@@ -18,13 +18,9 @@ import jsjava.awt.image.ImageProducer;
 
 public class JSToolkit extends Toolkit {
 
-	public JSToolkit(){}
-
-
-	public void sayHello() {
-		System.out.println("hello");
+	public JSToolkit(){
+		System.out.println("JSToolkit initialized");		
 	}
-
 
 	@Override
 	public Dimension getScreenSize() {

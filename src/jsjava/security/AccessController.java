@@ -17,9 +17,10 @@ public class AccessController implements AccessControlContext {
 		return true;
 	}
 
-	public static void doPrivileged(PrivilegedAction<Void> action,
-			AccessControlContext accessControlContext) {
-		action.run();		
-	}
+  public static <T> T doPrivileged(PrivilegedAction<T> action,
+      AccessControlContext context) {
+  	return action.run();
+  }
+
 
 }
