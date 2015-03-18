@@ -95,11 +95,11 @@ public class Region {
     int endIndex;
     int[] bands;
 
-    private static native void initIDs();
-
-    static {
-        initIDs();
-    }
+//    //private static native void initIDs();
+//
+//    static {
+//        initIDs();
+//    }
 
     /**
      * Adds the dimension <code>dim</code> to the coordinate

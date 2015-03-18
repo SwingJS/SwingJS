@@ -58,9 +58,10 @@ public class Disposer implements Runnable {
     static {
         //jsjava.security.AccessController.doPrivileged(
           //  new jssun.security.action.LoadLibraryAction("awt"));
-        initIDs();
-        String type = null;//(String) jsjava.security.AccessController.doPrivileged(
-                //new jssun.security.action.GetPropertyAction("jssun.java2d.reftype"));
+//        initIDs();
+        String type = System.getProperty("sun.java2d.reftype"); 
+        		//(String) jsjava.security.AccessController.doPrivileged(
+              //  new jssun.security.action.GetPropertyAction("jssun.java2d.reftype"));
         if (type != null) {
             if (type.equals("weak")) {
                 refType = WEAK;
@@ -235,7 +236,7 @@ public class Disposer implements Runnable {
         }
     }
 
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /*
      * This was added for use by the 2D font implementation to avoid creation

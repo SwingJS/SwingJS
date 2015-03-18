@@ -392,7 +392,7 @@ public class Window extends Container {
 //     * Initialize JNI field and method IDs for fields that may be
 //       accessed from C.
 //     */
-//    private static native void initIDs();
+//    //private static native void initIDs();
 //
     /**
      * Constructs a new, initially invisible window in default size with the

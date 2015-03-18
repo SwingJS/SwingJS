@@ -203,7 +203,7 @@ public abstract class InputEvent extends ComponentEvent {
      * Initialize JNI field and method IDs for fields that may be
        accessed from C.
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /**
      * Constructs an InputEvent object with the specified source component,

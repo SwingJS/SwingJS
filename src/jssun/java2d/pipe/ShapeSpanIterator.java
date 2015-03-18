@@ -67,11 +67,11 @@ public final class ShapeSpanIterator
 {
     long pData;
 
-    static {
-        initIDs();
-    }
-
-    public static native void initIDs();
+//    static {
+//        initIDs();
+//    }
+//
+//    public static native void initIDs();
 
     public ShapeSpanIterator(boolean adjust) {
         setNormalize(adjust);

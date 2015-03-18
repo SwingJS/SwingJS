@@ -175,6 +175,6 @@ public class Insets implements Cloneable, java.io.Serializable {
     /**
      * Initialize JNI field and method IDs
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
 }

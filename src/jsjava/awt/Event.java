@@ -593,19 +593,19 @@ public class Event implements java.io.Serializable {
      */
     private static final long serialVersionUID = 5488922509400504703L;
 
-    static {
-        /* ensure that the necessary native libraries are loaded */
-        //Toolkit.loadLibraries();
-        if (!GraphicsEnvironment.isHeadless()) {
-            initIDs();
-        }
-    }
+//    static {
+//        /* ensure that the necessary native libraries are loaded */
+//        //Toolkit.loadLibraries();
+//        if (!GraphicsEnvironment.isHeadless()) {
+//            initIDs();
+//        }
+//    }
 
     /**
      * Initialize JNI field and method IDs for fields that may be
        accessed from C.
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /**
      * <b>NOTE:</b> The <code>Event</code> class is obsolete and is

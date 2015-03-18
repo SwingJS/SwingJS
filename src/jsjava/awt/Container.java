@@ -229,7 +229,7 @@ public class Container extends Component {
 //     * Initialize JNI field and method IDs for fields that may be
 //       called from C.
 //     */
-//    private static native void initIDs();
+//    //private static native void initIDs();
 //
     /**
      * Constructs a new Container. Containers can be extended directly,

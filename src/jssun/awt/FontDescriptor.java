@@ -31,10 +31,10 @@ import java.nio.charset.StandardCharsets;
 
 public class FontDescriptor implements Cloneable {
 
-    static {
-  //      NativeLibLoader.loadLibraries();
-        initIDs();
-    }
+//    static {
+//  //      NativeLibLoader.loadLibraries();
+//        initIDs();
+//    }
 
     String nativeName;
     public CharsetEncoder encoder;
@@ -95,7 +95,7 @@ public class FontDescriptor implements Cloneable {
     /**
      * Initialize JNI field and method IDs
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
 
     public CharsetEncoder unicodeEncoder;

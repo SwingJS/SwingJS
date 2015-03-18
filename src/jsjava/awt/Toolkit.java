@@ -1573,7 +1573,7 @@ public abstract class Toolkit {
     /**
      * Initialize JNI field and method ids
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /**
      * Gets a property with the specified key and default.

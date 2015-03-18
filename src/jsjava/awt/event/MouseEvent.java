@@ -358,7 +358,7 @@ public class MouseEvent extends InputEvent {
      * Initialize JNI field and method IDs for fields that may be
        accessed from C.
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /**
      * Returns the absolute x, y position of the event.

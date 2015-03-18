@@ -320,7 +320,7 @@ public abstract class AWTEvent extends EventObject {
      * Initialize JNI field and method IDs for fields that may be
      * accessed from C.
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /**
      * Constructs an AWTEvent object from the parameters of a 1.0-style event.

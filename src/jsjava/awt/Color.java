@@ -265,7 +265,7 @@ public class Color implements Paint /*, java.io.Serializable*/ {
 //    /**
 //     * Initialize JNI field and method IDs
 //     */
-//    private static native void initIDs();
+//    //private static native void initIDs();
 //
 //    static {
 //        /** 4112352 - Calling getDefaultToolkit()

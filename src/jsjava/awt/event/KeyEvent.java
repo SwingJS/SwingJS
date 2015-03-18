@@ -904,7 +904,7 @@ public class KeyEvent extends InputEvent {
      * Initialize JNI field and method IDs for fields that may be
      * accessed from C.
      */
-    private static native void initIDs();
+    //private static native void initIDs();
 
     /**
      * Constructs a <code>KeyEvent</code> object.
