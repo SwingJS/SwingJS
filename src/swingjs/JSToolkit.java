@@ -1,7 +1,14 @@
-package jsjava.awt;
+package swingjs;
 
 import java.net.URL;
 
+import jsjava.awt.Dialog;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Image;
+import jsjava.awt.Toolkit;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
 import jsjava.awt.image.ColorModel;

@@ -829,12 +829,6 @@ public abstract class Toolkit {
      *                 if one could not be accessed or instantiated.
      */
     public static synchronized Toolkit getDefaultToolkit() {
-    	/**
-    	 * @j2sNative
-    	 * 
-    	 * return SwingController.JSToolkit;
-    	 */
-    	{
         if (toolkit == null) {
             try {
                 // We disable the JIT during toolkit initialization.  This
@@ -844,43 +838,44 @@ public abstract class Toolkit {
 
                 jsjava.security.AccessController.doPrivileged(
                         new jsjava.security.PrivilegedAction() {
-                    public Object run() {
-                        String nm = null;
-                        Class cls = null;
-                        try {
-                        	/**
-                        	 * @j2sNative
-                        	 * 
-                        	 * nm = "javajs.awt.JSToolkit";
-                        	 */
-                        	{
-                            nm = System.getProperty("awt.toolkit", "sun.awt.X11.XToolkit");
-                        	}
-                            try {
-                                cls = Class.forName(nm);
-                            } catch (ClassNotFoundException e) {
-                                ClassLoader cl = ClassLoader.getSystemClassLoader();
-                                if (cl != null) {
-                                    try {
-                                        cls = cl.loadClass(nm);
-                                    } catch (ClassNotFoundException ee) {
-                                        throw new AWTError("Toolkit not found: " + nm);
-                                    }
-                                }
-                            }
-                            if (cls != null) {
-                                toolkit = (Toolkit)cls.newInstance();
-//                                if (GraphicsEnvironment.isHeadless()) {
-//                                    toolkit = new HeadlessToolkit(toolkit);
-//                                }
-                            }
-                        } catch (InstantiationException e) {
-                            throw new AWTError("Could not instantiate Toolkit: " + nm);
-                        } catch (IllegalAccessException e) {
-                            throw new AWTError("Could not access Toolkit: " + nm);
-                        }
-                        return null;
-                    }
+							public Object run() {
+								String nm = null;
+								Class cls = null;
+								try {
+									/**
+									 * @j2sNative
+									 * 
+									 *            nm = "swingjs.JSToolkit";
+									 */
+									{
+										nm = System.getProperty("awt.toolkit",
+												"sun.awt.X11.XToolkit");
+									}
+									try {
+										cls = Class.forName(nm);
+									} catch (ClassNotFoundException e) {
+										ClassLoader cl = ClassLoader.getSystemClassLoader();
+										if (cl != null) {
+											try {
+												cls = cl.loadClass(nm);
+											} catch (ClassNotFoundException ee) {
+												throw new AWTError("Toolkit not found: " + nm);
+											}
+										}
+									}
+									if (cls != null) {
+										toolkit = (Toolkit) cls.newInstance();
+										// if (GraphicsEnvironment.isHeadless()) {
+										// toolkit = new HeadlessToolkit(toolkit);
+										// }
+									}
+								} catch (InstantiationException e) {
+									throw new AWTError("Could not instantiate Toolkit: " + nm);
+								} catch (IllegalAccessException e) {
+									throw new AWTError("Could not access Toolkit: " + nm);
+								}
+								return null;
+							}
                 });
 //                loadAssistiveTechnologies();
             } finally {
@@ -889,7 +884,6 @@ public abstract class Toolkit {
             }
         }
         return toolkit;
-    	}
     }
 
     /**
