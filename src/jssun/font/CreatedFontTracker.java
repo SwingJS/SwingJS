@@ -106,7 +106,7 @@ public class CreatedFontTracker {
      * Note that this only applies to createFont() from an InputStream object.
      */
     private static class TempFileDeletionHook {
-        private static HashMap<File, OutputStream> files = new HashMap<>();
+        private static HashMap<File, OutputStream> files = new HashMap();
 
         private static Thread t = null;
         static void init() {
