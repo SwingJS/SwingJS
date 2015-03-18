@@ -1,0 +1,7 @@
+#Java2Script Configuration
+#Mon Mar 16 07:17:33 CDT 2015
+j2s.compiler.abbreviation=false
+2s.compiler.abbreviation.prefix=$_
+j2s.abandoned.resources.list=
+j2s.output.path=bin
+j2s.compiler.status=disable
