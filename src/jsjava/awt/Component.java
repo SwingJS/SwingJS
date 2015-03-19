@@ -5098,7 +5098,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @see checkCoalsecing
      */
     private static boolean isCoalesceEventsOverriden(Class<?> clazz) {
-        assert Thread.holdsLock(coalesceMap);
+        //assert Thread.holdsLock(coalesceMap);
 
         // First check superclass - we may not need to bother ourselves.
         Class<?> superclass = clazz.getSuperclass();

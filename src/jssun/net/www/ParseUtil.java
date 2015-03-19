@@ -184,7 +184,7 @@ public class ParseUtil {
 
         char c = s.charAt(0);
         for (int i = 0; i < n;) {
-            assert c == s.charAt(i);
+            //assert c == s.charAt(i);
             if (c != '%') {
                 sb.append(c);
                 if (++i >= n)
@@ -195,7 +195,7 @@ public class ParseUtil {
             bb.clear();
             int ui = i;
             for (;;) {
-                assert (n - i >= 2);
+                //assert (n - i >= 2);
                 try {
                     bb.put(unescape(s, i));
                 } catch (NumberFormatException e) {

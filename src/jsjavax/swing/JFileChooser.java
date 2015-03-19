@@ -1741,7 +1741,7 @@ public class JFileChooser extends JComponent {
             jfcRef = new WeakReference(jfc);
         }
         public void propertyChange(PropertyChangeEvent ev) {
-            assert ev.getPropertyName().equals(SHOW_HIDDEN_PROP);
+            //assert ev.getPropertyName().equals(SHOW_HIDDEN_PROP);
             JFileChooser jfc = jfcRef.get();
             if (jfc == null) {
                 // Our JFileChooser is no longer around, so we no longer need to

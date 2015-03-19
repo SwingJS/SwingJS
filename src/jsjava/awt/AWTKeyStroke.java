@@ -864,20 +864,20 @@ class VKCollection {
     }
 
     public synchronized void put(String name, Integer code) {
-        assert((name != null) && (code != null));
-        assert(findName(code) == null);
-        assert(findCode(name) == null);
+//        assert((name != null) && (code != null));
+//        assert(findName(code) == null);
+//        assert(findCode(name) == null);
         code2name.put(code, name);
         name2code.put(name, code);
     }
 
     public synchronized Integer findCode(String name) {
-        assert(name != null);
+//        assert(name != null);
         return (Integer)name2code.get(name);
     }
 
     public synchronized String findName(Integer code) {
-        assert(code != null);
+//        assert(code != null);
         return (String)code2name.get(code);
     }
 }

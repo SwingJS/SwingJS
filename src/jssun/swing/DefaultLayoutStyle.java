@@ -168,7 +168,7 @@ public class DefaultLayoutStyle extends LayoutStyle {
         case SwingConstants.WEST:
             return SwingConstants.EAST;
         }
-        assert false;
+        //assert false;
         return 0;
     }
 
@@ -253,7 +253,7 @@ public class DefaultLayoutStyle extends LayoutStyle {
         case SwingConstants.WEST:
             return insets.left;
         }
-        assert false;
+       //assert false;
         return 0;
     }
 }

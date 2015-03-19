@@ -1313,7 +1313,7 @@ public class Container extends Component {
     }
 
     private int getListenersCount(int id, boolean enabledOnToolkit) {
-        assert Thread.holdsLock(getTreeLock());
+        //assert Thread.holdsLock(getTreeLock());
         if (enabledOnToolkit) {
             return descendantsCount;
         }
@@ -1331,7 +1331,7 @@ public class Container extends Component {
     final int createHierarchyEvents(int id, Component changed,
         Container changedParent, long changeFlags, boolean enabledOnToolkit)
     {
-        assert Thread.holdsLock(getTreeLock());
+        //assert Thread.holdsLock(getTreeLock());
         int listeners = getListenersCount(id, enabledOnToolkit);
 
         for (int count = listeners, i = 0; count > 0; i++) {
@@ -1346,7 +1346,7 @@ public class Container extends Component {
     final void createChildHierarchyEvents(int id, long changeFlags,
         boolean enabledOnToolkit)
     {
-        assert Thread.holdsLock(getTreeLock());
+        //assert Thread.holdsLock(getTreeLock());
         if (component.isEmpty()) {
             return;
         }
@@ -4593,7 +4593,7 @@ class LightweightDispatcher implements java.io.Serializable, AWTEventListener {
                 // avoid recursively calling LightweightDispatcher...
                 ((Container)target).dispatchEventToSelf(retargeted);
             } else {
-                assert AppContext.getAppContext() == target.appContext;
+                //assert AppContext.getAppContext() == target.appContext;
 
                 if (nativeContainer.modalComp != null) {
                     if (((Container)nativeContainer.modalComp).isAncestorOf(target)) {

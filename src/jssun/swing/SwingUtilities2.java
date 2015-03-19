@@ -713,7 +713,7 @@ public class SwingUtilities2 {
 
         // See if coords are inside
         // ASSUME: mouse x,y will never be < cell's x,y
-        assert (p.x >= cellBounds.x && p.y >= cellBounds.y);
+        //assert (p.x >= cellBounds.x && p.y >= cellBounds.y);
         if (p.x > cellBounds.x + cellBounds.width ||
                 p.y > cellBounds.y + cellBounds.height) {
             return true;
@@ -976,7 +976,7 @@ public class SwingUtilities2 {
      * see JComponent.getFontMetrics and TextLayoutStrategy.java
      */
     public static FontRenderContext getFontRenderContext(Component c) {
-        assert c != null;
+        //assert c != null;
         if (c == null) {
             return DEFAULT_FRC;
         } else {
@@ -990,7 +990,7 @@ public class SwingUtilities2 {
      * for the passed in Component if FontMetrics is null
      */
     private static FontRenderContext getFontRenderContext(Component c, FontMetrics fm) {
-        assert fm != null || c!= null;
+        //assert fm != null || c!= null;
         return (fm != null) ? fm.getFontRenderContext()
             : getFontRenderContext(c);
     }
@@ -1081,7 +1081,7 @@ public class SwingUtilities2 {
             this.font = fontMetrics.getFont();
             this.frc = fontMetrics.getFontRenderContext();
             this.cache = new HashMap<Character, Short>();
-            assert (font != null && frc != null);
+            //assert (font != null && frc != null);
         }
 
         public int getLeftSideBearing(char aChar) {

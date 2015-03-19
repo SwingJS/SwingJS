@@ -1635,7 +1635,7 @@ public class GroupLayout implements LayoutManager2 {
                 case MAX_SIZE:
                     return spring.getMaximumSize(axis);
             }
-            assert false;
+            //assert false;
             return 0;
         }
 
@@ -2031,7 +2031,7 @@ public class GroupLayout implements LayoutManager2 {
 
         private void setValidSizeNotPreferred(int axis, int origin, int size) {
             int delta = size - getPreferredSize(axis);
-            assert delta != 0;
+            //assert delta != 0;
             boolean useMin = (delta < 0);
             int springCount = springs.size();
             if (useMin) {
@@ -3000,7 +3000,7 @@ public class GroupLayout implements LayoutManager2 {
             if (min == PREFERRED_SIZE) {
                 return calculateNonlinkedPreferredSize(axis);
             }
-            assert (min == DEFAULT_SIZE);
+            //assert (min == DEFAULT_SIZE);
             return getSizeAlongAxis(axis, component.getMinimumSize());
         }
 
@@ -3011,7 +3011,7 @@ public class GroupLayout implements LayoutManager2 {
             if (pref >= 0) {
                 return pref;
             }
-            assert (pref == DEFAULT_SIZE || pref == PREFERRED_SIZE);
+            //assert (pref == DEFAULT_SIZE || pref == PREFERRED_SIZE);
             return getSizeAlongAxis(axis, component.getPreferredSize());
         }
 
@@ -3025,7 +3025,7 @@ public class GroupLayout implements LayoutManager2 {
             if (max == PREFERRED_SIZE) {
                 return calculateNonlinkedPreferredSize(axis);
             }
-            assert (max == DEFAULT_SIZE);
+            //assert (max == DEFAULT_SIZE);
             return getSizeAlongAxis(axis, component.getMaximumSize());
         }
 
@@ -3563,7 +3563,7 @@ public class GroupLayout implements LayoutManager2 {
                 if (axis == HORIZONTAL) {
                     spring = info.horizontalSpring;
                 } else {
-                    assert (axis == VERTICAL);
+                    //assert (axis == VERTICAL);
                     spring = info.verticalSpring;
                 }
                 size = Math.max(size,
@@ -3683,7 +3683,7 @@ public class GroupLayout implements LayoutManager2 {
             if (axis == HORIZONTAL) {
                 return horizontalMaster != null;
             }
-            assert (axis == VERTICAL);
+            //assert (axis == VERTICAL);
             return (verticalMaster != null);
         }
 
@@ -3691,7 +3691,7 @@ public class GroupLayout implements LayoutManager2 {
             if (axis == HORIZONTAL) {
                 horizontalMaster = linkInfo;
             } else {
-                assert (axis == VERTICAL);
+                //assert (axis == VERTICAL);
                 verticalMaster = linkInfo;
             }
         }
@@ -3709,7 +3709,7 @@ public class GroupLayout implements LayoutManager2 {
                 }
                 return horizontalMaster;
             } else {
-                assert (axis == VERTICAL);
+                //assert (axis == VERTICAL);
                 if (verticalMaster == null && create) {
                     // verticalMaster field is directly set by adding
                     // us to the LinkInfo.
@@ -3732,7 +3732,7 @@ public class GroupLayout implements LayoutManager2 {
             if (axis == HORIZONTAL) {
                 return horizontalMaster.getSize(axis);
             } else {
-                assert (axis == VERTICAL);
+                //assert (axis == VERTICAL);
                 return verticalMaster.getSize(axis);
             }
         }

@@ -147,11 +147,11 @@ public final class AppContext {
         return new HashSet<AppContext>(threadGroup2appContext.values());
     }
 
-    /* The main "system" AppContext, used by everything not otherwise
-       contained in another AppContext. It is implicitly created for
-       standalone apps only (i.e. not applets)
-    */
-    private static AppContext mainAppContext = null;
+//    /* The main "system" AppContext, used by everything not otherwise
+//       contained in another AppContext. It is implicitly created for
+//       standalone apps only (i.e. not applets)
+//    */
+//    private static AppContext mainAppContext = null;
 
     /*
      * The hash map associated with this AppContext.  A private delegate
@@ -226,26 +226,26 @@ public final class AppContext {
 
     private static MostRecentThreadAppContext mostRecentThreadAppContext = null;
 
-    private final static void initMainAppContext() {
-        // On the main Thread, we get the ThreadGroup, make a corresponding
-        // AppContext, and instantiate the Java EventQueue.  This way, legacy
-        // code is unaffected by the move to multiple AppContext ability.
-        AccessController.doPrivileged(new PrivilegedAction<Void>() {
-            public Void run() {
-                ThreadGroup currentThreadGroup =
-                        Thread.currentThread().getThreadGroup();
-                ThreadGroup parentThreadGroup = currentThreadGroup.getParent();
-                while (parentThreadGroup != null) {
-                    // Find the root ThreadGroup to construct our main AppContext
-                    currentThreadGroup = parentThreadGroup;
-                    parentThreadGroup = currentThreadGroup.getParent();
-                }
-
-                mainAppContext = SunToolkit.createNewAppContext(currentThreadGroup);
-                return null;
-            }
-        });
-    }
+//    private final static void initMainAppContext() {
+//        // On the main Thread, we get the ThreadGroup, make a corresponding
+//        // AppContext, and instantiate the Java EventQueue.  This way, legacy
+//        // code is unaffected by the move to multiple AppContext ability.
+//        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+//            public Void run() {
+//                ThreadGroup currentThreadGroup =
+//                        Thread.currentThread().getThreadGroup();
+//                ThreadGroup parentThreadGroup = currentThreadGroup.getParent();
+//                while (parentThreadGroup != null) {
+//                    // Find the root ThreadGroup to construct our main AppContext
+//                    currentThreadGroup = parentThreadGroup;
+//                    parentThreadGroup = currentThreadGroup.getParent();
+//                }
+//
+//                mainAppContext = SunToolkit.createNewAppContext(currentThreadGroup);
+//                return null;
+//            }
+//        });
+//    }
 
     /**
      * Returns the appropriate AppContext for the caller,
@@ -258,15 +258,16 @@ public final class AppContext {
      * @see     java.lang.ThreadGroup
      * @since   1.2
      */
-    public final static AppContext getAppContext() {
+    @SuppressWarnings("unchecked")
+		public final static AppContext getAppContext() {
     	/*
     	 * May not be possible without an ID
     	 *  
     	 */
-        // we are standalone app, return the main app context
-        if (numAppContexts.get() == 1 && mainAppContext != null) {
-            return mainAppContext;
-        }
+//        // we are standalone app, return the main app context
+//        if (numAppContexts.get() == 1 && mainAppContext != null) {
+//            return mainAppContext;
+//        }
 
         final Thread currentThread = Thread.currentThread();
 
@@ -300,10 +301,10 @@ public final class AppContext {
                     if (numAppContexts.get() == 0) {
                         // This check is not necessary, its purpose is to help
                         // Plugin devs to catch all the cases of main AC creation.
-                        if (System.getProperty("javaplugin.version") == null &&
-                                System.getProperty("javawebstart.version") == null) {
-                            initMainAppContext();
-                        }
+//                        if (System.getProperty("javaplugin.version") == null &&
+//                                System.getProperty("javawebstart.version") == null) {
+//                            initMainAppContext();
+//                        }
                     }
 
             AppContext context = threadGroup2appContext.get(threadGroup);
@@ -354,32 +355,33 @@ public final class AppContext {
      * @return  true if the specified AppContext is the main AppContext.
      */
     public final static boolean isMainContext(AppContext ctx) {
-        return (ctx != null && ctx == mainAppContext);
+    		return  false;
+        //return (ctx != null && ctx == mainAppContext);
     }
 
-    private final static AppContext getExecutionAppContext() {
-        SecurityManager securityManager = System.getSecurityManager();
-        if ((securityManager != null) &&
-            (securityManager instanceof AWTSecurityManager))
-        {
-            AWTSecurityManager awtSecMgr = (AWTSecurityManager) securityManager;
-            AppContext secAppContext = awtSecMgr.getAppContext();
-            return secAppContext; // Return what we're told
-        }
-        return null;
-    }
-
-    private long DISPOSAL_TIMEOUT = 5000;  // Default to 5-second timeout
+//    private final static AppContext getExecutionAppContext() {
+//        SecurityManager securityManager = System.getSecurityManager();
+//        if ((securityManager != null) &&
+//            (securityManager instanceof AWTSecurityManager))
+//        {
+//            AWTSecurityManager awtSecMgr = (AWTSecurityManager) securityManager;
+//            AppContext secAppContext = awtSecMgr.getAppContext();
+//            return secAppContext; // Return what we're told
+//        }
+//        return null;
+//    }
+//
+//    private long DISPOSAL_TIMEOUT = 5000;  // Default to 5-second timeout
                                            // for disposal of all Frames
                                            // (we wait for this time twice,
                                            // once for dispose(), and once
                                            // to clear the EventQueue).
 
-    private long THREAD_INTERRUPT_TIMEOUT = 1000;
-                            // Default to 1-second timeout for all
-                            // interrupted Threads to exit, and another
-                            // 1 second for all stopped Threads to die.
-
+//    private long THREAD_INTERRUPT_TIMEOUT = 1000;
+//                            // Default to 1-second timeout for all
+//                            // interrupted Threads to exit, and another
+//                            // 1 second for all stopped Threads to die.
+//
     /**
      * Disposes of this AppContext, all of its top-level Frames, and
      * all Threads and ThreadGroups contained within it.

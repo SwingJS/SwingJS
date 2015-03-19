@@ -374,5 +374,5 @@ public class Cursor implements java.io.Serializable {
 //        }
     }
 
-    private native static void finalizeImpl(long pData);
+//    private native static void finalizeImpl(long pData);
 }

@@ -4888,13 +4888,13 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         // Shortcut for vertical scrolling of a table w/ uniform row height
         if (null == rowModel && SwingConstants.VERTICAL == orientation) {
             int row = rowAtPoint(visibleRect.getLocation());
-            assert row != -1;
+            //assert row != -1;
             int col = columnAtPoint(visibleRect.getLocation());
             Rectangle cellRect = getCellRect(row, col, true);
 
             if (cellRect.y == visibleRect.y) {
                 int rh = getRowHeight();
-                assert rh > 0;
+                //assert rh > 0;
                 return Math.max(rh, (visibleRect.height / rh) * rh);
             }
         }

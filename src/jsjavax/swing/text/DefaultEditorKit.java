@@ -1131,8 +1131,8 @@ public class DefaultEditorKit extends EditorKit {
     static class DeleteWordAction extends TextAction {
         DeleteWordAction(String name) {
             super(name);
-            assert (name == deletePrevWordAction)
-                || (name == deleteNextWordAction);
+//            assert (name == deletePrevWordAction)
+//                || (name == deleteNextWordAction);
         }
         /**
          * The operation to perform when this action is triggered.

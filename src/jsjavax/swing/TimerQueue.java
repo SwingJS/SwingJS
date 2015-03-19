@@ -125,7 +125,7 @@ class TimerQueue implements Runnable
     }
 
     private void addTimer(DelayedTimer delayedTimer) {
-        assert delayedTimer != null && ! containsTimer(delayedTimer.getTimer());
+        //assert delayedTimer != null && ! containsTimer(delayedTimer.getTimer());
 
         Timer timer = delayedTimer.getTimer();
         timer.getLock().lock();

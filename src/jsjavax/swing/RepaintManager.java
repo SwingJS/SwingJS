@@ -1503,7 +1503,7 @@ public class RepaintManager {
 		 * of requests.
 		 */
 		protected void repaintRoot(JComponent root) {
-			assert (repaintManager.repaintRoot == null);
+			//assert (repaintManager.repaintRoot == null);
 			if (repaintManager.painting) {
 				repaintManager.repaintRoot = root;
 			} else {
