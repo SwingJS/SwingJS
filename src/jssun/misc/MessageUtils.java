@@ -95,14 +95,28 @@ public class MessageUtils {
      *  character conversion methods.
      *  @param msg   message to print
      */
-    public static native void toStderr(String msg);
+    public static void toStderr(String msg) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * System.out.println(msg);
+    	 */
+    	{}
+    }
 
     /**
      *  Print a message directly to stdout, bypassing all the
      *  character conversion methods.
      *  @param msg   message to print
      */
-    public static native void toStdout(String msg);
+    public static void toStdout(String msg) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * System.out.println(msg);
+    	 */
+    	{}
+    }
 
 
     // Short forms of the above
@@ -118,10 +132,18 @@ public class MessageUtils {
     // Print a stack trace to stderr
     //
     public static void where() {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * System.out.println(Clazz.getStackTrace());
+    	 * 
+    	 */
+    	{
         Throwable t = new Throwable();
         StackTraceElement[] es = t.getStackTrace();
         for (int i = 1; i < es.length; i++)
             toStderr("\t" + es[i].toString() + "\n");
+    	}
     }
 
 }

@@ -39,8 +39,8 @@ public class DefaultDisposerRecord implements DisposerRecord {
     }
 
     public void dispose() {
-        invokeNativeDispose(disposerMethodPointer,
-                            dataPointer);
+//        invokeNativeDispose(disposerMethodPointer,
+//                            dataPointer);
     }
 
     public long getDataPointer() {
@@ -51,6 +51,6 @@ public class DefaultDisposerRecord implements DisposerRecord {
         return disposerMethodPointer;
     }
 
-    public static native void invokeNativeDispose(long disposerMethodPointer,
-                                                  long dataPointer);
+//    public static native void invokeNativeDispose(long disposerMethodPointer,
+//                                                  long dataPointer);
 }

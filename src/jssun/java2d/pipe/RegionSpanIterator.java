@@ -47,16 +47,16 @@ public class RegionSpanIterator implements SpanIterator {
     // Is the associated Region rectangular?
     boolean isrect;
 
-/*
-    REMIND: For native implementation
-    long pData;     // Private storage of rect info
-
-    static {
-        initIDs();
-    }
-
-    public static native void initIDs();
-*/
+///*
+//    REMIND: For native implementation
+//    long pData;     // Private storage of rect info
+//
+//    static {
+//        initIDs();
+//    }
+//
+//    public static native void initIDs();
+//*/
 
     /**
      * Constructs an instance based on the given Region
