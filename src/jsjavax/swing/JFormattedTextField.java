@@ -651,7 +651,7 @@ public class JFormattedTextField extends JTextField {
                     JFormattedTextField.this.setValue(
                         JFormattedTextField.this.getValue(), true, true);
                 } catch (ParseException pe) {
-                    if (fb == JFormattedTextField.this.COMMIT_OR_REVERT) {
+                    if (fb == JFormattedTextField.COMMIT_OR_REVERT) {
                         JFormattedTextField.this.setValue(
                             JFormattedTextField.this.getValue(), true, true);
                     }

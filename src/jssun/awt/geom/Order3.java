@@ -407,6 +407,7 @@ final class Order3 extends Curve {
         return t;
     }
 
+    @SuppressWarnings("unused")
     public double refine(double a, double b, double c,
                          double target, double t)
     {

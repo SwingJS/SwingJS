@@ -364,7 +364,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         model.setPressed(true);
         paintImmediately(new Rectangle(0,0, size.width, size.height));
         try {
-            Thread.currentThread().sleep(pressTime);
+            Thread.sleep(pressTime);
         } catch(InterruptedException ie) {
         }
         model.setPressed(false);

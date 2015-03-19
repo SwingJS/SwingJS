@@ -90,7 +90,7 @@ public class StyledEditorKit extends DefaultEditorKit {
      * @return the command list
      */
     public Action[] getActions() {
-        return TextAction.augmentList(super.getActions(), this.defaultActions);
+        return TextAction.augmentList(super.getActions(), defaultActions);
     }
 
     /**

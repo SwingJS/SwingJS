@@ -152,6 +152,7 @@ public abstract class AreaOp {
 
     public abstract int getState();
 
+    @SuppressWarnings("unused")
     public Vector calculate(Vector left, Vector right) {
         Vector edges = new Vector();
         addEdges(edges, left, AreaOp.CTAG_LEFT);
@@ -195,6 +196,7 @@ public abstract class AreaOp {
         }
     };
 
+    @SuppressWarnings("unused")
     private Vector pruneEdges(Vector edges) {
         int numedges = edges.size();
         if (numedges < 2) {

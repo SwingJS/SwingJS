@@ -634,9 +634,10 @@ public class MaskFormatter extends DefaultFormatter {
             return string;
         }
         else if (last != string.length()) {
-            if (sb == null) {
-                return string.substring(last);
-            }
+
+// ub: always false:            if (sb == null) {
+//                return string.substring(last);
+//            }
             sb.append(string.substring(last));
         }
         return sb.toString();

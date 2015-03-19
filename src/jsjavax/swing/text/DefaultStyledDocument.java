@@ -461,9 +461,9 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
             int index = e.getElementIndex(pos);
             e = e.getElement(index);
         }
-        if(e != null)
+        // ub: always true (or the "e.isLeaf()" call is wrong): if(e != null)
             return e.getParentElement();
-        return e;
+        // ub: never executed: return e;
     }
 
     /**

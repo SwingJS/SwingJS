@@ -30,10 +30,11 @@ import jsjava.awt.image.VolatileImage;
 import jsjava.security.AccessControlContext;
 import jsjava.security.AccessController;
 import jsjava.security.PrivilegedAction;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import jsjava.applet.*;
 
+import jsjava.applet.*;
 import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
 import jssun.awt.AWTAccessor;
@@ -185,7 +186,7 @@ public class RepaintManager {
 		}
 		nativeDoubleBuffering = true;//"true".equals(AccessController
 				//.doPrivileged(new GetPropertyAction("awt.nativeDoubleBuffering")));
-		String bs = "false";
+		String bs = dummy();
 //		AccessController.doPrivileged(new GetPropertyAction(
 //				"swing.bufferPerWindow"));
 		if (headless) {
@@ -208,6 +209,10 @@ public class RepaintManager {
 		// new DisplayChangedHandler());
 		// }
 	}
+
+    private static String dummy() {
+        return "false";
+    }
 
 	/**
 	 * Return the RepaintManager for the calling thread given a Component.

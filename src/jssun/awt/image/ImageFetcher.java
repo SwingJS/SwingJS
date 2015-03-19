@@ -179,7 +179,7 @@ class ImageFetcher extends Thread {
             // the fetcher was interrupted, as we used to,
             // because there may be other images waiting
             // to be fetched (see 4789067)
-            me.interrupted();
+            Thread.interrupted();
             me.setPriority(HIGH_PRIORITY);
             ImageFetchable src = nextImage();
             if (src == null) {
