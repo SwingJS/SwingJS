@@ -24,10 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.text.*;
 import jsjava.awt.*;
-import jsjava.awt.font.*;
-import jsjava.awt.geom.Rectangle2D;
 import jsjavax.swing.text.Position.Bias;
 
 /**

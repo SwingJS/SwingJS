@@ -25,8 +25,6 @@
 
 package jsjavax.swing;
 
-import java.util.*;
-
 /**
  * The purpose of this class is to help clients support smooth focus
  * navigation through GUIs with text fields. Such GUIs often need

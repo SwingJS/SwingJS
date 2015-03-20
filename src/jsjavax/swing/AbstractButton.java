@@ -26,17 +26,9 @@ package jsjavax.swing;
 
 import jsjava.awt.*;
 import jsjava.awt.event.*;
-import jsjava.awt.image.*;
-import java.text.*;
-import jsjava.awt.geom.*;
 import jsjava.beans.*;
-import java.util.Enumeration;
-import java.util.Vector;
 import jsjavax.swing.event.*;
-import jsjavax.swing.border.*;
 import jsjavax.swing.plaf.*;
-import jsjavax.swing.text.*;
-import java.util.*;
 
 /**
  * Defines common behaviors for buttons and menu items.

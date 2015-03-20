@@ -27,14 +27,9 @@ package jsjavax.swing;
 
 import jsjava.awt.*;
 import jsjava.awt.event.*;
-import jsjava.beans.*;
 import java.io.*;
-import java.util.*;
-
 import jsjavax.swing.colorchooser.*;
 import jsjavax.swing.plaf.ColorChooserUI;
-import jsjavax.swing.event.*;
-
 import jssun.swing.SwingUtilities2;
 
 

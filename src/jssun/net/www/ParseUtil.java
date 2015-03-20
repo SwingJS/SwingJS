@@ -27,13 +27,6 @@ package jssun.net.www;
 
 import java.util.BitSet;
 import java.io.File;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-//port jssun.nio.cs.ThreadLocalCoders;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
 
 /**
  * A class that contains useful routines common to jssun.net.www
@@ -152,121 +145,121 @@ public class ParseUtil {
         return index;
     }
 
-    /**
-     * Un-escape and return the character at position i in string s.
-     */
-    private static byte unescape(String s, int i) {
-        return (byte) Integer.parseInt(s.substring(i+1,i+3),16);
-    }
+//    /**
+//     * Un-escape and return the character at position i in string s.
+//     */
+//    private static byte unescape(String s, int i) {
+//        return (byte) Integer.parseInt(s.substring(i+1,i+3),16);
+//    }
+//
+//
+//    /**
+//     * Returns a new String constructed from the specified String by replacing
+//     * the URL escape sequences and UTF8 encoding with the characters they
+//     * represent.
+//     */
+//    public static String decode(String s) {
+//        int n = s.length();
+//        if ((n == 0) || (s.indexOf('%') < 0))
+//            return s;
+//
+//        StringBuilder sb = new StringBuilder(n);
+//        ByteBuffer bb = ByteBuffer.allocate(n);
+//        CharBuffer cb = CharBuffer.allocate(n);
+//        CharsetDecoder dec = null;//ThreadLocalCoders.decoderFor("UTF-8")
+//            //.onMalformedInput(CodingErrorAction.REPORT)
+//            ///.onUnmappableCharacter(CodingErrorAction.REPORT);
+//
+//        char c = s.charAt(0);
+//        for (int i = 0; i < n;) {
+//            //assert c == s.charAt(i);
+//            if (c != '%') {
+//                sb.append(c);
+//                if (++i >= n)
+//                    break;
+//                c = s.charAt(i);
+//                continue;
+//            }
+//            bb.clear();
+//            int ui = i;
+//            for (;;) {
+//                //assert (n - i >= 2);
+//                try {
+//                    bb.put(unescape(s, i));
+//                } catch (NumberFormatException e) {
+//                    throw new IllegalArgumentException();
+//                }
+//                i += 3;
+//                if (i >= n)
+//                    break;
+//                c = s.charAt(i);
+//                if (c != '%')
+//                    break;
+//            }
+//            bb.flip();
+//            cb.clear();
+//            dec.reset();
+//            CoderResult cr = dec.decode(bb, cb, true);
+//            if (cr.isError())
+//                throw new IllegalArgumentException("Error decoding percent encoded characters");
+//            cr = dec.flush(cb);
+//            if (cr.isError())
+//                throw new IllegalArgumentException("Error decoding percent encoded characters");
+//            sb.append(cb.flip().toString());
+//        }
+//
+//        return sb.toString();
+//    }
 
+//    /**
+//     * Returns a canonical version of the specified string.
+//     */
+//    public String canonizeString(String file) {
+//        int i = 0;
+//        int lim = file.length();
+//
+//        // Remove embedded /../
+//        while ((i = file.indexOf("/../")) >= 0) {
+//            if ((lim = file.lastIndexOf('/', i - 1)) >= 0) {
+//                file = file.substring(0, lim) + file.substring(i + 3);
+//            } else {
+//                file = file.substring(i + 3);
+//            }
+//        }
+//        // Remove embedded /./
+//        while ((i = file.indexOf("/./")) >= 0) {
+//            file = file.substring(0, i) + file.substring(i + 2);
+//        }
+//        // Remove trailing ..
+//        while (file.endsWith("/..")) {
+//            i = file.indexOf("/..");
+//            if ((lim = file.lastIndexOf('/', i - 1)) >= 0) {
+//                file = file.substring(0, lim+1);
+//            } else {
+//                file = file.substring(0, i);
+//            }
+//        }
+//        // Remove trailing .
+//        if (file.endsWith("/."))
+//            file = file.substring(0, file.length() -1);
+//
+//        return file;
+//    }
 
-    /**
-     * Returns a new String constructed from the specified String by replacing
-     * the URL escape sequences and UTF8 encoding with the characters they
-     * represent.
-     */
-    public static String decode(String s) {
-        int n = s.length();
-        if ((n == 0) || (s.indexOf('%') < 0))
-            return s;
-
-        StringBuilder sb = new StringBuilder(n);
-        ByteBuffer bb = ByteBuffer.allocate(n);
-        CharBuffer cb = CharBuffer.allocate(n);
-        CharsetDecoder dec = null;//ThreadLocalCoders.decoderFor("UTF-8")
-            //.onMalformedInput(CodingErrorAction.REPORT)
-            ///.onUnmappableCharacter(CodingErrorAction.REPORT);
-
-        char c = s.charAt(0);
-        for (int i = 0; i < n;) {
-            //assert c == s.charAt(i);
-            if (c != '%') {
-                sb.append(c);
-                if (++i >= n)
-                    break;
-                c = s.charAt(i);
-                continue;
-            }
-            bb.clear();
-            int ui = i;
-            for (;;) {
-                //assert (n - i >= 2);
-                try {
-                    bb.put(unescape(s, i));
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException();
-                }
-                i += 3;
-                if (i >= n)
-                    break;
-                c = s.charAt(i);
-                if (c != '%')
-                    break;
-            }
-            bb.flip();
-            cb.clear();
-            dec.reset();
-            CoderResult cr = dec.decode(bb, cb, true);
-            if (cr.isError())
-                throw new IllegalArgumentException("Error decoding percent encoded characters");
-            cr = dec.flush(cb);
-            if (cr.isError())
-                throw new IllegalArgumentException("Error decoding percent encoded characters");
-            sb.append(cb.flip().toString());
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * Returns a canonical version of the specified string.
-     */
-    public String canonizeString(String file) {
-        int i = 0;
-        int lim = file.length();
-
-        // Remove embedded /../
-        while ((i = file.indexOf("/../")) >= 0) {
-            if ((lim = file.lastIndexOf('/', i - 1)) >= 0) {
-                file = file.substring(0, lim) + file.substring(i + 3);
-            } else {
-                file = file.substring(i + 3);
-            }
-        }
-        // Remove embedded /./
-        while ((i = file.indexOf("/./")) >= 0) {
-            file = file.substring(0, i) + file.substring(i + 2);
-        }
-        // Remove trailing ..
-        while (file.endsWith("/..")) {
-            i = file.indexOf("/..");
-            if ((lim = file.lastIndexOf('/', i - 1)) >= 0) {
-                file = file.substring(0, lim+1);
-            } else {
-                file = file.substring(0, i);
-            }
-        }
-        // Remove trailing .
-        if (file.endsWith("/."))
-            file = file.substring(0, file.length() -1);
-
-        return file;
-    }
-
-    public static URL fileToEncodedURL(File file)
-        throws MalformedURLException
-    {
-        String path = file.getAbsolutePath();
-        path = ParseUtil.encodePath(path);
-        if (!path.startsWith("/")) {
-            path = "/" + path;
-        }
-        if (!path.endsWith("/") && file.isDirectory()) {
-            path = path + "/";
-        }
-        return new URL("file", "", path);
-    }
-
+//    public static URL fileToEncodedURL(File file)
+//        throws MalformedURLException
+//    {
+//        String path = file.getAbsolutePath();
+//        path = ParseUtil.encodePath(path);
+//        if (!path.startsWith("/")) {
+//            path = "/" + path;
+//        }
+//        if (!path.endsWith("/") && file.isDirectory()) {
+//            path = path + "/";
+//        }
+//        return new URL("file", "", path);
+//    }
+//
 //    public static java.net.URI toURI(URL url) {
 //        String protocol = url.getProtocol();
 //        String auth = url.getAuthority();

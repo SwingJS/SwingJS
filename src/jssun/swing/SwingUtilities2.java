@@ -30,32 +30,18 @@ import jsjava.awt.*;
 import static jssun.awt.SunHints.*;
 import jsjava.awt.event.*;
 import jsjava.awt.font.*;
-import jsjava.awt.geom.*;
-import java.text.Bidi;
-import java.text.AttributedCharacterIterator;
-import java.text.AttributedString;
-
 import jsjavax.swing.*;
-import jsjavax.swing.plaf.*;
 import jsjavax.swing.text.Highlighter;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.DefaultHighlighter;
 import jsjavax.swing.text.DefaultCaret;
 import jsjavax.swing.table.TableCellRenderer;
-import jsjavax.swing.table.TableColumnModel;
-
-import jssun.swing.PrintColorUIResource;
 import jssun.swing.ImageIconUIResource;
-//import sun.print.ProxyPrintGraphics;
-import jssun.awt.*;
 //import jssun.security.action.GetPropertyAction;
 //import jssun.security.util.SecurityConstants;
 import java.io.*;
 import java.util.*;
 import jssun.font.FontDesignMetrics;
-import jssun.font.FontUtilities;
-//import jssun.java2d.SunGraphicsEnvironment;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
