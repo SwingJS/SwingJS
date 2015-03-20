@@ -24,16 +24,6 @@
  */
 package jsjava.awt;
 
-import jsjava.applet.Applet;
-import jsjava.awt.event.*;
-import jsjava.awt.geom.Point2D;
-import jsjava.awt.image.BufferedImage;
-import jsjava.beans.PropertyChangeListener;
-import jsjavax.swing.JComponent;
-import jsjavax.swing.JLayeredPane;
-import jsjavax.swing.JRootPane;
-import jsjavax.swing.RootPaneContainer;
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -43,12 +33,24 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.concurrent.atomic.AtomicBoolean;
-import jssun.awt.AWTAccessor;
+import java.util.logging.Logger;
+
+import jsjava.applet.Applet;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseWheelEvent;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.event.WindowFocusListener;
+import jsjava.awt.event.WindowListener;
+import jsjava.awt.event.WindowStateListener;
+import jsjava.awt.image.BufferedImage;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JLayeredPane;
+import jsjavax.swing.JRootPane;
+import jsjavax.swing.RootPaneContainer;
 import jssun.awt.AppContext;
-import jssun.awt.CausedFocusEvent;
 
 /**
  * A <code>Window</code> object is a top-level window with no borders and no
@@ -2990,6 +2992,7 @@ public class Window extends Container {
      * @see java.awt.GraphicsEnvironment#getCenterPoint
      * @since 1.4
      */
+    @SuppressWarnings("null")
     public void setLocationRelativeTo(Component c) {
         Container root=null;
 

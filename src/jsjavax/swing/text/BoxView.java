@@ -24,9 +24,12 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
-import jsjavax.swing.event.DocumentEvent;
+import jsjava.awt.Component;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjavax.swing.SizeRequirements;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * A view that arranges its children into a box shape by tiling
@@ -755,6 +758,7 @@ public class BoxView extends CompositeView {
      * @param spans the span of each child view; this is a return
      *  value and is filled in by the implementation of this method
      */
+    @SuppressWarnings("null")
     protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
         /*
          * first pass, calculate the preferred sizes

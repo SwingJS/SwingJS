@@ -24,8 +24,8 @@
  */
 package jsjava.awt;
 
-import java.util.Hashtable;
 import java.util.Arrays;
+import java.util.Hashtable;
 
 /**
  * The <code>GridBagLayout</code> class is a flexible layout
@@ -979,6 +979,7 @@ java.io.Serializable {
      * refer to <code>getLayoutInfo</code> for details on parameters
      * and return value.
      */
+    @SuppressWarnings("null")
     protected GridBagLayoutInfo GetLayoutInfo(Container parent, int sizeflag) {
         synchronized (parent.getTreeLock()) {
             GridBagLayoutInfo r;

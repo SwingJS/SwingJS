@@ -25,27 +25,51 @@
 
 package jsjavax.swing;
 
-import java.util.*;
-
-import jsjava.applet.Applet;
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-
-import jsjava.beans.*;
-
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.table.*;
-import jsjavax.swing.border.*;
-
-import java.text.NumberFormat;
 import java.text.DateFormat;
-import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.EventObject;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import jssun.swing.SwingUtilities2;
-import jssun.swing.SwingUtilities2.Section;
-import static sun.swing.SwingUtilities2.Section.*;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.border.EmptyBorder;
+import jsjavax.swing.border.LineBorder;
+import jsjavax.swing.event.CellEditorListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ListSelectionEvent;
+import jsjavax.swing.event.ListSelectionListener;
+import jsjavax.swing.event.RowSorterEvent;
+import jsjavax.swing.event.RowSorterListener;
+import jsjavax.swing.event.TableColumnModelEvent;
+import jsjavax.swing.event.TableColumnModelListener;
+import jsjavax.swing.event.TableModelEvent;
+import jsjavax.swing.event.TableModelListener;
+import jsjavax.swing.plaf.TableUI;
+import jsjavax.swing.plaf.UIResource;
+import jsjavax.swing.table.AbstractTableModel;
+import jsjavax.swing.table.DefaultTableCellRenderer;
+import jsjavax.swing.table.DefaultTableColumnModel;
+import jsjavax.swing.table.DefaultTableModel;
+import jsjavax.swing.table.JTableHeader;
+import jsjavax.swing.table.TableCellEditor;
+import jsjavax.swing.table.TableCellRenderer;
+import jsjavax.swing.table.TableColumn;
+import jsjavax.swing.table.TableColumnModel;
+import jsjavax.swing.table.TableModel;
+import jsjavax.swing.table.TableRowSorter;
 import jssun.swing.SwingLazyValue;
+import jssun.swing.SwingUtilities2;
 
 /**
  * The <code>JTable</code> is used to display and edit regular two-dimensional tables
@@ -4086,6 +4110,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * Invoked when <code>sorterChanged</code> is invoked, or
      * when <code>tableChanged</code> is invoked and sorting is enabled.
      */
+    @SuppressWarnings("null")
     private void sortedTableChanged(RowSorterEvent sortedEvent,
                                     TableModelEvent e) {
         int editingModelIndex = -1;

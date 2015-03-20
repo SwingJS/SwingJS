@@ -24,12 +24,20 @@
  */
 package jsjavax.swing.text;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.text.AttributedCharacterIterator;
+import java.text.CharacterIterator;
+import java.text.Format;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Map;
+
 import jsjava.awt.event.ActionEvent;
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import jsjavax.swing.*;
-import jsjavax.swing.text.*;
+import jsjavax.swing.AbstractAction;
+import jsjavax.swing.Action;
+import jsjavax.swing.JFormattedTextField;
 
 /**
  * <code>InternationalFormatter</code> extends <code>DefaultFormatter</code>,
@@ -619,6 +627,7 @@ public class InternationalFormatter extends DefaultFormatter {
         return (direction == -1) ? 0 : max;
     }
 
+    @SuppressWarnings("null")
     /**
      * Overriden in an attempt to honor the literals.
      * <p>

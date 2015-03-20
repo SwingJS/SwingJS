@@ -25,13 +25,13 @@
 
 package jsjavax.swing.tree;
 
-import jsjavax.swing.event.TreeModelEvent;
-import jsjava.awt.Dimension;
-import jsjava.awt.Rectangle;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.NoSuchElementException;
 import java.util.Stack;
+
+import jsjava.awt.Rectangle;
+import jsjavax.swing.event.TreeModelEvent;
 
 /**
  * NOTE: This will become more open in a future release.
@@ -1321,6 +1321,7 @@ public class FixedHeightLayoutCache extends AbstractLayoutCache {
          * This should be invoked on root with <code>nextRow</code> set
          * to <code>getRowCount</code>().
          */
+        @SuppressWarnings("null")
         protected boolean getPathForRow(int row, int nextRow,
                                         SearchInfo info) {
             if(this.row == row) {

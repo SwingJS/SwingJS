@@ -26,16 +26,17 @@
 package jsjavax.swing.filechooser;
 
 
-import jsjavax.swing.*;
-
-import jsjava.awt.Image;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Vector;
 
-import jssun.awt.shell.*;
+import jsjava.awt.Image;
+import jsjavax.swing.Icon;
+import jsjavax.swing.ImageIcon;
+import jsjavax.swing.UIManager;
+import jssun.awt.shell.ShellFolder;
 
 /**
  * FileSystemView is JFileChooser's gateway to the
@@ -427,6 +428,7 @@ public abstract class FileSystemView {
     /**
      * Gets the list of shown (i.e. not hidden) files.
      */
+    @SuppressWarnings("null")
     public File[] getFiles(File dir, boolean useFileHiding) {
         Vector files = new Vector();
 

@@ -25,15 +25,22 @@
 
 package jsjavax.swing.tree;
 
-import jsjava.beans.PropertyChangeListener;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.BitSet;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Vector;
-import jsjavax.swing.event.*;
+
+import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.DefaultListSelectionModel;
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.SwingPropertyChangeSupport;
+import jsjavax.swing.event.TreeSelectionEvent;
+import jsjavax.swing.event.TreeSelectionListener;
 
 /**
  * Default implementation of TreeSelectionModel.  Listeners are notified
@@ -202,6 +209,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param pPaths new selection
       */
+    @SuppressWarnings("null")
     public void setSelectionPaths(TreePath[] pPaths) {
         int            newCount, newCounter, oldCount, oldCounter;
         TreePath[]     paths = pPaths;
@@ -336,6 +344,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param paths the new path to add to the current selection
       */
+    @SuppressWarnings("null")
     public void addSelectionPaths(TreePath[] paths) {
         int       newPathLength = ((paths == null) ? 0 : paths.length);
 

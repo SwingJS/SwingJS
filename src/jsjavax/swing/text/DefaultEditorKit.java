@@ -24,12 +24,19 @@
  */
 package jsjavax.swing.text;
 
-import java.io.*;
-import jsjava.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+
+import jsjava.awt.ComponentOrientation;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
-import java.text.*;
 import jsjavax.swing.Action;
-import jsjavax.swing.KeyStroke;
 import jsjavax.swing.SwingConstants;
 import jsjavax.swing.UIManager;
 
@@ -304,6 +311,7 @@ public class DefaultEditorKit extends EditorKit {
      * @exception BadLocationException if pos is not within 0 and
      *   the length of the document.
      */
+    @SuppressWarnings("null")
     public void write(Writer out, Document doc, int pos, int len)
         throws IOException, BadLocationException {
 

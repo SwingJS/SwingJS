@@ -25,8 +25,10 @@
 
 package jssun.net.www;
 
-import java.util.BitSet;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.BitSet;
 
 /**
  * A class that contains useful routines common to jssun.net.www
@@ -246,20 +248,20 @@ public class ParseUtil {
 //        return file;
 //    }
 
-//    public static URL fileToEncodedURL(File file)
-//        throws MalformedURLException
-//    {
-//        String path = file.getAbsolutePath();
-//        path = ParseUtil.encodePath(path);
-//        if (!path.startsWith("/")) {
-//            path = "/" + path;
-//        }
-//        if (!path.endsWith("/") && file.isDirectory()) {
-//            path = path + "/";
-//        }
-//        return new URL("file", "", path);
-//    }
-//
+    public static URL fileToEncodedURL(File file)
+        throws MalformedURLException
+    {
+        String path = file.getAbsolutePath();
+        path = ParseUtil.encodePath(path);
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        if (!path.endsWith("/") && file.isDirectory()) {
+            path = path + "/";
+        }
+        return new URL("file", "", path);
+    }
+
 //    public static java.net.URI toURI(URL url) {
 //        String protocol = url.getProtocol();
 //        String auth = url.getAuthority();

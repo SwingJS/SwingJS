@@ -25,10 +25,10 @@
 
 package jssun.awt.geom;
 
-import java.util.Vector;
-import java.util.Enumeration;
-import java.util.Comparator;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.Vector;
 
 public abstract class AreaOp {
     public static abstract class CAGOp extends AreaOp {
@@ -439,6 +439,7 @@ public abstract class AreaOp {
     private static CurveLink[] EmptyLinkList = new CurveLink[2];
     private static ChainEnd[] EmptyChainList = new ChainEnd[2];
 
+    @SuppressWarnings("null")
     public static void resolveLinks(Vector subcurves,
                                     Vector chains,
                                     Vector links)

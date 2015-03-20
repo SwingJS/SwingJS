@@ -25,11 +25,14 @@
 
 package jssun.awt.shell;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.Vector;
+
 import jsjava.awt.Image;
 import jsjava.awt.Toolkit;
-import java.io.*;
-import java.io.FileNotFoundException;
-import java.util.*;
 
 /**
  * @author Michael Martak
@@ -115,6 +118,7 @@ public abstract class ShellFolder extends File {
         return listFiles(true);
     }
 
+    @SuppressWarnings("null")
     public File[] listFiles(boolean includeHiddenFiles) {
         File[] files = super.listFiles();
 

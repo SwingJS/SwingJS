@@ -24,11 +24,17 @@
  */
 package jsjavax.swing.text;
 
-import java.util.Vector;
-import java.util.Properties;
-import jsjava.awt.*;
 import java.lang.ref.SoftReference;
-import jsjavax.swing.event.*;
+
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * View of plain text (text with only one font and color)
@@ -820,6 +826,7 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          * @param startPos position to start breaking from
          * @return the cache created, ot null if text breaks into one line
          */
+        @SuppressWarnings("null")
         final int[] breakLines(int startPos) {
             int[] lineEnds = (lineCache == null) ? null : lineCache.get();
             int[] oldLineEnds = lineEnds;

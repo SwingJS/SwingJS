@@ -584,6 +584,7 @@ public class FlowLayout implements LayoutManager, java.io.Serializable {
      * @see Container
      * @see       java.awt.Container#doLayout
      */
+    @SuppressWarnings("null")
     public void layoutContainer(Container target) {
       synchronized (target.getTreeLock()) {
         Insets insets = target.getInsets();

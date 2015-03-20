@@ -25,26 +25,42 @@
 package jsjavax.swing;
 
 
+import static jsjavax.swing.ClientPropertyKey.JComponent_ANCESTOR_NOTIFIER;
+import static jsjavax.swing.ClientPropertyKey.JComponent_INPUT_VERIFIER;
+
+import java.util.Enumeration;
+import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Enumeration;
 import java.util.Locale;
-import java.util.EventListener;
 import java.util.Set;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-//import jsjava.awt.peer.LightweightPeer;
-import jsjava.beans.*;
-
 import jsjava.applet.Applet;
-
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-import static jsjavax.swing.ClientPropertyKey.*;
-// 
-
+import jsjava.awt.AWTEvent;
+import jsjava.awt.AWTKeyStroke;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Insets;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Window;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+//import jsjava.awt.peer.LightweightPeer;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.border.AbstractBorder;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.event.AncestorListener;
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.plaf.ComponentUI;
 import jssun.swing.SwingUtilities2;
 import jssun.swing.UIClientPropertyKey;
 
@@ -750,6 +766,7 @@ public abstract class JComponent extends Container
      * @see #paint
      * @see ComponentUI
      */
+    @SuppressWarnings("null")
     protected void paintComponent(Graphics g) {
         if (ui != null) {
             Graphics scratchGraphics = (g == null) ? null : g.create();

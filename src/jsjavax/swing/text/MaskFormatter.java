@@ -25,11 +25,12 @@
 
 package jsjavax.swing.text;
 
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import jsjavax.swing.*;
-import jsjavax.swing.text.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.text.ParseException;
+import java.util.ArrayList;
+
+import jsjavax.swing.JFormattedTextField;
 
 /**
  * <code>MaskFormatter</code> is used to format and edit strings. The behavior
@@ -692,6 +693,7 @@ public class MaskFormatter extends DefaultFormatter {
         return true;
     }
 
+    @SuppressWarnings("null")
     /**
      * This method does the following (assuming !getAllowsInvalid()):
      * iterate over the max of the deleted region or the text length, for

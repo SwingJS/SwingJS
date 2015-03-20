@@ -24,24 +24,29 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.Color;
-import jsjava.awt.Font;
-import jsjava.awt.font.TextAttribute;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
-import java.util.ArrayList;
-import jsjavax.swing.event.*;
+
+import jsjava.awt.Color;
+import jsjava.awt.Font;
+import jsjava.awt.font.TextAttribute;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.DocumentListener;
+import jsjavax.swing.event.UndoableEditEvent;
 import jsjavax.swing.undo.AbstractUndoableEdit;
 import jsjavax.swing.undo.CannotRedoException;
 import jsjavax.swing.undo.CannotUndoException;
 import jsjavax.swing.undo.UndoableEdit;
-import jsjavax.swing.SwingUtilities;
 
 /**
  * A document that can be marked up with character and paragraph
@@ -2058,6 +2063,7 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
             }
         }
 
+        @SuppressWarnings("null")
         /**
          * Recreates the elements to the right of the insertion point.
          * This starts at <code>startIndex</code> in <code>changed</code>,

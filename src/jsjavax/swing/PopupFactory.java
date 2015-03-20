@@ -25,15 +25,27 @@
 
 package jsjavax.swing;
 
-import jsjava.applet.Applet;
-import jsjava.awt.*;
-import jsjava.awt.event.WindowAdapter;
-import jsjava.awt.event.WindowEvent;
+import static jsjavax.swing.ClientPropertyKey.PopupFactory_FORCE_HEAVYWEIGHT_POPUP;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static jsjavax.swing.ClientPropertyKey.PopupFactory_FORCE_HEAVYWEIGHT_POPUP;
+
+import jsjava.applet.Applet;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.GraphicsEnvironment;
+import jsjava.awt.Insets;
+import jsjava.awt.Panel;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Toolkit;
+import jsjava.awt.Window;
+import jsjava.awt.event.WindowAdapter;
+import jsjava.awt.event.WindowEvent;
 
 /**
  * <code>PopupFactory</code>, as the name implies, is used to obtain
@@ -718,6 +730,7 @@ public class PopupFactory {
             component.removeAll();
             recycleLightWeightPopup(this);
         }
+        @SuppressWarnings("null")
         public void show() {
             Container parent = null;
 
@@ -875,6 +888,7 @@ public class PopupFactory {
             rootPane.getContentPane().removeAll();
             recycleMediumWeightPopup(this);
         }
+        @SuppressWarnings("null")
         public void show() {
             Component component = getComponent();
             Container parent = null;
