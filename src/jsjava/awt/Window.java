@@ -1906,7 +1906,8 @@ public class Window extends Container {
                     break;
                 case WindowEvent.WINDOW_STATE_CHANGED:
                     processWindowStateEvent((WindowEvent)e);
-                default:
+							//$FALL-THROUGH$
+						default:
                     break;
             }
             return;
