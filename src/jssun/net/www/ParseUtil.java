@@ -26,19 +26,14 @@
 package jssun.net.www;
 
 import java.util.BitSet;
-import java.io.UnsupportedEncodingException;
 import java.io.File;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
 //port jssun.nio.cs.ThreadLocalCoders;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 
 /**
  * A class that contains useful routines common to jssun.net.www
@@ -272,272 +267,272 @@ public class ParseUtil {
         return new URL("file", "", path);
     }
 
-    public static java.net.URI toURI(URL url) {
-        String protocol = url.getProtocol();
-        String auth = url.getAuthority();
-        String path = url.getPath();
-        String query = url.getQuery();
-        String ref = url.getRef();
-        if (path != null && !(path.startsWith("/")))
-            path = "/" + path;
+//    public static java.net.URI toURI(URL url) {
+//        String protocol = url.getProtocol();
+//        String auth = url.getAuthority();
+//        String path = url.getPath();
+//        String query = url.getQuery();
+//        String ref = url.getRef();
+//        if (path != null && !(path.startsWith("/")))
+//            path = "/" + path;
+//
+//        //
+//        // In java.net.URI class, a port number of -1 implies the default
+//        // port number. So get it stripped off before creating URI instance.
+//        //
+//        if (auth != null && auth.endsWith(":-1"))
+//            auth = auth.substring(0, auth.length() - 3);
+//
+//        java.net.URI uri;
+//        try {
+//            uri = createURI(protocol, auth, path, query, ref);
+//        } catch (java.net.URISyntaxException e) {
+//            uri = null;
+//        }
+//        return uri;
+//    }
 
-        //
-        // In java.net.URI class, a port number of -1 implies the default
-        // port number. So get it stripped off before creating URI instance.
-        //
-        if (auth != null && auth.endsWith(":-1"))
-            auth = auth.substring(0, auth.length() - 3);
+//    //
+//    // createURI() and its auxiliary code are cloned from java.net.URI.
+//    // Most of the code are just copy and paste, except that quote()
+//    // has been modified to avoid double-escape.
+//    //
+//    // Usually it is unacceptable, but we're forced to do it because
+//    // otherwise we need to change public API, namely java.net.URI's
+//    // multi-argument constructors. It turns out that the changes cause
+//    // incompatibilities so can't be done.
+//    //
+//    private static URI createURI(String scheme,
+//                                 String authority,
+//                                 String path,
+//                                 String query,
+//                                 String fragment) throws URISyntaxException
+//    {
+//        String s = toString(scheme, null,
+//                            authority, null, null, -1,
+//                            path, query, fragment);
+//        checkPath(s, scheme, path);
+//        return new URI(s);
+//    }
+//
+//    private static String toString(String scheme,
+//                            String opaquePart,
+//                            String authority,
+//                            String userInfo,
+//                            String host,
+//                            int port,
+//                            String path,
+//                            String query,
+//                            String fragment)
+//    {
+//        StringBuffer sb = new StringBuffer();
+//        if (scheme != null) {
+//            sb.append(scheme);
+//            sb.append(':');
+//        }
+//        appendSchemeSpecificPart(sb, opaquePart,
+//                                 authority, userInfo, host, port,
+//                                 path, query);
+//        appendFragment(sb, fragment);
+//        return sb.toString();
+//    }
+//
+//    private static void appendSchemeSpecificPart(StringBuffer sb,
+//                                          String opaquePart,
+//                                          String authority,
+//                                          String userInfo,
+//                                          String host,
+//                                          int port,
+//                                          String path,
+//                                          String query)
+//    {
+//        if (opaquePart != null) {
+//            /* check if SSP begins with an IPv6 address
+//             * because we must not quote a literal IPv6 address
+//             */
+//            if (opaquePart.startsWith("//[")) {
+//                int end =  opaquePart.indexOf("]");
+//                if (end != -1 && opaquePart.indexOf(":")!=-1) {
+//                    String doquote, dontquote;
+//                    if (end == opaquePart.length()) {
+//                        dontquote = opaquePart;
+//                        doquote = "";
+//                    } else {
+//                        dontquote = opaquePart.substring(0,end+1);
+//                        doquote = opaquePart.substring(end+1);
+//                    }
+//                    sb.append (dontquote);
+//                    sb.append(quote(doquote, L_URIC, H_URIC));
+//                }
+//            } else {
+//                sb.append(quote(opaquePart, L_URIC, H_URIC));
+//            }
+//        } else {
+//            appendAuthority(sb, authority, userInfo, host, port);
+//            if (path != null)
+//                sb.append(quote(path, L_PATH, H_PATH));
+//            if (query != null) {
+//                sb.append('?');
+//                sb.append(quote(query, L_URIC, H_URIC));
+//            }
+//        }
+//    }
+//
+//    private static void appendAuthority(StringBuffer sb,
+//                                 String authority,
+//                                 String userInfo,
+//                                 String host,
+//                                 int port)
+//    {
+//        if (host != null) {
+//            sb.append("//");
+//            if (userInfo != null) {
+//                sb.append(quote(userInfo, L_USERINFO, H_USERINFO));
+//                sb.append('@');
+//            }
+//            boolean needBrackets = ((host.indexOf(':') >= 0)
+//                                    && !host.startsWith("[")
+//                                    && !host.endsWith("]"));
+//            if (needBrackets) sb.append('[');
+//            sb.append(host);
+//            if (needBrackets) sb.append(']');
+//            if (port != -1) {
+//                sb.append(':');
+//                sb.append(port);
+//            }
+//        } else if (authority != null) {
+//            sb.append("//");
+//            if (authority.startsWith("[")) {
+//                int end = authority.indexOf("]");
+//                if (end != -1 && authority.indexOf(":")!=-1) {
+//                    String doquote, dontquote;
+//                    if (end == authority.length()) {
+//                        dontquote = authority;
+//                        doquote = "";
+//                    } else {
+//                        dontquote = authority.substring(0,end+1);
+//                        doquote = authority.substring(end+1);
+//                    }
+//                    sb.append (dontquote);
+//                    sb.append(quote(doquote,
+//                            L_REG_NAME | L_SERVER,
+//                            H_REG_NAME | H_SERVER));
+//                }
+//            } else {
+//                sb.append(quote(authority,
+//                            L_REG_NAME | L_SERVER,
+//                            H_REG_NAME | H_SERVER));
+//            }
+//        }
+//    }
+//
+//    private static void appendFragment(StringBuffer sb, String fragment) {
+//        if (fragment != null) {
+//            sb.append('#');
+//            sb.append(quote(fragment, L_URIC, H_URIC));
+//        }
+//    }
+//
+//    // Quote any characters in s that are not permitted
+//    // by the given mask pair
+//    //
+//    private static String quote(String s, long lowMask, long highMask) {
+//        int n = s.length();
+//        StringBuffer sb = null;
+//        boolean allowNonASCII = ((lowMask & L_ESCAPED) != 0);
+//        for (int i = 0; i < s.length(); i++) {
+//            char c = s.charAt(i);
+//            if (c < '\u0080') {
+//                if (!match(c, lowMask, highMask) && !isEscaped(s, i)) {
+//                    if (sb == null) {
+//                        sb = new StringBuffer();
+//                        sb.append(s.substring(0, i));
+//                    }
+//                    appendEscape(sb, (byte)c);
+//                } else {
+//                    if (sb != null)
+//                        sb.append(c);
+//                }
+//            } else if (allowNonASCII
+//                       && (Character.isSpaceChar(c)
+//                           || Character.isISOControl(c))) {
+//                if (sb == null) {
+//                    sb = new StringBuffer();
+//                    sb.append(s.substring(0, i));
+//                }
+//                appendEncoded(sb, c);
+//            } else {
+//                if (sb != null)
+//                    sb.append(c);
+//            }
+//        }
+//        return (sb == null) ? s : sb.toString();
+//    }
 
-        java.net.URI uri;
-        try {
-            uri = createURI(protocol, auth, path, query, ref);
-        } catch (java.net.URISyntaxException e) {
-            uri = null;
-        }
-        return uri;
-    }
-
-    //
-    // createURI() and its auxiliary code are cloned from java.net.URI.
-    // Most of the code are just copy and paste, except that quote()
-    // has been modified to avoid double-escape.
-    //
-    // Usually it is unacceptable, but we're forced to do it because
-    // otherwise we need to change public API, namely java.net.URI's
-    // multi-argument constructors. It turns out that the changes cause
-    // incompatibilities so can't be done.
-    //
-    private static URI createURI(String scheme,
-                                 String authority,
-                                 String path,
-                                 String query,
-                                 String fragment) throws URISyntaxException
-    {
-        String s = toString(scheme, null,
-                            authority, null, null, -1,
-                            path, query, fragment);
-        checkPath(s, scheme, path);
-        return new URI(s);
-    }
-
-    private static String toString(String scheme,
-                            String opaquePart,
-                            String authority,
-                            String userInfo,
-                            String host,
-                            int port,
-                            String path,
-                            String query,
-                            String fragment)
-    {
-        StringBuffer sb = new StringBuffer();
-        if (scheme != null) {
-            sb.append(scheme);
-            sb.append(':');
-        }
-        appendSchemeSpecificPart(sb, opaquePart,
-                                 authority, userInfo, host, port,
-                                 path, query);
-        appendFragment(sb, fragment);
-        return sb.toString();
-    }
-
-    private static void appendSchemeSpecificPart(StringBuffer sb,
-                                          String opaquePart,
-                                          String authority,
-                                          String userInfo,
-                                          String host,
-                                          int port,
-                                          String path,
-                                          String query)
-    {
-        if (opaquePart != null) {
-            /* check if SSP begins with an IPv6 address
-             * because we must not quote a literal IPv6 address
-             */
-            if (opaquePart.startsWith("//[")) {
-                int end =  opaquePart.indexOf("]");
-                if (end != -1 && opaquePart.indexOf(":")!=-1) {
-                    String doquote, dontquote;
-                    if (end == opaquePart.length()) {
-                        dontquote = opaquePart;
-                        doquote = "";
-                    } else {
-                        dontquote = opaquePart.substring(0,end+1);
-                        doquote = opaquePart.substring(end+1);
-                    }
-                    sb.append (dontquote);
-                    sb.append(quote(doquote, L_URIC, H_URIC));
-                }
-            } else {
-                sb.append(quote(opaquePart, L_URIC, H_URIC));
-            }
-        } else {
-            appendAuthority(sb, authority, userInfo, host, port);
-            if (path != null)
-                sb.append(quote(path, L_PATH, H_PATH));
-            if (query != null) {
-                sb.append('?');
-                sb.append(quote(query, L_URIC, H_URIC));
-            }
-        }
-    }
-
-    private static void appendAuthority(StringBuffer sb,
-                                 String authority,
-                                 String userInfo,
-                                 String host,
-                                 int port)
-    {
-        if (host != null) {
-            sb.append("//");
-            if (userInfo != null) {
-                sb.append(quote(userInfo, L_USERINFO, H_USERINFO));
-                sb.append('@');
-            }
-            boolean needBrackets = ((host.indexOf(':') >= 0)
-                                    && !host.startsWith("[")
-                                    && !host.endsWith("]"));
-            if (needBrackets) sb.append('[');
-            sb.append(host);
-            if (needBrackets) sb.append(']');
-            if (port != -1) {
-                sb.append(':');
-                sb.append(port);
-            }
-        } else if (authority != null) {
-            sb.append("//");
-            if (authority.startsWith("[")) {
-                int end = authority.indexOf("]");
-                if (end != -1 && authority.indexOf(":")!=-1) {
-                    String doquote, dontquote;
-                    if (end == authority.length()) {
-                        dontquote = authority;
-                        doquote = "";
-                    } else {
-                        dontquote = authority.substring(0,end+1);
-                        doquote = authority.substring(end+1);
-                    }
-                    sb.append (dontquote);
-                    sb.append(quote(doquote,
-                            L_REG_NAME | L_SERVER,
-                            H_REG_NAME | H_SERVER));
-                }
-            } else {
-                sb.append(quote(authority,
-                            L_REG_NAME | L_SERVER,
-                            H_REG_NAME | H_SERVER));
-            }
-        }
-    }
-
-    private static void appendFragment(StringBuffer sb, String fragment) {
-        if (fragment != null) {
-            sb.append('#');
-            sb.append(quote(fragment, L_URIC, H_URIC));
-        }
-    }
-
-    // Quote any characters in s that are not permitted
-    // by the given mask pair
-    //
-    private static String quote(String s, long lowMask, long highMask) {
-        int n = s.length();
-        StringBuffer sb = null;
-        boolean allowNonASCII = ((lowMask & L_ESCAPED) != 0);
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c < '\u0080') {
-                if (!match(c, lowMask, highMask) && !isEscaped(s, i)) {
-                    if (sb == null) {
-                        sb = new StringBuffer();
-                        sb.append(s.substring(0, i));
-                    }
-                    appendEscape(sb, (byte)c);
-                } else {
-                    if (sb != null)
-                        sb.append(c);
-                }
-            } else if (allowNonASCII
-                       && (Character.isSpaceChar(c)
-                           || Character.isISOControl(c))) {
-                if (sb == null) {
-                    sb = new StringBuffer();
-                    sb.append(s.substring(0, i));
-                }
-                appendEncoded(sb, c);
-            } else {
-                if (sb != null)
-                    sb.append(c);
-            }
-        }
-        return (sb == null) ? s : sb.toString();
-    }
-
-    //
-    // To check if the given string has an escaped triplet
-    // at the given position
-    //
-    private static boolean isEscaped(String s, int pos) {
-        if (s == null || (s.length() <= (pos + 2)))
-            return false;
-
-        return s.charAt(pos) == '%'
-               && match(s.charAt(pos + 1), L_HEX, H_HEX)
-               && match(s.charAt(pos + 2), L_HEX, H_HEX);
-    }
-
-    private static void appendEncoded(StringBuffer sb, char c) {
-        ByteBuffer bb = null;
-        //try {
-            bb = null;//ThreadLocalCoders.encoderFor("UTF-8")
-                //.encode(CharBuffer.wrap("" + c));
-        //} catch (CharacterCodingException x) {
-         //   assert false;
-       // }
-        while (bb.hasRemaining()) {
-            int b = bb.get() & 0xff;
-            if (b >= 0x80)
-                appendEscape(sb, (byte)b);
-            else
-                sb.append((char)b);
-        }
-    }
-
+//    //
+//    // To check if the given string has an escaped triplet
+//    // at the given position
+//    //
+//    private static boolean isEscaped(String s, int pos) {
+//        if (s == null || (s.length() <= (pos + 2)))
+//            return false;
+//
+//        return s.charAt(pos) == '%'
+//               && match(s.charAt(pos + 1), L_HEX, H_HEX)
+//               && match(s.charAt(pos + 2), L_HEX, H_HEX);
+//    }
+//
+//    private static void appendEncoded(StringBuffer sb, char c) {
+//        ByteBuffer bb = null;
+//        //try {
+//            bb = null;//ThreadLocalCoders.encoderFor("UTF-8")
+//                //.encode(CharBuffer.wrap("" + c));
+//        //} catch (CharacterCodingException x) {
+//         //   assert false;
+//       // }
+//        while (bb.hasRemaining()) {
+//            int b = bb.get() & 0xff;
+//            if (b >= 0x80)
+//                appendEscape(sb, (byte)b);
+//            else
+//                sb.append((char)b);
+//        }
+//    }
+//
     private final static char[] hexDigits = {
         '0', '1', '2', '3', '4', '5', '6', '7',
         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
     };
 
-    private static void appendEscape(StringBuffer sb, byte b) {
-        sb.append('%');
-        sb.append(hexDigits[(b >> 4) & 0x0f]);
-        sb.append(hexDigits[(b >> 0) & 0x0f]);
-    }
-
-    // Tell whether the given character is permitted by the given mask pair
-    private static boolean match(char c, long lowMask, long highMask) {
-        if (c < 64)
-            return ((1L << c) & lowMask) != 0;
-        if (c < 128)
-            return ((1L << (c - 64)) & highMask) != 0;
-        return false;
-    }
-
-    // If a scheme is given then the path, if given, must be absolute
-    //
-    private static void checkPath(String s, String scheme, String path)
-        throws URISyntaxException
-    {
-        if (scheme != null) {
-            if ((path != null)
-                && ((path.length() > 0) && (path.charAt(0) != '/')))
-                throw new URISyntaxException(s,
-                                             "Relative path in absolute URI");
-        }
-    }
-
-
+//    private static void appendEscape(StringBuffer sb, byte b) {
+//        sb.append('%');
+//        sb.append(hexDigits[(b >> 4) & 0x0f]);
+//        sb.append(hexDigits[(b >> 0) & 0x0f]);
+//    }
+//
+//    // Tell whether the given character is permitted by the given mask pair
+//    private static boolean match(char c, long lowMask, long highMask) {
+//        if (c < 64)
+//            return ((1L << c) & lowMask) != 0;
+//        if (c < 128)
+//            return ((1L << (c - 64)) & highMask) != 0;
+//        return false;
+//    }
+//
+//    // If a scheme is given then the path, if given, must be absolute
+//    //
+//    private static void checkPath(String s, String scheme, String path)
+//        throws URISyntaxException
+//    {
+//        if (scheme != null) {
+//            if ((path != null)
+//                && ((path.length() > 0) && (path.charAt(0) != '/')))
+//                throw new URISyntaxException(s,
+//                                             "Relative path in absolute URI");
+//        }
+//    }
+//
+//
     // -- Character classes for parsing --
 
     // Compute a low-order mask for the characters

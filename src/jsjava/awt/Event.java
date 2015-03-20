@@ -24,8 +24,8 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.*;
-import java.io.*;
+import jsjava.awt.event.KeyEvent;
+
 
 /**
  * <b>NOTE:</b> The <code>Event</code> class is obsolete and is

@@ -32,7 +32,7 @@ import jsjavax.swing.table.*;
 import jsjavax.swing.event.*;
 import java.util.EventObject;
 import jsjavax.swing.tree.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The default editor for table and tree cells.
@@ -295,7 +295,7 @@ public class DefaultCellEditor extends AbstractCellEditor
     /**
      * The protected <code>EditorDelegate</code> class.
      */
-    protected class EditorDelegate implements ActionListener, ItemListener, Serializable {
+    protected class EditorDelegate implements ActionListener, ItemListener {
 
         /**  The value of this cell. */
         protected Object value;

@@ -26,7 +26,7 @@
 package jsjavax.swing.colorchooser;
 
 import jsjava.awt.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjavax.swing.*;
 import jsjavax.swing.event.*;
 
@@ -226,7 +226,7 @@ public abstract class AbstractColorChooserPanel extends JPanel {
     /**
      *
      */
-    class ModelListener implements ChangeListener, Serializable {
+    class ModelListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
           if (isShowing()) {  // isVisible
                 updateChooser();

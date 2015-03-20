@@ -27,7 +27,7 @@ package jsjavax.swing.table;
 
 import jsjavax.swing.*;
 import jsjavax.swing.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.EventListener;
 
 /**
@@ -57,7 +57,7 @@ import java.util.EventListener;
  * @author Alan Chung
  * @author Philip Milne
  */
-public abstract class AbstractTableModel implements TableModel, Serializable
+public abstract class AbstractTableModel implements TableModel
 {
 //
 // Instance Variables

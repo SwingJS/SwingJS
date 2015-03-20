@@ -41,9 +41,9 @@ import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.*;
 
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.Serializable;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 
@@ -697,22 +697,22 @@ public class JToolBar extends JComponent implements SwingConstants
     }
 
 
-    /**
-     * See <code>readObject</code> and <code>writeObject</code> in
-     * <code>JComponent</code> for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
+//    /**
+//     * See <code>readObject</code> and <code>writeObject</code> in
+//     * <code>JComponent</code> for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
 
     /**
      * Returns a string representation of this <code>JToolBar</code>.
@@ -743,7 +743,7 @@ public class JToolBar extends JComponent implements SwingConstants
 
 
     private class DefaultToolBarLayout
-        implements LayoutManager2, Serializable, PropertyChangeListener, UIResource {
+        implements LayoutManager2, PropertyChangeListener, UIResource {
 
         BoxLayout lm;
 

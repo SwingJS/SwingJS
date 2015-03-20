@@ -24,9 +24,7 @@
  */
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -48,58 +46,58 @@ class ArrayTable implements Cloneable {
     private static final int ARRAY_BOUNDARY = 8;
 
 
-    /**
-     * Writes the passed in ArrayTable to the passed in ObjectOutputStream.
-     * The data is saved as an integer indicating how many key/value
-     * pairs are being archived, followed by the the key/value pairs. If
-     * <code>table</code> is null, 0 will be written to <code>s</code>.
-     * <p>
-     * This is a convenience method that ActionMap/InputMap and
-     * AbstractAction use to avoid having the same code in each class.
-     */
-    static void writeArrayTable(ObjectOutputStream s, ArrayTable table) throws IOException {
-        Object keys[];
-
-        if (table == null || (keys = table.getKeys(null)) == null) {
-            s.writeInt(0);
-        }
-        else {
-            // Determine how many keys have Serializable values, when
-            // done all non-null values in keys identify the Serializable
-            // values.
-            int validCount = 0;
-
-            for (int counter = 0; counter < keys.length; counter++) {
-                Object key = keys[counter];
-
-                /* include in Serialization when both keys and values are Serializable */
-                if (    (key instanceof Serializable
-                         && table.get(key) instanceof Serializable)
-                             ||
-                         /* include these only so that we get the appropriate exception below */
-                        (key instanceof ClientPropertyKey
-                         && ((ClientPropertyKey)key).getReportValueNotSerializable())) {
-
-                    validCount++;
-                } else {
-                    keys[counter] = null;
-                }
-            }
-            // Write ou the Serializable key/value pairs.
-            s.writeInt(validCount);
-            if (validCount > 0) {
-                for (int counter = 0; counter < keys.length; counter++) {
-                    if (keys[counter] != null) {
-                        s.writeObject(keys[counter]);
-                        s.writeObject(table.get(keys[counter]));
-                        if (--validCount == 0) {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    /**
+//     * Writes the passed in ArrayTable to the passed in ObjectOutputStream.
+//     * The data is saved as an integer indicating how many key/value
+//     * pairs are being archived, followed by the the key/value pairs. If
+//     * <code>table</code> is null, 0 will be written to <code>s</code>.
+//     * <p>
+//     * This is a convenience method that ActionMap/InputMap and
+//     * AbstractAction use to avoid having the same code in each class.
+//     */
+//    static void writeArrayTable(ObjectOutputStream s, ArrayTable table) throws IOException {
+//        Object keys[];
+//
+//        if (table == null || (keys = table.getKeys(null)) == null) {
+//            s.writeInt(0);
+//        }
+//        else {
+//            // Determine how many keys have Serializable values, when
+//            // done all non-null values in keys identify the Serializable
+//            // values.
+//            int validCount = 0;
+//
+//            for (int counter = 0; counter < keys.length; counter++) {
+//                Object key = keys[counter];
+//
+//                /* include in Serialization when both keys and values are Serializable */
+//                if (    (key instanceof Serializable
+//                         && table.get(key) instanceof Serializable)
+//                             ||
+//                         /* include these only so that we get the appropriate exception below */
+//                        (key instanceof ClientPropertyKey
+//                         && ((ClientPropertyKey)key).getReportValueNotSerializable())) {
+//
+//                    validCount++;
+//                } else {
+//                    keys[counter] = null;
+//                }
+//            }
+//            // Write ou the Serializable key/value pairs.
+//            s.writeInt(validCount);
+//            if (validCount > 0) {
+//                for (int counter = 0; counter < keys.length; counter++) {
+//                    if (keys[counter] != null) {
+//                        s.writeObject(keys[counter]);
+//                        s.writeObject(table.get(keys[counter]));
+//                        if (--validCount == 0) {
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     /*

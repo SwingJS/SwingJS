@@ -33,7 +33,7 @@ import java.util.Enumeration;
 import java.util.EventListener;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeEvent;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jssun.swing.SwingUtilities2;
 
 /**
@@ -53,7 +53,7 @@ import jssun.swing.SwingUtilities2;
  * @see JTable
  */
 public class DefaultTableColumnModel implements TableColumnModel,
-                        PropertyChangeListener, ListSelectionListener, Serializable
+                        PropertyChangeListener, ListSelectionListener
 {
 //
 // Instance Variables

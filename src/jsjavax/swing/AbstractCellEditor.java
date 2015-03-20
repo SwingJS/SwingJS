@@ -27,7 +27,7 @@ package jsjavax.swing;
 
 import jsjavax.swing.event.*;
 import java.util.EventObject;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  *
@@ -51,7 +51,7 @@ import java.io.Serializable;
  * @since 1.3
  */
 
-public abstract class AbstractCellEditor implements CellEditor, Serializable {
+public abstract class AbstractCellEditor implements CellEditor {
 
     protected EventListenerList listenerList = new EventListenerList();
     transient protected ChangeEvent changeEvent = null;

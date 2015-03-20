@@ -28,7 +28,7 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Component;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * A class which provides an empty, transparent border which
@@ -45,7 +45,7 @@ import java.io.Serializable;
  *
  * @author David Kloba
  */
-public class EmptyBorder extends AbstractBorder implements Serializable
+public class EmptyBorder extends AbstractBorder 
 {
     protected int left, right, top, bottom;
 

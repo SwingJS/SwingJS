@@ -24,19 +24,9 @@
 
 package jsjava.awt.event;
 
-import jssun.awt.AWTAccessor;
-import jssun.awt.AppContext;
-import jssun.awt.SunToolkit;
-
 import jsjava.awt.AWTEvent;
-import jsjava.awt.Component;
 import jsjava.awt.Event;
-import jsjava.awt.EventQueue;
-//import jsjava.awt.font.TextHitInfo;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.text.AttributedCharacterIterator;
-import java.text.CharacterIterator;
 
 /**
  * Input method events contain information about text that is being

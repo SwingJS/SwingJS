@@ -27,8 +27,8 @@ package jsjavax.swing;
 import jsjava.awt.*;
 import jsjava.awt.event.ActionEvent;
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
 
 import jsjavax.swing.text.*;
@@ -453,24 +453,24 @@ public class JTextPane extends JEditorPane {
     private static final String uiClassID = "TextPaneUI";
 
 
-    /**
-     * See <code>readObject</code> and <code>writeObject</code> in
-     * <code>JComponent</code> for more
-     * information about serialization in Swing.
-     *
-     * @param s the output stream
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
+//    /**
+//     * See <code>readObject</code> and <code>writeObject</code> in
+//     * <code>JComponent</code> for more
+//     * information about serialization in Swing.
+//     *
+//     * @param s the output stream
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
 
     // --- JEditorPane ------------------------------------
 

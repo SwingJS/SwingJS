@@ -24,8 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import java.io.PrintStream;
-import java.util.Vector;
 import jsjava.awt.*;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.SizeRequirements;

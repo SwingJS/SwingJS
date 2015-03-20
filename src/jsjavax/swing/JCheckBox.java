@@ -24,15 +24,7 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-
 import jsjavax.swing.plaf.*;
-
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
 
 
 /**
@@ -251,35 +243,35 @@ public class JCheckBox extends JToggleButton {
     void setIconFromAction(Action a) {
     }
 
-     /*
-      * See readObject and writeObject in JComponent for more
-      * information about serialization in Swing.
-      */
-     private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-     }
-
-
-    /**
-     * See JComponent.readObject() for information about serialization
-     * in Swing.
-     */
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException
-    {
-        s.defaultReadObject();
-        if (getUIClassID().equals(uiClassID)) {
-            updateUI();
-        }
-    }
-
+//     /*
+//      * See readObject and writeObject in JComponent for more
+//      * information about serialization in Swing.
+//      */
+//     private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//     }
+//
+//
+//    /**
+//     * See JComponent.readObject() for information about serialization
+//     * in Swing.
+//     */
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException
+//    {
+//        s.defaultReadObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            updateUI();
+//        }
+//    }
+//
 
     /**
      * Returns a string representation of this JCheckBox. This method

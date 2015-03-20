@@ -26,7 +26,7 @@
 package jsjavax.swing;
 
 import jsjavax.swing.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.EventListener;
 
 /**
@@ -44,7 +44,7 @@ import java.util.EventListener;
  *
  * @author Hans Muller
  */
-public abstract class AbstractListModel implements ListModel, Serializable
+public abstract class AbstractListModel implements ListModel
 {
     protected EventListenerList listenerList = new EventListenerList();
 

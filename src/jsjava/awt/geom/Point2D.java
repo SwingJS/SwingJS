@@ -25,7 +25,7 @@
 
 package jsjava.awt.geom;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The <code>Point2D</code> class defines a point representing a location
@@ -46,7 +46,7 @@ public abstract class Point2D implements Cloneable {
      * precision.
      * @since 1.2
      */
-    public static class Float extends Point2D implements Serializable {
+    public static class Float extends Point2D  {
         /**
          * The X coordinate of this <code>Point2D</code>.
          * @since 1.2
@@ -143,7 +143,7 @@ public abstract class Point2D implements Cloneable {
      * <code>double</code> precision.
      * @since 1.2
      */
-    public static class Double extends Point2D implements Serializable {
+    public static class Double extends Point2D  {
         /**
          * The X coordinate of this <code>Point2D</code>.
          * @since 1.2

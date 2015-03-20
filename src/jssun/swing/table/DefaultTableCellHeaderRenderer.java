@@ -33,7 +33,7 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjavax.swing.*;
 import jsjavax.swing.plaf.UIResource;
 import jsjavax.swing.border.Border;
@@ -187,7 +187,7 @@ public class DefaultTableCellHeaderRenderer extends DefaultTableCellRenderer
 //        return new Point(x, y);
 //    }
 //
-    private class EmptyIcon implements Icon, Serializable {
+    private class EmptyIcon implements Icon {
         int width = 0;
         int height = 0;
         public void paintIcon(Component c, Graphics g, int x, int y) {}

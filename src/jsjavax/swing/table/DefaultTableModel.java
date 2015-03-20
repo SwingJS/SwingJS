@@ -25,7 +25,7 @@
 
 package jsjavax.swing.table;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
 import jsjavax.swing.event.TableModelEvent;
@@ -59,7 +59,7 @@ import jsjavax.swing.event.TableModelEvent;
  * @see TableModel
  * @see #getDataVector
  */
-public class DefaultTableModel extends AbstractTableModel implements Serializable {
+public class DefaultTableModel extends AbstractTableModel  {
 
 //
 // Instance Variables

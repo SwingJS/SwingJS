@@ -25,11 +25,6 @@
 
 package jssun.applet;
 
-import java.util.EventListener;
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
-
 /**
  * AppletEventMulticaster class.  This class manages an immutable
  * structure consisting of a chain of AppletListeners and is

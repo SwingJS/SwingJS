@@ -26,7 +26,7 @@ package jsjavax.swing;
 
 
 import jsjava.awt.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * For the convenience of layout managers,
@@ -93,7 +93,7 @@ import java.io.Serializable;
  *
  * @author Timothy Prinzing
  */
-public class SizeRequirements implements Serializable {
+public class SizeRequirements  {
 
     /**
      * The minimum size required.

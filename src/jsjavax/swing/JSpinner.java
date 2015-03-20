@@ -374,7 +374,7 @@ public class JSpinner extends JComponent
      * We pass <code>Change</code> events along to the listeners with the
      * the slider (instead of the model itself) as the event source.
      */
-    private class ModelListener implements ChangeListener, Serializable {
+    private class ModelListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
             fireStateChanged();
         }

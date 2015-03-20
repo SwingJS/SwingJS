@@ -62,7 +62,7 @@ import jssun.font.FontManager;
  *
  * @author  Timothy Prinzing
  */
-public class StyleContext implements Serializable, AbstractDocument.AttributeContext {
+public class StyleContext implements  AbstractDocument.AttributeContext {
 
     /**
      * Returns default AttributeContext shared by all documents that
@@ -1247,7 +1247,7 @@ public class StyleContext implements Serializable, AbstractDocument.AttributeCon
      * has been added to the <code>jsjava.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    public class NamedStyle implements Style, Serializable {
+    public class NamedStyle implements Style {
 
         /**
          * Creates a new named style.

@@ -45,9 +45,9 @@ import jsjava.beans.*;
 
 import java.util.*;
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.Serializable;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
 
 import jsjavax.swing.event.*;
@@ -1113,7 +1113,7 @@ public class JMenu extends JMenuItem implements MenuElement
     void configureAcceleratorFromAction(Action a) {
     }
 
-    class MenuChangeListener implements ChangeListener, Serializable {
+    class MenuChangeListener implements ChangeListener {
         boolean isSelected = false;
         public void stateChanged(ChangeEvent e) {
             ButtonModel model = (ButtonModel) e.getSource();
@@ -1160,7 +1160,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * has been added to the <code>java.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    protected class WinListener extends WindowAdapter implements Serializable {
+    protected class WinListener extends WindowAdapter  {
         JPopupMenu popupMenu;
         /**
          *  Create the window listener for the specified popup.
@@ -1331,22 +1331,22 @@ public class JMenu extends JMenuItem implements MenuElement
     }
 
 
-    /**
-     * See <code>readObject</code> and <code>writeObject</code> in
-     * <code>JComponent</code> for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
+//    /**
+//     * See <code>readObject</code> and <code>writeObject</code> in
+//     * <code>JComponent</code> for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
 
     /**
      * Returns a string representation of this <code>JMenu</code>. This

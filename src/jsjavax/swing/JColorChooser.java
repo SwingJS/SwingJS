@@ -721,7 +721,7 @@ class ColorChooserDialog extends JDialog {
         chooserPane.setColor(initialColor);
     }
 
-    class Closer extends WindowAdapter implements Serializable{
+    class Closer extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             cancelButton.doClick(0);
             Window w = e.getWindow();
@@ -729,7 +729,7 @@ class ColorChooserDialog extends JDialog {
         }
     }
 
-    static class DisposeOnClose extends ComponentAdapter implements Serializable{
+    static class DisposeOnClose extends ComponentAdapter {
         public void componentHidden(ComponentEvent e) {
             Window w = (Window)e.getComponent();
             w.dispose();
@@ -738,7 +738,7 @@ class ColorChooserDialog extends JDialog {
 
 }
 
-class ColorTracker implements ActionListener, Serializable {
+class ColorTracker implements ActionListener {
     JColorChooser chooser;
     Color color;
 

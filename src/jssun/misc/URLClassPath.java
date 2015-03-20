@@ -25,27 +25,14 @@
 
 package jssun.misc;
 
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Hashtable;
-import java.util.NoSuchElementException;
 import java.util.Stack;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-import java.util.Iterator;
 //import jsjava.util.jar.JarFile;
 //import jssun.misc.JarIndex;
 //import jssun.misc.InvalidJarIndexException;
 import jssun.net.www.ParseUtil;
-import java.util.zip.ZipEntry;
-//import jsjava.util.jar.JarEntry;
-//import jsjava.util.jar.Manifest;
-//import jsjava.util.jar.Attributes;
-//import jsjava.util.jar.Attributes.Name;
-import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -54,18 +41,8 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import jsjava.security.AccessController;
-//import jsjava.security.AccessControlException;
-//import jsjava.security.CodeSigner;
-//import jsjava.security.Permission;
-import jsjava.security.PrivilegedAction;
-//import jsjava.security.PrivilegedExceptionAction;
-//import jsjava.security.cert.Certificate;
-//import jssun.misc.FileURLMapper;
 
 /**
  * This class is used to maintain a search path of URLs for loading classes
@@ -972,64 +949,64 @@ public class URLClassPath {
 //        }
 //    }
 
-    /*
-     * Inner class used to represent a loader of classes and resources
-     * from a file URL that refers to a directory.
-     */
-    private static class FileLoader extends Loader {
-        private File dir;
-
-        FileLoader(URL url) throws IOException {
-            super(url);
-            if (!"file".equals(url.getProtocol())) {
-                throw new IllegalArgumentException("url");
-            }
-            String path = url.getFile().replace('/', File.separatorChar);
-            path = ParseUtil.decode(path);
-            dir = new File(path);
-        }
-
-        /*
-         * Returns the URL for a resource with the specified name
-         */
-        URL findResource(final String name, boolean check) {
-            Resource rsc = getResource(name, check);
-            if (rsc != null) {
-                return rsc.getURL();
-            }
-            return null;
-        }
-
-        Resource getResource(final String name, boolean check) {
-            final URL url;
-            try {
-                URL normalizedBase = new URL(getBaseURL(), ".");
-                url = new URL(getBaseURL(), ParseUtil.encodePath(name, false));
-
-                if (url.getFile().startsWith(normalizedBase.getFile()) == false) {
-                    // requested resource had ../..'s in path
-                    return null;
-                }
-
-                if (check)
-                    URLClassPath.check(url);
-                final File file =
-                    new File(dir, name.replace('/', File.separatorChar));
-                if (file.exists()) {
-                    return new Resource() {
-                        public String getName() { return name; };
-                        public URL getURL() { return url; };
-                        public URL getCodeSourceURL() { return getBaseURL(); };
-                        public InputStream getInputStream() throws IOException
-                            { return new FileInputStream(file); };
-                        public int getContentLength() throws IOException
-                            { return (int)file.length(); };
-                    };
-                }
-            } catch (Exception e) {
-                return null;
-            }
-            return null;
-        }
-    }
+//    /*
+//     * Inner class used to represent a loader of classes and resources
+//     * from a file URL that refers to a directory.
+//     */
+//    private static class FileLoader extends Loader {
+//        private File dir;
+//
+//        FileLoader(URL url) throws IOException {
+//            super(url);
+//            if (!"file".equals(url.getProtocol())) {
+//                throw new IllegalArgumentException("url");
+//            }
+//            String path = url.getFile().replace('/', File.separatorChar);
+//            path = ParseUtil.decode(path);
+//            dir = new File(path);
+//        }
+//
+//        /*
+//         * Returns the URL for a resource with the specified name
+//         */
+//        URL findResource(final String name, boolean check) {
+//            Resource rsc = getResource(name, check);
+//            if (rsc != null) {
+//                return rsc.getURL();
+//            }
+//            return null;
+//        }
+//
+//        Resource getResource(final String name, boolean check) {
+//            final URL url;
+//            try {
+//                URL normalizedBase = new URL(getBaseURL(), ".");
+//                url = new URL(getBaseURL(), ParseUtil.encodePath(name, false));
+//
+//                if (url.getFile().startsWith(normalizedBase.getFile()) == false) {
+//                    // requested resource had ../..'s in path
+//                    return null;
+//                }
+//
+//                if (check)
+//                    URLClassPath.check(url);
+//                final File file =
+//                    new File(dir, name.replace('/', File.separatorChar));
+//                if (file.exists()) {
+//                    return new Resource() {
+//                        public String getName() { return name; };
+//                        public URL getURL() { return url; };
+//                        public URL getCodeSourceURL() { return getBaseURL(); };
+//                        public InputStream getInputStream() throws IOException
+//                            { return new FileInputStream(file); };
+//                        public int getContentLength() throws IOException
+//                            { return (int)file.length(); };
+//                    };
+//                }
+//            } catch (Exception e) {
+//                return null;
+//            }
+//            return null;
+//        }
+//    }
 }

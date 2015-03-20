@@ -26,22 +26,10 @@
 package jsjavax.swing;
 
 import jsjava.awt.Component;
-import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
 import jsjava.awt.event.*;
 import java.util.Vector;
-import java.util.Enumeration;
-
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-
-import jsjavax.swing.event.*;
-import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.*;
 //
 
@@ -719,46 +707,46 @@ public class JMenuBar extends JComponent implements MenuElement
         KeyboardManager.getCurrentManager().unregisterMenuBar(this);
     }
 
+//
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//
+//        Object[] kvData = new Object[4];
+//        int n = 0;
+//
+//        if (selectionModel instanceof Serializable) {
+//            kvData[n++] = "selectionModel";
+//            kvData[n++] = selectionModel;
+//        }
+//
+//        s.writeObject(kvData);
+//    }
+//
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-
-        Object[] kvData = new Object[4];
-        int n = 0;
-
-        if (selectionModel instanceof Serializable) {
-            kvData[n++] = "selectionModel";
-            kvData[n++] = selectionModel;
-        }
-
-        s.writeObject(kvData);
-    }
-
-
-    /**
-     * See JComponent.readObject() for information about serialization
-     * in Swing.
-     */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
-    {
-        s.defaultReadObject();
-        Object[] kvData = (Object[])(s.readObject());
-
-        for(int i = 0; i < kvData.length; i += 2) {
-            if (kvData[i] == null) {
-                break;
-            }
-            else if (kvData[i].equals("selectionModel")) {
-                selectionModel = (SingleSelectionModel)kvData[i + 1];
-            }
-        }
-
-    }
+//    /**
+//     * See JComponent.readObject() for information about serialization
+//     * in Swing.
+//     */
+//    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
+//    {
+//        s.defaultReadObject();
+//        Object[] kvData = (Object[])(s.readObject());
+//
+//        for(int i = 0; i < kvData.length; i += 2) {
+//            if (kvData[i] == null) {
+//                break;
+//            }
+//            else if (kvData[i].equals("selectionModel")) {
+//                selectionModel = (SingleSelectionModel)kvData[i + 1];
+//            }
+//        }
+//
+//    }
 }

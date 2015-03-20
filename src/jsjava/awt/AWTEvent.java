@@ -27,17 +27,12 @@ package jsjava.awt;
 
 import java.util.EventObject;
 import jsjava.awt.event.*;
-import java.awt.peer.ComponentPeer;
-import java.awt.peer.LightweightPeer;
 import java.lang.reflect.Field;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import jsjava.security.AccessControlContext;
 import jsjava.security.AccessController;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-import jssun.awt.AWTAccessor;
 
 /**
  * The root event class for all AWT events.
@@ -81,7 +76,8 @@ import jssun.awt.AWTAccessor;
  * @since 1.1
  */
 public abstract class AWTEvent extends EventObject {
-    private static final Logger log = Logger.getLogger("java.awt.AWTEvent");
+
+  private static final Logger log = Logger.getLogger("java.awt.AWTEvent");
     private byte bdata[];
 
     /**

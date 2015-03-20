@@ -30,7 +30,7 @@ import jsjava.awt.Rectangle;
 import jssun.awt.geom.Curve;
 
 import java.util.Arrays;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The <code>CubicCurve2D</code> class defines a cubic parametric curve
@@ -51,7 +51,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
      * {@code float} coordinates.
      * @since 1.2
      */
-    public static class Float extends CubicCurve2D implements Serializable {
+    public static class Float extends CubicCurve2D  {
         /**
          * The X coordinate of the start point
          * of the cubic curve segment.
@@ -334,7 +334,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
      * {@code double} coordinates.
      * @since 1.2
      */
-    public static class Double extends CubicCurve2D implements Serializable {
+    public static class Double extends CubicCurve2D  {
         /**
          * The X coordinate of the start point
          * of the cubic curve segment.

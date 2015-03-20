@@ -28,8 +28,6 @@ package jssun.awt.image;
 import jsjava.awt.image.*;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.BufferedInputStream;
-import java.util.Hashtable;
 
 public abstract class InputStreamImageSource implements ImageProducer,
                                                         ImageFetchable

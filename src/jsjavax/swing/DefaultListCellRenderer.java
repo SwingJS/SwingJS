@@ -33,7 +33,7 @@ import jsjava.awt.Component;
 import jsjava.awt.Color;
 import jsjava.awt.Rectangle;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import jssun.swing.DefaultLookup;
 
 
@@ -71,7 +71,7 @@ import jssun.swing.DefaultLookup;
  * @author Hans Muller
  */
 public class DefaultListCellRenderer extends JLabel
-    implements ListCellRenderer, Serializable
+    implements ListCellRenderer
 {
 
    /**

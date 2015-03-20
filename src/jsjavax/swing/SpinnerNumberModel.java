@@ -26,7 +26,7 @@
 package jsjavax.swing;
 
 import java.util.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 
 /**
@@ -80,7 +80,7 @@ import java.io.Serializable;
  * @author Hans Muller
  * @since 1.4
 */
-public class SpinnerNumberModel extends AbstractSpinnerModel implements Serializable
+public class SpinnerNumberModel extends AbstractSpinnerModel 
 {
     private Number stepSize, value;
     private Comparable minimum, maximum;

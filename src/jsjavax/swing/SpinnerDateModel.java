@@ -26,7 +26,7 @@
 package jsjavax.swing;
 
 import java.util.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 
 /**
@@ -86,7 +86,7 @@ import java.io.Serializable;
  * @author Hans Muller
  * @since 1.4
  */
-public class SpinnerDateModel extends AbstractSpinnerModel implements Serializable
+public class SpinnerDateModel extends AbstractSpinnerModel 
 {
     private Comparable start, end;
     private Calendar value;

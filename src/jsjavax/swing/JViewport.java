@@ -37,7 +37,7 @@ import jsjavax.swing.border.*;
 
 
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 
 /**
@@ -1313,7 +1313,7 @@ public class JViewport extends JComponent
      * has been added to the <code>java.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    protected class ViewListener extends ComponentAdapter implements Serializable
+    protected class ViewListener extends ComponentAdapter 
     {
         public void componentResized(ComponentEvent e) {
             fireStateChanged();

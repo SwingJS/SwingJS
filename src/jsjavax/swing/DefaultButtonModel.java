@@ -27,7 +27,7 @@ package jsjavax.swing;
 import jsjava.awt.*;
 import jsjava.awt.event.*;
 import jsjava.awt.image.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.EventListener;
 import jsjavax.swing.event.*;
 
@@ -45,7 +45,7 @@ import jsjavax.swing.event.*;
  *
  * @author Jeff Dinkins
  */
-public class DefaultButtonModel implements ButtonModel, Serializable {
+public class DefaultButtonModel implements ButtonModel {
 
     /** The bitmask used to store the state of the button. */
     protected int stateMask = 0;

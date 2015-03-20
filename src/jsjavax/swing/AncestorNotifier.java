@@ -35,14 +35,14 @@ import jsjava.awt.Window;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeEvent;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 
 /**
  * @author Dave Moore
  */
 
-class AncestorNotifier implements ComponentListener, PropertyChangeListener, Serializable
+class AncestorNotifier implements ComponentListener, PropertyChangeListener
 {
     Component firstInvisibleAncestor;
     EventListenerList listenerList = new EventListenerList();

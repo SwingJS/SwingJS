@@ -30,19 +30,11 @@ import java.lang.ref.SoftReference;
 
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Font;
-import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.geom.AffineTransform;
-import jsjava.awt.geom.NoninvertibleTransformException;
 import jsjava.awt.font.FontRenderContext;
 //import jsjava.awt.font.TextLayout;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import java.util.Hashtable;
-import java.util.concurrent.ConcurrentHashMap;
-
 import jssun.java2d.Disposer;
 import jssun.java2d.DisposerRecord;
 

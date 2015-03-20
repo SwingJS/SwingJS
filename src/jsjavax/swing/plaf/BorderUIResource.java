@@ -30,7 +30,7 @@ import jsjava.awt.Insets;
 import jsjava.awt.Color;
 import jsjava.awt.Font;
 import jsjava.awt.Graphics;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 import jsjavax.swing.border.*;
 import jsjavax.swing.Icon;
@@ -58,7 +58,7 @@ import jsjavax.swing.plaf.UIResource;
  * @author Amy Fowler
  *
  */
-public class BorderUIResource implements Border, UIResource, Serializable
+public class BorderUIResource implements Border, UIResource
 {
     static Border etched;
     static Border loweredBevel;

@@ -51,7 +51,7 @@ import java.lang.ref.ReferenceQueue;
  * @see AbstractButton
  */
 abstract class ActionPropertyChangeListener<T extends JComponent>
-        implements PropertyChangeListener, Serializable {
+        implements PropertyChangeListener {
     private static ReferenceQueue<JComponent> queue;
 
     // WeakReference's aren't serializable.

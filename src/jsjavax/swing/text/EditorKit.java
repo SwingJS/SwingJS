@@ -45,7 +45,7 @@ import jsjavax.swing.JEditorPane;
  *
  * @author  Timothy Prinzing
  */
-public abstract class EditorKit implements Cloneable, Serializable {
+public abstract class EditorKit implements Cloneable {
 
     /**
      * Construct an EditorKit.

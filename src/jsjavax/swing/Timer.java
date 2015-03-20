@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.*;
 import jsjava.awt.*;
 import jsjava.awt.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.io.*;
 import jsjava.security.AccessControlContext;
 import jsjava.security.AccessController;
@@ -146,7 +146,7 @@ import jsjavax.swing.event.EventListenerList;
  *
  * @author Dave Moore
  */
-public class Timer implements Serializable
+public class Timer 
 {
     /*
      * NOTE: all fields need to be handled in readResolve

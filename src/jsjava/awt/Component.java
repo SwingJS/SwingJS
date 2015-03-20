@@ -81,9 +81,9 @@ import jssun.awt.SunToolkit;
  * <pre>
  *    import java.awt.*;
  *    import java.awt.event.*;
- *    import java.io.Serializable;
+ *    //import java.io.Serializable;
  *
- *    class MyApp implements ActionListener, Serializable
+ *    class MyApp implements ActionListener
  *    {
  *        BigObjectThatShouldNotBeSerializedWithAButton bigOne;
  *        Button aButton = new Button();
@@ -111,7 +111,7 @@ import jssun.awt.SunToolkit;
  * <pre>
  *    import java.awt.*;
  *    import java.awt.event.*;
- *    import java.io.Serializable;
+ *    //import java.io.Serializable;
  *
  *    class MyApp java.io.Serializable
  *    {

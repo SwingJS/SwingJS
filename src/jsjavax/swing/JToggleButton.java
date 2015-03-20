@@ -31,8 +31,8 @@ import jsjavax.swing.event.*;
 import jsjavax.swing.plaf.*;
 
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
 
 
@@ -316,21 +316,21 @@ public class JToggleButton extends AbstractButton {
     }
 
 
-    /**
-     * See readObject() and writeObject() in JComponent for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
+//    /**
+//     * See readObject() and writeObject() in JComponent for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
 
     /**
      * Returns a string representation of this JToggleButton. This method

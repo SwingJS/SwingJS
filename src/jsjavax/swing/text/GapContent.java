@@ -25,14 +25,12 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.Serializable;
 import jsjavax.swing.undo.AbstractUndoableEdit;
 import jsjavax.swing.undo.CannotRedoException;
 import jsjavax.swing.undo.CannotUndoException;
 import jsjavax.swing.undo.UndoableEdit;
-import jsjavax.swing.SwingUtilities;
 import java.lang.ref.WeakReference;
 import java.lang.ref.ReferenceQueue;
 
@@ -58,7 +56,7 @@ import java.lang.ref.ReferenceQueue;
  *
  * @author  Timothy Prinzing
  */
-public class GapContent extends GapVector implements AbstractDocument.Content, Serializable {
+public class GapContent extends GapVector implements AbstractDocument.Content {
 
     /**
      * Creates a new GapContent object.  Initial size defaults to 10.
@@ -686,14 +684,14 @@ public class GapContent extends GapVector implements AbstractDocument.Content, S
 
     // --- serialization -------------------------------------
 
-    private void readObject(ObjectInputStream s)
-      throws ClassNotFoundException, IOException {
-        s.defaultReadObject();
-        marks = new MarkVector();
-        search = new MarkData(0);
-        queue = new ReferenceQueue();
-    }
-
+//    private void readObject(ObjectInputStream s)
+//      throws ClassNotFoundException, IOException {
+//        s.defaultReadObject();
+//        marks = new MarkVector();
+//        search = new MarkData(0);
+//        queue = new ReferenceQueue();
+//    }
+//
 
     // --- undo support --------------------------------------
 

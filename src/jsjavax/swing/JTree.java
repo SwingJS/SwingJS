@@ -3177,7 +3177,7 @@ public class JTree extends JComponent implements Scrollable
      * has been added to the <code>java.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    protected class TreeSelectionRedirector implements Serializable,
+    protected class TreeSelectionRedirector implements 
                     TreeSelectionListener
     {
         /**

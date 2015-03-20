@@ -34,7 +34,7 @@ import jsjava.awt.Container;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 
 /**
@@ -58,7 +58,7 @@ import java.io.Serializable;
  * @author Hans Muller
  */
 public class ScrollPaneLayout
-    implements LayoutManager, ScrollPaneConstants, Serializable
+    implements LayoutManager, ScrollPaneConstants
 {
 
     /**

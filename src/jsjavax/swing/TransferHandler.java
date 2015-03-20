@@ -24,32 +24,6 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-//import jsjava.awt.datatransfer.*;
-//import jsjava.awt.dnd.*;
-import jsjava.beans.*;
-import java.lang.reflect.*;
-import java.io.*;
-import java.util.TooManyListenersException;
-import jsjavax.swing.plaf.UIResource;
-import jsjavax.swing.event.*;
-import jsjavax.swing.text.JTextComponent;
-
-import jssun.swing.SwingUtilities2;
-import jssun.awt.AppContext;
-import jssun.swing.*;
-
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
-
-import jsjava.security.AccessControlContext;
-//import jsjava.security.ProtectionDomain;
-//import jssun.misc.SharedSecrets;
-//import jssun.misc.JavaSecurityAccess;
-
-import jssun.awt.AWTAccessor;
-
 /**
  * This class is used to handle the transfer of a <code>Transferable</code>
  * to and from Swing components.  The <code>Transferable</code> is used to
@@ -83,7 +57,7 @@ import jssun.awt.AWTAccessor;
  * @since 1.4
  */
 @SuppressWarnings("serial")
-public class TransferHandler {//implements Serializable {
+public class TransferHandler {// {
 //
 //    /**
 //     * An <code>int</code> representing no transfer action.

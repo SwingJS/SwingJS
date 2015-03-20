@@ -28,7 +28,7 @@ package jsjava.awt.geom;
 import jsjava.awt.Shape;
 import jsjava.awt.Rectangle;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * This <code>Line2D</code> represents a line segment in {@code (x,y)}
@@ -53,7 +53,7 @@ public abstract class Line2D implements Shape, Cloneable {
      * A line segment specified with float coordinates.
      * @since 1.2
      */
-    public static class Float extends Line2D implements Serializable {
+    public static class Float extends Line2D  {
         /**
          * The X coordinate of the start point of the line segment.
          * @since 1.2
@@ -220,7 +220,7 @@ public abstract class Line2D implements Shape, Cloneable {
      * A line segment specified with double coordinates.
      * @since 1.2
      */
-    public static class Double extends Line2D implements Serializable {
+    public static class Double extends Line2D  {
         /**
          * The X coordinate of the start point of the line segment.
          * @since 1.2

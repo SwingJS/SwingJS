@@ -85,7 +85,7 @@ import java.util.*;
  * @author Rob Davis
  */
 public class DefaultMutableTreeNode extends Object implements Cloneable,
-       MutableTreeNode, Serializable
+       MutableTreeNode
 {
     //private static final long serialVersionUID = -4298474751201349152L;
 

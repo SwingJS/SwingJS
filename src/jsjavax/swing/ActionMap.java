@@ -24,12 +24,10 @@
  */
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * <code>ActionMap</code> provides mappings from
@@ -55,7 +53,7 @@ import java.util.Set;
  * @author Scott Violet
  * @since 1.3
  */
-public class ActionMap implements Serializable {
+public class ActionMap  {
     /** Handles the mapping between Action name and Action. */
     private transient ArrayTable     arrayTable;
     /** Parent that handles any bindings we don't contain. */
@@ -209,17 +207,17 @@ public class ActionMap implements Serializable {
         return keyMap.keySet().toArray();
     }
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-
-        ArrayTable.writeArrayTable(s, arrayTable);
-    }
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException,
-                                                 IOException {
-        s.defaultReadObject();
-        for (int counter = s.readInt() - 1; counter >= 0; counter--) {
-            put(s.readObject(), (Action)s.readObject());
-        }
-    }
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//
+//        ArrayTable.writeArrayTable(s, arrayTable);
+//    }
+//
+//    private void readObject(ObjectInputStream s) throws ClassNotFoundException,
+//                                                 IOException {
+//        s.defaultReadObject();
+//        for (int counter = s.readInt() - 1; counter >= 0; counter--) {
+//            put(s.readObject(), (Action)s.readObject());
+//        }
+//    }
 }

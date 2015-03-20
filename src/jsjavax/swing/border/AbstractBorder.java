@@ -28,7 +28,7 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Component;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * A class that implements an empty border with no size.
@@ -46,7 +46,7 @@ import java.io.Serializable;
  *
  * @author David Kloba
  */
-public abstract class AbstractBorder implements Border, Serializable
+public abstract class AbstractBorder implements Border
 {
 
     /**

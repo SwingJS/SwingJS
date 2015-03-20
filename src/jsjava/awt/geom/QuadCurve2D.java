@@ -27,7 +27,7 @@ package jsjava.awt.geom;
 
 import jsjava.awt.Shape;
 import jsjava.awt.Rectangle;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The <code>QuadCurve2D</code> class defines a quadratic parametric curve
@@ -49,7 +49,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      *
      * @since 1.2
      */
-    public static class Float extends QuadCurve2D implements Serializable {
+    public static class Float extends QuadCurve2D  {
         /**
          * The X coordinate of the start point of the quadratic curve
          * segment.
@@ -262,7 +262,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      *
      * @since 1.2
      */
-    public static class Double extends QuadCurve2D implements Serializable {
+    public static class Double extends QuadCurve2D  {
         /**
          * The X coordinate of the start point of the quadratic curve
          * segment.

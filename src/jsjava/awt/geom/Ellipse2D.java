@@ -25,7 +25,7 @@
 
 package jsjava.awt.geom;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The <code>Ellipse2D</code> class describes an ellipse that is defined
@@ -46,7 +46,7 @@ public abstract class Ellipse2D extends RectangularShape {
      * in <code>float</code> precision.
      * @since 1.2
      */
-    public static class Float extends Ellipse2D implements Serializable {
+    public static class Float extends Ellipse2D  {
         /**
          * The X coordinate of the upper-left corner of the
          * framing rectangle of this {@code Ellipse2D}.
@@ -190,7 +190,7 @@ public abstract class Ellipse2D extends RectangularShape {
      * in <code>double</code> precision.
      * @since 1.2
      */
-    public static class Double extends Ellipse2D implements Serializable {
+    public static class Double extends Ellipse2D  {
         /**
          * The X coordinate of the upper-left corner of the
          * framing rectangle of this {@code Ellipse2D}.

@@ -48,7 +48,7 @@ import jsjavax.swing.event.*;
  * @author Ray Ryan
  * @author Scott Violet
  */
-public class DefaultTreeModel implements Serializable, TreeModel {
+public class DefaultTreeModel implements  TreeModel {
     /** Root of the tree. */
     protected TreeNode root;
     /** Listeners. */

@@ -27,7 +27,7 @@ package jsjavax.swing.plaf;
 
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjavax.swing.Icon;
 import jsjavax.swing.plaf.UIResource;
 
@@ -52,7 +52,7 @@ import jsjavax.swing.plaf.UIResource;
  * @author Amy Fowler
  *
  */
-public class IconUIResource implements Icon, UIResource, Serializable
+public class IconUIResource implements Icon, UIResource
 {
     private Icon delegate;
 

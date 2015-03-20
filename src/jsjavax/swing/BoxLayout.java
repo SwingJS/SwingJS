@@ -27,7 +27,7 @@
 package jsjavax.swing;
 
 import jsjava.awt.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.io.PrintStream;
 
 /**
@@ -134,7 +134,7 @@ import java.io.PrintStream;
  *
  * @author   Timothy Prinzing
  */
-public class BoxLayout implements LayoutManager2, Serializable {
+public class BoxLayout implements LayoutManager2 {
 
     /**
      * Specifies that components should be laid out left to right.

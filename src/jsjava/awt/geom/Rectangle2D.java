@@ -25,7 +25,7 @@
 
 package jsjava.awt.geom;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The <code>Rectangle2D</code> class describes a rectangle
@@ -74,7 +74,7 @@ public abstract class Rectangle2D extends RectangularShape {
      * coordinates.
      * @since 1.2
      */
-    public static class Float extends Rectangle2D implements Serializable {
+    public static class Float extends Rectangle2D  {
         /**
          * The X coordinate of this <code>Rectangle2D</code>.
          * @since 1.2
@@ -307,7 +307,7 @@ public abstract class Rectangle2D extends RectangularShape {
      * double coordinates.
      * @since 1.2
      */
-    public static class Double extends Rectangle2D implements Serializable {
+    public static class Double extends Rectangle2D  {
         /**
          * The X coordinate of this <code>Rectangle2D</code>.
          * @since 1.2

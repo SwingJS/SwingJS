@@ -30,8 +30,8 @@ import jsjava.beans.*;
 
 import jsjavax.swing.plaf.*;
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
 
 
@@ -214,22 +214,22 @@ public class JRadioButton extends JToggleButton {
     void setIconFromAction(Action a) {
     }
 
-    /**
-     * See readObject() and writeObject() in JComponent for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
-
+//    /**
+//     * See readObject() and writeObject() in JComponent for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
+//
     /**
      * Returns a string representation of this JRadioButton. This method
      * is intended to be used only for debugging purposes, and the

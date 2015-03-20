@@ -27,7 +27,7 @@ package jsjavax.swing.text;
 //import jssun.reflect.misc.ReflectUtil;
 import jssun.swing.SwingUtilities2;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.lang.reflect.*;
 import java.text.ParseException;
 import jsjavax.swing.*;
@@ -60,7 +60,7 @@ import jsjavax.swing.text.*;
  * @since 1.4
  */
 public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
-                    implements Cloneable, Serializable {
+                    implements Cloneable {
     /** Indicates if the value being edited must match the mask. */
     private boolean allowsInvalid;
 
@@ -680,7 +680,7 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * same name in DefaultFormatter.
      */
     private class DefaultNavigationFilter extends NavigationFilter
-                             implements Serializable {
+                              {
         public void setDot(FilterBypass fb, int dot, Position.Bias bias) {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();
             if (tc.composedTextExists()) {
@@ -722,8 +722,7 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * DocumentFilter implementation that calls back to the replace
      * method of DefaultFormatter.
      */
-    private class DefaultDocumentFilter extends DocumentFilter implements
-                             Serializable {
+    private class DefaultDocumentFilter extends DocumentFilter {
         public void remove(FilterBypass fb, int offset, int length) throws
                               BadLocationException {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();

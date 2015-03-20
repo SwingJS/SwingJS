@@ -28,17 +28,6 @@ import jsjava.awt.*;
 import jsjava.awt.image.*;
 import java.net.URL;
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-
-import java.util.Locale;
-
-import jssun.awt.AppContext;
-import java.lang.reflect.Field;
-//import jsjava.security.*;
-
 /**
  * An implementation of the Icon interface that paints Icons
  * from Images. Images that are created from a URL, filename or byte array
@@ -63,7 +52,7 @@ import java.lang.reflect.Field;
  * @author Jeff Dinkins
  * @author Lynn Monsanto
  */
-public class ImageIcon implements Icon, Serializable {
+public class ImageIcon implements Icon {
     /* Keep references to the filename and location so that
      * alternate persistence schemes have the option to archive
      * images symbolically rather than including the image data
@@ -471,51 +460,51 @@ public class ImageIcon implements Icon, Serializable {
         return super.toString();
     }
 
-    private void readObject(ObjectInputStream s)
-        throws ClassNotFoundException, IOException
-    {
-        s.defaultReadObject();
-
-        int w = s.readInt();
-        int h = s.readInt();
-        int[] pixels = (int[])(s.readObject());
-
-        if (pixels != null) {
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            ColorModel cm = ColorModel.getRGBdefault();
-            image = tk.createImage(new MemoryImageSource(w, h, cm, pixels, 0, w));
-            loadImage(image);
-        }
-    }
-
-
-    private void writeObject(ObjectOutputStream s)
-        throws IOException
-    {
-        s.defaultWriteObject();
-
-        int w = getIconWidth();
-        int h = getIconHeight();
-        int[] pixels = image != null? new int[w * h] : null;
-
-        if (image != null) {
-            try {
-                PixelGrabber pg = new PixelGrabber(image, 0, 0, w, h, pixels, 0, w);
-                pg.grabPixels();
-                if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
-                    throw new IOException("failed to load image contents");
-                }
-            }
-            catch (InterruptedException e) {
-                throw new IOException("image load interrupted");
-            }
-        }
-
-        s.writeInt(w);
-        s.writeInt(h);
-        s.writeObject(pixels);
-    }
-
+//    private void readObject(ObjectInputStream s)
+//        throws ClassNotFoundException, IOException
+//    {
+//        s.defaultReadObject();
+//
+//        int w = s.readInt();
+//        int h = s.readInt();
+//        int[] pixels = (int[])(s.readObject());
+//
+//        if (pixels != null) {
+//            Toolkit tk = Toolkit.getDefaultToolkit();
+//            ColorModel cm = ColorModel.getRGBdefault();
+//            image = tk.createImage(new MemoryImageSource(w, h, cm, pixels, 0, w));
+//            loadImage(image);
+//        }
+//    }
+//
+//
+//    private void writeObject(ObjectOutputStream s)
+//        throws IOException
+//    {
+//        s.defaultWriteObject();
+//
+//        int w = getIconWidth();
+//        int h = getIconHeight();
+//        int[] pixels = image != null? new int[w * h] : null;
+//
+//        if (image != null) {
+//            try {
+//                PixelGrabber pg = new PixelGrabber(image, 0, 0, w, h, pixels, 0, w);
+//                pg.grabPixels();
+//                if ((pg.getStatus() & ImageObserver.ABORT) != 0) {
+//                    throw new IOException("failed to load image contents");
+//                }
+//            }
+//            catch (InterruptedException e) {
+//                throw new IOException("image load interrupted");
+//            }
+//        }
+//
+//        s.writeInt(w);
+//        s.writeInt(h);
+//        s.writeObject(pixels);
+//    }
+//
 //    /**
 //     * --- Accessibility Support ---
 //     */
@@ -559,7 +548,7 @@ public class ImageIcon implements Icon, Serializable {
 //     * @since 1.3
 //     */
 //    protected class AccessibleImageIcon extends AccessibleContext
-//        implements AccessibleIcon, Serializable {
+//        implements AccessibleIcon {
 //
 //        /*
 //         * AccessibleContest implementation -----------------

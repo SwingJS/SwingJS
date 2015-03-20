@@ -32,7 +32,7 @@ import jsjava.awt.Component;
 import jsjava.awt.Color;
 import jsjava.awt.Rectangle;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import jssun.swing.DefaultLookup;
 
 
@@ -83,7 +83,7 @@ import jssun.swing.DefaultLookup;
  * @see JTable
  */
 public class DefaultTableCellRenderer extends JLabel
-    implements TableCellRenderer, Serializable
+    implements TableCellRenderer
 {
 
    /**

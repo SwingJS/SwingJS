@@ -24,16 +24,10 @@
  */
 package jsjavax.swing;
 
-import java.applet.Applet;
 import jsjava.awt.*;
 import jsjava.awt.event.*;
-import jsjava.beans.*;
-import jsjava.security.AccessController;
 //
 import jsjavax.swing.plaf.RootPaneUI;
-import java.util.Vector;
-import java.io.Serializable;
-import jsjavax.swing.border.*;
 import jssun.awt.AWTAccessor;
 //import jssun.security.action.GetBooleanAction;
 
@@ -899,7 +893,7 @@ public class JRootPane extends JComponent {
      * has been added to the <code>java.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    protected class RootLayout implements LayoutManager2, Serializable
+    protected class RootLayout implements LayoutManager2
     {
         /**
          * Returns the amount of space the layout would like to have.

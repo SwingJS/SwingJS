@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.text.ParseException;
 import jsjavax.swing.JFormattedTextField;
 
@@ -72,7 +72,7 @@ import jsjavax.swing.JFormattedTextField;
  *
  * @since 1.4
  */
-public class DefaultFormatterFactory extends JFormattedTextField.AbstractFormatterFactory implements Serializable {
+public class DefaultFormatterFactory extends JFormattedTextField.AbstractFormatterFactory  {
     /**
      * Default <code>AbstractFormatter</code> to use if a more specific one has
      * not been specified.

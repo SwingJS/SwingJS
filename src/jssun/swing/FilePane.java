@@ -25,25 +25,7 @@
  */
 package jssun.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.PropertyChangeEvent;
-import jsjava.beans.PropertyChangeListener;
-import java.io.*;
-import java.text.DateFormat;
-import java.text.MessageFormat;
-import java.util.*;
-import java.util.List;
-
 import jsjavax.swing.*;
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.filechooser.*;
-//import jsjavax.swing.plaf.basic.*;
-import jsjavax.swing.table.*;
-import jsjavax.swing.text.*;
-
-import jssun.awt.shell.*;
 
 /**
  * <b>WARNING:</b> This class is an implementation detail and is only

@@ -97,7 +97,7 @@ import jssun.swing.SwingUtilities2;
  *
  * @author  Timothy Prinzing
  */
-public abstract class AbstractDocument implements Document, Serializable {
+public abstract class AbstractDocument implements Document {
 
     /**
      * Constructs a new <code>AbstractDocument</code>, wrapped around some
@@ -1763,7 +1763,7 @@ public abstract class AbstractDocument implements Document, Serializable {
      * has been added to the <code>jsjava.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    public abstract class AbstractElement implements Element, MutableAttributeSet, Serializable, TreeNode {
+    public abstract class AbstractElement implements Element, MutableAttributeSet, TreeNode {
 
         /**
          * Creates a new AbstractElement.

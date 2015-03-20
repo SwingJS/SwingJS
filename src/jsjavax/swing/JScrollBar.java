@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjava.awt.Component;
 import jsjava.awt.Adjustable;
 import jsjava.awt.Dimension;
@@ -37,8 +37,8 @@ import jsjavax.swing.event.*;
 import jsjavax.swing.plaf.*;
 //
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
 
 
@@ -702,7 +702,7 @@ public class JScrollBar extends JComponent implements Adjustable
      * type of the AdjustmentEvent as all updates to the model's
      * value are considered equivalent.
      */
-    private class ModelListener implements ChangeListener, Serializable {
+    private class ModelListener implements ChangeListener {
         public void stateChanged(ChangeEvent e)   {
             Object obj = e.getSource();
             if (obj instanceof BoundedRangeModel) {
@@ -759,22 +759,22 @@ public class JScrollBar extends JComponent implements Adjustable
         }
     }
 
-    /**
-     * See readObject() and writeObject() in JComponent for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
-
+//    /**
+//     * See readObject() and writeObject() in JComponent for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
+//
     /**
      * Returns a string representation of this JScrollBar. This method
      * is intended to be used only for debugging purposes, and the

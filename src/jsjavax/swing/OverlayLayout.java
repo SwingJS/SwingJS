@@ -26,7 +26,7 @@ package jsjavax.swing;
 
 
 import jsjava.awt.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * A layout manager to arrange components over the top
@@ -50,7 +50,7 @@ import java.io.Serializable;
  *
  * @author   Timothy Prinzing
  */
-public class OverlayLayout implements LayoutManager2,Serializable {
+public class OverlayLayout implements LayoutManager2 {
 
     /**
      * Constructs a layout manager that performs overlay

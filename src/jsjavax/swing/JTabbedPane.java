@@ -2014,7 +2014,7 @@ public class JTabbedPane extends JComponent
 //    }
 
     private class Page //extends AccessibleContext
-        //implements Serializable, Accessible, AccessibleComponent 
+        //implements  Accessible, AccessibleComponent 
     {
         String title;
         Color background;

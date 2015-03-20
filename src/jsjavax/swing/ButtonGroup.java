@@ -27,7 +27,7 @@ package jsjavax.swing;
 import jsjava.awt.event.*;
 import java.util.Vector;
 import java.util.Enumeration;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * This class is used to create a multiple-exclusion scope for
@@ -65,7 +65,7 @@ import java.io.Serializable;
  *
  * @author Jeff Dinkins
  */
-public class ButtonGroup implements Serializable {
+public class ButtonGroup  {
 
     // the list of buttons participating in this group
     protected Vector<AbstractButton> buttons = new Vector();

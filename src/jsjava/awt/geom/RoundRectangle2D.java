@@ -25,7 +25,7 @@
 
 package jsjava.awt.geom;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The <code>RoundRectangle2D</code> class defines a rectangle with
@@ -49,7 +49,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
      * @since 1.2
      */
     public static class Float extends RoundRectangle2D
-        implements Serializable
+        
     {
         /**
          * The X coordinate of this <code>RoundRectangle2D</code>.
@@ -262,7 +262,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
      * @since 1.2
      */
     public static class Double extends RoundRectangle2D
-        implements Serializable
+        
     {
         /**
          * The X coordinate of this <code>RoundRectangle2D</code>.

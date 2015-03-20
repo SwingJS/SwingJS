@@ -28,9 +28,9 @@ import java.util.Hashtable;
 import java.util.Enumeration;
 import java.util.Collections;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.Serializable;
 
 /**
  * A straightforward implementation of MutableAttributeSet using a
@@ -47,7 +47,7 @@ import java.io.Serializable;
  *
  * @author Tim Prinzing
  */
-public class SimpleAttributeSet implements MutableAttributeSet, Serializable, Cloneable
+public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
 {
     //private static final long serialVersionUID = -6631553454711782652L;
 
@@ -333,22 +333,22 @@ public class SimpleAttributeSet implements MutableAttributeSet, Serializable, Cl
         return s;
     }
 
-    private void writeObject(java.io.ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        StyleContext.writeAttributeSet(s, this);
-    }
-
-    private void readObject(ObjectInputStream s)
-      throws ClassNotFoundException, IOException {
-        s.defaultReadObject();
-        table = new Hashtable(3);
-        StyleContext.readAttributeSet(s, this);
-    }
-
+//    private void writeObject(java.io.ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        StyleContext.writeAttributeSet(s, this);
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//      throws ClassNotFoundException, IOException {
+//        s.defaultReadObject();
+//        table = new Hashtable(3);
+//        StyleContext.readAttributeSet(s, this);
+//    }
+//
     /**
      * An AttributeSet that is always empty.
      */
-    static class EmptyAttributeSet implements AttributeSet, Serializable {
+    static class EmptyAttributeSet implements AttributeSet {
         static final long serialVersionUID = -8714803568785904228L;
 
         public int getAttributeCount() {

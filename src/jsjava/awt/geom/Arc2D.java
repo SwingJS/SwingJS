@@ -25,7 +25,7 @@
 
 package jsjava.awt.geom;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * <CODE>Arc2D</CODE> is the abstract superclass for all objects that
@@ -82,7 +82,7 @@ public abstract class Arc2D extends RectangularShape {
      * This class defines an arc specified in {@code float} precision.
      * @since 1.2
      */
-    public static class Float extends Arc2D implements Serializable {
+    public static class Float extends Arc2D  {
         /**
          * The X coordinate of the upper-left corner of the framing
          * rectangle of the arc.
@@ -319,65 +319,65 @@ public abstract class Arc2D extends RectangularShape {
                                          (float) w, (float) h);
         }
 
-        /*
-         * JDK 1.6 serialVersionUID
-         */
-        //private static final long serialVersionUID = 9130893014586380278L;
-
-        /**
-         * Writes the default serializable fields to the
-         * <code>ObjectOutputStream</code> followed by a byte
-         * indicating the arc type of this <code>Arc2D</code>
-         * instance.
-         *
-         * @serialData
-         * <ol>
-         * <li>The default serializable fields.
-         * <li>
-         * followed by a <code>byte</code> indicating the arc type
-         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
-         * </ol>
-         */
-        private void writeObject(java.io.ObjectOutputStream s)
-            throws java.io.IOException
-        {
-            s.defaultWriteObject();
-
-            s.writeByte(getArcType());
-        }
-
-        /**
-         * Reads the default serializable fields from the
-         * <code>ObjectInputStream</code> followed by a byte
-         * indicating the arc type of this <code>Arc2D</code>
-         * instance.
-         *
-         * @serialData
-         * <ol>
-         * <li>The default serializable fields.
-         * <li>
-         * followed by a <code>byte</code> indicating the arc type
-         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
-         * </ol>
-         */
-        private void readObject(java.io.ObjectInputStream s)
-            throws java.lang.ClassNotFoundException, java.io.IOException
-        {
-            s.defaultReadObject();
-
-            try {
-                setArcType(s.readByte());
-            } catch (IllegalArgumentException iae) {
-                throw new java.io.InvalidObjectException(iae.getMessage());
-            }
-        }
+//        /*
+//         * JDK 1.6 serialVersionUID
+//         */
+//        //private static final long serialVersionUID = 9130893014586380278L;
+//
+//        /**
+//         * Writes the default serializable fields to the
+//         * <code>ObjectOutputStream</code> followed by a byte
+//         * indicating the arc type of this <code>Arc2D</code>
+//         * instance.
+//         *
+//         * @serialData
+//         * <ol>
+//         * <li>The default serializable fields.
+//         * <li>
+//         * followed by a <code>byte</code> indicating the arc type
+//         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+//         * </ol>
+//         */
+//        private void writeObject(java.io.ObjectOutputStream s)
+//            throws java.io.IOException
+//        {
+//            s.defaultWriteObject();
+//
+//            s.writeByte(getArcType());
+//        }
+//
+//        /**
+//         * Reads the default serializable fields from the
+//         * <code>ObjectInputStream</code> followed by a byte
+//         * indicating the arc type of this <code>Arc2D</code>
+//         * instance.
+//         *
+//         * @serialData
+//         * <ol>
+//         * <li>The default serializable fields.
+//         * <li>
+//         * followed by a <code>byte</code> indicating the arc type
+//         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+//         * </ol>
+//         */
+//        private void readObject(java.io.ObjectInputStream s)
+//            throws java.lang.ClassNotFoundException, java.io.IOException
+//        {
+//            s.defaultReadObject();
+//
+//            try {
+//                setArcType(s.readByte());
+//            } catch (IllegalArgumentException iae) {
+//                throw new java.io.InvalidObjectException(iae.getMessage());
+//            }
+//        }
     }
 
     /**
      * This class defines an arc specified in {@code double} precision.
      * @since 1.2
      */
-    public static class Double extends Arc2D implements Serializable {
+    public static class Double extends Arc2D  {
         /**
          * The X coordinate of the upper-left corner of the framing
          * rectangle of the arc.

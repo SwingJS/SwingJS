@@ -61,7 +61,7 @@ import jsjavax.swing.DefaultListSelectionModel;
  *
  * @author Scott Violet
  */
-public class DefaultTreeSelectionModel extends Object implements Cloneable, Serializable, TreeSelectionModel
+public class DefaultTreeSelectionModel extends Object implements Cloneable, TreeSelectionModel
 {
     /** Property name for selectionMode. */
     public static final String          SELECTION_MODE_PROPERTY = "selectionMode";
@@ -1191,7 +1191,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Seri
         Object[]             tValues;
 
         s.defaultWriteObject();
-        // Save the rowMapper, if it implements Serializable
+        // Save the rowMapper, if it 
         if(rowMapper != null && rowMapper instanceof Serializable) {
             tValues = new Object[2];
             tValues[0] = "rowMapper";

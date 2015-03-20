@@ -640,7 +640,7 @@ public class JFormattedTextField extends JTextField {
     /**
      * FOCUS_LOST behavior implementation
      */
-    private class FocusLostHandler implements Runnable, Serializable {
+    private class FocusLostHandler implements Runnable {
         public void run() {
             int fb = JFormattedTextField.this.getFocusLostBehavior();
             if (fb == JFormattedTextField.COMMIT ||
@@ -903,7 +903,7 @@ public class JFormattedTextField extends JTextField {
      * at the appropriate times.
      * @since 1.4
      */
-    public static abstract class AbstractFormatter implements Serializable {
+    public static abstract class AbstractFormatter  {
         private JFormattedTextField ftf;
 
         /**
@@ -1175,7 +1175,7 @@ public class JFormattedTextField extends JTextField {
     /**
      * Sets the dirty state as the document changes.
      */
-    private class DocumentHandler implements DocumentListener, Serializable {
+    private class DocumentHandler implements DocumentListener {
         public void insertUpdate(DocumentEvent e) {
             setEdited(true);
         }

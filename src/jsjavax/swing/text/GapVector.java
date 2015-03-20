@@ -25,7 +25,7 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjavax.swing.undo.UndoableEdit;
 
 /**
@@ -41,7 +41,7 @@ import jsjavax.swing.undo.UndoableEdit;
  * @author  Timothy Prinzing
  * @see GapContent
  */
-abstract class GapVector implements Serializable {
+abstract class GapVector  {
 
 
     /**

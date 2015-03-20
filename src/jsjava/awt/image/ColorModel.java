@@ -27,14 +27,7 @@ package jsjava.awt.image;
 
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
-import java.awt.color.ICC_ColorSpace;
-//import sun.java2d.cmm.CMSManager;
-//import sun.java2d.cmm.ColorTransform;
-//import sun.java2d.cmm.PCMM;
-import java.awt.Toolkit;
-import java.util.Collections;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * The <code>ColorModel</code> abstract class encapsulates the

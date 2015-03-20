@@ -24,18 +24,6 @@
  */
 package jsjavax.swing;
 
-import java.util.EventListener;
-
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.*;
-
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-
-import jsjavax.swing.plaf.*;
-
 
 /**
  * A menu item that can be selected or deselected. If selected, the menu
@@ -219,22 +207,22 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
         return selectedObjects;
     }
 
-    /**
-     * See readObject() and writeObject() in JComponent for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
-
+//    /**
+//     * See readObject() and writeObject() in JComponent for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
+//
     /**
      * Returns a string representation of this JCheckBoxMenuItem. This method
      * is intended to be used only for debugging purposes, and the

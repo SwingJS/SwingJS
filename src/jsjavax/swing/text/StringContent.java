@@ -25,7 +25,7 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjavax.swing.undo.*;
 import jsjavax.swing.SwingUtilities;
 
@@ -50,7 +50,7 @@ import jsjavax.swing.SwingUtilities;
  *
  * @author  Timothy Prinzing
  */
-public final class StringContent implements AbstractDocument.Content, Serializable {
+public final class StringContent implements AbstractDocument.Content {
 
     /**
      * Creates a new StringContent object.  Initial size defaults to 10.

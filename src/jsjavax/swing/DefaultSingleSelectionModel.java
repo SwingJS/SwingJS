@@ -26,7 +26,7 @@
 package jsjavax.swing;
 
 import jsjavax.swing.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.EventListener;
 
 /**
@@ -43,8 +43,7 @@ import java.util.EventListener;
  *
  * @author Dave Moore
  */
-public class DefaultSingleSelectionModel implements SingleSelectionModel,
-Serializable {
+public class DefaultSingleSelectionModel implements SingleSelectionModel {
     /* Only one ModelChangeEvent is needed per model instance since the
      * event's only (read-only) state is the source property.  The source
      * of events generated here is always "this".

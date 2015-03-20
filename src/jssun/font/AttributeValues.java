@@ -49,7 +49,7 @@ import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.geom.NoninvertibleTransformException;
 import jsjava.awt.geom.Point2D;
 //import jsjava.awt.im.InputMethodHighlight;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.text.Annotation;
 import java.text.AttributedCharacterIterator.Attribute;
 import java.util.Map;
@@ -404,27 +404,27 @@ public final class AttributeValues implements Cloneable {
         return result;
     }
 
-    public Hashtable<Object, Object> toSerializableHashtable() {
-        Hashtable ht = new Hashtable();
-        int hashkey = defined;
-        for (int m = defined, i = 0; m != 0; ++i) {
-            EAttribute ea = EAttribute.atts[i];
-            if ((m & ea.mask) != 0) {
-                m &= ~ea.mask;
-                Object o = get(ea);
-                if (o == null) {
-                    // hashkey will handle it
-                } else if (o instanceof Serializable) { // check all...
-                    ht.put(ea.att, o);
-                } else {
-                    hashkey &= ~ea.mask;
-                }
-            }
-        }
-        ht.put(DEFINED_KEY, Integer.valueOf(hashkey));
-
-        return ht;
-    }
+//    public Hashtable<Object, Object> toSerializableHashtable() {
+//        Hashtable ht = new Hashtable();
+//        int hashkey = defined;
+//        for (int m = defined, i = 0; m != 0; ++i) {
+//            EAttribute ea = EAttribute.atts[i];
+//            if ((m & ea.mask) != 0) {
+//                m &= ~ea.mask;
+//                Object o = get(ea);
+//                if (o == null) {
+//                    // hashkey will handle it
+//                } else if (o instanceof Serializable) { // check all...
+//                    ht.put(ea.att, o);
+//                } else {
+//                    hashkey &= ~ea.mask;
+//                }
+//            }
+//        }
+//        ht.put(DEFINED_KEY, Integer.valueOf(hashkey));
+//
+//        return ht;
+//    }
 
     // boilerplate
     public int hashCode() {

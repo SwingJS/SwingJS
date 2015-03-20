@@ -4945,7 +4945,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     //
     // Caret implementation for editing the composed text.
     //
-    class ComposedTextCaret extends DefaultCaret implements Serializable {
+    class ComposedTextCaret extends DefaultCaret  {
         Color bg;
 
         //

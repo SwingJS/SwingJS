@@ -30,7 +30,7 @@ import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Point;
 import jsjava.awt.Toolkit;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+//import java.io.ObjectInputStream;
 import jsjava.awt.IllegalComponentStateException;
 
 /**
@@ -892,15 +892,15 @@ public class MouseEvent extends InputEvent {
         }
     }
 
-    /**
-     * Sets new modifiers by the old ones.
-     * @serial
-     */
-    private void readObject(ObjectInputStream s)
-      throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-        if (getModifiers() != 0 && getModifiersEx() == 0) {
-            setNewModifiers();
-        }
-    }
+//    /**
+//     * Sets new modifiers by the old ones.
+//     * @serial
+//     */
+//    private void readObject(ObjectInputStream s)
+//      throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//        if (getModifiers() != 0 && getModifiersEx() == 0) {
+//            setNewModifiers();
+//        }
+//    }
 }

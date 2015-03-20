@@ -30,7 +30,7 @@ import jsjava.applet.Applet;
 import jsjava.beans.PropertyChangeListener;
 import java.util.Locale;
 import java.util.Vector;
-//import java.io.Serializable;
+////import java.io.Serializable;
 // 
 
 /**

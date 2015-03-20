@@ -31,7 +31,7 @@ import jsjavax.swing.event.SwingPropertyChangeSupport;
 import java.lang.Integer;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
-import java.io.Serializable;
+//import java.io.Serializable;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 
@@ -82,7 +82,7 @@ import jsjava.beans.PropertyChangeListener;
  * @see JTable#getCellRenderer(int, int)
  * @see JTable#getCellEditor(int, int)
  */
-public class TableColumn extends Object implements Serializable {
+public class TableColumn extends Object  {
 
     /**
      * Obsolete as of Java 2 platform v1.3.  Please use string literals to identify

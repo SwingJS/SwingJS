@@ -32,9 +32,6 @@ import jsjavax.swing.plaf.FileChooserUI;
 //
 //
 import java.io.File;
-//import java.io.ObjectOutputStream;
-import java.io.IOException;
-
 import java.util.Vector;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Component;
@@ -43,7 +40,6 @@ import jsjava.awt.BorderLayout;
 import jsjava.awt.Window;
 import jsjava.awt.Dialog;
 import jsjava.awt.Frame;
-import jsjava.awt.GraphicsEnvironment;
 //import jsjava.awt.HeadlessException;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Toolkit;

@@ -31,10 +31,10 @@ import jsjavax.swing.text.*;
 import jsjavax.swing.plaf.*;
 import jsjavax.swing.event.*;
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
 import java.io.IOException;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * <code>JTextField</code> is a lightweight component that allows the editing
@@ -846,7 +846,7 @@ public class JTextField extends JTextComponent implements SwingConstants {
         }
     }
 
-    class ScrollRepainter implements ChangeListener, Serializable {
+    class ScrollRepainter implements ChangeListener {
 
         public void stateChanged(ChangeEvent e) {
             repaint();
@@ -855,22 +855,22 @@ public class JTextField extends JTextComponent implements SwingConstants {
     }
 
 
-    /**
-     * See <code>readObject</code> and <code>writeObject</code> in
-     * <code>JComponent</code> for more
-     * information about serialization in Swing.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
+//    /**
+//     * See <code>readObject</code> and <code>writeObject</code> in
+//     * <code>JComponent</code> for more
+//     * information about serialization in Swing.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
 
     /**
      * Returns a string representation of this <code>JTextField</code>.

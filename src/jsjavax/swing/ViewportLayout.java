@@ -32,7 +32,7 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.Point;
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * The default layout manager for <code>JViewport</code>.
@@ -55,7 +55,7 @@ import java.io.Serializable;
  *
  * @author Hans Muller
  */
-public class ViewportLayout implements LayoutManager, Serializable
+public class ViewportLayout implements LayoutManager
 {
     // Single instance used by JViewport.
     static ViewportLayout SHARED_INSTANCE = new ViewportLayout();

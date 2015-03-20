@@ -36,7 +36,7 @@ import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.Point;
 
-//import java.io.ObjectOutputStream;
+////import java.io.ObjectOutputStream;
 //import java.io.IOException;
 
 import jsjava.beans.*;

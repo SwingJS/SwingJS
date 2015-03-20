@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * This class encapsulates a single tab stop (basically as tab stops
@@ -42,7 +42,7 @@ import java.io.Serializable;
  * Please see {@link jsjava.beans.XMLEncoder}.
  *
  */
-public class TabStop implements Serializable {
+public class TabStop  {
 
     /** Character following tab is positioned at location. */
     public static final int ALIGN_LEFT    = 0;

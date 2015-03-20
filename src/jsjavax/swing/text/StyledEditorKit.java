@@ -24,7 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import java.io.*;
 import jsjava.awt.*;
 import jsjava.awt.event.ActionEvent;
 import jsjava.beans.PropertyChangeEvent;
@@ -32,7 +31,6 @@ import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.*;
 import jsjavax.swing.Action;
 import jsjavax.swing.JEditorPane;
-import jsjavax.swing.KeyStroke;
 import jsjavax.swing.UIManager;
 
 /**
@@ -218,7 +216,7 @@ public class StyledEditorKit extends DefaultEditorKit {
      * input attributes when the Document changes, as if the Document
      * changes the attributes will almost certainly change.
      */
-    class AttributeTracker implements CaretListener, PropertyChangeListener, Serializable {
+    class AttributeTracker implements CaretListener, PropertyChangeListener {
 
         /**
          * Updates the attributes. <code>dot</code> and <code>mark</code>

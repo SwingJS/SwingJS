@@ -25,8 +25,6 @@
 package jssun.font;
 
 import jsjava.awt.Font;
-import jsjava.awt.FontFormatException;
-import java.io.File;
 
 /**
  * Interface between Java Fonts (jsjava.awt.Font) and the underlying

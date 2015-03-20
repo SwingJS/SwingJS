@@ -29,7 +29,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import java.util.Locale;
-import java.util.Vector;
 import java.util.EventListener;
 import java.util.Set;
 
@@ -39,13 +38,6 @@ import jsjava.awt.event.*;
 import jsjava.beans.*;
 
 import jsjava.applet.Applet;
-
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-import java.io.ObjectInputValidation;
-import java.io.InvalidObjectException;
 
 import jsjavax.swing.border.*;
 import jsjavax.swing.event.*;
@@ -3416,7 +3408,7 @@ public abstract class JComponent extends Container
         }
     }
 
-    static class KeyboardState implements Serializable {
+    static class KeyboardState  {
         private static final Object keyCodesKey =
             JComponent.KeyboardState.class;
 

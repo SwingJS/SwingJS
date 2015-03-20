@@ -24,12 +24,10 @@
  */
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * <code>InputMap</code> provides a binding between an input event
@@ -52,7 +50,7 @@ import java.util.Set;
  * @author Scott Violet
  * @since 1.3
  */
-public class InputMap implements Serializable {
+public class InputMap  {
     /** Handles the mapping between KeyStroke and Action name. */
     private transient ArrayTable     arrayTable;
     /** Parent that handles any bindings we don't contain. */
@@ -215,17 +213,17 @@ public class InputMap implements Serializable {
         return (KeyStroke[])keyMap.keySet().toArray(allKeys);
     }
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-
-        ArrayTable.writeArrayTable(s, arrayTable);
-    }
-
-    private void readObject(ObjectInputStream s) throws ClassNotFoundException,
-                                                 IOException {
-        s.defaultReadObject();
-        for (int counter = s.readInt() - 1; counter >= 0; counter--) {
-            put((KeyStroke)s.readObject(), s.readObject());
-        }
-    }
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//
+//        ArrayTable.writeArrayTable(s, arrayTable);
+//    }
+//
+//    private void readObject(ObjectInputStream s) throws ClassNotFoundException,
+//                                                 IOException {
+//        s.defaultReadObject();
+//        for (int counter = s.readInt() - 1; counter >= 0; counter--) {
+//            put((KeyStroke)s.readObject(), s.readObject());
+//        }
+//    }
 }

@@ -29,7 +29,6 @@ package jsjavax.swing;
 
 
 
-import java.io.*;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Frame;
 import jsjava.awt.Dialog;
@@ -41,14 +40,6 @@ import jsjava.beans.PropertyChangeListener;
 import jsjava.awt.event.WindowListener;
 import jsjava.awt.event.WindowAdapter;
 import jsjava.awt.event.WindowEvent;
-
-import jsjava.awt.IllegalComponentStateException;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
-import java.text.*;
-import java.util.Locale;
-import jsjavax.swing.event.*;
-import jsjavax.swing.text.*;
 
 
 /** A class to monitor the progress of some operation. If it looks

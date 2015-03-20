@@ -28,9 +28,9 @@ package jsjavax.swing;
 import jsjava.awt.*;
 import jsjava.awt.event.*;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.Serializable;
 import jsjava.beans.*;
 
 import java.util.Vector;

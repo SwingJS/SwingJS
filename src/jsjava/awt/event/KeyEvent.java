@@ -30,7 +30,7 @@ import jsjava.awt.Component;
 import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Toolkit;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+//import java.io.ObjectInputStream;
 
 /**
  * An event which indicates that a keystroke occurred in a component.
@@ -1576,16 +1576,16 @@ public class KeyEvent extends InputEvent {
         }
     }
 
-    /**
-     * Sets new modifiers by the old ones. The key modifiers
-     * override overlaping mouse modifiers.
-     * @serial
-     */
-    private void readObject(ObjectInputStream s)
-      throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-        if (getModifiers() != 0 && getModifiersEx() == 0) {
-            setNewModifiers();
-        }
-    }
+//    /**
+//     * Sets new modifiers by the old ones. The key modifiers
+//     * override overlaping mouse modifiers.
+//     * @serial
+//     */
+//    private void readObject(ObjectInputStream s)
+//      throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//        if (getModifiers() != 0 && getModifiersEx() == 0) {
+//            setNewModifiers();
+//        }
+//    }
 }

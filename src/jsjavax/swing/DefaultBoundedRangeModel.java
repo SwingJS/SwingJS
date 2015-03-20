@@ -26,7 +26,7 @@
 package jsjavax.swing;
 
 import jsjavax.swing.event.*;
-import java.io.Serializable;
+//import java.io.Serializable;
 import java.util.EventListener;
 
 /**
@@ -45,7 +45,7 @@ import java.util.EventListener;
  * @author Hans Muller
  * @see BoundedRangeModel
  */
-public class DefaultBoundedRangeModel implements BoundedRangeModel, Serializable
+public class DefaultBoundedRangeModel implements BoundedRangeModel
 {
     /**
      * Only one <code>ChangeEvent</code> is needed per model instance since the

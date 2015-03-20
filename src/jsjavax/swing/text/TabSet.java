@@ -25,7 +25,7 @@
 
 package jsjavax.swing.text;
 
-import java.io.Serializable;
+//import java.io.Serializable;
 
 /**
  * A TabSet is comprised of many TabStops. It offers methods for locating the
@@ -43,7 +43,7 @@ import java.io.Serializable;
  *
  * @author  Scott Violet
  */
-public class TabSet implements Serializable
+public class TabSet 
 {
     /** TabStops this TabSet contains. */
     private TabStop[]              tabs;

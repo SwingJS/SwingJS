@@ -27,7 +27,7 @@ package jsjavax.swing;
 
 import java.util.EventListener;
 import java.util.BitSet;
-import java.io.Serializable;
+//import java.io.Serializable;
 
 import jsjavax.swing.event.*;
 
@@ -49,7 +49,7 @@ import jsjavax.swing.event.*;
  * @see ListSelectionModel
  */
 
-public class DefaultListSelectionModel implements ListSelectionModel, Cloneable, Serializable
+public class DefaultListSelectionModel implements ListSelectionModel, Cloneable
 {
     private static final int MIN = -1;
     private static final int MAX = Integer.MAX_VALUE;

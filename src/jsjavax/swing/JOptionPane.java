@@ -44,9 +44,9 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.ComponentAdapter;
 import jsjava.awt.event.ComponentEvent;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
+//import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Vector;
@@ -2318,136 +2318,136 @@ public class JOptionPane extends JComponent
         }
     }
 
-    // Serialization support.
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        Vector      values = new Vector();
-
-        s.defaultWriteObject();
-        // Save the icon, if its Serializable.
-        if(icon != null && icon instanceof Serializable) {
-            values.addElement("icon");
-            values.addElement(icon);
-        }
-        // Save the message, if its Serializable.
-        if(message != null && message instanceof Serializable) {
-            values.addElement("message");
-            values.addElement(message);
-        }
-        // Save the treeModel, if its Serializable.
-        if(options != null) {
-            Vector           serOptions = new Vector();
-
-            for(int counter = 0, maxCounter = options.length;
-                counter < maxCounter; counter++)
-                if(options[counter] instanceof Serializable)
-                    serOptions.addElement(options[counter]);
-            if(serOptions.size() > 0) {
-                int             optionCount = serOptions.size();
-                Object[]        arrayOptions = new Object[optionCount];
-
-                serOptions.copyInto(arrayOptions);
-                values.addElement("options");
-                values.addElement(arrayOptions);
-            }
-        }
-        // Save the initialValue, if its Serializable.
-        if(initialValue != null && initialValue instanceof Serializable) {
-            values.addElement("initialValue");
-            values.addElement(initialValue);
-        }
-        // Save the value, if its Serializable.
-        if(value != null && value instanceof Serializable) {
-            values.addElement("value");
-            values.addElement(value);
-        }
-        // Save the selectionValues, if its Serializable.
-        if(selectionValues != null) {
-            boolean            serialize = true;
-
-            for(int counter = 0, maxCounter = selectionValues.length;
-                counter < maxCounter; counter++) {
-                if(selectionValues[counter] != null &&
-                   !(selectionValues[counter] instanceof Serializable)) {
-                    serialize = false;
-                    break;
-                }
-            }
-            if(serialize) {
-                values.addElement("selectionValues");
-                values.addElement(selectionValues);
-            }
-        }
-        // Save the inputValue, if its Serializable.
-        if(inputValue != null && inputValue instanceof Serializable) {
-            values.addElement("inputValue");
-            values.addElement(inputValue);
-        }
-        // Save the initialSelectionValue, if its Serializable.
-        if(initialSelectionValue != null &&
-           initialSelectionValue instanceof Serializable) {
-            values.addElement("initialSelectionValue");
-            values.addElement(initialSelectionValue);
-        }
-        s.writeObject(values);
-    }
-
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-
-        Vector          values = (Vector)s.readObject();
-        int             indexCounter = 0;
-        int             maxCounter = values.size();
-
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("icon")) {
-            icon = (Icon)values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("message")) {
-            message = values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("options")) {
-            options = (Object[])values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("initialValue")) {
-            initialValue = values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("value")) {
-            value = values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("selectionValues")) {
-            selectionValues = (Object[])values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("inputValue")) {
-            inputValue = values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("initialSelectionValue")) {
-            initialSelectionValue = values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
+//    // Serialization support.
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        Vector      values = new Vector();
+//
+//        s.defaultWriteObject();
+//        // Save the icon, if its Serializable.
+//        if(icon != null && icon instanceof Serializable) {
+//            values.addElement("icon");
+//            values.addElement(icon);
+//        }
+//        // Save the message, if its Serializable.
+//        if(message != null && message instanceof Serializable) {
+//            values.addElement("message");
+//            values.addElement(message);
+//        }
+//        // Save the treeModel, if its Serializable.
+//        if(options != null) {
+//            Vector           serOptions = new Vector();
+//
+//            for(int counter = 0, maxCounter = options.length;
+//                counter < maxCounter; counter++)
+//                if(options[counter] instanceof Serializable)
+//                    serOptions.addElement(options[counter]);
+//            if(serOptions.size() > 0) {
+//                int             optionCount = serOptions.size();
+//                Object[]        arrayOptions = new Object[optionCount];
+//
+//                serOptions.copyInto(arrayOptions);
+//                values.addElement("options");
+//                values.addElement(arrayOptions);
+//            }
+//        }
+//        // Save the initialValue, if its Serializable.
+//        if(initialValue != null && initialValue instanceof Serializable) {
+//            values.addElement("initialValue");
+//            values.addElement(initialValue);
+//        }
+//        // Save the value, if its Serializable.
+//        if(value != null && value instanceof Serializable) {
+//            values.addElement("value");
+//            values.addElement(value);
+//        }
+//        // Save the selectionValues, if its Serializable.
+//        if(selectionValues != null) {
+//            boolean            serialize = true;
+//
+//            for(int counter = 0, maxCounter = selectionValues.length;
+//                counter < maxCounter; counter++) {
+//                if(selectionValues[counter] != null &&
+//                   !(selectionValues[counter] instanceof Serializable)) {
+//                    serialize = false;
+//                    break;
+//                }
+//            }
+//            if(serialize) {
+//                values.addElement("selectionValues");
+//                values.addElement(selectionValues);
+//            }
+//        }
+//        // Save the inputValue, if its Serializable.
+//        if(inputValue != null && inputValue instanceof Serializable) {
+//            values.addElement("inputValue");
+//            values.addElement(inputValue);
+//        }
+//        // Save the initialSelectionValue, if its Serializable.
+//        if(initialSelectionValue != null &&
+//           initialSelectionValue instanceof Serializable) {
+//            values.addElement("initialSelectionValue");
+//            values.addElement(initialSelectionValue);
+//        }
+//        s.writeObject(values);
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//
+//        Vector          values = (Vector)s.readObject();
+//        int             indexCounter = 0;
+//        int             maxCounter = values.size();
+//
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("icon")) {
+//            icon = (Icon)values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("message")) {
+//            message = values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("options")) {
+//            options = (Object[])values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("initialValue")) {
+//            initialValue = values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("value")) {
+//            value = values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("selectionValues")) {
+//            selectionValues = (Object[])values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("inputValue")) {
+//            inputValue = values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("initialSelectionValue")) {
+//            initialSelectionValue = values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
 
     /**
      * Returns a string representation of this <code>JOptionPane</code>.

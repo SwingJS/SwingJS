@@ -25,25 +25,17 @@
 package jsjavax.swing.text;
 
 import jsjava.awt.Color;
-import jsjava.awt.Component;
 import jsjava.awt.Font;
-import jsjava.awt.FontMetrics;
 import jsjava.awt.font.TextAttribute;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.ArrayList;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import jsjavax.swing.Icon;
 import jsjavax.swing.event.*;
 import jsjavax.swing.undo.AbstractUndoableEdit;
 import jsjavax.swing.undo.CannotRedoException;
@@ -934,21 +926,21 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
         }
     }
 
-    private void readObject(ObjectInputStream s)
-            throws ClassNotFoundException, IOException {
-        listeningStyles = new Vector();
-        s.defaultReadObject();
-        // Reinstall style listeners.
-        if (styleContextChangeListener == null &&
-            listenerList.getListenerCount(DocumentListener.class) > 0) {
-            styleContextChangeListener = createStyleContextChangeListener();
-            if (styleContextChangeListener != null) {
-                StyleContext styles = (StyleContext)getAttributeContext();
-                styles.addChangeListener(styleContextChangeListener);
-            }
-            updateStylesListeningTo();
-        }
-    }
+//    private void readObject(ObjectInputStream s)
+//            throws ClassNotFoundException, IOException {
+//        listeningStyles = new Vector();
+//        s.defaultReadObject();
+//        // Reinstall style listeners.
+//        if (styleContextChangeListener == null &&
+//            listenerList.getListenerCount(DocumentListener.class) > 0) {
+//            styleContextChangeListener = createStyleContextChangeListener();
+//            if (styleContextChangeListener != null) {
+//                StyleContext styles = (StyleContext)getAttributeContext();
+//                styles.addChangeListener(styleContextChangeListener);
+//            }
+//            updateStylesListeningTo();
+//        }
+//    }
 
     // --- member variables -----------------------------------------------------------
 
@@ -1250,7 +1242,7 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
      * has been added to the <code>jsjava.beans</code> package.
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
-    public class ElementBuffer implements Serializable {
+    public class ElementBuffer  {
 
         /**
          * Creates a new ElementBuffer.

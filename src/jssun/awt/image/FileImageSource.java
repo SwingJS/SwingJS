@@ -25,11 +25,6 @@
 
 package jssun.awt.image;
 
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
-
 public class FileImageSource /*extends InputStreamImageSource*/ {
     String imagefile;
 
