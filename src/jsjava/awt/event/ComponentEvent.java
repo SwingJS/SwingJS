@@ -95,7 +95,7 @@ public class ComponentEvent extends AWTEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 8101406823902992965L;
+    //private static final long serialVersionUID = 8101406823902992965L;
 
     /**
      * Constructs a <code>ComponentEvent</code> object.

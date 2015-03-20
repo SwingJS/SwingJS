@@ -260,7 +260,7 @@ public class Color implements Paint /*, java.io.Serializable*/ {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = 118526816881161077L;
+     //private static final long serialVersionUID = 118526816881161077L;
 
 //    /**
 //     * Initialize JNI field and method IDs

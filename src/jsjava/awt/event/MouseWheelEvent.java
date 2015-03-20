@@ -135,7 +135,7 @@ public class MouseWheelEvent extends MouseEvent {
      * serialVersionUID
      */
 
-    private static final long serialVersionUID = 6459879390515399677L;
+    //private static final long serialVersionUID = 6459879390515399677L;
 
     /**
      * Constructs a <code>MouseWheelEvent</code> object with the

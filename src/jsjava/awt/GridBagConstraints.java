@@ -568,7 +568,7 @@ public class GridBagConstraints implements Cloneable {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -1000070633030801713L;
+    //private static final long serialVersionUID = -1000070633030801713L;
 
     /**
      * Creates a <code>GridBagConstraint</code> object with

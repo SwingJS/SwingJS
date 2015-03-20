@@ -341,7 +341,7 @@ public class BorderLayout implements LayoutManager2,
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = -8658291919501921765L;
+     //private static final long serialVersionUID = -8658291919501921765L;
 
     /**
      * Constructs a new border layout with

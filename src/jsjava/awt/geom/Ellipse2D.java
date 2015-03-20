@@ -182,7 +182,7 @@ public abstract class Ellipse2D extends RectangularShape {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = -6633761252372475977L;
+        //private static final long serialVersionUID = -6633761252372475977L;
     }
 
     /**
@@ -307,7 +307,7 @@ public abstract class Ellipse2D extends RectangularShape {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 5555464816372320683L;
+        //private static final long serialVersionUID = 5555464816372320683L;
     }
 
     /**

@@ -404,7 +404,7 @@ public class Font implements java.io.Serializable
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -4206021311591459213L;
+    //private static final long serialVersionUID = -4206021311591459213L;
 
 //    /**
 //     * Gets the peer of this <code>Font</code>.

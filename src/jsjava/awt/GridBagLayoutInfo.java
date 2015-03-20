@@ -38,7 +38,7 @@ public class GridBagLayoutInfo {
     /*
      * serialVersionUID
      */
-    private static final long serialVersionUID = -4899416460737170217L;
+    //private static final long serialVersionUID = -4899416460737170217L;
 
     int width, height;          /* number of  cells: horizontal and vertical */
     int startx, starty;         /* starting point for layout */

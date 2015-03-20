@@ -344,7 +344,7 @@ public class MouseEvent extends InputEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -991214153494842848L;
+    //private static final long serialVersionUID = -991214153494842848L;
 
 //    static {
 //        /* ensure that the necessary native libraries are loaded */

@@ -82,7 +82,7 @@ public class Insets implements Cloneable, java.io.Serializable {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -2272572637695466749L;
+    //private static final long serialVersionUID = -2272572637695466749L;
 
    /**
      * Creates and initializes a new <code>Insets</code> object with the

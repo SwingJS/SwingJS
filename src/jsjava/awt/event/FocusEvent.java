@@ -107,7 +107,7 @@ public class FocusEvent extends ComponentEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 523753786457416396L;
+    //private static final long serialVersionUID = 523753786457416396L;
 
     /**
      * Constructs a <code>FocusEvent</code> object with the

@@ -253,7 +253,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = -8511188402130719609L;
+        //private static final long serialVersionUID = -8511188402130719609L;
     }
 
     /**
@@ -442,7 +442,7 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 4217149928428559721L;
+        //private static final long serialVersionUID = 4217149928428559721L;
     }
 
     /**

@@ -60,7 +60,7 @@ public class Point extends Point2D implements java.io.Serializable {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -5276940640259749850L;
+    //private static final long serialVersionUID = -5276940640259749850L;
 
     /**
      * Constructs and initializes a point at the origin

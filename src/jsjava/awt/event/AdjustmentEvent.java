@@ -123,7 +123,7 @@ public class AdjustmentEvent extends AWTEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = 5700290645205279921L;
+     //private static final long serialVersionUID = 5700290645205279921L;
 
 
     /**

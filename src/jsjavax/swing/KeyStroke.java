@@ -66,7 +66,7 @@ public class KeyStroke extends AWTKeyStroke {
     /**
      * Serial Version ID.
      */
-    private static final long serialVersionUID = -9060180771037902530L;
+    //private static final long serialVersionUID = -9060180771037902530L;
 
     private KeyStroke() {
     }

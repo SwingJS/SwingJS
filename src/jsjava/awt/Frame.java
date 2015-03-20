@@ -351,7 +351,7 @@ public class Frame extends Window {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = 2673458971256075116L;
+     //private static final long serialVersionUID = 2673458971256075116L;
 
 //    static {
 //        /* ensure that the necessary native libraries are loaded */
@@ -1126,7 +1126,7 @@ public class Frame extends Window {
 //        /*
 //         * JDK 1.3 serialVersionUID
 //         */
-//        private static final long serialVersionUID = -6172960752956030250L;
+//        //private static final long serialVersionUID = -6172960752956030250L;
 //
 //        /**
 //         * Get the role of this object.

@@ -251,7 +251,7 @@ public abstract class AWTEvent extends EventObject {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -1825314779160409405L;
+    //private static final long serialVersionUID = -1825314779160409405L;
 
 //    static {
 //        /* ensure that the necessary native libraries are loaded */

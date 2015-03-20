@@ -38,7 +38,7 @@ class FontFormatException extends Exception {
     /*
      * serialVersionUID
      */
-    private static final long serialVersionUID = -4481290147811361272L;
+    //private static final long serialVersionUID = -4481290147811361272L;
 
     /**
      * Report a FontFormatException for the reason specified.

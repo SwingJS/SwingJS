@@ -253,7 +253,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = -3423150618393866922L;
+        //private static final long serialVersionUID = -3423150618393866922L;
     }
 
     /**
@@ -436,7 +436,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 1048939333485206117L;
+        //private static final long serialVersionUID = 1048939333485206117L;
     }
 
     /**

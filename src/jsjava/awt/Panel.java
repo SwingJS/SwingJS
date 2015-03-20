@@ -43,7 +43,7 @@ public class Panel extends Container {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = -2728009084054400034L;
+     //private static final long serialVersionUID = -2728009084054400034L;
 
     /**
      * Creates a new panel using the default layout manager.
@@ -115,7 +115,7 @@ public class Panel extends Container {
 //     */
 //    protected class AccessibleAWTPanel extends AccessibleAWTContainer {
 //
-//        private static final long serialVersionUID = -6409552226660031050L;
+//        //private static final long serialVersionUID = -6409552226660031050L;
 //
 //        /**
 //         * Get the role of this object.

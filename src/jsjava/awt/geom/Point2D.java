@@ -135,7 +135,7 @@ public abstract class Point2D implements Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = -2870572449815403710L;
+        //private static final long serialVersionUID = -2870572449815403710L;
     }
 
     /**
@@ -219,7 +219,7 @@ public abstract class Point2D implements Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 6150783262733311327L;
+        //private static final long serialVersionUID = 6150783262733311327L;
     }
 
     /**

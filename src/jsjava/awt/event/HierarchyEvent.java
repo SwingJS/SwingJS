@@ -79,7 +79,7 @@ public class HierarchyEvent extends AWTEvent {
     /*
      * serialVersionUID
      */
-    private static final long serialVersionUID = -5337576970038043990L;
+    //private static final long serialVersionUID = -5337576970038043990L;
 
     /**
      * Marks the first integer id for the range of hierarchy event ids.

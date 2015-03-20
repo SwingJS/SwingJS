@@ -35,7 +35,7 @@ public class AWTException extends Exception {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = -1900414231151323879L;
+     //private static final long serialVersionUID = -1900414231151323879L;
 
     /**
      * Constructs an instance of <code>AWTException</code> with the

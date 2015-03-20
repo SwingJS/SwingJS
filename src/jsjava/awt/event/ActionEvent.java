@@ -129,7 +129,7 @@ public class ActionEvent extends AWTEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -7671078796273832149L;
+    //private static final long serialVersionUID = -7671078796273832149L;
 
     /**
      * Constructs an <code>ActionEvent</code> object.

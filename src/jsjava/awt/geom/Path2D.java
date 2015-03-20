@@ -762,7 +762,7 @@ public abstract class Path2D implements Shape, Cloneable {
 //        /*
 //         * JDK 1.6 serialVersionUID
 //         */
-//        private static final long serialVersionUID = 6990832515060788886L;
+//        //private static final long serialVersionUID = 6990832515060788886L;
 //
 //        /**
 //         * Writes the default serializable fields to the
@@ -1487,7 +1487,7 @@ public abstract class Path2D implements Shape, Cloneable {
 //        /*
 //         * JDK 1.6 serialVersionUID
 //         */
-//        private static final long serialVersionUID = 1826762518450014216L;
+//        //private static final long serialVersionUID = 1826762518450014216L;
 //
 //        /**
 //         * Writes the default serializable fields to the

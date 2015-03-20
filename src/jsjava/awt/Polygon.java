@@ -112,7 +112,7 @@ public class Polygon implements Shape {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -6460061437900069969L;
+    //private static final long serialVersionUID = -6460061437900069969L;
 
     /*
      * Default length for xpoints and ypoints.

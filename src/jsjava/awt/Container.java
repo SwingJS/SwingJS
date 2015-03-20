@@ -149,7 +149,7 @@ public class Container extends Component {
     /**
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 4613797578919906343L;
+    //private static final long serialVersionUID = 4613797578919906343L;
 
     /**
      * A constant which toggles one of the controllable behaviors
@@ -3569,7 +3569,7 @@ public class Container extends Component {
 //        /**
 //         * JDK1.3 serialVersionUID
 //         */
-//        private static final long serialVersionUID = 5081320404842566097L;
+//        //private static final long serialVersionUID = 5081320404842566097L;
 //
 //        /**
 //         * Returns the number of accessible children in the object.  If all
@@ -4137,7 +4137,7 @@ class LightweightDispatcher implements java.io.Serializable, AWTEventListener {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 5184291520170872969L;
+    //private static final long serialVersionUID = 5184291520170872969L;
     /*
      * Our own mouse event for when we're dragged over from another hw
      * container

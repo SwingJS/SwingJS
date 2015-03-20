@@ -890,7 +890,7 @@ public class KeyEvent extends InputEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -2352130953028126954L;
+    //private static final long serialVersionUID = -2352130953028126954L;
 
 //    static {
 //        /* ensure that the necessary native libraries are loaded */

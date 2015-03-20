@@ -165,7 +165,7 @@ public class WindowEvent extends ComponentEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -1567959133147912127L;
+    //private static final long serialVersionUID = -1567959133147912127L;
 
 
     /**

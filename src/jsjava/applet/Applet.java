@@ -24,15 +24,14 @@
  */
 package jsjava.applet;
 
-import jsjava.awt.*;
-//import jsjava.awt.image.ColorModel;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.util.Hashtable;
 import java.util.Locale;
 //import jsjavax.accessibility.*;
+
+import jsjava.awt.Dimension;
+import jsjava.awt.Image;
+import jsjava.awt.Panel;
 
 /**
  * An applet is a small program that is intended not to be run on
@@ -80,9 +79,6 @@ public class Applet extends Panel {
      * The stub field will be restored by the reader.
      */
     transient private AppletStub stub;
-
-    /* version ID for serialized form. */
-    private static final long serialVersionUID = -5836846270535785031L;
 
     /**
      * Sets this applet's stub. This is done automatically by the system.
@@ -526,7 +522,7 @@ public class Applet extends Panel {
 //     */
 //    protected class AccessibleApplet extends AccessibleAWTPanel {
 //
-//        private static final long serialVersionUID = 8127374778187708896L;
+//        //private static final long serialVersionUID = 8127374778187708896L;
 //
 //        /**
 //         * Get the role of this object.

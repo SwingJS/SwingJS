@@ -193,7 +193,7 @@ public class FlowLayout implements LayoutManager, java.io.Serializable {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = -7262534875583282631L;
+     //private static final long serialVersionUID = -7262534875583282631L;
 
     /**
      * Constructs a new <code>FlowLayout</code> with a centered alignment and a

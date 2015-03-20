@@ -88,7 +88,7 @@ public class ContainerEvent extends ComponentEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -4114942250539772041L;
+    //private static final long serialVersionUID = -4114942250539772041L;
 
     /**
      * Constructs a <code>ContainerEvent</code> object.

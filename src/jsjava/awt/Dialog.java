@@ -295,7 +295,7 @@ public class Dialog extends Window {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 5920926903803293709L;
+    //private static final long serialVersionUID = 5920926903803293709L;
 
     /**
      * Constructs an initially invisible, modeless <code>Dialog</code> with
@@ -1678,7 +1678,7 @@ public class Dialog extends Window {
 //        /*
 //         * JDK 1.3 serialVersionUID
 //         */
-//        private static final long serialVersionUID = 4837230331833941201L;
+//        //private static final long serialVersionUID = 4837230331833941201L;
 //
 //        /**
 //         * Get the role of this object.

@@ -294,7 +294,7 @@ public class Window extends Container {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 4497834738069338734L;
+    //private static final long serialVersionUID = 4497834738069338734L;
 
     private static final Logger log = Logger.getLogger("java.awt.Window");
 
@@ -2893,7 +2893,7 @@ public class Window extends Container {
 //        /*
 //         * JDK 1.3 serialVersionUID
 //         */
-//        private static final long serialVersionUID = 4215068635060671780L;
+//        //private static final long serialVersionUID = 4215068635060671780L;
 //
 //        /**
 //         * Get the role of this object.

@@ -97,7 +97,7 @@ public class ItemEvent extends AWTEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -608708132447206933L;
+    //private static final long serialVersionUID = -608708132447206933L;
 
     /**
      * Constructs an <code>ItemEvent</code> object.

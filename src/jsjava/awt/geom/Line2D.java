@@ -213,7 +213,7 @@ public abstract class Line2D implements Shape, Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 6161772511649436349L;
+        //private static final long serialVersionUID = 6161772511649436349L;
     }
 
     /**
@@ -365,7 +365,7 @@ public abstract class Line2D implements Shape, Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 7979627399746467499L;
+        //private static final long serialVersionUID = 7979627399746467499L;
     }
 
     /**

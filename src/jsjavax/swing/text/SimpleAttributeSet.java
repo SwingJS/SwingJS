@@ -49,7 +49,7 @@ import java.io.Serializable;
  */
 public class SimpleAttributeSet implements MutableAttributeSet, Serializable, Cloneable
 {
-    private static final long serialVersionUID = -6631553454711782652L;
+    //private static final long serialVersionUID = -6631553454711782652L;
 
     /**
      * An empty attribute set.

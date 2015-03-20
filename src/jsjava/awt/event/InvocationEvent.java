@@ -110,7 +110,7 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
     /*
      * JDK 1.1 serialVersionUID.
      */
-    private static final long serialVersionUID = 436056344909459450L;
+    //private static final long serialVersionUID = 436056344909459450L;
 
     /**
      * Constructs an <code>InvocationEvent</code> with the specified

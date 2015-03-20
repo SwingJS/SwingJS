@@ -115,7 +115,7 @@ public abstract class FontMetrics {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 1681126225205050147L;
+    //private static final long serialVersionUID = 1681126225205050147L;
 
     /**
      * Creates a new <code>FontMetrics</code> object for finding out

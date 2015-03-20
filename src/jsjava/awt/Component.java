@@ -27,44 +27,21 @@ package jsjava.awt;
 import java.util.Vector;
 import java.util.Locale;
 import java.util.EventListener;
-import java.util.Iterator;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 //import java.awt.peer.ComponentPeer;
 //import java.awt.peer.ContainerPeer;
 //import java.awt.peer.LightweightPeer;
 //import java.awt.image.BufferStrategy;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
-import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.event.*;
 
-import java.io.Serializable;
-import java.io.IOException;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
-//import jsjava.awt.event.InputMethodListener;
-//import jsjava.awt.event.InputMethodEvent;
-//import java.awt.im.InputContext;
-//import java.awt.im.InputMethodRequests;
-//import java.awt.dnd.DropTarget;
-//import java.lang.reflect.InvocationTargetException;
-//import java.lang.reflect.Method;
-//import jsjava.security.AccessController;
-//import jsjava.security.PrivilegedAction;
-//import jsjava.security.AccessControlContext;
-//import javax.accessibility.*;
-//import java.util.logging.*;
-import jsjava.applet.Applet;
-import jssun.awt.AWTAccessor;
-
 //import jssun.security.action.GetPropertyAction;
 import jssun.awt.AppContext;
-import jssun.awt.AWTAccessor;
-import jssun.awt.WindowClosingListener;
 //import jssun.awt.ConstrainableGraphics;
 //import jssun.awt.SubRegionShowable;
 //import jssun.awt.SunToolkit;
@@ -563,7 +540,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = -7644114512714619750L;
+    //private static final long serialVersionUID = -7644114512714619750L;
 
     /**
      * If any <code>PropertyChangeListeners</code> have been registered,

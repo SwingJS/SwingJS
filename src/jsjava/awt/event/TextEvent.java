@@ -68,7 +68,7 @@ public class TextEvent extends AWTEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 6269902291250941179L;
+    //private static final long serialVersionUID = 6269902291250941179L;
 
     /**
      * Constructs a <code>TextEvent</code> object.

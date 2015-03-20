@@ -326,7 +326,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = -1272015596714244385L;
+        //private static final long serialVersionUID = -1272015596714244385L;
     }
 
     /**
@@ -572,7 +572,7 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = -4202960122839707295L;
+        //private static final long serialVersionUID = -4202960122839707295L;
     }
 
     /**

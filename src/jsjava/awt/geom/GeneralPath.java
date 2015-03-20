@@ -123,5 +123,5 @@ public final class GeneralPath extends Path2D.Float {
     /*
      * JDK 1.6 serialVersionUID
      */
-    private static final long serialVersionUID = -8327096662768731142L;
+    //private static final long serialVersionUID = -8327096662768731142L;
 }

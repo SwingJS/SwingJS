@@ -322,7 +322,7 @@ public abstract class Arc2D extends RectangularShape {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 9130893014586380278L;
+        //private static final long serialVersionUID = 9130893014586380278L;
 
         /**
          * Writes the default serializable fields to the
@@ -614,7 +614,7 @@ public abstract class Arc2D extends RectangularShape {
         /*
          * JDK 1.6 serialVersionUID
          */
-        private static final long serialVersionUID = 728264085846882001L;
+        //private static final long serialVersionUID = 728264085846882001L;
 
         /**
          * Writes the default serializable fields to the

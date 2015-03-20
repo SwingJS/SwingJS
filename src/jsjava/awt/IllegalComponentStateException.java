@@ -35,7 +35,7 @@ public class IllegalComponentStateException extends IllegalStateException {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = -1889339587208144238L;
+     //private static final long serialVersionUID = -1889339587208144238L;
 
     /**
      * Constructs an IllegalComponentStateException with no detail message.

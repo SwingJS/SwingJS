@@ -93,7 +93,7 @@ public final class ComponentOrientation implements java.io.Serializable
     /*
      * serialVersionUID
      */
-    private static final long serialVersionUID = -4113291392143563828L;
+    //private static final long serialVersionUID = -4113291392143563828L;
 
     // Internal constants used in the implementation
     private static final int UNK_BIT      = 1;

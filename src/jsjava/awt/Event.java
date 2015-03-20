@@ -591,7 +591,7 @@ public class Event implements java.io.Serializable {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 5488922509400504703L;
+    //private static final long serialVersionUID = 5488922509400504703L;
 
 //    static {
 //        /* ensure that the necessary native libraries are loaded */

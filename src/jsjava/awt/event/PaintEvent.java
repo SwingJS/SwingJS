@@ -77,7 +77,7 @@ public class PaintEvent extends ComponentEvent {
     /*
      * JDK 1.1 serialVersionUID
      */
-    private static final long serialVersionUID = 1267492026433337593L;
+    //private static final long serialVersionUID = 1267492026433337593L;
 
     /**
      * Constructs a <code>PaintEvent</code> object with the specified

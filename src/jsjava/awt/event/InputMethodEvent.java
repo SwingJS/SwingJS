@@ -70,7 +70,7 @@ public class InputMethodEvent extends AWTEvent {
 //    /**
 //     * Serial Version ID.
 //     */
-//    private static final long serialVersionUID = 4727190874778922661L;
+//    //private static final long serialVersionUID = 4727190874778922661L;
 //
     /**
      * Marks the first integer id for the range of input method event ids.
