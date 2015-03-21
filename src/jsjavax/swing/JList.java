@@ -25,22 +25,20 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.event.*;
-import jsjava.awt.*;
-
 import java.util.Vector;
-import java.util.Locale;
 
-import jsjava.beans.*;
-
-import jsjavax.swing.event.*;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.Font;
+import jsjava.awt.Insets;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.ListSelectionEvent;
+import jsjavax.swing.event.ListSelectionListener;
 import jsjavax.swing.plaf.ListUI;
 import jsjavax.swing.text.Position;
-
-
-import jssun.swing.SwingUtilities2;
-import jssun.swing.SwingUtilities2.Section;
-import static jssun.swing.SwingUtilities2.Section.*;
 
 
 /**

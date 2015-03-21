@@ -27,7 +27,6 @@ package jsjavax.swing.plaf;
 
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
-//import java.io.Serializable;
 import jsjavax.swing.Icon;
 import jsjavax.swing.plaf.UIResource;
 

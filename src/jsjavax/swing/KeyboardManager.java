@@ -25,13 +25,14 @@
 package jsjavax.swing;
 
 
-import java.util.*;
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.applet.*;
-import jsjava.beans.*;
-import jsjavax.swing.event.*;
-//import jssun.awt.EmbeddedFrame;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import jsjava.applet.Applet;
+import jsjava.awt.Container;
+import jsjava.awt.Window;
+import jsjava.awt.event.KeyEvent;
 
 /**
   * The KeyboardManager class is used to help dispatch keyboard actions for the

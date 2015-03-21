@@ -24,16 +24,34 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-//import jsjava.awt.im.InputContext;
-import java.io.*;
-import java.text.*;
-import java.util.*;
-import jsjavax.swing.UIManager;
-import jsjavax.swing.event.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.AttributedCharacterIterator;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Date;
+
+import jsjava.awt.AWTEvent;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.InputMethodEvent;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.plaf.UIResource;
-import jsjavax.swing.text.*;
+import jsjavax.swing.text.AbstractDocument;
+import jsjavax.swing.text.DateFormatter;
+import jsjavax.swing.text.DefaultFormatter;
+import jsjavax.swing.text.DefaultFormatterFactory;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.DocumentFilter;
+import jsjavax.swing.text.InternationalFormatter;
+import jsjavax.swing.text.JTextComponent;
+import jsjavax.swing.text.NavigationFilter;
+import jsjavax.swing.text.NumberFormatter;
+import jsjavax.swing.text.TextAction;
 
 /**
  * <code>JFormattedTextField</code> extends <code>JTextField</code> adding

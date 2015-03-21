@@ -2,7 +2,6 @@ package swingjs;
 
 import java.net.URL;
 
-import jsjava.awt.Dialog;
 import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;

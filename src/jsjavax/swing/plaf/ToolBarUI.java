@@ -25,9 +25,6 @@
 
 package jsjavax.swing.plaf;
 
-import jsjava.awt.Insets;
-import jsjavax.swing.JToolBar;
-
 /**
  * Pluggable look and feel interface for JToolBar.
  *

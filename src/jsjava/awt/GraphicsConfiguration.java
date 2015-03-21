@@ -27,11 +27,8 @@ package jsjava.awt;
 
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.image.BufferedImage;
-//import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.VolatileImage;
-//import jsjava.awt.image.WritableRaster;
 
-//import sun.awt.image.SunVolatileImage;
 
 /**
  * The <code>GraphicsConfiguration</code> class describes the

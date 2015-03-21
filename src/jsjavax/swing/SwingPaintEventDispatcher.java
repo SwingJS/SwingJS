@@ -28,7 +28,6 @@ import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.PaintEvent;
-import jsjava.security.AccessController;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
 import jssun.awt.event.IgnorePaintEvent;

@@ -24,18 +24,34 @@
  */
 package jsjavax.swing.text;
 
-import java.util.*;
-import java.io.*;
-import jsjava.awt.font.TextAttribute;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectInputValidation;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.Bidi;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.Hashtable;
+import java.util.Vector;
 
+import jsjava.awt.font.TextAttribute;
 import jsjavax.swing.UIManager;
-import jsjavax.swing.undo.*;
-import jsjavax.swing.event.ChangeListener;
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.DocumentListener;
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.UndoableEditEvent;
+import jsjavax.swing.event.UndoableEditListener;
 import jsjavax.swing.tree.TreeNode;
-
-//import jssun.font.BidiUtils;
+import jsjavax.swing.undo.AbstractUndoableEdit;
+import jsjavax.swing.undo.CannotRedoException;
+import jsjavax.swing.undo.CannotUndoException;
+import jsjavax.swing.undo.CompoundEdit;
+import jsjavax.swing.undo.UndoableEdit;
 import jssun.swing.SwingUtilities2;
 
 /**

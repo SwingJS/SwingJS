@@ -24,10 +24,10 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.*;
-import java.util.Iterator;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.HierarchyEvent;
+import jsjava.awt.event.WindowEvent;
 import jssun.awt.AppContext;
-import jssun.awt.SunToolkit;
 
 /**
  * A Dialog is a top-level window with a title and a border

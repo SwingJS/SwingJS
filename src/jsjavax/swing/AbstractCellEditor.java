@@ -25,9 +25,11 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.event.*;
 import java.util.EventObject;
-//import java.io.Serializable;
+
+import jsjavax.swing.event.CellEditorListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.EventListenerList;
 
 /**
  *

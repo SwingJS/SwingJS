@@ -24,11 +24,13 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.event.*;
-import java.text.*;
-import java.util.*;
-import jsjavax.swing.*;
-import jsjavax.swing.text.*;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * DateFormatter is an <code>InternationalFormatter</code> that does its

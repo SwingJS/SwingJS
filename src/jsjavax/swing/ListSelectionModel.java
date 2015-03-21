@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.ListSelectionListener;
 
 /**
  * This interface represents the current state of the

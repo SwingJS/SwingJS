@@ -25,14 +25,11 @@
 
 package jsjava.awt.image;
 
-import jsjava.awt.Color;
 import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsConfiguration;
-//import jsjava.awt.GraphicsDevice;
 import jsjava.awt.Image;
 import jsjava.awt.ImageCapabilities;
-//import jsjava.awt.Toolkit;
 import jsjava.awt.Transparency;
 
 /**

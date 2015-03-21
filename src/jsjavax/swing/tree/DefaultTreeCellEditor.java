@@ -25,16 +25,36 @@
 
 package jsjavax.swing.tree;
 
-import jsjavax.swing.*;
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.FontUIResource;
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.EventObject;
 import java.util.Vector;
+
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.ComponentOrientation;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Font;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.DefaultCellEditor;
+import jsjavax.swing.Icon;
+import jsjavax.swing.JTextField;
+import jsjavax.swing.JTree;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.Timer;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.event.CellEditorListener;
+import jsjavax.swing.event.TreeSelectionEvent;
+import jsjavax.swing.event.TreeSelectionListener;
+import jsjavax.swing.plaf.FontUIResource;
 
 /**
  * A <code>TreeCellEditor</code>. You need to supply an
@@ -676,9 +696,9 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
 
         // This should not be used. It will be removed when new API is
         // allowed.
-        public void EditorContainer() {
-            setLayout(null);
-        }
+//        public void EditorContainer() {
+//            setLayout(null);
+//        }
 
         /**
          * Overrides <code>Container.paint</code> to paint the node's

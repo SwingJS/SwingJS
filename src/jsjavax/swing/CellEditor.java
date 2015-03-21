@@ -26,7 +26,8 @@
 package jsjavax.swing;
 
 import java.util.EventObject;
-import jsjavax.swing.event.*;
+
+import jsjavax.swing.event.CellEditorListener;
 
 /**
  * This interface defines the methods any general editor should be able

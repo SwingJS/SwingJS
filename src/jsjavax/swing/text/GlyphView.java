@@ -24,12 +24,18 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
 import java.text.BreakIterator;
-import jsjavax.swing.event.*;
 import java.util.BitSet;
 
-import jssun.swing.SwingUtilities2;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Font;
+import jsjava.awt.Graphics;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * A GlyphView is a styled chunk of text that represents a view

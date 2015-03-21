@@ -25,27 +25,17 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.Color;
 import jsjava.awt.Component;
-import jsjava.awt.ComponentOrientation;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.LayoutManager2;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-
-import jsjavax.swing.border.Border;
-import jsjavax.swing.plaf.*;
-
-
-//import java.io.Serializable;
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
-import java.util.Hashtable;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.plaf.ToolBarUI;
+import jsjavax.swing.plaf.UIResource;
 
 
 /**

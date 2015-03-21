@@ -25,7 +25,11 @@
 
 package jsjavax.swing.colorchooser;
 
-import jsjava.awt.*;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Insets;
+import jsjava.awt.LayoutManager;
 
 
 /**

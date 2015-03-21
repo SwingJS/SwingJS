@@ -28,8 +28,6 @@ package jsjavax.swing;
 import java.util.Vector;
 import java.util.Enumeration;
 
-import jsjavax.swing.event.*;
-
 
 /**
  * This class loosely implements the <code>java.util.Vector</code>

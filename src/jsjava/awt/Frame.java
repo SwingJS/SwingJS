@@ -24,11 +24,9 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
+
+import jsjava.awt.event.KeyEvent;
 
 /**
  * A <code>Frame</code> is a top-level window with a title and a border.

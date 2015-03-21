@@ -25,8 +25,6 @@
 
 package jsjavax.swing.event;
 
-import jsjavax.swing.event.ChangeEvent;
-import java.util.EventListener;
 
 /**
  * CellEditorListener defines the interface for an object that listens

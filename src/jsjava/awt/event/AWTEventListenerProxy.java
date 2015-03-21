@@ -25,7 +25,6 @@
 
 package jsjava.awt.event;
 
-import java.util.EventListenerProxy;
 import jsjava.awt.AWTEvent;
 
 /**

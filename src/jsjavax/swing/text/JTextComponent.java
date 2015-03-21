@@ -24,52 +24,56 @@
  */
 package jsjavax.swing.text;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.reflect.Method;
-
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
-
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+import java.text.CharacterIterator;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Enumeration;
-import java.util.Vector;
 import java.util.Map;
+import java.util.Vector;
 
-//import java.util.concurrent.*;
-
-import java.io.*;
-
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-//import jsjava.awt.print.*;
-//import jsjava.awt.datatransfer.*;
-//import jsjava.awt.im.InputContext;
-//import jsjava.awt.im.InputMethodRequests;
-//import jsjava.awt.font.TextHitInfo;
-//import jsjava.awt.font.TextAttribute;
-//
-//import jsjava.awt.print.Printable;
-//import jsjava.awt.print.PrinterException;
-//
-//import jsjavax.print.PrintService;
-//import jsjavax.print.attribute.PrintRequestAttributeSet;
-
-import java.text.*;
-import java.text.AttributedCharacterIterator.Attribute;
-
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-
-//import jsjavax.print.attribute.*;
-
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Color;
+import jsjava.awt.ComponentOrientation;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Graphics;
+import jsjava.awt.Insets;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.InputMethodEvent;
+import jsjava.awt.event.InputMethodListener;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseListener;
+import jsjava.security.AccessController;
+import jsjava.security.PrivilegedAction;
+import jsjavax.swing.Action;
+import jsjavax.swing.ActionMap;
+import jsjavax.swing.DropMode;
+import jsjavax.swing.InputMap;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JViewport;
+import jsjavax.swing.KeyStroke;
+import jsjavax.swing.Scrollable;
+import jsjavax.swing.SwingConstants;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.event.CaretEvent;
+import jsjavax.swing.event.CaretListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.plaf.TextUI;
 import jssun.awt.AppContext;
-
-
-//import jssun.swing.PrintingStatus;
-import jssun.swing.SwingUtilities2;
-//import jssun.swing.text.TextComponentPrintable;
 
 /**
  * <code>JTextComponent</code> is the base class for swing text

@@ -24,10 +24,14 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
 import java.util.Vector;
-import jsjavax.swing.event.*;
+
+import jsjava.awt.Component;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjavax.swing.SizeRequirements;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * A View that tries to flow it's children into some

@@ -25,9 +25,10 @@
 
 package jsjava.awt.image;
 
+import java.util.Map;
+
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
-import java.util.Map;
 
 /**
  * The <code>ColorModel</code> abstract class encapsulates the
@@ -147,7 +148,7 @@ import java.util.Map;
  * @see DataBuffer
  */
 public abstract class ColorModel implements Transparency{
-    private long pData;         // Placeholder for data for native functions
+//    private long pData;         // Placeholder for data for native functions
 
     /**
      * The total number of bits in the pixel.

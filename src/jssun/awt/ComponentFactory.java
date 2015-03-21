@@ -25,10 +25,6 @@
 
 package jssun.awt;
 
-//import jsjava.awt.*;
-//import jsjava.awt.dnd.*;
-//import jsjava.awt.dnd.peer.DragSourceContextPeer;
-//import jsjava.awt.peer.*;
 //
 /**
  * Interface for component creation support in toolkits

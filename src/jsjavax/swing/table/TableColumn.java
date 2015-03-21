@@ -25,15 +25,12 @@
 
 package jsjavax.swing.table;
 
-import jsjavax.swing.*;
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.SwingPropertyChangeSupport;
-import java.lang.Integer;
-import jsjava.awt.Color;
 import jsjava.awt.Component;
-//import java.io.Serializable;
-import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.JLabel;
+import jsjavax.swing.JTable;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.event.SwingPropertyChangeSupport;
 
 /**
  *  A <code>TableColumn</code> represents all the attributes of a column in a

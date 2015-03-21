@@ -27,7 +27,11 @@ package jssun.awt.shell;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
 import jsjavax.swing.SwingConstants;
 
 /**

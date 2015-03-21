@@ -24,8 +24,10 @@
  */
 package jsjavax.swing.text;
 
-import jssun.swing.SwingUtilities2;
-import jsjava.awt.*;
+import jsjava.awt.Container;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjavax.swing.JPasswordField;
 
 /**

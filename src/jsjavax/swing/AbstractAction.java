@@ -24,11 +24,8 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-import java.util.Hashtable;
-import java.util.Enumeration;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.SwingPropertyChangeSupport;
 
 /**

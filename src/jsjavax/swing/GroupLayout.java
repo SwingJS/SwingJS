@@ -24,16 +24,24 @@
  */
 package jsjavax.swing;
 
+import static jsjavax.swing.SwingConstants.HORIZONTAL;
+import static jsjavax.swing.SwingConstants.VERTICAL;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import jsjava.awt.Component;
+import jsjava.awt.Component.BaselineResizeBehavior;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager2;
-import java.util.*;
-import static jsjava.awt.Component.BaselineResizeBehavior;
-import static jsjavax.swing.LayoutStyle.ComponentPlacement;
-import static jsjavax.swing.SwingConstants.HORIZONTAL;
-import static jsjavax.swing.SwingConstants.VERTICAL;
+import jsjavax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  * {@code GroupLayout} is a {@code LayoutManager} that hierarchically

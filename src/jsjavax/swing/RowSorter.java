@@ -24,9 +24,11 @@
  */
 package jsjavax.swing;
 
-import jsjavax.swing.SortOrder;
-import jsjavax.swing.event.*;
-import java.util.*;
+import java.util.List;
+
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.RowSorterEvent;
+import jsjavax.swing.event.RowSorterListener;
 
 /**
  * <code>RowSorter</code> provides the basis for sorting and filtering.

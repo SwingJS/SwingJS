@@ -25,21 +25,14 @@
 
 package jsjavax.swing;
 
-//import java.io.Serializable;
-import jsjava.awt.Component;
 import jsjava.awt.Adjustable;
+import jsjava.awt.Component;
 import jsjava.awt.Dimension;
-import jsjava.awt.event.AdjustmentListener;
 import jsjava.awt.event.AdjustmentEvent;
-import jsjava.awt.Graphics;
-
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-//
-
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
+import jsjava.awt.event.AdjustmentListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.plaf.ScrollBarUI;
 
 
 

@@ -25,9 +25,6 @@
 
 package jsjavax.swing.event;
 
-import jsjavax.swing.event.ListSelectionEvent;
-import jsjavax.swing.event.ChangeEvent;
-import java.util.EventListener;
 
 /**
  * TableColumnModelListener defines the interface for an object that listens

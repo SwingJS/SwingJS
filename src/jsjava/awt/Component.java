@@ -24,39 +24,40 @@
  */
 package jsjava.awt;
 
-import java.util.Vector;
-import java.util.Locale;
 import java.util.EventListener;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-//import java.awt.peer.ComponentPeer;
-//import java.awt.peer.ContainerPeer;
-//import java.awt.peer.LightweightPeer;
-//import java.awt.image.BufferStrategy;
+import java.util.Vector;
+
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.AdjustmentEvent;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.ComponentListener;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.HierarchyBoundsListener;
+import jsjava.awt.event.HierarchyEvent;
+import jsjava.awt.event.HierarchyListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.InputMethodEvent;
+import jsjava.awt.event.InputMethodListener;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.KeyListener;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseListener;
+import jsjava.awt.event.MouseMotionListener;
+import jsjava.awt.event.MouseWheelEvent;
+import jsjava.awt.event.MouseWheelListener;
+import jsjava.awt.event.TextEvent;
+import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
-import jsjava.awt.event.*;
-
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
-//import jssun.security.action.GetPropertyAction;
 import jssun.awt.AppContext;
-//import jssun.awt.ConstrainableGraphics;
-//import jssun.awt.SubRegionShowable;
-//import jssun.awt.SunToolkit;
-//import jssun.awt.WindowClosingListener;
-//import jssun.awt.CausedFocusEvent;
-//import jssun.awt.EmbeddedFrame;
-//import jssun.awt.dnd.SunDropTargetEvent;
-//import jssun.awt.im.CompositionArea;
-//import jssun.java2d.SunGraphics2D;
-//import jssun.java2d.pipe.Region;
-//import jssun.awt.image.VSyncedBSManager;
-//import jssun.java2d.pipe.hw.ExtendedBufferCapabilities;
-//import static vsun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType.*;
-//import jssun.awt.RequestFocusController;
-//import jssun.java2d.SunGraphicsEnvironment;
 import jssun.awt.SunToolkit;
 
 /**
@@ -1992,10 +1993,10 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
                 if (!resized && !moved) {
                     return;
                 }
-                int oldX = this.x;
-                int oldY = this.y;
-                int oldWidth = this.width;
-                int oldHeight = this.height;
+//                int oldX = this.x;
+//                int oldY = this.y;
+//                int oldWidth = this.width;
+//                int oldHeight = this.height;
                 this.x = x;
                 this.y = y;
                 this.width = width;
@@ -2005,7 +2006,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
                     isPacked = false;
                 }
 
-                boolean needNotify = true;
+//                boolean needNotify = true;
                 mixOnReshaping();
 //                if (peer != null) {
 //                    // LightwightPeer is an empty stub so can skip peer.reshape

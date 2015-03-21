@@ -25,13 +25,17 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-import java.util.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-import jssun.swing.SwingUtilities2;
+import java.util.ArrayList;
+
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.plaf.TabbedPaneUI;
+import jsjavax.swing.plaf.UIResource;
 
 /**
  * A component that lets the user switch between a group of components by
@@ -365,7 +369,8 @@ public class JTabbedPane extends JComponent
 
             /* if the new component is non-null and different */
             if (newComp != null && newComp != visComp) {
-                boolean shouldChangeFocus = false;
+//SwingJSX: Key Focus
+//                boolean shouldChangeFocus = false;
 
                 /* Note: the following (clearing of the old visible component)
                  * is inside this if-statement for good reason: Tabbed pane
@@ -375,6 +380,7 @@ public class JTabbedPane extends JComponent
 
                 /* if there was a previous visible component */
                 if (visComp != null) {
+//SwingJSX: Key Focus
 //                    shouldChangeFocus =
 //                        (SwingUtilities.findFocusOwner(visComp) != null);
 
@@ -389,9 +395,10 @@ public class JTabbedPane extends JComponent
                     newComp.setVisible(true);
                 }
 
-                if (shouldChangeFocus) {
-                    SwingUtilities2.tabbedPaneChangeFocusTo(newComp);
-                }
+//SwingJSX: Key Focus
+//                if (shouldChangeFocus) {
+//                    SwingUtilities2.tabbedPaneChangeFocusTo(newComp);
+//                }
 
                 visComp = newComp;
             } /* else - the visible component shouldn't changed */
@@ -587,10 +594,11 @@ public class JTabbedPane extends JComponent
 
 
     private void setSelectedIndexImpl(int index, boolean doAccessibleChanges) {
-        int oldIndex = model.getSelectedIndex();
-        Page oldPage = null, newPage = null;
-        String oldName = null;
-
+//SwingJSX: Accessibility
+//        int oldIndex = model.getSelectedIndex();
+//        Page oldPage = null, newPage = null;
+//        String oldName = null;
+//
 //        doAccessibleChanges = doAccessibleChanges && (oldIndex != index);
 //
 //        if (doAccessibleChanges) {
@@ -609,11 +617,13 @@ public class JTabbedPane extends JComponent
 //
         model.setSelectedIndex(index);
 
+//SwingJSX: Accessibility
 //        if (doAccessibleChanges) {
 //            changeAccessibleSelection(oldPage, oldName, newPage);
 //        }
     }
 
+//SwingJSX: Accessibility
 //    private void changeAccessibleSelection(Page oldPage, String oldName, Page newPage) {
 //        if (accessibleContext == null) {
 //            return;
@@ -926,16 +936,20 @@ public class JTabbedPane extends JComponent
         checkIndex(index);
 
         Component component = getComponentAt(index);
-        boolean shouldChangeFocus = false;
+//SwingJSX: Key Focus
+//        boolean shouldChangeFocus = false;
         int selected = getSelectedIndex();
-        String oldName = null;
+//SwingJSX: Key Focus
+//        String oldName = null;
 
         /* if we're about to remove the visible component */
         if (component == visComp) {
- //           shouldChangeFocus = (SwingUtilities.findFocusOwner(visComp) != null);
+//SwingJSX: Key Focus
+//            shouldChangeFocus = (SwingUtilities.findFocusOwner(visComp) != null);
             visComp = null;
         }
 
+//SwingJSX: Accessibility
 //        if (accessibleContext != null) {
 //            /* if we're removing the selected page */
 //            if (index == selected) {
@@ -974,11 +988,13 @@ public class JTabbedPane extends JComponent
                 ? pages.get(selected - 1)
                 : null;
 
+//SwingJSX: Accessibility
 //            changeAccessibleSelection(null, oldName, newSelected);
 
         /* selected index hasn't changed, but the associated tab has */
         } else if (index == selected) {
             fireStateChanged();
+//SwingJSX: Accessibility
 //            changeAccessibleSelection(null, oldName, pages.get(index));
         }
 
@@ -996,9 +1012,10 @@ public class JTabbedPane extends JComponent
             }
         }
 
-        if (shouldChangeFocus) {
-            SwingUtilities2.tabbedPaneChangeFocusTo(getSelectedComponent());
-        }
+//SwingJSX: Key Focus
+//        if (shouldChangeFocus) {
+//            SwingUtilities2.tabbedPaneChangeFocusTo(getSelectedComponent());
+//        }
 
         revalidate();
         repaint();
@@ -1526,9 +1543,11 @@ public class JTabbedPane extends JComponent
     public void setComponentAt(int index, Component component) {
         Page page = pages.get(index);
         if (component != page.component) {
-            boolean shouldChangeFocus = false;
+//SwingJSX: Key Focus
+//            boolean shouldChangeFocus = false;
 
             if (page.component != null) {
+//SwingJSX: Key Focus
 //                shouldChangeFocus =
 //                    (SwingUtilities.findFocusOwner(page.component) != null);
 
@@ -1556,9 +1575,10 @@ public class JTabbedPane extends JComponent
                 component.setVisible(selectedPage);
                 addImpl(component, null, -1);
 
-                if (shouldChangeFocus) {
-                    SwingUtilities2.tabbedPaneChangeFocusTo(component);
-                }
+//SwingJSX: Key Focus
+//                if (shouldChangeFocus) {
+//                    SwingUtilities2.tabbedPaneChangeFocusTo(component);
+//                }
             } else {
                 repaint();
             }
@@ -2191,26 +2211,26 @@ public class JTabbedPane extends JComponent
             foreground = c;
         }
 
-        public Cursor getCursor() {
-            return parent.getCursor();
-        }
-
-        public void setCursor(Cursor c) {
-            parent.setCursor(c);
-        }
-
-        public Font getFont() {
-            return parent.getFont();
-        }
-
-        public void setFont(Font f) {
-            parent.setFont(f);
-        }
-
-        public FontMetrics getFontMetrics(Font f) {
-            return parent.getFontMetrics(f);
-        }
-
+//        public Cursor getCursor() {
+//            return parent.getCursor();
+//        }
+//
+//        public void setCursor(Cursor c) {
+//            parent.setCursor(c);
+//        }
+//
+//        public Font getFont() {
+//            return parent.getFont();
+//        }
+//
+//        public void setFont(Font f) {
+//            parent.setFont(f);
+//        }
+//
+//        public FontMetrics getFontMetrics(Font f) {
+//            return parent.getFontMetrics(f);
+//        }
+//
         public boolean isEnabled() {
             return enabled;
         }
@@ -2248,28 +2268,28 @@ public class JTabbedPane extends JComponent
              return new Point(r.x, r.y);
         }
 
-        public void setLocation(Point p) {
-            // do nothing
-        }
-
+//        public void setLocation(Point p) {
+//            // do nothing
+//        }
+//
         public Rectangle getBounds() {
             return parent.getUI().getTabBounds(parent,
                                                parent.indexOfTab(title));
         }
 
-        public void setBounds(Rectangle r) {
-            // do nothing
-        }
-
-        public Dimension getSize() {
-            Rectangle r = getBounds();
-            return new Dimension(r.width, r.height);
-        }
-
-        public void setSize(Dimension d) {
-            // do nothing
-        }
-
+//        public void setBounds(Rectangle r) {
+//            // do nothing
+//        }
+//
+//        public Dimension getSize() {
+//            Rectangle r = getBounds();
+//            return new Dimension(r.width, r.height);
+//        }
+//
+//        public void setSize(Dimension d) {
+//            // do nothing
+//        }
+//
 //        public Accessible getAccessibleAt(Point p) {
 //            if (component instanceof Accessible) {
 //                return (Accessible) component;
@@ -2277,23 +2297,23 @@ public class JTabbedPane extends JComponent
 //                return null;
 //            }
 //        }
-
-        public boolean isFocusTraversable() {
-            return false;
-        }
-
-        public void requestFocus() {
-            // do nothing
-        }
-
-        public void addFocusListener(FocusListener l) {
-            // do nothing
-        }
-
-        public void removeFocusListener(FocusListener l) {
-            // do nothing
-        }
-
+//
+//        public boolean isFocusTraversable() {
+//            return false;
+//        }
+//
+//        public void requestFocus() {
+//            // do nothing
+//        }
+//
+//        public void addFocusListener(FocusListener l) {
+//            // do nothing
+//        }
+//
+//        public void removeFocusListener(FocusListener l) {
+//            // do nothing
+//        }
+//
 //        // TIGER - 4732339
 //        /**
 //         * Returns an AccessibleIcon

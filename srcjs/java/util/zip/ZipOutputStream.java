@@ -27,7 +27,6 @@ package java.util.zip;
 
 import java.io.OutputStream;
 import java.io.IOException;
-//import java.io.UnsupportedEncodingException;
 import java.util.Hashtable;
 import java.util.Map;
 

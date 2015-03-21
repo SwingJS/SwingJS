@@ -24,8 +24,13 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
-import jsjavax.swing.event.*;
+import jsjava.awt.Color;
+import jsjava.awt.Container;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Shape;
+import jsjava.awt.Toolkit;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * A <code>LabelView</code> is a styled chunk of text

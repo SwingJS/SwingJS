@@ -24,9 +24,13 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.image.*;
 import java.net.URL;
+
+import jsjava.awt.Component;
+import jsjava.awt.Graphics;
+import jsjava.awt.Image;
+import jsjava.awt.Toolkit;
+import jsjava.awt.image.ImageObserver;
 
 /**
  * An implementation of the Icon interface that paints Icons

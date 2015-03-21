@@ -24,8 +24,8 @@
  */
 package jsjavax.swing.event;
 
-import jsjavax.swing.undo.*;
-import jsjavax.swing.text.*;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.Element;
 
 /**
  * Interface for document change notifications.  This provides

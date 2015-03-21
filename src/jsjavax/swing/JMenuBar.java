@@ -25,12 +25,14 @@
 
 package jsjavax.swing;
 
+import java.util.Vector;
+
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
-import jsjava.awt.event.*;
-import java.util.Vector;
-import jsjavax.swing.plaf.*;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.plaf.MenuBarUI;
 //
 
 /**

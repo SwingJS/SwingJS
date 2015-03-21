@@ -10,12 +10,6 @@ package java.net;
 
 import java.io.IOException;
 
-//import org.jmol.util.StringXBuilder;
-
-//import java.io.InputStream;
-//import java.io.OutputStream;
-//import java.util.Hashtable;
-
 /**
  * The abstract class <code>URLStreamHandler</code> is the common
  * superclass for all stream protocol handlers. A stream protocol

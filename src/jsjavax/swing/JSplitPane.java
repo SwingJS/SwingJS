@@ -29,14 +29,9 @@ package jsjavax.swing;
 
 
 
-import jsjavax.swing.plaf.*;
-//
-
-import jsjava.awt.*;
-//
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
+import jsjava.awt.Component;
+import jsjava.awt.Graphics;
+import jsjavax.swing.plaf.SplitPaneUI;
 
 
 

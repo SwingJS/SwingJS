@@ -30,7 +30,11 @@ import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
-import jsjavax.swing.*;
+import jsjavax.swing.JColorChooser;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JPanel;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.UIManager;
 import jssun.swing.SwingUtilities2;
 
 

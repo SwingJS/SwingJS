@@ -24,15 +24,20 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.*;
+import java.util.EventListener;
+import java.util.Set;
 
+import jsjava.awt.event.AWTEventListener;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.ContainerEvent;
+import jsjava.awt.event.ContainerListener;
+import jsjava.awt.event.HierarchyEvent;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseWheelEvent;
 import jsjava.beans.PropertyChangeListener;
 import jssun.awt.AppContext;
-
-import java.util.Arrays;
-import java.util.EventListener;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /**

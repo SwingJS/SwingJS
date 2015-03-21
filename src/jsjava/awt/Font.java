@@ -25,38 +25,13 @@
 
 package jsjava.awt;
 
-import jsjava.awt.font.FontRenderContext;
-//import jsjava.awt.font.GlyphVector;
-import jsjava.awt.font.LineMetrics;
-import jsjava.awt.font.TextAttribute;
-//import jsjava.awt.font.TextLayout;
-//import jsjava.awt.font.TransformAttribute;
-import jsjava.awt.geom.AffineTransform;
-import jsjava.awt.geom.Point2D;
-import jsjava.awt.geom.Rectangle2D;
-import java.lang.ref.SoftReference;
 import java.text.AttributedCharacterIterator.Attribute;
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
-import java.util.Map;
 
+import jsjava.awt.font.TextAttribute;
+import jsjava.awt.geom.AffineTransform;
 import jssun.font.AttributeValues;
-//import jssun.font.AttributeMap;
-//import jssun.font.AttributeValues;
-//import jssun.font.EAttribute;
-//import jssun.font.CompositeFont;
-//import jssun.font.CreatedFontTracker;
-//import jssun.font.Font2D;
-//import jssun.font.Font2DHandle;
-//import jssun.font.FontManager;
-//import jssun.font.GlyphLayout;
-//import jssun.font.FontLineMetrics;
-//import jssun.font.CoreMetrics;
-
-//import static jssun.font.EAttribute.*;
 
 /**
  * The <code>Font</code> class represents fonts, which are used to

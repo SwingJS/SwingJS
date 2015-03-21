@@ -24,10 +24,8 @@
  */
 package jsjavax.swing.text;
 
-import java.util.Vector;
-import jsjava.awt.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.SwingConstants;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 
 /**
  * <code>CompositeView</code> is an abstract <code>View</code>

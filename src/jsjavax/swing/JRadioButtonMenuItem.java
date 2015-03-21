@@ -24,19 +24,6 @@
  */
 package jsjavax.swing;
 
-import java.util.EventListener;
-
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.*;
-
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
-
-import jsjavax.swing.plaf.*;
-//
-
 /**
  * An implementation of a radio button menu item.
  * A <code>JRadioButtonMenuItem</code> is

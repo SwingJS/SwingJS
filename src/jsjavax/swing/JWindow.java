@@ -24,12 +24,15 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.PropertyChangeListener;
-import java.util.Locale;
-import java.util.Vector;
-//import java.io.Serializable;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Frame;
+import jsjava.awt.Graphics;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.LayoutManager;
+import jsjava.awt.Window;
+import jsjava.awt.event.WindowListener;
 
 // 
 

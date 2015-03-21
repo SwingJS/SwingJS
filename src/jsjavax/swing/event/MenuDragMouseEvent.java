@@ -24,11 +24,10 @@
  */
 package jsjavax.swing.event;
 
+import jsjava.awt.Component;
+import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.MenuElement;
 import jsjavax.swing.MenuSelectionManager;
-import java.util.EventObject;
-import jsjava.awt.event.MouseEvent;
-import jsjava.awt.Component;
 
 
 /**

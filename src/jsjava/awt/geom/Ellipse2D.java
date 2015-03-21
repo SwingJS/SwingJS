@@ -25,7 +25,6 @@
 
 package jsjava.awt.geom;
 
-//import java.io.Serializable;
 
 /**
  * The <code>Ellipse2D</code> class describes an ellipse that is defined

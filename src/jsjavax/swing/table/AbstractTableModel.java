@@ -25,10 +25,11 @@
 
 package jsjavax.swing.table;
 
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-//import java.io.Serializable;
 import java.util.EventListener;
+
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.TableModelEvent;
+import jsjavax.swing.event.TableModelListener;
 
 /**
  *  This abstract class provides default implementations for most of

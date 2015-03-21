@@ -24,8 +24,9 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
+import jsjava.awt.Component;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
 
 /**
  * Any component that can be placed into a menu should implement this interface.

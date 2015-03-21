@@ -24,8 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.Container;
-
 /**
  * A factory to create a view of some portion of document subject.
  * This is intended to enable customization of how views get

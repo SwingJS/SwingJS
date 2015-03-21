@@ -25,40 +25,36 @@
 
 package jsjava.awt;
 
-import jsjava.beans.PropertyChangeEvent;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.StringTokenizer;
-import jsjava.awt.event.*;
-//import jsjava.awt.peer.*;
-//import jsjava.awt.im.InputMethodHighlight;
+import java.util.WeakHashMap;
+
+import jsjava.awt.event.AWTEventListener;
+import jsjava.awt.event.AWTEventListenerProxy;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.AdjustmentEvent;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.ContainerEvent;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.HierarchyEvent;
+import jsjava.awt.event.InputMethodEvent;
+import jsjava.awt.event.InvocationEvent;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.PaintEvent;
+import jsjava.awt.event.TextEvent;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
-import jsjava.awt.image.ColorModel;
-//import jsjava.awt.datatransfer.Clipboard;
-//import jsjava.awt.dnd.DragSource;
-//import jsjava.awt.dnd.DragGestureRecognizer;
-//import jsjava.awt.dnd.DragGestureEvent;
-//import jsjava.awt.dnd.DragGestureListener;
-//import jsjava.awt.dnd.InvalidDnDOperationException;
-//import jsjava.awt.dnd.peer.DragSourceContextPeer;
-import java.net.URL;
-import java.io.File;
-import java.io.FileInputStream;
-
-import java.util.*;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
-import jssun.awt.AppContext;
-
-//import sun.awt.HeadlessToolkit;
-//import sun.awt.NullComponentPeer;
-//import sun.awt.PeerEvent;
-import jssun.awt.SunToolkit;
-//import sun.security.util.SecurityConstants;
-//
-//import sun.util.CoreResourceBundleControl;
 
 /**
  * This class is the abstract superclass of all actual

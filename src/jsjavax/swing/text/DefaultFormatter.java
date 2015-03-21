@@ -24,14 +24,12 @@
  */
 package jsjavax.swing.text;
 
-//import jssun.reflect.misc.ReflectUtil;
-import jssun.swing.SwingUtilities2;
-
-//import java.io.Serializable;
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
 import java.text.ParseException;
-import jsjavax.swing.*;
-import jsjavax.swing.text.*;
+
+import jsjavax.swing.JFormattedTextField;
+import jsjavax.swing.SwingConstants;
+import jssun.swing.SwingUtilities2;
 
 /**
  * <code>DefaultFormatter</code> formats aribtrary objects. Formatting is done

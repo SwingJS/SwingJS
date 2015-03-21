@@ -25,10 +25,27 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import java.io.*;
-import jsjavax.swing.colorchooser.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dialog;
+import jsjava.awt.FlowLayout;
+import jsjava.awt.Frame;
+import jsjava.awt.Window;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.ComponentAdapter;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.WindowAdapter;
+import jsjava.awt.event.WindowEvent;
+import jsjavax.swing.colorchooser.AbstractColorChooserPanel;
+import jsjavax.swing.colorchooser.ColorSelectionModel;
+import jsjavax.swing.colorchooser.DefaultColorSelectionModel;
 import jsjavax.swing.plaf.ColorChooserUI;
 import jssun.swing.SwingUtilities2;
 

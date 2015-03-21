@@ -25,9 +25,10 @@
 
 package jsjavax.swing.colorchooser;
 
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
 import jsjava.awt.Color;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 
 /**
  * A generic implementation of <code>ColorSelectionModel</code>.

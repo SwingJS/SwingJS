@@ -35,8 +35,9 @@
 
 package jsjava.awt.image.renderable;
 import java.util.Vector;
+
 import jsjava.awt.RenderingHints;
-import jsjava.awt.image.*;
+import jsjava.awt.image.RenderedImage;
 
 /**
  * A RenderableImage is a common interface for rendering-independent

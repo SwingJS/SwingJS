@@ -25,9 +25,6 @@
 
 package jsjavax.swing;
 
-import java.util.*;
-//import java.io.Serializable;
-
 
 /**
  * A <code>SpinnerModel</code> for sequences of numbers.

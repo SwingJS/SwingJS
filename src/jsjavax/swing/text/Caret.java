@@ -26,7 +26,6 @@ package jsjavax.swing.text;
 
 import jsjava.awt.Graphics;
 import jsjava.awt.Point;
-import jsjavax.swing.Action;
 import jsjavax.swing.event.ChangeListener;
 
 /**

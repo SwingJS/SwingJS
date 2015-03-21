@@ -24,7 +24,8 @@
  */
 package jsjavax.swing.text;
 
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.DocumentListener;
+import jsjavax.swing.event.UndoableEditListener;
 
 /**
  * <p>

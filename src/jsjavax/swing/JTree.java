@@ -25,19 +25,42 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-import java.io.*;
-import java.util.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.tree.*;
-import jsjavax.swing.text.Position;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Set;
+import java.util.Stack;
+import java.util.Vector;
 
-import jssun.swing.SwingUtilities2;
-import jssun.swing.SwingUtilities2.Section;
-import static sun.swing.SwingUtilities2.Section.*;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.TreeExpansionEvent;
+import jsjavax.swing.event.TreeExpansionListener;
+import jsjavax.swing.event.TreeModelEvent;
+import jsjavax.swing.event.TreeModelListener;
+import jsjavax.swing.event.TreeSelectionEvent;
+import jsjavax.swing.event.TreeSelectionListener;
+import jsjavax.swing.event.TreeWillExpandListener;
+import jsjavax.swing.plaf.TreeUI;
+import jsjavax.swing.text.Position;
+import jsjavax.swing.tree.DefaultMutableTreeNode;
+import jsjavax.swing.tree.DefaultTreeModel;
+import jsjavax.swing.tree.DefaultTreeSelectionModel;
+import jsjavax.swing.tree.ExpandVetoException;
+import jsjavax.swing.tree.TreeCellEditor;
+import jsjavax.swing.tree.TreeCellRenderer;
+import jsjavax.swing.tree.TreeModel;
+import jsjavax.swing.tree.TreeNode;
+import jsjavax.swing.tree.TreePath;
+import jsjavax.swing.tree.TreeSelectionModel;
 
 
 /**

@@ -35,10 +35,33 @@
 
 package jssun.font;
 
-import jsjava.awt.font.TextAttribute;
+import static jsjava.awt.font.TextAttribute.BACKGROUND;
+import static jsjava.awt.font.TextAttribute.BIDI_EMBEDDING;
+import static jsjava.awt.font.TextAttribute.CHAR_REPLACEMENT;
+import static jsjava.awt.font.TextAttribute.FAMILY;
+import static jsjava.awt.font.TextAttribute.FONT;
+import static jsjava.awt.font.TextAttribute.FOREGROUND;
+import static jsjava.awt.font.TextAttribute.INPUT_METHOD_HIGHLIGHT;
+import static jsjava.awt.font.TextAttribute.INPUT_METHOD_UNDERLINE;
+import static jsjava.awt.font.TextAttribute.JUSTIFICATION;
+import static jsjava.awt.font.TextAttribute.KERNING;
+import static jsjava.awt.font.TextAttribute.LIGATURES;
+import static jsjava.awt.font.TextAttribute.NUMERIC_SHAPING;
+import static jsjava.awt.font.TextAttribute.POSTURE;
+import static jsjava.awt.font.TextAttribute.RUN_DIRECTION;
+import static jsjava.awt.font.TextAttribute.SIZE;
+import static jsjava.awt.font.TextAttribute.STRIKETHROUGH;
+import static jsjava.awt.font.TextAttribute.SUPERSCRIPT;
+import static jsjava.awt.font.TextAttribute.SWAP_COLORS;
+import static jsjava.awt.font.TextAttribute.TRACKING;
+import static jsjava.awt.font.TextAttribute.TRANSFORM;
+import static jsjava.awt.font.TextAttribute.UNDERLINE;
+import static jsjava.awt.font.TextAttribute.WEIGHT;
+import static jsjava.awt.font.TextAttribute.WIDTH;
+
 import java.text.AttributedCharacterIterator.Attribute;
 
-import static jsjava.awt.font.TextAttribute.*;
+import jsjava.awt.font.TextAttribute;
 
 public enum EAttribute {
     EFAMILY(FAMILY),

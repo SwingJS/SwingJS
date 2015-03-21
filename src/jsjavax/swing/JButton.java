@@ -24,12 +24,7 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.*;
-
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.event.*;
+import jsjavax.swing.plaf.ButtonUI;
 
 
 

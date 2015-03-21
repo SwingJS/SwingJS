@@ -24,11 +24,17 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import java.util.*;
-import jsjava.awt.event.*;
-import jsjavax.swing.event.*;
+import java.util.Vector;
 
+import jsjava.awt.Component;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 import jssun.awt.AppContext;
 
 /**

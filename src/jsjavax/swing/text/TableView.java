@@ -24,13 +24,15 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
 import java.util.BitSet;
 import java.util.Vector;
+
+import jsjava.awt.Component;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjavax.swing.SizeRequirements;
 import jsjavax.swing.event.DocumentEvent;
 
-//import jsjavax.swing.text.html.HTML;
 
 /**
  * <p>

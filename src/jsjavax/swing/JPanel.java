@@ -24,15 +24,9 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-
-import jsjavax.swing.plaf.*;
-//
-
-//import java.io.Serializable;
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
+import jsjava.awt.FlowLayout;
+import jsjava.awt.LayoutManager;
+import jsjavax.swing.plaf.PanelUI;
 
 
 /**

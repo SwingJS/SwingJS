@@ -24,15 +24,7 @@
  */
 package jsjavax.swing;
 
-import jsjava.beans.*;
-import java.util.*;
-
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.border.*;
+import java.util.Vector;
 
 /**
  * The default model for combo boxes.

@@ -25,12 +25,7 @@
 
 package jsjava.awt;
 
-import java.text.CharacterIterator;
-
-import jsjava.awt.Graphics2D;
 import jsjava.awt.font.FontRenderContext;
-import jsjava.awt.font.LineMetrics;
-import jsjava.awt.geom.Rectangle2D;
 
 /**
  * The <code>FontMetrics</code> class defines a font metrics object, which

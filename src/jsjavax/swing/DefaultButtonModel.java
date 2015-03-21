@@ -24,12 +24,18 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.*;
-//import java.io.Serializable;
 import java.util.EventListener;
-import jsjavax.swing.event.*;
+
+import jsjava.awt.AWTEvent;
+import jsjava.awt.EventQueue;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.ItemListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 
 /**
  * The default implementation of a <code>Button</code> component's data model.

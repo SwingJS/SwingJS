@@ -25,9 +25,6 @@
 
 package jssun.java2d.pipe;
 
-import jsjava.awt.geom.PathIterator;
-import jsjava.awt.Rectangle;
-
 /**
  * This class clips a SpanIterator to a Region and outputs the
  * resulting spans as another SpanIterator.

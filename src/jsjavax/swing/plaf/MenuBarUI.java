@@ -24,11 +24,6 @@
  */
 
 package jsjavax.swing.plaf;
-
-import jsjava.awt.Insets;
-import jsjavax.swing.JMenuBar;
-
-import jsjavax.swing.JMenu;
 /**
  * Pluggable look and feel interface for JMenuBar.
  *

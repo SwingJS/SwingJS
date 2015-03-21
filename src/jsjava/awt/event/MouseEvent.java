@@ -26,12 +26,9 @@
 package jsjava.awt.event;
 
 import jsjava.awt.Component;
-import jsjava.awt.GraphicsEnvironment;
+import jsjava.awt.IllegalComponentStateException;
 import jsjava.awt.Point;
 import jsjava.awt.Toolkit;
-import java.io.IOException;
-//import java.io.ObjectInputStream;
-import jsjava.awt.IllegalComponentStateException;
 
 /**
  * An event which indicates that a mouse action occurred in a component.

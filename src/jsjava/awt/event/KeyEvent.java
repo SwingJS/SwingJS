@@ -25,12 +25,8 @@
 
 package jsjava.awt.event;
 
-import jsjava.awt.Event;
 import jsjava.awt.Component;
-import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Toolkit;
-import java.io.IOException;
-//import java.io.ObjectInputStream;
 
 /**
  * An event which indicates that a keystroke occurred in a component.
@@ -944,11 +940,11 @@ public class KeyEvent extends InputEvent {
      * @throws IllegalArgumentException if <code>source</code> is null
      * @since 1.4
      */
-    private KeyEvent(Component source, int id, long when, int modifiers,
-                    int keyCode, char keyChar, int keyLocation, boolean isProxyActive) {
-        this(source, id, when, modifiers, keyCode, keyChar, keyLocation);
-        this.isProxyActive = isProxyActive;
-    }
+//    private KeyEvent(Component source, int id, long when, int modifiers,
+//                    int keyCode, char keyChar, int keyLocation, boolean isProxyActive) {
+//        this(source, id, when, modifiers, keyCode, keyChar, keyLocation);
+//        this.isProxyActive = isProxyActive;
+//    }
     public KeyEvent(Component source, int id, long when, int modifiers,
                     int keyCode, char keyChar, int keyLocation) {
         super(source, id, when, modifiers);

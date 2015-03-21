@@ -25,7 +25,6 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-import jsjavax.swing.event.*;
 
 /**
  * A plain document that maintains no character attributes.  The

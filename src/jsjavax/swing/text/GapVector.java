@@ -24,10 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import java.util.Vector;
-//import java.io.Serializable;
-import jsjavax.swing.undo.UndoableEdit;
-
 /**
  * An implementation of a gapped buffer similar to that used by
  * emacs.  The underlying storage is a java array of some type,

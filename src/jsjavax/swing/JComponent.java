@@ -54,7 +54,6 @@ import jsjava.awt.event.ActionListener;
 import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
-//import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.border.AbstractBorder;
 import jsjavax.swing.border.Border;

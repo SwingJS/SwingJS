@@ -25,8 +25,12 @@
 package jsjavax.swing;
 
 
-import jsjava.awt.*;
-//import java.io.Serializable;
+import jsjava.awt.AWTError;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Insets;
+import jsjava.awt.LayoutManager2;
 
 /**
  * A layout manager to arrange components over the top

@@ -26,7 +26,6 @@
 package jsjavax.swing.tree;
 
 import jsjavax.swing.event.TreeModelEvent;
-import jsjava.awt.Dimension;
 import jsjava.awt.Rectangle;
 import java.util.Enumeration;
 

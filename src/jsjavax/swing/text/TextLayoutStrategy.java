@@ -24,14 +24,16 @@
  */
 package jsjavax.swing.text;
 
-import java.util.*;
-import jsjava.awt.*;
 import java.text.AttributedCharacterIterator;
-import java.text.BreakIterator;
-import jsjava.awt.font.*;
-import jsjava.awt.geom.AffineTransform;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Set;
+
+import jsjava.awt.Font;
+import jsjava.awt.Rectangle;
+import jsjava.awt.font.TextAttribute;
 import jsjavax.swing.event.DocumentEvent;
-//import jssun.font.BidiUtils;
 
 /**
  * A flow strategy that uses jsjava.awt.font.LineBreakMeasureer to

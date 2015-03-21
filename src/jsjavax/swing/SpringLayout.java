@@ -24,14 +24,19 @@
  */
 package jsjavax.swing;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
-import jsjava.awt.FontMetrics;
 import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager2;
-import jsjava.awt.Rectangle;
-import java.util.*;
 
 /**
  * A <code>SpringLayout</code> lays out the children of its associated container

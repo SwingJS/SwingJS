@@ -34,8 +34,6 @@
  ******************************************************************/
 
 package jsjava.awt.image;
-import jsjava.awt.Rectangle;
-import java.util.Dictionary;
 import java.util.Vector;
 
 /**

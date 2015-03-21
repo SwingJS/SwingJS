@@ -25,8 +25,6 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-//import java.io.ObjectInputStream;
-//import java.io.Serializable;
 import jsjavax.swing.undo.AbstractUndoableEdit;
 import jsjavax.swing.undo.CannotRedoException;
 import jsjavax.swing.undo.CannotUndoException;

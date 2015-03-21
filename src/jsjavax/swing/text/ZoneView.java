@@ -25,8 +25,10 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-import jsjava.awt.*;
-import jsjavax.swing.event.*;
+
+import jsjava.awt.Graphics;
+import jsjava.awt.Shape;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * ZoneView is a View implementation that creates zones for which

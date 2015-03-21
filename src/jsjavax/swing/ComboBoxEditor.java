@@ -24,8 +24,8 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
+import jsjava.awt.Component;
+import jsjava.awt.event.ActionListener;
 
 /**
  * The editor component used for JComboBox components.

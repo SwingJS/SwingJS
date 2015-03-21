@@ -1,0 +1,23 @@
+Differences to Original JDK 1.6
+===============================
+
+- No Accessibility Handling
+- No Serialization
+
+
+Key Focus
+---------
+- Less explicit key focus handling (mostly done by Browser/HTML)
+- no SwingUtilities.findFocusOwner
+
+Internal
+========
+- no ComponentPeer
+
+
+DISCUSS
+=======
+
+BufferedImage: only "support" imageType RGB and ARGB
+ColorSpace: only "support" CS_sRGB
+

@@ -24,23 +24,16 @@
  */
 package jsjavax.swing;
 
-import java.util.EventListener;
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.*;
-
-import jsjava.beans.PropertyChangeEvent;
-import jsjava.beans.PropertyChangeListener;
-
-////import java.io.Serializable;
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
-
-import jsjavax.swing.plaf.*;
-//import jsjavax.swing.plaf.basic.*;
-import jsjavax.swing.event.*;
-//
+import jsjava.awt.Component;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.MenuDragMouseEvent;
+import jsjavax.swing.event.MenuDragMouseListener;
+import jsjavax.swing.event.MenuKeyEvent;
+import jsjavax.swing.event.MenuKeyListener;
+import jsjavax.swing.plaf.MenuItemUI;
 
 /**
  * An implementation of an item in a menu. A menu item is essentially a button

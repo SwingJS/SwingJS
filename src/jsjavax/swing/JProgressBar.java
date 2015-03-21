@@ -25,18 +25,12 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.Color;
-import jsjava.awt.Graphics;
-
 import java.text.Format;
 import java.text.NumberFormat;
 
-////import java.io.Serializable;
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
-
-import jsjavax.swing.event.*;
+import jsjava.awt.Graphics;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ProgressBarUI;
 
 

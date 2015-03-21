@@ -24,7 +24,8 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
+import jsjava.awt.Graphics;
+import jsjava.awt.Shape;
 import jsjavax.swing.text.Position.Bias;
 
 /**

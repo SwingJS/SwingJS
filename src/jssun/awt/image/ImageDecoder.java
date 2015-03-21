@@ -25,10 +25,12 @@
 
 package jssun.awt.image;
 
-import java.util.Hashtable;
-import java.io.InputStream;
 import java.io.IOException;
-import jsjava.awt.image.*;
+import java.io.InputStream;
+import java.util.Hashtable;
+
+import jsjava.awt.image.ColorModel;
+import jsjava.awt.image.ImageConsumer;
 
 public abstract class ImageDecoder {
     InputStreamImageSource source;

@@ -25,16 +25,20 @@
 
 package jsjavax.swing.table;
 
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-import jsjava.awt.*;
-import java.util.Vector;
 import java.util.Enumeration;
 import java.util.EventListener;
-import jsjava.beans.PropertyChangeListener;
+import java.util.Vector;
+
 import jsjava.beans.PropertyChangeEvent;
-//import java.io.Serializable;
-import jssun.swing.SwingUtilities2;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.DefaultListSelectionModel;
+import jsjavax.swing.ListSelectionModel;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.ListSelectionEvent;
+import jsjavax.swing.event.ListSelectionListener;
+import jsjavax.swing.event.TableColumnModelEvent;
+import jsjavax.swing.event.TableColumnModelListener;
 
 /**
  * The standard column-handler for a <code>JTable</code>.

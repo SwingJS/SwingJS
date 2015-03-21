@@ -24,8 +24,6 @@
  */
 package jsjavax.swing.text;
 
-//import java.io.Serializable;
-import java.text.ParseException;
 import jsjavax.swing.JFormattedTextField;
 
 /**

@@ -25,7 +25,6 @@
 
 package jsjava.awt;
 
-//import jsjava.awt.image.ColorModel;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.geom.Rectangle2D;
 import jsjava.awt.image.ColorModel;

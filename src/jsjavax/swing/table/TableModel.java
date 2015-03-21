@@ -25,8 +25,7 @@
 
 package jsjavax.swing.table;
 
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.TableModelListener;
 
 /**
  *  The <code>TableModel</code> interface specifies the methods the

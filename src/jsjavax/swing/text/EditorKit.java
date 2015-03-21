@@ -24,7 +24,12 @@
  */
 package jsjavax.swing.text;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+
 import jsjavax.swing.Action;
 import jsjavax.swing.JEditorPane;
 

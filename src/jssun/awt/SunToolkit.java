@@ -25,29 +25,49 @@
 
 package jssun.awt;
 
-import jsjava.awt.*;
-import jsjava.awt.event.WindowEvent;
-import jsjava.awt.event.KeyEvent;
-import jsjava.awt.image.*;
+import static jsjava.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_GASP;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import jssun.misc.SoftCache;
+
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics2D;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.GraphicsEnvironment;
+import jsjava.awt.Image;
+import jsjava.awt.Panel;
+import jsjava.awt.RenderingHints;
+import jsjava.awt.Toolkit;
+import jsjava.awt.Window;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.image.BufferedImage;
+import jsjava.awt.image.ImageObserver;
+import jsjava.awt.image.ImageProducer;
 import jssun.awt.image.URLImageSource;
 import jssun.font.FontDesignMetrics;
-//import jssun.awt.im.InputContext;
-import jssun.awt.image.*;
-//import jssun.security.action.GetPropertyAction;
-//import jssun.security.action.GetBooleanAction;
-import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import static jsjava.awt.RenderingHints.*;
+import jssun.misc.SoftCache;
 
 public abstract class SunToolkit extends Toolkit
     implements WindowClosingSupport, WindowClosingListener,

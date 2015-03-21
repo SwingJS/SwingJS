@@ -24,14 +24,15 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
+import jsjava.awt.Color;
 import jsjava.awt.event.ActionEvent;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
-import jsjavax.swing.event.*;
 import jsjavax.swing.Action;
 import jsjavax.swing.JEditorPane;
 import jsjavax.swing.UIManager;
+import jsjavax.swing.event.CaretEvent;
+import jsjavax.swing.event.CaretListener;
 
 /**
  * This is the set of things needed by a text component

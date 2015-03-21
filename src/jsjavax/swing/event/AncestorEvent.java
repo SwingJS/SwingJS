@@ -24,9 +24,9 @@
  */
 package jsjavax.swing.event;
 
-import jsjava.awt.event.*;
-import jsjava.awt.*;
-import jsjavax.swing.*;
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Container;
+import jsjavax.swing.JComponent;
 
 /**
  * An event reported to a child component that originated from an

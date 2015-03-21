@@ -25,8 +25,7 @@
 
 package jsjavax.swing.event;
 
-import java.util.EventObject;
-import jsjavax.swing.table.*;
+import jsjavax.swing.table.TableColumnModel;
 
 /**
  * <B>TableColumnModelEvent</B> is used to notify listeners that a table

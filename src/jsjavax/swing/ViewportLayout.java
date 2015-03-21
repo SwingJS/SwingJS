@@ -28,11 +28,9 @@ package jsjavax.swing;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Point;
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
-//import java.io.Serializable;
 
 /**
  * The default layout manager for <code>JViewport</code>.

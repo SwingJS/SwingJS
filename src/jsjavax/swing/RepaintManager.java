@@ -24,26 +24,33 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.VolatileImage;
-import jsjava.security.AccessControlContext;
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import jsjava.applet.*;
+import jsjava.applet.Applet;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Frame;
+import jsjava.awt.Graphics;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.Image;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Toolkit;
+import jsjava.awt.Window;
+import jsjava.awt.event.InvocationEvent;
+import jsjava.awt.image.VolatileImage;
 import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
-import jssun.awt.AWTAccessor;
 import jssun.awt.DisplayChangedListener;
 import jssun.awt.SunToolkit;
-//import jssun.java2d.SunGraphicsEnvironment;
-//import jssun.misc.JavaSecurityAccess;
-//import jssun.misc.SharedSecrets;
-//import jssun.security.action.GetPropertyAction;
 
 /**
  * This class manages repaint requests, allowing the number of repaints to be

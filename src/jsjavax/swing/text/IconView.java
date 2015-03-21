@@ -24,9 +24,10 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjavax.swing.Icon;
-import jsjavax.swing.event.*;
 
 /**
  * Icon decorator that implements the view interface.  The

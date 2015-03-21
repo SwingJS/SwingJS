@@ -29,7 +29,11 @@ package jsjavax.swing;
 
 
 
-import java.io.*;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
+
 import jsjava.awt.Component;
 
 

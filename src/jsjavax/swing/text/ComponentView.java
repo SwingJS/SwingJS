@@ -24,11 +24,15 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.event.*;
 
 /**
  * Component decorator that implements the view interface.  The

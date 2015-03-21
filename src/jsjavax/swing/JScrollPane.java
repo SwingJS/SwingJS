@@ -25,21 +25,16 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.*;
-
 import jsjava.awt.Component;
 import jsjava.awt.ComponentOrientation;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.plaf.ScrollPaneUI;
+import jsjavax.swing.plaf.UIResource;
 
-////import java.io.ObjectOutputStream;
-//import java.io.IOException;
-
-import jsjava.beans.*;
 
 
 /**

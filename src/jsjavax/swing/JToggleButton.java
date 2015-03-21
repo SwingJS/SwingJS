@@ -24,17 +24,12 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-
-
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
-
+import jsjava.awt.AWTEvent;
+import jsjava.awt.EventQueue;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.ItemEvent;
+import jsjavax.swing.plaf.ButtonUI;
 
 /**
  * An implementation of a two-state button.

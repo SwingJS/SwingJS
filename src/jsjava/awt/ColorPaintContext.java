@@ -28,10 +28,6 @@
 package jsjava.awt;
 
 import jsjava.awt.image.ColorModel;
-//import jsjava.awt.image.Raster;
-//import java.awt.image.WritableRaster;
-//import sun.awt.image.IntegerComponentRaster;
-import java.util.Arrays;
 
 class ColorPaintContext implements PaintContext {
     int color;

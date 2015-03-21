@@ -24,10 +24,14 @@
  */
 package jsjavax.swing.text;
 
-import java.util.Vector;
-import java.util.Properties;
-import jsjava.awt.*;
-import jsjavax.swing.event.*;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * Implements View interface for a simple multi-line text view

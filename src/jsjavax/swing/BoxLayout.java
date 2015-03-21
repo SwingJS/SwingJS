@@ -26,9 +26,15 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-//import java.io.Serializable;
 import java.io.PrintStream;
+
+import jsjava.awt.AWTError;
+import jsjava.awt.Component;
+import jsjava.awt.ComponentOrientation;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Insets;
+import jsjava.awt.LayoutManager2;
 
 /**
  * A layout manager that allows multiple components to be laid out either

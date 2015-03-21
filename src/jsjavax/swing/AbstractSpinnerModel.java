@@ -25,8 +25,11 @@
 
 package jsjavax.swing;
 
-import java.util.*;
-import jsjavax.swing.event.*;
+import java.util.EventListener;
+
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 
 
 /**

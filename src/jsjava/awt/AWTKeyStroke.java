@@ -24,20 +24,14 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.KeyEvent;
-import jssun.awt.AppContext;
-import jsjava.awt.event.InputEvent;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-////import java.io.Serializable;
-//import jsjava.security.AccessController;
-//import jsjava.security.PrivilegedAction;
-//import java.lang.reflect.Constructor;
-//import java.lang.reflect.InvocationTargetException;
-//import java.lang.reflect.Modifier;
-//import java.lang.reflect.Field;
+
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.KeyEvent;
+import jssun.awt.AppContext;
 
 /**
  * An <code>AWTKeyStroke</code> represents a key action on the

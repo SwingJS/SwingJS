@@ -25,11 +25,12 @@
 
 package jsjavax.swing;
 
-import java.util.EventListener;
 import java.util.BitSet;
-//import java.io.Serializable;
+import java.util.EventListener;
 
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.ListSelectionEvent;
+import jsjavax.swing.event.ListSelectionListener;
 
 
 /**

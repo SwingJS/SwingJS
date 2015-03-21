@@ -24,15 +24,9 @@
  */
 package jsjavax.swing;
 
-import jsjavax.swing.text.*;
-import jsjavax.swing.plaf.*;
-//
-
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
-//import java.io.*;
-import java.util.Arrays;
+import jsjavax.swing.text.BadLocationException;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.Segment;
 
 /**
  * <code>JPasswordField</code> is a lightweight component that allows

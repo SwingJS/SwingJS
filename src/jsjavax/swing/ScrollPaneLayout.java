@@ -26,15 +26,13 @@
 package jsjavax.swing;
 
 
-import jsjavax.swing.border.*;
-
-import jsjava.awt.LayoutManager;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
-//import java.io.Serializable;
+import jsjava.awt.LayoutManager;
+import jsjava.awt.Rectangle;
+import jsjavax.swing.border.Border;
 
 
 /**

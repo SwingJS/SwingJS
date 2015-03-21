@@ -26,7 +26,6 @@ package jsjavax.swing.event;
 
 import jsjavax.swing.MenuElement;
 import jsjavax.swing.MenuSelectionManager;
-import java.util.EventObject;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.Component;
 

@@ -25,24 +25,15 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.Font;
-import jsjava.awt.event.InputEvent;
-import jsjava.awt.event.KeyEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
-//import jsjava.awt.SystemColor;
-//import jsjava.awt.Toolkit;
-
-import jsjavax.swing.text.*;
-import jsjavax.swing.border.*;
-import jsjavax.swing.plaf.*;
-
-import java.net.URL;
-import jssun.swing.SwingUtilities2;
+import jsjava.awt.Font;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.plaf.ComponentInputMapUIResource;
+import jsjavax.swing.plaf.InputMapUIResource;
+import jsjavax.swing.plaf.UIResource;
 import jssun.swing.DefaultLayoutStyle;
-import jssun.swing.ImageIconUIResource;
-
-import java.util.StringTokenizer;
+import jssun.swing.SwingUtilities2;
 
 
 /**

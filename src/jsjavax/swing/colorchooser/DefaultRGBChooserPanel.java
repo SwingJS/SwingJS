@@ -25,9 +25,18 @@
 
 package jsjavax.swing.colorchooser;
 
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-import jsjava.awt.*;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Color;
+import jsjavax.swing.Icon;
+import jsjavax.swing.JColorChooser;
+import jsjavax.swing.JLabel;
+import jsjavax.swing.JPanel;
+import jsjavax.swing.JSlider;
+import jsjavax.swing.JSpinner;
+import jsjavax.swing.SpinnerNumberModel;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
 
 /**
  * The standard RGB chooser.

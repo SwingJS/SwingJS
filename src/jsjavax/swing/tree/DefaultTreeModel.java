@@ -25,9 +25,16 @@
 
 package jsjavax.swing.tree;
 
-import java.util.*;
-import java.io.*;
-import jsjavax.swing.event.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.EventListener;
+import java.util.Vector;
+
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.TreeModelEvent;
+import jsjavax.swing.event.TreeModelListener;
 
 /**
  * A simple tree data model that uses TreeNodes.

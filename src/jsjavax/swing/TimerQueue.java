@@ -29,9 +29,13 @@ package jsjavax.swing;
 
 
 
-import java.util.concurrent.*;
-import java.util.concurrent.locks.*;
+import java.util.concurrent.DelayQueue;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import jssun.awt.AppContext;
 
 

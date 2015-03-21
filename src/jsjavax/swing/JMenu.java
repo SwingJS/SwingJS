@@ -25,37 +25,28 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.AWTEvent;
+import java.util.Hashtable;
+import java.util.Vector;
+
 import jsjava.awt.Component;
 import jsjava.awt.ComponentOrientation;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
-import jsjava.awt.Frame;
-import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
-//import jsjava.awt.GraphicsDevice;
-import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Insets;
 import jsjava.awt.Point;
-import jsjava.awt.Polygon;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-
-import java.util.*;
-
-//import java.io.Serializable;
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
-
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-//import jsjavax.swing.plaf.basic.*;
-//
-
-import java.lang.ref.WeakReference;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.WindowAdapter;
+import jsjava.awt.event.WindowEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.MenuEvent;
+import jsjavax.swing.event.MenuListener;
+import jsjavax.swing.plaf.MenuItemUI;
+import jsjavax.swing.plaf.PopupMenuUI;
 
 /**
  * An implementation of a menu -- a popup window containing

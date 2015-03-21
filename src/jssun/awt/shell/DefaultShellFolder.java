@@ -26,9 +26,6 @@
 package jssun.awt.shell;
 
 import java.io.File;
-//import jsjava.security.AccessController;
-//import jsjavax.swing.Icon;
-//import jssun.security.action.GetPropertyAction;
 
 /**
  * @author Michael Martak

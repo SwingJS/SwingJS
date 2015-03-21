@@ -24,12 +24,19 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-//
+import jsjava.awt.AWTEvent;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.IllegalComponentStateException;
+import jsjava.awt.Insets;
+import jsjava.awt.LayoutManager;
+import jsjava.awt.LayoutManager2;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.plaf.RootPaneUI;
 import jssun.awt.AWTAccessor;
-//import jssun.security.action.GetBooleanAction;
 
 
 /**

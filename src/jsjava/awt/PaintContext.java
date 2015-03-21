@@ -25,8 +25,6 @@
 
 package jsjava.awt;
 
-//import java.awt.image.Raster;
-//import java.awt.image.ColorModel;
 
 /**
  * The <code>PaintContext</code> interface defines the encapsulated

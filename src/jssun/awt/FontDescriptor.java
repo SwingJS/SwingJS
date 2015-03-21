@@ -27,7 +27,6 @@ package jssun.awt;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
-//import jssun.nio.cs.HistoricallyNamedCharset;
 
 public class FontDescriptor implements Cloneable {
 

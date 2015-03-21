@@ -26,35 +26,22 @@
 package jsjavax.swing;
 
 
-import jsjavax.swing.plaf.ComponentUI;
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.SwingPropertyChangeSupport;
-
-import java.lang.reflect.*;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.ResourceBundle;
-import java.util.ResourceBundle.Control;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Vector;
-import java.util.MissingResourceException;
-import jsjava.awt.Font;
-import jsjava.awt.Color;
-import jsjava.awt.Insets;
-import jsjava.awt.Dimension;
-import java.lang.reflect.Method;
-import jsjava.beans.PropertyChangeListener;
-import jsjava.beans.PropertyChangeEvent;
-import jsjava.security.AccessController;
-import jsjava.security.AccessControlContext;
-import jsjava.security.PrivilegedAction;
 
-//import jssun.reflect.misc.MethodUtil;
-//import jssun.reflect.misc.ReflectUtil;
-import jssun.swing.SwingUtilities2;
-//import jssun.util.CoreResourceBundleControl;
+import jsjava.awt.Color;
+import jsjava.awt.Dimension;
+import jsjava.awt.Font;
+import jsjava.awt.Insets;
+import jsjava.beans.PropertyChangeListener;
+import jsjava.security.AccessControlContext;
+import jsjava.security.AccessController;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.event.SwingPropertyChangeSupport;
+import jsjavax.swing.plaf.ComponentUI;
 
 /**
  * A table of defaults for Swing components.  Applications can set/get

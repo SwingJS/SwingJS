@@ -24,9 +24,8 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
+import jsjava.awt.event.ActionListener;
+import jsjava.beans.PropertyChangeListener;
 
 /**
  * The <code>Action</code> interface provides a useful extension to the

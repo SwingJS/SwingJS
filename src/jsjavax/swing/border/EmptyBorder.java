@@ -26,9 +26,7 @@ package jsjavax.swing.border;
 
 import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Component;
-//import java.io.Serializable;
 
 /**
  * A class which provides an empty, transparent border which

@@ -25,14 +25,13 @@
 
 package jsjava.applet;
 
-import jsjava.awt.Image;
-import jsjava.awt.Graphics;
-//import jsjava.awt.image.ColorModel;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
-import java.io.InputStream;
-import java.io.IOException;
 import java.util.Iterator;
+
+import jsjava.awt.Image;
 
 /**
  * This interface corresponds to an applet's environment: the

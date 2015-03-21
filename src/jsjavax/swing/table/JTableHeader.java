@@ -25,17 +25,20 @@
 
 package jsjavax.swing.table;
 
+import jsjava.awt.Component;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JTable;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ListSelectionEvent;
+import jsjavax.swing.event.TableColumnModelEvent;
+import jsjavax.swing.event.TableColumnModelListener;
+import jsjavax.swing.plaf.TableHeaderUI;
 import jssun.swing.table.DefaultTableCellHeaderRenderer;
-
-import java.util.*;
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-
-import jsjava.beans.PropertyChangeListener;
 
 
 /**

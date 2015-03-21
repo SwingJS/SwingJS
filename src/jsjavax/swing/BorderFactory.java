@@ -26,8 +26,14 @@ package jsjavax.swing;
 
 import jsjava.awt.Color;
 import jsjava.awt.Font;
-import jsjavax.swing.JComponent;
-import jsjavax.swing.border.*;
+import jsjavax.swing.border.BevelBorder;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.border.CompoundBorder;
+import jsjavax.swing.border.EmptyBorder;
+import jsjavax.swing.border.EtchedBorder;
+import jsjavax.swing.border.LineBorder;
+import jsjavax.swing.border.MatteBorder;
+import jsjavax.swing.border.TitledBorder;
 
 /**
  * Factory class for vending standard <code>Border</code> objects.  Wherever

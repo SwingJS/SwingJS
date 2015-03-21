@@ -25,24 +25,17 @@
 
 package jssun.misc;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLStreamHandler;
+import java.net.URLStreamHandlerFactory;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.ArrayList;
-//import jsjava.util.jar.JarFile;
-//import jssun.misc.JarIndex;
-//import jssun.misc.InvalidJarIndexException;
+
 import jssun.net.www.ParseUtil;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.HttpURLConnection;
-import java.net.URLStreamHandler;
-import java.net.URLStreamHandlerFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
 
 /**
  * This class is used to maintain a search path of URLs for loading classes
@@ -431,109 +424,109 @@ public class URLClassPath {
 //        }
     }
 
-    /**
-     * Inner class used to represent a loader of resources and classes
-     * from a base URL.
-     */
-    private static class Loader {
-        private final URL base;
-
-        /*
-         * Creates a new Loader for the specified URL.
-         */
-        Loader(URL url) {
-            base = url;
-        }
-
-        /*
-         * Returns the base URL for this Loader.
-         */
-        URL getBaseURL() {
-            return base;
-        }
-
-        URL findResource(final String name, boolean check) {
-            URL url;
-            try {
-                url = new URL(base, ParseUtil.encodePath(name, false));
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("name");
-            }
-
-            try {
-                if (check) {
-                    URLClassPath.check(url);
-                }
-
-                /*
-                 * For a HTTP connection we use the HEAD method to
-                 * check if the resource exists.
-                 */
-                URLConnection uc = url.openConnection();
-                if (uc instanceof HttpURLConnection) {
-                    HttpURLConnection hconn = (HttpURLConnection)uc;
-                    hconn.setRequestMethod("HEAD");
-                    if (hconn.getResponseCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
-                        return null;
-                    }
-                } else {
-                    // our best guess for the other cases
-                    InputStream is = url.openStream();
-                    is.close();
-                }
-                return url;
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
-        Resource getResource(final String name, boolean check) {
-            final URL url;
-            try {
-                url = new URL(base, ParseUtil.encodePath(name, false));
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("name");
-            }
-            final URLConnection uc;
-            try {
-                if (check) {
-                    URLClassPath.check(url);
-                }
-                uc = url.openConnection();
-                InputStream in = uc.getInputStream();
-            } catch (Exception e) {
-                return null;
-            }
-            return new Resource() {
-                public String getName() { return name; }
-                public URL getURL() { return url; }
-                public URL getCodeSourceURL() { return base; }
-                public InputStream getInputStream() throws IOException {
-                    return uc.getInputStream();
-                }
-                public int getContentLength() throws IOException {
-                    return uc.getContentLength();
-                }
-            };
-        }
-
-        /*
-         * Returns the Resource for the specified name, or null if not
-         * found or the caller does not have the permission to get the
-         * resource.
-         */
-        Resource getResource(final String name) {
-            return getResource(name, true);
-        }
-
-        /*
-         * Returns the local class path for this loader, or null if none.
-         */
-        URL[] getClassPath() throws IOException {
-            return null;
-        }
-    }
-
+//    /**
+//     * Inner class used to represent a loader of resources and classes
+//     * from a base URL.
+//     */
+//    private static class Loader {
+//        private final URL base;
+//
+//        /*
+//         * Creates a new Loader for the specified URL.
+//         */
+//        Loader(URL url) {
+//            base = url;
+//        }
+//
+//        /*
+//         * Returns the base URL for this Loader.
+//         */
+//        URL getBaseURL() {
+//            return base;
+//        }
+//
+//        URL findResource(final String name, boolean check) {
+//            URL url;
+//            try {
+//                url = new URL(base, ParseUtil.encodePath(name, false));
+//            } catch (MalformedURLException e) {
+//                throw new IllegalArgumentException("name");
+//            }
+//
+//            try {
+//                if (check) {
+//                    URLClassPath.check(url);
+//                }
+//
+//                /*
+//                 * For a HTTP connection we use the HEAD method to
+//                 * check if the resource exists.
+//                 */
+//                URLConnection uc = url.openConnection();
+//                if (uc instanceof HttpURLConnection) {
+//                    HttpURLConnection hconn = (HttpURLConnection)uc;
+//                    hconn.setRequestMethod("HEAD");
+//                    if (hconn.getResponseCode() >= HttpURLConnection.HTTP_BAD_REQUEST) {
+//                        return null;
+//                    }
+//                } else {
+//                    // our best guess for the other cases
+//                    InputStream is = url.openStream();
+//                    is.close();
+//                }
+//                return url;
+//            } catch (Exception e) {
+//                return null;
+//            }
+//        }
+//
+//        Resource getResource(final String name, boolean check) {
+//            final URL url;
+//            try {
+//                url = new URL(base, ParseUtil.encodePath(name, false));
+//            } catch (MalformedURLException e) {
+//                throw new IllegalArgumentException("name");
+//            }
+//            final URLConnection uc;
+//            try {
+//                if (check) {
+//                    URLClassPath.check(url);
+//                }
+//                uc = url.openConnection();
+//                InputStream in = uc.getInputStream();
+//            } catch (Exception e) {
+//                return null;
+//            }
+//            return new Resource() {
+//                public String getName() { return name; }
+//                public URL getURL() { return url; }
+//                public URL getCodeSourceURL() { return base; }
+//                public InputStream getInputStream() throws IOException {
+//                    return uc.getInputStream();
+//                }
+//                public int getContentLength() throws IOException {
+//                    return uc.getContentLength();
+//                }
+//            };
+//        }
+//
+//        /*
+//         * Returns the Resource for the specified name, or null if not
+//         * found or the caller does not have the permission to get the
+//         * resource.
+//         */
+//        Resource getResource(final String name) {
+//            return getResource(name, true);
+//        }
+//
+//        /*
+//         * Returns the local class path for this loader, or null if none.
+//         */
+//        URL[] getClassPath() throws IOException {
+//            return null;
+//        }
+//    }
+//
 //    /*
 //     * Inner class used to represent a Loader of resources from a JAR URL.
 //     */

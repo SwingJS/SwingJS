@@ -24,12 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.Component;
 import jsjavax.swing.event.ChangeListener;
-import jsjavax.swing.event.ChangeEvent;
-
-import java.util.Enumeration;
-import java.util.Hashtable;
 
 
 

@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.tree;
 
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.TreeModelListener;
 
 /**
  * The model used by <code>JTree</code>.

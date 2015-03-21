@@ -25,9 +25,9 @@
 
 package jsjava.awt.geom;
 
-import jsjava.awt.Shape;
 import jsjava.awt.Rectangle;
-//import java.io.Serializable;
+import jsjava.awt.Shape;
+
 
 /**
  * The <code>QuadCurve2D</code> class defines a quadratic parametric curve

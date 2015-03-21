@@ -25,20 +25,18 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.border.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-//
-
-////import java.io.Serializable;
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import jsjava.awt.Color;
 import jsjava.awt.Font;
-import java.util.*;
-import jsjava.beans.*;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.plaf.SliderUI;
+import jsjavax.swing.plaf.UIResource;
 
 
 /**

@@ -29,30 +29,16 @@ import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Dialog;
-import jsjava.awt.Dimension;
-//import jsjava.awt.KeyboardFocusManager;
 import jsjava.awt.Frame;
-import jsjava.awt.Point;
-//import jsjava.awt.HeadlessException;
-import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
-import jsjava.beans.PropertyChangeEvent;
-import jsjava.beans.PropertyChangeListener;
-import jsjava.awt.event.WindowListener;
-import jsjava.awt.event.WindowAdapter;
-import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.ComponentAdapter;
 import jsjava.awt.event.ComponentEvent;
-import java.io.IOException;
-//import java.io.ObjectInputStream;
-//import java.io.ObjectOutputStream;
-//import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Vector;
+import jsjava.awt.event.WindowAdapter;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.event.WindowListener;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.plaf.OptionPaneUI;
-//
-import static jsjavax.swing.ClientPropertyKey.PopupFactory_FORCE_HEAVYWEIGHT_POPUP;
 
 /**
  * <code>JOptionPane</code> makes it easy to pop up a standard dialog box that
@@ -2500,30 +2486,30 @@ public class JOptionPane extends JComponent
         ",wantsInput=" + wantsInputString;
     }
 
-    /**
-     * Retrieves a method from the provided class and makes it accessible.
-     */
-    private static class ModalPrivilegedAction {//implements PrivilegedAction {
-        private Class clazz;
-        private String methodName;
-
-        public ModalPrivilegedAction(Class clazz, String methodName) {
-            this.clazz = clazz;
-            this.methodName = methodName;
-        }
-
-        public Object run() {
-            Method method = null;
-            try {
-                method = clazz.getDeclaredMethod(methodName, (Class[])null);
-            } catch (NoSuchMethodException ex) {
-            }
-            if (method != null) {
-                method.setAccessible(true);
-            }
-            return method;
-        }
-    }
+//    /**
+//     * Retrieves a method from the provided class and makes it accessible.
+//     */
+//    private static class ModalPrivilegedAction {//implements PrivilegedAction {
+//        private Class clazz;
+//        private String methodName;
+//
+//        public ModalPrivilegedAction(Class clazz, String methodName) {
+//            this.clazz = clazz;
+//            this.methodName = methodName;
+//        }
+//
+//        public Object run() {
+//            Method method = null;
+//            try {
+//                method = clazz.getDeclaredMethod(methodName, (Class[])null);
+//            } catch (NoSuchMethodException ex) {
+//            }
+//            if (method != null) {
+//                method.setAccessible(true);
+//            }
+//            return method;
+//        }
+//    }
 
 
 

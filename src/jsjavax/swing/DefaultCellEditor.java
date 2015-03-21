@@ -25,14 +25,17 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.Component;
-import jsjava.awt.event.*;
-import java.lang.Boolean;
-import jsjavax.swing.table.*;
-import jsjavax.swing.event.*;
 import java.util.EventObject;
-import jsjavax.swing.tree.*;
-//import java.io.Serializable;
+
+import jsjava.awt.Component;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.ItemListener;
+import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.table.TableCellEditor;
+import jsjavax.swing.table.TableCellRenderer;
+import jsjavax.swing.tree.TreeCellEditor;
 
 /**
  * The default editor for table and tree cells.

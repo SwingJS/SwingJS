@@ -24,9 +24,16 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
+import jsjava.awt.Component;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjavax.swing.BoundedRangeModel;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JTextField;
+import jsjavax.swing.SwingConstants;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * Extends the multi-line plain text view to be suitable

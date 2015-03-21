@@ -25,9 +25,11 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.event.*;
-//import java.io.Serializable;
 import java.util.EventListener;
+
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 
 /**
  * A generic implementation of BoundedRangeModel.

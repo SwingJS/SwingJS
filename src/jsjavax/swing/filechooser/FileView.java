@@ -26,7 +26,8 @@
 package jsjavax.swing.filechooser;
 
 import java.io.File;
-import jsjavax.swing.*;
+
+import jsjavax.swing.Icon;
 
 /**
  * <code>FileView</code> defines an abstract class that can be implemented

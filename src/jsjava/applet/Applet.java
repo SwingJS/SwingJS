@@ -24,10 +24,9 @@
  */
 package jsjava.applet;
 
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
-//import jsjavax.accessibility.*;
 
 import jsjava.awt.Dimension;
 import jsjava.awt.Image;

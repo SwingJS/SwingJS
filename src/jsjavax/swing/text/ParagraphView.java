@@ -25,10 +25,14 @@
 package jsjavax.swing.text;
 
 import java.util.Arrays;
-import jsjava.awt.*;
+
+import jsjava.awt.Graphics;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjava.awt.font.TextAttribute;
-import jsjavax.swing.event.*;
 import jsjavax.swing.SizeRequirements;
+import jsjavax.swing.event.DocumentEvent;
 
 /**
  * View of a simple line-wrapping paragraph that supports

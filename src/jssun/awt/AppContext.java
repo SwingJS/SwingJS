@@ -26,12 +26,6 @@
 package jssun.awt;
 
 import jsjava.awt.EventQueue;
-import jsjava.awt.Window;
-//import jsjava.awt.SystemTray;
-//import jsjava.awt.TrayIcon;
-//import jsjava.awt.Toolkit;
-import jsjava.awt.GraphicsEnvironment;
-import jsjava.awt.event.InvocationEvent;
 import jsjava.security.AccessController;
 import jsjava.security.PrivilegedAction;
 import java.util.Collections;

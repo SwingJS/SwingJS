@@ -25,7 +25,6 @@
 
 package jssun.awt;
 
-//import jsjava.awt.peer.KeyboardFocusManagerPeer;
 
 /**
  * {@link KeyboardFocusManagerPeerProvider} is required to be implemented by

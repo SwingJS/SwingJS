@@ -25,7 +25,8 @@
 
 package jssun.awt;
 
-import jsjava.awt.*;
+import jsjava.awt.AWTEvent;
+import jsjava.awt.ActiveEvent;
 
 /**
  * Event object describing changes in AWT modality

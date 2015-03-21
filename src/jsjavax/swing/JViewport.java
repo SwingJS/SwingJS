@@ -25,19 +25,29 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.awt.image.VolatileImage;
-//import jsjava.awt.peer.ComponentPeer;
 import jsjava.applet.Applet;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Graphics;
+import jsjava.awt.Image;
+import jsjava.awt.Insets;
+import jsjava.awt.LayoutManager;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Window;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.ComponentAdapter;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.ComponentListener;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ViewportUI;
 
-import jsjavax.swing.event.*;
-import jsjavax.swing.border.*;
 
 
-
-//import java.io.Serializable;
 
 
 /**

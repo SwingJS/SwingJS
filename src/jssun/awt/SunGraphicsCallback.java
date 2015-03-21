@@ -25,9 +25,13 @@
 
 package jssun.awt;
 
-import jsjava.awt.*;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 
-//import java.util.logging.*;
 
 public abstract class SunGraphicsCallback {
     public static final int HEAVYWEIGHTS = 0x1;

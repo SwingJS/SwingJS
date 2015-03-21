@@ -24,20 +24,19 @@
  */
 package jssun.swing.table;
 
-import jssun.swing.DefaultLookup;
-
-import jsjava.awt.Component;
 import jsjava.awt.Color;
-import jsjava.awt.FontMetrics;
+import jsjava.awt.Component;
 import jsjava.awt.Graphics;
-import jsjava.awt.Insets;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
-//import java.io.Serializable;
-import jsjavax.swing.*;
-import jsjavax.swing.plaf.UIResource;
+import jsjavax.swing.Icon;
+import jsjavax.swing.JLabel;
+import jsjavax.swing.JTable;
+import jsjavax.swing.RowSorter;
+import jsjavax.swing.SortOrder;
 import jsjavax.swing.border.Border;
-import jsjavax.swing.table.*;
+import jsjavax.swing.plaf.UIResource;
+import jsjavax.swing.table.DefaultTableCellRenderer;
+import jsjavax.swing.table.JTableHeader;
+import jssun.swing.DefaultLookup;
 
 public class DefaultTableCellHeaderRenderer extends DefaultTableCellRenderer
         implements UIResource {

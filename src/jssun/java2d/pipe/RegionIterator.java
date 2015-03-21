@@ -25,8 +25,6 @@
 
 package jssun.java2d.pipe;
 
-import jsjava.awt.Rectangle;
-
 /**
  * This class defines the API for iterating through the bands
  * of a region object.

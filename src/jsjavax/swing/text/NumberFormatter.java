@@ -24,11 +24,16 @@
  */
 package jsjavax.swing.text;
 
-import java.lang.reflect.*;
-import java.text.*;
-import java.util.*;
-import jsjavax.swing.text.*;
-//import jssun.reflect.misc.ReflectUtil;
+import java.lang.reflect.Constructor;
+import java.text.AttributedCharacterIterator;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.Format;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Iterator;
+import java.util.Map;
+
 import jssun.swing.SwingUtilities2;
 
 /**

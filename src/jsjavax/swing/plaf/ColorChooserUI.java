@@ -25,9 +25,6 @@
 
 package jsjavax.swing.plaf;
 
-import jsjavax.swing.*;
-import jsjavax.swing.colorchooser.*;
-
 /**
  * Pluggable look and feel interface for JColorChooser.
  *

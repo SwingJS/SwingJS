@@ -24,17 +24,25 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-import jsjavax.swing.text.*;
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.event.*;
-
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
-//import java.io.Serializable;
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Insets;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.JTextComponent;
+import jsjavax.swing.text.PlainDocument;
+import jsjavax.swing.text.TextAction;
 
 /**
  * <code>JTextField</code> is a lightweight component that allows the editing

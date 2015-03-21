@@ -25,10 +25,9 @@
 package jsjavax.swing.table;
 
 import java.text.Collator;
-import java.util.*;
+import java.util.Comparator;
+
 import jsjavax.swing.DefaultRowSorter;
-import jsjavax.swing.RowFilter;
-import jsjavax.swing.SortOrder;
 
 /**
  * An implementation of <code>RowSorter</code> that provides sorting

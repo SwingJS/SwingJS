@@ -25,7 +25,6 @@
 
 package jsjavax.swing.undo;
 
-////import java.io.Serializable;
 import jsjavax.swing.UIManager;
 
 /**

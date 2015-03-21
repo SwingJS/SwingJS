@@ -25,16 +25,20 @@
 
 package jsjavax.swing.plaf;
 
-import jsjava.awt.Component;
-import jsjava.awt.Insets;
 import jsjava.awt.Color;
+import jsjava.awt.Component;
 import jsjava.awt.Font;
 import jsjava.awt.Graphics;
-//import java.io.Serializable;
-
-import jsjavax.swing.border.*;
+import jsjava.awt.Insets;
 import jsjavax.swing.Icon;
-import jsjavax.swing.plaf.UIResource;
+import jsjavax.swing.border.BevelBorder;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.border.CompoundBorder;
+import jsjavax.swing.border.EmptyBorder;
+import jsjavax.swing.border.EtchedBorder;
+import jsjavax.swing.border.LineBorder;
+import jsjavax.swing.border.MatteBorder;
+import jsjavax.swing.border.TitledBorder;
 
 
 /*

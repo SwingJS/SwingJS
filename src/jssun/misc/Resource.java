@@ -30,8 +30,6 @@ import java.net.URL;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.InputStream;
-//import jsjava.security.CodeSigner;
-//import jsjava.util.jar.Manifest;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import jssun.nio.ByteBuffered;

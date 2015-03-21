@@ -24,17 +24,33 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-//import jsjava.awt.datatransfer.*;
-import jsjava.beans.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.EventListener;
+
+import jsjava.awt.Graphics;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.ActionListener;
-import java.io.*;
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
-import java.util.EventListener;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseListener;
+import jsjava.awt.event.MouseMotionListener;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.Action;
+import jsjavax.swing.ActionMap;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.Timer;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.DocumentListener;
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.plaf.TextUI;
 import jssun.swing.SwingUtilities2;
 
 /**

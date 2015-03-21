@@ -25,19 +25,14 @@
 
 package jssun.font;
 
-import jsjava.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.lang.ref.SoftReference;
-import java.util.concurrent.ConcurrentHashMap;
+
+import jsjava.awt.Font;
 import jsjava.security.AccessController;
-
 import jsjava.security.PrivilegedAction;
-import jsjavax.swing.plaf.FontUIResource;
-
-//import sun.util.logging.PlatformLogger;
 
 /**
  * A collection of utility methods.

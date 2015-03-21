@@ -24,8 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.Shape;
-
 /**
  * <code>NavigationFilter</code> can be used to restrict where the cursor can
  * be positioned. When the default cursor positioning actions attempt to

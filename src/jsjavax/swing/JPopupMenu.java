@@ -25,19 +25,25 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import java.io.IOException;
-//import java.io.ObjectInputStream;
-//import java.io.ObjectOutputStream;
-//import java.io.Serializable;
-import jsjava.beans.*;
-
 import java.util.Vector;
-// 
+
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.Frame;
+import jsjava.awt.Graphics;
+import jsjava.awt.GraphicsEnvironment;
+import jsjava.awt.Insets;
+import jsjava.awt.Point;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.MenuKeyEvent;
+import jsjavax.swing.event.MenuKeyListener;
+import jsjavax.swing.event.PopupMenuEvent;
+import jsjavax.swing.event.PopupMenuListener;
 import jsjavax.swing.plaf.PopupMenuUI;
-//import jsjavax.swing.plaf.basic.BasicComboPopup;
-import jsjavax.swing.event.*;
 
 /**
  * An implementation of a popup menu -- a small window that pops up

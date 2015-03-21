@@ -25,7 +25,7 @@
 
 package jsjava.awt;
 
-import jsjava.awt.event.*;
+import jsjava.awt.event.AdjustmentListener;
 
 /**
  * The interface for objects which have an adjustable numeric value

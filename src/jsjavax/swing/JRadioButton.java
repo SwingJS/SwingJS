@@ -24,15 +24,7 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-
-import jsjavax.swing.plaf.*;
-
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
+import jsjavax.swing.plaf.ButtonUI;
 
 
 /**

@@ -24,7 +24,8 @@
  */
 package jsjavax.swing.undo;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * A concrete subclass of AbstractUndoableEdit, used to assemble little

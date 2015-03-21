@@ -25,9 +25,11 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.event.*;
-//import java.io.Serializable;
 import java.util.EventListener;
+
+import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.event.ListDataEvent;
+import jsjavax.swing.event.ListDataListener;
 
 /**
  * The abstract definition for the data model that provides

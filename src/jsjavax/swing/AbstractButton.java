@@ -24,11 +24,24 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjava.beans.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.Graphics;
+import jsjava.awt.Image;
+import jsjava.awt.Insets;
+import jsjava.awt.ItemSelectable;
+import jsjava.awt.LayoutManager;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.ItemListener;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.plaf.ButtonUI;
+import jsjavax.swing.plaf.UIResource;
 
 /**
  * Defines common behaviors for buttons and menu items.

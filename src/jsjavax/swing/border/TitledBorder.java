@@ -33,7 +33,6 @@ import jsjava.awt.Color;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Point;
-import jsjava.awt.Toolkit;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 

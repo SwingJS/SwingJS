@@ -27,14 +27,12 @@ package jssun.font;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
-
-import jsjava.awt.FontMetrics;
-import jsjava.awt.Font;
-import jsjava.awt.geom.AffineTransform;
-import jsjava.awt.font.FontRenderContext;
-//import jsjava.awt.font.TextLayout;
-
 import java.util.Hashtable;
+
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.font.FontRenderContext;
+import jsjava.awt.geom.AffineTransform;
 import jssun.java2d.Disposer;
 import jssun.java2d.DisposerRecord;
 
@@ -192,40 +190,40 @@ public final class FontDesignMetrics extends FontMetrics {
         }
     }
 
-    private static class MetricsKey {
-        Font font;
-        FontRenderContext frc;
-        int hash;
-
-        MetricsKey() {
-        }
-
-        MetricsKey(Font font, FontRenderContext frc) {
-            init(font, frc);
-        }
-
-        void init(Font font, FontRenderContext frc) {
-            this.font = font;
-            this.frc = frc;
-            this.hash = font.hashCode() + frc.hashCode();
-        }
-
-        public boolean equals(Object key) {
-            if (!(key instanceof MetricsKey)) {
-                return false;
-            }
-            return
-                font.equals(((MetricsKey)key).font) &&
-                frc.equals(((MetricsKey)key).frc);
-        }
-
-        public int hashCode() {
-            return hash;
-        }
-
-        /* Synchronize access to this on the class */
-        static final MetricsKey key = new MetricsKey();
-    }
+//    private static class MetricsKey {
+//        Font font;
+//        FontRenderContext frc;
+//        int hash;
+//
+//        MetricsKey() {
+//        }
+//
+//        MetricsKey(Font font, FontRenderContext frc) {
+//            init(font, frc);
+//        }
+//
+//        void init(Font font, FontRenderContext frc) {
+//            this.font = font;
+//            this.frc = frc;
+//            this.hash = font.hashCode() + frc.hashCode();
+//        }
+//
+//        public boolean equals(Object key) {
+//            if (!(key instanceof MetricsKey)) {
+//                return false;
+//            }
+//            return
+//                font.equals(((MetricsKey)key).font) &&
+//                frc.equals(((MetricsKey)key).frc);
+//        }
+//
+//        public int hashCode() {
+//            return hash;
+//        }
+//
+//        /* Synchronize access to this on the class */
+//        static final MetricsKey key = new MetricsKey();
+//    }
 
     /* All accesses to a CHM do not in general need to be synchronized,
      * as incomplete operations on another thread would just lead to

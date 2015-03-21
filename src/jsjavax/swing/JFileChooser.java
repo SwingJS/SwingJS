@@ -25,28 +25,30 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.event.*;
-import jsjavax.swing.filechooser.*;
-import jsjavax.swing.plaf.FileChooserUI;
-
-//
-//
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.Vector;
+
 import jsjava.awt.AWTEvent;
+import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
-import jsjava.awt.BorderLayout;
-import jsjava.awt.Window;
 import jsjava.awt.Dialog;
-import jsjava.awt.Frame;
-//import jsjava.awt.HeadlessException;
 import jsjava.awt.EventQueue;
+import jsjava.awt.Frame;
 import jsjava.awt.Toolkit;
-import jsjava.awt.event.*;
-import jsjava.beans.PropertyChangeListener;
+import jsjava.awt.Window;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.WindowAdapter;
+import jsjava.awt.event.WindowEvent;
 import jsjava.beans.PropertyChangeEvent;
-import java.lang.ref.WeakReference;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.filechooser.FileFilter;
+import jsjavax.swing.filechooser.FileSystemView;
+import jsjavax.swing.filechooser.FileView;
+import jsjavax.swing.plaf.FileChooserUI;
 
 /**
  * <code>JFileChooser</code> provides a simple mechanism for the user to

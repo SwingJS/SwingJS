@@ -24,7 +24,7 @@
  */
 package jsjavax.swing;
 
-import jsjavax.swing.plaf.*;
+import jsjavax.swing.plaf.ButtonUI;
 
 
 /**

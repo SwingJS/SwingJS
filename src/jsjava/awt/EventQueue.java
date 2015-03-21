@@ -25,22 +25,18 @@
 
 package jsjava.awt;
 
-import jsjava.awt.event.*;
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
-
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
-
 import java.util.EmptyStackException;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import jsjava.awt.event.InvocationEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.PaintEvent;
+import jsjava.security.PrivilegedAction;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
-import jssun.awt.AWTAccessor;
-
-import jsjava.security.AccessControlContext;
 
 
 /**

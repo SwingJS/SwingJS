@@ -24,24 +24,15 @@
  */
 package jsjavax.swing.text;
 
-import java.lang.reflect.Method;
+import java.text.BreakIterator;
 
 import jsjava.awt.Component;
-import jsjava.awt.Rectangle;
-import jsjava.awt.Graphics;
 import jsjava.awt.FontMetrics;
+import jsjava.awt.Rectangle;
 import jsjava.awt.Shape;
-import jsjava.awt.Toolkit;
-import jsjava.awt.Graphics2D;
-import jsjava.awt.font.FontRenderContext;
-//import jsjava.awt.font.TextLayout;
-import jsjava.awt.font.TextAttribute;
-
-import java.text.*;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.SwingConstants;
 import jsjavax.swing.text.ParagraphView.Row;
-import jssun.swing.SwingUtilities2;
 
 /**
  * A collection of methods to deal with various text

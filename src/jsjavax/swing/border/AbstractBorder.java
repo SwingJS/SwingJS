@@ -28,7 +28,6 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Component;
-//import java.io.Serializable;
 
 /**
  * A class that implements an empty border with no size.

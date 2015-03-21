@@ -24,9 +24,39 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.*;
 import java.lang.reflect.Array;
 import java.util.EventListener;
+
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.AdjustmentEvent;
+import jsjava.awt.event.AdjustmentListener;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.ComponentListener;
+import jsjava.awt.event.ContainerEvent;
+import jsjava.awt.event.ContainerListener;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.HierarchyBoundsListener;
+import jsjava.awt.event.HierarchyEvent;
+import jsjava.awt.event.HierarchyListener;
+import jsjava.awt.event.InputMethodEvent;
+import jsjava.awt.event.InputMethodListener;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.ItemListener;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.KeyListener;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseListener;
+import jsjava.awt.event.MouseMotionListener;
+import jsjava.awt.event.MouseWheelEvent;
+import jsjava.awt.event.MouseWheelListener;
+import jsjava.awt.event.TextEvent;
+import jsjava.awt.event.TextListener;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.event.WindowFocusListener;
+import jsjava.awt.event.WindowListener;
+import jsjava.awt.event.WindowStateListener;
 
 
 /**

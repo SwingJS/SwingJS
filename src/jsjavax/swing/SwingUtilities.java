@@ -24,8 +24,7 @@
  */
 package jsjavax.swing;
 
-import jssun.swing.SwingUtilities2;
-import jssun.swing.UIAction;
+import java.lang.reflect.InvocationTargetException;
 
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
@@ -47,13 +46,11 @@ import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseWheelEvent;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.WindowListener;
-
-import java.lang.reflect.*;
-
 import jsjavax.swing.event.MenuDragMouseEvent;
 import jsjavax.swing.plaf.UIResource;
-
 import jssun.awt.AppContext;
+import jssun.swing.SwingUtilities2;
+import jssun.swing.UIAction;
 
 /**
  * A collection of utility methods for Swing.

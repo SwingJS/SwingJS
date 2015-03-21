@@ -24,11 +24,14 @@
  */
 package jsjavax.swing;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
-import java.io.*;
-import java.lang.ref.WeakReference;
-import java.lang.ref.ReferenceQueue;
 
 /**
  * A package-private PropertyChangeListener which listens for

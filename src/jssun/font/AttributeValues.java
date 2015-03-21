@@ -35,26 +35,41 @@
 
 package jssun.font;
 
-import static jssun.font.EAttribute.*;
+import static jssun.font.EAttribute.EBACKGROUND;
+import static jssun.font.EAttribute.EBASELINE_TRANSFORM;
+import static jssun.font.EAttribute.EBIDI_EMBEDDING;
+import static jssun.font.EAttribute.EFAMILY;
+import static jssun.font.EAttribute.EFONT;
+import static jssun.font.EAttribute.EFOREGROUND;
+import static jssun.font.EAttribute.EINPUT_METHOD_HIGHLIGHT;
+import static jssun.font.EAttribute.EINPUT_METHOD_UNDERLINE;
+import static jssun.font.EAttribute.EJUSTIFICATION;
+import static jssun.font.EAttribute.EKERNING;
+import static jssun.font.EAttribute.ELIGATURES;
+import static jssun.font.EAttribute.EPOSTURE;
+import static jssun.font.EAttribute.ERUN_DIRECTION;
+import static jssun.font.EAttribute.ESIZE;
+import static jssun.font.EAttribute.ESTRIKETHROUGH;
+import static jssun.font.EAttribute.ESUPERSCRIPT;
+import static jssun.font.EAttribute.ESWAP_COLORS;
+import static jssun.font.EAttribute.ETRACKING;
+import static jssun.font.EAttribute.ETRANSFORM;
+import static jssun.font.EAttribute.EUNDERLINE;
+import static jssun.font.EAttribute.EWEIGHT;
+import static jssun.font.EAttribute.EWIDTH;
+
+import java.text.Annotation;
+import java.text.AttributedCharacterIterator.Attribute;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import jsjava.awt.Font;
 import jsjava.awt.Paint;
-//import java.awt.Paint;
-//import jsjava.awt.Toolkit;
-import jsjava.awt.font.GraphicAttribute;
-//import jsjava.awt.font.NumericShaper;
 import jsjava.awt.font.TextAttribute;
-//import jsjava.awt.font.TransformAttribute;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.geom.NoninvertibleTransformException;
 import jsjava.awt.geom.Point2D;
-//import jsjava.awt.im.InputMethodHighlight;
-//import java.io.Serializable;
-import java.text.Annotation;
-import java.text.AttributedCharacterIterator.Attribute;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 public final class AttributeValues implements Cloneable {
     private int defined;

@@ -24,7 +24,7 @@
  */
 package jssun.swing;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * <b>WARNING:</b> This class is an implementation detail and is only

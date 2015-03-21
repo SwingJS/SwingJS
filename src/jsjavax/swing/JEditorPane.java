@@ -24,15 +24,49 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import java.lang.reflect.*;
-import java.net.*;
-import java.util.*;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.DataOutputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.text.*;
-import jsjavax.swing.event.*;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.HyperlinkEvent;
+import jsjavax.swing.event.HyperlinkListener;
+import jsjavax.swing.plaf.TextUI;
+import jsjavax.swing.text.AbstractDocument;
+import jsjavax.swing.text.BadLocationException;
+import jsjavax.swing.text.BoxView;
+import jsjavax.swing.text.Caret;
+import jsjavax.swing.text.ChangedCharSetException;
+import jsjavax.swing.text.CompositeView;
+import jsjavax.swing.text.DefaultEditorKit;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.EditorKit;
+import jsjavax.swing.text.Element;
+import jsjavax.swing.text.JTextComponent;
+import jsjavax.swing.text.StyleConstants;
+import jsjavax.swing.text.StyledEditorKit;
+import jsjavax.swing.text.View;
+import jsjavax.swing.text.ViewFactory;
+import jsjavax.swing.text.WrappedPlainView;
 
 /**
  * A text component to edit various kinds of content.

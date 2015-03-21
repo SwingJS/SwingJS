@@ -26,7 +26,6 @@ package jsjavax.swing.text;
 
 import jsjava.awt.Color;
 import jsjava.awt.Component;
-import jsjava.awt.Toolkit;
 import jsjavax.swing.Icon;
 
 /**

@@ -29,13 +29,8 @@ import jsjava.awt.Font;
 import jsjava.awt.Color;
 import jsjava.awt.Insets;
 import jsjava.awt.Dimension;
-//import jsjava.awt.KeyboardFocusManager;
-//import jsjava.awt.KeyEventPostProcessor;
-//import jsjava.awt.Toolkit;
 
-//import jsjava.awt.event.KeyEvent;
 
-//import jsjava.security.AccessController;
 
 import jsjavax.swing.plaf.ComponentUI;
 import jsjavax.swing.border.Border;
@@ -51,11 +46,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.Locale;
 
-import jssun.awt.SunToolkit;
-//import jssun.awt.OSInfo;
-//import jssun.security.action.GetPropertyAction;
 import jssun.swing.SwingUtilities2;
-//import java.lang.reflect.Method;
 
 
 /**

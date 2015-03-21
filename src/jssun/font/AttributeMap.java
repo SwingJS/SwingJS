@@ -44,8 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static jssun.font.AttributeValues.*;
-
 public final class AttributeMap extends AbstractMap<TextAttribute, Object> {
     private AttributeValues values;
     private Map<TextAttribute, Object> delegateMap;

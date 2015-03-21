@@ -35,8 +35,6 @@
 
 package jsjava.awt.color;
 
-//import jssun.java2d.cmm.PCMM;
-//import sun.java2d.cmm.CMSManager;
 
 
 /**
@@ -103,10 +101,10 @@ public class ColorSpace {
 
     // Cache of singletons for the predefined color spaces.
     private static ColorSpace sRGBspace;
-    private static ColorSpace XYZspace;
-    private static ColorSpace PYCCspace;
-    private static ColorSpace GRAYspace;
-    private static ColorSpace LINEAR_RGBspace;
+//    private static ColorSpace XYZspace;
+//    private static ColorSpace PYCCspace;
+//    private static ColorSpace GRAYspace;
+//    private static ColorSpace LINEAR_RGBspace;
 
     /**
      * Any of the family of XYZ color spaces.
@@ -607,9 +605,9 @@ public class ColorSpace {
         return 1.0f;
     }
 
-    /* Returns true if cspace is the XYZspace.
-     */
-    static boolean isCS_CIEXYZ(ColorSpace cspace) {
-        return (cspace == XYZspace);
-    }
+//    /* Returns true if cspace is the XYZspace.
+//     */
+//    static boolean isCS_CIEXYZ(ColorSpace cspace) {
+//        return (cspace == XYZspace);
+//    }
 }

@@ -25,7 +25,7 @@
 
 package jsjava.awt;
 
-import jsjava.awt.event.*;
+import jsjava.awt.event.ItemListener;
 
 /**
  * The interface for objects which contain a set of items for

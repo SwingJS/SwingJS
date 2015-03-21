@@ -25,9 +25,14 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-import jsjava.awt.*;
-import jsjavax.swing.plaf.*;
-import jsjavax.swing.*;
+
+import jsjava.awt.Color;
+import jsjava.awt.Graphics;
+import jsjava.awt.Insets;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.plaf.TextUI;
 
 /**
  * Implements the Highlighter interfaces.  Implements a simple highlight

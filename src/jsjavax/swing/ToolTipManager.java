@@ -26,8 +26,29 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.event.*;
-import jsjava.awt.*;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Dimension;
+import jsjava.awt.Event;
+import jsjava.awt.Frame;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.Insets;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Toolkit;
+import jsjava.awt.Window;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.FocusAdapter;
+import jsjava.awt.event.FocusEvent;
+import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.KeyAdapter;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.KeyListener;
+import jsjava.awt.event.MouseAdapter;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseMotionAdapter;
+import jsjava.awt.event.MouseMotionListener;
 
 /**
  * Manages all the <code>ToolTips</code> in the system.

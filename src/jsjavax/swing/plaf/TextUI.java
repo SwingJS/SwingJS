@@ -24,12 +24,13 @@
  */
 package jsjavax.swing.plaf;
 
-import jsjavax.swing.Action;
-import jsjavax.swing.BoundedRangeModel;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
-import jsjava.awt.Insets;
-import jsjavax.swing.text.*;
+import jsjavax.swing.text.BadLocationException;
+import jsjavax.swing.text.EditorKit;
+import jsjavax.swing.text.JTextComponent;
+import jsjavax.swing.text.Position;
+import jsjavax.swing.text.View;
 
 /**
  * Text editor user interface

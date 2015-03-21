@@ -25,7 +25,6 @@
 
 package jsjava.awt;
 
-//import jsjava.awt.peer.LightweightPeer;
 import jssun.awt.SunGraphicsCallback;
 
 

@@ -25,15 +25,11 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.border.*;
-
-import jsjava.awt.Component;
 import jsjava.awt.Color;
+import jsjava.awt.Component;
 import jsjava.awt.Rectangle;
-
-//import java.io.Serializable;
+import jsjavax.swing.border.Border;
+import jsjavax.swing.border.EmptyBorder;
 import jssun.swing.DefaultLookup;
 
 

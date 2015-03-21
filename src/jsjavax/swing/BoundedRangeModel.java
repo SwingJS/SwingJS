@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.event.*;
+import jsjavax.swing.event.ChangeListener;
 
 
 /**

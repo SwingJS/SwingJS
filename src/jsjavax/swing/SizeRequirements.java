@@ -24,10 +24,6 @@
  */
 package jsjavax.swing;
 
-
-import jsjava.awt.*;
-//import java.io.Serializable;
-
 /**
  * For the convenience of layout managers,
  * calculates information about the size and position of components.

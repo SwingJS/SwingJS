@@ -26,9 +26,11 @@
 
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import java.util.Locale;
+import jsjava.awt.AWTError;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.Graphics;
+import jsjava.awt.LayoutManager;
 
 /**
  * A lightweight container

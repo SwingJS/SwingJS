@@ -25,26 +25,54 @@
 
 package jssun.swing;
 
-import java.lang.reflect.*;
-import jsjava.awt.*;
-import static jssun.awt.SunHints.*;
-import jsjava.awt.event.*;
-import jsjava.awt.font.*;
-import jsjavax.swing.*;
-import jsjavax.swing.text.Highlighter;
-import jsjavax.swing.text.JTextComponent;
-import jsjavax.swing.text.DefaultHighlighter;
-import jsjavax.swing.text.DefaultCaret;
-import jsjavax.swing.table.TableCellRenderer;
-import jssun.swing.ImageIconUIResource;
-//import jssun.security.action.GetPropertyAction;
-//import jssun.security.util.SecurityConstants;
-import java.io.*;
-import java.util.*;
-import jssun.font.FontDesignMetrics;
+import static jssun.awt.SunHints.KEY_TEXT_ANTIALIASING;
+import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_DEFAULT;
+import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_OFF;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.RenderingHints;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.font.FontRenderContext;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JList;
+import jsjavax.swing.JTable;
+import jsjavax.swing.ListCellRenderer;
+import jsjavax.swing.ListModel;
+import jsjavax.swing.ListSelectionModel;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.UIDefaults;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.table.TableCellRenderer;
+import jsjavax.swing.text.DefaultCaret;
+import jsjavax.swing.text.DefaultHighlighter;
+import jsjavax.swing.text.Highlighter;
+import jsjavax.swing.text.JTextComponent;
+import jssun.font.FontDesignMetrics;
 
 /**
  * A collection of utility methods for Swing.
@@ -66,8 +94,8 @@ public class SwingUtilities2 {
     private static final int STRONG_BEARING_CACHE_SIZE = 10;
     // Strong cache for the left and right side bearings
     // for STRONG_BEARING_CACHE_SIZE most recently used fonts.
-    private static BearingCacheEntry[] strongBearingCache =
-            new BearingCacheEntry[STRONG_BEARING_CACHE_SIZE];
+//    private static BearingCacheEntry[] strongBearingCache =
+//            new BearingCacheEntry[STRONG_BEARING_CACHE_SIZE];
     // Next index to insert an entry into the strong bearing cache
     private static int strongBearingCacheNextIndex = 0;
     // Soft cache for the left and right side bearings
@@ -1050,50 +1078,50 @@ public class SwingUtilities2 {
         return true;
     }
 
-    /**
-     * BearingCacheEntry is used to cache left and right character bearings
-     * for a particular <code>Font</code> and <code>FontRenderContext</code>.
-     */
-    private static class BearingCacheEntry {
-        private FontMetrics fontMetrics;
-        private Font font;
-        private FontRenderContext frc;
-        private Map<Character, Short> cache;
-        // Used for the creation of a GlyphVector
-        private static final char[] oneChar = new char[1];
-
-        public BearingCacheEntry(FontMetrics fontMetrics) {
-            this.fontMetrics = fontMetrics;
-            this.font = fontMetrics.getFont();
-            this.frc = fontMetrics.getFontRenderContext();
-            this.cache = new HashMap<Character, Short>();
-            //assert (font != null && frc != null);
-        }
-
-        public int getLeftSideBearing(char aChar) {
-            Short bearing = cache.get(aChar);
-            if (bearing == null) {
-                bearing = calcBearing(aChar);
-                cache.put(aChar, bearing);
-            }
-            return ((0xFF00 & bearing) >>> 8) - 127;
-        }
-
-        public int getRightSideBearing(char aChar) {
-            Short bearing = cache.get(aChar);
-            if (bearing == null) {
-                bearing = calcBearing(aChar);
-                cache.put(aChar, bearing);
-            }
-            return (0xFF & bearing) - 127;
-        }
-
-        /* Calculates left and right side bearings for a character.
-         * Makes an assumption that bearing is a value between -127 and +127.
-         * Stores LSB and RSB as single two-byte number (short):
-         * LSB is the high byte, RSB is the low byte.
-         */
-        private short calcBearing(char aChar) {
+//    /**
+//     * BearingCacheEntry is used to cache left and right character bearings
+//     * for a particular <code>Font</code> and <code>FontRenderContext</code>.
+//     */
+//    private static class BearingCacheEntry {
+//        private FontMetrics fontMetrics;
+//        private Font font;
+//        private FontRenderContext frc;
+//        private Map<Character, Short> cache;
+//        // Used for the creation of a GlyphVector
+//        private static final char[] oneChar = new char[1];
+//
+//        public BearingCacheEntry(FontMetrics fontMetrics) {
+//            this.fontMetrics = fontMetrics;
+//            this.font = fontMetrics.getFont();
+//            this.frc = fontMetrics.getFontRenderContext();
+//            this.cache = new HashMap<Character, Short>();
+//            //assert (font != null && frc != null);
+//        }
+//
+//        public int getLeftSideBearing(char aChar) {
+//            Short bearing = cache.get(aChar);
+//            if (bearing == null) {
+//                bearing = calcBearing(aChar);
+//                cache.put(aChar, bearing);
+//            }
+//            return ((0xFF00 & bearing) >>> 8) - 127;
+//        }
+//
+//        public int getRightSideBearing(char aChar) {
+//            Short bearing = cache.get(aChar);
+//            if (bearing == null) {
+//                bearing = calcBearing(aChar);
+//                cache.put(aChar, bearing);
+//            }
+//            return (0xFF & bearing) - 127;
+//        }
+//
+//        /* Calculates left and right side bearings for a character.
+//         * Makes an assumption that bearing is a value between -127 and +127.
+//         * Stores LSB and RSB as single two-byte number (short):
+//         * LSB is the high byte, RSB is the low byte.
+//         */
+//        private short calcBearing(char aChar) {
 //            oneChar[0] = aChar;
 //            GlyphVector gv = font.createGlyphVector(frc, oneChar);
 //            Rectangle pixelBounds = gv.getGlyphPixelBounds(0, frc, 0f, 0f);
@@ -1133,32 +1161,32 @@ public class SwingUtilities2 {
 //            }
 //
 //            int bearing = ((lsb + 127) << 8) + (rsb + 127);
-            return 0;//(short)bearing;
-        }
-
-        public boolean equals(Object entry) {
-            if (entry == this) {
-                return true;
-            }
-            if (!(entry instanceof BearingCacheEntry)) {
-                return false;
-            }
-            BearingCacheEntry oEntry = (BearingCacheEntry)entry;
-            return (font.equals(oEntry.font) &&
-                    frc.equals(oEntry.frc));
-        }
-
-        public int hashCode() {
-            int result = 17;
-            if (font != null) {
-                result = 37 * result + font.hashCode();
-            }
-            if (frc != null) {
-                result = 37 * result + frc.hashCode();
-            }
-            return result;
-        }
-    }
+//            return 0;//(short)bearing;
+//        }
+//
+//        public boolean equals(Object entry) {
+//            if (entry == this) {
+//                return true;
+//            }
+//            if (!(entry instanceof BearingCacheEntry)) {
+//                return false;
+//            }
+//            BearingCacheEntry oEntry = (BearingCacheEntry)entry;
+//            return (font.equals(oEntry.font) &&
+//                    frc.equals(oEntry.frc));
+//        }
+//
+//        public int hashCode() {
+//            int result = 17;
+//            if (font != null) {
+//                result = 37 * result + font.hashCode();
+//            }
+//            if (frc != null) {
+//                result = 37 * result + frc.hashCode();
+//            }
+//            return result;
+//        }
+//    }
 
 
     /*
@@ -1565,6 +1593,7 @@ public class SwingUtilities2 {
         return defaultValue;
     }
 
+//SwingJSX: Key Focus
 //    // At this point we need this method here. But we assume that there
 //    // will be a common method for this purpose in the future releases.
 //    public static Component compositeRequestFocus(Component component) {
@@ -1595,13 +1624,13 @@ public class SwingUtilities2 {
 //        }
 //        return null;
 //    }
-
-    /**
-     * Change focus to the visible component in {@code JTabbedPane}.
-     * This is not a general-purpose method and is here only to permit
-     * sharing code.
-     */
-    public static boolean tabbedPaneChangeFocusTo(Component comp) {
+//
+//    /**
+//     * Change focus to the visible component in {@code JTabbedPane}.
+//     * This is not a general-purpose method and is here only to permit
+//     * sharing code.
+//     */
+//    public static boolean tabbedPaneChangeFocusTo(Component comp) {
 //        if (comp != null) {
 //            if (comp.isFocusTraversable()) {
 //                SwingUtilities2.compositeRequestFocus(comp);
@@ -1613,8 +1642,8 @@ public class SwingUtilities2 {
 //            }
 //        }
 //
-        return false;
-    }
+//        return false;
+//    }
 
     /**
      * Submits a value-returning task for execution on the EDT and

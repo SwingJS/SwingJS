@@ -25,8 +25,6 @@
 
 package jsjava.awt.geom;
 
-//import java.io.Serializable;
-
 /**
  * <CODE>Arc2D</CODE> is the abstract superclass for all objects that
  * store a 2D arc defined by a framing rectangle,

@@ -25,13 +25,10 @@
 package jsjavax.swing.text;
 
 import jsjava.awt.event.ActionEvent;
-//import jsjava.awt.KeyboardFocusManager;
-import jsjava.awt.Component;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import jsjavax.swing.Action;
 import jsjavax.swing.AbstractAction;
-import jsjavax.swing.KeyStroke;
 
 /**
  * An Action implementation useful for key bindings that are

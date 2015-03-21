@@ -26,7 +26,6 @@
 package jsjavax.swing.event;
 
 import java.util.EventObject;
-import jsjavax.swing.*;
 
 
 /**

@@ -25,9 +25,10 @@
 package jsjavax.swing;
 
 
-import jsjava.awt.event.*;
-import jsjava.awt.*;
-import jsjavax.swing.event.*;
+import jsjava.awt.ItemSelectable;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.ItemListener;
+import jsjavax.swing.event.ChangeListener;
 
 /**
  * State model for buttons.

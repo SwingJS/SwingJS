@@ -25,8 +25,8 @@
 
 package jsjavax.swing.tree;
 
-import jsjavax.swing.event.*;
 import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.TreeSelectionListener;
 
 /**
   * This interface represents the current state of the selection for

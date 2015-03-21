@@ -24,14 +24,14 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
 import jsjava.applet.Applet;
-import jsjava.beans.PropertyChangeListener;
-import java.util.Locale;
-import java.util.Vector;
-////import java.io.Serializable;
-// 
+import jsjava.awt.AWTEvent;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Graphics;
+import jsjava.awt.LayoutManager;
 
 /**
  * An extended version of <code>jsjava.applet.Applet</code> that adds support for

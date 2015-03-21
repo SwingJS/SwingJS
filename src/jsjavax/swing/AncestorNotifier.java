@@ -26,16 +26,17 @@
 package jsjavax.swing;
 
 
-import jsjavax.swing.event.*;
-import jsjava.awt.event.*;
-
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Window;
-import jsjava.beans.PropertyChangeListener;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.ComponentListener;
 import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.AncestorEvent;
+import jsjavax.swing.event.AncestorListener;
+import jsjavax.swing.event.EventListenerList;
 
-//import java.io.Serializable;
 
 
 /**

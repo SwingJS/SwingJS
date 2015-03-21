@@ -28,7 +28,6 @@ package jsjava.awt.geom;
 import jsjava.awt.Shape;
 import jsjava.awt.Rectangle;
 
-//import java.io.Serializable;
 
 /**
  * This <code>Line2D</code> represents a line segment in {@code (x,y)}

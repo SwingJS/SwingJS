@@ -25,7 +25,6 @@
 
 package jsjava.awt.geom;
 
-//import java.io.Serializable;
 
 /**
  * The <code>Rectangle2D</code> class describes a rectangle

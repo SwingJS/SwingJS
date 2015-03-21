@@ -25,26 +25,14 @@
 
 package jsjava.awt.image;
 
-import jsjava.awt.Transparency;
-import jsjava.awt.Graphics;
-//import jsjava.awt.color.ColorSpace;
-import jsjava.awt.Graphics2D;
-import jsjava.awt.GraphicsConfiguration;
-import jsjava.awt.GraphicsEnvironment;
-import jsjava.awt.Image;
-import jsjava.awt.ImageCapabilities;
-import jsjava.awt.geom.Rectangle2D;
-import jsjava.awt.geom.Point2D;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
 import java.util.Hashtable;
 import java.util.Vector;
 
-//import sun.awt.image.BytePackedRaster;
-//import sun.awt.image.ShortComponentRaster;
-//import sun.awt.image.ByteComponentRaster;
-//import sun.awt.image.IntegerComponentRaster;
-//import sun.awt.image.OffScreenImageSource;
+import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
+import jsjava.awt.GraphicsEnvironment;
+import jsjava.awt.Image;
+
 
 /**
  *
@@ -116,176 +104,176 @@ public class BufferedImage extends Image
      */
     public static final int TYPE_INT_ARGB = 2;
 
-    /**
-     * Represents an image with 8-bit RGBA color components packed into
-     * integer pixels.  The image has a <code>DirectColorModel</code>
-     * with alpha.  The color data in this image is considered to be
-     * premultiplied with alpha.
-     */
-    public static final int TYPE_INT_ARGB_PRE = 3;
-
-    /**
-     * Represents an image with 8-bit RGB color components, corresponding
-     * to a Windows- or Solaris- style BGR color model, with the colors
-     * Blue, Green, and Red packed into integer pixels.  There is no alpha.
-     * The image has a {@link DirectColorModel}.
-     * When data with non-opaque alpha is stored
-     * in an image of this type,
-     * the color data must be adjusted to a non-premultiplied form
-     * and the alpha discarded,
-     * as described in the
-     * {@link java.awt.AlphaComposite} documentation.
-     */
-    public static final int TYPE_INT_BGR = 4;
-
-    /**
-     * Represents an image with 8-bit RGB color components, corresponding
-     * to a Windows-style BGR color model) with the colors Blue, Green,
-     * and Red stored in 3 bytes.  There is no alpha.  The image has a
-     * <code>ComponentColorModel</code>.
-     * When data with non-opaque alpha is stored
-     * in an image of this type,
-     * the color data must be adjusted to a non-premultiplied form
-     * and the alpha discarded,
-     * as described in the
-     * {@link java.awt.AlphaComposite} documentation.
-     */
-    public static final int TYPE_3BYTE_BGR = 5;
-
-    /**
-     * Represents an image with 8-bit RGBA color components with the colors
-     * Blue, Green, and Red stored in 3 bytes and 1 byte of alpha.  The
-     * image has a <code>ComponentColorModel</code> with alpha.  The
-     * color data in this image is considered not to be premultiplied with
-     * alpha.  The byte data is interleaved in a single
-     * byte array in the order A, B, G, R
-     * from lower to higher byte addresses within each pixel.
-     */
-    public static final int TYPE_4BYTE_ABGR = 6;
-
-    /**
-     * Represents an image with 8-bit RGBA color components with the colors
-     * Blue, Green, and Red stored in 3 bytes and 1 byte of alpha.  The
-     * image has a <code>ComponentColorModel</code> with alpha. The color
-     * data in this image is considered to be premultiplied with alpha.
-     * The byte data is interleaved in a single byte array in the order
-     * A, B, G, R from lower to higher byte addresses within each pixel.
-     */
-    public static final int TYPE_4BYTE_ABGR_PRE = 7;
-
-    /**
-     * Represents an image with 5-6-5 RGB color components (5-bits red,
-     * 6-bits green, 5-bits blue) with no alpha.  This image has
-     * a <code>DirectColorModel</code>.
-     * When data with non-opaque alpha is stored
-     * in an image of this type,
-     * the color data must be adjusted to a non-premultiplied form
-     * and the alpha discarded,
-     * as described in the
-     * {@link java.awt.AlphaComposite} documentation.
-     */
-    public static final int TYPE_USHORT_565_RGB = 8;
-
-    /**
-     * Represents an image with 5-5-5 RGB color components (5-bits red,
-     * 5-bits green, 5-bits blue) with no alpha.  This image has
-     * a <code>DirectColorModel</code>.
-     * When data with non-opaque alpha is stored
-     * in an image of this type,
-     * the color data must be adjusted to a non-premultiplied form
-     * and the alpha discarded,
-     * as described in the
-     * {@link java.awt.AlphaComposite} documentation.
-     */
-    public static final int TYPE_USHORT_555_RGB = 9;
-
-    /**
-     * Represents a unsigned byte grayscale image, non-indexed.  This
-     * image has a <code>ComponentColorModel</code> with a CS_GRAY
-     * {@link ColorSpace}.
-     * When data with non-opaque alpha is stored
-     * in an image of this type,
-     * the color data must be adjusted to a non-premultiplied form
-     * and the alpha discarded,
-     * as described in the
-     * {@link java.awt.AlphaComposite} documentation.
-     */
-    public static final int TYPE_BYTE_GRAY = 10;
-
-    /**
-     * Represents an unsigned short grayscale image, non-indexed).  This
-     * image has a <code>ComponentColorModel</code> with a CS_GRAY
-     * <code>ColorSpace</code>.
-     * When data with non-opaque alpha is stored
-     * in an image of this type,
-     * the color data must be adjusted to a non-premultiplied form
-     * and the alpha discarded,
-     * as described in the
-     * {@link java.awt.AlphaComposite} documentation.
-     */
-    public static final int TYPE_USHORT_GRAY = 11;
-
-    /**
-     * Represents an opaque byte-packed 1, 2, or 4 bit image.  The
-     * image has an {@link IndexColorModel} without alpha.  When this
-     * type is used as the <code>imageType</code> argument to the
-     * <code>BufferedImage</code> constructor that takes an
-     * <code>imageType</code> argument but no <code>ColorModel</code>
-     * argument, a 1-bit image is created with an
-     * <code>IndexColorModel</code> with two colors in the default
-     * sRGB <code>ColorSpace</code>: {0,&nbsp;0,&nbsp;0} and
-     * {255,&nbsp;255,&nbsp;255}.
-     *
-     * <p> Images with 2 or 4 bits per pixel may be constructed via
-     * the <code>BufferedImage</code> constructor that takes a
-     * <code>ColorModel</code> argument by supplying a
-     * <code>ColorModel</code> with an appropriate map size.
-     *
-     * <p> Images with 8 bits per pixel should use the image types
-     * <code>TYPE_BYTE_INDEXED</code> or <code>TYPE_BYTE_GRAY</code>
-     * depending on their <code>ColorModel</code>.
-
-     * <p> When color data is stored in an image of this type,
-     * the closest color in the colormap is determined
-     * by the <code>IndexColorModel</code> and the resulting index is stored.
-     * Approximation and loss of alpha or color components
-     * can result, depending on the colors in the
-     * <code>IndexColorModel</code> colormap.
-     */
-    public static final int TYPE_BYTE_BINARY = 12;
-
-    /**
-     * Represents an indexed byte image.  When this type is used as the
-     * <code>imageType</code> argument to the <code>BufferedImage</code>
-     * constructor that takes an <code>imageType</code> argument
-     * but no <code>ColorModel</code> argument, an
-     * <code>IndexColorModel</code> is created with
-     * a 256-color 6/6/6 color cube palette with the rest of the colors
-     * from 216-255 populated by grayscale values in the
-     * default sRGB ColorSpace.
-     *
-     * <p> When color data is stored in an image of this type,
-     * the closest color in the colormap is determined
-     * by the <code>IndexColorModel</code> and the resulting index is stored.
-     * Approximation and loss of alpha or color components
-     * can result, depending on the colors in the
-     * <code>IndexColorModel</code> colormap.
-     */
-    public static final int TYPE_BYTE_INDEXED = 13;
-
-    private static final int DCM_RED_MASK   = 0x00ff0000;
-    private static final int DCM_GREEN_MASK = 0x0000ff00;
-    private static final int DCM_BLUE_MASK  = 0x000000ff;
-    private static final int DCM_ALPHA_MASK = 0xff000000;
-    private static final int DCM_565_RED_MASK = 0xf800;
-    private static final int DCM_565_GRN_MASK = 0x07E0;
-    private static final int DCM_565_BLU_MASK = 0x001F;
-    private static final int DCM_555_RED_MASK = 0x7C00;
-    private static final int DCM_555_GRN_MASK = 0x03E0;
-    private static final int DCM_555_BLU_MASK = 0x001F;
-    private static final int DCM_BGR_RED_MASK = 0x0000ff;
-    private static final int DCM_BGR_GRN_MASK = 0x00ff00;
-    private static final int DCM_BGR_BLU_MASK = 0xff0000;
+//    /**
+//     * Represents an image with 8-bit RGBA color components packed into
+//     * integer pixels.  The image has a <code>DirectColorModel</code>
+//     * with alpha.  The color data in this image is considered to be
+//     * premultiplied with alpha.
+//     */
+//    public static final int TYPE_INT_ARGB_PRE = 3;
+//
+//    /**
+//     * Represents an image with 8-bit RGB color components, corresponding
+//     * to a Windows- or Solaris- style BGR color model, with the colors
+//     * Blue, Green, and Red packed into integer pixels.  There is no alpha.
+//     * The image has a {@link DirectColorModel}.
+//     * When data with non-opaque alpha is stored
+//     * in an image of this type,
+//     * the color data must be adjusted to a non-premultiplied form
+//     * and the alpha discarded,
+//     * as described in the
+//     * {@link java.awt.AlphaComposite} documentation.
+//     */
+//    public static final int TYPE_INT_BGR = 4;
+//
+//    /**
+//     * Represents an image with 8-bit RGB color components, corresponding
+//     * to a Windows-style BGR color model) with the colors Blue, Green,
+//     * and Red stored in 3 bytes.  There is no alpha.  The image has a
+//     * <code>ComponentColorModel</code>.
+//     * When data with non-opaque alpha is stored
+//     * in an image of this type,
+//     * the color data must be adjusted to a non-premultiplied form
+//     * and the alpha discarded,
+//     * as described in the
+//     * {@link java.awt.AlphaComposite} documentation.
+//     */
+//    public static final int TYPE_3BYTE_BGR = 5;
+//
+//    /**
+//     * Represents an image with 8-bit RGBA color components with the colors
+//     * Blue, Green, and Red stored in 3 bytes and 1 byte of alpha.  The
+//     * image has a <code>ComponentColorModel</code> with alpha.  The
+//     * color data in this image is considered not to be premultiplied with
+//     * alpha.  The byte data is interleaved in a single
+//     * byte array in the order A, B, G, R
+//     * from lower to higher byte addresses within each pixel.
+//     */
+//    public static final int TYPE_4BYTE_ABGR = 6;
+//
+//    /**
+//     * Represents an image with 8-bit RGBA color components with the colors
+//     * Blue, Green, and Red stored in 3 bytes and 1 byte of alpha.  The
+//     * image has a <code>ComponentColorModel</code> with alpha. The color
+//     * data in this image is considered to be premultiplied with alpha.
+//     * The byte data is interleaved in a single byte array in the order
+//     * A, B, G, R from lower to higher byte addresses within each pixel.
+//     */
+//    public static final int TYPE_4BYTE_ABGR_PRE = 7;
+//
+//    /**
+//     * Represents an image with 5-6-5 RGB color components (5-bits red,
+//     * 6-bits green, 5-bits blue) with no alpha.  This image has
+//     * a <code>DirectColorModel</code>.
+//     * When data with non-opaque alpha is stored
+//     * in an image of this type,
+//     * the color data must be adjusted to a non-premultiplied form
+//     * and the alpha discarded,
+//     * as described in the
+//     * {@link java.awt.AlphaComposite} documentation.
+//     */
+//    public static final int TYPE_USHORT_565_RGB = 8;
+//
+//    /**
+//     * Represents an image with 5-5-5 RGB color components (5-bits red,
+//     * 5-bits green, 5-bits blue) with no alpha.  This image has
+//     * a <code>DirectColorModel</code>.
+//     * When data with non-opaque alpha is stored
+//     * in an image of this type,
+//     * the color data must be adjusted to a non-premultiplied form
+//     * and the alpha discarded,
+//     * as described in the
+//     * {@link java.awt.AlphaComposite} documentation.
+//     */
+//    public static final int TYPE_USHORT_555_RGB = 9;
+//
+//    /**
+//     * Represents a unsigned byte grayscale image, non-indexed.  This
+//     * image has a <code>ComponentColorModel</code> with a CS_GRAY
+//     * {@link ColorSpace}.
+//     * When data with non-opaque alpha is stored
+//     * in an image of this type,
+//     * the color data must be adjusted to a non-premultiplied form
+//     * and the alpha discarded,
+//     * as described in the
+//     * {@link java.awt.AlphaComposite} documentation.
+//     */
+//    public static final int TYPE_BYTE_GRAY = 10;
+//
+//    /**
+//     * Represents an unsigned short grayscale image, non-indexed).  This
+//     * image has a <code>ComponentColorModel</code> with a CS_GRAY
+//     * <code>ColorSpace</code>.
+//     * When data with non-opaque alpha is stored
+//     * in an image of this type,
+//     * the color data must be adjusted to a non-premultiplied form
+//     * and the alpha discarded,
+//     * as described in the
+//     * {@link java.awt.AlphaComposite} documentation.
+//     */
+//    public static final int TYPE_USHORT_GRAY = 11;
+//
+//    /**
+//     * Represents an opaque byte-packed 1, 2, or 4 bit image.  The
+//     * image has an {@link IndexColorModel} without alpha.  When this
+//     * type is used as the <code>imageType</code> argument to the
+//     * <code>BufferedImage</code> constructor that takes an
+//     * <code>imageType</code> argument but no <code>ColorModel</code>
+//     * argument, a 1-bit image is created with an
+//     * <code>IndexColorModel</code> with two colors in the default
+//     * sRGB <code>ColorSpace</code>: {0,&nbsp;0,&nbsp;0} and
+//     * {255,&nbsp;255,&nbsp;255}.
+//     *
+//     * <p> Images with 2 or 4 bits per pixel may be constructed via
+//     * the <code>BufferedImage</code> constructor that takes a
+//     * <code>ColorModel</code> argument by supplying a
+//     * <code>ColorModel</code> with an appropriate map size.
+//     *
+//     * <p> Images with 8 bits per pixel should use the image types
+//     * <code>TYPE_BYTE_INDEXED</code> or <code>TYPE_BYTE_GRAY</code>
+//     * depending on their <code>ColorModel</code>.
+//
+//     * <p> When color data is stored in an image of this type,
+//     * the closest color in the colormap is determined
+//     * by the <code>IndexColorModel</code> and the resulting index is stored.
+//     * Approximation and loss of alpha or color components
+//     * can result, depending on the colors in the
+//     * <code>IndexColorModel</code> colormap.
+//     */
+//    public static final int TYPE_BYTE_BINARY = 12;
+//
+//    /**
+//     * Represents an indexed byte image.  When this type is used as the
+//     * <code>imageType</code> argument to the <code>BufferedImage</code>
+//     * constructor that takes an <code>imageType</code> argument
+//     * but no <code>ColorModel</code> argument, an
+//     * <code>IndexColorModel</code> is created with
+//     * a 256-color 6/6/6 color cube palette with the rest of the colors
+//     * from 216-255 populated by grayscale values in the
+//     * default sRGB ColorSpace.
+//     *
+//     * <p> When color data is stored in an image of this type,
+//     * the closest color in the colormap is determined
+//     * by the <code>IndexColorModel</code> and the resulting index is stored.
+//     * Approximation and loss of alpha or color components
+//     * can result, depending on the colors in the
+//     * <code>IndexColorModel</code> colormap.
+//     */
+//    public static final int TYPE_BYTE_INDEXED = 13;
+//
+//    private static final int DCM_RED_MASK   = 0x00ff0000;
+//    private static final int DCM_GREEN_MASK = 0x0000ff00;
+//    private static final int DCM_BLUE_MASK  = 0x000000ff;
+//    private static final int DCM_ALPHA_MASK = 0xff000000;
+//    private static final int DCM_565_RED_MASK = 0xf800;
+//    private static final int DCM_565_GRN_MASK = 0x07E0;
+//    private static final int DCM_565_BLU_MASK = 0x001F;
+//    private static final int DCM_555_RED_MASK = 0x7C00;
+//    private static final int DCM_555_GRN_MASK = 0x03E0;
+//    private static final int DCM_555_BLU_MASK = 0x001F;
+//    private static final int DCM_BGR_RED_MASK = 0x0000ff;
+//    private static final int DCM_BGR_GRN_MASK = 0x00ff00;
+//    private static final int DCM_BGR_BLU_MASK = 0xff0000;
 
 
 
@@ -324,20 +312,20 @@ public class BufferedImage extends Image
                                                   0x0           // Alpha
                                                   );
 //                  raster = colorModel.createCompatibleWritableRaster(width,
-  //	                                                                    height);
+//	                                                                    height);
             }
         break;
 
         case TYPE_INT_ARGB:
-//            {
-//                colorModel = ColorModel.getRGBdefault();
-//
+            {
+                colorModel = ColorModel.getRGBdefault();
+
 //                raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                   height);
-//            }
+            }
         break;
 
-        case TYPE_INT_ARGB_PRE:
+//        case TYPE_INT_ARGB_PRE:
 //            {
 //                colorModel = new
 //                    DirectColorModel(
@@ -354,9 +342,9 @@ public class BufferedImage extends Image
 //                  raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                      height);
 //            }
-        break;
-
-        case TYPE_INT_BGR:
+//        break;
+//
+//        case TYPE_INT_BGR:
 //            {
 //                colorModel = new DirectColorModel(24,
 //                                                  0x000000ff,   // Red
@@ -366,9 +354,9 @@ public class BufferedImage extends Image
 //                  raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                      height);
 //            }
-        break;
-
-        case TYPE_3BYTE_BGR:
+//        break;
+//
+//        case TYPE_3BYTE_BGR:
 //            {
 //                ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 //                int[] nBits = {8, 8, 8};
@@ -381,9 +369,9 @@ public class BufferedImage extends Image
 //                                                        width*3, 3,
 //                                                        bOffs, null);
 //            }
-        break;
-
-        case TYPE_4BYTE_ABGR:
+//        break;
+//
+//        case TYPE_4BYTE_ABGR:
 //            {
 //                ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 //                int[] nBits = {8, 8, 8, 8};
@@ -396,9 +384,9 @@ public class BufferedImage extends Image
 //                                                        width*4, 4,
 //                                                        bOffs, null);
 //            }
-        break;
-
-        case TYPE_4BYTE_ABGR_PRE:
+//        break;
+//
+//        case TYPE_4BYTE_ABGR_PRE:
 //            {
 //                ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 //                int[] nBits = {8, 8, 8, 8};
@@ -411,9 +399,9 @@ public class BufferedImage extends Image
 //                                                        width*4, 4,
 //                                                        bOffs, null);
 //            }
-        break;
-
-        case TYPE_BYTE_GRAY:
+//        break;
+//
+//        case TYPE_BYTE_GRAY:
 //            {
 //                ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 //                int[] nBits = {8};
@@ -423,9 +411,9 @@ public class BufferedImage extends Image
 //                raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                   height);
 //            }
-        break;
-
-        case TYPE_USHORT_GRAY:
+//        break;
+//
+//        case TYPE_USHORT_GRAY:
 //            {
 //                ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 //                int[] nBits = {16};
@@ -435,9 +423,9 @@ public class BufferedImage extends Image
 //                raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                   height);
 //            }
-        break;
-
-        case TYPE_BYTE_BINARY:
+//        break;
+//
+//        case TYPE_BYTE_BINARY:
 //            {
 //                byte[] arr = {(byte)0, (byte)0xff};
 //
@@ -445,9 +433,9 @@ public class BufferedImage extends Image
 //                raster = Raster.createPackedRaster(DataBuffer.TYPE_BYTE,
 //                                                   width, height, 1, 1, null);
 //            }
-        break;
-
-        case TYPE_BYTE_INDEXED:
+//        break;
+//
+//        case TYPE_BYTE_INDEXED:
 //            {
 //                // Create a 6x6x6 color cube
 //                int[] cmap = new int[256];
@@ -474,9 +462,9 @@ public class BufferedImage extends Image
 //                raster = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
 //                                                      width, height, 1, null);
 //            }
-        break;
-
-        case TYPE_USHORT_565_RGB:
+//        break;
+//
+//        case TYPE_USHORT_565_RGB:
 //            {
 //                colorModel = new DirectColorModel(16,
 //                                                  DCM_565_RED_MASK,
@@ -486,9 +474,9 @@ public class BufferedImage extends Image
 //                raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                   height);
 //            }
-            break;
-
-        case TYPE_USHORT_555_RGB:
+//            break;
+//
+//        case TYPE_USHORT_555_RGB:
 //            {
 //                colorModel = new DirectColorModel(15,
 //                                                  DCM_555_RED_MASK,
@@ -498,8 +486,8 @@ public class BufferedImage extends Image
 //                raster = colorModel.createCompatibleWritableRaster(width,
 //                                                                   height);
 //            }
-            break;
-
+//            break;
+//
         default:
             throw new IllegalArgumentException ("Unknown image type " +
                                                 imageType);

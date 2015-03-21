@@ -25,19 +25,14 @@
 
 package jssun.awt.image;
 
-import jsjava.awt.Component;
 import jsjava.awt.Color;
-//import jsjava.awt.SystemColor;
+import jsjava.awt.Component;
 import jsjava.awt.Font;
 import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ImageProducer;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
-//import jssun.java2d.SunGraphics2D;
-//import jssun.java2d.SurfaceData;
 
 /**
  * This is a special variant of BufferedImage that keeps a reference to

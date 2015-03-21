@@ -24,13 +24,8 @@
  */
 package jsjavax.swing.text;
 
-import java.util.Hashtable;
 import java.util.Enumeration;
-import java.util.Collections;
-import java.io.IOException;
-//import java.io.ObjectInputStream;
-//import java.io.ObjectOutputStream;
-//import java.io.Serializable;
+import java.util.Hashtable;
 
 /**
  * A straightforward implementation of MutableAttributeSet using a
@@ -73,9 +68,9 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
         addAttributes(source);
     }
 
-    private SimpleAttributeSet(Hashtable table) {
-        this.table = table;
-    }
+//    private SimpleAttributeSet(Hashtable table) {
+//        this.table = table;
+//    }
 
     /**
      * Checks whether the set of attributes is empty.

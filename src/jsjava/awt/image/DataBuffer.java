@@ -35,11 +35,7 @@
 
 package jsjava.awt.image;
 
-//import sun.java2d.StateTrackable.State;
-//import static sun.java2d.StateTrackable.State.*;
-//import sun.java2d.StateTrackableDelegate;
 //
-//import sun.awt.image.SunWritableRaster;
 
 /**
  * This class exists to wrap one or more data arrays.  Each data array in

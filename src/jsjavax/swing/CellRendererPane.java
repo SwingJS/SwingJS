@@ -24,12 +24,14 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import java.io.*;
-import jsjava.beans.PropertyChangeListener;
-import java.util.Locale;
-import java.util.Vector;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import jsjava.awt.Color;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
 
 /**
  * This class is inserted in between cell renderers and the components that

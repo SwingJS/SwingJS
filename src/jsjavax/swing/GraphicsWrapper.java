@@ -30,7 +30,8 @@ package jsjavax.swing;
  * @author Thomas Ball
  */
 
-import jsjava.awt.*;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
 
 interface GraphicsWrapper {
     Graphics subGraphics();

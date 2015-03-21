@@ -28,16 +28,12 @@ package jsjava.awt;
 import jsjava.awt.RenderingHints.Key;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.image.ImageObserver;
-//import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.RenderedImage;
 import jsjava.awt.image.renderable.RenderableImage;
-//import jsjava.awt.font.GlyphVector;
 import jsjava.awt.font.FontRenderContext;
-import jsjava.awt.font.TextAttribute;
 import java.text.AttributedCharacterIterator;
-//import jsjava.text.AttributedCharacterIterator;
 import java.util.Map;
 
 /**

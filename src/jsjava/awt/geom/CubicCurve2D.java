@@ -30,7 +30,6 @@ import jsjava.awt.Rectangle;
 import jssun.awt.geom.Curve;
 
 import java.util.Arrays;
-//import java.io.Serializable;
 
 /**
  * The <code>CubicCurve2D</code> class defines a cubic parametric curve

@@ -24,18 +24,30 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
-import java.util.*;
-import java.io.*;
-
-import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.event.ChangeListener;
-import jsjavax.swing.event.EventListenerList;
-import jsjavax.swing.event.ChangeEvent;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Vector;
 import java.util.WeakHashMap;
 
-import jssun.font.FontManager;
+import jsjava.awt.Color;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Toolkit;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 
 /**
  * A pool of styles and their associated resources.  This class determines

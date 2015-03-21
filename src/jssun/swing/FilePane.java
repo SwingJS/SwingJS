@@ -25,7 +25,7 @@
  */
 package jssun.swing;
 
-import jsjavax.swing.*;
+import jsjavax.swing.JPanel;
 
 /**
  * <b>WARNING:</b> This class is an implementation detail and is only

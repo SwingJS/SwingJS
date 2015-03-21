@@ -25,9 +25,8 @@
 
 package jsjavax.swing.table;
 
-//import java.io.Serializable;
 import java.util.Vector;
-import java.util.Enumeration;
+
 import jsjavax.swing.event.TableModelEvent;
 
 

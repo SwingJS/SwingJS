@@ -25,10 +25,14 @@
 
 package jsjavax.swing.colorchooser;
 
-import jsjava.awt.*;
-//import java.io.Serializable;
-import jsjavax.swing.*;
-import jsjavax.swing.event.*;
+import jsjava.awt.Color;
+import jsjava.awt.Graphics;
+import jsjavax.swing.Icon;
+import jsjavax.swing.JColorChooser;
+import jsjavax.swing.JPanel;
+import jsjavax.swing.UIManager;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
 
 /**
  * This is the abstract superclass for color choosers.  If you want to add

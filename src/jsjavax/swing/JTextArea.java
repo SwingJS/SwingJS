@@ -24,19 +24,17 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
-import jsjavax.swing.text.*;
-import jsjavax.swing.plaf.*;
-//
-
-import java.util.Collections;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-////import java.io.ObjectOutputStream;
-////import java.io.ObjectInputStream;
-//import java.io.IOException;
+import jsjava.awt.Dimension;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Insets;
+import jsjava.awt.Rectangle;
+import jsjavax.swing.text.AbstractDocument;
+import jsjavax.swing.text.BadLocationException;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.Element;
+import jsjavax.swing.text.JTextComponent;
+import jsjavax.swing.text.PlainDocument;
 
 /**
  * A <code>JTextArea</code> is a multi-line area that displays plain text.

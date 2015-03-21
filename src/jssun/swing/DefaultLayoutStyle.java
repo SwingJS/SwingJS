@@ -26,8 +26,15 @@ package jssun.swing;
 
 import jsjava.awt.Container;
 import jsjava.awt.Insets;
-import jsjavax.swing.*;
-import jsjavax.swing.LayoutStyle.ComponentPlacement;
+import jsjavax.swing.AbstractButton;
+import jsjavax.swing.Icon;
+import jsjavax.swing.JCheckBox;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JLabel;
+import jsjavax.swing.JRadioButton;
+import jsjavax.swing.LayoutStyle;
+import jsjavax.swing.SwingConstants;
+import jsjavax.swing.UIManager;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.UIResource;
 

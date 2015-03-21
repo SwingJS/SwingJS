@@ -24,8 +24,16 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.*;
+import jsjava.awt.AWTEvent;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Component;
+import jsjava.awt.Container;
+import jsjava.awt.Frame;
+import jsjava.awt.Graphics;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.Image;
+import jsjava.awt.LayoutManager;
+import jsjava.awt.event.WindowEvent;
 //
 
 

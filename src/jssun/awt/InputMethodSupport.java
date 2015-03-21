@@ -25,11 +25,7 @@
 
 package jssun.awt;
 
-import jsjava.awt.AWTException;
-import jsjava.awt.Window;
-//import jsjava.awt.im.spi.InputMethodDescriptor;
 import java.util.Locale;
-//import jssun.awt.im.InputContext;
 
 /**
  * Input method support for toolkits

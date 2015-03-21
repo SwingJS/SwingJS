@@ -27,11 +27,16 @@ package jssun.awt;
 
 import java.lang.reflect.InvocationTargetException;
 
-import jsjava.awt.*;
-
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Component;
+import jsjava.awt.Cursor;
+import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjava.awt.Window;
 import jsjava.awt.geom.Point2D;
 import jsjava.awt.image.BufferedImage;
-//import jsjava.awt.image.BufferedImage;
 
 /**
  * The AWTAccessor utility class.

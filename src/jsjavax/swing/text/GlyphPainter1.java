@@ -24,7 +24,13 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.*;
+import jsjava.awt.Container;
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
+import jsjava.awt.Toolkit;
 
 /**
  * A class to perform rendering of the glyphs.

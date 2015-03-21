@@ -25,7 +25,6 @@
 
 package jsjavax.swing.event;
 
-import java.util.EventListener;
 
 /**
  * TableModelListener defines the interface for an object that listens

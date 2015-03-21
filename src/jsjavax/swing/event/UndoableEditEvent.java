@@ -25,7 +25,7 @@
 
 package jsjavax.swing.event;
 
-import jsjavax.swing.undo.*;
+import jsjavax.swing.undo.UndoableEdit;
 
 /**
  * An event indicating that an operation which can be undone has occurred.

@@ -25,8 +25,9 @@
 
 package jssun.awt.shell;
 
-import jsjavax.swing.*;
 import java.util.Comparator;
+
+import jsjavax.swing.SortOrder;
 
 public class ShellFolderColumnInfo {
     private String title;

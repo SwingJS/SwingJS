@@ -24,11 +24,7 @@
  */
 package jsjavax.swing.event;
 
-import jsjava.awt.event.*;
-import jsjava.awt.*;
-import java.util.*;
-
-import jsjavax.swing.*;
+import java.util.EventListener;
 
 /**
  * AncestorListener

@@ -25,7 +25,6 @@
 package jsjavax.swing;
 
 import jsjava.awt.Container;
-import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.AppContext;
 
 /**

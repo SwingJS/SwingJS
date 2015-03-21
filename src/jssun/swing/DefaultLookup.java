@@ -26,7 +26,9 @@ package jssun.swing;
 
 import jsjava.awt.Color;
 import jsjava.awt.Insets;
-import jsjavax.swing.*;
+import jsjavax.swing.Icon;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.UIManager;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.AppContext;

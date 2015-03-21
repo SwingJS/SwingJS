@@ -25,9 +25,11 @@
 package jsjavax.swing.text;
 
 import java.util.Vector;
-//import java.io.Serializable;
-import jsjavax.swing.undo.*;
-import jsjavax.swing.SwingUtilities;
+
+import jsjavax.swing.undo.AbstractUndoableEdit;
+import jsjavax.swing.undo.CannotRedoException;
+import jsjavax.swing.undo.CannotUndoException;
+import jsjavax.swing.undo.UndoableEdit;
 
 /**
  * An implementation of the AbstractDocument.Content interface that is

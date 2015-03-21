@@ -24,16 +24,19 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.*;
-import jsjava.awt.event.ActionEvent;
-
-//import java.io.ObjectOutputStream;
-//import java.io.ObjectInputStream;
-import java.io.IOException;
-
-import jsjavax.swing.text.*;
-import jsjavax.swing.event.*;
-import jsjavax.swing.plaf.*;
+import jsjava.awt.Component;
+import jsjavax.swing.text.AbstractDocument;
+import jsjavax.swing.text.AttributeSet;
+import jsjavax.swing.text.BadLocationException;
+import jsjavax.swing.text.Caret;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.EditorKit;
+import jsjavax.swing.text.Element;
+import jsjavax.swing.text.MutableAttributeSet;
+import jsjavax.swing.text.Style;
+import jsjavax.swing.text.StyleConstants;
+import jsjavax.swing.text.StyledDocument;
+import jsjavax.swing.text.StyledEditorKit;
 
 /**
  * A text component that can be marked up with attributes that are

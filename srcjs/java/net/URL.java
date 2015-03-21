@@ -30,7 +30,6 @@ package java.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
-//import sun.security.util.SecurityConstants;
 
 /**
  * Class <code>URL</code> represents a Uniform Resource

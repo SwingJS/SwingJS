@@ -26,7 +26,7 @@
 package jsjavax.swing.table;
 
 import jsjava.awt.Component;
-import jsjavax.swing.*;
+import jsjavax.swing.JTable;
 
 /**
  * This interface defines the method required by any object that

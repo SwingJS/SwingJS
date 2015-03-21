@@ -24,9 +24,6 @@
  */
 package jsjavax.swing.plaf;
 
-import jsjavax.swing.*;
-import jsjava.awt.event.*;
-
 /**
  * Pluggable look and feel interface for JMenuItem.
  *

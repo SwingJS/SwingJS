@@ -24,10 +24,12 @@
  */
 package jsjavax.swing.event;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
-//import sun.reflect.misc.ReflectUtil;
+import java.util.EventListener;
 
 /**
  * A class that holds a list of EventListeners.  A single instance

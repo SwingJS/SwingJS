@@ -26,13 +26,9 @@
 package jsjavax.swing.plaf;
 
 import jsjavax.swing.JComponent;
-import jsjavax.swing.SwingUtilities;
-
 import jsjava.awt.Component;
-import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
-import jsjava.awt.Insets;
 
 
 /**

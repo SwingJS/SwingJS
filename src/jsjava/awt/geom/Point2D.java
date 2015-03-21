@@ -25,8 +25,6 @@
 
 package jsjava.awt.geom;
 
-//import java.io.Serializable;
-
 /**
  * The <code>Point2D</code> class defines a point representing a location
  * in {@code (x,y)} coordinate space.

@@ -24,10 +24,6 @@
  */
 package jsjava.awt;
 
-import java.util.Hashtable;
-import java.util.Properties;
-import java.util.StringTokenizer;
-
 /**
  * A class to encapsulate the bitmap representation of the mouse cursor.
  *

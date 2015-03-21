@@ -24,9 +24,12 @@
  */
 package jsjavax.swing.text;
 
-import java.util.*;
-import jsjava.awt.*;
-import jsjavax.swing.SwingUtilities;
+import java.util.ArrayList;
+
+import jsjava.awt.Component;
+import jsjava.awt.Graphics;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Shape;
 import jsjavax.swing.event.DocumentEvent;
 
 /**

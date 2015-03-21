@@ -24,7 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.awt.Color;
 import jsjava.awt.Graphics;
 import jsjava.awt.Shape;
 

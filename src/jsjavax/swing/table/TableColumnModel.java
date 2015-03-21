@@ -26,9 +26,9 @@
 package jsjavax.swing.table;
 
 import java.util.Enumeration;
-import jsjavax.swing.event.ChangeEvent;
-import jsjavax.swing.event.*;
-import jsjavax.swing.*;
+
+import jsjavax.swing.ListSelectionModel;
+import jsjavax.swing.event.TableColumnModelListener;
 
 
 /**
