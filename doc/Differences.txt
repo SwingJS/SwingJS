@@ -101,12 +101,13 @@ will be implemented as JavaScript classes in the swingjs package
 AWTAccessor and  AwtContext need to be customized 
    
     
-Threading Issues
-----------------
+Threads
+-------
 
-ThreadGroup -- should point to objects unique to an applet. This will allow
-                 easy access to applet-specific quantitities.  
-- All threading must be "faked" in JavaScript. Specifically not available is:
+Thread locking and synchronization are not relevant to JavaSCript.
+However, anything requiring "notify.." or "waitFor.." could be a serious issue.
+ 
+All threading must be "faked" in JavaScript. Specifically not available is:
 
   Thread.sleep()
   
@@ -114,7 +115,13 @@ ThreadGroup -- should point to objects unique to an applet. This will allow
   
     javax.swing.AbstractButton#doClick(pressTime)
     
-  and in SunToolkit for event handling
+  and in sun.awt.SunToolkit#waitForIdle() 
+  
+  
+  
+
+ThreadGroup should point to objects unique to an applet. 
+This will allow easy access to applet-specific quantitities
      
 
 Key Focus
