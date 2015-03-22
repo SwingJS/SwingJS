@@ -59,7 +59,7 @@ import jsjava.awt.event.KeyEvent;
  * @author     Sami Shaio
  * @since      JDK1.0
  */
-public class Event implements java.io.Serializable {
+public class Event {
     private transient long data;
 
     /* Modifier constants */

@@ -34,7 +34,7 @@ import jsjava.awt.geom.Point2D;
  * @author      Sami Shaio
  * @since       1.0
  */
-public class Point extends Point2D implements java.io.Serializable {
+public class Point extends Point2D {
     /**
      * The X coordinate of this <code>Point</code>.
      * If no X coordinate is set it will default to 0.

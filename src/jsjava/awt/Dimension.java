@@ -50,7 +50,7 @@ import java.awt.geom.Dimension2D;
  * @see         java.awt.LayoutManager
  * @since       1.0
  */
-public class Dimension extends Dimension2D implements java.io.Serializable {
+public class Dimension extends Dimension2D {
 
     /**
      * The width dimension; negative values can be used.

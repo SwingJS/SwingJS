@@ -1195,34 +1195,34 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
         return clone;
     }
 
-    // Serialization support.
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        Object[]             tValues;
-
-        s.defaultWriteObject();
-        // Save the rowMapper, if it 
-        if(rowMapper != null && rowMapper instanceof Serializable) {
-            tValues = new Object[2];
-            tValues[0] = "rowMapper";
-            tValues[1] = rowMapper;
-        }
-        else
-            tValues = new Object[0];
-        s.writeObject(tValues);
-    }
-
-
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        Object[]      tValues;
-
-        s.defaultReadObject();
-
-        tValues = (Object[])s.readObject();
-
-        if(tValues.length > 0 && tValues[0].equals("rowMapper"))
-            rowMapper = (RowMapper)tValues[1];
-    }
+//    // Serialization support.
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        Object[]             tValues;
+//
+//        s.defaultWriteObject();
+//        // Save the rowMapper, if it 
+//        if(rowMapper != null && rowMapper instanceof Serializable) {
+//            tValues = new Object[2];
+//            tValues[0] = "rowMapper";
+//            tValues[1] = rowMapper;
+//        }
+//        else
+//            tValues = new Object[0];
+//        s.writeObject(tValues);
+//    }
+//
+//
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        Object[]      tValues;
+//
+//        s.defaultReadObject();
+//
+//        tValues = (Object[])s.readObject();
+//
+//        if(tValues.length > 0 && tValues[0].equals("rowMapper"))
+//            rowMapper = (RowMapper)tValues[1];
+//    }
 }
 
 /**

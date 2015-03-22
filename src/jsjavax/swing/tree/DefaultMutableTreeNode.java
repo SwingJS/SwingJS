@@ -1281,34 +1281,34 @@ public class DefaultMutableTreeNode extends Object implements Cloneable,
     }
 
 
-    // Serialization support.
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        Object[]             tValues;
-
-        s.defaultWriteObject();
-        // Save the userObject, if its Serializable.
-        if(userObject != null && userObject instanceof Serializable) {
-            tValues = new Object[2];
-            tValues[0] = "userObject";
-            tValues[1] = userObject;
-        }
-        else
-            tValues = new Object[0];
-        s.writeObject(tValues);
-    }
-
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        Object[]      tValues;
-
-        s.defaultReadObject();
-
-        tValues = (Object[])s.readObject();
-
-        if(tValues.length > 0 && tValues[0].equals("userObject"))
-            userObject = tValues[1];
-    }
-
+//    // Serialization support.
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        Object[]             tValues;
+//
+//        s.defaultWriteObject();
+//        // Save the userObject, if its Serializable.
+//        if(userObject != null && userObject instanceof Serializable) {
+//            tValues = new Object[2];
+//            tValues[0] = "userObject";
+//            tValues[1] = userObject;
+//        }
+//        else
+//            tValues = new Object[0];
+//        s.writeObject(tValues);
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        Object[]      tValues;
+//
+//        s.defaultReadObject();
+//
+//        tValues = (Object[])s.readObject();
+//
+//        if(tValues.length > 0 && tValues[0].equals("userObject"))
+//            userObject = tValues[1];
+//    }
+//
     final class PreorderEnumeration implements Enumeration<TreeNode> {
         protected Stack stack;
 

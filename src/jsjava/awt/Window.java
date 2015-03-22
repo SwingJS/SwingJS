@@ -3559,7 +3559,7 @@ public class Window extends Container {
  * This class is no longer used, but is maintained for Serialization
  * backward-compatibility.
  */
-class FocusManager implements java.io.Serializable {
+class FocusManager {
     Container focusRoot;
     Component focusOwner;
 

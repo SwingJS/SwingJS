@@ -1441,45 +1441,45 @@ public abstract class AbstractDocument implements Document {
         notify();
     }
 
-    // --- serialization ---------------------------------------------
-
-    private void readObject(ObjectInputStream s)
-      throws ClassNotFoundException, IOException
-    {
-        s.defaultReadObject();
-        listenerList = new EventListenerList();
-
-        // Restore bidi structure
-        //REMIND(bcb) This creates an initial bidi element to account for
-        //the \n that exists by default in the content.
-        bidiRoot = new BidiRootElement();
-        try {
-            writeLock();
-            Element[] p = new Element[1];
-            p[0] = new BidiElement( bidiRoot, 0, 1, 0 );
-            bidiRoot.replace(0,0,p);
-        } finally {
-            writeUnlock();
-        }
-        // At this point bidi root is only partially correct. To fully
-        // restore it we need access to getDefaultRootElement. But, this
-        // is created by the subclass and at this point will be null. We
-        // thus use registerValidation.
-        s.registerValidation(new ObjectInputValidation() {
-            public void validateObject() {
-                try {
-                    writeLock();
-                    DefaultDocumentEvent e = new DefaultDocumentEvent
-                                   (0, getLength(),
-                                    DocumentEvent.EventType.INSERT);
-                    updateBidi( e );
-                }
-                finally {
-                    writeUnlock();
-                }
-            }
-        }, 0);
-    }
+//    // --- serialization ---------------------------------------------
+//
+//    private void readObject(ObjectInputStream s)
+//      throws ClassNotFoundException, IOException
+//    {
+//        s.defaultReadObject();
+//        listenerList = new EventListenerList();
+//
+//        // Restore bidi structure
+//        //REMIND(bcb) This creates an initial bidi element to account for
+//        //the \n that exists by default in the content.
+//        bidiRoot = new BidiRootElement();
+//        try {
+//            writeLock();
+//            Element[] p = new Element[1];
+//            p[0] = new BidiElement( bidiRoot, 0, 1, 0 );
+//            bidiRoot.replace(0,0,p);
+//        } finally {
+//            writeUnlock();
+//        }
+//        // At this point bidi root is only partially correct. To fully
+//        // restore it we need access to getDefaultRootElement. But, this
+//        // is created by the subclass and at this point will be null. We
+//        // thus use registerValidation.
+//        s.registerValidation(new ObjectInputValidation() {
+//            public void validateObject() {
+//                try {
+//                    writeLock();
+//                    DefaultDocumentEvent e = new DefaultDocumentEvent
+//                                   (0, getLength(),
+//                                    DocumentEvent.EventType.INSERT);
+//                    updateBidi( e );
+//                }
+//                finally {
+//                    writeUnlock();
+//                }
+//            }
+//        }, 0);
+//    }
 
     // ----- member variables ------------------------------------------
 

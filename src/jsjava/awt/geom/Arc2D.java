@@ -614,53 +614,53 @@ public abstract class Arc2D extends RectangularShape {
          */
         //private static final long serialVersionUID = 728264085846882001L;
 
-        /**
-         * Writes the default serializable fields to the
-         * <code>ObjectOutputStream</code> followed by a byte
-         * indicating the arc type of this <code>Arc2D</code>
-         * instance.
-         *
-         * @serialData
-         * <ol>
-         * <li>The default serializable fields.
-         * <li>
-         * followed by a <code>byte</code> indicating the arc type
-         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
-         * </ol>
-         */
-        private void writeObject(java.io.ObjectOutputStream s)
-            throws java.io.IOException
-        {
-            s.defaultWriteObject();
-
-            s.writeByte(getArcType());
-        }
-
-        /**
-         * Reads the default serializable fields from the
-         * <code>ObjectInputStream</code> followed by a byte
-         * indicating the arc type of this <code>Arc2D</code>
-         * instance.
-         *
-         * @serialData
-         * <ol>
-         * <li>The default serializable fields.
-         * <li>
-         * followed by a <code>byte</code> indicating the arc type
-         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
-         * </ol>
-         */
-        private void readObject(java.io.ObjectInputStream s)
-            throws java.lang.ClassNotFoundException, java.io.IOException
-        {
-            s.defaultReadObject();
-
-            try {
-                setArcType(s.readByte());
-            } catch (IllegalArgumentException iae) {
-                throw new java.io.InvalidObjectException(iae.getMessage());
-            }
-        }
+//        /**
+//         * Writes the default serializable fields to the
+//         * <code>ObjectOutputStream</code> followed by a byte
+//         * indicating the arc type of this <code>Arc2D</code>
+//         * instance.
+//         *
+//         * @serialData
+//         * <ol>
+//         * <li>The default serializable fields.
+//         * <li>
+//         * followed by a <code>byte</code> indicating the arc type
+//         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+//         * </ol>
+//         */
+//        private void writeObject(java.io.ObjectOutputStream s)
+//            throws java.io.IOException
+//        {
+//            s.defaultWriteObject();
+//
+//            s.writeByte(getArcType());
+//        }
+//
+//        /**
+//         * Reads the default serializable fields from the
+//         * <code>ObjectInputStream</code> followed by a byte
+//         * indicating the arc type of this <code>Arc2D</code>
+//         * instance.
+//         *
+//         * @serialData
+//         * <ol>
+//         * <li>The default serializable fields.
+//         * <li>
+//         * followed by a <code>byte</code> indicating the arc type
+//         * {@link #OPEN}, {@link #CHORD}, or {@link #PIE}.
+//         * </ol>
+//         */
+//        private void readObject(java.io.ObjectInputStream s)
+//            throws java.lang.ClassNotFoundException, java.io.IOException
+//        {
+//            s.defaultReadObject();
+//
+//            try {
+//                setArcType(s.readByte());
+//            } catch (IllegalArgumentException iae) {
+//                throw new java.io.InvalidObjectException(iae.getMessage());
+//            }
+//        }
     }
 
     private int type;

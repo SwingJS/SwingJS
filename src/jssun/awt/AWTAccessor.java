@@ -42,7 +42,7 @@ import jsjava.awt.image.BufferedImage;
  * The AWTAccessor utility class.
  * The main purpose of this class is to enable accessing
  * private and package-private fields of classes from
- * different classes/packages. See jssun.misc.SharedSecretes
+ * different classes/packages. See sun.misc.SharedSecrets
  * for another example.
  */
 public final class AWTAccessor {

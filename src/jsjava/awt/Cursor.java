@@ -30,7 +30,7 @@ package jsjava.awt;
  * @see Component#setCursor
  * @author      Amy Fowler
  */
-public class Cursor implements java.io.Serializable {
+public class Cursor {
 
     /**
      * The default cursor type (gets set if no cursor is defined).

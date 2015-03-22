@@ -1521,33 +1521,33 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
         return 1;
     }
 
-    // --- serialization ---------------------------------------------
-
-    private void readObject(ObjectInputStream s)
-      throws ClassNotFoundException, IOException
-    {
-        s.defaultReadObject();
-        handler = new Handler();
-        if (!s.readBoolean()) {
-            dotBias = Position.Bias.Forward;
-        }
-        else {
-            dotBias = Position.Bias.Backward;
-        }
-        if (!s.readBoolean()) {
-            markBias = Position.Bias.Forward;
-        }
-        else {
-            markBias = Position.Bias.Backward;
-        }
-    }
-
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        s.writeBoolean((dotBias == Position.Bias.Backward));
-        s.writeBoolean((markBias == Position.Bias.Backward));
-    }
-
+//    // --- serialization ---------------------------------------------
+//
+//    private void readObject(ObjectInputStream s)
+//      throws ClassNotFoundException, IOException
+//    {
+//        s.defaultReadObject();
+//        handler = new Handler();
+//        if (!s.readBoolean()) {
+//            dotBias = Position.Bias.Forward;
+//        }
+//        else {
+//            dotBias = Position.Bias.Backward;
+//        }
+//        if (!s.readBoolean()) {
+//            markBias = Position.Bias.Forward;
+//        }
+//        else {
+//            markBias = Position.Bias.Backward;
+//        }
+//    }
+//
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        s.writeBoolean((dotBias == Position.Bias.Backward));
+//        s.writeBoolean((markBias == Position.Bias.Backward));
+//    }
+//
     // ---- member variables ------------------------------------------
 
     /**

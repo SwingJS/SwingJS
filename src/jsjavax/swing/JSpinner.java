@@ -564,40 +564,40 @@ public class JSpinner extends JComponent
     }
 
 
-    /*
-     * See readObject and writeObject in JComponent for more
-     * information about serialization in Swing.
-     *
-     * @param s Stream to write to
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        HashMap additionalValues = new HashMap(1);
-        SpinnerModel model = getModel();
-
-        if (model instanceof Serializable) {
-            additionalValues.put("model", model);
-        }
-        s.writeObject(additionalValues);
-
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-
-        Map additionalValues = (Map)s.readObject();
-
-        model = (SpinnerModel)additionalValues.get("model");
-    }
-
+//    /*
+//     * See readObject and writeObject in JComponent for more
+//     * information about serialization in Swing.
+//     *
+//     * @param s Stream to write to
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        HashMap additionalValues = new HashMap(1);
+//        SpinnerModel model = getModel();
+//
+//        if (model instanceof Serializable) {
+//            additionalValues.put("model", model);
+//        }
+//        s.writeObject(additionalValues);
+//
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//
+//        Map additionalValues = (Map)s.readObject();
+//
+//        model = (SpinnerModel)additionalValues.get("model");
+//    }
+//
 
     /**
      * A simple base class for more specialized editors

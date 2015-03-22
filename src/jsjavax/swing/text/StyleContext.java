@@ -567,108 +567,108 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
         return s;
     }
 
-    // --- serialization ---------------------------------------------
-
-    /**
-     * Context-specific handling of writing out attributes
-     */
-    public void writeAttributes(ObjectOutputStream out,
-                                  AttributeSet a) throws IOException {
-        writeAttributeSet(out, a);
-    }
-
-    /**
-     * Context-specific handling of reading in attributes
-     */
-    public void readAttributes(ObjectInputStream in,
-                               MutableAttributeSet a) throws ClassNotFoundException, IOException {
-        readAttributeSet(in, a);
-    }
-
-    /**
-     * Writes a set of attributes to the given object stream
-     * for the purpose of serialization.  This will take
-     * special care to deal with static attribute keys that
-     * have been registered wit the
-     * <code>registerStaticAttributeKey</code> method.
-     * Any attribute key not regsitered as a static key
-     * will be serialized directly.  All values are expected
-     * to be serializable.
-     *
-     * @param out the output stream
-     * @param a the attribute set
-     * @exception IOException on any I/O error
-     */
-    public static void writeAttributeSet(ObjectOutputStream out,
-                                         AttributeSet a) throws IOException {
-        int n = a.getAttributeCount();
-        out.writeInt(n);
-        Enumeration keys = a.getAttributeNames();
-        while (keys.hasMoreElements()) {
-            Object key = keys.nextElement();
-            if (key instanceof Serializable) {
-                out.writeObject(key);
-            } else {
-                Object ioFmt = freezeKeyMap.get(key);
-                if (ioFmt == null) {
-                    throw new NotSerializableException(key.getClass().
-                                 getName() + " is not serializable as a key in an AttributeSet");
-                }
-                out.writeObject(ioFmt);
-            }
-            Object value = a.getAttribute(key);
-            Object ioFmt = freezeKeyMap.get(value);
-            if (value instanceof Serializable) {
-                out.writeObject((ioFmt != null) ? ioFmt : value);
-            } else {
-                if (ioFmt == null) {
-                    throw new NotSerializableException(value.getClass().
-                                 getName() + " is not serializable as a value in an AttributeSet");
-                }
-                out.writeObject(ioFmt);
-            }
-        }
-    }
-
-    /**
-     * Reads a set of attributes from the given object input
-     * stream that have been previously written out with
-     * <code>writeAttributeSet</code>.  This will try to restore
-     * keys that were static objects to the static objects in
-     * the current virtual machine considering only those keys
-     * that have been registered with the
-     * <code>registerStaticAttributeKey</code> method.
-     * The attributes retrieved from the stream will be placed
-     * into the given mutable set.
-     *
-     * @param in the object stream to read the attribute data from.
-     * @param a  the attribute set to place the attribute
-     *   definitions in.
-     * @exception ClassNotFoundException passed upward if encountered
-     *  when reading the object stream.
-     * @exception IOException passed upward if encountered when
-     *  reading the object stream.
-     */
-    public static void readAttributeSet(ObjectInputStream in,
-        MutableAttributeSet a) throws ClassNotFoundException, IOException {
-
-        int n = in.readInt();
-        for (int i = 0; i < n; i++) {
-            Object key = in.readObject();
-            Object value = in.readObject();
-            if (thawKeyMap != null) {
-                Object staticKey = thawKeyMap.get(key);
-                if (staticKey != null) {
-                    key = staticKey;
-                }
-                Object staticValue = thawKeyMap.get(value);
-                if (staticValue != null) {
-                    value = staticValue;
-                }
-            }
-            a.addAttribute(key, value);
-        }
-    }
+//    // --- serialization ---------------------------------------------
+//
+//    /**
+//     * Context-specific handling of writing out attributes
+//     */
+//    public void writeAttributes(ObjectOutputStream out,
+//                                  AttributeSet a) throws IOException {
+//        writeAttributeSet(out, a);
+//    }
+//
+//    /**
+//     * Context-specific handling of reading in attributes
+//     */
+//    public void readAttributes(ObjectInputStream in,
+//                               MutableAttributeSet a) throws ClassNotFoundException, IOException {
+//        readAttributeSet(in, a);
+//    }
+//
+//    /**
+//     * Writes a set of attributes to the given object stream
+//     * for the purpose of serialization.  This will take
+//     * special care to deal with static attribute keys that
+//     * have been registered wit the
+//     * <code>registerStaticAttributeKey</code> method.
+//     * Any attribute key not regsitered as a static key
+//     * will be serialized directly.  All values are expected
+//     * to be serializable.
+//     *
+//     * @param out the output stream
+//     * @param a the attribute set
+//     * @exception IOException on any I/O error
+//     */
+//    public static void writeAttributeSet(ObjectOutputStream out,
+//                                         AttributeSet a) throws IOException {
+//        int n = a.getAttributeCount();
+//        out.writeInt(n);
+//        Enumeration keys = a.getAttributeNames();
+//        while (keys.hasMoreElements()) {
+//            Object key = keys.nextElement();
+//            if (key instanceof Serializable) {
+//                out.writeObject(key);
+//            } else {
+//                Object ioFmt = freezeKeyMap.get(key);
+//                if (ioFmt == null) {
+//                    throw new NotSerializableException(key.getClass().
+//                                 getName() + " is not serializable as a key in an AttributeSet");
+//                }
+//                out.writeObject(ioFmt);
+//            }
+//            Object value = a.getAttribute(key);
+//            Object ioFmt = freezeKeyMap.get(value);
+//            if (value instanceof Serializable) {
+//                out.writeObject((ioFmt != null) ? ioFmt : value);
+//            } else {
+//                if (ioFmt == null) {
+//                    throw new NotSerializableException(value.getClass().
+//                                 getName() + " is not serializable as a value in an AttributeSet");
+//                }
+//                out.writeObject(ioFmt);
+//            }
+//        }
+//    }
+//
+//    /**
+//     * Reads a set of attributes from the given object input
+//     * stream that have been previously written out with
+//     * <code>writeAttributeSet</code>.  This will try to restore
+//     * keys that were static objects to the static objects in
+//     * the current virtual machine considering only those keys
+//     * that have been registered with the
+//     * <code>registerStaticAttributeKey</code> method.
+//     * The attributes retrieved from the stream will be placed
+//     * into the given mutable set.
+//     *
+//     * @param in the object stream to read the attribute data from.
+//     * @param a  the attribute set to place the attribute
+//     *   definitions in.
+//     * @exception ClassNotFoundException passed upward if encountered
+//     *  when reading the object stream.
+//     * @exception IOException passed upward if encountered when
+//     *  reading the object stream.
+//     */
+//    public static void readAttributeSet(ObjectInputStream in,
+//        MutableAttributeSet a) throws ClassNotFoundException, IOException {
+//
+//        int n = in.readInt();
+//        for (int i = 0; i < n; i++) {
+//            Object key = in.readObject();
+//            Object value = in.readObject();
+//            if (thawKeyMap != null) {
+//                Object staticKey = thawKeyMap.get(key);
+//                if (staticKey != null) {
+//                    key = staticKey;
+//                }
+//                Object staticValue = thawKeyMap.get(value);
+//                if (staticValue != null) {
+//                    value = staticValue;
+//                }
+//            }
+//            a.addAttribute(key, value);
+//        }
+//    }
 
     /**
      * Registers an object as a static object that is being

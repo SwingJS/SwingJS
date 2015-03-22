@@ -88,7 +88,7 @@ import java.util.ResourceBundle;
   * This is unsafe, since more constants may be added in the future and
   * since it is not guaranteed that orientation objects will be unique.
   */
-public final class ComponentOrientation implements java.io.Serializable
+public final class ComponentOrientation
 {
     /*
      * serialVersionUID

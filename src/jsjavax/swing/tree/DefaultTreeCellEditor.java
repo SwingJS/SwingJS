@@ -569,33 +569,33 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
         editingComponent = null;
     }
 
-    // Serialization support.
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        Vector      values = new Vector();
-
-        s.defaultWriteObject();
-        // Save the realEditor, if its Serializable.
-        if(realEditor != null && realEditor instanceof Serializable) {
-            values.addElement("realEditor");
-            values.addElement(realEditor);
-        }
-        s.writeObject(values);
-    }
-
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-
-        Vector          values = (Vector)s.readObject();
-        int             indexCounter = 0;
-        int             maxCounter = values.size();
-
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("realEditor")) {
-            realEditor = (TreeCellEditor)values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-    }
+//    // Serialization support.
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        Vector      values = new Vector();
+//
+//        s.defaultWriteObject();
+//        // Save the realEditor, if its Serializable.
+//        if(realEditor != null && realEditor instanceof Serializable) {
+//            values.addElement("realEditor");
+//            values.addElement(realEditor);
+//        }
+//        s.writeObject(values);
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//
+//        Vector          values = (Vector)s.readObject();
+//        int             indexCounter = 0;
+//        int             maxCounter = values.size();
+//
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("realEditor")) {
+//            realEditor = (TreeCellEditor)values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//    }
 
 
     /**

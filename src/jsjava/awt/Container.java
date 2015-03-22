@@ -4137,7 +4137,7 @@ public class Container extends Component {
  *
  * @author Timothy Prinzing
  */
-class LightweightDispatcher implements java.io.Serializable, AWTEventListener {
+class LightweightDispatcher implements AWTEventListener {
 
     /*
      * JDK 1.1 serialVersionUID

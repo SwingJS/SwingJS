@@ -1,23 +1,154 @@
 Differences to Original JDK 1.6
 ===============================
 
-- No Accessibility Handling
-- No Serialization
+primitive numerical types
+-------------------------
 
+JavaScript cannot distinguish between primitive number types 
+int, short, float, and double. Bob's J2S fix does allow for
+distinguishing between int[] and float[], but that is all. 
+The implication is for overloaded methods and constructors.
+For example:
+
+  Color(int r, int g, int b, int a)
+  Color(float r, float g, float b, float a)
+
+cannot be distinguished. 
+
+This will need careful checking and will be the source of bugs, for sure,
+because it is next to impossible to find all of these, and even if they are
+found, certain cases such as above will never be perfectly resolved.
+
+forced null typing
+------------------
+
+The J2S compiler has support for proper method signature handling 
+in cases such as:
+
+  new URL((URL) null, filePath, null)
+  
+The issue here is that without that (URL) the call is ambiguous. 
+However, there is a flaw in j2slib (jmolj2s) in that the called 
+method receives a "null" URL object, which does not in JavaScript
+evaluate to true for "== null". Thus, testing for null within 
+functions called this way process improperly.
+
+accessibility
+-------------
+
+All Accessibility handling has been commented out to save the download footprint.
+This removes the need for sun.misc.SharedSecrets
+
+security
+--------
+
+All JavaScript security is handled by the browser natively. 
+Thus, Java security checking is no longer necessary, and 
+java.security.AccessController has been simplified to work without
+native security checking.
+
+javax.swing.FileDialog
+----------------------
+
+HTML5 cannot expose a file directory structure
+
+
+native classes
+--------------
+
+The J2S compiler ignores all static native method declarations.
+Anything of this nature needs to be implemented in JavaScript if it is needed.
+
+fonts
+-----
+
+Fonts and FontMetrics will all be handled in JavaScript. Font matching will 
+not be exact, and composite (drawn) fonts will not be supported. 
+
+Jmol handles calls such as font.getFontMetrics(g).stringWidth("xxx") by 
+creating an off-page DOM image and querying its context. 
+This will be done here as well.
+ 
+  
+
+serialization
+-------------
+
+All serialization has been removed. It was never very useful for Swing anyway, 
+because one needs exactly the same Java version to save and restore serialized objects.
+
+OS-dependent classes
+--------------------
+
+Static classes such as:
+
+   java.awt.Toolkit
+   java.awt.GraphicsEnvironment
+   
+   
+which are created using Class.forName
+will be implemented as JavaScript classes in the swingjs package
+
+
+AWTAccessor and  AwtContext need to be customized 
+   
+    
+Threading Issues
+----------------
+
+ThreadGroup -- should point to objects unique to an applet. This will allow
+                 easy access to applet-specific quantitities.  
+- All threading must be "faked" in JavaScript. Specifically not available is:
+
+  Thread.sleep()
+  
+  which is used only sparingly: 
+  
+    javax.swing.AbstractButton#doClick(pressTime)
+    
+  and in SunToolkit for event handling
+     
 
 Key Focus
 ---------
-- Less explicit key focus handling (mostly done by Browser/HTML)
+- Less explicit key focus 
+- handling (mostly done by Browser/HTML)
 - no SwingUtilities.findFocusOwner
 
-Internal
-========
-- no ComponentPeer
+Image Loading
+-------------
+- JavaScript does not allow synchronous image loading. A callback is required, and 
+  since there is no Thread.sleep, this could be a problem in some cases. 
+
+- BufferedImage: only "support" imageType RGB and ARGB
+  -BH: This is a temporary edit, just to get us started. Certainly GRAY will be needed
+
+
+java.awt.Color
+--------------
+
+See note under primitive types, above.
+
+ColorSpace: only "support" CS_sRGB
+
+ -BH: This is a temporary edit just to get us started.
+
+
+
+AWT component peers
+---------------
+
+ComponentPeer is a class that represents a native AWT component.
+Components with such peers are called "heavy-weight" components.
+They are expected to do the dirty work of graphics drawing. 
+
+Java Swing implements peers only for JApplet, JDialog, JFrame, and JWindow. 
+References to such objects have been removed, but clearly there must be 
+some connection to similar DOM objects, even for "light-weight" components. 
+
 
 
 DISCUSS
 =======
 
-BufferedImage: only "support" imageType RGB and ARGB
-ColorSpace: only "support" CS_sRGB
 

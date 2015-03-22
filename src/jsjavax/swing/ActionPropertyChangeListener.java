@@ -127,20 +127,20 @@ abstract class ActionPropertyChangeListener<T extends JComponent>
           return action;
     }
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        s.writeObject(getTarget());
-    }
-
-    @SuppressWarnings("unchecked")
-    private void readObject(ObjectInputStream s)
-                     throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-        T target = (T)s.readObject();
-        if (target != null) {
-            setTarget(target);
-        }
-    }
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        s.writeObject(getTarget());
+//    }
+//
+//    @SuppressWarnings("unchecked")
+//    private void readObject(ObjectInputStream s)
+//                     throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//        T target = (T)s.readObject();
+//        if (target != null) {
+//            setTarget(target);
+//        }
+//    }
 
 
     private static class OwnedWeakReference<U extends JComponent> extends

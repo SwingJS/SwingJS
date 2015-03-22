@@ -988,17 +988,17 @@ public class InternationalFormatter extends DefaultFormatter {
         updateValue(value);
     }
 
-    /**
-     * Subclassed to update the internal representation of the mask after
-     * the default read operation has completed.
-     */
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-        updateMaskIfNecessary();
-    }
-
-
+//    /**
+//     * Subclassed to update the internal representation of the mask after
+//     * the default read operation has completed.
+//     */
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//        updateMaskIfNecessary();
+//    }
+//
+//
     /**
      * Overriden to return an instance of <code>ExtendedReplaceHolder</code>.
      */

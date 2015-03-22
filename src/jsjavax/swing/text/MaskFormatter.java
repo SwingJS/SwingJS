@@ -645,19 +645,19 @@ public class MaskFormatter extends DefaultFormatter {
     }
 
 
-    /**
-     * Subclassed to update the internal representation of the mask after
-     * the default read operation has completed.
-     */
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-        try {
-            updateInternalMask();
-        } catch (ParseException pe) {
-            // assert();
-        }
-    }
+//    /**
+//     * Subclassed to update the internal representation of the mask after
+//     * the default read operation has completed.
+//     */
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//        try {
+//            updateInternalMask();
+//        } catch (ParseException pe) {
+//            // assert();
+//        }
+//    }
 
     /**
      * Returns true if the MaskFormatter allows invalid, or

@@ -191,7 +191,7 @@ import jssun.font.AttributeValues;
  * especially important are called out as having 'baseline-relative
  * coordinates.'
  */
-public class Font implements java.io.Serializable
+public class Font
 {
 
     /**

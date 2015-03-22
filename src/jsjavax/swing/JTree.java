@@ -2949,208 +2949,208 @@ public class JTree extends JComponent implements Scrollable
         return null;
     }
 
-    // Serialization support.
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        Vector      values = new Vector();
+//    // Serialization support.
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        Vector      values = new Vector();
+//
+//        s.defaultWriteObject();
+//        // Save the cellRenderer, if its Serializable.
+//        if(cellRenderer != null && cellRenderer instanceof Serializable) {
+//            values.addElement("cellRenderer");
+//            values.addElement(cellRenderer);
+//        }
+//        // Save the cellEditor, if its Serializable.
+//        if(cellEditor != null && cellEditor instanceof Serializable) {
+//            values.addElement("cellEditor");
+//            values.addElement(cellEditor);
+//        }
+//        // Save the treeModel, if its Serializable.
+//        if(treeModel != null && treeModel instanceof Serializable) {
+//            values.addElement("treeModel");
+//            values.addElement(treeModel);
+//        }
+//        // Save the selectionModel, if its Serializable.
+//        if(selectionModel != null && selectionModel instanceof Serializable) {
+//            values.addElement("selectionModel");
+//            values.addElement(selectionModel);
+//        }
+//
+//        Object      expandedData = getArchivableExpandedState();
+//
+//        if(expandedData != null) {
+//            values.addElement("expandedState");
+//            values.addElement(expandedData);
+//        }
+//
+//        s.writeObject(values);
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//        throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//
+//        // Create an instance of expanded state.
+//
+//        expandedState = new Hashtable();
+//
+//        expandedStack = new Stack();
+//
+//        Vector          values = (Vector)s.readObject();
+//        int             indexCounter = 0;
+//        int             maxCounter = values.size();
+//
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("cellRenderer")) {
+//            cellRenderer = (TreeCellRenderer)values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("cellEditor")) {
+//            cellEditor = (TreeCellEditor)values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("treeModel")) {
+//            treeModel = (TreeModel)values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("selectionModel")) {
+//            selectionModel = (TreeSelectionModel)values.elementAt(++indexCounter);
+//            indexCounter++;
+//        }
+//        if(indexCounter < maxCounter && values.elementAt(indexCounter).
+//           equals("expandedState")) {
+//            unarchiveExpandedState(values.elementAt(++indexCounter));
+//            indexCounter++;
+//        }
+//        // Reinstall the redirector.
+//        if(listenerList.getListenerCount(TreeSelectionListener.class) != 0) {
+//            selectionRedirector = new TreeSelectionRedirector();
+//            selectionModel.addTreeSelectionListener(selectionRedirector);
+//        }
+//        // Listener to TreeModel.
+//        if(treeModel != null) {
+//            treeModelListener = createTreeModelListener();
+//            if(treeModelListener != null)
+//                treeModel.addTreeModelListener(treeModelListener);
+//        }
+//    }
 
-        s.defaultWriteObject();
-        // Save the cellRenderer, if its Serializable.
-        if(cellRenderer != null && cellRenderer instanceof Serializable) {
-            values.addElement("cellRenderer");
-            values.addElement(cellRenderer);
-        }
-        // Save the cellEditor, if its Serializable.
-        if(cellEditor != null && cellEditor instanceof Serializable) {
-            values.addElement("cellEditor");
-            values.addElement(cellEditor);
-        }
-        // Save the treeModel, if its Serializable.
-        if(treeModel != null && treeModel instanceof Serializable) {
-            values.addElement("treeModel");
-            values.addElement(treeModel);
-        }
-        // Save the selectionModel, if its Serializable.
-        if(selectionModel != null && selectionModel instanceof Serializable) {
-            values.addElement("selectionModel");
-            values.addElement(selectionModel);
-        }
+//    /**
+//     * Returns an object that can be archived indicating what nodes are
+//     * expanded and what aren't. The objects from the model are NOT
+//     * written out.
+//     */
+//    private Object getArchivableExpandedState() {
+//        TreeModel       model = getModel();
+//
+//        if(model != null) {
+//            Enumeration        paths = expandedState.keys();
+//
+//            if(paths != null) {
+//                Vector         state = new Vector();
+//
+//                while(paths.hasMoreElements()) {
+//                    TreePath   path = (TreePath)paths.nextElement();
+//                    Object     archivePath;
+//
+//                    try {
+//                        archivePath = getModelIndexsForPath(path);
+//                    } catch (Error error) {
+//                        archivePath = null;
+//                    }
+//                    if(archivePath != null) {
+//                        state.addElement(archivePath);
+//                        state.addElement(expandedState.get(path));
+//                    }
+//                }
+//                return state;
+//            }
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * Updates the expanded state of nodes in the tree based on the
+//     * previously archived state <code>state</code>.
+//     */
+//    private void unarchiveExpandedState(Object state) {
+//        if(state instanceof Vector) {
+//            Vector          paths = (Vector)state;
+//
+//            for(int counter = paths.size() - 1; counter >= 0; counter--) {
+//                Boolean        eState = (Boolean)paths.elementAt(counter--);
+//                TreePath       path;
+//
+//                try {
+//                    path = getPathForIndexs((int[])paths.elementAt(counter));
+//                    if(path != null)
+//                        expandedState.put(path, eState);
+//                } catch (Error error) {}
+//            }
+//        }
+//    }
 
-        Object      expandedData = getArchivableExpandedState();
-
-        if(expandedData != null) {
-            values.addElement("expandedState");
-            values.addElement(expandedData);
-        }
-
-        s.writeObject(values);
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
-
-    private void readObject(ObjectInputStream s)
-        throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-
-        // Create an instance of expanded state.
-
-        expandedState = new Hashtable();
-
-        expandedStack = new Stack();
-
-        Vector          values = (Vector)s.readObject();
-        int             indexCounter = 0;
-        int             maxCounter = values.size();
-
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("cellRenderer")) {
-            cellRenderer = (TreeCellRenderer)values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("cellEditor")) {
-            cellEditor = (TreeCellEditor)values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("treeModel")) {
-            treeModel = (TreeModel)values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("selectionModel")) {
-            selectionModel = (TreeSelectionModel)values.elementAt(++indexCounter);
-            indexCounter++;
-        }
-        if(indexCounter < maxCounter && values.elementAt(indexCounter).
-           equals("expandedState")) {
-            unarchiveExpandedState(values.elementAt(++indexCounter));
-            indexCounter++;
-        }
-        // Reinstall the redirector.
-        if(listenerList.getListenerCount(TreeSelectionListener.class) != 0) {
-            selectionRedirector = new TreeSelectionRedirector();
-            selectionModel.addTreeSelectionListener(selectionRedirector);
-        }
-        // Listener to TreeModel.
-        if(treeModel != null) {
-            treeModelListener = createTreeModelListener();
-            if(treeModelListener != null)
-                treeModel.addTreeModelListener(treeModelListener);
-        }
-    }
-
-    /**
-     * Returns an object that can be archived indicating what nodes are
-     * expanded and what aren't. The objects from the model are NOT
-     * written out.
-     */
-    private Object getArchivableExpandedState() {
-        TreeModel       model = getModel();
-
-        if(model != null) {
-            Enumeration        paths = expandedState.keys();
-
-            if(paths != null) {
-                Vector         state = new Vector();
-
-                while(paths.hasMoreElements()) {
-                    TreePath   path = (TreePath)paths.nextElement();
-                    Object     archivePath;
-
-                    try {
-                        archivePath = getModelIndexsForPath(path);
-                    } catch (Error error) {
-                        archivePath = null;
-                    }
-                    if(archivePath != null) {
-                        state.addElement(archivePath);
-                        state.addElement(expandedState.get(path));
-                    }
-                }
-                return state;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Updates the expanded state of nodes in the tree based on the
-     * previously archived state <code>state</code>.
-     */
-    private void unarchiveExpandedState(Object state) {
-        if(state instanceof Vector) {
-            Vector          paths = (Vector)state;
-
-            for(int counter = paths.size() - 1; counter >= 0; counter--) {
-                Boolean        eState = (Boolean)paths.elementAt(counter--);
-                TreePath       path;
-
-                try {
-                    path = getPathForIndexs((int[])paths.elementAt(counter));
-                    if(path != null)
-                        expandedState.put(path, eState);
-                } catch (Error error) {}
-            }
-        }
-    }
-
-    /**
-     * Returns an array of integers specifying the indexs of the
-     * components in the <code>path</code>. If <code>path</code> is
-     * the root, this will return an empty array.  If <code>path</code>
-     * is <code>null</code>, <code>null</code> will be returned.
-     */
-    private int[] getModelIndexsForPath(TreePath path) {
-        if(path != null) {
-            TreeModel   model = getModel();
-            int         count = path.getPathCount();
-            int[]       indexs = new int[count - 1];
-            Object      parent = model.getRoot();
-
-            for(int counter = 1; counter < count; counter++) {
-                indexs[counter - 1] = model.getIndexOfChild
-                                   (parent, path.getPathComponent(counter));
-                parent = path.getPathComponent(counter);
-                if(indexs[counter - 1] < 0)
-                    return null;
-            }
-            return indexs;
-        }
-        return null;
-    }
-
-    /**
-     * Returns a <code>TreePath</code> created by obtaining the children
-     * for each of the indices in <code>indexs</code>. If <code>indexs</code>
-     * or the <code>TreeModel</code> is <code>null</code>, it will return
-     * <code>null</code>.
-     */
-    private TreePath getPathForIndexs(int[] indexs) {
-        if(indexs == null)
-            return null;
-
-        TreeModel    model = getModel();
-
-        if(model == null)
-            return null;
-
-        int          count = indexs.length;
-        Object       parent = model.getRoot();
-        TreePath     parentPath = new TreePath(parent);
-
-        for(int counter = 0; counter < count; counter++) {
-            parent = model.getChild(parent, indexs[counter]);
-            if(parent == null)
-                return null;
-            parentPath = parentPath.pathByAddingChild(parent);
-        }
-        return parentPath;
-    }
+//    /**
+//     * Returns an array of integers specifying the indexs of the
+//     * components in the <code>path</code>. If <code>path</code> is
+//     * the root, this will return an empty array.  If <code>path</code>
+//     * is <code>null</code>, <code>null</code> will be returned.
+//     */
+//    private int[] getModelIndexsForPath(TreePath path) {
+//        if(path != null) {
+//            TreeModel   model = getModel();
+//            int         count = path.getPathCount();
+//            int[]       indexs = new int[count - 1];
+//            Object      parent = model.getRoot();
+//
+//            for(int counter = 1; counter < count; counter++) {
+//                indexs[counter - 1] = model.getIndexOfChild
+//                                   (parent, path.getPathComponent(counter));
+//                parent = path.getPathComponent(counter);
+//                if(indexs[counter - 1] < 0)
+//                    return null;
+//            }
+//            return indexs;
+//        }
+//        return null;
+//    }
+//
+//    /**
+//     * Returns a <code>TreePath</code> created by obtaining the children
+//     * for each of the indices in <code>indexs</code>. If <code>indexs</code>
+//     * or the <code>TreeModel</code> is <code>null</code>, it will return
+//     * <code>null</code>.
+//     */
+//    private TreePath getPathForIndexs(int[] indexs) {
+//        if(indexs == null)
+//            return null;
+//
+//        TreeModel    model = getModel();
+//
+//        if(model == null)
+//            return null;
+//
+//        int          count = indexs.length;
+//        Object       parent = model.getRoot();
+//        TreePath     parentPath = new TreePath(parent);
+//
+//        for(int counter = 0; counter < count; counter++) {
+//            parent = model.getChild(parent, indexs[counter]);
+//            if(parent == null)
+//                return null;
+//            parentPath = parentPath.pathByAddingChild(parent);
+//        }
+//        return parentPath;
+//    }
 
     /**
      * <code>EmptySelectionModel</code> is a <code>TreeSelectionModel</code>

@@ -639,10 +639,10 @@ public class Timer
         return timer;
     }
 
-     private void readObject(ObjectInputStream in) 
-        throws ClassNotFoundException, IOException
-     {
-        this.acc = AccessController.getContext();
-        in.defaultReadObject();
-     }
+//     private void readObject(ObjectInputStream in) 
+//        throws ClassNotFoundException, IOException
+//     {
+//        this.acc = AccessController.getContext();
+//        in.defaultReadObject();
+//     }
 }
