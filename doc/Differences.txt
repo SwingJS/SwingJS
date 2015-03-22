@@ -1,3 +1,11 @@
+DISCUSS
+=======
+
+It looks like just about all the warnings are "never used locally" errors.
+This is excellent!
+
+
+
 Differences to Original JDK 1.6
 ===============================
 
@@ -147,8 +155,5 @@ References to such objects have been removed, but clearly there must be
 some connection to similar DOM objects, even for "light-weight" components. 
 
 
-
-DISCUSS
-=======
 
 
