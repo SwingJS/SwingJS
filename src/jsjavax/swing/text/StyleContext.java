@@ -1586,18 +1586,18 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
 
         // --- serialization ---------------------------------------------
 
-        private void writeObject(ObjectOutputStream s) throws IOException {
-            s.defaultWriteObject();
-            writeAttributeSet(s, attributes);
-        }
-
-        private void readObject(ObjectInputStream s)
-            throws ClassNotFoundException, IOException
-        {
-            s.defaultReadObject();
-            attributes = SimpleAttributeSet.EMPTY;
-            readAttributeSet(s, this);
-        }
+//        private void writeObject(ObjectOutputStream s) throws IOException {
+//            s.defaultWriteObject();
+//            writeAttributeSet(s, attributes);
+//        }
+//
+//        private void readObject(ObjectInputStream s)
+//            throws ClassNotFoundException, IOException
+//        {
+//            s.defaultReadObject();
+//            attributes = SimpleAttributeSet.EMPTY;
+//            readAttributeSet(s, this);
+//        }
 
         // --- member variables -----------------------------------------------
 

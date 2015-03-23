@@ -2212,23 +2212,23 @@ public abstract class AbstractDocument implements Document {
          */
         public abstract Enumeration children();
 
-
-        // --- serialization ---------------------------------------------
-
-        private void writeObject(ObjectOutputStream s) throws IOException {
-            s.defaultWriteObject();
-            StyleContext.writeAttributeSet(s, attributes);
-        }
-
-        private void readObject(ObjectInputStream s)
-            throws ClassNotFoundException, IOException
-        {
-            s.defaultReadObject();
-            MutableAttributeSet attr = new SimpleAttributeSet();
-            StyleContext.readAttributeSet(s, attr);
-            AttributeContext context = getAttributeContext();
-            attributes = context.addAttributes(SimpleAttributeSet.EMPTY, attr);
-        }
+//
+//        // --- serialization ---------------------------------------------
+//
+//        private void writeObject(ObjectOutputStream s) throws IOException {
+//            s.defaultWriteObject();
+//            StyleContext.writeAttributeSet(s, attributes);
+//        }
+//
+//        private void readObject(ObjectInputStream s)
+//            throws ClassNotFoundException, IOException
+//        {
+//            s.defaultReadObject();
+//            MutableAttributeSet attr = new SimpleAttributeSet();
+//            StyleContext.readAttributeSet(s, attr);
+//            AttributeContext context = getAttributeContext();
+//            attributes = context.addAttributes(SimpleAttributeSet.EMPTY, attr);
+//        }
 
         // ---- variables -----------------------------------------------------
 
