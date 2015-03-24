@@ -59,7 +59,7 @@ import static jsjava.awt.font.TextAttribute.UNDERLINE;
 import static jsjava.awt.font.TextAttribute.WEIGHT;
 import static jsjava.awt.font.TextAttribute.WIDTH;
 
-import java.text.AttributedCharacterIterator.Attribute;
+import jsjava.text.AttributedCharacterIterator.Attribute;
 
 import jsjava.awt.font.TextAttribute;
 

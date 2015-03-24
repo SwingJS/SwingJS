@@ -41,7 +41,7 @@
 package jsjava.awt.font;
 
 import java.io.InvalidObjectException;
-import java.text.AttributedCharacterIterator.Attribute;
+import jsjava.text.AttributedCharacterIterator.Attribute;
 import java.util.Map;
 import java.util.HashMap;
 

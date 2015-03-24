@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.text.AttributedCharacterIterator;
+import jsjava.text.AttributedCharacterIterator;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;

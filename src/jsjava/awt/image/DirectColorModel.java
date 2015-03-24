@@ -111,14 +111,14 @@ public class DirectColorModel extends PackedColorModel {
     private int green_mask;
     private int blue_mask;
     private int alpha_mask;
-    private int red_offset;
-    private int green_offset;
-    private int blue_offset;
-    private int alpha_offset;
-    private int red_scale;
-    private int green_scale;
-    private int blue_scale;
-    private int alpha_scale;
+//    private int red_offset;
+//    private int green_offset;
+//    private int blue_offset;
+//    private int alpha_offset;
+//    private int red_scale;
+//    private int green_scale;
+//    private int blue_scale;
+//    private int alpha_scale;
     private boolean is_LinearRGB;
     private int lRGBprecision;
     private byte[] tosRGB8LUT;
@@ -183,7 +183,7 @@ public class DirectColorModel extends PackedColorModel {
                bits, rmask, gmask, bmask, amask, false,
                amask == 0 ? Transparency.OPAQUE : Transparency.TRANSLUCENT,
                ColorModel.getDefaultTransferType(bits));
-        setFields();
+        //SwingJS setFields();
     }
 
     /**
@@ -235,7 +235,7 @@ public class DirectColorModel extends PackedColorModel {
                isAlphaPremultiplied,
                amask == 0 ? Transparency.OPAQUE : Transparency.TRANSLUCENT,
                transferType);
-//        if (ColorModel.isLinearRGBspace(colorSpace)) {
+//SwingJS         if (ColorModel.isLinearRGBspace(colorSpace)) {
 //            is_LinearRGB = true;
 //            if (maxBits <= 8) {
 //                lRGBprecision = 8;
@@ -257,7 +257,7 @@ public class DirectColorModel extends PackedColorModel {
 //                }
 //            }
 //        }
-        setFields();
+//		setFields();
     }
 
     /**
@@ -1373,32 +1373,32 @@ public class DirectColorModel extends PackedColorModel {
 //        return (raster.getTransferType() == transferType);
 //    }
 
-    private void setFields() {
-        // Set the private fields
-        // REMIND: Get rid of these from the native code
-        red_mask     = maskArray[0];
-        red_offset   = maskOffsets[0];
-        green_mask   = maskArray[1];
-        green_offset = maskOffsets[1];
-        blue_mask    = maskArray[2];
-        blue_offset  = maskOffsets[2];
-        if (nBits[0] < 8) {
-            red_scale = (1 << nBits[0]) - 1;
-        }
-        if (nBits[1] < 8) {
-            green_scale = (1 << nBits[1]) - 1;
-        }
-        if (nBits[2] < 8) {
-            blue_scale = (1 << nBits[2]) - 1;
-        }
-        if (supportsAlpha) {
-            alpha_mask   = maskArray[3];
-            alpha_offset = maskOffsets[3];
-            if (nBits[3] < 8) {
-                alpha_scale = (1 << nBits[3]) - 1;
-            }
-        }
-    }
+//    private void setFields() {
+//        // Set the private fields
+//        // REMIND: Get rid of these from the native code
+//        red_mask     = maskArray[0];
+//        red_offset   = maskOffsets[0];
+//        green_mask   = maskArray[1];
+//        green_offset = maskOffsets[1];
+//        blue_mask    = maskArray[2];
+//        blue_offset  = maskOffsets[2];
+//        if (nBits[0] < 8) {
+//            red_scale = (1 << nBits[0]) - 1;
+//        }
+//        if (nBits[1] < 8) {
+//            green_scale = (1 << nBits[1]) - 1;
+//        }
+//        if (nBits[2] < 8) {
+//            blue_scale = (1 << nBits[2]) - 1;
+//        }
+//        if (supportsAlpha) {
+//            alpha_mask   = maskArray[3];
+//            alpha_offset = maskOffsets[3];
+//            if (nBits[3] < 8) {
+//                alpha_scale = (1 << nBits[3]) - 1;
+//            }
+//        }
+//    }
 
     /**
      * Returns a <code>String</code> that represents this

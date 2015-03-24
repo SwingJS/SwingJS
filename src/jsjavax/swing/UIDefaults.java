@@ -997,68 +997,68 @@ public class UIDefaults extends Hashtable<Object,Object>
      * @since 1.3
      */
     public static class ProxyLazyValue implements LazyValue {
-        private AccessControlContext acc;
-        private String className;
-        private String methodName;
-        private Object[] args;
+//        private AccessControlContext acc;
+//        private String className;
+//        private String methodName;
+//        private Object[] args;
 
-        /**
-         * Creates a <code>LazyValue</code> which will construct an instance
-         * when asked.
-         *
-         * @param c    a <code>String</code> specifying the classname
-         *             of the instance to be created on demand
-         */
-        public ProxyLazyValue(String c) {
-            this(c, (String)null);
-        }
-        /**
-         * Creates a <code>LazyValue</code> which will construct an instance
-         * when asked.
-         *
-         * @param c    a <code>String</code> specifying the classname of
-         *              the class
-         *              containing a static method to be called for
-         *              instance creation
-         * @param m    a <code>String</code> specifying the static
-         *              method to be called on class c
-         */
-        public ProxyLazyValue(String c, String m) {
-            this(c, m, null);
-        }
-        /**
-         * Creates a <code>LazyValue</code> which will construct an instance
-         * when asked.
-         *
-         * @param c    a <code>String</code> specifying the classname
-         *              of the instance to be created on demand
-         * @param o    an array of <code>Objects</code> to be passed as
-         *              paramaters to the constructor in class c
-         */
-        public ProxyLazyValue(String c, Object[] o) {
-            this(c, null, o);
-        }
-        /**
-         * Creates a <code>LazyValue</code> which will construct an instance
-         * when asked.
-         *
-         * @param c    a <code>String</code> specifying the classname
-         *              of the class
-         *              containing a static method to be called for
-         *              instance creation.
-         * @param m    a <code>String</code> specifying the static method
-         *              to be called on class c
-         * @param o    an array of <code>Objects</code> to be passed as
-         *              paramaters to the static method in class c
-         */
-        public ProxyLazyValue(String c, String m, Object[] o) {
-            acc = AccessController.getContext();
-            className = c;
-            methodName = m;
-            if (o != null) {
-                args = (Object[])o.clone();
-            }
-        }
+//        /**
+//         * Creates a <code>LazyValue</code> which will construct an instance
+//         * when asked.
+//         *
+//         * @param c    a <code>String</code> specifying the classname
+//         *             of the instance to be created on demand
+//         */
+//        public ProxyLazyValue(String c) {
+//            this(c, (String)null);
+//        }
+//        /**
+//         * Creates a <code>LazyValue</code> which will construct an instance
+//         * when asked.
+//         *
+//         * @param c    a <code>String</code> specifying the classname of
+//         *              the class
+//         *              containing a static method to be called for
+//         *              instance creation
+//         * @param m    a <code>String</code> specifying the static
+//         *              method to be called on class c
+//         */
+//        public ProxyLazyValue(String c, String m) {
+//            this(c, m, null);
+//        }
+//        /**
+//         * Creates a <code>LazyValue</code> which will construct an instance
+//         * when asked.
+//         *
+//         * @param c    a <code>String</code> specifying the classname
+//         *              of the instance to be created on demand
+//         * @param o    an array of <code>Objects</code> to be passed as
+//         *              paramaters to the constructor in class c
+//         */
+//        public ProxyLazyValue(String c, Object[] o) {
+//            this(c, null, o);
+//        }
+//        /**
+//         * Creates a <code>LazyValue</code> which will construct an instance
+//         * when asked.
+//         *
+//         * @param c    a <code>String</code> specifying the classname
+//         *              of the class
+//         *              containing a static method to be called for
+//         *              instance creation.
+//         * @param m    a <code>String</code> specifying the static method
+//         *              to be called on class c
+//         * @param o    an array of <code>Objects</code> to be passed as
+//         *              paramaters to the static method in class c
+//         */
+//        public ProxyLazyValue(String c, String m, Object[] o) {
+//            acc = AccessController.getContext();
+//            className = c;
+//            methodName = m;
+//            if (o != null) {
+//                args = (Object[])o.clone();
+//            }
+//        }
 
         /**
          * Creates the value retrieved from the <code>UIDefaults</code> table.
@@ -1115,55 +1115,55 @@ public class UIDefaults extends Hashtable<Object,Object>
 ////            }, acc);
         }
         
-        /* 
-         * Coerce the array of class types provided into one which
-         * looks the way the Reflection APIs expect.  This is done
-         * by substituting primitive types for their Object counterparts,
-         * and superclasses for subclasses used to add the
-         * <code>UIResource</code> tag.
-         */
-        private Class[] getClassArray(Object[] args) {
-            Class[] types = null;
-            if (args!=null) {
-                types = new Class[args.length];
-                for (int i = 0; i< args.length; i++) {
-                    /* PENDING(ges): At present only the primitive types
-                       used are handled correctly; this should eventually
-                       handle all primitive types */
-                    if (args[i] instanceof java.lang.Integer) {
-                        types[i]=Integer.TYPE;
-                    } else if (args[i] instanceof java.lang.Boolean) {
-                        types[i]=Boolean.TYPE;
-                    } else if (args[i] instanceof jsjavax.swing.plaf.ColorUIResource) {
-                        /* PENDING(ges) Currently the Reflection APIs do not
-                           search superclasses of parameters supplied for
-                           constructor/method lookup.  Since we only have
-                           one case where this is needed, we substitute
-                           directly instead of adding a massive amount
-                           of mechanism for this.  Eventually this will
-                           probably need to handle the general case as well.
-                           */
-                        types[i]=jsjava.awt.Color.class;
-                    } else {
-                        types[i]=args[i].getClass();
-                    }
-                }
-            }
-            return types;
-        }
-
-        private String printArgs(Object[] array) {
-            String s = "{";
-            if (array !=null) {
-                for (int i = 0 ; i < array.length-1; i++) {
-                    s = s.concat(array[i] + ",");
-                }
-                s = s.concat(array[array.length-1] + "}");
-            } else {
-                s = s.concat("}");
-            }
-            return s;
-        }
+//        /* 
+//         * Coerce the array of class types provided into one which
+//         * looks the way the Reflection APIs expect.  This is done
+//         * by substituting primitive types for their Object counterparts,
+//         * and superclasses for subclasses used to add the
+//         * <code>UIResource</code> tag.
+//         */
+//        private Class[] getClassArray(Object[] args) {
+//            Class[] types = null;
+//            if (args!=null) {
+//                types = new Class[args.length];
+//                for (int i = 0; i< args.length; i++) {
+//                    /* PENDING(ges): At present only the primitive types
+//                       used are handled correctly; this should eventually
+//                       handle all primitive types */
+//                    if (args[i] instanceof java.lang.Integer) {
+//                        types[i]=Integer.TYPE;
+//                    } else if (args[i] instanceof java.lang.Boolean) {
+//                        types[i]=Boolean.TYPE;
+//                    } else if (args[i] instanceof jsjavax.swing.plaf.ColorUIResource) {
+//                        /* PENDING(ges) Currently the Reflection APIs do not
+//                           search superclasses of parameters supplied for
+//                           constructor/method lookup.  Since we only have
+//                           one case where this is needed, we substitute
+//                           directly instead of adding a massive amount
+//                           of mechanism for this.  Eventually this will
+//                           probably need to handle the general case as well.
+//                           */
+//                        types[i]=jsjava.awt.Color.class;
+//                    } else {
+//                        types[i]=args[i].getClass();
+//                    }
+//                }
+//            }
+//            return types;
+//        }
+//
+//        private String printArgs(Object[] array) {
+//            String s = "{";
+//            if (array !=null) {
+//                for (int i = 0 ; i < array.length-1; i++) {
+//                    s = s.concat(array[i] + ",");
+//                }
+//                s = s.concat(array[array.length-1] + "}");
+//            } else {
+//                s = s.concat("}");
+//            }
+//            return s;
+//        }
     }
 
 

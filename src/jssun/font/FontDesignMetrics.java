@@ -32,7 +32,7 @@ import java.util.Hashtable;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.font.FontRenderContext;
-import jsjava.awt.geom.AffineTransform;
+//import jsjava.awt.geom.AffineTransform;
 //import jssun.java2d.Disposer;
 //import jssun.java2d.DisposerRecord;
 
@@ -97,38 +97,41 @@ import jsjava.awt.geom.AffineTransform;
 
 public final class FontDesignMetrics extends FontMetrics {
 
-    static final long serialVersionUID = 4480069578560887773L;
+//    static final long serialVersionUID = 4480069578560887773L;
 
-    private static final float UNKNOWN_WIDTH = -1;
-    private static final int CURRENT_VERSION = 1;
-
+//    private static final float UNKNOWN_WIDTH = -1;
+//    private static final int CURRENT_VERSION = 1;
+//
     // height, ascent, descent, leading are reported to the client
     // as an integer this value is added to the true fp value to
     // obtain a value which is usually going to result in a round up
     // to the next integer except for very marginal cases.
     private static float roundingUpValue = 0.95f;
 
-    // These fields are all part of the old serialization representation
-    private Font  font;
-    private float ascent;
-    private float descent;
-    private float leading;
-    private float maxAdvance;
-    private double[] matrix;
-    private int[] cache; // now unused, still here only for serialization
-    // End legacy serialization fields
+//    // These fields are all part of the old serialization representation
+//private Font  font;
+private float ascent;
+private float descent;
+private float leading;
+//    private float maxAdvance;
+//    private double[] matrix;
+//    private int[] cache; // now unused, still here only for serialization
+//    // End legacy serialization fields
 
-    private int serVersion = 0;  // If 1 in readObject, these fields are on the input stream:
-    private boolean isAntiAliased;
-    private boolean usesFractionalMetrics;
-    private AffineTransform frcTx;
-
-    private transient float[] advCache; // transient since values could change across runtimes
+    
+    
+    
+//    private int serVersion = 0;  // If 1 in readObject, these fields are on the input stream:
+//    private boolean isAntiAliased;
+//    private boolean usesFractionalMetrics;
+//    private AffineTransform frcTx;
+//
+//    private transient float[] advCache; // transient since values could change across runtimes
     private transient int height = -1;
 
     private transient FontRenderContext frc;
 
-    private transient double[] devmatrix = null;
+//   private transient double[] devmatrix = null;
 
 //    private transient FontStrike fontStrike;
 
@@ -183,7 +186,8 @@ public final class FontDesignMetrics extends FontMetrics {
          * synchronize all 'put' and 'remove' accesses to the cache which
          * I would prefer not to do.
          */
-        public void dispose() {
+        @SuppressWarnings("unused")
+				public void dispose() {
             if (metricsCache.get(key) == this) {
                 metricsCache.remove(key);
             }
@@ -332,12 +336,12 @@ public final class FontDesignMetrics extends FontMetrics {
       this.font = font;
       this.frc = frc;
 
-      this.isAntiAliased = frc.isAntiAliased();
-      this.usesFractionalMetrics = frc.usesFractionalMetrics();
+//      this.isAntiAliased = frc.isAntiAliased();
+//      this.usesFractionalMetrics = frc.usesFractionalMetrics();
 
 //      frcTx = frc.getTransform();
 
-      matrix = new double[4];
+//      matrix = new double[4];
       initMatrixAndMetrics();
 
       //initAdvCache();
@@ -526,10 +530,10 @@ public final class FontDesignMetrics extends FontMetrics {
         return widths;
     }
 
-    public int getMaxAdvance() {
-        return (int)(0.99f + this.maxAdvance);
-    }
-
+//    public int getMaxAdvance() {
+//        return (int)(0.99f + this.maxAdvance);
+//    }
+//
   /*
    * Returns the typographic ascent of the font. This is the maximum distance
    * glyphs in this font extend above the base line (measured in typographic

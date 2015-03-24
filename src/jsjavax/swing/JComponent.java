@@ -331,14 +331,14 @@ public abstract class JComponent extends Container
     private static final int IS_PRINTING_ALL                          = 12;
     private static final int IS_REPAINTING                            = 13;
     /** Bits 14-21 are used to handle nested writeObject calls. **/
-    private static final int WRITE_OBJ_COUNTER_FIRST                  = 14;
-    private static final int RESERVED_1                               = 15;
-    private static final int RESERVED_2                               = 16;
-    private static final int RESERVED_3                               = 17;
-    private static final int RESERVED_4                               = 18;
-    private static final int RESERVED_5                               = 19;
-    private static final int RESERVED_6                               = 20;
-    private static final int WRITE_OBJ_COUNTER_LAST                   = 21;
+//    private static final int WRITE_OBJ_COUNTER_FIRST                  = 14;
+//    private static final int RESERVED_1                               = 15;
+//    private static final int RESERVED_2                               = 16;
+//    private static final int RESERVED_3                               = 17;
+//    private static final int RESERVED_4                               = 18;
+//    private static final int RESERVED_5                               = 19;
+//    private static final int RESERVED_6                               = 20;
+//    private static final int WRITE_OBJ_COUNTER_LAST                   = 21;
 
     private static final int REQUEST_FOCUS_DISABLED                   = 22;
     private static final int INHERITS_POPUP_MENU                      = 23;
@@ -5237,17 +5237,17 @@ public abstract class JComponent extends Container
         int mask = (1 << aFlag);
         return ((flags & mask) == mask);
     }
-    // These functions must be static so that they can be called from
-    // subclasses inside the package, but whose inheritance hierarhcy includes
-    // classes outside of the package below JComponent (e.g., JTextArea).
-    static void setWriteObjCounter(JComponent comp, byte count) {
-        comp.flags = (comp.flags & ~(0xFF << WRITE_OBJ_COUNTER_FIRST)) |
-                     (count << WRITE_OBJ_COUNTER_FIRST);
-    }
-    static byte getWriteObjCounter(JComponent comp) {
-        return (byte)((comp.flags >> WRITE_OBJ_COUNTER_FIRST) & 0xFF);
-    }
-
+//    // These functions must be static so that they can be called from
+//    // subclasses inside the package, but whose inheritance hierarhcy includes
+//    // classes outside of the package below JComponent (e.g., JTextArea).
+//    static void setWriteObjCounter(JComponent comp, byte count) {
+//        comp.flags = (comp.flags & ~(0xFF << WRITE_OBJ_COUNTER_FIRST)) |
+//                     (count << WRITE_OBJ_COUNTER_FIRST);
+//    }
+//    static byte getWriteObjCounter(JComponent comp) {
+//        return (byte)((comp.flags >> WRITE_OBJ_COUNTER_FIRST) & 0xFF);
+//    }
+//
     /** Buffering **/
 
     /**

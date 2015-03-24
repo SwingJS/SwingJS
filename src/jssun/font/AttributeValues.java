@@ -58,8 +58,8 @@ import static jssun.font.EAttribute.EUNDERLINE;
 import static jssun.font.EAttribute.EWEIGHT;
 import static jssun.font.EAttribute.EWIDTH;
 
-import java.text.Annotation;
-import java.text.AttributedCharacterIterator.Attribute;
+import jsjava.text.Annotation;
+import jsjava.text.AttributedCharacterIterator.Attribute;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;

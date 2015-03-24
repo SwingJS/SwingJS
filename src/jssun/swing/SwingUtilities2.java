@@ -30,10 +30,10 @@ import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_DEFAULT;
 import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
 import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_OFF;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+//import java.io.BufferedInputStream;
+//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Map;
@@ -64,7 +64,7 @@ import jsjavax.swing.ListCellRenderer;
 import jsjavax.swing.ListModel;
 import jsjavax.swing.ListSelectionModel;
 import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.UIDefaults;
+//import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.table.TableCellRenderer;
 import jsjavax.swing.text.DefaultCaret;
@@ -920,51 +920,51 @@ public class SwingUtilities2 {
 //        return retVal;
 //    }
 
-    /*
-     * Checks if two given FontRenderContexts are compatible for printing.
-     * We can't just use equals as we want to exclude from the comparison :
-     * + whether AA is set as irrelevant for printing and shouldn't affect
-     * printed metrics anyway
-     * + any translation component in the transform of either FRC, as it
-     * does not affect metrics.
-     * Compatible means no special handling needed for text painting
-     */
-    private static boolean
-        isFontRenderContextPrintCompatible(FontRenderContext frc1,
-                                           FontRenderContext frc2) {
-
-        if (frc1 == frc2) {
-            return true;
-        }
-
-        if (frc1 == null || frc2 == null) { // not supposed to happen
-            return false;
-        }
-
-        if (frc1.getFractionalMetricsHint() !=
-            frc2.getFractionalMetricsHint()) {
-            return false;
-        }
-
-        /* If both are identity, return true */
-        if (!frc1.isTransformed() && !frc2.isTransformed()) {
-            return true;
-        }
-
-        /* That's the end of the cheap tests, need to get and compare
-         * the transform matrices. We don't care about the translation
-         * components, so return true if they are otherwise identical.
-         */
-        double[] mat1 = new double[4];
-        double[] mat2 = new double[4];
-        frc1.getTransform().getMatrix(mat1);
-        frc2.getTransform().getMatrix(mat2);
-        return
-            mat1[0] == mat2[0] &&
-            mat1[1] == mat2[1] &&
-            mat1[2] == mat2[2] &&
-            mat1[3] == mat2[3];
-    }
+//    /*
+//     * Checks if two given FontRenderContexts are compatible for printing.
+//     * We can't just use equals as we want to exclude from the comparison :
+//     * + whether AA is set as irrelevant for printing and shouldn't affect
+//     * printed metrics anyway
+//     * + any translation component in the transform of either FRC, as it
+//     * does not affect metrics.
+//     * Compatible means no special handling needed for text painting
+//     */
+//    private static boolean
+//        isFontRenderContextPrintCompatible(FontRenderContext frc1,
+//                                           FontRenderContext frc2) {
+//
+//        if (frc1 == frc2) {
+//            return true;
+//        }
+//
+//        if (frc1 == null || frc2 == null) { // not supposed to happen
+//            return false;
+//        }
+//
+//        if (frc1.getFractionalMetricsHint() !=
+//            frc2.getFractionalMetricsHint()) {
+//            return false;
+//        }
+//
+//        /* If both are identity, return true */
+//        if (!frc1.isTransformed() && !frc2.isTransformed()) {
+//            return true;
+//        }
+//
+//        /* That's the end of the cheap tests, need to get and compare
+//         * the transform matrices. We don't care about the translation
+//         * components, so return true if they are otherwise identical.
+//         */
+//        double[] mat1 = new double[4];
+//        double[] mat2 = new double[4];
+//        frc1.getTransform().getMatrix(mat1);
+//        frc2.getTransform().getMatrix(mat2);
+//        return
+//            mat1[0] == mat2[0] &&
+//            mat1[1] == mat2[1] &&
+//            mat1[2] == mat2[2] &&
+//            mat1[3] == mat2[3];
+//    }
 
     /*
      * Tries it best to get Graphics2D out of the given Graphics
@@ -1246,78 +1246,78 @@ public class SwingUtilities2 {
 //            || canEventAccessSystemClipboard(e, false);
     }
 
-    /**
-     * returns canAccessSystemClipboard field from InputEvent
-     *
-     * @param ie InputEvent to get the field from
-     */
-    private static synchronized boolean inputEvent_canAccessSystemClipboard(InputEvent ie) {
-    	return false;
-//        if (inputEvent_CanAccessSystemClipboard_Field == null) {
-//            inputEvent_CanAccessSystemClipboard_Field =
-//                (Field)AccessController.doPrivileged(
-//                    new jsjava.security.PrivilegedAction() {
-//                        public Object run() {
-//                            Field field = null;
-//                            try {
-//                                field = InputEvent.class.
-//                                    getDeclaredField("canAccessSystemClipboard");
-//                                field.setAccessible(true);
-//                                return field;
-//                            } catch (SecurityException e) {
-//                            } catch (NoSuchFieldException e) {
-//                            }
-//                            return null;
-//                        }
-//                    });
-//        }
-//        if (inputEvent_CanAccessSystemClipboard_Field == null) {
-//            return false;
-//        }
-//        boolean ret = false;
-//        try {
-//            ret = inputEvent_CanAccessSystemClipboard_Field.
-//                getBoolean(ie);
-//        } catch(IllegalAccessException e) {
-//        }
-//        return ret;
-    }
+//    /**
+//     * returns canAccessSystemClipboard field from InputEvent
+//     *
+//     * @param ie InputEvent to get the field from
+//     */
+//    private static synchronized boolean inputEvent_canAccessSystemClipboard(InputEvent ie) {
+//    	return false;
+////        if (inputEvent_CanAccessSystemClipboard_Field == null) {
+////            inputEvent_CanAccessSystemClipboard_Field =
+////                (Field)AccessController.doPrivileged(
+////                    new jsjava.security.PrivilegedAction() {
+////                        public Object run() {
+////                            Field field = null;
+////                            try {
+////                                field = InputEvent.class.
+////                                    getDeclaredField("canAccessSystemClipboard");
+////                                field.setAccessible(true);
+////                                return field;
+////                            } catch (SecurityException e) {
+////                            } catch (NoSuchFieldException e) {
+////                            }
+////                            return null;
+////                        }
+////                    });
+////        }
+////        if (inputEvent_CanAccessSystemClipboard_Field == null) {
+////            return false;
+////        }
+////        boolean ret = false;
+////        try {
+////            ret = inputEvent_CanAccessSystemClipboard_Field.
+////                getBoolean(ie);
+////        } catch(IllegalAccessException e) {
+////        }
+////        return ret;
+//    }
 
-    /**
-     * Returns true if the given event is corrent gesture for
-     * accessing clipboard
-     *
-     * @param ie InputEvent to check
-     */
-
-    private static boolean isAccessClipboardGesture(InputEvent ie) {
-        boolean allowedGesture = false;
-        if (ie instanceof KeyEvent) { //we can validate only keyboard gestures
-            KeyEvent ke = (KeyEvent)ie;
-            int keyCode = ke.getKeyCode();
-            int keyModifiers = ke.getModifiers();
-            switch(keyCode) {
-            case KeyEvent.VK_C:
-            case KeyEvent.VK_V:
-            case KeyEvent.VK_X:
-                allowedGesture = (keyModifiers == InputEvent.CTRL_MASK);
-                break;
-            case KeyEvent.VK_INSERT:
-                allowedGesture = (keyModifiers == InputEvent.CTRL_MASK ||
-                                  keyModifiers == InputEvent.SHIFT_MASK);
-                break;
-            case KeyEvent.VK_COPY:
-            case KeyEvent.VK_PASTE:
-            case KeyEvent.VK_CUT:
-                allowedGesture = true;
-                break;
-            case KeyEvent.VK_DELETE:
-                allowedGesture = ( keyModifiers == InputEvent.SHIFT_MASK);
-                break;
-            }
-        }
-        return allowedGesture;
-    }
+//    /**
+//     * Returns true if the given event is corrent gesture for
+//     * accessing clipboard
+//     *
+//     * @param ie InputEvent to check
+//     */
+//
+//    private static boolean isAccessClipboardGesture(InputEvent ie) {
+//        boolean allowedGesture = false;
+//        if (ie instanceof KeyEvent) { //we can validate only keyboard gestures
+//            KeyEvent ke = (KeyEvent)ie;
+//            int keyCode = ke.getKeyCode();
+//            int keyModifiers = ke.getModifiers();
+//            switch(keyCode) {
+//            case KeyEvent.VK_C:
+//            case KeyEvent.VK_V:
+//            case KeyEvent.VK_X:
+//                allowedGesture = (keyModifiers == InputEvent.CTRL_MASK);
+//                break;
+//            case KeyEvent.VK_INSERT:
+//                allowedGesture = (keyModifiers == InputEvent.CTRL_MASK ||
+//                                  keyModifiers == InputEvent.SHIFT_MASK);
+//                break;
+//            case KeyEvent.VK_COPY:
+//            case KeyEvent.VK_PASTE:
+//            case KeyEvent.VK_CUT:
+//                allowedGesture = true;
+//                break;
+//            case KeyEvent.VK_DELETE:
+//                allowedGesture = ( keyModifiers == InputEvent.SHIFT_MASK);
+//                break;
+//            }
+//        }
+//        return allowedGesture;
+//    }
 
 //    /**
 //     * Returns true if e has the permissions to
@@ -1438,69 +1438,70 @@ public class SwingUtilities2 {
     public static Object makeIcon(final Class<?> baseClass,
                                   final Class<?> rootClass,
                                   final String imageFile) {
-
-        return new UIDefaults.LazyValue() {
-            public Object createValue(UIDefaults table) {
-                /* Copy resource into a byte array.  This is
-                 * necessary because several browsers consider
-                 * Class.getResource a security risk because it
-                 * can be used to load additional classes.
-                 * Class.getResourceAsStream just returns raw
-                 * bytes, which we can convert to an image.
-                 */
-                byte[] buffer = (byte[])
-                    jsjava.security.AccessController.doPrivileged(
-                        new jsjava.security.PrivilegedAction() {
-                    public Object run() {
-                        try {
-                            InputStream resource = null;
-                            Class<?> srchClass = baseClass;
-
-                            while (srchClass != null) {
-                                resource = srchClass.getResourceAsStream(imageFile);
-
-                                if (resource != null || srchClass == rootClass) {
-                                    break;
-                                }
-
-                                srchClass = srchClass.getSuperclass();
-                            }
-
-                            if (resource == null) {
-                                return null;
-                            }
-
-                            BufferedInputStream in =
-                                new BufferedInputStream(resource);
-                            ByteArrayOutputStream out =
-                                new ByteArrayOutputStream(1024);
-                            byte[] buffer = new byte[1024];
-                            int n;
-                            while ((n = in.read(buffer)) > 0) {
-                                out.write(buffer, 0, n);
-                            }
-                            in.close();
-                            out.flush();
-                            return out.toByteArray();
-                        } catch (IOException ioe) {
-                            System.err.println(ioe.toString());
-                        }
-                        return null;
-                    }
-                });
-
-                if (buffer == null) {
-                    return null;
-                }
-                if (buffer.length == 0) {
-                    System.err.println("warning: " + imageFile +
-                                       " is zero-length");
-                    return null;
-                }
-
-                return new ImageIconUIResource(buffer);
-            }
-        };
+    //SWingJS TODO
+    	return null;
+//        return new UIDefaults.LazyValue() {
+//            public Object createValue(UIDefaults table) {
+//                /* Copy resource into a byte array.  This is
+//                 * necessary because several browsers consider
+//                 * Class.getResource a security risk because it
+//                 * can be used to load additional classes.
+//                 * Class.getResourceAsStream just returns raw
+//                 * bytes, which we can convert to an image.
+//                 */
+//                byte[] buffer = (byte[])
+//                    jsjava.security.AccessController.doPrivileged(
+//                        new jsjava.security.PrivilegedAction() {
+//                    public Object run() {
+//                        try {
+//                            InputStream resource = null;
+//                            Class<?> srchClass = baseClass;
+//
+//                            while (srchClass != null) {
+//                                resource = srchClass.getResourceAsStream(imageFile);
+//
+//                                if (resource != null || srchClass == rootClass) {
+//                                    break;
+//                                }
+//
+//                                srchClass = srchClass.getSuperclass();
+//                            }
+//
+//                            if (resource == null) {
+//                                return null;
+//                            }
+//
+//                            BufferedInputStream in =
+//                                new BufferedInputStream(resource);
+//                            ByteArrayOutputStream out =
+//                                new ByteArrayOutputStream(1024);
+//                            byte[] buffer = new byte[1024];
+//                            int n;
+//                            while ((n = in.read(buffer)) > 0) {
+//                                out.write(buffer, 0, n);
+//                            }
+//                            in.close();
+//                            out.flush();
+//                            return out.toByteArray();
+//                        } catch (IOException ioe) {
+//                            System.err.println(ioe.toString());
+//                        }
+//                        return null;
+//                    }
+//                });
+//
+//                if (buffer == null) {
+//                    return null;
+//                }
+//                if (buffer.length == 0) {
+//                    System.err.println("warning: " + imageFile +
+//                                       " is zero-length");
+//                    return null;
+//                }
+//
+//                return new ImageIconUIResource(buffer);
+//            }
+//        };
     }
 
     /* Used to help decide if AA text rendering should be used, so

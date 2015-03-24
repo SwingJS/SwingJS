@@ -25,13 +25,13 @@
 
 package jsjava.awt;
 
-import java.text.AttributedCharacterIterator.Attribute;
-import java.util.Hashtable;
+import jsjava.text.AttributedCharacterIterator.Attribute;
+//import java.util.Hashtable;
 import java.util.Locale;
 
 import jsjava.awt.font.TextAttribute;
 import jsjava.awt.geom.AffineTransform;
-import jssun.font.AttributeValues;
+//import jssun.font.AttributeValues;
 
 /**
  * The <code>Font</code> class represents fonts, which are used to
@@ -194,14 +194,14 @@ import jssun.font.AttributeValues;
 public class Font
 {
 
-    /**
-     * This is now only used during serialization.  Typically
-     * it is null.
-     *
-     * @serial
-     * @see #getAttributes()
-     */
-    private Hashtable fRequestedAttributes;
+//    /**
+//     * This is now only used during serialization.  Typically
+//     * it is null.
+//     *
+//     * @serial
+//     * @see #getAttributes()
+//     */
+//    private Hashtable fRequestedAttributes;
 
     /*
      * Constants to be used for logical font family names.
@@ -351,17 +351,17 @@ public class Font
      * The platform specific font information.
      */
 //    private transient FontPeer peer;
-    private transient long pData;       // native JDK1.1 font pointer
+//    private transient long pData;       // native JDK1.1 font pointer
 //    private transient Font2DHandle font2DHandle;
 
 //    private transient AttributeValues values;
     private transient boolean hasLayoutAttributes;
 
-    /*
-     * If the origin of a Font is a created font then this attribute
-     * must be set on all derived fonts too.
-     */
-    private transient boolean createdFont = false;
+//    /*
+//     * If the origin of a Font is a created font then this attribute
+//     * must be set on all derived fonts too.
+//     */
+//    private transient boolean createdFont = false;
 
     /*
      * This is true if the font transform is not identity.  It
@@ -369,12 +369,12 @@ public class Font
      */
     private transient boolean nonIdentityTx;
 
-    /*
-     * A cached value used when a transform is required for internal
-     * use.  This must not be exposed to callers since AffineTransform
-     * is mutable.
-     */
-    private static final AffineTransform identityTx = new AffineTransform();
+//    /*
+//     * A cached value used when a transform is required for internal
+//     * use.  This must not be exposed to callers since AffineTransform
+//     * is mutable.
+//     */
+//    private static final AffineTransform identityTx = new AffineTransform();
 
     /*
      * JDK 1.1 serialVersionUID
@@ -1095,27 +1095,27 @@ public class Font
         return new AffineTransform();
     }
 
-    // x = r^0 + r^1 + r^2... r^n
-    // rx = r^1 + r^2 + r^3... r^(n+1)
-    // x - rx = r^0 - r^(n+1)
-    // x (1 - r) = r^0 - r^(n+1)
-    // x = (r^0 - r^(n+1)) / (1 - r)
-    // x = (1 - r^(n+1)) / (1 - r)
-
-    // scale ratio is 2/3
-    // trans = 1/2 of ascent * x
-    // assume ascent is 3/4 of point size
-
-    private static final float[] ssinfo = {
-        0.0f,
-        0.375f,
-        0.625f,
-        0.7916667f,
-        0.9027778f,
-        0.9768519f,
-        1.0262346f,
-        1.0591564f,
-    };
+//    // x = r^0 + r^1 + r^2... r^n
+//    // rx = r^1 + r^2 + r^3... r^(n+1)
+//    // x - rx = r^0 - r^(n+1)
+//    // x (1 - r) = r^0 - r^(n+1)
+//    // x = (r^0 - r^(n+1)) / (1 - r)
+//    // x = (1 - r^(n+1)) / (1 - r)
+//
+//    // scale ratio is 2/3
+//    // trans = 1/2 of ascent * x
+//    // assume ascent is 3/4 of point size
+//
+//    private static final float[] ssinfo = {
+//        0.0f,
+//        0.375f,
+//        0.625f,
+//        0.7916667f,
+//        0.9027778f,
+//        0.9768519f,
+//        1.0262346f,
+//        1.0591564f,
+//    };
 
     /**
      * Returns the family name of this <code>Font</code>.
@@ -2588,19 +2588,19 @@ public class Font
     public static final int LAYOUT_NO_LIMIT_CONTEXT = 4;
 
 
-    private static void applyTransform(AffineTransform trans, AttributeValues values) {
-        if (trans == null) {
-            throw new IllegalArgumentException("transform must not be null");
-        }
-        values.setTransform(trans);
-    }
-
-    private static void applyStyle(int style, AttributeValues values) {
-        // WEIGHT_BOLD, WEIGHT_REGULAR
-        values.setWeight((style & BOLD) != 0 ? 2f : 1f);
-        // POSTURE_OBLIQUE, POSTURE_REGULAR
-        values.setPosture((style & ITALIC) != 0 ? .2f : 0f);
-    }
+//    private static void applyTransform(AffineTransform trans, AttributeValues values) {
+//        if (trans == null) {
+//            throw new IllegalArgumentException("transform must not be null");
+//        }
+//        values.setTransform(trans);
+//    }
+//
+//    private static void applyStyle(int style, AttributeValues values) {
+//        // WEIGHT_BOLD, WEIGHT_REGULAR
+//        values.setWeight((style & BOLD) != 0 ? 2f : 1f);
+//        // POSTURE_OBLIQUE, POSTURE_REGULAR
+//        values.setPosture((style & ITALIC) != 0 ? .2f : 0f);
+//    }
 
     /*
      * Initialize JNI field and method IDs
