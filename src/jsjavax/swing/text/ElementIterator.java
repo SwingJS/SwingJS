@@ -26,7 +26,7 @@
 package jsjavax.swing.text;
 
 import java.util.Stack;
-import java.util.Enumeration;
+//import java.util.Enumeration;
 
 /**
  * <p>
