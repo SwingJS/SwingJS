@@ -35,7 +35,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -46,7 +45,7 @@ import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
-import jsjava.awt.EventQueue;
+//import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
@@ -1320,44 +1319,44 @@ public class SwingUtilities2 {
         return allowedGesture;
     }
 
-    /**
-     * Returns true if e has the permissions to
-     * access the system clipboard and if it is allowed gesture (if
-     * checkGesture is true)
-     *
-     * @param e AWTEvent to check
-     * @param checkGesture boolean
-     */
-    private static boolean canEventAccessSystemClipboard(AWTEvent e,
-                                                        boolean checkGesture) {
-        if (EventQueue.isDispatchThread()) {
-            /*
-             * Checking event permissions makes sense only for event
-             * dispathing thread
-             */
-            if (e instanceof InputEvent
-                && (! checkGesture || isAccessClipboardGesture((InputEvent)e))) {
-                return inputEvent_canAccessSystemClipboard((InputEvent)e);
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
-    }
+//    /**
+//     * Returns true if e has the permissions to
+//     * access the system clipboard and if it is allowed gesture (if
+//     * checkGesture is true)
+//     *
+//     * @param e AWTEvent to check
+//     * @param checkGesture boolean
+//     */
+//    private static boolean canEventAccessSystemClipboard(AWTEvent e,
+//                                                        boolean checkGesture) {
+//        if (EventQueue.isDispatchThread()) {
+//            /*
+//             * Checking event permissions makes sense only for event
+//             * dispathing thread
+//             */
+//            if (e instanceof InputEvent
+//                && (! checkGesture || isAccessClipboardGesture((InputEvent)e))) {
+//                return inputEvent_canAccessSystemClipboard((InputEvent)e);
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return true;
+//        }
+//    }
 
-    /**
-     * Utility method that throws SecurityException if SecurityManager is set
-     * and modifiers are not public
-     *
-     * @param modifiers a set of modifiers
-     */
-    public static void checkAccess(int modifiers) {
-        if (System.getSecurityManager() != null
-                && !Modifier.isPublic(modifiers)) {
-            throw new SecurityException("Resource is not accessible");
-        }
-    }
+//    /**
+//     * Utility method that throws SecurityException if SecurityManager is set
+//     * and modifiers are not public
+//     *
+//     * @param modifiers a set of modifiers
+//     */
+//    public static void checkAccess(int modifiers) {
+//        if (System.getSecurityManager() != null
+//                && !Modifier.isPublic(modifiers)) {
+//            throw new SecurityException("Resource is not accessible");
+//        }
+//    }
 
 //    /**
 //     * Returns true if EventQueue.getCurrentEvent() has the permissions to

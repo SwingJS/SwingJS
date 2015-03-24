@@ -7,6 +7,8 @@ DISCUSS
 It looks like just about all the warnings are "never used locally" errors.
 This is excellent!
 
+need to work on number/date formatters as these are very popular
+
 MINOR ISSUES--requiring no rewriting
 ====================================
 
@@ -31,7 +33,6 @@ java.awt.Color
 javax.swing.JFileDialog
 key focus
 
-
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
 
@@ -48,7 +49,9 @@ fonts
 specific AWT components not implemented
 no threads
 image loading
-formatters not implemented
+no BigInteger; no BigDecimal
+no DateFormat
+no format internationalization
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -163,8 +166,6 @@ key Focus
 - handling (mostly done by Browser/HTML)
 - no SwingUtilities.findFocusOwner
 
-
-
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
 
@@ -263,4 +264,23 @@ image loading
 
 - BufferedImage: only "support" imageType RGB and ARGB
   -BH: This is a temporary edit, just to get us started. Certainly GRAY will be needed
+
+
+no BigInteger; no BigDecimal
+----------------------------
+
+BigInteger and BigDecimal are not supported
+
+
+no DateFormat
+-------------
+
+For now, no DateFormat
+
+
+no format internationalization
+------------------------------
+
+For now, just en for number formatters
+
 

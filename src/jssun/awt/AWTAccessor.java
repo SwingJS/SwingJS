@@ -320,11 +320,11 @@ public final class AWTAccessor {
 //    private static PopupMenuAccessor popupMenuAccessor;
 //    private static ScrollPaneAdjustableAccessor scrollPaneAdjustableAccessor;
 //    private static CheckboxMenuItemAccessor checkboxMenuItemAccessor;
-    private static CursorAccessor cursorAccessor;
+//    private static CursorAccessor cursorAccessor;
 //    private static MenuBarAccessor menuBarAccessor;
 //    private static MenuItemAccessor menuItemAccessor;
 //    private static MenuAccessor menuAccessor;
-    private static ClientPropertyKeyAccessor clientPropertyKeyAccessor;
+//    private static ClientPropertyKeyAccessor clientPropertyKeyAccessor;
 //    private static DefaultKeyboardFocusManagerAccessor defaultKeyboardFocusManagerAccessor;
 
     /**
@@ -396,13 +396,13 @@ public final class AWTAccessor {
 //        }
         return eventQueueAccessor;
     }
-    /**
-     * Set an accessor object for the jsjava.awt.Cursor class.
-     */
-    public static void setCursorAccessor(CursorAccessor ca) {
-        cursorAccessor = ca;
-    }
-
+//    /**
+//     * Set an accessor object for the jsjava.awt.Cursor class.
+//     */
+//    public static void setCursorAccessor(CursorAccessor ca) {
+//        cursorAccessor = ca;
+//    }
+//
 //    /**
 //     * Retrieve the accessor object for the jsjava.awt.Cursor class.
 //     */
@@ -413,13 +413,13 @@ public final class AWTAccessor {
 //        return cursorAccessor;
 //    }
 //
-    /**
-     * Set an accessor object for the jsjavax.swing.ClientPropertyKey class.
-     */
-    public static void setClientPropertyKeyAccessor(ClientPropertyKeyAccessor cpka) {
-        clientPropertyKeyAccessor = cpka;
-    }
-
+//    /**
+//     * Set an accessor object for the jsjavax.swing.ClientPropertyKey class.
+//     */
+//    public static void setClientPropertyKeyAccessor(ClientPropertyKeyAccessor cpka) {
+//        clientPropertyKeyAccessor = cpka;
+//    }
+//
 //    /**
 //     * Retrieve the accessor object for the jsjavax.swing.ClientPropertyKey class.
 //     */

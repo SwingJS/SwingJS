@@ -25,16 +25,15 @@
 package jsjavax.swing.text;
 
 import java.lang.reflect.Constructor;
-import java.text.AttributedCharacterIterator;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.Format;
-import java.text.NumberFormat;
+import jsjava.text.AttributedCharacterIterator;
+import jsjava.text.DecimalFormat;
+import jsjava.text.DecimalFormatSymbols;
+import jsjava.text.Format;
+import jsjava.text.NumberFormat;
 import jsjava.text.ParseException;
 import java.util.Iterator;
 import java.util.Map;
 
-import jssun.swing.SwingUtilities2;
 
 /**
  * <code>NumberFormatter</code> subclasses <code>InternationalFormatter</code>
@@ -158,18 +157,18 @@ public class NumberFormatter extends InternationalFormatter {
         }
     }
 
-//    /**
-//     * Invokes <code>parseObject</code> on <code>f</code>, returning
-//     * its value.
-//     */
-//    Object stringToValue(String text, Format f) throws ParseException {
-//        if (f == null) {
-//            return text;
-//        }
-//        Object value = f.parseObject(text);
-//
-//        return convertValueToValueClass(value, getValueClass());
-//    }
+    /**
+     * Invokes <code>parseObject</code> on <code>f</code>, returning
+     * its value.
+     */
+    Object stringToValue(String text, Format f) throws ParseException {
+        if (f == null) {
+            return text;
+        }
+        Object value = f.parseObject(text);
+
+        return convertValueToValueClass(value, getValueClass());
+    }
 
     /**
      * Converts the passed in value to the passed in class. This only
@@ -474,11 +473,11 @@ public class NumberFormatter extends InternationalFormatter {
                     }
                     try {
                         //ReflectUtil.checkPackageAccess(valueClass);
-                        SwingUtilities2.checkAccess(valueClass.getModifiers());
+                        //SwingUtilities2.checkAccess(valueClass.getModifiers());
                         Constructor cons = valueClass.getConstructor(
                                               new Class[] { String.class });
                         if (cons != null) {
-                            SwingUtilities2.checkAccess(cons.getModifiers());
+                            //SwingUtilities2.checkAccess(cons.getModifiers());
                             return cons.newInstance(new Object[]{string});
                         }
                     } catch (Throwable ex) { }

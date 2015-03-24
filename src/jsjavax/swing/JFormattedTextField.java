@@ -24,11 +24,11 @@
  */
 package jsjavax.swing;
 
-import java.text.AttributedCharacterIterator;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-//import java.text.Format;
-import java.text.NumberFormat;
+import jsjava.text.AttributedCharacterIterator;
+//TODO import jsjava.text.DateFormat;
+import jsjava.text.DecimalFormat;
+import jsjava.text.Format;
+import jsjava.text.NumberFormat;
 import jsjava.text.ParseException;
 import java.util.Date;
 
@@ -45,6 +45,7 @@ import jsjavax.swing.text.DefaultFormatter;
 import jsjavax.swing.text.DefaultFormatterFactory;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.DocumentFilter;
+import jsjavax.swing.text.InternationalFormatter;
 //import jsjavax.swing.text.InternationalFormatter;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.NavigationFilter;
@@ -835,18 +836,19 @@ public class JFormattedTextField extends JTextField {
      * Object type.
      */
     private AbstractFormatterFactory getDefaultFormatterFactory(Object type) {
-        if (type instanceof DateFormat) {
-            return new DefaultFormatterFactory(new DateFormatter
-                                               ((DateFormat)type));
-        }
+//SwingJS
+//TODO  if (type instanceof DateFormat) {
+//            return new DefaultFormatterFactory(new DateFormatter
+//                                               ((DateFormat)type));
+//        }
         if (type instanceof NumberFormat) {
             return new DefaultFormatterFactory(new NumberFormatter(
                                                (NumberFormat)type));
         }
-//        if (type instanceof Format) {
-//            return new DefaultFormatterFactory(new InternationalFormatter(
-//                                               (Format)type));
-//        }
+        if (type instanceof Format) {
+            return new DefaultFormatterFactory(new InternationalFormatter(
+                                               (Format)type));
+        }
         if (type instanceof Date) {
             return new DefaultFormatterFactory(new DateFormatter());
         }

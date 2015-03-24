@@ -24,9 +24,9 @@
  */
 package jsjavax.swing.text;
 
-import java.text.AttributedCharacterIterator;
-import java.text.CharacterIterator;
-import java.text.Format;
+import jsjava.text.AttributedCharacterIterator;
+import jsjava.text.CharacterIterator;
+import jsjava.text.Format;
 import jsjava.text.ParseException;
 import java.util.ArrayList;
 import java.util.BitSet;

@@ -25,6 +25,7 @@
 
 package jsjavax.swing;
 
+import java.lang.reflect.Constructor;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -5458,7 +5459,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     static class GenericEditor extends DefaultCellEditor {
 
         Class[] argTypes = new Class[]{String.class};
-        java.lang.reflect.Constructor constructor;
+        Constructor constructor;
         Object value;
 
         public GenericEditor() {
@@ -5481,8 +5482,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
                     }
                     super.stopCellEditing();
                 }
-
-                SwingUtilities2.checkAccess(constructor.getModifiers());
+//                SwingUtilities2.checkAccess(constructor.getModifiers());
                 value = constructor.newInstance(new Object[]{s});
             }
             catch (Exception e) {

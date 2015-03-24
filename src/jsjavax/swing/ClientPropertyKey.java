@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import jssun.awt.AWTAccessor;
+//import jssun.awt.AWTAccessor;
 
 /**
  * An enumeration for keys used as client properties within the Swing
@@ -81,22 +81,22 @@ enum ClientPropertyKey {
     PopupFactory_FORCE_HEAVYWEIGHT_POPUP(true);
 
 
-    /**
-     * Whether or not a {@code NotSerializableException} should be thrown
-     * during serialization, when the value associated with this key does
-     * not implement {@code Serializable}.
-     */
-    private final boolean reportValueNotSerializable;
-
-    static {
-        AWTAccessor.setClientPropertyKeyAccessor(
-            new AWTAccessor.ClientPropertyKeyAccessor() {
-                public Object getJComponent_TRANSFER_HANDLER() {
-                    return JComponent_TRANSFER_HANDLER;
-                }
-            });
-    }
-
+//    /**
+//     * Whether or not a {@code NotSerializableException} should be thrown
+//     * during serialization, when the value associated with this key does
+//     * not implement {@code Serializable}.
+//     */
+//    private final boolean reportValueNotSerializable;
+//
+//    static {
+//        AWTAccessor.setClientPropertyKeyAccessor(
+//            new AWTAccessor.ClientPropertyKeyAccessor() {
+//                public Object getJComponent_TRANSFER_HANDLER() {
+//                    return JComponent_TRANSFER_HANDLER;
+//                }
+//            });
+//    }
+//
     /**
      * Constructs a key with the {@code reportValueNotSerializable} property
      * set to {@code false}.
@@ -110,15 +110,15 @@ enum ClientPropertyKey {
      * set to the given value.
      */
     private ClientPropertyKey(boolean reportValueNotSerializable) {
-        this.reportValueNotSerializable = reportValueNotSerializable;
+//        this.reportValueNotSerializable = reportValueNotSerializable;
     }
 
-    /**
-     * Returns whether or not a {@code NotSerializableException} should be thrown
-     * during serialization, when the value associated with this key does
-     * not implement {@code Serializable}.
-     */
-    public boolean getReportValueNotSerializable() {
-        return reportValueNotSerializable;
-    }
+//    /**
+//     * Returns whether or not a {@code NotSerializableException} should be thrown
+//     * during serialization, when the value associated with this key does
+//     * not implement {@code Serializable}.
+//     */
+//    public boolean getReportValueNotSerializable() {
+//        return reportValueNotSerializable;
+//    }
 }

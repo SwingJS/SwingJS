@@ -26,7 +26,7 @@ package jsjava.awt.event;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Event;
-import java.text.AttributedCharacterIterator;
+import jsjava.text.AttributedCharacterIterator;
 
 /**
  * Input method events contain information about text that is being
