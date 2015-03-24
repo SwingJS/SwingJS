@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import java.util.Hashtable;
+//import java.util.Hashtable;
 import java.util.Vector;
 
 import jsjava.awt.Component;
@@ -125,12 +125,12 @@ public class JMenu extends JMenuItem implements MenuElement
      */
     private MenuEvent menuEvent = null;
 
-    /* Registry of listeners created for <code>Action-JMenuItem</code>
-     * linkage.  This is needed so that references can
-     * be cleaned up at remove time to allow garbage collection
-     * Default is <code>null</code>.
-     */
-    private static Hashtable listenerRegistry = null;
+//    /* Registry of listeners created for <code>Action-JMenuItem</code>
+//     * linkage.  This is needed so that references can
+//     * be cleaned up at remove time to allow garbage collection
+//     * Default is <code>null</code>.
+//     */
+//    private static Hashtable listenerRegistry = null;
 
     /*
      * Used by the look and feel (L&F) code to handle
@@ -144,10 +144,10 @@ public class JMenu extends JMenuItem implements MenuElement
       */
      private Point customMenuLocation = null;
 
-    /* Diagnostic aids -- should be false for production builds. */
-    private static final boolean TRACE =   false; // trace creates and disposes
-    private static final boolean VERBOSE = false; // show reuse hits/misses
-    private static final boolean DEBUG =   false;  // show bad params, misc.
+//    /* Diagnostic aids -- should be false for production builds. */
+//    private static final boolean TRACE =   false; // trace creates and disposes
+//    private static final boolean VERBOSE = false; // show reuse hits/misses
+//    private static final boolean DEBUG =   false;  // show bad params, misc.
 
     /**
      * Constructs a new <code>JMenu</code> with no text.
@@ -288,7 +288,7 @@ public class JMenu extends JMenuItem implements MenuElement
      */
     public void setSelected(boolean b) {
         ButtonModel model = getModel();
-        boolean oldValue = model.isSelected();
+//        boolean oldValue = model.isSelected();
 
         // TIGER - 4840653
         // Removed code which fired an AccessibleState.SELECTED
@@ -325,11 +325,11 @@ public class JMenu extends JMenuItem implements MenuElement
      *           hidden: true
      */
     public void setPopupMenuVisible(boolean b) {
-        if (DEBUG) {
-            System.out.println("in JMenu.setPopupMenuVisible " + b);
-            // Thread.dumpStack();
-        }
-
+//        if (DEBUG) {
+//            System.out.println("in JMenu.setPopupMenuVisible " + b);
+//            // Thread.dumpStack();
+//        }
+//
         boolean isVisible = isPopupMenuVisible();
         if (b != isVisible && (isEnabled() || !b)) {
             ensurePopupMenuCreated();
@@ -532,7 +532,7 @@ public class JMenu extends JMenuItem implements MenuElement
 
     private void ensurePopupMenuCreated() {
         if (popupMenu == null) {
-            final JMenu thisMenu = this;
+//            final JMenu thisMenu = this;
             this.popupMenu = new JPopupMenu();
             popupMenu.setInvoker(this);
             popupListener = createWinListener(popupMenu);
@@ -935,41 +935,41 @@ public class JMenu extends JMenuItem implements MenuElement
     }
 
 
-    /*
-     * Returns a point in the coordinate space of this menu's popupmenu
-     * which corresponds to the point <code>p</code> in the menu's
-     * coordinate space.
-     *
-     * @param p the point to be translated
-     * @return the point in the coordinate space of this menu's popupmenu
-     */
-    private Point translateToPopupMenu(Point p) {
-        return translateToPopupMenu(p.x, p.y);
-    }
-
-    /*
-     * Returns a point in the coordinate space of this menu's popupmenu
-     * which corresponds to the point (x,y) in the menu's coordinate space.
-     *
-     * @param x the x coordinate of the point to be translated
-     * @param y the y coordinate of the point to be translated
-     * @return the point in the coordinate space of this menu's popupmenu
-     */
-    private Point translateToPopupMenu(int x, int y) {
-            int newX;
-            int newY;
-
-            if (getParent() instanceof JPopupMenu) {
-                newX = x - getSize().width;
-                newY = y;
-            } else {
-                newX = x;
-                newY = y - getSize().height;
-            }
-
-            return new Point(newX, newY);
-        }
-
+//    /*
+//     * Returns a point in the coordinate space of this menu's popupmenu
+//     * which corresponds to the point <code>p</code> in the menu's
+//     * coordinate space.
+//     *
+//     * @param p the point to be translated
+//     * @return the point in the coordinate space of this menu's popupmenu
+//     */
+//    private Point translateToPopupMenu(Point p) {
+//        return translateToPopupMenu(p.x, p.y);
+//    }
+//
+//    /*
+//     * Returns a point in the coordinate space of this menu's popupmenu
+//     * which corresponds to the point (x,y) in the menu's coordinate space.
+//     *
+//     * @param x the x coordinate of the point to be translated
+//     * @param y the y coordinate of the point to be translated
+//     * @return the point in the coordinate space of this menu's popupmenu
+//     */
+//    private Point translateToPopupMenu(int x, int y) {
+//            int newX;
+//            int newY;
+//
+//            if (getParent() instanceof JPopupMenu) {
+//                newX = x - getSize().width;
+//                newY = y;
+//            } else {
+//                newX = x;
+//                newY = y - getSize().height;
+//            }
+//
+//            return new Point(newX, newY);
+//        }
+//
     /**
      * Returns the popupmenu associated with this menu.  If there is
      * no popupmenu, it will create one.
@@ -1018,9 +1018,9 @@ public class JMenu extends JMenuItem implements MenuElement
      * @see EventListenerList
      */
     protected void fireMenuSelected() {
-        if (DEBUG) {
-            System.out.println("In JMenu.fireMenuSelected");
-        }
+//        if (DEBUG) {
+//            System.out.println("In JMenu.fireMenuSelected");
+//        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -1048,9 +1048,9 @@ public class JMenu extends JMenuItem implements MenuElement
      * @see EventListenerList
      */
     protected void fireMenuDeselected() {
-        if (DEBUG) {
-            System.out.println("In JMenu.fireMenuDeselected");
-        }
+//        if (DEBUG) {
+//            System.out.println("In JMenu.fireMenuDeselected");
+//        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -1078,9 +1078,9 @@ public class JMenu extends JMenuItem implements MenuElement
      * @see EventListenerList
      */
     protected void fireMenuCanceled() {
-        if (DEBUG) {
-            System.out.println("In JMenu.fireMenuCanceled");
-        }
+//        if (DEBUG) {
+//            System.out.println("In JMenu.fireMenuCanceled");
+//        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -1177,9 +1177,9 @@ public class JMenu extends JMenuItem implements MenuElement
      *        it is not
      */
     public void menuSelectionChanged(boolean isIncluded) {
-        if (DEBUG) {
-            System.out.println("In JMenu.menuSelectionChanged to " + isIncluded);
-        }
+//        if (DEBUG) {
+//            System.out.println("In JMenu.menuSelectionChanged to " + isIncluded);
+//        }
         setSelected(isIncluded);
     }
 
