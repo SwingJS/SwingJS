@@ -25,8 +25,8 @@
 
 package jsjavax.swing;
 
-import java.text.Format;
-import java.text.NumberFormat;
+import jsjava.text.Format;
+import jsjava.text.NumberFormat;
 
 import jsjava.awt.Graphics;
 import jsjavax.swing.event.ChangeEvent;
