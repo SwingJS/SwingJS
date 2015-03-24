@@ -24,7 +24,7 @@
  */
 package jsjava.awt;
 
-import java.text.AttributedCharacterIterator;
+import jsjava.text.AttributedCharacterIterator;
 
 import jsjava.awt.image.ImageObserver;
 
