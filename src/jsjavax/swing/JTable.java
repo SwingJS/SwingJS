@@ -26,8 +26,8 @@
 package jsjavax.swing;
 
 import java.lang.reflect.Constructor;
-import java.text.DateFormat;
-import java.text.NumberFormat;
+//SwingJS TODO import jsjava.text.DateFormat;
+import jsjava.text.NumberFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.EventObject;
@@ -5379,18 +5379,18 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         }
     }
 
-    static class DateRenderer extends DefaultTableCellRenderer.UIResource {
-        DateFormat formatter;
-        public DateRenderer() { super(); }
-
-        public void setValue(Object value) {
-            if (formatter==null) {
-                formatter = DateFormat.getDateInstance();
-            }
-            setText((value == null) ? "" : formatter.format(value));
-        }
-    }
-
+//SwingJS TODO    static class DateRenderer extends DefaultTableCellRenderer.UIResource {
+//        DateFormat formatter;
+//        public DateRenderer() { super(); }
+//
+//        public void setValue(Object value) {
+//            if (formatter==null) {
+//                formatter = DateFormat.getDateInstance();
+//            }
+//            setText((value == null) ? "" : formatter.format(value));
+//        }
+//    }
+//
     static class IconRenderer extends DefaultTableCellRenderer.UIResource {
         public IconRenderer() {
             super();
