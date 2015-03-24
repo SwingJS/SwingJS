@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.text.CharacterIterator;
+import jsjava.text.CharacterIterator;
 
 /**
  * A segment of a character array representing a fragment

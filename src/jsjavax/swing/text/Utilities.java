@@ -411,37 +411,38 @@ public class Utilities {
     public static final int getBreakLocation(Segment s, FontMetrics metrics,
                                              int x0, int x, TabExpander e,
                                              int startOffset) {
-        char[] txt = s.array;
-        int txtOffset = s.offset;
-        int txtCount = s.count;
-        int index = Utilities.getTabbedTextOffset(s, metrics, x0, x,
-                                                  e, startOffset, false);
-
-
-        if (index >= txtCount - 1) {
-            return txtCount;
-        }
-
-        for (int i = txtOffset + index; i >= txtOffset; i--) {
-            char ch = txt[i];
-            if (ch < 256) {
-                // break on whitespace
-                if (Character.isWhitespace(ch)) {
-                    index = i - txtOffset + 1;
-                    break;
-                }
-            } else {
-                // a multibyte char found; use BreakIterator to find line break
-                BreakIterator bit = BreakIterator.getLineInstance();
-                bit.setText(s);
-                int breakPos = bit.preceding(i + 1);
-                if (breakPos > txtOffset) {
-                    index = breakPos - txtOffset;
-                }
-                break;
-            }
-        }
-        return index;
+    	return 0;
+//        char[] txt = s.array;
+//        int txtOffset = s.offset;
+//        int txtCount = s.count;
+//        int index = Utilities.getTabbedTextOffset(s, metrics, x0, x,
+//                                                  e, startOffset, false);
+//
+//
+//        if (index >= txtCount - 1) {
+//            return txtCount;
+//        }
+//
+//        for (int i = txtOffset + index; i >= txtOffset; i--) {
+//            char ch = txt[i];
+//            if (ch < 256) {
+//                // break on whitespace
+//                if (Character.isWhitespace(ch)) {
+//                    index = i - txtOffset + 1;
+//                    break;
+//                }
+//            } else {
+//                // a multibyte char found; use BreakIterator to find line break
+//                BreakIterator bit = BreakIterator.getLineInstance();
+//                bit.setText(s);
+//                int breakPos = bit.preceding(i + 1);
+//                if (breakPos > txtOffset) {
+//                    index = breakPos - txtOffset;
+//                }
+//                break;
+//            }
+//        }
+//        return index;
     }
 
     /**
@@ -590,28 +591,29 @@ public class Utilities {
      * @exception BadLocationException if the offset is out of range
      */
     public static final int getWordStart(JTextComponent c, int offs) throws BadLocationException {
-        Document doc = c.getDocument();
-        Element line = getParagraphElement(c, offs);
-        if (line == null) {
-            throw new BadLocationException("No word at " + offs, offs);
-        }
-        int lineStart = line.getStartOffset();
-        int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
-
-        Segment seg = SegmentCache.getSharedSegment();
-        doc.getText(lineStart, lineEnd - lineStart, seg);
-        if(seg.count > 0) {
-            BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
-            words.setText(seg);
-            int wordPosition = seg.offset + offs - lineStart;
-            if(wordPosition >= words.last()) {
-                wordPosition = words.last() - 1;
-            }
-            words.following(wordPosition);
-            offs = lineStart + words.previous() - seg.offset;
-        }
-        SegmentCache.releaseSharedSegment(seg);
-        return offs;
+//        Document doc = c.getDocument();
+//        Element line = getParagraphElement(c, offs);
+//        if (line == null) {
+//            throw new BadLocationException("No word at " + offs, offs);
+//        }
+//        int lineStart = line.getStartOffset();
+//        int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
+//
+//        Segment seg = SegmentCache.getSharedSegment();
+//        doc.getText(lineStart, lineEnd - lineStart, seg);
+//        if(seg.count > 0) {
+//            BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
+//            words.setText(seg);
+//            int wordPosition = seg.offset + offs - lineStart;
+//            if(wordPosition >= words.last()) {
+//                wordPosition = words.last() - 1;
+//            }
+//            words.following(wordPosition);
+//            offs = lineStart + words.previous() - seg.offset;
+//        }
+//        SegmentCache.releaseSharedSegment(seg);
+//        return offs;
+    	return 0;
     }
 
     /**
@@ -624,27 +626,28 @@ public class Utilities {
      * @exception BadLocationException if the offset is out of range
      */
     public static final int getWordEnd(JTextComponent c, int offs) throws BadLocationException {
-        Document doc = c.getDocument();
-        Element line = getParagraphElement(c, offs);
-        if (line == null) {
-            throw new BadLocationException("No word at " + offs, offs);
-        }
-        int lineStart = line.getStartOffset();
-        int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
-
-        Segment seg = SegmentCache.getSharedSegment();
-        doc.getText(lineStart, lineEnd - lineStart, seg);
-        if(seg.count > 0) {
-            BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
-            words.setText(seg);
-            int wordPosition = offs - lineStart + seg.offset;
-            if(wordPosition >= words.last()) {
-                wordPosition = words.last() - 1;
-            }
-            offs = lineStart + words.following(wordPosition) - seg.offset;
-        }
-        SegmentCache.releaseSharedSegment(seg);
-        return offs;
+//        Document doc = c.getDocument();
+//        Element line = getParagraphElement(c, offs);
+//        if (line == null) {
+//            throw new BadLocationException("No word at " + offs, offs);
+//        }
+//        int lineStart = line.getStartOffset();
+//        int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
+//
+//        Segment seg = SegmentCache.getSharedSegment();
+//        doc.getText(lineStart, lineEnd - lineStart, seg);
+//        if(seg.count > 0) {
+//            BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
+//            words.setText(seg);
+//            int wordPosition = offs - lineStart + seg.offset;
+//            if(wordPosition >= words.last()) {
+//                wordPosition = words.last() - 1;
+//            }
+//            offs = lineStart + words.following(wordPosition) - seg.offset;
+//        }
+//        SegmentCache.releaseSharedSegment(seg);
+//        return offs;
+    	return 0;
     }
 
     /**
@@ -678,50 +681,51 @@ public class Utilities {
      * if there are no more words in the element.
      */
     static int getNextWordInParagraph(JTextComponent c, Element line, int offs, boolean first) throws BadLocationException {
-        if (line == null) {
-            throw new BadLocationException("No more words", offs);
-        }
-        Document doc = line.getDocument();
-        int lineStart = line.getStartOffset();
-        int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
-        if ((offs >= lineEnd) || (offs < lineStart)) {
-            throw new BadLocationException("No more words", offs);
-        }
-        Segment seg = SegmentCache.getSharedSegment();
-        doc.getText(lineStart, lineEnd - lineStart, seg);
-        BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
-        words.setText(seg);
-        if ((first && (words.first() == (seg.offset + offs - lineStart))) &&
-            (! Character.isWhitespace(seg.array[words.first()]))) {
-
-            return offs;
-        }
-        int wordPosition = words.following(seg.offset + offs - lineStart);
-        if ((wordPosition == BreakIterator.DONE) ||
-            (wordPosition >= seg.offset + seg.count)) {
-                // there are no more words on this line.
-                return BreakIterator.DONE;
-        }
-        // if we haven't shot past the end... check to
-        // see if the current boundary represents whitespace.
-        // if so, we need to try again
-        char ch = seg.array[wordPosition];
-        if (! Character.isWhitespace(ch)) {
-            return lineStart + wordPosition - seg.offset;
-        }
-
-        // it was whitespace, try again.  The assumption
-        // is that it must be a word start if the last
-        // one had whitespace following it.
-        wordPosition = words.next();
-        if (wordPosition != BreakIterator.DONE) {
-            offs = lineStart + wordPosition - seg.offset;
-            if (offs != lineEnd) {
-                return offs;
-            }
-        }
-        SegmentCache.releaseSharedSegment(seg);
-        return BreakIterator.DONE;
+    	return 0;
+//        if (line == null) {
+//            throw new BadLocationException("No more words", offs);
+//        }
+//        Document doc = line.getDocument();
+//        int lineStart = line.getStartOffset();
+//        int lineEnd = Math.min(line.getEndOffset(), doc.getLength());
+//        if ((offs >= lineEnd) || (offs < lineStart)) {
+//            throw new BadLocationException("No more words", offs);
+//        }
+//        Segment seg = SegmentCache.getSharedSegment();
+//        doc.getText(lineStart, lineEnd - lineStart, seg);
+//        BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
+//        words.setText(seg);
+//        if ((first && (words.first() == (seg.offset + offs - lineStart))) &&
+//            (! Character.isWhitespace(seg.array[words.first()]))) {
+//
+//            return offs;
+//        }
+//        int wordPosition = words.following(seg.offset + offs - lineStart);
+//        if ((wordPosition == BreakIterator.DONE) ||
+//            (wordPosition >= seg.offset + seg.count)) {
+//                // there are no more words on this line.
+//                return BreakIterator.DONE;
+//        }
+//        // if we haven't shot past the end... check to
+//        // see if the current boundary represents whitespace.
+//        // if so, we need to try again
+//        char ch = seg.array[wordPosition];
+//        if (! Character.isWhitespace(ch)) {
+//            return lineStart + wordPosition - seg.offset;
+//        }
+//
+//        // it was whitespace, try again.  The assumption
+//        // is that it must be a word start if the last
+//        // one had whitespace following it.
+//        wordPosition = words.next();
+//        if (wordPosition != BreakIterator.DONE) {
+//            offs = lineStart + wordPosition - seg.offset;
+//            if (offs != lineEnd) {
+//                return offs;
+//            }
+//        }
+//        SegmentCache.releaseSharedSegment(seg);
+//        return BreakIterator.DONE;
     }
 
 
@@ -756,48 +760,49 @@ public class Utilities {
      * if there are no more words in the element.
      */
     static int getPrevWordInParagraph(JTextComponent c, Element line, int offs) throws BadLocationException {
-        if (line == null) {
-            throw new BadLocationException("No more words", offs);
-        }
-        Document doc = line.getDocument();
-        int lineStart = line.getStartOffset();
-        int lineEnd = line.getEndOffset();
-        if ((offs > lineEnd) || (offs < lineStart)) {
-            throw new BadLocationException("No more words", offs);
-        }
-        Segment seg = SegmentCache.getSharedSegment();
-        doc.getText(lineStart, lineEnd - lineStart, seg);
-        BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
-        words.setText(seg);
-        if (words.following(seg.offset + offs - lineStart) == BreakIterator.DONE) {
-            words.last();
-        }
-        int wordPosition = words.previous();
-        if (wordPosition == (seg.offset + offs - lineStart)) {
-            wordPosition = words.previous();
-        }
-
-        if (wordPosition == BreakIterator.DONE) {
-            // there are no more words on this line.
-            return BreakIterator.DONE;
-        }
-        // if we haven't shot past the end... check to
-        // see if the current boundary represents whitespace.
-        // if so, we need to try again
-        char ch = seg.array[wordPosition];
-        if (! Character.isWhitespace(ch)) {
-            return lineStart + wordPosition - seg.offset;
-        }
-
-        // it was whitespace, try again.  The assumption
-        // is that it must be a word start if the last
-        // one had whitespace following it.
-        wordPosition = words.previous();
-        if (wordPosition != BreakIterator.DONE) {
-            return lineStart + wordPosition - seg.offset;
-        }
-        SegmentCache.releaseSharedSegment(seg);
-        return BreakIterator.DONE;
+    	return 0;
+//        if (line == null) {
+//            throw new BadLocationException("No more words", offs);
+//        }
+//        Document doc = line.getDocument();
+//        int lineStart = line.getStartOffset();
+//        int lineEnd = line.getEndOffset();
+//        if ((offs > lineEnd) || (offs < lineStart)) {
+//            throw new BadLocationException("No more words", offs);
+//        }
+//        Segment seg = SegmentCache.getSharedSegment();
+//        doc.getText(lineStart, lineEnd - lineStart, seg);
+//        BreakIterator words = BreakIterator.getWordInstance(c.getLocale());
+//        words.setText(seg);
+//        if (words.following(seg.offset + offs - lineStart) == BreakIterator.DONE) {
+//            words.last();
+//        }
+//        int wordPosition = words.previous();
+//        if (wordPosition == (seg.offset + offs - lineStart)) {
+//            wordPosition = words.previous();
+//        }
+//
+//        if (wordPosition == BreakIterator.DONE) {
+//            // there are no more words on this line.
+//            return BreakIterator.DONE;
+//        }
+//        // if we haven't shot past the end... check to
+//        // see if the current boundary represents whitespace.
+//        // if so, we need to try again
+//        char ch = seg.array[wordPosition];
+//        if (! Character.isWhitespace(ch)) {
+//            return lineStart + wordPosition - seg.offset;
+//        }
+//
+//        // it was whitespace, try again.  The assumption
+//        // is that it must be a word start if the last
+//        // one had whitespace following it.
+//        wordPosition = words.previous();
+//        if (wordPosition != BreakIterator.DONE) {
+//            return lineStart + wordPosition - seg.offset;
+//        }
+//        SegmentCache.releaseSharedSegment(seg);
+//        return BreakIterator.DONE;
     }
 
     /**

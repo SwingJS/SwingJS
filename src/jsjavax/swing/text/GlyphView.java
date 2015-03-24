@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.text.BreakIterator;
+//import java.text.BreakIterator;
 import java.util.BitSet;
 
 import jsjava.awt.Color;
@@ -781,68 +781,69 @@ public class GlyphView extends View implements TabableView, Cloneable {
      * Returns the appropriate place to break based on BreakIterator.
      */
     private int getBreakSpotUseBreakIterator(int p0, int p1) {
-        // Certain regions require context for BreakIterator, start from
-        // our parents start offset.
-        Element parent = getElement().getParentElement();
-        int parent0;
-        int parent1;
-        Container c = getContainer();
-        BreakIterator breaker;
-
-        if (parent == null) {
-            parent0 = p0;
-            parent1 = p1;
-        }
-        else {
-            parent0 = parent.getStartOffset();
-            parent1 = parent.getEndOffset();
-        }
-        if (c != null) {
-            breaker = BreakIterator.getLineInstance(c.getLocale());
-        }
-        else {
-            breaker = BreakIterator.getLineInstance();
-        }
-
-        Segment s = getText(parent0, parent1);
-        int breakPoint;
-
-        // Needed to initialize the Segment.
-        s.first();
-        breaker.setText(s);
-
-        if (p1 == parent1) {
-            // This will most likely return the end, the assumption is
-            // that if parent1 == p1, then we are the last portion of
-            // a paragraph
-            breakPoint = breaker.last();
-        }
-        else if (p1 + 1 == parent1) {
-            // assert(s.count > 1)
-            breakPoint = breaker.following(s.offset + s.count - 2);
-            if (breakPoint >= s.count + s.offset) {
-                breakPoint = breaker.preceding(s.offset + s.count - 1);
-            }
-        }
-        else {
-            breakPoint = breaker.preceding(p1 - parent0 + s.offset + 1);
-        }
-
-        int retValue = -1;
-
-        if (breakPoint != BreakIterator.DONE) {
-            breakPoint = breakPoint - s.offset + parent0;
-            if (breakPoint > p0) {
-                if (p0 == parent0 && breakPoint == p0) {
-                    retValue = -1;
-                }
-                else if (breakPoint <= p1) {
-                    retValue = breakPoint;
-                }
-            }
-        }
-        SegmentCache.releaseSharedSegment(s);
-        return retValue;
+    	return 0;
+//        // Certain regions require context for BreakIterator, start from
+//        // our parents start offset.
+//        Element parent = getElement().getParentElement();
+//        int parent0;
+//        int parent1;
+//        Container c = getContainer();
+//        BreakIterator breaker;
+//
+//        if (parent == null) {
+//            parent0 = p0;
+//            parent1 = p1;
+//        }
+//        else {
+//            parent0 = parent.getStartOffset();
+//            parent1 = parent.getEndOffset();
+//        }
+//        if (c != null) {
+//            breaker = BreakIterator.getLineInstance(c.getLocale());
+//        }
+//        else {
+//            breaker = BreakIterator.getLineInstance();
+//        }
+//
+//        Segment s = getText(parent0, parent1);
+//        int breakPoint;
+//
+//        // Needed to initialize the Segment.
+//        s.first();
+//        breaker.setText(s);
+//
+//        if (p1 == parent1) {
+//            // This will most likely return the end, the assumption is
+//            // that if parent1 == p1, then we are the last portion of
+//            // a paragraph
+//            breakPoint = breaker.last();
+//        }
+//        else if (p1 + 1 == parent1) {
+//            // assert(s.count > 1)
+//            breakPoint = breaker.following(s.offset + s.count - 2);
+//            if (breakPoint >= s.count + s.offset) {
+//                breakPoint = breaker.preceding(s.offset + s.count - 1);
+//            }
+//        }
+//        else {
+//            breakPoint = breaker.preceding(p1 - parent0 + s.offset + 1);
+//        }
+//
+//        int retValue = -1;
+//
+//        if (breakPoint != BreakIterator.DONE) {
+//            breakPoint = breakPoint - s.offset + parent0;
+//            if (breakPoint > p0) {
+//                if (p0 == parent0 && breakPoint == p0) {
+//                    retValue = -1;
+//                }
+//                else if (breakPoint <= p1) {
+//                    retValue = breakPoint;
+//                }
+//            }
+//        }
+//        SegmentCache.releaseSharedSegment(s);
+//        return retValue;
     }
 
     /**
