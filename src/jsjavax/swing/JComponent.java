@@ -1016,17 +1016,17 @@ public abstract class JComponent extends Container
 
             int bw,bh;
             boolean printing = getFlag(IS_PRINTING);
-            if(!printing && repaintManager.isDoubleBufferingEnabled() &&
-               !getFlag(ANCESTOR_USING_BUFFER) && isDoubleBuffered()) {
-                repaintManager.beginPaint();
-                try {
-                    repaintManager.paint(this, this, co, clipX, clipY, clipW,
-                                         clipH);
-                } finally {
-                    repaintManager.endPaint();
-                }
-            }
-            else {
+//            if(!printing && repaintManager.isDoubleBufferingEnabled() &&
+//               !getFlag(ANCESTOR_USING_BUFFER) && isDoubleBuffered()) {
+//                repaintManager.beginPaint();
+//                try {
+//                    repaintManager.paint(this, this, co, clipX, clipY, clipW,
+//                                         clipH);
+//                } finally {
+//                    repaintManager.endPaint();
+//                }
+//            }
+//            else {
                 // Will ocassionaly happen in 1.2, especially when printing.
                 if (clipRect == null) {
                     co.setClip(clipX, clipY, clipW, clipH);
@@ -1048,7 +1048,7 @@ public abstract class JComponent extends Container
                 else {
                     printChildren(co);
                 }
-            }
+//            }
         } finally {
             co.dispose();
             if(shouldClearPaintFlags) {
@@ -5040,12 +5040,12 @@ public abstract class JComponent extends Container
 
                 // look to see if the parent (and therefor this component)
                 // is double buffered
-                if(repaintManager.isDoubleBufferingEnabled() && jc != null &&
-                                  jc.isDoubleBuffered()) {
-                    hasBuffer = true;
-                    bufferedComponent = jc;
-                }
-
+//                if(repaintManager.isDoubleBufferingEnabled() && jc != null &&
+//                                  jc.isDoubleBuffered()) {
+//                    hasBuffer = true;
+//                    bufferedComponent = jc;
+//                }
+//
                 // if we aren't on top, include the parent's clip
                 if (!ontop) {
                     int bx = c.getX();

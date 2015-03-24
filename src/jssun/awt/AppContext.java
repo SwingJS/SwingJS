@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.HashSet;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
-import java.util.concurrent.atomic.AtomicInteger;
+//import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The AppContext is a table referenced by ThreadGroup which stores
@@ -184,7 +184,7 @@ public final class AppContext {
      * number is 1.  If so, it returns the sole AppContext without
      * checking Thread.currentThread().
      */
-    private static final AtomicInteger numAppContexts = new AtomicInteger(0);
+    private static int numAppContexts = 0;
 
     /*
      * The context ClassLoader that was used to create this AppContext.
@@ -205,7 +205,7 @@ public final class AppContext {
      * @since   1.2
      */
     AppContext(ThreadGroup threadGroup) {
-        numAppContexts.incrementAndGet();
+        numAppContexts++;
 
         this.threadGroup = threadGroup;
         threadGroup2appContext.put(threadGroup, this);
@@ -292,7 +292,7 @@ public final class AppContext {
                     // if no contexts have been created yet. This covers standalone apps
                     // and excludes applets because by the time applet starts
                     // a number of contexts have already been created by the plugin.
-                    if (numAppContexts.get() == 0) {
+                    if (numAppContexts == 0) {
                         // This check is not necessary, its purpose is to help
                         // Plugin devs to catch all the cases of main AC creation.
 //                        if (System.getProperty("javaplugin.version") == null &&

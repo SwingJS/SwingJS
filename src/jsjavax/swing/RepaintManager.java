@@ -72,11 +72,11 @@ public class RepaintManager {
 	 */
 	static final boolean HANDLE_TOP_LEVEL_PAINT;
 
-	private static final short BUFFER_STRATEGY_NOT_SPECIFIED = 0;
-	private static final short BUFFER_STRATEGY_SPECIFIED_ON = 1;
-	private static final short BUFFER_STRATEGY_SPECIFIED_OFF = 2;
-
-	private static final short BUFFER_STRATEGY_TYPE;
+//	private static final short BUFFER_STRATEGY_NOT_SPECIFIED = 0;
+//	private static final short BUFFER_STRATEGY_SPECIFIED_ON = 1;
+//	private static final short BUFFER_STRATEGY_SPECIFIED_OFF = 2;
+//
+//	private static final short BUFFER_STRATEGY_TYPE;
 
 	/**
 	 * Maps from GraphicsConfiguration to VolatileImage.
@@ -104,9 +104,9 @@ public class RepaintManager {
 	// List of Runnables that need to be processed before painting from AWT.
 	private java.util.List<Runnable> runnableList;
 
-	boolean doubleBufferingEnabled = true;
+//	boolean doubleBufferingEnabled = true;
 
-	private Dimension doubleBufferMaxSize;
+//	private Dimension doubleBufferMaxSize;
 
 	// Support for both the standard and volatile offscreen buffers exists to
 	// provide backwards compatibility for the [rare] programs which may be
@@ -129,22 +129,22 @@ public class RepaintManager {
 	/**
 	 * Value of the system property awt.nativeDoubleBuffering.
 	 */
-	private static boolean nativeDoubleBuffering;
+//	private static boolean nativeDoubleBuffering;
 
 	// The maximum number of times Swing will attempt to use the VolatileImage
 	// buffer during a paint operation.
-	private static final int VOLATILE_LOOP_MAX = 2;
+//	private static final int VOLATILE_LOOP_MAX = 2;
 
 	/**
 	 * Number of <code>beginPaint</code> that have been invoked.
 	 */
 	private int paintDepth = 0;
 
-	/**
-	 * Type of buffer strategy to use. Will be one of the BUFFER_STRATEGY_
-	 * constants.
-	 */
-	private short bufferStrategyType;
+//	/**
+//	 * Type of buffer strategy to use. Will be one of the BUFFER_STRATEGY_
+//	 * constants.
+//	 */
+//	private short bufferStrategyType;
 
 	//
 	// BufferStrategyPaintManager has the unique characteristic that it
@@ -191,20 +191,20 @@ public class RepaintManager {
 		if (volatileImageBufferEnabled && headless) {
 			volatileImageBufferEnabled = false;
 		}
-		nativeDoubleBuffering = true;//"true".equals(AccessController
+//		nativeDoubleBuffering = true;//"true".equals(AccessController
 				//.doPrivileged(new GetPropertyAction("awt.nativeDoubleBuffering")));
-		String bs = dummy();
+//		String bs = dummy();
 //		AccessController.doPrivileged(new GetPropertyAction(
 //				"swing.bufferPerWindow"));
-		if (headless) {
-			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_SPECIFIED_OFF;
-		} else if (bs == null) {
-			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_NOT_SPECIFIED;
-		} else if ("true".equals(bs)) {
-			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_SPECIFIED_ON;
-		} else {
-			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_SPECIFIED_OFF;
-		}
+//		if (headless) {
+//			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_SPECIFIED_OFF;
+//		} else if (bs == null) {
+//			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_NOT_SPECIFIED;
+//		} else if ("true".equals(bs)) {
+//			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_SPECIFIED_ON;
+//		} else {
+//			BUFFER_STRATEGY_TYPE = BUFFER_STRATEGY_SPECIFIED_OFF;
+//		}
 		HANDLE_TOP_LEVEL_PAINT = true;
 		
 //		"true"
@@ -235,18 +235,21 @@ public class RepaintManager {
 		// component is ever used to determine the current
 		// RepaintManager, DisplayChangedRunnable will need to be modified
 		// accordingly.
-		return currentManager(AppContext.getAppContext());
-	}
-
-	/**
-	 * Returns the RepaintManager for the specified AppContext. If a
-	 * RepaintManager has not been created for the specified AppContext this will
-	 * return null.
-	 */
-	static RepaintManager currentManager(AppContext appContext) {
+//		return currentManager(AppContext.getAppContext());
+//	}
+//
+//	/**
+//	 * Returns the RepaintManager for the specified AppContext. If a
+//	 * RepaintManager has not been created for the specified AppContext this will
+//	 * return null.
+//	 */
+//	static RepaintManager currentManager(AppContext appContext) {
+		AppContext appContext = AppContext.getAppContext();
 		RepaintManager rm = (RepaintManager) appContext.get(repaintManagerKey);
 		if (rm == null) {
-			rm = new RepaintManager(BUFFER_STRATEGY_TYPE);
+			rm = new RepaintManager();
+			rm.set();
+//			rm.bufferStrategyType = BUFFER_STRATEGY_TYPE;
 			appContext.put(repaintManagerKey, rm);
 		}
 		return rm;
@@ -293,20 +296,20 @@ public class RepaintManager {
 		// volatile image we immediately punt in subclasses. If this
 		// poses a problem we'll need a more sophisticated detection algorithm,
 		// or API.
-		this(BUFFER_STRATEGY_SPECIFIED_OFF);
+		set();
+//		bufferStrategyType = BUFFER_STRATEGY_SPECIFIED_OFF;
+		processingRunnable = new ProcessingRunnable();
 	}
 
-	private RepaintManager(short bufferStrategyType) {
+	private void set() {
 		// If native doublebuffering is being used, do NOT use
 		// Swing doublebuffering.
-		doubleBufferingEnabled = !nativeDoubleBuffering;
-		synchronized (this) {
+		// doubleBufferingEnabled = !nativeDoubleBuffering;
+		//synchronized (this) {
 			dirtyComponents = new IdentityHashMap<Component, Rectangle>();
 			tmpDirtyComponents = new IdentityHashMap<Component, Rectangle>();
-			this.bufferStrategyType = bufferStrategyType;
 			hwDirtyComponents = new IdentityHashMap<Container, Rectangle>();
-		}
-		processingRunnable = new ProcessingRunnable();
+		//}
 	}
 
 	private void displayChanged() {
@@ -796,10 +799,11 @@ public class RepaintManager {
 			collectDirtyComponents(tmpDirtyComponents, dirty, roots);
 		}
 
-		final AtomicInteger count = new AtomicInteger(roots.size());
+//		final AtomicInteger count = new AtomicInteger(roots.size());
+		int count = roots.size();
 		painting = true;
 		try {
-			for (int j = 0; j < count.get(); j++) {
+			for (int j = 0; j < count; j++) {
 				final int i = j;
 				final Component dirtyComponent = roots.get(j);
 
@@ -836,7 +840,7 @@ public class RepaintManager {
 								// remove any components that are children of repaintRoot.
 								if (repaintRoot != null) {
 									adjustRoots(repaintRoot, roots, i + 1);
-									count.set(roots.size());
+									count = roots.size();
 									paintManager.isRepaintingRoot = true;
 									repaintRoot.paintImmediately(0, 0, repaintRoot.getWidth(),
 											repaintRoot.getHeight());
@@ -880,7 +884,7 @@ public class RepaintManager {
 			Component dirtyComponent, java.util.List<Component> roots) {
 		int dx, dy, rootDx, rootDy;
 		Component component, rootDirtyComponent, parent;
-		Rectangle cBounds;
+		//Rectangle cBounds;
 
 		// Find the highest parent which is dirty. When we get out of this
 		// rootDx and rootDy will contain the translation from the
@@ -1058,12 +1062,12 @@ public class RepaintManager {
 
 	/** Set the maximum double buffer size. **/
 	public void setDoubleBufferMaximumSize(Dimension d) {
-		doubleBufferMaxSize = d;
-		if (doubleBufferMaxSize == null) {
-			clearImages();
-		} else {
-			clearImages(d.width, d.height);
-		}
+//		doubleBufferMaxSize = d;
+//		if (doubleBufferMaxSize == null) {
+//			clearImages();
+//		} else {
+//			clearImages(d.width, d.height);
+//		}
 	}
 
 	private void clearImages() {
@@ -1096,22 +1100,24 @@ public class RepaintManager {
 	 * @return a Dimension object representing the maximum size
 	 */
 	public Dimension getDoubleBufferMaximumSize() {
-		if (doubleBufferMaxSize == null) {
-			// try {
-			Rectangle virtualBounds = new Rectangle();
-			// GraphicsEnvironment ge = GraphicsEnvironment.
-			// getLocalGraphicsEnvironment();
-			// for (GraphicsDevice gd : ge.getScreenDevices()) {
-			// GraphicsConfiguration gc = gd.getDefaultConfiguration();
-			// virtualBounds = virtualBounds.union(gc.getBounds());
-			// }
-			doubleBufferMaxSize = new Dimension(virtualBounds.width,
-					virtualBounds.height);
-			// } catch (HeadlessException e) {
-			doubleBufferMaxSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-			// }
-		}
-		return doubleBufferMaxSize;
+		//TODO 
+		return null;
+//		if (doubleBufferMaxSize == null) {
+//			// try {
+//			Rectangle virtualBounds = new Rectangle();
+//			// GraphicsEnvironment ge = GraphicsEnvironment.
+//			// getLocalGraphicsEnvironment();
+//			// for (GraphicsDevice gd : ge.getScreenDevices()) {
+//			// GraphicsConfiguration gc = gd.getDefaultConfiguration();
+//			// virtualBounds = virtualBounds.union(gc.getBounds());
+//			// }
+//			doubleBufferMaxSize = new Dimension(virtualBounds.width,
+//					virtualBounds.height);
+//			// } catch (HeadlessException e) {
+//			doubleBufferMaxSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+//			// }
+//		}
+//		return doubleBufferMaxSize;
 	}
 
 	/**
@@ -1125,26 +1131,27 @@ public class RepaintManager {
 	 * @see #isDoubleBufferingEnabled
 	 */
 	public void setDoubleBufferingEnabled(boolean aFlag) {
-		doubleBufferingEnabled = aFlag;
-		PaintManager paintManager = getPaintManager();
-		if (!aFlag && paintManager.getClass() != PaintManager.class) {
-			setPaintManager(new PaintManager());
-		}
+//SwingJS ignore
+//    doubleBufferingEnabled = aFlag;
+//		PaintManager paintManager = getPaintManager();
+//		if (!aFlag && paintManager.getClass() != PaintManager.class) {
+//			setPaintManager(new PaintManager());
+//		}
 	}
 
-	/**
-	 * Returns true if this RepaintManager is double buffered. The default value
-	 * for this property may vary from platform to platform. On platforms where
-	 * native double buffering is supported in the AWT, the default value will be
-	 * <code>false</code> to avoid unnecessary buffering in Swing. On platforms
-	 * where native double buffering is not supported, the default value will be
-	 * <code>true</code>.
-	 * 
-	 * @return true if this object is double buffered
-	 */
-	public boolean isDoubleBufferingEnabled() {
-		return doubleBufferingEnabled;
-	}
+//	/**
+//	 * Returns true if this RepaintManager is double buffered. The default value
+//	 * for this property may vary from platform to platform. On platforms where
+//	 * native double buffering is supported in the AWT, the default value will be
+//	 * <code>false</code> to avoid unnecessary buffering in Swing. On platforms
+//	 * where native double buffering is not supported, the default value will be
+//	 * <code>true</code>.
+//	 * 
+//	 * @return true if this object is double buffered
+//	 */
+//	public boolean isDoubleBufferingEnabled() {
+//		return doubleBufferingEnabled;
+//	}
 
 	/**
 	 * This resets the double buffer. Actually, it marks the double buffer as
@@ -1408,22 +1415,22 @@ public class RepaintManager {
 			// standard Image buffer.
 			boolean paintCompleted = false;
 			Image offscreen;
-			if (repaintManager.useVolatileDoubleBuffer()
-					&& (offscreen = getValidImage(repaintManager
-							.getVolatileOffscreenBuffer(bufferComponent, w, h))) != null) {
-				VolatileImage vImage = (jsjava.awt.image.VolatileImage) offscreen;
-				GraphicsConfiguration gc = bufferComponent.getGraphicsConfiguration();
-				for (int i = 0; !paintCompleted && i < RepaintManager.VOLATILE_LOOP_MAX; i++) {
-					if (vImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE) {
-						repaintManager.resetVolatileDoubleBuffer(gc);
-						offscreen = repaintManager.getVolatileOffscreenBuffer(
-								bufferComponent, w, h);
-						vImage = (jsjava.awt.image.VolatileImage) offscreen;
-					}
-					paintDoubleBuffered(paintingComponent, vImage, g, x, y, w, h);
-					paintCompleted = !vImage.contentsLost();
-				}
-			}
+//			if (repaintManager.useVolatileDoubleBuffer()
+//					&& (offscreen = getValidImage(repaintManager
+//							.getVolatileOffscreenBuffer(bufferComponent, w, h))) != null) {
+//				VolatileImage vImage = (jsjava.awt.image.VolatileImage) offscreen;
+//				GraphicsConfiguration gc = bufferComponent.getGraphicsConfiguration();
+//				for (int i = 0; !paintCompleted && i < RepaintManager.VOLATILE_LOOP_MAX; i++) {
+//					if (vImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE) {
+//						repaintManager.resetVolatileDoubleBuffer(gc);
+//						offscreen = repaintManager.getVolatileOffscreenBuffer(
+//								bufferComponent, w, h);
+//						vImage = (jsjava.awt.image.VolatileImage) offscreen;
+//					}
+//					paintDoubleBuffered(paintingComponent, vImage, g, x, y, w, h);
+//					paintCompleted = !vImage.contentsLost();
+//				}
+//			}
 			// VolatileImage painting loop failed, fallback to regular
 			// offscreen buffer
 			if (!paintCompleted

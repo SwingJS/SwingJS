@@ -24,15 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectInputValidation;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.text.Bidi;
+//import java.text.Bidi;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.EventListener;
@@ -1194,11 +1186,11 @@ public abstract class AbstractDocument implements Document {
 
         byte levels[] = new byte[ lastPEnd - firstPStart ];
         int  levelsEnd = 0;
-        Boolean defaultDirection = null;
-        Object d = getProperty(TextAttribute.RUN_DIRECTION);
-        if (d instanceof Boolean) {
-            defaultDirection = (Boolean) d;
-        }
+//        Boolean defaultDirection = null;
+//        Object d = getProperty(TextAttribute.RUN_DIRECTION);
+//        if (d instanceof Boolean) {
+//            defaultDirection = (Boolean) d;
+//        }
 
         // For each paragraph in the given range of paragraphs, get its
         // levels array and add it to the levels array for the entire span.
@@ -1210,11 +1202,11 @@ public abstract class AbstractDocument implements Document {
             // default run direction for the paragraph.  This will be
             // null if there is no direction override specified (i.e.
             // the direction will be determined from the content).
-            Boolean direction = defaultDirection;
-            d = p.getAttributes().getAttribute(TextAttribute.RUN_DIRECTION);
-            if (d instanceof Boolean) {
-                direction = (Boolean) d;
-            }
+//            Boolean direction = defaultDirection;
+//            d = p.getAttributes().getAttribute(TextAttribute.RUN_DIRECTION);
+//            if (d instanceof Boolean) {
+//                direction = (Boolean) d;
+//            }
 
             //System.out.println("updateBidi: paragraph start = " + pStart + " paragraph end = " + pEnd);
 
@@ -1226,20 +1218,20 @@ public abstract class AbstractDocument implements Document {
             } catch (BadLocationException e ) {
                 throw new Error("Internal error: " + e.toString());
             }
-            // REMIND(bcb) we should really be using a Segment here.
-            Bidi bidiAnalyzer;
-            int bidiflag = Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT;
-            if (direction != null) {
-                if (TextAttribute.RUN_DIRECTION_LTR.equals(direction)) {
-                    bidiflag = Bidi.DIRECTION_LEFT_TO_RIGHT;
-                } else {
-                    bidiflag = Bidi.DIRECTION_RIGHT_TO_LEFT;
-                }
-            }
-            bidiAnalyzer = new Bidi(seg.array, seg.offset, null, 0, seg.count,
-                    bidiflag);
+//            // REMIND(bcb) we should really be using a Segment here.
+//            Bidi bidiAnalyzer;
+//            int bidiflag = Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT;
+//            if (direction != null) {
+//                if (TextAttribute.RUN_DIRECTION_LTR.equals(direction)) {
+//                    bidiflag = Bidi.DIRECTION_LEFT_TO_RIGHT;
+//                } else {
+//                    bidiflag = Bidi.DIRECTION_RIGHT_TO_LEFT;
+//                }
+//            }
+//            bidiAnalyzer = new Bidi(seg.array, seg.offset, null, 0, seg.count,
+//                    bidiflag);
             //BidiUtils.getLevels(bidiAnalyzer, levels, levelsEnd);
-            levelsEnd += bidiAnalyzer.getLength();
+//            levelsEnd += bidiAnalyzer.getLength();
 
             o =  p.getEndOffset();
             SegmentCache.releaseSharedSegment(seg);
@@ -1252,18 +1244,18 @@ public abstract class AbstractDocument implements Document {
         return levels;
     }
 
-    /**
-     * Gives a diagnostic dump.
-     *
-     * @param out the output stream
-     */
-    public void dump(PrintStream out) {
-        Element root = getDefaultRootElement();
-        if (root instanceof AbstractElement) {
-            ((AbstractElement)root).dump(out, 0);
-        }
-        bidiRoot.dump(out,0);
-    }
+//    /**
+//     * Gives a diagnostic dump.
+//     *
+//     * @param out the output stream
+//     */
+//    public void dump(PrintStream out) {
+//        Element root = getDefaultRootElement();
+//        if (root instanceof AbstractElement) {
+//            ((AbstractElement)root).dump(out, 0);
+//        }
+//        bidiRoot.dump(out,0);
+//    }
 
     /**
      * Gets the content for the document.
@@ -1796,68 +1788,68 @@ public abstract class AbstractDocument implements Document {
             }
         }
 
-        private final void indent(PrintWriter out, int n) {
-            for (int i = 0; i < n; i++) {
-                out.print("  ");
-            }
-        }
+//        private final void indent(PrintWriter out, int n) {
+//            for (int i = 0; i < n; i++) {
+//                out.print("  ");
+//            }
+//        }
 
-        /**
-         * Dumps a debugging representation of the element hierarchy.
-         *
-         * @param psOut the output stream
-         * @param indentAmount the indentation level >= 0
-         */
-        public void dump(PrintStream psOut, int indentAmount) {
-            PrintWriter out;
-            try {
-                out = new PrintWriter(new OutputStreamWriter(psOut,"JavaEsc"),
-                                      true);
-            } catch (UnsupportedEncodingException e){
-                out = new PrintWriter(psOut,true);
-            }
-            indent(out, indentAmount);
-            if (getName() == null) {
-                out.print("<??");
-            } else {
-                out.print("<" + getName());
-            }
-            if (getAttributeCount() > 0) {
-                out.println("");
-                // dump the attributes
-                Enumeration names = attributes.getAttributeNames();
-                while (names.hasMoreElements()) {
-                    Object name = names.nextElement();
-                    indent(out, indentAmount + 1);
-                    out.println(name + "=" + getAttribute(name));
-                }
-                indent(out, indentAmount);
-            }
-            out.println(">");
-
-            if (isLeaf()) {
-                indent(out, indentAmount+1);
-                out.print("[" + getStartOffset() + "," + getEndOffset() + "]");
-                Content c = getContent();
-                try {
-                    String contentStr = c.getString(getStartOffset(),
-                                                    getEndOffset() - getStartOffset())/*.trim()*/;
-                    if (contentStr.length() > 40) {
-                        contentStr = contentStr.substring(0, 40) + "...";
-                    }
-                    out.println("["+contentStr+"]");
-                } catch (BadLocationException e) {
-                        ;
-                }
-
-            } else {
-                int n = getElementCount();
-                for (int i = 0; i < n; i++) {
-                    AbstractElement e = (AbstractElement) getElement(i);
-                    e.dump(psOut, indentAmount+1);
-                }
-            }
-        }
+//        /**
+//         * Dumps a debugging representation of the element hierarchy.
+//         *
+//         * @param psOut the output stream
+//         * @param indentAmount the indentation level >= 0
+//         */
+//        public void dump(PrintStream psOut, int indentAmount) {
+//            PrintWriter out;
+//            try {
+//                out = new PrintWriter(new OutputStreamWriter(psOut,"JavaEsc"),
+//                                      true);
+//            } catch (UnsupportedEncodingException e){
+//                out = new PrintWriter(psOut,true);
+//            }
+//            indent(out, indentAmount);
+//            if (getName() == null) {
+//                out.print("<??");
+//            } else {
+//                out.print("<" + getName());
+//            }
+//            if (getAttributeCount() > 0) {
+//                out.println("");
+//                // dump the attributes
+//                Enumeration names = attributes.getAttributeNames();
+//                while (names.hasMoreElements()) {
+//                    Object name = names.nextElement();
+//                    indent(out, indentAmount + 1);
+//                    out.println(name + "=" + getAttribute(name));
+//                }
+//                indent(out, indentAmount);
+//            }
+//            out.println(">");
+//
+//            if (isLeaf()) {
+//                indent(out, indentAmount+1);
+//                out.print("[" + getStartOffset() + "," + getEndOffset() + "]");
+//                Content c = getContent();
+//                try {
+//                    String contentStr = c.getString(getStartOffset(),
+//                                                    getEndOffset() - getStartOffset())/*.trim()*/;
+//                    if (contentStr.length() > 40) {
+//                        contentStr = contentStr.substring(0, 40) + "...";
+//                    }
+//                    out.println("["+contentStr+"]");
+//                } catch (BadLocationException e) {
+//                        ;
+//                }
+//
+//            } else {
+//                int n = getElementCount();
+//                for (int i = 0; i < n; i++) {
+//                    AbstractElement e = (AbstractElement) getElement(i);
+//                    e.dump(psOut, indentAmount+1);
+//                }
+//            }
+//        }
 
         // --- AttributeSet ----------------------------
         // delegated to the immutable field "attributes"
@@ -2631,30 +2623,30 @@ public abstract class AbstractDocument implements Document {
 
         // --- serialization ---------------------------------------------
 
-        private void writeObject(ObjectOutputStream s) throws IOException {
-            s.defaultWriteObject();
-            s.writeInt(p0.getOffset());
-            s.writeInt(p1.getOffset());
-        }
-
-        private void readObject(ObjectInputStream s)
-            throws ClassNotFoundException, IOException
-        {
-            s.defaultReadObject();
-
-            // set the range with positions that track change
-            int off0 = s.readInt();
-            int off1 = s.readInt();
-            try {
-                p0 = createPosition(off0);
-                p1 = createPosition(off1);
-            } catch (BadLocationException e) {
-                p0 = null;
-                p1 = null;
-                throw new IOException("Can't restore Position references");
-            }
-        }
-
+//        private void writeObject(ObjectOutputStream s) throws IOException {
+//            s.defaultWriteObject();
+//            s.writeInt(p0.getOffset());
+//            s.writeInt(p1.getOffset());
+//        }
+//
+//        private void readObject(ObjectInputStream s)
+//            throws ClassNotFoundException, IOException
+//        {
+//            s.defaultReadObject();
+//
+//            // set the range with positions that track change
+//            int off0 = s.readInt();
+//            int off1 = s.readInt();
+//            try {
+//                p0 = createPosition(off0);
+//                p1 = createPosition(off1);
+//            } catch (BadLocationException e) {
+//                p0 = null;
+//                p1 = null;
+//                throw new IOException("Can't restore Position references");
+//            }
+//        }
+//
         // ---- members -----------------------------------------------------
 
         private transient Position p0;

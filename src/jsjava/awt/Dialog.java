@@ -246,11 +246,11 @@ public class Dialog extends Window {
         TOOLKIT_EXCLUDE
     };
 
-    /**
-     * @since 1.6
-     */
-    private final static ModalExclusionType DEFAULT_MODAL_EXCLUSION_TYPE =
-        ModalExclusionType.APPLICATION_EXCLUDE;
+//    /**
+//     * @since 1.6
+//     */
+//    private final static ModalExclusionType DEFAULT_MODAL_EXCLUSION_TYPE =
+//        ModalExclusionType.APPLICATION_EXCLUDE;
 
     /**
      * Specifies the title of the Dialog.
@@ -262,9 +262,9 @@ public class Dialog extends Window {
      */
     String title;
 
-    private transient volatile boolean keepBlockingEDT = false;
-    private transient volatile boolean keepBlockingCT = false;
-
+//    private transient volatile boolean keepBlockingEDT = false;
+//    private transient volatile boolean keepBlockingCT = false;
+//
 //    private transient ModalEventFilter modalFilter;
 
     /*

@@ -33,8 +33,8 @@ import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.awt.geom.AffineTransform;
-import jssun.java2d.Disposer;
-import jssun.java2d.DisposerRecord;
+//import jssun.java2d.Disposer;
+//import jssun.java2d.DisposerRecord;
 
 /*
  * This class provides a summary of the glyph measurements  for a Font
@@ -162,16 +162,16 @@ public final class FontDesignMetrics extends FontMetrics {
      * out we can clear the keys from the table.
      */
     private static class KeyReference extends SoftReference
-        implements DisposerRecord, Disposer.PollDisposable {
+        {
 
-        static ReferenceQueue queue = Disposer.getQueue();
+//        static ReferenceQueue queue = Disposer.getQueue();
 
         Object key;
 
         KeyReference(Object key, Object value) {
-            super(value, queue);
+            super(value, null);//queue);
             this.key = key;
-            Disposer.addReference(this, this);
+            //Disposer.addReference(this, this);
         }
 
         /* It is possible that since this reference object has been

@@ -25,10 +25,9 @@
 
 package jsjava.awt;
 
-import java.lang.reflect.Field;
 import java.util.EventObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.AdjustmentEvent;
@@ -84,7 +83,6 @@ import jsjava.security.AccessController;
  */
 public abstract class AWTEvent extends EventObject {
 
-  private static final Logger log = Logger.getLogger("java.awt.AWTEvent");
     private byte bdata[];
 
     /**
@@ -249,7 +247,7 @@ public abstract class AWTEvent extends EventObject {
     public final static int RESERVED_ID_MAX = 1999;
 
     // security stuff
-    private static Field inputEvent_CanAccessSystemClipboard_Field = null;
+//    private static Field inputEvent_CanAccessSystemClipboard_Field = null;
 
     /*
      * JDK 1.1 serialVersionUID
@@ -289,8 +287,8 @@ public abstract class AWTEvent extends EventObject {
 //        });
 //    }
 
-    private static synchronized Field get_InputEvent_CanAccessSystemClipboard() {
-    	return null;
+//    private static synchronized Field get_InputEvent_CanAccessSystemClipboard() {
+//    	return null;
 //        if (inputEvent_CanAccessSystemClipboard_Field == null) {
 //            inputEvent_CanAccessSystemClipboard_Field =
 //                (Field)jsjava.security.AccessController.doPrivileged(
@@ -317,7 +315,7 @@ public abstract class AWTEvent extends EventObject {
 //        }
 //
 //        return inputEvent_CanAccessSystemClipboard_Field;
-    }
+ //   }
 
     /**
      * Initialize JNI field and method IDs for fields that may be
@@ -593,35 +591,36 @@ public abstract class AWTEvent extends EventObject {
      */
     void copyPrivateDataInto(AWTEvent that) {
         that.bdata = this.bdata;
+//SwingJS TODO
         // Copy canAccessSystemClipboard value from this into that.
-        if (this instanceof InputEvent && that instanceof InputEvent) {
-            Field field = get_InputEvent_CanAccessSystemClipboard();
-            if (field != null) {
-                try {
-                    boolean b = field.getBoolean(this);
-                    field.setBoolean(that, b);
-                } catch(IllegalAccessException e) {
-                    if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE, "AWTEvent.copyPrivateDataInto() got IllegalAccessException ", e);
-                    }
-                }
-            }
-        }
+//        if (this instanceof InputEvent && that instanceof InputEvent) {
+////            Field field = get_InputEvent_CanAccessSystemClipboard();
+////            if (field != null) {
+////                try {
+////                    boolean b = field.getBoolean(this);
+////                    field.setBoolean(that, b);
+////                } catch(IllegalAccessException e) {
+////                    if (log.isLoggable(Level.FINE)) {
+////                        log.log(Level.FINE, "AWTEvent.copyPrivateDataInto() got IllegalAccessException ", e);
+////                    }
+////                }
+////            }
+//        }
     }
 
     void dispatched() {
-        if (this instanceof InputEvent) {
-            Field field = get_InputEvent_CanAccessSystemClipboard();
-            if (field != null) {
-                try {
-                    field.setBoolean(this, false);
-                } catch(IllegalAccessException e) {
-                    if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE, "AWTEvent.dispatched() got IllegalAccessException ", e);
-                    }
-                }
-            }
-        }
+//        if (this instanceof InputEvent) {
+//            Field field = get_InputEvent_CanAccessSystemClipboard();
+//            if (field != null) {
+//                try {
+//                    field.setBoolean(this, false);
+//                } catch(IllegalAccessException e) {
+//                    if (log.isLoggable(Level.FINE)) {
+//                        log.log(Level.FINE, "AWTEvent.dispatched() got IllegalAccessException ", e);
+//                    }
+//                }
+//            }
+//        }
     }
 
 //    private void readObject(ObjectInputStream in) 

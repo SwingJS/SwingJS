@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.Format;
 import java.text.NumberFormat;
-import java.text.ParseException;
+import jsjava.text.ParseException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -158,18 +158,18 @@ public class NumberFormatter extends InternationalFormatter {
         }
     }
 
-    /**
-     * Invokes <code>parseObject</code> on <code>f</code>, returning
-     * its value.
-     */
-    Object stringToValue(String text, Format f) throws ParseException {
-        if (f == null) {
-            return text;
-        }
-        Object value = f.parseObject(text);
-
-        return convertValueToValueClass(value, getValueClass());
-    }
+//    /**
+//     * Invokes <code>parseObject</code> on <code>f</code>, returning
+//     * its value.
+//     */
+//    Object stringToValue(String text, Format f) throws ParseException {
+//        if (f == null) {
+//            return text;
+//        }
+//        Object value = f.parseObject(text);
+//
+//        return convertValueToValueClass(value, getValueClass());
+//    }
 
     /**
      * Converts the passed in value to the passed in class. This only

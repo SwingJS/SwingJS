@@ -820,7 +820,7 @@ public class DefaultEditorKit extends EditorKit {
         new SelectWordAction(), new SelectLineAction(),
         new SelectParagraphAction(), new SelectAllAction(),
         new UnselectAction(), new ToggleComponentOrientationAction(),
-        new DumpModelAction()
+//        new DumpModelAction()
     };
 
     /**
@@ -1621,22 +1621,22 @@ public class DefaultEditorKit extends EditorKit {
         private boolean left;
     }
 
-    static class DumpModelAction extends TextAction {
-
-        DumpModelAction() {
-            super("dump-model");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            JTextComponent target = getTextComponent(e);
-            if (target != null) {
-                Document d = target.getDocument();
-                if (d instanceof AbstractDocument) {
-                    ((AbstractDocument) d).dump(System.err);
-                }
-            }
-        }
-    }
+//    static class DumpModelAction extends TextAction {
+//
+//        DumpModelAction() {
+//            super("dump-model");
+//        }
+//
+//        public void actionPerformed(ActionEvent e) {
+//            JTextComponent target = getTextComponent(e);
+//            if (target != null) {
+//                Document d = target.getDocument();
+//                if (d instanceof AbstractDocument) {
+//                    ((AbstractDocument) d).dump(System.err);
+//                }
+//            }
+//        }
+//    }
 
     /*
      * Action to move the selection by way of the

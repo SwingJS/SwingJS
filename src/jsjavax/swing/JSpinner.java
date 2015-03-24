@@ -25,14 +25,10 @@
 
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
+import jsjava.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -888,9 +884,9 @@ public class JSpinner extends JComponent
             // If the value in the JFormattedTextField is legal, this will have
             // the result of pushing the value to the SpinnerModel
             // by way of the <code>propertyChange</code> method.
-            JFormattedTextField ftf = getTextField();
+            //JFormattedTextField ftf = getTextField();
 
-            ftf.commitEdit();
+            //ftf.commitEdit();
         }
 
         /**

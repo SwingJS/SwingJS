@@ -812,14 +812,14 @@ public class BufferedImage extends Image
         return imageType;
     }
 
-//    /**
-//     * Returns the <code>ColorModel</code>.
-//     * @return the <code>ColorModel</code> of this
-//     *  <code>BufferedImage</code>.
-//     */
-//    public ColorModel getColorModel() {
-//        return colorModel;
-//    }
+    /**
+     * Returns the <code>ColorModel</code>.
+     * @return the <code>ColorModel</code> of this
+     *  <code>BufferedImage</code>.
+     */
+    public ColorModel getColorModel() {
+        return colorModel;
+    }
 
 //    /**
 //     * Returns the {@link WritableRaster}.

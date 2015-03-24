@@ -26,7 +26,7 @@
 
 package jsjavax.swing;
 
-import java.io.PrintStream;
+//import java.io.PrintStream;
 
 import jsjava.awt.AWTError;
 import jsjava.awt.Component;
@@ -188,24 +188,24 @@ public class BoxLayout implements LayoutManager2 {
         this.target = target;
     }
 
-    /**
-     * Constructs a BoxLayout that
-     * produces debugging messages.
-     *
-     * @param target  the container that needs to be laid out
-     * @param axis  the axis to lay out components along. Can be one of:
-     *              <code>BoxLayout.X_AXIS</code>,
-     *              <code>BoxLayout.Y_AXIS</code>,
-     *              <code>BoxLayout.LINE_AXIS</code> or
-     *              <code>BoxLayout.PAGE_AXIS</code>
-     *
-     * @param dbg  the stream to which debugging messages should be sent,
-     *   null if none
-     */
-    BoxLayout(Container target, int axis, PrintStream dbg) {
-        this(target, axis);
-        this.dbg = dbg;
-    }
+//    /**
+//     * Constructs a BoxLayout that
+//     * produces debugging messages.
+//     *
+//     * @param target  the container that needs to be laid out
+//     * @param axis  the axis to lay out components along. Can be one of:
+//     *              <code>BoxLayout.X_AXIS</code>,
+//     *              <code>BoxLayout.Y_AXIS</code>,
+//     *              <code>BoxLayout.LINE_AXIS</code> or
+//     *              <code>BoxLayout.PAGE_AXIS</code>
+//     *
+//     * @param dbg  the stream to which debugging messages should be sent,
+//     *   null if none
+//     */
+//    BoxLayout(Container target, int axis, PrintStream dbg) {
+//        this(target, axis);
+//        this.dbg = dbg;
+//    }
 
     /**
      * Returns the container that uses this layout manager.
@@ -452,14 +452,14 @@ public class BoxLayout implements LayoutManager2 {
                         xSpans[i], ySpans[i]);
 
         }
-        if (dbg != null) {
-            for (int i = 0; i < nChildren; i++) {
-                Component c = target.getComponent(i);
-                dbg.println(c.toString());
-                dbg.println("X: " + xChildren[i]);
-                dbg.println("Y: " + yChildren[i]);
-            }
-        }
+//        if (dbg != null) {
+//            for (int i = 0; i < nChildren; i++) {
+//                Component c = target.getComponent(i);
+//                dbg.println(c.toString());
+//                dbg.println("X: " + xChildren[i]);
+//                dbg.println("Y: " + yChildren[i]);
+//            }
+//        }
 
     }
 
@@ -538,5 +538,5 @@ public class BoxLayout implements LayoutManager2 {
     private transient SizeRequirements xTotal;
     private transient SizeRequirements yTotal;
 
-    private transient PrintStream dbg;
+    //private transient PrintStream dbg;
 }

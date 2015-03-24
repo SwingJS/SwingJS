@@ -24,12 +24,10 @@
  */
 package jsjavax.swing.text;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
 import java.text.Format;
-import java.text.ParseException;
+import jsjava.text.ParseException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
@@ -325,22 +323,23 @@ public class InternationalFormatter extends DefaultFormatter {
      * @throws ParseException if there is an error in the conversion
      */
     public Object stringToValue(String text) throws ParseException {
-        Object value = stringToValue(text, getFormat());
-
-        // Convert to the value class if the Value returned from the
-        // Format does not match.
-        if (value != null && getValueClass() != null &&
-                             !getValueClass().isInstance(value)) {
-            value = super.stringToValue(value.toString());
-        }
-        try {
-            if (!isValidValue(value, true)) {
-                throw new ParseException("Value not within min/max range", 0);
-            }
-        } catch (ClassCastException cce) {
-            throw new ParseException("Class cast exception comparing values: "
-                                     + cce, 0);
-        }
+    	Object value = null;
+//        Object value = stringToValue(text, getFormat());
+//
+//        // Convert to the value class if the Value returned from the
+//        // Format does not match.
+//        if (value != null && getValueClass() != null &&
+//                             !getValueClass().isInstance(value)) {
+//            value = super.stringToValue(value.toString());
+//        }
+//        try {
+//            if (!isValidValue(value, true)) {
+//                throw new ParseException("Value not within min/max range", 0);
+//            }
+//        } catch (ClassCastException cce) {
+//            throw new ParseException("Class cast exception comparing values: "
+//                                     + cce, 0);
+//        }
         return value;
     }
 
@@ -399,17 +398,17 @@ public class InternationalFormatter extends DefaultFormatter {
         return null;
     }
 
-    /**
-     * Invokes <code>parseObject</code> on <code>f</code>, returning
-     * its value.
-     */
-    Object stringToValue(String text, Format f) throws ParseException {
-        if (f == null) {
-            return text;
-        }
-        return f.parseObject(text);
-    }
-
+//    /**
+//     * Invokes <code>parseObject</code> on <code>f</code>, returning
+//     * its value.
+//     */
+//    Object stringToValue(String text, Format f) throws ParseException {
+//        if (f == null) {
+//            return text;
+//        }
+//        return f.parseObject(text);
+//    }
+//
     /**
      * Returns true if <code>value</code> is between the min/max.
      *

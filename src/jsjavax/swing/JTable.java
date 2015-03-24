@@ -68,7 +68,7 @@ import jsjavax.swing.table.TableColumn;
 import jsjavax.swing.table.TableColumnModel;
 import jsjavax.swing.table.TableModel;
 import jsjavax.swing.table.TableRowSorter;
-import jssun.swing.SwingLazyValue;
+//import jssun.swing.SwingLazyValue;
 import jssun.swing.SwingUtilities2;
 
 /**
@@ -407,10 +407,10 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      */
     private boolean rowSelectionAdjusting;
 
-    /**
-     * To communicate errors between threads during printing.
-     */
-    private Throwable printError;
+//    /**
+//     * To communicate errors between threads during printing.
+//     */
+//    private Throwable printError;
 
     /**
      * True when setRowHeight(int) has been invoked.
@@ -5319,7 +5319,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     }
 
     private void setLazyValue(Hashtable h, Class c, String s) {
-        h.put(c, new SwingLazyValue(s));
+        h.put(c, s);//new SwingLazyValue(s));
     }
 
     private void setLazyRenderer(Class c, String s) {

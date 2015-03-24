@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 import jsjava.applet.Applet;
 import jsjava.awt.event.ComponentEvent;
@@ -228,15 +228,15 @@ public class Window extends Container {
     transient WindowStateListener windowStateListener;
     transient WindowFocusListener windowFocusListener;
 
-    private transient Object inputContextLock = new Object();
+//    private transient Object inputContextLock = new Object();
 
-    /**
-     * Unused. Maintained for serialization backward-compatibility.
-     *
-     * @serial
-     * @since 1.2
-     */
-    private FocusManager focusMgr;
+//    /**
+//     * Unused. Maintained for serialization backward-compatibility.
+//     *
+//     * @serial
+//     * @since 1.2
+//     */
+//    private FocusManager focusMgr;
 
     /**
      * Indicates whether this Window can become the focused Window.
@@ -248,17 +248,17 @@ public class Window extends Container {
      */
     private boolean focusableWindowState = true;
 
-    /**
-     * Indicates whether this window should receive focus on
-     * subsequently being shown (with a call to {@code setVisible(true)}), or
-     * being moved to the front (with a call to {@code toFront()}).
-     *
-     * @serial
-     * @see #setAutoRequestFocus
-     * @see #isAutoRequestFocus
-     * @since 1.7
-     */
-    private transient volatile boolean autoRequestFocus = true;
+//    /**
+//     * Indicates whether this window should receive focus on
+//     * subsequently being shown (with a call to {@code setVisible(true)}), or
+//     * being moved to the front (with a call to {@code toFront()}).
+//     *
+//     * @serial
+//     * @see #setAutoRequestFocus
+//     * @see #isAutoRequestFocus
+//     * @since 1.7
+//     */
+//    private transient volatile boolean autoRequestFocus = true;
 
     /*
      * Indicates that this window is being shown. This flag is set to true at
@@ -293,23 +293,23 @@ public class Window extends Container {
 
 		private static ArrayList<Window>allWindows;
 
-    /*
-     * JDK 1.1 serialVersionUID
-     */
-    //private static final long serialVersionUID = 4497834738069338734L;
-
-    private static final Logger log = Logger.getLogger("java.awt.Window");
+//    /*
+//     * JDK 1.1 serialVersionUID
+//     */
+//    //private static final long serialVersionUID = 4497834738069338734L;
+//
+//    private static final Logger log = Logger.getLogger("java.awt.Window");
 
 //    private static final boolean locationByPlatformProp;
 
     transient boolean isTrayIconWindow = false;
 
-    /**
-     * These fields are initialized in the native peer code
-     * or via AWTAccessor's WindowAccessor.
-     */
-    private transient volatile int securityWarningWidth = 0;
-    private transient volatile int securityWarningHeight = 0;
+//    /**
+//     * These fields are initialized in the native peer code
+//     * or via AWTAccessor's WindowAccessor.
+//     */
+//    private transient volatile int securityWarningWidth = 0;
+//    private transient volatile int securityWarningHeight = 0;
 
 //    /**
 //     * These fields represent the desired location for the security
@@ -511,68 +511,87 @@ public class Window extends Container {
      */
     Window() {
         //GraphicsEnvironment.checkHeadless();
-        init((GraphicsConfiguration)null);
+        init(null);
     }
 
-    /**
-     * Constructs a new, initially invisible window with the specified
-     * <code>Frame</code> as its owner. The window will not be focusable
-     * unless its owner is showing on the screen.
-     * <p>
-     * If there is a security manager, this method first calls
-     * the security manager's <code>checkTopLevelWindow</code>
-     * method with <code>this</code>
-     * as its argument to determine whether or not the window
-     * must be displayed with a warning banner.
-     *
-     * @param owner the <code>Frame</code> to act as owner or <code>null</code>
-     *    if this window has no owner
-     * @exception IllegalArgumentException if the <code>owner</code>'s
-     *    <code>GraphicsConfiguration</code> is not from a screen device
-     * @exception HeadlessException when
-     *    <code>GraphicsEnvironment.isHeadless</code> returns <code>true</code>
-     *
-     * @see java.awt.GraphicsEnvironment#isHeadless
-     * @see java.lang.SecurityManager#checkTopLevelWindow
-     * @see #isShowing
-     */
-    public Window(Frame owner) {
-        this(owner == null ? (GraphicsConfiguration)null :
-            owner.getGraphicsConfiguration());
-        ownedInit(owner);
-    }
+	/**
+	 * Constructs a new, initially invisible window with the specified
+	 * <code>Frame</code> as its owner. The window will not be focusable unless
+	 * its owner is showing on the screen.
+	 * <p>
+	 * If there is a security manager, this method first calls the security
+	 * manager's <code>checkTopLevelWindow</code> method with <code>this</code> as
+	 * its argument to determine whether or not the window must be displayed with
+	 * a warning banner.
+	 * 
+	 * @param owner
+	 *          the <code>Frame</code> to act as owner or <code>null</code> if
+	 *          this window has no owner
+	 * @exception IllegalArgumentException
+	 *              if the <code>owner</code>'s <code>GraphicsConfiguration</code>
+	 *              is not from a screen device
+	 * @exception HeadlessException
+	 *              when <code>GraphicsEnvironment.isHeadless</code> returns
+	 *              <code>true</code>
+	 * 
+	 * @see java.awt.GraphicsEnvironment#isHeadless
+	 * @see java.lang.SecurityManager#checkTopLevelWindow
+	 * @see #isShowing
+	 */
+	public Window(Frame owner) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            owner && owner.valueOf && owner.valueOf() == null && (owner =
+		 *            null);
+		 * 
+		 */
+		{
+		}
+		init(owner == null ? null : owner.getGraphicsConfiguration());
+		ownedInit(owner);
+	}
 
-    /**
-     * Constructs a new, initially invisible window with the specified
-     * <code>Window</code> as its owner. This window will not be focusable
-     * unless its nearest owning <code>Frame</code> or <code>Dialog</code>
-     * is showing on the screen.
-     * <p>
-     * If there is a security manager, this method first calls
-     * the security manager's <code>checkTopLevelWindow</code>
-     * method with <code>this</code>
-     * as its argument to determine whether or not the window
-     * must be displayed with a warning banner.
-     *
-     * @param owner the <code>Window</code> to act as owner or
-     *     <code>null</code> if this window has no owner
-     * @exception IllegalArgumentException if the <code>owner</code>'s
-     *     <code>GraphicsConfiguration</code> is not from a screen device
-     * @exception HeadlessException when
-     *     <code>GraphicsEnvironment.isHeadless()</code> returns
-     *     <code>true</code>
-     *
-     * @see       java.awt.GraphicsEnvironment#isHeadless
-     * @see       java.lang.SecurityManager#checkTopLevelWindow
-     * @see       #isShowing
-     *
-     * @since     1.2
-     */
-    public Window(Window owner) {
-        this(owner == null ? (GraphicsConfiguration)null :
-            owner.getGraphicsConfiguration());
-        ownedInit(owner);
-    }
+	/**
+	 * Constructs a new, initially invisible window with the specified
+	 * <code>Window</code> as its owner. This window will not be focusable unless
+	 * its nearest owning <code>Frame</code> or <code>Dialog</code> is showing on
+	 * the screen.
+	 * <p>
+	 * If there is a security manager, this method first calls the security
+	 * manager's <code>checkTopLevelWindow</code> method with <code>this</code> as
+	 * its argument to determine whether or not the window must be displayed with
+	 * a warning banner.
+	 * 
+	 * @param owner
+	 *          the <code>Window</code> to act as owner or <code>null</code> if
+	 *          this window has no owner
+	 * @exception IllegalArgumentException
+	 *              if the <code>owner</code>'s <code>GraphicsConfiguration</code>
+	 *              is not from a screen device
+	 * @exception HeadlessException
+	 *              when <code>GraphicsEnvironment.isHeadless()</code> returns
+	 *              <code>true</code>
+	 * 
+	 * @see java.awt.GraphicsEnvironment#isHeadless
+	 * @see java.lang.SecurityManager#checkTopLevelWindow
+	 * @see #isShowing
+	 * 
+	 * @since 1.2
+	 */
+	public Window(Window owner) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            owner && owner.valueOf && owner.valueOf() == null && (owner =
+		 *            null);
+		 * 
+		 */
+		{
+		}
+		init(owner == null ? null : owner.getGraphicsConfiguration());
+		ownedInit(owner);
+	}
 
     /**
      * Constructs a new, initially invisible window with the specified owner
@@ -2641,18 +2660,18 @@ public class Window extends Container {
 //        }
     }
 
-    private static void removeFromWindowList(AppContext context, Window w) {
-        synchronized (Window.class) {
-            Vector<Window> windowList = (Vector<Window>)context.get(Window.class);
-            if (windowList != null) {
-                windowList.remove(w);
-            }
-        }
-    }
+//    private static void removeFromWindowList(AppContext context, Window w) {
+//        synchronized (Window.class) {
+//            Vector<Window> windowList = (Vector<Window>)context.get(Window.class);
+//            if (windowList != null) {
+//                windowList.remove(w);
+//            }
+//        }
+//    }
 
-    private void removeFromWindowList() {
-        removeFromWindowList(appContext, this);
-    }
+//    private void removeFromWindowList() {
+//        removeFromWindowList(appContext, this);
+//    }
 
 //    /**
 //     * The window serialized data version.
@@ -3361,9 +3380,9 @@ public class Window extends Container {
         }
     }
 
-    /**
-     * JavaDoc
-     */
+//    /**
+//     * JavaDoc
+//     */
 /*
     @Override
     public void setBackground(Color bgColor) {
@@ -3399,6 +3418,7 @@ public class Window extends Container {
 
     void setOpaque(boolean opaque) {
         synchronized (getTreeLock()) {
+        	//TODO ?
             GraphicsConfiguration gc = getGraphicsConfiguration();
 //            if (!opaque && !com.sun.awt.AWTUtilities.isTranslucencyCapable(gc)) {
 //            throw new IllegalArgumentException(

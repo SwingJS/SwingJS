@@ -80,9 +80,6 @@ import jssun.awt.SunToolkit;
  * to consider the implications of making an object serializable.
  * One situation to watch out for is this:
  * <pre>
- *    import java.awt.*;
- *    import java.awt.event.*;
- *    //import java.io.Serializable;
  *
  *    class MyApp implements ActionListener
  *    {

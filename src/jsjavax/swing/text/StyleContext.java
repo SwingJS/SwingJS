@@ -24,11 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -715,25 +710,25 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
         return key.getClass().getName() + "." + key.toString();
     }
 
-    private void writeObject(java.io.ObjectOutputStream s)
-        throws IOException
-    {
-        // clean out unused sets before saving
-        removeUnusedSets();
-
-        s.defaultWriteObject();
-    }
-
-    private void readObject(ObjectInputStream s)
-      throws ClassNotFoundException, IOException
-    {
-        fontSearch = new FontKey(null, 0, 0);
-        fontTable = new Hashtable();
-        search = new SimpleAttributeSet();
-        attributesPool = Collections.
-            synchronizedMap(new WeakHashMap());
-        s.defaultReadObject();
-    }
+//    private void writeObject(java.io.ObjectOutputStream s)
+//        throws IOException
+//    {
+//        // clean out unused sets before saving
+//        removeUnusedSets();
+//
+//        s.defaultWriteObject();
+//    }
+//
+//    private void readObject(ObjectInputStream s)
+//      throws ClassNotFoundException, IOException
+//    {
+//        fontSearch = new FontKey(null, 0, 0);
+//        fontTable = new Hashtable();
+//        search = new SimpleAttributeSet();
+//        attributesPool = Collections.
+//            synchronizedMap(new WeakHashMap());
+//        s.defaultReadObject();
+//    }
 
     // --- variables ---------------------------------------------------
 
@@ -760,7 +755,7 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
      * to be cleaned out of the hashtable they are stored
      * in.
      */
-    private int unusedSets;
+//    private int unusedSets;
 
     /**
      * The threshold for no longer sharing the set of attributes

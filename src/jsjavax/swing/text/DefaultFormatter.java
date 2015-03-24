@@ -24,8 +24,8 @@
  */
 package jsjavax.swing.text;
 
-import java.lang.reflect.Constructor;
-import java.text.ParseException;
+//import java.lang.reflect.Constructor;
+import jsjava.text.ParseException;
 
 import jsjavax.swing.JFormattedTextField;
 import jsjavax.swing.SwingConstants;
@@ -242,27 +242,29 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
                 vc = value.getClass();
             }
         }
-        if (vc != null) {
-            Constructor cons;
-
-            try {
-                //ReflectUtil.checkPackageAccess(vc);
-                SwingUtilities2.checkAccess(vc.getModifiers());
-                cons = vc.getConstructor(new Class[]{String.class});
-
-            } catch (NoSuchMethodException nsme) {
-                cons = null;
-            }
-
-            if (cons != null) {
-                try {
-                    SwingUtilities2.checkAccess(cons.getModifiers());
-                    return cons.newInstance(new Object[] { string });
-                } catch (Throwable ex) {
-                    throw new ParseException("Error creating instance", 0);
-                }
-            }
-        }
+// SwingJS
+// TODO
+//        if (vc != null) {
+//            Constructor cons;
+//
+//            try {
+//                //ReflectUtil.checkPackageAccess(vc);
+//                SwingUtilities2.checkAccess(vc.getModifiers());
+//                cons = vc.getConstructor(new Class[]{String.class});
+//
+//            } catch (NoSuchMethodException nsme) {
+//                cons = null;
+//            }
+//
+//            if (cons != null) {
+//                try {
+//                    SwingUtilities2.checkAccess(cons.getModifiers());
+//                    return cons.newInstance(new Object[] { string });
+//                } catch (Throwable ex) {
+//                    throw new ParseException("Error creating instance", 0);
+//                }
+//            }
+//        }
         return string;
     }
 
@@ -422,9 +424,9 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
     void commitEdit() throws ParseException {
         JFormattedTextField ftf = getFormattedTextField();
 
-        if (ftf != null) {
-            ftf.commitEdit();
-        }
+//        if (ftf != null) {
+//            ftf.commitEdit();
+//        }
     }
 
     /**

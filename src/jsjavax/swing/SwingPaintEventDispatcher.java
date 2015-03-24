@@ -55,7 +55,7 @@ class SwingPaintEventDispatcher extends jssun.awt.PaintEventDispatcher {
                                          int w, int h) {
         if (component instanceof RootPaneContainer) {
             AppContext appContext = SunToolkit.targetToAppContext(component);
-            RepaintManager rm = RepaintManager.currentManager(appContext);
+            RepaintManager rm = RepaintManager.currentManager(component); // BH was appContext
             if (!SHOW_FROM_DOUBLE_BUFFER ||
                   !rm.show((Container)component, x, y, w, h)) {
                 rm.nativeAddDirtyRegion(appContext, (Container)component,
@@ -68,7 +68,7 @@ class SwingPaintEventDispatcher extends jssun.awt.PaintEventDispatcher {
         }
         else if (component instanceof SwingHeavyWeight) {
             AppContext appContext = SunToolkit.targetToAppContext(component);
-            RepaintManager rm = RepaintManager.currentManager(appContext);
+            RepaintManager rm = RepaintManager.currentManager(component);// BH was appContext
             rm.nativeAddDirtyRegion(appContext, (Container)component,
                                     x, y, w, h);
             return new IgnorePaintEvent(component, PaintEvent.PAINT,

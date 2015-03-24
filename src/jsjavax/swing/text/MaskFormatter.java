@@ -27,7 +27,7 @@ package jsjavax.swing.text;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.text.ParseException;
+import jsjava.text.ParseException;
 import java.util.ArrayList;
 
 import jsjavax.swing.JFormattedTextField;

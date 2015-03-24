@@ -24,14 +24,12 @@
  */
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.AttributedCharacterIterator;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.Format;
+//import java.text.Format;
 import java.text.NumberFormat;
-import java.text.ParseException;
+import jsjava.text.ParseException;
 import java.util.Date;
 
 import jsjava.awt.AWTEvent;
@@ -47,7 +45,7 @@ import jsjavax.swing.text.DefaultFormatter;
 import jsjavax.swing.text.DefaultFormatterFactory;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.DocumentFilter;
-import jsjavax.swing.text.InternationalFormatter;
+//import jsjavax.swing.text.InternationalFormatter;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.NavigationFilter;
 import jsjavax.swing.text.NumberFormatter;
@@ -266,22 +264,22 @@ public class JFormattedTextField extends JTextField {
      * Used to set the dirty state.
      */
     private DocumentListener documentListener;
-    /**
-     * Masked used to set the AbstractFormatterFactory.
-     */
-    private Object mask;
+//    /**
+//     * Masked used to set the AbstractFormatterFactory.
+//     */
+//    private Object mask;
     /**
      * ActionMap that the TextFormatter Actions are added to.
      */
     private ActionMap textFormatterActionMap;
-    /**
-     * Indicates the input method composed text is in the document
-     */
-    private boolean composedTextExists = false;
-    /**
-     * A handler for FOCUS_LOST event
-     */
-    private FocusLostHandler focusLostHandler;
+//    /**
+//     * Indicates the input method composed text is in the document
+//     */
+//    private boolean composedTextExists = false;
+//    /**
+//     * A handler for FOCUS_LOST event
+//     */
+//    private FocusLostHandler focusLostHandler;
 
 
     /**
@@ -607,14 +605,14 @@ public class JFormattedTextField extends JTextField {
         AttributedCharacterIterator text = e.getText();
         int commitCount = e.getCommittedCharacterCount();
 
-        // Keep track of the composed text
-        if (text != null) {
-            int begin = text.getBeginIndex();
-            int end = text.getEndIndex();
-            composedTextExists = ((end - begin) > commitCount);
-        } else {
-            composedTextExists = false;
-        }
+//        // Keep track of the composed text
+//        if (text != null) {
+//            int begin = text.getBeginIndex();
+//            int end = text.getEndIndex();
+//            composedTextExists = ((end - begin) > commitCount);
+//        } else {
+//            composedTextExists = false;
+//        }
 
         super.processInputMethodEvent(e);
     }
@@ -655,32 +653,32 @@ public class JFormattedTextField extends JTextField {
         }
     }
 
-    /**
-     * FOCUS_LOST behavior implementation
-     */
-    private class FocusLostHandler implements Runnable {
-        public void run() {
-            int fb = JFormattedTextField.this.getFocusLostBehavior();
-            if (fb == JFormattedTextField.COMMIT ||
-                fb == JFormattedTextField.COMMIT_OR_REVERT) {
-                try {
-                    JFormattedTextField.this.commitEdit();
-                    // Give it a chance to reformat.
-                    JFormattedTextField.this.setValue(
-                        JFormattedTextField.this.getValue(), true, true);
-                } catch (ParseException pe) {
-                    if (fb == JFormattedTextField.COMMIT_OR_REVERT) {
-                        JFormattedTextField.this.setValue(
-                            JFormattedTextField.this.getValue(), true, true);
-                    }
-                }
-            }
-            else if (fb == JFormattedTextField.REVERT) {
-                JFormattedTextField.this.setValue(
-                    JFormattedTextField.this.getValue(), true, true);
-            }
-        }
-    }
+//    /**
+//     * FOCUS_LOST behavior implementation
+//     */
+//    private class FocusLostHandler implements Runnable {
+//        public void run() {
+//            int fb = JFormattedTextField.this.getFocusLostBehavior();
+//            if (fb == JFormattedTextField.COMMIT ||
+//                fb == JFormattedTextField.COMMIT_OR_REVERT) {
+//                try {
+//                    JFormattedTextField.this.commitEdit();
+//                    // Give it a chance to reformat.
+//                    JFormattedTextField.this.setValue(
+//                        JFormattedTextField.this.getValue(), true, true);
+//                } catch (ParseException pe) {
+//                    if (fb == JFormattedTextField.COMMIT_OR_REVERT) {
+//                        JFormattedTextField.this.setValue(
+//                            JFormattedTextField.this.getValue(), true, true);
+//                    }
+//                }
+//            }
+//            else if (fb == JFormattedTextField.REVERT) {
+//                JFormattedTextField.this.setValue(
+//                    JFormattedTextField.this.getValue(), true, true);
+//            }
+//        }
+//    }
 
     /**
      * Fetches the command list for the editor.  This is
@@ -729,22 +727,22 @@ public class JFormattedTextField extends JTextField {
         doc.addDocumentListener(documentListener);
     }
 
-    /*
-     * See readObject and writeObject in JComponent for more
-     * information about serialization in Swing.
-     *
-     * @param s Stream to write to
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        if (getUIClassID().equals(uiClassID)) {
-            byte count = JComponent.getWriteObjCounter(this);
-            JComponent.setWriteObjCounter(this, --count);
-            if (count == 0 && ui != null) {
-                ui.installUI(this);
-            }
-        }
-    }
+//    /*
+//     * See readObject and writeObject in JComponent for more
+//     * information about serialization in Swing.
+//     *
+//     * @param s Stream to write to
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//        if (getUIClassID().equals(uiClassID)) {
+//            byte count = JComponent.getWriteObjCounter(this);
+//            JComponent.setWriteObjCounter(this, --count);
+//            if (count == 0 && ui != null) {
+//                ui.installUI(this);
+//            }
+//        }
+//    }
 
     /**
      * Resets the Actions that come from the TextFormatter to
@@ -845,10 +843,10 @@ public class JFormattedTextField extends JTextField {
             return new DefaultFormatterFactory(new NumberFormatter(
                                                (NumberFormat)type));
         }
-        if (type instanceof Format) {
-            return new DefaultFormatterFactory(new InternationalFormatter(
-                                               (Format)type));
-        }
+//        if (type instanceof Format) {
+//            return new DefaultFormatterFactory(new InternationalFormatter(
+//                                               (Format)type));
+//        }
         if (type instanceof Date) {
             return new DefaultFormatterFactory(new DateFormatter());
         }

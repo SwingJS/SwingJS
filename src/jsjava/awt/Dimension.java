@@ -25,7 +25,7 @@
 
 package jsjava.awt;
 
-import java.awt.geom.Dimension2D;
+import jsjava.awt.geom.Dimension2D;
 
 /**
  * The <code>Dimension</code> class encapsulates the width and

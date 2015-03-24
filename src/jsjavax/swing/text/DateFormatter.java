@@ -26,7 +26,7 @@ package jsjavax.swing.text;
 
 import java.text.DateFormat;
 import java.text.Format;
-import java.text.ParseException;
+import jsjava.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
