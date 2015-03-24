@@ -1,0 +1,785 @@
+// looking for problems still. see "TODO"
+
+java.applet.Applet	
+	jsjava\awt\borderlayout.java
+	jsjava\awt\flowlayout.java
+	jsjava\awt\gridbaglayout.java
+java.io.BufferedInputStream	
+	jsjavax\swing\jeditorpane.java
+	jssun\swing\swingutilities2.java
+java.io.BufferedReader	
+	jssun\font\fontutilities.java
+	jssun\misc\metaindex.java
+java.io.ByteArrayOutputStream	
+	jssun\swing\swingutilities2.java
+java.io.DataOutputStream	
+	jsjavax\swing\jeditorpane.java
+java.io.EOFException	
+	jssun\misc\ioutils.java
+	jssun\misc\resource.java
+java.io.File	
+	jsjavax\swing\filechooser\filefilter.java
+	jsjavax\swing\filechooser\filenameextensionfilter.java
+	jsjavax\swing\plaf\filechooserui.java
+	jsjavax\swing\uimanager.java
+	jssun\awt\shell\defaultshellfolder.java
+	jssun\awt\shell\shellfolder.java
+	jssun\awt\shell\shellfoldermanager.java
+	jssun\font\createdfonttracker.java
+	jssun\font\fontutilities.java
+	jssun\misc\metaindex.java
+	jssun\misc\urlclasspath.java
+	jssun\net\www\parseutil.java
+java.io.FileInputStream	
+	jssun\font\fontutilities.java
+java.io.FileNotFoundException	
+	jssun\awt\shell\shellfolder.java
+	jssun\awt\shell\shellfoldermanager.java
+java.io.FileReader	
+	jssun\misc\metaindex.java
+java.io.InputStream	
+	jsjava\applet\appletcontext.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\progressmonitorinputstream.java
+	jsjavax\swing\text\defaulteditorkit.java
+	jsjavax\swing\text\editorkit.java
+	jssun\awt\image\imagedecoder.java
+	jssun\awt\image\inputstreamimagesource.java
+	jssun\misc\ioutils.java
+	jssun\misc\resource.java
+	jssun\swing\swingutilities2.java
+java.io.InputStreamReader	
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\text\defaulteditorkit.java
+	jssun\font\fontutilities.java
+java.io.InterruptedIOException	
+	jsjavax\swing\progressmonitorinputstream.java
+	jssun\misc\resource.java
+java.io.InvalidObjectException	
+	jsjava\awt\font\textattribute.java
+java.io.IOException	
+	jsjava\applet\appletcontext.java
+	jsjavax\swing\actionpropertychangelistener.java
+	jsjavax\swing\cellrendererpane.java
+	jsjavax\swing\event\eventlistenerlist.java
+	jsjavax\swing\jcolorchooser.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\progressmonitorinputstream.java
+	jsjavax\swing\text\abstractdocument.java
+	jsjavax\swing\text\abstractwriter.java
+	jsjavax\swing\text\changedcharsetexception.java
+	jsjavax\swing\text\defaultcaret.java
+	jsjavax\swing\text\defaulteditorkit.java
+	jsjavax\swing\text\editorkit.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\maskformatter.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\timer.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+	jsjavax\swing\tree\defaulttreecelleditor.java
+	jsjavax\swing\tree\defaulttreemodel.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jsjavax\swing\tree\treepath.java
+	jssun\awt\image\imagedecoder.java
+	jssun\awt\image\inputstreamimagesource.java
+	jssun\awt\image\urlimagesource.java
+	jssun\awt\shell\shellfolder.java
+	jssun\misc\ioutils.java
+	jssun\misc\metaindex.java
+	jssun\misc\resource.java
+	jssun\misc\urlclasspath.java
+	jssun\nio\bytebuffered.java
+	jssun\swing\swingutilities2.java
+java.io.OutputStream	
+	jsjavax\swing\text\defaulteditorkit.java
+	jsjavax\swing\text\editorkit.java
+	jssun\font\createdfonttracker.java
+java.io.OutputStreamWriter	
+	jsjavax\swing\text\abstractdocument.java
+	jsjavax\swing\text\defaulteditorkit.java
+java.io.Reader	
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\text\defaulteditorkit.java
+	jsjavax\swing\text\editorkit.java
+	jsjavax\swing\text\jtextcomponent.java
+java.io.Serializable	
+	jsjava\awt\component.java
+	jsjavax\swing\event\eventlistenerlist.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+	jsjavax\swing\tree\defaulttreecelleditor.java
+	jsjavax\swing\tree\defaulttreemodel.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jsjavax\swing\tree\treepath.java
+java.io.StringReader	
+	jsjavax\swing\jeditorpane.java
+java.io.UnsupportedEncodingException	
+	jsjavax\swing\text\abstractdocument.java
+java.io.Writer	
+	jsjavax\swing\text\abstractwriter.java
+	jsjavax\swing\text\defaulteditorkit.java
+	jsjavax\swing\text\editorkit.java
+	jsjavax\swing\text\jtextcomponent.java
+java.lang.ref.ReferenceQueue	
+	jsjavax\swing\actionpropertychangelistener.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\gapcontent.java
+	jssun\font\fontdesignmetrics.java
+	jssun\misc\softcache.java
+java.lang.ref.SoftReference	
+	jsjavax\swing\text\wrappedplainview.java
+	jssun\font\fontdesignmetrics.java
+	jssun\misc\ref.java
+	jssun\misc\softcache.java
+	jssun\swing\imagecache.java
+java.lang.ref.WeakReference	
+	jsjava\awt\eventqueue.java
+	jsjava\awt\renderinghints.java
+	jsjava\awt\window.java
+	jsjavax\swing\actionpropertychangelistener.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\gapcontent.java
+	jsjavax\swing\text\stylecontext.java
+	jssun\java2d\disposer.java
+java.lang.reflect.Array	
+	jsjava\awt\awteventmulticaster.java
+	jsjavax\swing\event\eventlistenerlist.java
+java.lang.reflect.Constructor	
+	jsjavax\swing\text\defaultformatter.java
+	jsjavax\swing\text\numberformatter.java
+	jssun\awt\suntoolkit.java
+java.lang.reflect.Field	
+	jsjava\awt\awtevent.java
+	jssun\swing\swingutilities2.java
+java.lang.reflect.InvocationTargetException	
+	jsjava\awt\eventqueue.java
+	jsjava\awt\window.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\swingutilities.java
+	jssun\awt\awtaccessor.java
+	jssun\awt\suntoolkit.java
+	
+	
+//TODO
+	
+java.lang.reflect.Method	
+	jsjavax\swing\text\jtextcomponent.java
+	jssun\awt\suntoolkit.java
+java.lang.reflect.Modifier	
+	jssun\swing\swingutilities2.java
+	
+// TOHERE
+	
+java.net.HttpURLConnection	
+	jsjavax\swing\jeditorpane.java
+java.net.MalformedURLException	
+	jsjava\applet\applet.java
+	jssun\awt\image\urlimagesource.java
+	jssun\net\www\parseutil.java
+java.net.URL	
+	jscontext.java
+	jsjava\applet\applet.java
+	jsjava\applet\appletcontext.java
+	jsjava\applet\appletstub.java
+	jsjava\awt\toolkit.java
+	jsjavax\swing\event\hyperlinkevent.java
+	jsjavax\swing\imageicon.java
+	jsjavax\swing\jeditorpane.java
+	jssun\awt\image\urlimagesource.java
+	jssun\awt\suntoolkit.java
+	jssun\misc\resource.java
+	jssun\misc\urlclasspath.java
+	jssun\net\www\parseutil.java
+	swingjs\jstoolkit.java
+java.net.URLConnection	
+	jsjavax\swing\jeditorpane.java
+	jssun\awt\image\urlimagesource.java
+java.net.URLStreamHandler	
+	jssun\misc\urlclasspath.java
+java.net.URLStreamHandlerFactory	
+	jssun\misc\urlclasspath.java
+java.nio.ByteBuffer	
+	jssun\misc\resource.java
+	jssun\nio\bytebuffered.java
+java.nio.charset.Charset	
+	jssun\awt\fontdescriptor.java
+java.nio.charset.CharsetEncoder	
+	jssun\awt\fontdescriptor.java
+java.nio.charset.StandardCharsets	
+	jssun\awt\fontdescriptor.java
+java.text.Annotation	
+	jssun\font\attributevalues.java
+java.text.AttributedCharacterIterator	
+	jsjava\awt\event\inputmethodevent.java
+	jsjava\awt\graphics.java
+	jsjava\awt\graphics2d.java
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\numberformatter.java
+	jsjavax\swing\text\textlayoutstrategy.java
+java.text.AttributedCharacterIterator.Attri	
+	jsjava\awt\font.java
+	jsjava\awt\font\textattribute.java
+	jssun\font\attributevalues.java
+	jssun\font\eattribute.java
+java.text.AttributedString	
+	jsjavax\swing\text\jtextcomponent.java
+java.text.Bidi	
+	jsjavax\swing\text\abstractdocument.java
+java.text.BreakIterator	
+	jsjavax\swing\text\glyphview.java
+	jsjavax\swing\text\utilities.java
+	jsjavax\swing\text\whitespacebasedbreakiterator.java
+java.text.CharacterIterator	
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\segment.java
+	jsjavax\swing\text\whitespacebasedbreakiterator.java
+java.text.Collator	
+	jsjavax\swing\defaultrowsorter.java
+	jsjavax\swing\table\tablerowsorter.java
+java.text.DateFormat	
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\text\dateformatter.java
+java.text.DecimalFormat	
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\text\numberformatter.java
+java.text.DecimalFormatSymbols	
+	jsjavax\swing\text\numberformatter.java
+java.text.Format	
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jprogressbar.java
+	jsjavax\swing\text\dateformatter.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\numberformatter.java
+java.text.NumberFormat	
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jprogressbar.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\text\numberformatter.java
+java.text.ParseException	
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\text\dateformatter.java
+	jsjavax\swing\text\defaultformatter.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\maskformatter.java
+	jsjavax\swing\text\numberformatter.java
+java.text.SimpleDateFormat	
+	jsjavax\swing\jspinner.java
+java.text.StringCharacterIterator	
+	jsjavax\swing\text\whitespacebasedbreakiterator.java
+java.util.*	
+	jsjava\awt\gridbaglayout.java
+	jsjavax\swing\inputverifier.java
+java.util.AbstractMap	
+	jssun\font\attributemap.java
+	jssun\misc\softcache.java
+java.util.AbstractSet	
+	jssun\misc\softcache.java
+java.util.ArrayList	
+	jsjava\awt\toolkit.java
+	jsjava\awt\window.java
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\defaultrowsorter.java
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\jlayeredpane.java
+	jsjavax\swing\jtabbedpane.java
+	jsjavax\swing\popupfactory.java
+	jsjavax\swing\repaintmanager.java
+	jsjavax\swing\rowfilter.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\asyncboxview.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\maskformatter.java
+	jsjavax\swing\text\segmentcache.java
+	jsjavax\swing\uimanager.java
+	jssun\java2d\disposer.java
+	jssun\misc\metaindex.java
+	jssun\misc\urlclasspath.java
+	jssun\swing\bakedarraylist.java
+java.util.Arrays	
+	jsjava\awt\geom\cubiccurve2d.java
+	jsjava\awt\geom\path2d.java
+	jsjava\awt\gridbaglayout.java
+	jsjava\awt\polygon.java
+	jsjava\awt\window.java
+	jsjavax\swing\defaultrowsorter.java
+	jsjavax\swing\spinnerlistmodel.java
+	jsjavax\swing\text\paragraphview.java
+	jsjavax\swing\text\whitespacebasedbreakiterator.java
+	jssun\awt\geom\areaop.java
+	jssun\misc\ioutils.java
+	jssun\misc\resource.java
+java.util.BitSet	
+	jsjavax\swing\defaultlistselectionmodel.java
+	jsjavax\swing\text\glyphview.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\tableview.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jssun\net\www\parseutil.java
+java.util.Calendar	
+	jsjavax\swing\spinnerdatemodel.java
+	jsjavax\swing\text\dateformatter.java
+java.util.Collection	
+	jsjava\awt\renderinghints.java
+java.util.Collections	
+	jsjava\awt\awtkeystroke.java
+	jsjava\awt\renderinghints.java
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\defaultrowsorter.java
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\stylecontext.java
+	jssun\awt\appcontext.java
+	jssun\awt\shell\shellfoldermanager.java
+	jssun\awt\suntoolkit.java
+java.util.Comparator	
+	jsjavax\swing\defaultrowsorter.java
+	jsjavax\swing\layoutcomparator.java
+	jsjavax\swing\table\tablerowsorter.java
+	jssun\awt\geom\areaop.java
+	jssun\awt\shell\shellfoldercolumninfo.java
+	jssun\awt\shell\shellfoldermanager.java
+java.util.concurrent.atomic.AtomicBoolean	
+	jsjava\awt\window.java
+	jsjavax\swing\timer.java
+java.util.concurrent.atomic.AtomicInteger	
+	jsjavax\swing\repaintmanager.java
+	jssun\awt\appcontext.java
+java.util.concurrent.atomic.AtomicLong	
+	jsjavax\swing\timerqueue.java
+java.util.concurrent.Callable	
+	jssun\swing\swingutilities2.java
+java.util.concurrent.Delayed	
+	jsjavax\swing\timerqueue.java
+java.util.concurrent.DelayQueue	
+	jsjavax\swing\timerqueue.java
+java.util.concurrent.Future	
+	jssun\swing\swingutilities2.java
+java.util.concurrent.FutureTask	
+	jssun\swing\swingutilities2.java
+java.util.concurrent.locks.Condition	
+	jssun\awt\suntoolkit.java
+java.util.concurrent.locks.Lock	
+	jsjavax\swing\timer.java
+	jsjavax\swing\timerqueue.java
+java.util.concurrent.locks.ReentrantLock	
+	jsjavax\swing\timer.java
+	jsjavax\swing\timerqueue.java
+	jssun\awt\suntoolkit.java
+java.util.concurrent.Semaphore	
+	jssun\font\createdfonttracker.java
+java.util.concurrent.TimeUnit	
+	jsjavax\swing\timerqueue.java
+	jssun\awt\suntoolkit.java
+	jssun\font\createdfonttracker.java
+java.util.Date	
+	jsjavax\swing\jformattedtextfield.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\rowfilter.java
+	jsjavax\swing\spinnerdatemodel.java
+	jsjavax\swing\text\dateformatter.java
+	jssun\awt\shell\shellfoldermanager.java
+java.util.Dictionary	
+	jsjavax\swing\jslider.java
+	jsjavax\swing\text\abstractdocument.java
+java.util.EmptyStackException	
+	jsjava\awt\eventqueue.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+java.util.Enumeration	
+	jsjava\applet\appletcontext.java
+	jsjava\awt\geom\area.java
+	jsjava\awt\image\memoryimagesource.java
+	jsjavax\swing\arraytable.java
+	jsjavax\swing\buttongroup.java
+	jsjavax\swing\defaultlistmodel.java
+	jsjavax\swing\jcomponent.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\jslider.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\keyboardmanager.java
+	jsjavax\swing\multiuidefaults.java
+	jsjavax\swing\table\defaulttablecolumnmodel.java
+	jsjavax\swing\table\tablecolumnmodel.java
+	jsjavax\swing\text\abstractdocument.java
+	jsjavax\swing\text\abstractwriter.java
+	jsjavax\swing\text\attributeset.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\elementiterator.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\mutableattributeset.java
+	jsjavax\swing\text\simpleattributeset.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\text\textaction.java
+	jsjavax\swing\tree\abstractlayoutcache.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jsjavax\swing\tree\fixedheightlayoutcache.java
+	jsjavax\swing\tree\treenode.java
+	jsjavax\swing\tree\variableheightlayoutcache.java
+	jsjavax\swing\undo\compoundedit.java
+	jssun\awt\geom\areaop.java
+	jssun\awt\geom\crossings.java
+	jssun\misc\queue.java
+java.util.EventListener	
+	jsjava\awt\awteventmulticaster.java
+	jsjava\awt\component.java
+	jsjava\awt\container.java
+	jsjava\awt\event\actionlistener.java
+	jsjava\awt\event\adjustmentlistener.java
+	jsjava\awt\event\awteventlistener.java
+	jsjava\awt\event\componentlistener.java
+	jsjava\awt\event\containerlistener.java
+	jsjava\awt\event\focuslistener.java
+	jsjava\awt\event\hierarchyboundslistener.java
+	jsjava\awt\event\hierarchylistener.java
+	jsjava\awt\event\inputmethodlistener.java
+	jsjava\awt\event\itemlistener.java
+	jsjava\awt\event\keylistener.java
+	jsjava\awt\event\mouselistener.java
+	jsjava\awt\event\mousemotionlistener.java
+	jsjava\awt\event\mousewheellistener.java
+	jsjava\awt\event\textlistener.java
+	jsjava\awt\event\windowfocuslistener.java
+	jsjava\awt\event\windowlistener.java
+	jsjava\awt\event\windowstatelistener.java
+	jsjava\awt\toolkit.java
+	jsjava\awt\window.java
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\abstractlistmodel.java
+	jsjavax\swing\abstractspinnermodel.java
+	jsjavax\swing\defaultboundedrangemodel.java
+	jsjavax\swing\defaultbuttonmodel.java
+	jsjavax\swing\defaultlistselectionmodel.java
+	jsjavax\swing\defaultsingleselectionmodel.java
+	jsjavax\swing\event\ancestorlistener.java
+	jsjavax\swing\event\caretlistener.java
+	jsjavax\swing\event\changelistener.java
+	jsjavax\swing\event\documentlistener.java
+	jsjavax\swing\event\eventlistenerlist.java
+	jsjavax\swing\event\hyperlinklistener.java
+	jsjavax\swing\event\listdatalistener.java
+	jsjavax\swing\event\listselectionlistener.java
+	jsjavax\swing\event\menudragmouselistener.java
+	jsjavax\swing\event\menukeylistener.java
+	jsjavax\swing\event\menulistener.java
+	jsjavax\swing\event\popupmenulistener.java
+	jsjavax\swing\event\treeexpansionlistener.java
+	jsjavax\swing\event\treemodellistener.java
+	jsjavax\swing\event\treeselectionlistener.java
+	jsjavax\swing\event\treewillexpandlistener.java
+	jsjavax\swing\jcomponent.java
+	jsjavax\swing\table\abstracttablemodel.java
+	jsjavax\swing\table\defaulttablecolumnmodel.java
+	jsjavax\swing\text\abstractdocument.java
+	jsjavax\swing\text\defaultcaret.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\timer.java
+	jsjavax\swing\tree\defaulttreemodel.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jssun\applet\appletlistener.java
+	jssun\awt\displaychangedlistener.java
+java.util.EventListenerProxy	
+	jsjava\beans\changelistenermap.java
+java.util.EventObject	
+	jsjava\awt\awtevent.java
+	jsjavax\swing\abstractcelleditor.java
+	jsjavax\swing\celleditor.java
+	jsjavax\swing\defaultcelleditor.java
+	jsjavax\swing\event\caretevent.java
+	jsjavax\swing\event\changeevent.java
+	jsjavax\swing\event\hyperlinkevent.java
+	jsjavax\swing\event\listdataevent.java
+	jsjavax\swing\event\listselectionevent.java
+	jsjavax\swing\event\menuevent.java
+	jsjavax\swing\event\popupmenuevent.java
+	jsjavax\swing\event\treeexpansionevent.java
+	jsjavax\swing\event\treemodelevent.java
+	jsjavax\swing\event\treeselectionevent.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\tree\defaulttreecelleditor.java
+	jssun\applet\appletevent.java
+java.util.HashMap	
+	jsjava\awt\awtkeystroke.java
+	jsjava\awt\font\textattribute.java
+	jsjava\awt\renderinghints.java
+	jsjava\awt\toolkit.java
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\actionmap.java
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\inputmap.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\popupfactory.java
+	jsjavax\swing\repaintmanager.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\uidefaults.java
+	jssun\awt\appcontext.java
+	jssun\font\attributemap.java
+	jssun\font\attributevalues.java
+	jssun\font\createdfonttracker.java
+	jssun\misc\metaindex.java
+	jssun\misc\softcache.java
+	jssun\misc\urlclasspath.java
+	jssun\swing\cachedpainter.java
+java.util.HashSet	
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\jcomponent.java
+	jsjavax\swing\multiuidefaults.java
+	jsjavax\swing\repaintmanager.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\textlayoutstrategy.java
+	jssun\awt\appcontext.java
+java.util.Hashtable	
+	jsjava\awt\font.java
+	jsjava\awt\gridbaglayout.java
+	jsjava\awt\image\bufferedimage.java
+	jsjava\awt\image\imageconsumer.java
+	jsjava\awt\image\memoryimagesource.java
+	jsjava\awt\image\pixelgrabber.java
+	jsjavax\swing\arraytable.java
+	jsjavax\swing\jcomponent.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\jlayeredpane.java
+	jsjavax\swing\jmenu.java
+	jsjavax\swing\jslider.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\keyboardmanager.java
+	jsjavax\swing\text\abstractdocument.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\simpleattributeset.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\text\textaction.java
+	jsjavax\swing\text\textlayoutstrategy.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jsjavax\swing\tree\fixedheightlayoutcache.java
+	jsjavax\swing\tree\variableheightlayoutcache.java
+	jsjavax\swing\uidefaults.java
+	jssun\awt\image\imagedecoder.java
+	jssun\awt\image\offscreenimagesource.java
+	jssun\font\attributevalues.java
+	jssun\font\fontdesignmetrics.java
+	jssun\java2d\disposer.java
+java.util.IdentityHashMap	
+	jsjavax\swing\repaintmanager.java
+	jssun\awt\appcontext.java
+java.util.Iterator	
+	jsjava\applet\appletcontext.java
+	jsjavax\swing\multiuidefaults.java
+	jsjavax\swing\repaintmanager.java
+	jsjavax\swing\text\dateformatter.java
+	jsjavax\swing\text\numberformatter.java
+	jsjavax\swing\text\stylecontext.java
+	jssun\awt\suntoolkit.java
+	jssun\misc\softcache.java
+	jssun\swing\imagecache.java
+java.util.LinkedList	
+	jsjavax\swing\layoutcomparator.java
+	jssun\swing\imagecache.java
+java.util.List	
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\defaultrowsorter.java
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\popupfactory.java
+	jsjavax\swing\rowfilter.java
+	jsjavax\swing\rowsorter.java
+	jsjavax\swing\spinnerlistmodel.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\segmentcache.java
+	jssun\awt\shell\shellfolder.java
+	jssun\awt\shell\shellfoldermanager.java
+	jssun\misc\metaindex.java
+java.util.ListIterator	
+	jsjavax\swing\layoutcomparator.java
+java.util.Locale	
+	jsjava\applet\applet.java
+	jsjava\awt\component.java
+	jsjava\awt\componentorientation.java
+	jsjava\awt\font.java
+	jsjava\awt\graphicsenvironment.java
+	jsjava\awt\window.java
+	jsjavax\swing\filechooser\filenameextensionfilter.java
+	jsjavax\swing\jcomponent.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\multiuidefaults.java
+	jsjavax\swing\uidefaults.java
+	jsjavax\swing\uimanager.java
+	jssun\awt\inputmethodsupport.java
+	jssun\awt\suntoolkit.java
+	jssun\swing\swingutilities2.java
+	swingjs\jsgraphicsenvironment.java
+java.util.logging.Level	
+	jsjava\awt\awtevent.java
+	jsjava\awt\event\inputevent.java
+	jsjava\awt\eventqueue.java
+java.util.logging.Logger	
+	jsjava\awt\awtevent.java
+	jsjava\awt\event\inputevent.java
+	jsjava\awt\eventqueue.java
+	jsjava\awt\window.java
+java.util.Map	
+	jsjava\awt\awtkeystroke.java
+	jsjava\awt\component.java
+	jsjava\awt\font\textattribute.java
+	jsjava\awt\graphics2d.java
+	jsjava\awt\image\colormodel.java
+	jsjava\awt\renderinghints.java
+	jsjava\awt\toolkit.java
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\jeditorpane.java
+	jsjavax\swing\jspinner.java
+	jsjavax\swing\popupfactory.java
+	jsjavax\swing\repaintmanager.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\dateformatter.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\internationalformatter.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\numberformatter.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\text\textlayoutstrategy.java
+	jsjavax\swing\uidefaults.java
+	jssun\awt\appcontext.java
+	jssun\awt\suntoolkit.java
+	jssun\font\attributemap.java
+	jssun\font\attributevalues.java
+	jssun\font\createdfonttracker.java
+	jssun\misc\metaindex.java
+	jssun\misc\softcache.java
+	jssun\swing\cachedpainter.java
+	jssun\swing\swingutilities2.java
+java.util.Map.Entry	
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\multiuidefaults.java
+java.util.MissingResourceException	
+	jsjava\awt\toolkit.java
+java.util.NoSuchElementException	
+	jsjava\awt\geom\arciterator.java
+	jsjava\awt\geom\area.java
+	jsjava\awt\geom\cubiciterator.java
+	jsjava\awt\geom\ellipseiterator.java
+	jsjava\awt\geom\flatteningpathiterator.java
+	jsjava\awt\geom\lineiterator.java
+	jsjava\awt\geom\quaditerator.java
+	jsjava\awt\geom\rectiterator.java
+	jsjava\awt\geom\roundrectiterator.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+	jsjavax\swing\tree\fixedheightlayoutcache.java
+	jsjavax\swing\tree\variableheightlayoutcache.java
+	jssun\misc\queue.java
+	jssun\misc\softcache.java
+java.util.Properties	
+	jsjavax\swing\uimanager.java
+java.util.regex.Matcher	
+	jsjavax\swing\rowfilter.java
+java.util.regex.Pattern	
+	jsjavax\swing\rowfilter.java
+java.util.ResourceBundle	
+	jsjava\awt\componentorientation.java
+	jsjava\awt\toolkit.java
+	jsjava\awt\window.java
+java.util.Set	
+	jsjava\awt\component.java
+	jsjava\awt\container.java
+	jsjava\awt\renderinghints.java
+	jsjava\awt\window.java
+	jsjava\beans\changelistenermap.java
+	jsjavax\swing\grouplayout.java
+	jsjavax\swing\jcomponent.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\multiuidefaults.java
+	jsjavax\swing\repaintmanager.java
+	jsjavax\swing\springlayout.java
+	jsjavax\swing\text\textlayoutstrategy.java
+	jssun\awt\appcontext.java
+	jssun\font\attributemap.java
+	jssun\misc\softcache.java
+java.util.Stack	
+	jsjavax\swing\jtree.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\elementiterator.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+	jsjavax\swing\tree\fixedheightlayoutcache.java
+	jsjavax\swing\tree\variableheightlayoutcache.java
+	jssun\misc\urlclasspath.java
+java.util.StringTokenizer	
+	jsjava\awt\awtkeystroke.java
+	jsjavax\swing\uimanager.java
+	jssun\misc\urlclasspath.java
+java.util.Vector	
+	jsjava\awt\component.java
+	jsjava\awt\frame.java
+	jsjava\awt\geom\area.java
+	jsjava\awt\image\bufferedimage.java
+	jsjava\awt\image\memoryimagesource.java
+	jsjava\awt\image\renderable\renderableimage.java
+	jsjava\awt\image\renderedimage.java
+	jsjava\awt\window.java
+	jsjavax\swing\buttongroup.java
+	jsjavax\swing\defaultcomboboxmodel.java
+	jsjavax\swing\defaultlistmodel.java
+	jsjavax\swing\jcombobox.java
+	jsjavax\swing\jlist.java
+	jsjavax\swing\jmenu.java
+	jsjavax\swing\jmenubar.java
+	jsjavax\swing\jpopupmenu.java
+	jsjavax\swing\jtable.java
+	jsjavax\swing\jtree.java
+	jsjavax\swing\keyboardmanager.java
+	jsjavax\swing\menuselectionmanager.java
+	jsjavax\swing\table\defaulttablecolumnmodel.java
+	jsjavax\swing\table\defaulttablemodel.java
+	jsjavax\swing\text\abstractdocument.java
+	jsjavax\swing\text\defaulthighlighter.java
+	jsjavax\swing\text\defaultstyleddocument.java
+	jsjavax\swing\text\flowview.java
+	jsjavax\swing\text\gapcontent.java
+	jsjavax\swing\text\jtextcomponent.java
+	jsjavax\swing\text\layoutqueue.java
+	jsjavax\swing\text\plaindocument.java
+	jsjavax\swing\text\stringcontent.java
+	jsjavax\swing\text\stylecontext.java
+	jsjavax\swing\text\tableview.java
+	jsjavax\swing\text\zoneview.java
+	jsjavax\swing\tree\defaultmutabletreenode.java
+	jsjavax\swing\tree\defaulttreecelleditor.java
+	jsjavax\swing\tree\defaulttreemodel.java
+	jsjavax\swing\tree\defaulttreeselectionmodel.java
+	jsjavax\swing\tree\treepath.java
+	jsjavax\swing\tree\variableheightlayoutcache.java
+	jsjavax\swing\uidefaults.java
+	jsjavax\swing\uimanager.java
+	jsjavax\swing\undo\compoundedit.java
+	jssun\awt\geom\areaop.java
+	jssun\awt\geom\crossings.java
+	jssun\awt\geom\curve.java
+	jssun\awt\geom\order2.java
+	jssun\awt\geom\order3.java
+	jssun\awt\image\imagefetcher.java
+	jssun\awt\shell\shellfolder.java
+java.util.WeakHashMap	
+	jsjava\awt\toolkit.java
+	jsjavax\swing\text\stylecontext.java
+	jssun\awt\suntoolkit.java

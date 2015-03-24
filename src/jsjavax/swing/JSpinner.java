@@ -30,9 +30,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import jsjava.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
+//import java.util.Map;
 
 import jsjava.awt.Component;
 import jsjava.awt.Container;

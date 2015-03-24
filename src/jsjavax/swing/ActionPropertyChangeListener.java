@@ -24,9 +24,6 @@
  */
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 

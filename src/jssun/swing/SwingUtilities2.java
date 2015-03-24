@@ -1359,18 +1359,18 @@ public class SwingUtilities2 {
         }
     }
 
-    /**
-     * Returns true if EventQueue.getCurrentEvent() has the permissions to
-     * access the system clipboard and if it is allowed gesture (if
-     * checkGesture true)
-     *
-     * @param checkGesture boolean
-     */
-    private static boolean canCurrentEventAccessSystemClipboard(boolean
-                                                               checkGesture) {
-        AWTEvent event = EventQueue.getCurrentEvent();
-        return canEventAccessSystemClipboard(event, checkGesture);
-    }
+//    /**
+//     * Returns true if EventQueue.getCurrentEvent() has the permissions to
+//     * access the system clipboard and if it is allowed gesture (if
+//     * checkGesture true)
+//     *
+//     * @param checkGesture boolean
+//     */
+//    private static boolean canCurrentEventAccessSystemClipboard(boolean
+//                                                               checkGesture) {
+//        AWTEvent event = EventQueue.getCurrentEvent();
+//        return canEventAccessSystemClipboard(event, checkGesture);
+//    }
 
 //    /**
 //     * see RFE 5012841 [Per AppContect security permissions] for the

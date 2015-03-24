@@ -31,7 +31,6 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
@@ -217,9 +216,9 @@ public class RepaintManager {
 		// }
 	}
 
-    private static String dummy() {
-        return "false";
-    }
+//    private static String dummy() {
+//        return "false";
+//    }
 
 	/**
 	 * Return the RepaintManager for the calling thread given a Component.

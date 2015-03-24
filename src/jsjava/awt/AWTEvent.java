@@ -31,7 +31,7 @@ import java.util.EventObject;
 
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.AdjustmentEvent;
-import jsjava.awt.event.InputEvent;
+//import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.InputMethodEvent;
 import jsjava.awt.event.ItemEvent;
 import jsjava.awt.event.KeyEvent;

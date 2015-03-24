@@ -25,12 +25,7 @@
 
 package jsjavax.swing.tree;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.EventObject;
-import java.util.Vector;
 
 import jsjava.awt.Color;
 import jsjava.awt.Component;

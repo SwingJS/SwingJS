@@ -24,9 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.EventListener;
 
 import jsjava.awt.Graphics;

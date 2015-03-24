@@ -25,7 +25,7 @@
 
 package jssun.font;
 
-import java.lang.ref.ReferenceQueue;
+//import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.Hashtable;
 

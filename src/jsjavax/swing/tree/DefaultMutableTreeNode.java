@@ -26,10 +26,6 @@
 package jsjavax.swing.tree;
    // ISSUE: this class depends on nothing in AWT -- move to java.util?
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;

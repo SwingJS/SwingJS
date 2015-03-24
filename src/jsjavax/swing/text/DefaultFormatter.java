@@ -29,7 +29,7 @@ import jsjava.text.ParseException;
 
 import jsjavax.swing.JFormattedTextField;
 import jsjavax.swing.SwingConstants;
-import jssun.swing.SwingUtilities2;
+//import jssun.swing.SwingUtilities2;
 
 /**
  * <code>DefaultFormatter</code> formats aribtrary objects. Formatting is done
