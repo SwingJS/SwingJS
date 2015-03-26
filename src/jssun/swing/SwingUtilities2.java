@@ -26,17 +26,17 @@
 package jssun.swing;
 
 import static jssun.awt.SunHints.KEY_TEXT_ANTIALIASING;
-import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_DEFAULT;
-import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
-import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_OFF;
+//import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_DEFAULT;
+//import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+//import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_OFF;
 
 //import java.io.BufferedInputStream;
 //import java.io.ByteArrayOutputStream;
 //import java.io.IOException;
 //import java.io.InputStream;
-import java.lang.reflect.Field;
+//import java.lang.reflect.Field;
 import java.util.Locale;
-import java.util.Map;
+//import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -53,8 +53,8 @@ import jsjava.awt.Graphics2D;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.RenderingHints;
-import jsjava.awt.event.InputEvent;
-import jsjava.awt.event.KeyEvent;
+//import jsjava.awt.event.InputEvent;
+//import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.font.FontRenderContext;
 import jsjavax.swing.JComponent;
@@ -90,13 +90,13 @@ public class SwingUtilities2 {
     public static final Object LAF_STATE_KEY = new Object(); // LookAndFeel State
 
     // Most of applications use 10 or less fonts simultaneously
-    private static final int STRONG_BEARING_CACHE_SIZE = 10;
+//    private static final int STRONG_BEARING_CACHE_SIZE = 10;
     // Strong cache for the left and right side bearings
     // for STRONG_BEARING_CACHE_SIZE most recently used fonts.
 //    private static BearingCacheEntry[] strongBearingCache =
 //            new BearingCacheEntry[STRONG_BEARING_CACHE_SIZE];
     // Next index to insert an entry into the strong bearing cache
-    private static int strongBearingCacheNextIndex = 0;
+//    private static int strongBearingCacheNextIndex = 0;
     // Soft cache for the left and right side bearings
 //    private static Set<SoftReference<BearingCacheEntry>> softBearingCache =
 //            new HashSet<SoftReference<BearingCacheEntry>>();
@@ -122,19 +122,19 @@ public class SwingUtilities2 {
      */
     public static class AATextInfo {
 
-        private static AATextInfo getAATextInfoFromMap(Map hints) {
-
-            Object aaHint   = hints.get(KEY_TEXT_ANTIALIASING);
-//            Object contHint = hints.get(KEY_TEXT_LCD_CONTRAST);
-
-            if (aaHint == null ||
-                aaHint == VALUE_TEXT_ANTIALIAS_OFF ||
-                aaHint == VALUE_TEXT_ANTIALIAS_DEFAULT) {
-                return null;
-            } else {
-                return new AATextInfo(aaHint, 0);//(Integer)contHint);
-            }
-        }
+//        private static AATextInfo getAATextInfoFromMap(Map hints) {
+//
+//            Object aaHint   = hints.get(KEY_TEXT_ANTIALIASING);
+////            Object contHint = hints.get(KEY_TEXT_LCD_CONTRAST);
+//
+//            if (aaHint == null ||
+//                aaHint == VALUE_TEXT_ANTIALIAS_OFF ||
+//                aaHint == VALUE_TEXT_ANTIALIAS_DEFAULT) {
+//                return null;
+//            } else {
+//                return new AATextInfo(aaHint, 0);//(Integer)contHint);
+//            }
+//        }
 
         public static AATextInfo getAATextInfo(boolean lafCondition) {
 //            SunToolkit.setAAFontSettingsCondition(lafCondition);
@@ -151,24 +151,24 @@ public class SwingUtilities2 {
         Integer lcdContrastHint;
         FontRenderContext frc;
 
-        /* These are rarely constructed objects, and only when a complete
-         * UI is being updated, so the cost of the tests here is minimal
-         * and saves tests elsewhere.
-         * We test that the values are ones we support/expect.
-         */
-        public AATextInfo(Object aaHint, Integer lcdContrastHint) {
-            if (aaHint == null) {
-                throw new InternalError("null not allowed here");
-            }
-            if (aaHint == VALUE_TEXT_ANTIALIAS_OFF ||
-                aaHint == VALUE_TEXT_ANTIALIAS_DEFAULT) {
-                throw new InternalError("AA must be on");
-            }
-            this.aaHint = aaHint;
-            this.lcdContrastHint = lcdContrastHint;
-            this.frc = new FontRenderContext(null, aaHint,
-                                             VALUE_FRACTIONALMETRICS_DEFAULT);
-        }
+//        /* These are rarely constructed objects, and only when a complete
+//         * UI is being updated, so the cost of the tests here is minimal
+//         * and saves tests elsewhere.
+//         * We test that the values are ones we support/expect.
+//         */
+//        public AATextInfo(Object aaHint, Integer lcdContrastHint) {
+//            if (aaHint == null) {
+//                throw new InternalError("null not allowed here");
+//            }
+//            if (aaHint == VALUE_TEXT_ANTIALIAS_OFF ||
+//                aaHint == VALUE_TEXT_ANTIALIAS_DEFAULT) {
+//                throw new InternalError("AA must be on");
+//            }
+//            this.aaHint = aaHint;
+//            this.lcdContrastHint = lcdContrastHint;
+//            this.frc = new FontRenderContext(null, aaHint,
+//                                             VALUE_FRACTIONALMETRICS_DEFAULT);
+//        }
     }
 
     /**
@@ -181,15 +181,15 @@ public class SwingUtilities2 {
     public static final StringUIClientPropertyKey BASICMENUITEMUI_MAX_TEXT_OFFSET =
         new StringUIClientPropertyKey ("maxTextOffset");
 
-    // security stuff
-    private static Field inputEvent_CanAccessSystemClipboard_Field = null;
-    private static final String UntrustedClipboardAccess =
-        "UNTRUSTED_CLIPBOARD_ACCESS_KEY";
+//    // security stuff
+//    private static Field inputEvent_CanAccessSystemClipboard_Field = null;
+//    private static final String UntrustedClipboardAccess =
+//        "UNTRUSTED_CLIPBOARD_ACCESS_KEY";
 
     //all access to  charsBuffer is to be synchronized on charsBufferLock
-    private static final int CHAR_BUFFER_SIZE = 100;
-    private static final Object charsBufferLock = new Object();
-    private static char[] charsBuffer = new char[CHAR_BUFFER_SIZE];
+//    private static final int CHAR_BUFFER_SIZE = 100;
+//    private static final Object charsBufferLock = new Object();
+//    private static char[] charsBuffer = new char[CHAR_BUFFER_SIZE];
 
     /**
      * checks whether TextLayout is required to handle characters.
@@ -997,16 +997,16 @@ public class SwingUtilities2 {
         }
     }
 
-    /**
-     * A convenience method to get FontRenderContext.
-     * Returns the FontRenderContext for the passed in FontMetrics or
-     * for the passed in Component if FontMetrics is null
-     */
-    private static FontRenderContext getFontRenderContext(Component c, FontMetrics fm) {
-        //assert fm != null || c!= null;
-        return (fm != null) ? fm.getFontRenderContext()
-            : getFontRenderContext(c);
-    }
+//    /**
+//     * A convenience method to get FontRenderContext.
+//     * Returns the FontRenderContext for the passed in FontMetrics or
+//     * for the passed in Component if FontMetrics is null
+//     */
+//    private static FontRenderContext getFontRenderContext(Component c, FontMetrics fm) {
+//        //assert fm != null || c!= null;
+//        return (fm != null) ? fm.getFontRenderContext()
+//            : getFontRenderContext(c);
+//    }
 
     /*
      * This method is to be used only for JComponent.getFontMetrics.

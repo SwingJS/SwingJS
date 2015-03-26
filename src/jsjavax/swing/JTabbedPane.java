@@ -984,9 +984,9 @@ public class JTabbedPane extends JComponent
         /* if the selected tab is the last tab */
         } else if (selected >= getTabCount()) {
             setSelectedIndexImpl(selected - 1, false);
-            Page newSelected = (selected != 0)
-                ? pages.get(selected - 1)
-                : null;
+//            Page newSelected = (selected != 0)
+//                ? pages.get(selected - 1)
+//                : null;
 
 //SwingJSX: Accessibility
 //            changeAccessibleSelection(null, oldName, newSelected);
@@ -1433,7 +1433,7 @@ public class JTabbedPane extends JComponent
      * @since 1.3
      */
     public void setToolTipTextAt(int index, String toolTipText) {
-        String oldToolTipText = pages.get(index).tip;
+//        String oldToolTipText = pages.get(index).tip;
         pages.get(index).tip = toolTipText;
 
 //        if ((oldToolTipText != toolTipText) && (accessibleContext != null)) {
@@ -2045,7 +2045,7 @@ public class JTabbedPane extends JComponent
         Component component;
         String tip;
         boolean enabled = true;
-        boolean needsUIUpdate;
+//        boolean needsUIUpdate;
         int mnemonic = -1;
         int mnemonicIndex = -1;
         Component tabComponent;
@@ -2060,13 +2060,13 @@ public class JTabbedPane extends JComponent
             this.component = component;
             this.tip = tip;
 
-            initAccessibleContext();
+//            initAccessibleContext();
         }
 
-        /*
-         * initializes the AccessibleContext for the page
-         */
-        void initAccessibleContext() {
+//        /*
+//         * initializes the AccessibleContext for the page
+//         */
+//        void initAccessibleContext() {
 //            if (JTabbedPane.this.accessibleContext != null &&
 //                component instanceof Accessible) {
 //                /*
@@ -2080,7 +2080,7 @@ public class JTabbedPane extends JComponent
 //                    ac.setAccessibleParent(this);
 //                }
 //            }
-        }
+//        }
 
         void setMnemonic(int mnemonic) {
             this.mnemonic = mnemonic;

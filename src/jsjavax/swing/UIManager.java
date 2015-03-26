@@ -260,21 +260,21 @@ public class UIManager
         return "swing.installedlaf." + laf + "." + attr;
     }
 
-    /**
-     * The filename for swing.properties is a path like this (Unix version):
-     * <java.home>/lib/swing.properties.  This method returns a bogus
-     * filename if java.home isn't defined.
-     */
-    private static String makeSwingPropertiesFilename() {
-        String sep = File.separator;
-        // No need to wrap this in a doPrivileged as it's called from
-        // a doPrivileged.
-        String javaHome = System.getProperty("java.home");
-        if (javaHome == null) {
-            javaHome = "<java.home undefined>";
-        }
-        return javaHome + sep + "lib" + sep + "swing.properties";
-    }
+//    /**
+//     * The filename for swing.properties is a path like this (Unix version):
+//     * <java.home>/lib/swing.properties.  This method returns a bogus
+//     * filename if java.home isn't defined.
+//     */
+//    private static String makeSwingPropertiesFilename() {
+//        String sep = File.separator;
+//        // No need to wrap this in a doPrivileged as it's called from
+//        // a doPrivileged.
+//        String javaHome = System.getProperty("java.home");
+//        if (javaHome == null) {
+//            javaHome = "<java.home undefined>";
+//        }
+//        return javaHome + sep + "lib" + sep + "swing.properties";
+//    }
 
 
     /**

@@ -68,10 +68,10 @@ public class AWTKeyStroke {
      */
     private static VKCollection vks;
 
-    //A key for the collection of AWTKeyStrokes within AppContext.
-    private static Object APP_CONTEXT_CACHE_KEY = new Object();
-    //A key withing the cache
-    private static AWTKeyStroke APP_CONTEXT_KEYSTROKE_KEY = new AWTKeyStroke();
+//    //A key for the collection of AWTKeyStrokes within AppContext.
+//    private static Object APP_CONTEXT_CACHE_KEY = new Object();
+//    //A key withing the cache
+//    private static AWTKeyStroke APP_CONTEXT_KEYSTROKE_KEY = new AWTKeyStroke();
 
     /*
      * Reads keystroke class from AppContext and if null, puts there the
@@ -797,54 +797,54 @@ public class AWTKeyStroke {
         }
     }
 
-    private static int mapOldModifiers(int modifiers) {
-        if ((modifiers & InputEvent.SHIFT_MASK) != 0) {
-            modifiers |= InputEvent.SHIFT_DOWN_MASK;
-        }
-        if ((modifiers & InputEvent.ALT_MASK) != 0) {
-            modifiers |= InputEvent.ALT_DOWN_MASK;
-        }
-        if ((modifiers & InputEvent.ALT_GRAPH_MASK) != 0) {
-            modifiers |= InputEvent.ALT_GRAPH_DOWN_MASK;
-        }
-        if ((modifiers & InputEvent.CTRL_MASK) != 0) {
-            modifiers |= InputEvent.CTRL_DOWN_MASK;
-        }
-        if ((modifiers & InputEvent.META_MASK) != 0) {
-            modifiers |= InputEvent.META_DOWN_MASK;
-        }
-
-        modifiers &= InputEvent.SHIFT_DOWN_MASK
-            | InputEvent.ALT_DOWN_MASK
-            | InputEvent.ALT_GRAPH_DOWN_MASK
-            | InputEvent.CTRL_DOWN_MASK
-            | InputEvent.META_DOWN_MASK
-            | InputEvent.BUTTON1_DOWN_MASK
-            | InputEvent.BUTTON2_DOWN_MASK
-            | InputEvent.BUTTON3_DOWN_MASK;
-
-        return modifiers;
-    }
-
-    private static int mapNewModifiers(int modifiers) {
-        if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0) {
-            modifiers |= InputEvent.SHIFT_MASK;
-        }
-        if ((modifiers & InputEvent.ALT_DOWN_MASK) != 0) {
-            modifiers |= InputEvent.ALT_MASK;
-        }
-        if ((modifiers & InputEvent.ALT_GRAPH_DOWN_MASK) != 0) {
-            modifiers |= InputEvent.ALT_GRAPH_MASK;
-        }
-        if ((modifiers & InputEvent.CTRL_DOWN_MASK) != 0) {
-            modifiers |= InputEvent.CTRL_MASK;
-        }
-        if ((modifiers & InputEvent.META_DOWN_MASK) != 0) {
-            modifiers |= InputEvent.META_MASK;
-        }
-
-        return modifiers;
-    }
+//    private static int mapOldModifiers(int modifiers) {
+//        if ((modifiers & InputEvent.SHIFT_MASK) != 0) {
+//            modifiers |= InputEvent.SHIFT_DOWN_MASK;
+//        }
+//        if ((modifiers & InputEvent.ALT_MASK) != 0) {
+//            modifiers |= InputEvent.ALT_DOWN_MASK;
+//        }
+//        if ((modifiers & InputEvent.ALT_GRAPH_MASK) != 0) {
+//            modifiers |= InputEvent.ALT_GRAPH_DOWN_MASK;
+//        }
+//        if ((modifiers & InputEvent.CTRL_MASK) != 0) {
+//            modifiers |= InputEvent.CTRL_DOWN_MASK;
+//        }
+//        if ((modifiers & InputEvent.META_MASK) != 0) {
+//            modifiers |= InputEvent.META_DOWN_MASK;
+//        }
+//
+//        modifiers &= InputEvent.SHIFT_DOWN_MASK
+//            | InputEvent.ALT_DOWN_MASK
+//            | InputEvent.ALT_GRAPH_DOWN_MASK
+//            | InputEvent.CTRL_DOWN_MASK
+//            | InputEvent.META_DOWN_MASK
+//            | InputEvent.BUTTON1_DOWN_MASK
+//            | InputEvent.BUTTON2_DOWN_MASK
+//            | InputEvent.BUTTON3_DOWN_MASK;
+//
+//        return modifiers;
+//    }
+//
+//    private static int mapNewModifiers(int modifiers) {
+//        if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0) {
+//            modifiers |= InputEvent.SHIFT_MASK;
+//        }
+//        if ((modifiers & InputEvent.ALT_DOWN_MASK) != 0) {
+//            modifiers |= InputEvent.ALT_MASK;
+//        }
+//        if ((modifiers & InputEvent.ALT_GRAPH_DOWN_MASK) != 0) {
+//            modifiers |= InputEvent.ALT_GRAPH_MASK;
+//        }
+//        if ((modifiers & InputEvent.CTRL_DOWN_MASK) != 0) {
+//            modifiers |= InputEvent.CTRL_MASK;
+//        }
+//        if ((modifiers & InputEvent.META_DOWN_MASK) != 0) {
+//            modifiers |= InputEvent.META_MASK;
+//        }
+//
+//        return modifiers;
+//    }
 
 }
 

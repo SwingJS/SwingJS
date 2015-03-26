@@ -877,84 +877,84 @@ public class Dialog extends Window {
         firePropertyChange("title", oldTitle, title);
     }
 
-    /**
-     * @return true if we actually showed, false if we just called toFront()
-     */
-    private boolean conditionalShow(Component toFocus, Long time) {
-        boolean retval;
-
-        closeSplashScreen();
-
-        synchronized (getTreeLock()) {
-//            if (peer == null) {
-//                addNotify();
+//    /**
+//     * @return true if we actually showed, false if we just called toFront()
+//     */
+//    private boolean conditionalShow(Component toFocus, Long time) {
+//        boolean retval;
+//
+//        closeSplashScreen();
+//
+//        synchronized (getTreeLock()) {
+////            if (peer == null) {
+////                addNotify();
+////            }
+//            validate();
+//            if (visible) {
+//                toFront();
+//                retval = false;
+//            } else {
+//                visible = retval = true;
+//
+//                // check if this dialog should be modal blocked BEFORE calling peer.show(),
+//                // otherwise, a pair of FOCUS_GAINED and FOCUS_LOST may be mistakenly
+//                // generated for the dialog
+//                if (!isModal()) {
+////                    checkShouldBeBlocked(this);
+//                } else {
+//  //                  modalDialogs.add(this);
+//                    modalShow();
+//                }
+//
+//                if (toFocus != null && time != null && isFocusable() &&
+//                    isEnabled() && !isModalBlocked()) {
+////                    // keep the KeyEvents from being dispatched
+////                    // until the focus has been transfered
+////                    time.set(Toolkit.getEventQueue().getMostRecentEventTimeEx());
+////                    KeyboardFocusManager.getCurrentKeyboardFocusManager().
+////                        enqueueKeyEvents(time.get(), toFocus);
+//                }
+//
+//                // This call is required as the show() method of the Dialog class
+//                // does not invoke the super.show(). So wried... :(
+//                mixOnShowing();
+//
+////                peer.show(); // now guaranteed never to block
+//                if (isModalBlocked()) {
+//                    modalBlocker.toFront();
+//                }
+//
+//                //setLocationByPlatform(false);
+//                for (int i = 0; i < ownedWindowList.size(); i++) {
+//                    Window child = ownedWindowList.elementAt(i);
+//                    if ((child != null) && child.showWithParent) {
+//                        child.show();
+//                        child.showWithParent = false;
+//                    }       // endif
+//                }   // endfor
+//                Window.updateChildFocusableWindowState(this);
+//
+//                createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
+//                                      this, parent,
+//                                      HierarchyEvent.SHOWING_CHANGED,
+//                                      Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+//                if (componentListener != null ||
+//                        (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0 ||
+//                        Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {
+//                    ComponentEvent e =
+//                        new ComponentEvent(this, ComponentEvent.COMPONENT_SHOWN);
+//                    Toolkit.getEventQueue().postEvent(e);
+//                }
 //            }
-            validate();
-            if (visible) {
-                toFront();
-                retval = false;
-            } else {
-                visible = retval = true;
-
-                // check if this dialog should be modal blocked BEFORE calling peer.show(),
-                // otherwise, a pair of FOCUS_GAINED and FOCUS_LOST may be mistakenly
-                // generated for the dialog
-                if (!isModal()) {
-//                    checkShouldBeBlocked(this);
-                } else {
-  //                  modalDialogs.add(this);
-                    modalShow();
-                }
-
-                if (toFocus != null && time != null && isFocusable() &&
-                    isEnabled() && !isModalBlocked()) {
-//                    // keep the KeyEvents from being dispatched
-//                    // until the focus has been transfered
-//                    time.set(Toolkit.getEventQueue().getMostRecentEventTimeEx());
-//                    KeyboardFocusManager.getCurrentKeyboardFocusManager().
-//                        enqueueKeyEvents(time.get(), toFocus);
-                }
-
-                // This call is required as the show() method of the Dialog class
-                // does not invoke the super.show(). So wried... :(
-                mixOnShowing();
-
-//                peer.show(); // now guaranteed never to block
-                if (isModalBlocked()) {
-                    modalBlocker.toFront();
-                }
-
-                //setLocationByPlatform(false);
-                for (int i = 0; i < ownedWindowList.size(); i++) {
-                    Window child = ownedWindowList.elementAt(i);
-                    if ((child != null) && child.showWithParent) {
-                        child.show();
-                        child.showWithParent = false;
-                    }       // endif
-                }   // endfor
-                Window.updateChildFocusableWindowState(this);
-
-                createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
-                                      this, parent,
-                                      HierarchyEvent.SHOWING_CHANGED,
-                                      Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-                if (componentListener != null ||
-                        (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0 ||
-                        Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {
-                    ComponentEvent e =
-                        new ComponentEvent(this, ComponentEvent.COMPONENT_SHOWN);
-                    Toolkit.getEventQueue().postEvent(e);
-                }
-            }
-        }
-
-        if (retval && (state & OPENED) == 0) {
-            postWindowEvent(WindowEvent.WINDOW_OPENED);
-            state |= OPENED;
-        }
-
-        return retval;
-    }
+//        }
+//
+//        if (retval && (state & OPENED) == 0) {
+//            postWindowEvent(WindowEvent.WINDOW_OPENED);
+//            state |= OPENED;
+//        }
+//
+//        return retval;
+//    }
 
     /**
      * Shows or hides this {@code Dialog} depending on the value of parameter

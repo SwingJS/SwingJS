@@ -54,6 +54,7 @@ image loading
 no BigInteger; no BigDecimal
 no DateFormat
 no format internationalization
+no javax.swing.AutoScroller public static methods .stop, .isRunning, .processMouseDragged
 
 //////////////////////////////////////////////////////////////////////////////
 

@@ -29,7 +29,7 @@ import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
-import jsjava.awt.GraphicsEnvironment;
+//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jssun.awt.SunToolkit;

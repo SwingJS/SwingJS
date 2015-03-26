@@ -3122,17 +3122,18 @@ public abstract class JComponent extends Container
      * description: Determines if this component automatically scrolls its contents when dragged.
      */
     public void setAutoscrolls(boolean autoscrolls) {
-        setFlag(AUTOSCROLLS_SET, true);
-        if (this.autoscrolls != autoscrolls) {
-            this.autoscrolls = autoscrolls;
-            if (autoscrolls) {
-                enableEvents(AWTEvent.MOUSE_EVENT_MASK);
-                enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
-            }
-            else {
-                Autoscroller.stop(this);
-            }
-        }
+//SwingJS not implemented    	
+//        setFlag(AUTOSCROLLS_SET, true);
+//        if (this.autoscrolls != autoscrolls) {
+//            this.autoscrolls = autoscrolls;
+//            if (autoscrolls) {
+//                enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+//                enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
+//            }
+//            else {
+//                Autoscroller.stop(this);
+//            }
+//        }
     }
 
     /**
@@ -3270,9 +3271,9 @@ public abstract class JComponent extends Container
      * @since       1.5
      */
     protected void processMouseEvent(MouseEvent e) {
-        if (autoscrolls && e.getID() == MouseEvent.MOUSE_RELEASED) {
-            Autoscroller.stop(this);
-        }
+//        if (autoscrolls && e.getID() == MouseEvent.MOUSE_RELEASED) {
+//            Autoscroller.stop(this);
+//        }
         super.processMouseEvent(e);
     }
 
@@ -3283,16 +3284,16 @@ public abstract class JComponent extends Container
      * @see MouseEvent
      */
     protected void processMouseMotionEvent(MouseEvent e) {
-        boolean dispatch = true;
-        if (autoscrolls && e.getID() == MouseEvent.MOUSE_DRAGGED) {
-            // We don't want to do the drags when the mouse moves if we're
-            // autoscrolling.  It makes it feel spastic.
-            dispatch = !Autoscroller.isRunning(this);
-            Autoscroller.processMouseDragged(e);
-        }
-        if (dispatch) {
+//        boolean dispatch = true;
+//        if (autoscrolls && e.getID() == MouseEvent.MOUSE_DRAGGED) {
+//            // We don't want to do the drags when the mouse moves if we're
+//            // autoscrolling.  It makes it feel spastic.
+//            dispatch = !Autoscroller.isRunning(this);
+//            Autoscroller.processMouseDragged(e);
+//        }
+//        if (dispatch) {
             super.processMouseMotionEvent(e);
-        }
+//        }
     }
 
     // Inner classes can't get at this method from a super class
@@ -4723,9 +4724,9 @@ public abstract class JComponent extends Container
             RepaintManager.currentManager(this).resetDoubleBuffer();
             setCreatedDoubleBuffer(false);
         }
-        if (autoscrolls) {
-            Autoscroller.stop(this);
-        }
+//        if (autoscrolls) {
+//            Autoscroller.stop(this);
+//        }
     }
 
 

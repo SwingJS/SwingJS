@@ -700,12 +700,12 @@ final class DigitList implements Cloneable {
         return tempBuffer;
     }
 
-    private void extendDigits(int len) {
-        if (len > digits.length) {
-            digits = new char[len];
-        }
-    }
-
+//    private void extendDigits(int len) {
+//        if (len > digits.length) {
+//            digits = new char[len];
+//        }
+//    }
+//
     private final char[] getDataChars(int length) {
         if (data == null || data.length < length) {
             data = new char[length];

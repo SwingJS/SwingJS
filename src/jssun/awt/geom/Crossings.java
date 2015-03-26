@@ -25,7 +25,7 @@
 
 package jssun.awt.geom;
 
-import jsjava.awt.geom.PathIterator;
+//import jsjava.awt.geom.PathIterator;
 import java.util.Vector;
 import java.util.Enumeration;
 

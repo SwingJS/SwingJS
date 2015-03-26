@@ -625,27 +625,27 @@ public class PopupFactory {
     }
 
 
-    /**
-     * Popup implementation that is used in headless environment.
-     */
-    private static class HeadlessPopup extends ContainerPopup {
-        static Popup getHeadlessPopup(Component owner, Component contents,
-                                      int ownerX, int ownerY) {
-            HeadlessPopup popup = new HeadlessPopup();
-            popup.reset(owner, contents, ownerX, ownerY);
-            return popup;
-        }
-
-        Component createComponent(Component owner) {
-            return new Panel(new BorderLayout());
-        }
-
-        public void show() {
-        }
-        public void hide() {
-        }
-    }
-
+//    /**
+//     * Popup implementation that is used in headless environment.
+//     */
+//    private static class HeadlessPopup extends ContainerPopup {
+//        static Popup getHeadlessPopup(Component owner, Component contents,
+//                                      int ownerX, int ownerY) {
+//            HeadlessPopup popup = new HeadlessPopup();
+//            popup.reset(owner, contents, ownerX, ownerY);
+//            return popup;
+//        }
+//
+//        Component createComponent(Component owner) {
+//            return new Panel(new BorderLayout());
+//        }
+//
+//        public void show() {
+//        }
+//        public void hide() {
+//        }
+//    }
+//
 
     /**
      * Popup implementation that uses a JPanel as the popup.
@@ -660,7 +660,7 @@ public class PopupFactory {
          */
         static Popup getLightWeightPopup(Component owner, Component contents,
                                          int ownerX, int ownerY) {
-            LightWeightPopup popup = getRecycledLightWeightPopup();
+            LightWeightPopup popup = null;//getRecycledLightWeightPopup();
 
             if (popup == null) {
                 popup = new LightWeightPopup();
@@ -687,36 +687,36 @@ public class PopupFactory {
             return cache;
         }
 
-        /**
-         * Recycles the LightWeightPopup <code>popup</code>.
-         */
-        private static void recycleLightWeightPopup(LightWeightPopup popup) {
-            synchronized (LightWeightPopup.class) {
-                List lightPopupCache = getLightWeightPopupCache();
-                if (lightPopupCache.size() < MAX_CACHE_SIZE) {
-                    lightPopupCache.add(popup);
-                }
-            }
-        }
-
-        /**
-         * Returns a previously used <code>LightWeightPopup</code>, or null
-         * if none of the popups have been recycled.
-         */
-        private static LightWeightPopup getRecycledLightWeightPopup() {
-            synchronized (LightWeightPopup.class) {
-                List lightPopupCache = getLightWeightPopupCache();
-                int c;
-                if((c = lightPopupCache.size()) > 0) {
-                    LightWeightPopup r = (LightWeightPopup)lightPopupCache.
-                                               get(0);
-                    lightPopupCache.remove(0);
-                    return r;
-                }
-                return null;
-            }
-        }
-
+//        /**
+//         * Recycles the LightWeightPopup <code>popup</code>.
+//         */
+//        private static void recycleLightWeightPopup(LightWeightPopup popup) {
+//            synchronized (LightWeightPopup.class) {
+//                List lightPopupCache = getLightWeightPopupCache();
+//                if (lightPopupCache.size() < MAX_CACHE_SIZE) {
+//                    lightPopupCache.add(popup);
+//                }
+//            }
+//        }
+//
+//        /**
+//         * Returns a previously used <code>LightWeightPopup</code>, or null
+//         * if none of the popups have been recycled.
+//         */
+//        private static LightWeightPopup getRecycledLightWeightPopup() {
+//            synchronized (LightWeightPopup.class) {
+//                List lightPopupCache = getLightWeightPopupCache();
+//                int c;
+//                if((c = lightPopupCache.size()) > 0) {
+//                    LightWeightPopup r = (LightWeightPopup)lightPopupCache.
+//                                               get(0);
+//                    lightPopupCache.remove(0);
+//                    return r;
+//                }
+//                return null;
+//            }
+//        }
+//
 
 
         //
@@ -728,7 +728,7 @@ public class PopupFactory {
             Container component = (Container)getComponent();
 
             component.removeAll();
-            recycleLightWeightPopup(this);
+            //recycleLightWeightPopup(this);
         }
         @SuppressWarnings("null")
         public void show() {

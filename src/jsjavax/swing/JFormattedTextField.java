@@ -24,7 +24,7 @@
  */
 package jsjavax.swing;
 
-import jsjava.text.AttributedCharacterIterator;
+//import jsjava.text.AttributedCharacterIterator;
 //TODO import jsjava.text.DateFormat;
 import jsjava.text.DecimalFormat;
 import jsjava.text.Format;
