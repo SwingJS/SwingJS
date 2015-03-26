@@ -769,8 +769,8 @@ public class DefaultEditorKit extends EditorKit {
     private static final Action[] defaultActions = {
         new InsertContentAction(), new DeletePrevCharAction(),
         new DeleteNextCharAction(), new ReadOnlyAction(),
-        new DeleteWordAction(deletePrevWordAction),
-        new DeleteWordAction(deleteNextWordAction),
+//        new DeleteWordAction(deletePrevWordAction),
+//        new DeleteWordAction(deleteNextWordAction),
         new WritableAction(), new CutAction(),
         new CopyAction(), new PasteAction(),
         new VerticalPageAction(pageUpAction, -1, false),
@@ -1132,77 +1132,77 @@ public class DefaultEditorKit extends EditorKit {
     }
 
 
-    /*
-     * Deletes the word that precedes/follows the beginning of the selection.
-     * @see DefaultEditorKit#getActions
-     */
-    static class DeleteWordAction extends TextAction {
-        DeleteWordAction(String name) {
-            super(name);
-//            assert (name == deletePrevWordAction)
-//                || (name == deleteNextWordAction);
-        }
-        /**
-         * The operation to perform when this action is triggered.
-         *
-         * @param e the action event
-         */
-        public void actionPerformed(ActionEvent e) {
-            final JTextComponent target = getTextComponent(e);
-            if ((target != null) && (e != null)) {
-                if ((! target.isEditable()) || (! target.isEnabled())) {
-                    UIManager.getLookAndFeel().provideErrorFeedback(target);
-                    return;
-                }
-                boolean beep = true;
-                try {
-                    final int start = target.getSelectionStart();
-                    final Element line =
-                        Utilities.getParagraphElement(target, start);
-                    int end;
-                    if (deleteNextWordAction == getValue(Action.NAME)) {
-                        end = Utilities.
-                            getNextWordInParagraph(target, line, start, false);
-                        if (end == java.text.BreakIterator.DONE) {
-                            //last word in the paragraph
-                            final int endOfLine = line.getEndOffset();
-                            if (start == endOfLine - 1) {
-                                //for last position remove last \n
-                                end = endOfLine;
-                            } else {
-                                //remove to the end of the paragraph
-                                end = endOfLine - 1;
-                            }
-                        }
-                    } else {
-                        end = Utilities.
-                            getPrevWordInParagraph(target, line, start);
-                        if (end == java.text.BreakIterator.DONE) {
-                            //there is no previous word in the paragraph
-                            final int startOfLine = line.getStartOffset();
-                            if (start == startOfLine) {
-                                //for first position remove previous \n
-                                end = startOfLine - 1;
-                            } else {
-                                //remove to the start of the paragraph
-                                end = startOfLine;
-                            }
-                        }
-                    }
-                    int offs = Math.min(start, end);
-                    int len = Math.abs(end - start);
-                    if (offs >= 0) {
-                        target.getDocument().remove(offs, len);
-                        beep = false;
-                    }
-                } catch (BadLocationException ignore) {
-                }
-                if (beep) {
-                    UIManager.getLookAndFeel().provideErrorFeedback(target);
-                }
-            }
-        }
-    }
+//    /*
+//     * Deletes the word that precedes/follows the beginning of the selection.
+//     * @see DefaultEditorKit#getActions
+//     */
+//    static class DeleteWordAction extends TextAction {
+//        DeleteWordAction(String name) {
+//            super(name);
+////            assert (name == deletePrevWordAction)
+////                || (name == deleteNextWordAction);
+//        }
+//        /**
+//         * The operation to perform when this action is triggered.
+//         *
+//         * @param e the action event
+//         */
+//        public void actionPerformed(ActionEvent e) {
+//            final JTextComponent target = getTextComponent(e);
+//            if ((target != null) && (e != null)) {
+//                if ((! target.isEditable()) || (! target.isEnabled())) {
+//                    UIManager.getLookAndFeel().provideErrorFeedback(target);
+//                    return;
+//                }
+//                boolean beep = true;
+//                try {
+//                    final int start = target.getSelectionStart();
+//                    final Element line =
+//                        Utilities.getParagraphElement(target, start);
+//                    int end;
+//                    if (deleteNextWordAction == getValue(Action.NAME)) {
+//                        end = Utilities.
+//                            getNextWordInParagraph(target, line, start, false);
+//                        if (end == java.text.BreakIterator.DONE) {
+//                            //last word in the paragraph
+//                            final int endOfLine = line.getEndOffset();
+//                            if (start == endOfLine - 1) {
+//                                //for last position remove last \n
+//                                end = endOfLine;
+//                            } else {
+//                                //remove to the end of the paragraph
+//                                end = endOfLine - 1;
+//                            }
+//                        }
+//                    } else {
+//                        end = Utilities.
+//                            getPrevWordInParagraph(target, line, start);
+//                        if (end == java.text.BreakIterator.DONE) {
+//                            //there is no previous word in the paragraph
+//                            final int startOfLine = line.getStartOffset();
+//                            if (start == startOfLine) {
+//                                //for first position remove previous \n
+//                                end = startOfLine - 1;
+//                            } else {
+//                                //remove to the start of the paragraph
+//                                end = startOfLine;
+//                            }
+//                        }
+//                    }
+//                    int offs = Math.min(start, end);
+//                    int len = Math.abs(end - start);
+//                    if (offs >= 0) {
+//                        target.getDocument().remove(offs, len);
+//                        beep = false;
+//                    }
+//                } catch (BadLocationException ignore) {
+//                }
+//                if (beep) {
+//                    UIManager.getLookAndFeel().provideErrorFeedback(target);
+//                }
+//            }
+//        }
+//    }
 
 
     /*

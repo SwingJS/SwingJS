@@ -663,7 +663,7 @@ public class Utilities {
         int nextWord;
         Element line = getParagraphElement(c, offs);
         for (nextWord = getNextWordInParagraph(c, line, offs, false);
-             nextWord == BreakIterator.DONE;
+             nextWord == -1; //BreakIterator.DONE;
              nextWord = getNextWordInParagraph(c, line, offs, true)) {
 
             // didn't find in this line, try the next line
