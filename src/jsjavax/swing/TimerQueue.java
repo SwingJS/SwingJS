@@ -115,7 +115,7 @@ class TimerQueue implements Runnable
     }
 
     void addTimer(Timer timer, long delayMillis) {
-        timer.getLock().lock();
+//        timer.getLock().lock();
         try {
             // If the Timer is already in the queue, then ignore the add.
             if (! containsTimer(timer)) {
@@ -124,7 +124,7 @@ class TimerQueue implements Runnable
                                       + now()));
             }
         } finally {
-            timer.getLock().unlock();
+//            timer.getLock().unlock();
         }
     }
 
@@ -132,33 +132,33 @@ class TimerQueue implements Runnable
         //assert delayedTimer != null && ! containsTimer(delayedTimer.getTimer());
 
         Timer timer = delayedTimer.getTimer();
-        timer.getLock().lock();
+//        timer.getLock().lock();
         try {
             timer.delayedTimer = delayedTimer;
             queue.add(delayedTimer);
         } finally {
-            timer.getLock().unlock();
+//            timer.getLock().unlock();
         }
     }
 
     void removeTimer(Timer timer) {
-        timer.getLock().lock();
+//        timer.getLock().lock();
         try {
             if (timer.delayedTimer != null) {
                 queue.remove(timer.delayedTimer);
                 timer.delayedTimer = null;
             }
         } finally {
-            timer.getLock().unlock();
+//            timer.getLock().unlock();
         }
     }
 
     boolean containsTimer(Timer timer) {
-        timer.getLock().lock();
+//        timer.getLock().lock();
         try {
             return timer.delayedTimer != null;
         } finally {
-            timer.getLock().unlock();
+//            timer.getLock().unlock();
         }
     }
 
@@ -169,7 +169,7 @@ class TimerQueue implements Runnable
             while (running) {
                 try {
                     Timer timer = queue.take().getTimer();
-                    timer.getLock().lock();
+//                    timer.getLock().lock();
                     try {
                         DelayedTimer delayedTimer = timer.delayedTimer;
                         if (delayedTimer != null) {
@@ -189,7 +189,7 @@ class TimerQueue implements Runnable
                         }
                     } catch (SecurityException ignore) {
                     } finally {
-                        timer.getLock().unlock();
+//                        timer.getLock().unlock();
                     }
                 } catch (InterruptedException ie) {
                     // Shouldn't ignore InterruptedExceptions here, so AppContext

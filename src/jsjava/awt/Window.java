@@ -33,7 +33,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.concurrent.atomic.AtomicBoolean;
 //import java.util.logging.Logger;
 
 import jsjava.applet.Applet;
@@ -909,9 +909,9 @@ public class Window extends Container {
         }
     }
 
-    static private final AtomicBoolean
-        beforeFirstWindowShown = new AtomicBoolean(true);
-
+//    static private final AtomicBoolean
+//        beforeFirstWindowShown = new AtomicBoolean(true);
+//
     static final void closeSplashScreen() {
 //        if (beforeFirstWindowShown.getAndSet(false)) {
 //            SunToolkit.closeSplashScreen();

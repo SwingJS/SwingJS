@@ -30,9 +30,9 @@ package jsjavax.swing;
 
 
 import java.util.EventListener;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+//import java.util.concurrent.atomic.AtomicBoolean;
+//import java.util.concurrent.locks.Lock;
+//import java.util.concurrent.locks.ReentrantLock;
 
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.ActionListener;
@@ -167,7 +167,7 @@ public class Timer
     // notify is set to true when the Timer fires and the Runnable is queued.
     // It will be set to false after notifying the listeners (if coalesce is
     // true) or if the developer invokes stop.
-    private transient final AtomicBoolean notify = new AtomicBoolean(false);
+    private transient boolean notify;
 
     private volatile int     initialDelay, delay;
     private volatile boolean repeats = true, coalesce = true;
@@ -176,8 +176,8 @@ public class Timer
 
     private static volatile boolean logTimers;
 
-    private transient final Lock lock = new ReentrantLock();
-
+//    private transient final Lock lock = new ReentrantLock();
+//
     /*
      * The timer's AccessControlContext.
      */
@@ -240,7 +240,7 @@ public class Timer
             if (logTimers) {
                 System.out.println("Timer ringing: " + Timer.this);
             }
-            if(notify.get()) {
+            if(notify) {
                 fireActionPerformed(new ActionEvent(Timer.this, 0, getActionCommand(),
                                                     System.currentTimeMillis(),
                                                     0));
@@ -571,13 +571,13 @@ public class Timer
      * @see #start
      */
     public void stop() {
-        getLock().lock();
-        try {
+//        getLock().lock();
+//        try {
             cancelEvent();
             timerQueue().removeTimer(this);
-        } finally {
-            getLock().unlock();
-        }
+//        } finally {
+//            getLock().unlock();
+//        }
     }
 
 
@@ -587,13 +587,13 @@ public class Timer
      * it to fire with its initial delay.
      */
     public void restart() {
-        getLock().lock();
-        try {
+//        getLock().lock();
+//        try {
             stop();
             start();
-        } finally {
-            getLock().unlock();
-        }
+//        } finally {
+//            getLock().unlock();
+//        }
     }
 
 
@@ -603,12 +603,14 @@ public class Timer
      * firing again, use <code>stop</code> for that.
      */
     void cancelEvent() {
-        notify.set(false);
+        notify = (false);
     }
 
 
     void post() {
-        if (notify.compareAndSet(false, true) || !coalesce) {
+    	boolean wasnotify = notify;
+    	notify = true;
+        if (!notify || !coalesce) {
             AccessController.doPrivileged(new PrivilegedAction<Void>() {
                 public Void run() {
                     SwingUtilities.invokeLater(doPostEvent);
@@ -618,10 +620,10 @@ public class Timer
         }
     }
 
-    Lock getLock() {
-        return lock;
-    }
-
+//    Lock getLock() {
+//        return lock;
+//    }
+//
     /*
      * We have to use readResolve because we can not initialize final
      * fields for deserialized object otherwise
