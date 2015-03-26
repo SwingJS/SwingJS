@@ -9,6 +9,8 @@ This is excellent!
 
 need to work on number/date formatters as these are very popular
 
+Table row/col sorter needs checking after removal of java.text.Collator references
+
 MINOR ISSUES--requiring no rewriting
 ====================================
 
