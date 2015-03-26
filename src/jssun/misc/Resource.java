@@ -30,9 +30,7 @@ import java.net.URL;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.InputStream;
-//import java.nio.ByteBuffer;
 import java.util.Arrays;
-//import jssun.nio.ByteBuffered;
 
 /**
  * This class is used to represent a Resource that has been loaded

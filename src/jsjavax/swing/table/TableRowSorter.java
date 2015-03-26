@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.table;
 
-import java.text.Collator;
+//import java.text.Collator;
 import java.util.Comparator;
 
 import jsjavax.swing.DefaultRowSorter;
@@ -217,14 +217,16 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
         if (comparator != null) {
             return comparator;
         }
-        Class columnClass = getModel().getColumnClass(column);
-        if (columnClass == String.class) {
-            return Collator.getInstance();
-        }
-        if (Comparable.class.isAssignableFrom(columnClass)) {
-            return COMPARABLE_COMPARATOR;
-        }
-        return Collator.getInstance();
+        return null;
+//Swingjs ignore
+//        Class columnClass = getModel().getColumnClass(column);
+//        if (columnClass == String.class) {
+//            return Collator.getInstance();
+//        }
+//        if (Comparable.class.isAssignableFrom(columnClass)) {
+//            return COMPARABLE_COMPARATOR;
+//        }
+//        return Collator.getInstance();
     }
 
     /**

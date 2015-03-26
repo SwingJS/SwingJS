@@ -24,7 +24,6 @@
  */
 package jsjavax.swing;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -697,6 +696,7 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
         int keySize = keys.size();
         sortComparators = new Comparator[keySize];
         for (int i = 0; i < keySize; i++) {
+        	//Swingjs -- may be null
             sortComparators[i] = getComparator0(keys.get(i).getColumn());
         }
         cachedSortKeys = keys.toArray(new SortKey[keySize]);
@@ -791,9 +791,11 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
         if (comparator != null) {
             return comparator;
         }
-        // This should be ok as useToString(column) should have returned
-        // true in this case.
-        return Collator.getInstance();
+        return null;
+//Swingjs ignore
+//        // This should be ok as useToString(column) should have returned
+//        // true in this case.
+//        return Collator.getInstance();
     }
 
     private RowFilter.Entry<M,I> getFilterEntry(int modelIndex) {
@@ -948,13 +950,13 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
                 result = model1 - model2;
             } else {
                 // v1 != null && v2 != null
-                if (useToString[column]) {
-                    v1 = getModelWrapper().getStringValueAt(model1, column);
-                    v2 = getModelWrapper().getStringValueAt(model2, column);
-                } else {
+//                if (useToString[column]) {
+//                    v1 = getModelWrapper().getStringValueAt(model1, column);
+//                    v2 = getModelWrapper().getStringValueAt(model2, column);
+//                } else {
                     v1 = getModelWrapper().getValueAt(model1, column);
                     v2 = getModelWrapper().getValueAt(model2, column);
-                }
+//                }
                 // Treat nulls as < then non-null
                 if (v1 == null) {
                     if (v2 == null) {
@@ -965,7 +967,17 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
                 } else if (v2 == null) {
                     result = 1;
                 } else {
-                    result = sortComparators[counter].compare(v1, v2);
+                		Comparator c = sortComparators[counter];
+                		/**
+                		 *  @j2sNative
+                		 *  
+                		 *  result = (c != null ? c.compare(v1, v2) : typeof c == "object" ? 
+                		 *    ((v1 = v1.toString()) < (v2 = v2.toString) ? -1 : v1 == v2 ? 0 : 1)
+                		 *    : (v1 < v2 ? -1 : v1 == v2 ? 0 : 1));   
+                		 */
+                		{
+                			result = c.compare(v1, v2);
+                		}
                 }
                 if (sortOrder == SortOrder.DESCENDING) {
                     result *= -1;
@@ -1122,8 +1134,8 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
         int i, j;
         int delta = lastRow - firstRow + 1;
         int modelIndex;
-        int last;
-        int index;
+//        int last;
+//        int index;
 
         if (getRowFilter() == null) {
             // Sorting only:
