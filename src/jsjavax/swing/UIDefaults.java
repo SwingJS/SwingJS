@@ -212,7 +212,7 @@ public class UIDefaults extends Hashtable<Object,Object>
                     else {
                         super.put(key, value);
                     }
-                    this.notifyAll();
+                  //SwingJS CANNOT DO THIS                notifyAll();
                 }
             }
         }

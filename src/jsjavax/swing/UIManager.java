@@ -38,7 +38,7 @@ import jsjavax.swing.border.Border;
 import jsjavax.swing.event.SwingPropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 
-import java.io.File;
+//import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -173,23 +173,23 @@ public class UIManager
      */
     private static class LAFState
     {
-        Properties swingProps;
+//        Properties swingProps;
         private UIDefaults[] tables = new UIDefaults[2];
 
         boolean initialized = false;
         MultiUIDefaults multiUIDefaults = new MultiUIDefaults(tables);
         LookAndFeel lookAndFeel;
-        LookAndFeel multiLookAndFeel = null;
+//        LookAndFeel multiLookAndFeel = null;
         Vector auxLookAndFeels = null;
         SwingPropertyChangeSupport changeSupport;
 
         LookAndFeelInfo[] installedLAFs;
 
-        UIDefaults getLookAndFeelDefaults() { return tables[0]; }
-        void setLookAndFeelDefaults(UIDefaults x) { tables[0] = x; }
-
-        UIDefaults getSystemDefaults() { return tables[1]; }
-        void setSystemDefaults(UIDefaults x) { tables[1] = x; }
+//        UIDefaults getLookAndFeelDefaults() { return tables[0]; }
+//        void setLookAndFeelDefaults(UIDefaults x) { tables[0] = x; }
+//
+//        UIDefaults getSystemDefaults() { return tables[1]; }
+//        void setSystemDefaults(UIDefaults x) { tables[1] = x; }
 
         /**
          * Returns the SwingPropertyChangeSupport for the current
@@ -241,25 +241,25 @@ public class UIManager
     }
 
 
-    /* Keys used for the properties file in <java.home>/lib/swing.properties.
-     * See loadUserProperties(), initialize().
-     */
-
-    private static final String defaultLAFKey = "swing.defaultlaf";
-    private static final String auxiliaryLAFsKey = "swing.auxiliarylaf";
-    private static final String multiplexingLAFKey = "swing.plaf.multiplexinglaf";
-    private static final String installedLAFsKey = "swing.installedlafs";
-    private static final String disableMnemonicKey = "swing.disablenavaids";
-
-    /**
-     * Return a swing.properties file key for the attribute of specified
-     * look and feel.  The attr is either "name" or "class", a typical
-     * key would be: "swing.installedlaf.windows.name"
-     */
-    private static String makeInstalledLAFKey(String laf, String attr) {
-        return "swing.installedlaf." + laf + "." + attr;
-    }
-
+//    /* Keys used for the properties file in <java.home>/lib/swing.properties.
+//     * See loadUserProperties(), initialize().
+//     */
+//
+//    private static final String defaultLAFKey = "swing.defaultlaf";
+//    private static final String auxiliaryLAFsKey = "swing.auxiliarylaf";
+//    private static final String multiplexingLAFKey = "swing.plaf.multiplexinglaf";
+//    private static final String installedLAFsKey = "swing.installedlafs";
+//    private static final String disableMnemonicKey = "swing.disablenavaids";
+//
+//    /**
+//     * Return a swing.properties file key for the attribute of specified
+//     * look and feel.  The attr is either "name" or "class", a typical
+//     * key would be: "swing.installedlaf.windows.name"
+//     */
+//    private static String makeInstalledLAFKey(String laf, String attr) {
+//        return "swing.installedlaf." + laf + "." + attr;
+//    }
+//
 //    /**
 //     * The filename for swing.properties is a path like this (Unix version):
 //     * <java.home>/lib/swing.properties.  This method returns a bogus
@@ -501,33 +501,33 @@ public class UIManager
     public static void setLookAndFeel(LookAndFeel newLookAndFeel)
         throws UnsupportedLookAndFeelException
     {
-        if ((newLookAndFeel != null) && !newLookAndFeel.isSupportedLookAndFeel()) {
-            String s = newLookAndFeel.toString() + " not supported on this platform";
-            throw new UnsupportedLookAndFeelException(s);
-        }
-
-        LAFState lafState = getLAFState();
-        LookAndFeel oldLookAndFeel = lafState.lookAndFeel;
-        if (oldLookAndFeel != null) {
-            oldLookAndFeel.uninitialize();
-        }
-
-        lafState.lookAndFeel = newLookAndFeel;
-        if (newLookAndFeel != null) {
-            jssun.swing.DefaultLookup.setDefaultLookup(null);
-            newLookAndFeel.initialize();
-            lafState.setLookAndFeelDefaults(newLookAndFeel.getDefaults());
-        }
-        else {
-            lafState.setLookAndFeelDefaults(null);
-        }
-
-        SwingPropertyChangeSupport changeSupport = lafState.
-                                         getPropertyChangeSupport(false);
-        if (changeSupport != null) {
-            changeSupport.firePropertyChange("lookAndFeel", oldLookAndFeel,
-                                             newLookAndFeel);
-        }
+//        if ((newLookAndFeel != null) && !newLookAndFeel.isSupportedLookAndFeel()) {
+//            String s = newLookAndFeel.toString() + " not supported on this platform";
+//            throw new UnsupportedLookAndFeelException(s);
+//        }
+//
+//        LAFState lafState = getLAFState();
+//        LookAndFeel oldLookAndFeel = lafState.lookAndFeel;
+//        if (oldLookAndFeel != null) {
+//            oldLookAndFeel.uninitialize();
+//        }
+//
+//        lafState.lookAndFeel = newLookAndFeel;
+//        if (newLookAndFeel != null) {
+//            jssun.swing.DefaultLookup.setDefaultLookup(null);
+//            newLookAndFeel.initialize();
+//            lafState.setLookAndFeelDefaults(newLookAndFeel.getDefaults());
+//        }
+//        else {
+//            lafState.setLookAndFeelDefaults(null);
+//        }
+//
+//        SwingPropertyChangeSupport changeSupport = lafState.
+//                                         getPropertyChangeSupport(false);
+//        if (changeSupport != null) {
+//            changeSupport.firePropertyChange("lookAndFeel", oldLookAndFeel,
+//                                             newLookAndFeel);
+//        }
     }
 
 
@@ -994,151 +994,151 @@ public class UIManager
     }
 
 
-    /**
-     * Returns the {@code UIDefaults} from the current look and feel,
-     * that were obtained at the time the look and feel was installed.
-     * <p>
-     * In general, developers should use the {@code UIDefaults} returned from
-     * {@code getDefaults()}. As the current look and feel may expect
-     * certain values to exist, altering the {@code UIDefaults} returned
-     * from this method could have unexpected results.
-     *
-     * @return <code>UIDefaults</code> from the current look and feel
-     * @see #getDefaults
-     * @see #setLookAndFeel(LookAndFeel)
-     * @see LookAndFeel#getDefaults
-     */
-    public static UIDefaults getLookAndFeelDefaults() {
-        maybeInitialize();
-        return getLAFState().getLookAndFeelDefaults();
-    }
-
-    /**
-     * Finds the Multiplexing <code>LookAndFeel</code>.
-     */
-    private static LookAndFeel getMultiLookAndFeel() {
-        LookAndFeel multiLookAndFeel = getLAFState().multiLookAndFeel;
-        if (multiLookAndFeel == null) {
-            String defaultName = "jsjavax.swing.plaf.multi.MultiLookAndFeel";
-            String className = getLAFState().swingProps.getProperty(multiplexingLAFKey, defaultName);
-            try {
-                Class lnfClass = SwingUtilities.loadSystemClass(className);
-                multiLookAndFeel = (LookAndFeel)lnfClass.newInstance();
-            } catch (Exception exc) {
-                System.err.println("UIManager: failed loading " + className);
-            }
-        }
-        return multiLookAndFeel;
-    }
-
-    /**
-     * Adds a <code>LookAndFeel</code> to the list of auxiliary look and feels.
-     * The auxiliary look and feels tell the multiplexing look and feel what
-     * other <code>LookAndFeel</code> classes for a component instance are to be used
-     * in addition to the default <code>LookAndFeel</code> class when creating a
-     * multiplexing UI.  The change will only take effect when a new
-     * UI class is created or when the default look and feel is changed
-     * on a component instance.
-     * <p>Note these are not the same as the installed look and feels.
-     *
-     * @param laf the <code>LookAndFeel</code> object
-     * @see #removeAuxiliaryLookAndFeel
-     * @see #setLookAndFeel
-     * @see #getAuxiliaryLookAndFeels
-     * @see #getInstalledLookAndFeels
-     */
-    static public void addAuxiliaryLookAndFeel(LookAndFeel laf) {
-        maybeInitialize();
-
-        if (!laf.isSupportedLookAndFeel()) {
-            // Ideally we would throw an exception here, but it's too late
-            // for that.
-            return;
-        }
-        Vector v = getLAFState().auxLookAndFeels;
-        if (v == null) {
-            v = new Vector();
-        }
-
-        if (!v.contains(laf)) {
-            v.addElement(laf);
-            laf.initialize();
-            getLAFState().auxLookAndFeels = v;
-
-            if (getLAFState().multiLookAndFeel == null) {
-                getLAFState().multiLookAndFeel = getMultiLookAndFeel();
-            }
-        }
-    }
-
-    /**
-     * Removes a <code>LookAndFeel</code> from the list of auxiliary look and feels.
-     * The auxiliary look and feels tell the multiplexing look and feel what
-     * other <code>LookAndFeel</code> classes for a component instance are to be used
-     * in addition to the default <code>LookAndFeel</code> class when creating a
-     * multiplexing UI.  The change will only take effect when a new
-     * UI class is created or when the default look and feel is changed
-     * on a component instance.
-     * <p>Note these are not the same as the installed look and feels.
-     * @return true if the <code>LookAndFeel</code> was removed from the list
-     * @see #removeAuxiliaryLookAndFeel
-     * @see #getAuxiliaryLookAndFeels
-     * @see #setLookAndFeel
-     * @see #getInstalledLookAndFeels
-     */
-    static public boolean removeAuxiliaryLookAndFeel(LookAndFeel laf) {
-        maybeInitialize();
-
-        boolean result;
-
-        Vector v = getLAFState().auxLookAndFeels;
-        if ((v == null) || (v.size() == 0)) {
-            return false;
-        }
-
-        result = v.removeElement(laf);
-        if (result) {
-            if (v.size() == 0) {
-                getLAFState().auxLookAndFeels = null;
-                getLAFState().multiLookAndFeel = null;
-            } else {
-                getLAFState().auxLookAndFeels = v;
-            }
-        }
-        laf.uninitialize();
-
-        return result;
-    }
-
-    /**
-     * Returns the list of auxiliary look and feels (can be <code>null</code>).
-     * The auxiliary look and feels tell the multiplexing look and feel what
-     * other <code>LookAndFeel</code> classes for a component instance are
-     * to be used in addition to the default LookAndFeel class when creating a
-     * multiplexing UI.
-     * <p>Note these are not the same as the installed look and feels.
-     *
-     * @return list of auxiliary <code>LookAndFeel</code>s or <code>null</code>
-     * @see #addAuxiliaryLookAndFeel
-     * @see #removeAuxiliaryLookAndFeel
-     * @see #setLookAndFeel
-     * @see #getInstalledLookAndFeels
-     */
-    static public LookAndFeel[] getAuxiliaryLookAndFeels() {
-        maybeInitialize();
-
-        Vector v = getLAFState().auxLookAndFeels;
-        if ((v == null) || (v.size() == 0)) {
-            return null;
-        }
-        else {
-            LookAndFeel[] rv = new LookAndFeel[v.size()];
-            for (int i = 0; i < rv.length; i++) {
-                rv[i] = (LookAndFeel)v.elementAt(i);
-            }
-            return rv;
-        }
-    }
+//    /**
+//     * Returns the {@code UIDefaults} from the current look and feel,
+//     * that were obtained at the time the look and feel was installed.
+//     * <p>
+//     * In general, developers should use the {@code UIDefaults} returned from
+//     * {@code getDefaults()}. As the current look and feel may expect
+//     * certain values to exist, altering the {@code UIDefaults} returned
+//     * from this method could have unexpected results.
+//     *
+//     * @return <code>UIDefaults</code> from the current look and feel
+//     * @see #getDefaults
+//     * @see #setLookAndFeel(LookAndFeel)
+//     * @see LookAndFeel#getDefaults
+//     */
+//    public static UIDefaults getLookAndFeelDefaults() {
+//        maybeInitialize();
+//        return getLAFState().getLookAndFeelDefaults();
+//    }
+//
+//    /**
+//     * Finds the Multiplexing <code>LookAndFeel</code>.
+//     */
+//    private static LookAndFeel getMultiLookAndFeel() {
+//        LookAndFeel multiLookAndFeel = getLAFState().multiLookAndFeel;
+//        if (multiLookAndFeel == null) {
+//            String defaultName = "jsjavax.swing.plaf.multi.MultiLookAndFeel";
+//            String className = getLAFState().swingProps.getProperty(multiplexingLAFKey, defaultName);
+//            try {
+//                Class lnfClass = SwingUtilities.loadSystemClass(className);
+//                multiLookAndFeel = (LookAndFeel)lnfClass.newInstance();
+//            } catch (Exception exc) {
+//                System.err.println("UIManager: failed loading " + className);
+//            }
+//        }
+//        return multiLookAndFeel;
+//    }
+//
+//    /**
+//     * Adds a <code>LookAndFeel</code> to the list of auxiliary look and feels.
+//     * The auxiliary look and feels tell the multiplexing look and feel what
+//     * other <code>LookAndFeel</code> classes for a component instance are to be used
+//     * in addition to the default <code>LookAndFeel</code> class when creating a
+//     * multiplexing UI.  The change will only take effect when a new
+//     * UI class is created or when the default look and feel is changed
+//     * on a component instance.
+//     * <p>Note these are not the same as the installed look and feels.
+//     *
+//     * @param laf the <code>LookAndFeel</code> object
+//     * @see #removeAuxiliaryLookAndFeel
+//     * @see #setLookAndFeel
+//     * @see #getAuxiliaryLookAndFeels
+//     * @see #getInstalledLookAndFeels
+//     */
+//    static public void addAuxiliaryLookAndFeel(LookAndFeel laf) {
+//        maybeInitialize();
+//
+//        if (!laf.isSupportedLookAndFeel()) {
+//            // Ideally we would throw an exception here, but it's too late
+//            // for that.
+//            return;
+//        }
+//        Vector v = getLAFState().auxLookAndFeels;
+//        if (v == null) {
+//            v = new Vector();
+//        }
+//
+//        if (!v.contains(laf)) {
+//            v.addElement(laf);
+//            laf.initialize();
+//            getLAFState().auxLookAndFeels = v;
+//
+//            if (getLAFState().multiLookAndFeel == null) {
+//                getLAFState().multiLookAndFeel = getMultiLookAndFeel();
+//            }
+//        }
+//    }
+//
+//    /**
+//     * Removes a <code>LookAndFeel</code> from the list of auxiliary look and feels.
+//     * The auxiliary look and feels tell the multiplexing look and feel what
+//     * other <code>LookAndFeel</code> classes for a component instance are to be used
+//     * in addition to the default <code>LookAndFeel</code> class when creating a
+//     * multiplexing UI.  The change will only take effect when a new
+//     * UI class is created or when the default look and feel is changed
+//     * on a component instance.
+//     * <p>Note these are not the same as the installed look and feels.
+//     * @return true if the <code>LookAndFeel</code> was removed from the list
+//     * @see #removeAuxiliaryLookAndFeel
+//     * @see #getAuxiliaryLookAndFeels
+//     * @see #setLookAndFeel
+//     * @see #getInstalledLookAndFeels
+//     */
+//    static public boolean removeAuxiliaryLookAndFeel(LookAndFeel laf) {
+//        maybeInitialize();
+//
+//        boolean result;
+//
+//        Vector v = getLAFState().auxLookAndFeels;
+//        if ((v == null) || (v.size() == 0)) {
+//            return false;
+//        }
+//
+//        result = v.removeElement(laf);
+//        if (result) {
+//            if (v.size() == 0) {
+//                getLAFState().auxLookAndFeels = null;
+//                getLAFState().multiLookAndFeel = null;
+//            } else {
+//                getLAFState().auxLookAndFeels = v;
+//            }
+//        }
+//        laf.uninitialize();
+//
+//        return result;
+//    }
+//
+//    /**
+//     * Returns the list of auxiliary look and feels (can be <code>null</code>).
+//     * The auxiliary look and feels tell the multiplexing look and feel what
+//     * other <code>LookAndFeel</code> classes for a component instance are
+//     * to be used in addition to the default LookAndFeel class when creating a
+//     * multiplexing UI.
+//     * <p>Note these are not the same as the installed look and feels.
+//     *
+//     * @return list of auxiliary <code>LookAndFeel</code>s or <code>null</code>
+//     * @see #addAuxiliaryLookAndFeel
+//     * @see #removeAuxiliaryLookAndFeel
+//     * @see #setLookAndFeel
+//     * @see #getInstalledLookAndFeels
+//     */
+//    static public LookAndFeel[] getAuxiliaryLookAndFeels() {
+//        maybeInitialize();
+//
+//        Vector v = getLAFState().auxLookAndFeels;
+//        if ((v == null) || (v.size() == 0)) {
+//            return null;
+//        }
+//        else {
+//            LookAndFeel[] rv = new LookAndFeel[v.size()];
+//            for (int i = 0; i < rv.length; i++) {
+//                rv[i] = (LookAndFeel)v.elementAt(i);
+//            }
+//            return rv;
+//        }
+//    }
 
 
     /**
@@ -1243,135 +1243,135 @@ public class UIManager
 //    }
 
 
-    /**
-     * If a swing.properties file exist and it has a swing.installedlafs property
-     * then initialize the <code>installedLAFs</code> field.
-     *
-     * @see #getInstalledLookAndFeels
-     */
-    private static void initializeInstalledLAFs(Properties swingProps)
-    {
-        String ilafsString = swingProps.getProperty(installedLAFsKey);
-        if (ilafsString == null) {
-            return;
-        }
-
-        /* Create a vector that contains the value of the swing.installedlafs
-         * property.  For example given "swing.installedlafs=motif,windows"
-         * lafs = {"motif", "windows"}.
-         */
-        Vector lafs = new Vector();
-        StringTokenizer st = new StringTokenizer(ilafsString, ",", false);
-        while (st.hasMoreTokens()) {
-            lafs.addElement(st.nextToken());
-        }
-
-        /* Look up the name and class for each name in the "swing.installedlafs"
-         * list.  If they both exist then add a LookAndFeelInfo to
-         * the installedLafs array.
-         */
-        Vector ilafs = new Vector(lafs.size());
-        for(int i = 0; i < lafs.size(); i++) {
-            String laf = (String)lafs.elementAt(i);
-            String name = swingProps.getProperty(makeInstalledLAFKey(laf, "name"), laf);
-            String cls = swingProps.getProperty(makeInstalledLAFKey(laf, "class"));
-            if (cls != null) {
-                ilafs.addElement(new LookAndFeelInfo(name, cls));
-            }
-        }
-
-        LookAndFeelInfo[] installedLAFs = new LookAndFeelInfo[ilafs.size()];
-        for(int i = 0; i < ilafs.size(); i++) {
-            installedLAFs[i] = (LookAndFeelInfo)(ilafs.elementAt(i));
-        }
-        getLAFState().installedLAFs = installedLAFs;
-    }
-
-
-    /**
-     * If the user has specified a default look and feel, use that.
-     * Otherwise use the look and feel that's native to this platform.
-     * If this code is called after the application has explicitly
-     * set it's look and feel, do nothing.
-     *
-     * @see #maybeInitialize
-     */
-    private static void initializeDefaultLAF(Properties swingProps)
-    {
-        if (getLAFState().lookAndFeel != null) {
-            return;
-        }
-
-        String metalLnf = getCrossPlatformLookAndFeelClassName();
-        String lnfDefault = metalLnf;
-
-        String lnfName = "<undefined>" ;
-        try {
-            lnfName = swingProps.getProperty(defaultLAFKey, lnfDefault);
-            setLookAndFeel(lnfName);
-        } catch (Exception e) {
-            try {
-                lnfName = swingProps.getProperty(defaultLAFKey, metalLnf);
-                setLookAndFeel(lnfName);
-            } catch (Exception e2) {
-                throw new Error("can't load " + lnfName);
-            }
-        }
-    }
-
-
-    private static void initializeAuxiliaryLAFs(Properties swingProps)
-    {
-        String auxLookAndFeelNames = swingProps.getProperty(auxiliaryLAFsKey);
-        if (auxLookAndFeelNames == null) {
-            return;
-        }
-
-        Vector auxLookAndFeels = new Vector();
-
-        StringTokenizer p = new StringTokenizer(auxLookAndFeelNames,",");
-        String factoryName;
-
-        /* Try to load each LookAndFeel subclass in the list.
-         */
-
-        while (p.hasMoreTokens()) {
-            String className = p.nextToken();
-            try {
-                Class lnfClass = SwingUtilities.loadSystemClass(className);
-                LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
-                newLAF.initialize();
-                auxLookAndFeels.addElement(newLAF);
-            }
-            catch (Exception e) {
-                System.err.println("UIManager: failed loading auxiliary look and feel " + className);
-            }
-        }
-
-        /* If there were problems and no auxiliary look and feels were
-         * loaded, make sure we reset auxLookAndFeels to null.
-         * Otherwise, we are going to use the MultiLookAndFeel to get
-         * all component UI's, so we need to load it now.
-         */
-        if (auxLookAndFeels.size() == 0) {
-            auxLookAndFeels = null;
-        }
-        else {
-            getLAFState().multiLookAndFeel = getMultiLookAndFeel();
-            if (getLAFState().multiLookAndFeel == null) {
-                auxLookAndFeels = null;
-            }
-        }
-
-        getLAFState().auxLookAndFeels = auxLookAndFeels;
-    }
-
-
-    private static void initializeSystemDefaults(Properties swingProps) {
-        getLAFState().swingProps = swingProps;
-    }
-
-
+//    /**
+//     * If a swing.properties file exist and it has a swing.installedlafs property
+//     * then initialize the <code>installedLAFs</code> field.
+//     *
+//     * @see #getInstalledLookAndFeels
+//     */
+//    private static void initializeInstalledLAFs(Properties swingProps)
+//    {
+//        String ilafsString = swingProps.getProperty(installedLAFsKey);
+//        if (ilafsString == null) {
+//            return;
+//        }
+//
+//        /* Create a vector that contains the value of the swing.installedlafs
+//         * property.  For example given "swing.installedlafs=motif,windows"
+//         * lafs = {"motif", "windows"}.
+//         */
+//        Vector lafs = new Vector();
+//        StringTokenizer st = new StringTokenizer(ilafsString, ",", false);
+//        while (st.hasMoreTokens()) {
+//            lafs.addElement(st.nextToken());
+//        }
+//
+//        /* Look up the name and class for each name in the "swing.installedlafs"
+//         * list.  If they both exist then add a LookAndFeelInfo to
+//         * the installedLafs array.
+//         */
+//        Vector ilafs = new Vector(lafs.size());
+//        for(int i = 0; i < lafs.size(); i++) {
+//            String laf = (String)lafs.elementAt(i);
+//            String name = swingProps.getProperty(makeInstalledLAFKey(laf, "name"), laf);
+//            String cls = swingProps.getProperty(makeInstalledLAFKey(laf, "class"));
+//            if (cls != null) {
+//                ilafs.addElement(new LookAndFeelInfo(name, cls));
+//            }
+//        }
+//
+//        LookAndFeelInfo[] installedLAFs = new LookAndFeelInfo[ilafs.size()];
+//        for(int i = 0; i < ilafs.size(); i++) {
+//            installedLAFs[i] = (LookAndFeelInfo)(ilafs.elementAt(i));
+//        }
+//        getLAFState().installedLAFs = installedLAFs;
+//    }
+//
+//
+//    /**
+//     * If the user has specified a default look and feel, use that.
+//     * Otherwise use the look and feel that's native to this platform.
+//     * If this code is called after the application has explicitly
+//     * set it's look and feel, do nothing.
+//     *
+//     * @see #maybeInitialize
+//     */
+//    private static void initializeDefaultLAF(Properties swingProps)
+//    {
+//        if (getLAFState().lookAndFeel != null) {
+//            return;
+//        }
+//
+//        String metalLnf = getCrossPlatformLookAndFeelClassName();
+//        String lnfDefault = metalLnf;
+//
+//        String lnfName = "<undefined>" ;
+//        try {
+//            lnfName = swingProps.getProperty(defaultLAFKey, lnfDefault);
+//            setLookAndFeel(lnfName);
+//        } catch (Exception e) {
+//            try {
+//                lnfName = swingProps.getProperty(defaultLAFKey, metalLnf);
+//                setLookAndFeel(lnfName);
+//            } catch (Exception e2) {
+//                throw new Error("can't load " + lnfName);
+//            }
+//        }
+//    }
+//
+//
+//    private static void initializeAuxiliaryLAFs(Properties swingProps)
+//    {
+//        String auxLookAndFeelNames = swingProps.getProperty(auxiliaryLAFsKey);
+//        if (auxLookAndFeelNames == null) {
+//            return;
+//        }
+//
+//        Vector auxLookAndFeels = new Vector();
+//
+//        StringTokenizer p = new StringTokenizer(auxLookAndFeelNames,",");
+//        String factoryName;
+//
+//        /* Try to load each LookAndFeel subclass in the list.
+//         */
+//
+//        while (p.hasMoreTokens()) {
+//            String className = p.nextToken();
+//            try {
+//                Class lnfClass = SwingUtilities.loadSystemClass(className);
+//                LookAndFeel newLAF = (LookAndFeel)lnfClass.newInstance();
+//                newLAF.initialize();
+//                auxLookAndFeels.addElement(newLAF);
+//            }
+//            catch (Exception e) {
+//                System.err.println("UIManager: failed loading auxiliary look and feel " + className);
+//            }
+//        }
+//
+//        /* If there were problems and no auxiliary look and feels were
+//         * loaded, make sure we reset auxLookAndFeels to null.
+//         * Otherwise, we are going to use the MultiLookAndFeel to get
+//         * all component UI's, so we need to load it now.
+//         */
+//        if (auxLookAndFeels.size() == 0) {
+//            auxLookAndFeels = null;
+//        }
+//        else {
+//            getLAFState().multiLookAndFeel = getMultiLookAndFeel();
+//            if (getLAFState().multiLookAndFeel == null) {
+//                auxLookAndFeels = null;
+//            }
+//        }
+//
+//        getLAFState().auxLookAndFeels = auxLookAndFeels;
+//    }
+//
+//
+//    private static void initializeSystemDefaults(Properties swingProps) {
+//        getLAFState().swingProps = swingProps;
+//    }
+//
+//
     /*
      * This method is called before any code that depends on the
      * <code>AppContext</code> specific LAFState object runs.  When the AppContext

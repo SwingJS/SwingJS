@@ -651,7 +651,8 @@ public class PixelGrabber implements ImageConsumer {
             break;
         }
         producer.removeConsumer(this);
-        notifyAll();
+        //SwingJS -- cannot notify other threads in JavaScript
+//        notifyAll();
     }
 
     /**

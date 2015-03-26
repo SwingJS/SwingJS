@@ -1371,7 +1371,7 @@ public abstract class AbstractDocument implements Document {
         if (--numWriters <= 0) {
             numWriters = 0;
             currWriter = null;
-            notifyAll();
+          //SwingJS CANNOT DO THIS                notifyAll();
         }
     }
 

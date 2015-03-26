@@ -1067,29 +1067,29 @@ public class RepaintManager {
 //		}
 	}
 
-	private void clearImages() {
-		clearImages(0, 0);
-	}
+//	private void clearImages() {
+//		clearImages(0, 0);
+//	}
 
-	private void clearImages(int width, int height) {
-		if (standardDoubleBuffer != null && standardDoubleBuffer.image != null) {
-			if (standardDoubleBuffer.image.getWidth(null) > width
-					|| standardDoubleBuffer.image.getHeight(null) > height) {
-				standardDoubleBuffer.image.flush();
-				standardDoubleBuffer.image = null;
-			}
-		}
-		// Clear out the VolatileImages
-		Iterator gcs = volatileMap.keySet().iterator();
-		while (gcs.hasNext()) {
-			GraphicsConfiguration gc = (GraphicsConfiguration) gcs.next();
-			VolatileImage image = (VolatileImage) volatileMap.get(gc);
-			if (image.getWidth() > width || image.getHeight() > height) {
-				image.flush();
-				gcs.remove();
-			}
-		}
-	}
+//	private void clearImages(int width, int height) {
+//		if (standardDoubleBuffer != null && standardDoubleBuffer.image != null) {
+//			if (standardDoubleBuffer.image.getWidth(null) > width
+//					|| standardDoubleBuffer.image.getHeight(null) > height) {
+//				standardDoubleBuffer.image.flush();
+//				standardDoubleBuffer.image = null;
+//			}
+//		}
+//		// Clear out the VolatileImages
+//		Iterator gcs = volatileMap.keySet().iterator();
+//		while (gcs.hasNext()) {
+//			GraphicsConfiguration gc = (GraphicsConfiguration) gcs.next();
+//			VolatileImage image = (VolatileImage) volatileMap.get(gc);
+//			if (image.getWidth() > width || image.getHeight() > height) {
+//				image.flush();
+//				gcs.remove();
+//			}
+//		}
+//	}
 
 	/**
 	 * Returns the maximum double buffer size.

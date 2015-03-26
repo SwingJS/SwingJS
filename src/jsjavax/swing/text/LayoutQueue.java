@@ -84,7 +84,7 @@ public class LayoutQueue {
             worker.start();
         }
         tasks.addElement(task);
-        notifyAll();
+      //SwingJS CANNOT DO THIS                notifyAll();
     }
 
     /**

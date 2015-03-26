@@ -24,9 +24,9 @@
  */
 package jsjavax.swing;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
+//import java.io.IOException;
+//import java.io.ObjectOutputStream;
+//
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -178,11 +178,11 @@ public class CellRendererPane extends Container
     }
 
 
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        removeAll();
-        s.defaultWriteObject();
-    }
-
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        removeAll();
+//        s.defaultWriteObject();
+//    }
+//
 
 /////////////////
 // Accessibility support

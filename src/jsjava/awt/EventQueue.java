@@ -293,9 +293,9 @@ public class EventQueue {
 //                if (theEvent.getSource() != AWTAutoShutdown.getInstance()) {
 //                    AWTAutoShutdown.getInstance().notifyThreadBusy(dispatchThread);
 //                }
-                notifyAll();
+//SwingJS CANNOT DO THIS                notifyAll();
             } else if (notifyID) {
-                notifyAll();
+//SwingJS CANNOT DO THIS                notifyAll();
             }
         } else {
             // The event was not coalesced or has non-Component source.
@@ -303,7 +303,7 @@ public class EventQueue {
             queues[priority].tail.next = newItem;
             queues[priority].tail = newItem;
             if (notifyID) {
-                notifyAll();
+//SwingJS CANNOT DO THIS                notifyAll();
             }
         }
     }

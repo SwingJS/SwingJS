@@ -1480,110 +1480,110 @@ public abstract class SunToolkit extends Toolkit
     private static final int MIN_ITERS = 0;
     private static final int MINIMAL_EDELAY = 0;
 
-    /**
-     * Parameterless version of realsync which uses default timout (see DEFAUL_WAIT_TIME).
-     */
-    public void realSync() throws OperationTimedOut, InfiniteLoop {
-        realSync(DEFAULT_WAIT_TIME);
-    }
+//    /**
+//     * Parameterless version of realsync which uses default timout (see DEFAUL_WAIT_TIME).
+//     */
+//    public void realSync() throws OperationTimedOut, InfiniteLoop {
+//        realSync(DEFAULT_WAIT_TIME);
+//    }
 
-    /**
-     * Forces toolkit to synchronize with the native windowing
-     * sub-system, flushing all pending work and waiting for all the
-     * events to be processed.  This method guarantees that after
-     * return no additional Java events will be generated, unless
-     * cause by user. Obviously, the method cannot be used on the
-     * event dispatch thread (EDT). In case it nevertheless gets
-     * invoked on this thread, the method throws the
-     * IllegalThreadException runtime exception.
-     *
-     * <p> This method allows to write tests without explicit timeouts
-     * or wait for some event.  Example:
-     * <code>
-     * Frame f = ...;
-     * f.setVisible(true);
-     * ((SunToolkit)Toolkit.getDefaultToolkit()).realSync();
-     * </code>
-     *
-     * <p> After realSync, <code>f</code> will be completely visible
-     * on the screen, its getLocationOnScreen will be returning the
-     * right result and it will be the focus owner.
-     *
-     * <p> Another example:
-     * <code>
-     * b.requestFocus();
-     * ((SunToolkit)Toolkit.getDefaultToolkit()).realSync();
-     * </code>
-     *
-     * <p> After realSync, <code>b</code> will be focus owner.
-     *
-     * <p> Notice that realSync isn't guaranteed to work if recurring
-     * actions occur, such as if during processing of some event
-     * another request which may generate some events occurs.  By
-     * default, sync tries to perform as much as {@value MAX_ITERS}
-     * cycles of event processing, allowing for roughly {@value
-     * MAX_ITERS} additional requests.
-     *
-     * <p> For example, requestFocus() generates native request, which
-     * generates one or two Java focus events, which then generate a
-     * serie of paint events, a serie of Java focus events, which then
-     * generate a serie of paint events which then are processed -
-     * three cycles, minimum.
-     *
-     * @param timeout the maximum time to wait in milliseconds, negative means "forever".
-     */
-    public void realSync(final long timeout) throws OperationTimedOut, InfiniteLoop
-    {
-        if (EventQueue.isDispatchThread()) {
-            throw new IllegalThreadException("The SunToolkit.realSync() method cannot be used on the event dispatch thread (EDT).");
-        }
-        int bigLoop = 0;
-        do {
-            // Let's do sync first
-            sync();
-
-            // During the wait process, when we were processing incoming
-            // events, we could have made some new request, which can
-            // generate new events.  Example: MapNotify/XSetInputFocus.
-            // Therefore, we dispatch them as long as there is something
-            // to dispatch.
-            int iters = 0;
-            while (iters < MIN_ITERS) {
-                syncNativeQueue(timeout);
-                iters++;
-            }
-            while (syncNativeQueue(timeout) && iters < MAX_ITERS) {
-                iters++;
-            }
-            if (iters >= MAX_ITERS) {
-                throw new InfiniteLoop();
-            }
-
-            // native requests were dispatched by X/Window Manager or Windows
-            // Moreover, we processed them all on Toolkit thread
-            // Now wait while EDT processes them.
-            //
-            // During processing of some events (focus, for example),
-            // some other events could have been generated.  So, after
-            // waitForIdle, we may end up with full EventQueue
-            iters = 0;
-            while (iters < MIN_ITERS) {
-                waitForIdle(timeout);
-                iters++;
-            }
-            while (waitForIdle(timeout) && iters < MAX_ITERS) {
-                iters++;
-            }
-            if (iters >= MAX_ITERS) {
-                throw new InfiniteLoop();
-            }
-
-            bigLoop++;
-            // Again, for Java events, it was simple to check for new Java
-            // events by checking event queue, but what if Java events
-            // resulted in native requests?  Therefor, check native events again.
-        } while ((syncNativeQueue(timeout) || waitForIdle(timeout)) && bigLoop < MAX_ITERS);
-    }
+//    /**
+//     * Forces toolkit to synchronize with the native windowing
+//     * sub-system, flushing all pending work and waiting for all the
+//     * events to be processed.  This method guarantees that after
+//     * return no additional Java events will be generated, unless
+//     * cause by user. Obviously, the method cannot be used on the
+//     * event dispatch thread (EDT). In case it nevertheless gets
+//     * invoked on this thread, the method throws the
+//     * IllegalThreadException runtime exception.
+//     *
+//     * <p> This method allows to write tests without explicit timeouts
+//     * or wait for some event.  Example:
+//     * <code>
+//     * Frame f = ...;
+//     * f.setVisible(true);
+//     * ((SunToolkit)Toolkit.getDefaultToolkit()).realSync();
+//     * </code>
+//     *
+//     * <p> After realSync, <code>f</code> will be completely visible
+//     * on the screen, its getLocationOnScreen will be returning the
+//     * right result and it will be the focus owner.
+//     *
+//     * <p> Another example:
+//     * <code>
+//     * b.requestFocus();
+//     * ((SunToolkit)Toolkit.getDefaultToolkit()).realSync();
+//     * </code>
+//     *
+//     * <p> After realSync, <code>b</code> will be focus owner.
+//     *
+//     * <p> Notice that realSync isn't guaranteed to work if recurring
+//     * actions occur, such as if during processing of some event
+//     * another request which may generate some events occurs.  By
+//     * default, sync tries to perform as much as {@value MAX_ITERS}
+//     * cycles of event processing, allowing for roughly {@value
+//     * MAX_ITERS} additional requests.
+//     *
+//     * <p> For example, requestFocus() generates native request, which
+//     * generates one or two Java focus events, which then generate a
+//     * serie of paint events, a serie of Java focus events, which then
+//     * generate a serie of paint events which then are processed -
+//     * three cycles, minimum.
+//     *
+//     * @param timeout the maximum time to wait in milliseconds, negative means "forever".
+//     */
+//    public void realSync(final long timeout) throws OperationTimedOut, InfiniteLoop
+//    {
+//        if (EventQueue.isDispatchThread()) {
+//            throw new IllegalThreadException("The SunToolkit.realSync() method cannot be used on the event dispatch thread (EDT).");
+//        }
+//        int bigLoop = 0;
+//        do {
+//            // Let's do sync first
+//            sync();
+//
+//            // During the wait process, when we were processing incoming
+//            // events, we could have made some new request, which can
+//            // generate new events.  Example: MapNotify/XSetInputFocus.
+//            // Therefore, we dispatch them as long as there is something
+//            // to dispatch.
+//            int iters = 0;
+//            while (iters < MIN_ITERS) {
+//                syncNativeQueue(timeout);
+//                iters++;
+//            }
+//            while (syncNativeQueue(timeout) && iters < MAX_ITERS) {
+//                iters++;
+//            }
+//            if (iters >= MAX_ITERS) {
+//                throw new InfiniteLoop();
+//            }
+//
+//            // native requests were dispatched by X/Window Manager or Windows
+//            // Moreover, we processed them all on Toolkit thread
+//            // Now wait while EDT processes them.
+//            //
+//            // During processing of some events (focus, for example),
+//            // some other events could have been generated.  So, after
+//            // waitForIdle, we may end up with full EventQueue
+//            iters = 0;
+//            while (iters < MIN_ITERS) {
+//                waitForIdle(timeout);
+//                iters++;
+//            }
+//            while (waitForIdle(timeout) && iters < MAX_ITERS) {
+//                iters++;
+//            }
+//            if (iters >= MAX_ITERS) {
+//                throw new InfiniteLoop();
+//            }
+//
+//            bigLoop++;
+//            // Again, for Java events, it was simple to check for new Java
+//            // events by checking event queue, but what if Java events
+//            // resulted in native requests?  Therefor, check native events again.
+//        } while ((syncNativeQueue(timeout) || waitForIdle(timeout)) && bigLoop < MAX_ITERS);
+//    }
 
     /**
      * Platform toolkits need to implement this method to perform the
@@ -1604,66 +1604,68 @@ public abstract class SunToolkit extends Toolkit
         return AWTAccessor.getEventQueueAccessor().noEvents(queue);
     }
 
-    /**
-     * Waits for the Java event queue to empty.  Ensures that all
-     * events are processed (including paint events), and that if
-     * recursive events were generated, they are also processed.
-     * Should return <code>true</code> if more processing is
-     * necessary, <code>false</code> otherwise.
-     */
-    protected final boolean waitForIdle(final long timeout) {
-        flushPendingEvents();
-        boolean queueWasEmpty = isEQEmpty();
-        queueEmpty = false;
-        eventDispatched = false;
-        synchronized(waitLock) {
-            postEvent(AppContext.getAppContext(),
-                      new PeerEvent(getSystemEventQueueImpl(), null, PeerEvent.LOW_PRIORITY_EVENT) {
-                          public void dispatch() {
-                              // Here we block EDT.  It could have some
-                              // events, it should have dispatched them by
-                              // now.  So native requests could have been
-                              // generated.  First, dispatch them.  Then,
-                              // flush Java events again.
-                              int iters = 0;
-                              while (iters < MIN_ITERS) {
-                                  syncNativeQueue(timeout);
-                                  iters++;
-                              }
-                              while (syncNativeQueue(timeout) && iters < MAX_ITERS) {
-                                  iters++;
-                              }
-                              flushPendingEvents();
-
-                              synchronized(waitLock) {
-                                  queueEmpty = isEQEmpty();
-                                  eventDispatched = true;
-                                  waitLock.notifyAll();
-                              }
-                          }
-                      });
-            try {
-                while (!eventDispatched) {
-                    waitLock.wait();
-                }
-            } catch (InterruptedException ie) {
-                return false;
-            }
-        }
-
-        try {
-            Thread.sleep(MINIMAL_EDELAY);
-        } catch (InterruptedException ie) {
-            throw new RuntimeException("Interrupted");
-        }
-
-        flushPendingEvents();
-
-        // Lock to force write-cache flush for queueEmpty.
-        synchronized (waitLock) {
-            return !(queueEmpty && isEQEmpty() && queueWasEmpty);
-        }
-    }
+//SwingJS CANNOT DO THIS  waitForIdle 
+//    
+//    /**
+//     * Waits for the Java event queue to empty.  Ensures that all
+//     * events are processed (including paint events), and that if
+//     * recursive events were generated, they are also processed.
+//     * Should return <code>true</code> if more processing is
+//     * necessary, <code>false</code> otherwise.
+//     */
+//    protected final boolean waitForIdle(final long timeout) {
+//        flushPendingEvents();
+//        boolean queueWasEmpty = isEQEmpty();
+//        queueEmpty = false;
+//        eventDispatched = false;
+//        synchronized(waitLock) {
+//            postEvent(AppContext.getAppContext(),
+//                      new PeerEvent(getSystemEventQueueImpl(), null, PeerEvent.LOW_PRIORITY_EVENT) {
+//                          public void dispatch() {
+//                              // Here we block EDT.  It could have some
+//                              // events, it should have dispatched them by
+//                              // now.  So native requests could have been
+//                              // generated.  First, dispatch them.  Then,
+//                              // flush Java events again.
+//                              int iters = 0;
+//                              while (iters < MIN_ITERS) {
+//                                  syncNativeQueue(timeout);
+//                                  iters++;
+//                              }
+//                              while (syncNativeQueue(timeout) && iters < MAX_ITERS) {
+//                                  iters++;
+//                              }
+//                              flushPendingEvents();
+//
+//                              synchronized(waitLock) {
+//                                  queueEmpty = isEQEmpty();
+//                                  eventDispatched = true;
+//                                //SwingJS CANNOT DO THIS                waitLock.notifyAll();
+//                              }
+//                          }
+//                      });
+//            try {
+//                while (!eventDispatched) {
+//                    waitLock.wait();
+//                }
+//            } catch (InterruptedException ie) {
+//                return false;
+//            }
+//        }
+//
+//        try {
+//            Thread.sleep(MINIMAL_EDELAY);
+//        } catch (InterruptedException ie) {
+//            throw new RuntimeException("Interrupted");
+//        }
+//
+//        flushPendingEvents();
+//
+//        // Lock to force write-cache flush for queueEmpty.
+//        synchronized (waitLock) {
+//            return !(queueEmpty && isEQEmpty() && queueWasEmpty);
+//        }
+//    }
 
     /**
      * Grabs the mouse input for the given window.  The window must be

@@ -28,10 +28,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Method;
-import jsjava.text.AttributedCharacterIterator;
-import jsjava.text.AttributedString;
-import jsjava.text.CharacterIterator;
-import java.util.Collections;
+//import jsjava.text.AttributedCharacterIterator;
+//import jsjava.text.AttributedString;
+//import jsjava.text.CharacterIterator;
+//import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -56,8 +56,8 @@ import jsjava.awt.event.InputMethodListener;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseListener;
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
+//import jsjava.security.AccessController;
+//import jsjava.security.PrivilegedAction;
 import jsjavax.swing.Action;
 import jsjavax.swing.ActionMap;
 import jsjavax.swing.DropMode;
@@ -485,7 +485,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setComponentOrientation( ComponentOrientation o ) {
         // Set the document's run direction property to match the
         // ComponentOrientation property.
-        Document doc = getDocument();
+//        Document doc = getDocument();
 //        if( doc !=  null ) {
 //            Boolean runDir = o.isLeftToRight()
 //                             ? TextAttribute.RUN_DIRECTION_LTR
@@ -4038,7 +4038,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     }
 
     private static final Object KEYMAP_TABLE = new Object(); // JTextComponent_KeymapTable
-    private JTextComponent editor;
+//    private JTextComponent editor;
     //
     // member variables used for on-the-spot input method
     // editing style support
@@ -4048,10 +4048,10 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     private String composedTextContent;
     private Position composedTextStart;
     private Position composedTextEnd;
-    private Position latestCommittedTextStart;
-    private Position latestCommittedTextEnd;
-    private ComposedTextCaret composedTextCaret;
-    private transient Caret originalCaret;
+//    private Position latestCommittedTextStart;
+//    private Position latestCommittedTextEnd;
+//    private ComposedTextCaret composedTextCaret;
+//    private transient Caret originalCaret;
     /**
      * Set to true after the check for the override of processInputMethodEvent
      * has been checked.
@@ -4685,116 +4685,116 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //        }
 //    }
 
-    //
-    // Replaces the current input method (composed) text according to
-    // the passed input method event. This method also inserts the
-    // committed text into the document.
-    //
-    private void replaceInputMethodText(InputMethodEvent e) {
-        int commitCount = e.getCommittedCharacterCount();
-        AttributedCharacterIterator text = e.getText();
-        int composedTextIndex;
+//    //
+//    // Replaces the current input method (composed) text according to
+//    // the passed input method event. This method also inserts the
+//    // committed text into the document.
+//    //
+//    private void replaceInputMethodText(InputMethodEvent e) {
+//        int commitCount = e.getCommittedCharacterCount();
+//        AttributedCharacterIterator text = e.getText();
+//        int composedTextIndex;
+//
+//        // old composed text deletion
+//        Document doc = getDocument();
+//        if (composedTextExists()) {
+//            try {
+//                doc.remove(composedTextStart.getOffset(),
+//                           composedTextEnd.getOffset() -
+//                           composedTextStart.getOffset());
+//            } catch (BadLocationException ble) {}
+//            composedTextStart = composedTextEnd = null;
+//            composedTextAttribute = null;
+//            composedTextContent = null;
+//        }
+//
+//        if (text != null) {
+//            text.first();
+//            int committedTextStartIndex = 0;
+//            int committedTextEndIndex = 0;
+//
+//            // committed text insertion
+//            if (commitCount > 0) {
+//                // Remember latest committed text start index
+//                committedTextStartIndex = caret.getDot();
+//
+//                // Need to generate KeyTyped events for the committed text for components
+//                // that are not aware they are active input method clients.
+//                if (shouldSynthensizeKeyEvents()) {
+//                    for (char c = text.current(); commitCount > 0;
+//                         c = text.next(), commitCount--) {
+//                        KeyEvent ke = new KeyEvent(this, KeyEvent.KEY_TYPED,
+//                                                   EventQueue.getMostRecentEventTime(),
+//                                                   0, KeyEvent.VK_UNDEFINED, c);
+//                        processKeyEvent(ke);
+//                    }
+//                } else {
+//                    StringBuffer strBuf = new StringBuffer();
+//                    for (char c = text.current(); commitCount > 0;
+//                         c = text.next(), commitCount--) {
+//                        strBuf.append(c);
+//                    }
+//
+//                    // map it to an ActionEvent
+//                    mapCommittedTextToAction(new String(strBuf));
+//                }
+//
+//                // Remember latest committed text end index
+//                committedTextEndIndex = caret.getDot();
+//            }
+//
+//            // new composed text insertion
+//            composedTextIndex = text.getIndex();
+//            if (composedTextIndex < text.getEndIndex()) {
+//                createComposedTextAttribute(composedTextIndex, text);
+//                try {
+//                    replaceSelection(null);
+//                    doc.insertString(caret.getDot(), composedTextContent,
+//                                        composedTextAttribute);
+//                    composedTextStart = doc.createPosition(caret.getDot() -
+//                                                composedTextContent.length());
+//                    composedTextEnd = doc.createPosition(caret.getDot());
+//                } catch (BadLocationException ble) {
+//                    composedTextStart = composedTextEnd = null;
+//                    composedTextAttribute = null;
+//                    composedTextContent = null;
+//                }
+//            }
+//
+//            // Save the latest committed text information
+//            if (committedTextStartIndex != committedTextEndIndex) {
+//                try {
+//                    latestCommittedTextStart = doc.
+//                        createPosition(committedTextStartIndex);
+//                    latestCommittedTextEnd = doc.
+//                        createPosition(committedTextEndIndex);
+//                } catch (BadLocationException ble) {
+//                    latestCommittedTextStart =
+//                        latestCommittedTextEnd = null;
+//                }
+//            } else {
+//                latestCommittedTextStart =
+//                    latestCommittedTextEnd = null;
+//            }
+//        }
+//    }
 
-        // old composed text deletion
-        Document doc = getDocument();
-        if (composedTextExists()) {
-            try {
-                doc.remove(composedTextStart.getOffset(),
-                           composedTextEnd.getOffset() -
-                           composedTextStart.getOffset());
-            } catch (BadLocationException ble) {}
-            composedTextStart = composedTextEnd = null;
-            composedTextAttribute = null;
-            composedTextContent = null;
-        }
-
-        if (text != null) {
-            text.first();
-            int committedTextStartIndex = 0;
-            int committedTextEndIndex = 0;
-
-            // committed text insertion
-            if (commitCount > 0) {
-                // Remember latest committed text start index
-                committedTextStartIndex = caret.getDot();
-
-                // Need to generate KeyTyped events for the committed text for components
-                // that are not aware they are active input method clients.
-                if (shouldSynthensizeKeyEvents()) {
-                    for (char c = text.current(); commitCount > 0;
-                         c = text.next(), commitCount--) {
-                        KeyEvent ke = new KeyEvent(this, KeyEvent.KEY_TYPED,
-                                                   EventQueue.getMostRecentEventTime(),
-                                                   0, KeyEvent.VK_UNDEFINED, c);
-                        processKeyEvent(ke);
-                    }
-                } else {
-                    StringBuffer strBuf = new StringBuffer();
-                    for (char c = text.current(); commitCount > 0;
-                         c = text.next(), commitCount--) {
-                        strBuf.append(c);
-                    }
-
-                    // map it to an ActionEvent
-                    mapCommittedTextToAction(new String(strBuf));
-                }
-
-                // Remember latest committed text end index
-                committedTextEndIndex = caret.getDot();
-            }
-
-            // new composed text insertion
-            composedTextIndex = text.getIndex();
-            if (composedTextIndex < text.getEndIndex()) {
-                createComposedTextAttribute(composedTextIndex, text);
-                try {
-                    replaceSelection(null);
-                    doc.insertString(caret.getDot(), composedTextContent,
-                                        composedTextAttribute);
-                    composedTextStart = doc.createPosition(caret.getDot() -
-                                                composedTextContent.length());
-                    composedTextEnd = doc.createPosition(caret.getDot());
-                } catch (BadLocationException ble) {
-                    composedTextStart = composedTextEnd = null;
-                    composedTextAttribute = null;
-                    composedTextContent = null;
-                }
-            }
-
-            // Save the latest committed text information
-            if (committedTextStartIndex != committedTextEndIndex) {
-                try {
-                    latestCommittedTextStart = doc.
-                        createPosition(committedTextStartIndex);
-                    latestCommittedTextEnd = doc.
-                        createPosition(committedTextEndIndex);
-                } catch (BadLocationException ble) {
-                    latestCommittedTextStart =
-                        latestCommittedTextEnd = null;
-                }
-            } else {
-                latestCommittedTextStart =
-                    latestCommittedTextEnd = null;
-            }
-        }
-    }
-
-    private void createComposedTextAttribute(int composedIndex,
-                                        AttributedCharacterIterator text) {
-        Document doc = getDocument();
-        StringBuffer strBuf = new StringBuffer();
-
-        // create attributed string with no attributes
-        for (char c = text.setIndex(composedIndex);
-             c != CharacterIterator.DONE; c = text.next()) {
-            strBuf.append(c);
-        }
-
-        composedTextContent = new String(strBuf);
-        composedTextAttribute = new SimpleAttributeSet();
-        composedTextAttribute.addAttribute(StyleConstants.ComposedTextAttribute,
-                new AttributedString(text, composedIndex, text.getEndIndex()));
-    }
+//    private void createComposedTextAttribute(int composedIndex,
+//                                        AttributedCharacterIterator text) {
+//        Document doc = getDocument();
+//        StringBuffer strBuf = new StringBuffer();
+//
+//        // create attributed string with no attributes
+//        for (char c = text.setIndex(composedIndex);
+//             c != CharacterIterator.DONE; c = text.next()) {
+//            strBuf.append(c);
+//        }
+//
+//        composedTextContent = new String(strBuf);
+//        composedTextAttribute = new SimpleAttributeSet();
+//        composedTextAttribute.addAttribute(StyleConstants.ComposedTextAttribute,
+//                new AttributedString(text, composedIndex, text.getEndIndex()));
+//    }
 
     private boolean saveComposedText(int pos) {
         if (composedTextExists()) {
@@ -4823,35 +4823,35 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         } catch (BadLocationException ble) {}
     }
 
-    //
-    // Map committed text to an ActionEvent. If the committed text length is 1,
-    // treat it as a KeyStroke, otherwise or there is no KeyStroke defined,
-    // treat it just as a default action.
-    //
-    private void mapCommittedTextToAction(String committedText) {
-        Keymap binding = getKeymap();
-        if (binding != null) {
-            Action a = null;
-            if (committedText.length() == 1) {
-                KeyStroke k = KeyStroke.getKeyStroke(committedText.charAt(0));
-                a = binding.getAction(k);
-            }
-
-            if (a == null) {
-                a = binding.getDefaultAction();
-            }
-
-            if (a != null) {
-                ActionEvent ae =
-                    new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                                    committedText,
-                                    EventQueue.getMostRecentEventTime(),
-                                    getCurrentEventModifiers());
-                a.actionPerformed(ae);
-            }
-        }
-    }
-
+//    //
+//    // Map committed text to an ActionEvent. If the committed text length is 1,
+//    // treat it as a KeyStroke, otherwise or there is no KeyStroke defined,
+//    // treat it just as a default action.
+//    //
+//    private void mapCommittedTextToAction(String committedText) {
+//        Keymap binding = getKeymap();
+//        if (binding != null) {
+//            Action a = null;
+//            if (committedText.length() == 1) {
+//                KeyStroke k = KeyStroke.getKeyStroke(committedText.charAt(0));
+//                a = binding.getAction(k);
+//            }
+//
+//            if (a == null) {
+//                a = binding.getDefaultAction();
+//            }
+//
+//            if (a != null) {
+//                ActionEvent ae =
+//                    new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+//                                    committedText,
+//                                    EventQueue.getMostRecentEventTime(),
+//                                    getCurrentEventModifiers());
+//                a.actionPerformed(ae);
+//            }
+//        }
+//    }
+//
 //    //
 //    // Sets the caret position according to the passed input method
 //    // event. Also, sets/resets composed text caret appropriately.
@@ -4894,50 +4894,50 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //            caret.setDot(dot);
 //        }
 //    }
+//
+//    private void exchangeCaret(Caret oldCaret, Caret newCaret) {
+//        int blinkRate = oldCaret.getBlinkRate();
+//        setCaret(newCaret);
+//        caret.setBlinkRate(blinkRate);
+//        caret.setVisible(hasFocus());
+//    }
+//
+//    /**
+//     * Returns true if KeyEvents should be synthesized from an InputEvent.
+//     */
+//    private boolean shouldSynthensizeKeyEvents() {
+//        if (!checkedInputOverride) {
+//            checkedInputOverride = true;
+//            needToSendKeyTypedEvent =
+//                             !isProcessInputMethodEventOverridden();
+//        }
+//        return needToSendKeyTypedEvent;
+//    }
 
-    private void exchangeCaret(Caret oldCaret, Caret newCaret) {
-        int blinkRate = oldCaret.getBlinkRate();
-        setCaret(newCaret);
-        caret.setBlinkRate(blinkRate);
-        caret.setVisible(hasFocus());
-    }
-
-    /**
-     * Returns true if KeyEvents should be synthesized from an InputEvent.
-     */
-    private boolean shouldSynthensizeKeyEvents() {
-        if (!checkedInputOverride) {
-            checkedInputOverride = true;
-            needToSendKeyTypedEvent =
-                             !isProcessInputMethodEventOverridden();
-        }
-        return needToSendKeyTypedEvent;
-    }
-
-    //
-    // Checks whether the client code overrides processInputMethodEvent.  If it is overridden,
-    // need not to generate KeyTyped events for committed text. If it's not, behave as an
-    // passive input method client.
-    //
-    private boolean isProcessInputMethodEventOverridden() {
-        if (overrideMap == null) {
-            overrideMap = Collections.synchronizedMap(new HashMap());
-        }
-        Boolean retValue = (Boolean)overrideMap.get(getClass().getName());
-
-        if (retValue != null) {
-            return retValue.booleanValue();
-        }
-        Boolean ret = (Boolean)AccessController.doPrivileged(new
-                       PrivilegedAction() {
-            public Object run() {
-                return isProcessInputMethodEventOverridden(
-                                JTextComponent.this.getClass());
-            }
-        });
-
-        return ret.booleanValue();
-    }
+//    //
+//    // Checks whether the client code overrides processInputMethodEvent.  If it is overridden,
+//    // need not to generate KeyTyped events for committed text. If it's not, behave as an
+//    // passive input method client.
+//    //
+//    private boolean isProcessInputMethodEventOverridden() {
+//        if (overrideMap == null) {
+//            overrideMap = Collections.synchronizedMap(new HashMap());
+//        }
+//        Boolean retValue = (Boolean)overrideMap.get(getClass().getName());
+//
+//        if (retValue != null) {
+//            return retValue.booleanValue();
+//        }
+//        Boolean ret = (Boolean)AccessController.doPrivileged(new
+//                       PrivilegedAction() {
+//            public Object run() {
+//                return isProcessInputMethodEventOverridden(
+//                                JTextComponent.this.getClass());
+//            }
+//        });
+//
+//        return ret.booleanValue();
+//    }
 
     //
     // Checks whether a composed text in this text component

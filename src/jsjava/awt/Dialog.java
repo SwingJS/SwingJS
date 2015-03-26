@@ -24,8 +24,8 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.event.ComponentEvent;
-import jsjava.awt.event.HierarchyEvent;
+//import jsjava.awt.event.ComponentEvent;
+//import jsjava.awt.event.HierarchyEvent;
 import jsjava.awt.event.WindowEvent;
 import jssun.awt.AppContext;
 
