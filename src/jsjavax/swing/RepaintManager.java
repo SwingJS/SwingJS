@@ -36,7 +36,6 @@ import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
-import jsjava.awt.EventQueue;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
@@ -48,7 +47,6 @@ import jsjava.awt.event.InvocationEvent;
 import jsjava.awt.image.VolatileImage;
 import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
-import jssun.awt.DisplayChangedListener;
 import jssun.awt.SunToolkit;
 
 /**
@@ -311,10 +309,10 @@ public class RepaintManager {
 		//}
 	}
 
-	private void displayChanged() {
-		clearImages();
-	}
-
+//	private void displayChanged() {
+//		clearImages();
+//	}
+//
 	/**
 	 * Mark the component as in need of layout and queue a runnable for the event
 	 * dispatching thread that will validate the components first isValidateRoot()
@@ -1551,45 +1549,45 @@ public class RepaintManager {
 		public boolean needsReset = false;
 	}
 
-	/**
-	 * Listener installed to detect display changes. When display changes,
-	 * schedules a callback to notify all RepaintManagers of the display changes.
-	 * Only one DisplayChangedHandler is ever installed. The singleton instance
-	 * will schedule notification for all AppContexts.
-	 */
-	private static final class DisplayChangedHandler implements
-			DisplayChangedListener {
-		public void displayChanged() {
-			scheduleDisplayChanges();
-		}
-
-		public void paletteChanged() {
-		}
-
-		private void scheduleDisplayChanges() {
-			// To avoid threading problems, we notify each RepaintManager
-			// on the thread it was created on.
-			for (Object c : AppContext.getAppContexts()) {
-				AppContext context = (AppContext) c;
-				synchronized (context) {
-					if (!context.isDisposed()) {
-						EventQueue eventQueue = (EventQueue) context
-								.get(AppContext.EVENT_QUEUE_KEY);
-						if (eventQueue != null) {
-							eventQueue.postEvent(new InvocationEvent(Toolkit
-									.getDefaultToolkit(), new DisplayChangedRunnable()));
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private static final class DisplayChangedRunnable implements Runnable {
-		public void run() {
-			RepaintManager.currentManager((JComponent) null).displayChanged();
-		}
-	}
+//	/**
+//	 * Listener installed to detect display changes. When display changes,
+//	 * schedules a callback to notify all RepaintManagers of the display changes.
+//	 * Only one DisplayChangedHandler is ever installed. The singleton instance
+//	 * will schedule notification for all AppContexts.
+//	 */
+//	private static final class DisplayChangedHandler implements
+//			DisplayChangedListener {
+//		public void displayChanged() {
+//			scheduleDisplayChanges();
+//		}
+//
+//		public void paletteChanged() {
+//		}
+//
+//		private void scheduleDisplayChanges() {
+//			// To avoid threading problems, we notify each RepaintManager
+//			// on the thread it was created on.
+//			for (Object c : AppContext.getAppContexts()) {
+//				AppContext context = (AppContext) c;
+//				synchronized (context) {
+//					if (!context.isDisposed()) {
+//						EventQueue eventQueue = (EventQueue) context
+//								.get(AppContext.EVENT_QUEUE_KEY);
+//						if (eventQueue != null) {
+//							eventQueue.postEvent(new InvocationEvent(Toolkit
+//									.getDefaultToolkit(), new DisplayChangedRunnable()));
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	private static final class DisplayChangedRunnable implements Runnable {
+//		public void run() {
+//			RepaintManager.currentManager((JComponent) null).displayChanged();
+//		}
+//	}
 
 	/**
 	 * Runnable used to process all repaint/revalidate requests.

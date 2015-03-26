@@ -87,10 +87,10 @@ public class JMenuBar extends JComponent implements MenuElement
     private boolean paintBorder           = true;
     private Insets     margin             = null;
 
-    /* diagnostic aids -- should be false for production builds. */
-    private static final boolean TRACE =   false; // trace creates and disposes
-    private static final boolean VERBOSE = false; // show reuse hits/misses
-    private static final boolean DEBUG =   false;  // show bad params, misc.
+//    /* diagnostic aids -- should be false for production builds. */
+//    private static final boolean TRACE =   false; // trace creates and disposes
+//    private static final boolean VERBOSE = false; // show reuse hits/misses
+//    private static final boolean DEBUG =   false;  // show bad params, misc.
 
     /**
      * Creates a new menu bar.

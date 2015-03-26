@@ -859,42 +859,42 @@ public abstract class NumberFormat extends Format  {
      */
     private boolean groupingUsed = true;
 
-    /**
-     * The maximum number of digits allowed in the integer portion of a
-     * number.  <code>maxIntegerDigits</code> must be greater than or equal to
-     * <code>minIntegerDigits</code>.
-     * <p>
-     * <strong>Note:</strong> This field exists only for serialization
-     * compatibility with JDK 1.1.  In Java platform 2 v1.2 and higher, the new
-     * <code>int</code> field <code>maximumIntegerDigits</code> is used instead.
-     * When writing to a stream, <code>maxIntegerDigits</code> is set to
-     * <code>maximumIntegerDigits</code> or <code>Byte.MAX_VALUE</code>,
-     * whichever is smaller.  When reading from a stream, this field is used
-     * only if <code>serialVersionOnStream</code> is less than 1.
-     *
-     * @serial
-     * @see #getMaximumIntegerDigits
-     */
-    private byte    maxIntegerDigits = 40;
-
-    /**
-     * The minimum number of digits allowed in the integer portion of a
-     * number.  <code>minimumIntegerDigits</code> must be less than or equal to
-     * <code>maximumIntegerDigits</code>.
-     * <p>
-     * <strong>Note:</strong> This field exists only for serialization
-     * compatibility with JDK 1.1.  In Java platform 2 v1.2 and higher, the new
-     * <code>int</code> field <code>minimumIntegerDigits</code> is used instead.
-     * When writing to a stream, <code>minIntegerDigits</code> is set to
-     * <code>minimumIntegerDigits</code> or <code>Byte.MAX_VALUE</code>,
-     * whichever is smaller.  When reading from a stream, this field is used
-     * only if <code>serialVersionOnStream</code> is less than 1.
-     *
-     * @serial
-     * @see #getMinimumIntegerDigits
-     */
-    private byte    minIntegerDigits = 1;
-
+//    /**
+//     * The maximum number of digits allowed in the integer portion of a
+//     * number.  <code>maxIntegerDigits</code> must be greater than or equal to
+//     * <code>minIntegerDigits</code>.
+//     * <p>
+//     * <strong>Note:</strong> This field exists only for serialization
+//     * compatibility with JDK 1.1.  In Java platform 2 v1.2 and higher, the new
+//     * <code>int</code> field <code>maximumIntegerDigits</code> is used instead.
+//     * When writing to a stream, <code>maxIntegerDigits</code> is set to
+//     * <code>maximumIntegerDigits</code> or <code>Byte.MAX_VALUE</code>,
+//     * whichever is smaller.  When reading from a stream, this field is used
+//     * only if <code>serialVersionOnStream</code> is less than 1.
+//     *
+//     * @serial
+//     * @see #getMaximumIntegerDigits
+//     */
+//    private byte    maxIntegerDigits = 40;
+//
+//    /**
+//     * The minimum number of digits allowed in the integer portion of a
+//     * number.  <code>minimumIntegerDigits</code> must be less than or equal to
+//     * <code>maximumIntegerDigits</code>.
+//     * <p>
+//     * <strong>Note:</strong> This field exists only for serialization
+//     * compatibility with JDK 1.1.  In Java platform 2 v1.2 and higher, the new
+//     * <code>int</code> field <code>minimumIntegerDigits</code> is used instead.
+//     * When writing to a stream, <code>minIntegerDigits</code> is set to
+//     * <code>minimumIntegerDigits</code> or <code>Byte.MAX_VALUE</code>,
+//     * whichever is smaller.  When reading from a stream, this field is used
+//     * only if <code>serialVersionOnStream</code> is less than 1.
+//     *
+//     * @serial
+//     * @see #getMinimumIntegerDigits
+//     */
+//    private byte    minIntegerDigits = 1;
+//
     /**
      * The maximum number of digits allowed in the fractional portion of a
      * number.  <code>maximumFractionDigits</code> must be greater than or equal to
@@ -913,23 +913,23 @@ public abstract class NumberFormat extends Format  {
      */
     private byte    maxFractionDigits = 3;    // invariant, >= minFractionDigits
 
-    /**
-     * The minimum number of digits allowed in the fractional portion of a
-     * number.  <code>minimumFractionDigits</code> must be less than or equal to
-     * <code>maximumFractionDigits</code>.
-     * <p>
-     * <strong>Note:</strong> This field exists only for serialization
-     * compatibility with JDK 1.1.  In Java platform 2 v1.2 and higher, the new
-     * <code>int</code> field <code>minimumFractionDigits</code> is used instead.
-     * When writing to a stream, <code>minFractionDigits</code> is set to
-     * <code>minimumFractionDigits</code> or <code>Byte.MAX_VALUE</code>,
-     * whichever is smaller.  When reading from a stream, this field is used
-     * only if <code>serialVersionOnStream</code> is less than 1.
-     *
-     * @serial
-     * @see #getMinimumFractionDigits
-     */
-    private byte    minFractionDigits = 0;
+//    /**
+//     * The minimum number of digits allowed in the fractional portion of a
+//     * number.  <code>minimumFractionDigits</code> must be less than or equal to
+//     * <code>maximumFractionDigits</code>.
+//     * <p>
+//     * <strong>Note:</strong> This field exists only for serialization
+//     * compatibility with JDK 1.1.  In Java platform 2 v1.2 and higher, the new
+//     * <code>int</code> field <code>minimumFractionDigits</code> is used instead.
+//     * When writing to a stream, <code>minFractionDigits</code> is set to
+//     * <code>minimumFractionDigits</code> or <code>Byte.MAX_VALUE</code>,
+//     * whichever is smaller.  When reading from a stream, this field is used
+//     * only if <code>serialVersionOnStream</code> is less than 1.
+//     *
+//     * @serial
+//     * @see #getMinimumFractionDigits
+//     */
+//    private byte    minFractionDigits = 0;
 
     /**
      * True if this format will parse numbers as integers only.
@@ -987,28 +987,28 @@ public abstract class NumberFormat extends Format  {
 
     static final int currentSerialVersion = 1;
 
-    /**
-     * Describes the version of <code>NumberFormat</code> present on the stream.
-     * Possible values are:
-     * <ul>
-     * <li><b>0</b> (or uninitialized): the JDK 1.1 version of the stream format.
-     *     In this version, the <code>int</code> fields such as
-     *     <code>maximumIntegerDigits</code> were not present, and the <code>byte</code>
-     *     fields such as <code>maxIntegerDigits</code> are used instead.
-     *
-     * <li><b>1</b>: the 1.2 version of the stream format.  The values of the
-     *     <code>byte</code> fields such as <code>maxIntegerDigits</code> are ignored,
-     *     and the <code>int</code> fields such as <code>maximumIntegerDigits</code>
-     *     are used instead.
-     * </ul>
-     * When streaming out a <code>NumberFormat</code>, the most recent format
-     * (corresponding to the highest allowable <code>serialVersionOnStream</code>)
-     * is always written.
-     *
-     * @serial
-     * @since 1.2
-     */
-    private int serialVersionOnStream = currentSerialVersion;
+//    /**
+//     * Describes the version of <code>NumberFormat</code> present on the stream.
+//     * Possible values are:
+//     * <ul>
+//     * <li><b>0</b> (or uninitialized): the JDK 1.1 version of the stream format.
+//     *     In this version, the <code>int</code> fields such as
+//     *     <code>maximumIntegerDigits</code> were not present, and the <code>byte</code>
+//     *     fields such as <code>maxIntegerDigits</code> are used instead.
+//     *
+//     * <li><b>1</b>: the 1.2 version of the stream format.  The values of the
+//     *     <code>byte</code> fields such as <code>maxIntegerDigits</code> are ignored,
+//     *     and the <code>int</code> fields such as <code>maximumIntegerDigits</code>
+//     *     are used instead.
+//     * </ul>
+//     * When streaming out a <code>NumberFormat</code>, the most recent format
+//     * (corresponding to the highest allowable <code>serialVersionOnStream</code>)
+//     * is always written.
+//     *
+//     * @serial
+//     * @since 1.2
+//     */
+//    private int serialVersionOnStream = currentSerialVersion;
 
     // Removed "implements Cloneable" clause.  Needs to update serialization
     // ID for backward compatibility.
