@@ -235,7 +235,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener 
     void showTipWindow() {
         if(insideComponent == null || !insideComponent.isShowing())
             return;
-        String mode = UIManager.getString("ToolTipManager.enableToolTipMode");
+//        String mode = UIManager.getString("ToolTipManager.enableToolTipMode");
 //        if ("activeApplication".equals(mode)) {
 //            KeyboardFocusManager kfm =
 //                    KeyboardFocusManager.getCurrentKeyboardFocusManager();

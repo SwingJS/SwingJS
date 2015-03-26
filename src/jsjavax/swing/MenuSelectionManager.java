@@ -45,10 +45,10 @@ import jssun.awt.AppContext;
 public class MenuSelectionManager {
     private Vector selection = new Vector();
 
-    /* diagnostic aids -- should be false for production builds. */
-    private static final boolean TRACE =   false; // trace creates and disposes
-    private static final boolean VERBOSE = false; // show reuse hits/misses
-    private static final boolean DEBUG =   false;  // show bad params, misc.
+//    /* diagnostic aids -- should be false for production builds. */
+//    private static final boolean TRACE =   false; // trace creates and disposes
+//    private static final boolean VERBOSE = false; // show reuse hits/misses
+//    private static final boolean DEBUG =   false;  // show bad params, misc.
 
     private static final Object MENU_SELECTION_MANAGER_KEY = new Object(); // jsjavax.swing.MenuSelectionManager
 
@@ -99,11 +99,11 @@ public class MenuSelectionManager {
             path = new MenuElement[0];
         }
 
-        if (DEBUG) {
-            System.out.print("Previous:  "); printMenuElementArray(getSelectedPath());
-            System.out.print("New:  "); printMenuElementArray(path);
-        }
-
+//        if (DEBUG) {
+//            System.out.print("Previous:  "); printMenuElementArray(getSelectedPath());
+//            System.out.print("New:  "); printMenuElementArray(path);
+//        }
+//
         for(i=0,c=path.length;i<c;i++) {
             if(i < currentSelectionCount && (MenuElement)selection.elementAt(i) == path[i])
                 firstDifference++;
@@ -212,7 +212,7 @@ public class MenuSelectionManager {
     public void processMouseEvent(MouseEvent event) {
         int screenX,screenY;
         Point p;
-        int i,c,j,d;
+        int i,j,d;
         Component mc;
         Rectangle r2;
         int cWidth,cHeight;
@@ -331,35 +331,35 @@ public class MenuSelectionManager {
         }
     }
 
-    private void printMenuElementArray(MenuElement path[]) {
-        printMenuElementArray(path, false);
-    }
-
-    private void printMenuElementArray(MenuElement path[], boolean dumpStack) {
-        System.out.println("Path is(");
-        int i, j;
-        for(i=0,j=path.length; i<j ;i++){
-            for (int k=0; k<=i; k++)
-                System.out.print("  ");
-            MenuElement me = (MenuElement) path[i];
-            if(me instanceof JMenuItem) {
-                System.out.println(((JMenuItem)me).getText() + ", ");
-            } else if (me instanceof JMenuBar) {
-                System.out.println("JMenuBar, ");
-            } else if(me instanceof JPopupMenu) {
-                System.out.println("JPopupMenu, ");
-            } else if (me == null) {
-                System.out.println("NULL , ");
-            } else {
-                System.out.println("" + me + ", ");
-            }
-        }
-        System.out.println(")");
-
-        if (dumpStack == true)
-            Thread.dumpStack();
-    }
-
+//    private void printMenuElementArray(MenuElement path[]) {
+//        printMenuElementArray(path, false);
+//    }
+//
+//    private void printMenuElementArray(MenuElement path[], boolean dumpStack) {
+//        System.out.println("Path is(");
+//        int i, j;
+//        for(i=0,j=path.length; i<j ;i++){
+//            for (int k=0; k<=i; k++)
+//                System.out.print("  ");
+//            MenuElement me = (MenuElement) path[i];
+//            if(me instanceof JMenuItem) {
+//                System.out.println(((JMenuItem)me).getText() + ", ");
+//            } else if (me instanceof JMenuBar) {
+//                System.out.println("JMenuBar, ");
+//            } else if(me instanceof JPopupMenu) {
+//                System.out.println("JPopupMenu, ");
+//            } else if (me == null) {
+//                System.out.println("NULL , ");
+//            } else {
+//                System.out.println("" + me + ", ");
+//            }
+//        }
+//        System.out.println(")");
+//
+//        if (dumpStack == true)
+//            Thread.dumpStack();
+//    }
+//
     /**
      * Returns the component in the currently selected path
      * which contains sourcePoint.
@@ -375,7 +375,7 @@ public class MenuSelectionManager {
     public Component componentForPoint(Component source, Point sourcePoint) {
         int screenX,screenY;
         Point p = sourcePoint;
-        int i,c,j,d;
+        int i,j,d;
         Component mc;
         Rectangle r2;
         int cWidth,cHeight;

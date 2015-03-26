@@ -88,10 +88,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      */
     private static final String uiClassID = "MenuItemUI";
 
-    /* diagnostic aids -- should be false for production builds. */
-    private static final boolean TRACE =   false; // trace creates and disposes
-    private static final boolean VERBOSE = false; // show reuse hits/misses
-    private static final boolean DEBUG =   false;  // show bad params, misc.
+//    /* diagnostic aids -- should be false for production builds. */
+//    private static final boolean TRACE =   false; // trace creates and disposes
+//    private static final boolean VERBOSE = false; // show reuse hits/misses
+//    private static final boolean DEBUG =   false;  // show bad params, misc.
 
     private boolean isMouseDragged = false;
 
@@ -441,10 +441,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param manager   the <code>MenuSelectionManager</code>
      */
     public void processKeyEvent(KeyEvent e,MenuElement path[],MenuSelectionManager manager) {
-        if (DEBUG) {
-            System.out.println("in JMenuItem.processKeyEvent/3 for " + getText() +
-                                   "  " + KeyStroke.getKeyStrokeForEvent(e));
-        }
+//        if (DEBUG) {
+//            System.out.println("in JMenuItem.processKeyEvent/3 for " + getText() +
+//                                   "  " + KeyStroke.getKeyStrokeForEvent(e));
+//        }
         MenuKeyEvent mke = new MenuKeyEvent(e.getComponent(), e.getID(),
                                              e.getWhen(), e.getModifiers(),
                                              e.getKeyCode(), e.getKeyChar(),
@@ -484,10 +484,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param e  a <code>MenuKeyEvent</code> object
      */
     public void processMenuKeyEvent(MenuKeyEvent e) {
-        if (DEBUG) {
-            System.out.println("in JMenuItem.processMenuKeyEvent for " + getText()+
-                                   "  " + KeyStroke.getKeyStrokeForEvent(e));
-        }
+//        if (DEBUG) {
+//            System.out.println("in JMenuItem.processMenuKeyEvent for " + getText()+
+//                                   "  " + KeyStroke.getKeyStrokeForEvent(e));
+//        }
         switch (e.getID()) {
         case KeyEvent.KEY_PRESSED:
             fireMenuKeyPressed(e); break;
@@ -588,10 +588,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @see EventListenerList
      */
     protected void fireMenuKeyPressed(MenuKeyEvent event) {
-        if (DEBUG) {
-            System.out.println("in JMenuItem.fireMenuKeyPressed for " + getText()+
-                                   "  " + KeyStroke.getKeyStrokeForEvent(event));
-        }
+//        if (DEBUG) {
+//            System.out.println("in JMenuItem.fireMenuKeyPressed for " + getText()+
+//                                   "  " + KeyStroke.getKeyStrokeForEvent(event));
+//        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -612,10 +612,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @see EventListenerList
      */
     protected void fireMenuKeyReleased(MenuKeyEvent event) {
-        if (DEBUG) {
-            System.out.println("in JMenuItem.fireMenuKeyReleased for " + getText()+
-                                   "  " + KeyStroke.getKeyStrokeForEvent(event));
-        }
+//        if (DEBUG) {
+//            System.out.println("in JMenuItem.fireMenuKeyReleased for " + getText()+
+//                                   "  " + KeyStroke.getKeyStrokeForEvent(event));
+//        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -636,10 +636,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @see EventListenerList
      */
     protected void fireMenuKeyTyped(MenuKeyEvent event) {
-        if (DEBUG) {
-            System.out.println("in JMenuItem.fireMenuKeyTyped for " + getText()+
-                                   "  " + KeyStroke.getKeyStrokeForEvent(event));
-        }
+//        if (DEBUG) {
+//            System.out.println("in JMenuItem.fireMenuKeyTyped for " + getText()+
+//                                   "  " + KeyStroke.getKeyStrokeForEvent(event));
+//        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying

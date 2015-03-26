@@ -208,10 +208,10 @@ public class Popup {
      * should override.
      */
     Component createComponent(Component owner) {
-        if (GraphicsEnvironment.isHeadless()) {
-            // Generally not useful, bail.
-            return null;
-        }
+//        if (GraphicsEnvironment.isHeadless()) {
+//            // Generally not useful, bail.
+//            return null;
+//        }
         return new HeavyWeightWindow(getParentWindow(owner));
     }
 

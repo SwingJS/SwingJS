@@ -123,15 +123,15 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      */
     private SingleSelectionModel selectionModel;
 
-    /* Lock object used in place of class object for synchronization.
-     * (4187686)
-     */
-    private static final Object classLock = new Object();
-
-    /* diagnostic aids -- should be false for production builds. */
-    private static final boolean TRACE =   false; // trace creates and disposes
-    private static final boolean VERBOSE = false; // show reuse hits/misses
-    private static final boolean DEBUG =   false;  // show bad params, misc.
+//    /* Lock object used in place of class object for synchronization.
+//     * (4187686)
+//     */
+//    private static final Object classLock = new Object();
+//
+//    /* diagnostic aids -- should be false for production builds. */
+//    private static final boolean TRACE =   false; // trace creates and disposes
+//    private static final boolean VERBOSE = false; // show reuse hits/misses
+//    private static final boolean DEBUG =   false;  // show bad params, misc.
 
     /**
      *  Sets the default value of the <code>lightWeightPopupEnabled</code>
@@ -717,9 +717,9 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *     description: Makes the popup visible
      */
     public void setVisible(boolean b) {
-        if (DEBUG) {
-            System.out.println("JPopupMenu.setVisible " + b);
-        }
+//        if (DEBUG) {
+//            System.out.println("JPopupMenu.setVisible " + b);
+//        }
 
         // Is it a no-op?
         if (b == isVisible())
@@ -890,9 +890,9 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * the popup menu is to be displayed
      */
     public void show(Component invoker, int x, int y) {
-        if (DEBUG) {
-            System.out.println("in JPopupMenu.show " );
-        }
+//        if (DEBUG) {
+//            System.out.println("in JPopupMenu.show " );
+//        }
         setInvoker(invoker);
         Frame newFrame = getFrame(invoker);
         if (newFrame != frame) {
@@ -1430,9 +1430,9 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @see MenuElement#menuSelectionChanged(boolean)
      */
     public void menuSelectionChanged(boolean isIncluded) {
-        if (DEBUG) {
-            System.out.println("In JPopupMenu.menuSelectionChanged " + isIncluded);
-        }
+//        if (DEBUG) {
+//            System.out.println("In JPopupMenu.menuSelectionChanged " + isIncluded);
+//        }
         if(invoker instanceof JMenu) {
             JMenu m = (JMenu) invoker;
             if(isIncluded)

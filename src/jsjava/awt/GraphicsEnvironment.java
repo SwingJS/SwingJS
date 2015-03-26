@@ -48,16 +48,16 @@ import java.util.Locale;
 public abstract class GraphicsEnvironment {
     private static GraphicsEnvironment localEnv;
 
-    /**
-     * The headless state of the Toolkit and GraphicsEnvironment
-     */
-    private static Boolean headless;
-
-    /**
-     * The headless state assumed by default
-     */
-    private static Boolean defaultHeadless;
-
+//    /**
+//     * The headless state of the Toolkit and GraphicsEnvironment
+//     */
+//    private static Boolean headless;
+//
+//    /**
+//     * The headless state assumed by default
+//     */
+//    private static Boolean defaultHeadless;
+//
     /**
      * This is an abstract class and cannot be instantiated directly.
      * Instances must be obtained from a suitable factory or query method.
@@ -71,26 +71,29 @@ public abstract class GraphicsEnvironment {
      */
     public static synchronized GraphicsEnvironment getLocalGraphicsEnvironment() {
         if (localEnv == null) {
-        	  final String def = null;
+        	String nm = null;
+//        	  final String def = null;
         	  /**
         	   * @j2sNative
         	   * 
-        	   * def = "swingjs.JSGraphicsEnvironment";
+        	   * nm = "swingjs.JSGraphicsEnvironment";
         	   */
-        	  {}
-            String nm = (String) jsjava.security.AccessController.doPrivileged
-                (new jssun.security.action.GetPropertyAction
-                 ("java.awt.graphicsenv", def));
-
+        	  {
+        	  	nm = "ignored";
+        	  }
+//            String nm = (String) jsjava.security.AccessController.doPrivileged
+//                (new jssun.security.action.GetPropertyAction
+//                 ("java.awt.graphicsenv", def));
+//
             try {
-//                      long t0 = System.currentTimeMillis();
+////                      long t0 = System.currentTimeMillis();
                 localEnv =
                     (GraphicsEnvironment) Class.forName(nm).newInstance();
-//              long t1 = System.currentTimeMillis();
-//              System.out.println("GE creation took " + (t1-t0)+ "ms.");
-//                if (isHeadless()) {
-//                    localEnv = new HeadlessGraphicsEnvironment(localEnv);
-//                }
+////              long t1 = System.currentTimeMillis();
+////              System.out.println("GE creation took " + (t1-t0)+ "ms.");
+////                if (isHeadless()) {
+////                    localEnv = new HeadlessGraphicsEnvironment(localEnv);
+////                }
             } catch (ClassNotFoundException e) {
                 throw new Error("Could not find class: "+nm);
             } catch (InstantiationException e) {

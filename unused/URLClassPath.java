@@ -44,130 +44,130 @@ import jssun.net.www.ParseUtil;
  * @author  David Connelly
  */
 public class URLClassPath {
-    final static String USER_AGENT_JAVA_VERSION = "UA-Java-Version";
-    final static String JAVA_VERSION;
-    private static final boolean DEBUG;
-    private static final boolean DISABLE_JAR_CHECKING;
-
-    static {
-        JAVA_VERSION = "1.6";//jsjava.security.AccessController.doPrivileged(
-            //new jssun.security.action.GetPropertyAction("java.version"));
-        DEBUG        = false;//(jsjava.security.AccessController.doPrivileged(
-            //new jssun.security.action.GetPropertyAction("jssun.misc.URLClassPath.debug")) != null);
-        //String p = jsjava.security.AccessController.doPrivileged(
-            //new jssun.security.action.GetPropertyAction("jssun.misc.URLClassPath.disableJarChecking"));
-        DISABLE_JAR_CHECKING = true;//p != null ? p.equals("true") || p.equals("") : false;
-    }
-
-    /* The original search path of URLs. */
-    private ArrayList path = new ArrayList();
-
-    /* The stack of unopened URLs */
-    Stack urls = new Stack();
-
-    /* The resulting search path of Loaders */
-    ArrayList loaders = new ArrayList();
-
-    /* Map of each URL opened to its corresponding Loader */
-    HashMap lmap = new HashMap();
-
-    /* The jar protocol handler to use when creating new URLs */
-    private URLStreamHandler jarHandler;
-
-    /**
-     * Creates a new URLClassPath for the given URLs. The URLs will be
-     * searched in the order specified for classes and resources. A URL
-     * ending with a '/' is assumed to refer to a directory. Otherwise,
-     * the URL is assumed to refer to a JAR file.
-     *
-     * @param urls the directory and JAR file URLs to search for classes
-     *        and resources
-     * @param factory the URLStreamHandlerFactory to use when creating new URLs
-     */
-    public URLClassPath(URL[] urls, URLStreamHandlerFactory factory) {
-        for (int i = 0; i < urls.length; i++) {
-            path.add(urls[i]);
-        }
-        push(urls);
-        if (factory != null) {
-            jarHandler = factory.createURLStreamHandler("jar");
-        }
-    }
-
-    public URLClassPath(URL[] urls) {
-        this(urls, null);
-    }
-
-    /**
-     * Appends the specified URL to the search path of directory and JAR
-     * file URLs from which to load classes and resources.
-     */
-    public void addURL(URL url) {
-        synchronized (urls) {
-            if (path.contains(url))
-                return;
-
-            urls.add(0, url);
-            path.add(url);
-        }
-    }
-
-    /**
-     * Returns the original search path of URLs.
-     */
-    public URL[] getURLs() {
-        synchronized (urls) {
-            return (URL[])path.toArray(new URL[path.size()]);
-        }
-    }
-
-    /**
-     * Finds the resource with the specified name on the URL search path
-     * or null if not found or security check fails.
-     *
-     * @param name      the name of the resource
-     * @param check     whether to perform a security check
-     * @return a <code>URL</code> for the resource, or <code>null</code>
-     * if the resource could not be found.
-     */
-    public URL findResource(String name, boolean check) {
-
-    	//TODO
-    	
-//        Loader loader;
-//        for (int i = 0; (loader = getLoader(i)) != null; i++) {
-//            URL url = loader.findResource(name, check);
-//            if (url != null) {
-//                return url;
-//            }
-//        }
-        return null;
-    }
-
-    /**
-     * Finds the first Resource on the URL search path which has the specified
-     * name. Returns null if no Resource could be found.
-     *
-     * @param name the name of the Resource
-     * @param check     whether to perform a security check
-     * @return the Resource, or null if not found
-     */
-    public Resource getResource(String name, boolean check) {
-    	// TODO
-//        if (DEBUG) {
-//            System.err.println("URLClassPath.getResource(\"" + name + "\")");
-//        }
+//    final static String USER_AGENT_JAVA_VERSION = "UA-Java-Version";
+//    final static String JAVA_VERSION;
+//    private static final boolean DEBUG;
+//    private static final boolean DISABLE_JAR_CHECKING;
 //
-//        Loader loader;
-//        for (int i = 0; (loader = getLoader(i)) != null; i++) {
-//            Resource res = loader.getResource(name, check);
-//            if (res != null) {
-//                return res;
-//            }
+//    static {
+//        JAVA_VERSION = "1.6";//jsjava.security.AccessController.doPrivileged(
+//            //new jssun.security.action.GetPropertyAction("java.version"));
+//        DEBUG        = false;//(jsjava.security.AccessController.doPrivileged(
+//            //new jssun.security.action.GetPropertyAction("jssun.misc.URLClassPath.debug")) != null);
+//        //String p = jsjava.security.AccessController.doPrivileged(
+//            //new jssun.security.action.GetPropertyAction("jssun.misc.URLClassPath.disableJarChecking"));
+//        DISABLE_JAR_CHECKING = true;//p != null ? p.equals("true") || p.equals("") : false;
+//    }
+//
+//    /* The original search path of URLs. */
+//    private ArrayList path = new ArrayList();
+//
+//    /* The stack of unopened URLs */
+//    Stack urls = new Stack();
+//
+//    /* The resulting search path of Loaders */
+//    ArrayList loaders = new ArrayList();
+//
+//    /* Map of each URL opened to its corresponding Loader */
+//    HashMap lmap = new HashMap();
+//
+//SwingJS unused
+//    /* The jar protocol handler to use when creating new URLs */
+//    private URLStreamHandler jarHandler;
+//
+//    /**
+//     * Creates a new URLClassPath for the given URLs. The URLs will be
+//     * searched in the order specified for classes and resources. A URL
+//     * ending with a '/' is assumed to refer to a directory. Otherwise,
+//     * the URL is assumed to refer to a JAR file.
+//     *
+//     * @param urls the directory and JAR file URLs to search for classes
+//     *        and resources
+//     * @param factory the URLStreamHandlerFactory to use when creating new URLs
+//     */
+//    public URLClassPath(URL[] urls, URLStreamHandlerFactory factory) {
+//        for (int i = 0; i < urls.length; i++) {
+//            path.add(urls[i]);
 //        }
-        return null;
-    }
+//        push(urls);
+//        if (factory != null) {
+//            jarHandler = factory.createURLStreamHandler("jar");
+//        }
+//    }
+//    public URLClassPath(URL[] urls) {
+//        this(urls, null);
+//    }
+//
+//    /**
+//     * Appends the specified URL to the search path of directory and JAR
+//     * file URLs from which to load classes and resources.
+//     */
+//    public void addURL(URL url) {
+//        synchronized (urls) {
+//            if (path.contains(url))
+//                return;
+//
+//            urls.add(0, url);
+//            path.add(url);
+//        }
+//    }
+//
+//    /**
+//     * Returns the original search path of URLs.
+//     */
+//    public URL[] getURLs() {
+//        synchronized (urls) {
+//            return (URL[])path.toArray(new URL[path.size()]);
+//        }
+//    }
 
+//    /**
+//     * Finds the resource with the specified name on the URL search path
+//     * or null if not found or security check fails.
+//     *
+//     * @param name      the name of the resource
+//     * @param check     whether to perform a security check
+//     * @return a <code>URL</code> for the resource, or <code>null</code>
+//     * if the resource could not be found.
+//     */
+//    public URL findResource(String name, boolean check) {
+//
+//    	//TODO
+//    	
+////        Loader loader;
+////        for (int i = 0; (loader = getLoader(i)) != null; i++) {
+////            URL url = loader.findResource(name, check);
+////            if (url != null) {
+////                return url;
+////            }
+////        }
+//        return null;
+//    }
+//
+//    /**
+//     * Finds the first Resource on the URL search path which has the specified
+//     * name. Returns null if no Resource could be found.
+//     *
+//     * @param name the name of the Resource
+//     * @param check     whether to perform a security check
+//     * @return the Resource, or null if not found
+//     */
+//    public Resource getResource(String name, boolean check) {
+//    	// TODO
+////        if (DEBUG) {
+////            System.err.println("URLClassPath.getResource(\"" + name + "\")");
+////        }
+////
+////        Loader loader;
+////        for (int i = 0; (loader = getLoader(i)) != null; i++) {
+////            Resource res = loader.getResource(name, check);
+////            if (res != null) {
+////                return res;
+////            }
+////        }
+//        return null;
+//    }
+//
 //    /**
 //     * Finds all resources on the URL search path with the given name.
 //     * Returns an enumeration of the URL objects.
@@ -210,11 +210,11 @@ public class URLClassPath {
 //            }
 //        };
 //    }
-
-    public Resource getResource(String name) {
-        return getResource(name, true);
-    }
-
+//
+//    public Resource getResource(String name) {
+//        return getResource(name, true);
+//    }
+//
 //    /**
 //     * Finds all resources on the URL search path with the given name.
 //     * Returns an enumeration of the Resource objects.
@@ -261,7 +261,7 @@ public class URLClassPath {
 //    public Enumeration getResources(final String name) {
 //        return getResources(name, true);
 //    }
-
+//
 //    /*
 //     * Returns the Loader at the specified position in the URL search
 //     * path. The URLs are opened and expanded as needed. Returns null
@@ -331,69 +331,69 @@ public class URLClassPath {
 //            throw (IOException)pae.getException();
 //        }
 //    }
-
-    /*
-     * Pushes the specified URLs onto the list of unopened URLs.
-     */
-    private void push(URL[] us) {
-        synchronized (urls) {
-            for (int i = us.length - 1; i >= 0; --i) {
-                urls.push(us[i]);
-            }
-        }
-    }
-
-    /**
-     * Convert class path specification into an array of file URLs.
-     *
-     * The path of the file is encoded before conversion into URL
-     * form so that reserved characters can safely appear in the path.
-     */
-    public static URL[] pathToURLs(String path) {
-        StringTokenizer st = new StringTokenizer(path, File.pathSeparator);
-        URL[] urls = new URL[st.countTokens()];
-        int count = 0;
-        while (st.hasMoreTokens()) {
-            File f = new File(st.nextToken());
-            try {
-                f = new File(f.getCanonicalPath());
-            } catch (IOException x) {
-                // use the non-canonicalized filename
-            }
-            try {
-                urls[count++] = ParseUtil.fileToEncodedURL(f);
-            } catch (IOException x) { }
-        }
-
-        if (urls.length != count) {
-            URL[] tmp = new URL[count];
-            System.arraycopy(urls, 0, tmp, 0, count);
-            urls = tmp;
-        }
-        return urls;
-    }
-
-    /*
-     * Check whether the resource URL should be returned.
-     * Return null on security check failure.
-     * Called by java.net.URLClassLoader.
-     */
-    public URL checkURL(URL url) {
-        try {
-            check(url);
-        } catch (Exception e) {
-            return null;
-        }
-
-        return url;
-    }
-
-    /*
-     * Check whether the resource URL should be returned.
-     * Throw exception on failure.
-     * Called internally within this file.
-     */
-    static void check(URL url) throws IOException {
+//
+//    /*
+//     * Pushes the specified URLs onto the list of unopened URLs.
+//     */
+//    private void push(URL[] us) {
+//        synchronized (urls) {
+//            for (int i = us.length - 1; i >= 0; --i) {
+//                urls.push(us[i]);
+//            }
+//        }
+//    }
+//
+//    /**
+//     * Convert class path specification into an array of file URLs.
+//     *
+//     * The path of the file is encoded before conversion into URL
+//     * form so that reserved characters can safely appear in the path.
+//     */
+//    public static URL[] pathToURLs(String path) {
+//        StringTokenizer st = new StringTokenizer(path, File.pathSeparator);
+//        URL[] urls = new URL[st.countTokens()];
+//        int count = 0;
+//        while (st.hasMoreTokens()) {
+//            File f = new File(st.nextToken());
+//            try {
+//                f = new File(f.getCanonicalPath());
+//            } catch (IOException x) {
+//                // use the non-canonicalized filename
+//            }
+//            try {
+//                urls[count++] = ParseUtil.fileToEncodedURL(f);
+//            } catch (IOException x) { }
+//        }
+//
+//        if (urls.length != count) {
+//            URL[] tmp = new URL[count];
+//            System.arraycopy(urls, 0, tmp, 0, count);
+//            urls = tmp;
+//        }
+//        return urls;
+//    }
+//
+//    /*
+//     * Check whether the resource URL should be returned.
+//     * Return null on security check failure.
+//     * Called by java.net.URLClassLoader.
+//     */
+//    public URL checkURL(URL url) {
+//        try {
+//            check(url);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//
+//        return url;
+//    }
+//
+//    /*
+//     * Check whether the resource URL should be returned.
+//     * Throw exception on failure.
+//     * Called internally within this file.
+//     */
+//    static void check(URL url) throws IOException {
 //        SecurityManager security = System.getSecurityManager();
 //        if (security != null) {
 //            URLConnection urlConnection = url.openConnection();
@@ -422,8 +422,8 @@ public class URLClassPath {
 //                }
 //            }
 //        }
-    }
-
+//    }
+//
 //    /**
 //     * Inner class used to represent a loader of resources and classes
 //     * from a base URL.

@@ -30,9 +30,9 @@ import java.net.URL;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
+//import java.nio.ByteBuffer;
 import java.util.Arrays;
-import jssun.nio.ByteBuffered;
+//import jssun.nio.ByteBuffered;
 
 /**
  * This class is used to represent a Resource that has been loaded
@@ -150,18 +150,18 @@ public abstract class Resource {
         return b;
     }
 
-    /**
-     * Returns the Resource data as a ByteBuffer, but only if the input stream
-     * was implemented on top of a ByteBuffer. Return <tt>null</tt> otherwise.
-     */
-    public ByteBuffer getByteBuffer() throws IOException {
-        InputStream in = cachedInputStream();
-        if (in instanceof ByteBuffered) {
-            return ((ByteBuffered)in).getByteBuffer();
-        }
-        return null;
-    }
-
+//    /**
+//     * Returns the Resource data as a ByteBuffer, but only if the input stream
+//     * was implemented on top of a ByteBuffer. Return <tt>null</tt> otherwise.
+//     */
+//    public ByteBuffer getByteBuffer() throws IOException {
+//        InputStream in = cachedInputStream();
+//        if (in instanceof ByteBuffered) {
+//            return ((ByteBuffered)in).getByteBuffer();
+//        }
+//        return null;
+//    }
+//
 //    /**
 //     * Returns the Manifest for the Resource, or null if none.
 //     */

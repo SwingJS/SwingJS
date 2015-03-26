@@ -25,20 +25,20 @@
 
 package jssun.awt;
 
-import static jsjava.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
-import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_GASP;
-import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR;
-import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB;
-import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR;
-import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB;
-import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
-
+//import static jsjava.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_GASP;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HBGR;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VBGR;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+//
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+//import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -53,16 +53,16 @@ import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
-import jsjava.awt.Graphics2D;
+//import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsConfiguration;
-import jsjava.awt.GraphicsEnvironment;
+//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
 import jsjava.awt.RenderingHints;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.event.WindowEvent;
-import jsjava.awt.image.BufferedImage;
+//import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jssun.awt.image.URLImageSource;
@@ -89,7 +89,7 @@ public abstract class SunToolkit extends Toolkit
      */
     public static final int GRAB_EVENT_MASK = 0x80000000;
 
-    private static Method  wakeupMethod;
+//    private static Method  wakeupMethod;
     /* The key to put()/get() the PostEventQueue into/from the AppContext.
      */
     private static final String POST_EVENT_QUEUE_KEY = "PostEventQueue";
@@ -377,16 +377,19 @@ public abstract class SunToolkit extends Toolkit
     }
 
     protected static void targetCreatedPeer(Object target, Object peer) {
-        if (target != null && peer != null &&
-            !GraphicsEnvironment.isHeadless())
+        if (target != null && peer != null
+//        		&& !GraphicsEnvironment.isHeadless()
+        		)
         {
         //JS             AWTAutoShutdown.getInstance().registerPeer(target, peer);
         }
     }
 
     protected static void targetDisposedPeer(Object target, Object peer) {
-        if (target != null && peer != null &&
-            !GraphicsEnvironment.isHeadless())
+        if (target != null && peer != null 
+//        		&&
+//            !GraphicsEnvironment.isHeadless()
+            )
         {
         //JS AWTAutoShutdown.getInstance().unregisterPeer(target, peer);
         }
@@ -398,24 +401,24 @@ public abstract class SunToolkit extends Toolkit
         Collections.synchronizedMap(new WeakHashMap());
 
 
-    /**
-     * Sets the appContext field of target. If target is not a Component or
-     * MenuComponent, this returns false.
-     */
-    private static boolean setAppContext(Object target, AppContext context)
-    {
-        if (target instanceof Component) {
-            AWTAccessor.getComponentAccessor().
-                setAppContext((Component)target, context);
-//        } else if (target instanceof MenuComponent) {
-//            AWTAccessor.getMenuComponentAccessor().
-//                setAppContext((MenuComponent)target, context);
-        } else {
-            return false;
-        }
-        return true;
-    }
-
+//    /**
+//     * Sets the appContext field of target. If target is not a Component or
+//     * MenuComponent, this returns false.
+//     */
+//    private static boolean setAppContext(Object target, AppContext context)
+//    {
+//        if (target instanceof Component) {
+//            AWTAccessor.getComponentAccessor().
+//                setAppContext((Component)target, context);
+////        } else if (target instanceof MenuComponent) {
+////            AWTAccessor.getMenuComponentAccessor().
+////                setAppContext((MenuComponent)target, context);
+//        } else {
+//            return false;
+//        }
+//        return true;
+//    }
+//
     /**
      * Returns the appContext field for target. If target is not a
      * Component or MenuComponent this returns null.
@@ -439,7 +442,9 @@ public abstract class SunToolkit extends Toolkit
      * null or the target can't be found, a null with be returned.
      */
     public static AppContext targetToAppContext(Object target) {
-        if (target == null || GraphicsEnvironment.isHeadless()) {
+        if (target == null 
+//        		|| GraphicsEnvironment.isHeadless()
+        		) {
             return null;
         }
         AppContext context = getAppContext(target);
@@ -550,13 +555,13 @@ public abstract class SunToolkit extends Toolkit
      * via targetToAppContext() above.
      */
     public static void insertTargetMapping(Object target, AppContext appContext) {
-        if (!GraphicsEnvironment.isHeadless()) {
-            if (!setAppContext(target, appContext)) {
-                // Target is not a Component/MenuComponent, use the private Map
-                // instead.
-                appContextMap.put(target, appContext);
-            }
-        }
+//        if (!GraphicsEnvironment.isHeadless()) {
+//            if (!setAppContext(target, appContext)) {
+//                // Target is not a Component/MenuComponent, use the private Map
+//                // instead.
+//                appContextMap.put(target, appContext);
+//            }
+//        }
     }
 
     /*
@@ -952,117 +957,117 @@ public abstract class SunToolkit extends Toolkit
         return true;
     }
 
-    /**
-     * Scans {@code imageList} for best-looking image of specified dimensions.
-     * Image can be scaled and/or padded with transparency.
-     */
-    public static BufferedImage getScaledIconImage(java.util.List<Image> imageList, int width, int height) {
-        if (width == 0 || height == 0) {
-            return null;
-        }
-        Image bestImage = null;
-        int bestWidth = 0;
-        int bestHeight = 0;
-        double bestSimilarity = 3; //Impossibly high value
-        double bestScaleFactor = 0;
-        for (Iterator<Image> i = imageList.iterator();i.hasNext();) {
-            //Iterate imageList looking for best matching image.
-            //'Similarity' measure is defined as good scale factor and small insets.
-            //best possible similarity is 0 (no scale, no insets).
-            //It's found while the experiments that good-looking result is achieved
-            //with scale factors x1, x3/4, x2/3, xN, x1/N.
-            Image im = i.next();
-            if (im == null) {
-                continue;
-            }
-//            if (im instanceof ToolkitImage) {
-//                ImageRepresentation ir = ((ToolkitImage)im).getImageRep();
-//                ir.reconstruct(ImageObserver.ALLBITS);
+//    /**
+//     * Scans {@code imageList} for best-looking image of specified dimensions.
+//     * Image can be scaled and/or padded with transparency.
+//     */
+//    public static BufferedImage getScaledIconImage(java.util.List<Image> imageList, int width, int height) {
+//        if (width == 0 || height == 0) {
+//            return null;
+//        }
+//        Image bestImage = null;
+//        int bestWidth = 0;
+//        int bestHeight = 0;
+//        double bestSimilarity = 3; //Impossibly high value
+////        double bestScaleFactor = 0;
+//        for (Iterator<Image> i = imageList.iterator();i.hasNext();) {
+//            //Iterate imageList looking for best matching image.
+//            //'Similarity' measure is defined as good scale factor and small insets.
+//            //best possible similarity is 0 (no scale, no insets).
+//            //It's found while the experiments that good-looking result is achieved
+//            //with scale factors x1, x3/4, x2/3, xN, x1/N.
+//            Image im = i.next();
+//            if (im == null) {
+//                continue;
 //            }
-            int iw;
-            int ih;
-            try {
-                iw = im.getWidth(null);
-                ih = im.getHeight(null);
-            } catch (Exception e){
-                continue;
-            }
-            if (iw > 0 && ih > 0) {
-                //Calc scale factor
-                double scaleFactor = Math.min((double)width / (double)iw,
-                                              (double)height / (double)ih);
-                //Calculate scaled image dimensions
-                //adjusting scale factor to nearest "good" value
-                int adjw = 0;
-                int adjh = 0;
-                double scaleMeasure = 1; //0 - best (no) scale, 1 - impossibly bad
-                if (scaleFactor >= 2) {
-                    //Need to enlarge image more than twice
-                    //Round down scale factor to multiply by integer value
-                    scaleFactor = Math.floor(scaleFactor);
-                    adjw = iw * (int)scaleFactor;
-                    adjh = ih * (int)scaleFactor;
-                    scaleMeasure = 1.0 - 0.5 / scaleFactor;
-                } else if (scaleFactor >= 1) {
-                    //Don't scale
-                    scaleFactor = 1.0;
-                    adjw = iw;
-                    adjh = ih;
-                    scaleMeasure = 0;
-                } else if (scaleFactor >= 0.75) {
-                    //Multiply by 3/4
-                    scaleFactor = 0.75;
-                    adjw = iw * 3 / 4;
-                    adjh = ih * 3 / 4;
-                    scaleMeasure = 0.3;
-                } else if (scaleFactor >= 0.6666) {
-                    //Multiply by 2/3
-                    scaleFactor = 0.6666;
-                    adjw = iw * 2 / 3;
-                    adjh = ih * 2 / 3;
-                    scaleMeasure = 0.33;
-                } else {
-                    //Multiply size by 1/scaleDivider
-                    //where scaleDivider is minimum possible integer
-                    //larger than 1/scaleFactor
-                    double scaleDivider = Math.ceil(1.0 / scaleFactor);
-                    scaleFactor = 1.0 / scaleDivider;
-                    adjw = (int)Math.round((double)iw / scaleDivider);
-                    adjh = (int)Math.round((double)ih / scaleDivider);
-                    scaleMeasure = 1.0 - 1.0 / scaleDivider;
-                }
-                double similarity = ((double)width - (double)adjw) / (double)width +
-                    ((double)height - (double)adjh) / (double)height + //Large padding is bad
-                    scaleMeasure; //Large rescale is bad
-                if (similarity < bestSimilarity) {
-                    bestSimilarity = similarity;
-                    bestScaleFactor = scaleFactor;
-                    bestImage = im;
-                    bestWidth = adjw;
-                    bestHeight = adjh;
-                }
-                if (similarity == 0) break;
-            }
-        }
-        if (bestImage == null) {
-            //No images were found, possibly all are broken
-            return null;
-        }
-        BufferedImage bimage =
-            new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bimage.createGraphics();
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        try {
-            int x = (width - bestWidth) / 2;
-            int y = (height - bestHeight) / 2;
-            g.drawImage(bestImage, x, y, bestWidth, bestHeight, null);
-        } finally {
-            g.dispose();
-        }
-        return bimage;
-    }
-
+////            if (im instanceof ToolkitImage) {
+////                ImageRepresentation ir = ((ToolkitImage)im).getImageRep();
+////                ir.reconstruct(ImageObserver.ALLBITS);
+////            }
+//            int iw;
+//            int ih;
+//            try {
+//                iw = im.getWidth(null);
+//                ih = im.getHeight(null);
+//            } catch (Exception e){
+//                continue;
+//            }
+//            if (iw > 0 && ih > 0) {
+//                //Calc scale factor
+//                double scaleFactor = Math.min((double)width / (double)iw,
+//                                              (double)height / (double)ih);
+//                //Calculate scaled image dimensions
+//                //adjusting scale factor to nearest "good" value
+//                int adjw = 0;
+//                int adjh = 0;
+//                double scaleMeasure = 1; //0 - best (no) scale, 1 - impossibly bad
+//                if (scaleFactor >= 2) {
+//                    //Need to enlarge image more than twice
+//                    //Round down scale factor to multiply by integer value
+//                    scaleFactor = Math.floor(scaleFactor);
+//                    adjw = iw * (int)scaleFactor;
+//                    adjh = ih * (int)scaleFactor;
+//                    scaleMeasure = 1.0 - 0.5 / scaleFactor;
+//                } else if (scaleFactor >= 1) {
+//                    //Don't scale
+//                    scaleFactor = 1.0;
+//                    adjw = iw;
+//                    adjh = ih;
+//                    scaleMeasure = 0;
+//                } else if (scaleFactor >= 0.75) {
+//                    //Multiply by 3/4
+//                    scaleFactor = 0.75;
+//                    adjw = iw * 3 / 4;
+//                    adjh = ih * 3 / 4;
+//                    scaleMeasure = 0.3;
+//                } else if (scaleFactor >= 0.6666) {
+//                    //Multiply by 2/3
+//                    scaleFactor = 0.6666;
+//                    adjw = iw * 2 / 3;
+//                    adjh = ih * 2 / 3;
+//                    scaleMeasure = 0.33;
+//                } else {
+//                    //Multiply size by 1/scaleDivider
+//                    //where scaleDivider is minimum possible integer
+//                    //larger than 1/scaleFactor
+//                    double scaleDivider = Math.ceil(1.0 / scaleFactor);
+//                    scaleFactor = 1.0 / scaleDivider;
+//                    adjw = (int)Math.round((double)iw / scaleDivider);
+//                    adjh = (int)Math.round((double)ih / scaleDivider);
+//                    scaleMeasure = 1.0 - 1.0 / scaleDivider;
+//                }
+//                double similarity = ((double)width - (double)adjw) / (double)width +
+//                    ((double)height - (double)adjh) / (double)height + //Large padding is bad
+//                    scaleMeasure; //Large rescale is bad
+//                if (similarity < bestSimilarity) {
+//                    bestSimilarity = similarity;
+//                    bestScaleFactor = scaleFactor;
+//                    bestImage = im;
+//                    bestWidth = adjw;
+//                    bestHeight = adjh;
+//                }
+//                if (similarity == 0) break;
+//            }
+//        }
+//        if (bestImage == null) {
+//            //No images were found, possibly all are broken
+//            return null;
+//        }
+//        BufferedImage bimage =
+//            new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g = bimage.createGraphics();
+//        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+//                           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//        try {
+//            int x = (width - bestWidth) / 2;
+//            int y = (height - bestHeight) / 2;
+//            g.drawImage(bestImage, x, y, bestWidth, bestHeight, null);
+//        } finally {
+//            g.dispose();
+//        }
+//        return bimage;
+//    }
+//
 //    public static DataBufferInt getScaledIconData(java.util.List<Image> imageList, int width, int height) {
 //        BufferedImage bimage = getScaledIconImage(imageList, width, height);
 //        if (bimage == null) {
@@ -1698,10 +1703,10 @@ public abstract class SunToolkit extends Toolkit
 //                           SunToolkit.getDesktopFontHints());
 //    }
 
-    private static boolean checkedSystemAAFontSettings;
-    private static boolean useSystemAAFontSettings;
-    private static boolean lastExtraCondition = true;
-    private static RenderingHints desktopFontHints;
+//    private static boolean checkedSystemAAFontSettings;
+//    private static boolean useSystemAAFontSettings;
+//    private static boolean lastExtraCondition = true;
+//    private static RenderingHints desktopFontHints;
 
 //    /* Since Swing is the reason for this "extra condition" logic its
 //     * worth documenting it in some detail.
@@ -1745,35 +1750,35 @@ public abstract class SunToolkit extends Toolkit
 //        }
 //    }
 
-    /* "false", "off", ""default" aren't explicitly tested, they
-     * just fall through to produce a null return which all are equated to
-     * "false".
-     */
-    private static RenderingHints getDesktopAAHintsByName(String hintname) {
-        Object aaHint = null;
-        hintname = hintname.toLowerCase(Locale.ENGLISH);
-        if (hintname.equals("on")) {
-            aaHint = VALUE_TEXT_ANTIALIAS_ON;
-        } else if (hintname.equals("gasp")) {
-            aaHint = VALUE_TEXT_ANTIALIAS_GASP;
-        } else if (hintname.equals("lcd") || hintname.equals("lcd_hrgb")) {
-            aaHint = VALUE_TEXT_ANTIALIAS_LCD_HRGB;
-        } else if (hintname.equals("lcd_hbgr")) {
-            aaHint = VALUE_TEXT_ANTIALIAS_LCD_HBGR;
-        } else if (hintname.equals("lcd_vrgb")) {
-            aaHint = VALUE_TEXT_ANTIALIAS_LCD_VRGB;
-        } else if (hintname.equals("lcd_vbgr")) {
-            aaHint = VALUE_TEXT_ANTIALIAS_LCD_VBGR;
-        }
-        if (aaHint != null) {
-            RenderingHints map = new RenderingHints(null);
-            map.put(KEY_TEXT_ANTIALIASING, aaHint);
-            return map;
-        } else {
-            return null;
-        }
-    }
-
+//    /* "false", "off", ""default" aren't explicitly tested, they
+//     * just fall through to produce a null return which all are equated to
+//     * "false".
+//     */
+//    private static RenderingHints getDesktopAAHintsByName(String hintname) {
+//        Object aaHint = null;
+//        hintname = hintname.toLowerCase(Locale.ENGLISH);
+//        if (hintname.equals("on")) {
+//            aaHint = VALUE_TEXT_ANTIALIAS_ON;
+//        } else if (hintname.equals("gasp")) {
+//            aaHint = VALUE_TEXT_ANTIALIAS_GASP;
+//        } else if (hintname.equals("lcd") || hintname.equals("lcd_hrgb")) {
+//            aaHint = VALUE_TEXT_ANTIALIAS_LCD_HRGB;
+//        } else if (hintname.equals("lcd_hbgr")) {
+//            aaHint = VALUE_TEXT_ANTIALIAS_LCD_HBGR;
+//        } else if (hintname.equals("lcd_vrgb")) {
+//            aaHint = VALUE_TEXT_ANTIALIAS_LCD_VRGB;
+//        } else if (hintname.equals("lcd_vbgr")) {
+//            aaHint = VALUE_TEXT_ANTIALIAS_LCD_VBGR;
+//        }
+//        if (aaHint != null) {
+//            RenderingHints map = new RenderingHints(null);
+//            map.put(KEY_TEXT_ANTIALIASING, aaHint);
+//            return map;
+//        } else {
+//            return null;
+//        }
+//    }
+//
 //    /* This method determines whether to use the system font settings,
 //     * or ignore them if a L&F has specified they should be ignored, or
 //     * to override both of these with a system property specified value.
@@ -1878,8 +1883,8 @@ public abstract class SunToolkit extends Toolkit
         return (Window)comp;
     }
  
-    private static Boolean sunAwtDisableMixing = null;
-
+//    private static Boolean sunAwtDisableMixing = null;
+//
 //    /**
 //     * Returns the value of "jssun.awt.disableMixing" property. Default
 //     * value is {@code false}.

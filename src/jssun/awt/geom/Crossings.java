@@ -30,7 +30,7 @@ import java.util.Vector;
 import java.util.Enumeration;
 
 public abstract class Crossings {
-    public static final boolean debug = false;
+//    public static final boolean debug = false;
 
     int limit = 0;
     double yranges[] = new double[10];
@@ -89,103 +89,103 @@ public abstract class Crossings {
                 return null;
             }
         }
-        if (debug) {
-            cross.print();
-        }
+//        if (debug) {
+//            cross.print();
+//        }
         return cross;
     }
 
-    public static Crossings findCrossings(PathIterator pi,
-                                          double xlo, double ylo,
-                                          double xhi, double yhi)
-    {
-        Crossings cross;
-        if (pi.getWindingRule() == PathIterator.WIND_EVEN_ODD) {
-            cross = new EvenOdd(xlo, ylo, xhi, yhi);
-        } else {
-            cross = new NonZero(xlo, ylo, xhi, yhi);
-        }
-        // coords array is big enough for holding:
-        //     coordinates returned from currentSegment (6)
-        //     OR
-        //         two subdivided quadratic curves (2+4+4=10)
-        //         AND
-        //             0-1 horizontal splitting parameters
-        //             OR
-        //             2 parametric equation derivative coefficients
-        //     OR
-        //         three subdivided cubic curves (2+6+6+6=20)
-        //         AND
-        //             0-2 horizontal splitting parameters
-        //             OR
-        //             3 parametric equation derivative coefficients
-        double coords[] = new double[23];
-        double movx = 0;
-        double movy = 0;
-        double curx = 0;
-        double cury = 0;
-        double newx, newy;
-        while (!pi.isDone()) {
-            int type = pi.currentSegment(coords);
-            switch (type) {
-            case PathIterator.SEG_MOVETO:
-                if (movy != cury &&
-                    cross.accumulateLine(curx, cury, movx, movy))
-                {
-                    return null;
-                }
-                movx = curx = coords[0];
-                movy = cury = coords[1];
-                break;
-            case PathIterator.SEG_LINETO:
-                newx = coords[0];
-                newy = coords[1];
-                if (cross.accumulateLine(curx, cury, newx, newy)) {
-                    return null;
-                }
-                curx = newx;
-                cury = newy;
-                break;
-            case PathIterator.SEG_QUADTO:
-                newx = coords[2];
-                newy = coords[3];
-                if (cross.accumulateQuad(curx, cury, coords)) {
-                    return null;
-                }
-                curx = newx;
-                cury = newy;
-                break;
-            case PathIterator.SEG_CUBICTO:
-                newx = coords[4];
-                newy = coords[5];
-                if (cross.accumulateCubic(curx, cury, coords)) {
-                    return null;
-                }
-                curx = newx;
-                cury = newy;
-                break;
-            case PathIterator.SEG_CLOSE:
-                if (movy != cury &&
-                    cross.accumulateLine(curx, cury, movx, movy))
-                {
-                    return null;
-                }
-                curx = movx;
-                cury = movy;
-                break;
-            }
-            pi.next();
-        }
-        if (movy != cury) {
-            if (cross.accumulateLine(curx, cury, movx, movy)) {
-                return null;
-            }
-        }
-        if (debug) {
-            cross.print();
-        }
-        return cross;
-    }
+//    public static Crossings findCrossings(PathIterator pi,
+//                                          double xlo, double ylo,
+//                                          double xhi, double yhi)
+//    {
+//        Crossings cross;
+//        if (pi.getWindingRule() == PathIterator.WIND_EVEN_ODD) {
+//            cross = new EvenOdd(xlo, ylo, xhi, yhi);
+//        } else {
+//            cross = new NonZero(xlo, ylo, xhi, yhi);
+//        }
+//        // coords array is big enough for holding:
+//        //     coordinates returned from currentSegment (6)
+//        //     OR
+//        //         two subdivided quadratic curves (2+4+4=10)
+//        //         AND
+//        //             0-1 horizontal splitting parameters
+//        //             OR
+//        //             2 parametric equation derivative coefficients
+//        //     OR
+//        //         three subdivided cubic curves (2+6+6+6=20)
+//        //         AND
+//        //             0-2 horizontal splitting parameters
+//        //             OR
+//        //             3 parametric equation derivative coefficients
+//        double coords[] = new double[23];
+//        double movx = 0;
+//        double movy = 0;
+//        double curx = 0;
+//        double cury = 0;
+//        double newx, newy;
+//        while (!pi.isDone()) {
+//            int type = pi.currentSegment(coords);
+//            switch (type) {
+//            case PathIterator.SEG_MOVETO:
+//                if (movy != cury &&
+//                    cross.accumulateLine(curx, cury, movx, movy))
+//                {
+//                    return null;
+//                }
+//                movx = curx = coords[0];
+//                movy = cury = coords[1];
+//                break;
+//            case PathIterator.SEG_LINETO:
+//                newx = coords[0];
+//                newy = coords[1];
+//                if (cross.accumulateLine(curx, cury, newx, newy)) {
+//                    return null;
+//                }
+//                curx = newx;
+//                cury = newy;
+//                break;
+//            case PathIterator.SEG_QUADTO:
+//                newx = coords[2];
+//                newy = coords[3];
+//                if (cross.accumulateQuad(curx, cury, coords)) {
+//                    return null;
+//                }
+//                curx = newx;
+//                cury = newy;
+//                break;
+//            case PathIterator.SEG_CUBICTO:
+//                newx = coords[4];
+//                newy = coords[5];
+//                if (cross.accumulateCubic(curx, cury, coords)) {
+//                    return null;
+//                }
+//                curx = newx;
+//                cury = newy;
+//                break;
+//            case PathIterator.SEG_CLOSE:
+//                if (movy != cury &&
+//                    cross.accumulateLine(curx, cury, movx, movy))
+//                {
+//                    return null;
+//                }
+//                curx = movx;
+//                cury = movy;
+//                break;
+//            }
+//            pi.next();
+//        }
+//        if (movy != cury) {
+//            if (cross.accumulateLine(curx, cury, movx, movy)) {
+//                return null;
+//            }
+//        }
+//        if (debug) {
+//            cross.print();
+//        }
+//        return cross;
+//    }
 
     public boolean accumulateLine(double x0, double y0,
                                   double x1, double y1)

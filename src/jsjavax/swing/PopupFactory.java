@@ -37,7 +37,7 @@ import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.GraphicsConfiguration;
-import jsjava.awt.GraphicsEnvironment;
+//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Insets;
 import jsjava.awt.Panel;
 import jsjava.awt.Point;
@@ -227,9 +227,9 @@ public class PopupFactory {
      */
     private Popup getPopup(Component owner, Component contents,
                            int ownerX, int ownerY, int popupType) {
-        if (GraphicsEnvironment.isHeadless()) {
-            return getHeadlessPopup(owner, contents, ownerX, ownerY);
-        }
+//        if (GraphicsEnvironment.isHeadless()) {
+//            return getHeadlessPopup(owner, contents, ownerX, ownerY);
+//        }
 
         switch(popupType) {
         case LIGHT_WEIGHT_POPUP:
@@ -242,14 +242,14 @@ public class PopupFactory {
         return null;
     }
 
-    /**
-     * Creates a headless popup
-     */
-    private Popup getHeadlessPopup(Component owner, Component contents,
-                                   int ownerX, int ownerY) {
-        return HeadlessPopup.getHeadlessPopup(owner, contents, ownerX, ownerY);
-    }
-
+//    /**
+//     * Creates a headless popup
+//     */
+//    private Popup getHeadlessPopup(Component owner, Component contents,
+//                                   int ownerX, int ownerY) {
+//        return HeadlessPopup.getHeadlessPopup(owner, contents, ownerX, ownerY);
+//    }
+//
     /**
      * Creates a light weight popup.
      */
@@ -273,9 +273,9 @@ public class PopupFactory {
      */
     private Popup getHeavyWeightPopup(Component owner, Component contents,
                                          int ownerX, int ownerY) {
-        if (GraphicsEnvironment.isHeadless()) {
-            return getMediumWeightPopup(owner, contents, ownerX, ownerY);
-        }
+//        if (GraphicsEnvironment.isHeadless()) {
+//            return getMediumWeightPopup(owner, contents, ownerX, ownerY);
+//        }
         return HeavyWeightPopup.getHeavyWeightPopup(owner, contents, ownerX,
                                                     ownerY);
     }
