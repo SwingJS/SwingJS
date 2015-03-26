@@ -315,7 +315,7 @@ public class JFormattedTextField extends JTextField {
      *
      * @param format Format used to look up an AbstractFormatter
      */
-    public JFormattedTextField(java.text.Format format) {
+    public JFormattedTextField(jsjava.text.Format format) {
         this();
         setFormatterFactory(getDefaultFormatterFactory(format));
     }
@@ -603,9 +603,8 @@ public class JFormattedTextField extends JTextField {
      * @see InputMethodEvent
      */
     protected void processInputMethodEvent(InputMethodEvent e) {
-        AttributedCharacterIterator text = e.getText();
-        int commitCount = e.getCommittedCharacterCount();
-
+//        AttributedCharacterIterator text = e.getText();
+//        int commitCount = e.getCommittedCharacterCount();
 //        // Keep track of the composed text
 //        if (text != null) {
 //            int begin = text.getBeginIndex();
