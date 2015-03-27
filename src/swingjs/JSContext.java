@@ -1,3 +1,4 @@
+package swingjs;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
 import java.net.URL;
@@ -5,10 +6,15 @@ import java.net.URL;
 import jsjavax.swing.JApplet;
 
 
-public class jsContext implements AppletStub {
+/**
+ * A "native" implementation of AppletStub for JavaScript 
+ *
+ */
+
+public class JSContext implements AppletStub {
 
 	JApplet app;
-	public jsContext(JApplet app) {
+	public JSContext(JApplet app) {
 		this.app = app;
 	}
 
