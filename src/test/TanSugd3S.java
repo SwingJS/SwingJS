@@ -1,12 +1,30 @@
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
+package test;
+
+import jsjava.awt.AWTEvent;
+import jsjava.awt.BasicStroke;
+import jsjava.awt.BorderLayout;
+import jsjava.awt.Color;
+import jsjava.awt.Container;
+import jsjava.awt.Event;
+import jsjava.awt.Font;
+import jsjava.awt.Frame;
+import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Stroke;
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.ItemListener;
+import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseListener;
+import jsjavax.swing.ButtonGroup;
+import jsjavax.swing.JApplet;
+import jsjavax.swing.JPanel;
+import jsjavax.swing.JRadioButton;
+import jsjavax.swing.JTextField;
 
 public class TanSugd3S extends JApplet {
-  /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	TSd3Canvas canvas;
   TSd3Controls controls;
 
@@ -279,12 +297,8 @@ public class TanSugd3S extends JApplet {
 } //End Class TanSugd3
 
 //------------------------------------------------------
-class TSd3Canvas extends Canvas implements MouseListener {
+class TSd3Canvas extends JPanel implements MouseListener {
 
-  /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	double y; // Coordinates used for drawing graphs
   Point bottomLeft, btmLeft;
   int start_x, end_x, lrange;
@@ -602,10 +616,7 @@ class TSd3Canvas extends Canvas implements MouseListener {
 
 //------------------------------------------------------
 class TSd3Controls extends JPanel implements ItemListener {
-  /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
 	JTextField s;
   JTextField e;
   TSd3Canvas canvas;
