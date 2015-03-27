@@ -25,7 +25,7 @@
 
 package jssun.awt;
 
-import jsjava.awt.EventQueue;
+//import jsjava.awt.EventQueue;
 import jsjava.security.AccessController;
 import jsjava.security.PrivilegedAction;
 import java.util.Collections;
@@ -530,20 +530,20 @@ public final class AppContext {
 //        mostRecentKeyValue = null;
     }
 
-    static final class PostShutdownEventRunnable implements Runnable {
-        private final AppContext appContext;
-
-        public PostShutdownEventRunnable(AppContext ac) {
-            appContext = ac;
-        }
-
-        public void run() {
-//            final EventQueue eq = (EventQueue)appContext.get(EVENT_QUEUE_KEY);
-//            if (eq != null) {
-//                eq.postEvent(AWTAutoShutdown.getShutdownEvent());
-//            }
-        }
-    }
+//    static final class PostShutdownEventRunnable implements Runnable {
+////        private final AppContext appContext;
+//
+//        public PostShutdownEventRunnable(AppContext ac) {
+//            appContext = ac;
+//        }
+//
+//        public void run() {
+////            final EventQueue eq = (EventQueue)appContext.get(EVENT_QUEUE_KEY);
+////            if (eq != null) {
+////                eq.postEvent(AWTAutoShutdown.getShutdownEvent());
+////            }
+//        }
+//    }
 
     static final class CreateThreadAction implements PrivilegedAction {
         private final AppContext appContext;
@@ -563,25 +563,25 @@ public final class AppContext {
         }
     }
 
-    static void stopEventDispatchThreads() {
-        for (AppContext appContext: getAppContexts()) {
-            if (appContext.isDisposed()) {
-                continue;
-            }
-            Runnable r = new PostShutdownEventRunnable(appContext);
-            // For security reasons EventQueue.postEvent should only be called
-            // on a thread that belongs to the corresponding thread group.
-            if (appContext != AppContext.getAppContext()) {
-                // Create a thread that belongs to the thread group associated
-                // with the AppContext and invokes EventQueue.postEvent.
-                PrivilegedAction action = new CreateThreadAction(appContext, r);
-                Thread thread = (Thread)AccessController.doPrivileged(action);
-                thread.start();
-            } else {
-                r.run();
-            }
-        }
-    }
+//    static void stopEventDispatchThreads() {
+//        for (AppContext appContext: getAppContexts()) {
+//            if (appContext.isDisposed()) {
+//                continue;
+//            }
+//            Runnable r = new PostShutdownEventRunnable(appContext);
+//            // For security reasons EventQueue.postEvent should only be called
+//            // on a thread that belongs to the corresponding thread group.
+//            if (appContext != AppContext.getAppContext()) {
+//                // Create a thread that belongs to the thread group associated
+//                // with the AppContext and invokes EventQueue.postEvent.
+//                PrivilegedAction action = new CreateThreadAction(appContext, r);
+//                Thread thread = (Thread)AccessController.doPrivileged(action);
+//                thread.start();
+//            } else {
+//                r.run();
+//            }
+//        }
+//    }
 
     private MostRecentKeyValue mostRecentKeyValue = null;
     private MostRecentKeyValue shadowMostRecentKeyValue = null;

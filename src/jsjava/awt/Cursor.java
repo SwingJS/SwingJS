@@ -146,12 +146,12 @@ public class Cursor {
      */
 
 
-    /**
-     * Hook into native data.
-     */
-    private transient long pData;
-
-    private transient Object anchor = new Object();
+//    /**
+//     * Hook into native data.
+//     */
+//    private transient long pData;
+//
+//    private transient Object anchor = new Object();
 
     /**
      * The user-visible name of the cursor.
@@ -338,37 +338,37 @@ public class Cursor {
         return getClass().getName() + "[" + getName() + "]";
     }
 
-    /*
-     * load the cursor.properties file
-     */
-    private static void loadSystemCustomCursorProperties() throws AWTException {
-//        synchronized(systemCustomCursors) {
-//            systemCustomCursorProperties = new Properties();
-//
-//            try {
-//                AccessController.doPrivileged(
-//                      new jsjava.security.PrivilegedExceptionAction() {
-//                    public Object run() throws Exception {
-//                        FileInputStream fis = null;
-//                        try {
-//                            fis = new FileInputStream(
-//                                           systemCustomCursorPropertiesFile);
-//                            systemCustomCursorProperties.load(fis);
-//                        } finally {
-//                            if (fis != null)
-//                                fis.close();
-//                        }
-//                        return null;
-//                    }
-//                });
-//            } catch (Exception e) {
-//                systemCustomCursorProperties = null;
-//                 throw new AWTException("Exception: " + e.getClass() + " " +
-//                   e.getMessage() + " occurred while loading: " +
-//                                        systemCustomCursorPropertiesFile);
-//            }
-//        }
-    }
+//    /*
+//     * load the cursor.properties file
+//     */
+//    private static void loadSystemCustomCursorProperties() throws AWTException {
+////        synchronized(systemCustomCursors) {
+////            systemCustomCursorProperties = new Properties();
+////
+////            try {
+////                AccessController.doPrivileged(
+////                      new jsjava.security.PrivilegedExceptionAction() {
+////                    public Object run() throws Exception {
+////                        FileInputStream fis = null;
+////                        try {
+////                            fis = new FileInputStream(
+////                                           systemCustomCursorPropertiesFile);
+////                            systemCustomCursorProperties.load(fis);
+////                        } finally {
+////                            if (fis != null)
+////                                fis.close();
+////                        }
+////                        return null;
+////                    }
+////                });
+////            } catch (Exception e) {
+////                systemCustomCursorProperties = null;
+////                 throw new AWTException("Exception: " + e.getClass() + " " +
+////                   e.getMessage() + " occurred while loading: " +
+////                                        systemCustomCursorPropertiesFile);
+////            }
+////        }
+//    }
 
 //    private native static void finalizeImpl(long pData);
 }

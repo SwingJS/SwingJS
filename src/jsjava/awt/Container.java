@@ -139,7 +139,7 @@ public class Container extends Component {
     // keeps track of the threads that are printing this component
 //    private transient Set printingThreads;
     // True if there is at least one thread that's printing this component
-    private transient boolean printing = false;
+//    private transient boolean printing = false;
 
     transient ContainerListener containerListener;
 
@@ -1005,7 +1005,7 @@ public class Container extends Component {
              * if comp is container, all sub-components must be on
              * same GraphicsDevice.
              */
-            GraphicsConfiguration thisGC = this.getGraphicsConfiguration();
+//            GraphicsConfiguration thisGC = this.getGraphicsConfiguration();
 
             if (index > component.size() || (index < 0 && index != -1)) {
                 throw new IllegalArgumentException(
@@ -4492,36 +4492,36 @@ class LightweightDispatcher implements AWTEventListener {
                                srcEvent.getButton());
             ((AWTEvent)srcEvent).copyPrivateDataInto(me);
             // translate coordinates to this native container
-            final Point ptSrcOrigin = srcComponent.getLocationOnScreen();
+//            final Point ptSrcOrigin = srcComponent.getLocationOnScreen();
 
-            if (AppContext.getAppContext() != nativeContainer.appContext) {
-                final MouseEvent mouseEvent = me;
-                Runnable r = new Runnable() {
-                        public void run() {
-                            if (!nativeContainer.isShowing() ) {
-                                return;
-                            }
-
-                            Point       ptDstOrigin = nativeContainer.getLocationOnScreen();
-                            mouseEvent.translatePoint(ptSrcOrigin.x - ptDstOrigin.x,
-                                              ptSrcOrigin.y - ptDstOrigin.y );
-                            Component targetOver =
-                                nativeContainer.getMouseEventTarget(mouseEvent.getX(),
-                                                                    mouseEvent.getY(),
-                                                                    Container.INCLUDE_SELF);
-                            trackMouseEnterExit(targetOver, mouseEvent);
-                        }
-                    };
-//                SunToolkit.executeOnEventHandlerThread(nativeContainer, r);
-                return;
-            } else {
-                if (!nativeContainer.isShowing() ) {
-                    return;
-                }
-
-                Point   ptDstOrigin = nativeContainer.getLocationOnScreen();
-                me.translatePoint( ptSrcOrigin.x - ptDstOrigin.x, ptSrcOrigin.y - ptDstOrigin.y );
-            }
+//            if (AppContext.getAppContext() != nativeContainer.appContext) {
+//                final MouseEvent mouseEvent = me;
+//                Runnable r = new Runnable() {
+//                        public void run() {
+//                            if (!nativeContainer.isShowing() ) {
+//                                return;
+//                            }
+//
+//                            Point       ptDstOrigin = nativeContainer.getLocationOnScreen();
+//                            mouseEvent.translatePoint(ptSrcOrigin.x - ptDstOrigin.x,
+//                                              ptSrcOrigin.y - ptDstOrigin.y );
+//                            Component targetOver =
+//                                nativeContainer.getMouseEventTarget(mouseEvent.getX(),
+//                                                                    mouseEvent.getY(),
+//                                                                    Container.INCLUDE_SELF);
+//                            trackMouseEnterExit(targetOver, mouseEvent);
+//                        }
+//                    };
+////                SunToolkit.executeOnEventHandlerThread(nativeContainer, r);
+//                return;
+//            } else {
+//                if (!nativeContainer.isShowing() ) {
+//                    return;
+//                }
+//
+//                Point   ptDstOrigin = nativeContainer.getLocationOnScreen();
+//                me.translatePoint( ptSrcOrigin.x - ptDstOrigin.x, ptSrcOrigin.y - ptDstOrigin.y );
+//            }
         }
         //System.out.println("Track event: " + me);
         // feed the 'dragged-over' event directly to the enter/exit
@@ -4622,10 +4622,10 @@ class LightweightDispatcher implements AWTEventListener {
      */
     private Container nativeContainer;
 
-    /**
-     * This variable is not used, but kept for serialization compatibility
-     */
-    private Component focus;
+//    /**
+//     * This variable is not used, but kept for serialization compatibility
+//     */
+//    private Component focus;
 
     /**
      * The current subcomponent being hosted by this windowed
@@ -4645,10 +4645,10 @@ class LightweightDispatcher implements AWTEventListener {
      */
     private transient boolean isMouseInNativeContainer = false;
 
-    /**
-     * This variable is not used, but kept for serialization compatibility
-     */
-    private Cursor nativeCursor;
+//    /**
+//     * This variable is not used, but kept for serialization compatibility
+//     */
+//    private Cursor nativeCursor;
 
     /**
      * The event mask for contained lightweight components.  Lightweight
@@ -4659,16 +4659,16 @@ class LightweightDispatcher implements AWTEventListener {
      */
     private long eventMask;
 
-    /**
-     * The kind of events routed to lightweight components from windowed
-     * hosts.
-     */
-    private static final long PROXY_EVENT_MASK =
-        AWTEvent.FOCUS_EVENT_MASK |
-        AWTEvent.KEY_EVENT_MASK |
-        AWTEvent.MOUSE_EVENT_MASK |
-        AWTEvent.MOUSE_MOTION_EVENT_MASK |
-        AWTEvent.MOUSE_WHEEL_EVENT_MASK;
+//    /**
+//     * The kind of events routed to lightweight components from windowed
+//     * hosts.
+//     */
+//    private static final long PROXY_EVENT_MASK =
+//        AWTEvent.FOCUS_EVENT_MASK |
+//        AWTEvent.KEY_EVENT_MASK |
+//        AWTEvent.MOUSE_EVENT_MASK |
+//        AWTEvent.MOUSE_MOTION_EVENT_MASK |
+//        AWTEvent.MOUSE_WHEEL_EVENT_MASK;
 
     private static final long MOUSE_MASK =
         AWTEvent.MOUSE_EVENT_MASK |

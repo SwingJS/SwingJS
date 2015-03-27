@@ -41,8 +41,8 @@ import jssun.swing.DefaultLookup;
 public class DefaultTableCellHeaderRenderer extends DefaultTableCellRenderer
         implements UIResource {
     private boolean horizontalTextPositionSet;
-    private Icon sortArrow;
-    private EmptyIcon emptyIcon = new EmptyIcon();
+//    private Icon sortArrow;
+//    private EmptyIcon emptyIcon = new EmptyIcon();
 
     public DefaultTableCellHeaderRenderer() {
         setHorizontalAlignment(JLabel.CENTER);
@@ -110,7 +110,7 @@ public class DefaultTableCellHeaderRenderer extends DefaultTableCellRenderer
 
         setText(value == null ? "" : value.toString());
         setIcon(sortIcon);
-        sortArrow = sortIcon;
+//        sortArrow = sortIcon;
 
         Border border = null;
         if (hasFocus) {
@@ -186,11 +186,11 @@ public class DefaultTableCellHeaderRenderer extends DefaultTableCellRenderer
 //        return new Point(x, y);
 //    }
 //
-    private class EmptyIcon implements Icon {
-        int width = 0;
-        int height = 0;
-        public void paintIcon(Component c, Graphics g, int x, int y) {}
-        public int getIconWidth() { return width; }
-        public int getIconHeight() { return height; }
-    }
+//    private class EmptyIcon implements Icon {
+//        int width = 0;
+//        int height = 0;
+//        public void paintIcon(Component c, Graphics g, int x, int y) {}
+//        public int getIconWidth() { return width; }
+//        public int getIconHeight() { return height; }
+//    }
 }
