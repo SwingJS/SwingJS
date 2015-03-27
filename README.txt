@@ -5,6 +5,8 @@ Udo Borkowski
 
 http://sourceforge.net/projects/swingjs/
 
+NOTE: THIS PROJECT IS NOT IN AN EXECUTABLE STATE YET
+
 SwingJS is a work in progress -- interested developers are welcome. 
 The overall objective is to allow Java Swing Applets to be ported to 
 JavaScript/HTML5 with a minimum of refactoring. The project derives 
