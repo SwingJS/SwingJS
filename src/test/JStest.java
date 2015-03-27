@@ -1,13 +1,13 @@
 package test;
 
-import jsjava.awt.Font;
-import jsjava.awt.FontMetrics;
-import jsjava.awt.Graphics;
+//import jsjava.awt.Font;
+//import jsjava.awt.FontMetrics;
+//import jsjava.awt.Graphics;
 
-import jsjavax.swing.JFrame;
-import jsjavax.swing.JLabel;
-import jsjavax.swing.JPanel;
-import jsjavax.swing.JWindow;
+//import jsjavax.swing.JFrame;
+//import jsjavax.swing.JLabel;
+//import jsjavax.swing.JPanel;
+//import jsjavax.swing.JWindow;
 
 import jsjava.awt.Toolkit;
 
@@ -17,27 +17,29 @@ public class JStest {
 	public static void main(String[] args) {
 	
 		printit(2,3,4,5);
-		Toolkit.getDefaultToolkit();
+		Toolkit tk = Toolkit.getDefaultToolkit();
 		
-		JPanel ca = new JPanel();
-		JWindow jp = new JWindow();
-		JLabel jl = new JLabel();
-		jp.pack();
-		Font f = new Font("SansSerif", Font.BOLD, 10);
-		Graphics g = jp.getGraphics();
-		FontMetrics fm = g.getFontMetrics(f);
-		float w = fm.stringWidth("hello");
-		System.out.println(w + " " + jl.getGraphics() + " " + g);
+		System.out.println(tk.toString());
 		
-		int[] a =  new int[] {1,2,3,343};
-		int[][] b = new int[][] {new int[]{4,5},new int[]{5,6}}; 
-		int[][] c = new int[3][4];		
-		float[][] d = new float[][] {new float[]{4,5},new float[]{5,6}}; 
-		float[][][] e = new float[][][] {new float[][] {new float[]{4,5},new float[]{5,6}}}; 
-		String[] sa =  new String[] {"a","b","c","d"};
-		String[][] sb = new String[][] {new String[]{"a","b","c","d"},new String[]{"a","b","c","d"}}; 
-		String[][] sc = new String[3][4];		
-		String[][] sd = new String[][] {new String[]{"a","b","c","d"},new String[]{"a","b","c","d"}}; 
+//		JPanel ca = new JPanel();
+//		JWindow jp = new JWindow();
+//		JLabel jl = new JLabel();
+//		jp.pack();
+//		Font f = new Font("SansSerif", Font.BOLD, 10);
+//		Graphics g = jp.getGraphics();
+//		FontMetrics fm = g.getFontMetrics(f);
+//		float w = fm.stringWidth("hello");
+//		System.out.println(w + " " + jl.getGraphics() + " " + g);
+		
+//		int[] a =  new int[] {1,2,3,343};
+//		int[][] b = new int[][] {new int[]{4,5},new int[]{5,6}}; 
+//		int[][] c = new int[3][4];		
+//		float[][] d = new float[][] {new float[]{4,5},new float[]{5,6}}; 
+//		float[][][] e = new float[][][] {new float[][] {new float[]{4,5},new float[]{5,6}}}; 
+//		String[] sa =  new String[] {"a","b","c","d"};
+//		String[][] sb = new String[][] {new String[]{"a","b","c","d"},new String[]{"a","b","c","d"}}; 
+//		String[][] sc = new String[3][4];		
+//		String[][] sd = new String[][] {new String[]{"a","b","c","d"},new String[]{"a","b","c","d"}}; 
 		System.out.println(args);
   }
 	
