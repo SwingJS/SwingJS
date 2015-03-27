@@ -305,7 +305,7 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
      */
     public void setText(String text) {
 
-        String oldAccessibleName = null;
+//        String oldAccessibleName = null;
 //        if (accessibleContext != null) {
 //            oldAccessibleName = accessibleContext.getAccessibleName();
 //        }

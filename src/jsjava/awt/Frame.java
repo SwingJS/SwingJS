@@ -603,7 +603,7 @@ public class Frame extends Window {
      */
     public void setResizable(boolean resizable) {
         boolean oldResizable = this.resizable;
-        boolean testvalid = false;
+//        boolean testvalid = false;
 
         synchronized (this) {
             this.resizable = resizable;
