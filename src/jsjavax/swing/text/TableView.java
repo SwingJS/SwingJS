@@ -419,7 +419,7 @@ public abstract class TableView extends BoxView {
             for (int cell = 0; cell < ncells; cell++, col++) {
                 View cv = row.getView(cell);
                 for (; row.isFilled(col); col++); // advance to a free column
-                int rowSpan = getRowsOccupied(cv);
+                //int rowSpan = getRowsOccupied(cv);
                 int colSpan = getColumnsOccupied(cv);
                 if (colSpan == 1) {
                     checkSingleColumnCell(axis, col, cv);
@@ -476,12 +476,12 @@ public abstract class TableView extends BoxView {
         // calculate the totals
         long min = 0;
         long pref = 0;
-        long max = 0;
+//        long max = 0;
         for (int i = 0; i < ncols; i++) {
             SizeRequirements req = columnRequirements[col + i];
             min += req.minimum;
             pref += req.preferred;
-            max += req.maximum;
+            //max += req.maximum;
         }
 
         // check if the minimum size needs adjustment.
@@ -522,7 +522,7 @@ public abstract class TableView extends BoxView {
              */
             SizeRequirements[] reqs = new SizeRequirements[ncols];
             for (int i = 0; i < ncols; i++) {
-                SizeRequirements r = reqs[i] = columnRequirements[col + i];
+              reqs[i] = columnRequirements[col + i];
             }
             int[] spans = new int[ncols];
             int[] offsets = new int[ncols];

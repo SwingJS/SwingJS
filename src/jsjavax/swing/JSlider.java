@@ -653,7 +653,7 @@ public class JSlider extends JComponent implements SwingConstants {
      */
     public void setValueIsAdjusting(boolean b) {
         BoundedRangeModel m = getModel();
-        boolean oldValue = m.getValueIsAdjusting();
+        //boolean oldValue = m.getValueIsAdjusting();
         m.setValueIsAdjusting(b);
 
 //        if ((oldValue != b) && (accessibleContext != null)) {

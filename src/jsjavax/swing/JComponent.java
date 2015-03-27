@@ -61,7 +61,7 @@ import jsjavax.swing.event.AncestorListener;
 import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.swing.SwingUtilities2;
-import jssun.swing.UIClientPropertyKey;
+//import jssun.swing.UIClientPropertyKey;
 
 /**
  * The base class for all Swing components except top-level containers.
@@ -185,11 +185,11 @@ public abstract class JComponent extends Container
      */
     private static final String uiClassID = "ComponentUI";
 
-    /**
-     * @see #readObject
-     */
-    private static final Hashtable readObjectCallbacks = new Hashtable(1);
-
+//    /**
+//     * @see #readObject
+//     */
+//    private static final Hashtable readObjectCallbacks = new Hashtable(1);
+//
     /**
      * Keys to use for forward focus traversal when the JComponent is
      * managing focus.
@@ -248,7 +248,7 @@ public abstract class JComponent extends Container
     private int flags;
 
     /* Input verifier for this component */
-    private InputVerifier inputVerifier = null;
+//    private InputVerifier inputVerifier = null;
 
     private boolean verifyInputWhenFocusTarget = true;
 
@@ -289,11 +289,11 @@ public abstract class JComponent extends Container
      */
     public static final int UNDEFINED_CONDITION = -1;
 
-    /**
-     * The key used by <code>JComponent</code> to access keyboard bindings.
-     */
-    private static final String KEYBOARD_BINDINGS_KEY = "_KeyboardBindings";
-
+//    /**
+//     * The key used by <code>JComponent</code> to access keyboard bindings.
+//     */
+//    private static final String KEYBOARD_BINDINGS_KEY = "_KeyboardBindings";
+//
     /**
      * An array of <code>KeyStroke</code>s used for
      * <code>WHEN_IN_FOCUSED_WINDOW</code> are stashed
@@ -320,7 +320,7 @@ public abstract class JComponent extends Container
     private static final int ANCESTOR_USING_BUFFER                    =  1;
     private static final int IS_PAINTING_TILE                         =  2;
     private static final int IS_OPAQUE                                =  3;
-    private static final int KEY_EVENTS_ENABLED                       =  4;
+//    private static final int KEY_EVENTS_ENABLED                       =  4;
     private static final int FOCUS_INPUTMAP_CREATED                   =  5;
     private static final int ANCESTOR_INPUTMAP_CREATED                =  6;
     private static final int WIF_INPUTMAP_CREATED                     =  7;
@@ -344,8 +344,8 @@ public abstract class JComponent extends Container
     private static final int INHERITS_POPUP_MENU                      = 23;
     private static final int OPAQUE_SET                               = 24;
     private static final int AUTOSCROLLS_SET                          = 25;
-    private static final int FOCUS_TRAVERSAL_KEYS_FORWARD_SET         = 26;
-    private static final int FOCUS_TRAVERSAL_KEYS_BACKWARD_SET        = 27;
+//    private static final int FOCUS_TRAVERSAL_KEYS_FORWARD_SET         = 26;
+//    private static final int FOCUS_TRAVERSAL_KEYS_BACKWARD_SET        = 27;
     private static final int REVALIDATE_RUNNABLE_SCHEDULED            = 28;
 
     /**
@@ -663,30 +663,30 @@ public abstract class JComponent extends Container
 //        repaint();
     }
 
-    /**
-     * Uninstalls the UI, if any, and any client properties designated
-     * as being specific to the installed UI - instances of
-     * {@code UIClientPropertyKey}.
-     */
-    private void uninstallUIAndProperties() {
-        if (ui != null) {
-            ui.uninstallUI(this);
-            //clean UIClientPropertyKeys from client properties
-            if (clientProperties != null) {
-                synchronized(clientProperties) {
-                    Object[] clientPropertyKeys =
-                        clientProperties.getKeys(null);
-                    if (clientPropertyKeys != null) {
-                        for (Object key : clientPropertyKeys) {
-                            if (key instanceof UIClientPropertyKey) {
-                                putClientProperty(key, null);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    /**
+//     * Uninstalls the UI, if any, and any client properties designated
+//     * as being specific to the installed UI - instances of
+//     * {@code UIClientPropertyKey}.
+//     */
+//    private void uninstallUIAndProperties() {
+//        if (ui != null) {
+//            ui.uninstallUI(this);
+//            //clean UIClientPropertyKeys from client properties
+//            if (clientProperties != null) {
+//                synchronized(clientProperties) {
+//                    Object[] clientPropertyKeys =
+//                        clientProperties.getKeys(null);
+//                    if (clientPropertyKeys != null) {
+//                        for (Object key : clientPropertyKeys) {
+//                            if (key instanceof UIClientPropertyKey) {
+//                                putClientProperty(key, null);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Returns the <code>UIDefaults</code> key used to
@@ -984,7 +984,7 @@ public abstract class JComponent extends Container
         Graphics componentGraphics = getComponentGraphics(g);
         Graphics co = componentGraphics.create();
         try {
-            RepaintManager repaintManager = RepaintManager.currentManager(this);
+//            RepaintManager repaintManager = RepaintManager.currentManager(this);
             Rectangle clipRect = co.getClipBounds();
             int clipX;
             int clipY;
@@ -1014,7 +1014,7 @@ public abstract class JComponent extends Container
                 shouldClearPaintFlags = true;
             }
 
-            int bw,bh;
+//            int bw,bh;
             boolean printing = getFlag(IS_PRINTING);
 //            if(!printing && repaintManager.isDoubleBufferingEnabled() &&
 //               !getFlag(ANCESTOR_USING_BUFFER) && isDoubleBuffered()) {
@@ -1304,8 +1304,8 @@ public abstract class JComponent extends Container
             return;
         }
 
-        Container nearestRoot =
-            (isFocusCycleRoot()) ? this : getFocusCycleRootAncestor();
+//        Container nearestRoot =
+//            (isFocusCycleRoot()) ? this : getFocusCycleRootAncestor();
 //        FocusTraversalPolicy policy = nearestRoot.getFocusTraversalPolicy();
 //        if (!(policy instanceof LegacyGlueFocusTraversalPolicy)) {
 //            policy = new LegacyGlueFocusTraversalPolicy(policy);
@@ -2803,7 +2803,7 @@ public abstract class JComponent extends Container
 
     /** Overrides <code>processKeyEvent</code> to process events. **/
     protected void processKeyEvent(KeyEvent e) {
-      boolean result;
+//      boolean result;
       boolean shouldProcessKey;
 
       // This gives the key event listeners a crack at the event
@@ -2963,7 +2963,7 @@ public abstract class JComponent extends Container
      * description: The text to display in a tool tip.
      */
     public void setToolTipText(String text) {
-        String oldText = getToolTipText();
+//        String oldText = getToolTipText();
         putClientProperty(TOOL_TIP_TEXT_KEY, text);
 //        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
 //        if (text != null) {
@@ -4940,7 +4940,7 @@ public abstract class JComponent extends Container
 
         Graphics g;
         Container c;
-        Rectangle b;
+//        Rectangle b;
 
         int tmpX, tmpY, tmpWidth, tmpHeight;
         int offsetX=0,offsetY=0;
@@ -4950,7 +4950,7 @@ public abstract class JComponent extends Container
         JComponent bufferedComponent = null;
         JComponent paintingComponent = this;
 
-        RepaintManager repaintManager = RepaintManager.currentManager(this);
+//        RepaintManager repaintManager = RepaintManager.currentManager(this);
         // parent Container's up to Window or Applet. First container is
         // the direct parent. Note that in testing it was faster to
         // alloc a new Vector vs keeping a stack of them around, and gc

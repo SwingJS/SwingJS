@@ -411,7 +411,7 @@ public class PlainView extends View implements TabExpander {
                 return getEndOffset() - 1;
             }
             Element line = map.getElement(lineIndex);
-            int dx = 0;
+//            int dx = 0;
             if (lineIndex == 0) {
                 alloc.x += firstLineOffset;
                 alloc.width -= firstLineOffset;
@@ -641,7 +641,7 @@ public class PlainView extends View implements TabExpander {
         Component c = getContainer();
         font = c.getFont();
         metrics = c.getFontMetrics(font);
-        Document doc = getDocument();
+//        Document doc = getDocument();
         Element lines = getElement();
         int n = lines.getElementCount();
         int maxWidth = -1;

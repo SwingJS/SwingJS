@@ -494,11 +494,11 @@ public class ParseUtil {
 //        }
 //    }
 //
-    private final static char[] hexDigits = {
-        '0', '1', '2', '3', '4', '5', '6', '7',
-        '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-    };
-
+//    private final static char[] hexDigits = {
+//        '0', '1', '2', '3', '4', '5', '6', '7',
+//        '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+//    };
+//
 //    private static void appendEscape(StringBuffer sb, byte b) {
 //        sb.append('%');
 //        sb.append(hexDigits[(b >> 4) & 0x0f]);
@@ -530,141 +530,141 @@ public class ParseUtil {
 //
     // -- Character classes for parsing --
 
-    // Compute a low-order mask for the characters
-    // between first and last, inclusive
-    private static long lowMask(char first, char last) {
-        long m = 0;
-        int f = Math.max(Math.min(first, 63), 0);
-        int l = Math.max(Math.min(last, 63), 0);
-        for (int i = f; i <= l; i++)
-            m |= 1L << i;
-        return m;
-    }
+//    // Compute a low-order mask for the characters
+//    // between first and last, inclusive
+//    private static long lowMask(char first, char last) {
+//        long m = 0;
+//        int f = Math.max(Math.min(first, 63), 0);
+//        int l = Math.max(Math.min(last, 63), 0);
+//        for (int i = f; i <= l; i++)
+//            m |= 1L << i;
+//        return m;
+//    }
 
-    // Compute the low-order mask for the characters in the given string
-    private static long lowMask(String chars) {
-        int n = chars.length();
-        long m = 0;
-        for (int i = 0; i < n; i++) {
-            char c = chars.charAt(i);
-            if (c < 64)
-                m |= (1L << c);
-        }
-        return m;
-    }
+//    // Compute the low-order mask for the characters in the given string
+//    private static long lowMask(String chars) {
+//        int n = chars.length();
+//        long m = 0;
+//        for (int i = 0; i < n; i++) {
+//            char c = chars.charAt(i);
+//            if (c < 64)
+//                m |= (1L << c);
+//        }
+//        return m;
+//    }
+//
+//    // Compute a high-order mask for the characters
+//    // between first and last, inclusive
+//    private static long highMask(char first, char last) {
+//        long m = 0;
+//        int f = Math.max(Math.min(first, 127), 64) - 64;
+//        int l = Math.max(Math.min(last, 127), 64) - 64;
+//        for (int i = f; i <= l; i++)
+//            m |= 1L << i;
+//        return m;
+//    }
 
-    // Compute a high-order mask for the characters
-    // between first and last, inclusive
-    private static long highMask(char first, char last) {
-        long m = 0;
-        int f = Math.max(Math.min(first, 127), 64) - 64;
-        int l = Math.max(Math.min(last, 127), 64) - 64;
-        for (int i = f; i <= l; i++)
-            m |= 1L << i;
-        return m;
-    }
-
-    // Compute the high-order mask for the characters in the given string
-    private static long highMask(String chars) {
-        int n = chars.length();
-        long m = 0;
-        for (int i = 0; i < n; i++) {
-            char c = chars.charAt(i);
-            if ((c >= 64) && (c < 128))
-                m |= (1L << (c - 64));
-        }
-        return m;
-    }
-
+//    // Compute the high-order mask for the characters in the given string
+//    private static long highMask(String chars) {
+//        int n = chars.length();
+//        long m = 0;
+//        for (int i = 0; i < n; i++) {
+//            char c = chars.charAt(i);
+//            if ((c >= 64) && (c < 128))
+//                m |= (1L << (c - 64));
+//        }
+//        return m;
+//    }
+//
 
     // Character-class masks
 
-    // digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
-    //            "8" | "9"
-    private static final long L_DIGIT = lowMask('0', '9');
-    private static final long H_DIGIT = 0L;
-
+//    // digit    = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" |
+//    //            "8" | "9"
+//    private static final long L_DIGIT = lowMask('0', '9');
+//    private static final long H_DIGIT = 0L;
+//
     // hex           =  digit | "A" | "B" | "C" | "D" | "E" | "F" |
     //                          "a" | "b" | "c" | "d" | "e" | "f"
-    private static final long L_HEX = L_DIGIT;
-    private static final long H_HEX = highMask('A', 'F') | highMask('a', 'f');
-
-    // upalpha  = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
-    //            "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
-    //            "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
-    private static final long L_UPALPHA = 0L;
-    private static final long H_UPALPHA = highMask('A', 'Z');
-
-    // lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
-    //            "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
-    //            "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
-    private static final long L_LOWALPHA = 0L;
-    private static final long H_LOWALPHA = highMask('a', 'z');
-
-    // alpha         = lowalpha | upalpha
-    private static final long L_ALPHA = L_LOWALPHA | L_UPALPHA;
-    private static final long H_ALPHA = H_LOWALPHA | H_UPALPHA;
-
-    // alphanum      = alpha | digit
-    private static final long L_ALPHANUM = L_DIGIT | L_ALPHA;
-    private static final long H_ALPHANUM = H_DIGIT | H_ALPHA;
-
-    // mark          = "-" | "_" | "." | "!" | "~" | "*" | "'" |
-    //                 "(" | ")"
-    private static final long L_MARK = lowMask("-_.!~*'()");
-    private static final long H_MARK = highMask("-_.!~*'()");
-
-    // unreserved    = alphanum | mark
-    private static final long L_UNRESERVED = L_ALPHANUM | L_MARK;
-    private static final long H_UNRESERVED = H_ALPHANUM | H_MARK;
-
-    // reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
-    //                 "$" | "," | "[" | "]"
-    // Added per RFC2732: "[", "]"
-    private static final long L_RESERVED = lowMask(";/?:@&=+$,[]");
-    private static final long H_RESERVED = highMask(";/?:@&=+$,[]");
-
-    // The zero'th bit is used to indicate that escape pairs and non-US-ASCII
-    // characters are allowed; this is handled by the scanEscape method below.
-    private static final long L_ESCAPED = 1L;
-    private static final long H_ESCAPED = 0L;
-
-    // Dash, for use in domainlabel and toplabel
-    private static final long L_DASH = lowMask("-");
-    private static final long H_DASH = highMask("-");
+//    private static final long L_HEX = L_DIGIT;
+//    private static final long H_HEX = highMask('A', 'F') | highMask('a', 'f');
+//
+//    // upalpha  = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" |
+//    //            "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" |
+//    //            "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+//    private static final long L_UPALPHA = 0L;
+//    private static final long H_UPALPHA = highMask('A', 'Z');
+//
+//    // lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" |
+//    //            "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" |
+//    //            "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+//    private static final long L_LOWALPHA = 0L;
+//    private static final long H_LOWALPHA = highMask('a', 'z');
+//
+//    // alpha         = lowalpha | upalpha
+//    private static final long L_ALPHA = L_LOWALPHA | L_UPALPHA;
+//    private static final long H_ALPHA = H_LOWALPHA | H_UPALPHA;
+//
+//    // alphanum      = alpha | digit
+//    private static final long L_ALPHANUM = L_DIGIT | L_ALPHA;
+//    private static final long H_ALPHANUM = H_DIGIT | H_ALPHA;
+//
+//    // mark          = "-" | "_" | "." | "!" | "~" | "*" | "'" |
+//    //                 "(" | ")"
+//    private static final long L_MARK = lowMask("-_.!~*'()");
+//    private static final long H_MARK = highMask("-_.!~*'()");
+//
+//    // unreserved    = alphanum | mark
+//    private static final long L_UNRESERVED = L_ALPHANUM | L_MARK;
+//    private static final long H_UNRESERVED = H_ALPHANUM | H_MARK;
+//
+//    // reserved      = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
+//    //                 "$" | "," | "[" | "]"
+//    // Added per RFC2732: "[", "]"
+//    private static final long L_RESERVED = lowMask(";/?:@&=+$,[]");
+//    private static final long H_RESERVED = highMask(";/?:@&=+$,[]");
+//
+//    // The zero'th bit is used to indicate that escape pairs and non-US-ASCII
+//    // characters are allowed; this is handled by the scanEscape method below.
+//    private static final long L_ESCAPED = 1L;
+//    private static final long H_ESCAPED = 0L;
+//
+//    // Dash, for use in domainlabel and toplabel
+//    private static final long L_DASH = lowMask("-");
+//    private static final long H_DASH = highMask("-");
 
     // uric          = reserved | unreserved | escaped
-    private static final long L_URIC = L_RESERVED | L_UNRESERVED | L_ESCAPED;
-    private static final long H_URIC = H_RESERVED | H_UNRESERVED | H_ESCAPED;
+//    private static final long L_URIC = L_RESERVED | L_UNRESERVED | L_ESCAPED;
+//    private static final long H_URIC = H_RESERVED | H_UNRESERVED | H_ESCAPED;
 
     // pchar         = unreserved | escaped |
     //                 ":" | "@" | "&" | "=" | "+" | "$" | ","
-    private static final long L_PCHAR
-        = L_UNRESERVED | L_ESCAPED | lowMask(":@&=+$,");
-    private static final long H_PCHAR
-        = H_UNRESERVED | H_ESCAPED | highMask(":@&=+$,");
+//    private static final long L_PCHAR
+//        = L_UNRESERVED | L_ESCAPED | lowMask(":@&=+$,");
+//    private static final long H_PCHAR
+//        = H_UNRESERVED | H_ESCAPED | highMask(":@&=+$,");
 
     // All valid path characters
-    private static final long L_PATH = L_PCHAR | lowMask(";/");
-    private static final long H_PATH = H_PCHAR | highMask(";/");
+//    private static final long L_PATH = L_PCHAR | lowMask(";/");
+//    private static final long H_PATH = H_PCHAR | highMask(";/");
 
     // userinfo      = *( unreserved | escaped |
     //                    ";" | ":" | "&" | "=" | "+" | "$" | "," )
-    private static final long L_USERINFO
-        = L_UNRESERVED | L_ESCAPED | lowMask(";:&=+$,");
-    private static final long H_USERINFO
-        = H_UNRESERVED | H_ESCAPED | highMask(";:&=+$,");
+//    private static final long L_USERINFO
+//        = L_UNRESERVED | L_ESCAPED | lowMask(";:&=+$,");
+//    private static final long H_USERINFO
+//        = H_UNRESERVED | H_ESCAPED | highMask(";:&=+$,");
 
     // reg_name      = 1*( unreserved | escaped | "$" | "," |
     //                     ";" | ":" | "@" | "&" | "=" | "+" )
-    private static final long L_REG_NAME
-        = L_UNRESERVED | L_ESCAPED | lowMask("$,;:@&=+");
-    private static final long H_REG_NAME
-        = H_UNRESERVED | H_ESCAPED | highMask("$,;:@&=+");
+//    private static final long L_REG_NAME
+//        = L_UNRESERVED | L_ESCAPED | lowMask("$,;:@&=+");
+//    private static final long H_REG_NAME
+//        = H_UNRESERVED | H_ESCAPED | highMask("$,;:@&=+");
 
-    // All valid characters for server-based authorities
-    private static final long L_SERVER
-        = L_USERINFO | L_ALPHANUM | L_DASH | lowMask(".:@[]");
-    private static final long H_SERVER
-        = H_USERINFO | H_ALPHANUM | H_DASH | highMask(".:@[]");
+//    // All valid characters for server-based authorities
+//    private static final long L_SERVER
+//        = L_USERINFO | L_ALPHANUM | L_DASH | lowMask(".:@[]");
+//    private static final long H_SERVER
+//        = H_USERINFO | H_ALPHANUM | H_DASH | highMask(".:@[]");
 }

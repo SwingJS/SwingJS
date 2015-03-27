@@ -280,7 +280,7 @@ public class AsyncBoxView extends View {
                 synchronized(stats) {
                     int n = getViewCount();
                     if ((n > 0) && (minorChanged || estimatedMajorSpan)) {
-                        LayoutQueue q = getLayoutQueue();
+//                        LayoutQueue q = getLayoutQueue();
                         ChildState min = getChildState(0);
                         ChildState pref = getChildState(0);
                         float span = 0f;
@@ -1397,7 +1397,7 @@ public class AsyncBoxView extends View {
         private float min;
         private float pref;
         private float max;
-        private float align;
+//        private float align;
         private boolean minorValid;
 
         // major axis

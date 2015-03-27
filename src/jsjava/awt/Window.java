@@ -3414,7 +3414,8 @@ public class Window extends Container {
     }
 */
 
-    private transient boolean opaque = true;
+    @SuppressWarnings("unused")
+		private transient boolean opaque = true;
 
     void setOpaque(boolean opaque) {
         synchronized (getTreeLock()) {

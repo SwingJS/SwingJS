@@ -837,7 +837,7 @@ public class JProgressBar extends JComponent implements SwingConstants
      */
     public void setValue(int n) {
         BoundedRangeModel brm = getModel();
-        int oldValue = brm.getValue();
+        //int oldValue = brm.getValue();
         brm.setValue(n);
 
 //        if (accessibleContext != null) {

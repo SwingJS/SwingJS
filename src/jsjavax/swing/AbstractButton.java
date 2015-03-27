@@ -334,7 +334,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @param b  true if the button is selected, otherwise false
      */
     public void setSelected(boolean b) {
-        boolean oldValue = isSelected();
+        //boolean oldValue = isSelected();
 
         // TIGER - 4840653
         // Removed code which fired an AccessibleState.SELECTED
@@ -1562,7 +1562,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      *  description: the keyboard character mnemonic
      */
     public void setMnemonic(int mnemonic) {
-        int oldValue = getMnemonic();
+        //int oldValue = getMnemonic();
         model.setMnemonic(mnemonic);
         updateMnemonicProperties();
     }

@@ -259,10 +259,10 @@ public class EventQueue {
 //            return LOW_PRIORITY;
 //        }
 //
-//        int id = theEvent.getID();
-//        if (id == PaintEvent.PAINT || id == PaintEvent.UPDATE) {
-//            return LOW_PRIORITY;
-//        }
+        int id = theEvent.getID();
+        if (id == PaintEvent.PAINT || id == PaintEvent.UPDATE) {
+            return LOW_PRIORITY;
+        }
         return NORM_PRIORITY;
     }
 
@@ -744,12 +744,12 @@ public class EventQueue {
     	return null;
 //        return Toolkit.getEventQueue().getCurrentEventImpl();
     }
-    private synchronized AWTEvent getCurrentEventImpl() {
-    	return null;
-//        return (Thread.currentThread() == dispatchThread)
-//            ? ((AWTEvent)currentEvent.get())
-//            : null;
-    }
+//    private synchronized AWTEvent getCurrentEventImpl() {
+//    	return null;
+////        return (Thread.currentThread() == dispatchThread)
+////            ? ((AWTEvent)currentEvent.get())
+////            : null;
+//    }
 
     /**
      * Replaces the existing <code>EventQueue</code> with the specified one.

@@ -345,7 +345,7 @@ final class Order3 extends Curve {
         double a = ycoeff2 / ycoeff3;
         double b = ycoeff1 / ycoeff3;
         double c = (ycoeff0 - y) / ycoeff3;
-        int roots = 0;
+//        int roots = 0;
         double Q = (a * a - 3.0 * b) / 9.0;
         double R = (2.0 * a * a * a - 9.0 * a * b + 27.0 * c) / 54.0;
         double R2 = R * R;

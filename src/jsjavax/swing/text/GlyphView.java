@@ -358,18 +358,18 @@ public class GlyphView extends View implements TabableView, Cloneable {
         return (length > 0) ? e.getStartOffset() + offset + length : e.getEndOffset();
     }
 
-    /**
-     * Lazily initializes the selections field
-     */
-    private void initSelections(int p0, int p1) {
-        int viewPosCount = p1 - p0 + 1;
-        if (selections == null || viewPosCount > selections.length) {
-            selections = new byte[viewPosCount];
-            return;
-        }
-        for (int i = 0; i < viewPosCount; selections[i++] = 0);
-    }
-
+//    /**
+//     * Lazily initializes the selections field
+//     */
+//    private void initSelections(int p0, int p1) {
+//        int viewPosCount = p1 - p0 + 1;
+//        if (selections == null || viewPosCount > selections.length) {
+//            selections = new byte[viewPosCount];
+//            return;
+//        }
+//        for (int i = 0; i < viewPosCount; selections[i++] = 0);
+//    }
+//
     /**
      * Renders a portion of a text style run.
      *
@@ -1009,7 +1009,7 @@ public class GlyphView extends View implements TabableView, Cloneable {
         int txtEnd = segment.offset + segment.count - 1;
         int startContentPosition = txtEnd + 1;
         int endContentPosition = txtOffset - 1;
-        int lastTabPosition = txtOffset - 1;
+//        int lastTabPosition = txtOffset - 1;
         int trailingSpaces = 0;
         int contentSpaces = 0;
         int leadingSpaces = 0;
@@ -1076,10 +1076,10 @@ public class GlyphView extends View implements TabableView, Cloneable {
 
     // --- variables ------------------------------------------------
 
-    /**
-    * Used by paint() to store highlighted view positions
-    */
-    private byte[] selections = null;
+//    /**
+//    * Used by paint() to store highlighted view positions
+//    */
+//    private byte[] selections = null;
 
     int offset;
     int length;
@@ -1247,7 +1247,7 @@ public class GlyphView extends View implements TabableView, Cloneable {
 
             int startOffset = v.getStartOffset();
             int endOffset = v.getEndOffset();
-            Segment text;
+//            Segment text;
 
             switch (direction) {
             case View.NORTH:

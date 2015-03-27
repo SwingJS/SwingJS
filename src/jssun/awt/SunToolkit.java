@@ -1476,9 +1476,9 @@ public abstract class SunToolkit extends Toolkit
     }
 
     public static final int DEFAULT_WAIT_TIME = 10000;
-    private static final int MAX_ITERS = 20;
-    private static final int MIN_ITERS = 0;
-    private static final int MINIMAL_EDELAY = 0;
+//    private static final int MAX_ITERS = 20;
+//    private static final int MIN_ITERS = 0;
+//    private static final int MINIMAL_EDELAY = 0;
 
 //    /**
 //     * Parameterless version of realsync which uses default timout (see DEFAUL_WAIT_TIME).
@@ -1595,15 +1595,15 @@ public abstract class SunToolkit extends Toolkit
      */
     protected abstract boolean syncNativeQueue(final long timeout);
 
-    private boolean eventDispatched = false;
-    private boolean queueEmpty = false;
-    private final Object waitLock = "Wait Lock";
+//    private boolean eventDispatched = false;
+//    private boolean queueEmpty = false;
+//    private final Object waitLock = "Wait Lock";
 
-    private boolean isEQEmpty() {
-        EventQueue queue = getSystemEventQueueImpl();
-        return AWTAccessor.getEventQueueAccessor().noEvents(queue);
-    }
-
+//    private boolean isEQEmpty() {
+//        EventQueue queue = getSystemEventQueueImpl();
+//        return AWTAccessor.getEventQueueAccessor().noEvents(queue);
+//    }
+//
 //SwingJS CANNOT DO THIS  waitForIdle 
 //    
 //    /**

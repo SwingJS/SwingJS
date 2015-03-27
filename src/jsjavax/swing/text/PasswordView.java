@@ -226,7 +226,7 @@ public class PasswordView extends FieldView {
                 if (f.echoCharIsSet()) {
                     char echoChar = f.getEchoChar();
                     FontMetrics m = f.getFontMetrics(f.getFont());
-                    Document doc = getDocument();
+//                    Document doc = getDocument();
                     return m.charWidth(echoChar) * getDocument().getLength();
                 }
             }

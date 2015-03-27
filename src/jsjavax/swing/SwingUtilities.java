@@ -60,21 +60,21 @@ import jssun.swing.UIAction;
 public class SwingUtilities implements SwingConstants
 {
     // These states are system-wide, rather than AppContext wide.
-    private static boolean canAccessEventQueue = false;
-    private static boolean eventQueueTested = false;
+//    private static boolean canAccessEventQueue = false;
+//    private static boolean eventQueueTested = false;
 
-    /**
-     * Indicates if we should change the drop target when a
-     * {@code TransferHandler} is set.
-     */
-    private static boolean suppressDropSupport;
-
-    /**
-     * Indiciates if we've checked the system property for suppressing
-     * drop support.
-     */
-    private static boolean checkedSuppressDropSupport;
-
+//    /**
+//     * Indicates if we should change the drop target when a
+//     * {@code TransferHandler} is set.
+//     */
+//    private static boolean suppressDropSupport;
+//
+//    /**
+//     * Indiciates if we've checked the system property for suppressing
+//     * drop support.
+//     */
+//    private static boolean checkedSuppressDropSupport;
+//
     /**
      * Installs a {@code DropTarget} on the component as necessary for a
      * {@code TransferHandler} change.
@@ -361,7 +361,7 @@ public class SwingUtilities implements SwingConstants
      * @param c  a Component object
      */
     public static void convertPointToScreen(Point p,Component c) {
-            Rectangle b;
+//            Rectangle b;
             int x,y;
 
             do {
@@ -400,7 +400,7 @@ public class SwingUtilities implements SwingConstants
      * @param c  a Component object
      */
     public static void convertPointFromScreen(Point p,Component c) {
-        Rectangle b;
+//        Rectangle b;
         int x,y;
 
         do {

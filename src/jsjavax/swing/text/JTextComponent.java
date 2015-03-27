@@ -4052,12 +4052,12 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //    private Position latestCommittedTextEnd;
 //    private ComposedTextCaret composedTextCaret;
 //    private transient Caret originalCaret;
-    /**
-     * Set to true after the check for the override of processInputMethodEvent
-     * has been checked.
-     */
-    private boolean checkedInputOverride;
-    private boolean needToSendKeyTypedEvent;
+//    /**
+//     * Set to true after the check for the override of processInputMethodEvent
+//     * has been checked.
+//     */
+//    private boolean checkedInputOverride;
+//    private boolean needToSendKeyTypedEvent;
 
     static class DefaultKeymap implements Keymap {
 
@@ -4522,8 +4522,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void addInputMethodListener(InputMethodListener l) {
         super.addInputMethodListener(l);
         if (l != null) {
-            needToSendKeyTypedEvent = false;
-            checkedInputOverride = true;
+//            needToSendKeyTypedEvent = false;
+//            checkedInputOverride = true;
         }
     }
 

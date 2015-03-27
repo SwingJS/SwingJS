@@ -647,17 +647,17 @@ public class DecimalFormat extends NumberFormat {
         // a number near MIN_VALUE or MAX_VALUE outside the legal range.  We
         // check for this before multiplying, and if it happens we use
         // BigInteger instead.
-        boolean useBigInteger = false;
+//        boolean useBigInteger = false;
         if (number < 0) { // This can only happen if number == Long.MIN_VALUE.
-            if (multiplier != 0) {
-                useBigInteger = true;
-            }
+//            if (multiplier != 0) {
+//                useBigInteger = true;
+//            }
         } else if (multiplier != 1 && multiplier != 0) {
             long cutoff = Long.MAX_VALUE / multiplier;
             if (cutoff < 0) {
                 cutoff = -cutoff;
             }
-            useBigInteger = (number > cutoff);
+            //useBigInteger = (number > cutoff);
         }
 
 //        if (useBigInteger) {
@@ -3193,7 +3193,7 @@ public class DecimalFormat extends NumberFormat {
      */
     private int    minimumFractionDigits = super.getMinimumFractionDigits();
 
-		private static int roundingMode_HALF_EVE = 0;
+//		private static int roundingMode_HALF_EVE = 0;
 
     /**
      * The {@link java.math.RoundingMode} used in this DecimalFormat.
@@ -3205,32 +3205,32 @@ public class DecimalFormat extends NumberFormat {
 
     //----------------------------------------------------------------------
 
-    static final int currentSerialVersion = 4;
-
-    /**
-     * The internal serial version which says which version was written.
-     * Possible values are:
-     * <ul>
-     * <li><b>0</b> (default): versions before the Java 2 platform v1.2
-     * <li><b>1</b>: version for 1.2, which includes the two new fields
-     *      <code>useExponentialNotation</code> and
-     *      <code>minExponentDigits</code>.
-     * <li><b>2</b>: version for 1.3 and later, which adds four new fields:
-     *      <code>posPrefixPattern</code>, <code>posSuffixPattern</code>,
-     *      <code>negPrefixPattern</code>, and <code>negSuffixPattern</code>.
-     * <li><b>3</b>: version for 1.5 and later, which adds five new fields:
-     *      <code>maximumIntegerDigits</code>,
-     *      <code>minimumIntegerDigits</code>,
-     *      <code>maximumFractionDigits</code>,
-     *      <code>minimumFractionDigits</code>, and
-     *      <code>parseBigDecimal</code>.
-     * <li><b>4</b>: version for 1.6 and later, which adds one new field:
-     *      <code>roundingMode</code>.
-     * </ul>
-     * @since 1.2
-     * @serial
-     */
-    private int serialVersionOnStream = currentSerialVersion;
+//    static final int currentSerialVersion = 4;
+//
+//    /**
+//     * The internal serial version which says which version was written.
+//     * Possible values are:
+//     * <ul>
+//     * <li><b>0</b> (default): versions before the Java 2 platform v1.2
+//     * <li><b>1</b>: version for 1.2, which includes the two new fields
+//     *      <code>useExponentialNotation</code> and
+//     *      <code>minExponentDigits</code>.
+//     * <li><b>2</b>: version for 1.3 and later, which adds four new fields:
+//     *      <code>posPrefixPattern</code>, <code>posSuffixPattern</code>,
+//     *      <code>negPrefixPattern</code>, and <code>negSuffixPattern</code>.
+//     * <li><b>3</b>: version for 1.5 and later, which adds five new fields:
+//     *      <code>maximumIntegerDigits</code>,
+//     *      <code>minimumIntegerDigits</code>,
+//     *      <code>maximumFractionDigits</code>,
+//     *      <code>minimumFractionDigits</code>, and
+//     *      <code>parseBigDecimal</code>.
+//     * <li><b>4</b>: version for 1.6 and later, which adds one new field:
+//     *      <code>roundingMode</code>.
+//     * </ul>
+//     * @since 1.2
+//     * @serial
+//     */
+//    private int serialVersionOnStream = currentSerialVersion;
 
     //----------------------------------------------------------------------
     // CONSTANTS

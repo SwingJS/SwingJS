@@ -456,7 +456,7 @@ public abstract class CompositeView extends View {
     public int getNextVisualPositionFrom(int pos, Position.Bias b, Shape a,
                                          int direction, Position.Bias[] biasRet)
       throws BadLocationException {
-        Rectangle alloc = getInsideAllocation(a);
+        //Rectangle alloc = getInsideAllocation(a);
 
         switch (direction) {
         case NORTH:

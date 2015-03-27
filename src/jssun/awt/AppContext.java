@@ -538,7 +538,7 @@ public final class AppContext {
         }
 
         public void run() {
-            final EventQueue eq = (EventQueue)appContext.get(EVENT_QUEUE_KEY);
+//            final EventQueue eq = (EventQueue)appContext.get(EVENT_QUEUE_KEY);
 //            if (eq != null) {
 //                eq.postEvent(AWTAutoShutdown.getShutdownEvent());
 //            }

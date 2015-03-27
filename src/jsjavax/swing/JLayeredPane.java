@@ -467,7 +467,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
      * @see #getComponentCountInLayer
      */
     public int getPosition(Component c) {
-        int i, count, startLayer, curLayer, startLocation, pos = 0;
+        @SuppressWarnings("unused")
+				int i, count, startLayer, curLayer, startLocation, pos = 0;
 
         count = getComponentCount();
         startLocation = getIndexOf(c);

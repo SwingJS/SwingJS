@@ -244,11 +244,11 @@ public class NumberFormatter extends InternationalFormatter {
         return null;
     }
 
-    /**
-     */
-    private boolean isValidInsertionCharacter(char aChar) {
-        return (Character.isDigit(aChar) || specialChars.indexOf(aChar) != -1);
-    }
+//    /**
+//     */
+//    private boolean isValidInsertionCharacter(char aChar) {
+//        return (Character.isDigit(aChar) || specialChars.indexOf(aChar) != -1);
+//    }
 
 
     /**
@@ -417,27 +417,27 @@ public class NumberFormatter extends InternationalFormatter {
         return false;
     }
 
-    /**
-     * Returns true if the range offset to length identifies the only
-     * integer field.
-     */
-    private boolean isOnlyIntegerField(int offset, int length) {
-        if (isValidMask()) {
-            int start = getAttributeStart(NumberFormat.Field.INTEGER);
-
-            if (start != -1) {
-                AttributedCharacterIterator iterator = getIterator();
-
-                iterator.setIndex(start);
-                if (offset > start || iterator.getRunLimit(
-                    NumberFormat.Field.INTEGER) > (offset + length)) {
-                    return false;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+//    /**
+//     * Returns true if the range offset to length identifies the only
+//     * integer field.
+//     */
+//    private boolean isOnlyIntegerField(int offset, int length) {
+//        if (isValidMask()) {
+//            int start = getAttributeStart(NumberFormat.Field.INTEGER);
+//
+//            if (start != -1) {
+//                AttributedCharacterIterator iterator = getIterator();
+//
+//                iterator.setIndex(start);
+//                if (offset > start || iterator.getRunLimit(
+//                    NumberFormat.Field.INTEGER) > (offset + length)) {
+//                    return false;
+//                }
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * Invoked to toggle the sign. For this to work the value class

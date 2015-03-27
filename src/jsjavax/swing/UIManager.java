@@ -38,12 +38,7 @@ import jsjavax.swing.border.Border;
 import jsjavax.swing.event.SwingPropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 
-//import java.io.File;
-
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.Vector;
 import java.util.Locale;
 
 import jssun.swing.SwingUtilities2;
@@ -180,7 +175,7 @@ public class UIManager
         MultiUIDefaults multiUIDefaults = new MultiUIDefaults(tables);
         LookAndFeel lookAndFeel;
 //        LookAndFeel multiLookAndFeel = null;
-        Vector auxLookAndFeels = null;
+//        Vector auxLookAndFeels = null;
         SwingPropertyChangeSupport changeSupport;
 
         LookAndFeelInfo[] installedLAFs;

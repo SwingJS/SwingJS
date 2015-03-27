@@ -25,7 +25,7 @@
 
 package jssun.awt.image;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.MalformedURLException;
@@ -104,16 +104,16 @@ public class URLImageSource extends InputStreamImageSource {
         return true;
     }
 
-    private synchronized URLConnection getConnection() throws IOException {
-        URLConnection c;
-        if (conn != null) {
-            c = conn;
-            conn = null;
-        } else {
-            c = url.openConnection();
-        }
-        return c;
-    }
+//    private synchronized URLConnection getConnection() throws IOException {
+//        URLConnection c;
+//        if (conn != null) {
+//            c = conn;
+//            conn = null;
+//        } else {
+//            c = url.openConnection();
+//        }
+//        return c;
+//    }
 
 		@Override
     protected ImageDecoder getDecoder() {

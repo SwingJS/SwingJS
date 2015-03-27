@@ -3241,10 +3241,10 @@ public class GroupLayout implements LayoutManager2 {
             this.userCreated = true;
         }
 
-        public void setSource(ComponentSpring source) {
-            this.source = source;
-        }
-
+//        public void setSource(ComponentSpring source) {
+//            this.source = source;
+//        }
+//
         public void setSources(List<ComponentSpring> sources) {
             this.sources = new ArrayList<ComponentSpring>(sources);
         }
@@ -3679,10 +3679,10 @@ public class GroupLayout implements LayoutManager2 {
             }
         }
 
-        public Component getComponent() {
-            return component;
-        }
-
+//        public Component getComponent() {
+//            return component;
+//        }
+//
         /**
          * Returns true if this component has its size linked to
          * other components.

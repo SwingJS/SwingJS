@@ -270,7 +270,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
     public void setArmed(boolean b) {
         ButtonModel model = (ButtonModel) getModel();
 
-        boolean oldValue = model.isArmed();
+//        boolean oldValue = model.isArmed();
         if(model.isArmed() != b) {
             model.setArmed(b);
         }

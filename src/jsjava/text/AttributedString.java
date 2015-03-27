@@ -739,7 +739,7 @@ public class AttributedString {
         private int endIndex;
 
         // attributes that our client is interested in
-        private Attribute[] relevantAttributes;
+//        private Attribute[] relevantAttributes;
 
         // the current index for our iteration
         // invariant: beginIndex <= currentIndex <= endIndex
@@ -761,9 +761,9 @@ public class AttributedString {
             this.endIndex = endIndex;
             this.currentIndex = beginIndex;
             updateRunInfo();
-            if (attributes != null) {
-                relevantAttributes = (Attribute[]) attributes.clone();
-            }
+//            if (attributes != null) {
+//                relevantAttributes = (Attribute[]) attributes.clone();
+//            }
         }
 
         // Object methods. See documentation in that class.

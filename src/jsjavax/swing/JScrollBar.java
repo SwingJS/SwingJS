@@ -303,11 +303,11 @@ public class JScrollBar extends JComponent implements Adjustable
      * description: The scrollbar's BoundedRangeModel.
      */
     public void setModel(BoundedRangeModel newModel) {
-        Integer oldValue = null;
+        //Integer oldValue = null;
         BoundedRangeModel oldModel = model;
         if (model != null) {
             model.removeChangeListener(fwdAdjustmentEvents);
-            oldValue = new Integer(model.getValue());
+            //oldValue = new Integer(model.getValue());
         }
         model = newModel;
         if (model != null) {
@@ -452,7 +452,7 @@ public class JScrollBar extends JComponent implements Adjustable
      */
     public void setValue(int value) {
         BoundedRangeModel m = getModel();
-        int oldValue = m.getValue();
+        //int oldValue = m.getValue();
         m.setValue(value);
 
 //        if (accessibleContext != null) {
@@ -569,7 +569,7 @@ public class JScrollBar extends JComponent implements Adjustable
      */
     public void setValueIsAdjusting(boolean b) {
         BoundedRangeModel m = getModel();
-        boolean oldValue = m.getValueIsAdjusting();
+        //boolean oldValue = m.getValueIsAdjusting();
         m.setValueIsAdjusting(b);
 
 //        if ((oldValue != b) && (accessibleContext != null)) {
@@ -598,7 +598,7 @@ public class JScrollBar extends JComponent implements Adjustable
     public void setValues(int newValue, int newExtent, int newMin, int newMax)
     {
         BoundedRangeModel m = getModel();
-        int oldValue = m.getValue();
+        //int oldValue = m.getValue();
         m.setRangeProperties(newValue, newExtent, newMin, newMax, m.getValueIsAdjusting());
 
 //        if (accessibleContext != null) {

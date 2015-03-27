@@ -608,7 +608,7 @@ public class Timer
 
 
     void post() {
-    	boolean wasnotify = notify;
+//    	boolean wasnotify = notify;
     	notify = true;
         if (!notify || !coalesce) {
             AccessController.doPrivileged(new PrivilegedAction<Void>() {

@@ -246,7 +246,7 @@ public class Container extends Component {
     }
 
     void initializeFocusTraversalKeys() {
-        focusTraversalKeys = new Set[4];
+        //focusTraversalKeys = new Set[4];
     }
 
     /**
@@ -722,26 +722,26 @@ public class Container extends Component {
 //        }
 //    }
 
-    /**
-     * Reparents child component peer to this container peer.
-     * Container must be heavyweight.
-     * @since 1.5
-     */
-    private void reparentChild(Component comp) {
-////        checkTreeLock();
-//        if (comp == null) {
-//            return;
-//        }
-//        if (comp.isLightweight()) {
-//            // If component is lightweight container we need to reparent all its explicit  heavyweight children
-////            if (comp instanceof Container) {
-////                // Traverse component's tree till depth-first until encountering heavyweight component
-////                reparentTraverse((ContainerPeer)getPeer(), (Container)comp);
-////            }
-//        } else {
-//            comp.getPeer().reparent((ContainerPeer)getPeer());
-//        }
-    }
+//    /**
+//     * Reparents child component peer to this container peer.
+//     * Container must be heavyweight.
+//     * @since 1.5
+//     */
+//    private void reparentChild(Component comp) {
+//////        checkTreeLock();
+////        if (comp == null) {
+////            return;
+////        }
+////        if (comp.isLightweight()) {
+////            // If component is lightweight container we need to reparent all its explicit  heavyweight children
+//////            if (comp instanceof Container) {
+//////                // Traverse component's tree till depth-first until encountering heavyweight component
+//////                reparentTraverse((ContainerPeer)getPeer(), (Container)comp);
+//////            }
+////        } else {
+////            comp.getPeer().reparent((ContainerPeer)getPeer());
+////        }
+//    }
 
     /**
      * Adds component to this container. Tries to minimize side effects of this adding -
@@ -1534,7 +1534,7 @@ public class Container extends Component {
      * @since JDK1.0
      */
     public void setFont(Font f) {
-        boolean shouldinvalidate = false;
+//        boolean shouldinvalidate = false;
 
         Font oldfont = getFont();
         super.setFont(f);
@@ -2984,7 +2984,8 @@ public class Container extends Component {
 //            throw new IllegalArgumentException("invalid focus traversal key identifier");
 //        }
 //
-        return (focusTraversalKeys != null && focusTraversalKeys[id] != null);
+//        return (focusTraversalKeys != null && focusTraversalKeys[id] != null);
+    	return false;
     }
 
     /**

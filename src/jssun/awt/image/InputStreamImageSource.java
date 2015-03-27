@@ -169,12 +169,12 @@ public abstract class InputStreamImageSource implements ImageProducer,
         }
     }
 
-    private synchronized void stopProduction() {
-        if (awaitingFetch) {
-            ImageFetcher.remove(this);
-            awaitingFetch = false;
-        }
-    }
+//    private synchronized void stopProduction() {
+//        if (awaitingFetch) {
+//            ImageFetcher.remove(this);
+//            awaitingFetch = false;
+//        }
+//    }
 
     public void requestTopDownLeftRightResend(ImageConsumer ic) {
     }

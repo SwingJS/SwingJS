@@ -655,11 +655,11 @@ public abstract class Toolkit {
      */
     private static Toolkit toolkit;
 
-    /**
-     * Used internally by the assistive technologies functions; set at
-     * init time and used at load time
-     */
-    private static String atNames;
+//    /**
+//     * Used internally by the assistive technologies functions; set at
+//     * init time and used at load time
+//     */
+//    private static String atNames;
 
 //    /**
 //     * Initializes properties related to assistive technologies.

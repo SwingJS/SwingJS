@@ -233,7 +233,7 @@ public class ZoneView extends BoxView {
      */
     protected void loadChildren(ViewFactory f) {
         // build the first zone.
-        Document doc = getDocument();
+//        Document doc = getDocument();
         int offs0 = getStartOffset();
         int offs1 = getEndOffset();
         append(createZone(offs0, offs1));
@@ -285,8 +285,8 @@ public class ZoneView extends BoxView {
      */
     void splitZone(int index, int offs0, int offs1) {
         // divide the old zone into a new set of bins
-        Element elem = getElement();
-        Document doc = elem.getDocument();
+//        Element elem = getElement();
+//        Document doc = elem.getDocument();
         Vector zones = new Vector();
         int offs = offs0;
         do {
@@ -294,7 +294,7 @@ public class ZoneView extends BoxView {
             offs = Math.min(getDesiredZoneEnd(offs0), offs1);
             zones.addElement(createZone(offs0, offs));
         } while (offs < offs1);
-        View oldZone = getView(index);
+//        View oldZone = getView(index);
         View[] newZones = new View[zones.size()];
         zones.copyInto(newZones);
         replace(index, 1, newZones);

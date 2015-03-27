@@ -127,11 +127,11 @@ import jsjavax.swing.DefaultRowSorter;
  * @since 1.6
  */
 public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, Integer> {
-    /**
-     * Comparator that uses compareTo on the contents.
-     */
-    private static final Comparator COMPARABLE_COMPARATOR =
-            new ComparableComparator();
+//    /**
+//     * Comparator that uses compareTo on the contents.
+//     */
+//    private static final Comparator COMPARABLE_COMPARATOR =
+//            new ComparableComparator();
 
     /**
      * Underlying model.

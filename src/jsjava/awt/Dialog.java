@@ -110,7 +110,7 @@ public class Dialog extends Window {
      */
     boolean undecorated = false;
 
-    private transient boolean initialized = false;
+//    private transient boolean initialized = false;
 
     /**
      * Modal dialogs block all input to some top-level windows.
@@ -658,7 +658,7 @@ public class Dialog extends Window {
         this.title = title;
         setModalityType(modalityType);
         //SunToolkit.checkAndSetPolicy(this, false);
-        initialized = true;
+        //initialized = true;
     }
 
     /**
@@ -710,7 +710,7 @@ public class Dialog extends Window {
         this.title = title;
         setModalityType(modalityType);
         //SunToolkit.checkAndSetPolicy(this, false);
-        initialized = true;
+        //initialized = true;
     }
 
     /**
@@ -989,11 +989,11 @@ public class Dialog extends Window {
         super.setVisible(b);
     }
 
-    /**
-    * Stores the app context on which event dispatch thread the dialog
-    * is being shown. Initialized in show(), used in hideAndDisposeHandler()
-    */
-    transient private AppContext showAppContext;
+//    /**
+//    * Stores the app context on which event dispatch thread the dialog
+//    * is being shown. Initialized in show(), used in hideAndDisposeHandler()
+//    */
+//    transient private AppContext showAppContext;
 
    /**
      * Makes the {@code Dialog} visible. If the dialog and/or its owner

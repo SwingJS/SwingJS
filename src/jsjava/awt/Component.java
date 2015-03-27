@@ -27,7 +27,7 @@ package jsjava.awt;
 import java.util.EventListener;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+//import java.util.Set;
 import java.util.Vector;
 
 import jsjava.awt.event.ActionEvent;
@@ -355,14 +355,14 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @see #getFocusTraversalKeys
      * @since 1.4
      */
-    Set[] focusTraversalKeys;
+//    Set[] focusTraversalKeys;
 
-    private static final String[] focusTraversalKeyPropertyNames = {
-        "forwardFocusTraversalKeys",
-        "backwardFocusTraversalKeys",
-        "upCycleFocusTraversalKeys",
-        "downCycleFocusTraversalKeys"
-    };
+//    private static final String[] focusTraversalKeyPropertyNames = {
+//        "forwardFocusTraversalKeys",
+//        "backwardFocusTraversalKeys",
+//        "upCycleFocusTraversalKeys",
+//        "downCycleFocusTraversalKeys"
+//    };
 
     /**
      * Indicates whether focus traversal keys are enabled for this Component.
@@ -685,11 +685,11 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //     */
 //    private transient Region mixingCutoutRegion = null;
 
-    /*
-     * Indicates whether addNotify() is complete
-     * (i.e. the peer is created).
-     */
-    private transient boolean isAddNotifyComplete = false;
+//    /*
+//     * Indicates whether addNotify() is complete
+//     * (i.e. the peer is created).
+//     */
+//    private transient boolean isAddNotifyComplete = false;
 
 //    /**
 //     * Should only be used in subclass getBounds to check that part of bounds
@@ -797,9 +797,9 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
         appContext = AppContext.getAppContext();
     }
 
-    void initializeFocusTraversalKeys() {
-        focusTraversalKeys = new Set[3];
-    }
+//    void initializeFocusTraversalKeys() {
+//        focusTraversalKeys = new Set[3];
+//    }
 
     /**
      * Constructs a name for this component.  Called by <code>getName</code>
@@ -3095,14 +3095,14 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
     void printHeavyweightComponents(Graphics g) {
     }
 
-    private Insets getInsets_NoClientCode() {
-    	// TODO
-//        ComponentPeer peer = this.peer;
-//        if (peer instanceof ContainerPeer) {
-//            return (Insets)((ContainerPeer)peer).insets().clone();
-//        }
-        return new Insets(0, 0, 0, 0);
-    }
+//    private Insets getInsets_NoClientCode() {
+//    	// TODO
+////        ComponentPeer peer = this.peer;
+////        if (peer instanceof ContainerPeer) {
+////            return (Insets)((ContainerPeer)peer).insets().clone();
+////        }
+//        return new Insets(0, 0, 0, 0);
+//    }
 
     /**
      * Repaints the component when the image has changed.
