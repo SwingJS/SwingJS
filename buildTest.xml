@@ -1,0 +1,149 @@
+<project name="swingjs" default="createSite" basedir=".">
+   			
+	
+  <target name="createSite" id="createSite">
+
+  	<property name="project.path" value="." />
+
+  	<!-- create a NON svn local directory only containing JS files  -->
+  	
+  	<echo>deleting the site directory</echo>
+   	 	<delete quiet="true" dir="site" />
+
+   	<echo>...adding html files</echo>
+   	<copy todir="site/swingjs">
+  	  <fileset dir="html">
+  	    <include name="**/*" />
+  	  </fileset>
+   	 <!-- 
+      <fileset dir="">
+    	<include name="README-DOWNLOAD.TXT" /> 
+      </fileset>
+      -->
+    </copy>
+
+   	<echo>creating site/swingjs/j2s</echo>   	
+   	<echo>...adding java code from JSmol</echo>
+   	<copy todir="site/swingjs/j2s" >
+      <fileset dir="jsmol/bin">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+
+    <echo>...adding swingjs/j2s customized java files from bin</echo>
+  	<copy todir="site/swingjs/j2s" >
+      <fileset dir="bin">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+   	
+   	<echo>...adding jQuery and minimizing it</echo>
+  	<copy todir="site/swingjs/jquery">
+  	  <fileset dir="lib/jquery">
+  	    <include name="**/*" />
+  	  </fileset>
+    </copy>
+   	<java jar="jars/closure_compiler.jar" fork="true" dir="site/swingjs/jquery" failonerror="false">
+   		<arg line="--js jquery.js --js_output_file jquery.min.js" />
+    </java>
+
+   	<echo>...adding js subdirectory from jsmoljs and js</echo>
+   	<copy todir="site/swingjs/js">
+  	  <fileset dir="jsmoljs">		
+  	    <include name="core/**/*" />
+  	    <include name="j2sjmol.js" />
+  	  	<include name="JSmol.js" />
+  	    <include name="JSmolCore.js" />
+  	  	<include name="JSmolJavaExt.js" />
+  	  	<include name="JSmoljQueryExt.js" />
+  	  </fileset>
+      <fileset dir="js">		
+    	<include name="**/*" />
+      </fileset>
+    </copy> 
+   	
+   	<echo>...adding jsmol.php</echo>
+  	<copy todir="site/swingjs/php">
+  	  <fileset dir="php">
+  	    <include name="**/*" />
+  	  </fileset>
+    </copy>
+  
+   	<!-- make core files -->
+ 
+   	<echo>creating and compressing core files - warnings are OK; "does not exist" is trouble</echo>
+   	<echo>...adding package.js from ${project.path}/srcjs/js</echo>
+   	<copy todir="site/swingjs/j2s/core">
+  	  <fileset dir="${project.path}/srcjs/js">
+  	    <include name="package.js" />
+  	  </fileset>
+    </copy>
+
+   	<!-- note: any changes in these next sections must be reflected also
+   	             in package.js -->
+<!--   	
+    <property name="javaCoreFiles" value="
+    	java/lang/AbstractStringBuilder.js
+    	java/lang/Enum.js
+    	...
+    	" />
+-->    
+   	
+    <antcall target="call-core">
+        <param name="call-core.name" value="" />
+        <param name="call-core.list" value="
+       		../js/JSmolJavaExt.js
+        	" />
+    </antcall>
+    
+   	<!-- minimize additional JSmol JavaScript -->
+
+  </target>
+
+
+  <target name="call-core" id="call-core">
+   	<echo>......Creating core${call-core.name}.js</echo> 	
+   	<concat destfile="site/swingjs/js/core${call-core.name}.js">
+   		<filelist dir="site/swingjs/j2s" files="${call-core.list}" />
+   	</concat> 
+  	<copy file="site/swingjs/js/core${call-core.name}.js" tofile="site/swingjs/js/core2.js" />
+  	<!--
+	   	<echo>...removing unnecessary Clazz.defineStatics blocks</echo>
+  	  This next replacement does not work, because the j2s compiler does not 
+  	  distinguish between final and non-final static variable.
+  	  We will have to do this on a case-by-case basis. 
+  	   
+  	<replaceregexp file="site/swingjs/js/core2.js" match="(Clazz.defineStatics ?\(((?![\[\(]).)*?\);)" flags="gs" replace="/*\1*/" /> 
+  	<copy file="site/swingjs/js/core2.js" tofile="site/swingjs/js/core${call-core.name}3.js" />
+  	 -->
+
+  	<replace dir="site/swingjs/js" includes="core2.js" token="Clazz." value="Clazz_"/>
+  	<replace dir="site/swingjs/js" includes="core2.js" token="Clazz__" value="Clazz._"/>
+  	<replace dir="site/swingjs/js" includes="core2.js" token="($fz = " value=""/>
+  	<replace dir="site/swingjs/js" includes="core2.js" token=", $fz.isPrivate = true, $fz)" value=""/> 	
+   	<concat destfile="site/swingjs/js/core${call-core.name}.js"><filelist dir="site/swingjs/js" files="
+   		core/coretop2.js
+   		core2.js
+   		core/corebottom2.js
+   		" />
+   	</concat>
+   	<echo>......Generating core${call-core.name}.z.js</echo> 	
+   	<java jar="jars/closure_compiler.jar" fork="true" dir="site/swingjs/js" failonerror="false">
+   		<arg line="--js core${call-core.name}.js --js_output_file ../j2s/core/core${call-core.name}.z.js" />
+    </java>
+  </target>
+
+  <target name="call-min" id="call-min">
+   	<echo>......Creating JSmol.${call-min.minname}.js</echo> 	
+   	<concat destfile="site/swingjs/js/SwingJS.${call-min.fullname}.js">
+   		<filelist dir="jsmoljs" files="${call-min.list}" />
+   	</concat>   
+   	<java jar="jars/closure_compiler.jar" fork="true" dir="" failonerror="false">
+   		<arg line="--js site/swingjs/js/SwingJS.${call-min.fullname}.js --js_output_file site/swingjs/SwingJS.${call-min.minname}.js" />
+    </java>
+  </target>
+	
+
+	
+	
+</project>

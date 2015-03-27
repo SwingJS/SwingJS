@@ -1,0 +1,27 @@
+<project name="swingjs" default="fromJSmol" basedir=".">
+   			
+ <!-- 
+ 
+  starting point for this project is JSmol
+  but only Bob should have to do this. We'll see! 
+ 
+  -->
+	
+  <property name="jsmol.path" value="../JSmol" />
+	
+  <target name="fromJSmol" id="fromJSmol">
+
+   	<echo>...transferring JSmol customized code (JSmol must have been compiled already)</echo>
+   	<copy todir="jsmol/bin" >
+      <fileset dir="${jsmol.path}/bin">
+        <include name="com/**/*.js" />
+        <include name="java/**/*.js" />
+        <include name="javajs/**/*.js" />
+      </fileset>
+    </copy>
+  </target>
+	
+
+	
+	
+</project>
