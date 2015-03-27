@@ -86,6 +86,10 @@ src/swingjs/
 
   JavaScript-specific "native" classes called from within java classes
 
+src/swintjs/test/
+
+  Test suite for SwingjS
+  
 srcjs/com/
 
   java classes added to the JSmol binary for ZIP file reading and writing
