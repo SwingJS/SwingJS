@@ -17,6 +17,14 @@ JavaScript/HTML5 (See http://sourceforge.net/p/jmol and http://sourceforge.net/p
 
 Directory structure for the SwingjS project:
 
+bin/
+
+  .class and .js files are found here
+  flagged with svn-ignore
+  
+doc/
+
+  working documents for SwingJS developers
 
 html/
  
