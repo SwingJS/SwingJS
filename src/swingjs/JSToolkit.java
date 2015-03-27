@@ -17,6 +17,12 @@ import jsjava.awt.image.ImageProducer;
 
 public class JSToolkit extends Toolkit {
 
+	/*
+	 * NOTE: This class is called from jsjava.awt.Toolkit
+	 * within in j2sNative block.
+	 * 
+	 */
+	
 	public JSToolkit(){
 		System.out.println("JSToolkit initialized");		
 	}

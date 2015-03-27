@@ -10,6 +10,11 @@ import jsjava.awt.image.BufferedImage;
 
 public class JSGraphicsEnvironment extends GraphicsEnvironment {
 
+	/*
+	 * NOTE: This class is called from jsjava.awt.GraphicsEnvironment
+	 * within in j2sNative block.
+	 * 
+	 */
 	public JSGraphicsEnvironment(){
 		System.out.println("JSGraphicsEnvironment initialized");		
 	}
