@@ -1,5 +1,7 @@
 <project name="swingjs" default="createSite" basedir=".">
    			
+<!-- buildSite.xml for building site/ -->
+	
 	
   <target name="createSite" id="createSite">
 
