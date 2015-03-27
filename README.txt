@@ -79,12 +79,12 @@ src/swingjs/
 srcjs/com/
 
   java classes added to the JSmol binary for ZIP file reading and writing
-  for reference only -- do not modify (or modify only in the JSmol project)
+  for reference only -- do not modify (or modify only in the Jmol project)
 
 srcjs/java/
 
   java classes that override the original classes from the J2S distribution
-  for reference only -- do not modify (or modify only in the JSmol project)
+  for reference only -- do not modify (or modify only in the Jmol project)
 
 srcjs/js/
 
