@@ -10,7 +10,7 @@ self.SwingJS || (SwingJS = {});
 
 (function (SwingJS, $) {
 
-	Swingjs.getApplet = function(id, Info, checkOnly) {
+	SwingJS.getApplet = function(id, Info, checkOnly) {
 		return SwingJS._Applet._get(id, Info, checkOnly);
 	}
 
@@ -237,10 +237,10 @@ self.SwingJS || (SwingJS = {});
 	}
 	
 	proto._addCoreFiles = function() {
-		Jmol.__addCoreFile(this.__Info.code, this._j2sPath, this.__Info.preloadCore);
+		Jmol._addCoreFile(this.__Info.code, this._j2sPath, this.__Info.preloadCore);
 		if (Jmol._debugCode) {
 		// no min package for that
-			Jmol.__addExec([this, Jmol.__loadClass, this.__Info.code, "load " + this.__Info.code]);
+			Jmol._addExec([this, null, this.__Info.code, "load " + this.__Info.code]);
 		}
   }
   

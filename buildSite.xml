@@ -92,7 +92,7 @@
 -->    
    	
     <antcall target="call-core">
-        <param name="call-core.name" value="" />
+        <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
        		../js/JSmolJavaExt.js
         	" />
