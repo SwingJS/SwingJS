@@ -26,7 +26,7 @@ package jssun.swing;
 
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
-import java.lang.ref.SoftReference;
+//import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -37,11 +37,11 @@ public class ImageCache {
     // Maximum number of entries to cache
     private int maxCount;
     // The entries.
-    final private LinkedList<SoftReference<Entry>> entries;
+    final private LinkedList<Entry> entries;
 
     public ImageCache(int maxCount) {
         this.maxCount = maxCount;
-        entries = new LinkedList<SoftReference<Entry>>();
+        entries = new LinkedList<Entry>();
     }
 
     void setMaxCount(int maxCount) {
@@ -55,10 +55,10 @@ public class ImageCache {
     private Entry getEntry(Object key, GraphicsConfiguration config,
                            int w, int h, Object[] args) {
         Entry entry;
-        Iterator<SoftReference<Entry>> iter = entries.listIterator();
+        Iterator<Entry> iter = entries.listIterator();
         while (iter.hasNext()) {
-            SoftReference<Entry> ref = iter.next();
-            entry = ref.get();
+            Entry ref = iter.next();
+            entry = ref;
             if (entry == null) {
                 // SoftReference was invalidated, remove the entry
                 iter.remove();
@@ -75,7 +75,7 @@ public class ImageCache {
         if (entries.size() >= maxCount) {
             entries.removeLast();
         }
-        entries.addFirst(new SoftReference<Entry>(entry));
+        entries.addFirst(entry);
         return entry;
     }
 

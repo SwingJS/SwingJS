@@ -440,22 +440,22 @@ public class JTree extends JComponent implements Scrollable
      */
     private int expandRow = -1;
 
-    private class TreeTimer extends Timer {
-        public TreeTimer() {
-            super(2000, null);
-            setRepeats(false);
-        }
-
-        public void fireActionPerformed(ActionEvent ae) {
-            JTree.this.expandRow(expandRow);
-        }
-    }
-
-    /**
-     * A timer to expand nodes during drop.
-     */
-    private TreeTimer dropTimer;
-
+//    private class TreeTimer extends Timer {
+//        public TreeTimer() {
+//            super(2000, null);
+//            setRepeats(false);
+//        }
+//
+//        public void fireActionPerformed(ActionEvent ae) {
+//            JTree.this.expandRow(expandRow);
+//        }
+//    }
+//
+//    /**
+//     * A timer to expand nodes during drop.
+//     */
+//    private TreeTimer dropTimer;
+//
     /**
      * When <code>addTreeExpansionListener</code> is invoked,
      * and <code>settingUI</code> is true, this ivar gets set to the passed in
@@ -1446,15 +1446,15 @@ public class JTree extends JComponent implements Scrollable
 //        return retVal;
 //    }
 
-    /**
-     * Called to indicate to this component that DnD is done.
-     * Allows for us to cancel the expand timer.
-     */
-    void dndDone() {
-        cancelDropTimer();
-        dropTimer = null;
-    }
-
+//    /**
+//     * Called to indicate to this component that DnD is done.
+//     * Allows for us to cancel the expand timer.
+//     */
+//    void dndDone() {
+//        cancelDropTimer();
+//        dropTimer = null;
+//    }
+//
 //    /**
 //     * Returns the location that this component should visually indicate
 //     * as the drop location during a DnD operation over the component,
@@ -1477,19 +1477,19 @@ public class JTree extends JComponent implements Scrollable
 //        return dropLocation;
 //    }
 
-    private void startDropTimer() {
-        if (dropTimer == null) {
-            dropTimer = new TreeTimer();
-        }
-        dropTimer.start();
-    }
-
-    private void cancelDropTimer() {
-        if (dropTimer != null && dropTimer.isRunning()) {
-            expandRow = -1;
-            dropTimer.stop();
-        }
-    }
+//    private void startDropTimer() {
+//        if (dropTimer == null) {
+//            dropTimer = new TreeTimer();
+//        }
+//        dropTimer.start();
+//    }
+//
+//    private void cancelDropTimer() {
+//        if (dropTimer != null && dropTimer.isRunning()) {
+//            expandRow = -1;
+//            dropTimer.stop();
+//        }
+//    }
 
     /**
      * Returns <code>isEditable</code>. This is invoked from the UI before

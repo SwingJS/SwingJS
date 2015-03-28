@@ -35,10 +35,9 @@ package jssun.awt;
 //
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-//import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Collections;
-//import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -53,21 +52,22 @@ import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
-//import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsConfiguration;
-//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
 import jsjava.awt.RenderingHints;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.event.WindowEvent;
-//import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jssun.awt.image.URLImageSource;
 import jssun.font.FontDesignMetrics;
-import jssun.misc.SoftCache;
+//import java.lang.reflect.Method;
+//import java.util.Iterator;
+//import jsjava.awt.Graphics2D;
+//import jsjava.awt.GraphicsEnvironment;
+//import jsjava.awt.image.BufferedImage;
 
 public abstract class SunToolkit extends Toolkit
     implements WindowClosingSupport, WindowClosingListener,
@@ -801,7 +801,7 @@ public abstract class SunToolkit extends Toolkit
     public void setOverrideRedirect(Window target) {
     }
 
-    static SoftCache imgCache = new SoftCache();
+    static HashMap imgCache = new HashMap();
 
     static synchronized Image getImageFromHash(Toolkit tk, URL url) {
 //        SecurityManager sm = System.getSecurityManager();

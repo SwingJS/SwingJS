@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Vector;
 //import java.util.concurrent.atomic.AtomicBoolean;
-//import java.util.logging.Logger;
+//import jsjava.util.logging.Logger;
 
 import jsjava.applet.Applet;
 import jsjava.awt.event.ComponentEvent;

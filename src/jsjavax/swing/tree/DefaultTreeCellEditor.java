@@ -43,7 +43,7 @@ import jsjavax.swing.Icon;
 import jsjavax.swing.JTextField;
 import jsjavax.swing.JTree;
 import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.Timer;
+//import jsjavax.swing.Timer;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.event.CellEditorListener;
@@ -111,8 +111,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
     /** Last path that was selected. */
     protected transient TreePath           lastPath;
 
-    /** Used before starting the editing session. */
-    protected transient Timer              timer;
+//    /** Used before starting the editing session. */
+//    protected transient Timer              timer;
 
     /**
      * Row that was last passed into
@@ -297,8 +297,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
         else if(editable && shouldStartEditingTimer(event)) {
             startEditingTimer();
         }
-        else if(timer != null && timer.isRunning())
-            timer.stop();
+//        else if(timer != null && timer.isRunning())
+//            timer.stop();
         if(retValue)
             prepareForEditing();
         return retValue;
@@ -375,9 +375,9 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
             else
                 lastPath = null;
         }
-        if(timer != null) {
-            timer.stop();
-        }
+//        if(timer != null) {
+//            timer.stop();
+//        }
     }
 
     //
@@ -410,9 +410,9 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
             tree = newTree;
             if(tree != null)
                 tree.addTreeSelectionListener(this);
-            if(timer != null) {
-                timer.stop();
-            }
+//            if(timer != null) {
+//                timer.stop();
+//            }
         }
     }
 
@@ -436,11 +436,11 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * Starts the editing timer.
      */
     protected void startEditingTimer() {
-        if(timer == null) {
-            timer = new Timer(1200, this);
-            timer.setRepeats(false);
-        }
-        timer.start();
+//        if(timer == null) {
+//            timer = new Timer(1200, this);
+//            timer.setRepeats(false);
+//        }
+//        timer.start();
     }
 
     /**

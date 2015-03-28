@@ -27,10 +27,10 @@ package jsjava.awt.event;
 
 import jsjava.awt.Event;
 import jsjava.awt.Component;
-import jsjava.awt.GraphicsEnvironment;
+//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Toolkit;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+//import jsjava.util.logging.Logger;
+//import jsjava.util.logging.Level;
 
 /**
  * The root event class for all component-level input events.
@@ -54,7 +54,7 @@ import java.util.logging.Level;
  * @since 1.1
  */
 public abstract class InputEvent extends ComponentEvent {
-    private static final Logger log = Logger.getLogger("jsjava.awt.event.InputEvent");
+//    private static final Logger log = Logger.getLogger("jsjava.awt.event.InputEvent");
 
     /**
      * The Shift key modifier constant.
@@ -224,30 +224,30 @@ public abstract class InputEvent extends ComponentEvent {
         super(source, id);
         this.when = when;
         this.modifiers = modifiers;
-        canAccessSystemClipboard = canAccessSystemClipboard();
+        canAccessSystemClipboard = false;//canAccessSystemClipboard();
     }
 
-    private boolean canAccessSystemClipboard() {
-        boolean b = false;
-
-        if (!GraphicsEnvironment.isHeadless()) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) {
-                try {
-                    sm.checkSystemClipboardAccess();
-                    b = true;
-                } catch (SecurityException se) {
-                    if (log.isLoggable(Level.FINE)) {
-                        log.log(Level.FINE, "InputEvent.canAccessSystemClipboard() got SecurityException ", se);
-                    }
-                }
-            } else {
-                b = true;
-            }
-        }
-
-        return b;
-    }
+//    private boolean canAccessSystemClipboard() {
+//        boolean b = false;
+//
+//        if (!GraphicsEnvironment.isHeadless()) {
+//            SecurityManager sm = System.getSecurityManager();
+//            if (sm != null) {
+//                try {
+//                    sm.checkSystemClipboardAccess();
+//                    b = true;
+//                } catch (SecurityException se) {
+//                    if (log.isLoggable(Level.FINE)) {
+//                        log.log(Level.FINE, "InputEvent.canAccessSystemClipboard() got SecurityException ", se);
+//                    }
+//                }
+//            } else {
+//                b = true;
+//            }
+//        }
+//
+//        return b;
+//    }
 
     /**
      * Returns whether or not the Shift modifier is down on this event.

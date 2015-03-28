@@ -199,7 +199,7 @@ public class Timer
     // eventQueued can also be reset by the TimerQueue, but will only ever
     // happen in applet case when TimerQueues thread is destroyed.
     // access to this field is synchronized on getLock() lock.
-    transient TimerQueue.DelayedTimer delayedTimer = null;
+//    transient TimerQueue.DelayedTimer delayedTimer = null;
 
     private volatile String actionCommand;
 
@@ -356,13 +356,13 @@ public class Timer
         return listenerList.getListeners(listenerType);
     }
 
-    /**
-     * Returns the timer queue.
-     */
-    private TimerQueue timerQueue() {
-        return TimerQueue.sharedInstance();
-    }
-
+//    /**
+//     * Returns the timer queue.
+//     */
+//    private TimerQueue timerQueue() {
+//        return TimerQueue.sharedInstance();
+//    }
+//
 
     /**
      * Enables or disables the timer log. When enabled, a message
@@ -541,61 +541,61 @@ public class Timer
     }
 
 
-    /**
-     * Starts the <code>Timer</code>,
-     * causing it to start sending action events
-     * to its listeners.
-     *
-     * @see #stop
-     */
-     public void start() {
-        timerQueue().addTimer(this, getInitialDelay());
-    }
-
-
-    /**
-     * Returns <code>true</code> if the <code>Timer</code> is running.
-     *
-     * @see #start
-     */
-    public boolean isRunning() {
-        return timerQueue().containsTimer(this);
-    }
-
-
-    /**
-     * Stops the <code>Timer</code>,
-     * causing it to stop sending action events
-     * to its listeners.
-     *
-     * @see #start
-     */
-    public void stop() {
-//        getLock().lock();
-//        try {
-            cancelEvent();
-            timerQueue().removeTimer(this);
-//        } finally {
-//            getLock().unlock();
-//        }
-    }
-
-
-    /**
-     * Restarts the <code>Timer</code>,
-     * canceling any pending firings and causing
-     * it to fire with its initial delay.
-     */
-    public void restart() {
-//        getLock().lock();
-//        try {
-            stop();
-            start();
-//        } finally {
-//            getLock().unlock();
-//        }
-    }
-
+//    /**
+//     * Starts the <code>Timer</code>,
+//     * causing it to start sending action events
+//     * to its listeners.
+//     *
+//     * @see #stop
+//     */
+//     public void start() {
+//        timerQueue().addTimer(this, getInitialDelay());
+//    }
+//
+//
+//    /**
+//     * Returns <code>true</code> if the <code>Timer</code> is running.
+//     *
+//     * @see #start
+//     */
+//    public boolean isRunning() {
+//        return timerQueue().containsTimer(this);
+//    }
+//
+//
+//    /**
+//     * Stops the <code>Timer</code>,
+//     * causing it to stop sending action events
+//     * to its listeners.
+//     *
+//     * @see #start
+//     */
+//    public void stop() {
+////        getLock().lock();
+////        try {
+//            cancelEvent();
+//            timerQueue().removeTimer(this);
+////        } finally {
+////            getLock().unlock();
+////        }
+//    }
+//
+//
+//    /**
+//     * Restarts the <code>Timer</code>,
+//     * canceling any pending firings and causing
+//     * it to fire with its initial delay.
+//     */
+//    public void restart() {
+////        getLock().lock();
+////        try {
+//            stop();
+//            start();
+////        } finally {
+////            getLock().unlock();
+////        }
+//    }
+//
 
     /**
      * Resets the internal state to indicate this Timer shouldn't notify

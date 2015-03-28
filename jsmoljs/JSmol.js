@@ -82,7 +82,8 @@
 			if (applet._noMonitor)
 				Clazz._LoaderProgressMonitor.showStatus = function() {}
 			LoadClazz = null;
-
+      if (applet.__Info.uncompressed)
+        Clazz.loadClass(); // for now; allows for no compression 
 			Clazz._Loader.onGlobalLoaded = function (file) {
 			 // not really.... just nothing more yet to do yet
 				Clazz._LoaderProgressMonitor.showStatus("Application loaded.", true);

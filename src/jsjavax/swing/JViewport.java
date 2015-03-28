@@ -258,11 +258,11 @@ public class JViewport extends JComponent
      */
     private transient boolean waitingForRepaint;
 
-    /**
-     * Instead of directly invoking repaint, a <code>Timer</code>
-     * is started and when it fires, repaint is invoked.
-     */
-    private transient Timer repaintTimer;
+//    /**
+//     * Instead of directly invoking repaint, a <code>Timer</code>
+//     * is started and when it fires, repaint is invoked.
+//     */
+//    private transient Timer repaintTimer;
 
     /**
      * Set to true in paintView when paint is invoked.
@@ -742,23 +742,23 @@ public class JViewport extends JComponent
         if (repaintAll) {
             repaintAll = false;
             Rectangle clipB = g.getClipBounds();
-            if (clipB.width < getWidth() ||
-                clipB.height < getHeight()) {
-                waitingForRepaint = true;
-                if (repaintTimer == null) {
-                    repaintTimer = createRepaintTimer();
-                }
-                repaintTimer.stop();
-                repaintTimer.start();
-                // We really don't need to paint, a future repaint will
-                // take care of it, but if we don't we get an ugly flicker.
-            }
-            else {
-                if (repaintTimer != null) {
-                    repaintTimer.stop();
-                }
-                waitingForRepaint = false;
-            }
+//            if (clipB.width < getWidth() ||
+//                clipB.height < getHeight()) {
+//                waitingForRepaint = true;
+//                if (repaintTimer == null) {
+//                    repaintTimer = createRepaintTimer();
+//                }
+//                repaintTimer.stop();
+//                repaintTimer.start();
+//                // We really don't need to paint, a future repaint will
+//                // take care of it, but if we don't we get an ugly flicker.
+//            }
+//            else {
+//                if (repaintTimer != null) {
+//                    repaintTimer.stop();
+//                }
+//                waitingForRepaint = false;
+//            }
         }
         else if (waitingForRepaint) {
             // Need a complete repaint before resetting waitingForRepaint
@@ -766,7 +766,7 @@ public class JViewport extends JComponent
             if (clipB.width >= getWidth() &&
                 clipB.height >= getHeight()) {
                 waitingForRepaint = false;
-                repaintTimer.stop();
+//                repaintTimer.stop();
             }
         }
 
@@ -1512,20 +1512,20 @@ public class JViewport extends JComponent
         return true;
     }
 
-    private Timer createRepaintTimer() {
-        Timer timer = new Timer(300, new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                // waitingForRepaint will be false if a paint came down
-                // with the complete clip rect, in which case we don't
-                // have to cause a repaint.
-                if (waitingForRepaint) {
-                    repaint();
-                }
-            }
-        });
-        timer.setRepeats(false);
-        return timer;
-    }
+//    private Timer createRepaintTimer() {
+//        Timer timer = new Timer(300, new ActionListener() {
+//            public void actionPerformed(ActionEvent ae) {
+//                // waitingForRepaint will be false if a paint came down
+//                // with the complete clip rect, in which case we don't
+//                // have to cause a repaint.
+//                if (waitingForRepaint) {
+//                    repaint();
+//                }
+//            }
+//        });
+//        timer.setRepeats(false);
+//        return timer;
+//    }
 
     /**
      * If the repaint manager has a dirty region for the view, the view is

@@ -25,7 +25,15 @@
     </copy>
 
    	<echo>creating site/swingjs/j2s</echo>   	
-   	<echo>...adding java code from JSmol</echo>
+
+  	<echo>...adding standard j2s JavaScript classes from j2s/</echo>
+   	<copy todir="site/swingjs/j2s/java" >
+      <fileset dir="j2s/java">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+
+  	<echo>...adding java code from JSmol</echo>
    	<copy todir="site/swingjs/j2s" >
       <fileset dir="jsmol/bin">
         <include name="**/*.js" />

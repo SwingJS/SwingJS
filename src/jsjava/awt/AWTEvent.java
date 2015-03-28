@@ -26,8 +26,8 @@
 package jsjava.awt;
 
 import java.util.EventObject;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+//import jsjava.util.logging.Level;
+//import jsjava.util.logging.Logger;
 
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.AdjustmentEvent;

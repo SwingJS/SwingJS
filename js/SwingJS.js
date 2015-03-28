@@ -78,6 +78,7 @@ self.SwingJS || (SwingJS = {});
 		Info || (Info = {});
 		var DefaultInfo = {
       code: "swingjs.test.TanSugd3S",
+      uncompressed: true,
 			color: "#FFFFFF", // applet object background color
 			width: 300,
 			height: 300,

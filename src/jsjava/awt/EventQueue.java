@@ -28,8 +28,8 @@ package jsjava.awt;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EmptyStackException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+//import jsjava.util.logging.Level;
+//import jsjava.util.logging.Logger;
 
 import jsjava.awt.event.InvocationEvent;
 import jsjava.awt.event.MouseEvent;
@@ -147,7 +147,7 @@ public class EventQueue {
 
     private final String name = "AWT-EventQueue-" + nextThreadNum();
 
-    private static final Logger eventLog = Logger.getLogger("java.awt.event.EventQueue");
+//    private static final Logger eventLog = Logger.getLogger("java.awt.event.EventQueue");
 //
 //    static {
 //        AWTAccessor.setEventQueueAccessor(
@@ -763,9 +763,9 @@ public class EventQueue {
      * @since           1.2
      */
     public synchronized void push(EventQueue newEventQueue) {
-        if (eventLog.isLoggable(Level.FINE)) {
-            eventLog.log(Level.FINE, "EventQueue.push(" + newEventQueue + ")");
-        }
+//        if (eventLog.isLoggable(Level.FINE)) {
+//            eventLog.log(Level.FINE, "EventQueue.push(" + newEventQueue + ")");
+//        }
 
         if (nextQueue != null) {
             nextQueue.push(newEventQueue);
@@ -778,9 +778,9 @@ public class EventQueue {
                 try {
                     newEventQueue.postEventPrivate(getNextEvent());
                 } catch (InterruptedException ie) {
-                    if (eventLog.isLoggable(Level.FINE)) {
-                        eventLog.log(Level.FINE, "Interrupted push", ie);
-                    }
+//                    if (eventLog.isLoggable(Level.FINE)) {
+//                        eventLog.log(Level.FINE, "Interrupted push", ie);
+//                    }
                 }
             }
 
@@ -822,9 +822,9 @@ public class EventQueue {
      * @since           1.2
      */
     protected void pop() throws EmptyStackException {
-        if (eventLog.isLoggable(Level.FINE)) {
-            eventLog.log(Level.FINE, "EventQueue.pop(" + this + ")");
-        }
+//        if (eventLog.isLoggable(Level.FINE)) {
+//            eventLog.log(Level.FINE, "EventQueue.pop(" + this + ")");
+//        }
 
         // To prevent deadlock, we lock on the previous EventQueue before
         // this one.  This uses the same locking order as everything else
@@ -846,9 +846,9 @@ public class EventQueue {
                 try {
                     previousQueue.postEventPrivate(getNextEvent());
                 } catch (InterruptedException ie) {
-                    if (eventLog.isLoggable(Level.FINE)) {
-                        eventLog.log(Level.FINE, "Interrupted pop", ie);
-                    }
+//                    if (eventLog.isLoggable(Level.FINE)) {
+//                        eventLog.log(Level.FINE, "Interrupted pop", ie);
+//                    }
                 }
             }
             AppContext appContext = AppContext.getAppContext();

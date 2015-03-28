@@ -41,7 +41,7 @@ import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.Action;
 import jsjavax.swing.ActionMap;
 import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.Timer;
+//import jsjavax.swing.Timer;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.event.DocumentEvent;
@@ -745,9 +745,9 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
         synchronized(this) {
             component = null;
         }
-        if (flasher != null) {
-            flasher.stop();
-        }
+//        if (flasher != null) {
+//            flasher.stop();
+//        }
 
 
     }
@@ -986,13 +986,13 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
                 }
             }
         }
-        if (flasher != null) {
-            if (visible) {
-                flasher.start();
-            } else {
-                flasher.stop();
-            }
-        }
+//        if (flasher != null) {
+//            if (visible) {
+//                flasher.start();
+//            } else {
+//                flasher.stop();
+//            }
+//        }
     }
 
     /**
@@ -1002,18 +1002,18 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
      * @see Caret#setBlinkRate
      */
     public void setBlinkRate(int rate) {
-        if (rate != 0) {
-            if (flasher == null) {
-                flasher = new Timer(rate, handler);
-            }
-            flasher.setDelay(rate);
-        } else {
-            if (flasher != null) {
-                flasher.stop();
-                flasher.removeActionListener(handler);
-                flasher = null;
-            }
-        }
+//        if (rate != 0) {
+//            if (flasher == null) {
+//                flasher = new Timer(rate, handler);
+//            }
+//            flasher.setDelay(rate);
+//        } else {
+//            if (flasher != null) {
+//                flasher.stop();
+//                flasher.removeActionListener(handler);
+//                flasher = null;
+//            }
+//        }
     }
 
     /**
@@ -1024,7 +1024,8 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
      * @see Caret#getBlinkRate
      */
     public int getBlinkRate() {
-        return (flasher == null) ? 0 : flasher.getDelay();
+    	return 0;
+//        return (flasher == null) ? 0 : flasher.getDelay();
     }
 
     /**
@@ -1274,12 +1275,12 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
         repaint();
 
 
-        // Make sure the caret is visible if this window has the focus.
-        if (flasher != null && flasher.isRunning()) {
-            visible = true;
-            flasher.restart();
-        }
-
+//        // Make sure the caret is visible if this window has the focus.
+//        if (flasher != null && flasher.isRunning()) {
+//            visible = true;
+//            flasher.restart();
+//        }
+//
         // notify listeners at the caret moved
         this.dot = dot;
         this.dotBias = dotBias;
@@ -1571,7 +1572,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
     int mark;
     Object selectionTag;
     boolean selectionVisible;
-    Timer flasher;
+    //Timer flasher;
     Point magicCaretPosition;
     transient Position.Bias dotBias;
     transient Position.Bias markBias;

@@ -738,10 +738,10 @@ public class JTabbedPane extends JComponent
             setSelectedIndexImpl(selectedIndex + 1, false);
         }
 
-        if (!haveRegistered && tip != null) {
-            ToolTipManager.sharedInstance().registerComponent(this);
-            haveRegistered = true;
-        }
+//        if (!haveRegistered && tip != null) {
+//            ToolTipManager.sharedInstance().registerComponent(this);
+//            haveRegistered = true;
+//        }
 
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
@@ -1441,10 +1441,10 @@ public class JTabbedPane extends JComponent
 //                    AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
 //                    oldToolTipText, toolTipText);
 //        }
-        if (!haveRegistered && toolTipText != null) {
-            ToolTipManager.sharedInstance().registerComponent(this);
-            haveRegistered = true;
-        }
+//        if (!haveRegistered && toolTipText != null) {
+//            ToolTipManager.sharedInstance().registerComponent(this);
+//            haveRegistered = true;
+//        }
     }
 
     /**
