@@ -112,7 +112,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		display = params.get("display");
 	}
 	
-	///// AppletContext /////
+	///// AppletStub /////
 	
 	
 	@Override
