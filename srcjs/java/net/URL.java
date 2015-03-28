@@ -30,6 +30,7 @@ package java.net;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Hashtable;
+//import sun.security.util.SecurityConstants;
 
 /**
  * Class <code>URL</code> represents a Uniform Resource
@@ -502,16 +503,40 @@ public final class URL implements java.io.Serializable {
     public URL(URL context, String spec, URLStreamHandler handler)
         throws MalformedURLException
     {
+//    public URL(String spec) 
+//    public URL(URL context, String spec) 
+//    public URL(URL context, String spec, URLStreamHandler handler)
+// 
+//    public URL(String protocol, String host, String file)
+//    public URL(String protocol, String host, int port, String file)
+//    public URL(String protocol, String host, int port, String file, URLStreamHandler handler)
+
       /**
+       * key is that we want to have only one constructor
+       * 
+       * subtle J2S bug here in that passing (URL)null does not actually pass a value that == null 
+       *
        * @j2sNative
        * 
-       * if (arguments.length == 1) {
+       * switch (arguments.length) {
+       * case 1:
        *   spec = context;context = handler = null;
+       *   break;
+       * case 2:
+       *   handler = null;
+       *   break;
+       * case 3:
+       * if (context == null || Clazz.instanceOf(context, java.net.URL))
+       *   break;
+       * default:
+       *   alert("java.net.URL constructor format not supported");
+       *   break;
        * }
-       * if (context && context.getValue() == null)
-       *   context = null;
+       * 
+       * context && context.valueOf && context.valueOf() == null && (context = null);
        * 
        */
+      {}
         String original = spec;
         int i, limit, c;
         int start = 0;
@@ -519,13 +544,13 @@ public final class URL implements java.io.Serializable {
         boolean aRef=false;
         boolean isRelative = false;
 
-        // Check for permission to specify a handler
-        if (handler != null) {
-            SecurityManager sm = System.getSecurityManager();
-            if (sm != null) {
-                checkSpecifyHandler(sm);
-            }
-        }
+//        // Check for permission to specify a handler
+//        if (handler != null) {
+//            SecurityManager sm = System.getSecurityManager();
+//            if (sm != null) {
+//                checkSpecifyHandler(sm);
+//            }
+//        }
 
         try {
             limit = spec.length();

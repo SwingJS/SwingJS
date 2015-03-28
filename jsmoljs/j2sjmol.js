@@ -1853,13 +1853,18 @@ Clazz.exceptionOf=function(e, clazz) {
 
 Clazz.getStackTrace = function(n) {
 	n || (n = 25);
+  // updateNode and updateParents cause infinite loop here
 	var s = "\n";
-	var c = arguments.callee.caller;
+	var c = arguments.callee;
 	for (var i = 0; i < n; i++) {
-		if (!c)break;
-		s += (i + " " + (c.exName ? (c.claxxOwner ? c.claxxOwner.__CLASS_NAME__ + "."  : "") + c.exName 
-		: (c.toString ? c.toString().substring(0, c.toString().indexOf("{")) : "<native method>"))) + "\n";
-		c = c.caller
+		if (!(c = c.caller))
+      break;
+    var sig = (c.toString ? c.toString().substring(0, c.toString().indexOf("{")) : "<native method>");
+		s += i + " " + (c.exName ? (c.claxxOwner ? c.claxxOwner.__CLASS_NAME__ + "."  : "") + c.exName  + sig.replace(/function /,""): sig) + "\n";
+		if (c == c.caller) {
+      s += "<recursing>\n";
+      break;
+    }
 	}
 	return s;
 }
@@ -3121,7 +3126,7 @@ Clazz._Node = function () {
 };
 
 ;(function(Clazz, ClazzLoader, ClazzNode) {
-ClazzLoader.initNode = function(node) {
+ClazzLoader.initNode = function(node, _initNode) {
 	node.parents = [];
 	node.musts = [];
 	node.optionals = [];
@@ -4026,7 +4031,7 @@ ClazzLoader.checkCycle = function (node) {
  * Update the dependency tree nodes recursively.
  */
 /* private */
-ClazzLoader.updateNode = function(node) {
+ClazzLoader.updateNode = function(node, _updateNode) {
 	if (!node.name || node.status >= ClazzNode.STATUS_OPTIONALS_LOADED) {
 		ClazzLoader.destroyClassNode(node);
 		return;
@@ -4119,7 +4124,16 @@ ClazzLoader.updateNode = function(node) {
 			}
 		}
 	}
-	ClazzLoader.updateParents(node, level);
+  // ClazzLoader.updateParents = function (node, level, _updateParents)
+	if (node.parents && node.parents.length) {
+  	for (var i = 0; i < node.parents.length; i++) {
+  		var p = node.parents[i];
+  		if (p.status < level) 
+  			ClazzLoader.updateNode(p, p.name);
+  	}
+  	if (level == ClazzNode.STATUS_OPTIONALS_LOADED)
+  		node.parents = [];
+  }
 };
 
 /* private */
@@ -4130,7 +4144,7 @@ ClazzLoader.checkStatusIs = function(arr, status){
 	return true;
 }
 /* private */
-ClazzLoader.doneLoading = function(node, level) {
+ClazzLoader.doneLoading = function(node, level, _doneLoading) {
 	node.status = level;
 	ClazzLoader.onScriptCompleted(node.path);
 	var onLoaded = node.onRequiredLoaded;
@@ -4143,19 +4157,6 @@ ClazzLoader.doneLoading = function(node, level) {
 	ClazzLoader.destroyClassNode(node);
 	return true;
 }
-
-/* private */
-ClazzLoader.updateParents = function (node, level) {
-	if (!node.parents || node.parents.length == 0)
-		return;
-	for (var i = 0; i < node.parents.length; i++) {
-		var p = node.parents[i];
-		if (p.status < level) 
-			ClazzLoader.updateNode(p);
-	}
-	if (level == ClazzNode.STATUS_OPTIONALS_LOADED)
-		node.parents = [];
-};
 
 /*
  * Be used to record already used random numbers. And next new random

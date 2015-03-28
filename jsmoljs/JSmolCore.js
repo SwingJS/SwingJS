@@ -1,7 +1,7 @@
-	// BH 4/25 -- added text option. setAppletCss(null, "style=\"xxxx\"")
-	// note that since you must add the style keyword, this can be used to add any attribute to these tags, not just css. 
-
 // JSmolCore.js -- Jmol core capability 
+
+// allows Jmol applets to be created on a page with more flexibility and extendability
+// provides an object-oriented interface for JSpecView and syncing of Jmol/JSpecView
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
@@ -65,9 +65,8 @@
 // 5/14/2012 BH: added AJAX queue for ChemDoodle option with multiple canvases 
 // 8/12/2012 BH: adds support for MSIE xdr cross-domain request (jQuery.iecors.js)
 
-// allows Jmol applets to be created on a page with more flexibility and extendability
-// provides an object-oriented interface for JSpecView and syncing of Jmol/JSpecView
-
+	// BH 4/25 -- added text option. setAppletCss(null, "style=\"xxxx\"")
+	// note that since you must add the style keyword, this can be used to add any attribute to these tags, not just css. 
 
 // required/optional libraries (preferably in the following order):
 

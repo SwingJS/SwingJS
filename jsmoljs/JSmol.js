@@ -1,6 +1,11 @@
+// JSmol.js -- Jmol pure JavaScript version
+// author: Bob Hanson, hansonr@stolaf.edu	4/16/2012
+// author: Takanori Nakane biochem_fan 6/12/2012
+
+// BH 3/28/2015 6:18:33 AM refactoring to generalize for non-Jmol-related SwingJS applications
 // BH 9/6/2014 5:42:32 PM  two-point gestures broken
 // BH 5/8/2014 11:16:40 AM j2sPath starting with "/" fails to add idiom
-// BH 1/16/2014 8:44:03 PM   Jmol.__execDelayMS = 100; // FF bug when loading into a tab that is not 
+// BH 1/16/2014 8:44:03 PM   __execDelayMS = 100; // FF bug when loading into a tab that is not 
 //                           immediately focused and not using jQuery for adding the applet and having  
 //                           multiple applets.
 // BH 12/6/2013 10:12:30 AM adding corejmoljsv.z.js
@@ -8,21 +13,17 @@
 // BH 3/5/2013 9:54:16 PM added support for a cover image: Info.coverImage, coverScript, coverTitle, deferApplet, deferUncover
 // BH 1/3/2013 4:54:01 AM mouse binding should return false -- see d.bind(...), and d.bind("contextmenu") is not necessary
 
-// JSmol.js -- Jmol pure JavaScript version
-// author: Bob Hanson, hansonr@stolaf.edu	4/16/2012
-// author: Takanori Nakane biochem_fan 6/12/2012
-
 // This library requires prior inclusion of 
 
-//  jQuery 
+//  jQuery 9 or higher
 //	JSmoljQueryExt.js
 //	JSmolCore.js
-//  JSmolApplet.js
-//  JSmolApi.js
 //  j2sjmol.js    (Clazz and associated classes)
 
 // these:
 //
+//  JSmolApplet.js
+//  JSmolApi.js
 //  JSmolThree.js
 //  JSmolGLmol.js
 //  
@@ -36,81 +37,31 @@
 	Jmol._coreFiles = []; // required for package.js
 
 
-  ///////////////////
- // This section provides an asynchronous loading sequence
+///////////////////
+// This section provides an asynchronous loading sequence
 //
 
-	Jmol.__execLog = [];
-	Jmol.__execStack = [];
-	Jmol.__execTimer = 0;
-	Jmol.__coreSet = [];
-	Jmol.__coreMore = [];
-	Jmol.__execDelayMS = 100; // must be > 55 ms for FF
+// methods and fields starting with double underscore are private to this .js file
 
-	Jmol.showExecLog = function() { return Jmol.__execLog.join("\n") }; 
+  var __clazzLoaded = false;
+	var __execLog = [];
+	var __execStack = [];
+	var __execTimer = 0;
+	var __coreSet = [];
+	var __coreMore = [];
+	var __execDelayMS = 100; // must be > 55 ms for FF
 
-	Jmol.__addExec = function(e) {
-		var s = "JSmol load " + e[0]._id + " " + e[3];
-		if (self.console)console.log(s + "...")
-		Jmol.__execLog.push(s);   
-		Jmol.__execStack.push(e);
-	}
-
-	Jmol.__addCoreFile = function(type, path, more) {
-		if (Jmol.__coreSet.join("").indexOf(type) >= 0) return;
-		Jmol.__coreSet.push(type);
-		Jmol.__coreSet.sort();
-		var f = Jmol.__coreSet.join("");
-		Jmol._coreFiles = [path + "/core/core" + (f == "jmol" ? "" : f) + ".z.js" ];
-		if (more && (more = more.split(" ")))
-			for (var i = 0; i < more.length; i++)
-				if (Jmol.__coreMore.join("").indexOf(more[i]) < 0)
-					Jmol.__coreMore.push(path + "/core/core" + more[i] + ".z.js")
-		for (var i = 0; i < Jmol.__coreMore.length; i++)
-			Jmol._coreFiles.push(Jmol.__coreMore[i]);			 
-	}      		
-
-  Jmol._loadZJars = function(i) {
-    if (i < Jmol._coreFiles.length) {
-		  Clazz._Loader.loadZJar(Jmol._coreFiles[i], Clazz._Loader.runtimeKeyClass, function() {Jmol._loadZJars(i + 1)});
-		} else {
-			window["java.registered"] = true;
-			Jmol._nextExecution();
-		}
-	}
-	
-	    /*
-ClazzLoader._loadZJars = function(i) { 
-	if (Jmol._isAsync) {
-		if (i < Jmol._coreFiles.length) {
-		  ClazzLoader.loadZJar(Jmol._coreFiles[i], ClazzLoader.runtimeKeyClass, function() {ClazzLoader._loadZJars(i + 1)});
-		} else {
-			Jmol._nextExecution();
-		}
-		return;	
-	} else {
-		for (var i = 0; i < Jmol._coreFiles.length; i++)
-		  ClazzLoader.loadZJar(Jmol._coreFiles[i], ClazzLoader.runtimeKeyClass);
-		window["java.registered"] = true;
-	}
-}
-
-ClazzLoader._loadZJars(0);
-
-    */
-    
-
-
-	Jmol.__nextExecution = function(trigger) {
-		delete Jmol.__execTimer;
-		var es = Jmol.__execStack;
+	var __nextExecution = function(trigger) {
+    arguments.length || (trigger = true);
+		delete __execTimer;
+		var es = __execStack;
 		var e;
 		while (es.length > 0 && (e = es[0])[4] == "done")
 			es.shift();
 		if (es.length == 0)
 			return;
 		if (!Jmol._isAsync && !trigger) {
-			setTimeout("Jmol.__nextExecution(true)",10)
+			setTimeout(__nextExecution,10)
 			return;
 		}
 		e.push("done");
@@ -119,13 +70,13 @@ ClazzLoader._loadZJars(0);
 			System.out.println(s);
 			//alert(s)
 		if (self.console)console.log(s + " -- OK")
-		Jmol.__execLog.push(s);
+		__execLog.push(s);
 		e[1](e[0],e[2]);	
 	};
 
-	Jmol.__loadClazz = function(applet) {
-		if (!Jmol.__clazzLoaded) {
-			Jmol.__clazzLoaded = true;
+	var __loadClazz = function(applet) {
+		if (!__clazzLoaded) {
+			__clazzLoaded = true;
 			// create the Clazz object
 			LoadClazz();
 			if (applet._noMonitor)
@@ -137,19 +88,57 @@ ClazzLoader._loadZJars(0);
 				Clazz._LoaderProgressMonitor.showStatus("Application loaded.", true);
 				if (!Jmol._debugCode || !Jmol.haveCore) {
 					Jmol.haveCore = true;
-					Jmol.__nextExecution();
+					__nextExecution();
 				}
 			};
 		  // load package.js and j2s/core/core.z.js
-			Clazz._Loader.loadPackageClasspath("java", null, true, Jmol.__nextExecution);
+			Clazz._Loader.loadPackageClasspath("java", null, true, __nextExecution);
 			return;
 		}
-		Jmol.__nextExecution();
+		__nextExecution();
 	};
 
-	Jmol.__loadClass = function(applet, javaClass) {
-		Clazz._Loader.loadClass(javaClass, function() {Jmol.__nextExecution()});
+	var __loadClass = function(applet, javaClass) {
+		Clazz._Loader.loadClass(javaClass, function() {__nextExecution()});
 	};
+
+	Jmol.showExecLog = function() { return __execLog.join("\n") }; 
+
+	Jmol._addExec = function(e) {
+    e[1] || (e[1] = __loadClass);
+		var s = "JSmol load " + e[0]._id + " " + e[3];
+		if (self.console)console.log(s + "...")
+		__execLog.push(s);   
+		__execStack.push(e);
+	}
+
+	Jmol._addCoreFile = function(type, path, more) {
+  
+    // BH 3/15: idea here is that when both Jmol and JSV are present, 
+    // we want to load a common core file -- jmoljsv.z.js --
+    // instead of just one. Otherwise we do a lot of duplication.
+    // It is not clear how this would play with other concurrent
+    // apps. So this will take some thinking. But the basic idea is that
+    // core file to load is 
+     
+    type = type.toLowerCase().split(".")[0]; // package name only 
+
+    // return if type is already part of the set.    
+		if (__coreSet.join("").indexOf(type) >= 0) return;
+    
+    // create a concatenated lower-case name for a core file that includes
+    // all Java applets on the page
+    
+		__coreSet.push(type);
+		__coreSet.sort();
+		Jmol._coreFiles = [path + "/core/core" + __coreSet.join("") + ".z.js" ];
+		if (more && (more = more.split(" ")))
+			for (var i = 0; i < more.length; i++)
+				if (__coreMore.join("").indexOf(more[i]) < 0)
+					__coreMore.push(path + "/core/core" + more[i] + ".z.js")
+		for (var i = 0; i < __coreMore.length; i++)
+			Jmol._coreFiles.push(__coreMore[i]);
+	}      		
 
 	Jmol._Canvas2D = function(id, Info, type, checkOnly){
 		// type: Jmol or JSV
@@ -236,16 +225,16 @@ ClazzLoader._loadZJars(0);
 		proto._createCanvas2d = function(doReplace) {
 			var container = Jmol.$(this, "appletdiv");
 			//if (doReplace) {
-				try {
-				container[0].removeChild(this._canvas);
-				if (this._canvas.frontLayer)
-					container[0].removeChild(this._canvas.frontLayer);
-				if (this._canvas.rearLayer)
-					container[0].removeChild(this._canvas.rearLayer);
-				if (this._canvas.imageLayer)
-					container[0].removeChild(this._canvas.imageLayer);
-				Jmol._jsUnsetMouse(this._mouseInterface);
-				} catch (e) {}
+			try {
+			container[0].removeChild(this._canvas);
+			if (this._canvas.frontLayer)
+				container[0].removeChild(this._canvas.frontLayer);
+			if (this._canvas.rearLayer)
+				container[0].removeChild(this._canvas.rearLayer);
+			if (this._canvas.imageLayer)
+				container[0].removeChild(this._canvas.imageLayer);
+			Jmol._jsUnsetMouse(this._mouseInterface);
+			} catch (e) {}
 			//}
 			var w = Math.round(container.width());
 			var h = Math.round(container.height());
@@ -296,48 +285,20 @@ ClazzLoader._loadZJars(0);
 				console : this._console,
 				monitorZIndex : Jmol._getZ(this, "monitorZIndex")
 			};
-			var isFirst = (Jmol.__execStack.length == 0);
+			var isFirst = (__execStack.length == 0);
 			if (isFirst)
-				Jmol.__addExec([this, Jmol.__loadClazz, null, "loadClazz"]);
-				
-			if (this._isJSV) {
-				Jmol.__addCoreFile("jsv", this._j2sPath, this.__Info.preloadCore);
-				if (Jmol._debugCode) {
-				// no min package for that
-					Jmol.__addExec([this, Jmol.__loadClass, "JSV.appletjs.JSVApplet", "load JSV"]);
-					if (this._isPro)
-						Jmol.__addExec([this, Jmol.__loadClass, "JSV.appletjs.JSVAppletPro", "load JSV(signed)"]);
-				}
-			} else if (this._isAstex) {
-				Jmol.__addCoreFile("astex", this._j2sPath, this.__Info.preloadCore);
-				if (Jmol._debugCode) {
-				// no min package for that
-					Jmol.__addExec([this, Jmol.__loadClass, "astex.MoleculeViewerAppletJS", "load Astex"]);
-				}
-			} else {
-				Jmol.__addCoreFile("jmol", this._j2sPath, this.__Info.preloadCore);
-				if (!this._is2D) {
-			 		Jmol.__addExec([this, Jmol.__loadClass, "J.export.JSExporter","load JSExporter"])
-			//		Jmol.__addExec([this, this.__addExportHook, null, "addExportHook"])
-				}			 			
-				if (Jmol._debugCode)
-					Jmol.__addExec([this, Jmol.__loadClass, "J.appletjs.Jmol", "load Jmol"]);
-			}
-			Jmol.__addExec([this, this.__startAppletJS, null, "start applet"])
-
+				Jmol._addExec([this, __loadClazz, null, "loadClazz"]);
+      this._addCoreFiles();
+			Jmol._addExec([this, this.__startAppletJS, null, "start applet"])
 			this._isSigned = true; // access all files via URL hook
 			this._ready = false; 
 			this._applet = null;
 			this._canScript = function(script) {return true;};
 			this._savedOrientations = [];
-			Jmol.__execTimer && clearTimeout(Jmol.__execTimer);
-			Jmol.__execTimer = setTimeout(Jmol.__nextExecution, Jmol.__execDelayMS);
+			__execTimer && clearTimeout(__execTimer);
+			__execTimer = setTimeout(__nextExecution, __execDelayMS);
 		};
 
-//		proto.__addExportHook = function(applet) {
-	//		Jmol.GLmol.addExportHook(applet);
-		//	Jmol.__nextExecution();
-		//};
 		proto.__startAppletJS = function(applet) {
 			if (Jmol._version.indexOf("$Date: ") == 0)
 				Jmol._version = (Jmol._version.substring(7) + " -").split(" -")[0] + " (JSmol/j2s)"
@@ -351,14 +312,10 @@ ClazzLoader._loadZJars(0);
 				viewerOptions.put("async", true);
 			if (applet._color) 
 				viewerOptions.put("bgcolor", applet._color);
-			if (!applet._is2D)  
-				viewerOptions.put("script", "set multipleBondSpacing 0.35;");
-			else if (applet._startupScript)
+			if (applet._startupScript)
 				viewerOptions.put("script", applet._startupScript)
-
-			if (Jmol._syncedApplets.length) {
+			if (Jmol._syncedApplets.length)
 				viewerOptions.put("synccallback", "Jmol._mySyncCallback");
-			}
 			viewerOptions.put("signedApplet", "true");
 			viewerOptions.put("platform", applet._platform);
 			if (applet._is2D)
@@ -375,11 +332,8 @@ ClazzLoader._loadZJars(0);
 					base[base.length - 1] = codePath;
 				codePath = base.join("/");
 			}
-			viewerOptions.put ("codePath", codePath);
-
+			viewerOptions.put("codePath", codePath);
 			Jmol._registerApplet(applet._id, applet);
-			//if (!applet._is2D)
-				//applet._GLmol.applet = applet;
 			try {
 				applet._newApplet(viewerOptions);
 			} catch (e) {
@@ -387,47 +341,13 @@ ClazzLoader._loadZJars(0);
 				return;
 			}
 			applet._jsSetScreenDimensions();      
-			Jmol.__nextExecution();
+			__nextExecution();
 		};
 
-		proto._restoreState = function(clazzName, state) {
-			System.out.println("\n\nasynchronous restore state for " + clazzName + " " + state)
-			var applet = this;
-			var vwr = applet._applet && applet._applet.viewer;
-			switch (state) {
-			case "setOptions":
-				return function(_setOptions) {applet.__startAppletJS(applet)};
-			case "render":
-				return function() {setTimeout(function(){vwr.refresh(2)},10)};
-			default:
-				switch (clazzName) {
-				// debug mode only, when core.z.js has not been loaded and prior to start
-				case "J.shape.Balls":
-				case "J.shape.Sticks":
-				case "J.shape.Frank":
-					return null;
-				}
-				
-				//if (vwr.rm.repaintPending)
-					//return function() {setTimeout(function(){vwr.refresh(2)},10)};
-				if (vwr && vwr.isScriptExecuting && vwr.isScriptExecuting()) {
-					if (Jmol._asyncCallbacks[clazzName]) {
-						System.out.println("...ignored");
-						return 1;
-					}
-					var sc = vwr.getEvalContextAndHoldQueue(vwr.eval);
-					var pc = sc.pc - 1;
-					sc.asyncID = clazzName;
-					Jmol._asyncCallbacks[clazzName] = function(pc) {sc.pc=pc; System.out.println("sc.asyncID="+sc.asyncID+" sc.pc = " + sc.pc);vwr.eval.resumeEval(sc)};
-					vwr.eval.pc = vwr.eval.pcEnd;
-					System.out.println("setting resume for pc=" + sc.pc + " " + clazzName + " to " + Jmol._asyncCallbacks[clazzName] + "//" )
-					return function() {System.out.println("resuming " + clazzName + " " + Jmol._asyncCallbacks[clazzName]);Jmol._asyncCallbacks[clazzName](pc)};					
-				}
-				System.out.println(clazzName + "?????????????????????" + state)
-				return function() {setTimeout(function(){vwr.refresh(2)},10)};
-				//return null;
-			}
-		}
+    if (!proto._restoreState)
+	   	proto._restoreState = function(clazzName, state) {
+        // applet-dependent
+		  }
 	
 		proto._jsSetScreenDimensions = function() {
 				if (!this._applet)return
@@ -435,10 +355,7 @@ ClazzLoader._loadZJars(0);
 				// applet div can be not the same size as the canvas if there
 				// is a border in place.
 				var d = Jmol._getElement(this, (this._is2D ? "canvas2d" : "canvas"));
-				this._applet.setScreenDimension(
-				d.width, d.height);
-// Math.floor(Jmol.$(this, "appletdiv").height()));
-
+				this._applet.setScreenDimension(d.width, d.height);
 		};
 
 		proto._show = function(tf) {
@@ -449,13 +366,14 @@ ClazzLoader._loadZJars(0);
 
 		proto._canScript = function(script) {return true};
 
-		proto._delay = function(eval, sc, millis) {
-		// does not take into account that scripts may be added after this and
-		// need to be cached.
-			this._delayID = setTimeout(function(){eval.resumeEval(sc,false)}, millis);		
-		}
-
-		proto._createDomNode = function(id, data) {
+//		proto._delay = function(eval, sc, millis) {
+//    alert("_delay???")
+//		// does not take into account that scripts may be added after this and
+//		// need to be cached.
+//			this._delayID = setTimeout(function(){eval.resumeEval(sc,false)}, millis);		
+//		}
+/*
+		proto._createDomNode = function(id, data) { // moved to org.jmol.adapter.readers.xml.XmlReader.java
 			id = this._id + "_" + id;
 			var d = document.getElementById(id);
 			if (d)
@@ -492,7 +410,7 @@ ClazzLoader._loadZJars(0);
 			document.body.appendChild(d);
 			return d;
 		}		
-
+*/
 		proto.equals = function(a) { return this == a };
 		proto.clone = function() { return this };
 		proto.hashCode = function() { return parseInt(this._uniqueId) };  
@@ -523,7 +441,7 @@ ClazzLoader._loadZJars(0);
 		// false is from Repaintmanager.requestRepaintAndWait()
 		// called from apiPlatform Display.repaint()
 
-		// alert("_repaint " + arguments.callee.caller.caller.exName)
+		//alert("_repaint " + Clazz.getStackTrace())
 		if (!applet || !applet._applet)return;
 
 		// asNewThread = false;
@@ -599,6 +517,7 @@ ClazzLoader._loadZJars(0);
 	};
 
 	Jmol._setCanvasImage = function(canvas, width, height) {
+    // called from org.jmol.awtjs2d.Platform
 		canvas.buf32 = null;
 		canvas.width = width;
 		canvas.height = height;

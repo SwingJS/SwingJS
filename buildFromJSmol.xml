@@ -7,11 +7,20 @@
  
   -->
 	
+  <property name="jmol.path" value="../Jmol" />
   <property name="jsmol.path" value="../JSmol" />
 	
   <target name="fromJSmol" id="fromJSmol">
 
-   	<echo>...transferring JSmol customized code (JSmol must have been compiled already)</echo>
+   	<echo>...copying Jmol srcjs/ java for reference only</echo>
+   	<copy todir="srcjs" >
+      <fileset dir="${jmol.path}/srcjs">
+        <include name="com/**/*.java" />
+        <include name="java/**/*.java" />
+      </fileset>
+    </copy>
+  	
+   	<echo>...creating jsmol/bin/ (JSmol customized code -- JSmol must have been compiled already)</echo>
    	<copy todir="jsmol/bin" >
       <fileset dir="${jsmol.path}/bin">
         <include name="com/**/*.js" />
@@ -19,6 +28,36 @@
         <include name="javajs/**/*.js" />
       </fileset>
     </copy>
+  	
+   	<echo>...creating lib/jquery/</echo>
+  	<copy todir="lib/jquery">
+  	  <fileset dir="${jsmol.path}/lib/jquery">
+  	    <include name="**/*" />
+  	  </fileset>
+    </copy>
+
+   	<echo>...creating jsmoljs/ </echo>
+   	<copy todir="jsmoljs">
+  	  <fileset dir="${jsmol.path}/jsmoljs">		
+  	    <include name="core/**/*" />
+  	    <include name="j2sjmol.js" />
+  	  	<include name="JSmol.js" />
+  	    <include name="JSmolCore.js" />
+  	  	<include name="JSmolJavaExt.js" />
+  	  	<include name="JSmoljQueryExt.js" />
+  	  </fileset>
+    </copy> 
+   	
+   	<echo>...adding jsmol.php</echo>
+  	<copy todir="php">
+  	  <fileset dir="${jsmol.path}/php">
+  	    <include name="**/*" />
+  	  </fileset>
+    </copy>
+  
+  	
+  	
+  	
   </target>
 	
 
