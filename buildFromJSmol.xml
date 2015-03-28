@@ -12,6 +12,14 @@
 	
   <target name="fromJSmol" id="fromJSmol">
 
+   	<echo>...copying Jmol javajs/ java from Jmol</echo>
+   	<copy todir="src" >
+      <fileset dir="${jmol.path}/src">
+        <include name="javajs/**/*" />
+        <exclude name="javajs/swing/*" />
+      </fileset>
+    </copy>
+  	
    	<echo>...copying Jmol srcjs/ java for reference only</echo>
    	<copy todir="srcjs" >
       <fileset dir="${jmol.path}/srcjs">

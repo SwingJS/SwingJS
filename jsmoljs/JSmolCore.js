@@ -131,7 +131,7 @@ Jmol = (function(document) {
 		}
 	};
 	var j = {
-		_version: "$Date: 2015-03-01 07:13:29 -0600 (Sun, 01 Mar 2015) $", // svn.keywords:lastUpdated
+		_version: "$Date: 2015-03-28 08:56:04 -0500 (Sat, 28 Mar 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
 		_allowedJmolSize: [25, 2048, 300],   // min, max, default (pixels)

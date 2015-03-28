@@ -2405,7 +2405,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
     	return minimumSize();
     }
    
-    Dimension minimumSize() {
+    public Dimension minimumSize() {
       
         /* Avoid grabbing the lock if a reasonable cached size value
          * is available.

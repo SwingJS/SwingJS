@@ -1692,7 +1692,7 @@ function(c){
  var i = c.charCodeAt(0);
 if(i==0x20||i==0xa0||i==0x1680)return true;
 if(i<0x2000)return false;
-returni<=0x200b||i==0x2028||i==0x2029||i==0x202f||i==0x3000;
+return i<=0x200b||i==0x2028||i==0x2029||i==0x202f||i==0x3000;
 },"~N");
 c$.digit=Clazz.defineMethod(c$,"digit",
 function(c,radix){

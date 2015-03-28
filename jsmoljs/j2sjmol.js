@@ -2544,6 +2544,7 @@ Clazz.checkPrivateMethod = function (args) {
 c$ = null;
 Clazz.cStack = [];
 Clazz.pu$h = function (c) {
+  c || (c = self.c$); // old style
 	c && Clazz.cStack.push(c);
 };
 
@@ -3369,6 +3370,7 @@ Clazz.loadClass = function (name, onRequiredLoaded, forced, async) {
   if (!self.Class) {
       Class = Clazz;
       Class.forName = Clazz._4Name;
+      JavaObject = Clazz._O;
       // maybe more here
   }
   if (!name)
