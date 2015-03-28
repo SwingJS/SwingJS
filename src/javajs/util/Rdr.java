@@ -268,7 +268,7 @@ public class Rdr implements GenericLineReader {
     int totalLen = 0;
     while ((len = bis.read(buf, 0, 1024)) > 0) {
       totalLen += len;
-      if (bytes != null) {
+      if (out == null) {
         if (totalLen >= bytes.length)
           bytes = AU.ensureLengthByte(bytes, totalLen * 2);
         System.arraycopy(buf, 0, bytes, totalLen - len, len);

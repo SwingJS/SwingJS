@@ -1425,20 +1425,13 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since JDK1.1
      */
     public void setVisible(boolean b) {
-        if (!visible) {
-          visible = true;
-            Container parent = this.parent;
-            if (parent != null) {
-                parent.invalidate();
-            }
-        }
+    	show(b);
     }
 
     /**
      * @deprecated As of JDK version 1.1,
      * replaced by <code>setVisible(boolean)</code>.
      */
-    @Deprecated
     public void show(boolean b) {
         if (b) {
             show();
@@ -1447,13 +1440,38 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
         }
     }
 
-    /**
-     * Makes the next available buffer visible by either blitting or
-     * flipping.
-     */
-    public void show() {
-        //?? flip(caps.getFlipContents());
-    }
+	public void show() {
+		if (!visible) {
+			// synchronized (getTreeLock()) {
+			visible = true;
+			// mixOnShowing();
+			// ComponentPeer peer = this.peer;
+			// if (peer != null) {
+			// peer.show();
+			// createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
+			// this, parent,
+			// HierarchyEvent.SHOWING_CHANGED,
+			// Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+			// if (peer instanceof LightweightPeer) {
+			// repaint();
+			// }
+			// updateCursorImmediately();
+			// }
+
+			if (componentListener != null
+					|| (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
+					|| Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {
+				ComponentEvent e = new ComponentEvent(this,
+						ComponentEvent.COMPONENT_SHOWN);
+				Toolkit.getEventQueue().postEvent(e);
+			}
+		}
+		Container parent = this.parent;
+		if (parent != null) {
+			parent.invalidate();
+		}
+	}
+//    }
 
     boolean containsFocus() {
         return isFocusOwner();
@@ -1471,7 +1489,6 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @deprecated As of JDK version 1.1,
      * replaced by <code>setVisible(boolean)</code>.
      */
-    @Deprecated
     public void hide() {
         isPacked = false;
         if (visible) {

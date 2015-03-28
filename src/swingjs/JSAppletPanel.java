@@ -45,7 +45,6 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 	public String appletDocumentBase;
 
   public int maximumSize = Integer.MAX_VALUE;
-	public String htmlName;
 	public String appletName;
 	public String syncId;
 	public boolean testAsync;
@@ -59,8 +58,10 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
     maximumSize = Math.max(x, 100);
   }
 
-	public JSAppletPanel(){
-		System.out.println("JSAppletPanel initialized");		
+	public JSAppletPanel(Hashtable params) {
+		System.out.println("JSAppletPanel initialized");
+		set(params);
+		//
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 	 * 
 	 * @param params
 	 */
-	public void set(Hashtable params) {
+	private void set(Hashtable params) {
 		this.params = params;
 		fullName = (String) params.get("fullName");
 		if (fullName == null)
@@ -110,6 +111,10 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 			if (platform != null)
 				apiPlatform = (GenericPlatform) Interface.getInterface(platform);
 		display = params.get("display");
+		runLoader(); // applet created here
+		// do something with display here
+		appletInit();
+		appletStart();
 	}
 	
 	///// AppletStub /////
@@ -148,7 +153,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 
 	@Override
 	protected String getCode() {
-		return getParameter("appletClass");
+		return getParameter("code");
 	}
 
 //	@Override

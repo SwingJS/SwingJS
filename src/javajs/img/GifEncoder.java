@@ -544,7 +544,6 @@ public class GifEncoder extends ImageEncoder {
           lab = toLABnorm(rgb);
           cell = nearestCell.get(key);
           if (cell == null) {
-            cell = new ColorCell(0);
             // find nearest cell
             float maxerr = Float.MAX_VALUE;
             // skip 0 0 0

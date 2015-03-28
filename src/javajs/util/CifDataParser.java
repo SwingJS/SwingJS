@@ -168,8 +168,8 @@ public class CifDataParser implements GenericCifDataParser {
   public Map<String, Object> getAllCifData() {
     line = "";
     String key;
+    Map<String, Object> data = null;
     Map<String, Object> allData = new Hashtable<String, Object>();
-    Map<String, Object> data = allData;
     Lst<Map<String, Object>> models = new  Lst<Map<String,Object>>();
     allData.put("models", models);
     try {

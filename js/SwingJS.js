@@ -14,7 +14,6 @@ self.SwingJS || (SwingJS = {});
 		return SwingJS._Applet._get(id, Info, checkOnly);
 	}
 
-
 	// optional Info here	
 	SwingJS.getAppletHtml = function(applet, Info) {
 		if (Info) {
@@ -26,7 +25,6 @@ self.SwingJS || (SwingJS = {});
 		return applet._code;
 	}
 
-  
 	SwingJS._Applet = function(id, Info, checkOnly){
 		window[id] = this;
 		this._appletType = "SwingJS._Applet" + (Info.isSigned ? " (signed)" : "");
@@ -73,12 +71,13 @@ self.SwingJS || (SwingJS = {});
 	}
 
 	;(function(Applet, proto) {
+  
 	Applet._get = function(id, Info, checkOnly) {
 
 		checkOnly || (checkOnly = false);
 		Info || (Info = {});
 		var DefaultInfo = {
-      appletClass: "JmolApplet",
+      code: "swingjs.test.TanSugd3S",
 			color: "#FFFFFF", // applet object background color
 			width: 300,
 			height: 300,
@@ -87,7 +86,7 @@ self.SwingJS || (SwingJS = {});
 			readyFunction: null,
 			use: "HTML5",//other options include JAVA
 			jarPath: "java",
-			jarFile: "[appletClass].jar",
+			jarFile: "[code].jar",
 			j2sPath: "j2s",
 			disableJ2SLoadMonitor: false,
 			disableInitialConsole: false,
@@ -97,7 +96,7 @@ self.SwingJS || (SwingJS = {});
     // Jmol here
     
 		Jmol._addDefaultInfo(Info, DefaultInfo);
-    Info.jarFile && Info.appletClass && Info.jarFile.replace(/\[appletClass\]/,Info.appletClass);
+    Info.jarFile && Info.code && Info.jarFile.replace(/\[code\]/,Info.code);
 		Jmol._debugAlert = Info.debug;
 		Info.serverURL && (Jmol._serverUrl = Info.serverURL);
 
@@ -113,7 +112,7 @@ self.SwingJS || (SwingJS = {});
 				break;
 			case "HTML5":               
   			if (Jmol.featureDetection.allowHTML5){
-				  applet = Applet._getCanvas(id, Info, checkOnly, false);
+				  applet = Applet._getCanvas(id, Info, checkOnly);
         } else {
           List.push("JAVA");
         }
@@ -133,9 +132,27 @@ self.SwingJS || (SwingJS = {});
 		return (checkOnly ? applet : Jmol._registerApplet(id, applet));  
 	}
 
+	SwingJS._Canvas2D = function(id, Info, type, checkOnly){
+		// type: Jmol or JSV
+		this._uniqueId = ("" + Math.random()).substring(3);
+		this._id = id;
+		this._is2D = true;
+		this._isJava = false;
+		this._jmolType = "SwingJS._Canvas2D (" + type + ")";
+    this._platform = "";
+		if (checkOnly)
+			return this;
+		window[id] = this;
+		this._createCanvas(id, Info, false);
+		if (!Jmol._document || this._deferApplet)
+			return this;
+		this._init();
+		return this;
+	};
+
 	Applet._getCanvas = function(id, Info, checkOnly) {
 		Jmol._Canvas2D.prototype = Jmol._jsSetPrototype(new Applet(id, Info, true));
-		return new Jmol._Canvas2D(id, Info, Info.appletClass, checkOnly);
+		return new Jmol._Canvas2D(id, Info, Info.code, checkOnly);
 	};
 
 	/*  AngelH, mar2007:
@@ -220,10 +237,10 @@ self.SwingJS || (SwingJS = {});
 	}
 	
 	proto._addCoreFiles = function() {
-		Jmol.__addCoreFile(this.__Info.appletClass, this._j2sPath, this.__Info.preloadCore);
+		Jmol.__addCoreFile(this.__Info.code, this._j2sPath, this.__Info.preloadCore);
 		if (Jmol._debugCode) {
 		// no min package for that
-			Jmol.__addExec([this, Jmol.__loadClass, this.__Info.appletClass, "load " + this.__Info.appletClass]);
+			Jmol.__addExec([this, Jmol.__loadClass, this.__Info.code, "load " + this.__Info.code]);
 		}
   }
   
@@ -695,4 +712,6 @@ self.SwingJS || (SwingJS = {});
 	};
 */  
   
+})(SwingJS._Applet, SwingJS._Applet.prototype);
+
 })(SwingJS, jQuery);
