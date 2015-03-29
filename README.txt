@@ -14,8 +14,15 @@ from the highly successful port of the Jmol Java Applet to
 JavaScript/HTML5 (See http://sourceforge.net/p/jmol and http://sourceforge.net/p/jsmol) using the Java2Script Eclipse-based J2S compiler. 
 
 
+Running the testApplet 
+----------------------
+
+- run buildsite.xml (from Eclipse, or command line ("ant -f buildSite.xml"))
+- open site/swingjs/test.htm
+
 
 Directory structure for the SwingjS project:
+--------------------------------------------
 
 bin/
 
