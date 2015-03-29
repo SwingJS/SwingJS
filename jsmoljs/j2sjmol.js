@@ -2099,12 +2099,16 @@ Clazz.isClassDefined = Clazz.isDefinedClass = function (clazzName) {
 		return false;		/* consider null or empty name as non-defined class */
 	if (Clazz.allClasses[clazzName])
 		return true;
+
+  
+
 	var pkgFrags = clazzName.split (/\./);
 	var pkg = null;
 	for (var i = 0; i < pkgFrags.length; i++)
-		if (!(pkg = (pkg ? pkg[pkgFrags[i]] : Clazz.allPackage[pkgFrags[0]])))
+		if (!(pkg = (pkg ? pkg[pkgFrags[i]] : Clazz.allPackage[pkgFrags[0]]))) {
 			return false;
-	return (pkg && (Clazz.allClasses[clazzName] = true));
+    }
+  return (pkg && (Clazz.allClasses[clazzName] = true));
 };
 /**
  * Define the enum constant.
@@ -3127,6 +3131,11 @@ Clazz._Node = function () {
 };
 
 ;(function(Clazz, ClazzLoader, ClazzNode) {
+
+ClazzLoader._fileCheckOnly = self.Jmol && Jmol._fileCheckOnly;
+
+
+
 ClazzLoader.initNode = function(node, _initNode) {
 	node.parents = [];
 	node.musts = [];
@@ -3779,7 +3788,13 @@ ClazzLoader.loadScript = function (file, why, ignoreOnload, fSuccess) {
 	// also remove from queue
 	Clazz.removeArrayItem(ClazzLoader.classQueue, file);
 
-	System.out.println("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + ClazzLoader.isUsingXMLHttpRequest + " async=" + ClazzLoader.isAsynchronousLoading)
+if (ClazzLoader._fileCheckOnly) {
+  // forces not-found message
+  ClazzLoader.isAsynchronousLoading = false;
+  ClazzLoader.isUsingXMLHttpRequest = true;
+}
+	if (ClazzLoader._fileCheckOnly)
+    System.out.println("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + ClazzLoader.isUsingXMLHttpRequest + " async=" + ClazzLoader.isAsynchronousLoading)
 
 
 	ClazzLoader.onScriptLoading(file);
@@ -4088,6 +4103,8 @@ ClazzLoader.updateNode = function(node, _updateNode) {
 		var decl = node.declaration;
 		if (decl)
 			decl(), decl.executed = true;
+    if(ClazzLoader._fileCheckOnly)
+        System.out.println("OK FOR " + node.name)
 		node.status = ClazzNode.STATUS_DECLARED;
 		if (ClazzLoader.definedClasses)
 			ClazzLoader.definedClasses[node.name] = true;
@@ -4288,6 +4305,9 @@ ClazzLoader.load = function (musts, clazz, optionals, declaration) {
 			ClazzLoader.load(musts, clazz[i], optionals, declaration, clazz);
 		return;
 	}	
+//  System.out.println("ClazzLoader loading " + clazz)
+  
+  
 //	if (clazz.charAt (0) == '$')
 //		clazz = "org.eclipse.s" + clazz.substring (1);
 	var node = ClazzLoader.mapPath2ClassNode["#" + clazz];

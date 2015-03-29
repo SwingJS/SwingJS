@@ -36,14 +36,14 @@ package jssun.awt;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+//import java.util.WeakHashMap;
+//import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.locks.Condition;
+//import java.util.concurrent.locks.ReentrantLock;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Component;
@@ -231,76 +231,76 @@ public abstract class SunToolkit extends Toolkit
 //  //      return peer;
 //    }
 
-    /**
-     * The AWT lock is typically only used on Unix platforms to synchronize
-     * access to Xlib, OpenGL, etc.  However, these methods are implemented
-     * in SunToolkit so that they can be called from shared code (e.g.
-     * from the OGL pipeline) or from the X11 pipeline regardless of whether
-     * XToolkit or MToolkit is currently in use.  There are native macros
-     * (such as AWT_LOCK) defined in awt.h, so if the implementation of these
-     * methods is changed, make sure it is compatible with the native macros.
-     *
-     * Note: The following methods (awtLock(), awtUnlock(), etc) should be
-     * used in place of:
-     *     synchronized (getAWTLock()) {
-     *         ...
-     *     }
-     *
-     * By factoring these methods out specially, we are able to change the
-     * implementation of these methods (e.g. use more advanced locking
-     * mechanisms) without impacting calling code.
-     *
-     * Sample usage:
-     *     private void doStuffWithXlib() {
-     *         assert !SunToolkit.isAWTLockHeldByCurrentThread();
-     *         SunToolkit.awtLock();
-     *         try {
-     *             ...
-     *             XlibWrapper.XDoStuff();
-     *         } finally {
-     *             SunToolkit.awtUnlock();
-     *         }
-     *     }
-     */
-
-    private static final ReentrantLock AWT_LOCK = new ReentrantLock();
-    private static final Condition AWT_LOCK_COND = AWT_LOCK.newCondition();
-
-    public static final void awtLock() {
-        AWT_LOCK.lock();
-    }
-
-    public static final boolean awtTryLock() {
-        return AWT_LOCK.tryLock();
-    }
-
-    public static final void awtUnlock() {
-        AWT_LOCK.unlock();
-    }
-
-    public static final void awtLockWait()
-        throws InterruptedException
-    {
-        AWT_LOCK_COND.await();
-    }
-
-    public static final void awtLockWait(long timeout)
-        throws InterruptedException
-    {
-        AWT_LOCK_COND.await(timeout, TimeUnit.MILLISECONDS);
-    }
-
-    public static final void awtLockNotify() {
-        AWT_LOCK_COND.signal();
-    }
-
-    public static final void awtLockNotifyAll() {
-        AWT_LOCK_COND.signalAll();
-    }
-
-    public static final boolean isAWTLockHeldByCurrentThread() {
-        return AWT_LOCK.isHeldByCurrentThread();
-    }
+//    /**
+//     * The AWT lock is typically only used on Unix platforms to synchronize
+//     * access to Xlib, OpenGL, etc.  However, these methods are implemented
+//     * in SunToolkit so that they can be called from shared code (e.g.
+//     * from the OGL pipeline) or from the X11 pipeline regardless of whether
+//     * XToolkit or MToolkit is currently in use.  There are native macros
+//     * (such as AWT_LOCK) defined in awt.h, so if the implementation of these
+//     * methods is changed, make sure it is compatible with the native macros.
+//     *
+//     * Note: The following methods (awtLock(), awtUnlock(), etc) should be
+//     * used in place of:
+//     *     synchronized (getAWTLock()) {
+//     *         ...
+//     *     }
+//     *
+//     * By factoring these methods out specially, we are able to change the
+//     * implementation of these methods (e.g. use more advanced locking
+//     * mechanisms) without impacting calling code.
+//     *
+//     * Sample usage:
+//     *     private void doStuffWithXlib() {
+//     *         assert !SunToolkit.isAWTLockHeldByCurrentThread();
+//     *         SunToolkit.awtLock();
+//     *         try {
+//     *             ...
+//     *             XlibWrapper.XDoStuff();
+//     *         } finally {
+//     *             SunToolkit.awtUnlock();
+//     *         }
+//     *     }
+//     */
+//
+//    private static final ReentrantLock AWT_LOCK = new ReentrantLock();
+//    private static final Condition AWT_LOCK_COND = AWT_LOCK.newCondition();
+//
+//    public static final void awtLock() {
+//        AWT_LOCK.lock();
+//    }
+//
+//    public static final boolean awtTryLock() {
+//        return AWT_LOCK.tryLock();
+//    }
+//
+//    public static final void awtUnlock() {
+//        AWT_LOCK.unlock();
+//    }
+//
+//    public static final void awtLockWait()
+//        throws InterruptedException
+//    {
+//        AWT_LOCK_COND.await();
+//    }
+//
+//    public static final void awtLockWait(long timeout)
+//        throws InterruptedException
+//    {
+//        AWT_LOCK_COND.await(timeout, TimeUnit.MILLISECONDS);
+//    }
+//
+//    public static final void awtLockNotify() {
+//        AWT_LOCK_COND.signal();
+//    }
+//
+//    public static final void awtLockNotifyAll() {
+//        AWT_LOCK_COND.signalAll();
+//    }
+//
+//    public static final boolean isAWTLockHeldByCurrentThread() {
+//        return AWT_LOCK.isHeldByCurrentThread();
+//    }
 
     /*
      * Create a new AppContext, along with its EventQueue, for a
@@ -397,8 +397,8 @@ public abstract class SunToolkit extends Toolkit
 
     // Maps from non-Component/MenuComponent to AppContext.
     // WeakHashMap<Component,AppContext>
-    private static final Map appContextMap =
-        Collections.synchronizedMap(new WeakHashMap());
+    private static final Map appContextMap = new HashMap();
+//        Collections.synchronizedMap(new WeakHashMap());
 
 
 //    /**

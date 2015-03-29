@@ -40,8 +40,8 @@
 
 package jssun.util.resources;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import jsjava.security.AccessController;
+import jsjava.security.PrivilegedAction;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -216,7 +216,7 @@ public class LocaleData {
 //    private static boolean isNonEuroLangSupported() {
 //        final String sep = File.separator;
 //        String localeDataJar =
-//            java.security.AccessController.doPrivileged(
+//            jsjava.security.AccessController.doPrivileged(
 //             new sun.security.action.GetPropertyAction("java.home")) +
 //            sep + "lib" + sep + "ext" + sep + localeDataJarName;
 //

@@ -25,7 +25,7 @@
 
 package jsjava.awt;
 
-import java.lang.ref.WeakReference;
+//import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EmptyStackException;
 //import jsjava.util.logging.Level;
@@ -137,7 +137,7 @@ public class EventQueue {
      * The modifiers field of the current event, if the current event is an
      * InputEvent or ActionEvent.
      */
-    private WeakReference currentEvent;
+//    private WeakReference currentEvent;
 
     /*
      * Non-zero if a thread is waiting in getNextEvent(int) for an event of

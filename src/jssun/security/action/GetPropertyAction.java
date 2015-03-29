@@ -36,13 +36,13 @@ package jssun.security.action;
  * property named <code>"prop"</code> as a privileged action: <p>
  *
  * <pre>
- * String s = java.security.AccessController.doPrivileged
+ * String s = jsjava.security.AccessController.doPrivileged
  *                      (new GetPropertyAction("prop"));
  * </pre>
  *
  * @author Roland Schemers
- * @see java.security.PrivilegedAction
- * @see java.security.AccessController
+ * @see jsjava.security.PrivilegedAction
+ * @see jsjava.security.AccessController
  * @since 1.2
  */
 

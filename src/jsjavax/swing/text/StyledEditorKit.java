@@ -99,7 +99,7 @@ public class StyledEditorKit extends DefaultEditorKit {
      * @return the model
      */
     public Document createDefaultDocument() {
-        return new DefaultStyledDocument();
+        return null;//new DefaultStyledDocument();
     }
 
     /**

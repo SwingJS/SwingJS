@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.WeakHashMap;
+//import java.util.WeakHashMap;
 
 import jsjava.awt.event.AWTEventListener;
 import jsjava.awt.event.AWTEventListenerProxy;
@@ -830,7 +830,7 @@ public abstract class Toolkit {
                 // We disable the JIT during toolkit initialization.  This
                 // tends to touch lots of classes that aren't needed again
                 // later and therefore JITing is counter-productiive.
-                java.lang.Compiler.disable();
+//                java.lang.Compiler.disable();
 
                 jsjava.security.AccessController.doPrivileged(
                         new jsjava.security.PrivilegedAction() {
@@ -876,7 +876,7 @@ public abstract class Toolkit {
 //                loadAssistiveTechnologies();
             } finally {
                 // Make sure to always re-enable the JIT.
-                java.lang.Compiler.enable();
+//              java.lang.Compiler.enable();
             }
         }
         return toolkit;
@@ -1853,7 +1853,7 @@ public abstract class Toolkit {
     private int[] calls = new int[LONG_BITS];
     private static volatile long enabledOnToolkitMask;
     private AWTEventListener eventListener = null;
-    private WeakHashMap listener2SelectiveListener = new WeakHashMap();
+    private HashMap listener2SelectiveListener = new HashMap(); // was Weak
 
     /*
      * Extracts a "pure" AWTEventListener from a AWTEventListenerProxy,

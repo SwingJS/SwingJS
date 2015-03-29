@@ -26,7 +26,7 @@
 package jssun.font;
 
 //import java.lang.ref.ReferenceQueue;
-import java.lang.ref.SoftReference;
+//import java.lang.ref.SoftReference;
 import java.util.Hashtable;
 
 import jsjava.awt.Font;
@@ -164,17 +164,23 @@ private float leading;
      * Also we put the references on a queue so that if they do get nulled
      * out we can clear the keys from the table.
      */
-    private static class KeyReference extends SoftReference
+    private static class KeyReference //extends SoftReference
         {
 
 //        static ReferenceQueue queue = Disposer.getQueue();
 
         Object key;
+        Object val;
 
         KeyReference(Object key, Object value) {
-            super(value, null);//queue);
+            //super(value, null);//queue);
             this.key = key;
+            this.val = value;
             //Disposer.addReference(this, this);
+        }
+        
+        Object get() {
+        	return val;
         }
 
         /* It is possible that since this reference object has been

@@ -286,8 +286,8 @@ class ImageFetcher extends Thread {
        }
        final ThreadGroup fetcherGroup = fetcherThreadGroup;
 
-       java.security.AccessController.doPrivileged(
-         new java.security.PrivilegedAction() {
+       jsjava.security.AccessController.doPrivileged(
+         new jsjava.security.PrivilegedAction() {
          public Object run() {
              for (int i = 0; i < info.fetchers.length; i++) {
                if (info.fetchers[i] == null) {

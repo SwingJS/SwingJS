@@ -24,7 +24,7 @@
  */
 package jsjava.awt;
 
-import java.lang.ref.WeakReference;
+//import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1104,8 +1104,8 @@ public class Window extends Container {
                 ownedWindowList.copyInto(ownedWindowArray);
             }
             for (int i = 0; i < ownedWindowArray.length; i++) {
-                Window child = (Window) (((WeakReference)
-                               (ownedWindowArray[i])).get());
+                Window child = (Window) ((
+                               (ownedWindowArray[i])));
                 if (child != null) {
                     child.disposeImpl();
                 }
@@ -2636,7 +2636,7 @@ public class Window extends Container {
         }
     }
 
-    void removeOwnedWindow(WeakReference weakWindow) {
+    void removeOwnedWindow(Window weakWindow) {
         if (weakWindow != null) {
             // synchronized block not required since removeElement is
             // already synchronized

@@ -24,8 +24,8 @@
  */
 package jsjavax.swing;
 
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
+//import java.lang.ref.ReferenceQueue;
+//import java.lang.ref.WeakReference;
 
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
@@ -52,22 +52,22 @@ import jsjava.beans.PropertyChangeListener;
  */
 abstract class ActionPropertyChangeListener<T extends JComponent>
         implements PropertyChangeListener {
-    private static ReferenceQueue<JComponent> queue;
+//    private static ReferenceQueue<JComponent> queue;
 
     // WeakReference's aren't serializable.
-    private transient OwnedWeakReference<T> target;
+  //  private transient OwnedWeakReference<T> target;
     // The Component's that reference an Action do so through a strong
     // reference, so that there is no need to check for serialized.
     private Action action;
 
-    private static ReferenceQueue<JComponent> getQueue() {
-        synchronized(ActionPropertyChangeListener.class) {
-            if (queue == null) {
-                queue = new ReferenceQueue<JComponent>();
-            }
-        }
-        return queue;
-    }
+//    private static ReferenceQueue<JComponent> getQueue() {
+//        synchronized(ActionPropertyChangeListener.class) {
+//            if (queue == null) {
+//                queue = new ReferenceQueue<JComponent>();
+//            }
+//        }
+//        return queue;
+//    }
 
     public ActionPropertyChangeListener(T c, Action a) {
         super();
@@ -97,27 +97,27 @@ abstract class ActionPropertyChangeListener<T extends JComponent>
                                                   PropertyChangeEvent e);
 
     private void setTarget(T c) {
-        ReferenceQueue<JComponent> queue = getQueue();
-        // Check to see whether any old buttons have
-        // been enqueued for GC.  If so, look up their
-        // PCL instance and remove it from its Action.
-        OwnedWeakReference r;
-        while ((r = (OwnedWeakReference)queue.poll()) != null) {
-            ActionPropertyChangeListener oldPCL = r.getOwner();
-            Action oldAction = oldPCL.getAction();
-            if (oldAction!=null) {
-                oldAction.removePropertyChangeListener(oldPCL);
-            }
-        }
-        this.target = new OwnedWeakReference<T>(c, queue, this);
+//        ReferenceQueue<JComponent> queue = getQueue();
+//        // Check to see whether any old buttons have
+//        // been enqueued for GC.  If so, look up their
+//        // PCL instance and remove it from its Action.
+//        OwnedWeakReference r;
+//        while ((r = (OwnedWeakReference)queue.poll()) != null) {
+//            ActionPropertyChangeListener oldPCL = r.getOwner();
+//            Action oldAction = oldPCL.getAction();
+//            if (oldAction!=null) {
+//                oldAction.removePropertyChangeListener(oldPCL);
+//            }
+//        }
+//        this.target = new OwnedWeakReference<T>(c, queue, this);
     }
 
     public T getTarget() {
-        if (target == null) {
-            // Will only happen if serialized and real target was null
+//        if (target == null) {
+//            // Will only happen if serialized and real target was null
             return null;
-        }
-        return this.target.get();
+//        }
+//        return this.target.get();
     }
 
     public Action getAction() {
@@ -140,18 +140,18 @@ abstract class ActionPropertyChangeListener<T extends JComponent>
 //    }
 
 
-    private static class OwnedWeakReference<U extends JComponent> extends
-                              WeakReference<U> {
-        private ActionPropertyChangeListener owner;
-
-        OwnedWeakReference(U target, ReferenceQueue<? super U> queue,
-                           ActionPropertyChangeListener owner) {
-            super(target, queue);
-            this.owner = owner;
-        }
-
-        public ActionPropertyChangeListener getOwner() {
-            return owner;
-        }
-    }
+//    private static class OwnedWeakReference<U extends JComponent> extends
+//                              WeakReference<U> {
+//        private ActionPropertyChangeListener owner;
+//
+//        OwnedWeakReference(U target, ReferenceQueue<? super U> queue,
+//                           ActionPropertyChangeListener owner) {
+//            super(target, queue);
+//            this.owner = owner;
+//        }
+//
+//        public ActionPropertyChangeListener getOwner() {
+//            return owner;
+//        }
+//    }
 }

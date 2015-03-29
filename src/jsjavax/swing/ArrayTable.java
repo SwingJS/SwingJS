@@ -44,6 +44,9 @@ class ArrayTable implements Cloneable {
     private Object table = null;
     private static final int ARRAY_BOUNDARY = 8;
 
+    ArrayTable() {
+    	System.out.println("Hmm");
+    }
 
 //    /**
 //     * Writes the passed in ArrayTable to the passed in ObjectOutputStream.

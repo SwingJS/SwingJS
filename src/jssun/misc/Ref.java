@@ -24,7 +24,7 @@
  */
 
 package jssun.misc;
-import java.lang.ref.SoftReference;
+//import java.lang.ref.SoftReference;
 
 
 /**
@@ -48,9 +48,11 @@ import java.lang.ref.SoftReference;
 
 public abstract class Ref {
 
-    private SoftReference soft = null;
+  //  private SoftReference soft = null;
 
-    /**
+    private Object soft;
+
+		/**
      * Returns a pointer to the object referenced by this Ref.  If the object
      * has been thrown away by the garbage collector, it will be
      * reconstituted. This method does everything necessary to ensure that the garbage
@@ -84,9 +86,9 @@ public abstract class Ref {
      * invoke reconstitute().
      */
     public synchronized void flush() {
-        SoftReference s = soft;
-        if (s != null) s.clear();
-        soft = null;
+//        SoftReference s = soft;
+//        if (s != null) s.clear();
+//        soft = null;
     }
 
     /**
@@ -95,16 +97,17 @@ public abstract class Ref {
      */
     public synchronized void setThing(Object thing) {
         flush();
-        soft = new SoftReference(thing);
+        soft = thing;//new SoftReference(thing);
     }
 
     /**
      * Checks to see what object is being pointed at by this Ref and returns it.
      */
     public synchronized Object check() {
-        SoftReference s = soft;
-        if (s == null) return null;
-        return s.get();
+    	return soft;
+//        SoftReference s = soft;
+//        if (s == null) return null;
+//        return s.get();
     }
 
     /**

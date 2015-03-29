@@ -40,9 +40,16 @@
       </fileset>
     </copy>
 
-    <echo>...adding swingjs/j2s customized java files from bin</echo>
+    <echo>...adding to swingjs/j2s customized java files from bin</echo>
   	<copy todir="site/swingjs/j2s" >
       <fileset dir="bin">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+   	
+    <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
+  	<copy todir="site/swingjs/j2s" overwrite="true" >
+      <fileset dir="j2shack">
         <include name="**/*.js" />
       </fileset>
     </copy>
@@ -74,7 +81,7 @@
    	
    	<echo>...adding jsmol.php</echo>
   	<copy todir="site/swingjs/php">
-  	  <fileset dir="php">
+  	  <fileset dir="${project.path}/php">
   	    <include name="**/*" />
   	  </fileset>
     </copy>
@@ -82,9 +89,10 @@
    	<!-- make core files -->
  
    	<echo>creating and compressing core files - warnings are OK; "does not exist" is trouble</echo>
-   	<echo>...adding package.js from ${project.path}/srcjs/js</echo>
+
+  	<echo>...adding package.js from ${project.path}/package</echo>
    	<copy todir="site/swingjs/j2s/core">
-  	  <fileset dir="${project.path}/srcjs/js">
+  	  <fileset dir="${project.path}/package">
   	    <include name="package.js" />
   	  </fileset>
     </copy>

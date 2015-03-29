@@ -37,16 +37,16 @@ package jssun.applet;
 //import java.net.JarURLConnection;
 //import java.net.SocketPermission;
 //import java.net.URL;
-//import java.security.AccessControlContext;
-//import java.security.AccessControlException;
-//import java.security.AccessController;
-//import java.security.CodeSource;
-//import java.security.Permission;
-//import java.security.PermissionCollection;
-//import java.security.Permissions;
-//import java.security.Policy;
-//import java.security.PrivilegedAction;
-//import java.security.ProtectionDomain;
+//import jsjava.security.AccessControlContext;
+//import jsjava.security.AccessControlException;
+//import jsjava.security.AccessController;
+//import jsjava.security.CodeSource;
+//import jsjava.security.Permission;
+//import jsjava.security.PermissionCollection;
+//import jsjava.security.Permissions;
+//import jsjava.security.Policy;
+//import jsjava.security.PrivilegedAction;
+//import jsjava.security.ProtectionDomain;
 //import java.util.HashMap;
 import java.util.Locale;
 //import java.util.StringTokenizer;
@@ -746,8 +746,8 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		// } else {
 		// // serName is not null;
 		// InputStream is = (InputStream)
-		// java.security.AccessController.doPrivileged(
-		// new java.security.PrivilegedAction() {
+		// jsjava.security.AccessController.doPrivileged(
+		// new jsjava.security.PrivilegedAction() {
 		// public Object run() {
 		// return loader.getResourceAsStream(serName);
 		// }
@@ -1084,7 +1084,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 	// PermissionCollection perms = (PermissionCollection)
 	// AccessController.doPrivileged(new PrivilegedAction() {
 	// public Object run() {
-	// Policy p = java.security.Policy.getPolicy();
+	// Policy p = jsjava.security.Policy.getPolicy();
 	// if (p != null) {
 	// return p.getPermissions(new CodeSource(null,
 	// (java.security.cert.Certificate[]) null));
@@ -1268,8 +1268,8 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 	// byte[] classHeader = new byte[8];
 	//
 	// try {
-	// is = (InputStream) java.security.AccessController.doPrivileged(
-	// new java.security.PrivilegedAction() {
+	// is = (InputStream) jsjava.security.AccessController.doPrivileged(
+	// new jsjava.security.PrivilegedAction() {
 	// public Object run() {
 	// return loader.getResourceAsStream(resourceName);
 	// }

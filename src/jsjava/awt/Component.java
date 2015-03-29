@@ -25,6 +25,7 @@
 package jsjava.awt;
 
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 //import java.util.Set;
@@ -5042,7 +5043,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * Bootstrap classes are not included.
      */
     private static final Map<Class<?>, Boolean> coalesceMap =
-        new java.util.WeakHashMap<Class<?>, Boolean>();
+        new HashMap<Class<?>, Boolean>(); // was weakHashmap
 
     /**
      * Indicates whether this class overrides coalesceEvents.

@@ -37,9 +37,9 @@ import static jssun.awt.SunHints.KEY_TEXT_ANTIALIASING;
 //import java.lang.reflect.Field;
 import java.util.Locale;
 //import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
+//import java.util.concurrent.Callable;
+//import java.util.concurrent.Future;
+//import java.util.concurrent.FutureTask;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
@@ -1645,49 +1645,49 @@ public class SwingUtilities2 {
 //        return false;
 //    }
 
-    /**
-     * Submits a value-returning task for execution on the EDT and
-     * returns a Future representing the pending results of the task.
-     *
-     * @param task the task to submit
-     * @return a Future representing pending completion of the task
-     * @throws NullPointerException if the task is null
-     */
-    public static <V> Future<V> submit(Callable<V> task) {
-        if (task == null) {
-            throw new NullPointerException();
-        }
-        FutureTask<V> future = new FutureTask<V>(task);
-        execute(future);
-        return future;
-    }
-
-    /**
-     * Submits a Runnable task for execution on the EDT and returns a
-     * Future representing that task.
-     *
-     * @param task the task to submit
-     * @param result the result to return upon successful completion
-     * @return a Future representing pending completion of the task,
-     *         and whose <tt>get()</tt> method will return the given
-     *         result value upon completion
-     * @throws NullPointerException if the task is null
-     */
-    public static <V> Future<V> submit(Runnable task, V result) {
-        if (task == null) {
-            throw new NullPointerException();
-        }
-        FutureTask<V> future = new FutureTask<V>(task, result);
-        execute(future);
-        return future;
-    }
-
-    /**
-     * Sends a Runnable to the EDT for the execution.
-     */
-    private static void execute(Runnable command) {
-        SwingUtilities.invokeLater(command);
-    }
+//    /**
+//     * Submits a value-returning task for execution on the EDT and
+//     * returns a Future representing the pending results of the task.
+//     *
+//     * @param task the task to submit
+//     * @return a Future representing pending completion of the task
+//     * @throws NullPointerException if the task is null
+//     */
+//    public static <V> Future<V> submit(Callable<V> task) {
+//        if (task == null) {
+//            throw new NullPointerException();
+//        }
+//        FutureTask<V> future = new FutureTask<V>(task);
+//        execute(future);
+//        return future;
+//    }
+//
+//    /**
+//     * Submits a Runnable task for execution on the EDT and returns a
+//     * Future representing that task.
+//     *
+//     * @param task the task to submit
+//     * @param result the result to return upon successful completion
+//     * @return a Future representing pending completion of the task,
+//     *         and whose <tt>get()</tt> method will return the given
+//     *         result value upon completion
+//     * @throws NullPointerException if the task is null
+//     */
+//    public static <V> Future<V> submit(Runnable task, V result) {
+//        if (task == null) {
+//            throw new NullPointerException();
+//        }
+//        FutureTask<V> future = new FutureTask<V>(task, result);
+//        execute(future);
+//        return future;
+//    }
+//
+//    /**
+//     * Sends a Runnable to the EDT for the execution.
+//     */
+//    private static void execute(Runnable command) {
+//        SwingUtilities.invokeLater(command);
+//    }
 
     /**
      * Sets the {@code SKIP_CLICK_COUNT} client property on the component

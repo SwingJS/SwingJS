@@ -178,16 +178,17 @@ public interface AttributeSet {
      */
     public AttributeSet getResolveParent();
 
-    /**
-     * Attribute name used to name the collection of
-     * attributes.
-     */
-    public static final Object NameAttribute = StyleConstants.NameAttribute;
-
-    /**
-     * Attribute name used to identify the resolving parent
-     * set of attributes, if one is defined.
-     */
-    public static final Object ResolveAttribute = StyleConstants.ResolveAttribute;
+//SwingJS -- note, these two cause circular loading with StyleConstants
+//    /**
+//     * Attribute name used to name the collection of
+//     * attributes.
+//     */
+//    public static final Object NameAttribute = StyleConstants.NameAttribute;
+//
+//    /**
+//     * Attribute name used to identify the resolving parent
+//     * set of attributes, if one is defined.
+//     */
+//    public static final Object ResolveAttribute = StyleConstants.ResolveAttribute;
 
 }

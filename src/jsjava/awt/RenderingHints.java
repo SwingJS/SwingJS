@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import jssun.awt.SunHints;
-import java.lang.ref.WeakReference;
 
 /**
  * The {@code RenderingHints} class defines and manages collections of
@@ -72,7 +71,7 @@ import java.lang.ref.WeakReference;
  * value for that key is the exact value that specifies the algorithm.
  * <p>
  * The keys used to control the hints are all special values that
- * subclass the associated {@link RenderingHints.Key} class.
+ * subclass the associated {@link SunHints.Key} class.
  * Many common hints are expressed below as static constants in this
  * class, but the list is not meant to be exhaustive.
  * Other hints may be created by other packages by defining new objects
@@ -81,119 +80,6 @@ import java.lang.ref.WeakReference;
 public class RenderingHints
     implements Map<Object,Object>, Cloneable
 {
-    /**
-     * Defines the base type of all keys used along with the
-     * {@link RenderingHints} class to control various
-     * algorithm choices in the rendering and imaging pipelines.
-     * Instances of this class are immutable and unique which
-     * means that tests for matches can be made using the
-     * {@code ==} operator instead of the more expensive
-     * {@code equals()} method.
-     */
-    public abstract static class Key {
-        private static HashMap identitymap = new HashMap(17);
-
-        private String getIdentity() {
-            // Note that the identity string is dependent on 3 variables:
-            //     - the name of the subclass of Key
-            //     - the identityHashCode of the subclass of Key
-            //     - the integer key of the Key
-            // It is theoretically possible for 2 distinct keys to collide
-            // along all 3 of those attributes in the context of multiple
-            // class loaders, but that occurence will be extremely rare and
-            // we account for that possibility below in the recordIdentity
-            // method by slightly relaxing our uniqueness guarantees if we
-            // end up in that situation.
-            return getClass().getName()+"@"+
-                Integer.toHexString(System.identityHashCode(getClass()))+":"+
-                Integer.toHexString(privatekey);
-        }
-
-        private synchronized static void recordIdentity(Key k) {
-            Object identity = k.getIdentity();
-            Object otherref = identitymap.get(identity);
-            if (otherref != null) {
-                Key otherkey = (Key) ((WeakReference) otherref).get();
-                if (otherkey != null && otherkey.getClass() == k.getClass()) {
-                    throw new IllegalArgumentException(identity+
-                                                       " already registered");
-                }
-                // Note that this system can fail in a mostly harmless
-                // way.  If we end up generating the same identity
-                // String for 2 different classes (a very rare case)
-                // then we correctly avoid throwing the exception above,
-                // but we are about to drop through to a statement that
-                // will replace the entry for the old Key subclass with
-                // an entry for the new Key subclass.  At that time the
-                // old subclass will be vulnerable to someone generating
-                // a duplicate Key instance for it.  We could bail out
-                // of the method here and let the old identity keep its
-                // record in the map, but we are more likely to see a
-                // duplicate key go by for the new class than the old
-                // one since the new one is probably still in the
-                // initialization stage.  In either case, the probability
-                // of loading 2 classes in the same VM with the same name
-                // and identityHashCode should be nearly impossible.
-            }
-            // Note: Use a weak reference to avoid holding on to extra
-            // objects and classes after they should be unloaded.
-            identitymap.put(identity, new WeakReference(k));
-        }
-
-        private int privatekey;
-
-        /**
-         * Construct a key using the indicated private key.  Each
-         * subclass of Key maintains its own unique domain of integer
-         * keys.  No two objects with the same integer key and of the
-         * same specific subclass can be constructed.  An exception
-         * will be thrown if an attempt is made to construct another
-         * object of a given class with the same integer key as a
-         * pre-existing instance of that subclass of Key.
-         * @param privatekey the specified key
-         */
-        protected Key(int privatekey) {
-            this.privatekey = privatekey;
-            recordIdentity(this);
-        }
-
-        /**
-         * Returns true if the specified object is a valid value
-         * for this Key.
-         * @param val the <code>Object</code> to test for validity
-         * @return <code>true</code> if <code>val</code> is valid;
-         *         <code>false</code> otherwise.
-         */
-        public abstract boolean isCompatibleValue(Object val);
-
-        /**
-         * Returns the private integer key that the subclass
-         * instantiated this Key with.
-         * @return the private integer key that the subclass
-         * instantiated this Key with.
-         */
-        protected final int intKey() {
-            return privatekey;
-        }
-
-        /**
-         * The hash code for all Key objects will be the same as the
-         * system identity code of the object as defined by the
-         * System.identityHashCode() method.
-         */
-        public final int hashCode() {
-            return super.hashCode();
-        }
-
-        /**
-         * The equals method for all Key objects will return the same
-         * result as the equality operator '=='.
-         */
-        public final boolean equals(Object o) {
-            return this == o;
-        }
-    }
-
     HashMap hintmap = new HashMap(7);
 
     /**
@@ -215,7 +101,7 @@ public class RenderingHints
      * <li>{@link #VALUE_ANTIALIAS_DEFAULT}
      * </ul>
      */
-    public static final Key KEY_ANTIALIASING =
+    public static final SunHints.Key KEY_ANTIALIASING =
         SunHints.KEY_ANTIALIASING;
 
     /**
@@ -256,7 +142,7 @@ public class RenderingHints
      * <li>{@link #VALUE_RENDER_DEFAULT}
      * </ul>
      */
-    public static final Key KEY_RENDERING =
+    public static final SunHints.Key KEY_RENDERING =
          SunHints.KEY_RENDERING;
 
     /**
@@ -307,7 +193,7 @@ public class RenderingHints
      * <li>{@link #VALUE_DITHER_DEFAULT}
      * </ul>
      */
-    public static final Key KEY_DITHERING =
+    public static final SunHints.Key KEY_DITHERING =
          SunHints.KEY_DITHERING;
 
     /**
@@ -360,7 +246,7 @@ public class RenderingHints
      * <li>{@link #VALUE_TEXT_ANTIALIAS_LCD_VBGR}
      * </ul>
      */
-    public static final Key KEY_TEXT_ANTIALIASING =
+    public static final SunHints.Key KEY_TEXT_ANTIALIASING =
          SunHints.KEY_TEXT_ANTIALIASING;
 
     /**
@@ -544,7 +430,7 @@ public class RenderingHints
      * @see #KEY_TEXT_ANTIALIASING
      * @since 1.6
      */
-    public static final Key KEY_TEXT_LCD_CONTRAST =
+    public static final SunHints.Key KEY_TEXT_LCD_CONTRAST =
         SunHints.KEY_TEXT_ANTIALIAS_LCD_CONTRAST;
 
     /**
@@ -632,7 +518,7 @@ public class RenderingHints
      * <li>{@link #VALUE_FRACTIONALMETRICS_DEFAULT}
      * </ul>
      */
-    public static final Key KEY_FRACTIONALMETRICS =
+    public static final SunHints.Key KEY_FRACTIONALMETRICS =
          SunHints.KEY_FRACTIONALMETRICS;
 
     /**
@@ -689,7 +575,7 @@ public class RenderingHints
      * <li>{@link #VALUE_INTERPOLATION_BICUBIC}
      * </ul>
      */
-    public static final Key KEY_INTERPOLATION =
+    public static final SunHints.Key KEY_INTERPOLATION =
          SunHints.KEY_INTERPOLATION;
 
     /**
@@ -781,7 +667,7 @@ public class RenderingHints
      * <li>{@link #VALUE_ALPHA_INTERPOLATION_DEFAULT}
      * </ul>
      */
-    public static final Key KEY_ALPHA_INTERPOLATION =
+    public static final SunHints.Key KEY_ALPHA_INTERPOLATION =
          SunHints.KEY_ALPHA_INTERPOLATION;
 
     /**
@@ -857,7 +743,7 @@ public class RenderingHints
      * <li>{@link #VALUE_COLOR_RENDER_DEFAULT}
      * </ul>
      */
-    public static final Key KEY_COLOR_RENDERING =
+    public static final SunHints.Key KEY_COLOR_RENDERING =
          SunHints.KEY_COLOR_RENDERING;
 
     /**
@@ -912,7 +798,7 @@ public class RenderingHints
      * </ul>
      * @since 1.3
      */
-    public static final Key KEY_STROKE_CONTROL =
+    public static final SunHints.Key KEY_STROKE_CONTROL =
         SunHints.KEY_STROKE_CONTROL;
 
     /**
@@ -959,7 +845,7 @@ public class RenderingHints
      * @param init a map of key/value pairs to initialize the hints
      *          or null if the object should be empty
      */
-    public RenderingHints(Map<Key,?> init) {
+    public RenderingHints(Map<SunHints.Key,?> init) {
         if (init != null) {
             hintmap.putAll(init);
         }
@@ -971,7 +857,7 @@ public class RenderingHints
      * @param value the value of the hint property specified with
      * <code>key</code>
      */
-    public RenderingHints(Key key, Object value) {
+    public RenderingHints(SunHints.Key key, Object value) {
         hintmap.put(key, value);
     }
 
@@ -1009,7 +895,7 @@ public class RenderingHints
      *            be cast to <code>RenderingHints.Key</code>
      */
     public boolean containsKey(Object key) {
-        return hintmap.containsKey((Key) key);
+        return hintmap.containsKey((SunHints.Key) key);
     }
 
     /**
@@ -1045,7 +931,7 @@ public class RenderingHints
      * @see     #put(Object, Object)
      */
     public Object get(Object key) {
-        return hintmap.get((Key) key);
+        return hintmap.get((SunHints.Key) key);
     }
 
     /**
@@ -1070,12 +956,12 @@ public class RenderingHints
      * @see     #get(Object)
      */
     public Object put(Object key, Object value) {
-        if (!((Key) key).isCompatibleValue(value)) {
+        if (!((SunHints.Key) key).isCompatibleValue(value)) {
             throw new IllegalArgumentException(value+
                                                " incompatible with "+
                                                key);
         }
-        return hintmap.put((Key) key, value);
+        return hintmap.put((SunHints.Key) key, value);
     }
 
     /**
@@ -1111,7 +997,7 @@ public class RenderingHints
      *          if the key did not have a mapping.
      */
     public Object remove(Object key) {
-        return hintmap.remove((Key) key);
+        return hintmap.remove((SunHints.Key) key);
     }
 
     /**

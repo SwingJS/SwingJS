@@ -16,11 +16,41 @@ if (!window["java.registered"])
 		  ClazzLoader.loadZJar(Jmol._coreFiles[i], ClazzLoader.runtimeKeyClass);
 	//}
 		
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjava/awt/geom/Point2D.js", [
+  "jsjava.awt.geom.Point2D", 
+  "jsjava.awt.geom.Point2D.Double", 
+  "jsjava.awt.geom.Point2D.Float"  
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jssun/awt/SunHints.js", [
+  "jssun.awt.SunHints", 
+  "jssun.awt.SunHints.Value", 
+  "jssun.awt.SunHints.Key", 
+  "jssun.awt.SunHints.LCDContrastKey",
+  "jssun.awt.SunHints.SunKey" 
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/text/AbstractDocument.js", [
+  "jsjavax.swing.text.AbstractDocument", 
+  "jsjavax.swing.text.AbstractDocument.UndoRedoDocumentEvent" 
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/Popup.js", [
+  "jsjavax.swing.Popup", 
+  "jsjavax.swing.Popup.DefaultFrame",
+  "jsjavax.swing.Popup.HeavyWeightWindow" 
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/text/LayeredHighlighter.js", [
+  "jsjavax.swing.text.LayeredHighlighter", 
+  "jsjavax.swing.text.LayeredHighlighter.LayerPainter" 
+	]);
+
+
   if (Jmol._debugCode)
     return;
 
 	var	base = ClazzLoader.getJ2SLibBase() + "core/";
-
 
 // note - we don't need to list ALL the classes -- only the ones that are entry points.
 // several more classe are in each of these files -- see build_03_tojs.xml

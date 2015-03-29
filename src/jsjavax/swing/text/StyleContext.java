@@ -24,16 +24,17 @@
  */
 package jsjavax.swing.text;
 
-import java.lang.ref.WeakReference;
+//import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Vector;
-import java.util.WeakHashMap;
+//import java.util.WeakHashMap;
 
 import jsjava.awt.Color;
 import jsjava.awt.Font;
@@ -523,15 +524,16 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
     AttributeSet getImmutableUniqueSet() {
         // PENDING(prinz) should consider finding a alternative to
         // generating extra garbage on search key.
-        SmallAttributeSet key = createSmallAttributeSet(search);
-        WeakReference reference = (WeakReference)attributesPool.get(key);
-        SmallAttributeSet a;
-        if (reference == null
-            || (a = (SmallAttributeSet)reference.get()) == null) {
-            a = key;
-            attributesPool.put(a, new WeakReference(a));
-        }
-        return a;
+//        SmallAttributeSet key = createSmallAttributeSet(search);
+//        WeakReference reference = (WeakReference)attributesPool.get(key);
+//        SmallAttributeSet a;
+//        if (reference == null
+//            || (a = (SmallAttributeSet)reference.get()) == null) {
+//            a = key;
+//            attributesPool.put(a, new WeakReference(a));
+//        }
+//        return a;
+    	return null;
     }
 
     /**
@@ -746,7 +748,7 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
     private transient Hashtable fontTable = new Hashtable();
 
     private transient Map attributesPool = Collections.
-        synchronizedMap(new WeakHashMap());
+        synchronizedMap(new HashMap()); // was WeakHashMap
     private transient MutableAttributeSet search = new SimpleAttributeSet();
 
     /**

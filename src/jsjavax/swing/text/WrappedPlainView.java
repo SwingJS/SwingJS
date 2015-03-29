@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.text;
 
-import java.lang.ref.SoftReference;
+//import java.lang.ref.SoftReference;
 
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -808,17 +808,17 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          * If there's no cache, returns null
          */
         final int[] getLineEnds() {
-            if (lineCache == null) {
+//            if (lineCache == null) {
                 return null;
-            } else {
-                int[] lineEnds = lineCache.get();
-                if (lineEnds == null) {
-                    // Cache was GC'ed, so rebuild it
-                    return breakLines(getStartOffset());
-                } else {
-                    return lineEnds;
-                }
-            }
+//            } else {
+//                int[] lineEnds = lineCache.get();
+//                if (lineEnds == null) {
+//                    // Cache was GC'ed, so rebuild it
+//                    return breakLines(getStartOffset());
+//                } else {
+//                    return lineEnds;
+//                }
+//            }
         }
 
         /**
@@ -828,58 +828,58 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          */
         @SuppressWarnings("null")
         final int[] breakLines(int startPos) {
-            int[] lineEnds = (lineCache == null) ? null : lineCache.get();
-            int[] oldLineEnds = lineEnds;
-            int start = getStartOffset();
-            int lineIndex = 0;
-            if (lineEnds != null) {
-                lineIndex = findLine(startPos - start);
-                if (lineIndex > 0) {
-                    lineIndex--;
-                }
-            }
-
-            int p0 = (lineIndex == 0) ? start : start + lineEnds[lineIndex - 1];
-            int p1 = getEndOffset();
-            while (p0 < p1) {
-                int p = calculateBreakPosition(p0, p1);
-                p0 = (p == p0) ? ++p : p;      // 4410243
-
-                if (lineIndex == 0 && p0 >= p1) {
-                    // do not use cache if there's only one line
-                    lineCache = null;
-                    lineEnds = null;
-                    lineIndex = 1;
-                    break;
-                } else if (lineEnds == null || lineIndex >= lineEnds.length) {
-                    // we have 2+ lines, and the cache is not big enough
-                    // we try to estimate total number of lines
-                    double growFactor = ((double)(p1 - start) / (p0 - start));
-                    int newSize = (int)Math.ceil((lineIndex + 1) * growFactor);
-                    newSize = Math.max(newSize, lineIndex + 2);
-                    int[] tmp = new int[newSize];
-                    if (lineEnds != null) {
-                        System.arraycopy(lineEnds, 0, tmp, 0, lineIndex);
-                    }
-                    lineEnds = tmp;
-                }
-                lineEnds[lineIndex++] = p0 - start;
-            }
-
-            lineCount = lineIndex;
-            if (lineCount > 1) {
-                // check if the cache is too big
-                int maxCapacity = lineCount + lineCount / 3;
-                if (lineEnds.length > maxCapacity) {
-                    int[] tmp = new int[maxCapacity];
-                    System.arraycopy(lineEnds, 0, tmp, 0, lineCount);
-                    lineEnds = tmp;
-                }
-            }
-
-            if (lineEnds != null && lineEnds != oldLineEnds) {
-                lineCache = new SoftReference<int[]>(lineEnds);
-            }
+            int[] lineEnds = null;//(lineCache == null) ? null : lineCache.get();
+//            int[] oldLineEnds = lineEnds;
+//            int start = getStartOffset();
+//            int lineIndex = 0;
+//            if (lineEnds != null) {
+//                lineIndex = findLine(startPos - start);
+//                if (lineIndex > 0) {
+//                    lineIndex--;
+//                }
+//            }
+//
+//            int p0 = (lineIndex == 0) ? start : start + lineEnds[lineIndex - 1];
+//            int p1 = getEndOffset();
+//            while (p0 < p1) {
+//                int p = calculateBreakPosition(p0, p1);
+//                p0 = (p == p0) ? ++p : p;      // 4410243
+//
+//                if (lineIndex == 0 && p0 >= p1) {
+//                    // do not use cache if there's only one line
+//                    //lineCache = null;
+//                    lineEnds = null;
+//                    lineIndex = 1;
+//                    break;
+//                } else if (lineEnds == null || lineIndex >= lineEnds.length) {
+//                    // we have 2+ lines, and the cache is not big enough
+//                    // we try to estimate total number of lines
+//                    double growFactor = ((double)(p1 - start) / (p0 - start));
+//                    int newSize = (int)Math.ceil((lineIndex + 1) * growFactor);
+//                    newSize = Math.max(newSize, lineIndex + 2);
+//                    int[] tmp = new int[newSize];
+//                    if (lineEnds != null) {
+//                        System.arraycopy(lineEnds, 0, tmp, 0, lineIndex);
+//                    }
+//                    lineEnds = tmp;
+//                }
+//                lineEnds[lineIndex++] = p0 - start;
+//            }
+//
+//            lineCount = lineIndex;
+//            if (lineCount > 1) {
+//                // check if the cache is too big
+//                int maxCapacity = lineCount + lineCount / 3;
+//                if (lineEnds.length > maxCapacity) {
+//                    int[] tmp = new int[maxCapacity];
+//                    System.arraycopy(lineEnds, 0, tmp, 0, lineCount);
+//                    lineEnds = tmp;
+//                }
+//            }
+//
+//            if (lineEnds != null && lineEnds != oldLineEnds) {
+//                //lineCache = new SoftReference<int[]>(lineEnds);
+//            }
             return lineEnds;
         }
 
@@ -889,14 +889,15 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          * assumes that cache exists.
          */
         private int findLine(int offset) {
-            int[] lineEnds = lineCache.get();
-            if (offset < lineEnds[0]) {
-                return 0;
-            } else if (offset > lineEnds[lineCount - 1]) {
-                return lineCount;
-            } else {
-                return findLine(lineEnds, offset, 0, lineCount - 1);
-            }
+        	return  0;
+//            int[] lineEnds = lineCache.get();
+//            if (offset < lineEnds[0]) {
+//                return 0;
+//            } else if (offset > lineEnds[lineCount - 1]) {
+//                return lineCount;
+//            } else {
+//                return findLine(lineEnds, offset, 0, lineCount - 1);
+//            }
         }
 
         private int findLine(int[] array, int offset, int min, int max) {
@@ -911,6 +912,6 @@ public class WrappedPlainView extends BoxView implements TabExpander {
         }
 
         int lineCount;
-        SoftReference<int[]> lineCache = null;
+//        SoftReference<int[]> lineCache = null;
     }
 }
