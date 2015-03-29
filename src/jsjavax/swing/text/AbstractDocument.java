@@ -196,7 +196,7 @@ public abstract class AbstractDocument implements Document {
      * @see EventListenerList
      */
     protected void fireInsertUpdate(DocumentEvent e) {
-        notifyingListeners = true;
+//        notifyingListeners = true;
         try {
             // Guaranteed to return a non-null array
             Object[] listeners = listenerList.getListenerList();
@@ -211,7 +211,7 @@ public abstract class AbstractDocument implements Document {
                 }
             }
         } finally {
-            notifyingListeners = false;
+//            notifyingListeners = false;
         }
     }
 
@@ -225,7 +225,7 @@ public abstract class AbstractDocument implements Document {
      * @see EventListenerList
      */
     protected void fireChangedUpdate(DocumentEvent e) {
-        notifyingListeners = true;
+//        notifyingListeners = true;
         try {
             // Guaranteed to return a non-null array
             Object[] listeners = listenerList.getListenerList();
@@ -240,7 +240,7 @@ public abstract class AbstractDocument implements Document {
                 }
             }
         } finally {
-            notifyingListeners = false;
+//            notifyingListeners = false;
         }
     }
 
@@ -254,7 +254,7 @@ public abstract class AbstractDocument implements Document {
      * @see EventListenerList
      */
     protected void fireRemoveUpdate(DocumentEvent e) {
-        notifyingListeners = true;
+//        notifyingListeners = true;
         try {
             // Guaranteed to return a non-null array
             Object[] listeners = listenerList.getListenerList();
@@ -269,7 +269,7 @@ public abstract class AbstractDocument implements Document {
                 }
             }
         } finally {
-            notifyingListeners = false;
+//            notifyingListeners = false;
         }
     }
 
@@ -1298,19 +1298,19 @@ public abstract class AbstractDocument implements Document {
 
     // --- Document locking ----------------------------------
 
-    /**
-     * Fetches the current writing thread if there is one.
-     * This can be used to distinguish whether a method is
-     * being called as part of an existing modification or
-     * if a lock needs to be acquired and a new transaction
-     * started.
-     *
-     * @return the thread actively modifying the document
-     *  or <code>null</code> if there are no modifications in progress
-     */
-    protected synchronized final Thread getCurrentWriter() {
-        return currWriter;
-    }
+//    /**
+//     * Fetches the current writing thread if there is one.
+//     * This can be used to distinguish whether a method is
+//     * being called as part of an existing modification or
+//     * if a lock needs to be acquired and a new transaction
+//     * started.
+//     *
+//     * @return the thread actively modifying the document
+//     *  or <code>null</code> if there are no modifications in progress
+//     */
+//    protected synchronized final Thread getCurrentWriter() {
+//        return currWriter;
+//    }
 
     /**
      * Acquires a lock to begin mutating the document this lock
@@ -1338,26 +1338,26 @@ public abstract class AbstractDocument implements Document {
      *  should be notified before further mutations are allowed.
      */
     protected synchronized final void writeLock() {
-        try {
-            while ((numReaders > 0) || (currWriter != null)) {
-                if (Thread.currentThread() == currWriter) {
-                    if (notifyingListeners) {
-                        // Assuming one doesn't do something wrong in a
-                        // subclass this should only happen if a
-                        // DocumentListener tries to mutate the document.
-                        throw new IllegalStateException(
-                                      "Attempt to mutate in notification");
-                    }
-                    numWriters++;
-                    return;
-                }
-                wait();
-            }
-            currWriter = Thread.currentThread();
-            numWriters = 1;
-        } catch (InterruptedException e) {
-            throw new Error("Interrupted attempt to aquire write lock");
-        }
+//        try {
+//            while ((numReaders > 0) || (currWriter != null)) {
+//                if (Thread.currentThread() == currWriter) {
+//                    if (notifyingListeners) {
+//                        // Assuming one doesn't do something wrong in a
+//                        // subclass this should only happen if a
+//                        // DocumentListener tries to mutate the document.
+//                        throw new IllegalStateException(
+//                                      "Attempt to mutate in notification");
+//                    }
+//                    numWriters++;
+//                    return;
+//                }
+//                wait();
+//            }
+//            currWriter = Thread.currentThread();
+//            numWriters = 1;
+//        } catch (InterruptedException e) {
+//            throw new Error("Interrupted attempt to aquire write lock");
+//        }
     }
 
     /**
@@ -1368,11 +1368,11 @@ public abstract class AbstractDocument implements Document {
      * @see #writeLock
      */
     protected synchronized final void writeUnlock() {
-        if (--numWriters <= 0) {
-            numWriters = 0;
-            currWriter = null;
-          //SwingJS CANNOT DO THIS                notifyAll();
-        }
+//        if (--numWriters <= 0) {
+//            numWriters = 0;
+//            currWriter = null;
+//          //SwingJS CANNOT DO THIS                notifyAll();
+//        }
     }
 
     /**
@@ -1387,19 +1387,19 @@ public abstract class AbstractDocument implements Document {
      * @see #readUnlock
      */
     public synchronized final void readLock() {
-        try {
-            while (currWriter != null) {
-                if (currWriter == Thread.currentThread()) {
-                    // writer has full read access.... may try to acquire
-                    // lock in notification
-                    return;
-                }
-                wait();
-            }
-            numReaders += 1;
-        } catch (InterruptedException e) {
-            throw new Error("Interrupted attempt to aquire read lock");
-        }
+//        try {
+//            while (currWriter != null) {
+//                if (currWriter == Thread.currentThread()) {
+//                    // writer has full read access.... may try to acquire
+//                    // lock in notification
+//                    return;
+//                }
+//                wait();
+//            }
+//            numReaders += 1;
+//        } catch (InterruptedException e) {
+//            throw new Error("Interrupted attempt to aquire read lock");
+//        }
     }
 
     /**
@@ -1421,16 +1421,16 @@ public abstract class AbstractDocument implements Document {
      * @see #readLock
      */
     public synchronized final void readUnlock() {
-        if (currWriter == Thread.currentThread()) {
-            // writer has full read access.... may try to acquire
-            // lock in notification
-            return;
-        }
-        if (numReaders <= 0) {
-            throw new StateInvariantError(BAD_LOCK_STATE);
-        }
-        numReaders -= 1;
-        notify();
+//        if (currWriter == Thread.currentThread()) {
+//            // writer has full read access.... may try to acquire
+//            // lock in notification
+//            return;
+//        }
+//        if (numReaders <= 0) {
+//            throw new StateInvariantError(BAD_LOCK_STATE);
+//        }
+//        numReaders -= 1;
+//        notify();
     }
 
 //    // --- serialization ---------------------------------------------
@@ -1475,16 +1475,16 @@ public abstract class AbstractDocument implements Document {
 
     // ----- member variables ------------------------------------------
 
-    private transient int numReaders;
-    private transient Thread currWriter;
-    /**
-     * The number of writers, all obtained from <code>currWriter</code>.
-     */
-    private transient int numWriters;
-    /**
-     * True will notifying listeners.
-     */
-    private transient boolean notifyingListeners;
+//    private transient int numReaders;
+//    private transient Thread currWriter;
+//    /**
+//     * The number of writers, all obtained from <code>currWriter</code>.
+//     */
+//    private transient int numWriters;
+//    /**
+//     * True will notifying listeners.
+//     */
+//    private transient boolean notifyingListeners;
 
     private static Boolean defaultI18NProperty;
 
@@ -1528,7 +1528,7 @@ public abstract class AbstractDocument implements Document {
      */
     private transient DocumentFilter.FilterBypass filterBypass;
 
-    private static final String BAD_LOCK_STATE = "document lock failure";
+//    private static final String BAD_LOCK_STATE = "document lock failure";
 
     /**
      * Error message to indicate a bad location.
@@ -2056,10 +2056,10 @@ public abstract class AbstractDocument implements Document {
         }
 
         private final void checkForIllegalCast() {
-            Thread t = getCurrentWriter();
-            if ((t == null) || (t != Thread.currentThread())) {
-                throw new StateInvariantError("Illegal cast to MutableAttributeSet");
-            }
+//            Thread t = getCurrentWriter();
+//            if ((t == null) || (t != Thread.currentThread())) {
+//                throw new StateInvariantError("Illegal cast to MutableAttributeSet");
+//            }
         }
 
         // --- Element methods -------------------------------------
@@ -2958,12 +2958,12 @@ public abstract class AbstractDocument implements Document {
      */
     class UndoRedoDocumentEvent implements DocumentEvent {
         private DefaultDocumentEvent src = null;
-        private boolean isUndo;
+//        private boolean isUndo;
         private EventType type = null;
 
         public UndoRedoDocumentEvent(DefaultDocumentEvent src, boolean isUndo) {
             this.src = src;
-            this.isUndo = isUndo;
+//            this.isUndo = isUndo;
             if(isUndo) {
                 if(src.getType().equals(EventType.INSERT)) {
                     type = EventType.REMOVE;

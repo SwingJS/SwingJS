@@ -43,6 +43,7 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import jsjava.lang.Thread;
 
 public final class AttributeMap extends AbstractMap<TextAttribute, Object> {
     private AttributeValues values;

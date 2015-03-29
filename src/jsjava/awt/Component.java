@@ -58,6 +58,8 @@ import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
 
@@ -150,6 +152,14 @@ import jssun.awt.SunToolkit;
 public abstract class Component implements ImageObserver/*, MenuContainer,
                                            Serializable*/
 {
+
+	/**
+	 * used by SwingJS
+	 * 
+	 */
+	public ThreadGroup threadGroup;
+	public Thread myThread;
+
 
 //  /**
 //   * The peer of the component. The peer implements the component's

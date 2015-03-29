@@ -51,6 +51,7 @@ import jsjavax.swing.plaf.UIResource;
 import jssun.awt.AppContext;
 import jssun.swing.SwingUtilities2;
 import jssun.swing.UIAction;
+import jsjava.lang.Thread;
 
 /**
  * A collection of utility methods for Swing.

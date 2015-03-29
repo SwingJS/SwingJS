@@ -24,14 +24,14 @@
  */
 package jsjavax.swing;
 
+import javax.swing.event.EventListenerList;
+
 import jsjava.awt.Component;
-import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
 import jsjava.awt.Insets;
 import jsjava.awt.ItemSelectable;
 import jsjava.awt.LayoutManager;
-import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.ActionListener;
 import jsjava.awt.event.ItemEvent;
@@ -364,16 +364,16 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @param pressTime the time to "hold down" the button, in milliseconds
      */
     public void doClick(int pressTime) {
-        Dimension size = getSize();
-        model.setArmed(true);
-        model.setPressed(true);
-        paintImmediately(new Rectangle(0,0, size.width, size.height));
-        try {
-            Thread.sleep(pressTime);
-        } catch(InterruptedException ie) {
-        }
-        model.setPressed(false);
-        model.setArmed(false);
+//SwingJS        Dimension size = getSize();
+//        model.setArmed(true);
+//        model.setPressed(true);
+//        paintImmediately(new Rectangle(0,0, size.width, size.height));
+//        try {
+//            Thread.sleep(pressTime);
+//        } catch(InterruptedException ie) {
+//        }
+//        model.setPressed(false);
+//        model.setArmed(false);
     }
 
     /**
@@ -2319,7 +2319,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         // ChangeListener
         //
         public void stateChanged(ChangeEvent e) {
-            Object source = e.getSource();
+            //Object source = e.getSource();
 
             updateMnemonicProperties();
             if (isEnabled() != model.isEnabled()) {

@@ -42,6 +42,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.api.Interface;
+
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
@@ -67,6 +69,8 @@ import jsjavax.swing.text.StyledEditorKit;
 import jsjavax.swing.text.View;
 import jsjavax.swing.text.ViewFactory;
 import jsjavax.swing.text.WrappedPlainView;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 /**
  * A text component to edit various kinds of content.
@@ -1276,18 +1280,19 @@ public class JEditorPane extends JTextComponent {
         if (k == null) {
             // try to dynamically load the support
             String classname = (String) getKitTypeRegistry().get(type);
-            ClassLoader loader = (ClassLoader) getKitLoaderRegistry().get(type);
+//            ClassLoader loader = (ClassLoader) getKitLoaderRegistry().get(type);
             try {
-                Class c;
-                if (loader != null) {
-                    c = loader.loadClass(classname);
-                } else {
-                    // Will only happen if developer has invoked
-                    // registerEditorKitForContentType(type, class, null).
-                    c = Class.forName(classname, true, Thread.currentThread().
-                                      getContextClassLoader());
-                }
-                k = (EditorKit) c.newInstance();
+              k = (EditorKit) Interface.getInterface(classname);
+//                Class c;
+//                if (loader != null) {
+//                    c = loader.loadClass(classname);
+//                } else {
+//                    // Will only happen if developer has invoked
+//                    // registerEditorKitForContentType(type, class, null).
+//                    c = Class.forName(classname, true, Thread.currentThread().
+//                                      getContextClassLoader());
+//                }
+//                k = (EditorKit) c.newInstance();
                 kitRegistry.put(type, k);
             } catch (Throwable e) {
                 k = null;
@@ -1315,8 +1320,9 @@ public class JEditorPane extends JTextComponent {
      * @param classname the class to load later
      */
     public static void registerEditorKitForContentType(String type, String classname) {
-        registerEditorKitForContentType(type, classname,Thread.currentThread().
-                                        getContextClassLoader());
+        registerEditorKitForContentType(type, classname, null
+        		//Thread.currentThread().getContextClassLoader()
+        );
     }
 
     /**
@@ -1333,7 +1339,7 @@ public class JEditorPane extends JTextComponent {
      */
     public static void registerEditorKitForContentType(String type, String classname, ClassLoader loader) {
         getKitTypeRegistry().put(type, classname);
-        getKitLoaderRegistry().put(type, loader);
+        //getKitLoaderRegistry().put(type, loader);
         getKitRegisty().remove(type);
     }
 
@@ -1354,11 +1360,11 @@ public class JEditorPane extends JTextComponent {
         return (Hashtable)SwingUtilities.appContextGet(kitTypeRegistryKey);
     }
 
-    private static Hashtable getKitLoaderRegistry() {
-        loadDefaultKitsIfNecessary();
-        return (Hashtable)SwingUtilities.appContextGet(kitLoaderRegistryKey);
-    }
-
+//    private static Hashtable getKitLoaderRegistry() {
+//        loadDefaultKitsIfNecessary();
+//        return (Hashtable)SwingUtilities.appContextGet(kitLoaderRegistryKey);
+//    }
+//
     private static Hashtable getKitRegisty() {
         Hashtable ht = (Hashtable)SwingUtilities.appContextGet(kitRegistryKey);
         if (ht == null) {

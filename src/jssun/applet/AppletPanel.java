@@ -25,6 +25,7 @@
 
 package jssun.applet;
 
+import jsjava.lang.Thread;
 //import java.awt.KeyboardFocusManager;
 //import java.io.File;
 //import java.io.FilePermission;
@@ -127,11 +128,11 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 	 */
 	protected int status;
 
-	// /**
-	// * The thread for the applet.
-	// */
-	// Thread handler;
-	//
+	 /**
+	 * The thread for the applet.
+	 */
+	 Thread handler;
+	
 
 	/**
 	 * The initial applet size.

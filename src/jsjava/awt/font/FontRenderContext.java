@@ -29,12 +29,12 @@
 
 package jsjava.awt.font;
 
-import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_DEFAULT;
-import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_OFF;
-import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_ON;
-import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
-import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_OFF;
-import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_ON;
+import static jsjava.awt.RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT;
+import static jsjava.awt.RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
+import static jsjava.awt.RenderingHints.VALUE_FRACTIONALMETRICS_ON;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;
+import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 import jsjava.awt.geom.AffineTransform;
 
 /**

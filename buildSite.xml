@@ -54,7 +54,12 @@
       </fileset>
     </copy>
    	
-   	<echo>...adding jQuery and minimizing it</echo>
+	
+   	<echo>Fixing J2S compiler errors</echo>
+  	<!-- no idea what this problem could be -->
+  	<replace dir="site/swingjs/j2s/jsjava/lang" includes="Thread.js" token="(g.Thread" value="(jsjava.lang.Thread" />
+
+  	<echo>...adding jQuery and minimizing it</echo>
   	<copy todir="site/swingjs/jquery">
   	  <fileset dir="lib/jquery">
   	    <include name="**/*" />
@@ -160,8 +165,5 @@
    		<arg line="--js site/swingjs/js/SwingJS.${call-min.fullname}.js --js_output_file site/swingjs/SwingJS.${call-min.minname}.js" />
     </java>
   </target>
-	
-
-	
 	
 </project>

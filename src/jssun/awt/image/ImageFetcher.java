@@ -27,6 +27,8 @@ package jssun.awt.image;
 
 import java.util.Vector;
 import jssun.awt.AppContext;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 /**
   * An ImageFetcher is a thread used to fetch ImageFetchable objects.

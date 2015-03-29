@@ -25,6 +25,7 @@
 
 package jsjava.awt;
 
+import jsjava.awt.RenderingHints.Key;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.BufferedImage;
@@ -33,8 +34,6 @@ import jsjava.awt.image.RenderedImage;
 import jsjava.awt.image.renderable.RenderableImage;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.text.AttributedCharacterIterator;
-import jssun.awt.SunHints;
-import jssun.awt.SunHints.Key;
 
 import java.util.Map;
 
@@ -894,7 +893,7 @@ public abstract class Graphics2D extends Graphics {
      * @see #getRenderingHint(RenderingHints.Key)
      * @see RenderingHints
      */
-    public abstract void setRenderingHint(SunHints.Key hintKey, Object hintValue);
+    public abstract void setRenderingHint(Key hintKey, Object hintValue);
 
     /**
      * Returns the value of a single preference for the rendering algorithms.
@@ -909,7 +908,7 @@ public abstract class Graphics2D extends Graphics {
      * @see RenderingHints
      * @see #setRenderingHint(RenderingHints.Key, Object)
      */
-    public abstract Object getRenderingHint(SunHints.Key hintKey);
+    public abstract Object getRenderingHint(RenderingHints.Key hintKey);
 
     /**
      * Replaces the values of all preferences for the rendering

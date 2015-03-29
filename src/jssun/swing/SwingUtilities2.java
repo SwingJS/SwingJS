@@ -25,10 +25,10 @@
 
 package jssun.swing;
 
-import static jssun.awt.SunHints.KEY_TEXT_ANTIALIASING;
-//import static jssun.awt.SunHints.VALUE_FRACTIONALMETRICS_DEFAULT;
-//import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
-//import static jssun.awt.SunHints.VALUE_TEXT_ANTIALIAS_OFF;
+import static jsjava.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
+//import static jsjava.awt.RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;
 
 //import java.io.BufferedInputStream;
 //import java.io.ByteArrayOutputStream;

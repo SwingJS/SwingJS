@@ -25,6 +25,8 @@
 
 package jssun.awt;
 
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 //import jsjava.awt.EventQueue;
 import jsjava.security.AccessController;
 import jsjava.security.PrivilegedAction;
@@ -37,6 +39,8 @@ import java.util.HashSet;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 //import java.util.concurrent.atomic.AtomicInteger;
+import jsjava.lang.Thread; // OH YES IT IS!
+import jsjava.lang.ThreadGroup; // OH YES IT IS!
 
 /**
  * The AppContext is a table referenced by ThreadGroup which stores
@@ -186,10 +190,10 @@ public final class AppContext {
      */
     private static int numAppContexts = 0;
 
-    /*
-     * The context ClassLoader that was used to create this AppContext.
-     */
-    private final ClassLoader contextClassLoader;
+//    /*
+//     * The context ClassLoader that was used to create this AppContext.
+//     */
+//    private final ClassLoader contextClassLoader;
 
     /**
      * Constructor for AppContext.  This method is <i>not</i> public,
@@ -210,12 +214,12 @@ public final class AppContext {
         this.threadGroup = threadGroup;
         threadGroup2appContext.put(threadGroup, this);
 
-        this.contextClassLoader =
-            (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        return Thread.currentThread().getContextClassLoader();
-                    }
-                });
+//        this.contextClassLoader =
+//            (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+//                    public Object run() {
+//                        return Thread.currentThread().getContextClassLoader();
+//                    }
+//                });
     }
 
     private static MostRecentThreadAppContext mostRecentThreadAppContext = null;
@@ -249,7 +253,7 @@ public final class AppContext {
      * context.
      *
      * @return  the AppContext for the caller.
-     * @see     java.lang.ThreadGroup
+     * @see     jsjava.lang.ThreadGroup
      * @since   1.2
      */
     @SuppressWarnings("unchecked")
@@ -307,18 +311,18 @@ public final class AppContext {
                 if (threadGroup == null) {
                     // We've got up to the root thread group and did not find an AppContext
                     // Try to get it from the security manager
-                    SecurityManager securityManager = System.getSecurityManager();
-                    if (securityManager != null) {
-                        ThreadGroup smThreadGroup = securityManager.getThreadGroup();
-                        if (smThreadGroup != null) {
-                            /*
-                             * If we get this far then it's likely that
-                             * the ThreadGroup does not actually belong
-                             * to the applet, so do not cache it.
-                             */
-                            return threadGroup2appContext.get(smThreadGroup);
-                        }
-                    }
+//                    SecurityManager securityManager = System.getSecurityManager();
+//                    if (securityManager != null) {
+//                        ThreadGroup smThreadGroup = securityManager.getThreadGroup();
+//                        if (smThreadGroup != null) {
+//                            /*
+//                             * If we get this far then it's likely that
+//                             * the ThreadGroup does not actually belong
+//                             * to the applet, so do not cache it.
+//                             */
+//                            return threadGroup2appContext.get(smThreadGroup);
+//                        }
+//                    }
                     return null;
                 }
                 context = threadGroup2appContext.get(threadGroup);
@@ -556,7 +560,7 @@ public final class AppContext {
 
         public Object run() {
             Thread t = new Thread(appContext.getThreadGroup(), runnable);
-            t.setContextClassLoader(appContext.getContextClassLoader());
+            //t.setContextClassLoader(appContext.getContextClassLoader());
             t.setPriority(Thread.NORM_PRIORITY + 1);
             t.setDaemon(true);
             return t;
@@ -681,15 +685,15 @@ public final class AppContext {
         return threadGroup;
     }
 
-    /**
-     * Returns the context ClassLoader that was used to create this
-     * AppContext.
-     *
-     * @see java.lang.Thread#getContextClassLoader
-     */
-    public ClassLoader getContextClassLoader() {
-        return contextClassLoader;
-    }
+//    /**
+//     * Returns the context ClassLoader that was used to create this
+//     * AppContext.
+//     *
+//     * @see jsjava.lang.Thread#getContextClassLoader
+//     */
+//    public ClassLoader getContextClassLoader() {
+//        return contextClassLoader;
+//    }
 
     /**
      * Returns a string representation of this AppContext.

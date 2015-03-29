@@ -68,6 +68,8 @@ import jssun.font.FontDesignMetrics;
 //import jsjava.awt.Graphics2D;
 //import jsjava.awt.GraphicsEnvironment;
 //import jsjava.awt.image.BufferedImage;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 public abstract class SunToolkit extends Toolkit
     implements WindowClosingSupport, WindowClosingListener,

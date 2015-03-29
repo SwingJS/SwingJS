@@ -15,7 +15,8 @@ import jssun.applet.AppletPanel;
 //import org.jmol.api.Interface;
 //import org.jmol.util.Logger;
 //import org.jmol.viewer.Viewer.ACCESS;
-
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 /**
  * SwingJS class to start an applet. 
@@ -23,10 +24,9 @@ import jssun.applet.AppletPanel;
  * For now we use the following, but this will be different once we compress
  * 
  * Clazz.loadClass("swingjs.JSAppletPanel");
- * var appletPanel = new JSAppletPanel();
- * appletPanel.set(viewerOptions);
+ * this._applet = new JSAppletPanel(viewerOptions);
  * 
- * where viewerOptions holds critical information needed by this applet
+ * where viewerOptions holds critical information needed to create this applet
  * 
  * 
  * @author Bob Hanson 
@@ -36,9 +36,10 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 
 	private Hashtable params;
 	/*
-	 * the actual applet
+	 * the JavaScript SwingJS._Applet object
 	 */
 	public Object html5Applet;
+	
 	public String fullName;
 	public String appletCodeBase;
 	public String appletIdiomaBase;
@@ -53,7 +54,6 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 	public Object strJavaVendor;
 	public Object display;
 	public GenericPlatform apiPlatform;
-	private ThreadGroup threadGroup;
 
   private void setMaximumSize(int x) {
     maximumSize = Math.max(x, 100);
@@ -62,20 +62,24 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 	public JSAppletPanel(Hashtable params) {
 		System.out.println("JSAppletPanel initialized");
 		set(params);
+		// This will allow us to get an applet from any component while running.
+		// The trick will be that when we fire events, we make sure to set the
+		// "currentThread" to the one appropriate for this applet. That is,  
+		// 
+		// Might work! -- BH
+		
+		threadGroup = new ThreadGroup(appletName);
+		myThread = new Thread(threadGroup, appletName);
 		/**
 		 * @j2sNative
 		 * 
+		 * this.threadGroup.setHtmlApplet(this.html5Applet);
+		 * Jmol._applets[this.appletName + "_thread"] = this.myThread;
 		 */
-		{
-			threadGroup = Thread.currentThread().getThreadGroup();
-		}
+		{}
+		
 	}
 
-	/**
-	 * called from Swingjs
-	 * 
-	 * @param params
-	 */
 	private void set(Hashtable params) {
 		this.params = params;
 		fullName = (String) params.get("fullName");
@@ -124,6 +128,12 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		appletStart();
 	}
 	
+	@Override
+	protected void setupAppletAppContext() {
+		// probably do something here
+		// do nothing
+	}
+
 	///// AppletStub /////
 	
 	
@@ -182,9 +192,8 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		 *  
 		 */
 		{
-			
+			return 0;
 		}
-		return 0;
 	}
 
 	@Override
@@ -196,9 +205,8 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		 *  
 		 */
 		{
-			
+			return 0;
 		}
-		return 0;
 	}
 
 	@Override

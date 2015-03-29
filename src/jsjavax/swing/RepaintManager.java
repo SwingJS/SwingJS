@@ -48,6 +48,8 @@ import jsjava.awt.image.VolatileImage;
 import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 /**
  * This class manages repaint requests, allowing the number of repaints to be
