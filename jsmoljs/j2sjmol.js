@@ -2702,6 +2702,19 @@ System = {
 
 System.setProperty("line.separator", navigator.userAgent.indexOf("Windows")>=0?"\r\n" : "\n") //BH
 System.setProperty("os.name", navigator.userAgent) //BH
+System.identityHashCode=function(obj){
+  if(obj==null)
+    return 0;
+  try{
+    return obj.toString().hashCode();
+  }catch(e){
+    var str=":";
+    for(var s in obj){
+     str+=s+":"
+    }
+    return str.hashCode();
+  }
+}
 
 System.out = new Clazz._O ();
 System.out.__CLASS_NAME__ = "java.io.PrintStream";

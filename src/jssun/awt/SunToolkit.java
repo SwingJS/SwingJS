@@ -125,8 +125,8 @@ public abstract class SunToolkit extends Toolkit
                 try {
                     eventQueue = (EventQueue)Class.forName(eqName).newInstance();
                 } catch (Exception e) {
-                    e.printStackTrace();
                     System.err.println("Failed loading " + eqName + ": " + e);
+                    e.printStackTrace();
                     eventQueue = new EventQueue();
                 }
                 AppContext appContext = AppContext.getAppContext();
@@ -143,6 +143,7 @@ public abstract class SunToolkit extends Toolkit
             try {
                 eqInitThread.join();
             } catch (InterruptedException e) {
+            	System.out.println("Suntoolkit error in threadgroup " + e);
                 e.printStackTrace();
             }
         } else {

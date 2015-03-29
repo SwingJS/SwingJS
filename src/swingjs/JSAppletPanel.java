@@ -53,6 +53,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 	public Object strJavaVendor;
 	public Object display;
 	public GenericPlatform apiPlatform;
+	private ThreadGroup threadGroup;
 
   private void setMaximumSize(int x) {
     maximumSize = Math.max(x, 100);
@@ -61,7 +62,13 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 	public JSAppletPanel(Hashtable params) {
 		System.out.println("JSAppletPanel initialized");
 		set(params);
-		//
+		/**
+		 * @j2sNative
+		 * 
+		 */
+		{
+			threadGroup = Thread.currentThread().getThreadGroup();
+		}
 	}
 
 	/**

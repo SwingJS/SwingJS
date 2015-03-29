@@ -1619,15 +1619,16 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
     }
 
     static {
-        // initialize the static key registry with the StyleConstants keys
-        try {
-            int n = StyleConstants.keys.length;
-            for (int i = 0; i < n; i++) {
-                StyleContext.registerStaticAttributeKey(StyleConstants.keys[i]);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+//SwingJS        // initialize the static key registry with the StyleConstants keys
+//        try {
+//            int n = StyleConstants.keys.length;
+//            for (int i = 0; i < n; i++) {
+//                StyleContext.registerStaticAttributeKey(StyleConstants.keys[i]);
+//            }
+//        } catch (Throwable e) {
+//        	System.out.println("error in StyleContext");
+//            e.printStackTrace();
+//        }
     }
 
 

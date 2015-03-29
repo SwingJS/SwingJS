@@ -24,6 +24,7 @@
  */
 package jsjavax.swing;
 
+import javajs.J2SRequireImport;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.SwingPropertyChangeSupport;
@@ -47,6 +48,7 @@ import jsjavax.swing.event.SwingPropertyChangeSupport;
  * @author Georges Saab
  * @see Action
  */
+@J2SRequireImport(ArrayTable.class)
 public abstract class AbstractAction implements Action, Cloneable
 {
     /**

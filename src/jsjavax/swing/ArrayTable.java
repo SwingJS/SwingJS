@@ -45,7 +45,6 @@ class ArrayTable implements Cloneable {
     private static final int ARRAY_BOUNDARY = 8;
 
     ArrayTable() {
-    	System.out.println("Hmm");
     }
 
 //    /**

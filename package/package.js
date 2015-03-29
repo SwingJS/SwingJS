@@ -46,6 +46,12 @@ ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/text/Laye
   "jsjavax.swing.text.LayeredHighlighter.LayerPainter" 
 	]);
 
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/JComponent.js", [
+  "jsjavax.swing.JComponent", 
+  "jsjavax.swing.JComponent.KeyboardState", 
+  "jsjavax.swing.JComponent.ActionStandin", 
+  "jsjavax.swing.JComponent.IntVector" 
+	]);
 
   if (Jmol._debugCode)
     return;

@@ -160,6 +160,9 @@
 		case "Astex":
 			this._isAstex = true;
 			this._platform = "astex.awtjs2d.Platform";
+      break;
+    default:
+      this._platform = "";
 		}
 		if (checkOnly)
 			return this;
@@ -325,6 +328,7 @@
 			// viewerOptions.put("repaintManager", "J.render");
 			viewerOptions.put("documentBase", document.location.href);
 			var codePath = applet._j2sPath + "/";
+      
 			if (codePath.indexOf("://") < 0) {
 				var base = document.location.href.split("#")[0].split("?")[0].split("/");
 				if (codePath.indexOf("/") == 0)
@@ -341,7 +345,9 @@
 				System.out.println((Jmol._isAsync ? "normal async abort from " : "") + e);
 				return;
 			}
-			applet._jsSetScreenDimensions();      
+      
+      alert("howhw")
+			applet._jsSetScreenDimensions();
 			__nextExecution();
 		};
 

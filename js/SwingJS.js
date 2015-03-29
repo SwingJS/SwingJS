@@ -140,7 +140,6 @@ self.SwingJS || (SwingJS = {});
 		this._is2D = true;
 		this._isJava = false;
 		this._jmolType = "SwingJS._Canvas2D (" + type + ")";
-    this._platform = "";
 		if (checkOnly)
 			return this;
 		window[id] = this;
@@ -234,14 +233,15 @@ self.SwingJS || (SwingJS = {});
 
 	proto._newApplet = function(viewerOptions) {
 		this._viewerOptions = viewerOptions;
-		return new J.appletjs.Jmol(viewerOptions);
+		return new swingjs.JSAppletPanel(viewerOptions);
 	}
 	
 	proto._addCoreFiles = function() {
 		Jmol._addCoreFile(this.__Info.code, this._j2sPath, this.__Info.preloadCore);
 		if (Jmol._debugCode) {
 		// no min package for that
-			Jmol._addExec([this, null, this.__Info.code, "load " + this.__Info.code]);
+			Jmol._addExec([this, null, "swingjs.JSAppletPanel", "load " + this.__Info.code]);
+      
 		}
   }
   
