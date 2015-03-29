@@ -352,7 +352,7 @@ class Thread implements Runnable {
      */
     private void init(ThreadGroup g, Runnable target, String name,
                       long stackSize, Object acc) { // was access controller
-        Thread parent = (thisThread == null ? null : currentThread());
+        Thread parent = (thisThread == null ? null : thisThread);
 //        SecurityManager security = System.getSecurityManager();
         if (g == null) {
             /* Determine if it's an applet or not */
@@ -372,7 +372,7 @@ class Thread implements Runnable {
         
         // SwingJS -- this can happen for the first thread
         if (g == null) {
-        	g = new ThreadGroup(name);
+        	g = new ThreadGroup(null, name);
         	parent = this; // ?? 
         }
         /* checkAccess regardless of whether or not threadgroup is

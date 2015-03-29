@@ -97,46 +97,46 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
         this(Thread.currentThread().getThreadGroup(), name);
     }
 
-    /**
-     * Creates a new thread group. The parent of this new group is the
-     * specified thread group.
-     * <p>
-     * The <code>checkAccess</code> method of the parent thread group is
-     * called with no arguments; this may result in a security exception.
-     *
-     * @param     parent   the parent thread group.
-     * @param     name     the name of the new thread group.
-     * @exception  NullPointerException  if the thread group argument is
-     *               <code>null</code>.
-     * @exception  SecurityException  if the current thread cannot create a
-     *               thread in the specified thread group.
-     * @see     java.lang.SecurityException
-     * @see     jsjava.lang.ThreadGroup#checkAccess()
-     * @since   JDK1.0
-     */
-    public ThreadGroup(ThreadGroup parent, String name) {
-        this(checkParentAccess(parent), parent, name);
-    }
+	/**
+	 * Creates a new thread group. The parent of this new group is the specified
+	 * thread group.
+	 * <p>
+	 * The <code>checkAccess</code> method of the parent thread group is called
+	 * with no arguments; this may result in a security exception.
+	 * 
+	 * @param parent
+	 *          the parent thread group.
+	 * @param name
+	 *          the name of the new thread group.
+	 * @exception NullPointerException
+	 *              if the thread group argument is <code>null</code>.
+	 * @exception SecurityException
+	 *              if the current thread cannot create a thread in the specified
+	 *              thread group.
+	 * @see java.lang.SecurityException
+	 * @see jsjava.lang.ThreadGroup#checkAccess()
+	 * @since JDK1.0
+	 */
+	public ThreadGroup(ThreadGroup parent, String name) {
+		this.name = name;
+		this.parent = parent;
+		if (parent != null) {
+			this.maxPriority = parent.maxPriority;
+			this.daemon = parent.daemon;
+			this.vmAllowSuspension = parent.vmAllowSuspension;
+			parent.add(this);
+		}
+	}
 
-    private ThreadGroup(Void unused, ThreadGroup parent, String name) {
-        this.name = name;
-        this.maxPriority = parent.maxPriority;
-        this.daemon = parent.daemon;
-        this.vmAllowSuspension = parent.vmAllowSuspension;
-        this.parent = parent;
-        if (parent != null)
-        	parent.add(this);
-    }
-
-    /*
-     * @throws  NullPointerException  if the parent argument is {@code null}
-     * @throws  SecurityException     if the current thread cannot create a
-     *                                thread in the specified thread group.
-     */
-    private static Void checkParentAccess(ThreadGroup parent) {
-        parent.checkAccess();
-        return null;
-    }
+//    /*
+//     * @throws  NullPointerException  if the parent argument is {@code null}
+//     * @throws  SecurityException     if the current thread cannot create a
+//     *                                thread in the specified thread group.
+//     */
+//    private static Void checkParentAccess(ThreadGroup parent) {
+//        parent.checkAccess();
+//        return null;
+//    }
 
     /**
      * Returns the name of this thread group.
