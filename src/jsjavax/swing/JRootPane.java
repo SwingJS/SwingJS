@@ -204,17 +204,17 @@ public class JRootPane extends JComponent {
 
     private static final String uiClassID = "RootPaneUI";
 
-    /**
-     * Whether or not we should dump the stack when true double buffering
-     * is disabled. Default is false.
-     */
-    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING;
-
-    /**
-     * Whether or not we should ignore requests to disable true double
-     * buffering. Default is false.
-     */
-    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING;
+//    /**
+//     * Whether or not we should dump the stack when true double buffering
+//     * is disabled. Default is false.
+//     */
+//    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING;
+//
+//    /**
+//     * Whether or not we should ignore requests to disable true double
+//     * buffering. Default is false.
+//     */
+//    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING;
 
     /**
      * Constant used for the windowDecorationStyle property. Indicates that
@@ -349,11 +349,11 @@ public class JRootPane extends JComponent {
     boolean useTrueDoubleBuffering = true;
 
     static {
-        LOG_DISABLE_TRUE_DOUBLE_BUFFERING = false;
-        
+//        LOG_DISABLE_TRUE_DOUBLE_BUFFERING = false;
+//        
 //            AccessController.doPrivileged(new GetBooleanAction(
 //                                   "swing.logDoubleBufferingDisable"));
-        IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING = true;
+//        IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING = true;
 //            AccessController.doPrivileged(new GetBooleanAction(
 //                                   "swing.ignoreDoubleBufferingDisable"));
     }

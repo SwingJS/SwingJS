@@ -60,6 +60,7 @@ import jsjava.awt.event.KeyEvent;
  * @since      JDK1.0
  */
 public class Event {
+    @SuppressWarnings("unused")
     private transient long data;
 
     /* Modifier constants */

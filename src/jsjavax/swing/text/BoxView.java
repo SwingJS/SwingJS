@@ -758,7 +758,6 @@ public class BoxView extends CompositeView {
      * @param spans the span of each child view; this is a return
      *  value and is filled in by the implementation of this method
      */
-    @SuppressWarnings("null")
     protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
         /*
          * first pass, calculate the preferred sizes

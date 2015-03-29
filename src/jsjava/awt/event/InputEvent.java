@@ -25,8 +25,8 @@
 
 package jsjava.awt.event;
 
-import jsjava.awt.Event;
 import jsjava.awt.Component;
+import jsjava.awt.Event;
 //import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Toolkit;
 //import jsjava.util.logging.Logger;
@@ -185,12 +185,12 @@ public abstract class InputEvent extends ComponentEvent {
      */
     int modifiers;
 
-    /*
-     * A flag that indicates that this instance can be used to access
-     * the system clipboard.
-     */
-    private transient boolean canAccessSystemClipboard;
-
+//    /*
+//     * A flag that indicates that this instance can be used to access
+//     * the system clipboard.
+//     */
+//    private transient boolean canAccessSystemClipboard;
+//
 //    static {
 //        /* ensure that the necessary native libraries are loaded */
 //        NativeLibLoader.loadLibraries();
@@ -224,7 +224,7 @@ public abstract class InputEvent extends ComponentEvent {
         super(source, id);
         this.when = when;
         this.modifiers = modifiers;
-        canAccessSystemClipboard = false;//canAccessSystemClipboard();
+//        canAccessSystemClipboard = false;//canAccessSystemClipboard();
     }
 
 //    private boolean canAccessSystemClipboard() {

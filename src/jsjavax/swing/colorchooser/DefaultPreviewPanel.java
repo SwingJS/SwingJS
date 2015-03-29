@@ -27,7 +27,6 @@ package jsjavax.swing.colorchooser;
 
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
-import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
 import jsjavax.swing.JColorChooser;
@@ -61,7 +60,7 @@ class DefaultPreviewPanel extends JPanel {
 
 
     private int textGap = 5;
-    private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
+//    private Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
     private String sampleText = UIManager.getString("ColorChooser.sampleText");
 
     private int swatchWidth = 50;
@@ -80,7 +79,7 @@ class DefaultPreviewPanel extends JPanel {
         }
         FontMetrics fm = host.getFontMetrics(getFont());
 
-        int ascent = fm.getAscent();
+//        int ascent = fm.getAscent();
         int height = fm.getHeight();
         int width = SwingUtilities2.stringWidth(host, fm, sampleText);
 

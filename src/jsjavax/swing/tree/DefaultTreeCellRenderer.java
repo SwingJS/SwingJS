@@ -96,15 +96,15 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     private boolean drawDashedFocusIndicator;
 
     // If drawDashedFocusIndicator is true, the following are used.
-    /**
-     * Background color of the tree.
-     */
-    private Color treeBGColor;
-    /**
-     * Color to draw the focus indicator in, determined from the background.
-     * color.
-     */
-    private Color focusBGColor;
+//    /**
+//     * Background color of the tree.
+//     */
+//    private Color treeBGColor;
+//    /**
+//     * Color to draw the focus indicator in, determined from the background.
+//     * color.
+//     */
+//    private Color focusBGColor;
 
     // Icons
     /** Icon used to show non-leaf nodes that aren't expanded. */

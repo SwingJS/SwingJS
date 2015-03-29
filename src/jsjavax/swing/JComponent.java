@@ -765,7 +765,6 @@ public abstract class JComponent extends Container
      * @see #paint
      * @see ComponentUI
      */
-    @SuppressWarnings("null")
     protected void paintComponent(Graphics g) {
         if (ui != null) {
             Graphics scratchGraphics = (g == null) ? null : g.create();

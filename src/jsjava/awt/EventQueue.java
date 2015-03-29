@@ -34,7 +34,6 @@ import java.util.EmptyStackException;
 import jsjava.awt.event.InvocationEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.PaintEvent;
-import jsjava.security.PrivilegedAction;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
 
@@ -85,15 +84,15 @@ import jssun.awt.SunToolkit;
  */
 public class EventQueue {
 
-    // From Thread.java
-    private static int threadInitNumber;
-    private static synchronized int nextThreadNum() {
-        return threadInitNumber++;
-    }
-
-    private static final int LOW_PRIORITY = 0;
-    private static final int NORM_PRIORITY = 1;
-    private static final int HIGH_PRIORITY = 2;
+//    // From Thread.java
+//    private static int threadInitNumber;
+//    private static synchronized int nextThreadNum() {
+//        return threadInitNumber++;
+//    }
+//
+//    private static final int LOW_PRIORITY = 0;
+//    private static final int NORM_PRIORITY = 1;
+//    private static final int HIGH_PRIORITY = 2;
     private static final int ULTIMATE_PRIORITY = 3;
 
     private static final int NUM_PRIORITIES = ULTIMATE_PRIORITY + 1;
@@ -139,14 +138,14 @@ public class EventQueue {
      */
 //    private WeakReference currentEvent;
 
-    /*
-     * Non-zero if a thread is waiting in getNextEvent(int) for an event of
-     * a particular ID to be posted to the queue.
-     */
-    private int waitForID;
-
-    private final String name = "AWT-EventQueue-" + nextThreadNum();
-
+//    /*
+//     * Non-zero if a thread is waiting in getNextEvent(int) for an event of
+//     * a particular ID to be posted to the queue.
+//     */
+//    private int waitForID;
+//
+//    private final String name = "AWT-EventQueue-" + nextThreadNum();
+//
 //    private static final Logger eventLog = Logger.getLogger("java.awt.event.EventQueue");
 //
 //    static {
@@ -237,7 +236,7 @@ public class EventQueue {
 //        }
     }
 
-    private static int getPriority(AWTEvent theEvent) {
+//    private static int getPriority(AWTEvent theEvent) {
 //        if (theEvent instanceof PeerEvent &&
 //            (((PeerEvent)theEvent).getFlags() &
 //                PeerEvent.ULTIMATE_PRIORITY_EVENT) != 0)
@@ -259,55 +258,55 @@ public class EventQueue {
 //            return LOW_PRIORITY;
 //        }
 //
-        int id = theEvent.getID();
-        if (id == PaintEvent.PAINT || id == PaintEvent.UPDATE) {
-            return LOW_PRIORITY;
-        }
-        return NORM_PRIORITY;
-    }
+//        int id = theEvent.getID();
+//        if (id == PaintEvent.PAINT || id == PaintEvent.UPDATE) {
+//            return LOW_PRIORITY;
+//        }
+//        return NORM_PRIORITY;
+//    }
 
-    /**
-     * Posts the event to the internal Queue of specified priority,
-     * coalescing as appropriate.
-     *
-     * @param theEvent an instance of <code>java.awt.AWTEvent</code>,
-     *          or a subclass of it
-     * @param priority  the desired priority of the event
-     */
-    private void postEvent(AWTEvent theEvent, int priority) {
-        if (coalesceEvent(theEvent, priority)) {
-            return;
-        }
-
-        EventQueueItem newItem = new EventQueueItem(theEvent);
-
-        cacheEQItem(newItem);
-
-        boolean notifyID = (theEvent.getID() == this.waitForID);
-
-        if (queues[priority].head == null) {
-            boolean shouldNotify = noEvents();
-            queues[priority].head = queues[priority].tail = newItem;
-
-            if (shouldNotify) {
+//    /**
+//     * Posts the event to the internal Queue of specified priority,
+//     * coalescing as appropriate.
+//     *
+//     * @param theEvent an instance of <code>java.awt.AWTEvent</code>,
+//     *          or a subclass of it
+//     * @param priority  the desired priority of the event
+//     */
+//    private void postEvent(AWTEvent theEvent, int priority) {
+//        if (coalesceEvent(theEvent, priority)) {
+//            return;
+//        }
+//
+//        EventQueueItem newItem = new EventQueueItem(theEvent);
+//
+//        cacheEQItem(newItem);
+//
+//        boolean notifyID = (theEvent.getID() == this.waitForID);
+//
+//        if (queues[priority].head == null) {
+//            boolean shouldNotify = noEvents();
+//            queues[priority].head = queues[priority].tail = newItem;
+//
+//            if (shouldNotify) {
 //                if (theEvent.getSource() != AWTAutoShutdown.getInstance()) {
 //                    AWTAutoShutdown.getInstance().notifyThreadBusy(dispatchThread);
 //                }
 //SwingJS CANNOT DO THIS                notifyAll();
-            } else if (notifyID) {
+//            } else if (notifyID) {
 //SwingJS CANNOT DO THIS                notifyAll();
-            }
-        } else {
-            // The event was not coalesced or has non-Component source.
-            // Insert it at the end of the appropriate Queue.
-            queues[priority].tail.next = newItem;
-            queues[priority].tail = newItem;
-            if (notifyID) {
+//            }
+//        } else {
+//            // The event was not coalesced or has non-Component source.
+//            // Insert it at the end of the appropriate Queue.
+//            queues[priority].tail.next = newItem;
+//            queues[priority].tail = newItem;
+//            if (notifyID) {
 //SwingJS CANNOT DO THIS                notifyAll();
-            }
-        }
-    }
-
+//            }
+//        }
+//    }
+//
 //    private boolean coalescePaintEvent(PaintEvent e) {
 //        ComponentPeer sourcePeer = ((Component)e.getSource()).peer;
 //        if (sourcePeer != null) {
@@ -340,20 +339,20 @@ public class EventQueue {
 //        }
 //        return null;
 //    }
-
-    private boolean coalesceMouseEvent(MouseEvent e) {
-        EventQueueItem[] cache = ((Component)e.getSource()).eventCache;
-        if (cache == null) {
-            return false;
-        }
-        int index = eventToCacheIndex(e);
-        if (index != -1 && cache[index] != null) {
-            cache[index].event = e;
-            return true;
-        }
-        return false;
-    }
-
+//
+//    private boolean coalesceMouseEvent(MouseEvent e) {
+//        EventQueueItem[] cache = ((Component)e.getSource()).eventCache;
+//        if (cache == null) {
+//            return false;
+//        }
+//        int index = eventToCacheIndex(e);
+//        if (index != -1 && cache[index] != null) {
+//            cache[index].event = e;
+//            return true;
+//        }
+//        return false;
+//    }
+//
 //    private boolean coalescePeerEvent(PeerEvent e) {
 //        EventQueueItem[] cache = ((Component)e.getSource()).eventCache;
 //        if (cache == null) {
@@ -371,65 +370,65 @@ public class EventQueue {
 //        }
 //        return false;
 //    }
-
-    /*
-     * Should avoid of calling this method by any means
-     * as it's working time is dependant on EQ length.
-     * In the wors case this method alone can slow down the entire application
-     * 10 times by stalling the Event processing.
-     * Only here by backward compatibility reasons.
-     */
-    private boolean coalesceOtherEvent(AWTEvent e, int priority) {
-        int id = e.getID();
-        Component source = (Component)e.getSource();
-        for (EventQueueItem entry = queues[priority].head;
-            entry != null; entry = entry.next)
-        {
-            // Give Component.coalesceEvents a chance
-            if (entry.event.getSource() == source && entry.id == id) {
-                AWTEvent coalescedEvent = source.coalesceEvents(
-                    entry.event, e);
-                if (coalescedEvent != null) {
-                    entry.event = coalescedEvent;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean coalesceEvent(AWTEvent e, int priority) {
-        if (!(e.getSource() instanceof Component)) {
-            return false;
-        }
-//        if (e instanceof PeerEvent) {
-//            return coalescePeerEvent((PeerEvent)e);
+//
+//    /*
+//     * Should avoid of calling this method by any means
+//     * as it's working time is dependant on EQ length.
+//     * In the wors case this method alone can slow down the entire application
+//     * 10 times by stalling the Event processing.
+//     * Only here by backward compatibility reasons.
+//     */
+//    private boolean coalesceOtherEvent(AWTEvent e, int priority) {
+//        int id = e.getID();
+//        Component source = (Component)e.getSource();
+//        for (EventQueueItem entry = queues[priority].head;
+//            entry != null; entry = entry.next)
+//        {
+//            // Give Component.coalesceEvents a chance
+//            if (entry.event.getSource() == source && entry.id == id) {
+//                AWTEvent coalescedEvent = source.coalesceEvents(
+//                    entry.event, e);
+//                if (coalescedEvent != null) {
+//                    entry.event = coalescedEvent;
+//                    return true;
+//                }
+//            }
 //        }
-        // The worst case
-        if (((Component)e.getSource()).isCoalescingEnabled()
-            && coalesceOtherEvent(e, priority))
-        {
-            return true;
-        }
-//        if (e instanceof PaintEvent) {
-//            return coalescePaintEvent((PaintEvent)e);
+//        return false;
+//    }
+//
+//    private boolean coalesceEvent(AWTEvent e, int priority) {
+//        if (!(e.getSource() instanceof Component)) {
+//            return false;
 //        }
-        if (e instanceof MouseEvent) {
-            return coalesceMouseEvent((MouseEvent)e);
-        }
-        return false;
-    }
-
-    private void cacheEQItem(EventQueueItem entry) {
-        int index = eventToCacheIndex(entry.event);
-        if (index != -1 && entry.event.getSource() instanceof Component) {
-            Component source = (Component)entry.event.getSource();
-            if (source.eventCache == null) {
-                source.eventCache = new EventQueueItem[CACHE_LENGTH];
-            }
-            source.eventCache[index] = entry;
-        }
-    }
+////        if (e instanceof PeerEvent) {
+////            return coalescePeerEvent((PeerEvent)e);
+////        }
+//        // The worst case
+//        if (((Component)e.getSource()).isCoalescingEnabled()
+//            && coalesceOtherEvent(e, priority))
+//        {
+//            return true;
+//        }
+////        if (e instanceof PaintEvent) {
+////            return coalescePaintEvent((PaintEvent)e);
+////        }
+//        if (e instanceof MouseEvent) {
+//            return coalesceMouseEvent((MouseEvent)e);
+//        }
+//        return false;
+//    }
+//
+//    private void cacheEQItem(EventQueueItem entry) {
+//        int index = eventToCacheIndex(entry.event);
+//        if (index != -1 && entry.event.getSource() instanceof Component) {
+//            Component source = (Component)entry.event.getSource();
+//            if (source.eventCache == null) {
+//                source.eventCache = new EventQueueItem[CACHE_LENGTH];
+//            }
+//            source.eventCache[index] = entry;
+//        }
+//    }
 
     private void uncacheEQItem(EventQueueItem entry) {
         int index = eventToCacheIndex(entry.event);
@@ -446,8 +445,8 @@ public class EventQueue {
     private static final int UPDATE = 1;
     private static final int MOVE = 2;
     private static final int DRAG = 3;
-    private static final int PEER = 4;
-    private static final int CACHE_LENGTH = 5;
+//    private static final int PEER = 4;
+//    private static final int CACHE_LENGTH = 5;
 
     private static int eventToCacheIndex(AWTEvent e) {
         switch(e.getID()) {
@@ -466,20 +465,20 @@ public class EventQueue {
         }
     }
 
-    /**
-     * Returns whether an event is pending on any of the separate
-     * Queues.
-     * @return whether an event is pending on any of the separate Queues
-     */
-    private boolean noEvents() {
-        for (int i = 0; i < NUM_PRIORITIES; i++) {
-            if (queues[i].head != null) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    /**
+//     * Returns whether an event is pending on any of the separate
+//     * Queues.
+//     * @return whether an event is pending on any of the separate Queues
+//     */
+//    private boolean noEvents() {
+//        for (int i = 0; i < NUM_PRIORITIES; i++) {
+//            if (queues[i].head != null) {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     /**
      * Removes an event from the <code>EventQueue</code> and
@@ -542,9 +541,9 @@ public class EventQueue {
                         }
                     }
                 }
-                this.waitForID = id;
+//                this.waitForID = id;
                 wait();
-                this.waitForID = 0;
+//                this.waitForID = 0;
             }
         } while(true);
     }
@@ -625,14 +624,14 @@ public class EventQueue {
      * @since           1.2
      */
     protected void dispatchEvent(final AWTEvent event) {
-        final Object src = event.getSource();
-        final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
-            public Void run() {
-                dispatchEventImpl(event, src);
-                return null;
-            }
-        };
-
+//        final Object src = event.getSource();
+//        final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
+//            public Void run() {
+//                dispatchEventImpl(event, src);
+//                return null;
+//            }
+//        };
+//
 //        final AccessControlContext stack = AccessController.getContext();
 //        final AccessControlContext srcAcc = getAccessControlContextFrom(src);
 //        final AccessControlContext eventAcc = event.getAccessControlContext();
@@ -659,19 +658,19 @@ public class EventQueue {
 ////                    ((TrayIcon)src).getAccessControlContext() :
 //                    null;
 //    }
-
-    /**
-     * Called from dispatchEvent() under a correct AccessControlContext  
-     */
-    private void dispatchEventImpl(final AWTEvent event, final Object src) {
-        event.isPosted = true;
-        if (event instanceof ActiveEvent) {
-            // This could become the sole method of dispatching in time.
-            setCurrentEventAndMostRecentTimeImpl(event);
-            ((ActiveEvent)event).dispatch();
-        } else if (src instanceof Component) {
-            ((Component)src).dispatchEvent(event);
-            event.dispatched();
+//
+//    /**
+//     * Called from dispatchEvent() under a correct AccessControlContext  
+//     */
+//    private void dispatchEventImpl(final AWTEvent event, final Object src) {
+//        event.isPosted = true;
+//        if (event instanceof ActiveEvent) {
+//            // This could become the sole method of dispatching in time.
+//            setCurrentEventAndMostRecentTimeImpl(event);
+//            ((ActiveEvent)event).dispatch();
+//        } else if (src instanceof Component) {
+//            ((Component)src).dispatchEvent(event);
+//            event.dispatched();
 //        } else if (src instanceof MenuComponent) {
 //            ((MenuComponent)src).dispatchEvent(event);
 //        } else if (src instanceof TrayIcon) {
@@ -680,10 +679,10 @@ public class EventQueue {
 //            if (noEvents()) {
 //                dispatchThread.stopDispatching();
 //            }
-        } else {
-            System.err.println("unable to dispatch event: " + event);
-        }
-    }
+//        } else {
+//            System.err.println("unable to dispatch event: " + event);
+//        }
+//    }
 
     /**
      * Returns the timestamp of the most recent event that had a timestamp, and
@@ -981,8 +980,8 @@ public class EventQueue {
     static void setCurrentEventAndMostRecentTime(AWTEvent e) {
 //        Toolkit.getEventQueue().setCurrentEventAndMostRecentTimeImpl(e);
     }
-    private synchronized void setCurrentEventAndMostRecentTimeImpl(AWTEvent e)
-    {
+//    private synchronized void setCurrentEventAndMostRecentTimeImpl(AWTEvent e)
+//    {
 //        if (Thread.currentThread() != dispatchThread) {
 //            return;
 //        }
@@ -1012,7 +1011,7 @@ public class EventQueue {
 //            mostRecentEventTime2 = ie.getWhen();
 //        }
 //        mostRecentEventTime = Math.max(mostRecentEventTime, mostRecentEventTime2);
-    }
+//    }
 
     /**
      * Causes <code>runnable</code> to have its <code>run</code>
@@ -1079,14 +1078,14 @@ public class EventQueue {
         }
     }
 
-    /*
-     * Called from PostEventQueue.postEvent to notify that a new event
-     * appeared. First it proceeds to the EventQueue on the top of the
-     * stack, then notifies the associated dispatch thread if it exists
-     * or starts a new one otherwise.
-     */
-    private void wakeup(boolean isShutdown) {
-        synchronized(this) {
+//    /*
+//     * Called from PostEventQueue.postEvent to notify that a new event
+//     * appeared. First it proceeds to the EventQueue on the top of the
+//     * stack, then notifies the associated dispatch thread if it exists
+//     * or starts a new one otherwise.
+//     */
+//    private void wakeup(boolean isShutdown) {
+//        synchronized(this) {
 //            if (nextQueue != null) {
 //                // Forward call to the top of EventQueue stack.
 //                nextQueue.wakeup(isShutdown);
@@ -1095,8 +1094,8 @@ public class EventQueue {
 //            } else if (!isShutdown) {
 //                initDispatchThread();
 //            }
-        }
-    }
+//        }
+//    }
 }
 
 /**

@@ -38,9 +38,6 @@ import java.util.Set;
 import java.util.HashSet;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
-//import java.util.concurrent.atomic.AtomicInteger;
-import jsjava.lang.Thread; // OH YES IT IS!
-import jsjava.lang.ThreadGroup; // OH YES IT IS!
 
 /**
  * The AppContext is a table referenced by ThreadGroup which stores

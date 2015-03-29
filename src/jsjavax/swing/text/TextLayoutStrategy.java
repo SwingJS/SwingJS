@@ -24,7 +24,6 @@
  */
 package jsjavax.swing.text;
 
-import jsjava.text.AttributedCharacterIterator;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
@@ -33,6 +32,7 @@ import java.util.Set;
 import jsjava.awt.Font;
 import jsjava.awt.Rectangle;
 import jsjava.awt.font.TextAttribute;
+import jsjava.text.AttributedCharacterIterator;
 import jsjavax.swing.event.DocumentEvent;
 
 /**
@@ -181,7 +181,7 @@ class TextLayoutStrategy extends FlowView.FlowStrategy {
     protected View createView(FlowView fv, int startOffset, int spanLeft, int rowIndex) {
         // Get the child view that contains the given starting position
         View lv = getLogicalView(fv);
-        View row = fv.getView(rowIndex);
+//        View row = fv.getView(rowIndex);
         boolean requireNextWord = (viewBuffer.size() == 0) ? false : true;
         int childIndex = lv.getViewIndex(startOffset, Position.Bias.Forward);
         View v = lv.getView(childIndex);

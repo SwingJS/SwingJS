@@ -2063,7 +2063,6 @@ public class DefaultStyledDocument extends AbstractDocument implements StyledDoc
             }
         }
 
-        @SuppressWarnings("null")
         /**
          * Recreates the elements to the right of the insertion point.
          * This starts at <code>startIndex</code> in <code>changed</code>,

@@ -118,7 +118,6 @@ public abstract class ShellFolder extends File {
         return listFiles(true);
     }
 
-    @SuppressWarnings("null")
     public File[] listFiles(boolean includeHiddenFiles) {
         File[] files = super.listFiles();
 

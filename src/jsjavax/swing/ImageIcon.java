@@ -62,7 +62,9 @@ public class ImageIcon implements Icon {
      * images symbolically rather than including the image data
      * in the archive.
      */
+    @SuppressWarnings("unused")
     transient private String filename;
+    @SuppressWarnings("unused")
     transient private URL location;
 
     transient Image image;
@@ -116,13 +118,13 @@ public class ImageIcon implements Icon {
 //                })
 //        );
 //    }
-
-    /**
-     * Id used in loading images from MediaTracker.
-     */
-    private static int mediaTrackerID;
-
-    private final static Object TRACKER_KEY = new StringBuilder("TRACKER_KEY");
+//
+//    /**
+//     * Id used in loading images from MediaTracker.
+//     */
+//    private static int mediaTrackerID;
+//
+//    private final static Object TRACKER_KEY = new StringBuilder("TRACKER_KEY");
 
     int width = -1;
     int height = -1;

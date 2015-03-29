@@ -1467,7 +1467,6 @@ public class DefaultMutableTreeNode extends Object implements Cloneable,
     final class PathBetweenNodesEnumeration implements Enumeration<TreeNode> {
         protected Stack<TreeNode> stack;
 
-        @SuppressWarnings("null")
         public PathBetweenNodesEnumeration(TreeNode ancestor,
                                            TreeNode descendant)
         {

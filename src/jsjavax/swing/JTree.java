@@ -36,7 +36,6 @@ import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
-import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.event.TreeExpansionEvent;
 import jsjavax.swing.event.TreeExpansionListener;
@@ -434,12 +433,12 @@ public class JTree extends JComponent implements Scrollable
 //                   + "childIndex=" + index + "]";
 //        }
 //    }
-
-    /**
-     * The row to expand during DnD.
-     */
-    private int expandRow = -1;
-
+//
+//    /**
+//     * The row to expand during DnD.
+//     */
+//    private int expandRow = -1;
+//
 //    private class TreeTimer extends Timer {
 //        public TreeTimer() {
 //            super(2000, null);
@@ -938,7 +937,6 @@ public class JTree extends JComponent implements Scrollable
      */
     public void setShowsRootHandles(boolean newValue) {
         boolean                oldValue = showsRootHandles;
-        TreeModel              model = getModel();
 
         showsRootHandles = newValue;
         showsRootHandlesSet = true;

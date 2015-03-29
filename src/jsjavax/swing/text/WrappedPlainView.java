@@ -826,7 +826,6 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          * @param startPos position to start breaking from
          * @return the cache created, ot null if text breaks into one line
          */
-        @SuppressWarnings("null")
         final int[] breakLines(int startPos) {
             int[] lineEnds = null;//(lineCache == null) ? null : lineCache.get();
 //            int[] oldLineEnds = lineEnds;
@@ -900,16 +899,16 @@ public class WrappedPlainView extends BoxView implements TabExpander {
 //            }
         }
 
-        private int findLine(int[] array, int offset, int min, int max) {
-            if (max - min <= 1) {
-                return max;
-            } else {
-                int mid = (max + min) / 2;
-                return (offset < array[mid]) ?
-                        findLine(array, offset, min, mid) :
-                        findLine(array, offset, mid, max);
-            }
-        }
+//        private int findLine(int[] array, int offset, int min, int max) {
+//            if (max - min <= 1) {
+//                return max;
+//            } else {
+//                int mid = (max + min) / 2;
+//                return (offset < array[mid]) ?
+//                        findLine(array, offset, min, mid) :
+//                        findLine(array, offset, mid, max);
+//            }
+//        }
 
         int lineCount;
 //        SoftReference<int[]> lineCache = null;

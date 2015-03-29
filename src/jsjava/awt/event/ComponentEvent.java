@@ -129,7 +129,6 @@ public class ComponentEvent extends AWTEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    @SuppressWarnings("null")
     public String paramString() {
         String typeStr;
         Rectangle b = (source !=null

@@ -33,7 +33,6 @@ import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.AppContext;
 import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 /**
  * DefaultLookup provides a way to customize the lookup done by the

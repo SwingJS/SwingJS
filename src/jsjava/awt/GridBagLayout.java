@@ -979,7 +979,6 @@ java.io.Serializable {
      * refer to <code>getLayoutInfo</code> for details on parameters
      * and return value.
      */
-    @SuppressWarnings("null")
     protected GridBagLayoutInfo GetLayoutInfo(Container parent, int sizeflag) {
         synchronized (parent.getTreeLock()) {
             GridBagLayoutInfo r;
