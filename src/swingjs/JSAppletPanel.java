@@ -60,6 +60,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
   }
 
 	public JSAppletPanel(Hashtable params) {
+		super();
 		System.out.println("JSAppletPanel initialized");
 		set(params);
 		// This will allow us to get an applet from any component while running.
