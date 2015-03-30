@@ -7,6 +7,7 @@ import java.util.Hashtable;
 
 import javajs.api.GenericPlatform;
 import javajs.api.Interface;
+import javajs.api.JSInterface;
 import javajs.util.PT;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
@@ -32,7 +33,7 @@ import jsjava.lang.ThreadGroup;
  * @author Bob Hanson 
  *
  */
-public class JSAppletPanel extends AppletPanel implements AppletContext {
+public class JSAppletPanel extends AppletPanel implements AppletContext, JSInterface {
 
 	private Hashtable params;
 	/*
@@ -128,6 +129,8 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		 *   SwingJS._JSToolkit = javajs.api.Interface.getInterface("swingjs.JSToolkit");
 		 */
 		{}
+
+		init();
 		
 		System.out.println("JSAPpletPanel runloader");
 		runLoader(); // applet created here
@@ -296,6 +299,103 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		{
 			System.out.println(status);
 		}
+	}
+
+	/////////// javajs.api.JSInterface ///////////
+	//
+	// methods called by page JavaScript
+	//
+	//
+	
+	@Override
+	public int cacheFileByName(String fileName, boolean isAdd) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void cachePut(String key, Object data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object getGLmolView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getFullName() {
+		return fullName;
+	}
+
+	@Override
+	public String loadInlineString(String mol, String script, boolean isAppend) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String openFile(String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void openFileAsyncSpecial(String fileName, int flags) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean processMouseEvent(int id, int x, int y, int modifiers,
+			long time) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void processTwoPointGesture(float[][][] touches) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDisplay(Object canvas) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setScreenDimension(int width, int height) {
+		resize(width, height);
+		if (applet != null)
+			applet.resize(width, height);
+	}
+
+	@Override
+	public boolean setStatusDragDropped(int mode, int x, int y, String fileName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void startHoverWatcher(boolean enable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

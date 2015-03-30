@@ -84,7 +84,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 	/**
 	 * The applet (if loaded).
 	 */
-	Applet applet;
+	protected Applet applet;
 
 	/**
 	 * The id of this applet on the page for JavaScript

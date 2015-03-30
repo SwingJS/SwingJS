@@ -78,10 +78,8 @@
   	    <include name="JSmolCore.js" />
   	  	<include name="JSmolJavaExt.js" />
   	  	<include name="JSmoljQueryExt.js" />
+  	    <include name="SwingJS.js" />
   	  </fileset>
-      <fileset dir="js">		
-    	<include name="**/*" />
-      </fileset>
     </copy> 
    	
    	<echo>...adding jsmol.php</echo>
