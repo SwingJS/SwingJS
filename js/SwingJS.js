@@ -4,12 +4,13 @@
 
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required for SwingJS, but it's not defined.")
 
+if (typeof(SwingJS) == "undefined") {
 
-self.SwingJS || (SwingJS = {});
-
+  SwingJS = {};
 
 (function (SwingJS, $) {
 
+  SwingJS._JSToolkit == null
 	SwingJS.getApplet = function(id, Info, checkOnly) {
 		return SwingJS._Applet._get(id, Info, checkOnly);
 	}
@@ -716,3 +717,5 @@ self.SwingJS || (SwingJS = {});
 })(SwingJS._Applet, SwingJS._Applet.prototype);
 
 })(SwingJS, jQuery);
+
+} // SwingJS undefined

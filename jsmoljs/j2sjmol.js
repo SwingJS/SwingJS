@@ -52,6 +52,7 @@
  //                            getInterface() 
  //                         see JSmol.js and Jmol._isAsync flag
  
+ // BH 3/29/2015 8:12:44 PM System.getProperty(x, "") does not return ""
  // BH 8/23/2014 10:04:19 AM cleaning up a few general methods; Clazz.removeArrayItem
  // BH 6/1/2014 10:58:46 AM fix for Clazz.isAP() not working
  // BH 5/26/2014 5:19:29 PM removing superConstructor call in creating Enum constants
@@ -2687,7 +2688,8 @@ System = {
 		if (System.props)
 			return System.props.getProperty (key, def);
 		var v = System.$props[key];
-		return (v ? v : arguments.length == 1 ? null : def ? def : key); // BH
+    
+		return (typeof v != "undefined" ? v : arguments.length == 1 ? null : def == null ? key : def); // BH
 	},
 	getSecurityManager : function() { return null },  // bh
 	setProperties : function (props) {
