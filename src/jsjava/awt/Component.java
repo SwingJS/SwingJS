@@ -181,7 +181,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * The <code>AppContext</code> of the component. Applets/Plugin may
      * change the AppContext.
      */
-    transient AppContext appContext;
+    protected transient AppContext appContext;
 
     /**
      * The x position of the component in the parent's coordinate system.
@@ -2975,7 +2975,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since     JDK1.0
      */
     public void repaint() {
-        repaint(0, 0, 0, width, height);
+        repaintImpl(0, 0, 0, width, height);
     }
 
     /**
@@ -2994,7 +2994,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since JDK1.0
      */
     public void repaint(long tm) {
-        repaint(tm, 0, 0, width, height);
+        repaintImpl(tm, 0, 0, width, height);
     }
 
     /**
@@ -3018,7 +3018,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since     JDK1.0
      */
     public void repaint(int x, int y, int width, int height) {
-        repaint(0, x, y, width, height);
+        repaintImpl(0, x, y, width, height);
     }
 
     /**
@@ -3044,6 +3044,10 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since     JDK1.0
      */
     public void repaint(long tm, int x, int y, int width, int height) {
+    	repaintImpl(tm, x, y, width, height);
+    }
+    public void repaintImpl(long tm, int x, int y, int width, int height) {
+
 //        if (this.peer instanceof LightweightPeer) {
 //            // Needs to be translated to parent coordinates since
 //            // a parent native container provides the actual repaint

@@ -300,10 +300,10 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
     }
 
 
-//    private static class ComparableComparator implements Comparator {
-//        @SuppressWarnings("unchecked")
-//        public int compare(Object o1, Object o2) {
-//            return ((Comparable)o1).compareTo(o2);
-//        }
-//    }
+    private static class ComparableComparator implements Comparator {
+        @SuppressWarnings("unchecked")
+        public int compare(Object o1, Object o2) {
+            return ((Comparable)o1).compareTo(o2);
+        }
+    }
 }

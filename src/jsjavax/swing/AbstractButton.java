@@ -24,6 +24,8 @@
  */
 package jsjavax.swing;
 
+import javax.swing.event.EventListenerList;
+
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;

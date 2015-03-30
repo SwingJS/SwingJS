@@ -1690,7 +1690,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
                 }
                 return;
             }
-//            int adjust = 0;
+            int adjust = 0;
             int offset = e.getOffset();
             int length = e.getLength();
             int newDot = dot;
@@ -1774,7 +1774,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
             }
             int offs0 = e.getOffset();
             int offs1 = offs0 + e.getLength();
-//            int adjust = 0;
+            int adjust = 0;
             int newDot = dot;
             boolean adjustDotBias = false;
             int newMark = mark;

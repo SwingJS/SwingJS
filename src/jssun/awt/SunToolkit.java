@@ -75,6 +75,7 @@ public abstract class SunToolkit extends Toolkit
     implements WindowClosingSupport, WindowClosingListener,
     ComponentFactory {//, InputMethodSupport {
 
+
     // 8014736: logging has been removed from SunToolkit
 
     /* Load debug settings for native code */
@@ -132,6 +133,8 @@ public abstract class SunToolkit extends Toolkit
                     eventQueue = new EventQueue();
                 }
                 AppContext appContext = AppContext.getAppContext();
+                
+                
                 appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
 
                 PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
@@ -428,8 +431,15 @@ public abstract class SunToolkit extends Toolkit
      */
     private static AppContext getAppContext(Object target) {
         if (target instanceof Component) {
+			/**
+			 * @j2sNative
+			 * 
+			 *            return target.appContext;
+			 */
+        	{
             return AWTAccessor.getComponentAccessor().
                        getAppContext((Component)target);
+        	}
 //        } else if (target instanceof MenuComponent) {
 //            return AWTAccessor.getMenuComponentAccessor().
 //                       getAppContext((MenuComponent)target);

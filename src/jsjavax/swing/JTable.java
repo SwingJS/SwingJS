@@ -26,6 +26,8 @@
 package jsjavax.swing;
 
 import java.lang.reflect.Constructor;
+//SwingJS TODO import jsjava.text.DateFormat;
+import jsjava.text.NumberFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.EventObject;
@@ -41,8 +43,6 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.beans.PropertyChangeListener;
-//SwingJS TODO import jsjava.text.DateFormat;
-import jsjava.text.NumberFormat;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.border.EmptyBorder;
 import jsjavax.swing.border.LineBorder;
@@ -4111,6 +4111,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * Invoked when <code>sorterChanged</code> is invoked, or
      * when <code>tableChanged</code> is invoked and sorting is enabled.
      */
+    @SuppressWarnings("null")
     private void sortedTableChanged(RowSorterEvent sortedEvent,
                                     TableModelEvent e) {
         int editingModelIndex = -1;

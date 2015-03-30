@@ -137,15 +137,15 @@ import jsjava.awt.Toolkit;
  */
 public class KeyEvent extends InputEvent {
 
-//    /**
-//     * Stores the state of native event dispatching system
-//     * - true, if when the event was created event proxying
-//     *         mechanism was active
-//     * - false, if it was inactive
-//     * Used in Component.dispatchEventImpl to correctly dispatch
-//     * events when proxy is active
-//     */
-//    private boolean isProxyActive = false;
+    /**
+     * Stores the state of native event dispatching system
+     * - true, if when the event was created event proxying
+     *         mechanism was active
+     * - false, if it was inactive
+     * Used in Component.dispatchEventImpl to correctly dispatch
+     * events when proxy is active
+     */
+    private boolean isProxyActive = false;
 
     /**
      * The first number in the range of ids used for key events.

@@ -27,6 +27,7 @@ package jsjavax.swing.text;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Method;
 //import jsjava.text.AttributedCharacterIterator;
 //import jsjava.text.AttributedString;
 //import jsjava.text.CharacterIterator;
@@ -34,6 +35,7 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 import jsjava.awt.AWTEvent;
@@ -45,8 +47,11 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
+import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
+import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.InputMethodEvent;
 import jsjava.awt.event.InputMethodListener;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
@@ -1174,46 +1179,46 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         }
     }
 
-//    /**
-//     * Returns true if <code>klass</code> is NOT a JTextComponent and it or
-//     * one of its superclasses (stoping at JTextComponent) overrides
-//     * <code>processInputMethodEvent</code>. It is assumed this will be
-//     * invoked from within a <code>doPrivileged</code>, and it is also
-//     * assumed <code>klass</code> extends <code>JTextComponent</code>.
-//     */
-//    private static Boolean isProcessInputMethodEventOverridden(Class klass) {
-//        if (klass == JTextComponent.class) {
-//            return Boolean.FALSE;
-//        }
-//        Boolean retValue = (Boolean)overrideMap.get(klass.getName());
-//
-//        if (retValue != null) {
-//            return retValue;
-//        }
-//        Boolean sOverriden = isProcessInputMethodEventOverridden(
-//                                       klass.getSuperclass());
-//
-//        if (sOverriden.booleanValue()) {
-//            // If our superclass has overriden it, then by definition klass
-//            // overrides it.
-//            overrideMap.put(klass.getName(), sOverriden);
-//            return sOverriden;
-//        }
-//        // klass's superclass didn't override it, check for an override in
-//        // klass.
-//        try {
-//            Class[] classes = new Class[1];
-//            classes[0] = InputMethodEvent.class;
-//
-//            Method m = klass.getDeclaredMethod("processInputMethodEvent",
-//                                               classes);
-//            retValue = Boolean.TRUE;
-//        } catch (NoSuchMethodException nsme) {
-//            retValue = Boolean.FALSE;
-//        }
-//        overrideMap.put(klass.getName(), retValue);
-//        return retValue;
-//    }
+    /**
+     * Returns true if <code>klass</code> is NOT a JTextComponent and it or
+     * one of its superclasses (stoping at JTextComponent) overrides
+     * <code>processInputMethodEvent</code>. It is assumed this will be
+     * invoked from within a <code>doPrivileged</code>, and it is also
+     * assumed <code>klass</code> extends <code>JTextComponent</code>.
+     */
+    private static Boolean isProcessInputMethodEventOverridden(Class klass) {
+        if (klass == JTextComponent.class) {
+            return Boolean.FALSE;
+        }
+        Boolean retValue = (Boolean)overrideMap.get(klass.getName());
+
+        if (retValue != null) {
+            return retValue;
+        }
+        Boolean sOverriden = isProcessInputMethodEventOverridden(
+                                       klass.getSuperclass());
+
+        if (sOverriden.booleanValue()) {
+            // If our superclass has overriden it, then by definition klass
+            // overrides it.
+            overrideMap.put(klass.getName(), sOverriden);
+            return sOverriden;
+        }
+        // klass's superclass didn't override it, check for an override in
+        // klass.
+        try {
+            Class[] classes = new Class[1];
+            classes[0] = InputMethodEvent.class;
+
+            Method m = klass.getDeclaredMethod("processInputMethodEvent",
+                                               classes);
+            retValue = Boolean.TRUE;
+        } catch (NoSuchMethodException nsme) {
+            retValue = Boolean.FALSE;
+        }
+        overrideMap.put(klass.getName(), retValue);
+        return retValue;
+    }
 
     /**
      * Fetches the current color used to render the
@@ -1472,43 +1477,43 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //        }
     }
 
-//    /**
-//     * This is a conveniance method that is only useful for
-//     * <code>cut</code>, <code>copy</code> and <code>paste</code>.  If
-//     * an <code>Action</code> with the name <code>name</code> does not
-//     * exist in the <code>ActionMap</code>, this will attemp to install a
-//     * <code>TransferHandler</code> and then use <code>altAction</code>.
-//     */
-//    private void invokeAction(String name, Action altAction) {
-//        ActionMap map = getActionMap();
-//        Action action = null;
-//
-//        if (map != null) {
-//            action = map.get(name);
-//        }
-//        if (action == null) {
-//            installDefaultTransferHandlerIfNecessary();
-//            action = altAction;
-//        }
-//        action.actionPerformed(new ActionEvent(this,
-//                               ActionEvent.ACTION_PERFORMED, (String)action.
-//                               getValue(Action.NAME),
-//                               EventQueue.getMostRecentEventTime(),
-//                               getCurrentEventModifiers()));
-//    }
+    /**
+     * This is a conveniance method that is only useful for
+     * <code>cut</code>, <code>copy</code> and <code>paste</code>.  If
+     * an <code>Action</code> with the name <code>name</code> does not
+     * exist in the <code>ActionMap</code>, this will attemp to install a
+     * <code>TransferHandler</code> and then use <code>altAction</code>.
+     */
+    private void invokeAction(String name, Action altAction) {
+        ActionMap map = getActionMap();
+        Action action = null;
 
-//    /**
-//     * If the current <code>TransferHandler</code> is null, this will
-//     * install a new one.
-//     */
-//    private void installDefaultTransferHandlerIfNecessary() {
+        if (map != null) {
+            action = map.get(name);
+        }
+        if (action == null) {
+            installDefaultTransferHandlerIfNecessary();
+            action = altAction;
+        }
+        action.actionPerformed(new ActionEvent(this,
+                               ActionEvent.ACTION_PERFORMED, (String)action.
+                               getValue(Action.NAME),
+                               EventQueue.getMostRecentEventTime(),
+                               getCurrentEventModifiers()));
+    }
+
+    /**
+     * If the current <code>TransferHandler</code> is null, this will
+     * install a new one.
+     */
+    private void installDefaultTransferHandlerIfNecessary() {
 //        if (getTransferHandler() == null) {
 //            if (defaultTransferHandler == null) {
 //                defaultTransferHandler = new DefaultTransferHandler();
 //            }
 //            setTransferHandler(defaultTransferHandler);
 //        }
-//    }
+    }
 
     /**
      * Moves the caret to a new position, leaving behind a mark
@@ -3894,11 +3899,11 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //     */
 //    private static DefaultTransferHandler defaultTransferHandler;
 //
-//    /**
-//     * Maps from class name to Boolean indicating if
-//     * <code>processInputMethodEvent</code> has been overriden.
-//     */
-//    private static Map overrideMap;
+    /**
+     * Maps from class name to Boolean indicating if
+     * <code>processInputMethodEvent</code> has been overriden.
+     */
+    private static Map overrideMap;
 
     /**
      * Returns a string representation of this <code>JTextComponent</code>.
@@ -4021,16 +4026,16 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             get(FOCUSED_COMPONENT);
     }
 
-//    private int getCurrentEventModifiers() {
-//        int modifiers = 0;
-//        AWTEvent currentEvent = EventQueue.getCurrentEvent();
-//        if (currentEvent instanceof InputEvent) {
-//            modifiers = ((InputEvent)currentEvent).getModifiers();
-//        } else if (currentEvent instanceof ActionEvent) {
-//            modifiers = ((ActionEvent)currentEvent).getModifiers();
-//        }
-//        return modifiers;
-//    }
+    private int getCurrentEventModifiers() {
+        int modifiers = 0;
+        AWTEvent currentEvent = EventQueue.getCurrentEvent();
+        if (currentEvent instanceof InputEvent) {
+            modifiers = ((InputEvent)currentEvent).getModifiers();
+        } else if (currentEvent instanceof ActionEvent) {
+            modifiers = ((ActionEvent)currentEvent).getModifiers();
+        }
+        return modifiers;
+    }
 
     private static final Object KEYMAP_TABLE = new Object(); // JTextComponent_KeymapTable
 //    private JTextComponent editor;

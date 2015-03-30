@@ -255,6 +255,7 @@ abstract class GapVector  {
         int dg = newGapStart - oldGapStart;
         int oldGapEnd = g1;
         int newGapEnd = oldGapEnd + dg;
+        int gapSize = oldGapEnd - oldGapStart;
 
         g0 = newGapStart;
         g1 = newGapEnd;

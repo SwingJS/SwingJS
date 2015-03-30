@@ -139,7 +139,7 @@ class Thread implements Runnable {
 //    }
 	
     private String        name;
-    private int         priority;
+    private int         priority = NORM_PRIORITY;
 //    private Thread      threadQ;
 //    private long        eetop;
 //
@@ -268,6 +268,7 @@ class Thread implements Runnable {
     public static Thread currentThread() {
     	if (thisThread == null) {
     		thisThread = new Thread("master");
+    		thisThread.setPriority(NORM_PRIORITY);
     	}
     	return thisThread;
     }

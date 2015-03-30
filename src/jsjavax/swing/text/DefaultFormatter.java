@@ -26,6 +26,7 @@ package jsjavax.swing.text;
 
 //import java.lang.reflect.Constructor;
 import jsjava.text.ParseException;
+
 import jsjavax.swing.JFormattedTextField;
 import jsjavax.swing.SwingConstants;
 //import jssun.swing.SwingUtilities2;
@@ -421,8 +422,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * Invokes <code>commitEdit</code> on the JFormattedTextField.
      */
     void commitEdit() throws ParseException {
-//        JFormattedTextField ftf = getFormattedTextField();
-//
+        JFormattedTextField ftf = getFormattedTextField();
+
 //        if (ftf != null) {
 //            ftf.commitEdit();
 //        }

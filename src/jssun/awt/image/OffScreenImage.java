@@ -25,6 +25,7 @@
 
 package jssun.awt.image;
 
+import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Font;
 import jsjava.awt.Graphics;
@@ -46,7 +47,7 @@ public class OffScreenImage extends BufferedImage {
 	}
 
 		protected Component c;
-//    private OffScreenImageSource osis;
+    private OffScreenImageSource osis;
     private Font defaultFont;
 
 //    /**
@@ -74,12 +75,12 @@ public class OffScreenImage extends BufferedImage {
             return env.createGraphics(this);
         }
 
-//        Color bg = c.getBackground();
+        Color bg = c.getBackground();
 //        if (bg == null) {
 //            bg = SystemColor.window;
 //        }
-//
-//        Color fg = c.getForeground();
+
+        Color fg = c.getForeground();
 //        if (fg == null) {
 //            fg = SystemColor.windowText;
 //        }
@@ -97,14 +98,14 @@ public class OffScreenImage extends BufferedImage {
 //                                 fg, bg, font);
     }
 
-//    private void initSurface(int width, int height) {
-//        Graphics2D g2 = createGraphics();
-//        try {
-//            g2.clearRect(0, 0, width, height);
-//        } finally {
-//            g2.dispose();
-//        }
-//    }
+    private void initSurface(int width, int height) {
+        Graphics2D g2 = createGraphics();
+        try {
+            g2.clearRect(0, 0, width, height);
+        } finally {
+            g2.dispose();
+        }
+    }
 
     public ImageProducer getSource() {
 //        if (osis == null) {

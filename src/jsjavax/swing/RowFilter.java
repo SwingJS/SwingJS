@@ -509,6 +509,7 @@ public abstract class RowFilter<M,I> {
             Object v = value.getValue(index);
 
             if (v instanceof Number) {
+                boolean compared = true;
                 int compareResult;
                 Class vClass = v.getClass();
                 if (number.getClass() == vClass && isComparable) {

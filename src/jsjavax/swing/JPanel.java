@@ -75,7 +75,7 @@ public class JPanel extends JComponent
      */
     public JPanel(LayoutManager layout, boolean isDoubleBuffered) {
         setLayout(layout);
-        setDoubleBuffered(isDoubleBuffered);
+//        setDoubleBuffered(isDoubleBuffered);
         setUIProperty("opaque", Boolean.TRUE);
         updateUI();
     }

@@ -34,6 +34,7 @@ import jsjava.awt.Container;
 import jsjava.awt.Window;
 import jsjava.awt.event.KeyEvent;
 import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 /**
   * The KeyboardManager class is used to help dispatch keyboard actions for the

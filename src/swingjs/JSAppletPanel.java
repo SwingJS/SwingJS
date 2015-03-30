@@ -61,7 +61,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 
 	public JSAppletPanel(Hashtable params) {
 		super();
-		System.out.println("JSAppletPanel initialized");
+		System.out.println("JSAppletPanel initializing");
 		set(params);
 		// This will allow us to get an applet from any component while running.
 		// The trick will be that when we fire events, we make sure to set the
@@ -69,24 +69,19 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		// 
 		// Might work! -- BH
 		
-		threadGroup = new ThreadGroup(appletName);
-		myThread = new Thread(threadGroup, appletName);
-		/**
-		 * @j2sNative
-		 * 
-		 * this.threadGroup.setHtmlApplet(this.html5Applet);
-		 * Jmol._applets[this.appletName + "_thread"] = this.myThread;
-		 */
-		{}
-		
+		System.out.println("JSAppletPanel initialized");
 	}
 
 	private void set(Hashtable params) {
 		this.params = params;
-		fullName = (String) params.get("fullName");
-		if (fullName == null)
-			fullName = "";
-		Object o = params.get("codePath");
+    htmlName = PT.split("" + getParameter("name"), "_object")[0];
+		appletName = PT.split(htmlName + "_", "_")[0]; 
+		// should be the same as htmlName; probably should point out that applet names cannot have _ in them.
+		
+    syncId = getParameter("syncId");
+    fullName = htmlName + "__" + syncId + "__";
+    params.put("fullName", fullName);
+  	Object o = params.get("codePath");
 		if (o == null)
 			o = "../java/";
 		appletCodeBase = o.toString();
@@ -98,10 +93,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 		if (params.containsKey("maximumSize"))
 			setMaximumSize(((Integer) params.get("maximumSize")).intValue());
 
-		int i = fullName.indexOf("__");
-		htmlName = (i < 0 ? fullName : fullName.substring(0, i));
-		appletName = PT.split(htmlName + "_", "_")[0];
-		syncId = (i < 0 ? "" : fullName.substring(i + 2, fullName.length() - 2));
+		//syncId = (i < 0 ? "" : fullName.substring(i + 2, fullName.length() - 2));
 			async = (testAsync || params.containsKey("async"));
 			Object applet = null;
 			String javaver = "?";
@@ -120,13 +112,33 @@ public class JSAppletPanel extends AppletPanel implements AppletContext {
 			strJavaVersion = javaver;
 			strJavaVendor = "Java2Script/Java 1.6 (HTML5)";
 			String platform = (String) params.get("platform");
-			if (platform != null)
+			if (platform != null && platform.length() > 0)
 				apiPlatform = (GenericPlatform) Interface.getInterface(platform);
 		display = params.get("display");
+		
+		threadGroup = new ThreadGroup(appletName);
+		myThread = new Thread(threadGroup, appletName);
+		/**
+		 * @j2sNative
+		 * 
+		 * this.threadGroup.setHtmlApplet(null, this.html5Applet);
+		 * Jmol._applets[this.appletName + "_thread"] = jsjava.lang.Thread.thisThread = this.myThread;
+		 * this.appContext = jssun.awt.SunToolkit.createNewAppContext();
+		 * if (SwingJS._JSToolkit == null)
+		 *   SwingJS._JSToolkit = javajs.api.Interface.getInterface("swingjs.JSToolkit");
+		 */
+		{}
+		
+		System.out.println("JSAPpletPanel runloader");
 		runLoader(); // applet created here
 		// do something with display here
+		System.out.println("JSAPpletPane  init");
 		appletInit();
+		System.out.println("JSAPpletPanel start");
+
 		appletStart();
+		System.out.println("JSAPpletPanel done");
+
 	}
 	
 	@Override

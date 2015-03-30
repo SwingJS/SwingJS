@@ -311,6 +311,7 @@ public class DefaultEditorKit extends EditorKit {
      * @exception BadLocationException if pos is not within 0 and
      *   the length of the document.
      */
+    @SuppressWarnings("null")
     public void write(Writer out, Document doc, int pos, int len)
         throws IOException, BadLocationException {
 

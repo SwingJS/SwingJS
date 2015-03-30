@@ -24,15 +24,15 @@
  */
 package jsjavax.swing.text;
 
+import jsjava.text.AttributedCharacterIterator;
+import jsjava.text.CharacterIterator;
+import jsjava.text.Format;
+import jsjava.text.ParseException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
 
 import jsjava.awt.event.ActionEvent;
-import jsjava.text.AttributedCharacterIterator;
-import jsjava.text.CharacterIterator;
-import jsjava.text.Format;
-import jsjava.text.ParseException;
 import jsjavax.swing.AbstractAction;
 import jsjavax.swing.Action;
 import jsjavax.swing.JFormattedTextField;
@@ -626,6 +626,7 @@ public class InternationalFormatter extends DefaultFormatter {
         return (direction == -1) ? 0 : max;
     }
 
+    @SuppressWarnings("null")
     /**
      * Overriden in an attempt to honor the literals.
      * <p>
@@ -925,6 +926,7 @@ public class InternationalFormatter extends DefaultFormatter {
                     (f instanceof AttributedCharacterIterator.Attribute)) {
             AttributedCharacterIterator.Attribute field =
                                    (AttributedCharacterIterator.Attribute)f;
+            int index = 0;
 
             iterator.first();
             while (iterator.getIndex() < start) {

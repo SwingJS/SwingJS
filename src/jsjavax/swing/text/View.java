@@ -499,6 +499,7 @@ public abstract class View implements SwingConstants {
      * @exception IllegalArgumentException if <code>direction</code>
      *          doesn't have one of the legal values above
      */
+    @SuppressWarnings("null")
     public int getNextVisualPositionFrom(int pos, Position.Bias b, Shape a,
                                          int direction, Position.Bias[] biasRet)
       throws BadLocationException {
@@ -1136,8 +1137,10 @@ public abstract class View implements SwingConstants {
      * @see #changedUpdate
      * @since 1.3
      */
+    @SuppressWarnings("null")
     protected void forwardUpdate(DocumentEvent.ElementChange ec,
                                       DocumentEvent e, Shape a, ViewFactory f) {
+        Element elem = getElement();
         int pos = e.getOffset();
         int index0 = getViewIndex(pos, Position.Bias.Forward);
         if (index0 == -1 && e.getType() == DocumentEvent.EventType.REMOVE &&

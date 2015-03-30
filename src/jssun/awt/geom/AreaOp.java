@@ -439,6 +439,7 @@ public abstract class AreaOp {
     private static CurveLink[] EmptyLinkList = new CurveLink[2];
     private static ChainEnd[] EmptyChainList = new ChainEnd[2];
 
+    @SuppressWarnings("null")
     public static void resolveLinks(Vector subcurves,
                                     Vector chains,
                                     Vector links)

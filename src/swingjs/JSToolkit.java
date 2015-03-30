@@ -7,15 +7,16 @@ import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Image;
-import jsjava.awt.Toolkit;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
+import jsjava.awt.Window;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jssun.awt.SunToolkit;
 
 
-public class JSToolkit extends Toolkit {
+public class JSToolkit extends SunToolkit {
 
 	/*
 	 * NOTE: This class is called from jsjava.awt.Toolkit
@@ -27,13 +28,15 @@ public class JSToolkit extends Toolkit {
 		System.out.println("JSToolkit initialized");		
 	}
 
+	//////// jsjava.awt.Toolkit /////////
+
 	@Override
 	public Dimension getScreenSize() {
 		Dimension d = new Dimension(0, 0);
 		/**
 		 * @j2sNative
 		 * 
-		 * d.setSize(Jmol.$(window).width, Jmol.$(window).height));
+		 * d.setSize(Jmol.$(window).width(), Jmol.$(window).height());
 		 * return d;
 		 */
 		{
@@ -153,6 +156,7 @@ public class JSToolkit extends Toolkit {
 		return false;
 	}
 
+	//////// sun.awt.SunToolkit /////////
 
 	@Override
 	public boolean isModalExclusionTypeSupported(
@@ -160,4 +164,45 @@ public class JSToolkit extends Toolkit {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean isTraySupported() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected int getScreenWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int getScreenHeight() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected boolean syncNativeQueue(long timeout) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void grab(Window w) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void ungrab(Window w) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
+	
 }

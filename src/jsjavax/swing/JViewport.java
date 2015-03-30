@@ -36,6 +36,8 @@ import jsjava.awt.LayoutManager;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Window;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
 import jsjava.awt.event.ComponentAdapter;
 import jsjava.awt.event.ComponentEvent;
 import jsjava.awt.event.ComponentListener;
@@ -739,7 +741,7 @@ public class JViewport extends JComponent
 
         if (repaintAll) {
             repaintAll = false;
-//            Rectangle clipB = g.getClipBounds();
+            Rectangle clipB = g.getClipBounds();
 //            if (clipB.width < getWidth() ||
 //                clipB.height < getHeight()) {
 //                waitingForRepaint = true;
@@ -1565,7 +1567,6 @@ public class JViewport extends JComponent
         }
 
         boolean retValue;
-        @SuppressWarnings("unused")
         RepaintManager rm = RepaintManager.currentManager(this);
         JComponent view = (JComponent) getView();
 

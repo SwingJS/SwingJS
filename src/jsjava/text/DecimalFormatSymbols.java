@@ -43,7 +43,6 @@ import java.util.Currency;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 //import java.util.spi.LocaleServiceProvider;
 //import sun.util.LocaleServiceProviderPool;
 import jssun.util.resources.LocaleData;
@@ -770,35 +769,35 @@ public class DecimalFormatSymbols implements Cloneable {
     // Proclaim JDK 1.1 FCS compatibility
     static final long serialVersionUID = 5772796243397350300L;
 
-//    // The internal serial version which says which version was written
-//    // - 0 (default) for version up to JDK 1.1.5
-//    // - 1 for version from JDK 1.1.6, which includes two new fields:
-//    //     monetarySeparator and exponential.
-//    // - 2 for version from J2SE 1.4, which includes locale field.
-//    // - 3 for version from J2SE 1.6, which includes exponentialSeparator field.
-//    private static final int currentSerialVersion = 3;
-//
-//    /**
-//     * Describes the version of <code>DecimalFormatSymbols</code> present on the stream.
-//     * Possible values are:
-//     * <ul>
-//     * <li><b>0</b> (or uninitialized): versions prior to JDK 1.1.6.
-//     *
-//     * <li><b>1</b>: Versions written by JDK 1.1.6 or later, which include
-//     *      two new fields: <code>monetarySeparator</code> and <code>exponential</code>.
-//     * <li><b>2</b>: Versions written by J2SE 1.4 or later, which include a
-//     *      new <code>locale</code> field.
-//     * <li><b>3</b>: Versions written by J2SE 1.6 or later, which include a
-//     *      new <code>exponentialSeparator</code> field.
-//     * </ul>
-//     * When streaming out a <code>DecimalFormatSymbols</code>, the most recent format
-//     * (corresponding to the highest allowable <code>serialVersionOnStream</code>)
-//     * is always written.
-//     *
-//     * @serial
-//     * @since JDK 1.1.6
-//     */
-//    private int serialVersionOnStream = currentSerialVersion;
+    // The internal serial version which says which version was written
+    // - 0 (default) for version up to JDK 1.1.5
+    // - 1 for version from JDK 1.1.6, which includes two new fields:
+    //     monetarySeparator and exponential.
+    // - 2 for version from J2SE 1.4, which includes locale field.
+    // - 3 for version from J2SE 1.6, which includes exponentialSeparator field.
+    private static final int currentSerialVersion = 3;
+
+    /**
+     * Describes the version of <code>DecimalFormatSymbols</code> present on the stream.
+     * Possible values are:
+     * <ul>
+     * <li><b>0</b> (or uninitialized): versions prior to JDK 1.1.6.
+     *
+     * <li><b>1</b>: Versions written by JDK 1.1.6 or later, which include
+     *      two new fields: <code>monetarySeparator</code> and <code>exponential</code>.
+     * <li><b>2</b>: Versions written by J2SE 1.4 or later, which include a
+     *      new <code>locale</code> field.
+     * <li><b>3</b>: Versions written by J2SE 1.6 or later, which include a
+     *      new <code>exponentialSeparator</code> field.
+     * </ul>
+     * When streaming out a <code>DecimalFormatSymbols</code>, the most recent format
+     * (corresponding to the highest allowable <code>serialVersionOnStream</code>)
+     * is always written.
+     *
+     * @serial
+     * @since JDK 1.1.6
+     */
+    private int serialVersionOnStream = currentSerialVersion;
 
     /**
      * cache to hold the NumberElements and the Currency

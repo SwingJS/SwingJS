@@ -140,11 +140,11 @@ public class CellRendererPane extends Container
             c.validate();
         }
 
-        boolean wasDoubleBuffered = false;
-        if ((c instanceof JComponent) && ((JComponent)c).isDoubleBuffered()) {
-            wasDoubleBuffered = true;
-            ((JComponent)c).setDoubleBuffered(false);
-        }
+//        boolean wasDoubleBuffered = false;
+//        if ((c instanceof JComponent) && ((JComponent)c).isDoubleBuffered()) {
+//            wasDoubleBuffered = true;
+//            ((JComponent)c).setDoubleBuffered(false);
+//        }
 
         Graphics cg = g.create(x, y, w, h);
         try {
@@ -154,10 +154,10 @@ public class CellRendererPane extends Container
             cg.dispose();
         }
 
-        if (wasDoubleBuffered && (c instanceof JComponent)) {
-            ((JComponent)c).setDoubleBuffered(true);
-        }
-
+//        if (wasDoubleBuffered && (c instanceof JComponent)) {
+//            ((JComponent)c).setDoubleBuffered(true);
+//        }
+//
         c.setBounds(-w, -h, 0, 0);
     }
 

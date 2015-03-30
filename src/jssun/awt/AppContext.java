@@ -28,8 +28,8 @@ package jssun.awt;
 import jsjava.lang.Thread;
 import jsjava.lang.ThreadGroup;
 //import jsjava.awt.EventQueue;
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
+//import jsjava.security.AccessController;
+//import jsjava.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -38,6 +38,9 @@ import java.util.Set;
 import java.util.HashSet;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
+//import java.util.concurrent.atomic.AtomicInteger;
+import jsjava.lang.Thread; // OH YES IT IS!
+import jsjava.lang.ThreadGroup; // OH YES IT IS!
 
 /**
  * The AppContext is a table referenced by ThreadGroup which stores
@@ -279,31 +282,22 @@ public final class AppContext {
         if ((recent != null) && (recent.thread == currentThread))  {
             appContext = recent.appContext; // Cache hit
         } else {
-            appContext = (AppContext)AccessController.doPrivileged(
-                                            new PrivilegedAction() {
-            public Object run() {
-            // Get the current ThreadGroup, and look for it and its
-            // parents in the hash from ThreadGroup to AppContext --
-            // it should be found, because we use createNewContext()
-            // when new AppContext objects are created.
-            ThreadGroup currentThreadGroup = currentThread.getThreadGroup();
-            ThreadGroup threadGroup = currentThreadGroup;
-
+          ThreadGroup currentThreadGroup = currentThread.getThreadGroup();
+          ThreadGroup threadGroup = currentThreadGroup;
                     // Special case: we implicitly create the main app context
                     // if no contexts have been created yet. This covers standalone apps
                     // and excludes applets because by the time applet starts
                     // a number of contexts have already been created by the plugin.
-                    if (numAppContexts == 0) {
+//                    if (numAppContexts == 0) {
                         // This check is not necessary, its purpose is to help
                         // Plugin devs to catch all the cases of main AC creation.
 //                        if (System.getProperty("javaplugin.version") == null &&
 //                                System.getProperty("javawebstart.version") == null) {
 //                            initMainAppContext();
 //                        }
-                    }
-
-            AppContext context = threadGroup2appContext.get(threadGroup);
-            while (context == null) {
+//                    }
+            appContext = threadGroup2appContext.get(threadGroup);
+            while (appContext == null) {
                 threadGroup = threadGroup.getParent();
                 if (threadGroup == null) {
                     // We've got up to the root thread group and did not find an AppContext
@@ -322,22 +316,18 @@ public final class AppContext {
 //                    }
                     return null;
                 }
-                context = threadGroup2appContext.get(threadGroup);
+                appContext = threadGroup2appContext.get(threadGroup);
             }
             // In case we did anything in the above while loop, we add
             // all the intermediate ThreadGroups to threadGroup2appContext
             // so we won't spin again.
             for (ThreadGroup tg = currentThreadGroup; tg != threadGroup; tg = tg.getParent()) {
-                threadGroup2appContext.put(tg, context);
+                threadGroup2appContext.put(tg, appContext);
             }
 
             // Now we're done, so we cache the latest key/value pair.
             mostRecentThreadAppContext =
-                new MostRecentThreadAppContext(currentThread, context);
-
-            return context;
-          }
-         });
+                new MostRecentThreadAppContext(currentThread, appContext);
         }
 
         return appContext;
@@ -546,24 +536,24 @@ public final class AppContext {
 //        }
 //    }
 
-    static final class CreateThreadAction implements PrivilegedAction {
-        private final AppContext appContext;
-        private final Runnable runnable;
-
-        public CreateThreadAction(AppContext ac, Runnable r) {
-            appContext = ac;
-            runnable = r;
-        }
-
-        public Object run() {
-            Thread t = new Thread(appContext.getThreadGroup(), runnable);
-            //t.setContextClassLoader(appContext.getContextClassLoader());
-            t.setPriority(Thread.NORM_PRIORITY + 1);
-            t.setDaemon(true);
-            return t;
-        }
-    }
-
+//    static final class CreateThreadAction implements PrivilegedAction {
+//        private final AppContext appContext;
+//        private final Runnable runnable;
+//
+//        public CreateThreadAction(AppContext ac, Runnable r) {
+//            appContext = ac;
+//            runnable = r;
+//        }
+//
+//        public Object run() {
+//            Thread t = new Thread(appContext.getThreadGroup(), runnable);
+//            //t.setContextClassLoader(appContext.getContextClassLoader());
+//            t.setPriority(Thread.NORM_PRIORITY + 1);
+//            t.setDaemon(true);
+//            return t;
+//        }
+//    }
+//
 //    static void stopEventDispatchThreads() {
 //        for (AppContext appContext: getAppContexts()) {
 //            if (appContext.isDisposed()) {

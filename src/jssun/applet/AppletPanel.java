@@ -719,11 +719,11 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		// final String serName = getSerializedObject();
 		String code = getCode();
 
-		if (code != null) {
+		if (code == null) {
 			System.err.println("runloader.err");
 			// return null;
 			throw new InstantiationException(
-					"Either \"code\" or \"object\" should be specified, but not both.");
+					"\"code\" must be specified.");
 		}
 		// if (code == null) {
 		// String msg = "nocode";
@@ -737,7 +737,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		/**
 		 * @j2sNative
 		 * 
-		 *            this.applet = javajs.Interface.getInterface(code);
+		 *            this.applet = javajs.api.Interface.getInterface(code);
 		 * 
 		 */
 		{

@@ -205,6 +205,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param pPaths new selection
       */
+    @SuppressWarnings("null")
     public void setSelectionPaths(TreePath[] pPaths) {
         int            newCount, newCounter, oldCount, oldCounter;
         TreePath[]     paths = pPaths;
@@ -339,6 +340,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param paths the new path to add to the current selection
       */
+    @SuppressWarnings("null")
     public void addSelectionPaths(TreePath[] paths) {
         int       newPathLength = ((paths == null) ? 0 : paths.length);
 
@@ -776,6 +778,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
         listSelectionModel.clearSelection();
         if(selection != null && rowMapper != null) {
             int               aRow;
+            int               validCount = 0;
             int[]             rows = rowMapper.getRowsForPaths(selection);
 
             for(int counter = 0, maxCounter = selection.length;
@@ -1035,7 +1038,7 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
             BitSet               bitSet = new BitSet();
             int                  counter;
             int                  pathCount = paths.length;
-//            int                  anIndex;
+            int                  anIndex;
             int                  min = -1;
             int                  validCount = 0;
             TreePath[]           tempPath = new TreePath[1];

@@ -204,9 +204,11 @@ public class PlainDocument extends AbstractDocument {
                 }
             }
             if (hasBreaks) {
+                int rmCount = 1;
                 removed.addElement(rmCandidate);
                 if ((offset + length == rmOffs1) && (lastOffset != rmOffs1) &&
                     ((index+1) < lineMap.getElementCount())) {
+                    rmCount += 1;
                     Element e = lineMap.getElement(index+1);
                     removed.addElement(e);
                     rmOffs1 = e.getEndOffset();

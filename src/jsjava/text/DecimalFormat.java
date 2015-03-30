@@ -41,13 +41,12 @@ package jsjava.text;
 //import java.io.InvalidObjectException;
 //import jsjava.math.BigDecimal;
 //import jsjava.math.BigInteger;
+import jsjava.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import jsjava.math.RoundingMode;
 //import java.util.concurrent.atomic.AtomicInteger;
 //import java.util.concurrent.atomic.AtomicLong;
 import jssun.util.resources.LocaleData;
@@ -2365,7 +2364,6 @@ public class DecimalFormat extends NumberFormat {
         // occupied by phase 1.  This is used during the processing of the
         // second pattern (the one representing negative numbers) to ensure
         // that no deviation exists in phase 1 between the two patterns.
-        @SuppressWarnings("unused")
         int phaseOneStart = 0;
         int phaseOneLength = 0;
 

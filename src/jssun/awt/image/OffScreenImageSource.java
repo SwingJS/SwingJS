@@ -26,14 +26,14 @@
 package jssun.awt.image;
 
 import java.util.Hashtable;
-
+import jsjava.awt.image.ImageConsumer;
+import jsjava.awt.image.ImageProducer;
+//import jsjava.awt.image.WritableRaster;
+import jsjava.awt.image.ColorModel;
 //import jsjava.awt.image.IndexColorModel;
 //import jsjava.awt.image.DirectColorModel;
 import jsjava.awt.image.BufferedImage;
 //import jsjava.awt.image.DataBuffer;
-import jsjava.awt.image.ImageConsumer;
-import jsjava.awt.image.ImageProducer;
-//import jsjava.awt.image.WritableRaster;
 
 public class OffScreenImageSource implements ImageProducer {
     BufferedImage image;
@@ -85,7 +85,7 @@ public class OffScreenImageSource implements ImageProducer {
     private void sendPixels() {
     	//TODO
     	//SwingJS lots to do here
-//        ColorModel cm = image.getColorModel();
+        ColorModel cm = image.getColorModel();
         //WritableRaster raster = image.getRaster();
         //int numDataElements = raster.getNumDataElements();
         //int dataType = raster.getDataBuffer().getDataType();

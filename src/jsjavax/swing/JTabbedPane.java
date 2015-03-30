@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import jsjava.awt.Color;
 import jsjava.awt.Component;
+import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.event.ChangeEvent;
@@ -2238,44 +2239,44 @@ public class JTabbedPane extends JComponent
             enabled = b;
         }
 
-//        public boolean isVisible() {
-//            return parent.isVisible();
-//        }
-//
-//        public void setVisible(boolean b) {
-//            parent.setVisible(b);
-//        }
-//
-//        public boolean isShowing() {
-//            return parent.isShowing();
-//        }
-//
-//        public boolean contains(Point p) {
-//            Rectangle r = getBounds();
-//            return r.contains(p);
-//        }
-//
-//        public Point getLocationOnScreen() {
-//             Point parentLocation = parent.getLocationOnScreen();
-//             Point componentLocation = getLocation();
-//             componentLocation.translate(parentLocation.x, parentLocation.y);
-//             return componentLocation;
-//        }
-//
-//        public Point getLocation() {
-//             Rectangle r = getBounds();
-//             return new Point(r.x, r.y);
-//        }
-//
+        public boolean isVisible() {
+            return parent.isVisible();
+        }
+
+        public void setVisible(boolean b) {
+            parent.setVisible(b);
+        }
+
+        public boolean isShowing() {
+            return parent.isShowing();
+        }
+
+        public boolean contains(Point p) {
+            Rectangle r = getBounds();
+            return r.contains(p);
+        }
+
+        public Point getLocationOnScreen() {
+             Point parentLocation = parent.getLocationOnScreen();
+             Point componentLocation = getLocation();
+             componentLocation.translate(parentLocation.x, parentLocation.y);
+             return componentLocation;
+        }
+
+        public Point getLocation() {
+             Rectangle r = getBounds();
+             return new Point(r.x, r.y);
+        }
+
 //        public void setLocation(Point p) {
 //            // do nothing
 //        }
 //
-//        public Rectangle getBounds() {
-//            return parent.getUI().getTabBounds(parent,
-//                                               parent.indexOfTab(title));
-//        }
-//
+        public Rectangle getBounds() {
+            return parent.getUI().getTabBounds(parent,
+                                               parent.indexOfTab(title));
+        }
+
 //        public void setBounds(Rectangle r) {
 //            // do nothing
 //        }

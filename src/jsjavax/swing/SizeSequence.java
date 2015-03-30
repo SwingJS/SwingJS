@@ -393,6 +393,7 @@ public class SizeSequence {
      */
     public void removeEntries(int start, int length) {
         int sizes[] = getSizes();
+        int end = start + length;
         int n = a.length - length;
         a = new int[n];
         for (int i = 0; i < start; i++) {

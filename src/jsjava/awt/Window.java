@@ -44,6 +44,7 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.WindowFocusListener;
 import jsjava.awt.event.WindowListener;
 import jsjava.awt.event.WindowStateListener;
+import jsjava.awt.image.BufferedImage;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JLayeredPane;
@@ -784,7 +785,7 @@ public class Window extends Container {
      * @see Component#isDisplayable
      */
     public void pack() {
-//        Container parent = this.parent;
+        Container parent = this.parent;
         /**
          * @j2sNative
          *  //TODO
@@ -3010,6 +3011,7 @@ public class Window extends Container {
      * @see java.awt.GraphicsEnvironment#getCenterPoint
      * @since 1.4
      */
+    @SuppressWarnings("null")
     public void setLocationRelativeTo(Component c) {
         Container root=null;
 
@@ -3418,7 +3420,7 @@ public class Window extends Container {
     void setOpaque(boolean opaque) {
         synchronized (getTreeLock()) {
         	//TODO ?
-//            GraphicsConfiguration gc = getGraphicsConfiguration();
+            GraphicsConfiguration gc = getGraphicsConfiguration();
 //            if (!opaque && !com.sun.awt.AWTUtilities.isTranslucencyCapable(gc)) {
 //            throw new IllegalArgumentException(
 //                    "The window must use a translucency-compatible graphics configuration");
@@ -3442,14 +3444,14 @@ public class Window extends Container {
         }
     }
 
-//    private void updateWindow(BufferedImage backBuffer) {
+    private void updateWindow(BufferedImage backBuffer) {
 //        synchronized (getTreeLock()) {
 //            WindowPeer peer = (WindowPeer)getPeer();
 //            if (peer != null) {
 //                peer.updateWindow(backBuffer);
 //            }
 //        }
-//    }
+    }
 
     private static final Color TRANSPARENT_BACKGROUND_COLOR = new Color(0, 0, 0, 0);
 
@@ -3466,9 +3468,9 @@ public class Window extends Container {
             JComponent gp =
                 (rpc.getGlassPane() instanceof JComponent) ?
                 (JComponent)rpc.getGlassPane() : null;
-            if (gp != null) {
-                gp.setDoubleBuffered(isOpaque);
-            }
+//            if (gp != null) {
+//                gp.setDoubleBuffered(isOpaque);
+//            }
             lp.setOpaque(isOpaque);
             root.setOpaque(isOpaque);
             root.setDoubleBuffered(isOpaque); //XXX: the "white rect" workaround

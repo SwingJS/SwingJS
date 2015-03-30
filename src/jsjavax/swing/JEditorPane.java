@@ -70,6 +70,7 @@ import jsjavax.swing.text.View;
 import jsjavax.swing.text.ViewFactory;
 import jsjavax.swing.text.WrappedPlainView;
 import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 /**
  * A text component to edit various kinds of content.

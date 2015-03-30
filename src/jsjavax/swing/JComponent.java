@@ -765,6 +765,7 @@ public abstract class JComponent extends Container
      * @see #paint
      * @see ComponentUI
      */
+    @SuppressWarnings("null")
     protected void paintComponent(Graphics g) {
         if (ui != null) {
             Graphics scratchGraphics = (g == null) ? null : g.create();
@@ -5261,7 +5262,7 @@ public abstract class JComponent extends Container
      *  @param aFlag if true, set this component to be double buffered
      */
     public void setDoubleBuffered(boolean aFlag) {
-        setFlag(IS_DOUBLE_BUFFERED,aFlag);
+//        setFlag(IS_DOUBLE_BUFFERED,aFlag);
     }
 
     /**

@@ -57,7 +57,7 @@ public
 class ThreadGroup implements Thread.UncaughtExceptionHandler {
     private final ThreadGroup parent;
     String name;
-    int maxPriority;
+    int maxPriority = Thread.MAX_PRIORITY;  // BH
     boolean destroyed;
     boolean daemon;
     boolean vmAllowSuspension;

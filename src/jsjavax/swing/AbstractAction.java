@@ -51,10 +51,10 @@ import jsjavax.swing.event.SwingPropertyChangeSupport;
 @J2SRequireImport(ArrayTable.class)
 public abstract class AbstractAction implements Action, Cloneable
 {
-//    /**
-//     * Whether or not actions should reconfigure all properties on null.
-//     */
-//    private static Boolean RECONFIGURE_ON_NULL;
+    /**
+     * Whether or not actions should reconfigure all properties on null.
+     */
+    private static Boolean RECONFIGURE_ON_NULL;
 
     /**
      * Specifies whether action is enabled; the default is true.
@@ -73,7 +73,7 @@ public abstract class AbstractAction implements Action, Cloneable
      */
     static boolean shouldReconfigure(PropertyChangeEvent e) {
         if (e.getPropertyName() == null) {
-// never read:            RECONFIGURE_ON_NULL = false;
+            RECONFIGURE_ON_NULL = false;
             }
         return false;
     }

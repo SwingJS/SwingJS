@@ -375,7 +375,8 @@ public class PopupFactory {
                 } else {
                     return null;
                 }
-                if ((cache.size()) > 0) {
+                int c;
+                if ((c = cache.size()) > 0) {
                     HeavyWeightPopup r = (HeavyWeightPopup)cache.get(0);
                     cache.remove(0);
                     return r;
@@ -650,7 +651,7 @@ public class PopupFactory {
      * Popup implementation that uses a JPanel as the popup.
      */
     private static class LightWeightPopup extends ContainerPopup {
-//        private static final Object lightWeightPopupCacheKey = new Object(); // PopupFactory.lightPopupCache
+        private static final Object lightWeightPopupCacheKey = new Object(); // PopupFactory.lightPopupCache
 
         /**
          * Returns a light weight <code>Popup</code> implementation. If
@@ -673,19 +674,19 @@ public class PopupFactory {
             return popup;
         }
 
-//        /**
-//         * Returns the cache to use for heavy weight popups.
-//         */
-//        private static List getLightWeightPopupCache() {
-//            List cache = (List)SwingUtilities.appContextGet(
-//                                   lightWeightPopupCacheKey);
-//            if (cache == null) {
-//                cache = new ArrayList();
-//                SwingUtilities.appContextPut(lightWeightPopupCacheKey, cache);
-//            }
-//            return cache;
-//        }
-//
+        /**
+         * Returns the cache to use for heavy weight popups.
+         */
+        private static List getLightWeightPopupCache() {
+            List cache = (List)SwingUtilities.appContextGet(
+                                   lightWeightPopupCacheKey);
+            if (cache == null) {
+                cache = new ArrayList();
+                SwingUtilities.appContextPut(lightWeightPopupCacheKey, cache);
+            }
+            return cache;
+        }
+
 //        /**
 //         * Recycles the LightWeightPopup <code>popup</code>.
 //         */
@@ -729,6 +730,7 @@ public class PopupFactory {
             component.removeAll();
             //recycleLightWeightPopup(this);
         }
+        @SuppressWarnings("null")
         public void show() {
             Container parent = null;
 
@@ -865,8 +867,8 @@ public class PopupFactory {
             synchronized (MediumWeightPopup.class) {
                 java.util.List mediumPopupCache =
                                      getMediumWeightPopupCache();
-//                int c;
-                if ((/*nc=*/mediumPopupCache.size()) > 0) {
+                int c;
+                if ((c=mediumPopupCache.size()) > 0) {
                     MediumWeightPopup r = (MediumWeightPopup)mediumPopupCache.
                                                  get(0);
                     mediumPopupCache.remove(0);
@@ -886,6 +888,7 @@ public class PopupFactory {
             rootPane.getContentPane().removeAll();
             recycleMediumWeightPopup(this);
         }
+        @SuppressWarnings("null")
         public void show() {
             Component component = getComponent();
             Container parent = null;

@@ -83,7 +83,7 @@ class SwingPaintEventDispatcher extends jssun.awt.PaintEventDispatcher {
 
     public boolean queueSurfaceDataReplacing(Component c, Runnable r) {
         if (c instanceof RootPaneContainer) {
-//            AppContext appContext = SunToolkit.targetToAppContext(c);
+            AppContext appContext = SunToolkit.targetToAppContext(c);
 //            RepaintManager.currentManager(appContext).
 //                    nativeQueueSurfaceDataRunnable(appContext, c, r);
             return true;
