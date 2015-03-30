@@ -141,9 +141,23 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 		appletStart();
 		System.out.println("JSAPpletPanel done");
+		
+		notifyAppletReady();
 
 	}
 	
+	private void notifyAppletReady() {
+		/**
+		 *  not quite correct yet. Have to think about this...
+		 * 
+		 * @j2sNative
+		 * 
+		 * 	Jmol._readyCallback(this.appletName, this.fullName, true, this);
+		 * 
+		 */
+		{}
+	}
+
 	@Override
 	protected void setupAppletAppContext() {
 		// probably do something here
