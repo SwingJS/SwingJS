@@ -180,10 +180,10 @@ public class EventListenerList  {
             // something wrong
             return;
         }
-        if (!t.isInstance(l)) {
-            throw new IllegalArgumentException("Listener " + l +
-                                         " is not of type " + t);
-        }
+//        if (!t.isInstance(l)) {
+//            throw new IllegalArgumentException("Listener " + l +
+//                                         " is not of type " + t);
+//        }
         if (listenerList == NULL_ARRAY) {
             // if this is the first listener added,
             // initialize the lists
@@ -213,10 +213,10 @@ public class EventListenerList  {
             // something wrong
             return;
         }
-        if (!t.isInstance(l)) {
-            throw new IllegalArgumentException("Listener " + l +
-                                         " is not of type " + t);
-        }
+//        if (!t.isInstance(l)) {
+//            throw new IllegalArgumentException("Listener " + l +
+//                                         " is not of type " + t);
+//        }
         // Is l on the list?
         int index = -1;
         for (int i = listenerList.length-2; i>=0; i-=2) {
