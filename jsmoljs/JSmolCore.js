@@ -5,6 +5,7 @@
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
+// BH 3/30/2015 9:46:53 PM adds JSAppletPanel for ready callback
 // BH 12/6/2014 3:32:54 PM Jmol.setAppletCss() broken
 // BH 9/13/2014 2:15:51 PM embedded JSME loads from SEARCH when Jmol should 
 // BH 8/14/2014 2:52:38 PM drag-drop cache should not be cleared if SPT file is dropped
@@ -1094,13 +1095,15 @@ Jmol = (function(document) {
 		return window[id] = Jmol._applets[id] = Jmol._applets[applet] = Jmol._applets[id + "__" + Jmol._syncId + "__"] = applet;
 	} 
 
-	Jmol._readyCallback = function (appId,fullId,isReady,jmolApp) {
+	Jmol._readyCallback = function (appId,fullId,isReady,jmolApp,JSAppletPanel) {
 		appId = appId.split("_object")[0];
+    JSAppletPanel || (JSAppletPanel = jmolApp);
 		isReady = (isReady.booleanValue ? isReady.booleanValue() : isReady);
 		// necessary for MSIE in strict mode -- apparently, we can't call 
 		// jmol._readyCallback, but we can call Jmol._readyCallback. Go figure...
-
-		Jmol._track(Jmol._applets[appId])._readyCallback(appId, fullId, isReady, jmolApp);
+    var applet = Jmol._applets[appId];
+    applet._appletPanel = JSAppletPanel;
+		Jmol._track(applet._readyCallback(appId, fullId, isReady, jmolApp, JSAppletPanel));
 	}
 
 	Jmol._getWrapper = function(applet, isHeader) {
@@ -1354,7 +1357,7 @@ Jmol = (function(document) {
 
 	Jmol._destroy = function(applet) {
 		try {
-			if (applet._applet) applet._applet.destroy();
+			if (applet._appletPanel) applet._appletPanel.destroy();
 			applet._applet = null;
 			Jmol._unsetMouse(applet._canvas)
 			applet._canvas = null;
@@ -1598,8 +1601,8 @@ Jmol = (function(document) {
 		Jmol.$bind(canvas, "contextmenu", function() {return false;});
 
 		Jmol.$bind(canvas, 'mouseout', function(ev) {
-			if (canvas.applet._applet)
-				canvas.applet._applet.startHoverWatcher(false);
+			if (canvas.applet._appletPanel)
+				canvas.applet._appletPanel.startHoverWatcher(false);
 			//canvas.isDragging = false;
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if (!xym)
@@ -1610,8 +1613,8 @@ Jmol = (function(document) {
 		});
 
 		Jmol.$bind(canvas, 'mouseenter', function(ev) {
-			if (canvas.applet._applet)
-				canvas.applet._applet.startHoverWatcher(true);
+			if (canvas.applet._appletPanel)
+				canvas.applet._appletPanel.startHoverWatcher(true);
 			if (ev.buttons === 0 || ev.which === 0) {
 				canvas.isDragging = false;
 				var xym = Jmol._jsGetXY(canvas, ev);
@@ -2165,14 +2168,14 @@ Jmol.Cache.put = function(filename, data) {
 					var cacheName = "cache://DROP_" + file.name;
 					var bytes = Jmol._toBytes(evt.target.result);
 					if (!cacheName.endsWith(".spt"))
-						me._applet.cacheFileByName("cache://DROP_*",false);
+						me._appletPanel.cacheFileByName("cache://DROP_*",false);
 					if (me._viewType == "JSV" || cacheName.endsWith(".jdx")) // shared by Jmol and JSV
 						Jmol.Cache.put(cacheName, bytes);
 					else
-						me._applet.cachePut(cacheName, bytes);
+						me._appletPanel.cachePut(cacheName, bytes);
 					var xym = Jmol._jsGetXY(me._canvas, e);
-					if(xym && (!me._applet.setStatusDragDropped || me._applet.setStatusDragDropped(0, xym[0], xym[1], cacheName))) {
-						me._applet.openFileAsyncSpecial(cacheName, 1);
+					if(xym && (!me._appletPanel.setStatusDragDropped || me._appletPanel.setStatusDragDropped(0, xym[0], xym[1], cacheName))) {
+						me._appletPanel.openFileAsyncSpecial(cacheName, 1);
 					}
 				}
 			};

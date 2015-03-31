@@ -39,6 +39,7 @@ public class TanSugd3S extends JApplet {
     Container c = getContentPane();
     c.add(canvas, BorderLayout.CENTER);
     c.add(controls = new TSd3Controls(canvas), BorderLayout.SOUTH);
+    System.out.println("Hello, world!");
   }
 
   public void setSize(int width, int height) 	{

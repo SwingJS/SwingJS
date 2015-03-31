@@ -1,7 +1,8 @@
 
-// modified by Bob Hanson 3/21/2014 6:44:21 AM  to reduce this.b$[....] phrases to simply this.h$
-// BH added ability to use a non-Java key for HTML elements, for example.
+// BH 3/30/2015 11:01:35 PM incorrect constructor for HashtableKeySet and HashtableEntrySet (extends, not implements)
 // BH 8/24/2014 8:48:58 PM all synchronization and inner classes removed
+// BH 3/21/2014 6:44:21 AM  to reduce this.b$[....] phrases to simply this.h$
+// BH added ability to use a non-Java key for HTML elements, for example.
 
 
 Clazz.load([],"java.util.HashtableIterator",[],function(){
@@ -124,10 +125,10 @@ throw new java.util.NoSuchElementException();
 
 ////////////////////////////
 
-Clazz.load([],"java.util.HashtableEntrySet",[],function(){
+Clazz.load(["java.util.AbstractSet"],"java.util.HashtableEntrySet",[],function(){
 c$=Clazz.decorateAsClass(function(){
 Clazz.instantialize(this,arguments);
-},java.util,"HashtableEntrySet",null,java.util.AbstractSet);
+},java.util,"HashtableEntrySet",java.util.AbstractSet,null);
 
 Clazz.makeConstructor(c$,
 function(a){
@@ -168,10 +169,10 @@ return new java.util.HashtableIterator(this);
 
 ////////////////////////////
 
-Clazz.load([],"java.util.HashtableKeySet",[],function(){
+Clazz.load(["java.util.AbstractSet"],"java.util.HashtableKeySet",[],function(){
 c$=Clazz.decorateAsClass(function(){
 Clazz.instantialize(this,arguments);
-},java.util,"HashtableKeySet",null,java.util.AbstractSet);
+},java.util,"HashtableKeySet",java.util.AbstractSet,null);
 
 Clazz.makeConstructor(c$,
 function(a){
@@ -211,10 +212,10 @@ return new java.util.HashtableIterator(this);
 
 ////////////////////////////
 
-Clazz.load([],"java.util.HashtableValueCollection",[],function(){
+Clazz.load(["java.util.AbstractCollection"],"java.util.HashtableValueCollection",[],function(){
 c$=Clazz.decorateAsClass(function(){
 Clazz.instantialize(this,arguments);
-},java.util,"HashtableValueCollection",null,java.util.AbstractCollection);
+},java.util,"HashtableValueCollection",java.util.AbstractCollection,null);
 
 Clazz.makeConstructor(c$,
 function(a){

@@ -25,7 +25,7 @@ import jsjava.lang.ThreadGroup;
  * For now we use the following, but this will be different once we compress
  * 
  * Clazz.loadClass("swingjs.JSAppletPanel");
- * this._applet = new JSAppletPanel(viewerOptions);
+ * this._appletPanel = new JSAppletPanel(viewerOptions);
  * 
  * where viewerOptions holds critical information needed to create this applet
  * 
@@ -152,7 +152,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		 * 
 		 * @j2sNative
 		 * 
-		 * 	Jmol._readyCallback(this.appletName, this.fullName, true, this);
+		 * 	Jmol._readyCallback(this.appletName, this.fullName, true, this.applet, this);
 		 * 
 		 */
 		{}
@@ -340,26 +340,8 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	}
 
 	@Override
-	public Object getGLmolView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String getFullName() {
 		return fullName;
-	}
-
-	@Override
-	public String loadInlineString(String mol, String script, boolean isAppend) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String openFile(String fileName) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
