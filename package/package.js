@@ -58,6 +58,11 @@ ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jssun/util/resources/Lo
   "jssun.util.resources.LocaleDataResourceBundleControl"
 	]);
 
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjava/text/DateFormat.js", [
+  "jsjava.text.DateFormat", 
+  "jsjava.text.DateFormat.Field"
+	]);
+
   if (Jmol._debugCode)
     return;
 
