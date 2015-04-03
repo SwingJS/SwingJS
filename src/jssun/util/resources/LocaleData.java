@@ -106,13 +106,13 @@ public class LocaleData {
 //        return (OpenListResourceBundle)getBundle("sun.util.resources.LocaleNames", locale);
 //    }
 
-//    /**
-//     * Gets a time zone names resource bundle, using privileges
-//     * to allow accessing a sun.* package.
-//     */
-//    public static OpenListResourceBundle getTimeZoneNames(Locale locale) {
-//        return (OpenListResourceBundle)getBundle("sun.util.resources.TimeZoneNames", locale);
-//    }
+    /**
+     * Gets a time zone names resource bundle, using privileges
+     * to allow accessing a sun.* package.
+     */
+    public static OpenListResourceBundle getTimeZoneNames(Locale locale) {
+        return (OpenListResourceBundle)getBundle("jssun.util.resources.TimeZoneNames", locale);
+    }
 
 //    /**
 //     * Gets a collation data resource bundle, using privileges
@@ -122,13 +122,13 @@ public class LocaleData {
 //        return getBundle("sun.text.resources.CollationData", locale);
 //    }
 
-//    /**
-//     * Gets a date format data resource bundle, using privileges
-//     * to allow accessing a sun.* package.
-//     */
-//    public static ResourceBundle getDateFormatData(Locale locale) {
-//        return getBundle("sun.text.resources.FormatData", locale);
-//    }
+    /**
+     * Gets a date format data resource bundle, using privileges
+     * to allow accessing a sun.* package.
+     */
+    public static ResourceBundle getDateFormatData(Locale locale) {
+        return getNumberFormatData(locale);
+    }
 
     /**
      * Gets a number format data resource bundle, using privileges
