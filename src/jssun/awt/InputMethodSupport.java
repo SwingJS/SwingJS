@@ -25,7 +25,7 @@
 
 package jssun.awt;
 
-import java.util.Locale;
+import jsjava.util.Locale;
 
 /**
  * Input method support for toolkits

@@ -27,7 +27,7 @@
 package jsjava.awt;
 
 import jsjava.awt.image.BufferedImage;
-import java.util.Locale;
+import jsjava.util.Locale;
 
 /**
  *

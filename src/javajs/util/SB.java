@@ -1,7 +1,7 @@
 
 package javajs.util;
 
-import javajs.J2SIgnoreImport;
+import swingjs.J2SIgnoreImport;
 
 /**
  * Interesting thing here is that JavaScript is 3x faster than Java in handling strings.

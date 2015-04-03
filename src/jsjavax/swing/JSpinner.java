@@ -31,7 +31,7 @@ import jsjava.text.NumberFormat;
 import jsjava.text.ParseException;
 //import java.text.SimpleDateFormat;
 //import java.util.HashMap;
-import java.util.Locale;
+import jsjava.util.Locale;
 //import java.util.Map;
 
 import jsjava.awt.Component;

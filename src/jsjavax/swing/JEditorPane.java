@@ -42,7 +42,9 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javajs.api.Interface;
+import swingjs.J2SIgnoreImport;
+import swingjs.api.Interface;
+
 
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
@@ -221,6 +223,7 @@ import jsjava.lang.ThreadGroup;
  *
  * @author  Timothy Prinzing
  */
+@J2SIgnoreImport({StyledEditorKit.class})
 public class JEditorPane extends JTextComponent {
 
     /**

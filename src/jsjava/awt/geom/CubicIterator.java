@@ -38,13 +38,22 @@ class CubicIterator implements PathIterator {
     CubicCurve2D cubic;
     AffineTransform affine;
     int index;
-
+    
+    CubicIterator(){
+    	//SwingJS for reflection
+    }
+    
     CubicIterator(CubicCurve2D q, AffineTransform at) {
-        this.cubic = q;
-        this.affine = at;
+    	set(q, at);
     }
 
-    /**
+    CubicIterator set(CubicCurve2D q, AffineTransform at) {
+      this.cubic = q;
+      this.affine = at;
+      return  this;
+		}
+
+		/**
      * Return the winding rule for determining the insideness of the
      * path.
      * @see #WIND_EVEN_ODD

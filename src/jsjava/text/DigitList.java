@@ -270,7 +270,7 @@ final class DigitList implements Cloneable {
      * @param maximumFractionDigits The most fractional digits which should
      * be converted.
      */
-    public final void set(boolean isNegative, double source, int maximumFractionDigits) {
+    public final void setDouble(boolean isNegative, double source, int maximumFractionDigits) {
         set(isNegative, source, maximumFractionDigits, true);
     }
 
@@ -496,8 +496,8 @@ final class DigitList implements Cloneable {
     /**
      * Utility routine to set the value of the digit list from a long
      */
-    public final void set(boolean isNegative, long source) {
-        set(isNegative, source, 0);
+    public final void setExp(boolean isNegative, long source) {
+        setLong(isNegative, source, 0);
     }
 
     /**
@@ -509,7 +509,7 @@ final class DigitList implements Cloneable {
      * If maximumDigits is lower than the number of significant digits
      * in source, the representation will be rounded.  Ignored if <= 0.
      */
-    public final void set(boolean isNegative, long source, int maximumDigits) {
+    public final void setLong(boolean isNegative, long source, int maximumDigits) {
         this.isNegative = isNegative;
 
         // This method does not expect a negative number. However,
@@ -530,7 +530,8 @@ final class DigitList implements Cloneable {
             // Long.toString(), which was about 4x slower than this code.
             int left = MAX_COUNT;
             int right;
-            while (source > 0) {
+            while (source >= 1) {
+//SwingJS -- integers will not go to 0 upon div by 10            while (source > 0) {
                 digits[--left] = (char)('0' + (source % 10));
                 source /= 10;
             }

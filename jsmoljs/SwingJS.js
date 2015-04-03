@@ -1,5 +1,7 @@
 // SwingJS.js
 
+// BH 4/2/2015 5:17:44 PM  adds SwingJS.getJavaResource(path)
+
 // BH 3/27/2015 6:34:49 AM  just a shell
 
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required for SwingJS, but it's not defined.")
@@ -15,7 +17,13 @@ if (typeof(SwingJS) == "undefined") {
 		return SwingJS._Applet._get(id, Info, checkOnly);
 	}
 
-	// optional Info here	
+  SwingJS.getJavaResource = function(path) {
+   // path looks like jssun.util...., for example
+    var s = Jmol._getFileData(Jmol._applets[jsjava.lang.Thread.currentThread().getName()].__Info.j2sPath + "/" + path);
+    return (s.startsWith("[Exception") ? null : s);
+  }
+  
+  	// optional Info here	
 	SwingJS.getAppletHtml = function(applet, Info) {
 		if (Info) {
 			var d = SwingJS._document;

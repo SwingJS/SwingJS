@@ -35,6 +35,9 @@
         <include name="java/**/*.js" />
         <include name="javajs/**/*.js" />
       </fileset>
+        <fileset dir="${jsmol.path}/site/jsmol/j2s">
+          <include name="JU/**/*.js" />
+        </fileset>
     </copy>
   	
    	<echo>...creating lib/jquery/</echo>

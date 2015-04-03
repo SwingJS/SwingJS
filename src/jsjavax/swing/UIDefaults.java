@@ -28,7 +28,7 @@ package jsjavax.swing;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Locale;
+import jsjava.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 

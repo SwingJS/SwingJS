@@ -27,7 +27,7 @@ package jsjava.awt;
 
 import jsjava.text.AttributedCharacterIterator.Attribute;
 //import java.util.Hashtable;
-import java.util.Locale;
+import jsjava.util.Locale;
 
 import jsjava.awt.font.TextAttribute;
 import jsjava.awt.geom.AffineTransform;
@@ -1479,7 +1479,7 @@ public class Font
 
         if (styleIndex >= 0 && styleIndex+1 < strlen) {
             styleName = str.substring(styleIndex+1, sizeIndex);
-            styleName = styleName.toLowerCase(Locale.ENGLISH);
+            styleName = styleName.toLowerCase();//Locale.ENGLISH);
             if (styleName.equals("bolditalic")) {
                 fontStyle = Font.BOLD | Font.ITALIC;
             } else if (styleName.equals("italic")) {

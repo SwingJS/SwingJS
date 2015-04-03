@@ -5,8 +5,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import swingjs.api.Interface;
+
 import javajs.api.GenericPlatform;
-import javajs.api.Interface;
 import javajs.api.JSInterface;
 import javajs.util.PT;
 import jsjava.applet.Applet;
@@ -126,7 +127,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		 * Jmol._applets[this.appletName + "_thread"] = jsjava.lang.Thread.thisThread = this.myThread;
 		 * this.appContext = jssun.awt.SunToolkit.createNewAppContext();
 		 * if (SwingJS._JSToolkit == null)
-		 *   SwingJS._JSToolkit = javajs.api.Interface.getInterface("swingjs.JSToolkit");
+		 *   SwingJS._JSToolkit = swingjs.api.Interface.getInterface("swingjs.JSToolkit");
 		 */
 		{}
 

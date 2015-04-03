@@ -40,12 +40,12 @@ package jsjava.text;
 
 import jsjava.math.RoundingMode;
 //import java.text.spi.NumberFormatProvider;
-import java.util.Currency;
+//import java.util.Currency;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Locale;
+import jsjava.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
+import jsjava.util.ResourceBundle;
 //import java.util.concurrent.atomic.AtomicInteger;
 //import java.util.concurrent.atomic.AtomicLong;
 //import java.util.spi.LocaleServiceProvider;
@@ -662,42 +662,42 @@ public abstract class NumberFormat extends Format  {
         }
     }
 
-    /**
-     * Gets the currency used by this number format when formatting
-     * currency values. The initial value is derived in a locale dependent
-     * way. The returned value may be null if no valid
-     * currency could be determined and no currency has been set using
-     * {@link #setCurrency(java.util.Currency) setCurrency}.
-     * <p>
-     * The default implementation throws
-     * <code>UnsupportedOperationException</code>.
-     *
-     * @return the currency used by this number format, or <code>null</code>
-     * @exception UnsupportedOperationException if the number format class
-     * doesn't implement currency formatting
-     * @since 1.4
-     */
-    public Currency getCurrency() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Sets the currency used by this number format when formatting
-     * currency values. This does not update the minimum or maximum
-     * number of fraction digits used by the number format.
-     * <p>
-     * The default implementation throws
-     * <code>UnsupportedOperationException</code>.
-     *
-     * @param currency the new currency to be used by this number format
-     * @exception UnsupportedOperationException if the number format class
-     * doesn't implement currency formatting
-     * @exception NullPointerException if <code>currency</code> is null
-     * @since 1.4
-     */
-    public void setCurrency(Currency currency) {
-        throw new UnsupportedOperationException();
-    }
+//    /**
+//     * Gets the currency used by this number format when formatting
+//     * currency values. The initial value is derived in a locale dependent
+//     * way. The returned value may be null if no valid
+//     * currency could be determined and no currency has been set using
+//     * {@link #setCurrency(java.util.Currency) setCurrency}.
+//     * <p>
+//     * The default implementation throws
+//     * <code>UnsupportedOperationException</code>.
+//     *
+//     * @return the currency used by this number format, or <code>null</code>
+//     * @exception UnsupportedOperationException if the number format class
+//     * doesn't implement currency formatting
+//     * @since 1.4
+//     */
+//    public Currency getCurrency() {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    /**
+//     * Sets the currency used by this number format when formatting
+//     * currency values. This does not update the minimum or maximum
+//     * number of fraction digits used by the number format.
+//     * <p>
+//     * The default implementation throws
+//     * <code>UnsupportedOperationException</code>.
+//     *
+//     * @param currency the new currency to be used by this number format
+//     * @exception UnsupportedOperationException if the number format class
+//     * doesn't implement currency formatting
+//     * @exception NullPointerException if <code>currency</code> is null
+//     * @since 1.4
+//     */
+//    public void setCurrency(Currency currency) {
+//        throw new UnsupportedOperationException();
+//    }
 
     /**
      * Gets the {@link java.math.RoundingMode} used in this NumberFormat.

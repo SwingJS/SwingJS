@@ -255,8 +255,9 @@ Clazz.addProto = function(proto, name, func) {
 	Clazz.clone = function(me) {
 		// BH allows @j2sNative access without super constructor
 		var o = new me.constructor();
-		for (var i in me)
+		for (var i in me) {
 			o[i] = me[i];
+      }
 		return o;
 	}
 /*
@@ -3822,8 +3823,12 @@ if (ClazzLoader._fileCheckOnly) {
 
 		var data = Jmol._getFileData(file);
 
-		ClazzLoader.evaluate(file, data); 
-		return;
+		ClazzLoader.evaluate(file, data);
+//    if (fSuccess) {
+//    alert("fscuccess=" + fSuccess.toString())
+//      fSuccess(); 
+//      }
+//		return;
 	}
 
 	var info = {
@@ -4059,6 +4064,8 @@ ClazzLoader.checkCycle = function (node) {
 };
 
 
+ClazzLoader._classCount = 0;
+ClazzLoader._classHash = {};
 /**
  * Update the dependency tree nodes recursively.
  */
@@ -4118,8 +4125,10 @@ ClazzLoader.updateNode = function(node, _updateNode) {
 		var decl = node.declaration;
 		if (decl)
 			decl(), decl.executed = true;
-    if(ClazzLoader._fileCheckOnly)
-        System.out.println("OK FOR " + node.name)
+    if(ClazzLoader._fileCheckOnly && !ClazzLoader._classHash[node.name]) {
+      ClazzLoader._classHash[node.name] = 1;
+      System.out.println("OK " + (++ClazzLoader._classCount) + " FOR " + node.name)
+    }
 		node.status = ClazzNode.STATUS_DECLARED;
 		if (ClazzLoader.definedClasses)
 			ClazzLoader.definedClasses[node.name] = true;

@@ -43,10 +43,10 @@ package jsjava.text;
 //import jsjava.math.BigInteger;
 import jsjava.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Currency;
+//import java.util.Currency;
 import java.util.Hashtable;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import jsjava.util.Locale;
+import jsjava.util.ResourceBundle;
 //import java.util.concurrent.atomic.AtomicInteger;
 //import java.util.concurrent.atomic.AtomicLong;
 import jssun.util.resources.LocaleData;
@@ -519,8 +519,12 @@ public class DecimalFormat extends NumberFormat {
                                FieldPosition fieldPosition) {
         fieldPosition.setBeginIndex(0);
         fieldPosition.setEndIndex(0);
-
-        return format(number, result, fieldPosition.getFieldDelegate());
+        //SwingJS setting difference here by whether it is an integer or not
+        boolean isInt = (number == (int) number && Math.abs(number) < Integer.MAX_VALUE);
+        if (isInt)
+          return formatLong((int)number, result, fieldPosition.getFieldDelegate());
+        else
+          return formatDouble(number, result, fieldPosition.getFieldDelegate());
     }
 
     /**
@@ -532,7 +536,7 @@ public class DecimalFormat extends NumberFormat {
      *                  mode being set to RoundingMode.UNNECESSARY
      * @return The formatted number string
      */
-    private StringBuffer format(double number, StringBuffer result,
+    private StringBuffer formatDouble(double number, StringBuffer result,
                                 FieldDelegate delegate) {
         if (Double.isNaN(number) ||
            (Double.isInfinite(number) && multiplier == 0)) {
@@ -605,6 +609,7 @@ public class DecimalFormat extends NumberFormat {
         }
     }
 
+    
     /**
      * Format a long to produce a string.
      * @param number    The long to format
@@ -615,13 +620,17 @@ public class DecimalFormat extends NumberFormat {
      *                  mode being set to RoundingMode.UNNECESSARY
      * @return The formatted number string
      * @see java.text.FieldPosition
+     * 
+     * SwingJS ignores this one
+     * 
+     * @j2sIgnore 
      */
     public StringBuffer format(long number, StringBuffer result,
                                FieldPosition fieldPosition) {
         fieldPosition.setBeginIndex(0);
         fieldPosition.setEndIndex(0);
 
-        return format(number, result, fieldPosition.getFieldDelegate());
+        return formatLong(number, result, fieldPosition.getFieldDelegate());
     }
 
     /**
@@ -634,7 +643,7 @@ public class DecimalFormat extends NumberFormat {
      *                   mode being set to RoundingMode.UNNECESSARY
      * @see java.text.FieldPosition
      */
-    private StringBuffer format(long number, StringBuffer result,
+    private StringBuffer formatLong(long number, StringBuffer result,
                                FieldDelegate delegate) {
         boolean isNegative = (number < 0);
         if (isNegative) {
@@ -684,7 +693,7 @@ public class DecimalFormat extends NumberFormat {
             int maxFraDigits = super.getMaximumFractionDigits();
             int minFraDigits = super.getMinimumFractionDigits();
 
-            digitList.set(isNegative, number,
+            digitList.setLong(isNegative, number,
                      useExponentialNotation ? maxIntDigits + maxFraDigits : 0);
 
             return subformat(result, delegate, isNegative, true,
@@ -836,14 +845,14 @@ public class DecimalFormat extends NumberFormat {
         StringBuffer sb = new StringBuffer();
 
         if (obj instanceof Double || obj instanceof Float) {
-            format(((Number)obj).doubleValue(), sb, delegate);
+            formatDouble(((Number)obj).doubleValue(), sb, delegate);
         } else if (obj instanceof Long || obj instanceof Integer ||
                    obj instanceof Short || obj instanceof Byte 
 //                   ||
 //                   obj instanceof AtomicInteger || obj instanceof AtomicLong
 //                   
         		) {
-            format(((Number)obj).longValue(), sb, delegate);
+            formatLong(((Number)obj).longValue(), sb, delegate);
 //        } else if (obj instanceof BigDecimal) {
 //            format((BigDecimal)obj, sb, delegate);
 //        } else if (obj instanceof BigInteger) {
@@ -1034,7 +1043,7 @@ public class DecimalFormat extends NumberFormat {
                 delegate.formatted(Field.EXPONENT_SIGN, Field.EXPONENT_SIGN,
                                    fieldStart, result.length(), result);
             }
-            digitList.set(negativeExponent, exponent);
+            digitList.setExp(negativeExponent, exponent);
 
             int eFieldStart = result.length();
 
@@ -2364,7 +2373,7 @@ public class DecimalFormat extends NumberFormat {
         // occupied by phase 1.  This is used during the processing of the
         // second pattern (the one representing negative numbers) to ensure
         // that no deviation exists in phase 1 between the two patterns.
-        int phaseOneStart = 0;
+//        int phaseOneStart = 0;
         int phaseOneLength = 0;
 
         int start = 0;
@@ -2417,9 +2426,9 @@ public class DecimalFormat extends NumberFormat {
                             ch == groupingSeparator ||
                             ch == decimalSeparator) {
                             phase = 1;
-                            if (j == 1) {
-                                phaseOneStart = pos;
-                            }
+//                            if (j == 1) {
+//                                phaseOneStart = pos;
+//                            }
                             --pos; // Reprocess this character
                             continue;
                         } else if (ch == CURRENCY_SIGN) {
@@ -2789,40 +2798,40 @@ public class DecimalFormat extends NumberFormat {
         return minimumFractionDigits;
     }
 
-    /**
-     * Gets the currency used by this decimal format when formatting
-     * currency values.
-     * The currency is obtained by calling
-     * {@link DecimalFormatSymbols#getCurrency DecimalFormatSymbols.getCurrency}
-     * on this number format's symbols.
-     *
-     * @return the currency used by this decimal format, or <code>null</code>
-     * @since 1.4
-     */
-    public Currency getCurrency() {
-        return symbols.getCurrency();
-    }
-
-    /**
-     * Sets the currency used by this number format when formatting
-     * currency values. This does not update the minimum or maximum
-     * number of fraction digits used by the number format.
-     * The currency is set by calling
-     * {@link DecimalFormatSymbols#setCurrency DecimalFormatSymbols.setCurrency}
-     * on this number format's symbols.
-     *
-     * @param currency the new currency to be used by this decimal format
-     * @exception NullPointerException if <code>currency</code> is null
-     * @since 1.4
-     */
-    public void setCurrency(Currency currency) {
-        if (currency != symbols.getCurrency()) {
-            symbols.setCurrency(currency);
-            if (isCurrencyFormat) {
-                expandAffixes();
-            }
-        }
-    }
+//    /**
+//     * Gets the currency used by this decimal format when formatting
+//     * currency values.
+//     * The currency is obtained by calling
+//     * {@link DecimalFormatSymbols#getCurrency DecimalFormatSymbols.getCurrency}
+//     * on this number format's symbols.
+//     *
+//     * @return the currency used by this decimal format, or <code>null</code>
+//     * @since 1.4
+//     */
+//    public Currency getCurrency() {
+//        return symbols.getCurrency();
+//    }
+//
+//    /**
+//     * Sets the currency used by this number format when formatting
+//     * currency values. This does not update the minimum or maximum
+//     * number of fraction digits used by the number format.
+//     * The currency is set by calling
+//     * {@link DecimalFormatSymbols#setCurrency DecimalFormatSymbols.setCurrency}
+//     * on this number format's symbols.
+//     *
+//     * @param currency the new currency to be used by this decimal format
+//     * @exception NullPointerException if <code>currency</code> is null
+//     * @since 1.4
+//     */
+//    public void setCurrency(Currency currency) {
+//        if (currency != symbols.getCurrency()) {
+//            symbols.setCurrency(currency);
+//            if (isCurrencyFormat) {
+//                expandAffixes();
+//            }
+//        }
+//    }
 
     /**
      * Gets the {@link java.math.RoundingMode} used in this DecimalFormat.
@@ -2857,16 +2866,17 @@ public class DecimalFormat extends NumberFormat {
      * are reasonable for the currency's default fraction digits.
      */
     void adjustForCurrencyDefaultFractionDigits() {
-        Currency currency = symbols.getCurrency();
-        if (currency == null) {
-            try {
-                currency = Currency.getInstance(symbols.getInternationalCurrencySymbol());
-            } catch (IllegalArgumentException e) {
-            }
-        }
-        if (currency != null) {
-            int digits = currency.getDefaultFractionDigits();
-            if (digits != -1) {
+//        Currency currency = symbols.getCurrency();
+//        if (currency == null) {
+//            try {
+//                currency = Currency.getInstance(symbols.getInternationalCurrencySymbol());
+//            } catch (IllegalArgumentException e) {
+//            }
+//        }
+//        if (currency != null) {
+//            int digits = currency.getDefaultFractionDigits();
+//            if (digits != -1) {
+    	int digits = 2;
                 int oldMinDigits = getMinimumFractionDigits();
                 // Common patterns are "#.##", "#.00", "#".
                 // Try to adjust all of them in a reasonable way.
@@ -2877,8 +2887,8 @@ public class DecimalFormat extends NumberFormat {
                     setMinimumFractionDigits(Math.min(digits, oldMinDigits));
                     setMaximumFractionDigits(digits);
                 }
-            }
-        }
+//            }
+//        }
     }
 
 //    /**

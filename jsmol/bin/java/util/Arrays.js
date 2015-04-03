@@ -147,7 +147,7 @@ if (arguments.length == 2) {
 
 c$.asList=Clazz.defineMethod(c$,"asList",
 function(a){
-return new java.util.Arrays.ArrayList(a);
+return new java.util.Arrays.ArrayList(arguments.length == 1 && Clazz.getClassName(a) == "Array" ? a : arguments); // BH must be T...
 },"~A");
 Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){

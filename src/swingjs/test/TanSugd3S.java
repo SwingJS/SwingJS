@@ -24,10 +24,10 @@ import jsjavax.swing.JRadioButton;
 import jsjavax.swing.JTextField;
 
 public class TanSugd3S extends JApplet {
-
+	
 	TSd3Canvas canvas;
   TSd3Controls controls;
-
+ 
   public TanSugd3S()     {
     }
 

@@ -1,13 +1,32 @@
+PROGRESS
+========
+
+4/2/2015:
+
+JApplet loading successful
+
+ResourceBundle working
+DecimalFormat working
+
+Thread.currentThread() working. For example, this works:
+
+  SwingJS.getJavaResource = function(path) {
+   // path looks like jssun.util...., for example
+    var appId = jsjava.lang.Thread.currentThread().getName();
+    path = Jmol._applets[appId].__Info.j2sPath + "/" + path;
+    var s = Jmol._getFileData(path);
+    return (s.startsWith("[Exception") ? null : s);
+  }
+  
+
+
 Differences to Original JDK 1.6
 ===============================
 
 DISCUSS
 =======
 
-It looks like just about all the warnings are "never used locally" errors.
-This is excellent!
-
-need to work on number/date formatters as these are very popular
+TODO: date formatters as these are very popular
 
 Table row/col sorter needs checking after removal of java.text.Collator references
 
@@ -43,6 +62,7 @@ native classes
 java.awt.Color
 javax.swing.JFileDialog
 key focus
+static methods and classes -- order is important
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -135,6 +155,16 @@ because it is next to impossible to find all of these, and even if they are
 found, certain cases such as above will never be perfectly resolved.
 
 In addition, JavaScript does not/cannot support "long". 
+One cannot test against Long.MAX_VALUE or Long.MIN_VALUE.
+
+Since int, long, byte, and char are not really integers, care must be taken 
+to avoid a loop such as the following, which was in java.text.DigitList:
+
+  while (source > 0) {
+    ... 
+    source /= 10 
+  }
+
 
 forced null typing
 ------------------
@@ -171,13 +201,43 @@ native classes
 --------------
 
 The J2S compiler ignores all static native method declarations.
-Anything of this nature needs to be implemented in JavaScript if it is needed.
+Anything of this nature needs to be implemented in JavaScript if it is needed,
+using j2sNative blocks:
+
+/**
+ * @j2sNative
+ *
+ */
+ {
+   // it is critical to remember to insert this { } phrasing, 
+   // or the block will be ignored!
+ }
+ 
 
 key Focus
 ---------
 - Less explicit key focus 
 - handling (mostly done by Browser/HTML)
 - no SwingUtilities.findFocusOwner
+
+static methods and classes -- order is important
+------------------------------------------------
+
+J2S cannot run a static method that calls an uninitiated static variable:
+
+	static int x = createX();
+
+    static int createX() {
+		return y;
+	}
+	
+	static int y = 20;
+
+will fail. It's actually quite odd that it does not fail in Java as well.
+
+Likewise, static classes hidden in other classes must be presented in an order
+that does not call an uninitiated class. In java.util.Collections, for example,
+it was important to move SynchronizedRandomAccessList to after SynchronizedList.
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================

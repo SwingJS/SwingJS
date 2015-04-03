@@ -32,7 +32,7 @@ import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Locale;
+import jsjava.util.Locale;
 import java.util.Set;
 
 import jsjava.applet.Applet;

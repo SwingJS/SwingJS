@@ -1,4 +1,4 @@
-package javajs;
+package swingjs;
 
 public @interface J2SRequireImport {
 

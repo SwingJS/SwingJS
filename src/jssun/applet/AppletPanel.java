@@ -49,7 +49,7 @@ import jsjava.lang.Thread;
 //import jsjava.security.PrivilegedAction;
 //import jsjava.security.ProtectionDomain;
 //import java.util.HashMap;
-import java.util.Locale;
+import jsjava.util.Locale;
 //import java.util.StringTokenizer;
 //import java.util.Vector;
 
@@ -737,7 +737,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		/**
 		 * @j2sNative
 		 * 
-		 *            this.applet = javajs.api.Interface.getInterface(code);
+		 *            this.applet = swingjs.api.Interface.getInterface(code);
 		 * 
 		 */
 		{
@@ -797,7 +797,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 
 		// Need the default(fallback) font to be created in this AppContext
 		Font f = getFont();
-		if (f == null || "dialog".equals(f.getFamily().toLowerCase(Locale.ENGLISH))
+		if (f == null || "dialog".equals(f.getFamily().toLowerCase())//Locale.ENGLISH))
 				&& f.getSize() == 12 && f.getStyle() == Font.PLAIN) {
 			setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
 		}

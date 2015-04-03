@@ -26,6 +26,9 @@ package jsjavax.swing;
 
 import java.lang.reflect.InvocationTargetException;
 
+import swingjs.J2SIgnoreImport;
+import swingjs.api.Interface;
+
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -58,6 +61,7 @@ import jsjava.lang.Thread;
  *
  * @author unknown
  */
+@J2SIgnoreImport({CellRendererPane.class, DefaultCellEditor.class, ImageIcon.class, JMenu.class, })
 public class SwingUtilities implements SwingConstants
 {
     // These states are system-wide, rather than AppContext wide.
@@ -1203,7 +1207,7 @@ public class SwingUtilities implements SwingConstants
                 p.add(shell);
             }
         } else {
-            shell = new CellRendererPane();
+            shell = (Container) Interface.getInterface("jsjavax.swing.CellRendererPane");
             shell.add(c);
             p.add(shell);
         }

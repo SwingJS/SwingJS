@@ -26,7 +26,7 @@ package jsjava.awt;
 
 import java.util.EventListener;
 import java.util.HashMap;
-import java.util.Locale;
+import jsjava.util.Locale;
 import java.util.Map;
 //import java.util.Set;
 import java.util.Vector;

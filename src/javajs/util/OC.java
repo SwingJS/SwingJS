@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import swingjs.J2SIgnoreImport;
 
 
-import javajs.J2SIgnoreImport;
+
 import javajs.api.BytePoster;
 
 /**

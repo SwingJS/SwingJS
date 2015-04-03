@@ -38,7 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 //import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
+import jsjava.util.Locale;
 import java.util.Map;
 //import java.util.WeakHashMap;
 //import java.util.concurrent.TimeUnit;

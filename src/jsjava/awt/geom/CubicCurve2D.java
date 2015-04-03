@@ -31,6 +31,8 @@ import jssun.awt.geom.Curve;
 
 import java.util.Arrays;
 
+import swingjs.api.Interface;
+
 /**
  * The <code>CubicCurve2D</code> class defines a cubic parametric curve
  * segment in {@code (x,y)} coordinate space.
@@ -1651,7 +1653,8 @@ public abstract class CubicCurve2D implements Shape, Cloneable {
      * @since 1.2
      */
     public PathIterator getPathIterator(AffineTransform at) {
-        return new CubicIterator(this, at);
+    	//SwingJS reflection
+    	return ((CubicIterator) Interface.getInterface("jsjava.awt.geom.CubicInterator")).set(this,at); 
     }
 
     /**

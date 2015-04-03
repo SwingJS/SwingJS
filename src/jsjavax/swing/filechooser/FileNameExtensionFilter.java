@@ -26,7 +26,7 @@
 package jsjavax.swing.filechooser;
 
 import java.io.File;
-import java.util.Locale;
+import jsjava.util.Locale;
 
 /**
  * An implementation of {@code FileFilter} that filters using a
@@ -85,7 +85,7 @@ public final class FileNameExtensionFilter extends FileFilter {
                     "Each extension must be non-null and not empty");
             }
             this.extensions[i] = extensions[i];
-            lowerCaseExtensions[i] = extensions[i].toLowerCase(Locale.ENGLISH);
+            lowerCaseExtensions[i] = extensions[i].toLowerCase();//Locale.ENGLISH);
         }
     }
 
@@ -112,7 +112,7 @@ public final class FileNameExtensionFilter extends FileFilter {
             int i = fileName.lastIndexOf('.');
             if (i > 0 && i < fileName.length() - 1) {
                 String desiredExtension = fileName.substring(i+1).
-                        toLowerCase(Locale.ENGLISH);
+                        toLowerCase();//Locale.ENGLISH);
                 for (String extension : lowerCaseExtensions) {
                     if (desiredExtension.equals(extension)) {
                         return true;

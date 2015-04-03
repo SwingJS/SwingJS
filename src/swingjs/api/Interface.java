@@ -23,13 +23,13 @@
  *  02110-1301, USA.
  */
 
-package javajs.api;
+package swingjs.api;
 
 public class Interface {
 
   public static Object getInterface(String name) {
     try {
-      System.out.println("javajs.api.Interface creating instance of " + name);
+      System.out.println("swingjs.api.Interface creating instance of " + name);
       Class<?> x = Class.forName(name);
       return (x == null ? null : x.newInstance());
     } catch (Exception e) {

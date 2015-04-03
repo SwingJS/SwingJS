@@ -24,7 +24,7 @@
  */
 package jsjavax.swing;
 
-import javajs.J2SRequireImport;
+import swingjs.J2SRequireImport;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.SwingPropertyChangeSupport;

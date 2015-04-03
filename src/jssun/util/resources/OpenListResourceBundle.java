@@ -43,7 +43,7 @@ package jssun.util.resources;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
+import jsjava.util.ResourceBundle;
 import java.util.Set;
 import jssun.util.ResourceBundleEnumeration;
 

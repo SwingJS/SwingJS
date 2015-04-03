@@ -44,8 +44,8 @@ import jsjava.security.AccessController;
 import jsjava.security.PrivilegedAction;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import jsjava.util.Locale;
+import jsjava.util.ResourceBundle;
 import java.util.StringTokenizer;
 
 //import sun.util.LocaleDataMetaInfo;
@@ -69,9 +69,9 @@ public class LocaleData {
          static final Locale[] localeList = createLocaleList();
     }
 
-    //SwingJS for now, just en files are present in sun.text.resources
-		private static String SwingJSSupportedLocales = "en|"; 
-
+//    //SwingJS for now, just en files are present in sun.text.resources
+//		private static String SwingJSSupportedLocales = "en|"; 
+//
     /**
      * Returns a list of the installed locales. Currently, this simply returns
      * the list of locales for which a sun.text.resources.FormatData bundle
@@ -90,52 +90,52 @@ public class LocaleData {
         return getBundle("sun.util.resources.CalendarData", locale);
     }
 
-    /**
-     * Gets a currency names resource bundle, using privileges
-     * to allow accessing a sun.* package.
-     */
-    public static OpenListResourceBundle getCurrencyNames(Locale locale) {
-        return (OpenListResourceBundle)getBundle("sun.util.resources.CurrencyNames", locale);
-    }
+//    /**
+//     * Gets a currency names resource bundle, using privileges
+//     * to allow accessing a sun.* package.
+//     */
+//    public static OpenListResourceBundle getCurrencyNames(Locale locale) {
+//        return (OpenListResourceBundle)getBundle("sun.util.resources.CurrencyNames", locale);
+//    }
 
-    /**
-     * Gets a locale names resource bundle, using privileges
-     * to allow accessing a sun.* package.
-     */
-    public static OpenListResourceBundle getLocaleNames(Locale locale) {
-        return (OpenListResourceBundle)getBundle("sun.util.resources.LocaleNames", locale);
-    }
+//    /**
+//     * Gets a locale names resource bundle, using privileges
+//     * to allow accessing a sun.* package.
+//     */
+//    public static OpenListResourceBundle getLocaleNames(Locale locale) {
+//        return (OpenListResourceBundle)getBundle("sun.util.resources.LocaleNames", locale);
+//    }
 
-    /**
-     * Gets a time zone names resource bundle, using privileges
-     * to allow accessing a sun.* package.
-     */
-    public static OpenListResourceBundle getTimeZoneNames(Locale locale) {
-        return (OpenListResourceBundle)getBundle("sun.util.resources.TimeZoneNames", locale);
-    }
+//    /**
+//     * Gets a time zone names resource bundle, using privileges
+//     * to allow accessing a sun.* package.
+//     */
+//    public static OpenListResourceBundle getTimeZoneNames(Locale locale) {
+//        return (OpenListResourceBundle)getBundle("sun.util.resources.TimeZoneNames", locale);
+//    }
 
-    /**
-     * Gets a collation data resource bundle, using privileges
-     * to allow accessing a sun.* package.
-     */
-    public static ResourceBundle getCollationData(Locale locale) {
-        return getBundle("sun.text.resources.CollationData", locale);
-    }
+//    /**
+//     * Gets a collation data resource bundle, using privileges
+//     * to allow accessing a sun.* package.
+//     */
+//    public static ResourceBundle getCollationData(Locale locale) {
+//        return getBundle("sun.text.resources.CollationData", locale);
+//    }
 
-    /**
-     * Gets a date format data resource bundle, using privileges
-     * to allow accessing a sun.* package.
-     */
-    public static ResourceBundle getDateFormatData(Locale locale) {
-        return getBundle("sun.text.resources.FormatData", locale);
-    }
+//    /**
+//     * Gets a date format data resource bundle, using privileges
+//     * to allow accessing a sun.* package.
+//     */
+//    public static ResourceBundle getDateFormatData(Locale locale) {
+//        return getBundle("sun.text.resources.FormatData", locale);
+//    }
 
     /**
      * Gets a number format data resource bundle, using privileges
      * to allow accessing a sun.* package.
      */
     public static ResourceBundle getNumberFormatData(Locale locale) {
-        return getBundle("sun.text.resources.FormatData", locale);
+        return getBundle("jssun.text.resources.FormatData", locale);
     }
 
     private static ResourceBundle getBundle(final String baseName, final Locale locale) {
@@ -171,7 +171,7 @@ public class LocaleData {
          public List<Locale> getCandidateLocales(String baseName, Locale locale) {
             List<Locale> candidates = super.getCandidateLocales(baseName, locale);
             /* Get the locale string list from LocaleDataMetaInfo class. */
-            String localeString = SwingJSSupportedLocales;//LocaleDataMetaInfo.getSupportedLocaleString(baseName);
+            String localeString = " en ";//LocaleDataMetaInfo.getSupportedLocaleString(baseName);
 
             if (localeString.length() == 0) {
                 return candidates;
@@ -241,7 +241,7 @@ public class LocaleData {
      *
      */
     private static Locale[] createLocaleList() {
-        String supportedLocaleString = SwingJSSupportedLocales ;
+        String supportedLocaleString = "en|";//SwingJSSupportedLocales ;
 //        LocaleDataMetaInfo.
 //            getSupportedLocaleString("sun.text.resources.FormatData");
 

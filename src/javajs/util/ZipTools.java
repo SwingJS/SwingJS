@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javajs.J2SIgnoreImport;
 import javajs.api.GenericZipInputStream;
 import javajs.api.GenericZipTools;
 import javajs.api.ZInputStream;
@@ -41,6 +40,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import swingjs.J2SIgnoreImport;
 
 
 /**
@@ -306,7 +307,7 @@ public class ZipTools implements GenericZipTools {
     /**
      * @j2sNative
      * 
-     *            return javajs.api.Interface.getInterface(
+     *            return swingjs.api.Interface.getInterface(
      *            "java.util.zip.ZipOutputStream").setZOS(bos);
      * 
      */

@@ -28,7 +28,7 @@ package jsjavax.swing;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
+import jsjava.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
 

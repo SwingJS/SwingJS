@@ -40,7 +40,7 @@
 
 package jssun.text.resources;
 
-import java.util.ListResourceBundle;
+import jsjava.util.ListResourceBundle;
 
 public class FormatData_en extends ListResourceBundle {
     /**

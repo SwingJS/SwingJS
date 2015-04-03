@@ -127,38 +127,38 @@ public abstract class AbstractDocument implements Document {
     protected AbstractDocument(Content data, AttributeContext context) {
         this.data = data;
         this.context = context;
-        bidiRoot = new BidiRootElement();
+//        bidiRoot = new BidiRootElement();
 
-        if (defaultI18NProperty == null) {
-            // determine default setting for i18n support
-            Object o = jsjava.security.AccessController.doPrivileged(
-                new jsjava.security.PrivilegedAction() {
-                    public Object run() {
-                        return System.getProperty(I18NProperty);
-                    }
-                }
-            );
-            if (o != null) {
-                defaultI18NProperty = Boolean.valueOf((String)o);
-            } else {
-                defaultI18NProperty = Boolean.FALSE;
-            }
-        }
-        putProperty( I18NProperty, defaultI18NProperty);
-
-        //REMIND(bcb) This creates an initial bidi element to account for
-        //the \n that exists by default in the content.  Doing it this way
-        //seems to expose a little too much knowledge of the content given
-        //to us by the sub-class.  Consider having the sub-class' constructor
-        //make an initial call to insertUpdate.
-        writeLock();
-        try {
-            Element[] p = new Element[1];
-            p[0] = new BidiElement( bidiRoot, 0, 1, 0 );
-            bidiRoot.replace(0,0,p);
-        } finally {
-            writeUnlock();
-        }
+//        if (defaultI18NProperty == null) {
+//            // determine default setting for i18n support
+//            Object o = jsjava.security.AccessController.doPrivileged(
+//                new jsjava.security.PrivilegedAction() {
+//                    public Object run() {
+//                        return System.getProperty(I18NProperty);
+//                    }
+//                }
+//            );
+//            if (o != null) {
+//                defaultI18NProperty = Boolean.valueOf((String)o);
+//            } else {
+//                defaultI18NProperty = Boolean.FALSE;
+//            }
+//        }
+//        putProperty( I18NProperty, defaultI18NProperty);
+//
+//        //REMIND(bcb) This creates an initial bidi element to account for
+//        //the \n that exists by default in the content.  Doing it this way
+//        //seems to expose a little too much knowledge of the content given
+//        //to us by the sub-class.  Consider having the sub-class' constructor
+//        //make an initial call to insertUpdate.
+//        writeLock();
+//        try {
+//            Element[] p = new Element[1];
+//            p[0] = new BidiElement( bidiRoot, 0, 1, 0 );
+//            bidiRoot.replace(0,0,p);
+//        } finally {
+//            writeUnlock();
+//        }
     }
 
     /**
@@ -390,46 +390,46 @@ public abstract class AbstractDocument implements Document {
         return documentFilter;
     }
 
-    // --- Document methods -----------------------------------------
-
-    /**
-     * This allows the model to be safely rendered in the presence
-     * of currency, if the model supports being updated asynchronously.
-     * The given runnable will be executed in a way that allows it
-     * to safely read the model with no changes while the runnable
-     * is being executed.  The runnable itself may <em>not</em>
-     * make any mutations.
-     * <p>
-     * This is implemented to aquire a read lock for the duration
-     * of the runnables execution.  There may be multiple runnables
-     * executing at the same time, and all writers will be blocked
-     * while there are active rendering runnables.  If the runnable
-     * throws an exception, its lock will be safely released.
-     * There is no protection against a runnable that never exits,
-     * which will effectively leave the document locked for it's
-     * lifetime.
-     * <p>
-     * If the given runnable attempts to make any mutations in
-     * this implementation, a deadlock will occur.  There is
-     * no tracking of individual rendering threads to enable
-     * detecting this situation, but a subclass could incur
-     * the overhead of tracking them and throwing an error.
-     * <p>
-     * This method is thread safe, although most Swing methods
-     * are not. Please see
-     * <A HREF="http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html">How
-     * to Use Threads</A> for more information.
-     *
-     * @param r the renderer to execute
-     */
-    public void render(Runnable r) {
-        readLock();
-        try {
-            r.run();
-        } finally {
-            readUnlock();
-        }
-    }
+//    // --- Document methods -----------------------------------------
+//
+//    /**
+//     * This allows the model to be safely rendered in the presence
+//     * of currency, if the model supports being updated asynchronously.
+//     * The given runnable will be executed in a way that allows it
+//     * to safely read the model with no changes while the runnable
+//     * is being executed.  The runnable itself may <em>not</em>
+//     * make any mutations.
+//     * <p>
+//     * This is implemented to aquire a read lock for the duration
+//     * of the runnables execution.  There may be multiple runnables
+//     * executing at the same time, and all writers will be blocked
+//     * while there are active rendering runnables.  If the runnable
+//     * throws an exception, its lock will be safely released.
+//     * There is no protection against a runnable that never exits,
+//     * which will effectively leave the document locked for it's
+//     * lifetime.
+//     * <p>
+//     * If the given runnable attempts to make any mutations in
+//     * this implementation, a deadlock will occur.  There is
+//     * no tracking of individual rendering threads to enable
+//     * detecting this situation, but a subclass could incur
+//     * the overhead of tracking them and throwing an error.
+//     * <p>
+//     * This method is thread safe, although most Swing methods
+//     * are not. Please see
+//     * <A HREF="http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html">How
+//     * to Use Threads</A> for more information.
+//     *
+//     * @param r the renderer to execute
+//     */
+//    public void render(Runnable r) {
+//        readLock();
+//        try {
+//            r.run();
+//        } finally {
+//            readUnlock();
+//        }
+//    }
 
     /**
      * Returns the length of the data.  This is the number of
@@ -555,21 +555,21 @@ public abstract class AbstractDocument implements Document {
         } else {
             getDocumentProperties().remove(key);
         }
-        if( key == TextAttribute.RUN_DIRECTION
-            && Boolean.TRUE.equals(getProperty(I18NProperty)) )
-        {
-            //REMIND - this needs to flip on the i18n property if run dir
-            //is rtl and the i18n property is not already on.
-            writeLock();
-            try {
-                DefaultDocumentEvent e
-                    = new DefaultDocumentEvent(0, getLength(),
-                                               DocumentEvent.EventType.INSERT);
-                updateBidi( e );
-            } finally {
-                writeUnlock();
-            }
-        }
+//        if( key == TextAttribute.RUN_DIRECTION
+//            && Boolean.TRUE.equals(getProperty(I18NProperty)) )
+//        {
+//            //REMIND - this needs to flip on the i18n property if run dir
+//            //is rtl and the i18n property is not already on.
+//            writeLock();
+//            try {
+//                DefaultDocumentEvent e
+//                    = new DefaultDocumentEvent(0, getLength(),
+//                                               DocumentEvent.EventType.INSERT);
+////                updateBidi( e );
+//            } finally {
+//                writeUnlock();
+//            }
+//        }
     }
 
     /**
@@ -971,9 +971,9 @@ public abstract class AbstractDocument implements Document {
      * @param attr the attributes for the change
      */
     protected void insertUpdate(DefaultDocumentEvent chng, AttributeSet attr) {
-        if( getProperty(I18NProperty).equals( Boolean.TRUE ) )
-            updateBidi( chng );
-
+//        if( getProperty(I18NProperty).equals( Boolean.TRUE ) )
+//            updateBidi( chng );
+//
         // Check if a multi byte is encountered in the inserted text.
         if (chng.type == DocumentEvent.EventType.INSERT &&
                         chng.getLength() > 0 &&
@@ -1017,233 +1017,233 @@ public abstract class AbstractDocument implements Document {
      * @param chng a description of the change
      */
     protected void postRemoveUpdate(DefaultDocumentEvent chng) {
-        if( getProperty(I18NProperty).equals( Boolean.TRUE ) )
-            updateBidi( chng );
+//        if( getProperty(I18NProperty).equals( Boolean.TRUE ) )
+//            updateBidi( chng );
     }
 
 
-    /**
-     * Update the bidi element structure as a result of the given change
-     * to the document.  The given change will be updated to reflect the
-     * changes made to the bidi structure.
-     *
-     * This method assumes that every offset in the model is contained in
-     * exactly one paragraph.  This method also assumes that it is called
-     * after the change is made to the default element structure.
-     */
-    void updateBidi( DefaultDocumentEvent chng ) {
-
-        // Calculate the range of paragraphs affected by the change.
-        int firstPStart;
-        int lastPEnd;
-        if( chng.type == DocumentEvent.EventType.INSERT
-            || chng.type == DocumentEvent.EventType.CHANGE )
-        {
-            int chngStart = chng.getOffset();
-            int chngEnd =  chngStart + chng.getLength();
-            firstPStart = getParagraphElement(chngStart).getStartOffset();
-            lastPEnd = getParagraphElement(chngEnd).getEndOffset();
-        } else if( chng.type == DocumentEvent.EventType.REMOVE ) {
-            Element paragraph = getParagraphElement( chng.getOffset() );
-            firstPStart = paragraph.getStartOffset();
-            lastPEnd = paragraph.getEndOffset();
-        } else {
-            throw new Error("Internal error: unknown event type.");
-        }
-        //System.out.println("updateBidi: firstPStart = " + firstPStart + " lastPEnd = " + lastPEnd );
-
-
-        // Calculate the bidi levels for the affected range of paragraphs.  The
-        // levels array will contain a bidi level for each character in the
-        // affected text.
-        byte levels[] = calculateBidiLevels( firstPStart, lastPEnd );
-
-
-        Vector newElements = new Vector();
-
-        // Calculate the first span of characters in the affected range with
-        // the same bidi level.  If this level is the same as the level of the
-        // previous bidi element (the existing bidi element containing
-        // firstPStart-1), then merge in the previous element.  If not, but
-        // the previous element overlaps the affected range, truncate the
-        // previous element at firstPStart.
-        int firstSpanStart = firstPStart;
-        int removeFromIndex = 0;
-        if( firstSpanStart > 0 ) {
-            int prevElemIndex = bidiRoot.getElementIndex(firstPStart-1);
-            removeFromIndex = prevElemIndex;
-            Element prevElem = bidiRoot.getElement(prevElemIndex);
-            int prevLevel=StyleConstants.getBidiLevel(prevElem.getAttributes());
-            //System.out.println("createbidiElements: prevElem= " + prevElem  + " prevLevel= " + prevLevel + "level[0] = " + levels[0]);
-            if( prevLevel==levels[0] ) {
-                firstSpanStart = prevElem.getStartOffset();
-            } else if( prevElem.getEndOffset() > firstPStart ) {
-                newElements.addElement(new BidiElement(bidiRoot,
-                                                       prevElem.getStartOffset(),
-                                                       firstPStart, prevLevel));
-            } else {
-                removeFromIndex++;
-            }
-        }
-
-        int firstSpanEnd = 0;
-        while((firstSpanEnd<levels.length) && (levels[firstSpanEnd]==levels[0]))
-            firstSpanEnd++;
-
-
-        // Calculate the last span of characters in the affected range with
-        // the same bidi level.  If this level is the same as the level of the
-        // next bidi element (the existing bidi element containing lastPEnd),
-        // then merge in the next element.  If not, but the next element
-        // overlaps the affected range, adjust the next element to start at
-        // lastPEnd.
-        int lastSpanEnd = lastPEnd;
-        Element newNextElem = null;
-        int removeToIndex = bidiRoot.getElementCount() - 1;
-        if( lastSpanEnd <= getLength() ) {
-            int nextElemIndex = bidiRoot.getElementIndex( lastPEnd );
-            removeToIndex = nextElemIndex;
-            Element nextElem = bidiRoot.getElement( nextElemIndex );
-            int nextLevel = StyleConstants.getBidiLevel(nextElem.getAttributes());
-            if( nextLevel == levels[levels.length-1] ) {
-                lastSpanEnd = nextElem.getEndOffset();
-            } else if( nextElem.getStartOffset() < lastPEnd ) {
-                newNextElem = new BidiElement(bidiRoot, lastPEnd,
-                                              nextElem.getEndOffset(),
-                                              nextLevel);
-            } else {
-                removeToIndex--;
-            }
-        }
-
-        int lastSpanStart = levels.length;
-        while( (lastSpanStart>firstSpanEnd)
-               && (levels[lastSpanStart-1]==levels[levels.length-1]) )
-            lastSpanStart--;
-
-
-        // If the first and last spans are contiguous and have the same level,
-        // merge them and create a single new element for the entire span.
-        // Otherwise, create elements for the first and last spans as well as
-        // any spans in between.
-        if((firstSpanEnd==lastSpanStart)&&(levels[0]==levels[levels.length-1])){
-            newElements.addElement(new BidiElement(bidiRoot, firstSpanStart,
-                                                   lastSpanEnd, levels[0]));
-        } else {
-            // Create an element for the first span.
-            newElements.addElement(new BidiElement(bidiRoot, firstSpanStart,
-                                                   firstSpanEnd+firstPStart,
-                                                   levels[0]));
-            // Create elements for the spans in between the first and last
-            for( int i=firstSpanEnd; i<lastSpanStart; ) {
-                //System.out.println("executed line 872");
-                int j;
-                for( j=i;  (j<levels.length) && (levels[j] == levels[i]); j++ );
-                newElements.addElement(new BidiElement(bidiRoot, firstPStart+i,
-                                                       firstPStart+j,
-                                                       (int)levels[i]));
-                i=j;
-            }
-            // Create an element for the last span.
-            newElements.addElement(new BidiElement(bidiRoot,
-                                                   lastSpanStart+firstPStart,
-                                                   lastSpanEnd,
-                                                   levels[levels.length-1]));
-        }
-
-        if( newNextElem != null )
-            newElements.addElement( newNextElem );
-
-
-        // Calculate the set of existing bidi elements which must be
-        // removed.
-        int removedElemCount = 0;
-        if( bidiRoot.getElementCount() > 0 ) {
-            removedElemCount = removeToIndex - removeFromIndex + 1;
-        }
-        Element[] removedElems = new Element[removedElemCount];
-        for( int i=0; i<removedElemCount; i++ ) {
-            removedElems[i] = bidiRoot.getElement(removeFromIndex+i);
-        }
-
-        Element[] addedElems = new Element[ newElements.size() ];
-        newElements.copyInto( addedElems );
-
-        // Update the change record.
-        ElementEdit ee = new ElementEdit( bidiRoot, removeFromIndex,
-                                          removedElems, addedElems );
-        chng.addEdit( ee );
-
-        // Update the bidi element structure.
-        bidiRoot.replace( removeFromIndex, removedElems.length, addedElems );
-    }
-
-
-    /**
-     * Calculate the levels array for a range of paragraphs.
-     */
-    private byte[] calculateBidiLevels( int firstPStart, int lastPEnd ) {
-
-        byte levels[] = new byte[ lastPEnd - firstPStart ];
-        int  levelsEnd = 0;
-//        Boolean defaultDirection = null;
-//        Object d = getProperty(TextAttribute.RUN_DIRECTION);
-//        if (d instanceof Boolean) {
-//            defaultDirection = (Boolean) d;
+//    /**
+//     * Update the bidi element structure as a result of the given change
+//     * to the document.  The given change will be updated to reflect the
+//     * changes made to the bidi structure.
+//     *
+//     * This method assumes that every offset in the model is contained in
+//     * exactly one paragraph.  This method also assumes that it is called
+//     * after the change is made to the default element structure.
+//     */
+//    void updateBidi( DefaultDocumentEvent chng ) {
+//
+//        // Calculate the range of paragraphs affected by the change.
+//        int firstPStart;
+//        int lastPEnd;
+//        if( chng.type == DocumentEvent.EventType.INSERT
+//            || chng.type == DocumentEvent.EventType.CHANGE )
+//        {
+//            int chngStart = chng.getOffset();
+//            int chngEnd =  chngStart + chng.getLength();
+//            firstPStart = getParagraphElement(chngStart).getStartOffset();
+//            lastPEnd = getParagraphElement(chngEnd).getEndOffset();
+//        } else if( chng.type == DocumentEvent.EventType.REMOVE ) {
+//            Element paragraph = getParagraphElement( chng.getOffset() );
+//            firstPStart = paragraph.getStartOffset();
+//            lastPEnd = paragraph.getEndOffset();
+//        } else {
+//            throw new Error("Internal error: unknown event type.");
 //        }
-
-        // For each paragraph in the given range of paragraphs, get its
-        // levels array and add it to the levels array for the entire span.
-        for(int o=firstPStart; o<lastPEnd; ) {
-            Element p = getParagraphElement( o );
-            int pStart = p.getStartOffset();
-            int pEnd = p.getEndOffset();
-
-            // default run direction for the paragraph.  This will be
-            // null if there is no direction override specified (i.e.
-            // the direction will be determined from the content).
-//            Boolean direction = defaultDirection;
-//            d = p.getAttributes().getAttribute(TextAttribute.RUN_DIRECTION);
-//            if (d instanceof Boolean) {
-//                direction = (Boolean) d;
+//        //System.out.println("updateBidi: firstPStart = " + firstPStart + " lastPEnd = " + lastPEnd );
+//
+//
+//        // Calculate the bidi levels for the affected range of paragraphs.  The
+//        // levels array will contain a bidi level for each character in the
+//        // affected text.
+//        byte levels[] = calculateBidiLevels( firstPStart, lastPEnd );
+//
+//
+//        Vector newElements = new Vector();
+//
+//        // Calculate the first span of characters in the affected range with
+//        // the same bidi level.  If this level is the same as the level of the
+//        // previous bidi element (the existing bidi element containing
+//        // firstPStart-1), then merge in the previous element.  If not, but
+//        // the previous element overlaps the affected range, truncate the
+//        // previous element at firstPStart.
+//        int firstSpanStart = firstPStart;
+//        int removeFromIndex = 0;
+//        if( firstSpanStart > 0 ) {
+//            int prevElemIndex = bidiRoot.getElementIndex(firstPStart-1);
+//            removeFromIndex = prevElemIndex;
+//            Element prevElem = bidiRoot.getElement(prevElemIndex);
+//            int prevLevel=StyleConstants.getBidiLevel(prevElem.getAttributes());
+//            //System.out.println("createbidiElements: prevElem= " + prevElem  + " prevLevel= " + prevLevel + "level[0] = " + levels[0]);
+//            if( prevLevel==levels[0] ) {
+//                firstSpanStart = prevElem.getStartOffset();
+//            } else if( prevElem.getEndOffset() > firstPStart ) {
+//                newElements.addElement(new BidiElement(bidiRoot,
+//                                                       prevElem.getStartOffset(),
+//                                                       firstPStart, prevLevel));
+//            } else {
+//                removeFromIndex++;
 //            }
-
-            //System.out.println("updateBidi: paragraph start = " + pStart + " paragraph end = " + pEnd);
-
-            // Create a Bidi over this paragraph then get the level
-            // array.
-            Segment seg = SegmentCache.getSharedSegment();
-            try {
-                getText(pStart, pEnd-pStart, seg);
-            } catch (BadLocationException e ) {
-                throw new Error("Internal error: " + e.toString());
-            }
-//            // REMIND(bcb) we should really be using a Segment here.
-//            Bidi bidiAnalyzer;
-//            int bidiflag = Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT;
-//            if (direction != null) {
-//                if (TextAttribute.RUN_DIRECTION_LTR.equals(direction)) {
-//                    bidiflag = Bidi.DIRECTION_LEFT_TO_RIGHT;
-//                } else {
-//                    bidiflag = Bidi.DIRECTION_RIGHT_TO_LEFT;
-//                }
+//        }
+//
+//        int firstSpanEnd = 0;
+//        while((firstSpanEnd<levels.length) && (levels[firstSpanEnd]==levels[0]))
+//            firstSpanEnd++;
+//
+//
+//        // Calculate the last span of characters in the affected range with
+//        // the same bidi level.  If this level is the same as the level of the
+//        // next bidi element (the existing bidi element containing lastPEnd),
+//        // then merge in the next element.  If not, but the next element
+//        // overlaps the affected range, adjust the next element to start at
+//        // lastPEnd.
+//        int lastSpanEnd = lastPEnd;
+//        Element newNextElem = null;
+//        int removeToIndex = bidiRoot.getElementCount() - 1;
+//        if( lastSpanEnd <= getLength() ) {
+//            int nextElemIndex = bidiRoot.getElementIndex( lastPEnd );
+//            removeToIndex = nextElemIndex;
+//            Element nextElem = bidiRoot.getElement( nextElemIndex );
+//            int nextLevel = StyleConstants.getBidiLevel(nextElem.getAttributes());
+//            if( nextLevel == levels[levels.length-1] ) {
+//                lastSpanEnd = nextElem.getEndOffset();
+//            } else if( nextElem.getStartOffset() < lastPEnd ) {
+//                newNextElem = new BidiElement(bidiRoot, lastPEnd,
+//                                              nextElem.getEndOffset(),
+//                                              nextLevel);
+//            } else {
+//                removeToIndex--;
 //            }
-//            bidiAnalyzer = new Bidi(seg.array, seg.offset, null, 0, seg.count,
-//                    bidiflag);
-            //BidiUtils.getLevels(bidiAnalyzer, levels, levelsEnd);
-//            levelsEnd += bidiAnalyzer.getLength();
+//        }
+//
+//        int lastSpanStart = levels.length;
+//        while( (lastSpanStart>firstSpanEnd)
+//               && (levels[lastSpanStart-1]==levels[levels.length-1]) )
+//            lastSpanStart--;
+//
+//
+//        // If the first and last spans are contiguous and have the same level,
+//        // merge them and create a single new element for the entire span.
+//        // Otherwise, create elements for the first and last spans as well as
+//        // any spans in between.
+//        if((firstSpanEnd==lastSpanStart)&&(levels[0]==levels[levels.length-1])){
+//            newElements.addElement(new BidiElement(bidiRoot, firstSpanStart,
+//                                                   lastSpanEnd, levels[0]));
+//        } else {
+//            // Create an element for the first span.
+//            newElements.addElement(new BidiElement(bidiRoot, firstSpanStart,
+//                                                   firstSpanEnd+firstPStart,
+//                                                   levels[0]));
+//            // Create elements for the spans in between the first and last
+//            for( int i=firstSpanEnd; i<lastSpanStart; ) {
+//                //System.out.println("executed line 872");
+//                int j;
+//                for( j=i;  (j<levels.length) && (levels[j] == levels[i]); j++ );
+//                newElements.addElement(new BidiElement(bidiRoot, firstPStart+i,
+//                                                       firstPStart+j,
+//                                                       (int)levels[i]));
+//                i=j;
+//            }
+//            // Create an element for the last span.
+//            newElements.addElement(new BidiElement(bidiRoot,
+//                                                   lastSpanStart+firstPStart,
+//                                                   lastSpanEnd,
+//                                                   levels[levels.length-1]));
+//        }
+//
+//        if( newNextElem != null )
+//            newElements.addElement( newNextElem );
+//
+//
+//        // Calculate the set of existing bidi elements which must be
+//        // removed.
+//        int removedElemCount = 0;
+//        if( bidiRoot.getElementCount() > 0 ) {
+//            removedElemCount = removeToIndex - removeFromIndex + 1;
+//        }
+//        Element[] removedElems = new Element[removedElemCount];
+//        for( int i=0; i<removedElemCount; i++ ) {
+//            removedElems[i] = bidiRoot.getElement(removeFromIndex+i);
+//        }
+//
+//        Element[] addedElems = new Element[ newElements.size() ];
+//        newElements.copyInto( addedElems );
+//
+//        // Update the change record.
+//        ElementEdit ee = new ElementEdit( bidiRoot, removeFromIndex,
+//                                          removedElems, addedElems );
+//        chng.addEdit( ee );
+//
+//        // Update the bidi element structure.
+//        bidiRoot.replace( removeFromIndex, removedElems.length, addedElems );
+//    }
 
-            o =  p.getEndOffset();
-            SegmentCache.releaseSharedSegment(seg);
-        }
 
-        // REMIND(bcb) remove this code when debugging is done.
-        if( levelsEnd != levels.length )
-            throw new Error("levelsEnd assertion failed.");
-
-        return levels;
-    }
-
+//    /**
+//     * Calculate the levels array for a range of paragraphs.
+//     */
+//    private byte[] calculateBidiLevels( int firstPStart, int lastPEnd ) {
+//
+//        byte levels[] = new byte[ lastPEnd - firstPStart ];
+//        int  levelsEnd = 0;
+////        Boolean defaultDirection = null;
+////        Object d = getProperty(TextAttribute.RUN_DIRECTION);
+////        if (d instanceof Boolean) {
+////            defaultDirection = (Boolean) d;
+////        }
+//
+//        // For each paragraph in the given range of paragraphs, get its
+//        // levels array and add it to the levels array for the entire span.
+//        for(int o=firstPStart; o<lastPEnd; ) {
+//            Element p = getParagraphElement( o );
+//            int pStart = p.getStartOffset();
+//            int pEnd = p.getEndOffset();
+//
+//            // default run direction for the paragraph.  This will be
+//            // null if there is no direction override specified (i.e.
+//            // the direction will be determined from the content).
+////            Boolean direction = defaultDirection;
+////            d = p.getAttributes().getAttribute(TextAttribute.RUN_DIRECTION);
+////            if (d instanceof Boolean) {
+////                direction = (Boolean) d;
+////            }
+//
+//            //System.out.println("updateBidi: paragraph start = " + pStart + " paragraph end = " + pEnd);
+//
+//            // Create a Bidi over this paragraph then get the level
+//            // array.
+//            Segment seg = SegmentCache.getSharedSegment();
+//            try {
+//                getText(pStart, pEnd-pStart, seg);
+//            } catch (BadLocationException e ) {
+//                throw new Error("Internal error: " + e.toString());
+//            }
+////            // REMIND(bcb) we should really be using a Segment here.
+////            Bidi bidiAnalyzer;
+////            int bidiflag = Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT;
+////            if (direction != null) {
+////                if (TextAttribute.RUN_DIRECTION_LTR.equals(direction)) {
+////                    bidiflag = Bidi.DIRECTION_LEFT_TO_RIGHT;
+////                } else {
+////                    bidiflag = Bidi.DIRECTION_RIGHT_TO_LEFT;
+////                }
+////            }
+////            bidiAnalyzer = new Bidi(seg.array, seg.offset, null, 0, seg.count,
+////                    bidiflag);
+//            //BidiUtils.getLevels(bidiAnalyzer, levels, levelsEnd);
+////            levelsEnd += bidiAnalyzer.getLength();
+//
+//            o =  p.getEndOffset();
+//            SegmentCache.releaseSharedSegment(seg);
+//        }
+//
+//        // REMIND(bcb) remove this code when debugging is done.
+//        if( levelsEnd != levels.length )
+//            throw new Error("levelsEnd assertion failed.");
+//
+//        return levels;
+//    }
+//
 //    /**
 //     * Gives a diagnostic dump.
 //     *
@@ -1485,8 +1485,8 @@ public abstract class AbstractDocument implements Document {
 //     * True will notifying listeners.
 //     */
 //    private transient boolean notifyingListeners;
-
-    private static Boolean defaultI18NProperty;
+//
+//    private static Boolean defaultI18NProperty;
 
     /**
      * Storage for document-wide properties.
@@ -2653,61 +2653,61 @@ public abstract class AbstractDocument implements Document {
         private transient Position p1;
     }
 
-    /**
-     * Represents the root element of the bidirectional element structure.
-     * The root element is the only element in the bidi element structure
-     * which contains children.
-     */
-    class BidiRootElement extends BranchElement {
-
-        BidiRootElement() {
-            super( null, null );
-        }
-
-        /**
-         * Gets the name of the element.
-         * @return the name
-         */
-        public String getName() {
-            return "bidi root";
-        }
-    }
-
-    /**
-     * Represents an element of the bidirectional element structure.
-     */
-    class BidiElement extends LeafElement {
-
-        /**
-         * Creates a new BidiElement.
-         */
-        BidiElement(Element parent, int start, int end, int level) {
-            super(parent, new SimpleAttributeSet(), start, end);
-            addAttribute(StyleConstants.BidiLevel, new Integer(level));
-            //System.out.println("BidiElement: start = " + start
-            //                   + " end = " + end + " level = " + level );
-        }
-
-        /**
-         * Gets the name of the element.
-         * @return the name
-         */
-        public String getName() {
-            return BidiElementName;
-        }
-
-        int getLevel() {
-            Integer o = (Integer) getAttribute(StyleConstants.BidiLevel);
-            if (o != null) {
-                return o.intValue();
-            }
-            return 0;  // Level 0 is base level (non-embedded) left-to-right
-        }
-
-        boolean isLeftToRight() {
-            return ((getLevel() % 2) == 0);
-        }
-    }
+//    /**
+//     * Represents the root element of the bidirectional element structure.
+//     * The root element is the only element in the bidi element structure
+//     * which contains children.
+//     */
+//    class BidiRootElement extends BranchElement {
+//
+//        BidiRootElement() {
+//            super( null, null );
+//        }
+//
+//        /**
+//         * Gets the name of the element.
+//         * @return the name
+//         */
+//        public String getName() {
+//            return "bidi root";
+//        }
+//    }
+//
+//    /**
+//     * Represents an element of the bidirectional element structure.
+//     */
+//    class BidiElement extends LeafElement {
+//
+//        /**
+//         * Creates a new BidiElement.
+//         */
+//        BidiElement(Element parent, int start, int end, int level) {
+//            super(parent, new SimpleAttributeSet(), start, end);
+//            addAttribute(StyleConstants.BidiLevel, new Integer(level));
+//            //System.out.println("BidiElement: start = " + start
+//            //                   + " end = " + end + " level = " + level );
+//        }
+//
+//        /**
+//         * Gets the name of the element.
+//         * @return the name
+//         */
+//        public String getName() {
+//            return BidiElementName;
+//        }
+//
+//        int getLevel() {
+//            Integer o = (Integer) getAttribute(StyleConstants.BidiLevel);
+//            if (o != null) {
+//                return o.intValue();
+//            }
+//            return 0;  // Level 0 is base level (non-embedded) left-to-right
+//        }
+//
+//        boolean isLeftToRight() {
+//            return ((getLevel() % 2) == 0);
+//        }
+//    }
 
     /**
      * Stores document changes as the document is being

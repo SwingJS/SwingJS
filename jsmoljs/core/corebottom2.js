@@ -1,4 +1,5 @@
 })(Clazz
+,Clazz.getClassName
 ,Clazz.newLongArray
 ,Clazz.doubleToByte
 ,Clazz.doubleToInt

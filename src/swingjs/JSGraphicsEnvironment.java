@@ -1,6 +1,6 @@
 package swingjs;
 
-import java.util.Locale;
+import jsjava.util.Locale;
 
 import jsjava.awt.Font;
 import jsjava.awt.Graphics2D;

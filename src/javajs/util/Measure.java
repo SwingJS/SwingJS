@@ -23,9 +23,9 @@
  */
 package javajs.util;
 
+import swingjs.api.Interface;
 import javajs.api.EigenInterface;
 
-import javajs.api.Interface;
 
 
 

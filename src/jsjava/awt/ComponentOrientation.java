@@ -36,8 +36,8 @@
 
 package jsjava.awt;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import jsjava.util.Locale;
+import jsjava.util.ResourceBundle;
 
 /**
   * The ComponentOrientation class encapsulates the language-sensitive

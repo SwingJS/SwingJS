@@ -35,7 +35,7 @@ import static jsjava.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
 //import java.io.IOException;
 //import java.io.InputStream;
 //import java.lang.reflect.Field;
-import java.util.Locale;
+import jsjava.util.Locale;
 //import java.util.Map;
 //import java.util.concurrent.Callable;
 //import java.util.concurrent.Future;

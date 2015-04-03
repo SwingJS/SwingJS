@@ -39,7 +39,7 @@ import jsjavax.swing.event.SwingPropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 
 import java.util.ArrayList;
-import java.util.Locale;
+import jsjava.util.Locale;
 
 import jssun.swing.SwingUtilities2;
 

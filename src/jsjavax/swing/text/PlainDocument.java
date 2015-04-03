@@ -321,4 +321,10 @@ public class PlainDocument extends AbstractDocument {
     private Vector added = new Vector();     // Vector<Element>
     private Vector removed = new Vector();   // Vector<Element>
     private transient Segment s;
+
+		@Override
+		public void render(Runnable r) {
+			// TODO Auto-generated method stub
+			
+		}
 }

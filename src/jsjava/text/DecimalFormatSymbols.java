@@ -41,8 +41,8 @@ package jsjava.text;
 //import java.text.spi.DecimalFormatSymbolsProvider;
 import java.util.Currency;
 import java.util.Hashtable;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import jsjava.util.Locale;
+import jsjava.util.ResourceBundle;
 //import java.util.spi.LocaleServiceProvider;
 //import sun.util.LocaleServiceProviderPool;
 import jssun.util.resources.LocaleData;
@@ -352,48 +352,48 @@ public class DecimalFormatSymbols implements Cloneable {
     public void setInternationalCurrencySymbol(String currencyCode)
     {
         intlCurrencySymbol = currencyCode;
-        currency = null;
-        if (currencyCode != null) {
-            try {
-                currency = Currency.getInstance(currencyCode);
-                currencySymbol = currency.getSymbol();
-            } catch (IllegalArgumentException e) {
-            }
-        }
+//        currency = null;
+//        if (currencyCode != null) {
+//            try {
+//                currency = Currency.getInstance(currencyCode);
+//                currencySymbol = currency.getSymbol();
+//            } catch (IllegalArgumentException e) {
+//            }
+//        }
     }
 
-    /**
-     * Gets the currency of these DecimalFormatSymbols. May be null if the
-     * currency symbol attribute was previously set to a value that's not
-     * a valid ISO 4217 currency code.
-     *
-     * @return the currency used, or null
-     * @since 1.4
-     */
-    public Currency getCurrency() {
-        return currency;
-    }
+//    /**
+//     * Gets the currency of these DecimalFormatSymbols. May be null if the
+//     * currency symbol attribute was previously set to a value that's not
+//     * a valid ISO 4217 currency code.
+//     *
+//     * @return the currency used, or null
+//     * @since 1.4
+//     */
+//    public Currency getCurrency() {
+//        return currency;
+//    }
 
-    /**
-     * Sets the currency of these DecimalFormatSymbols.
-     * This also sets the currency symbol attribute to the currency's symbol
-     * in the DecimalFormatSymbols' locale, and the international currency
-     * symbol attribute to the currency's ISO 4217 currency code.
-     *
-     * @param currency the new currency to be used
-     * @exception NullPointerException if <code>currency</code> is null
-     * @since 1.4
-     * @see #setCurrencySymbol
-     * @see #setInternationalCurrencySymbol
-     */
-    public void setCurrency(Currency currency) {
-        if (currency == null) {
-            throw new NullPointerException();
-        }
-        this.currency = currency;
-        intlCurrencySymbol = currency.getCurrencyCode();
-        currencySymbol = currency.getSymbol(locale);
-    }
+//    /**
+//     * Sets the currency of these DecimalFormatSymbols.
+//     * This also sets the currency symbol attribute to the currency's symbol
+//     * in the DecimalFormatSymbols' locale, and the international currency
+//     * symbol attribute to the currency's ISO 4217 currency code.
+//     *
+//     * @param currency the new currency to be used
+//     * @exception NullPointerException if <code>currency</code> is null
+//     * @since 1.4
+//     * @see #setCurrencySymbol
+//     * @see #setInternationalCurrencySymbol
+//     */
+//    public void setCurrency(Currency currency) {
+//        if (currency == null) {
+//            throw new NullPointerException();
+//        }
+//        this.currency = currency;
+//        intlCurrencySymbol = currency.getCurrencyCode();
+//        currencySymbol = currency.getSymbol(locale);
+//    }
 
 
     /**
@@ -500,7 +500,7 @@ public class DecimalFormatSymbols implements Cloneable {
         NaN.equals(other.NaN) &&
         currencySymbol.equals(other.currencySymbol) &&
         intlCurrencySymbol.equals(other.intlCurrencySymbol) &&
-        currency == other.currency &&
+//        currency == other.currency &&
         monetarySeparator == other.monetarySeparator &&
         exponentialSeparator.equals(other.exponentialSeparator) &&
         locale.equals(other.locale));
@@ -547,36 +547,36 @@ public class DecimalFormatSymbols implements Cloneable {
         infinity  = numberElements[9];
         NaN = numberElements[10];
 
-        // Try to obtain the currency used in the locale's country.
-        // Check for empty country string separately because it's a valid
-        // country ID for Locale (and used for the C locale), but not a valid
-        // ISO 3166 country code, and exceptions are expensive.
-        if (!"".equals(locale.getCountry())) {
-            try {
-                currency = Currency.getInstance(locale);
-            } catch (IllegalArgumentException e) {
-                // use default values below for compatibility
-            }
-        }
-        if (currency != null) {
-            intlCurrencySymbol = currency.getCurrencyCode();
-            if (data[1] != null && data[1] == intlCurrencySymbol) {
-                currencySymbol = (String) data[2];
-            } else {
-                currencySymbol = currency.getSymbol(locale);
-                data[1] = intlCurrencySymbol;
-                data[2] = currencySymbol;
-                needCacheUpdate = true;
-            }
-        } else {
+//        // Try to obtain the currency used in the locale's country.
+//        // Check for empty country string separately because it's a valid
+//        // country ID for Locale (and used for the C locale), but not a valid
+//        // ISO 3166 country code, and exceptions are expensive.
+//        if (!"".equals(locale.getCountry())) {
+//            try {
+//                currency = Currency.getInstance(locale);
+//            } catch (IllegalArgumentException e) {
+//                // use default values below for compatibility
+//            }
+//        }
+//        if (currency != null) {
+//            intlCurrencySymbol = currency.getCurrencyCode();
+//            if (data[1] != null && data[1] == intlCurrencySymbol) {
+//                currencySymbol = (String) data[2];
+//            } else {
+//                currencySymbol = currency.getSymbol(locale);
+//                data[1] = intlCurrencySymbol;
+//                data[2] = currencySymbol;
+//                needCacheUpdate = true;
+//            }
+//        } else {
             // default values
             intlCurrencySymbol = "XXX";
-            try {
-                currency = Currency.getInstance(intlCurrencySymbol);
-            } catch (IllegalArgumentException e) {
-            }
+//            try {
+//                currency = Currency.getInstance(intlCurrencySymbol);
+//            } catch (IllegalArgumentException e) {
+//            }
             currencySymbol = "\u00A4";
-        }
+//        }
         // Currently the monetary decimal separator is the same as the
         // standard decimal separator for all locales that we support.
         // If that changes, add a new entry to NumberElements.
@@ -763,11 +763,11 @@ public class DecimalFormatSymbols implements Cloneable {
      */
     private Locale locale;
 
-    // currency; only the ISO code is serialized.
-    private transient Currency currency;
-
-    // Proclaim JDK 1.1 FCS compatibility
-    static final long serialVersionUID = 5772796243397350300L;
+//    // currency; only the ISO code is serialized.
+//    private transient Currency currency;
+//
+//    // Proclaim JDK 1.1 FCS compatibility
+//    static final long serialVersionUID = 5772796243397350300L;
 
     // The internal serial version which says which version was written
     // - 0 (default) for version up to JDK 1.1.5

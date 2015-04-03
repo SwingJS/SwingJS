@@ -31,7 +31,7 @@ import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import jsjava.util.ResourceBundle;
 //import java.util.WeakHashMap;
 
 import jsjava.awt.event.AWTEventListener;

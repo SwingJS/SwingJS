@@ -16,6 +16,10 @@ public class JStest {
 
 	public static void main(String[] args) {
 	
+		int[] a2 = new int[2];
+		int[][] a20 = new int[2][];
+		int[][] a23 = new int[2][3];
+		
 		printit(2,3,4,5);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		

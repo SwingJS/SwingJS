@@ -1,3 +1,5 @@
+//BH note: a declared static superclass must come before a static class referencing it
+
 Clazz.load(["java.util.AbstractList","$.AbstractMap","$.AbstractSet","$.Collection","$.Iterator","$.List","$.ListIterator","$.Map","$.RandomAccess","$.Set","$.SortedMap","$.SortedSet","java.lang.NullPointerException","$.UnsupportedOperationException","java.lang.reflect.Array"],"java.util.Collections",["java.lang.ArrayIndexOutOfBoundsException","$.ClassCastException","$.IllegalArgumentException","$.IndexOutOfBoundsException","java.util.ArrayList","$.Arrays","$.Enumeration","java.util.Map.Entry","java.util.NoSuchElementException","$.Random"],function(){
 c$=Clazz.declareType(java.util,"Collections");
 c$.binarySearch=Clazz.defineMethod(c$,"binarySearch",
@@ -924,14 +926,8 @@ function(a){
 return this.c.toArray(a);
 }},"~A");
 c$=Clazz.p0p();
-Clazz.pu$h(self.c$);
-c$=Clazz.declareType(java.util.Collections,"SynchronizedRandomAccessList",java.util.Collections.SynchronizedList,java.util.RandomAccess);
-Clazz.overrideMethod(c$,"subList",
-function(a,b){
-{
-return new java.util.Collections.SynchronizedRandomAccessList(this.list.subList(a,b),this.mutex);
-}},"~N,~N");
-c$=Clazz.p0p();
+
+
 Clazz.pu$h(self.c$);
 c$=Clazz.decorateAsClass(function(){
 this.list=null;
@@ -1009,6 +1005,21 @@ function(a,b){
 return new java.util.Collections.SynchronizedList(this.list.subList(a,b),this.mutex);
 }},"~N,~N");
 c$=Clazz.p0p();
+
+
+
+Clazz.pu$h(self.c$);
+c$=Clazz.declareType(java.util.Collections,"SynchronizedRandomAccessList",java.util.Collections.SynchronizedList,java.util.RandomAccess);
+Clazz.overrideMethod(c$,"subList",
+function(a,b){
+{
+return new java.util.Collections.SynchronizedRandomAccessList(this.list.subList(a,b),this.mutex);
+}},"~N,~N");
+c$=Clazz.p0p();
+
+
+
+
 Clazz.pu$h(self.c$);
 c$=Clazz.decorateAsClass(function(){
 this.m=null;
@@ -1296,13 +1307,9 @@ throw new UnsupportedOperationException();
 c$=Clazz.p0p();
 };
 c$=Clazz.p0p();
-Clazz.pu$h(self.c$);
-c$=Clazz.declareType(java.util.Collections,"UnmodifiableRandomAccessList",java.util.Collections.UnmodifiableList,java.util.RandomAccess);
-Clazz.overrideMethod(c$,"subList",
-function(a,b){
-return new java.util.Collections.UnmodifiableRandomAccessList(this.list.subList(a,b));
-},"~N,~N");
-c$=Clazz.p0p();
+
+//BH note: a declared static superclass must come before a static class referencing it
+
 Clazz.pu$h(self.c$);
 c$=Clazz.decorateAsClass(function(){
 this.list=null;
@@ -1411,6 +1418,32 @@ throw new UnsupportedOperationException();
 c$=Clazz.p0p();
 };
 c$=Clazz.p0p();
+
+
+
+
+Clazz.pu$h(self.c$);
+c$=Clazz.declareType(java.util.Collections,"UnmodifiableRandomAccessList",java.util.Collections.UnmodifiableList,java.util.RandomAccess);
+Clazz.overrideMethod(c$,"subList",
+function(a,b){
+return new java.util.Collections.UnmodifiableRandomAccessList(this.list.subList(a,b));
+},"~N,~N");
+c$=Clazz.p0p();
+
+
+Clazz.pu$h(self.c$);
+c$=Clazz.declareType(java.util.Collections,"UnmodifiableSet",java.util.Collections.UnmodifiableCollection,java.util.Set);
+Clazz.overrideMethod(c$,"equals",
+function(a){
+return this.c.equals(a);
+},"~O");
+Clazz.overrideMethod(c$,"hashCode",
+function(){
+return this.c.hashCode();
+});
+c$=Clazz.p0p();
+
+
 Clazz.pu$h(self.c$);
 c$=Clazz.decorateAsClass(function(){
 this.m=null;
@@ -1480,6 +1513,13 @@ Clazz.defineMethod(c$,"toString",
 function(){
 return this.m.toString();
 });
+
+
+
+
+
+
+
 Clazz.pu$h(self.c$);
 c$=Clazz.declareType(java.util.Collections.UnmodifiableMap,"UnmodifiableEntrySet",java.util.Collections.UnmodifiableSet);
 Clazz.overrideMethod(c$,"iterator",
@@ -1571,17 +1611,9 @@ return this.mapEntry.toString();
 c$=Clazz.p0p();
 c$=Clazz.p0p();
 c$=Clazz.p0p();
-Clazz.pu$h(self.c$);
-c$=Clazz.declareType(java.util.Collections,"UnmodifiableSet",java.util.Collections.UnmodifiableCollection,java.util.Set);
-Clazz.overrideMethod(c$,"equals",
-function(a){
-return this.c.equals(a);
-},"~O");
-Clazz.overrideMethod(c$,"hashCode",
-function(){
-return this.c.hashCode();
-});
-c$=Clazz.p0p();
+
+
+
 Clazz.pu$h(self.c$);
 c$=Clazz.decorateAsClass(function(){
 this.sm=null;

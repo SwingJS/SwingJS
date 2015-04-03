@@ -47,10 +47,15 @@ ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/text/Laye
 	]);
 
 ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/JComponent.js", [
-  "jsjavax.swing.JComponent", 
-  "jsjavax.swing.JComponent.KeyboardState", 
-  "jsjavax.swing.JComponent.ActionStandin", 
-  "jsjavax.swing.JComponent.IntVector" 
+  "jsjavax.swing.JComponent"//, 
+//  "jsjavax.swing.JComponent.KeyboardState", 
+//  "jsjavax.swing.JComponent.ActionStandin", 
+//  "jsjavax.swing.JComponent.IntVector" 
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jssun/util/resources/LocaleData.js", [
+  "jssun.util.resources.LocaleData", 
+  "jssun.util.resources.LocaleDataResourceBundleControl"
 	]);
 
   if (Jmol._debugCode)
