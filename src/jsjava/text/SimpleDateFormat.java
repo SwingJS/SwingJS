@@ -344,7 +344,7 @@ import jssun.util.resources.LocaleData;
  * @author       Mark Davis, Chen-Lieh Huang, Alan Liu
  */
 @J2SRequireImport( { jsjava.util.Calendar.class, jsjava.util.TimeZone.class, 
-	jssun.util.calendar.ZoneInfo.class })
+	jssun.util.calendar.ZoneInfo.class, jsjava.text.DecimalFormat.class })
 public class SimpleDateFormat extends DateFormat {
 
     // the official serial version ID which says cryptically

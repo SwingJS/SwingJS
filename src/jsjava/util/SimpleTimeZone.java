@@ -40,6 +40,8 @@ package jsjava.util;
 
 import java.util.Date;
 
+import swingjs.J2SRequireImport;
+
 import jssun.util.calendar.CalendarSystem;
 import jssun.util.calendar.CalendarUtils;
 import jssun.util.calendar.BaseCalendar;
@@ -146,6 +148,7 @@ import jssun.util.calendar.Gregorian;
  * @author   David Goldsmith, Mark Davis, Chen-Lieh Huang, Alan Liu
  */
 
+@J2SRequireImport({jssun.util.calendar.Gregorian.class})
 public class SimpleTimeZone extends TimeZone {
     /**
      * Constructs a SimpleTimeZone with the given base time zone offset from GMT

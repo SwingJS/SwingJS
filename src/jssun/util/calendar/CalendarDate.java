@@ -469,7 +469,8 @@ public abstract class CalendarDate implements Cloneable {
                 offset = -zoneOffset;
                 sign = '-';
             }
-            offset /= 60000;
+            // SwingJS fix
+            offset = offset / 60000;
             sb.append(sign);
             CalendarUtils.sprintf0d(sb, offset / 60, 2);
             CalendarUtils.sprintf0d(sb, offset % 60, 2);

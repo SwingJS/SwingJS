@@ -68,6 +68,7 @@ import jsjava.util.Locale;
 import jsjava.util.MissingResourceException;
 import java.util.Set;
 
+import swingjs.J2SRequireImport;
 import swingjs.api.Interface;
 
 //import jsjava.security.AccessController;
@@ -761,48 +762,51 @@ public abstract class ResourceBundle {
                              Control.INSTANCE);
     }
 
-//    /**
-//     * Returns a resource bundle using the specified base name, the
-//     * default locale and the specified control. Calling this method
-//     * is equivalent to calling
-//     * <pre>
-//     * getBundle(baseName, Locale.getDefault(),
-//     *           this.getClass().getClassLoader(), control),
-//     * </pre>
-//     * except that <code>getClassLoader()</code> is run with the security
-//     * privileges of <code>ResourceBundle</code>.  See {@link
-//     * #getBundle(String, Locale, ClassLoader, Control) getBundle} for the
-//     * complete description of the resource bundle loading process with a
-//     * <code>ResourceBundle.Control</code>.
-//     *
-//     * @param baseName
-//     *        the base name of the resource bundle, a fully qualified class
-//     *        name
-//     * @param control
-//     *        the control which gives information for the resource bundle
-//     *        loading process
-//     * @return a resource bundle for the given base name and the default
-//     *        locale
-//     * @exception NullPointerException
-//     *        if <code>baseName</code> or <code>control</code> is
-//     *        <code>null</code>
-//     * @exception MissingResourceException
-//     *        if no resource bundle for the specified base name can be found
-//     * @exception IllegalArgumentException
-//     *        if the given <code>control</code> doesn't perform properly
-//     *        (e.g., <code>control.getCandidateLocales</code> returns null.)
-//     *        Note that validation of <code>control</code> is performed as
-//     *        needed.
-//     * @since 1.6
-//     */
-//    
-//    public static final ResourceBundle getBundle(String baseName,
-//                                                 Control control) {
-//        return getBundleImpl(baseName, Locale.getDefault(),
-//                             /* must determine loader here, else we break stack invariant */
-//                             getLoader(Reflection.getCallerClass()),
-//                             control);
-//    }
+    /**
+     * Returns a resource bundle using the specified base name, the
+     * default locale and the specified control. Calling this method
+     * is equivalent to calling
+     * <pre>
+     * getBundle(baseName, Locale.getDefault(),
+     *           this.getClass().getClassLoader(), control),
+     * </pre>
+     * except that <code>getClassLoader()</code> is run with the security
+     * privileges of <code>ResourceBundle</code>.  See {@link
+     * #getBundle(String, Locale, ClassLoader, Control) getBundle} for the
+     * complete description of the resource bundle loading process with a
+     * <code>ResourceBundle.Control</code>.
+     *
+     * @param baseName
+     *        the base name of the resource bundle, a fully qualified class
+     *        name
+     * @param control
+     *        the control which gives information for the resource bundle
+     *        loading process
+     * @return a resource bundle for the given base name and the default
+     *        locale
+     * @exception NullPointerException
+     *        if <code>baseName</code> or <code>control</code> is
+     *        <code>null</code>
+     * @exception MissingResourceException
+     *        if no resource bundle for the specified base name can be found
+     * @exception IllegalArgumentException
+     *        if the given <code>control</code> doesn't perform properly
+     *        (e.g., <code>control.getCandidateLocales</code> returns null.)
+     *        Note that validation of <code>control</code> is performed as
+     *        needed.
+     * @since 1.6
+     * 
+     * @j2sIgnore
+		 *
+     */
+    
+    public static final ResourceBundle getBundle(String baseName,
+                                                 Control control) {
+        return getBundleImpl(baseName, Locale.getDefault(),
+                             /* must determine loader here, else we break stack invariant */
+                             null,//getLoader(Reflection.getCallerClass()),
+                             control);
+    }
 
     /**
      * Gets a resource bundle using the specified base name and locale,
@@ -824,6 +828,8 @@ public abstract class ResourceBundle {
      * @exception MissingResourceException
      *        if no resource bundle for the specified base name can be found
      * @return a resource bundle for the given base name and locale
+     * 
+     * @j2sIgnore
      */
     
     public static final ResourceBundle getBundle(String baseName,
@@ -874,17 +880,18 @@ public abstract class ResourceBundle {
      * 
      * @j2sIgnore
      * 
+     * 
      */
     
-//    public static final ResourceBundle getBundle(String baseName, Locale targetLocale,
-//                                                 Object control) {
-//        return getBundleImpl(baseName, targetLocale, null, null 
-////        									
-////                             /* must determine loader here, else we break stack invariant */
-////                             getLoader(Reflection.getCallerClass()),
-////                             control
-//                             );
-//    }
+    public static final ResourceBundle getBundle(String baseName, Locale targetLocale,
+                                                 Control control) {
+      return getBundleImpl(baseName, targetLocale, null, 
+        									
+                             /* must determine loader here, else we break stack invariant */
+                             //getLoader(Reflection.getCallerClass()),
+                             control
+                             );
+    }
 
     /**
      * Gets a resource bundle using the specified base name, locale, and class loader.
@@ -1229,98 +1236,131 @@ public abstract class ResourceBundle {
      *        needed.
      * @since 1.6
      * 
-     * @j2sIgnore
+     *
      */
-    public static ResourceBundle getBundle(String baseName, Locale targetLocale,
+    public static ResourceBundle getBundle(String baseName, Object targetLocale,
                                            Object loader, Control control) {
-        if (
-//    	loader == null || 
-    	control == null) {
-            throw new NullPointerException();
-        }
-        return getBundleImpl(baseName, targetLocale, loader, control);
+    	int n = 4;
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * n = arguments.length;
+    	 * 
+    	 * 
+    	 */
+    	{}    	
+    	switch (n) {
+    	case 2:
+    		if ((targetLocale instanceof Control)) {
+    			control = (Control) targetLocale;
+    			targetLocale = null;
+    		}
+    		break;
+    	case 3:
+    		if ((loader instanceof Control)) {
+    			control = (Control) loader;
+    			loader = null;
+    		}
+    		break;
+    	}
+    	if (targetLocale == null)
+    		targetLocale = Locale.getDefault();
+    	if (control == null)
+    		control = Control.getControl(Control.FORMAT_PROPERTIES);
+      return getBundleImpl(baseName, (Locale) targetLocale, loader, control);
     }
 
-    private static ResourceBundle getBundleImpl(String baseName, Locale locale,
-                                                Object loader, Control control) {
-        if (locale == null || control == null) {
-            throw new NullPointerException("ResourceBundle locale or control is null");
-        }
+	private static ResourceBundle getBundleImpl(String baseName, Locale locale,
+			Object loader, Control control) {
 
-        // We create a CacheKey here for use by this call. The base
-        // name and loader will never change during the bundle loading
-        // process. We have to make sure that the locale is set before
-        // using it as a cache key.
-        CacheKey cacheKey = new CacheKey(baseName, locale, loader);
-        ResourceBundle bundle = null;
+		/**
+		 * @j2sNative
+		 * 
+		 */
+		{
+			if (locale == null || control == null) {
+				throw new NullPointerException(
+						"ResourceBundle locale or control is null");
+			}
+		}
 
-        // Quick lookup of the cache.
-        ResourceBundle bundleRef = cacheList.get(cacheKey);
-        if (bundleRef != null) {
-            bundle = bundleRef;
-            bundleRef = null;
-        }
+		// We create a CacheKey here for use by this call. The base
+		// name and loader will never change during the bundle loading
+		// process. We have to make sure that the locale is set before
+		// using it as a cache key.
+		CacheKey cacheKey = new CacheKey(baseName, locale, loader);
+		ResourceBundle bundle = null;
 
-        // If this bundle and all of its parents are valid (not expired),
-        // then return this bundle. If any of the bundles is expired, we
-        // don't call control.needsReload here but instead drop into the
-        // complete loading process below.
-        if (isValidBundle(bundle)) {// && hasValidParentChain(bundle)) {
-            return bundle;
-        }
+		// Quick lookup of the cache.
+		ResourceBundle bundleRef = cacheList.get(cacheKey);
+		if (bundleRef != null) {
+			bundle = bundleRef;
+			bundleRef = null;
+		}
 
-        // No valid bundle was found in the cache, so we need to load the
-        // resource bundle and its parents.
+		// If this bundle and all of its parents are valid (not expired),
+		// then return this bundle. If any of the bundles is expired, we
+		// don't call control.needsReload here but instead drop into the
+		// complete loading process below.
+		if (isValidBundle(bundle)) {// && hasValidParentChain(bundle)) {
+			return bundle;
+		}
 
-//        boolean isKnownControl = (control == Control.INSTANCE) ||
-//                                   (control instanceof SingleFormatControl);
-        List<String> formats = control.getFormats(baseName);
-//        if (!isKnownControl && !checkList(formats)) {
-//            throw new IllegalArgumentException("Invalid Control: getFormats");
-//        }
+		// No valid bundle was found in the cache, so we need to load the
+		// resource bundle and its parents.
 
-        ResourceBundle baseBundle = null;
-        for (Locale targetLocale = locale;
-             targetLocale != null;
-             targetLocale = control.getFallbackLocale(baseName, targetLocale)) {
-            List<Locale> candidateLocales = control.getCandidateLocales(baseName, targetLocale);
-//            if (!isKnownControl && !checkList(candidateLocales)) {
-//                throw new IllegalArgumentException("Invalid Control: getCandidateLocales");
-//            }
+		// boolean isKnownControl = (control == Control.INSTANCE) ||
+		// (control instanceof SingleFormatControl);
+		List<String> formats = control.getFormats(baseName);
+		// if (!isKnownControl && !checkList(formats)) {
+		// throw new IllegalArgumentException("Invalid Control: getFormats");
+		// }
 
-            bundle = findBundle(cacheKey, candidateLocales, formats, 0, control, baseBundle);
+		ResourceBundle baseBundle = null;
+		for (Locale targetLocale = locale; targetLocale != null; targetLocale = control
+				.getFallbackLocale(baseName, targetLocale)) {
+			List<Locale> candidateLocales = control.getCandidateLocales(baseName,
+					targetLocale);
+			// if (!isKnownControl && !checkList(candidateLocales)) {
+			// throw new
+			// IllegalArgumentException("Invalid Control: getCandidateLocales");
+			// }
 
-            // If the loaded bundle is the base bundle and exactly for the
-            // requested locale or the only candidate locale, then take the
-            // bundle as the resulting one. If the loaded bundle is the base
-            // bundle, it's put on hold until we finish processing all
-            // fallback locales.
-            if (isValidBundle(bundle)) {
-                boolean isBaseBundle = Locale.ROOT.equals(bundle.locale);
-                if (!isBaseBundle || bundle.locale.equals(locale)
-                    || (candidateLocales.size() == 1
-                        && bundle.locale.equals(candidateLocales.get(0)))) {
-                    break;
-                }
+			bundle = findBundle(cacheKey, candidateLocales, formats, 0, control,
+					baseBundle);
 
-                // If the base bundle has been loaded, keep the reference in
-                // baseBundle so that we can avoid any redundant loading in case
-                // the control specify not to cache bundles.
-                if (isBaseBundle && baseBundle == null) {
-                    baseBundle = bundle;
-                }
-            }
-        }
+			// If the loaded bundle is the base bundle and exactly for the
+			// requested locale or the only candidate locale, then take the
+			// bundle as the resulting one. If the loaded bundle is the base
+			// bundle, it's put on hold until we finish processing all
+			// fallback locales.
+			if (isValidBundle(bundle)) {
+				boolean isBaseBundle = Locale.ROOT.equals(bundle.locale);
+				if (!isBaseBundle
+						|| bundle.locale.equals(locale)
+						|| (candidateLocales.size() == 1 && bundle.locale
+								.equals(candidateLocales.get(0)))) {
+					break;
+				}
 
-        if (bundle == null) {
-            if (baseBundle == null) {
-                throwMissingResourceException(baseName, locale, cacheKey.getCause());
-            }
-            bundle = baseBundle;
-        }
+				// If the base bundle has been loaded, keep the reference in
+				// baseBundle so that we can avoid any redundant loading in case
+				// the control specify not to cache bundles.
+				if (isBaseBundle && baseBundle == null) {
+					baseBundle = bundle;
+				}
+			}
+		}
 
-        return bundle;
-    }
+		if (bundle == null) {
+			if (baseBundle == null) {
+				throwMissingResourceException(baseName, locale, cacheKey.getCause());
+			}
+			bundle = baseBundle;
+		}
+
+		return bundle;
+	}
 
 //    /**
 //     * Checks if the given <code>List</code> is not null, not empty,
@@ -2468,14 +2508,20 @@ public abstract class ResourceBundle {
 								String data = "";
                 InputStream stream = null;
                 //SwingJS - we just get the resource as a string here
+                // J2S compiler bug converts these variables to a b c d e
                 /**
                  * @j2sNative
                  * 
-                 * data = SwingJS.getJavaResource(resourceName); 
-                 * stream = (data == null  ? null : JU.Rdr.getBIS(data.getBytes()));
+                 * if (typeof h == "undefined") {
+                 *  data = SwingJS.getJavaResource(resourceName); 
+                 * } else {
+                 *  i = SwingJS.getJavaResource(h); 
+                 * }
                  */
                 {
                 }
+                stream = (data == null  ? null : javajs.util.Rdr.getBIS(data.getBytes()));
+
 ////                try {
 //                    stream = AccessController.doPrivileged(
 //                        new PrivilegedAction<InputStream>() {
@@ -2503,7 +2549,7 @@ public abstract class ResourceBundle {
 ////                }
                 if (stream != null) {
                     try {
-                        bundle = new PropertyResourceBundle(stream);
+                        bundle = newPropertyBundle(stream);
                     } finally {
                         stream.close();
                     }
@@ -2514,7 +2560,12 @@ public abstract class ResourceBundle {
             return bundle;
         }
 
-        /**
+        private ResourceBundle newPropertyBundle(InputStream stream) throws IOException {
+        	  return ((PropertyResourceBundle)Interface.getInterface("jsjava.util.PropertyResourceBundle"))
+        		.setStream(stream);
+        	}
+
+				/**
          * Returns the time-to-live (TTL) value for resource bundles that
          * are loaded under this
          * <code>ResourceBundle.Control</code>. Positive time-to-live values

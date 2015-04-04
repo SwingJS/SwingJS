@@ -1455,7 +1455,7 @@ public class KeyEvent extends InputEvent {
             break;
         }
 
-        str.append(",keyCode=").append(keyCode);
+        str.append(",keyCode=").append("" + keyCode);
         str.append(",keyText=").append(getKeyText(keyCode));
 
         /* Some keychars don't print well, e.g. escape, backspace,

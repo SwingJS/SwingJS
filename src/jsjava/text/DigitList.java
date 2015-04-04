@@ -164,7 +164,7 @@ final class DigitList implements Cloneable {
         temp.append('.');
         temp.append(digits, 0, count);
         temp.append('E');
-        temp.append(decimalAt);
+        temp.append("" + decimalAt);
         return Double.parseDouble(temp.toString());
     }
 
@@ -533,7 +533,7 @@ final class DigitList implements Cloneable {
             while (source >= 1) {
 //SwingJS -- integers will not go to 0 upon div by 10            while (source > 0) {
                 digits[--left] = (char)('0' + (source % 10));
-                source /= 10;
+                source = source / 10;
             }
             decimalAt = MAX_COUNT - left;
             // Don't copy trailing zeros.  We are guaranteed that there is at
@@ -686,7 +686,7 @@ final class DigitList implements Cloneable {
         buf.append("0.");
         buf.append(digits, 0, count);
         buf.append("x10^");
-        buf.append(decimalAt);
+        buf.append("" + decimalAt);
         return buf.toString();
     }
 

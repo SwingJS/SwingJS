@@ -2,7 +2,7 @@
 <html>
 <title>SwingJS test</title>
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <!-- breaking out the library for debugging -->
 <script type="text/javascript" src="jquery/jquery.js"></script>
 <script type="text/javascript" src="js/JSmoljQueryExt.js"></script>
@@ -13,7 +13,7 @@
 
 <script type="text/javascript">
 
-Jmol._fileCheckOnly = true
+Jmol._checkLoad = true
 
 // WISHFUL THINKING ONLY!!!! 
 
@@ -47,6 +47,7 @@ Info = {
 	isSigned: false,
 	disableJ2SLoadMonitor: false,
 	disableInitialConsole: false,
+	console:"sysoutdiv",
 	readyFunction: jmol_isReady,
   allowjavascript: true
 }
@@ -58,9 +59,13 @@ Info = {
 SwingJS.getApplet("testApplet", Info)
 </script>
 <br>
-info <a href="javascript:testApplet._showInfo(true)">show</a>
-<a href="javascript:testApplet._clearConsole()">clear</a>
+<!-- info <a href="javascript:testApplet._showInfo(true)">show</a>
 <a href="javascript:testApplet._showInfo(false)">hide</a>
-
+-->
+<div style="position:absolute;left:500px;top:10px;width:600px;height:300px;">
+<div id=sysoutdiv style="border:1px solid green;width:100%;height:95%;overflow:auto"></div>
+<a href="javascript:testApplet._clearConsole()">clear</a>
+</div>
+</div>
 </body>
 </html>

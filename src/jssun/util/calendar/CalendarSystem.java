@@ -29,6 +29,8 @@ package jssun.util.calendar;
 import java.util.HashMap;
 //import jsjava.util.Locale;
 import java.util.Map;
+
+import swingjs.J2SRequireImport;
 //import java.util.MissingResourceException;
 //import jsjava.util.ResourceBundle;
 //import java.util.Set;
@@ -118,17 +120,20 @@ public abstract class CalendarSystem {
         }
     }
 
-    private final static Gregorian GREGORIAN_INSTANCE = new Gregorian();
+    private static Gregorian GREGORIAN_INSTANCE;
 
-    /**
-     * Returns the singleton instance of the <code>Gregorian</code>
-     * calendar system.
-     *
-     * @return the <code>Gregorian</code> instance
-     */
-    public static Gregorian getGregorianCalendar() {
-        return GREGORIAN_INSTANCE;
-    }
+	/**
+	 * Returns the singleton instance of the <code>Gregorian</code> calendar
+	 * system.
+	 * 
+	 * @return the <code>Gregorian</code> instance
+	 */
+	public static Gregorian getGregorianCalendar() {
+		if (GREGORIAN_INSTANCE == null)
+			GREGORIAN_INSTANCE = (Gregorian) swingjs.api.Interface
+					.getInterface("jssun.util.calendar.Gregorian");
+		return GREGORIAN_INSTANCE;
+	}
 
     /**
      * Returns a <code>CalendarSystem</code> specified by the calendar

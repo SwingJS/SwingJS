@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import jsjava.util.Properties;
 import java.util.Set;
 
 import jssun.util.ResourceBundleEnumeration;
@@ -120,6 +120,9 @@ import jssun.util.ResourceBundleEnumeration;
  * @since JDK1.1
  */
 public class PropertyResourceBundle extends ResourceBundle {
+	
+	
+	
     /**
      * Creates a property resource bundle from an {@link java.io.InputStream
      * InputStream}.  The property file read with this constructor
@@ -131,12 +134,17 @@ public class PropertyResourceBundle extends ResourceBundle {
      * @throws NullPointerException if <code>stream</code> is null
      */
     public PropertyResourceBundle (InputStream stream) throws IOException {
-        Properties properties = new Properties();
-        properties.load(stream);
-        lookup = new HashMap(properties);
+    	setStream(stream);
     }
 
-    /**
+    public PropertyResourceBundle setStream(InputStream stream) throws IOException {
+      Properties properties = new Properties();
+      properties.load(stream);
+      lookup = new HashMap(properties);
+      return this;
+		}
+
+		/**
      * Creates a property resource bundle from a {@link java.io.Reader
      * Reader}.  Unlike the constructor
      * {@link #PropertyResourceBundle(java.io.InputStream) PropertyResourceBundle(InputStream)},
@@ -154,7 +162,11 @@ public class PropertyResourceBundle extends ResourceBundle {
         lookup = new HashMap(properties);
     }
 
-    // Implements java.util.ResourceBundle.handleGetObject; inherits javadoc specification.
+    public PropertyResourceBundle() {
+			// for reflection
+		}
+
+		// Implements java.util.ResourceBundle.handleGetObject; inherits javadoc specification.
     public Object handleGetObject(String key) {
         if (key == null) {
             throw new NullPointerException();
@@ -192,4 +204,5 @@ public class PropertyResourceBundle extends ResourceBundle {
     // ==================privates====================
 
     private Map<String,Object> lookup;
+
 }

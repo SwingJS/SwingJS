@@ -87,7 +87,7 @@ public class LocaleData {
      * to allow accessing a sun.* package.
      */
     public static ResourceBundle getCalendarData(Locale locale) {
-        return getBundle("sun.util.resources.CalendarData", locale);
+        return getBundle("jssun.util.resources.CalendarData", locale);
     }
 
 //    /**
@@ -95,7 +95,7 @@ public class LocaleData {
 //     * to allow accessing a sun.* package.
 //     */
 //    public static OpenListResourceBundle getCurrencyNames(Locale locale) {
-//        return (OpenListResourceBundle)getBundle("sun.util.resources.CurrencyNames", locale);
+//        return (OpenListResourceBundle)getBundle("jssun.util.resources.CurrencyNames", locale);
 //    }
 
 //    /**
@@ -103,23 +103,23 @@ public class LocaleData {
 //     * to allow accessing a sun.* package.
 //     */
 //    public static OpenListResourceBundle getLocaleNames(Locale locale) {
-//        return (OpenListResourceBundle)getBundle("sun.util.resources.LocaleNames", locale);
+//        return (OpenListResourceBundle)getBundle("jssun.util.resources.LocaleNames", locale);
 //    }
 
-    /**
-     * Gets a time zone names resource bundle, using privileges
-     * to allow accessing a sun.* package.
-     */
-    public static OpenListResourceBundle getTimeZoneNames(Locale locale) {
-        return (OpenListResourceBundle)getBundle("jssun.util.resources.TimeZoneNames", locale);
-    }
+//    /**
+//     * Gets a time zone names resource bundle, using privileges
+//     * to allow accessing a sun.* package.
+//     */
+//    public static OpenListResourceBundle getTimeZoneNames(Locale locale) {
+//        return (OpenListResourceBundle)getBundle("jssun.util.resources.TimeZoneNames", locale);
+//    }
 
 //    /**
 //     * Gets a collation data resource bundle, using privileges
 //     * to allow accessing a sun.* package.
 //     */
 //    public static ResourceBundle getCollationData(Locale locale) {
-//        return getBundle("sun.text.resources.CollationData", locale);
+//        return getBundle("jssun.text.resources.CollationData", locale);
 //    }
 
     /**
@@ -127,7 +127,7 @@ public class LocaleData {
      * to allow accessing a sun.* package.
      */
     public static ResourceBundle getDateFormatData(Locale locale) {
-        return getNumberFormatData(locale);
+        return getBundle("jssun.text.resources.FormatData", locale);
     }
 
     /**
@@ -157,6 +157,14 @@ public class LocaleData {
             return rbControlInstance;
         }
 
+    @Override
+		public List<String> getFormats(String baseName) {
+			if (baseName == null) {
+				throw new NullPointerException();
+			}
+			return (baseName.indexOf("jssun.util.resources.Calendar") >= 0 ? ResourceBundle.Control.FORMAT_PROPERTIES
+					: ResourceBundle.Control.FORMAT_CLASS);
+		}
         /*
          * This method overrides the default implementation to search
          * from a prebaked locale string list to determin the candidate
@@ -243,7 +251,7 @@ public class LocaleData {
     private static Locale[] createLocaleList() {
         String supportedLocaleString = "en|";//SwingJSSupportedLocales ;
 //        LocaleDataMetaInfo.
-//            getSupportedLocaleString("sun.text.resources.FormatData");
+//            getSupportedLocaleString("jssun.text.resources.FormatData");
 
         if (supportedLocaleString.length() == 0) {
             return null;

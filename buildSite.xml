@@ -40,6 +40,13 @@
       </fileset>
     </copy>
    	
+    <echo>...adding to swingjs/j2s property files from src</echo>
+  	<copy todir="site/swingjs/j2s"  overwrite="true" >
+      <fileset dir="src">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
+   	
   	<echo>...adding customized js from JSmol</echo>
    	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="jsmol/bin">
@@ -79,6 +86,7 @@
   	  	<include name="JSmolJavaExt.js" />
   	  	<include name="JSmoljQueryExt.js" />
   	    <include name="SwingJS.js" />
+  	    <include name="tocore.bat" />
   	  </fileset>
     </copy> 
    	

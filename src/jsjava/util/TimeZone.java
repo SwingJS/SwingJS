@@ -553,10 +553,10 @@ abstract public class TimeZone implements Cloneable {
 	}
 
 	private static int getTimeZoneOffsetMillis() {
-		/*
+		/**
 		 * @j2sNative
 		 * 
-		 * return -(new Date()).getTimezoneOffset() * 1000;
+		 * return -(new Date()).getTimezoneOffset() * 60000;
 		 */
 		{
 			return 0;
@@ -754,7 +754,7 @@ abstract public class TimeZone implements Cloneable {
 		if (gmtOffset == 0) {
 			// ZoneInfoFile.getZoneInfo(GMT_ID);
 		} else {
-			zi.setRawOffset(gmtOffset);
+			zi.setRawOffsetReally(gmtOffset);
 			// ZoneInfoFile.getCustomTimeZone(id, gmtOffset);
 		}
 		zi.setID(gmtID);
@@ -823,7 +823,7 @@ abstract public class TimeZone implements Cloneable {
 		boolean isNegative = (gmtOffset < 0);
 		if (isNegative)
 			gmtOffset = -gmtOffset;
-		gmtOffset /= 60000;
+		gmtOffset = gmtOffset / 60000;
 		int hours = gmtOffset / 60;
 		int min = gmtOffset - hours * 60; 
 		String NN = "00" + hours;

@@ -93,6 +93,10 @@ public class ZoneInfo extends TimeZone {
      */
     private int rawOffset;
     
+    public void setRawOffsetReally(int offset) {
+    	rawOffset = offset;
+    }
+    
     /**
      * Difference in milliseconds from the original GMT offset in case
      * the raw offset value has been modified by calling {@link

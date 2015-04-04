@@ -41,6 +41,8 @@ package jsjava.util;
 import java.io.IOException;
 import java.util.Date;
 
+import swingjs.J2SRequireImport;
+
 import jssun.util.calendar.BaseCalendar;
 import jssun.util.calendar.CalendarDate;
 import jssun.util.calendar.CalendarSystem;
@@ -297,6 +299,7 @@ import jssun.util.calendar.ZoneInfo;
  * @author David Goldsmith, Mark Davis, Chen-Lieh Huang, Alan Liu
  * @since JDK1.1
  */
+@J2SRequireImport({jssun.util.calendar.Gregorian.class})
 public class GregorianCalendar extends Calendar {
     /*
      * Implementation Notes

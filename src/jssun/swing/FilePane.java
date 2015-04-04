@@ -1055,11 +1055,11 @@ public class FilePane extends JPanel {
 //                } else if (len < 1024L) {
 //                    text = MessageFormat.format(kiloByteString, (len == 0L) ? 1L : len);
 //                } else {
-//                    len /= 1024L;
+//                    len = len / 1024L;
 //                    if (len < 1024L) {
 //                        text = MessageFormat.format(megaByteString, len);
 //                    } else {
-//                        len /= 1024L;
+//                        len = len / 1024L;
 //                        text = MessageFormat.format(gigaByteString, len);
 //                    }
 //                }

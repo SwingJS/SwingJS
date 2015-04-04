@@ -769,10 +769,10 @@ public class MouseEvent extends InputEvent {
         }
 
         // (x,y) coordinates
-        str.append(",(").append(x).append(",").append(y).append(")");
-        str.append(",absolute(").append(xAbs).append(",").append(yAbs).append(")");
+        str.append(",(").append("" + x).append(",").append("" + y).append(")");
+        str.append(",absolute(").append("" + xAbs).append(",").append("" + yAbs).append(")");
 
-        str.append(",button=").append(getButton());
+        str.append(",button=").append("" + getButton());
 
         if (getModifiers() != 0) {
             str.append(",modifiers=").append(getMouseModifiersText(modifiers));
@@ -782,7 +782,7 @@ public class MouseEvent extends InputEvent {
             str.append(",extModifiers=").append(getModifiersExText(modifiers));
         }
 
-        str.append(",clickCount=").append(clickCount);
+        str.append(",clickCount=").append("" + clickCount);
 
         return str.toString();
     }

@@ -166,9 +166,11 @@ public class CalendarUtils {
         }
         for (int i = 1; i < width && d < n; i++) {
             sb.append('0');
-            n /= 10;
+            // SwingJS fix
+            n = n / 10;
         }
-        sb.append(d);
+        //SwingJS coerce integer to string for append
+        sb.append("" + d);
         return sb;
     }
 
@@ -185,9 +187,11 @@ public class CalendarUtils {
         }
         for (int i = 1; i < width && d < n; i++) {
             sb.append('0');
-            n /= 10;
+            // SwingJS fix
+            n = n / 10;
         }
-        sb.append(d);
+        //SwingJS coerce integer to string for append
+        sb.append("" + d);
         return sb;
     }
 }

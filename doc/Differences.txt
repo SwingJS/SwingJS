@@ -1,11 +1,135 @@
 PROGRESS
 ========
+4/4/2015
 
-4/2/2015:
+j2sjmol.js updated due to problems with incomplete loading
+
+several issues found in getting SimpleDateFormat working
+
+ -- integer /=
+ -- current-date processing
+ -- missing inner class constructors
+ -- cyclic static references
+ -- detailing of J2S bugs
+ -- SimpleDateFormat working
+ -- fixed sb.append(int) --> sb.append("" + i)
+
+ 
+
+J2S bugs
+--------
+4/4/2015
+
+#7 J2S does not properly do integer/long/short/byte  /=
+
+  n /= 3
+  
+needs to be written out as
+
+  n = n / 3
+  
+  
+#6 J2S drops seemingly unnecessary constructors in inner classes. These
+are required, and must be included. I added j2sNative blocks to do this.
+
+public class Gregorian extends BaseCalendar {
+
+    static class Date extends BaseCalendar.Date {
+      protected Date() {
+        super();
+        /**
+         * @j2sNative
+         */
+        {
+      	int dummy = 1; // forces J2S to leave this in
+        }
+    }
+
+    protected Date(TimeZone zone) {
+        super(zone);
+        /**
+         * @j2sNative
+         */
+        {
+      	int dummy = 1; // forces J2S to leave this in
+        }
+    }
+
+  ...
+  
+ 
+#5 for some reason HashMap cannot call its superclass (AbstractMap) "putall" method from its constructor.
+
+#4 @J2SRequireImport({jsjava.util.PropertyResourceBundle.class})
+
+is required for  public abstract class ResourceBundle because the inner class
+ResourceBundle.Control requires it, but for some reason it is not included in the
+MUST list in the Clazz.load() call.
+
+#3 J2S compiler bug -- inner classes variables are simplified to a b c d..., making it
+nearly impossible to insert @j2sNative blocks.
+
+#2 array declarations 
+
+ int[][] a = new int[3][]
+ 
+ and
+ 
+ int[] a = new int[3]
+ 
+ are treated the same. The first needs to be changed to javajs.util.AU.newInt2(3)
+ Several similar methods are in javajs.util.AU
+ 
+
+#1 The J2S compiler has support for proper method signature handling 
+in cases such as:
+
+  new URL((URL) null, filePath, null)
+  
+The issue here is that without that (URL) the call is ambiguous. 
+However, there is a flaw in j2slib (jmolj2s) in that the called 
+method receives a "null" URL object, which does not in JavaScript
+evaluate to true for "== null". Thus, testing for null within 
+functions called this way process improperly.
+
+j2sjmol.js (j2slib.js)
+----------------------
+j2sjmol requiree modification to properly identify the end of all class loading so 
+that an asynchronous function can be called. Working currently with 
+
+   Clazz.loadClass("java.util.Properties",function(){alert("ready!")})
+   
+for user-controlled loading of classes from JavaScript.
+   
+
+
+
+PROGRESS
+========
+4/4/2015
+
+j2sjmol.js updated due to problems with incomplete loading
+
+several issues found in getting SimpleDateFormat working
+
+ -- integer /=
+ -- current-date processing
+ -- missing inner class constructors
+ -- cyclic static references
+  
+
+4/3/2015
+
+ResourceBundle working with property loading. 
+But ResourceBundle.Control calls new PropertyResourceBundle(), and that 
+causes a loading loop. Solution is to give PropertyResourceBundle() an empty
+constructor and to call it with reflection.
+
+4/2/2015
 
 JApplet loading successful
 
-ResourceBundle working
+ResourceBundle working with Java class loading
 DecimalFormat working
 
 Thread.currentThread() working. For example, this works:
@@ -25,8 +149,6 @@ Differences to Original JDK 1.6
 
 DISCUSS
 =======
-
-TODO: date formatters as these are very popular
 
 Table row/col sorter needs checking after removal of java.text.Collator references
 
@@ -81,7 +203,6 @@ specific AWT components not implemented
 no threads
 image loading
 no BigInteger; no BigDecimal
-no DateFormat
 no format internationalization
 no javax.swing.AutoScroller public static methods .stop, .isRunning, .processMouseDragged
 no AbstractButton    public void doClick(int pressTime), as it requires Thread.sleep()
@@ -148,7 +269,16 @@ For example:
   Color(int r, int g, int b, int a)
   Color(float r, float g, float b, float a)
 
-cannot be distinguished. 
+cannot be distinguished. A very important case in this regard is 
+
+  StringBuffer.append(int)
+  StringBuffer.append(float)
+  
+There is no way to know one's intent here. Integers must be changed to strings:
+
+  sb.append("" + i)
+
+  
 
 This will need careful checking and will be the source of bugs, for sure,
 because it is next to impossible to find all of these, and even if they are
@@ -164,6 +294,42 @@ to avoid a loop such as the following, which was in java.text.DigitList:
     ... 
     source /= 10 
   }
+
+Similarly, large integers will never roll over to negative ones. They will
+just get bigger.
+
+						int newLength = lineBuf.length * 2;
+						/**
+						 * @j2sIgnore
+						 */
+						{
+							// never going to happen in JavaScript
+							if (newLength < 0) {
+								newLength = Integer.MAX_VALUE;
+							}
+						}
+
+
+Also, J2S does not translate properly
+
+  int n = 110
+  n /= 100
+  
+This needs to be recast as
+  
+  n = n / 100
+  
+For example, SimpleDateFormat needs
+
+month = Clazz.doubleToInt(month / 367);
+
+instead of 
+
+month /= 367
+
+
+  
+  
 
 
 forced null typing
@@ -343,12 +509,6 @@ no BigInteger; no BigDecimal
 ----------------------------
 
 BigInteger and BigDecimal are not supported
-
-
-no DateFormat
--------------
-
-For now, no DateFormat
 
 
 no format internationalization

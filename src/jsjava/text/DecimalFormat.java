@@ -454,7 +454,7 @@ public class DecimalFormat extends NumberFormat {
      * @see java.text.NumberFormat#getPercentInstance
      * @see java.text.DecimalFormatSymbols
      */
-    public DecimalFormat (String pattern, DecimalFormatSymbols symbols) {
+    public DecimalFormat(String pattern, DecimalFormatSymbols symbols) {
         // Always applyPattern after the symbols are set
         this.symbols = (DecimalFormatSymbols)symbols.clone();
         applyPattern(pattern, false);
@@ -1339,7 +1339,8 @@ public class DecimalFormat extends NumberFormat {
                 } else {
                     // Avoid converting to double if we can
                     if (longResult % multiplier == 0) {
-                        longResult /= multiplier;
+                    	//SwingJS fix
+                        longResult = longResult / multiplier;
                     } else {
                         doubleResult = ((double)longResult) / multiplier;
                         gotDouble = true;

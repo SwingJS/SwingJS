@@ -37,13 +37,25 @@ import jsjava.util.TimeZone;
 public class Gregorian extends BaseCalendar {
 
     static class Date extends BaseCalendar.Date {
-        protected Date() {
-            super();
+      protected Date() {
+        super();
+        /**
+         * @j2sNative
+         */
+        {
+      	int dummy = 1; // forces J2S to leave this in
         }
+    }
 
-        protected Date(TimeZone zone) {
-            super(zone);
+    protected Date(TimeZone zone) {
+        super(zone);
+        /**
+         * @j2sNative
+         */
+        {
+      	int dummy = 1; // forces J2S to leave this in
         }
+    }
 
         public int getNormalizedYear() {
             return getYear();

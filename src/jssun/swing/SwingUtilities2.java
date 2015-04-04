@@ -1389,7 +1389,7 @@ public class SwingUtilities2 {
             rule.append(font.getFamily());
             rule.append(" ; ");
             rule.append(" font-size: ");
-            rule.append(font.getSize());
+            rule.append("" + font.getSize());
             rule.append("pt ;");
             if (font.isBold()) {
                 rule.append(" font-weight: 700 ; ");

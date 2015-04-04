@@ -447,7 +447,9 @@ public abstract class BaseCalendar extends AbstractCalendar {
         }
         int month = 12 * priorDays + 373;
         if (month > 0) {
-            month /= 367;
+        	// can't do this -- j2s bug:
+          //  month /= 367;
+        	month = month / 367;
         } else {
             month = CalendarUtils.floorDivide(month, 367);
         }
