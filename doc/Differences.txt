@@ -116,6 +116,20 @@ several issues found in getting SimpleDateFormat working
  -- current-date processing
  -- missing inner class constructors
  -- cyclic static references
+
+JavaScript Examples used for testing
+------------------------------------
+Clazz.loadClass("jsjava.text.SimpleDateFormat")
+
+   undefined
+
+x = new jsjava.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z")
+
+   Object { serialVersionOnStream: 1, pattern: "EEE, d MMM yyyy HH:mm:ss Z", compiledPattern: Array[16], zeroDigit: "
+
+x.format(new Date)
+
+   "Sat, 4 Apr 2015 03:57:31 -0500"
   
 
 4/3/2015
