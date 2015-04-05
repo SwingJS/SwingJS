@@ -45,7 +45,7 @@
 
  // BH 4/5/2015 8:12:57 AM refactoring j2slib (this file) to make private functions really private using var
  // BH 4/3/2015 6:14:34 AM adding anonymous local "ClazzLoader" (Clazz._Loader) --> "_Loader"
- // BH 4/3/2015 6:14:34 AM adding Clazz._Loader._classPending, Clazz._classCount
+ // BH 4/3/2015 6:14:34 AM adding Clazz._Loader._classPending, Clazz._Loader._classCount
  // BH 4/3/2015 6:14:34 AM adding Clazz._Loader._checkLoad 
  //  -- forces asynchronous class loading
  //  -- builds Clazz._Loader._classPending and Clazz._classCount
@@ -670,30 +670,6 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 	/*# x<< #*/
 	return fx.apply (objThis, funParams || []);
 };
-
-/* private */
-/* removed BH see Clazz.removeArrayItem
-_Loader.removeFromArray = function (node, arr) {
-	if (arr == null || node == null) {
-		return false;
-	}
-	//var isPackedJS = (node.path
-	//		&& node.path.indexOf (".z.js") == node.path.length - 5);
-	//log ("... remove " + node.path + " :: " + isPackedJS);
-	var j = 0;
-	for (var i = 0; i < arr.length; i++) {
-		if (!(arr[i] === node)// || (isPackedJS && arr[i].path == node.path)))
-			if (j < i) {
-				arr[j] = arr[i];
-			}
-			j++;
-		}
-	}
-	arr.length = j;
-	return false;
-};
-*/
-
 
 /**
  * Call super constructor of the class. 
@@ -1498,19 +1474,19 @@ Clazz.defineType = function (qClazzName, clazzFun, clazzParent, interfacez) {
 	return clazzFun;
 };
 
-Clazz.isSafari = (navigator.userAgent.indexOf ("Safari") != -1);
-Clazz.isSafari4Plus = false;
-if (Clazz.isSafari) {
+var isSafari = (navigator.userAgent.indexOf ("Safari") != -1);
+var isSafari4Plus = false;
+if (isSafari) {
 	var ua = navigator.userAgent;
 	var verIdx = ua.indexOf("Version/");
 	if (verIdx  != -1) {
 		var verStr = ua.substring(verIdx + 8);
 		var verNumber = parseFloat(verStr);
-		Clazz.isSafari4Plus = verNumber >= 4.0;
+		isSafari4Plus = verNumber >= 4.0;
 	}
 }
 
-/* protected */
+/* public */
 Clazz.instantialize = function (objThis, args) {
 	if (args && args.length == 1 && args[0] 
 			&& args[0] instanceof args4InheritClass) {
@@ -1521,7 +1497,7 @@ Clazz.instantialize = function (objThis, args) {
 			return this;
 		};
 	}
-	if (Clazz.isSafari4Plus) { // Fix bug of Safari 4.0+'s over-optimization
+	if (isSafari4Plus) { // Fix bug of Safari 4.0+'s over-optimization
 		var argsClone = [];
 		for (var k = 0; k < args.length; k++) {
 			argsClone[k] = args[k];
@@ -1602,14 +1578,14 @@ Clazz._innerFunctions = {
 	},
 	getClassLoader : function () {
 		var clazzName = this.__CLASS_NAME__;
-		var baseFolder = Clazz._Loader.getClasspathFor (clazzName);
+		var baseFolder = Clazz._Loader.getClasspathFor(clazzName);
 		var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
 		if (x != -1) {
 			baseFolder = baseFolder.substring (0, x);
 		} else {
-			baseFolder = Clazz._Loader.getClasspathFor (clazzName, true);
+			baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
 		}
-		var loader = Clazz._Loader.requireLoaderByBase (baseFolder);
+		var loader = Clazz._Loader.requireLoaderByBase(baseFolder);
 		loader.getResourceAsStream = Clazz._innerFunctions.getResourceAsStream;
 		loader.getResource = Clazz._innerFunctions.getResource; // BH
 		return loader;
@@ -1642,9 +1618,9 @@ Clazz._innerFunctions = {
 			if (arguments.length == 2) { // additional argument
 				baseFolder = arguments[1];
 				if (!baseFolder)
-					baseFolder = Clazz._Loader.binaryFolders[0];
+					baseFolder = Clazz.binaryFolders[0];
 			} else if (Clazz._Loader) {
-				baseFolder = Clazz._Loader.getClasspathFor (clazzName, true);
+				baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
 			}
 			if (!baseFolder) {
 				is.url = name.substring (1);
@@ -1661,7 +1637,7 @@ Clazz._innerFunctions = {
 			if (this.base) {
 				baseFolder = this.base;
 			} else if (Clazz._Loader) {
-				baseFolder = Clazz._Loader.getClasspathFor (clazzName);
+				baseFolder = Clazz._Loader.getClasspathFor(clazzName);
 				var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
 				if (x != -1) {
 					baseFolder = baseFolder.substring (0, x);
@@ -1686,7 +1662,7 @@ Clazz._innerFunctions = {
 							}
 						}
 					} else {
-						baseFolder = Clazz._Loader.getClasspathFor (clazzName, true);
+						baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
 					}
 				}
 			} else {
@@ -1770,7 +1746,7 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
 	}
 	var qName = (prefixName ? prefixName + "." : "") + name;
   
-  if (Clazz._Loader._checkLoad) {
+  if (Clazz._Loader && Clazz._Loader._checkLoad) {
     if (Clazz._Loader._classPending[qName]) {
       delete Clazz._Loader._classPending[qName];
       Clazz._Loader._classCountOK++;
@@ -1819,16 +1795,8 @@ var decorateFunction = function (clazzFun, prefix, name, _decorateFunction) {
 		clazzFun[inF[i]] = Clazz._innerFunctions[inF[i]];
 	}
 
-	if (Clazz._Loader) {
-		var node = Clazz._Loader.findNode(qName);
-		if (node && node.status == Node.STATUS_KNOWN) {
-			window.setTimeout((function(nnn) {
-				return function() {
-					Clazz._Loader.updateNode(nnn);
-				};
-			})(node), 1);
-		}
-	}
+	if (Clazz._Loader) 
+    Clazz._Loader.updateNodeForFunctionDecoration(qName);
 };
 
 /* protected */
@@ -2115,7 +2083,7 @@ Clazz.cloneFinals = function () {
 };
 
 /* public */
-Clazz.isClassDefined = Clazz.isDefinedClass = function (clazzName) {
+Clazz.isClassDefined = Clazz.isDefinedClass = function(clazzName) {
 	if (!clazzName) 
 		return false;		/* consider null or empty name as non-defined class */
 	if (Clazz.allClasses[clazzName])
@@ -3030,7 +2998,7 @@ Clazz.unloadClass = function (qClazzName) {
 		}
 
 		if (Clazz._Loader) {
-			Clazz._Loader.unloadClassExt (qClazzName);
+			Clazz._Loader.unloadClassExt(qClazzName);
 		}
 
 		return true;
@@ -3184,8 +3152,19 @@ var Node = function () {
 ;(function(Clazz, _Loader) {
 
 _Loader._checkLoad = Jmol._checkLoad;
+ 
+_Loader.updateNodeForFunctionDecoration = function(qName) {
+	var node = findNode(qName);
+	if (node && node.status == Node.STATUS_KNOWN) {
+		window.setTimeout((function(nnn) {
+			return function() {
+				updateNode(nnn);
+			};
+		})(node), 1);
+	}
+}
 
-Node.prototype.toString = function () {
+Node.prototype.toString = function() {
 	return this.name || this.path || "ClazzNode";
 }
 
@@ -3197,48 +3176,48 @@ Node.STATUS_DECLARED = 4;
 Node.STATUS_LOAD_COMPLETE = 5;
 
 						 
-_Loader.loaders = [];
+var loaders = [];
 
+/* public */
 _Loader.requireLoaderByBase = function (base) {
-	for (var i = 0; i < _Loader.loaders.length; i++) {
-		if (_Loader.loaders[i].base == base) {
-			return _Loader.loaders[i];
+	for (var i = 0; i < loaders.length; i++) {
+		if (loaders[i].base == base) {
+			return loaders[i];
 		}
 	}
 	var loader = new _Loader ();
 	loader.base = base; 
-	_Loader.loaders.push(loader);
+	loaders.push(loader);
 	return loader;
 };
 
 /**
  * Class dependency tree
  */
-_Loader.clazzTreeRoot = new Node ();
+var clazzTreeRoot = new Node();
 
 /**
  * Used to keep the status whether a given *.js path is loaded or not.
  */
 /* private */
-_Loader.loadedScripts = {};
+var loadedScripts = {};
 
 /**
  * Multiple threads are used to speed up *.js loading.
  */
 /* private */
-_Loader.inLoadingThreads = 0;
+var inLoadingThreads = 0;
 
 /**
  * Maximum of loading threads
  */
-/* protected */
-_Loader.maxLoadingThreads = 6;
+/* private */
+var maxLoadingThreads = 6;
 
-_Loader.userAgent = navigator.userAgent.toLowerCase ();
-_Loader.isOpera = (_Loader.userAgent.indexOf ("opera") != -1);
-_Loader.isIE = (_Loader.userAgent.indexOf ("msie") != -1) && !_Loader.isOpera;
-_Loader.isGecko = (_Loader.userAgent.indexOf ("gecko") != -1);
-//_Loader.isChrome = (_Loader.userAgent.indexOf ("chrome") != -1);
+var userAgent = navigator.userAgent.toLowerCase ();
+var isOpera = (userAgent.indexOf ("opera") != -1);
+var isIE = (userAgent.indexOf ("msie") != -1) && !isOpera;
+var isGecko = (userAgent.indexOf ("gecko") != -1);
 
 /*
  * Opera has different loading order which will result in performance degrade!
@@ -3246,16 +3225,16 @@ _Loader.isGecko = (_Loader.userAgent.indexOf ("gecko") != -1);
  *
  * FIXME: This different loading order also causes bugs in single thread!
  */
-if (_Loader.isOpera) {
-	_Loader.maxLoadingThreads = 1;
-	var index = _Loader.userAgent.indexOf ("opera/");
+if (isOpera) {
+	maxLoadingThreads = 1;
+	var index = userAgent.indexOf ("opera/");
 	if (index != -1) {
 		var verNumber = 9.0;
 		try {
-			verNumber = parseFloat(_Loader.userAgent.subString (index + 6));
+			verNumber = parseFloat(userAgent.subString (index + 6));
 		} catch (e) {}
 		if (verNumber >= 9.6) {
-			_Loader.maxLoadingThreads = 6;
+			maxLoadingThreads = 6;
 		}
 	} 
 }
@@ -3265,12 +3244,15 @@ if (_Loader.isOpera) {
  * In original design _Loader and Clazz are independent!
  *  -- zhourenjian @ December 23, 2006
  */
-if (window["Clazz"] && Clazz.isClassDefined) {
-	_Loader.isClassDefined = Clazz.isClassDefined;
+var isClassdefined;
+var definedClasses;
+
+if (self.Clazz && Clazz.isClassDefined) {
+	isClassDefined = Clazz.isClassDefined;
 } else {
-	_Loader.definedClasses = {};
-	_Loader.isClassDefined = function (clazzName) {
-		return _Loader.definedClasses[clazzName] == true;
+	definedClasses = {};
+	isClassDefined = function (clazzName) {
+		return definedClasses[clazzName] == true;
 	};
 }
 
@@ -3286,7 +3268,7 @@ if (window["Clazz"] && Clazz.isClassDefined) {
  * the ignored classes list.
  */
 /* private */
-_Loader.unwrapArray = function (arr) {
+var unwrapArray = function (arr) {
 	if (!arr || arr.length == 0)
 		return [];
 	var last = null;
@@ -3315,14 +3297,17 @@ _Loader.unwrapArray = function (arr) {
  * Used to keep to-be-loaded classes.
  */
 /* private */
-_Loader.classQueue = [];
+var classQueue = [];
 
 /* private */
-_Loader.classpathMap = {};
+var classpathMap = {};
+
+/* private */
+var pkgRefCount = 0;
 
 /* public */
 _Loader.loadPackageClasspath = function (pkg, base, isIndex, fSuccess, mode, pt) {
-	var map = _Loader.classpathMap;
+	var map = classpathMap;
 	mode || (mode = 0);
 	fSuccess || (fSuccess = null);
 	pt || (pt = 0);
@@ -3341,21 +3326,21 @@ _Loader.loadPackageClasspath = function (pkg, base, isIndex, fSuccess, mode, pt)
 	 * should never initialize "java/package.js" again!
 	 */
 	var isPkgDeclared = (isIndex && map["@" + pkg]);
-	if (mode == 0 && isIndex && !map["@java"] && pkg.indexOf ("java") != 0 && _Loader.needPackage("java")) {
+	if (mode == 0 && isIndex && !map["@java"] && pkg.indexOf ("java") != 0 && needPackage("java")) {
 		_Loader.loadPackage("java", fSuccess ? function(_package){_Loader.loadPackageClasspath(pkg, base, isIndex, fSuccess, 1)} : null);
 		if (fSuccess)
 			return;
 	}
 	if (pkg instanceof Array) {
-		_Loader.unwrapArray(pkg);
+		unwrapArray(pkg);
 		if (fSuccess) {
 			if (pt < pkg.length)
-				_Loader.loadPackageClasspath (pkg[pt], base, isIndex, function(_loadPackageClassPath){_Loader.loadPackageClasspath(pkg, base, isIndex, fSuccess, 1, pt + 1)}, 1);
+				_Loader.loadPackageClasspath(pkg[pt], base, isIndex, function(_loadPackageClassPath){_Loader.loadPackageClasspath(pkg, base, isIndex, fSuccess, 1, pt + 1)}, 1);
 			else
 				fSuccess();
 		} else {
 			for (var i = 0; i < pkg.length; i++)
-				_Loader.loadPackageClasspath (pkg[i], base, isIndex, null);
+				_Loader.loadPackageClasspath(pkg[i], base, isIndex, null);
 		}
 		return;
 	}
@@ -3391,12 +3376,12 @@ _Loader.loadPackageClasspath = function (pkg, base, isIndex, fSuccess, mode, pt)
 	if (base) // critical for multiple applets
 		map["@" + pkg] = base;
 	if (isIndex && !isPkgDeclared && !window[pkg + ".registered"]) {
-		_Loader.pkgRefCount++;
+		pkgRefCount++;
 		if (pkg == "java")
 			pkg = "core" // JSmol -- moves java/package.js to core/package.js
 		_Loader.loadClass(pkg + ".package", function () {
-					if (--_Loader.pkgRefCount == 0)
-						_Loader.runtimeLoaded();
+					if (--pkgRefCount == 0)
+						runtimeLoaded();
 					//fSuccess && fSuccess();
 				}, true, true, 1);
 		return;
@@ -3433,12 +3418,12 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 
   System.out.println("loadClass " + name)
 
-	// Make sure that _Loader.packageClasspath ("java", base, true); 
+	// Make sure that packageClasspath ("java", base, true); 
 	// is called before any _Loader#loadClass is called.
 
-	if (_Loader.needPackage("java"))
+	if (needPackage("java"))
 		_Loader.loadPackage("java");
-	if (_Loader.needPackage("core"))
+	if (needPackage("core"))
 		_Loader.loadPackage("core");	
 
 //	var swtPkg = "org.eclipse.swt";
@@ -3453,20 +3438,20 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 
 	_Loader.keepOnLoading = true;
 	
-	if (!forced && (_Loader.pkgRefCount && name.lastIndexOf(".package") != name.length - 8
-			|| name.indexOf("java.") != 0 && !_Loader.isClassDefined(_Loader.runtimeKeyClass)
+	if (!forced && (pkgRefCount && name.lastIndexOf(".package") != name.length - 8
+			|| name.indexOf("java.") != 0 && !isClassDefined(runtimeKeyClass)
 		 )) {	
-		_Loader.queueBe4KeyClazz.push([name, onLoaded]);
+		queueBe4KeyClazz.push([name, onLoaded]);
     
     
-  System.out.println("loadclass-queuing" + name+ _Loader.runtimeKeyClass + " "+ _Loader.isClassDefined(_Loader.runtimeKeyClass))
+  System.out.println("loadclass-queuing" + name+ runtimeKeyClass + " "+ isClassDefined(runtimeKeyClass))
 
 		return;    
 	}
 	var b;
-	if ((b = _Loader.isClassDefined(name)) || _Loader.isClassExcluded(name)) {
+	if ((b = isClassDefined(name)) || isClassExcluded(name)) {
 		if (b && onLoaded) {
-			var nn = _Loader.findNode(name);
+			var nn = findNode(name);
 			if (!nn || nn.status >= Node.STATUS_LOAD_COMPLETE) {
 				if (async) {
 					window.setTimeout(onLoaded, 25);
@@ -3477,13 +3462,9 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 		}
 		return;
 	}
-	
 	var path = _Loader.getClasspathFor(name);
-  
-
-	var existed = _Loader.loadedScripts[path];
-  
-	var qq = _Loader.classQueue;
+  var existed = loadedScripts[path];
+  	var qq = classQueue;
 	if (!existed)
 		for (var i = qq.length; --i >= 0;)
 			if (qq[i].path == path || qq[i].name == name) {
@@ -3492,7 +3473,7 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 			}
 	if (existed) {
 		if (onLoaded) {
-			var n = _Loader.findNode(name);
+			var n = findNode(name);
 			if (n) {
 				if (!n.onLoaded) {
 					n.onLoaded = onLoaded;
@@ -3504,11 +3485,11 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 		return;
 	}
 
-	var n = (Clazz.unloadedClasses[name] && _Loader.findNode(name) || new Node());
+	var n = (Clazz.unloadedClasses[name] && findNode(name) || new Node());
 	n.name = name;
 	n.path = path;
 	n.isPackage = (path.lastIndexOf("package.js") == path.length - 10);
-	_Loader.mappingPathNameNode(path, name, n);
+	mappingPathNameNode(path, name, n);
 	n.onLoaded = onLoaded;
 	n.status = Node.STATUS_KNOWN;
 	var needBeingQueued = false;
@@ -3534,12 +3515,12 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 	if (!needBeingQueued) { // can be loaded directly
 		var bSave = false;
 		if (onLoaded) {	
-			bSave = _Loader.isLoadingEntryClass;
-			_Loader.isLoadingEntryClass = true;
+			bSave = isLoadingEntryClass;
+			isLoadingEntryClass = true;
 		}
     if (forced)onLoaded = null;
-		_Loader.addChildClassNode(_Loader.clazzTreeRoot, n, true);
-		_Loader.loadScript(n, n.path, n.requiredBy, false, onLoaded ? function(_loadClass){ _Loader.isLoadingEntryClass = bSave; onLoaded()}: null);
+		addChildClassNode(clazzTreeRoot, n, true);
+		loadScript(n, n.path, n.requiredBy, false, onLoaded ? function(_loadClass){ isLoadingEntryClass = bSave; onLoaded()}: null);
 	}
 };
 
@@ -3548,9 +3529,9 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
  * Only "java" and "org.eclipse.swt" are accepted in argument.
  */
 /* private */
-_Loader.needPackage = function(pkg) {
+var needPackage = function(pkg) {
   // note that false != null and true != null
-	return (window[pkg + ".registered"] != null && !_Loader.classpathMap["@" + pkg]);
+	return (window[pkg + ".registered"] != null && !classpathMap["@" + pkg]);
 }
 
 /* private */
@@ -3562,8 +3543,6 @@ _Loader.loadPackage = function(pkg, fSuccess) {
 		true, fSuccess);
 };
 
-_Loader.pkgRefCount = 0;
-
 /**
  * Register classes to a given *.z.js path, so only a single *.z.js is loaded
  * for all those classes.
@@ -3572,10 +3551,10 @@ _Loader.pkgRefCount = 0;
 _Loader.jarClasspath = function (jar, clazzes) {
 	if (!(clazzes instanceof Array))
 		clazzes = [classes];
-	_Loader.unwrapArray(clazzes);
+	unwrapArray(clazzes);
 	for (var i = clazzes.length; --i >= 0;)
-		_Loader.classpathMap["#" + clazzes[i]] = jar;
-	_Loader.classpathMap["$" + jar] = clazzes;
+		classpathMap["#" + clazzes[i]] = jar;
+	classpathMap["$" + jar] = clazzes;
 };
 
 /**
@@ -3632,7 +3611,7 @@ _Loader.multipleSites = function (path) {
 		}
 	}
 	var length = path.length;
-	if (_Loader.maxLoadingThreads > 1 
+	if (maxLoadingThreads > 1 
 			&& ((length > 15 && path.substring (0, 15) == "http://archive.")
 			|| (length > 9 && path.substring (0, 9) == "http://a."))) {
 		var index = path.lastIndexOf("/");
@@ -3660,7 +3639,7 @@ _Loader.multipleSites = function (path) {
  */
 /* public */
 _Loader.getClasspathFor = function (clazz, forRoot, ext) {
-	var path = _Loader.classpathMap["#" + clazz];
+	var path = classpathMap["#" + clazz];
 	if (!path || forRoot || ext) {
 		var base;
 		var idx;
@@ -3673,7 +3652,7 @@ _Loader.getClasspathFor = function (clazz, forRoot, ext) {
 		} else {
 			idx = clazz.length + 2;
 			while ((idx = clazz.lastIndexOf(".", idx - 2)) >= 0)
-				if ((base = _Loader.classpathMap["@" + clazz.substring(0, idx)]))
+				if ((base = classpathMap["@" + clazz.substring(0, idx)]))
 					break;
 			if (!forRoot)
 				clazz = clazz.replace (/\./g, "/");	
@@ -3691,10 +3670,6 @@ _Loader.getClasspathFor = function (clazz, forRoot, ext) {
 	return path;//_Loader.multipleSites(path);
 };
 
-/* Used to keep ignored classes */
-/* private */
-_Loader.excludeClassMap = {};
-
 /**
  * To ignore some classes.
  */
@@ -3708,14 +3683,9 @@ _Loader.ignore = function () {
 		for (var i = 0; i < n; i++)
 			clazzes[i] = arguments[i];
 	}
-	_Loader.unwrapArray(clazzes);
+	unwrapArray(clazzes);
 	for (var i = 0; i < n; i++)
-		_Loader.excludeClassMap["@" + clazzes[i]] = 1;
-};
-
-/* private */
-_Loader.isClassExcluded = function (clazz) {
-	return _Loader.excludeClassMap["@" + clazz];
+		excludeClassMap["@" + clazzes[i]] = 1;
 };
 
 /**
@@ -3724,38 +3694,46 @@ _Loader.isClassExcluded = function (clazz) {
  *
  * TODO: There should be a Java interface with name like INativeLoaderStatus
  */
-/* protected */
+/* public */
 _Loader.onScriptLoading = function (file){};
 
-/* protected */
+/* public */
 _Loader.onScriptLoaded = function (file, isError){};
 
-/* protected */
+/* public */
 _Loader.onScriptInitialized = function (file){};
 
-/* protected */
+/* public */
 _Loader.onScriptCompleted = function (file){};
 
-/* protected */
+/* public */
 _Loader.onClassUnloaded = function (clazz){};
 
 /**
  * After all the classes are loaded, this method will be called.
  * Should be overriden to run *.main([]).
  */
-/* protected */
+/* public */
 _Loader.onGlobalLoaded = function () {};
 
-/* protected */
-
+/* public */
 _Loader.keepOnLoading = true; // never set false in this code
 
 
 /* private */
-_Loader.mapPath2ClassNode = {};
+var mapPath2ClassNode = {};
 
-_Loader.evaluate = function(file, js) {
+/* private */
+var isClassExcluded = function (clazz) {
+	return excludeClassMap["@" + clazz];
+};
 
+/* Used to keep ignored classes */
+/* private */
+var excludeClassMap = {};
+
+/* private */
+var evaluate = function(file, js) {
  		try {
 			eval(js);
 		} catch (e) {
@@ -3767,14 +3745,14 @@ _Loader.evaluate = function(file, js) {
 			throw e;
 		}
 		_Loader.onScriptLoaded(file, false);
-		_Loader.tryToLoadNext(file);
+		tryToLoadNext(file);
 }
 
-/* protected */
-_Loader.failedHandles = {};
+/* private */
+var failedHandles = {};
 
 /* private */
-_Loader.generateRemovingFunction = function (node) {
+var generateRemovingFunction = function (node) {
 	return function () {
 		if (node.readyState != "interactive") {
 			try {
@@ -3787,12 +3765,12 @@ _Loader.generateRemovingFunction = function (node) {
 };
 
 /* private */
-_Loader.removeScriptNode = function (n) {
+var removeScriptNode = function (n) {
 	if (window["j2s.script.debugging"]) {
 		return;
 	}
 	// lazily remove script nodes.
-	window.setTimeout (_Loader.generateRemovingFunction (n), 1);
+	window.setTimeout (generateRemovingFunction (n), 1);
 };
 
 /* public */
@@ -3820,35 +3798,35 @@ Clazz.currentPath= "";
  * Load *.js by adding script elements into head. Hook the onload event to
  * load the next class in dependency tree.
  */
-/* protected */
-_Loader.loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript) {
+/* private */
+var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript) {
 		Clazz.currentPath = file;
 	if (ignoreOnload)alert("WHY>>")
 //BH removed	// maybe some scripts are to be loaded without needs to know onload event.
-//	if (!ignoreOnload && _Loader.loadedScripts[file]) {
+//	if (!ignoreOnload && loadedScripts[file]) {
 //		_Loader.tryToLoadNext(file);
 //		return;
 //	}
-	_Loader.loadedScripts[file] = true;
+	loadedScripts[file] = true;
 	// also remove from queue
-	removeArrayItem(_Loader.classQueue, file);
+	removeArrayItem(classQueue, file);
 
   if (_Loader._checkLoad) {
     // forces not-found message
-    _Loader.isUsingXMLHttpRequest = true;
-    _Loader.isAsynchronousLoading = false;
-    System.out.println("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + _Loader.isUsingXMLHttpRequest + " async=" + _Loader.isAsynchronousLoading)
+    isUsingXMLHttpRequest = true;
+    isAsynchronousLoading = false;
+    System.out.println("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + isUsingXMLHttpRequest + " async=" + isAsynchronousLoading)
   }
 
 	_Loader.onScriptLoading(file);
-	if (_Loader.isUsingXMLHttpRequest && !_Loader.isAsynchronousLoading) {
-		// alert("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + _Loader.isUsingXMLHttpRequest + " async=" + _Loader.isAsynchronousLoading + " " + Clazz.getStackTrace())
+	if (isUsingXMLHttpRequest && !isAsynchronousLoading) {
+		// alert("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + isUsingXMLHttpRequest + " async=" + isAsynchronousLoading + " " + Clazz.getStackTrace())
 		// synchronous loading
 		// works in MSIE locally unless a binary file :)
 		// from Jmol.api.Interface only
 		var data = Jmol._getFileData(file);
     try{
-		  _Loader.evaluate(file, data);
+		  evaluate(file, data);
     }catch(e) {
       alert(e + " loading file " + file + " " + node.name + " " + Clazz.getStackTrace());
     }
@@ -3866,25 +3844,25 @@ _Loader.loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScr
 		async:true, 
 		type:"GET", 
 		url:file,
-		success:_Loader.W3CScriptOnCallback(file, false, fSuccess),
-		error:_Loader.W3CScriptOnCallback(file, true, fSuccess)
+		success:W3CScriptOnCallback(file, false, fSuccess),
+		error:W3CScriptOnCallback(file, true, fSuccess)
 	};
-	_Loader.inLoadingThreads++;
+	inLoadingThreads++;
 	Jmol.$ajax(info);
 };
 
 /* private */
-_Loader.W3CScriptOnCallback = function (path, forError, fSuccess) {
+var W3CScriptOnCallback = function (path, forError, fSuccess) {
   var s = Clazz.getStackTrace();
   // if (!fSuccess)alert("why no fSuccess?" + s)
 	return function () {
   //System.out.println("returning " + (fSuccess ? fSuccess.toString() : "no function ") + s) 
 		if (forError && __debuggingBH)Clazz.alert ("############ forError=" + forError + " path=" + path + " ####" + (forError ? "NOT" : "") + "LOADED###");
-		if (_Loader.isGecko && this.timeoutHandle)
+		if (isGecko && this.timeoutHandle)
 			window.clearTimeout(this.timeoutHandle), this.timeoutHandle = null;
-		if (_Loader.inLoadingThreads > 0)
-			_Loader.inLoadingThreads--;
-		//System.out.println("w3ccalback for " + path + " " + _Loader.inLoadingThreads + " threads")
+		if (inLoadingThreads > 0)
+			inLoadingThreads--;
+		//System.out.println("w3ccalback for " + path + " " + inLoadingThreads + " threads")
 		this.onload = null;
 		this.onerror = null;
 		if (forError) 
@@ -3893,55 +3871,55 @@ _Loader.W3CScriptOnCallback = function (path, forError, fSuccess) {
 		var node = this;			
 		var f;
     if (fSuccess)
-      f = function(_W3scriptFS){_Loader.removeScriptNode(node);_Loader.tryToLoadNext(path, fSuccess); };
+      f = function(_W3scriptFS){removeScriptNode(node);tryToLoadNext(path, fSuccess); };
     else
-      f = function(_W3script){_Loader.removeScriptNode(node);_Loader.tryToLoadNext(path)};
-		if (_Loader.loadingTimeLag >= 0)
-			window.setTimeout(function() { _Loader.tryToLoadNext(path, f); }, _Loader.loadingTimeLag);
+      f = function(_W3script){removeScriptNode(node);tryToLoadNext(path)};
+		if (loadingTimeLag >= 0)
+			window.setTimeout(function() { tryToLoadNext(path, f); }, loadingTimeLag);
 		else
-			_Loader.tryToLoadNext(path, f);
+			tryToLoadNext(path, f);
 	};
 };
 
 /* private */
-_Loader.isLoadingEntryClass = true;
+var isLoadingEntryClass = true;
 
 /* private */
-_Loader.besidesJavaPackage = false;
+var besidesJavaPackage = false;
 
 /**
  * After class is loaded, this method will be executed to check whether there
  * are classes in the dependency tree that need to be loaded.
  */
 /* private */
-_Loader.tryToLoadNext = function (file, fSuccess) {
-	var node = _Loader.mapPath2ClassNode["@" + file];
+var tryToLoadNext = function (file, fSuccess) {
+	var node = mapPath2ClassNode["@" + file];
 	if (!node) // maybe class tree root
 		return;
 	var n;
   // check for content loaded
-	var clazzes = _Loader.classpathMap["$" + file];
+	var clazzes = classpathMap["$" + file];
 	if (clazzes) {
 		for (var i = 0; i < clazzes.length; i++) {
 			var name = clazzes[i];
-			if (name != node.name && (n = _Loader.findNode(name))) {
+			if (name != node.name && (n = findNode(name))) {
 				if (n.status < Node.STATUS_CONTENT_LOADED) {
 					n.status = Node.STATUS_CONTENT_LOADED;
-					_Loader.updateNode(n);
+					updateNode(n);
 				}
 			} else {
 				n = new Node();
 				n.name = name;
-				var pp = _Loader.classpathMap["#" + name];
+				var pp = classpathMap["#" + name];
 				if (!pp) {
 					alert (name + " J2S error in tryToLoadNext");
 					error("Java2Script implementation error! Please report this bug!");
 				}
 				n.path = pp;
-				_Loader.mappingPathNameNode (n.path, name, n);
+				mappingPathNameNode (n.path, name, n);
 				n.status = Node.STATUS_CONTENT_LOADED;
-				_Loader.addChildClassNode(_Loader.clazzTreeRoot, n, false);
-				_Loader.updateNode(n);
+				addChildClassNode(clazzTreeRoot, n, false);
+				updateNode(n);
 			}
 		}
 	}
@@ -3949,14 +3927,14 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
 		for (var i = 0; i < node.length; i++) {
 			if (node[i].status < Node.STATUS_CONTENT_LOADED) {
 				node[i].status = Node.STATUS_CONTENT_LOADED;
-				_Loader.updateNode(node[i]);
+				updateNode(node[i]);
 			}
 		}
 	} else if (node.status < Node.STATUS_CONTENT_LOADED) {
 		var stillLoading = false;
 		var ss = document.getElementsByTagName ("SCRIPT");
 		for (var i = 0; i < ss.length; i++) {
-			if (_Loader.isIE) {
+			if (isIE) {
 				if (ss[i].onreadystatechange && ss[i].onreadystatechange.path == node.path
 						&& ss[i].readyState == "interactive") {
 					stillLoading = true;
@@ -3969,7 +3947,7 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
 		}
 		if (!stillLoading) {
 			node.status = Node.STATUS_CONTENT_LOADED;
-			_Loader.updateNode(node);
+			updateNode(node);
 		}
 	}
 	/*
@@ -3984,24 +3962,24 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
  // check for a "must" class that has content and load it
 	var cq;
 	var working = true;
-	if ((n = _Loader.findNextMustClass(Node.STATUS_KNOWN))) {
-		_Loader.loadClassNode(n);
-		while (_Loader.inLoadingThreads < _Loader.maxLoadingThreads) {
-			if (!(n = _Loader.findNextMustClass(Node.STATUS_KNOWN)))
+	if ((n = findNextMustClass(Node.STATUS_KNOWN))) {
+		loadClassNode(n);
+		while (inLoadingThreads < maxLoadingThreads) {
+			if (!(n = findNextMustClass(Node.STATUS_KNOWN)))
 				break;
-			_Loader.loadClassNode(n); // will increase inLoadingThreads!
+			loadClassNode(n); // will increase inLoadingThreads!
 		}
-	} else if ((cq = _Loader.classQueue).length != 0) { 
+	} else if ((cq = classQueue).length != 0) { 
 		/* queue must be loaded in order! */
 		n = cq.shift();
-		if (!_Loader.loadedScripts[n.path] 
+		if (!loadedScripts[n.path] 
 				|| cq.length != 0 
-				|| !_Loader.isLoadingEntryClass
+				|| !isLoadingEntryClass
 				|| n.musts.length
 				|| n.optionals.length) {
-			_Loader.addChildClassNode(_Loader.clazzTreeRoot, n, true);
-			_Loader.loadScript(n, n.path, n.requiredBy, false);
-		} else if (_Loader.isLoadingEntryClass) {
+			addChildClassNode(clazzTreeRoot, n, true);
+			loadScript(n, n.path, n.requiredBy, false);
+		} else if (isLoadingEntryClass) {
 			/*
 			 * The first time reaching here is the time when ClassLoader
 			 * is trying to load entry class. Class with #main method and
@@ -4013,19 +3991,19 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
 			 * then continue to call #onLoaded callback method,
 			 * which results in an script error!
 			 */
-			_Loader.isLoadingEntryClass = false;
+			isLoadingEntryClass = false;
 		}
-	} else if ((n = _Loader.findNextRequiredClass(Node.STATUS_KNOWN))) {
-		_Loader.loadClassNode(n);
-		while (_Loader.inLoadingThreads < _Loader.maxLoadingThreads) {
-			if (!(n = _Loader.findNextRequiredClass(Node.STATUS_KNOWN)))
+	} else if ((n = findNextRequiredClass(Node.STATUS_KNOWN))) {
+		loadClassNode(n);
+		while (inLoadingThreads < maxLoadingThreads) {
+			if (!(n = findNextRequiredClass(Node.STATUS_KNOWN)))
 				break;
-			_Loader.loadClassNode(n); // will increase inLoadingThreads!
+			loadClassNode(n); // will increase inLoadingThreads!
 		}
 	} else {
 		working = false;
 	}
-	if (working || _Loader.inLoadingThreads > 0)
+	if (working || inLoadingThreads > 0)
 		return;
   // 
   // now check all classes that MUST be loaded prior to initialization 
@@ -4033,21 +4011,21 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
   // and all classes REQUIRED somewhere in that class, possibly by the constructor
   // (that is, "new xxxx()" called somewhere in code) and update them
   // that have content but are not declared already 
-	var f = [_Loader.findNextMustClass,_Loader.findNextRequiredClass];
+	var f = [findNextMustClass,findNextRequiredClass];
 	var lastNode = null;
 	for (var i = 0; i < 2; i++)
 		while ((n = f[i](Node.STATUS_CONTENT_LOADED))) {
 			if (i == 1 && lastNode === n) // Already existed cycle ?
 				n.status = Node.STATUS_LOAD_COMPLETE;
-			_Loader.updateNode(n);
+			updateNode(n);
 			lastNode = n;
 		}
     
   // check for load cycles
   
 	while (true) {
-		_Loader.tracks = [];
-		if (!_Loader.checkCycle(_Loader.clazzTreeRoot, file))
+		tracks = [];
+		if (!checkCycle(clazzTreeRoot, file))
 			break;
 	}
   
@@ -4058,7 +4036,7 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
 		while ((n = f[i](Node.STATUS_DECLARED))) {
 			if (lastNode === n) 
 				break;
-			_Loader.updateNode(lastNode = n);
+			updateNode(lastNode = n);
 		}
 	}
 	var done = [];
@@ -4067,7 +4045,7 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
 			done.push(n), n.status = Node.STATUS_LOAD_COMPLETE;
 	if (done.length) {
 		for (var i = 0; i < done.length; i++)
-			_Loader.destroyClassNode(done[i]);
+			destroyClassNode(done[i]);
 		for (var i = 0; i < done.length; i++)
 			if ((f = done[i].onLoaded))
 				done[i].onLoaded = null, f();
@@ -4086,9 +4064,9 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
   } else if (_Loader._classCountPending) {
     alert(Clazz.getStackTrace(-1));
     for (var name in _Loader._classPending) {
-      var n = _Loader.findNode(name);
+      var n = findNode(name);
       if (n) {
-        _Loader.updateNode(n);
+        updateNode(n);
         break;
       }
     }
@@ -4104,14 +4082,15 @@ _Loader.tryToLoadNext = function (file, fSuccess) {
 }
 };
 
-_Loader.tracks = [];
+
+var tracks = [];
 
 /*
  * There are classes reference cycles. Try to detect and break those cycles.
  */
 /* private */
-_Loader.checkCycle = function (node, file) {
-	var ts = _Loader.tracks;
+var checkCycle = function (node, file) {
+	var ts = tracks;
 	var len = ts.length;
   // add this node to tracks
 	ts.push(node);
@@ -4131,9 +4110,9 @@ _Loader.checkCycle = function (node, file) {
 		for (; i < len; i++) {
       var n = ts[i];
 			n.status = Node.STATUS_LOAD_COMPLETE;
-			_Loader.destroyClassNode(n); // Same as above
+			destroyClassNode(n); // Same as above
 			for (var k = 0; k < n.parents.length; k++)
-				_Loader.updateNode(n.parents[k]);
+				updateNode(n.parents[k]);
 			n.parents = [];
       var f = n.onLoaded;
       if (_Loader._checkLoad) {
@@ -4149,7 +4128,7 @@ _Loader.checkCycle = function (node, file) {
 	var a = [node.musts, node.optionals];
 	for (var j = 0; j < 2; j++)
 		for (var r = a[j], i = r.length; --i >= 0;)
-			if (r[i].status == Node.STATUS_DECLARED && _Loader.checkCycle(r[i], file)) 
+			if (r[i].status == Node.STATUS_DECLARED && checkCycle(r[i], file)) 
 				return true;
   // reset _tracks to its original length      
 	ts.length = len;
@@ -4164,18 +4143,18 @@ _Loader._classPending = {};
 _Loader.showPending = function() {
   var a = [];
   for (var name in _Loader._classPending) {
-    var n = _Loader.findNode(name);
+    var n = findNode(name);
     if (!n) {
       alert("No node for " + name);
       continue;
     }
     a.push(n);
-    System.out.println(_Loader.showNode("", "", n, "", 0));     
+    System.out.println(showNode("", "", n, "", 0));     
   }  
   return a;
 }
 
-_Loader.showNode = function(s, names, node, inset, level) {
+var showNode = function(s, names, node, inset, level) {
   names += "--" + node.name;
   s += names + "\n";
   if (level > 5) {
@@ -4187,13 +4166,13 @@ _Loader.showNode = function(s, names, node, inset, level) {
   if (node.parents && node.parents.length && node.parents[0] && node.parents[0].name) {
     s += inset + "parents: " + node.parents.length + "\n";
     for (var i = 0; i < node.parents.length; i++) {
-      s = _Loader.showNode(s, names, node.parents[i], inset + "\t", level+1);
+      s = showNode(s, names, node.parents[i], inset + "\t", level+1);
     }
     s += "\n";
   }
 //  if (node.requiredBy) {
 //    s += inset + "requiredBy:\n";
-//    s = _Loader.showNode(s, names, node.requiredBy, inset + "\t", level+1);
+//    s = showNode(s, names, node.requiredBy, inset + "\t", level+1);
 //    s += "\n";
 //  }
   return s;    
@@ -4203,9 +4182,9 @@ _Loader.showNode = function(s, names, node, inset, level) {
  * Update the dependency tree nodes recursively.
  */
 /* private */
-_Loader.updateNode = function(node, _updateNode) {
+updateNode = function(node, _updateNode) {
 	if (!node.name || node.status >= Node.STATUS_LOAD_COMPLETE) {
-		_Loader.destroyClassNode(node);
+		destroyClassNode(node);
 		return;
 	}
 	var ready = true;
@@ -4214,19 +4193,19 @@ _Loader.updateNode = function(node, _updateNode) {
 		for (var mustLength = node.musts.length, i = mustLength; --i >= 0;) {
 			var n = node.musts[i];
 			n.requiredBy = node;
-			if (n.status < Node.STATUS_DECLARED && _Loader.isClassDefined (n.name)) {
+			if (n.status < Node.STATUS_DECLARED && isClassDefined (n.name)) {
 				var nns = []; // a stack for onLoaded events
 				n.status = Node.STATUS_LOAD_COMPLETE;
-				_Loader.destroyClassNode(n); // Same as above
+				destroyClassNode(n); // Same as above
 				if (n.declaration	&& n.declaration.clazzList) {
 					// For those classes within one *.js file, update them synchronously.
 					for (var j = 0, list = n.declaration.clazzList, l = list.length; j < l; j++) {
-						var nn = _Loader.findNode (list[j]);
+						var nn = findNode (list[j]);
 						if (nn && nn.status != Node.STATUS_LOAD_COMPLETE
 								&& nn !== n) {
 							nn.status = n.status;
 							nn.declaration = null;
-							_Loader.destroyClassNode(nn);
+							destroyClassNode(nn);
 							nn.onLoaded && nns.push(nn);
 						}
 					}
@@ -4243,7 +4222,7 @@ _Loader.updateNode = function(node, _updateNode) {
 					}
 				}
 			} else {
-				(n.status == Node.STATUS_CONTENT_LOADED) && _Loader.updateNode(n); // musts may be changed
+				(n.status == Node.STATUS_CONTENT_LOADED) && updateNode(n); // musts may be changed
 				if (n.status < Node.STATUS_DECLARED)
 					ready = false;
 			}
@@ -4269,18 +4248,18 @@ _Loader.updateNode = function(node, _updateNode) {
             }
     }
 		node.status = Node.STATUS_DECLARED;
-		if (_Loader.definedClasses)
-			_Loader.definedClasses[node.name] = true;
+		if (definedClasses)
+			definedClasses[node.name] = true;
 		_Loader.onScriptInitialized(node.path);
 		if (node.declaration && node.declaration.clazzList) {
 			// For those classes within one *.js file, update them synchronously.
 			for (var j = 0, list = node.declaration.clazzList, l = list.length; j < l; j++) {
-				var nn = _Loader.findNode(list[j]);
+				var nn = findNode(list[j]);
 				if (nn && nn.status != Node.STATUS_DECLARED
 						&& nn !== node) {
 					nn.status = Node.STATUS_DECLARED;
-					if (_Loader.definedClasses)
-						_Loader.definedClasses[nn.name] = true;
+					if (definedClasses)
+						definedClasses[nn.name] = true;
 					_Loader.onScriptInitialized(nn.path);
 				}
 			}
@@ -4289,18 +4268,18 @@ _Loader.updateNode = function(node, _updateNode) {
 	var level = Node.STATUS_DECLARED;
 	if (node.optionals.length == 0 && node.musts.length == 0
 			|| node.status > Node.STATUS_KNOWN && !node.declaration
-			|| _Loader.checkStatusIs(node.musts, Node.STATUS_LOAD_COMPLETE)
-					&& _Loader.checkStatusIs(node.optionals, Node.STATUS_LOAD_COMPLETE)) { 
+			|| checkStatusIs(node.musts, Node.STATUS_LOAD_COMPLETE)
+					&& checkStatusIs(node.optionals, Node.STATUS_LOAD_COMPLETE)) { 
 		level = Node.STATUS_LOAD_COMPLETE;
-		if (!_Loader.doneLoading(node, level))
+		if (!doneLoading(node, level))
 			return false;
 			// For those classes within one *.js file, update them synchronously.
 		if (node.declaration && node.declaration.clazzList) {
 			for (var j = 0, list = node.declaration.clazzList, l = list.length; j < l; j++) {
-				var nn = _Loader.findNode(list[j]);
+				var nn = findNode(list[j]);
 				if (nn && nn.status != level && nn !== node) {
 					nn.declaration = null;
-					if (!_Loader.doneLoading(nn, level))
+					if (!doneLoading(nn, level))
 						return false;
 				}
 			}
@@ -4311,7 +4290,7 @@ _Loader.updateNode = function(node, _updateNode) {
   	for (var i = 0; i < node.parents.length; i++) {
   		var p = node.parents[i];
   		if (p.status < level) 
-  			_Loader.updateNode(p, p.name);
+  			updateNode(p, p.name);
   	}
   	if (level == Node.STATUS_LOAD_COMPLETE)
   		node.parents = [];
@@ -4319,14 +4298,14 @@ _Loader.updateNode = function(node, _updateNode) {
 };
 
 /* private */
-_Loader.checkStatusIs = function(arr, status){
+var checkStatusIs = function(arr, status){
 	for (var i = arr.length; --i >= 0;)
 		if (arr[i].status < status)
 			return false;
 	return true;
 }
 /* private */
-_Loader.doneLoading = function(node, level, _doneLoading) {
+var doneLoading = function(node, level, _doneLoading) {
 	node.status = level;
 	_Loader.onScriptCompleted(node.path);
   
@@ -4338,7 +4317,7 @@ _Loader.doneLoading = function(node, level, _doneLoading) {
 			return false;
 	}
   
-	_Loader.destroyClassNode(node);
+	destroyClassNode(node);
 	return true;
 }
 
@@ -4347,56 +4326,57 @@ _Loader.doneLoading = function(node, level, _doneLoading) {
  * number should not be in the property set.
  */
 /* private */
-_Loader.usedRandoms = {};
-_Loader.usedRandoms["r" + 0.13412] = 1;
+var usedRandoms = {
+  "r0.13412" : 1
+};
 
 /* private */
-_Loader.getRnd = function() {
+var getRnd = function() {
 	while (true) { // get a unique random number
 		var rnd = Math.random();
 		var s = "r" + rnd;
-		if (!_Loader.usedRandoms[s])
-			return (_Loader.usedRandoms[s] = 1, _Loader.clazzTreeRoot.random = rnd);
+		if (!usedRandoms[s])
+			return (usedRandoms[s] = 1, clazzTreeRoot.random = rnd);
 	}
 }
 
 /* protected */
-_Loader.findNode = function(clazzName) {
-	_Loader.getRnd();
-	return _Loader.findNodeUnderNode(clazzName, _Loader.clazzTreeRoot);
+var findNode = function(clazzName) {
+	getRnd();
+	return findNodeUnderNode(clazzName, clazzTreeRoot);
 };
 
 /* private */
-_Loader.findNextRequiredClass = function(status) {
-	_Loader.getRnd();
-	return _Loader.findNextRequiredNode(_Loader.clazzTreeRoot, status);
+var findNextRequiredClass = function(status) {
+	getRnd();
+	return findNextRequiredNode(clazzTreeRoot, status);
 };
 
 /* private */
-_Loader.findNextMustClass = function(status) {
-	return _Loader.findNextMustNode(_Loader.clazzTreeRoot, status);
+var findNextMustClass = function(status) {
+	return findNextMustNode(clazzTreeRoot, status);
 };
 
 /* private */
-_Loader.findNodeUnderNode = function(clazzName, node) {
+var findNodeUnderNode = function(clazzName, node) {
 	var n;
 	// node, then musts then optionals
 	return (node.name == clazzName ? node 
-		: (n = _Loader.findNodeWithin(clazzName, node.musts))
-		|| (n = _Loader.findNodeWithin(clazzName, node.optionals)) 
+		: (n = findNodeWithin(clazzName, node.musts))
+		|| (n = findNodeWithin(clazzName, node.optionals)) 
 		? n : null);
 };
 
 /* private */
-_Loader.findNodeWithin = function(name, arr) {
-	var rnd = _Loader.clazzTreeRoot.random;
+var findNodeWithin = function(name, arr) {
+	var rnd = clazzTreeRoot.random;
 	for (var i = arr.length; --i >= 0;) {
 		var n = arr[i];
 		if (n.name == name)
 			return n;
 		if (n.random != rnd) {
 			n.random = rnd;
-			if ((n = _Loader.findNodeUnderNode(name, n)))
+			if ((n = findNodeUnderNode(name, n)))
 				return n;
 		}
 	}
@@ -4404,44 +4384,44 @@ _Loader.findNodeWithin = function(name, arr) {
 }
 
 /* private */
-_Loader.checkStatus = function(n, status) {
+var checkStatus = function(n, status) {
 	return (n.status == status 
-			&& (status != Node.STATUS_KNOWN || !_Loader.loadedScripts[n.path])
-			&& (status == Node.STATUS_DECLARED	|| !_Loader.isClassDefined (n.name)));
+			&& (status != Node.STATUS_KNOWN || !loadedScripts[n.path])
+			&& (status == Node.STATUS_DECLARED	|| !isClassDefined (n.name)));
 }
 
 /* private */
-_Loader.findNextMustNode = function(node, status) {
+var findNextMustNode = function(node, status) {
 	for (var i = node.musts.length; --i >= 0;) {
 		var n = node.musts[i];
-		if (_Loader.checkStatus(n, status) || (n = _Loader.findNextMustNode(n, status)))
+		if (checkStatus(n, status) || (n = findNextMustNode(n, status)))
 			return n;	
 	}
-	return (_Loader.checkStatus(node, status) ? node : null); 
+	return (checkStatus(node, status) ? node : null); 
 };
 
 /* private */
-_Loader.findNextRequiredNode = function (node, status) {
+var findNextRequiredNode = function (node, status) {
 	// search musts first
 	// search optionals second
 	// search itself last
 	var n;
-	return ((n = _Loader.searchClassArray(node.musts, status))
-		|| (n = _Loader.searchClassArray(node.optionals, status))
-		|| _Loader.checkStatus(n = node, status) ? n : null);
+	return ((n = searchClassArray(node.musts, status))
+		|| (n = searchClassArray(node.optionals, status))
+		|| checkStatus(n = node, status) ? n : null);
 };
 
 /* private */
-_Loader.searchClassArray = function (arr, status) {
+var searchClassArray = function (arr, status) {
 	if (arr) {
-		var rnd = _Loader.clazzTreeRoot.random;
+		var rnd = clazzTreeRoot.random;
 		for (var i = 0; i < arr.length; i++) {
 			var n = arr[i];
-			if (_Loader.checkStatus(n, status))
+			if (checkStatus(n, status))
 				return n;
 			if (n.random != rnd) {
 				n.random = rnd; // mark as visited!
-				if ((n = _Loader.findNextRequiredNode(n, status)))
+				if ((n = findNextRequiredNode(n, status)))
 					return n;
 			}
 		}
@@ -4455,19 +4435,19 @@ _Loader.searchClassArray = function (arr, status) {
  * loaded or not, so inner loading mark is used for detecting.
  */
 /* private */
-_Loader.innerLoadedScripts = {};
+var innerLoadedScripts = {};
 
 /**
  * This method will be called in almost every *.js generated by Java2Script
  * compiler.
  */
-/* protected */
-_Loader.load = function (musts, name, optionals, declaration) {
+/* public */
+var load = function (musts, name, optionals, declaration) {
   // called as name.load in Jmol
 	if (name instanceof Array) {
-		_Loader.unwrapArray(name);
+		unwrapArray(name);
 		for (var i = 0; i < name.length; i++)
-			_Loader.load(musts, name[i], optionals, declaration, name);
+			load(musts, name[i], optionals, declaration, name);
 		return;
 	}	
 
@@ -4484,17 +4464,17 @@ _Loader.load = function (musts, name, optionals, declaration) {
 
 //	if (clazz.charAt (0) == '$')
 //		clazz = "org.eclipse.s" + clazz.substring (1);
-	var node = _Loader.mapPath2ClassNode["#" + name];
-	if (!node) { // _Loader.load called inside *.z.js?
-		var n = _Loader.findNode(name);
+	var node = mapPath2ClassNode["#" + name];
+	if (!node) { // load called inside *.z.js?
+		var n = findNode(name);
 		node = (n ? n : new Node());
 		node.name = name;
-		node.path = _Loader.classpathMap["#" + name] || "unknown";
-		_Loader.mappingPathNameNode (node.path, name, node);
+		node.path = classpathMap["#" + name] || "unknown";
+		mappingPathNameNode(node.path, name, node);
 		node.status = Node.STATUS_KNOWN;
-		_Loader.addChildClassNode(_Loader.clazzTreeRoot, node, false);
+		addChildClassNode(clazzTreeRoot, node, false);
 	}
-	_Loader.processRequired(node, musts, true);
+	processRequired(node, musts, true);
 	if (arguments.length == 5 && declaration) {
 		declaration.status = node.status;
 		declaration.clazzList = arguments[4];
@@ -4502,28 +4482,28 @@ _Loader.load = function (musts, name, optionals, declaration) {
 	node.declaration = declaration;
 	if (declaration) 
 		node.status = Node.STATUS_CONTENT_LOADED;
-	_Loader.processRequired(node, optionals, false);
+	processRequired(node, optionals, false);
 };
 
 /* private */
-_Loader.processRequired = function(node, arr, isMust) {
+var processRequired = function(node, arr, isMust) {
 	if (arr && arr.length) {
-		_Loader.unwrapArray(arr);
+		unwrapArray(arr);
 		for (var i = 0; i < arr.length; i++) {
 			var name = arr[i];
 			if (!name)
 				continue;
-			if (_Loader.isClassDefined(name)
-					|| _Loader.isClassExcluded(name))
+			if (isClassDefined(name)
+					|| isClassExcluded(name))
 				continue;
-			var n = _Loader.findNode(name);
+			var n = findNode(name);
 			if (!n) {
 				n = new Node();
 				n.name = name;
 				n.status = Node.STATUS_KNOWN;
 			}
 			n.requiredBy = node;
-			_Loader.addChildClassNode(node, n, isMust);
+			addChildClassNode(node, n, isMust);
 		}
 	}
 }
@@ -4532,11 +4512,10 @@ _Loader.processRequired = function(node, arr, isMust) {
  * Try to be compatiable of Clazz
  */
 if (window["Clazz"]) {
-	Clazz.load = _Loader.load;
-	//if (window["$_L"]) {
-	//	$_L = Clazz.load;
-	//}
-}
+	Clazz.load = load;
+} else {
+  _Loader.load = load;
+}  
 /**
  * Map different class to the same path! Many classes may be packed into
  * a *.z.js already.
@@ -4546,8 +4525,8 @@ if (window["Clazz"]) {
  * @node Node object
  */
 /* private */
-_Loader.mappingPathNameNode = function (path, name, node) {
-	var map = _Loader.mapPath2ClassNode;
+var mappingPathNameNode = function (path, name, node) {
+	var map = mapPath2ClassNode;
 	var keyPath = "@" + path;
 	var v = map[keyPath];
 	if (v) {
@@ -4571,15 +4550,15 @@ _Loader.mappingPathNameNode = function (path, name, node) {
 };
 
 /* protected */
-_Loader.loadClassNode = function (node) {
+var loadClassNode = function (node) {
 	var name = node.name;
-	if (!_Loader.isClassDefined (name) 
-			&& !_Loader.isClassExcluded (name)) {
+	if (!isClassDefined (name) 
+			&& !isClassExcluded (name)) {
 		var path = _Loader.getClasspathFor (name/*, true*/);
 		node.path = path;
-		_Loader.mappingPathNameNode (path, name, node);
-		if (!_Loader.loadedScripts[path]) {
-			_Loader.loadScript (node, path, node.requiredBy, false);
+		mappingPathNameNode (path, name, node);
+		if (!loadedScripts[path]) {
+			loadScript(node, path, node.requiredBy, false);
 			return true;
 		}
 	}
@@ -4587,19 +4566,22 @@ _Loader.loadClassNode = function (node) {
 };
 
 
-/* protected */
-_Loader.runtimeKeyClass = "java.lang.String";
+/* private */
+var runtimeKeyClass = "java.lang.String";
 
 /**
  * Queue used to store classes before key class is loaded.
  */
 /* private */
-_Loader.queueBe4KeyClazz = [];
+var queueBe4KeyClazz = [];
+
+/* private */
+var J2sLibBase;
 
 /**
  * Return J2SLib base path from existed SCRIPT src attribute.
  */
-/* private */
+/* public */
 _Loader.getJ2SLibBase = function () {
 	var o = window["j2s.lib"];
 	return (o ? o.base + (o.alias == "." ? "" : (o.alias ? o.alias : (o.version ? o.version : "1.0.0")) + "/") : null);
@@ -4609,14 +4591,14 @@ _Loader.getJ2SLibBase = function () {
  * Indicate whether _Loader is loading script synchronously or 
  * asynchronously.
  */
-/* protected */
-_Loader.isAsynchronousLoading = true;
+/* private */
+var isAsynchronousLoading = true;
 
-/* protected */
-_Loader.isUsingXMLHttpRequest = false;
+/* private */
+var isUsingXMLHttpRequest = false;
 
-/* protected */
-_Loader.loadingTimeLag = -1;
+/* private */
+var loadingTimeLag = -1;
 
 _Loader.MODE_SCRIPT = 4;
 _Loader.MODE_XHR = 2;
@@ -4654,20 +4636,20 @@ _Loader.setLoadingMode = function (mode, timeLag) {
 		else
 			async = !(mode & _Loader.MODE_SYNC);
 	}
-	_Loader.isUsingXMLHttpRequest = ajax;
-	_Loader.isAsynchronousLoading = async;
-	_Loader.loadingTimeLag = (async && timeLag >= 0 ? timeLag: -1);
+	isUsingXMLHttpRequest = ajax;
+	isAsynchronousLoading = async;
+	loadingTimeLag = (async && timeLag >= 0 ? timeLag: -1);
 	return async;
 };
 
 /* private */
-_Loader.runtimeLoaded = function () {
-	if (_Loader.pkgRefCount	|| !_Loader.isClassDefined(_Loader.runtimeKeyClass))
+var runtimeLoaded = function () {
+	if (pkgRefCount	|| !isClassDefined(runtimeKeyClass))
 		return;
-	var qbs = _Loader.queueBe4KeyClazz;
+	var qbs = queueBe4KeyClazz;
 	for (var i = 0; i < qbs.length; i++)
-		_Loader.loadClass (qbs[i][0], qbs[i][1]);
-	_Loader.queueBe4KeyClazz = [];
+		_Loader.loadClass(qbs[i][0], qbs[i][1]);
+	queueBe4KeyClazz = [];
 };
 
 /*
@@ -4682,20 +4664,20 @@ _Loader.loadZJar = function (zjarPath, keyClass) {
 	if (isArr)
 		keyClass = keyClass[keyClass.length - 1];
 	else
-		f = (keyClass == _Loader.runtimeKeyClass ? _Loader.runtimeLoaded : null);			
+		f = (keyClass == runtimeKeyClass ? runtimeLoaded : null);			
 	_Loader.jarClasspath(zjarPath, isArr ? keyClass : [keyClass]);
-	// BH note: _Loader.runtimeKeyClass is java.lang.String	
+	// BH note: runtimeKeyClass is java.lang.String	
 	_Loader.loadClass(keyClass, f, true);
 };
 
-_Loader.NodeMap = {};
-_Loader._allNodes = [];
+var NodeMap = {};
+var _allNodes = [];
 
 /**
  * The method help constructing the multiple-binary class dependency tree.
  */
 /* private */
-_Loader.addChildClassNode = function (parent, child, isMust) {
+var addChildClassNode = function (parent, child, isMust) {
 	var existed = false;
 	var arr;
 	if (isMust) {
@@ -4713,9 +4695,9 @@ _Loader.addChildClassNode = function (parent, child, isMust) {
 	} else {
 		arr = parent.optionals;
 	}
-	if (!_Loader.NodeMap[child.name]) {
-		_Loader._allNodes.push(child)
-		_Loader.NodeMap[child.name]=child
+	if (!NodeMap[child.name]) {
+		_allNodes.push(child)
+		NodeMap[child.name]=child
 	}
 	for (var i = 0; i < arr.length; i++) {
 		if (arr[i].name == child.name) {
@@ -4725,24 +4707,25 @@ _Loader.addChildClassNode = function (parent, child, isMust) {
 	}
 	if (!existed) {
 		arr.push(child);
-		if (_Loader.isLoadingEntryClass 
+		if (isLoadingEntryClass 
 				&& child.name.indexOf("java") != 0 
 				&& child.name.indexOf("net.sf.j2s.ajax") != 0) {
-			if (_Loader.besidesJavaPackage)
-				_Loader.isLoadingEntryClass = false;
-			_Loader.besidesJavaPackage = true;
+			if (besidesJavaPackage)
+				isLoadingEntryClass = false;
+			besidesJavaPackage = true;
 //		} else if (child.name.indexOf("org.eclipse.swt") == 0 
 //				|| child.name.indexOf("$wt") == 0) {
-//			window["swt.lazy.loading.callback"] = _Loader.swtLazyLoading;
-//			if (_Loader.needPackage("org.eclipse.swt"))
-//				return _Loader.loadPackage("org.eclipse.swt", function() {_Loader.addParentClassNode(child, parent)});
+//			window["swt.lazy.loading.callback"] = swtLazyLoading;
+//			if (needPackage("org.eclipse.swt"))
+//				return _Loader.loadPackage("org.eclipse.swt", function() {addParentClassNode(child, parent)});
 		}
 	}
-	_Loader.addParentClassNode(child, parent);
+	addParentClassNode(child, parent);
 };
 
-_Loader.addParentClassNode = function(child, parent) {
-	if (parent.name && parent != _Loader.clazzTreeRoot && parent != child)
+/* private */
+var addParentClassNode = function(child, parent) {
+	if (parent.name && parent != clazzTreeRoot && parent != child)
 		for (var i = 0; i < child.parents.length; i++)
 			if (child.parents[i].name == parent.name)
 				return;
@@ -4750,36 +4733,36 @@ _Loader.addParentClassNode = function(child, parent) {
 }
 
 /* private */
-_Loader.destroyClassNode = function (node) {
+var destroyClassNode = function (node) {
 	var parents = node.parents;
 	if (parents)
 		for (var k = parents.length; --k >= 0;)
 			removeArrayItem(parents[k].musts, node) || removeArrayItem(parents[k].optionals, node);
 };
 
-/* protected */
+/* public */
 _Loader.unloadClassExt = function (qClazzName) {
-	if (_Loader.definedClasses)
-		_Loader.definedClasses[qClazzName] = false;
-	if (_Loader.classpathMap["#" + qClazzName]) {
-		var pp = _Loader.classpathMap["#" + qClazzName];
-		_Loader.classpathMap["#" + qClazzName] = null;
-		var arr = _Loader.classpathMap["$" + pp];
-		removeArrayItem(arr, qClazzName) && (_Loader.classpathMap["$" + pp] = arr);
+	if (definedClasses)
+		definedClasses[qClazzName] = false;
+	if (classpathMap["#" + qClazzName]) {
+		var pp = classpathMap["#" + qClazzName];
+		classpathMap["#" + qClazzName] = null;
+		var arr = classpathMap["$" + pp];
+		removeArrayItem(arr, qClazzName) && (classpathMap["$" + pp] = arr);
 	}
-	var n = _Loader.findNode(qClazzName);
+	var n = findNode(qClazzName);
 	if (n) {
 		n.status = Node.STATUS_KNOWN;
-		_Loader.loadedScripts[n.path] = false;
+		loadedScripts[n.path] = false;
 	}
 	var path = _Loader.getClasspathFor (qClazzName);
-	_Loader.loadedScripts[path] = false;
-	_Loader.innerLoadedScripts[path] && (_Loader.innerLoadedScripts[path] = false);
+	loadedScripts[path] = false;
+	innerLoadedScripts[path] && (innerLoadedScripts[path] = false);
 	_Loader.onClassUnloaded(qClazzName);
 };
 
-/* protected */
-_Loader.assureInnerClass = function (clzz, fun) {
+/* private */
+var assureInnerClass = function (clzz, fun) {
 	clzz = clzz.__CLASS_NAME__;
 	if (Clazz.unloadedClasses[clzz]) {
 		if (clzz.indexOf("$") >= 0)
@@ -4896,7 +4879,7 @@ var setAlpha = function (alpha) {
 		fadeOutTimer = null;
 	}
 	fadeAlpha = alpha;
-	var ua = navigator.userAgent.toLowerCase ();
+	var ua = navigator.userAgent.toLowerCase();
 	monitorEl.style.filter = "Alpha(Opacity=" + alpha + ")";
 	monitorEl.style.opacity = alpha / 100.0;
 };
