@@ -119,17 +119,23 @@ several issues found in getting SimpleDateFormat working
 
 JavaScript Examples used for testing
 ------------------------------------
-Clazz.loadClass("jsjava.text.SimpleDateFormat")
+Clazz.loadClass(); // equates "Class" with "Clazz" and allow uncompressed code calling
+
+Class.loadClass("jsjava.text.SimpleDateFormat");
 
    undefined
 
-x = new jsjava.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z")
+x = new jsjava.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
 
    Object { serialVersionOnStream: 1, pattern: "EEE, d MMM yyyy HH:mm:ss Z", compiledPattern: Array[16], zeroDigit: "
 
-x.format(new Date)
+x.format(new Date);
 
    "Sat, 4 Apr 2015 03:57:31 -0500"
+
+Class.loadClass("jsjava.text.SimpleDateFormat", function() { x = new jsjava.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z"); x.format(new Date)} );
+
+
   
 
 4/3/2015
