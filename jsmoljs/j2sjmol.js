@@ -884,6 +884,7 @@ Clazz.overrideConstructor = function (clazzThis, funBody, funParams) {
 	//clazzThis.con$truct = clazzThis.prototype.con$truct = null;
 };
 
+
 /*
  * Define method for the class with the given method name and method
  * body and method parameter signature.
@@ -901,15 +902,10 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
     Clazz.assureInnerClass(clazzThis, funBody);
 	funBody.exName = funName;
 	var fpName = formatParameters(funParams);
-
-	/*
-	 * For method the first time is defined, just keep it rather than
-	 * wrapping into deep hierarchies!
-	 */
-
-	// BH : signature based on nParams
 	var proto = clazzThis.prototype;
 	var f$ = proto[funName];
+  if (Clazz._Loader._checkLoad)
+    checkDuplicate(clazzThis, funName, fpName);
 	if (!f$ || (f$.claxxOwner === clazzThis && f$.funParams == fpName)) {
 		// property "funParams" will be used as a mark of only-one method
 		funBody.funParams = fpName; 
@@ -917,6 +913,7 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 		funBody.exClazz = clazzThis; // make it traceable
 		return addProto(proto, funName, funBody);
 	}
+  // we have found a duplicate
 	var oldFun = null;
 	var oldStacks = f$.stacks;
 		if (!oldStacks) {
@@ -974,6 +971,29 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 	f$[fpName] = funBody;
 	return f$;
 };                                                
+
+duplicatedMethods = {};
+
+var checkDuplicate = function(clazzThis, funName, fpName) {
+	var proto = clazzThis.prototype;
+	var f$ = proto[funName];
+  if (f$ && f$.claxxOwner === clazzThis) {
+    key = clazzThis.__CLASS_NAME__ + "." + funName + fpName;
+    var m = duplicatedMethods[key];
+    if (m) {
+      alert("Warning! Duplicate method found for " + key + " -- must be fixed!");
+       m++; 
+    } else {
+      duplicatedMethods[key] = 1;
+    }
+  }
+}
+
+Clazz.showDuplicates = function() {
+  var s = JSON.stringify(duplicatedMethods).replace(/\,/g,'\n');
+  System.out.println(s);
+  alert(s);
+}
 
 var findArrayItem = function(arr, item) {
 	if (arr && item)
@@ -1036,6 +1056,8 @@ Clazz.overrideMethod = function(clazzThis, funName, funBody, funParams) {
 	if (Clazz.assureInnerClass) Clazz.assureInnerClass (clazzThis, funBody);
 	funBody.exName = funName;
 	var fpName = formatParameters(funParams);
+  if (Clazz._Loader._checkLoad)
+    checkDuplicate(clazzThis, funName, fpName);
 	/*
 	 * Replace old methods with new method. No super methods are kept.
 	 */
@@ -4831,6 +4853,12 @@ CLPM.DEFAULT_OPACITY = (Jmol && Jmol._j2sLoadMonitorOpacity ? Jmol._j2sLoadMonit
 	}
 };
 */
+
+/* public */
+CLPM.hideMonitor = function () {
+  	monitorEl.style.display = "none";
+}
+
 /* public */
 CLPM.showStatus = function (msg, fading) {
 	if (!monitorEl) {
@@ -4842,12 +4870,21 @@ CLPM.showStatus = function (msg, fading) {
 		}
 	}
 	clearChildren(monitorEl);
+  if (msg == null) {
+    if (fading) {
+      fadeOut();
+    } else {
+    	CLPM.hideMonitor();
+    }
+    return;
+  }
+  
 	monitorEl.appendChild(document.createTextNode ("" + msg));
 	if (monitorEl.style.display == "none") {
 		monitorEl.style.display = "";
 	}
 	setAlpha(CLPM.DEFAULT_OPACITY);
-	var offTop = getFixedOffsetTop ();
+	var offTop = getFixedOffsetTop();
 	if (lastScrollTop != offTop) {
 		lastScrollTop = offTop;
 		monitorEl.style.bottom = (lastScrollTop + 4) + "px";
@@ -4885,8 +4922,9 @@ var setAlpha = function (alpha) {
 };
 /* private */ 
 var hidingOnMouseOver = function () {
-	monitorEl.style.display = "none";
+  CLPM.hideMonitor();
 };
+
 /* private */ 
 var attached = false;
 /* private */ 
@@ -4917,6 +4955,7 @@ var createHandle = function () {
 	return div;
 };
 /* private */ 
+
 var fadeOut = function () {
 	if (monitorEl.style.display == "none") return;
 	if (fadeAlpha == CLPM.DEFAULT_OPACITY) {
