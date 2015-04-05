@@ -977,22 +977,33 @@ duplicatedMethods = {};
 var checkDuplicate = function(clazzThis, funName, fpName) {
 	var proto = clazzThis.prototype;
 	var f$ = proto[funName];
-  if (f$ && f$.claxxOwner === clazzThis) {
+  if (f$ && (f$.claxxOwner || f$.claxxReference) === clazzThis) {
     key = clazzThis.__CLASS_NAME__ + "." + funName + fpName;
     var m = duplicatedMethods[key];
     if (m) {
-      alert("Warning! Duplicate method found for " + key + " -- must be fixed!");
-       m++; 
+      var s = "Warning! Duplicate method found for " + key;
+      System.out.println(s);
+      Clazz.alert(s);
+      duplicatedMethods[key] = m + 1; 
     } else {
       duplicatedMethods[key] = 1;
     }
   }
 }
 
-Clazz.showDuplicates = function() {
-  var s = JSON.stringify(duplicatedMethods).replace(/\,/g,'\n');
+Clazz.showDuplicates = function(quiet) {
+  var s = "";
+  var a = duplicatedMethods;
+  var n = 0;
+  for (var key in a)
+    if (a[key] > 1) {
+      s += a[key] + "\t" + key + "\n";
+      n++;
+    }
+  s = "Duplicates: " + n + "\n\n" + s;
   System.out.println(s);
-  alert(s);
+  if (!quiet)
+    alert(s);
 }
 
 var findArrayItem = function(arr, item) {
@@ -4098,8 +4109,10 @@ var tryToLoadNext = function (file, fSuccess) {
   // + _Loader._classCountOK + "/" + _Loader._classCountPending + " " 
    //+ _Loader.onGlobalLoaded.toString() + " " + Clazz.getStackTrace()
  //  )
-  if (_Loader._checkLoad)
-   System.out.println("I think I'm done: SAEM call count: " + SAEMid);
+  if (_Loader._checkLoad) {
+    System.out.println("I think I'm done: SAEM call count: " + SAEMid);
+    Clazz.showDuplicates(true);
+  }
 	_Loader.onGlobalLoaded();
 }
 };
