@@ -132,7 +132,7 @@ Jmol = (function(document) {
 		}
 	};
 	var j = {
-		_version: "$Date: 2015-03-28 08:56:04 -0500 (Sat, 28 Mar 2015) $", // svn.keywords:lastUpdated
+		_version: "$Date: 2015-04-05 21:22:14 -0500 (Sun, 05 Apr 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
 		_allowedJmolSize: [25, 2048, 300],   // min, max, default (pixels)
@@ -891,7 +891,7 @@ Jmol = (function(document) {
 			}
 			if (fSuccess) {
 				info.success = function(data) { fSuccess(Jmol._xhrReturn(info.xhr))};
-				info.error = function() { info;fSuccess(info.xhr.statusText)};
+				info.error = function() { fSuccess(info.xhr.statusText)};
 			}
 			info.xhr = Jmol.$ajax(info);
 			if (!fSuccess) {
