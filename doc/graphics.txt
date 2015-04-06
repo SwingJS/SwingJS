@@ -6,6 +6,16 @@ Other JComponents, such as buttons, must explicitly declare a request for a
 transparent foreground graphics to write into. Without that, the paint method's
 Graphics object will be null.
 
+
+/**
+ * @j2sNative
+ *
+ * SwingJS.createGraphics(this);
+ *
+ */
+ {} 
+
+
 Fonts will be backed by a hidden canvas that will be part of their FontMetrics and
 will allow checking of string width and height characteristics.
  
@@ -16,15 +26,6 @@ Some of these methods may not be fully implemented.
 Mouse events will be delivered the same as in Java.
 
  
-
-/**
- * @j2sNative
- *
- * SwingJS.createGraphics(this);
- *
- */
- {} 
-
 public abstract class Graphics2D extends Graphics {
 	public abstract AffineTransform getTransform();
 	public abstract boolean drawImage(Image img, AffineTransform xform, ImageObserver obs);
