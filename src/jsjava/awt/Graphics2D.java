@@ -689,8 +689,15 @@ public abstract class Graphics2D extends Graphics {
      * @see #setTransform
      * @see #setComposite
      * @see #setClip
+     * 
+     * @deprecated
+     * @j2sIgnore
      */
-    public abstract void drawString(String str, float x, float y);
+    public void drawString(String str, float x, float y) {
+    	throw new IllegalArgumentException("JSGraphics2d requires drawStringTrans(x,y)");
+    }
+
+    public abstract void drawStringTrans(String str, float x, float y);
 
     /**
      * Renders the text of the specified iterator applying its attributes
@@ -740,9 +747,19 @@ public abstract class Graphics2D extends Graphics {
      * @see #setTransform
      * @see #setComposite
      * @see #setClip
+     * 
+     * @deprecated
+     * @j2sIgnore
+     * 
      */
-    public abstract void drawString(AttributedCharacterIterator iterator,
-                                    float x, float y);
+    public void drawString(AttributedCharacterIterator iterator,
+                                    float x, float y) {
+    	throw new IllegalArgumentException("JSGraphics2d requires drawStringAttrTrans(x,y)");
+
+    }
+
+    public abstract void drawStringAttrTrans(AttributedCharacterIterator iterator,
+        float x, float y);
 
 //    /**
 //     * Renders the text of the specified
@@ -986,8 +1003,17 @@ public abstract class Graphics2D extends Graphics {
      * </pre>
      * @param tx the distance to translate along the x-axis
      * @param ty the distance to translate along the y-axis
+     * 
+     * @deprecated
+     * @j2sIgnore
      */
-    public abstract void translate(double tx, double ty);
+    public void translate(double tx, double ty) {
+    	throw new IllegalArgumentException("JSGraphics2d requires translateTrans(x,y)");
+
+    }
+    
+    public abstract void translateTrans(double tx, double ty);
+
 
     /**
      * Concatenates the current <code>Graphics2D</code>

@@ -68,18 +68,26 @@ function dateTest() {
 </script>
 </head>
 <body>
+A test page for the SwingJS system. All we have here is a <a href=https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src/swingjs/test/TanSugd3S.java>simple JApplet initialization</a>. It actually does nothing, because paint is not implemented yet.
 <script>
 SwingJS.getApplet("testApplet", Info)
 </script>
-<br>
+If this is a simple rectangle with a blue outline, it means that 
+<br> the JApplet loaded successfully.  
 <!-- info <a href="javascript:testApplet._showInfo(true)">show</a>
 <a href="javascript:testApplet._showInfo(false)">hide</a>
 -->
-<div style="position:absolute;left:500px;top:10px;width:600px;height:300px;">
+<div style="position:absolute;left:500px;top:30px;width:600px;height:300px;">
 <div id=sysoutdiv style="border:1px solid green;width:100%;height:95%;overflow:auto"></div>
-<a href="javascript:testApplet._clearConsole()">clear</a>
+This is System.out. <a href="javascript:testApplet._clearConsole()">clear it</a> 
+Go ahead and open a developer console and type
+<br>
+<b> <a href='javascript:System.out.println("Hello, world!")'>System.out.println("Hello, world!")</a></b>
+<br>
+<br>
 <input type=text id=date style="width:200px" value="EEE, d MMM yyyy HH:mm:ss z"> <a href="javascript:dateTest()">SimpleDateFormat test</a>
- <a href="javascript:Clazz.showDuplicates()">Show Duplicates</a>
+ <a href="javascript:alert('The methods listed in the next message are those that are overloaded in such a way -- for example, Color(int r, int g, int b) and Color(float r, float g, float b) -- that make them impossible for Java2Script to differentiate and so must be refactored.'); Clazz.showDuplicates()">Show Duplicates</a>
+<br> <a href="j2s" target="_blank">Converted Java class directory</a>
 </div>
 </div>
 </body>
