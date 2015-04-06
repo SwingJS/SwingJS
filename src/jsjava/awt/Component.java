@@ -7257,6 +7257,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {
+    	//SwingJS -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7275,6 +7276,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, char oldValue, char newValue) {
+    	//SwingJS -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7293,6 +7295,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, short oldValue, short newValue) {
+    	//SwingJS -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7312,6 +7315,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, long oldValue, long newValue) {
+    	//SwingJS -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7330,6 +7334,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, float oldValue, float newValue) {
+    	//SwingJS -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7348,6 +7353,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, double oldValue, double newValue) {
+    	//SwingJS -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }

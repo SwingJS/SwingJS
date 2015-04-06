@@ -1857,6 +1857,7 @@ public class Font
      * @since 1.2
      */
     public Font deriveFont(float size){
+    	//SwingJS -- MUST FIX SIGNATURE
 //        if (values == null) {
             return new Font(name, style, size);
 //        }
@@ -1889,6 +1890,7 @@ public class Font
      * @since 1.2
      */
     public Font deriveFont(int style){
+    	//SwingJS -- MUST FIX SIGNATURE
 //        if (values == null) {
            return new Font(name, style, size);
 //        }

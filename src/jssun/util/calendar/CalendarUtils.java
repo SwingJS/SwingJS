@@ -121,6 +121,9 @@ public class CalendarUtils {
      * @param r an array of at least one element in which the value
      * <code>mod(n, d)</code> is returned.
      * @return the floor of the quotient.
+     * 
+     * @j2sIgnore
+     * 
      */
     public static final int floorDivide(long n, int d, int[] r) {
         if (n >= 0) {
