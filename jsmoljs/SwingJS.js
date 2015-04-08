@@ -247,7 +247,7 @@ if (typeof(SwingJS) == "undefined") {
 	}
 	
 	proto._addCoreFiles = function() {
-		Jmol._addCoreFile(this.__Info.code, this._j2sPath, this.__Info.preloadCore);
+		Jmol._addCoreFile("swingjs", this._j2sPath, this.__Info.preloadCore);
 		if (Jmol._debugCode) {
 		// no min package for that
 			Jmol._addExec([this, null, "swingjs.JSAppletPanel", "load " + this.__Info.code]);

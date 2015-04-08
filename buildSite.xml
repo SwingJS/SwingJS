@@ -125,6 +125,21 @@
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
        		../js/JSmolJavaExt.js
+            jsjava/util/Locale.js
+            jsjava/util/ResourceBundle.js
+            javajs/util/Rdr.js
+            javajs/api/GenericLineReader.js
+            java/io/BufferedInputStream.js
+            java/io/FilterInputStream.js
+            java/io/InputStream.js
+            java/io/BufferedReader.js
+            java/io/ByteArrayInputStream.js
+            java/io/StringReader.js
+            javajs/util/Base64.js
+            javajs/util/Encoding.js
+            jsjava/util/MissingResourceException.js
+            jsjava/awt/geom/Point2D.js
+            swingjs/JSAppletPanel.js
             jssun/applet/AppletPanel.js
             jssun/misc/MessageUtils.js
             jsjava/awt/Dimension.js
@@ -428,14 +443,20 @@
             javajs/util/M4.js
             javajs/util/T3.js
             swingjs/JSToolkit.js
-            swingjs/test/TanSugd3S.js
-            jsjava/awt/BasicStroke.js
-            jsjava/awt/Stroke.js
-            jsjavax/swing/ButtonGroup.js
     	"/>
     </antcall>
     
-   	<!-- minimize additional JSmol JavaScript -->
+   	<!-- 
+   	
+   	put classes in here temporarily to exclude them from the 
+   	core load and make them easier to debug
+   	
+   	        swingjs/test/TanSugd3S.js
+            jsjava/awt/BasicStroke.js
+            jsjava/awt/Stroke.js
+            jsjavax/swing/ButtonGroup.js
+   	
+   	minimize additional JSmol JavaScript -->
 
   </target>
 

@@ -29,6 +29,8 @@ package jsjava.lang;
 import java.util.Arrays;
 //import sun.misc.VM;
 
+import swingjs.api.HTML5Applet;
+
 /**
  * A thread group represents a set of threads. In addition, a thread
  * group can also include other thread groups. The thread groups form
@@ -68,7 +70,7 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
 
     int ngroups;
     ThreadGroup groups[];
-		private Object html5Applet;
+		private HTML5Applet html5Applet;
 
 //    /**
 //     * Creates an empty Thread group that is not in any Thread group.
@@ -1034,13 +1036,5 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
         return getClass().getName() + "[name=" + getName() + ",maxpri=" + maxPriority + ",html5Applet=" + html5Applet + "]";
     }
 
-    // 
-		public void setHtmlApplet(Object html5Applet) {
-			this.html5Applet = html5Applet;
-		}
-
-		public Object getHtmlApplet() {
-			return html5Applet;
-		}
 
 }

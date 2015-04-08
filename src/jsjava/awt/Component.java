@@ -25,9 +25,9 @@
 package jsjava.awt;
 
 import java.util.EventListener;
-import java.util.HashMap;
+//import java.util.HashMap;
 import jsjava.util.Locale;
-import java.util.Map;
+//import java.util.Map;
 //import java.util.Set;
 import java.util.Vector;
 
@@ -5045,19 +5045,19 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 
     transient EventQueueItem[] eventCache;
 
-    /**
-     * @see #isCoalescingEnabled
-     * @see #checkCoalescing
-     */
-    transient private boolean coalescingEnabled = false;//checkCoalescing();
-
-    /**
-     * Weak map of known coalesceEvent overriders.
-     * Value indicates whether overriden.
-     * Bootstrap classes are not included.
-     */
-    private static final Map<Class<?>, Boolean> coalesceMap =
-        new HashMap<Class<?>, Boolean>(); // was weakHashmap
+//    /**
+//     * @see #isCoalescingEnabled
+//     * @see #checkCoalescing
+//     */
+//    transient private boolean coalescingEnabled = false;//checkCoalescing();
+//
+//    /**
+//     * Weak map of known coalesceEvent overriders.
+//     * Value indicates whether overriden.
+//     * Bootstrap classes are not included.
+//     */
+//    private static final Map<Class<?>, Boolean> coalesceMap =
+//        new HashMap<Class<?>, Boolean>(); // was weakHashmap
 
 //    /**
 //     * Indicates whether this class overrides coalesceEvents.
@@ -5091,60 +5091,60 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //             return enabled;
 //         }
 //     }
+//
+//    /**
+//     * Parameter types of coalesceEvents(AWTEvent,AWTEVent).
+//     */
+//    private static final Class[] coalesceEventsParams = {
+//        AWTEvent.class, AWTEvent.class
+//    };
+//
+//    /**
+//     * Indicates whether a class or its superclasses override coalesceEvents.
+//     * Must be called with lock on coalesceMap and privileged.
+//     * @see checkCoalsecing
+//     */
+//    private static boolean isCoalesceEventsOverriden(Class<?> clazz) {
+//        //assert Thread.holdsLock(coalesceMap);
+//
+//        // First check superclass - we may not need to bother ourselves.
+//        Class<?> superclass = clazz.getSuperclass();
+//        if (superclass == null) {
+//            // Only occurs on implementations that
+//            //   do not use null to represent the bootsrap class loader.
+//            return false;
+//        }
+//        if (superclass.getClassLoader() != null) {
+//            Boolean value = coalesceMap.get(superclass);
+//            if (value == null) {
+//                // Not done already - recurse.
+//                if (isCoalesceEventsOverriden(superclass)) {
+//                    coalesceMap.put(superclass, true);
+//                    return true;
+//                }
+//            } else if (value) {
+//                return true;
+//            }
+//        }
+//
+//        try {
+//            // Throws if not overriden.
+//            clazz.getDeclaredMethod(
+//                "coalesceEvents", coalesceEventsParams
+//                );
+//            return true;
+//        } catch (NoSuchMethodException e) {
+//            // Not present in this class.
+//            return false;
+//        }
+//    }
 
-    /**
-     * Parameter types of coalesceEvents(AWTEvent,AWTEVent).
-     */
-    private static final Class[] coalesceEventsParams = {
-        AWTEvent.class, AWTEvent.class
-    };
-
-    /**
-     * Indicates whether a class or its superclasses override coalesceEvents.
-     * Must be called with lock on coalesceMap and privileged.
-     * @see checkCoalsecing
-     */
-    private static boolean isCoalesceEventsOverriden(Class<?> clazz) {
-        //assert Thread.holdsLock(coalesceMap);
-
-        // First check superclass - we may not need to bother ourselves.
-        Class<?> superclass = clazz.getSuperclass();
-        if (superclass == null) {
-            // Only occurs on implementations that
-            //   do not use null to represent the bootsrap class loader.
-            return false;
-        }
-        if (superclass.getClassLoader() != null) {
-            Boolean value = coalesceMap.get(superclass);
-            if (value == null) {
-                // Not done already - recurse.
-                if (isCoalesceEventsOverriden(superclass)) {
-                    coalesceMap.put(superclass, true);
-                    return true;
-                }
-            } else if (value) {
-                return true;
-            }
-        }
-
-        try {
-            // Throws if not overriden.
-            clazz.getDeclaredMethod(
-                "coalesceEvents", coalesceEventsParams
-                );
-            return true;
-        } catch (NoSuchMethodException e) {
-            // Not present in this class.
-            return false;
-        }
-    }
-
-    /**
-     * Indicates whether coalesceEvents may do something.
-     */
-    final boolean isCoalescingEnabled() {
-        return coalescingEnabled;
-     }
+//    /**
+//     * Indicates whether coalesceEvents may do something.
+//     */
+//    final boolean isCoalescingEnabled() {
+//        return coalescingEnabled;
+//     }
 
 
     /**

@@ -1,6 +1,6 @@
 package swingjs.api;
 
-public interface HTMLCanvasContex2D {
+public interface HTMLCanvasContext2D {
 
 	void beginPath();
 

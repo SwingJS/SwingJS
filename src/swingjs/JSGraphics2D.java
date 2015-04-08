@@ -41,7 +41,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import swingjs.api.HTMLCanvasContex2D;
+import swingjs.api.HTML5Canvas;
+import swingjs.api.HTMLCanvasContext2D;
 
 import jsjava.awt.Color;
 import jsjava.awt.Font;
@@ -80,17 +81,22 @@ public class JSGraphics2D extends Graphics2D  {
 
 	private int windowWidth;
 	private int windowHeight;
+	private HTML5Canvas canvas;
 
-  public JSGraphics2D() {
+  public JSGraphics2D(Object canvas) {
+  	this.canvas = (HTML5Canvas) canvas;
+  	
+  	ctx = this.canvas.getContext("2d");
   	/**
   	 * @j2sNative
   	 * 
-  	 * this.gc = Swingjs;
+  	 * this.gc = SwingJS;
+  	 *
   	 */
   	{}
 	}
 
-  private HTMLCanvasContex2D ctx;
+  private HTMLCanvasContext2D ctx;
   private GraphicsConfiguration gc;
   
 	@Override
@@ -100,7 +106,6 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void drawLine(int x0, int y0, int x1, int y1) {
-		@SuppressWarnings("unused")
 		boolean inPath = this.inPath;
 		if (!inPath)
 			ctx.beginPath();

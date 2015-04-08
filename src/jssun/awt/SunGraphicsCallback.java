@@ -107,18 +107,18 @@ public abstract class SunGraphicsCallback {
         // ToDo(dpm): Either build a list of heavyweights during the
         // lightweight pass, or redesign the components array to keep
         // lightweights and heavyweights separate.
-        if ((weightFlags & TWO_PASSES) != 0) {
-            for (int i = ncomponents - 1; i >= 0; i--) {
-                runOneComponent(comps[i], null, g, clip, LIGHTWEIGHTS);
-            }
-            for (int i = ncomponents - 1; i >= 0; i--) {
-                runOneComponent(comps[i], null, g, clip, HEAVYWEIGHTS);
-            }
-        } else {
+//        if ((weightFlags & TWO_PASSES) != 0) {
+//            for (int i = ncomponents - 1; i >= 0; i--) {
+//                runOneComponent(comps[i], null, g, clip, LIGHTWEIGHTS);
+//            }
+//            for (int i = ncomponents - 1; i >= 0; i--) {
+//                runOneComponent(comps[i], null, g, clip, HEAVYWEIGHTS);
+//            }
+//        } else {
             for (int i = ncomponents - 1; i >= 0; i--) {
                 runOneComponent(comps[i], null, g, clip, weightFlags);
             }
-        }
+//        }
     }
 
     public static final class PaintHeavyweightComponentsCallback

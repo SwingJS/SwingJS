@@ -225,6 +225,8 @@
 			else
 				this._GLmol.create();
 		};
+    
+    proto._getHtml5Canvas = function() { return this._canvas }; 
 
 		proto._createCanvas2d = function(doReplace) {
 			var container = Jmol.$(this, "appletdiv");
@@ -459,11 +461,11 @@
 			applet._appletPanel.setDisplay(applet._canvas);
 		}
 		applet._appletPanel.setScreenDimension(w, h);
-
+    var paint = (applet._appletPanel.paint || applet._appletPanel.update);
 		if (asNewThread) {
-			setTimeout(function(){ applet._appletPanel && applet._appletPanel.update()});
+			setTimeout(function(){paint(null)});
 		} else {
-			applet._appletPanel.update();
+			paint(null);
 		}
 		// System.out.println(applet._appletPanel.getFullName())
 	}

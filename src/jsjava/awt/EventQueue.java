@@ -275,9 +275,9 @@ public class EventQueue {
      * @param priority  the desired priority of the event
      */
     private void postEvent(AWTEvent theEvent, int priority) {
-        if (coalesceEvent(theEvent, priority)) {
-            return;
-        }
+//        if (coalesceEvent(theEvent, priority)) {
+//            return;
+//        }
 
         EventQueueItem newItem = new EventQueueItem(theEvent);
 
@@ -372,53 +372,53 @@ public class EventQueue {
 //        return false;
 //    }
 
-    /*
-     * Should avoid of calling this method by any means
-     * as it's working time is dependant on EQ length.
-     * In the wors case this method alone can slow down the entire application
-     * 10 times by stalling the Event processing.
-     * Only here by backward compatibility reasons.
-     */
-    private boolean coalesceOtherEvent(AWTEvent e, int priority) {
-        int id = e.getID();
-        Component source = (Component)e.getSource();
-        for (EventQueueItem entry = queues[priority].head;
-            entry != null; entry = entry.next)
-        {
-            // Give Component.coalesceEvents a chance
-            if (entry.event.getSource() == source && entry.id == id) {
-                AWTEvent coalescedEvent = source.coalesceEvents(
-                    entry.event, e);
-                if (coalescedEvent != null) {
-                    entry.event = coalescedEvent;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean coalesceEvent(AWTEvent e, int priority) {
-        if (!(e.getSource() instanceof Component)) {
-            return false;
-        }
-//        if (e instanceof PeerEvent) {
-//            return coalescePeerEvent((PeerEvent)e);
+//    /*
+//     * Should avoid of calling this method by any means
+//     * as it's working time is dependant on EQ length.
+//     * In the wors case this method alone can slow down the entire application
+//     * 10 times by stalling the Event processing.
+//     * Only here by backward compatibility reasons.
+//     */
+//    private boolean coalesceOtherEvent(AWTEvent e, int priority) {
+//        int id = e.getID();
+//        Component source = (Component)e.getSource();
+//        for (EventQueueItem entry = queues[priority].head;
+//            entry != null; entry = entry.next)
+//        {
+//            // Give Component.coalesceEvents a chance
+//            if (entry.event.getSource() == source && entry.id == id) {
+//                AWTEvent coalescedEvent = source.coalesceEvents(
+//                    entry.event, e);
+//                if (coalescedEvent != null) {
+//                    entry.event = coalescedEvent;
+//                    return true;
+//                }
+//            }
 //        }
-        // The worst case
-        if (((Component)e.getSource()).isCoalescingEnabled()
-            && coalesceOtherEvent(e, priority))
-        {
-            return true;
-        }
-//        if (e instanceof PaintEvent) {
-//            return coalescePaintEvent((PaintEvent)e);
+//        return false;
+//    }
+//
+//    private boolean coalesceEvent(AWTEvent e, int priority) {
+//        if (!(e.getSource() instanceof Component)) {
+//            return false;
 //        }
-        if (e instanceof MouseEvent) {
-            return coalesceMouseEvent((MouseEvent)e);
-        }
-        return false;
-    }
+////        if (e instanceof PeerEvent) {
+////            return coalescePeerEvent((PeerEvent)e);
+////        }
+//        // The worst case
+////        if (((Component)e.getSource()).isCoalescingEnabled()
+////            && coalesceOtherEvent(e, priority))
+////        {
+////            return true;
+////        }
+////        if (e instanceof PaintEvent) {
+////            return coalescePaintEvent((PaintEvent)e);
+////        }
+//        if (e instanceof MouseEvent) {
+//            return coalesceMouseEvent((MouseEvent)e);
+//        }
+//        return false;
+//    }
 
     private void cacheEQItem(EventQueueItem entry) {
         int index = eventToCacheIndex(entry.event);

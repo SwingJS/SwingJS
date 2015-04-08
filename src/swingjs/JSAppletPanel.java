@@ -5,20 +5,21 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import swingjs.api.HTML5Applet;
+import swingjs.api.HTML5Canvas;
 import swingjs.api.Interface;
 
 import javajs.api.GenericPlatform;
-import javajs.api.JSInterface;
+import swingjs.api.JSInterface;
 import javajs.util.PT;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
+import jsjava.awt.Graphics;
 import jsjava.awt.Image;
 import jssun.applet.AppletPanel;
 //import org.jmol.api.Interface;
 //import org.jmol.util.Logger;
 //import org.jmol.viewer.Viewer.ACCESS;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 /**
  * SwingJS class to start an applet. 
@@ -40,7 +41,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	/*
 	 * the JavaScript SwingJS._Applet object
 	 */
-	public Object html5Applet;
+	public HTML5Applet html5Applet;
 	
 	public String fullName;
 	public String appletCodeBase;
@@ -56,6 +57,8 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	public Object strJavaVendor;
 	public Object display;
 	public GenericPlatform apiPlatform;
+	private HTML5Canvas canvas;
+	private JSGraphics2D jsgraphics;
 
   private void setMaximumSize(int x) {
     maximumSize = Math.max(x, 100);
@@ -76,14 +79,15 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 	private void set(Hashtable params) {
 		this.params = params;
-    htmlName = PT.split("" + getParameter("name"), "_object")[0];
-		appletName = PT.split(htmlName + "_", "_")[0]; 
-		// should be the same as htmlName; probably should point out that applet names cannot have _ in them.
-		
-    syncId = getParameter("syncId");
-    fullName = htmlName + "__" + syncId + "__";
-    params.put("fullName", fullName);
-  	Object o = params.get("codePath");
+		htmlName = PT.split("" + getParameter("name"), "_object")[0];
+		appletName = PT.split(htmlName + "_", "_")[0];
+		// should be the same as htmlName; probably should point out that applet
+		// names cannot have _ in them.
+
+		syncId = getParameter("syncId");
+		fullName = htmlName + "__" + syncId + "__";
+		params.put("fullName", fullName);
+		Object o = params.get("codePath");
 		if (o == null)
 			o = "../java/";
 		appletCodeBase = o.toString();
@@ -95,44 +99,47 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		if (params.containsKey("maximumSize"))
 			setMaximumSize(((Integer) params.get("maximumSize")).intValue());
 
-		//syncId = (i < 0 ? "" : fullName.substring(i + 2, fullName.length() - 2));
-			async = (testAsync || params.containsKey("async"));
-			Object applet = null;
-			String javaver = "?";
-			/**
-			 * @j2sNative
-			 * 
-			 *            if(self.Jmol) { applet =
-			 *            Jmol._applets[this.htmlName.split("_object")[0]]; javaver =
-			 *            Jmol._version; }
-			 * 
-			 * 
-			 */
-			{
-			}
-			html5Applet = applet;
-			strJavaVersion = javaver;
-			strJavaVendor = "Java2Script/Java 1.6 (HTML5)";
-			String platform = (String) params.get("platform");
-			if (platform != null && platform.length() > 0)
-				apiPlatform = (GenericPlatform) Interface.getInterface(platform);
-		display = params.get("display");
-		
-		threadGroup = new ThreadGroup(appletName);
-		myThread = new Thread(threadGroup, appletName);
+		// syncId = (i < 0 ? "" : fullName.substring(i + 2, fullName.length() - 2));
+		async = (testAsync || params.containsKey("async"));
+		HTML5Applet applet = null;
+		String javaver = "?";
 		/**
 		 * @j2sNative
 		 * 
-		 * this.threadGroup.setHtmlApplet(null, this.html5Applet);
-		 * Jmol._applets[this.appletName + "_thread"] = jsjava.lang.Thread.thisThread = this.myThread;
-		 * this.appContext = jssun.awt.SunToolkit.createNewAppContext();
-		 * if (SwingJS._JSToolkit == null)
-		 *   SwingJS._JSToolkit = swingjs.api.Interface.getInterface("swingjs.JSToolkit");
+		 *            if(self.Jmol) { applet =
+		 *            Jmol._applets[this.htmlName.split("_object")[0]]; 
+		 *            javaver =
+		 *            Jmol._version; }
+		 * 
+		 * 
 		 */
-		{}
+		{
+		}
+		html5Applet = applet;
+		strJavaVersion = javaver;
+		strJavaVendor = "Java2Script/Java 1.6 (HTML5)";
+		String platform = (String) params.get("platform");
+		if (platform != null && platform.length() > 0)
+			apiPlatform = (GenericPlatform) Interface.getInterface(platform);
+		display = params.get("display");
+
+		threadGroup = new JSThreadGroup(appletName);
+		myThread = new JSThread(threadGroup, appletName);
+		((JSThreadGroup) threadGroup).setHtmlApplet(html5Applet);
+		/**
+		 * @j2sNative
+		 * 
+		 *            Jmol._applets[this.appletName + "_thread"] =
+		 *            jsjava.lang.Thread.isThread = this.myThread; this.appContext =
+		 *            jssun.awt.SunToolkit.createNewAppContext(); if
+		 *            (SwingJS._JSToolkit == null) SwingJS._JSToolkit =
+		 *            swingjs.api.Interface.getInterface("swingjs.JSToolkit");
+		 */
+		{
+		}
 
 		init();
-		
+
 		System.out.println("JSAPpletPanel runloader");
 		runLoader(); // applet created here
 		// do something with display here
@@ -142,7 +149,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 		appletStart();
 		System.out.println("JSAPpletPanel done");
-		
+
 		notifyAppletReady();
 
 	}
@@ -365,13 +372,13 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	}
 
 	@Override
-	public void setDisplay(Object canvas) {
-		// TODO Auto-generated method stub
-		
+	public void setDisplay(HTML5Canvas canvas) {
+		this.canvas = canvas;		
 	}
 
 	@Override
 	public void setScreenDimension(int width, int height) {
+		setGraphics(jsgraphics = null);
 		resize(width, height);
 		if (applet != null)
 			applet.resize(width, height);
@@ -389,10 +396,40 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		
 	}
 
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
+	public void paintme() {	
+		paint(null);
 		
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		// Note that this "Panel" is never painted.
+		// This class simply maintains valuable information for applet loading.
+		applet.paint(setGraphics(g));
+	}
+
+	/**
+	 * SwingJS will deliver a null graphics here. 
+	 * 
+	 * @param g
+	 * @return
+	 */
+	private Graphics setGraphics(Graphics g) {
+		if (g == null || (g = jsgraphics) == null) {
+			g = jsgraphics = new JSGraphics2D(canvas = html5Applet._getHtml5Canvas());
+			// set methods for HTMLCanvasContext2D that are just direct assignments
+			/**
+			 * @j2sNative
+			 * 
+			 * 	g.ctx._setLineWidth = function(d) {this.lineWidth = d};
+			 *  g.ctx._setFont = function(f) {this.font = f};
+			 * 	g.ctx._setFillStyle = function(s) {this.fillStyle = s};
+			 *	g.ctx._setStrokeStyle = function(s) {this.strokeStyle = s};
+			 */
+			{}
+			((JSGraphics2D)g).setWindowParameters(getWidth(), getHeight());
+		}
+		return g;
 	}
 
 }

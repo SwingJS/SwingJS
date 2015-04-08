@@ -1737,7 +1737,9 @@ public class Container extends Component {
      * @see   Component#update(Graphics)
      */
     public void paint(Graphics g) {
-    	// how to do this?
+    	//SwingJS: The developer should override paint() to draw;
+    	//this method will take care of all buttons, in case the
+    	//paintComponent() method for them has been overridden.
 //    	
 //        if (isShowing()) {
 ////            synchronized (this) {
@@ -1754,8 +1756,8 @@ public class Container extends Component {
 //
 //            // super.paint(); -- Don't bother, since it's a NOP.
 //
-//            GraphicsCallback.PaintCallback.getInstance().
-//                runComponents(component.toArray(EMPTY_ARRAY), g, GraphicsCallback.LIGHTWEIGHTS);
+            GraphicsCallback.PaintCallback.getInstance().
+                runComponents(component.toArray(EMPTY_ARRAY), g, GraphicsCallback.LIGHTWEIGHTS);
 //        }
     }
 

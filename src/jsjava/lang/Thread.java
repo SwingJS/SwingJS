@@ -373,7 +373,7 @@ class Thread implements Runnable {
         
         // SwingJS -- this can happen for the first thread
         if (g == null) {
-        	g = new ThreadGroup(null, name);
+        	g = newThreadGroup(null, name);
         	parent = this; // ?? 
         }
         /* checkAccess regardless of whether or not threadgroup is
@@ -461,7 +461,11 @@ class Thread implements Runnable {
 //        init(null, target, "Thread-" + nextThreadNum(), 0, acc);
 //    }
 
-    /**
+    protected ThreadGroup newThreadGroup(ThreadGroup group, String name) {
+    	return new ThreadGroup(group, name);
+		}
+
+		/**
      * Allocates a new <code>Thread</code> object. This constructor has
      * the same effect as <code>Thread(null, null,</code>
      * <i>gname</i><code>)</code>, where <b><i>gname</i></b> is

@@ -1199,6 +1199,8 @@ var searchAndExecuteMethod = function (id, objThis, claxxRef, fxName, args) {
 //  }
 	fx = objThis[fxName];
 	var params = Clazz.getParamsType(args);
+  if (!fx) 
+    System.out.println(Clazz.getStackTrace())
 	_profile && addProfile(claxxRef, fxName, params, id);
 	// Cache last matched method
 	if (fx.lastParams == params.typeString && fx.lastClaxxRef === claxxRef) {
@@ -3161,7 +3163,7 @@ var cleanDelegateMethod = function (m) {
 /**
  * Static class loader class
  */
-Clazz._Loader = function () {};
+Clazz._Loader = Clazz.ClazzLoader = function () {};
 
 /**
  * Class dependency tree node
@@ -4601,8 +4603,10 @@ var loadClassNode = function (node) {
 };
 
 
-/* private */
-var runtimeKeyClass = "java.lang.String";
+/**
+ * Used in package
+/* public */
+var runtimeKeyClass = _Loader.runtimeKeyClass = "java.lang.String";
 
 /**
  * Queue used to store classes before key class is loaded.
