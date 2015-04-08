@@ -47,8 +47,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 //import java.util.StringTokenizer;
 
-import jsjava.security.AccessController;
-import jssun.security.action.GetPropertyAction;
+//import jsjava.security.AccessController;
+//import jssun.security.action.GetPropertyAction;
 //import java.util.spi.LocaleNameProvider;
 //import java.util.spi.LocaleServiceProvider;
 //import jssun.util.resources.LocaleData;
@@ -178,85 +178,85 @@ public final class Locale implements Cloneable, Serializable {
      */
     static public final Locale ENGLISH = createSingleton("en__", "en", "");
 
-    /** Useful constant for language.
-     */
-    static public final Locale FRENCH = createSingleton("fr__", "fr", "");
-
-    /** Useful constant for language.
-     */
-    static public final Locale GERMAN = createSingleton("de__", "de", "");
-
-    /** Useful constant for language.
-     */
-    static public final Locale ITALIAN = createSingleton("it__", "it", "");
-
-    /** Useful constant for language.
-     */
-    static public final Locale JAPANESE = createSingleton("ja__", "ja", "");
-
-    /** Useful constant for language.
-     */
-    static public final Locale KOREAN = createSingleton("ko__", "ko", "");
-
-    /** Useful constant for language.
-     */
-    static public final Locale CHINESE = createSingleton("zh__", "zh", "");
-
-    /** Useful constant for language.
-     */
-    static public final Locale SIMPLIFIED_CHINESE = createSingleton("zh_CN_", "zh", "CN");
-
-    /** Useful constant for language.
-     */
-    static public final Locale TRADITIONAL_CHINESE = createSingleton("zh_TW_", "zh", "TW");
-
-    /** Useful constant for country.
-     */
-    static public final Locale FRANCE = createSingleton("fr_FR_", "fr", "FR");
-
-    /** Useful constant for country.
-     */
-    static public final Locale GERMANY = createSingleton("de_DE_", "de", "DE");
-
-    /** Useful constant for country.
-     */
-    static public final Locale ITALY = createSingleton("it_IT_", "it", "IT");
-
-    /** Useful constant for country.
-     */
-    static public final Locale JAPAN = createSingleton("ja_JP_", "ja", "JP");
-
-    /** Useful constant for country.
-     */
-    static public final Locale KOREA = createSingleton("ko_KR_", "ko", "KR");
-
-    /** Useful constant for country.
-     */
-    static public final Locale CHINA = SIMPLIFIED_CHINESE;
-
-    /** Useful constant for country.
-     */
-    static public final Locale PRC = SIMPLIFIED_CHINESE;
-
-    /** Useful constant for country.
-     */
-    static public final Locale TAIWAN = TRADITIONAL_CHINESE;
-
-    /** Useful constant for country.
-     */
-    static public final Locale UK = createSingleton("en_GB_", "en", "GB");
-
-    /** Useful constant for country.
-     */
-    static public final Locale US = createSingleton("en_US_", "en", "US");
-
-    /** Useful constant for country.
-     */
-    static public final Locale CANADA = createSingleton("en_CA_", "en", "CA");
-
-    /** Useful constant for country.
-     */
-    static public final Locale CANADA_FRENCH = createSingleton("fr_CA_", "fr", "CA");
+//    /** Useful constant for language.
+//     */
+//    static public final Locale FRENCH = createSingleton("fr__", "fr", "");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale GERMAN = createSingleton("de__", "de", "");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale ITALIAN = createSingleton("it__", "it", "");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale JAPANESE = createSingleton("ja__", "ja", "");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale KOREAN = createSingleton("ko__", "ko", "");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale CHINESE = createSingleton("zh__", "zh", "");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale SIMPLIFIED_CHINESE = createSingleton("zh_CN_", "zh", "CN");
+//
+//    /** Useful constant for language.
+//     */
+//    static public final Locale TRADITIONAL_CHINESE = createSingleton("zh_TW_", "zh", "TW");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale FRANCE = createSingleton("fr_FR_", "fr", "FR");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale GERMANY = createSingleton("de_DE_", "de", "DE");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale ITALY = createSingleton("it_IT_", "it", "IT");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale JAPAN = createSingleton("ja_JP_", "ja", "JP");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale KOREA = createSingleton("ko_KR_", "ko", "KR");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale CHINA = SIMPLIFIED_CHINESE;
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale PRC = SIMPLIFIED_CHINESE;
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale TAIWAN = TRADITIONAL_CHINESE;
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale UK = createSingleton("en_GB_", "en", "GB");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale US = createSingleton("en_US_", "en", "US");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale CANADA = createSingleton("en_CA_", "en", "CA");
+//
+//    /** Useful constant for country.
+//     */
+//    static public final Locale CANADA_FRENCH = createSingleton("fr_CA_", "fr", "CA");
 
     /**
      * Useful constant for the root locale.  The root locale is the locale whose
@@ -399,28 +399,31 @@ public final class Locale implements Cloneable, Serializable {
         // do not synchronize this method - see 4071298
         // it's OK if more than one default locale happens to be created
         if (defaultLocale == null) {
-            String language, region, country, variant;
-            language = AccessController.doPrivileged(
-                new GetPropertyAction("user.language", "en"));
+            String language/*, region*/, country, variant;
+            
+            //SwingJS TODO? we could use System.getProperty() here
+            
+            language = "en";//AccessController.doPrivileged(
+                //new GetPropertyAction("user.language", "en"));
             // for compatibility, check for old user.region property
-            region = AccessController.doPrivileged(
-                new GetPropertyAction("user.region"));
-            if (region != null) {
-                // region can be of form country, country_variant, or _variant
-                int i = region.indexOf('_');
-                if (i >= 0) {
-                    country = region.substring(0, i);
-                    variant = region.substring(i + 1);
-                } else {
-                    country = region;
-                    variant = "";
-                }
-            } else {
-                country = AccessController.doPrivileged(
-                    new GetPropertyAction("user.country", ""));
-                variant = AccessController.doPrivileged(
-                    new GetPropertyAction("user.variant", ""));
-            }
+//            region = null;//AccessController.doPrivileged(
+                //new GetPropertyAction("user.region"));
+//            if (region != null) {
+//                // region can be of form country, country_variant, or _variant
+//                int i = region.indexOf('_');
+//                if (i >= 0) {
+//                    country = region.substring(0, i);
+//                    variant = region.substring(i + 1);
+//                } else {
+//                    country = region;
+//                    variant = "";
+//                }
+//            } else {
+                country = "";//AccessController.doPrivileged(
+                    //new GetPropertyAction("user.country", ""));
+                variant = "";//AccessController.doPrivileged(
+                    //new GetPropertyAction("user.variant", ""));
+//            }
             defaultLocale = getInstance(language, country, variant);
         }
         return defaultLocale;

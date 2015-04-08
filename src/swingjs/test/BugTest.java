@@ -12,6 +12,10 @@ package swingjs.test;
 import java.util.AbstractMap;
 import java.util.HashMap;
 
+import swingjs.JSGraphics2D;
+import swingjs.JSToolkit;
+
+import jsjava.awt.Graphics2D;
 import jsjava.awt.Toolkit;
 
 public class BugTest extends HashMap {
@@ -27,7 +31,7 @@ public class BugTest extends HashMap {
 	private String name;
 
 	public static void main(String[] args) {
-
+		
 		BugTest t = new BugTest();
 		t.name = "test";
 

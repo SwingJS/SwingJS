@@ -158,7 +158,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		 */
 		{}
 	}
-
+	
 	@Override
 	protected void setupAppletAppContext() {
 		// probably do something here

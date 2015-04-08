@@ -288,9 +288,9 @@ class ImageFetcher extends Thread {
        }
        final ThreadGroup fetcherGroup = fetcherThreadGroup;
 
-       jsjava.security.AccessController.doPrivileged(
-         new jsjava.security.PrivilegedAction() {
-         public Object run() {
+//       jsjava.security.AccessController.doPrivileged(
+  //       new jsjava.security.PrivilegedAction() {
+    //     public Object run() {
              for (int i = 0; i < info.fetchers.length; i++) {
                if (info.fetchers[i] == null) {
                    info.fetchers[i] = new ImageFetcher(
@@ -300,9 +300,9 @@ class ImageFetcher extends Thread {
                    break;
                }
              }
-          return null;
-        }
-       });
+      //    return null;
+        //}
+      // });
       return;
     }
 

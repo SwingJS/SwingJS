@@ -166,13 +166,13 @@ public abstract class ImageDecoder {
         aborted = true;
         source.doneDecoding(this);
         close();
-        jsjava.security.AccessController.doPrivileged(
-            new jsjava.security.PrivilegedAction() {
-            public Object run() {
+        //jsjava.security.AccessController.doPrivileged(
+          //  new jsjava.security.PrivilegedAction() {
+            //public Object run() {
                 feeder.interrupt();
-                return null;
-            }
-        });
+              //  return null;
+           // }
+        //});
     }
 
     public synchronized void close() {

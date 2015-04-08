@@ -2,6 +2,7 @@ package swingjs;
 
 import java.net.URL;
 
+
 import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
@@ -199,6 +200,20 @@ public class JSToolkit extends SunToolkit {
 	public void ungrab(Window w) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public static Object getPropertyObject(Object t, String key, Object def) {
+		/**
+		 * @j2sNative
+		 * switch (key) {
+		 * case "graphics":
+		 *   return SwingJS.getGraphics(t)
+		 *   break;
+		 * }
+		 * 
+		 */
+		{}
+		return def;
 	}
 	
 	

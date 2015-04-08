@@ -826,15 +826,15 @@ public abstract class Toolkit {
      */
     public static synchronized Toolkit getDefaultToolkit() {
         if (toolkit == null) {
-            try {
+            //try {
                 // We disable the JIT during toolkit initialization.  This
                 // tends to touch lots of classes that aren't needed again
                 // later and therefore JITing is counter-productiive.
 //                java.lang.Compiler.disable();
 
-                jsjava.security.AccessController.doPrivileged(
-                        new jsjava.security.PrivilegedAction() {
-							public Object run() {
+//                jsjava.security.AccessController.doPrivileged(
+//                        new jsjava.security.PrivilegedAction() {
+//							public Object run() {
 								String nm = null;
 								Class cls = null;
 								try {
@@ -872,13 +872,13 @@ public abstract class Toolkit {
 								}
 								return null;
 							}
-                });
-//                loadAssistiveTechnologies();
-            } finally {
-                // Make sure to always re-enable the JIT.
-//              java.lang.Compiler.enable();
-            }
-        }
+//                });
+////                loadAssistiveTechnologies();
+//            } finally {
+//                // Make sure to always re-enable the JIT.
+////              java.lang.Compiler.enable();
+//            }
+//        }
         return toolkit;
     }
 

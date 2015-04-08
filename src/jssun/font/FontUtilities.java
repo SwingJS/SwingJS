@@ -31,8 +31,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 import jsjava.awt.Font;
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
+//import jsjava.security.AccessController;
+//import jsjava.security.PrivilegedAction;
 
 /**
  * A collection of utility methods.
@@ -66,8 +66,8 @@ public final class FontUtilities {
     // This static initializer block figures out the OS constants.
     static {
 
-        AccessController.doPrivileged(new PrivilegedAction () {
-            public Object run() {
+        //AccessController.doPrivileged(new PrivilegedAction () {
+          //  public Object run() {
                 String osName = System.getProperty("os.name", "unknownOS");
                 isSolaris = osName.startsWith("SunOS");
 
@@ -139,9 +139,9 @@ public final class FontUtilities {
 //                    logging = logger.isEnabled();
                 }
 
-                return null;
-            }
-        });
+            //    return null;
+           // }
+        //});
     }
 
     /**

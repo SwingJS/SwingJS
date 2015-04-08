@@ -5049,7 +5049,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @see #isCoalescingEnabled
      * @see #checkCoalescing
      */
-    transient private boolean coalescingEnabled = checkCoalescing();
+    transient private boolean coalescingEnabled = false;//checkCoalescing();
 
     /**
      * Weak map of known coalesceEvent overriders.
@@ -5059,38 +5059,38 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
     private static final Map<Class<?>, Boolean> coalesceMap =
         new HashMap<Class<?>, Boolean>(); // was weakHashmap
 
-    /**
-     * Indicates whether this class overrides coalesceEvents.
-     * It is assumed that all classes that are loaded from the bootstrap
-     *   do not.
-     * The boostrap class loader is assumed to be represented by null.
-     * We do not check that the method really overrides
-     *   (it might be static, private or package private).
-     */
-     private boolean checkCoalescing() {
-         if (getClass().getClassLoader()==null) {
-             return false;
-         }
-         final Class<? extends Component> clazz = getClass();
-         synchronized (coalesceMap) {
-             // Check cache.
-             Boolean value = coalesceMap.get(clazz);
-             if (value != null) {
-                 return value;
-             }
-
-             // Need to check non-bootstraps.
-             Boolean enabled = jsjava.security.AccessController.doPrivileged(
-                 new jsjava.security.PrivilegedAction<Boolean>() {
-                     public Boolean run() {
-                         return isCoalesceEventsOverriden(clazz);
-                     }
-                 }
-                 );
-             coalesceMap.put(clazz, enabled);
-             return enabled;
-         }
-     }
+//    /**
+//     * Indicates whether this class overrides coalesceEvents.
+//     * It is assumed that all classes that are loaded from the bootstrap
+//     *   do not.
+//     * The boostrap class loader is assumed to be represented by null.
+//     * We do not check that the method really overrides
+//     *   (it might be static, private or package private).
+//     */
+//     private boolean checkCoalescing() {
+//         if (getClass().getClassLoader()==null) {
+//             return false;
+//         }
+//         final Class<? extends Component> clazz = getClass();
+//         synchronized (coalesceMap) {
+//             // Check cache.
+//             Boolean value = coalesceMap.get(clazz);
+//             if (value != null) {
+//                 return value;
+//             }
+//
+//             // Need to check non-bootstraps.
+//             Boolean enabled = jsjava.security.AccessController.doPrivileged(
+//                 new jsjava.security.PrivilegedAction<Boolean>() {
+//                     public Boolean run() {
+//                         return isCoalesceEventsOverriden(clazz);
+//                     }
+//                 }
+//                 );
+//             coalesceMap.put(clazz, enabled);
+//             return enabled;
+//         }
+//     }
 
     /**
      * Parameter types of coalesceEvents(AWTEvent,AWTEVent).

@@ -34,7 +34,7 @@ import java.util.EmptyStackException;
 import jsjava.awt.event.InvocationEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.PaintEvent;
-import jsjava.security.PrivilegedAction;
+//import jsjava.security.PrivilegedAction;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
 
@@ -626,12 +626,12 @@ public class EventQueue {
      */
     protected void dispatchEvent(final AWTEvent event) {
         final Object src = event.getSource();
-        final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
-            public Void run() {
+//        final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
+//            public Void run() {
                 dispatchEventImpl(event, src);
-                return null;
-            }
-        };
+//                return null;
+//            }
+//        };
 
 //        final AccessControlContext stack = AccessController.getContext();
 //        final AccessControlContext srcAcc = getAccessControlContextFrom(src);

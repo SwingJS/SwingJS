@@ -40,8 +40,8 @@
 
 package jssun.util.resources;
 
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
+//import jsjava.security.AccessController;
+//import jsjava.security.PrivilegedAction;
 import java.util.Iterator;
 import java.util.List;
 import jsjava.util.Locale;
@@ -139,13 +139,13 @@ public class LocaleData {
     }
 
     private static ResourceBundle getBundle(final String baseName, final Locale locale) {
-        return (ResourceBundle) AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
+        //return (ResourceBundle) AccessController.doPrivileged(new PrivilegedAction() {
+          //      public Object run() {
                     return ResourceBundle.
                         getBundle(baseName, locale,
                                   LocaleDataResourceBundleControl.getRBControlInstance());
-                }
-            });
+         //       }
+           // });
     }
 
     static class LocaleDataResourceBundleControl extends ResourceBundle.Control {
