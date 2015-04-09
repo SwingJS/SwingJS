@@ -1224,157 +1224,178 @@ public class SimpleDateFormat extends DateFormat {
     }
 
 
-    /**
-     * Parses text from a string to produce a <code>Date</code>.
-     * <p>
-     * The method attempts to parse text starting at the index given by
-     * <code>pos</code>.
-     * If parsing succeeds, then the index of <code>pos</code> is updated
-     * to the index after the last character used (parsing does not necessarily
-     * use all characters up to the end of the string), and the parsed
-     * date is returned. The updated <code>pos</code> can be used to
-     * indicate the starting point for the next call to this method.
-     * If an error occurs, then the index of <code>pos</code> is not
-     * changed, the error index of <code>pos</code> is set to the index of
-     * the character where the error occurred, and null is returned.
-     *
-     * @param text  A <code>String</code>, part of which should be parsed.
-     * @param pos   A <code>ParsePosition</code> object with index and error
-     *              index information as described above.
-     * @return A <code>Date</code> parsed from the string. In case of
-     *         error, returns null.
-     * @exception NullPointerException if <code>text</code> or <code>pos</code> is null.
-     */
-    public Date parse(String text, ParsePosition pos)
-    {
-    	  /** 
-    	   * 
-    	   * :)
-    	   * 
-    	   * @j2sNative
-    	   * 
-    	   * return new Date(text);
-    	   */
-    	{
-    		return null;
-    	}
-//        int start = pos.index;
-//        int oldStart = start;
-//        int textLength = text.length();
-//
-//        calendar.clear(); // Clears all the time fields
-//
-//        boolean[] ambiguousYear = {false};
-//
-//
-//        for (int i = 0; i < compiledPattern.length; ) {
-//            int tag = compiledPattern[i] >>> 8;
-//            int count = compiledPattern[i++] & 0xff;
-//            if (count == 255) {
-//                count = compiledPattern[i++] << 16;
-//                count |= compiledPattern[i++];
-//            }
-//
-//            switch (tag) {
-//            case TAG_QUOTE_ASCII_CHAR:
-//                if (start >= textLength || text.charAt(start) != (char)count) {
-//                    pos.index = oldStart;
-//                    pos.errorIndex = start;
-//                    return null;
-//                }
-//                start++;
-//                break;
-//
-//            case TAG_QUOTE_CHARS:
-//                while (count-- > 0) {
-//                    if (start >= textLength || text.charAt(start) != compiledPattern[i++]) {
-//                        pos.index = oldStart;
-//                        pos.errorIndex = start;
-//                        return null;
-//                    }
-//                    start++;
-//                }
-//                break;
-//
-//            default:
-//                // Peek the next pattern to determine if we need to
-//                // obey the number of pattern letters for
-//                // parsing. It's required when parsing contiguous
-//                // digit text (e.g., "20010704") with a pattern which
-//                // has no delimiters between fields, like "yyyyMMdd".
-//                boolean obeyCount = false;
-//                if (i < compiledPattern.length) {
-//                    int nextTag = compiledPattern[i] >>> 8;
-//                    if (!(nextTag == TAG_QUOTE_ASCII_CHAR || nextTag == TAG_QUOTE_CHARS)) {
-//                        obeyCount = true;
-//                    }
-//                }
-//                start = subParse(text, start, tag, count, obeyCount,
-//                                 ambiguousYear, pos);
-//                if (start < 0) {
-//                    pos.index = oldStart;
-//                    return null;
-//                }
-//            }
-//        }
-//
-//        // At this point the fields of Calendar have been set.  Calendar
-//        // will fill in default values for missing fields when the time
-//        // is computed.
-//
-//        pos.index = start;
-//
-//        // This part is a problem:  When we call parsedDate.after, we compute the time.
-//        // Take the date April 3 2004 at 2:30 am.  When this is first set up, the year
-//        // will be wrong if we're parsing a 2-digit year pattern.  It will be 1904.
-//        // April 3 1904 is a Sunday (unlike 2004) so it is the DST onset day.  2:30 am
-//        // is therefore an "impossible" time, since the time goes from 1:59 to 3:00 am
-//        // on that day.  It is therefore parsed out to fields as 3:30 am.  Then we
-//        // add 100 years, and get April 3 2004 at 3:30 am.  Note that April 3 2004 is
-//        // a Saturday, so it can have a 2:30 am -- and it should. [LIU]
-//        /*
-//        Date parsedDate = calendar.getTime();
-//        if( ambiguousYear[0] && !parsedDate.after(defaultCenturyStart) ) {
-//            calendar.add(Calendar.YEAR, 100);
-//            parsedDate = calendar.getTime();
-//        }
-//        */
-//        // Because of the above condition, save off the fields in case we need to readjust.
-//        // The procedure we use here is not particularly efficient, but there is no other
-//        // way to do this given the API restrictions present in Calendar.  We minimize
-//        // inefficiency by only performing this computation when it might apply, that is,
-//        // when the two-digit year is equal to the start year, and thus might fall at the
-//        // front or the back of the default century.  This only works because we adjust
-//        // the year correctly to start with in other cases -- see subParse().
-//        Date parsedDate;
-//        try {
-//            if (ambiguousYear[0]) // If this is true then the two-digit year == the default start year
-//            {
-//                // We need a copy of the fields, and we need to avoid triggering a call to
-//                // complete(), which will recalculate the fields.  Since we can't access
-//                // the fields[] array in Calendar, we clone the entire object.  This will
-//                // stop working if Calendar.clone() is ever rewritten to call complete().
-//                Calendar savedCalendar = (Calendar)calendar.clone();
-//                parsedDate = calendar.getTime();
-//                if (parsedDate.before(defaultCenturyStart))
-//                {
-//                    // We can't use add here because that does a complete() first.
-//                    savedCalendar.set(Calendar.YEAR, defaultCenturyStartYear + 100);
-//                    parsedDate = savedCalendar.getTime();
-//                }
-//            }
-//            else parsedDate = calendar.getTime();
-//        }
-//        // An IllegalArgumentException will be thrown by Calendar.getTime()
-//        // if any fields are out of range, e.g., MONTH == 17.
-//        catch (IllegalArgumentException e) {
-//            pos.errorIndex = start;
-//            pos.index = oldStart;
-//            return null;
-//        }
-//
-//        return parsedDate;
-    }
+	/**
+	 * Parses text from a string to produce a <code>Date</code>.
+	 * <p>
+	 * The method attempts to parse text starting at the index given by
+	 * <code>pos</code>. If parsing succeeds, then the index of <code>pos</code>
+	 * is updated to the index after the last character used (parsing does not
+	 * necessarily use all characters up to the end of the string), and the parsed
+	 * date is returned. The updated <code>pos</code> can be used to indicate the
+	 * starting point for the next call to this method. If an error occurs, then
+	 * the index of <code>pos</code> is not changed, the error index of
+	 * <code>pos</code> is set to the index of the character where the error
+	 * occurred, and null is returned.
+	 * 
+	 * @param text
+	 *          A <code>String</code>, part of which should be parsed.
+	 * @param pos
+	 *          A <code>ParsePosition</code> object with index and error index
+	 *          information as described above.
+	 * @return A <code>Date</code> parsed from the string. In case of error,
+	 *         returns null.
+	 * @exception NullPointerException
+	 *              if <code>text</code> or <code>pos</code> is null.
+	 */
+	public Date parse(String text, ParsePosition pos) {
+		//SwingJS brute force
+		
+		/**
+		 *
+		 * 
+		 * @j2sNative
+		 * 
+		 *            var i0 = pos.index; pos.index = text.length(); while
+		 *            (pos.index >= i0) { var d = new Date(text.substring(i0,
+		 *            pos.index)); var x = d.getMilliseconds(); if (!isNaN(x))
+		 *            return d; pos.index--; } 
+		 *            pos.index = i0;
+		 *            return null;
+		 */
+		{
+			return null;
+		}
+		// int start = pos.index;
+		// int oldStart = start;
+		// int textLength = text.length();
+		//
+		// calendar.clear(); // Clears all the time fields
+		//
+		// boolean[] ambiguousYear = {false};
+		//
+		//
+		// for (int i = 0; i < compiledPattern.length; ) {
+		// int tag = compiledPattern[i] >>> 8;
+		// int count = compiledPattern[i++] & 0xff;
+		// if (count == 255) {
+		// count = compiledPattern[i++] << 16;
+		// count |= compiledPattern[i++];
+		// }
+		//
+		// switch (tag) {
+		// case TAG_QUOTE_ASCII_CHAR:
+		// if (start >= textLength || text.charAt(start) != (char)count) {
+		// pos.index = oldStart;
+		// pos.errorIndex = start;
+		// return null;
+		// }
+		// start++;
+		// break;
+		//
+		// case TAG_QUOTE_CHARS:
+		// while (count-- > 0) {
+		// if (start >= textLength || text.charAt(start) != compiledPattern[i++]) {
+		// pos.index = oldStart;
+		// pos.errorIndex = start;
+		// return null;
+		// }
+		// start++;
+		// }
+		// break;
+		//
+		// default:
+		// // Peek the next pattern to determine if we need to
+		// // obey the number of pattern letters for
+		// // parsing. It's required when parsing contiguous
+		// // digit text (e.g., "20010704") with a pattern which
+		// // has no delimiters between fields, like "yyyyMMdd".
+		// boolean obeyCount = false;
+		// if (i < compiledPattern.length) {
+		// int nextTag = compiledPattern[i] >>> 8;
+		// if (!(nextTag == TAG_QUOTE_ASCII_CHAR || nextTag == TAG_QUOTE_CHARS)) {
+		// obeyCount = true;
+		// }
+		// }
+		// start = subParse(text, start, tag, count, obeyCount,
+		// ambiguousYear, pos);
+		// if (start < 0) {
+		// pos.index = oldStart;
+		// return null;
+		// }
+		// }
+		// }
+		//
+		// // At this point the fields of Calendar have been set. Calendar
+		// // will fill in default values for missing fields when the time
+		// // is computed.
+		//
+		// pos.index = start;
+		//
+		// // This part is a problem: When we call parsedDate.after, we compute the
+		// time.
+		// // Take the date April 3 2004 at 2:30 am. When this is first set up, the
+		// year
+		// // will be wrong if we're parsing a 2-digit year pattern. It will be
+		// 1904.
+		// // April 3 1904 is a Sunday (unlike 2004) so it is the DST onset day.
+		// 2:30 am
+		// // is therefore an "impossible" time, since the time goes from 1:59 to
+		// 3:00 am
+		// // on that day. It is therefore parsed out to fields as 3:30 am. Then we
+		// // add 100 years, and get April 3 2004 at 3:30 am. Note that April 3 2004
+		// is
+		// // a Saturday, so it can have a 2:30 am -- and it should. [LIU]
+		// /*
+		// Date parsedDate = calendar.getTime();
+		// if( ambiguousYear[0] && !parsedDate.after(defaultCenturyStart) ) {
+		// calendar.add(Calendar.YEAR, 100);
+		// parsedDate = calendar.getTime();
+		// }
+		// */
+		// // Because of the above condition, save off the fields in case we need to
+		// readjust.
+		// // The procedure we use here is not particularly efficient, but there is
+		// no other
+		// // way to do this given the API restrictions present in Calendar. We
+		// minimize
+		// // inefficiency by only performing this computation when it might apply,
+		// that is,
+		// // when the two-digit year is equal to the start year, and thus might
+		// fall at the
+		// // front or the back of the default century. This only works because we
+		// adjust
+		// // the year correctly to start with in other cases -- see subParse().
+		// Date parsedDate;
+		// try {
+		// if (ambiguousYear[0]) // If this is true then the two-digit year == the
+		// default start year
+		// {
+		// // We need a copy of the fields, and we need to avoid triggering a call
+		// to
+		// // complete(), which will recalculate the fields. Since we can't access
+		// // the fields[] array in Calendar, we clone the entire object. This will
+		// // stop working if Calendar.clone() is ever rewritten to call complete().
+		// Calendar savedCalendar = (Calendar)calendar.clone();
+		// parsedDate = calendar.getTime();
+		// if (parsedDate.before(defaultCenturyStart))
+		// {
+		// // We can't use add here because that does a complete() first.
+		// savedCalendar.set(Calendar.YEAR, defaultCenturyStartYear + 100);
+		// parsedDate = savedCalendar.getTime();
+		// }
+		// }
+		// else parsedDate = calendar.getTime();
+		// }
+		// // An IllegalArgumentException will be thrown by Calendar.getTime()
+		// // if any fields are out of range, e.g., MONTH == 17.
+		// catch (IllegalArgumentException e) {
+		// pos.errorIndex = start;
+		// pos.index = oldStart;
+		// return null;
+		// }
+		//
+		// return parsedDate;
+	}
 //
 //    /**
 //     * Private code-size reduction function used by subParse.

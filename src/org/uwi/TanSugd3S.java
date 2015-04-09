@@ -1,14 +1,13 @@
 package org.uwi;
 
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BasicStroke;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Color;
 import jsjava.awt.Container;
 import jsjava.awt.Event;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.event.WindowListener;
 import jsjava.awt.Font;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;

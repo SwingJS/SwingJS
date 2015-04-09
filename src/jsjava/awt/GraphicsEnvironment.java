@@ -26,6 +26,7 @@
 
 package jsjava.awt;
 
+import swingjs.JSToolkit;
 import jsjava.awt.image.BufferedImage;
 import jsjava.util.Locale;
 
@@ -71,38 +72,32 @@ public abstract class GraphicsEnvironment {
      */
     public static synchronized GraphicsEnvironment getLocalGraphicsEnvironment() {
         if (localEnv == null) {
-        	String nm = null;
-//        	  final String def = null;
-        	  /**
-        	   * @j2sNative
-        	   * 
-        	   * nm = "swingjs.JSGraphicsEnvironment";
-        	   */
-        	  {
-        	  	nm = "ignored";
-        	  }
-//            String nm = (String) jsjava.security.AccessController.doPrivileged
-//                (new jssun.security.action.GetPropertyAction
-//                 ("java.awt.graphicsenv", def));
-//
-            try {
-////                      long t0 = System.currentTimeMillis();
-                localEnv =
-                    (GraphicsEnvironment) Class.forName(nm).newInstance();
-////              long t1 = System.currentTimeMillis();
-////              System.out.println("GE creation took " + (t1-t0)+ "ms.");
-////                if (isHeadless()) {
-////                    localEnv = new HeadlessGraphicsEnvironment(localEnv);
-////                }
-            } catch (ClassNotFoundException e) {
-                throw new Error("Could not find class: "+nm);
-            } catch (InstantiationException e) {
-                throw new Error("Could not instantiate Graphics Environment: "
-                                + nm);
-            } catch (IllegalAccessException e) {
-                throw new Error ("Could not access Graphics Environment: "
-                                 + nm);
-            }
+          localEnv = (GraphicsEnvironment) JSToolkit.getInstance("swingjs.JSGraphicsEnvironment");	
+        
+//        	String nm = null;
+////        	  final String def = null;
+////            String nm = (String) jsjava.security.AccessController.doPrivileged
+////                (new jssun.security.action.GetPropertyAction
+////                 ("java.awt.graphicsenv", def));
+////
+//            try {
+//////                      long t0 = System.currentTimeMillis();
+//                localEnv =
+//                    (GraphicsEnvironment) Class.forName(nm).newInstance();
+//////              long t1 = System.currentTimeMillis();
+//////              System.out.println("GE creation took " + (t1-t0)+ "ms.");
+//////                if (isHeadless()) {
+//////                    localEnv = new HeadlessGraphicsEnvironment(localEnv);
+//////                }
+//            } catch (ClassNotFoundException e) {
+//                throw new Error("Could not find class: "+nm);
+//            } catch (InstantiationException e) {
+//                throw new Error("Could not instantiate Graphics Environment: "
+//                                + nm);
+//            } catch (IllegalAccessException e) {
+//                throw new Error ("Could not access Graphics Environment: "
+//                                 + nm);
+//            }
         }
 
         return localEnv;
@@ -213,14 +208,14 @@ public abstract class GraphicsEnvironment {
 //    public abstract GraphicsDevice[] getScreenDevices()
 //        throws HeadlessException;
 
-//    /**
-//     * Returns the default screen <code>GraphicsDevice</code>.
-//     * @return the <code>GraphicsDevice</code> that represents the
-//     * default screen device
-//     * @exception HeadlessException if isHeadless() returns true
-//     * @see #isHeadless()
-//     */
-//    public abstract GraphicsDevice getDefaultScreenDevice()
+    /**
+     * Returns the default screen <code>GraphicsDevice</code>.
+     * @return the <code>GraphicsDevice</code> that represents the
+     * default screen device
+     * @exception HeadlessException if isHeadless() returns true
+     * @see #isHeadless()
+     */
+    public abstract GraphicsDevice getDefaultScreenDevice();
 //        throws HeadlessException;
 
     /**

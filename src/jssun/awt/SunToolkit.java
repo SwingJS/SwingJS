@@ -456,7 +456,7 @@ public abstract class SunToolkit extends Toolkit
      */
     public static AppContext targetToAppContext(Object target) {
         if (target == null 
-//        		|| GraphicsEnvironment.isHeadless()
+        		|| GraphicsEnvironment.isHeadless()
         		) {
             return null;
         }

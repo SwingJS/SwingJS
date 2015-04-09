@@ -31,6 +31,8 @@ import jsjava.util.Locale;
 //import java.util.Set;
 import java.util.Vector;
 
+import swingjs.JSToolkit;
+
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.AdjustmentEvent;
 import jsjava.awt.event.ComponentEvent;
@@ -963,28 +965,30 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since 1.3
      */
     public GraphicsConfiguration getGraphicsConfiguration() {
-        synchronized(getTreeLock()) {
-            if (graphicsConfig != null) {
-                return graphicsConfig;
-            } else if (getParent() != null) {
-                return getParent().getGraphicsConfiguration();
-            } else {
-                return null;
-            }
-        }
+    	//SwingJS
+    	return JSToolkit.getGraphicsConfiguration();
+//        synchronized(getTreeLock()) {
+//            if (graphicsConfig != null) {
+//                return graphicsConfig;
+//            } else if (getParent() != null) {
+//                return getParent().getGraphicsConfiguration();
+//            } else {
+//                return null;
+//            }
+//        }
     }
 
-    final GraphicsConfiguration getGraphicsConfiguration_NoClientCode() {
-        GraphicsConfiguration graphicsConfig = this.graphicsConfig;
-        Container parent = this.parent;
-        if (graphicsConfig != null) {
-            return graphicsConfig;
-        } else if (parent != null) {
-            return parent.getGraphicsConfiguration_NoClientCode();
-        } else {
-            return null;
-        }
-    }
+//    final GraphicsConfiguration getGraphicsConfiguration_NoClientCode() {
+//        GraphicsConfiguration graphicsConfig = this.graphicsConfig;
+//        Container parent = this.parent;
+//        if (graphicsConfig != null) {
+//            return graphicsConfig;
+//        } else if (parent != null) {
+//            return parent.getGraphicsConfiguration_NoClientCode();
+//        } else {
+//            return null;
+//        }
+//    }
 
     /**
      * Resets this <code>Component</code>'s
@@ -993,8 +997,9 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * Called from the Toolkit thread, so NO CLIENT CODE.
      */
     void resetGC() {
+//SwingJS ignore
 //        synchronized(getTreeLock()) {
-            graphicsConfig = null;
+//            graphicsConfig = null;
 //        }
     }
 //
@@ -3111,15 +3116,15 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //        }
     }
 
-    /**
-     * Simulates the peer callbacks into java.awt for printing of
-     * lightweight Components.
-     * @param     g   the graphics context to use for printing
-     * @see       #printAll
-     */
-    void lightweightPrint(Graphics g) {
-        print(g);
-    }
+//    /**
+//     * Simulates the peer callbacks into java.awt for printing of
+//     * lightweight Components.
+//     * @param     g   the graphics context to use for printing
+//     * @see       #printAll
+//     */
+//    void lightweightPrint(Graphics g) {
+//        print(g);
+//    }
 
     /**
      * Prints all the heavyweight subcomponents.

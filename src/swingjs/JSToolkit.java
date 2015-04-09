@@ -7,6 +7,7 @@ import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
+import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
@@ -201,7 +202,17 @@ public class JSToolkit extends SunToolkit {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	///////////////////// Special SwingJS calls /////////////////////////
 
+	/**
+	 * get a property that is not just a String
+	 * 
+	 * @param t
+	 * @param key
+	 * @param def
+	 * @return
+	 */
 	public static Object getPropertyObject(Object t, String key, Object def) {
 		/**
 		 * @j2sNative
@@ -214,6 +225,36 @@ public class JSToolkit extends SunToolkit {
 		 */
 		{}
 		return def;
+	}
+
+	/**
+	 * Load a class that has a () constructor.
+	 * 
+	 * @param className
+	 * @return may be null
+	 */
+	public static Object getInstance(String className) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   return swingjs.api.Interface.getInterface(className);
+		 * 
+		 */
+		{
+			return null;
+		}
+	}
+
+	private static GraphicsConfiguration gc;
+
+	public static GraphicsConfiguration getGraphicsConfiguration() {
+		// TODO Auto-generated method stub
+		return (gc == null ? gc = (GraphicsConfiguration) getInstance("swingjs.JSGraphicsConfiguration") : gc);
+	}
+
+	public static boolean isFocused(Window window) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	

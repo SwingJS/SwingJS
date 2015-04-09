@@ -33,6 +33,8 @@ import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 import java.util.Set;
 import java.util.Vector;
+
+import swingjs.JSToolkit;
 //import java.util.concurrent.atomic.AtomicBoolean;
 //import jsjava.util.logging.Logger;
 
@@ -442,12 +444,6 @@ public class Window extends Container {
 //    }
 //
   private void init(GraphicsConfiguration gc) {
-  	/**
-  	 * @j2sNative
-  	 * 
-  	 * gc = SwingController.graphicsConfiguration;
-  	 */
-  	{}
   //      GraphicsEnvironment.checkHeadless();
 
         syncLWRequests = systemSyncLWRequests;
@@ -457,12 +453,13 @@ public class Window extends Container {
         //setWarningString();
         this.cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         this.visible = false;
+        
 //        if (gc == null) {
 //            this.graphicsConfig =
 //                GraphicsEnvironment.getLocalGraphicsEnvironment().
 //             getDefaultScreenDevice().getDefaultConfiguration();
 //        } else {
-            this.graphicsConfig = gc;
+//            this.graphicsConfig = gc;
 //        }
 //        if (graphicsConfig.getDevice().getType() !=
 //            GraphicsDevice.TYPE_RASTER_SCREEN) {
@@ -472,15 +469,16 @@ public class Window extends Container {
 
         /* offset the initial location with the original of the screen */
         /* and any insets                                              */
-        Rectangle screenBounds = graphicsConfig.getBounds();
-        Insets screenInsets = getToolkit().getScreenInsets(graphicsConfig);
-        int x = getX() + screenBounds.x + screenInsets.left;
-        int y = getY() + screenBounds.y + screenInsets.top;
-        if (x != this.x || y != this.y) {
-            setLocation(x, y);
-            /* reset after setLocation */
-//            setLocationByPlatform(locationByPlatformProp);
-        }
+//SwingJS TODO ?? 
+//        Rectangle screenBounds = graphicsConfig.getBounds();
+//        Insets screenInsets = getToolkit().getScreenInsets(graphicsConfig);
+//        int x = getX() + screenBounds.x + screenInsets.left;
+//        int y = getY() + screenBounds.y + screenInsets.top;
+//        if (x != this.x || y != this.y) {
+//            setLocation(x, y);
+//            /* reset after setLocation */
+////            setLocationByPlatform(locationByPlatformProp);
+//        }
 
         modalExclusionType = Dialog.ModalExclusionType.NO_EXCLUDE;
 
@@ -539,15 +537,6 @@ public class Window extends Container {
 	 * @see #isShowing
 	 */
 	public Window(Frame owner) {
-		/**
-		 * @j2sNative
-		 * 
-		 *            owner && owner.valueOf && owner.valueOf() == null && (owner =
-		 *            null);
-		 * 
-		 */
-		{
-		}
 		init(owner == null ? null : owner.getGraphicsConfiguration());
 		ownedInit(owner);
 	}
@@ -580,15 +569,6 @@ public class Window extends Container {
 	 * @since 1.2
 	 */
 	public Window(Window owner) {
-		/**
-		 * @j2sNative
-		 * 
-		 *            owner && owner.valueOf && owner.valueOf() == null && (owner =
-		 *            null);
-		 * 
-		 */
-		{
-		}
 		init(owner == null ? null : owner.getGraphicsConfiguration());
 		ownedInit(owner);
 	}
@@ -2260,14 +2240,7 @@ public class Window extends Container {
      * @since 1.4
      */
     public boolean isFocused() {
-    	/**
-    	 * @j2sNative
-    	 * 
-    	 * return false;
-    	 */
-    	{
-    		return false;
-    	}
+    	return JSToolkit.isFocused(this);
 //        return (KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //                getGlobalFocusedWindow() == this);
     }
@@ -2660,316 +2633,314 @@ public class Window extends Container {
 //        }
     }
 
-//    private static void removeFromWindowList(AppContext context, Window w) {
-//        synchronized (Window.class) {
-//            Vector<Window> windowList = (Vector<Window>)context.get(Window.class);
-//            if (windowList != null) {
-//                windowList.remove(w);
-//            }
-//        }
-//    }
+	// private static void removeFromWindowList(AppContext context, Window w) {
+	// synchronized (Window.class) {
+	// Vector<Window> windowList = (Vector<Window>)context.get(Window.class);
+	// if (windowList != null) {
+	// windowList.remove(w);
+	// }
+	// }
+	// }
 
-//    private void removeFromWindowList() {
-//        removeFromWindowList(appContext, this);
-//    }
+	// private void removeFromWindowList() {
+	// removeFromWindowList(appContext, this);
+	// }
 
-//    /**
-//     * The window serialized data version.
-//     *
-//     * @serial
-//     */
-//    private int windowSerializedDataVersion = 2;
-//
-//    /**
-//     * Writes default serializable fields to stream.  Writes
-//     * a list of serializable <code>WindowListener</code>s and
-//     * <code>WindowFocusListener</code>s as optional data.
-//     * Writes a list of child windows as optional data.
-//     * Writes a list of icon images as optional data
-//     *
-//     * @param s the <code>ObjectOutputStream</code> to write
-//     * @serialData <code>null</code> terminated sequence of
-//     *    0 or more pairs; the pair consists of a <code>String</code>
-//     *    and and <code>Object</code>; the <code>String</code>
-//     *    indicates the type of object and is one of the following:
-//     *    <code>windowListenerK</code> indicating a
-//     *      <code>WindowListener</code> object;
-//     *    <code>windowFocusWindowK</code> indicating a
-//     *      <code>WindowFocusListener</code> object;
-//     *    <code>ownedWindowK</code> indicating a child
-//     *      <code>Window</code> object
-//     *
-//     * @see AWTEventMulticaster#save(java.io.ObjectOutputStream, java.lang.String, java.util.EventListener)
-//     * @see Component#windowListenerK
-//     * @see Component#windowFocusListenerK
-//     * @see Component#ownedWindowK
-//     * @see #readObject(ObjectInputStream)
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        synchronized (this) {
-//            // Update old focusMgr fields so that our object stream can be read
-//            // by previous releases
-//            focusMgr = new FocusManager();
-//            focusMgr.focusRoot = this;
-//            focusMgr.focusOwner = getMostRecentFocusOwner();
-//
-//            s.defaultWriteObject();
-//
-//            // Clear fields so that we don't keep extra references around
-//            focusMgr = null;
-//
-//            AWTEventMulticaster.save(s, windowListenerK, windowListener);
-//            AWTEventMulticaster.save(s, windowFocusListenerK, windowFocusListener);
-//            AWTEventMulticaster.save(s, windowStateListenerK, windowStateListener);
-//        }
-//
-//        s.writeObject(null);
-//
-//        synchronized (ownedWindowList) {
-//            for (int i = 0; i < ownedWindowList.size(); i++) {
-//                Window child = ownedWindowList.elementAt(i).get();
-//                if (child != null) {
-//                    s.writeObject(ownedWindowK);
-//                    s.writeObject(child);
-//                }
-//            }
-//        }
-//        s.writeObject(null);
-//
-//        //write icon array
-//        if (icons != null) {
-//            for (Image i : icons) {
-//                if (i instanceof Serializable) {
-//                    s.writeObject(i);
-//                }
-//            }
-//        }
-//        s.writeObject(null);
-//    }
-//
-//    //
-//    // Part of deserialization procedure to be called before
-//    // user's code.
-//    //
-//    private void initDeserializedWindow() {
-//        setWarningString();
-//        inputContextLock = new Object();
-//
-//        // Deserialized Windows are not yet visible.
-//        visible = false;
-//
-//        weakThis = new WeakReference(this);
-//
-//        anchor = new Object();
-//        sun.java2d.Disposer.addRecord(anchor, new WindowDisposerRecord(appContext, this));
-//
-//        addToWindowList();
-//
-//    }
-//
-//    private void deserializeResources(ObjectInputStream s)
-//        throws ClassNotFoundException, IOException, HeadlessException {
-//            ownedWindowList = new Vector();
-//
-//            if (windowSerializedDataVersion < 2) {
-//                // Translate old-style focus tracking to new model. For 1.4 and
-//                // later releases, we'll rely on the Window's initial focusable
-//                // Component.
-//                if (focusMgr != null) {
-//                    if (focusMgr.focusOwner != null) {
-//                        KeyboardFocusManager.
-//                            setMostRecentFocusOwner(this, focusMgr.focusOwner);
-//                    }
-//                }
-//
-//                // This field is non-transient and relies on default serialization.
-//                // However, the default value is insufficient, so we need to set
-//                // it explicitly for object data streams prior to 1.4.
-//                focusableWindowState = true;
-//
-//
-//            }
-//
-//        Object keyOrNull;
-//        while(null != (keyOrNull = s.readObject())) {
-//            String key = ((String)keyOrNull).intern();
-//
-//            if (windowListenerK == key) {
-//                addWindowListener((WindowListener)(s.readObject()));
-//            } else if (windowFocusListenerK == key) {
-//                addWindowFocusListener((WindowFocusListener)(s.readObject()));
-//            } else if (windowStateListenerK == key) {
-//                addWindowStateListener((WindowStateListener)(s.readObject()));
-//            } else // skip value for unrecognized key
-//                s.readObject();
-//        }
-//
-//        try {
-//            while (null != (keyOrNull = s.readObject())) {
-//                String key = ((String)keyOrNull).intern();
-//
-//                if (ownedWindowK == key)
-//                    connectOwnedWindow((Window) s.readObject());
-//
-//                else // skip value for unrecognized key
-//                    s.readObject();
-//            }
-//
-//            //read icons
-//            Object obj = s.readObject(); //Throws OptionalDataException
-//                                         //for pre1.6 objects.
-//            icons = new ArrayList<Image>(); //Frame.readObject() assumes
-//                                            //pre1.6 version if icons is null.
-//            while (obj != null) {
-//                if (obj instanceof Image) {
-//                    icons.add((Image)obj);
-//                }
-//                obj = s.readObject();
-//            }
-//        }
-//        catch (OptionalDataException e) {
-//            // 1.1 serialized form
-//            // ownedWindowList will be updated by Frame.readObject
-//        }
-//
-//    }
-//
-//    /**
-//     * Reads the <code>ObjectInputStream</code> and an optional
-//     * list of listeners to receive various events fired by
-//     * the component; also reads a list of
-//     * (possibly <code>null</code>) child windows.
-//     * Unrecognized keys or values will be ignored.
-//     *
-//     * @param s the <code>ObjectInputStream</code> to read
-//     * @exception HeadlessException if
-//     *   <code>GraphicsEnvironment.isHeadless</code> returns
-//     *   <code>true</code>
-//     * @see java.awt.GraphicsEnvironment#isHeadless
-//     * @see #writeObject
-//     */
-//    private void readObject(ObjectInputStream s)
-//      throws ClassNotFoundException, IOException, HeadlessException
-//    {
-//         GraphicsEnvironment.checkHeadless();
-//         initDeserializedWindow();
-//         ObjectInputStream.GetField f = s.readFields();
-//
-//         syncLWRequests = f.get("syncLWRequests", systemSyncLWRequests);
-//         state = f.get("state", 0);
-//         focusableWindowState = f.get("focusableWindowState", true);
-//         windowSerializedDataVersion = f.get("windowSerializedDataVersion", 1);
-//         locationByPlatform = f.get("locationByPlatform", locationByPlatformProp);
-//         // Note: 1.4 (or later) doesn't use focusMgr
-//         focusMgr = (FocusManager)f.get("focusMgr", null);
-//         Dialog.ModalExclusionType et = (Dialog.ModalExclusionType)
-//             f.get("modalExclusionType", Dialog.ModalExclusionType.NO_EXCLUDE);
-//         setModalExclusionType(et); // since 6.0
-//         boolean aot = f.get("alwaysOnTop", false);
-//         if(aot) {
-//             setAlwaysOnTop(aot); // since 1.5; subject to permission check
-//         }
-//         shape = (Shape)f.get("shape", null);
-//         opacity = (Float)f.get("opacity", 1.0f);
-//
-//         this.securityWarningWidth = 0;
-//         this.securityWarningHeight = 0;
-//         this.securityWarningPointX = 2.0;
-//         this.securityWarningPointY = 0.0;
-//         this.securityWarningAlignmentX = RIGHT_ALIGNMENT;
-//         this.securityWarningAlignmentY = TOP_ALIGNMENT;
-//
-//         deserializeResources(s);
-//    }
-//
-//    /*
-//     * --- Accessibility Support ---
-//     *
-//     */
-//
-//    /**
-//     * Gets the AccessibleContext associated with this Window.
-//     * For windows, the AccessibleContext takes the form of an
-//     * AccessibleAWTWindow.
-//     * A new AccessibleAWTWindow instance is created if necessary.
-//     *
-//     * @return an AccessibleAWTWindow that serves as the
-//     *         AccessibleContext of this Window
-//     * @since 1.3
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleAWTWindow();
-//        }
-//        return accessibleContext;
-//    }
+	// /**
+	// * The window serialized data version.
+	// *
+	// * @serial
+	// */
+	// private int windowSerializedDataVersion = 2;
+	//
+	// /**
+	// * Writes default serializable fields to stream. Writes
+	// * a list of serializable <code>WindowListener</code>s and
+	// * <code>WindowFocusListener</code>s as optional data.
+	// * Writes a list of child windows as optional data.
+	// * Writes a list of icon images as optional data
+	// *
+	// * @param s the <code>ObjectOutputStream</code> to write
+	// * @serialData <code>null</code> terminated sequence of
+	// * 0 or more pairs; the pair consists of a <code>String</code>
+	// * and and <code>Object</code>; the <code>String</code>
+	// * indicates the type of object and is one of the following:
+	// * <code>windowListenerK</code> indicating a
+	// * <code>WindowListener</code> object;
+	// * <code>windowFocusWindowK</code> indicating a
+	// * <code>WindowFocusListener</code> object;
+	// * <code>ownedWindowK</code> indicating a child
+	// * <code>Window</code> object
+	// *
+	// * @see AWTEventMulticaster#save(java.io.ObjectOutputStream,
+	// java.lang.String, java.util.EventListener)
+	// * @see Component#windowListenerK
+	// * @see Component#windowFocusListenerK
+	// * @see Component#ownedWindowK
+	// * @see #readObject(ObjectInputStream)
+	// */
+	// private void writeObject(ObjectOutputStream s) throws IOException {
+	// synchronized (this) {
+	// // Update old focusMgr fields so that our object stream can be read
+	// // by previous releases
+	// focusMgr = new FocusManager();
+	// focusMgr.focusRoot = this;
+	// focusMgr.focusOwner = getMostRecentFocusOwner();
+	//
+	// s.defaultWriteObject();
+	//
+	// // Clear fields so that we don't keep extra references around
+	// focusMgr = null;
+	//
+	// AWTEventMulticaster.save(s, windowListenerK, windowListener);
+	// AWTEventMulticaster.save(s, windowFocusListenerK, windowFocusListener);
+	// AWTEventMulticaster.save(s, windowStateListenerK, windowStateListener);
+	// }
+	//
+	// s.writeObject(null);
+	//
+	// synchronized (ownedWindowList) {
+	// for (int i = 0; i < ownedWindowList.size(); i++) {
+	// Window child = ownedWindowList.elementAt(i).get();
+	// if (child != null) {
+	// s.writeObject(ownedWindowK);
+	// s.writeObject(child);
+	// }
+	// }
+	// }
+	// s.writeObject(null);
+	//
+	// //write icon array
+	// if (icons != null) {
+	// for (Image i : icons) {
+	// if (i instanceof Serializable) {
+	// s.writeObject(i);
+	// }
+	// }
+	// }
+	// s.writeObject(null);
+	// }
+	//
+	// //
+	// // Part of deserialization procedure to be called before
+	// // user's code.
+	// //
+	// private void initDeserializedWindow() {
+	// setWarningString();
+	// inputContextLock = new Object();
+	//
+	// // Deserialized Windows are not yet visible.
+	// visible = false;
+	//
+	// weakThis = new WeakReference(this);
+	//
+	// anchor = new Object();
+	// sun.java2d.Disposer.addRecord(anchor, new WindowDisposerRecord(appContext,
+	// this));
+	//
+	// addToWindowList();
+	//
+	// }
+	//
+	// private void deserializeResources(ObjectInputStream s)
+	// throws ClassNotFoundException, IOException, HeadlessException {
+	// ownedWindowList = new Vector();
+	//
+	// if (windowSerializedDataVersion < 2) {
+	// // Translate old-style focus tracking to new model. For 1.4 and
+	// // later releases, we'll rely on the Window's initial focusable
+	// // Component.
+	// if (focusMgr != null) {
+	// if (focusMgr.focusOwner != null) {
+	// KeyboardFocusManager.
+	// setMostRecentFocusOwner(this, focusMgr.focusOwner);
+	// }
+	// }
+	//
+	// // This field is non-transient and relies on default serialization.
+	// // However, the default value is insufficient, so we need to set
+	// // it explicitly for object data streams prior to 1.4.
+	// focusableWindowState = true;
+	//
+	//
+	// }
+	//
+	// Object keyOrNull;
+	// while(null != (keyOrNull = s.readObject())) {
+	// String key = ((String)keyOrNull).intern();
+	//
+	// if (windowListenerK == key) {
+	// addWindowListener((WindowListener)(s.readObject()));
+	// } else if (windowFocusListenerK == key) {
+	// addWindowFocusListener((WindowFocusListener)(s.readObject()));
+	// } else if (windowStateListenerK == key) {
+	// addWindowStateListener((WindowStateListener)(s.readObject()));
+	// } else // skip value for unrecognized key
+	// s.readObject();
+	// }
+	//
+	// try {
+	// while (null != (keyOrNull = s.readObject())) {
+	// String key = ((String)keyOrNull).intern();
+	//
+	// if (ownedWindowK == key)
+	// connectOwnedWindow((Window) s.readObject());
+	//
+	// else // skip value for unrecognized key
+	// s.readObject();
+	// }
+	//
+	// //read icons
+	// Object obj = s.readObject(); //Throws OptionalDataException
+	// //for pre1.6 objects.
+	// icons = new ArrayList<Image>(); //Frame.readObject() assumes
+	// //pre1.6 version if icons is null.
+	// while (obj != null) {
+	// if (obj instanceof Image) {
+	// icons.add((Image)obj);
+	// }
+	// obj = s.readObject();
+	// }
+	// }
+	// catch (OptionalDataException e) {
+	// // 1.1 serialized form
+	// // ownedWindowList will be updated by Frame.readObject
+	// }
+	//
+	// }
+	//
+	// /**
+	// * Reads the <code>ObjectInputStream</code> and an optional
+	// * list of listeners to receive various events fired by
+	// * the component; also reads a list of
+	// * (possibly <code>null</code>) child windows.
+	// * Unrecognized keys or values will be ignored.
+	// *
+	// * @param s the <code>ObjectInputStream</code> to read
+	// * @exception HeadlessException if
+	// * <code>GraphicsEnvironment.isHeadless</code> returns
+	// * <code>true</code>
+	// * @see java.awt.GraphicsEnvironment#isHeadless
+	// * @see #writeObject
+	// */
+	// private void readObject(ObjectInputStream s)
+	// throws ClassNotFoundException, IOException, HeadlessException
+	// {
+	// GraphicsEnvironment.checkHeadless();
+	// initDeserializedWindow();
+	// ObjectInputStream.GetField f = s.readFields();
+	//
+	// syncLWRequests = f.get("syncLWRequests", systemSyncLWRequests);
+	// state = f.get("state", 0);
+	// focusableWindowState = f.get("focusableWindowState", true);
+	// windowSerializedDataVersion = f.get("windowSerializedDataVersion", 1);
+	// locationByPlatform = f.get("locationByPlatform", locationByPlatformProp);
+	// // Note: 1.4 (or later) doesn't use focusMgr
+	// focusMgr = (FocusManager)f.get("focusMgr", null);
+	// Dialog.ModalExclusionType et = (Dialog.ModalExclusionType)
+	// f.get("modalExclusionType", Dialog.ModalExclusionType.NO_EXCLUDE);
+	// setModalExclusionType(et); // since 6.0
+	// boolean aot = f.get("alwaysOnTop", false);
+	// if(aot) {
+	// setAlwaysOnTop(aot); // since 1.5; subject to permission check
+	// }
+	// shape = (Shape)f.get("shape", null);
+	// opacity = (Float)f.get("opacity", 1.0f);
+	//
+	// this.securityWarningWidth = 0;
+	// this.securityWarningHeight = 0;
+	// this.securityWarningPointX = 2.0;
+	// this.securityWarningPointY = 0.0;
+	// this.securityWarningAlignmentX = RIGHT_ALIGNMENT;
+	// this.securityWarningAlignmentY = TOP_ALIGNMENT;
+	//
+	// deserializeResources(s);
+	// }
+	//
+	// /*
+	// * --- Accessibility Support ---
+	// *
+	// */
+	//
+	// /**
+	// * Gets the AccessibleContext associated with this Window.
+	// * For windows, the AccessibleContext takes the form of an
+	// * AccessibleAWTWindow.
+	// * A new AccessibleAWTWindow instance is created if necessary.
+	// *
+	// * @return an AccessibleAWTWindow that serves as the
+	// * AccessibleContext of this Window
+	// * @since 1.3
+	// */
+	// public AccessibleContext getAccessibleContext() {
+	// if (accessibleContext == null) {
+	// accessibleContext = new AccessibleAWTWindow();
+	// }
+	// return accessibleContext;
+	// }
 
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>Window</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to window user-interface elements.
-//     * @since 1.3
-//     */
-//    protected class AccessibleAWTWindow extends AccessibleAWTContainer
-//    {
-//        /*
-//         * JDK 1.3 serialVersionUID
-//         */
-//        //private static final long serialVersionUID = 4215068635060671780L;
-//
-//        /**
-//         * Get the role of this object.
-//         *
-//         * @return an instance of AccessibleRole describing the role of the
-//         * object
-//         * @see javax.accessibility.AccessibleRole
-//         */
-//        public AccessibleRole getAccessibleRole() {
-//            return AccessibleRole.WINDOW;
-//        }
-//
-//        /**
-//         * Get the state of this object.
-//         *
-//         * @return an instance of AccessibleStateSet containing the current
-//         * state set of the object
-//         * @see javax.accessibility.AccessibleState
-//         */
-//        public AccessibleStateSet getAccessibleStateSet() {
-//            AccessibleStateSet states = super.getAccessibleStateSet();
-//            if (getFocusOwner() != null) {
-//                states.add(AccessibleState.ACTIVE);
-//            }
-//            return states;
-//        }
-//
-//    } // inner class AccessibleAWTWindow
+	// /**
+	// * This class implements accessibility support for the
+	// * <code>Window</code> class. It provides an implementation of the
+	// * Java Accessibility API appropriate to window user-interface elements.
+	// * @since 1.3
+	// */
+	// protected class AccessibleAWTWindow extends AccessibleAWTContainer
+	// {
+	// /*
+	// * JDK 1.3 serialVersionUID
+	// */
+	// //private static final long serialVersionUID = 4215068635060671780L;
+	//
+	// /**
+	// * Get the role of this object.
+	// *
+	// * @return an instance of AccessibleRole describing the role of the
+	// * object
+	// * @see javax.accessibility.AccessibleRole
+	// */
+	// public AccessibleRole getAccessibleRole() {
+	// return AccessibleRole.WINDOW;
+	// }
+	//
+	// /**
+	// * Get the state of this object.
+	// *
+	// * @return an instance of AccessibleStateSet containing the current
+	// * state set of the object
+	// * @see javax.accessibility.AccessibleState
+	// */
+	// public AccessibleStateSet getAccessibleStateSet() {
+	// AccessibleStateSet states = super.getAccessibleStateSet();
+	// if (getFocusOwner() != null) {
+	// states.add(AccessibleState.ACTIVE);
+	// }
+	// return states;
+	// }
+	//
+	// } // inner class AccessibleAWTWindow
 
-    /**
-     * This method returns the GraphicsConfiguration used by this Window.
-     * @since 1.3
-     */
-    public GraphicsConfiguration getGraphicsConfiguration() {
-    	/**
-    	 * @j2sNative
-    	 * 
-    	 * return SwingController.graphicsConfiguration;
-    	 * 
-    	 */
-    	{
-//                //NOTE: for multiscreen, this will need to take into account
-//                //which screen the window is on/mostly on instead of returning the
-//                //default or constructor argument config.
-//        synchronized(getTreeLock()) {
-//            if (graphicsConfig == null  && !GraphicsEnvironment.isHeadless()) {
-//                graphicsConfig =
-//                    GraphicsEnvironment. getLocalGraphicsEnvironment().
-//                    getDefaultScreenDevice().
-//                    getDefaultConfiguration();
-//            }
-            return graphicsConfig;
-            }
-    }
+	/**
+	 * This method returns the GraphicsConfiguration used by this Window.
+	 * 
+	 * @since 1.3
+	 */
+	public GraphicsConfiguration getGraphicsConfiguration() {
+		// //NOTE: for multiscreen, this will need to take into account
+		// //which screen the window is on/mostly on instead of returning the
+		// //default or constructor argument config.
+		// synchronized(getTreeLock()) {
+		// if (graphicsConfig == null && !GraphicsEnvironment.isHeadless()) {
+		// graphicsConfig =
+		// GraphicsEnvironment. getLocalGraphicsEnvironment().
+		// getDefaultScreenDevice().
+		// getDefaultConfiguration();
+		// }
+		if (graphicsConfig == null)
+			graphicsConfig = JSToolkit.getGraphicsConfiguration();
+		return graphicsConfig;
+		// }
+	}
 
     /**
      * Reset this Window's GraphicsConfiguration to match its peer.

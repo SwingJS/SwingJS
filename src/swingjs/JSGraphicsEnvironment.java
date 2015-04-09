@@ -4,11 +4,14 @@ import jsjava.util.Locale;
 
 import jsjava.awt.Font;
 import jsjava.awt.Graphics2D;
+import jsjava.awt.GraphicsDevice;
 import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.image.BufferedImage;
 
 
 public class JSGraphicsEnvironment extends GraphicsEnvironment {
+
+	private static GraphicsDevice device;
 
 	/*
 	 * NOTE: This class is called from jsjava.awt.GraphicsEnvironment
@@ -41,6 +44,13 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 	public String[] getAvailableFontFamilyNames(Locale l) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public GraphicsDevice getDefaultScreenDevice() {
+		if (device == null)
+			device = (GraphicsDevice) JSToolkit.getInstance("swingjs.JSScreenDevice"); 
+		return device;
 	}
 
 }

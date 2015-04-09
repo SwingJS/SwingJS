@@ -31,6 +31,8 @@ import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
+
+import swingjs.JSToolkit;
 import jsjava.util.ResourceBundle;
 //import java.util.WeakHashMap;
 
@@ -826,59 +828,55 @@ public abstract class Toolkit {
      */
     public static synchronized Toolkit getDefaultToolkit() {
         if (toolkit == null) {
-            //try {
-                // We disable the JIT during toolkit initialization.  This
-                // tends to touch lots of classes that aren't needed again
-                // later and therefore JITing is counter-productiive.
-//                java.lang.Compiler.disable();
-
-//                jsjava.security.AccessController.doPrivileged(
-//                        new jsjava.security.PrivilegedAction() {
-//							public Object run() {
-								String nm = null;
-								Class cls = null;
-								try {
-									/**
-									 * @j2sNative
-									 * 
-									 *            nm = "swingjs.JSToolkit";
-									 */
-									{
-										nm = System.getProperty("awt.toolkit",
-												"sun.awt.X11.XToolkit");
-									}
-									try {
-										cls = Class.forName(nm);
-									} catch (ClassNotFoundException e) {
-										ClassLoader cl = ClassLoader.getSystemClassLoader();
-										if (cl != null) {
-											try {
-												cls = cl.loadClass(nm);
-											} catch (ClassNotFoundException ee) {
-												throw new AWTError("Toolkit not found: " + nm);
-											}
-										}
-									}
-									if (cls != null) {
-										toolkit = (Toolkit) cls.newInstance();
-										// if (GraphicsEnvironment.isHeadless()) {
-										// toolkit = new HeadlessToolkit(toolkit);
-										// }
-									}
-								} catch (InstantiationException e) {
-									throw new AWTError("Could not instantiate Toolkit: " + nm);
-								} catch (IllegalAccessException e) {
-									throw new AWTError("Could not access Toolkit: " + nm);
-								}
-								return null;
-							}
+        	return new JSToolkit();
+//            //try {
+//                // We disable the JIT during toolkit initialization.  This
+//                // tends to touch lots of classes that aren't needed again
+//                // later and therefore JITing is counter-productiive.
+////                java.lang.Compiler.disable();
+//
+////                jsjava.security.AccessController.doPrivileged(
+////                        new jsjava.security.PrivilegedAction() {
+////							public Object run() {
+//								String nm = null;
+//								Class cls = null;
+//								try {
+//									{
+//										nm = System.getProperty("awt.toolkit",
+//												"sun.awt.X11.XToolkit");
+//									}
+//									try {
+//										cls = Class.forName(nm);
+//									} catch (ClassNotFoundException e) {
+//										ClassLoader cl = ClassLoader.getSystemClassLoader();
+//										if (cl != null) {
+//											try {
+//												cls = cl.loadClass(nm);
+//											} catch (ClassNotFoundException ee) {
+//												throw new AWTError("Toolkit not found: " + nm);
+//											}
+//										}
+//									}
+//									if (cls != null) {
+//										toolkit = (Toolkit) cls.newInstance();
+//										// if (GraphicsEnvironment.isHeadless()) {
+//										// toolkit = new HeadlessToolkit(toolkit);
+//										// }
+//									}
+//								} catch (InstantiationException e) {
+//									throw new AWTError("Could not instantiate Toolkit: " + nm);
+//								} catch (IllegalAccessException e) {
+//									throw new AWTError("Could not access Toolkit: " + nm);
+//								}
+//								return null;
+//							}
 //                });
 ////                loadAssistiveTechnologies();
 //            } finally {
 //                // Make sure to always re-enable the JIT.
 ////              java.lang.Compiler.enable();
 //            }
-//        }
+        }
         return toolkit;
     }
 

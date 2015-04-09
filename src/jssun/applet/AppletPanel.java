@@ -25,6 +25,7 @@
 
 package jssun.applet;
 
+import swingjs.JSToolkit;
 import jsjava.lang.Thread;
 //import java.awt.KeyboardFocusManager;
 //import java.io.File;
@@ -725,24 +726,9 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 			throw new InstantiationException(
 					"\"code\" must be specified.");
 		}
-		// if (code == null) {
-		// String msg = "nocode";
-		// status = APPLET_ERROR;
-		// showAppletStatus(msg);
-		// showAppletLog(msg);
-		// repaint();
-		// }
-		// if (code != null) {
 
-		/**
-		 * @j2sNative
-		 * 
-		 *            this.applet = swingjs.api.Interface.getInterface(code);
-		 * 
-		 */
-		{
-			// applet = (Applet) loader.loadCode(code).newInstance();
-		}
+		applet = (Applet) JSToolkit.getInstance(code);
+
 		doInit = true;
 		// } else {
 		// // serName is not null;
