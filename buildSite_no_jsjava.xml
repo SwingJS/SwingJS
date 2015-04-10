@@ -65,7 +65,6 @@
         <include name="**/*.js" />
       </fileset>
     </copy>
-
   	
     <echo>...adding to swingjs/j2s jssun and swingjs JavaScript files from bin</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
@@ -77,6 +76,13 @@
       </fileset>
     </copy>
    	
+  	<echo>...adding customized js from JSmol</echo>
+   	<copy todir="site/swingjs/j2s"  overwrite="true" >
+      <fileset dir="jsmol/bin">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+
     <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
   	<copy todir="site/swingjs/j2s" overwrite="true" >
       <fileset dir="j2shack">
@@ -86,7 +92,7 @@
    	
    	<echo>Fixing "jsjava" references</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
-  	<replace dir="site/swingjs/" includes="**/*.js" token="J.util" value="javajs/util" />
+  	<replace dir="site/swingjs/" includes="**/*.js" token="J.util" value="JU" />
 
   		
   	<echo>...adding to swingjs/j2s property files from src (for CalendarData)</echo>
@@ -139,6 +145,10 @@
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
        		../js/JSmolJavaExt.js
+            javax/swing/JComponent.js
+            swingjs/JSAppletPanel.js
+            java/awt/Container.js
+            java/awt/Component.js
             java/util/Locale.js
             java/util/ResourceBundle.js
             javajs/util/Rdr.js
@@ -453,13 +463,6 @@
             javajs/util/M4.js
             javajs/util/T3.js
             swingjs/JSToolkit.js
-            javax/swing/JComponent.js
-            swingjs/JSAppletPanel.js
-   	        swingjs/test/TanSugd3S.js
-            java/awt/BasicStroke.js
-            java/awt/Stroke.js
-            java/awt/Container.js
-            java/awt/Component.js
     	"/>
     </antcall>
     
@@ -469,7 +472,8 @@
    	core load and make them easier to debug
    	
             javax/swing/ButtonGroup.js
-   	
+            java/awt/BasicStroke.js
+            java/awt/Stroke.js   	
    	minimize additional JSmol JavaScript -->
 
   </target>

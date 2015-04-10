@@ -1,29 +1,29 @@
 package org.uwi;
 
-import jsjava.awt.AWTEvent;
-import jsjava.awt.BasicStroke;
-import jsjava.awt.BorderLayout;
-import jsjava.awt.Color;
-import jsjava.awt.Container;
-import jsjava.awt.Event;
-import jsjava.awt.event.WindowEvent;
-import jsjava.awt.event.WindowListener;
-import jsjava.awt.Font;
-import jsjava.awt.Frame;
-import jsjava.awt.Graphics;
-import jsjava.awt.Graphics2D;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
-import jsjava.awt.Stroke;
-import jsjava.awt.event.ItemEvent;
-import jsjava.awt.event.ItemListener;
-import jsjava.awt.event.MouseEvent;
-import jsjava.awt.event.MouseListener;
-import jsjavax.swing.ButtonGroup;
-import jsjavax.swing.JApplet;
-import jsjavax.swing.JPanel;
-import jsjavax.swing.JRadioButton;
-import jsjavax.swing.JTextField;
+import java.awt.AWTEvent;
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Event;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.ButtonGroup;
+import javax.swing.JApplet;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 public class TanSugd3S extends JApplet implements WindowListener {
 

@@ -3312,9 +3312,9 @@ if (self.Clazz && Clazz.isClassDefined) {
 /**
  * Expand the shortened list of class names.
  * For example:
- * J.util.Log, $.Display, $.Decorations
+ * JU.Log, $.Display, $.Decorations
  * will be expanded to 
- * J.util.Log, J.util.Display, J.util.Decorations
+ * JU.Log, JU.Display, JU.Decorations
  * where "$." stands for the previous class name's package.
  *
  * This method will be used to unwrap the required/optional classes list and 
@@ -4115,9 +4115,9 @@ var tryToLoadNext = function (file, fSuccess) {
     //System.out.println("tryToLoadNext firing " + _Loader._classCountOK + "/" + _Loader._classCountPending + " "   + fSuccess.toString() + " " + Clazz.getStackTrace())
 	  fSuccess();
   } else if (_Loader._classCountPending) {
-    alert(Clazz.getStackTrace(-1));
     for (var name in _Loader._classPending) {
       var n = findNode(name);
+      System.out.println("class left pending " + name + " " + n);
       if (n) {
         updateNode(n);
         break;
@@ -4129,12 +4129,12 @@ var tryToLoadNext = function (file, fSuccess) {
   // + _Loader._classCountOK + "/" + _Loader._classCountPending + " " 
    //+ _Loader.onGlobalLoaded.toString() + " " + Clazz.getStackTrace()
  //  )
-  if (_Loader._checkLoad) {
-    System.out.println("I think I'm done: SAEM call count: " + SAEMid);
-    Clazz.showDuplicates(true);
+    if (_Loader._checkLoad) {
+      System.out.println("I think I'm done: SAEM call count: " + SAEMid);
+      Clazz.showDuplicates(true);
+    }
   }
 	_Loader.onGlobalLoaded();
-}
 };
 
 
