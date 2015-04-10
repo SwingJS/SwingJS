@@ -34,7 +34,7 @@ public interface HTMLCanvasContext2D {
 
 	void _setFillStyle(String s);
 
-	void _strokeStyle(String s);
+	void _setStrokeStyle(String s);
 
 	void fillRect(double x, double y, double width, double height);
 

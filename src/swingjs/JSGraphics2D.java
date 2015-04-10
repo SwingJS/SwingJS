@@ -207,8 +207,10 @@ public class JSGraphics2D extends Graphics2D  {
 
 
 	boolean isShifted;// private, but only JavaScript
+	private Color bgColor;
 	
 	public void background(Color bgcolor) {
+		bgColor = bgcolor;
 		if (bgcolor == null) {
 			/*
 			 * 
@@ -242,20 +244,34 @@ public class JSGraphics2D extends Graphics2D  {
 
 	public void setGraphicsColor(Color c) {
 		String s = toCSSString(c);
+		/**
+		 * @j2sNative
+		 *  this.ctx.fillStyle = s;
+		 *  this.ctx.strokeStyle = s;
+		 */
+		{
 		ctx._setFillStyle(s);
-		ctx._strokeStyle(s);
+		ctx._setStrokeStyle(s);
+		}
 	}
 
 	private String toCSSString(Color c) {
-		// TODO Auto-generated method stub
-		return null;
+	  String s = "000000" + Integer.toHexString(c.getRGB());
+	  return "#" + s.substring(s.length() - 6);
 	}
 
 	public void setFont(Font font) {
 		String s = getInfo(font);
 		int pt = s.indexOf(" ");
 		s = s.substring(0, pt) + "px" + s.substring(pt);
+		/**
+		 * @j2sNative
+		 * 
+		 * this.ctx.font = s;
+		 */
+		{
 		ctx._setFont(s);
+		}
 	}
 
 	private String getInfo(Font font) {
@@ -263,7 +279,14 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	public void setStrokeBold(boolean tf) {
+		/**
+		 * @j2sNative
+		 * 
+		 * this.ctx.lineWidth = (tf ? 2. : 1.);
+		 */
+		{
 		  ctx._setLineWidth(tf ? 2. : 1.);
+		}
 	}
 
 	public void setWindowParameters(int width, int height) {
@@ -399,8 +422,7 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void scale(double sx, double sy) {
-		// TODO Auto-generated method stub
-		
+		ctx.scale(sx, sy);
 	}
 
 	@Override
@@ -435,14 +457,12 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void setBackground(Color color) {
-		// TODO Auto-generated method stub
-		
+		background(color);
 	}
 
 	@Override
 	public Color getBackground() {
-		// TODO Auto-generated method stub
-		return null;
+		return bgColor;
 	}
 
 	@Override
@@ -483,8 +503,7 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void setColor(Color c) {
-		// TODO Auto-generated method stub
-		
+		setGraphicsColor(c);
 	}
 
 	@Override

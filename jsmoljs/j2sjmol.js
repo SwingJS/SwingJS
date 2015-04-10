@@ -43,6 +43,7 @@
  
  // J2S class changes:
 
+ // BH 4/10/2015 8:23:05 AM adding Int32Array.prototype.clone and Float64.prototype.clone
  // BH 4/5/2015 8:12:57 AM refactoring j2slib (this file) to make private functions really private using var
  // BH 4/3/2015 6:14:34 AM adding anonymous local "ClazzLoader" (Clazz._Loader) --> "_Loader"
  // BH 4/3/2015 6:14:34 AM adding Clazz._Loader._classPending, Clazz._Loader._classCount
@@ -2183,10 +2184,23 @@ Clazz.doubleToChar = Clazz.floatToChar;
 //
 //
 
+var getArrayClone = function(nbits) {
+  return function() {
+    var me = this;
+    var n = me.length;
+    var a = (nbits == 32 ? new Int32Array(n) : new Float64Array(n));
+    for (var i = n; --i >= 0;)
+      a[i] = me[i];
+    return a; 
+  }
+}
+
 if (self.Int32Array && self.Int32Array != Array) {
 	Clazz.haveInt32 = true;
 	if (!Int32Array.prototype.sort)
 		Int32Array.prototype.sort = Array.prototype.sort
+	if (!Int32Array.prototype.clone)
+		Int32Array.prototype.clone = getArrayClone(32);
 } else {
 	Int32Array = function(n) {
 		if (!n) n = 0;
@@ -2197,6 +2211,7 @@ if (self.Int32Array && self.Int32Array != Array) {
 	}
 	Clazz.haveInt32 = false;
 	Int32Array.prototype.sort = Array.prototype.sort
+	Int32Array.prototype.clone = getArrayClone(32);
 	Int32Array.prototype.int32Fake = function(){};
 }
 
@@ -2204,6 +2219,8 @@ if (self.Float64Array && self.Float64Array != Array) {
 	Clazz.haveFloat64 = true;
 	if (!Float64Array.prototype.sort)
 		Float64Array.prototype.sort = Array.prototype.sort
+	if (!Float64Array.prototype.clone)
+		Float64Array.prototype.clone = getArrayClone(64);
 } else {
 	Clazz.haveFloat64 = false;
 	Float64Array = function(n) {
@@ -2213,6 +2230,7 @@ if (self.Float64Array && self.Float64Array != Array) {
 		return b;
 	};
 	Float64Array.prototype.sort = Array.prototype.sort
+	Float64Array.prototype.clone = getArrayClone(64);
 	Float64Array.prototype.float64Fake = function() {}; // "present"
 	Float64Array.prototype.toString = function() {return "[object Float64Array]"};
 // Darn! Mozilla makes this a double, not a float. It's 64-bit.
