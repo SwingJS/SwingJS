@@ -116,13 +116,16 @@ public abstract class Graphics {
     protected Graphics() {
     }
 
+    
     /**
+     * 
+     * SwingJS name change from "create" to avoid SAEM colision with Graphics.create(clipx,...)
      * Creates a new <code>Graphics</code> object that is
      * a copy of this <code>Graphics</code> object.
      * @return     a new graphics context that is a copy of
      *                       this graphics context.
      */
-    public abstract Graphics create();
+    public abstract Graphics createSwingJS();
 
     /**
      * Creates a new <code>Graphics</code> object based on this
@@ -159,7 +162,7 @@ public abstract class Graphics {
      * @see        java.awt.Graphics#clipRect
      */
     public Graphics create(int x, int y, int width, int height) {
-        Graphics g = create();
+        Graphics g = createSwingJS();
         if (g == null) return null;
         g.translate(x, y);
         g.clipRect(0, 0, width, height);

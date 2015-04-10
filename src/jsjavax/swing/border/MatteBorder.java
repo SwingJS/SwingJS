@@ -139,7 +139,7 @@ public class MatteBorder extends EmptyBorder
             Graphics cg;
 
             // Paint top matte edge
-            cg = g.create();
+            cg = g.createSwingJS();
             cg.setClip(0, 0, width, insets.top);
             for (ypos = 0; insets.top - ypos > 0; ypos += tileH) {
                 for (xpos = 0; width - xpos > 0; xpos += tileW) {
@@ -149,7 +149,7 @@ public class MatteBorder extends EmptyBorder
             cg.dispose();
 
             // Paint left matte edge
-            cg = g.create();
+            cg = g.createSwingJS();
             cg.setClip(0, insets.top, insets.left, height - insets.top);
             starty = insets.top - (insets.top%tileH);
             startx = 0;
@@ -161,7 +161,7 @@ public class MatteBorder extends EmptyBorder
             cg.dispose();
 
             // Paint bottom matte edge
-            cg = g.create();
+            cg = g.createSwingJS();
             cg.setClip(insets.left, height - insets.bottom, width - insets.left, insets.bottom);
             starty = (height - insets.bottom) - ((height - insets.bottom)%tileH);
             startx = insets.left - (insets.left%tileW);
@@ -173,7 +173,7 @@ public class MatteBorder extends EmptyBorder
             cg.dispose();
 
             // Paint right matte edge
-            cg = g.create();
+            cg = g.createSwingJS();
             cg.setClip(width - insets.right, insets.top, insets.right, height - insets.top - insets.bottom);
             starty = insets.top - (insets.top%tileH);
             startx = width - insets.right - ((width - insets.right)%tileW);

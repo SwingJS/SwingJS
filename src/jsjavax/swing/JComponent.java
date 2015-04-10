@@ -765,153 +765,147 @@ public abstract class JComponent extends Container
      * @see #paint
      * @see ComponentUI
      */
-    @SuppressWarnings("null")
     protected void paintComponent(Graphics g) {
-        if (ui != null) {
-            Graphics scratchGraphics = (g == null) ? null : g.create();
-            try {
-                ui.update(scratchGraphics, this);
-            }
-            finally {
-                scratchGraphics.dispose();
-            }
-        }
-    }
-
-    /**
-     * Paints this component's children.
-     * If <code>shouldUseBuffer</code> is true,
-     * no component ancestor has a buffer and
-     * the component children can use a buffer if they have one.
-     * Otherwise, one ancestor has a buffer currently in use and children
-     * should not use a buffer to paint.
-     * @param g  the <code>Graphics</code> context in which to paint
-     * @see #paint
-     * @see jsjava.awt.Container#paint
-     */
-    protected void paintChildren(Graphics g) {
-//        boolean isJComponent;
-//        Graphics sg = g;
-//
-//        synchronized(getTreeLock()) {
-//            int i = getComponentCount() - 1;
-//            if (i < 0) {
-//                return;
+//        if (ui != null) {
+//            Graphics scratchGraphics = (g == null) ? null : g.createSwingJS();
+//            try {
+//                ui.update(scratchGraphics, this);
 //            }
-//            // If we are only to paint to a specific child, determine
-//            // its index.
-//            if (paintingChild != null &&
-//                (paintingChild instanceof JComponent) &&
-//                ((JComponent)paintingChild).isOpaque()) {
-//                for (; i >= 0; i--) {
-//                    if (getComponent(i) == paintingChild){
-//                        break;
-//                    }
-//                }
+//            finally {
+//                scratchGraphics.dispose();
 //            }
-//            Rectangle tmpRect = fetchRectangle();
-//            boolean checkSiblings = (!isOptimizedDrawingEnabled() &&
-//                                     checkIfChildObscuredBySibling());
-//            Rectangle clipBounds = null;
-//            if (checkSiblings) {
-//                clipBounds = sg.getClipBounds();
-//                if (clipBounds == null) {
-//                    clipBounds = new Rectangle(0, 0, getWidth(),
-//                                               getHeight());
-//                }
-//            }
-//            boolean printing = getFlag(IS_PRINTING);
-//            for (; i >= 0 ; i--) {
-//                Component comp = getComponent(i);
-//                isJComponent = (comp instanceof JComponent);
-//                if (comp != null &&
-//                    (isJComponent || isLightweightComponent(comp)) &&
-//                    (comp.isVisible() == true)) {
-//                    Rectangle cr;
-//
-//                    cr = comp.getBounds(tmpRect);
-//
-//                    boolean hitClip = g.hitClip(cr.x, cr.y, cr.width,
-//                                                cr.height);
-//
-//                    if (hitClip) {
-//                        if (checkSiblings && i > 0) {
-//                            int x = cr.x;
-//                            int y = cr.y;
-//                            int width = cr.width;
-//                            int height = cr.height;
-//                            SwingUtilities.computeIntersection
-//                                (clipBounds.x, clipBounds.y,
-//                                 clipBounds.width, clipBounds.height, cr);
-//
-//                            if(getObscuredState(i, cr.x, cr.y, cr.width,
-//                                          cr.height) == COMPLETELY_OBSCURED) {
-//                                continue;
-//                            }
-//                            cr.x = x;
-//                            cr.y = y;
-//                            cr.width = width;
-//                            cr.height = height;
-//                        }
-//                        Graphics cg = sg.create(cr.x, cr.y, cr.width,
-//                                                cr.height);
-//                        cg.setColor(comp.getForeground());
-//                        cg.setFont(comp.getFont());
-//                        boolean shouldSetFlagBack = false;
-//                        try {
-//                            if(isJComponent) {
-//                                if(getFlag(ANCESTOR_USING_BUFFER)) {
-//                                    ((JComponent)comp).setFlag(
-//                                                 ANCESTOR_USING_BUFFER,true);
-//                                    shouldSetFlagBack = true;
-//                                }
-//                                if(getFlag(IS_PAINTING_TILE)) {
-//                                    ((JComponent)comp).setFlag(
-//                                                 IS_PAINTING_TILE,true);
-//                                    shouldSetFlagBack = true;
-//                                }
-//                                if(!printing) {
-//                                    ((JComponent)comp).paint(cg);
-//                                }
-//                                else {
-//                                    if (!getFlag(IS_PRINTING_ALL)) {
-//                                        comp.print(cg);
-//                                    }
-//                                    else {
-//                                        comp.printAll(cg);
-//                                    }
-//                                }
-//                            } else {
-//                                if (!printing) {
-//                                    comp.paint(cg);
-//                                }
-//                                else {
-//                                    if (!getFlag(IS_PRINTING_ALL)) {
-//                                        comp.print(cg);
-//                                    }
-//                                    else {
-//                                        comp.printAll(cg);
-//                                    }
-//                                }
-//                            }
-//                        } finally {
-//                            cg.dispose();
-//                            if(shouldSetFlagBack) {
-//                                ((JComponent)comp).setFlag(
-//                                             ANCESTOR_USING_BUFFER,false);
-//                                ((JComponent)comp).setFlag(
-//                                             IS_PAINTING_TILE,false);
-//                            }
-//                        }
-//                    }
-//                }
-//
-//            }
-//            recycleRectangle(tmpRect);
 //        }
     }
 
-    /**
+	/**
+	 * Paints this component's children. If <code>shouldUseBuffer</code> is true,
+	 * no component ancestor has a buffer and the component children can use a
+	 * buffer if they have one. Otherwise, one ancestor has a buffer currently in
+	 * use and children should not use a buffer to paint.
+	 * 
+	 * @param g
+	 *          the <code>Graphics</code> context in which to paint
+	 * @see #paint
+	 * @see jsjava.awt.Container#paint
+	 */
+	protected void paintChildren(Graphics g) {
+		boolean isJComponent;
+		Graphics sg = g;
+
+		synchronized (getTreeLock()) {
+			int i = getComponentCount() - 1;
+			if (i < 0) {
+				return;
+			}
+			// If we are only to paint to a specific child, determine
+			// its index.
+			if (paintingChild != null && (paintingChild instanceof JComponent)
+			// &&
+			// ((JComponent)paintingChild).isOpaque()
+			) {
+				for (; i >= 0; i--) {
+					if (getComponent(i) == paintingChild) {
+						break;
+					}
+				}
+			}
+			Rectangle tmpRect = fetchRectangle();
+			// boolean checkSiblings = (!isOptimizedDrawingEnabled() &&
+			// checkIfChildObscuredBySibling());
+			// Rectangle clipBounds = null;
+			// if (checkSiblings) {
+			// clipBounds = sg.getClipBounds();
+			// if (clipBounds == null) {
+			// clipBounds = new Rectangle(0, 0, getWidth(),
+			// getHeight());
+			// }
+			// }
+			// boolean printing = getFlag(IS_PRINTING);
+			for (; i >= 0; i--) {
+				Component comp = getComponent(i);
+				isJComponent = (comp instanceof JComponent);
+				//SwingJS here is where we need to differentiate between types
+				// and probably not do this.
+				// SwingJS TODO -- allow JSpecView-like layer for writing over buttons
+				if (comp != null && (isJComponent || isLightweightComponent(comp)) &&
+						isSwingJSPaintable(comp) && (comp.isVisible() == true)) {
+					Rectangle cr;
+					cr = comp.getBounds(tmpRect);
+//
+//					boolean hitClip = g.hitClip(cr.x, cr.y, cr.width, cr.height);
+//
+//					if (hitClip) {
+//						if (checkSiblings && i > 0) {
+//							int x = cr.x;
+//							int y = cr.y;
+//							int width = cr.width;
+//							int height = cr.height;
+//							SwingUtilities.computeIntersection(clipBounds.x, clipBounds.y,
+//									clipBounds.width, clipBounds.height, cr);
+//
+//							if (getObscuredState(i, cr.x, cr.y, cr.width, cr.height) == COMPLETELY_OBSCURED) {
+//								continue;
+//							}
+//							cr.x = x;
+//							cr.y = y;
+//							cr.width = width;
+//							cr.height = height;
+//						}
+						Graphics cg = sg.create(cr.x, cr.y, cr.width, cr.height);
+						cg.setColor(comp.getForeground());
+						cg.setFont(comp.getFont());
+						boolean shouldSetFlagBack = false;
+						try {
+							if (isJComponent) {
+//								if (getFlag(ANCESTOR_USING_BUFFER)) {
+//									((JComponent) comp).setFlag(ANCESTOR_USING_BUFFER, true);
+//									shouldSetFlagBack = true;
+//								}
+//								if (getFlag(IS_PAINTING_TILE)) {
+//									((JComponent) comp).setFlag(IS_PAINTING_TILE, true);
+//									shouldSetFlagBack = true;
+//								}
+//								if (!printing) {
+									((JComponent) comp).paint(cg);
+//								} else {
+//									if (!getFlag(IS_PRINTING_ALL)) {
+//										comp.print(cg);
+//									} else {
+//										comp.printAll(cg);
+//									}
+//								}
+							} else { // not JComponent -- we might allow these
+//								if (!printing) {
+									comp.paint(cg);
+//								} else {
+//									if (!getFlag(IS_PRINTING_ALL)) {
+//										comp.print(cg);
+//									} else {
+//										comp.printAll(cg);
+//									}
+//								}
+							}
+						} finally {
+							cg.dispose();
+							if (shouldSetFlagBack) {
+								((JComponent) comp).setFlag(ANCESTOR_USING_BUFFER, false);
+								((JComponent) comp).setFlag(IS_PAINTING_TILE, false);
+							}
+						}
+					}
+//				}
+
+			}
+			recycleRectangle(tmpRect);
+		}
+	}
+
+    private boolean isSwingJSPaintable(Component c) {
+    	//SwingJS FOR NOW NOT SUPPORTING print(g) in a button.  
+    	return (c instanceof JPanel);
+    			}
+
+		/**
      * Paints the component's border.
      * <p>
      * If you override this in a subclass you should not make permanent
@@ -982,9 +976,10 @@ public abstract class JComponent extends Container
         }
 
         Graphics componentGraphics = getComponentGraphics(g);
-        Graphics co = componentGraphics.create();
+        Graphics co = componentGraphics.createSwingJS();
         try {
 //            RepaintManager repaintManager = RepaintManager.currentManager(this);
+        	//SwingJS TODO: Here is where we need JSToolkit
             Rectangle clipRect = co.getClipBounds();
             int clipX;
             int clipY;
@@ -1032,7 +1027,7 @@ public abstract class JComponent extends Container
                     co.setClip(clipX, clipY, clipW, clipH);
                 }
 
-                if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
+//                if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
   //                  if (!printing) {
                         paintComponent(co);
                         paintBorder(co);
@@ -1041,7 +1036,7 @@ public abstract class JComponent extends Container
  //                       printComponent(co);
  //                       printBorder(co);
  //                   }
-                }
+ //               }
  //               if (!printing) {
                     paintChildren(co);
  //               }

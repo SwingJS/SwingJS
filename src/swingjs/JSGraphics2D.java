@@ -376,8 +376,7 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void translate(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		ctx.translate(x, y);
 	}
 
 	@Override
@@ -465,8 +464,15 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	@Override
-	public Graphics create() {
+	public Graphics createSwingJS() {
+		ctx.save();
 		return this;// just testing here. It's supposed to be a clone, but...
+	}
+
+	@Override
+	public void dispose() {
+		// we don't really dispose of this, as create doesn't really create a clone
+		ctx.restore();
 	}
 
 	@Override
@@ -620,9 +626,4 @@ public class JSGraphics2D extends Graphics2D  {
 		return false;
 	}
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
 }
