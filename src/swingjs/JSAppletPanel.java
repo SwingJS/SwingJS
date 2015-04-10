@@ -14,8 +14,10 @@ import swingjs.api.JSInterface;
 import javajs.util.PT;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
+import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
+import jsjavax.swing.JApplet;
 import jssun.applet.AppletPanel;
 //import org.jmol.api.Interface;
 //import org.jmol.util.Logger;
@@ -396,16 +398,12 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		
 	}
 
-	public void paintme() {	
-		paint(null);
-		
-	}
-	
 	@Override
 	public void paint(Graphics g) {
 		// Note that this "Panel" is never painted.
 		// This class simply maintains valuable information for applet loading.
-		applet.paint(setGraphics(g));
+		// Here we go straight to the contentPane and paint that.	
+		(applet instanceof JApplet ? ((JApplet) applet).getContentPane(): applet).paint(setGraphics(g));
 	}
 
 	/**

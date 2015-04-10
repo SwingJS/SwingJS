@@ -53,6 +53,7 @@ import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
 import jsjava.awt.RenderingHints;
@@ -456,7 +457,7 @@ public abstract class SunToolkit extends Toolkit
      */
     public static AppContext targetToAppContext(Object target) {
         if (target == null 
-        		|| GraphicsEnvironment.isHeadless()
+//        		|| GraphicsEnvironment.isHeadless()
         		) {
             return null;
         }

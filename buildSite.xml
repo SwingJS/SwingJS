@@ -139,18 +139,15 @@
             javajs/util/Encoding.js
             jsjava/util/MissingResourceException.js
             jsjava/awt/geom/Point2D.js
-            swingjs/JSAppletPanel.js
             jssun/applet/AppletPanel.js
             jssun/misc/MessageUtils.js
             jsjava/awt/Dimension.js
             jsjava/awt/geom/Dimension2D.js
             jsjava/awt/Panel.js
-            jsjava/awt/Container.js
             java/util/ArrayList.js
             java/util/AbstractList.js
             java/util/AbstractCollection.js
             jsjava/awt/event/AWTEventListener.js
-            jsjava/awt/Component.js
             jsjava/awt/ComponentOrientation.js
             jsjava/awt/AWTEvent.js
             jsjava/security/AccessController.js
@@ -242,7 +239,6 @@
             jsjava/awt/GraphicsEnvironment.js
             jsjava/awt/event/WindowEvent.js
             jsjavax/swing/Action.js
-            jsjavax/swing/JComponent.js
             jsjavax/swing/SwingUtilities.js
             jsjava/awt/Frame.js
             jsjava/awt/IllegalComponentStateException.js
@@ -451,9 +447,13 @@
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
+            jsjavax/swing/JComponent.js
+            swingjs/JSAppletPanel.js
    	        swingjs/test/TanSugd3S.js
             jsjava/awt/BasicStroke.js
             jsjava/awt/Stroke.js
+            jsjava/awt/Container.js
+            jsjava/awt/Component.js
             jsjavax/swing/ButtonGroup.js
    	
    	minimize additional JSmol JavaScript -->

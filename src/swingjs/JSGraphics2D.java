@@ -259,8 +259,7 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	private String getInfo(Font font) {
-		// TODO Auto-generated method stub
-		return null;
+		return font.getSize() + " " + font.getFamily() + " " + font.getSwingjsStyleName();
 	}
 
 	public void setStrokeBold(boolean tf) {
@@ -467,8 +466,7 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public Graphics create() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;// just testing here. It's supposed to be a clone, but...
 	}
 
 	@Override

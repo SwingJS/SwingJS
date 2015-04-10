@@ -1015,7 +1015,7 @@ public abstract class JComponent extends Container
             }
 
 //            int bw,bh;
-            boolean printing = getFlag(IS_PRINTING);
+//            boolean printing = getFlag(IS_PRINTING);
 //            if(!printing && repaintManager.isDoubleBufferingEnabled() &&
 //               !getFlag(ANCESTOR_USING_BUFFER) && isDoubleBuffered()) {
 //                repaintManager.beginPaint();
@@ -1033,21 +1033,21 @@ public abstract class JComponent extends Container
                 }
 
                 if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
-                    if (!printing) {
+  //                  if (!printing) {
                         paintComponent(co);
                         paintBorder(co);
-                    }
-                    else {
-                        printComponent(co);
-                        printBorder(co);
-                    }
+ //                   }
+ //                   else {
+ //                       printComponent(co);
+ //                       printBorder(co);
+ //                   }
                 }
-                if (!printing) {
+ //               if (!printing) {
                     paintChildren(co);
-                }
-                else {
-                    printChildren(co);
-                }
+ //               }
+ //               else {
+ //                   printChildren(co);
+ //               }
 //            }
         } finally {
             co.dispose();

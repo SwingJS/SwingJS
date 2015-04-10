@@ -1629,20 +1629,23 @@ public class Font
     // NOTE: This method may be called by privileged threads.
     //       DO NOT INVOKE CLIENT CODE ON THIS THREAD!
     public String toString() {
-        String  strStyle;
-
-        if (isBold()) {
-            strStyle = isItalic() ? "bolditalic" : "bold";
-        } else {
-            strStyle = isItalic() ? "italic" : "plain";
-        }
-
         return getClass().getName() + "[family=" + getFamily() + ",name=" + name + ",style=" +
-            strStyle + ",size=" + size + "]";
+            getSwingjsStyleName() + ",size=" + size + "]";
     } // toString()
 
+    
 
-//    /** Serialization support.  A <code>readObject</code>
+	/**
+	 * Added for SwingJS; see swingjs.JSgraphics2D
+	 * 
+	 * @return
+	 */
+	public String getSwingjsStyleName() {
+		return (isBold() ? (isItalic() ? "bolditalic" : "bold") 
+					: isItalic() ? "italic" : "plain");
+  }
+
+		//    /** Serialization support.  A <code>readObject</code>
 //     *  method is neccessary because the constructor creates
 //     *  the font's peer, and we can't serialize the peer.
 //     *  Similarly the computed font "family" may be different

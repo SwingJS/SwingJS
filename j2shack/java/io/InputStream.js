@@ -7,11 +7,10 @@ if (b == null) {
 throw  new NullPointerException ();
 }
  
-    	  if (arguments.length == 1) {
-    	    off = 0;
-    	    len = b.length;
-    	  }
- alert(len)
+if (arguments.length == 1) {
+  off = 0;
+  len = b.length;
+}
 if (off < 0 || len < 0 || len > b.length - off) {
 throw  new IndexOutOfBoundsException ();
 } else if (len == 0) {

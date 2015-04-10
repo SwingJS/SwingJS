@@ -461,11 +461,16 @@
 			applet._appletPanel.setDisplay(applet._canvas);
 		}
 		applet._appletPanel.setScreenDimension(w, h);
-    var paint = (applet._appletPanel.paint || applet._appletPanel.update);
+    var f = function(){
+      if (applet._appletPanel.paint)
+        applet._appletPanel.paint(null);
+      else
+        applet._appletPanel.update(null)
+    };
 		if (asNewThread) {
-			setTimeout(function(){paint(null)});
+			setTimeout(f);
 		} else {
-			paint(null);
+      f();
 		}
 		// System.out.println(applet._appletPanel.getFullName())
 	}
