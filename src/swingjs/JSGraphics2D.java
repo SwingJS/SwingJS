@@ -44,6 +44,7 @@ import java.util.Map.Entry;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.HTMLCanvasContext2D;
 
+import jsjava.awt.BasicStroke;
 import jsjava.awt.Color;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
@@ -256,14 +257,12 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	private String toCSSString(Color c) {
-	  String s = "000000" + Integer.toHexString(c.getRGB());
+	  String s = "000000" + Integer.toHexString(c.getRGB()&0xFFFFFF);
 	  return "#" + s.substring(s.length() - 6);
 	}
 
 	public void setFont(Font font) {
-		String s = getInfo(font);
-		int pt = s.indexOf(" ");
-		s = s.substring(0, pt) + "px" + s.substring(pt);
+		String s = JSToolkit.getCanvasFont(font);
 		/**
 		 * @j2sNative
 		 * 
@@ -274,18 +273,18 @@ public class JSGraphics2D extends Graphics2D  {
 		}
 	}
 
-	private String getInfo(Font font) {
-		return font.getSize() + " " + font.getFamily() + " " + font.getSwingjsStyleName();
+	public void setStrokeBold(boolean tf) {
+		setLineWidth(tf ? 2. : 1.);
 	}
 
-	public void setStrokeBold(boolean tf) {
+	private void setLineWidth(double d) {
 		/**
 		 * @j2sNative
 		 * 
-		 * this.ctx.lineWidth = (tf ? 2. : 1.);
+		 * this.ctx.lineWidth = d;
 		 */
 		{
-		  ctx._setLineWidth(tf ? 2. : 1.);
+		  ctx._setLineWidth(d);
 		}
 	}
 
@@ -364,8 +363,16 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void setStroke(Stroke s) {
-		// TODO Auto-generated method stub
-		
+		if (!(s instanceof BasicStroke))
+			return;
+		BasicStroke b = (BasicStroke) s;
+		float[] dash = b.getDashArray();
+		int[] idash = new int[dash == null ? 0 : dash.length];
+		for (int i = idash.length; --i >= 0;)
+			idash[i] = (int) dash[i];
+		ctx.setLineDash(idash);
+		setLineWidth(b.getLineWidth());
+		//SwingJS TODO more here
 	}
 
 	@Override
@@ -568,8 +575,7 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void clearRect(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-		
+		ctx.clearRect(x, y, width, height);
 	}
 
 	@Override

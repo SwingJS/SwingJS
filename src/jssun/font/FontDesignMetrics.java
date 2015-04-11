@@ -27,7 +27,10 @@ package jssun.font;
 
 //import java.lang.ref.ReferenceQueue;
 //import java.lang.ref.SoftReference;
+import jsjava.awt.Toolkit;
 import java.util.Hashtable;
+
+import swingjs.JSToolkit;
 
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
@@ -403,14 +406,14 @@ private float leading;
 
     public int charWidth(char ch) {
         // default metrics for compatibility with legacy code
+    	String s = "";
     	/**
     	 * @j2sNative
     	 * 
-    	 * return this.stringWidth("" + ch);
+    	 * s = "" + ch;
     	 */
-    	{
-    		return 0;
-    	}
+    	{}
+    	return stringWidth(s);
 //        float w;
 //        if (ch < 0x100) {
 //            w = getLatinCharWidth(ch);
@@ -432,13 +435,11 @@ private float leading;
 //    }
 
     public int stringWidth(String str) {
-    	int width = 0;
-    	/**
-    	 * @j2sNative
-    	 */
-    	{
-    		
-    	}
+      return (int) (0.5 + getWidth(str));
+    }
+    
+    private float getWidth(String str) {
+    	return JSToolkit.getStringWidth(null, font, str);
 //
 //        float width = 0;
 //        if (font.hasLayoutAttributes()) {
@@ -465,24 +466,25 @@ private float leading;
 //            }
 //        }
 //
-        return (int) (0.5 + width);
+//        return (int) (0.5 + width);
     }
 
     public int charsWidth(char data[], int off, int len) {
 
         float width = 0;
-        /**
-         * @j2sNative
-         * 
-         *  var s = "";
-         *	for (var i = 0; i < len; i++)
-         *   s += data[i + off];
-         *   return this.stringWidth(s);
-         *
-         */
-        {
-        	
-        }
+//        String s = "";
+//        /**
+//         * @j2sNative
+//         * 
+//         *  var s = "";
+//         *	for (var i = 0; i < len; i++)
+//         *   s += data[i + off];
+//         *   return this.stringWidth(s);
+//         *
+//         */
+//        {
+//        	
+//        }
 //        if (font.hasLayoutAttributes()) {
 //            if (len == 0) {
 //                return 0;
@@ -490,13 +492,14 @@ private float leading;
 //            String str = new String(data, off, len);
 //            width = new TextLayout(str, font, frc).getAdvance();
 //        } else {
-//            /* Explicit test needed to satisfy superclass spec */
-//            if (len < 0) {
-//                throw new IndexOutOfBoundsException("len="+len);
-//            }
-//            int limit = off + len;
-//            for (int i=off; i < limit; i++) {
-//                char ch = data[i];
+            /* Explicit test needed to satisfy superclass spec */
+            if (len < 0) {
+                throw new IndexOutOfBoundsException("len="+len);
+            }
+            int limit = off + len;
+            for (int i=off; i < limit; i++) {
+                char ch = data[i];
+                width += stringWidth("" + ch);
 //                if (ch < 0x100) {
 //                    width += getLatinCharWidth(ch);
 //                } else if (FontUtilities.isNonSimpleChar(ch)) {
@@ -506,7 +509,7 @@ private float leading;
 //                } else {
 //                    width += handleCharWidth(ch);
 //                }
-//            }
+            }
 //        }
 
         return (int) (0.5 + width);
@@ -546,7 +549,9 @@ private float leading;
    * units).
    */
     public int getAscent() {
-        return (int)(roundingUpValue + this.ascent);
+    	if (ascent == 0)
+    		ascent = Toolkit.getDefaultToolkit().getFontMetrics(font).getAscent();
+        return (int)(roundingUpValue + ascent);
     }
 
   /*
@@ -554,7 +559,9 @@ private float leading;
    * glyphs in this font extend below the base line.
    */
     public int getDescent() {
-        return (int)(roundingUpValue + this.descent);
+    	if (descent == 0)
+    		descent = Toolkit.getDefaultToolkit().getFontMetrics(font).getDescent();
+        return (int)(roundingUpValue + descent);
     }
 
     public int getLeading() {

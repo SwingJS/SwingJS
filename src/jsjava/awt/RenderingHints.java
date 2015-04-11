@@ -1396,7 +1396,7 @@ public class RenderingHints
            * System.identityHashCode() method.
            */
           public final int hashCode() {
-          	// SwingJS -- TODO
+          	//SwingJS -- TODO
               return description.hashCode();//System.identityHashCode(this);
           }
 

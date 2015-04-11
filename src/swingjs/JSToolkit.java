@@ -2,6 +2,7 @@ package swingjs;
 
 import java.net.URL;
 
+import swingjs.api.HTMLCanvasContext2D;
 
 import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
@@ -246,6 +247,7 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	private static GraphicsConfiguration gc;
+	private static HTMLCanvasContext2D defaultContext;
 
 	public static GraphicsConfiguration getGraphicsConfiguration() {
 		// TODO Auto-generated method stub
@@ -255,6 +257,79 @@ public class JSToolkit extends SunToolkit {
 	public static boolean isFocused(Window window) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public static int getJqueryInt(Object o, String type) {
+		/**
+		 * @j2sNative 
+		 * 
+		 * var d = Jmol.$(o);
+		 * switch (type) {
+		 * case "width":
+		 * return d.width();
+		 * break;
+		 * case "height":
+		 * return d.height();
+		 * }
+		 *  
+		 */
+		{
+			return 0;
+		}
+	}
+
+	public static float getStringWidth(HTMLCanvasContext2D context, Font font, String text) {
+		@SuppressWarnings("unused")
+		String fontInfo = getCanvasFont(font);
+		if (context == null)
+			context = getDefaultCanvasContext2d();
+		/**
+	   * context.font = fontInfo;
+     * return Math.ceil(context.measureText(text).width);
+     */
+		{
+			return 0;
+		}
+	}
+
+	public static HTMLCanvasContext2D getDefaultCanvasContext2d() {
+		/**
+		 * @j2sNative
+		 * 
+		 * if (this.defaultContext == null)
+		 *   this.defaultContext = document.createElement( 'canvas' ).getContext('2d'); 
+		 */
+		return defaultContext;
+	}
+
+	
+	/**
+	 * generates proper font name for JSGraphics2d
+	 * @param font
+	 * @return  "italic bold 10pt Helvetica" 
+	 */
+	public static String getCanvasFont(Font font) {
+		String strStyle = "";
+		if (font.isItalic())
+			strStyle += "italic ";
+		if (font.isBold())
+			strStyle += "bold ";
+		// for whatever reason, Java font points are much larger than HTML5 canvas points
+		return strStyle + font.getSize() + "px " + font.getFamily();
+	}
+
+	/**
+	 * Just using name, not family name, here for now
+	 * 
+	 * @param font
+	 * @return CSS family name 
+	 */
+	public static String getFontFamily(Font font) {
+		//SwingJS TODO
+		String name = font.getName();
+		if (name.equalsIgnoreCase("Display"))
+			return "Courier";
+		return name;
 	}
 	
 	

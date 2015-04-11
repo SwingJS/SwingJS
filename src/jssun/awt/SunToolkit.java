@@ -432,6 +432,8 @@ public abstract class SunToolkit extends Toolkit
      */
     private static AppContext getAppContext(Object target) {
         if (target instanceof Component) {
+    //SwingJS untested; TODO
+    //in SwingJS can't be MenuComponent - that's an AWT menu construct  
 			/**
 			 * @j2sNative
 			 * 
@@ -1144,6 +1146,7 @@ public abstract class SunToolkit extends Toolkit
      */
     public static Locale getStartupLocale() {
         if (startupLocale == null) {
+        	//SwingJS TODO -- set startup locale
         	/**
         	 * @j2sNative
         	 */

@@ -388,10 +388,10 @@ public abstract class AbstractCalendar extends CalendarSystem {
             date.setTimeOfDay(fraction);
         }
         date.setMillis((int)(fraction % 1000));
-        // SwingJS fix
+        //SwingJS fix
         fraction = fraction / 1000;
         date.setSeconds((int)(fraction % 60));
-        // SwingJS fix
+        //SwingJS fix
         fraction = fraction / 60;
         date.setMinutes((int)(fraction % 60));
         date.setHours((int)(fraction / 60));

@@ -1313,5 +1313,5 @@ public class Color implements Paint /*, java.io.Serializable*/ {
             return Transparency.TRANSLUCENT;
         }
     }
-
+    
 }

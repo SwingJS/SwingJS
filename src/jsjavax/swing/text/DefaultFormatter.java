@@ -242,7 +242,7 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
                 vc = value.getClass();
             }
         }
-// SwingJS
+//SwingJS
 // TODO
 //        if (vc != null) {
 //            Constructor cons;

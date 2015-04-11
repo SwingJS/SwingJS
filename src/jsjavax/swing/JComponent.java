@@ -826,7 +826,7 @@ public abstract class JComponent extends Container
 				isJComponent = (comp instanceof JComponent);
 				//SwingJS here is where we need to differentiate between types
 				// and probably not do this.
-				// SwingJS TODO -- allow JSpecView-like layer for writing over buttons
+				//SwingJS TODO -- allow JSpecView-like layer for writing over buttons
 				if (comp != null && (isJComponent || isLightweightComponent(comp)) &&
 						isSwingJSPaintable(comp) && (comp.isVisible() == true)) {
 					Rectangle cr;

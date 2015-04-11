@@ -371,7 +371,7 @@ class Thread implements Runnable {
             }
         }
         
-        // SwingJS -- this can happen for the first thread
+        //SwingJS -- this can happen for the first thread
         if (g == null) {
         	g = newThreadGroup(null, name);
         	parent = this; // ?? 

@@ -7,14 +7,10 @@ import java.util.Hashtable;
 
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
-import swingjs.api.Interface;
 
-import javajs.api.GenericPlatform;
 import swingjs.api.JSInterface;
-import javajs.util.PT;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
-import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
 import jsjavax.swing.JApplet;
@@ -58,7 +54,6 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	public String strJavaVersion;
 	public Object strJavaVendor;
 	public Object display;
-	public GenericPlatform apiPlatform;
 	private HTML5Canvas canvas;
 	private JSGraphics2D jsgraphics;
 
@@ -81,8 +76,8 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 	private void set(Hashtable params) {
 		this.params = params;
-		htmlName = PT.split("" + getParameter("name"), "_object")[0];
-		appletName = PT.split(htmlName + "_", "_")[0];
+		htmlName = JSUtil.split("" + getParameter("name"), "_object")[0];
+		appletName = JSUtil.split(htmlName + "_", "_")[0];
 		// should be the same as htmlName; probably should point out that applet
 		// names cannot have _ in them.
 
@@ -120,9 +115,9 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		html5Applet = applet;
 		strJavaVersion = javaver;
 		strJavaVendor = "Java2Script/Java 1.6 (HTML5)";
-		String platform = (String) params.get("platform");
-		if (platform != null && platform.length() > 0)
-			apiPlatform = (GenericPlatform) Interface.getInterface(platform);
+		//String platform = (String) params.get("platform");
+		//if (platform != null && platform.length() > 0)
+	  //		apiPlatform = (GenericPlatform) Interface.getInterface(platform);
 		display = params.get("display");
 
 		threadGroup = new JSThreadGroup(appletName);
@@ -225,28 +220,19 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 	@Override
 	public int getWidth() {
-		/**
-		 * @j2sNative 
-		 * 
-		 * return Jmol.$(this.html5Applet._canvas).width()
-		 *  
-		 */
-		{
-			return 0;
-		}
+		return JSToolkit.getJqueryInt(getCanvas(), "width");
+	}
+
+	private HTML5Canvas getCanvas() {
+		if (canvas == null)
+			canvas = html5Applet._getHtml5Canvas();
+		return canvas;
 	}
 
 	@Override
 	public int getHeight() {
-		/**
-		 * @j2sNative 
-		 * 
-		 * return Jmol.$(this.html5Applet._canvas).height()
-		 *  
-		 */
-		{
-			return 0;
-		}
+		getCanvas();
+		return JSToolkit.getJqueryInt(getCanvas(), "height");
 	}
 
 	@Override
@@ -261,7 +247,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 	@Override
 	public void appletResize(int width, int height) {
-		System.out.println("resize applet to " + width + " " + height);
+		System.out.println("resize applet to " + width + " " + height + " (ignored)");
 	}
 
 	///// AppletContext /////
@@ -414,17 +400,17 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	 */
 	private Graphics setGraphics(Graphics g) {
 		if (g == null || (g = jsgraphics) == null) {
-			g = jsgraphics = new JSGraphics2D(canvas = html5Applet._getHtml5Canvas());
+			g = jsgraphics = new JSGraphics2D(getCanvas());
 			// set methods for HTMLCanvasContext2D that are just direct assignments
-			/**
-			 * @j2sNative
-			 * 
-			 * 	g.ctx._setLineWidth = function(d) {this.lineWidth = d};
-			 *  g.ctx._setFont = function(f) {this.font = f};
-			 * 	g.ctx._setFillStyle = function(s) {this.fillStyle = s};
-			 *	g.ctx._setStrokeStyle = function(s) {this.strokeStyle = s};
-			 */
-			{}
+//did not work			/**
+//			 * @j2sNative
+//			 * 
+//			 * 	g.ctx._setLineWidth = function(d) {this.lineWidth = d};
+//			 *  g.ctx._setFont = function(f) {this.font = f};
+//			 * 	g.ctx._setFillStyle = function(s) {this.fillStyle = s};
+//			 *	g.ctx._setStrokeStyle = function(s) {this.strokeStyle = s};
+//			 */
+//			{}
 			((JSGraphics2D)g).setWindowParameters(getWidth(), getHeight());
 		}
 		return g;

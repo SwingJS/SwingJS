@@ -40,4 +40,6 @@ public interface HTMLCanvasContext2D {
 
 	void clearRect(int i, int j, int windowWidth, int windowHeight);
 
+	void setLineDash(int[] dash);
+
 }

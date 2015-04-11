@@ -25,6 +25,7 @@
 
 package jsjava.awt;
 
+import swingjs.JSToolkit;
 import jsjava.text.AttributedCharacterIterator.Attribute;
 //import java.util.Hashtable;
 import jsjava.util.Locale;
@@ -1137,7 +1138,8 @@ public class Font
      * @since JDK1.1
      */
     public String getFamily() {
-    	  return family;
+    	//SwingJS 
+    	  return (family == null ? family = JSToolkit.getFontFamily(this) : family);
 //        return getFamily_NoClientCode();
     }
 //    // NOTE: This method is called by privileged threads.
@@ -1629,23 +1631,19 @@ public class Font
     // NOTE: This method may be called by privileged threads.
     //       DO NOT INVOKE CLIENT CODE ON THIS THREAD!
     public String toString() {
-        return getClass().getName() + "[family=" + getFamily() + ",name=" + name + ",style=" +
-            getSwingjsStyleName() + ",size=" + size + "]";
+      String  strStyle;
+      if (isBold()) {
+          strStyle = isItalic() ? "bolditalic" : "bold";
+      } else {
+          strStyle = isItalic() ? "italic" : "plain";
+      }
+      return getClass().getName() + "[family=" + getFamily() + ",name=" + name + ",style=" +
+            strStyle + ",size=" + size + "]";
     } // toString()
 
     
 
-	/**
-	 * Added for SwingJS; see swingjs.JSgraphics2D
-	 * 
-	 * @return
-	 */
-	public String getSwingjsStyleName() {
-		return (isBold() ? (isItalic() ? "bolditalic" : "bold") 
-					: isItalic() ? "italic" : "plain");
-  }
-
-		//    /** Serialization support.  A <code>readObject</code>
+//    /** Serialization support.  A <code>readObject</code>
 //     *  method is neccessary because the constructor creates
 //     *  the font's peer, and we can't serialize the peer.
 //     *  Similarly the computed font "family" may be different
