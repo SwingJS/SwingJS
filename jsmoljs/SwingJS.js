@@ -160,6 +160,9 @@ if (typeof(SwingJS) == "undefined") {
 	};
 
 	Applet._getCanvas = function(id, Info, checkOnly) {
+    Info._layered = true;
+    Info._isSwing = true;
+    Info._platform = "";
 		Jmol._Canvas2D.prototype = Jmol._jsSetPrototype(new Applet(id, Info, true));
 		return new Jmol._Canvas2D(id, Info, Info.code, checkOnly);
 	};
@@ -291,13 +294,12 @@ if (typeof(SwingJS) == "undefined") {
    // applet-dependent
 	}
 
-	proto._readyCallback = function(id, fullid, isReady, applet) {
+	proto._readyCallback = function(id, fullid, isReady) {
 		if (!isReady)
 			return; // ignore -- page is closing
 		Jmol._setDestroy(this);
 		this._ready = true;
 		var script = this._readyScript;
-		this._applet = applet;
 		if (this._defaultModel)
 			Jmol._search(this, this._defaultModel, (script ? ";" + script : ""));
 		else if (script)

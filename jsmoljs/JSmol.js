@@ -148,22 +148,11 @@
 		this._is2D = true;
 		this._isJava = false;
 		this._jmolType = "Jmol._Canvas2D (" + type + ")";
-		switch (type) {
-		case "Jmol":
-			this._platform = "J.awtjs2d.Platform";
-			break;
-		case "JSV":
-			this._isJSV = true;
-			this._isLayered = true;
-			this._platform = "JSV.awtjs2d.Platform";
-			break;
-		case "Astex":
-			this._isAstex = true;
-			this._platform = "astex.awtjs2d.Platform";
-      break;
-    default:
-      this._platform = "";
-		}
+    this._isLayered = Info._isLayered || false;
+    this._isSwing = Info._isSwing || false;
+    this._isJSV = Info._isJSV || false;
+    this._isAstex = Info._isAstex || false;            
+    this._platform = Info._platform || "";
 		if (checkOnly)
 			return this;
 		window[id] = this;
