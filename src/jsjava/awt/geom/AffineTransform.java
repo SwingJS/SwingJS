@@ -25,6 +25,7 @@
 
 package jsjava.awt.geom;
 
+import javajs.util.AU;
 import jsjava.awt.Shape;
 
 /**
@@ -507,6 +508,9 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * @param m02 the X coordinate translation element of the 3x3 matrix
      * @param m12 the Y coordinate translation element of the 3x3 matrix
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public AffineTransform(float m00, float m10,
                            float m01, float m11,
@@ -532,6 +536,8 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * less than 6, only the first 4 values are taken. If the length of
      * the array is greater than 6, the first 6 values are taken.
      * @since 1.2
+     * 
+     * @j2sIgnore
      */
     public AffineTransform(float[] flatmatrix) {
         m00 = flatmatrix[0];
@@ -2953,10 +2959,19 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * transformed point object that is stored in the destination array
      * @param numPts the number of point objects to be transformed
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public void transform(Point2D[] ptSrc, int srcOff,
                           Point2D[] ptDst, int dstOff,
                           int numPts) {
+    	transformPts(ptSrc, srcOff, ptDst, dstOff, numPts);
+    }
+    
+    private void transformPts(Point2D[] ptSrc, int srcOff,
+        Point2D[] ptDst, int dstOff,
+        int numPts) {
         int state = this.state;
         while (--numPts >= 0) {
             // Copy source coords into local variables in case src == dst
@@ -3028,6 +3043,9 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * transformed point that is stored in the destination array
      * @param numPts the number of points to be transformed
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public void transform(float[] srcPts, int srcOff,
                           float[] dstPts, int dstOff,
@@ -3124,120 +3142,144 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
         /* NOTREACHED */
     }
 
-    /**
-     * Transforms an array of double precision coordinates by this transform.
-     * The two coordinate array sections can be exactly the same or
-     * can be overlapping sections of the same array without affecting the
-     * validity of the results.
-     * This method ensures that no source coordinates are
-     * overwritten by a previous operation before they can be transformed.
-     * The coordinates are stored in the arrays starting at the indicated
-     * offset in the order <code>[x0, y0, x1, y1, ..., xn, yn]</code>.
-     * @param srcPts the array containing the source point coordinates.
-     * Each point is stored as a pair of x,&nbsp;y coordinates.
-     * @param dstPts the array into which the transformed point
-     * coordinates are returned.  Each point is stored as a pair of
-     * x,&nbsp;y coordinates.
-     * @param srcOff the offset to the first point to be transformed
-     * in the source array
-     * @param dstOff the offset to the location of the first
-     * transformed point that is stored in the destination array
-     * @param numPts the number of point objects to be transformed
-     * @since 1.2
-     */
-    public void transform(double[] srcPts, int srcOff,
-                          double[] dstPts, int dstOff,
-                          int numPts) {
-        double M00, M01, M02, M10, M11, M12;    // For caching
-        if (dstPts == srcPts &&
-            dstOff > srcOff && dstOff < srcOff + numPts * 2)
-        {
-            // If the arrays overlap partially with the destination higher
-            // than the source and we transform the coordinates normally
-            // we would overwrite some of the later source coordinates
-            // with results of previous transformations.
-            // To get around this we use arraycopy to copy the points
-            // to their final destination with correct overwrite
-            // handling and then transform them in place in the new
-            // safer location.
-            System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts * 2);
-            // srcPts = dstPts;         // They are known to be equal.
-            srcOff = dstOff;
-        }
-        switch (state) {
-        default:
-            stateError();
-            /* NOTREACHED */
-  					//$FALL-THROUGH$
-        case (APPLY_SHEAR | APPLY_SCALE | APPLY_TRANSLATE):
-            M00 = m00; M01 = m01; M02 = m02;
-            M10 = m10; M11 = m11; M12 = m12;
-            while (--numPts >= 0) {
-                double x = srcPts[srcOff++];
-                double y = srcPts[srcOff++];
-                dstPts[dstOff++] = M00 * x + M01 * y + M02;
-                dstPts[dstOff++] = M10 * x + M11 * y + M12;
-            }
-            return;
-        case (APPLY_SHEAR | APPLY_SCALE):
-            M00 = m00; M01 = m01;
-            M10 = m10; M11 = m11;
-            while (--numPts >= 0) {
-                double x = srcPts[srcOff++];
-                double y = srcPts[srcOff++];
-                dstPts[dstOff++] = M00 * x + M01 * y;
-                dstPts[dstOff++] = M10 * x + M11 * y;
-            }
-            return;
-        case (APPLY_SHEAR | APPLY_TRANSLATE):
-            M01 = m01; M02 = m02;
-            M10 = m10; M12 = m12;
-            while (--numPts >= 0) {
-                double x = srcPts[srcOff++];
-                dstPts[dstOff++] = M01 * srcPts[srcOff++] + M02;
-                dstPts[dstOff++] = M10 * x + M12;
-            }
-            return;
-        case (APPLY_SHEAR):
-            M01 = m01; M10 = m10;
-            while (--numPts >= 0) {
-                double x = srcPts[srcOff++];
-                dstPts[dstOff++] = M01 * srcPts[srcOff++];
-                dstPts[dstOff++] = M10 * x;
-            }
-            return;
-        case (APPLY_SCALE | APPLY_TRANSLATE):
-            M00 = m00; M02 = m02;
-            M11 = m11; M12 = m12;
-            while (--numPts >= 0) {
-                dstPts[dstOff++] = M00 * srcPts[srcOff++] + M02;
-                dstPts[dstOff++] = M11 * srcPts[srcOff++] + M12;
-            }
-            return;
-        case (APPLY_SCALE):
-            M00 = m00; M11 = m11;
-            while (--numPts >= 0) {
-                dstPts[dstOff++] = M00 * srcPts[srcOff++];
-                dstPts[dstOff++] = M11 * srcPts[srcOff++];
-            }
-            return;
-        case (APPLY_TRANSLATE):
-            M02 = m02; M12 = m12;
-            while (--numPts >= 0) {
-                dstPts[dstOff++] = srcPts[srcOff++] + M02;
-                dstPts[dstOff++] = srcPts[srcOff++] + M12;
-            }
-            return;
-        case (APPLY_IDENTITY):
-            if (srcPts != dstPts || srcOff != dstOff) {
-                System.arraycopy(srcPts, srcOff, dstPts, dstOff,
-                                 numPts * 2);
-            }
-            return;
-        }
+	/**
+	 * Transforms an array of double precision coordinates by this transform. The
+	 * two coordinate array sections can be exactly the same or can be overlapping
+	 * sections of the same array without affecting the validity of the results.
+	 * This method ensures that no source coordinates are overwritten by a
+	 * previous operation before they can be transformed. The coordinates are
+	 * stored in the arrays starting at the indicated offset in the order
+	 * <code>[x0, y0, x1, y1, ..., xn, yn]</code>.
+	 * 
+	 * @param srcPts
+	 *          the array containing the source point coordinates. Each point is
+	 *          stored as a pair of x,&nbsp;y coordinates.
+	 * @param dstPts
+	 *          the array into which the transformed point coordinates are
+	 *          returned. Each point is stored as a pair of x,&nbsp;y coordinates.
+	 * @param srcOff
+	 *          the offset to the first point to be transformed in the source
+	 *          array
+	 * @param dstOff
+	 *          the offset to the location of the first transformed point that is
+	 *          stored in the destination array
+	 * @param numPts
+	 *          the number of point objects to be transformed
+	 * @since 1.2
+	 */
+	public void transform(double[] srcPts, int srcOff, double[] dstPts,
+			int dstOff, int numPts) {
+		if (numPts == 0)
+			return;
+		if (!AU.isAD(srcPts)) {
+			//SwingJS -- check for array of doubles; trick to use correct function
+			// note that this cannot be used to compare float[] with double[], but
+			// here we are using it to check Point2D[] vs. double[]
+			Object src = srcPts;
+			Object dst = dstPts;
+			transform((Point2D[]) src, srcOff, (Point2D[]) dst, dstOff, numPts);
+			return;
+		}
+		double M00, M01, M02, M10, M11, M12; // For caching
+		if (dstPts == srcPts && dstOff > srcOff && dstOff < srcOff + numPts * 2) {
+			// If the arrays overlap partially with the destination higher
+			// than the source and we transform the coordinates normally
+			// we would overwrite some of the later source coordinates
+			// with results of previous transformations.
+			// To get around this we use arraycopy to copy the points
+			// to their final destination with correct overwrite
+			// handling and then transform them in place in the new
+			// safer location.
+			System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts * 2);
+			// srcPts = dstPts; // They are known to be equal.
+			srcOff = dstOff;
+		}
+		switch (state) {
+		default:
+			stateError();
+			/* NOTREACHED */
+			//$FALL-THROUGH$
+		case (APPLY_SHEAR | APPLY_SCALE | APPLY_TRANSLATE):
+			M00 = m00;
+			M01 = m01;
+			M02 = m02;
+			M10 = m10;
+			M11 = m11;
+			M12 = m12;
+			while (--numPts >= 0) {
+				double x = srcPts[srcOff++];
+				double y = srcPts[srcOff++];
+				dstPts[dstOff++] = M00 * x + M01 * y + M02;
+				dstPts[dstOff++] = M10 * x + M11 * y + M12;
+			}
+			return;
+		case (APPLY_SHEAR | APPLY_SCALE):
+			M00 = m00;
+			M01 = m01;
+			M10 = m10;
+			M11 = m11;
+			while (--numPts >= 0) {
+				double x = srcPts[srcOff++];
+				double y = srcPts[srcOff++];
+				dstPts[dstOff++] = M00 * x + M01 * y;
+				dstPts[dstOff++] = M10 * x + M11 * y;
+			}
+			return;
+		case (APPLY_SHEAR | APPLY_TRANSLATE):
+			M01 = m01;
+			M02 = m02;
+			M10 = m10;
+			M12 = m12;
+			while (--numPts >= 0) {
+				double x = srcPts[srcOff++];
+				dstPts[dstOff++] = M01 * srcPts[srcOff++] + M02;
+				dstPts[dstOff++] = M10 * x + M12;
+			}
+			return;
+		case (APPLY_SHEAR):
+			M01 = m01;
+			M10 = m10;
+			while (--numPts >= 0) {
+				double x = srcPts[srcOff++];
+				dstPts[dstOff++] = M01 * srcPts[srcOff++];
+				dstPts[dstOff++] = M10 * x;
+			}
+			return;
+		case (APPLY_SCALE | APPLY_TRANSLATE):
+			M00 = m00;
+			M02 = m02;
+			M11 = m11;
+			M12 = m12;
+			while (--numPts >= 0) {
+				dstPts[dstOff++] = M00 * srcPts[srcOff++] + M02;
+				dstPts[dstOff++] = M11 * srcPts[srcOff++] + M12;
+			}
+			return;
+		case (APPLY_SCALE):
+			M00 = m00;
+			M11 = m11;
+			while (--numPts >= 0) {
+				dstPts[dstOff++] = M00 * srcPts[srcOff++];
+				dstPts[dstOff++] = M11 * srcPts[srcOff++];
+			}
+			return;
+		case (APPLY_TRANSLATE):
+			M02 = m02;
+			M12 = m12;
+			while (--numPts >= 0) {
+				dstPts[dstOff++] = srcPts[srcOff++] + M02;
+				dstPts[dstOff++] = srcPts[srcOff++] + M12;
+			}
+			return;
+		case (APPLY_IDENTITY):
+			if (srcPts != dstPts || srcOff != dstOff) {
+				System.arraycopy(srcPts, srcOff, dstPts, dstOff, numPts * 2);
+			}
+			return;
+		}
 
-        /* NOTREACHED */
-    }
+		/* NOTREACHED */
+	}
 
     /**
      * Transforms an array of floating point coordinates by this transform
@@ -3255,6 +3297,9 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * transformed point that is stored in the destination array
      * @param numPts the number of points to be transformed
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public void transform(float[] srcPts, int srcOff,
                           double[] dstPts, int dstOff,
@@ -3351,6 +3396,9 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * transformed point that is stored in the destination array
      * @param numPts the number of point objects to be transformed
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public void transform(double[] srcPts, int srcOff,
                           float[] dstPts, int dstOff,

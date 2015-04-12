@@ -27,6 +27,8 @@ package jsjava.awt.image;
 
 import java.util.Map;
 
+import javajs.util.AU;
+
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
 
@@ -1189,6 +1191,11 @@ public abstract class ColorModel implements Transparency{
      *  method is not supported by this <code>ColorModel</code>
      */
     public int getDataElement(int[] components, int offset) {
+    	return getDataElementInt(components, offset);
+    }
+    
+    protected int getDataElementInt(int[] components, int offset) {    	
+    	//SwingJS THIS is tne method that needs to be implemented, not getDataElement(int[], int)
         throw new UnsupportedOperationException("This method is not supported "+
                                     "by this color model.");
     }
@@ -1238,49 +1245,56 @@ public abstract class ColorModel implements Transparency{
      *  method is not supported by this <code>ColorModel</code>
      * @see WritableRaster#setDataElements
      * @see SampleModel#setDataElements
+     * 
+     * @j2sIgnore
+     * 
      */
     public Object getDataElements(int[] components, int offset, Object obj) {
         throw new UnsupportedOperationException("This method has not been implemented "+
                                     "for this color model.");
     }
 
-    /**
-     * Returns a pixel value represented as an <code>int</code> in this
-     * <code>ColorModel</code>, given an array of normalized color/alpha
-     * components.  This method will throw an
-     * <code>IllegalArgumentException</code> if pixel values for this
-     * <code>ColorModel</code> are not conveniently representable as a
-     * single <code>int</code>.  An
-     * <code>ArrayIndexOutOfBoundsException</code> is thrown if  the
-     * <code>normComponents</code> array is not large enough to hold all the
-     * color and alpha components (starting at <code>normOffset</code>).
-     * Since <code>ColorModel</code> is an abstract class,
-     * any instance is an instance of a subclass.  The default implementation
-     * of this method in this abstract class first converts from the
-     * normalized form to the unnormalized form and then calls
-     * <code>getDataElement(int[], int)</code>.  Subclasses which may
-     * have instances which do not support the unnormalized form must
-     * override this method.
-     * @param normComponents an array of normalized color and alpha
-     * components
-     * @param normOffset the index into <code>normComponents</code> at which to
-     * begin retrieving the color and alpha components
-     * @return an <code>int</code> pixel value in this
-     * <code>ColorModel</code> corresponding to the specified components.
-     * @throws IllegalArgumentException if
-     *  pixel values for this <code>ColorModel</code> are not
-     *  conveniently representable as a single <code>int</code>
-     * @throws ArrayIndexOutOfBoundsException if
-     *  the <code>normComponents</code> array is not large enough to
-     *  hold all of the color and alpha components starting at
-     *  <code>normOffset</code>
-     * @since 1.4
-     */
-    public int getDataElement(float[] normComponents, int normOffset) {
-        int components[] = getUnnormalizedComponents(normComponents,
-                                                     normOffset, null, 0);
-        return getDataElement(components, 0);
-    }
+	/**
+	 * Returns a pixel value represented as an <code>int</code> in this
+	 * <code>ColorModel</code>, given an array of normalized color/alpha
+	 * components. This method will throw an <code>IllegalArgumentException</code>
+	 * if pixel values for this <code>ColorModel</code> are not conveniently
+	 * representable as a single <code>int</code>. An
+	 * <code>ArrayIndexOutOfBoundsException</code> is thrown if the
+	 * <code>normComponents</code> array is not large enough to hold all the color
+	 * and alpha components (starting at <code>normOffset</code>). Since
+	 * <code>ColorModel</code> is an abstract class, any instance is an instance
+	 * of a subclass. The default implementation of this method in this abstract
+	 * class first converts from the normalized form to the unnormalized form and
+	 * then calls <code>getDataElement(int[], int)</code>. Subclasses which may
+	 * have instances which do not support the unnormalized form must override
+	 * this method.
+	 * 
+	 * @param normComponents
+	 *          an array of normalized color and alpha components
+	 * @param normOffset
+	 *          the index into <code>normComponents</code> at which to begin
+	 *          retrieving the color and alpha components
+	 * @return an <code>int</code> pixel value in this <code>ColorModel</code>
+	 *         corresponding to the specified components.
+	 * @throws IllegalArgumentException
+	 *           if pixel values for this <code>ColorModel</code> are not
+	 *           conveniently representable as a single <code>int</code>
+	 * @throws ArrayIndexOutOfBoundsException
+	 *           if the <code>normComponents</code> array is not large enough to
+	 *           hold all of the color and alpha components starting at
+	 *           <code>normOffset</code>
+	 * @since 1.4
+	 */
+	public int getDataElement(float[] normComponents, int normOffset) {
+		if (AU.isAI(normComponents)) {
+			Object ints = normComponents;
+			return getDataElementInt((int[]) ints, normOffset);
+		}
+		int components[] = getUnnormalizedComponents(normComponents, normOffset,
+				null, 0);
+		return getDataElement(components, 0);
+	}
 
     /**
      * Returns a data element array representation of a pixel in this
