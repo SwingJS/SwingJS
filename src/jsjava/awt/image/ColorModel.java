@@ -1156,6 +1156,7 @@ public abstract class ColorModel implements Transparency{
     }
 
     /**
+     * SwinJS note: Override getDataElementInt, not this method.
      * Returns a pixel value represented as an <code>int</code> in this
      * <code>ColorModel</code>, given an array of unnormalized color/alpha
      * components.  This method will throw an
@@ -1195,7 +1196,7 @@ public abstract class ColorModel implements Transparency{
     }
     
     protected int getDataElementInt(int[] components, int offset) {    	
-    	//SwingJS THIS is tne method that needs to be implemented, not getDataElement(int[], int)
+    	//SwingJS THIS is the method that needs to be implemented, not getDataElement(int[], int)
         throw new UnsupportedOperationException("This method is not supported "+
                                     "by this color model.");
     }
