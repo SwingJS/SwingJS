@@ -37,6 +37,7 @@
 
 package swingjs;
 
+import jsjava.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,6 +61,7 @@ import jsjava.awt.Shape;
 import jsjava.awt.Stroke;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.awt.geom.AffineTransform;
+import jsjava.awt.geom.PathIterator;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.ImageObserver;
@@ -189,26 +191,9 @@ public class JSGraphics2D extends Graphics2D  {
 	  ctx.fillText(s,x,y);
 }
 
-	@Override
-	public void drawStringTrans(String str, float x, float y) {
-		// apply affine transformation first
-	}
-
-	@Override
-	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawStringAttrTrans(AttributedCharacterIterator iterator, float x, float y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	boolean isShifted;// private, but only JavaScript
 	private Color bgColor;
+	private Font font;
 	
 	public void background(Color bgcolor) {
 		bgColor = bgcolor;
@@ -262,6 +247,7 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	public void setFont(Font font) {
+		this.font = font;
 		String s = JSToolkit.getCanvasFont(font);
 		/**
 		 * @j2sNative
@@ -314,53 +300,83 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	@Override
+	public void clip(Shape s) {
+		doShape(s);
+		ctx.clip();
+	}
+
+	@Override
 	public void draw(Shape s) {
-		// TODO Auto-generated method stub
-		
+		doShape(s);
+		ctx.stroke();
+	}
+
+	private void doShape(Shape s) {
+		ctx.beginPath();
+		double[] pts = new double[6];
+		PathIterator pi = s.getPathIterator(null);
+		while (!pi.isDone()) {
+			switch (pi.currentSegment(pts)) {
+			case PathIterator.SEG_MOVETO:
+				ctx.moveTo(pts[0], pts[1]);
+				break;
+			case PathIterator.SEG_LINETO:
+				ctx.lineTo(pts[0], pts[1]);
+				break;
+			case PathIterator.SEG_QUADTO:
+				ctx.quadraticCurveTo(pts[0], pts[1], pts[2], pts[3]);
+				break;
+			case PathIterator.SEG_CUBICTO:
+				ctx.bezeierCurveTo(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]);
+				break;
+			case PathIterator.SEG_CLOSE:
+				ctx.closePath();
+				break;
+			}
+			pi.next();			
+		}
+		// then fill or stroke or clip
 	}
 
 	@Override
 	public void fill(Shape s) {
-		// TODO Auto-generated method stub
-		
+		doShape(s);
+		ctx.fill();
 	}
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
 	}
 
 	@Override
 	public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public void setPaint(Paint paint) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public void setStroke(Stroke s) {
 		if (!(s instanceof BasicStroke))
@@ -372,16 +388,49 @@ public class JSGraphics2D extends Graphics2D  {
 			idash[i] = (int) dash[i];
 		ctx.setLineDash(idash);
 		setLineWidth(b.getLineWidth());
+		String lineCap, lineJoin;
+		float miterLimit = -1;
+		switch (b.getEndCap()) {
+		case BasicStroke.CAP_BUTT:
+			lineCap = "butt";
+			break;
+		case BasicStroke.CAP_SQUARE:
+			lineCap = "square";
+			break;
+		case BasicStroke.CAP_ROUND:
+		default:
+			lineCap = "round";
+		}
+		switch (b.getLineJoin()) {
+		case BasicStroke.JOIN_BEVEL:
+			lineJoin = "bevel";
+			break;
+		case BasicStroke.JOIN_MITER:
+			lineJoin = "miter";
+			miterLimit= b.getMiterLimit();
+			break;
+		case BasicStroke.JOIN_ROUND:
+			lineJoin = "round";
+		}
+		/**
+		 * @j2sNative
+		 * 
+		 * this.ctx.lineCap = lineCap;
+		 * this.ctx.lineJoin = lineJoin;
+		 * if (miterLimit >= 0)
+		 *   this.ctx.miterLimit = miterLimit;
+		 */
+		{}
 		//SwingJS TODO more here
 	}
 
 	@Override
 	public void setRenderingHint(Key hintKey, Object hintValue) {
-		// TODO Auto-generated method stub
-		
+		hints.put(hintKey, hintValue);
 	}
 
 	private RenderingHints hints = new RenderingHints(new HashMap());
+	private Color color;
 	
 	@Override
 	public Object getRenderingHint(Key hintKey) {
@@ -410,56 +459,8 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	@Override
-	public void translateTrans(double tx, double ty) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rotate(double theta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void rotate(double theta, double x, double y) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void scale(double sx, double sy) {
 		ctx.scale(sx, sy);
-	}
-
-	@Override
-	public void shear(double shx, double shy) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void transform(AffineTransform Tx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setTransform(AffineTransform Tx) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public AffineTransform getTransform() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Paint getPaint() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -470,24 +471,6 @@ public class JSGraphics2D extends Graphics2D  {
 	@Override
 	public Color getBackground() {
 		return bgColor;
-	}
-
-	@Override
-	public Stroke getStroke() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void clip(Shape s) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public FontRenderContext getFontRenderContext() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -504,73 +487,46 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return color;
 	}
 
 	@Override
 	public void setColor(Color c) {
+		color = c;
 		setGraphicsColor(c);
 	}
 
 	@Override
-	public void setPaintMode() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setXORMode(Color c1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public Font getFont() {
-		// TODO Auto-generated method stub
-		return null;
+		return font;
 	}
 
 	@Override
 	public FontMetrics getFontMetrics(Font f) {
-		// TODO Auto-generated method stub
-		return null;
+		return Toolkit.getDefaultToolkit().getFontMetrics(f);
 	}
 
-	@Override
-	public Rectangle getClipBounds() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void clipRect(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-		
+		//SwingJS --  this is not quite right. Should ADD this to the clipping region
+    ctx.beginPath();
+		ctx.rect(x, y, width, height);
+		ctx.clip(); 
 	}
 
 	@Override
 	public void setClip(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Shape getClip() {
-		// TODO Auto-generated method stub
-		return null;
+		ctx.beginPath();
+		ctx.rect(x, y, width, height);
+		ctx.clip(); 
 	}
 
 	@Override
 	public void setClip(Shape clip) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-		// TODO Auto-generated method stub
-		
+		ctx.beginPath();
+		doShape(clip);
+		ctx.clip();
 	}
 
 	@Override
@@ -579,76 +535,177 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	@Override
+	public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
+		if (nPoints < 2)
+			return;
+		ctx.moveTo(xPoints[0], yPoints[0]);
+		for (int i = 1; i < nPoints; i++) {
+			ctx.lineTo(xPoints[i], yPoints[i]);
+		}
+	}
+
+	@Override
+	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth,
 			int arcHeight) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
+		drawRect(x, y, width, height); 		
 	}
 
 	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth,
 			int arcHeight) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
+		fillRect(x, y, width, height); 		
 	}
 
 	@Override
 	public void drawOval(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
 	}
 
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawPolyline(int[] xPoints, int[] yPoints, int nPoints) {
-		// TODO Auto-generated method stub
-		
+		JSToolkit.notImplemented();
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-		// TODO Auto-generated method stub
+		JSToolkit.notImplemented();
 		return false;
+	}
+
+	@Override
+	public Shape getClip() {
+		// not available in JavaScript?
+		JSToolkit.notImplemented();
+		return null;
+	}
+
+	@Override
+	public void drawStringTrans(String str, float x, float y) {
+		// apply affine transformation first
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void drawStringAttrTrans(AttributedCharacterIterator iterator, float x, float y) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void translateTrans(double tx, double ty) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void rotate(double theta) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void rotate(double theta, double x, double y) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void shear(double shx, double shy) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void transform(AffineTransform Tx) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void setTransform(AffineTransform Tx) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public AffineTransform getTransform() {
+		JSToolkit.notImplemented();
+		return null;
+	}
+
+	@Override
+	public Paint getPaint() {
+		JSToolkit.notImplemented();
+		return null;
+	}
+
+
+	@Override
+	public Stroke getStroke() {
+		JSToolkit.notImplemented();
+		return null;
+	}
+
+	@Override
+	public FontRenderContext getFontRenderContext() {
+		JSToolkit.notImplemented();
+		return null;
+	}
+
+	@Override
+	public void setPaintMode() {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public void setXORMode(Color c1) {
+		JSToolkit.notImplemented();
+	}
+
+	@Override
+	public Rectangle getClipBounds() {
+		JSToolkit.notImplemented();
+		return null;
 	}
 
 }

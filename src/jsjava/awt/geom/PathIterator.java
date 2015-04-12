@@ -187,6 +187,7 @@ public interface PathIterator {
      * @see #SEG_QUADTO
      * @see #SEG_CUBICTO
      * @see #SEG_CLOSE
+     * @j2sIgnore
      */
     public int currentSegment(float[] coords);
 

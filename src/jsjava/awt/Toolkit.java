@@ -827,8 +827,7 @@ public abstract class Toolkit {
      *                 if one could not be accessed or instantiated.
      */
     public static synchronized Toolkit getDefaultToolkit() {
-        if (toolkit == null) {
-        	return new JSToolkit();
+       return (toolkit == null ? toolkit =  new JSToolkit() : toolkit);
 //            //try {
 //                // We disable the JIT during toolkit initialization.  This
 //                // tends to touch lots of classes that aren't needed again
@@ -876,8 +875,8 @@ public abstract class Toolkit {
 //                // Make sure to always re-enable the JIT.
 ////              java.lang.Compiler.enable();
 //            }
-        }
-        return toolkit;
+//        }
+//        return toolkit;
     }
 
     /**

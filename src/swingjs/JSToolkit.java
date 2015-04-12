@@ -1,6 +1,8 @@
 package swingjs;
 
 import java.net.URL;
+import java.util.Hashtable;
+import java.util.Map;
 
 import swingjs.api.HTMLCanvasContext2D;
 
@@ -69,21 +71,10 @@ public class JSToolkit extends SunToolkit {
 		return null;
 	}
 
-
-	@Override
-	@Deprecated
-	public FontMetrics getFontMetrics(Font font) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	@Override
 	public void sync() {
-		// n/a?
-		
+		// n/a?		
 	}
-
 
 	@Override
 	public Image getImage(String filename) {
@@ -277,6 +268,24 @@ public class JSToolkit extends SunToolkit {
 			return 0;
 		}
 	}
+  
+	/**
+	 * generates proper font name for JSGraphics2d
+	 * Apparently Java sizes are pixels, not points. Not sure on this...
+	 * 
+	 * @param font
+	 * @return  "italic bold 10pt Helvetica" 
+	 */
+	public static String getCSSFont(Font font) {
+		String css = "";
+		if (font.isItalic())
+			css += "font-style:italic;";
+		if (font.isBold())
+			css += "font-weight:bold;";
+		css += "font-size:" + font.getSize() + "px;";
+		css += "font-family:" + font.getFamily() + ";";
+		return css;
+	}
 
 	public static float getStringWidth(HTMLCanvasContext2D context, Font font, String text) {
 		@SuppressWarnings("unused")
@@ -305,6 +314,8 @@ public class JSToolkit extends SunToolkit {
 	
 	/**
 	 * generates proper font name for JSGraphics2d
+	 * Apparently Java sizes are pixels, not points. Not sure on this...
+	 * 
 	 * @param font
 	 * @return  "italic bold 10pt Helvetica" 
 	 */
@@ -332,8 +343,35 @@ public class JSToolkit extends SunToolkit {
 		return name;
 	}
 	
+	@Override
+	public FontMetrics getFontMetrics(Font font) {
+		JSFontMetrics fm = (JSFontMetrics) getInstance("swingjs.JSFontMetrics");
+		fm.setFont(font);
+		return fm;
+	}
+
+	private static Map<String, Boolean> mapNotImpl;
 	
-	
-	
+	/**
+	 * report ONCE to System.out; can check in JavaScript
+	 * 
+	 */
+	public static void notImplemented() {
+		String s = null;
+		if (mapNotImpl == null)
+			mapNotImpl = new Hashtable<String, Boolean>();
+		/**
+		 * @j2sNative
+		 * 
+		 * s = arguments.callee.caller.exClazz && arguments.callee.caller.exClazz.__CLASS_NAME__;
+		 * s += "." + arguments.callee.caller.exName;
+		 * 
+		 */
+		{}
+		if (mapNotImpl.containsKey(s))
+			return;
+		mapNotImpl.put(s, Boolean.TRUE);
+		System.out.println(s + " has not been implemented in SwingJS.");		
+	}	
 	
 }

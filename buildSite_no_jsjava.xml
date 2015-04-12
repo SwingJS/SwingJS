@@ -145,8 +145,10 @@
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
        		../js/JSmolJavaExt.js
-            javax/swing/JComponent.js
+            swingjs/JSUtil.js
+            swingjs/JSToolkit.js
             swingjs/JSAppletPanel.js
+            javax/swing/JComponent.js
             java/awt/Container.js
             java/awt/Component.js
             java/util/Locale.js
@@ -462,7 +464,6 @@
             javajs/util/M34.js
             javajs/util/M4.js
             javajs/util/T3.js
-            swingjs/JSToolkit.js
     	"/>
     </antcall>
     

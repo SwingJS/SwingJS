@@ -58,9 +58,9 @@ function dateTest() {
   Class.loadClass()
 
   Class.loadClass(
-	"jsjava.text.SimpleDateFormat",
+	"java.text.SimpleDateFormat",
 	function() {
-		alert(new jsjava.text.SimpleDateFormat($("#date").val()).format(new Date))
+		alert(new java.text.SimpleDateFormat($("#date").val()).format(new Date))
 	}
   );
 }

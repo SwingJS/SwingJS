@@ -42,4 +42,10 @@ public interface HTMLCanvasContext2D {
 
 	void setLineDash(int[] dash);
 
+	void clip();
+
+	void quadraticCurveTo(double d, double e, double f, double g);
+
+	void bezeierCurveTo(double d, double e, double f, double g, double h, double i);
+
 }
