@@ -2,7 +2,8 @@ PROGRESS
 ========
 4/12/2015
 
-graphics working; not a full implementation, though
+basic very limited graphics working; no AffineTransform
+still no layout
 
 4/4/2015
 
@@ -351,9 +352,9 @@ One cannot test:
   }
    
 The javajs.util.AU class does provide a set of tests for specific
-kinds of arrays, but this is still not perfect, and is not complete.
+kinds of arrays, but this is still not perfect, and it is not complete.
 These methods call Clazz.isAxx methods and depend upon the first
-inner-most array not being empty.
+inner-most array and, in some cases, inner-most array itself not being null.
 
   public static boolean isAB(Object x)     // byte[]
   public static boolean isAI(Object x)     // int[]
@@ -363,6 +364,7 @@ inner-most array not being empty.
   public static boolean isAFFF(Object x)   // float[][][]
   public static boolean isAD(Object x)     // double[]
   public static boolean isADD(Object x)    // double[][]
+  
   public static boolean isAFloat(Object x) // Float[]
   public static boolean isAS(Object x)     // String[]
   public static boolean isASS(Object x)    // String[][]
@@ -552,6 +554,6 @@ BigInteger and BigDecimal are not supported
 no format internationalization
 ------------------------------
 
-For now, just en for number formatters
+For now, just en for number and date formatters
 
 
