@@ -1393,6 +1393,7 @@ public class Container extends Component {
      * @since JDK1.1
      */
     public void doLayout() {
+    	// only called by JTable
         layout();
     }
 
@@ -1402,6 +1403,7 @@ public class Container extends Component {
      */
     @Deprecated
     public void layout() {
+    	// called by Component and Container
         LayoutManager layoutMgr = this.layoutMgr;
         if (layoutMgr != null) {
             layoutMgr.layoutContainer(this);

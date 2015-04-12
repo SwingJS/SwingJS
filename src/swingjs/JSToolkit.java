@@ -371,7 +371,19 @@ public class JSToolkit extends SunToolkit {
 		if (mapNotImpl.containsKey(s))
 			return;
 		mapNotImpl.put(s, Boolean.TRUE);
-		System.out.println(s + " has not been implemented in SwingJS.");		
+		System.out.println(s + " has not been implemented in SwingJS." + getStackTrace(-5));
+		
+	}
+
+	public static String getStackTrace(int n) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return Clazz.getStackTrace(n);
+		 */
+		{
+			return null;
+		}
 	}	
 	
 }

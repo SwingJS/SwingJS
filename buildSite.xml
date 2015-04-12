@@ -145,6 +145,11 @@
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
        		../js/JSmolJavaExt.js
+            java/awt/BasicStroke.js
+            java/awt/Stroke.js
+            swingjs/api/JSInterface.js
+            swingjs/JSThread.js
+            swingjs/JSThreadGroup.js
             swingjs/JSUtil.js
             swingjs/JSToolkit.js
             swingjs/JSAppletPanel.js
@@ -472,9 +477,9 @@
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
-            javax/swing/ButtonGroup.js
-            java/awt/BasicStroke.js
-            java/awt/Stroke.js   	
+    jssun/java2d/SunGraphics2D.js
+    swingjs/JSGraphics2D.js
+    
    	minimize additional JSmol JavaScript -->
 
   </target>

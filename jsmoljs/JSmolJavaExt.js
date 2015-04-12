@@ -6,6 +6,7 @@
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 4/12/2015 1:37:44 PM adding Math.rint = Math.round
 // BH 1/16/2015 10:09:38 AM Chrome failure jqGrig due to new String("x").toString() not being a simple string
 // BH 8/14/2014 6:49:22 PM Character class efficiencies
 // BH 7/24/2014 9:02:18 AM most browsers do not support String.codePointAt()
@@ -67,6 +68,8 @@
 		"java.text.DateFormat", // not used
 		sJU + ".concurrent.Executors"
 	])
+
+Math.rint = Math.round;
 
 Math.log10||(Math.log10=function(a){return Math.log(a)/2.302585092994046});
 

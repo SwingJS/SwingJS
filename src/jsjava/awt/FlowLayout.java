@@ -161,7 +161,7 @@ public class FlowLayout implements LayoutManager, java.io.Serializable {
     int newAlign;       // This is the one we actually use
 
     /**
-     * The flow layout manager allows a seperation of
+     * The flow layout manager allows a separation of
      * components with gaps.  The horizontal gap will
      * specify the space between components and between
      * the components and the borders of the
@@ -586,6 +586,7 @@ public class FlowLayout implements LayoutManager, java.io.Serializable {
      */
     @SuppressWarnings("null")
     public void layoutContainer(Container target) {
+    	System.out.println("FlowLayout laying out " + target);
       synchronized (target.getTreeLock()) {
         Insets insets = target.getInsets();
         int maxwidth = target.width - (insets.left + insets.right + hgap*2);

@@ -975,34 +975,40 @@ public abstract class JComponent extends Container
             return;
         }
 
+        // BH just sets font and color
         Graphics componentGraphics = getComponentGraphics(g);
         Graphics co = componentGraphics.createSwingJS();
         try {
 //            RepaintManager repaintManager = RepaintManager.currentManager(this);
-        	//SwingJS TODO: Here is where we need JSToolkit
-            Rectangle clipRect = co.getClipBounds();
+        	
+          //SwingJS -- we are not going to worry about components having special clipping
+        	// bounds. The assumption is that what we are working with are
+        	// standard JPanels and JApplets, which have simple bounds based on 
+        	// width and height. No need to do anything else. Painting over a button, 
+        	// for instance, will paint into the rectangle associated with that button. 
+ //       	Rectangle clipRect = co.getClipBounds();
             int clipX;
             int clipY;
             int clipW;
             int clipH;
-            if (clipRect == null) {
+ //           if (clipRect == null) {
                 clipX = clipY = 0;
                 clipW = getWidth();
                 clipH = getHeight();
-            }
-            else {
-                clipX = clipRect.x;
-                clipY = clipRect.y;
-                clipW = clipRect.width;
-                clipH = clipRect.height;
-            }
+//            }
+//            else {
+//                clipX = clipRect.x;
+//                clipY = clipRect.y;
+//                clipW = clipRect.width;
+//                clipH = clipRect.height;
+//            }
 
-            if(clipW > getWidth()) {
-                clipW = getWidth();
-            }
-            if(clipH > getHeight()) {
-                clipH = getHeight();
-            }
+//            if(clipW > getWidth()) {
+//                clipW = getWidth();
+//            }
+//            if(clipH > getHeight()) {
+//                clipH = getHeight();
+//            }
 
             if(getParent() != null && !(getParent() instanceof JComponent)) {
                 adjustPaintFlags();
@@ -1023,26 +1029,26 @@ public abstract class JComponent extends Container
 //            }
 //            else {
                 // Will ocassionaly happen in 1.2, especially when printing.
-                if (clipRect == null) {
+//                if (clipRect == null) {
                     co.setClip(clipX, clipY, clipW, clipH);
-                }
+//                }
 
 //                if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
-  //                  if (!printing) {
+//                  if (!printing) {
                         paintComponent(co);
                         paintBorder(co);
- //                   }
- //                   else {
- //                       printComponent(co);
- //                       printBorder(co);
- //                   }
- //               }
- //               if (!printing) {
-                    paintChildren(co);
- //               }
- //               else {
- //                   printChildren(co);
- //               }
+//                   }
+//                   else {
+//                       printComponent(co);
+//                       printBorder(co);
+//                   }
+//               }
+//               if (!printing) {
+                   paintChildren(co);
+//               }
+//               else {
+//                   printChildren(co);
+//               }
 //            }
         } finally {
             co.dispose();

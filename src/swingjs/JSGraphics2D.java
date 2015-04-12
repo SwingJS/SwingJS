@@ -50,7 +50,6 @@ import jsjava.awt.Color;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
-import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Paint;
@@ -68,40 +67,58 @@ import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.RenderedImage;
 import jsjava.awt.image.renderable.RenderableImage;
 import jsjava.text.AttributedCharacterIterator;
-
-
+import jssun.java2d.SunGraphics2D;
 
 /**
  * generic 2D drawing methods -- JavaScript version
  * 
- * guessing a lot here -- just getting something out; 
- * converted from JSpecView
+ * guessing a lot here -- just getting something out; converted from JSpecView
+ * 
+ * but see sun.java2d.SunGraphics2D.java for insight into the issues of full
+ * implementation
  * 
  * @author Bob Hanson hansonr@stolaf.edu
  */
 
-public class JSGraphics2D extends Graphics2D  {
+public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
-	private int windowWidth;
+  public int constrainX;
+  public int constrainY;
+
+  private int windowWidth;
 	private int windowHeight;
 	private HTML5Canvas canvas;
 
-  public JSGraphics2D(Object canvas) {
-  	this.canvas = (HTML5Canvas) canvas;
-  	
-  	ctx = this.canvas.getContext("2d");
-  	/**
-  	 * @j2sNative
-  	 * 
-  	 * this.gc = SwingJS;
-  	 *
-  	 */
-  	{}
+	private HTMLCanvasContext2D ctx;
+	private GraphicsConfiguration gc;
+
+  public int paintState;
+  public int compositeState;
+  public int strokeState;
+  public int transformState;
+  public int clipState;
+
+  //public Color foregroundColor;
+
+	boolean isShifted;// private, but only JavaScript
+	private Font font;
+
+	public JSGraphics2D(Object canvas) {
+		hints = new RenderingHints(new HashMap());
+		this.canvas = (HTML5Canvas) canvas;
+		transform = new AffineTransform();
+
+		ctx = this.canvas.getContext("2d");
+		/**
+		 * @j2sNative
+		 * 
+		 *            this.gc = SwingJS;
+		 * 
+		 */
+		{
+		}
 	}
 
-  private HTMLCanvasContext2D ctx;
-  private GraphicsConfiguration gc;
-  
 	@Override
 	public GraphicsConfiguration getDeviceConfiguration() {
 		return gc;
@@ -119,7 +136,7 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	public void drawCircle(int x, int y, int diameter) {
-		drawArc(x, y, diameter, diameter, 0, 360);		
+		drawArc(x, y, diameter, diameter, 0, 360);
 	}
 
 	@Override
@@ -134,7 +151,6 @@ public class JSGraphics2D extends Graphics2D  {
 		doArc(x, y, width, height, startAngle, arcAngle, false);
 	}
 
-
 	private void doArc(int x, int y, int width, int height, int startAngle,
 			int arcAngle, boolean fill) {
 		// width
@@ -144,7 +160,7 @@ public class JSGraphics2D extends Graphics2D  {
 		ctx.scale(width / height, height);
 		ctx.beginPath();
 		if (fill) {
-				// do something here to fill this arc
+			// do something here to fill this arc
 		}
 		ctx.arc(0.5, 0.5, 0.5, toRad(startAngle), toRad(arcAngle), false);
 		if (isCircle)
@@ -179,24 +195,19 @@ public class JSGraphics2D extends Graphics2D  {
 			ctx.stroke();
 	}
 
-	public void drawRect(int x, int y, int width,
-			int height) {
-		  ctx.beginPath();
-      ctx.rect(x ,y, width, height);
-      ctx.stroke();
+	public void drawRect(int x, int y, int width, int height) {
+		ctx.beginPath();
+		ctx.rect(x, y, width, height);
+		ctx.stroke();
 	}
 
 	@Override
 	public void drawString(String s, int x, int y) {
-	  ctx.fillText(s,x,y);
-}
+		ctx.fillText(s, x, y);
+	}
 
-	boolean isShifted;// private, but only JavaScript
-	private Color bgColor;
-	private Font font;
-	
 	public void background(Color bgcolor) {
-		bgColor = bgcolor;
+		backgroundColor = bgcolor;
 		if (bgcolor == null) {
 			/*
 			 * 
@@ -214,10 +225,10 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	public void fillCircle(int x, int y, int diameter) {
-		double r = diameter/2f;
-		 		ctx.beginPath();
-		    ctx.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
-		    ctx.fill();
+		double r = diameter / 2f;
+		ctx.beginPath();
+		ctx.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
+		ctx.fill();
 	}
 
 	public void fillPolygon(int[] ayPoints, int[] axPoints, int nPoints) {
@@ -225,25 +236,23 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	public void fillRect(int x, int y, int width, int height) {
-		 ctx.fillRect(x, y, width, height);
+		ctx.fillRect(x, y, width, height);
 	}
 
 	public void setGraphicsColor(Color c) {
 		String s = toCSSString(c);
 		/**
-		 * @j2sNative
-		 *  this.ctx.fillStyle = s;
-		 *  this.ctx.strokeStyle = s;
+		 * @j2sNative this.ctx.fillStyle = s; this.ctx.strokeStyle = s;
 		 */
 		{
-		ctx._setFillStyle(s);
-		ctx._setStrokeStyle(s);
+			ctx._setFillStyle(s);
+			ctx._setStrokeStyle(s);
 		}
 	}
 
 	private String toCSSString(Color c) {
-	  String s = "000000" + Integer.toHexString(c.getRGB()&0xFFFFFF);
-	  return "#" + s.substring(s.length() - 6);
+		String s = "000000" + Integer.toHexString(c.getRGB() & 0xFFFFFF);
+		return "#" + s.substring(s.length() - 6);
 	}
 
 	public void setFont(Font font) {
@@ -252,10 +261,10 @@ public class JSGraphics2D extends Graphics2D  {
 		/**
 		 * @j2sNative
 		 * 
-		 * this.ctx.font = s;
+		 *            this.ctx.font = s;
 		 */
 		{
-		ctx._setFont(s);
+			ctx._setFont(s);
 		}
 	}
 
@@ -267,10 +276,10 @@ public class JSGraphics2D extends Graphics2D  {
 		/**
 		 * @j2sNative
 		 * 
-		 * this.ctx.lineWidth = d;
+		 *            this.ctx.lineWidth = d;
 		 */
 		{
-		  ctx._setLineWidth(d);
+			ctx._setLineWidth(d);
 		}
 	}
 
@@ -279,24 +288,23 @@ public class JSGraphics2D extends Graphics2D  {
 		windowHeight = height;
 	}
 
-
 	public boolean canDoLineTo() {
 		return true;
 	}
 
 	boolean inPath;
-	
+
 	public void doStroke(boolean isBegin) {
 		inPath = isBegin;
-		  if (isBegin) {
-		  	 ctx.beginPath();
-		  } else {
-		    ctx.stroke();
-		  }
+		if (isBegin) {
+			ctx.beginPath();
+		} else {
+			ctx.stroke();
+		}
 	}
 
 	public void lineTo(int x2, int y2) {
-		 ctx.lineTo(x2, y2);	
+		ctx.lineTo(x2, y2);
 	}
 
 	@Override
@@ -333,7 +341,7 @@ public class JSGraphics2D extends Graphics2D  {
 				ctx.closePath();
 				break;
 			}
-			pi.next();			
+			pi.next();
 		}
 		// then fill or stroke or clip
 	}
@@ -407,7 +415,7 @@ public class JSGraphics2D extends Graphics2D  {
 			break;
 		case BasicStroke.JOIN_MITER:
 			lineJoin = "miter";
-			miterLimit= b.getMiterLimit();
+			miterLimit = b.getMiterLimit();
 			break;
 		case BasicStroke.JOIN_ROUND:
 			lineJoin = "round";
@@ -415,13 +423,12 @@ public class JSGraphics2D extends Graphics2D  {
 		/**
 		 * @j2sNative
 		 * 
-		 * this.ctx.lineCap = lineCap;
-		 * this.ctx.lineJoin = lineJoin;
-		 * if (miterLimit >= 0)
-		 *   this.ctx.miterLimit = miterLimit;
+		 *            this.ctx.lineCap = lineCap; this.ctx.lineJoin = lineJoin; if
+		 *            (miterLimit >= 0) this.ctx.miterLimit = miterLimit;
 		 */
-		{}
-		//SwingJS TODO more here
+		{
+		}
+		// SwingJS TODO more here
 	}
 
 	@Override
@@ -429,9 +436,6 @@ public class JSGraphics2D extends Graphics2D  {
 		hints.put(hintKey, hintValue);
 	}
 
-	private RenderingHints hints = new RenderingHints(new HashMap());
-	private Color color;
-	
 	@Override
 	public Object getRenderingHint(Key hintKey) {
 		return hints.get(hintKey);
@@ -439,13 +443,13 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public void setRenderingHints(Map<?, ?> hints) {
-		this.hints = new RenderingHints((Map<Key, ?>)hints);
+		this.hints = new RenderingHints((Map<Key, ?>) hints);
 	}
 
 	@Override
 	public void addRenderingHints(Map<?, ?> hints) {
-		for (Entry<?, ?> e  : hints.entrySet())
-			this.hints.put(e.getKey(), e.getValue());	
+		for (Entry<?, ?> e : hints.entrySet())
+			this.hints.put(e.getKey(), e.getValue());
 	}
 
 	@Override
@@ -470,29 +474,34 @@ public class JSGraphics2D extends Graphics2D  {
 
 	@Override
 	public Color getBackground() {
-		return bgColor;
+		return backgroundColor;
 	}
 
 	@Override
 	public Graphics createSwingJS() {
+		return (Graphics) clone();
+	}
+
+	@Override
+	public Object clone() {
 		ctx.save();
-		return this;// just testing here. It's supposed to be a clone, but...
+		JSGraphics2D g = (JSGraphics2D) super.clone();
+		return g;
 	}
 
 	@Override
 	public void dispose() {
-		// we don't really dispose of this, as create doesn't really create a clone
 		ctx.restore();
 	}
 
 	@Override
 	public Color getColor() {
-		return color;
+		return foregroundColor;
 	}
 
 	@Override
 	public void setColor(Color c) {
-		color = c;
+		foregroundColor = c;
 		setGraphicsColor(c);
 	}
 
@@ -506,20 +515,20 @@ public class JSGraphics2D extends Graphics2D  {
 		return Toolkit.getDefaultToolkit().getFontMetrics(f);
 	}
 
-
 	@Override
 	public void clipRect(int x, int y, int width, int height) {
-		//SwingJS --  this is not quite right. Should ADD this to the clipping region
-    ctx.beginPath();
+		// SwingJS -- this is not quite right. Should ADD this to the clipping
+		// region
+		ctx.beginPath();
 		ctx.rect(x, y, width, height);
-		ctx.clip(); 
+		ctx.clip();
 	}
 
 	@Override
 	public void setClip(int x, int y, int width, int height) {
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
-		ctx.clip(); 
+		ctx.clip();
 	}
 
 	@Override
@@ -553,14 +562,14 @@ public class JSGraphics2D extends Graphics2D  {
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth,
 			int arcHeight) {
 		JSToolkit.notImplemented();
-		drawRect(x, y, width, height); 		
+		drawRect(x, y, width, height);
 	}
 
 	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth,
 			int arcHeight) {
 		JSToolkit.notImplemented();
-		fillRect(x, y, width, height); 		
+		fillRect(x, y, width, height);
 	}
 
 	@Override
@@ -633,7 +642,8 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	@Override
-	public void drawStringAttrTrans(AttributedCharacterIterator iterator, float x, float y) {
+	public void drawStringAttrTrans(AttributedCharacterIterator iterator,
+			float x, float y) {
 		JSToolkit.notImplemented();
 	}
 
@@ -658,7 +668,7 @@ public class JSGraphics2D extends Graphics2D  {
 	}
 
 	@Override
-	public void transform(AffineTransform Tx) {
+	public void transform(AffineTransform xform) {
 		JSToolkit.notImplemented();
 	}
 
@@ -673,12 +683,20 @@ public class JSGraphics2D extends Graphics2D  {
 		return null;
 	}
 
+  /**
+   * Returns the current Transform ignoring the "constrain"
+   * rectangle.
+   */
+  public AffineTransform cloneTransform() {
+		JSToolkit.notImplemented();
+    return null;
+  }
+
 	@Override
 	public Paint getPaint() {
 		JSToolkit.notImplemented();
 		return null;
 	}
-
 
 	@Override
 	public Stroke getStroke() {
@@ -702,8 +720,31 @@ public class JSGraphics2D extends Graphics2D  {
 		JSToolkit.notImplemented();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public Rectangle getClipBounds() {
+		Rectangle r = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            if (arguments.length == 1) r = arguments[0];
+		 */
+		{
+		}
+		if (r != null) {
+			Rectangle clipRect = getClipBoundsImpl();
+			if (clipRect != null) {
+				r.x = clipRect.x;
+				r.y = clipRect.y;
+				r.width = clipRect.width;
+				r.height = clipRect.height;
+			}
+			return r;
+		}
+		return getClipBoundsImpl();
+	}
+
+	private Rectangle getClipBoundsImpl() {
 		JSToolkit.notImplemented();
 		return null;
 	}

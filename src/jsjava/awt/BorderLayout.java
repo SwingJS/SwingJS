@@ -438,6 +438,8 @@ public class BorderLayout implements LayoutManager2,
             name = "Center";
         }
 
+      	System.out.println("BorderLayout adding " + name + " " + comp);
+
         /* Assign the component to one of the known regions of the layout.
          */
         if ("Center".equals(name)) {
@@ -799,6 +801,7 @@ public class BorderLayout implements LayoutManager2,
      * @see     java.awt.Container#doLayout()
      */
     public void layoutContainer(Container target) {
+    	System.out.println("BorderLayout laying out " + target);
       synchronized (target.getTreeLock()) {
         Insets insets = target.getInsets();
         int top = insets.top;

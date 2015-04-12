@@ -803,6 +803,7 @@ java.io.Serializable {
      * @see java.awt.Container#doLayout
      */
     public void layoutContainer(Container parent) {
+    	System.out.println("GridBagLayout laying out " + parent);
         arrangeGrid(parent);
     }
 

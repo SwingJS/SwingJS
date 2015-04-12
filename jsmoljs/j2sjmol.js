@@ -42,7 +42,7 @@
  // NOTES by Bob Hanson: 
  
  // J2S class changes:
-
+ // BH 4/12/2015 11:48:03 AM added Clazz.getStackTrace(-n) -- reports actual parameter values for n levels
  // BH 4/10/2015 8:23:05 AM adding Int32Array.prototype.clone and Float64.prototype.clone
  // BH 4/5/2015 8:12:57 AM refactoring j2slib (this file) to make private functions really private using var
  // BH 4/3/2015 6:14:34 AM adding anonymous local "ClazzLoader" (Clazz._Loader) --> "_Loader"
@@ -836,6 +836,9 @@ Clazz.getStackTrace = function(n) {
   // updateNode and updateParents cause infinite loop here
 	var s = "\n";
 	var c = arguments.callee;
+  var showParams = (n < 0);
+  if (showParams)
+    n = -n;
 	for (var i = 0; i < n; i++) {
 		if (!(c = c.caller))
       break;
@@ -844,6 +847,15 @@ Clazz.getStackTrace = function(n) {
 		if (c == c.caller) {
       s += "<recursing>\n";
       break;
+    }
+    if (showParams) {
+      var args = c.arguments;
+      for (var j = 0; j < args.length; j++) {
+        var sa = "" + args[j];
+        if (sa.length > 60)
+          sa = sa.substring(0, 60) + "...";
+        s += " args[" + j + "]=" + sa.replace(/\s+/g," ") + "\n";
+      }
     }
 	}
 	return s;

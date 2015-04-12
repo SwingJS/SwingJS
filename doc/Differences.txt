@@ -1,5 +1,9 @@
 PROGRESS
 ========
+4/12/2015
+
+graphics working; not a full implementation, though
+
 4/4/2015
 
 j2sjmol.js updated due to problems with incomplete loading
@@ -14,11 +18,38 @@ several issues found in getting SimpleDateFormat working
  -- SimpleDateFormat working
  -- fixed sb.append(int) --> sb.append("" + i)
 
- 
+4/3/2015
 
-J2S bugs
---------
-4/4/2015
+ResourceBundle working with property loading. 
+But ResourceBundle.Control calls new PropertyResourceBundle(), and that 
+causes a loading loop. Solution is to give PropertyResourceBundle() an empty
+constructor and to call it with reflection.
+
+4/2/2015
+
+JApplet loading successful
+
+ResourceBundle working with Java class loading
+DecimalFormat working
+
+Thread.currentThread() working. For example, this works:
+
+  SwingJS.getJavaResource = function(path) {
+   // path looks like jssun.util...., for example
+    var appId = jsjava.lang.Thread.currentThread().getName();
+    path = Jmol._applets[appId].__Info.j2sPath + "/" + path;
+    var s = Jmol._getFileData(path);
+    return (s.startsWith("[Exception") ? null : s);
+  }
+  
+3/19/2015
+
+Project initiated
+
+========================================================================== 
+
+J2S bugs identified
+-------------------
 
 #7 J2S does not properly do integer/long/short/byte  /=
 
@@ -94,28 +125,13 @@ functions called this way process improperly.
 
 j2sjmol.js (j2slib.js)
 ----------------------
-j2sjmol requiree modification to properly identify the end of all class loading so 
+j2sjmol required modification to properly identify the end of all class loading so 
 that an asynchronous function can be called. Working currently with 
 
    Clazz.loadClass("java.util.Properties",function(){alert("ready!")})
    
 for user-controlled loading of classes from JavaScript.
    
-
-
-
-PROGRESS
-========
-4/4/2015
-
-j2sjmol.js updated due to problems with incomplete loading
-
-several issues found in getting SimpleDateFormat working
-
- -- integer /=
- -- current-date processing
- -- missing inner class constructors
- -- cyclic static references
 
 JavaScript Examples used for testing
 ------------------------------------
@@ -137,32 +153,6 @@ Class.loadClass("jsjava.text.SimpleDateFormat", function() { x = new jsjava.text
 
 
   
-
-4/3/2015
-
-ResourceBundle working with property loading. 
-But ResourceBundle.Control calls new PropertyResourceBundle(), and that 
-causes a loading loop. Solution is to give PropertyResourceBundle() an empty
-constructor and to call it with reflection.
-
-4/2/2015
-
-JApplet loading successful
-
-ResourceBundle working with Java class loading
-DecimalFormat working
-
-Thread.currentThread() working. For example, this works:
-
-  SwingJS.getJavaResource = function(path) {
-   // path looks like jssun.util...., for example
-    var appId = jsjava.lang.Thread.currentThread().getName();
-    path = Jmol._applets[appId].__Info.j2sPath + "/" + path;
-    var s = Jmol._getFileData(path);
-    return (s.startsWith("[Exception") ? null : s);
-  }
-  
-
 
 Differences to Original JDK 1.6
 ===============================
@@ -199,6 +189,7 @@ MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS
 =====================================================================
 
 primitive numerical types
+distinguishing arrays
 forced null typing
 native classes
 java.awt.Color
@@ -348,9 +339,36 @@ instead of
 month /= 367
 
 
-  
-  
+distinguishing arrays
+---------------------
 
+J2S cannot distinguish array types.
+One cannot test:
+
+  if (x instanceof float[]) {
+  } else if (x instanceof double[]) {
+  } else if (x instanceof Point2D[]) {
+  }
+   
+The javajs.util.AU class does provide a set of tests for specific
+kinds of arrays, but this is still not perfect, and is not complete.
+These methods call Clazz.isAxx methods and depend upon the first
+inner-most array not being empty.
+
+  public static boolean isAB(Object x)     // byte[]
+  public static boolean isAI(Object x)     // int[]
+  public static boolean isAII(Object x)    // int[][]
+  public static boolean isAF(Object x)     // float[]
+  public static boolean isAFF(Object x)    // float[][]
+  public static boolean isAFFF(Object x)   // float[][][]
+  public static boolean isAD(Object x)     // double[]
+  public static boolean isADD(Object x)    // double[][]
+  public static boolean isAFloat(Object x) // Float[]
+  public static boolean isAS(Object x)     // String[]
+  public static boolean isASS(Object x)    // String[][]
+  public static boolean isAP(Object x)     // javajs.util.T3[]
+
+  
 
 forced null typing
 ------------------
