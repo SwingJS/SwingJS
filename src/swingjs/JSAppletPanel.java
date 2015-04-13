@@ -127,7 +127,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		 * @j2sNative
 		 * 
 		 *            Jmol._applets[this.appletName + "_thread"] =
-		 *            jsjava.lang.Thread.isThread = this.myThread; this.appContext =
+		 *            jsjava.lang.Thread.thisThread = this.myThread; this.appContext =
 		 *            jssun.awt.SunToolkit.createNewAppContext(); if
 		 *            (SwingJS._JSToolkit == null) SwingJS._JSToolkit =
 		 *            swingjs.api.Interface.getInstance("swingjs.JSToolkit", false);

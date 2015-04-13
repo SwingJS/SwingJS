@@ -47,6 +47,10 @@ import jsjava.awt.Graphics;
  *
  */
 public abstract class ComponentUI {
+	
+	
+	protected int incr; //SwingJS
+	
     /**
      * Sole constructor. (For invocation by subclass constructors,
      * typically implicit.)

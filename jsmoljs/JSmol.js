@@ -220,6 +220,7 @@
 		proto._createCanvas2d = function(doReplace) {
 			var container = Jmol.$(this, "appletdiv");
 			//if (doReplace) {
+      
 			try {
 			container[0].removeChild(this._canvas);
 			if (this._canvas.frontLayer)
@@ -250,6 +251,12 @@
 				container.append(img);
 				Jmol._$(img.id).css({zIndex:Jmol._getZ(this, "image"),position:"absolute",left:"0px",top:"0px", width:"0px", height:"0px", overflow:"hidden"});
 				this._mouseInterface = this._getLayer("front", container, w, h, false);
+        if (this._isSwing) {
+        	var d = document.createElement("div");
+          d.id = this._id + "_swingdiv";
+        	Jmol._$(this._id + "_appletinfotablediv").append(d);
+				  Jmol._$(d.id).css({zIndex:Jmol._getZ(this, "rear"),position:"absolute",left:"0px",top:"0px", width:w +"px", height:h+"px", overflow:"hidden"});
+        }
 				//this._getLayer("rear", container, w, h, true);
 				//Jmol._$(canvas.id).css({background:"rgb(0,0,0,0.001)", "z-index":Jmol._z.main}); 
 			} else {

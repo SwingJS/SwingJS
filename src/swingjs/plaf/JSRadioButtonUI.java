@@ -175,7 +175,26 @@ public class JSRadioButtonUI extends ComponentUI {
      */
     public Dimension getPreferredSize(JComponent c) {
     	System.out.println("checking JSRadioButton UI getPreferredSize");
-        return null;
+    	String app = Thread.currentThread().getName();
+    	String id = app + "_" + c.getUIClassID() + (++incr);
+    	String div = app + "_swingdiv";
+    	int w = 0, h = 0;
+    	/**
+    	 * 
+    	 * @j2sNative
+    	 * 
+    	 * var d = document.createElement('input');
+    	 * d.id = id;
+    	 * d.type = "button";
+    	 * d.value = c.getText();
+    	 * Jmol._$(div).html("").append(d);
+    	 * w = Jmol._$(id).width();
+    	 * h = Jmol._$(id).height();
+    	 * Jmol._$(div).html("");
+    	 * 
+    	 */
+    	{}
+        return new Dimension(w, h);
     }
 
     /**

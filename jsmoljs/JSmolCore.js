@@ -117,8 +117,8 @@ Jmol = (function(document) {
 	var z=Jmol.z || 9000;
 	var getZOrders = function(z) {
 		return {
-			header:z++,
 			rear:z++,
+			header:z++,
 			main:z++,
 			image:z++,
 			front:z++,
@@ -132,7 +132,7 @@ Jmol = (function(document) {
 		}
 	};
 	var j = {
-		_version: "$Date: 2015-04-05 21:22:14 -0500 (Sun, 05 Apr 2015) $", // svn.keywords:lastUpdated
+		_version: "$Date: 2015-04-13 06:11:50 -0500 (Mon, 13 Apr 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
 		_allowedJmolSize: [25, 2048, 300],   // min, max, default (pixels)

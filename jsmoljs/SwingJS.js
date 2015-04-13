@@ -19,7 +19,7 @@ if (typeof(SwingJS) == "undefined") {
 
   SwingJS.getJavaResource = function(path) {
    // path looks like jssun.util...., for example
-    var s = Jmol._getFileData(Jmol._applets[jsjava.lang.Thread.currentThread().getName()].__Info.j2sPath + "/" + path);
+    var s = Jmol._getFileData(Jmol._applets[java.lang.Thread.currentThread().getName()].__Info.j2sPath + "/" + path);
     return (s.startsWith("[Exception") ? null : s);
   }
   
@@ -142,25 +142,8 @@ if (typeof(SwingJS) == "undefined") {
 		return (checkOnly ? applet : Jmol._registerApplet(id, applet));  
 	}
 
-	SwingJS._Canvas2D = function(id, Info, type, checkOnly){
-		// type: Jmol or JSV
-		this._uniqueId = ("" + Math.random()).substring(3);
-		this._id = id;
-		this._is2D = true;
-		this._isJava = false;
-		this._jmolType = "SwingJS._Canvas2D (" + type + ")";
-		if (checkOnly)
-			return this;
-		window[id] = this;
-		this._createCanvas(id, Info, false);
-		if (!Jmol._document || this._deferApplet)
-			return this;
-		this._init();
-		return this;
-	};
-
 	Applet._getCanvas = function(id, Info, checkOnly) {
-    Info._layered = true;
+    Info._isLayered = true;
     Info._isSwing = true;
     Info._platform = "";
 		Jmol._Canvas2D.prototype = Jmol._jsSetPrototype(new Applet(id, Info, true));
