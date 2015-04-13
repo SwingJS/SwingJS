@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import swingjs.api.HTMLCanvasContext2D;
+import swingjs.api.Interface;
+import swingjs.plaf.SwingJSLookAndFeel;
 
 import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
@@ -18,6 +20,8 @@ import jsjava.awt.Window;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjavax.swing.UIDefaults;
+import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.SunToolkit;
 
 
@@ -226,15 +230,7 @@ public class JSToolkit extends SunToolkit {
 	 * @return may be null
 	 */
 	public static Object getInstance(String className) {
-		/**
-		 * @j2sNative
-		 * 
-		 *   return swingjs.api.Interface.getInterface(className);
-		 * 
-		 */
-		{
-			return null;
-		}
+		return swingjs.api.Interface.getInstance(className, false);
 	}
 
 	private static GraphicsConfiguration gc;
@@ -384,6 +380,18 @@ public class JSToolkit extends SunToolkit {
 		{
 			return null;
 		}
+	}
+
+	private static UIDefaults uid;
+	
+	public static UIDefaults getLookAndFeelDefaults() {
+		if (uid == null)
+			uid = ((SwingJSLookAndFeel) getInstance("swingjs.plaf.SwingJSLookAndFeel")).getDefaults();
+		return uid;
+	}
+
+	public static ComponentUI getComponentUI(String uiClassID) {
+  	return (ComponentUI) Interface.getInstance("swingjs.plaf.JS" + uiClassID, true);
 	}	
 	
 }

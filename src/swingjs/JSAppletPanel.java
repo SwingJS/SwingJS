@@ -130,22 +130,20 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		 *            jsjava.lang.Thread.isThread = this.myThread; this.appContext =
 		 *            jssun.awt.SunToolkit.createNewAppContext(); if
 		 *            (SwingJS._JSToolkit == null) SwingJS._JSToolkit =
-		 *            swingjs.api.Interface.getInterface("swingjs.JSToolkit");
+		 *            swingjs.api.Interface.getInstance("swingjs.JSToolkit", false);
 		 */
 		{
 		}
 
 		init();
 
-		System.out.println("JSAPpletPanel runloader");
+		System.out.println("JSAppletPanel runloader");
 		runLoader(); // applet created here
-		// do something with display here
-		System.out.println("JSAPpletPane  init");
+		System.out.println("JSAppletPane  init");
 		appletInit();
-		System.out.println("JSAPpletPanel start");
-
+		System.out.println("JSAppletPanel start");
 		appletStart();
-		System.out.println("JSAPpletPanel done");
+		System.out.println("JSAppletPanel done");
 
 		notifyAppletReady();
 

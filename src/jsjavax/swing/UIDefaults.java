@@ -32,6 +32,8 @@ import jsjava.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 
+import swingjs.JSToolkit;
+
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
@@ -739,8 +741,9 @@ public class UIDefaults extends Hashtable<Object,Object>
      * @return the <code>ComponentUI</code> object
      */
     public ComponentUI getUI(JComponent target) {
-    	 return null;
-//        Object cl = get("ClassLoader");
+    //SwingJS 
+    	return JSToolkit.getComponentUI(target.getUIClassID());
+    			//        Object cl = get("ClassLoader");
 //        ClassLoader uiClassLoader =
 //            (cl != null) ? (ClassLoader)cl : target.getClass().getClassLoader();
 //        Class uiClass = getUIClass(target.getUIClassID(), uiClassLoader);

@@ -581,15 +581,15 @@ public abstract class JComponent extends Container
         // bindings will work everywhere. This is a partial fix to BugID
         // 4282211.
         enableEvents(AWTEvent.KEY_EVENT_MASK);
-        if (isManagingFocus()) {
-            LookAndFeel.installProperty(this,
-                                        "focusTraversalKeysForward",
-                                  getManagingFocusForwardTraversalKeys());
-            LookAndFeel.installProperty(this,
-                                        "focusTraversalKeysBackward",
-                                  getManagingFocusBackwardTraversalKeys());
-        }
-
+//SwingJS        if (isManagingFocus()) {
+//            LookAndFeel.installProperty(this,
+//                                        "focusTraversalKeysForward",
+//                                  getManagingFocusForwardTraversalKeys());
+//            LookAndFeel.installProperty(this,
+//                                        "focusTraversalKeysBackward",
+//                                  getManagingFocusBackwardTraversalKeys());
+//        }
+//
         super.setLocale( JComponent.getDefaultLocale() );
     }
 
@@ -640,37 +640,37 @@ public abstract class JComponent extends Container
      *  description: The component's look and feel delegate.
      */
     protected void setUI(ComponentUI newUI) {
-    	return;
-//        /* We do not check that the UI instance is different
-//         * before allowing the switch in order to enable the
-//         * same UI instance *with different default settings*
-//         * to be installed.
-//         */
-//
-//        uninstallUIAndProperties();
-//
-//        // aaText shouldn't persist between look and feels, reset it.
-//        aaTextInfo =
-//            UIManager.getDefaults().get(SwingUtilities2.AA_TEXT_PROPERTY_KEY);
+//    	return;
+        /* We do not check that the UI instance is different
+         * before allowing the switch in order to enable the
+         * same UI instance *with different default settings*
+         * to be installed.
+         */
+
+        uninstallUIAndProperties();
+
+        // aaText shouldn't persist between look and feels, reset it.
+        aaTextInfo =
+            UIManager.getDefaults().get(SwingUtilities2.AA_TEXT_PROPERTY_KEY);
 //        ComponentUI oldUI = ui;
-//        ui = newUI;
-//        if (ui != null) {
-//            ui.installUI(this);
-//        }
+        ui = newUI;
+        if (ui != null) {
+            ui.installUI(this);
+        }
 //
 //        firePropertyChange("UI", oldUI, newUI);
-//        revalidate();
-//        repaint();
+        revalidate();
+        repaint();
     }
 
-//    /**
-//     * Uninstalls the UI, if any, and any client properties designated
-//     * as being specific to the installed UI - instances of
-//     * {@code UIClientPropertyKey}.
-//     */
-//    private void uninstallUIAndProperties() {
-//        if (ui != null) {
-//            ui.uninstallUI(this);
+    /**
+     * Uninstalls the UI, if any, and any client properties designated
+     * as being specific to the installed UI - instances of
+     * {@code UIClientPropertyKey}.
+     */
+    private void uninstallUIAndProperties() {
+        if (ui != null) {
+            ui.uninstallUI(this);
 //            //clean UIClientPropertyKeys from client properties
 //            if (clientProperties != null) {
 //                synchronized(clientProperties) {
@@ -685,8 +685,8 @@ public abstract class JComponent extends Container
 //                    }
 //                }
 //            }
-//        }
-//    }
+        }
+    }
 
     /**
      * Returns the <code>UIDefaults</code> key used to

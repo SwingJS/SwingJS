@@ -1095,14 +1095,16 @@ Jmol = (function(document) {
 		return window[id] = Jmol._applets[id] = Jmol._applets[applet] = Jmol._applets[id + "__" + Jmol._syncId + "__"] = applet;
 	} 
 
-	Jmol._readyCallback = function (appId,fullId,isReady,javaApplet,javaJSAppletPanel) {
+	Jmol._readyCallback = function (appId,fullId,isReady,javaApplet,javaAppletPanel) {
 		appId = appId.split("_object")[0];
-    javaJSAppletPanel || (javaJSAppletPanel = javaApplet);
+    javaAppletPanel || (javaAppletPanel = javaApplet);
 		isReady = (isReady.booleanValue ? isReady.booleanValue() : isReady);
 		// necessary for MSIE in strict mode -- apparently, we can't call 
 		// jmol._readyCallback, but we can call Jmol._readyCallback. Go figure...
     var applet = Jmol._applets[appId];
-		Jmol._track(applet._readyCallback(appId, fullId, isReady, javaApplet, javaJSAppletPanel));
+    applet._appletPanel = javaAppletPanel;
+    applet._applet = javaApplet;
+		Jmol._track(applet._readyCallback(appId, fullId, isReady));
 	}
 
 	Jmol._getWrapper = function(applet, isHeader) {

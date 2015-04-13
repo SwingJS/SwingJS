@@ -675,7 +675,7 @@ final public class Measure {
 
     //this construction prevents JavaScript from requiring preloading of Eigen
     
-    float[] v = ((EigenInterface) Interface.getInterface("javajs.util.Eigen"))
+    float[] v = ((EigenInterface) Interface.getInstance("javajs.util.Eigen", false))
         .setM(N).getEigenvectorsFloatTransposed()[3];
     q = Quat.newP4(P4.new4(v[1], v[2], v[3], v[0]));
     retStddev[1] = getRmsd(centerAndPoints, q);

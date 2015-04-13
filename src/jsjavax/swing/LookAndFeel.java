@@ -25,6 +25,7 @@
 
 package jsjavax.swing;
 
+import swingjs.JSToolkit;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Font;
@@ -32,6 +33,7 @@ import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
 import jsjavax.swing.plaf.InputMapUIResource;
 import jsjavax.swing.plaf.UIResource;
+import jsjavax.swing.text.JTextComponent;
 import jssun.swing.DefaultLayoutStyle;
 import jssun.swing.SwingUtilities2;
 
@@ -160,15 +162,16 @@ public abstract class LookAndFeel
                                      String defaultBgName,
                                      String defaultFgName)
     {
-        Color bg = c.getBackground();
-        if (bg == null || bg instanceof UIResource) {
-            c.setBackground(UIManager.getColor(defaultBgName));
-        }
-
-        Color fg = c.getForeground();
-        if (fg == null || fg instanceof UIResource) {
-            c.setForeground(UIManager.getColor(defaultFgName));
-        }
+    	JSToolkit.notImplemented();
+//        Color bg = c.getBackground();
+//        if (bg == null || bg instanceof UIResource) {
+//            c.setBackground(UIManager.getColor(defaultBgName));
+//        }
+//
+//        Color fg = c.getForeground();
+//        if (fg == null || fg instanceof UIResource) {
+//            c.setForeground(UIManager.getColor(defaultFgName));
+//        }
     }
 
 
@@ -193,12 +196,13 @@ public abstract class LookAndFeel
                                          String defaultBgName,
                                          String defaultFgName,
                                          String defaultFontName) {
-        Font f = c.getFont();
-        if (f == null || f instanceof UIResource) {
-            c.setFont(UIManager.getFont(defaultFontName));
-        }
-
-        installColors(c, defaultBgName, defaultFgName);
+    	JSToolkit.notImplemented();
+//        Font f = c.getFont();
+//        if (f == null || f instanceof UIResource) {
+//            c.setFont(UIManager.getFont(defaultFontName));
+//        }
+//
+//        installColors(c, defaultBgName, defaultFgName);
     }
 
 
@@ -213,10 +217,11 @@ public abstract class LookAndFeel
      *         <a href="#exceptions">exceptions</a>
      */
     public static void installBorder(JComponent c, String defaultBorderName) {
-        Border b = c.getBorder();
-        if (b == null || b instanceof UIResource) {
-            c.setBorder(UIManager.getBorder(defaultBorderName));
-        }
+    	JSToolkit.notImplemented();
+//        Border b = c.getBorder();
+//        if (b == null || b instanceof UIResource) {
+//            c.setBorder(UIManager.getBorder(defaultBorderName));
+//        }
     }
 
 
@@ -229,9 +234,10 @@ public abstract class LookAndFeel
      * @throws NullPointerException if {@code c} is {@code null}
      */
     public static void uninstallBorder(JComponent c) {
-        if (c.getBorder() instanceof UIResource) {
-            c.setBorder(null);
-        }
+    	JSToolkit.notImplemented();
+//        if (c.getBorder() instanceof UIResource) {
+//            c.setBorder(null);
+//        }
     }
 
     /**
@@ -262,64 +268,66 @@ public abstract class LookAndFeel
         // this is a special case because the JPasswordField's ancestor heirarchy
         // includes a class outside of jsjavax.swing, thus we cannot call setUIProperty
         // directly.
-        if (c instanceof JPasswordField) {
-            if (!((JPasswordField)c).customSetUIProperty(propertyName, propertyValue)) {
-                c.setUIProperty(propertyName, propertyValue);
-            }
-        } else {
-            c.setUIProperty(propertyName, propertyValue);
-        }
+    	JSToolkit.notImplemented();
+//        if (c instanceof JPasswordField) {
+//            if (!((JPasswordField)c).customSetUIProperty(propertyName, propertyValue)) {
+//                c.setUIProperty(propertyName, propertyValue);
+//            }
+//        } else {
+//            c.setUIProperty(propertyName, propertyValue);
+//        }
     }
 
-//    /**
-//     * Convenience method for building an array of {@code
-//     * KeyBindings}. While this method is not deprecated, developers
-//     * should instead use {@code ActionMap} and {@code InputMap} for
-//     * supplying key bindings.
-//     * <p>
-//     * This method returns an array of {@code KeyBindings}, one for each
-//     * alternating {@code key-action} pair in {@code keyBindingList}.
-//     * A {@code key} can either be a {@code String} in the format
-//     * specified by the <code>KeyStroke.getKeyStroke</code> method, or
-//     * a {@code KeyStroke}. The {@code action} part of the pair is a
-//     * {@code String} that corresponds to the name of the {@code
-//     * Action}.
-//     * <p>
-//     * The following example illustrates creating a {@code KeyBinding} array
-//     * from six alternating {@code key-action} pairs:
-//     * <pre>
-//     *  JTextComponent.KeyBinding[] multilineBindings = makeKeyBindings( new Object[] {
-//     *          "UP", DefaultEditorKit.upAction,
-//     *        "DOWN", DefaultEditorKit.downAction,
-//     *     "PAGE_UP", DefaultEditorKit.pageUpAction,
-//     *   "PAGE_DOWN", DefaultEditorKit.pageDownAction,
-//     *       "ENTER", DefaultEditorKit.insertBreakAction,
-//     *         "TAB", DefaultEditorKit.insertTabAction
-//     *  });
-//     * </pre>
-//     * If {@code keyBindingList's} length is odd, the last element is
-//     * ignored.
-//     * <p>
-//     * Supplying a {@code null} value for either the {@code key} or
-//     * {@code action} part of the {@code key-action} pair results in
-//     * creating a {@code KeyBinding} with the corresponding value
-//     * {@code null}. As other parts of Swing's expect {@code non-null} values
-//     * in a {@code KeyBinding}, you should avoid supplying {@code null} as
-//     * either the {@code key} or {@code action} part of the {@code key-action}
-//     * pair.
-//     *
-//     * @param keyBindingList an array of {@code key-action} pairs
-//     * @return an array of {@code KeyBindings}
-//     * @throws NullPointerException if {@code keyBindingList} is {@code null}
-//     * @throws ClassCastException if the {@code key} part of the pair is
-//     *         not a {@code KeyStroke} or {@code String}, or the
-//     *         {@code action} part of the pair is not a {@code String}
-//     * @see ActionMap
-//     * @see InputMap
-//     * @see KeyStroke#getKeyStroke
-//     */
-//    public static JTextComponent.KeyBinding[] makeKeyBindings(Object[] keyBindingList)
-//    {
+    /**
+     * Convenience method for building an array of {@code
+     * KeyBindings}. While this method is not deprecated, developers
+     * should instead use {@code ActionMap} and {@code InputMap} for
+     * supplying key bindings.
+     * <p>
+     * This method returns an array of {@code KeyBindings}, one for each
+     * alternating {@code key-action} pair in {@code keyBindingList}.
+     * A {@code key} can either be a {@code String} in the format
+     * specified by the <code>KeyStroke.getKeyStroke</code> method, or
+     * a {@code KeyStroke}. The {@code action} part of the pair is a
+     * {@code String} that corresponds to the name of the {@code
+     * Action}.
+     * <p>
+     * The following example illustrates creating a {@code KeyBinding} array
+     * from six alternating {@code key-action} pairs:
+     * <pre>
+     *  JTextComponent.KeyBinding[] multilineBindings = makeKeyBindings( new Object[] {
+     *          "UP", DefaultEditorKit.upAction,
+     *        "DOWN", DefaultEditorKit.downAction,
+     *     "PAGE_UP", DefaultEditorKit.pageUpAction,
+     *   "PAGE_DOWN", DefaultEditorKit.pageDownAction,
+     *       "ENTER", DefaultEditorKit.insertBreakAction,
+     *         "TAB", DefaultEditorKit.insertTabAction
+     *  });
+     * </pre>
+     * If {@code keyBindingList's} length is odd, the last element is
+     * ignored.
+     * <p>
+     * Supplying a {@code null} value for either the {@code key} or
+     * {@code action} part of the {@code key-action} pair results in
+     * creating a {@code KeyBinding} with the corresponding value
+     * {@code null}. As other parts of Swing's expect {@code non-null} values
+     * in a {@code KeyBinding}, you should avoid supplying {@code null} as
+     * either the {@code key} or {@code action} part of the {@code key-action}
+     * pair.
+     *
+     * @param keyBindingList an array of {@code key-action} pairs
+     * @return an array of {@code KeyBindings}
+     * @throws NullPointerException if {@code keyBindingList} is {@code null}
+     * @throws ClassCastException if the {@code key} part of the pair is
+     *         not a {@code KeyStroke} or {@code String}, or the
+     *         {@code action} part of the pair is not a {@code String}
+     * @see ActionMap
+     * @see InputMap
+     * @see KeyStroke#getKeyStroke
+     */
+    public static JTextComponent.KeyBinding[] makeKeyBindings(Object[] keyBindingList)
+    {
+    	JSToolkit.notImplemented();
 //        JTextComponent.KeyBinding[] rv = new JTextComponent.KeyBinding[keyBindingList.length / 2];
 //
 //        for(int i = 0; i < keyBindingList.length; i += 2) {
@@ -331,7 +339,8 @@ public abstract class LookAndFeel
 //        }
 //
 //        return rv;
-//    }
+    	return null;
+    }
 
     /**
      * Creates a {@code InputMapUIResource} from <code>keys</code>. This is
@@ -347,9 +356,11 @@ public abstract class LookAndFeel
      * @since 1.3
      */
     public static InputMap makeInputMap(Object[] keys) {
-        InputMap retMap = new InputMapUIResource();
-        loadKeyBindings(retMap, keys);
-        return retMap;
+    	JSToolkit.notImplemented();
+//        InputMap retMap = new InputMapUIResource();
+//        loadKeyBindings(retMap, keys);
+//        return retMap;
+    	return null;
     }
 
     /**
@@ -373,9 +384,11 @@ public abstract class LookAndFeel
      */
     public static ComponentInputMap makeComponentInputMap(JComponent c,
                                                           Object[] keys) {
-        ComponentInputMap retMap = new ComponentInputMapUIResource(c);
-        loadKeyBindings(retMap, keys);
-        return retMap;
+    	JSToolkit.notImplemented();
+//        ComponentInputMap retMap = new ComponentInputMapUIResource(c);
+//        loadKeyBindings(retMap, keys);
+//        return retMap;
+    	return null;
     }
 
 
@@ -418,16 +431,17 @@ public abstract class LookAndFeel
      * @since 1.3
      */
     public static void loadKeyBindings(InputMap retMap, Object[] keys) {
-        if (keys != null) {
-            for (int counter = 0, maxCounter = keys.length;
-                 counter < maxCounter; counter++) {
-                Object keyStrokeO = keys[counter++];
-                KeyStroke ks = (keyStrokeO instanceof KeyStroke) ?
-                                (KeyStroke)keyStrokeO :
-                                KeyStroke.getKeyStroke((String)keyStrokeO);
-                retMap.put(ks, keys[counter]);
-            }
-        }
+    	JSToolkit.notImplemented();
+//        if (keys != null) {
+//            for (int counter = 0, maxCounter = keys.length;
+//                 counter < maxCounter; counter++) {
+//                Object keyStrokeO = keys[counter++];
+//                KeyStroke ks = (keyStrokeO instanceof KeyStroke) ?
+//                                (KeyStroke)keyStrokeO :
+//                                KeyStroke.getKeyStroke((String)keyStrokeO);
+//                retMap.put(ks, keys[counter]);
+//            }
+//        }
     }
 
     /**
@@ -453,7 +467,9 @@ public abstract class LookAndFeel
      * @see Class#getResourceAsStream(String)
      */
     public static Object makeIcon(final Class<?> baseClass, final String gifFile) {
-        return SwingUtilities2.makeIcon(baseClass, baseClass, gifFile);
+    	JSToolkit.notImplemented();
+    	return null;
+//        return SwingUtilities2.makeIcon(baseClass, baseClass, gifFile);
     }
 
     /**
@@ -486,6 +502,7 @@ public abstract class LookAndFeel
      * @since 1.4
      */
     public void provideErrorFeedback(Component component) {
+    	JSToolkit.notImplemented();
 //        Toolkit toolkit = null;
 //        if (component != null) {
 //            toolkit = component.getToolkit();
@@ -510,6 +527,7 @@ public abstract class LookAndFeel
      * @since 1.4
      */
     public static Object getDesktopPropertyValue(String systemPropertyName, Object fallbackValue) {
+    	JSToolkit.notImplemented();
 //        Object value = Toolkit.getDefaultToolkit().getDesktopProperty(systemPropertyName);
 //        if (value == null) {
             return fallbackValue;
@@ -541,7 +559,7 @@ public abstract class LookAndFeel
      * @since 1.5
      */
     public Icon getDisabledIcon(JComponent component, Icon icon) {
-    	// TODO?
+    	JSToolkit.notImplemented();
 //        if (icon instanceof ImageIcon) {
 //            return new ImageIconUIResource(GrayFilter.
 //                   createDisabledImage(((ImageIcon)icon).getImage()));

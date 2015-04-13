@@ -27,10 +27,22 @@ package swingjs.api;
 
 public class Interface {
 
-  public static Object getInterface(String name) {
+  public static Object getInstance(String name, boolean isQuiet) {
     try {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * Clazz._isQuiet = isQuiet;
+    	 */
+    	{}
       System.out.println("swingjs.api.Interface creating instance of " + name);
       Class<?> x = Class.forName(name);
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * Clazz._isQuiet = false;
+    	 */
+    	{}      
       return (x == null ? null : x.newInstance());
     } catch (Exception e) {
       System.out.println("Interface.java Error creating instance for " + name + ": \n" + e);

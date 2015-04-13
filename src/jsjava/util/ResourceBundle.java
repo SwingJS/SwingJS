@@ -2479,7 +2479,7 @@ public abstract class ResourceBundle {
 			String bundleName = toBundleName(baseName, locale);
 			ResourceBundle bundle = null;
 			if (format.equals("java.class")) {
-				bundle = (ResourceBundle) Interface.getInterface(bundleName);
+				bundle = (ResourceBundle) Interface.getInstance(bundleName, false);
 				// try {
 				// Class<? extends ResourceBundle> bundleClass
 				// = (Class<? extends ResourceBundle>)loader.loadClass(bundleName);
@@ -2555,7 +2555,7 @@ public abstract class ResourceBundle {
 		}
 
         private ResourceBundle newPropertyBundle(InputStream stream) throws IOException {
-        	  return ((PropertyResourceBundle)Interface.getInterface("jsjava.util.PropertyResourceBundle"))
+        	  return ((PropertyResourceBundle)Interface.getInstance("jsjava.util.PropertyResourceBundle", false))
         		.setStream(stream);
         	}
 

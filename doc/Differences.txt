@@ -197,6 +197,7 @@ java.awt.Color
 javax.swing.JFileDialog
 key focus
 static methods and classes -- order is important
+LookAndFeel
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -444,6 +445,13 @@ will fail. It's actually quite odd that it does not fail in Java as well.
 Likewise, static classes hidden in other classes must be presented in an order
 that does not call an uninitiated class. In java.util.Collections, for example,
 it was important to move SynchronizedRandomAccessList to after SynchronizedList.
+
+LookAndFeel
+-----------
+
+SwingJS implements the native browser LookAndFeel. Token UIManager methods are
+present but unimplemented; methods returning key bindings or other arrays return null.
+
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================

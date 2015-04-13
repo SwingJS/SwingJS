@@ -394,7 +394,6 @@
             javax/swing/LayoutStyle.js
             javax/swing/JCheckBox.js
             javax/swing/JToggleButton.js
-            javax/swing/AbstractButton.js
             java/awt/ItemSelectable.js
             java/awt/event/ItemEvent.js
             javax/swing/DefaultButtonModel.js
@@ -477,6 +476,7 @@
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
+            javax/swing/AbstractButton.js
     jssun/java2d/SunGraphics2D.js
     swingjs/JSGraphics2D.js
     

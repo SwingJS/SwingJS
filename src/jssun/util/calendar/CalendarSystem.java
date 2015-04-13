@@ -131,7 +131,7 @@ public abstract class CalendarSystem {
 	public static Gregorian getGregorianCalendar() {
 		if (GREGORIAN_INSTANCE == null)
 			GREGORIAN_INSTANCE = (Gregorian) swingjs.api.Interface
-					.getInterface("jssun.util.calendar.Gregorian");
+					.getInstance("jssun.util.calendar.Gregorian", false);
 		return GREGORIAN_INSTANCE;
 	}
 

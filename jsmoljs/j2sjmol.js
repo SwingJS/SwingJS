@@ -174,7 +174,9 @@ window["j2s.object.native"] = true;
  * Class Clazz. All the methods are static in this class.
  */
 /* static */
-/*Class = */ Clazz = function () {};
+/*Class = */ Clazz = {
+  _isQuiet: false
+};
 
 ;(function(Clazz, Jmol) {
 
@@ -3801,12 +3803,14 @@ var excludeClassMap = {};
 var evaluate = function(file, js) {
  		try {
 			eval(js);
-		} catch (e) {
+		} catch (e) {      
+      if (Clazz._isQuiet) 
+        return;
 			var s = "[Java2Script] The required class file \n\n" + file + (js.indexOf("[Exception") == 0 && js.indexOf("data: no") ? 
          "\nwas not found.\n"
         : "\ncould not be loaded. Script error: " + e.message + " \n\ndata:\n\n" + js) + "\n\n" + Clazz.getStackTrace();
-			alert (s)
-			Clazz.alert (s);
+  		alert(s)
+			Clazz.alert(s);
 			throw e;
 		}
 		_Loader.onScriptLoaded(file, false);

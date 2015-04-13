@@ -35,13 +35,15 @@ import jsjava.awt.Dimension;
 import jsjavax.swing.plaf.ComponentUI;
 import jsjavax.swing.border.Border;
 
-import jsjavax.swing.event.SwingPropertyChangeSupport;
+//import jsjavax.swing.event.SwingPropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 
 import java.util.ArrayList;
+
+import swingjs.JSToolkit;
 import jsjava.util.Locale;
 
-import jssun.swing.SwingUtilities2;
+//import jssun.swing.SwingUtilities2;
 
 
 /**
@@ -156,84 +158,84 @@ import jssun.swing.SwingUtilities2;
  */
 public class UIManager
 {
-    /**
-     * This class defines the state managed by the <code>UIManager</code>.  For
-     * Swing applications the fields in this class could just as well
-     * be static members of <code>UIManager</code> however we give them
-     * "AppContext"
-     * scope instead so that applets (and potentially multiple lightweight
-     * applications running in a single VM) have their own state. For example,
-     * an applet can alter its look and feel, see <code>setLookAndFeel</code>.
-     * Doing so has no affect on other applets (or the browser).
-     */
-    private static class LAFState
-    {
-//        Properties swingProps;
-        private UIDefaults[] tables = new UIDefaults[2];
-
-        boolean initialized = false;
-        MultiUIDefaults multiUIDefaults = new MultiUIDefaults(tables);
-        LookAndFeel lookAndFeel;
-//        LookAndFeel multiLookAndFeel = null;
-//        Vector auxLookAndFeels = null;
-        SwingPropertyChangeSupport changeSupport;
-
-        LookAndFeelInfo[] installedLAFs;
-
-//        UIDefaults getLookAndFeelDefaults() { return tables[0]; }
-//        void setLookAndFeelDefaults(UIDefaults x) { tables[0] = x; }
+//    /**
+//     * This class defines the state managed by the <code>UIManager</code>.  For
+//     * Swing applications the fields in this class could just as well
+//     * be static members of <code>UIManager</code> however we give them
+//     * "AppContext"
+//     * scope instead so that applets (and potentially multiple lightweight
+//     * applications running in a single VM) have their own state. For example,
+//     * an applet can alter its look and feel, see <code>setLookAndFeel</code>.
+//     * Doing so has no affect on other applets (or the browser).
+//     */
+//    private static class LAFState
+//    {
+////        Properties swingProps;
+//        private UIDefaults[] tables = new UIDefaults[2];
 //
-//        UIDefaults getSystemDefaults() { return tables[1]; }
-//        void setSystemDefaults(UIDefaults x) { tables[1] = x; }
-
-        /**
-         * Returns the SwingPropertyChangeSupport for the current
-         * AppContext.  If <code>create</code> is a true, a non-null
-         * <code>SwingPropertyChangeSupport</code> will be returned, if
-         * <code>create</code> is false and this has not been invoked
-         * with true, null will be returned.
-         */
-        public synchronized SwingPropertyChangeSupport
-                                 getPropertyChangeSupport(boolean create) {
-            if (create && changeSupport == null) {
-                changeSupport = new SwingPropertyChangeSupport(
-                                         UIManager.class);
-            }
-            return changeSupport;
-        }
-    }
-
+//        boolean initialized = false;
+//        MultiUIDefaults multiUIDefaults = new MultiUIDefaults(tables);
+//        LookAndFeel lookAndFeel;
+////        LookAndFeel multiLookAndFeel = null;
+////        Vector auxLookAndFeels = null;
+//        SwingPropertyChangeSupport changeSupport;
+//
+//        LookAndFeelInfo[] installedLAFs;
+//
+////        UIDefaults getLookAndFeelDefaults() { return tables[0]; }
+////        void setLookAndFeelDefaults(UIDefaults x) { tables[0] = x; }
+////
+////        UIDefaults getSystemDefaults() { return tables[1]; }
+////        void setSystemDefaults(UIDefaults x) { tables[1] = x; }
+//
+//        /**
+//         * Returns the SwingPropertyChangeSupport for the current
+//         * AppContext.  If <code>create</code> is a true, a non-null
+//         * <code>SwingPropertyChangeSupport</code> will be returned, if
+//         * <code>create</code> is false and this has not been invoked
+//         * with true, null will be returned.
+//         */
+//        public synchronized SwingPropertyChangeSupport
+//                                 getPropertyChangeSupport(boolean create) {
+//            if (create && changeSupport == null) {
+//                changeSupport = new SwingPropertyChangeSupport(
+//                                         UIManager.class);
+//            }
+//            return changeSupport;
+//        }
+//    }
+//
 
 
 
     /* Lock object used in place of class object for synchronization. (4187686)
      */
-    private static final Object classLock = new Object();
+//    private static final Object classLock = new Object();
 
-    /**
-     * Return the <code>LAFState</code> object, lazily create one if necessary.
-     * All access to the <code>LAFState</code> fields is done via this method,
-     * for example:
-     * <pre>
-     *     getLAFState().initialized = true;
-     * </pre>
-     */
-    private static LAFState getLAFState() {
-        LAFState rv = (LAFState)SwingUtilities.appContextGet(
-                SwingUtilities2.LAF_STATE_KEY);
-        if (rv == null) {
-            synchronized (classLock) {
-                rv = (LAFState)SwingUtilities.appContextGet(
-                        SwingUtilities2.LAF_STATE_KEY);
-                if (rv == null) {
-                    SwingUtilities.appContextPut(
-                            SwingUtilities2.LAF_STATE_KEY,
-                            (rv = new LAFState()));
-                }
-            }
-        }
-        return rv;
-    }
+//    /**
+//     * Return the <code>LAFState</code> object, lazily create one if necessary.
+//     * All access to the <code>LAFState</code> fields is done via this method,
+//     * for example:
+//     * <pre>
+//     *     getLAFState().initialized = true;
+//     * </pre>
+//     */
+//    private static LAFState getLAFState() {
+//        LAFState rv = (LAFState)SwingUtilities.appContextGet(
+//                SwingUtilities2.LAF_STATE_KEY);
+//        if (rv == null) {
+//            synchronized (classLock) {
+//                rv = (LAFState)SwingUtilities.appContextGet(
+//                        SwingUtilities2.LAF_STATE_KEY);
+//                if (rv == null) {
+//                    SwingUtilities.appContextPut(
+//                            SwingUtilities2.LAF_STATE_KEY,
+//                            (rv = new LAFState()));
+//                }
+//            }
+//        }
+//        return rv;
+//    }
 
 
 //    /* Keys used for the properties file in <java.home>/lib/swing.properties.
@@ -342,15 +344,16 @@ public class UIManager
 
     static {
         ArrayList iLAFs = new ArrayList(4);
-        iLAFs.add(new LookAndFeelInfo(
-                      "Metal", "jsjavax.swing.plaf.metal.MetalLookAndFeel"));
-        iLAFs.add(new LookAndFeelInfo(
-                      "Nimbus", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"));
-        iLAFs.add(new LookAndFeelInfo("CDE/Motif",
-                  "com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
-
-        // Only include windows on Windows boxs.
-//JS        OSInfo.OSType osType = AccessController.doPrivileged(OSInfo.getOSTypeAction());
+        iLAFs.add(new LookAndFeelInfo("SwingJS", "swingjs.plaf.SwingJSLookAndFeel"));
+//SwingJS        iLAFs.add(new LookAndFeelInfo(
+//                      "Metal", "jsjavax.swing.plaf.metal.MetalLookAndFeel"));
+//        iLAFs.add(new LookAndFeelInfo(
+//                      "Nimbus", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"));
+//        iLAFs.add(new LookAndFeelInfo("CDE/Motif",
+//                  "com.sun.java.swing.plaf.motif.MotifLookAndFeel"));
+//
+//        // Only include windows on Windows boxs.
+//        OSInfo.OSType osType = AccessController.doPrivileged(OSInfo.getOSTypeAction());
 //        if (osType == OSInfo.OSType.WINDOWS) {
 //            iLAFs.add(new LookAndFeelInfo("Windows",
 //                        "com.sun.java.swing.plaf.windows.WindowsLookAndFeel"));
@@ -391,14 +394,15 @@ public class UIManager
      * @see #setLookAndFeel
      */
     public static LookAndFeelInfo[] getInstalledLookAndFeels() {
-        maybeInitialize();
-        LookAndFeelInfo[] ilafs = getLAFState().installedLAFs;
-        if (ilafs == null) {
-            ilafs = installedLAFs;
-        }
-        LookAndFeelInfo[] rv = new LookAndFeelInfo[ilafs.length];
-        System.arraycopy(ilafs, 0, rv, 0, ilafs.length);
-        return rv;
+//        maybeInitialize();
+//        LookAndFeelInfo[] ilafs = getLAFState().installedLAFs;
+//        if (ilafs == null) {
+//            ilafs = installedLAFs;
+//        }
+//        LookAndFeelInfo[] rv = new LookAndFeelInfo[ilafs.length];
+//        System.arraycopy(ilafs, 0, rv, 0, ilafs.length);
+//        return rv;
+    	return installedLAFs;
     }
 
 
@@ -417,10 +421,11 @@ public class UIManager
     public static void setInstalledLookAndFeels(LookAndFeelInfo[] infos)
         throws SecurityException
     {
-        maybeInitialize();
-        LookAndFeelInfo[] newInfos = new LookAndFeelInfo[infos.length];
-        System.arraycopy(infos, 0, newInfos, 0, infos.length);
-        getLAFState().installedLAFs = newInfos;
+    	JSToolkit.notImplemented();
+//        maybeInitialize();
+//        LookAndFeelInfo[] newInfos = new LookAndFeelInfo[infos.length];
+//        System.arraycopy(infos, 0, newInfos, 0, infos.length);
+//        getLAFState().installedLAFs = newInfos;
     }
 
 
@@ -464,8 +469,10 @@ public class UIManager
      * @see #setLookAndFeel
      */
     public static LookAndFeel getLookAndFeel() {
-        maybeInitialize();
-        return getLAFState().lookAndFeel;
+    	JSToolkit.notImplemented();
+//        maybeInitialize();
+//        return getLAFState().lookAndFeel;
+    	return null;
     }
 
 
@@ -627,7 +634,7 @@ public class UIManager
      */
     public static UIDefaults getDefaults() {
         maybeInitialize();
-        return getLAFState().multiUIDefaults;
+        return uid;//getLAFState().multiUIDefaults;
     }
 
     /**
@@ -973,9 +980,8 @@ public class UIManager
      * @see UIDefaults#getUI
      */
     public static ComponentUI getUI(JComponent target) {
-    	return null;
-//        maybeInitialize();
-//        ComponentUI ui = null;
+        maybeInitialize();
+        ComponentUI ui = null;
 //        LookAndFeel multiLAF = getLAFState().multiLookAndFeel;
 //        if (multiLAF != null) {
 //            // This can return null if the multiplexing look and feel
@@ -983,9 +989,11 @@ public class UIManager
 //            ui = multiLAF.getDefaults().getUI(target);
 //        }
 //        if (ui == null) {
-//            ui = getDefaults().getUI(target);
-//        }
-//        return ui;
+            ui = getDefaults().getUI(target);
+ //       }
+        if (ui == null)
+        	System.out.println(target.getUIClassID() + " has not been implemented");
+        return ui;
     }
 
 
@@ -1145,10 +1153,10 @@ public class UIManager
      */
     public static void addPropertyChangeListener(PropertyChangeListener listener)
     {
-        synchronized (classLock) {
-            getLAFState().getPropertyChangeSupport(true).
-                             addPropertyChangeListener(listener);
-        }
+//        synchronized (classLock) {
+//            getLAFState().getPropertyChangeSupport(true).
+//                             addPropertyChangeListener(listener);
+//        }
     }
 
 
@@ -1162,10 +1170,10 @@ public class UIManager
      */
     public static void removePropertyChangeListener(PropertyChangeListener listener)
     {
-        synchronized (classLock) {
-            getLAFState().getPropertyChangeSupport(true).
-                          removePropertyChangeListener(listener);
-        }
+//        synchronized (classLock) {
+//            getLAFState().getPropertyChangeSupport(true).
+//                          removePropertyChangeListener(listener);
+//        }
     }
 
 
@@ -1178,10 +1186,11 @@ public class UIManager
      * @since 1.4
      */
     public static PropertyChangeListener[] getPropertyChangeListeners() {
-        synchronized(classLock) {
-            return getLAFState().getPropertyChangeSupport(true).
-                      getPropertyChangeListeners();
-        }
+    	return new PropertyChangeListener[0];
+//        synchronized(classLock) {
+//            return getLAFState().getPropertyChangeSupport(true).
+//                      getPropertyChangeListeners();
+//        }
     }
 
 //    private static Properties loadSwingProperties()
@@ -1367,6 +1376,10 @@ public class UIManager
 //    }
 //
 //
+
+    
+private static UIDefaults uid;
+
     /*
      * This method is called before any code that depends on the
      * <code>AppContext</code> specific LAFState object runs.  When the AppContext
@@ -1375,78 +1388,81 @@ public class UIManager
      * initialize().
      */
     private static void maybeInitialize() {
-        synchronized (classLock) {
-            if (!getLAFState().initialized) {
-                getLAFState().initialized = true;
-                initialize();
-            }
-        }
-    }
-
-
-    /*
-     * Only called by maybeInitialize().
-     */
-    private static void initialize() {
-        //Properties swingProps = loadSwingProperties();
-        //initializeSystemDefaults(swingProps);
-        //initializeDefaultLAF(swingProps);
-        //initializeAuxiliaryLAFs(swingProps);
-        //initializeInstalledLAFs(swingProps);
-
-        // Enable the Swing default LayoutManager.
-//        String toolkitName = Toolkit.getDefaultToolkit().getClass().getName();
-//        // don't set default policy if this is XAWT.
-//        if (!"jssun.awt.X11.XToolkit".equals(toolkitName)) {
-//            if (FocusManager.isFocusManagerEnabled()) {
-//                KeyboardFocusManager.getCurrentKeyboardFocusManager().
-//                    setDefaultFocusTraversalPolicy(
-//                        new LayoutFocusTraversalPolicy());
+    	if (uid == null) {
+    		uid = JSToolkit.getLookAndFeelDefaults();
+    	}
+//        synchronized (classLock) {
+//            if (!getLAFState().initialized) {
+//                getLAFState().initialized = true;
+//                initialize();
 //            }
 //        }
-
-        // Install Swing's PaintEventDispatcher
-//JS        if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
-//            jssun.awt.PaintEventDispatcher.setPaintEventDispatcher(
-//                                        new SwingPaintEventDispatcher());
-//        }
-        // Install a hook that will be invoked if no one consumes the
-        // KeyEvent.  If the source isn't a JComponent this will process
-        // key bindings, if the source is a JComponent it implies that
-        // processKeyEvent was already invoked and thus no need to process
-        // the bindings again, unless the Component is disabled, in which
-        // case KeyEvents will no longer be dispatched to it so that we
-        // handle it here.
-//        KeyboardFocusManager.getCurrentKeyboardFocusManager().
-//                addKeyEventPostProcessor(new KeyEventPostProcessor() {
-//                    public boolean postProcessKeyEvent(KeyEvent e) {
-//                        Component c = e.getComponent();
-//
-//                        if ((!(c instanceof JComponent) ||
-//                             (c != null && !((JComponent)c).isEnabled())) &&
-//                                JComponent.KeyboardState.shouldProcess(e) &&
-//                                SwingUtilities.processKeyBindings(e)) {
-//                            e.consume();
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                });
-//        try {
-//            Method setRequestFocusControllerM = jsjava.security.AccessController.doPrivileged(
-//                    new jsjava.security.PrivilegedExceptionAction<Method>() {
-//                        public Method run() throws Exception {
-//                            Method method =
-//                            Component.class.getDeclaredMethod("setRequestFocusController",
-//                                                              jssun.awt.RequestFocusController.class);
-//                            method.setAccessible(true);
-//                            return method;
-//                        }
-//                    });
-//            setRequestFocusControllerM.invoke(null, JComponent.focusController);
-//        } catch (Exception e) {
-//            // perhaps we should log this
-//            assert false;
-//        }
     }
+
+
+//    /*
+//     * Only called by maybeInitialize().
+//     */
+//    private static void initialize() {
+//        //Properties swingProps = loadSwingProperties();
+//        //initializeSystemDefaults(swingProps);
+//        //initializeDefaultLAF(swingProps);
+//        //initializeAuxiliaryLAFs(swingProps);
+//        //initializeInstalledLAFs(swingProps);
+//
+//        // Enable the Swing default LayoutManager.
+////        String toolkitName = Toolkit.getDefaultToolkit().getClass().getName();
+////        // don't set default policy if this is XAWT.
+////        if (!"jssun.awt.X11.XToolkit".equals(toolkitName)) {
+////            if (FocusManager.isFocusManagerEnabled()) {
+////                KeyboardFocusManager.getCurrentKeyboardFocusManager().
+////                    setDefaultFocusTraversalPolicy(
+////                        new LayoutFocusTraversalPolicy());
+////            }
+////        }
+//
+//        // Install Swing's PaintEventDispatcher
+////JS        if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
+////            jssun.awt.PaintEventDispatcher.setPaintEventDispatcher(
+////                                        new SwingPaintEventDispatcher());
+////        }
+//        // Install a hook that will be invoked if no one consumes the
+//        // KeyEvent.  If the source isn't a JComponent this will process
+//        // key bindings, if the source is a JComponent it implies that
+//        // processKeyEvent was already invoked and thus no need to process
+//        // the bindings again, unless the Component is disabled, in which
+//        // case KeyEvents will no longer be dispatched to it so that we
+//        // handle it here.
+////        KeyboardFocusManager.getCurrentKeyboardFocusManager().
+////                addKeyEventPostProcessor(new KeyEventPostProcessor() {
+////                    public boolean postProcessKeyEvent(KeyEvent e) {
+////                        Component c = e.getComponent();
+////
+////                        if ((!(c instanceof JComponent) ||
+////                             (c != null && !((JComponent)c).isEnabled())) &&
+////                                JComponent.KeyboardState.shouldProcess(e) &&
+////                                SwingUtilities.processKeyBindings(e)) {
+////                            e.consume();
+////                            return true;
+////                        }
+////                        return false;
+////                    }
+////                });
+////        try {
+////            Method setRequestFocusControllerM = jsjava.security.AccessController.doPrivileged(
+////                    new jsjava.security.PrivilegedExceptionAction<Method>() {
+////                        public Method run() throws Exception {
+////                            Method method =
+////                            Component.class.getDeclaredMethod("setRequestFocusController",
+////                                                              jssun.awt.RequestFocusController.class);
+////                            method.setAccessible(true);
+////                            return method;
+////                        }
+////                    });
+////            setRequestFocusControllerM.invoke(null, JComponent.focusController);
+////        } catch (Exception e) {
+////            // perhaps we should log this
+////            assert false;
+////        }
+//    }
 }

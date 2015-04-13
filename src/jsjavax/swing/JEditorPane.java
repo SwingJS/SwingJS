@@ -1285,7 +1285,7 @@ public class JEditorPane extends JTextComponent {
             String classname = (String) getKitTypeRegistry().get(type);
 //            ClassLoader loader = (ClassLoader) getKitLoaderRegistry().get(type);
             try {
-              k = (EditorKit) Interface.getInterface(classname);
+              k = (EditorKit) Interface.getInstance(classname, false);
 //                Class c;
 //                if (loader != null) {
 //                    c = loader.loadClass(classname);
