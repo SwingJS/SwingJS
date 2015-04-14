@@ -25,14 +25,18 @@
 
 package swingjs.plaf;
 
+import swingjs.api.DOMObject;
 import jsjavax.swing.AbstractButton;
 
 public class JSRadioButtonUI extends JSComponentUI {
 
+	private DOMObject radio;
+	private DOMObject label;
+
 	@Override
-	public Object getDomObject() {
-		Object radio = getElement("input", id, "type", "radio");
-		Object label = getElement("label", id + "l", "htmlFor", id, "innerHTML",
+	public DOMObject getDomObject() {
+		radio = getElement("input", id, "type", "radio");
+		label = getElement("label", id + "l", "htmlFor", id, "innerHTML",
 				((AbstractButton) c).getText());
 		domObj = getSpan(id, radio, label);
 		setCssFont(domObj, c.getFont());

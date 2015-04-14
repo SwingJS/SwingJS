@@ -1,6 +1,9 @@
 package swingjs.plaf;
 
 import swingjs.JSToolkit;
+import swingjs.api.DOMObject;
+import swingjs.api.JQuery;
+import swingjs.api.JQueryObject;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
@@ -12,32 +15,77 @@ public abstract class JSComponentUI extends ComponentUI {
 
 	protected JComponent c;
 	protected String id;
-	protected Object domObj;
+	protected DOMObject domObj;
 	protected int num;
 
 	public JSComponentUI() {
+		// for reflection
 	}
+
+  public abstract DOMObject getDomObject();
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
-		id = c.getUIClassID() + num;
-		num = ++incr;
+		newID();
 		return this;
 	}
 
+	protected void newID() {
+		num = ++incr;
+		id = c.getUIClassID() + num;
+	}
+
+	protected void setCssFont(DOMObject obj, Font font) {
+		if (font == null)
+			return;
+		int istyle = font.getStyle();
+		DOMObject.setStyle(obj, "font-family", font.getFamily());
+		DOMObject.setStyle(obj, "font-size", font.getSize() + "px");
+		DOMObject.setStyle(obj, "font-style", ((istyle & Font.ITALIC) == 0 ? "normal" : "italic"));
+		DOMObject.setStyle(obj, "font-weight", ((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
+	}
+
+	protected DOMObject getElement(String key, String id, String... attr) {
+		DOMObject d = DOMObject.createElement(key, id);
+		for (int i = 0; i < attr.length;)
+			DOMObject.setAttr(d, attr[i++], attr[i++]);
+		return d;
+	}
+
+	protected DOMObject getSpan(String id, Object... elements) {
+		DOMObject span = getElement("span", id + "s");
+		for (int i = 0; i < elements.length; i++)
+			span.appendChild(elements[i]);
+		return span;
+	}
+
+	protected Dimension getDimension(DOMObject span) {
+		String div = JSToolkit.getSwingDivId();
+		JQuery jq = JSToolkit.getJQuery();
+		JQueryObject jo = jq.$("#" + div);
+		jo.append(span);
+		int w = jq.$(span).width();
+		int h = jq.$(span).height();
+		jo.html("");
+		return new Dimension(w, h);
+	}
+
 	/**
-	 * c ignored
+	 * c ignored because JSComponentUI is one per component
 	 */
 	public Dimension getPreferredSize(JComponent c) {
+		newID();
   	return getDimension(getDomObject());
   }
 
 	protected static int incr; //SwingJS
 	
 	public void installUI(JComponent c) {
+		System.out.println(id + " installUI called on " + c);
 	}
 
 	public void uninstallUI(JComponent c) {
+		System.out.println(id + " uninstallUI called on " + c);
 	}
 
 	public void paint(Graphics g, JComponent c) {
@@ -57,74 +105,6 @@ public abstract class JSComponentUI extends ComponentUI {
 
 	public Dimension getMaximumSize(JComponent c) {
 		return null;// getPreferredSize(c);
-	}
-
-	@SuppressWarnings("unused")
-	protected void setCssFont(Object obj, Font font) {
-		if (font == null)
-			return;
-		String fam = font.getFamily();
-		String size = font.getSize() + "px";
-		int istyle = font.getStyle();
-		String style = ((istyle & Font.ITALIC) == 0 ? "normal" : "italic");
-		String weight = ((istyle & Font.BOLD) == 0 ? "normal" : "bold");
-		/**
-		 * @j2sNative
-		 * 
-		 *            obj.style["font-family"] = fam; obj.style["font-size"] = size;
-		 *            obj.style["font-style"] = style; obj.style["font-weight"] =
-		 *            weight;
-		 * 
-		 */
-		{
-		}
-	}
-
-	protected Object getElement(String key, String id, String... attr) {
-		Object d = null;
-		/**
-		 * 
-		 * @j2sNative
-		 * 
-		 *            d = document.createElement(key); d.id = id; for (var i = 0; i
-		 *            < attr.length;) 	d[attr[i++]] = attr[i++];
-		 * 
-		 */
-		{
-		}
-		return d;
-	}
-
-	protected Object getSpan(String id, Object... elements) {
-		Object span = getElement("span", id + "s");
-		for (int i = 0; i < elements.length; i++) {
-			/**
-			 * @j2sNative
-			 * 
-			 *            span.appendChild(elements[i]);
-			 * 
-			 */
-			{
-			}
-		}
-		return span;
-	}
-
-	protected Dimension getDimension(Object span) {
-		String div = JSToolkit.getSwingDivId();
-		int w = 0, h = 0;
-		/**
-		 * 
-		 * @j2sNative
-		 * 
-		 *            var jd = Jmol._$(div); jd.append(span); w =
-		 *            Jmol._$(span.id).width(); h = Jmol._$(span.id).height();
-		 *            jd.html("");
-		 * 
-		 */
-		{
-		}
-		return new Dimension(w, h);
 	}
 
   /**
@@ -220,6 +200,4 @@ public abstract class JSComponentUI extends ComponentUI {
       return Component.BaselineResizeBehavior.OTHER;
   }
   
-  public abstract Object getDomObject();
-
 }

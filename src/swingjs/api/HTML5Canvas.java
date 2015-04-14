@@ -1,7 +1,7 @@
 package swingjs.api;
 
-public interface HTML5Canvas {
+public abstract class HTML5Canvas extends DOMObject {
 
-	HTMLCanvasContext2D getContext(String str2d);
+	public abstract HTMLCanvasContext2D getContext(String str2d);
 
 }

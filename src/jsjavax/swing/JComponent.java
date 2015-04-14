@@ -640,7 +640,6 @@ public abstract class JComponent extends Container
      *  description: The component's look and feel delegate.
      */
     protected void setUI(ComponentUI newUI) {
-//    	return;
         /* We do not check that the UI instance is different
          * before allowing the switch in order to enable the
          * same UI instance *with different default settings*

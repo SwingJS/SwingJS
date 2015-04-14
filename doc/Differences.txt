@@ -1,5 +1,29 @@
 PROGRESS
 ========
+4/14/2015
+
+-- preliminary "native" user interface components implemented -- see swingjs.plaf
+   
+abstract class swingjs.api.DOMObject 
+abstract class HTML5Canvas extends DOMObject
+interface swingjs.api.JQuery 
+interface swingjs.api.JQueryObject
+
+These APIs allow considerable manipulation of page HTML5 without
+the need for @j2sNative blocks. For example, in swingjs.plaf.JSComponentUI:
+
+	protected Dimension getDimension(DOMObject span) {
+		String div = JSToolkit.getSwingDivId();
+		JQuery jq = JSToolkit.getJQuery();
+		JQueryObject jo = jq.$("#" + div);
+		jo.append(span);
+		int w = jq.$(span).width();
+		int h = jq.$(span).height();
+		jo.html("");
+		return new Dimension(w, h);
+	}
+
+
 4/12/2015
 
 basic very limited graphics working; no AffineTransform
@@ -48,6 +72,38 @@ Thread.currentThread() working. For example, this works:
 Project initiated
 
 ========================================================================== 
+J2S tips
+--------
+
+It is wise to always use "return(xxx)" with no space between "return" and "(". 
+and not just "return xxx" within an @j2sNative block. 
+These blocks will be rewrapped by Eclipse if ALT-S-N or Alt-S-F
+is pressed, and it is possible to have something like this:
+
+		/**
+		 * @j2sNative
+		 * 
+		 *  jQuery.$ || (jQuery.$ = jQuery);  return jQuery;
+		 */
+
+turn into this:
+
+		/**
+		 * @j2sNative
+		 * 
+		 *           jQuery.$ || (jQuery.$ = jQuery);  return
+		 *           jQuery;
+		 */
+
+which will fail. But if we have
+
+		/**
+		 * @j2sNative
+		 * 
+		 *           jQuery.$ || (jQuery.$ = jQuery);  return(jQuery);
+		 */
+
+then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------

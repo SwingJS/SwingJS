@@ -753,12 +753,7 @@ class TSd3Controls extends JPanel implements ItemListener {
 	private void addButton(ButtonGroup bg, String text, boolean b) {
 		JRadioButton c;
 		bg.add(c = new JRadioButton(text, b));
-		System.out.println(text + "  " + c.getPreferredSize());
 		add(c);
-		c.setText(text + "????");
-		System.out.println(text + "????  " + c.getPreferredSize());
-		c.setFont(new Font("Arial", Font.BOLD, 30));
-		System.out.println(text + "???? Arial 30px bold " + c.getPreferredSize());
 		c.addItemListener(this);
 	}
 

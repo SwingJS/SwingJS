@@ -25,12 +25,13 @@
 
 package swingjs.plaf;
 
+import swingjs.api.DOMObject;
 import jsjavax.swing.AbstractButton;
 
 public class JSButtonUI extends JSComponentUI {
 
 	@Override
-	public Object getDomObject() {
+	public DOMObject getDomObject() {
 		domObj = getElement("label", id, "innerHTML",
 				((AbstractButton) c).getText());
 		setCssFont(domObj, c.getFont());

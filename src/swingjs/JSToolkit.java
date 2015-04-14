@@ -6,6 +6,7 @@ import java.util.Map;
 
 import swingjs.api.HTMLCanvasContext2D;
 import swingjs.api.Interface;
+import swingjs.api.JQuery;
 import swingjs.plaf.JSComponentUI;
 import swingjs.plaf.SwingJSLookAndFeel;
 
@@ -43,14 +44,16 @@ public class JSToolkit extends SunToolkit {
 	@Override
 	public Dimension getScreenSize() {
 		Dimension d = new Dimension(0, 0);
+		JQuery jq = getJQuery();
+		
 		/**
 		 * @j2sNative
 		 * 
-		 * d.setSize(Jmol.$(window).width(), Jmol.$(window).height());
+		 * d.setSize(jq.$(window).width(), jq.$(window).height());
 		 * return d;
 		 */
 		{
-			return d;
+			return null;
 		}
 	}
 
@@ -203,7 +206,7 @@ public class JSToolkit extends SunToolkit {
 	///////////////////// Special SwingJS calls /////////////////////////
 
 	/**
-	 * get a property that is not just a String
+	 * get a property that is not just a String (not implemented)
 	 * 
 	 * @param t
 	 * @param key
@@ -211,16 +214,6 @@ public class JSToolkit extends SunToolkit {
 	 * @return
 	 */
 	public static Object getPropertyObject(Object t, String key, Object def) {
-		/**
-		 * @j2sNative
-		 * switch (key) {
-		 * case "graphics":
-		 *   return SwingJS.getGraphics(t)
-		 *   break;
-		 * }
-		 * 
-		 */
-		{}
 		return def;
 	}
 
@@ -247,25 +240,6 @@ public class JSToolkit extends SunToolkit {
 		return false;
 	}
 
-	public static int getJqueryInt(Object o, String type) {
-		/**
-		 * @j2sNative 
-		 * 
-		 * var d = Jmol.$(o);
-		 * switch (type) {
-		 * case "width":
-		 * return d.width();
-		 * break;
-		 * case "height":
-		 * return d.height();
-		 * }
-		 *  
-		 */
-		{
-			return 0;
-		}
-	}
-  
 	/**
 	 * generates proper font name for JSGraphics2d
 	 * Apparently Java sizes are pixels, not points. Not sure on this...
@@ -400,6 +374,23 @@ public class JSToolkit extends SunToolkit {
 
 	public static String getSwingDivId() {
   	return Thread.currentThread().getName() + "_swingdiv";
+	}
+
+	/**
+	 * Sets window.jQuery.$ = window.jQuery, so that we can call jQuery.$  
+	 * @return an object with $ as a method
+	 */
+	public static JQuery getJQuery() {
+		/**
+		 * @j2sNative
+		 * 
+		 *            if (!window.jQuery) alert(
+		 *            "jQuery is required for SwingJS, but window.jQuery is not defined."
+		 *            ); jQuery.$ || (jQuery.$ = jQuery); return(jQuery);
+		 */
+		{
+			return null;
+		}
 	}	
 	
 }

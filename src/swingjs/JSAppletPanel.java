@@ -216,11 +216,6 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 //		return null;
 //	}
 
-	@Override
-	public int getWidth() {
-		return JSToolkit.getJqueryInt(getCanvas(), "width");
-	}
-
 	private HTML5Canvas getCanvas() {
 		if (canvas == null)
 			canvas = html5Applet._getHtml5Canvas();
@@ -229,8 +224,12 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 	@Override
 	public int getHeight() {
-		getCanvas();
-		return JSToolkit.getJqueryInt(getCanvas(), "height");
+		return JSToolkit.getJQuery().$(getCanvas()).height();
+	}
+
+	@Override
+	public int getWidth() {
+		return JSToolkit.getJQuery().$(getCanvas()).width();
 	}
 
 	@Override
