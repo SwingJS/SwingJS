@@ -12,7 +12,7 @@ public abstract class JSComponentUI extends ComponentUI {
 
 	protected JComponent c;
 	protected String id;
-	protected Object span;
+	protected Object domObj;
 	protected int num;
 
 	public JSComponentUI() {
@@ -29,7 +29,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	 * c ignored
 	 */
 	public Dimension getPreferredSize(JComponent c) {
-  	return getDimension(getSpanObject());
+  	return getDimension(getDomObject());
   }
 
 	protected static int incr; //SwingJS
@@ -220,6 +220,6 @@ public abstract class JSComponentUI extends ComponentUI {
       return Component.BaselineResizeBehavior.OTHER;
   }
   
-  public abstract Object getSpanObject();
+  public abstract Object getDomObject();
 
 }
