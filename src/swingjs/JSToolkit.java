@@ -6,6 +6,7 @@ import java.util.Map;
 
 import swingjs.api.HTMLCanvasContext2D;
 import swingjs.api.Interface;
+import swingjs.plaf.JSComponentUI;
 import swingjs.plaf.SwingJSLookAndFeel;
 
 import jsjava.awt.Dimension;
@@ -20,8 +21,8 @@ import jsjava.awt.Window;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
-import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.SunToolkit;
 
 
@@ -390,8 +391,15 @@ public class JSToolkit extends SunToolkit {
 		return uid;
 	}
 
-	public static ComponentUI getComponentUI(String uiClassID) {
-  	return (ComponentUI) Interface.getInstance("swingjs.plaf.JS" + uiClassID, true);
+	public static JSComponentUI getComponentUI(JComponent target) {
+    JSComponentUI c = (JSComponentUI) Interface.getInstance("swingjs.plaf.JS" + target.getUIClassID(), true);
+    if (c != null)
+    	c.set(target);
+    return  c;
+	}
+
+	public static String getSwingDivId() {
+  	return Thread.currentThread().getName() + "_swingdiv";
 	}	
 	
 }

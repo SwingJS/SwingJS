@@ -742,7 +742,7 @@ public class UIDefaults extends Hashtable<Object,Object>
      */
     public ComponentUI getUI(JComponent target) {
     //SwingJS 
-    	return JSToolkit.getComponentUI(target.getUIClassID());
+    	return JSToolkit.getComponentUI(target);
     			//        Object cl = get("ClassLoader");
 //        ClassLoader uiClassLoader =
 //            (cl != null) ? (ClassLoader)cl : target.getClass().getClassLoader();

@@ -49,8 +49,6 @@ import jsjava.awt.Graphics;
 public abstract class ComponentUI {
 	
 	
-	protected int incr; //SwingJS
-	
     /**
      * Sole constructor. (For invocation by subclass constructors,
      * typically implicit.)
@@ -221,7 +219,7 @@ public abstract class ComponentUI {
      * @see jsjava.awt.LayoutManager2#maximumLayoutSize
      */
     public Dimension getMaximumSize(JComponent c) {
-        return getPreferredSize(c);
+        return null;//getPreferredSize(c);
     }
 
     /**
@@ -284,13 +282,13 @@ public abstract class ComponentUI {
      * @since 1.6
      */
     public int getBaseline(JComponent c, int width, int height) {
-        if (c == null) {
-            throw new NullPointerException("Component must be non-null");
-        }
-        if (width < 0 || height < 0) {
-            throw new IllegalArgumentException(
-                    "Width and height must be >= 0");
-        }
+//        if (c == null) {
+//            throw new NullPointerException("Component must be non-null");
+//        }
+//        if (width < 0 || height < 0) {
+//            throw new IllegalArgumentException(
+//                    "Width and height must be >= 0");
+//        }
         return -1;
     }
 
@@ -311,9 +309,9 @@ public abstract class ComponentUI {
      */
     public Component.BaselineResizeBehavior getBaselineResizeBehavior(
             JComponent c) {
-        if (c == null) {
-            throw new NullPointerException("Component must be non-null");
-        }
+//        if (c == null) {
+//            throw new NullPointerException("Component must be non-null");
+//        }
         return Component.BaselineResizeBehavior.OTHER;
     }
 

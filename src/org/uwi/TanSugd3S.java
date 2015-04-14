@@ -42,6 +42,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 		c.add(canvas, BorderLayout.CENTER);
 		c.add(controls = new TSd3Controls(canvas), BorderLayout.SOUTH);
 		System.out.println("Hello, world!");
+		invalidate();
 	}
 
 	public void setSize(int width, int height) {
@@ -754,11 +755,10 @@ class TSd3Controls extends JPanel implements ItemListener {
 		bg.add(c = new JRadioButton(text, b));
 		System.out.println(text + "  " + c.getPreferredSize());
 		add(c);
-		System.out.println(text + "  " + c.getPreferredSize());
-		c.setText( text + "????");
-		System.out.println(text + "  " + c.getPreferredSize());
+		c.setText(text + "????");
+		System.out.println(text + "????  " + c.getPreferredSize());
 		c.setFont(new Font("Arial", Font.BOLD, 30));
-		System.out.println(text + "  " + c.getPreferredSize());
+		System.out.println(text + "???? Arial 30px bold " + c.getPreferredSize());
 		c.addItemListener(this);
 	}
 
