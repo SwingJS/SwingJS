@@ -32,7 +32,7 @@ public class JSButtonUI extends JSComponentUI {
 
 	@Override
 	public DOMObject getDomObject() {
-		domObj = getElement("label", id, "innerHTML",
+		domObj = getDOMObject("label", id, "innerHTML",
 				((AbstractButton) c).getText());
 		setCssFont(domObj, c.getFont());
 		return domObj;

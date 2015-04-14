@@ -35,8 +35,8 @@ public class JSRadioButtonUI extends JSComponentUI {
 
 	@Override
 	public DOMObject getDomObject() {
-		radio = getElement("input", id, "type", "radio");
-		label = getElement("label", id + "l", "htmlFor", id, "innerHTML",
+		radio = getDOMObject("input", id, "type", "radio");
+		label = getDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
 				((AbstractButton) c).getText());
 		domObj = getSpan(id, radio, label);
 		setCssFont(domObj, c.getFont());

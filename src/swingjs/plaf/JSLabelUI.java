@@ -32,7 +32,7 @@ public class JSLabelUI extends JSComponentUI {
 
 	@Override
 	public DOMObject getDomObject() {
-		domObj = getElement("label", id, "innerHTML",((JLabel) c).getText());
+		domObj = getDOMObject("label", id, "innerHTML",((JLabel) c).getText());
 		setCssFont(domObj, c.getFont());
 		return domObj;
 	}

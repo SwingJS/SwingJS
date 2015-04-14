@@ -45,7 +45,7 @@ public abstract class JSComponentUI extends ComponentUI {
 		DOMObject.setStyle(obj, "font-weight", ((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
 	}
 
-	protected DOMObject getElement(String key, String id, String... attr) {
+	protected DOMObject getDOMObject(String key, String id, String... attr) {
 		DOMObject d = DOMObject.createElement(key, id);
 		for (int i = 0; i < attr.length;)
 			DOMObject.setAttr(d, attr[i++], attr[i++]);
@@ -53,19 +53,19 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	protected DOMObject getSpan(String id, Object... elements) {
-		DOMObject span = getElement("span", id + "s");
+		DOMObject span = getDOMObject("span", id + "s");
 		for (int i = 0; i < elements.length; i++)
 			span.appendChild(elements[i]);
 		return span;
 	}
 
-	protected Dimension getDimension(DOMObject span) {
+	protected Dimension getDimension(DOMObject obj) {
 		String div = JSToolkit.getSwingDivId();
 		JQuery jq = JSToolkit.getJQuery();
 		JQueryObject jo = jq.$("#" + div);
-		jo.append(span);
-		int w = jq.$(span).width();
-		int h = jq.$(span).height();
+		jo.append(obj);
+		int w = jq.$(obj).width();
+		int h = jq.$(obj).height();
 		jo.html("");
 		return new Dimension(w, h);
 	}
@@ -75,7 +75,9 @@ public abstract class JSComponentUI extends ComponentUI {
 	 */
 	public Dimension getPreferredSize(JComponent c) {
 		newID();
-  	return getDimension(getDomObject());
+		Dimension d = getDimension(getDomObject());
+		System.out.println(id + " getPreferredSize " + d + " called on " + c);
+  	return d;
   }
 
 	protected static int incr; //SwingJS

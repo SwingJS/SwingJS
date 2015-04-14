@@ -24,6 +24,7 @@ import javax.swing.JApplet;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JComponent;
 
 public class TanSugd3S extends JApplet implements WindowListener {
 
@@ -42,7 +43,6 @@ public class TanSugd3S extends JApplet implements WindowListener {
 		c.add(canvas, BorderLayout.CENTER);
 		c.add(controls = new TSd3Controls(canvas), BorderLayout.SOUTH);
 		System.out.println("Hello, world!");
-		invalidate();
 	}
 
 	public void setSize(int width, int height) {
@@ -57,6 +57,8 @@ public class TanSugd3S extends JApplet implements WindowListener {
 
 	public void start() {
 		controls.setEnabled(true);
+		controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
+		controls.revalidate();
 	}
 
 	public void stop() {
@@ -736,12 +738,13 @@ class TSd3Controls extends JPanel implements ItemListener {
 	JTextField e;
 	TSd3Canvas canvas;
 	int range;
+  public JComponent bg0;
 
 	public TSd3Controls(TSd3Canvas canvas) {
 		this.canvas = canvas;
 		range = 0;
 		ButtonGroup bg = new ButtonGroup();
-		addButton(bg, "0-50", true);
+		bg0 = addButton(bg, "0-50", true);
 		addButton(bg, "0-10", false);
 		addButton(bg, "10-20", false);
 		addButton(bg, "20-30", false);
@@ -750,11 +753,13 @@ class TSd3Controls extends JPanel implements ItemListener {
 		setVisible(true);
 	}
 
-	private void addButton(ButtonGroup bg, String text, boolean b) {
+	private JComponent addButton(ButtonGroup bg, String text, boolean b) {
 		JRadioButton c;
 		bg.add(c = new JRadioButton(text, b));
 		add(c);
 		c.addItemListener(this);
+		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
+		return c;
 	}
 
 	public void itemStateChanged(ItemEvent e) {
