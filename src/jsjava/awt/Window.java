@@ -469,7 +469,7 @@ public class Window extends Container {
 
         /* offset the initial location with the original of the screen */
         /* and any insets                                              */
-//SwingJS TODO ?? 
+// SwingJS  TODO ?? 
 //        Rectangle screenBounds = graphicsConfig.getBounds();
 //        Insets screenInsets = getToolkit().getScreenInsets(graphicsConfig);
 //        int x = getX() + screenBounds.x + screenInsets.left;
@@ -1107,7 +1107,7 @@ public class Window extends Container {
 //        if (EventQueue.isDispatchThread()) {
             action.run();
 //        }
-//SwingJS can't invokeAndWait        else {
+// SwingJS  can't invokeAndWait        else {
 //            try {
 //                EventQueue.invokeAndWait(this, action);
 //            }

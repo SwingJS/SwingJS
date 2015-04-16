@@ -80,7 +80,7 @@ public abstract class SunToolkit extends Toolkit
     // 8014736: logging has been removed from SunToolkit
 
     /* Load debug settings for native code */
-//JS    static {
+// SwingJS  ??     static {
 //        if (AccessController.doPrivileged(new GetBooleanAction("jssun.awt.nativedebug"))) {
 //            DebugSettings.init();
 //        }
@@ -98,64 +98,49 @@ public abstract class SunToolkit extends Toolkit
      */
     protected static final String POST_EVENT_QUEUE_KEY = "PostEventQueue";
 
-    public SunToolkit() {
-//        /* If awt.threadgroup is set to class name the instance of
-//         * this class is created (should be subclass of ThreadGroup)
-//         * and EventDispatchThread is created inside of it
-//         *
-//         * If loaded class overrides uncaughtException instance
-//         * handles all uncaught exception on EventDispatchThread
-//         */
-//        ThreadGroup threadGroup = null;
-//        String tgName = System.getProperty("awt.threadgroup", "");
-//
-//        if (tgName.length() != 0) {
-//            try {
-//                Constructor ctor = Class.forName(tgName).
-//                    getConstructor(new Class[] {String.class});
-//                threadGroup = (ThreadGroup)ctor.newInstance(new Object[] {"AWT-ThreadGroup"});
-//            } catch (Exception e) {
-//                System.err.println("Failed loading " + tgName + ": " + e);
-//            }
-//        }
-//
-//        Runnable initEQ = new Runnable() {
-//            public void run () {
-//                EventQueue eventQueue;
-//
-//                String eqName = System.getProperty("AWT.EventQueueClass",
-//                                                   "jsjava.awt.EventQueue");
-//
-//                try {
-//                    eventQueue = (EventQueue)Class.forName(eqName).newInstance();
-//                } catch (Exception e) {
-//                    System.err.println("Failed loading " + eqName + ": " + e);
-//                    e.printStackTrace();
-//                    eventQueue = new EventQueue();
-//                }
-//                AppContext appContext = AppContext.getAppContext();
-//                
-//                
-//                appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
-//
-//                PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
-//                appContext.put(POST_EVENT_QUEUE_KEY, postEventQueue);
-//            }
-//        };
-//
-//        if (threadGroup != null) {
-//            Thread eqInitThread = new Thread(threadGroup, initEQ, "EventQueue-Init");
-//            eqInitThread.start();
-//            try {
-//                eqInitThread.join();
-//            } catch (InterruptedException e) {
-//            	System.out.println("Suntoolkit error in threadgroup " + e);
-//                e.printStackTrace();
-//            }
-//        } else {
-//            initEQ.run();
-//        }
-    }
+	public SunToolkit() {
+		// SwingJS simplification here
+		// /* If awt.threadgroup is set to class name the instance of
+		// * this class is created (should be subclass of ThreadGroup)
+		// * and EventDispatchThread is created inside of it
+		// *
+		// * If loaded class overrides uncaughtException instance
+		// * handles all uncaught exception on EventDispatchThread
+		// */
+		// Runnable initEQ = new Runnable() {
+		// public void run () {
+		EventQueue eventQueue;
+		//
+		// String eqName = System.getProperty("AWT.EventQueueClass",
+		// "jsjava.awt.EventQueue");
+		//
+		// try {
+		// eventQueue = (EventQueue)Class.forName(eqName).newInstance();
+		// } catch (Exception e) {
+		// System.err.println("Failed loading " + eqName + ": " + e);
+		// e.printStackTrace();
+		eventQueue = new EventQueue();
+		// }
+		AppContext appContext = AppContext.getAppContext();
+		appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
+		PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
+		appContext.put(POST_EVENT_QUEUE_KEY, postEventQueue);
+		// }
+		// };
+
+		// if (threadGroup != null) {
+		// Thread eqInitThread = new Thread(threadGroup, initEQ, "EventQueue-Init");
+		// eqInitThread.start();
+		// try {
+		// eqInitThread.join();
+		// } catch (InterruptedException e) {
+		// System.out.println("Suntoolkit error in threadgroup " + e);
+		// e.printStackTrace();
+		// }
+		// } else {
+		// initEQ.run();
+		// }
+	}
 
     public boolean useBufferPerWindow() {
         return false;
@@ -234,7 +219,7 @@ public abstract class SunToolkit extends Toolkit
 
 //    public KeyboardFocusManagerPeer createKeyboardFocusManagerPeer(KeyboardFocusManager manager) throws HeadlessException {
 //return  null;
-////JS KeyboardFocusManagerPeerImpl peer = new KeyboardFocusManagerPeerImpl(manager);
+//// SwingJS  ??  KeyboardFocusManagerPeerImpl peer = new KeyboardFocusManagerPeerImpl(manager);
 //  //      return peer;
 //    }
 
@@ -339,7 +324,8 @@ public abstract class SunToolkit extends Toolkit
     }
 
     static void wakeupEventQueue(EventQueue q, boolean isShutdown){
-//        if (wakeupMethod == null){
+    	q.wakeup(isShutdown);
+// SwingJS -- not applicable?        if (wakeupMethod == null){
 //            wakeupMethod = (Method)AccessController.doPrivileged(new PrivilegedAction(){
 //                    public Object run(){
 //                        try {
@@ -368,39 +354,38 @@ public abstract class SunToolkit extends Toolkit
 //        }
     }
 
-    /*
-     * Fetch the peer associated with the given target (as specified
-     * in the peer creation method).  This can be used to determine
-     * things like what the parent peer is.  If the target is null
-     * or the target can't be found (either because the a peer was
-     * never created for it or the peer was disposed), a null will
-     * be returned.
-     */
-    protected static Object targetToPeer(Object target) {
-    //JS         if (target != null && !GraphicsEnvironment.isHeadless()) {
-//            return AWTAutoShutdown.getInstance().getPeer(target);
-//        }
-        return null;
-    }
+	/*
+	 * Fetch the peer associated with the given target (as specified in the peer
+	 * creation method). This can be used to determine things like what the parent
+	 * peer is. If the target is null or the target can't be found (either because
+	 * the a peer was never created for it or the peer was disposed), a null will
+	 * be returned.
+	 */
+	protected static Object targetToPeer(Object target) {
+		if (target != null
+		// && !GraphicsEnvironment.isHeadless()
+		) {
+			return AWTAutoShutdown.getInstance().getPeer(target);
+		}
+		return null;
+	}
 
-    protected static void targetCreatedPeer(Object target, Object peer) {
-        if (target != null && peer != null
-//        		&& !GraphicsEnvironment.isHeadless()
-        		)
-        {
-        //JS             AWTAutoShutdown.getInstance().registerPeer(target, peer);
-        }
-    }
+	protected static void targetCreatedPeer(Object target, Object peer) {
+		if (target != null && peer != null
+		// && !GraphicsEnvironment.isHeadless()
+		) {
+			AWTAutoShutdown.getInstance().registerPeer(target, peer);
+		}
+	}
 
-    protected static void targetDisposedPeer(Object target, Object peer) {
-        if (target != null && peer != null 
-//        		&&
-//            !GraphicsEnvironment.isHeadless()
-            )
-        {
-        //JS AWTAutoShutdown.getInstance().unregisterPeer(target, peer);
-        }
-    }
+	protected static void targetDisposedPeer(Object target, Object peer) {
+		if (target != null && peer != null
+		// &&
+		// !GraphicsEnvironment.isHeadless()
+		) {
+			AWTAutoShutdown.getInstance().unregisterPeer(target, peer);
+		}
+	}
 
     // Maps from non-Component/MenuComponent to AppContext.
     // WeakHashMap<Component,AppContext>
@@ -408,31 +393,31 @@ public abstract class SunToolkit extends Toolkit
 //        Collections.synchronizedMap(new WeakHashMap());
 
 
-//    /**
-//     * Sets the appContext field of target. If target is not a Component or
-//     * MenuComponent, this returns false.
-//     */
-//    private static boolean setAppContext(Object target, AppContext context)
-//    {
-//        if (target instanceof Component) {
-//            AWTAccessor.getComponentAccessor().
-//                setAppContext((Component)target, context);
-////        } else if (target instanceof MenuComponent) {
-////            AWTAccessor.getMenuComponentAccessor().
-////                setAppContext((MenuComponent)target, context);
-//        } else {
-//            return false;
-//        }
-//        return true;
-//    }
-//
+    /**
+     * Sets the appContext field of target. If target is not a Component or
+     * MenuComponent, this returns false.
+     */
+    private static boolean setAppContext(Object target, AppContext context)
+    {
+        if (target instanceof Component) {
+            AWTAccessor.getComponentAccessor().
+                setAppContext((Component)target, context);
+//        } else if (target instanceof MenuComponent) {
+//            AWTAccessor.getMenuComponentAccessor().
+//                setAppContext((MenuComponent)target, context);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Returns the appContext field for target. If target is not a
      * Component or MenuComponent this returns null.
      */
     private static AppContext getAppContext(Object target) {
         if (target instanceof Component) {
-    //SwingJS untested; TODO
+    // SwingJS  untested; TODO
     //in SwingJS can't be MenuComponent - that's an AWT menu construct  
 			/**
 			 * @j2sNative
@@ -572,11 +557,11 @@ public abstract class SunToolkit extends Toolkit
      */
     public static void insertTargetMapping(Object target, AppContext appContext) {
 //        if (!GraphicsEnvironment.isHeadless()) {
-//            if (!setAppContext(target, appContext)) {
-//                // Target is not a Component/MenuComponent, use the private Map
-//                // instead.
-//                appContextMap.put(target, appContext);
-//            }
+            if (!setAppContext(target, appContext)) {
+                // Target is not a Component/MenuComponent, use the private Map
+                // instead.
+                appContextMap.put(target, appContext);
+            }
 //        }
     }
 
@@ -602,6 +587,7 @@ public abstract class SunToolkit extends Toolkit
      * Post AWTEvent of high priority.
      */
     public static void postPriorityEvent(final AWTEvent e) {
+    	// SwingJS  -- no priorities here -- could be a problem?
         PeerEvent pe = new PeerEvent(Toolkit.getDefaultToolkit(), new Runnable() {
                 public void run() {
                     AWTAccessor.getAWTEventAccessor().setPosted(e);
@@ -616,24 +602,20 @@ public abstract class SunToolkit extends Toolkit
      * EventQueue yet.
      */
     public static void flushPendingEvents()  {
-//SwingJS unnec        AppContext appContext = AppContext.getAppContext();
-//        PostEventQueue postEventQueue =
-//            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
-//        if(postEventQueue != null) {
-//            postEventQueue.flush();
-//        }
+        AppContext appContext = AppContext.getAppContext();
+        PostEventQueue postEventQueue =
+            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
+        if(postEventQueue != null) {
+            postEventQueue.flush();
+        }
     }
 
-//SwingJS unnec    public static boolean isPostEventQueueEmpty()  {
-//        AppContext appContext = AppContext.getAppContext();
-//        PostEventQueue postEventQueue =
-//            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
-//        if (postEventQueue != null) {
-//            return postEventQueue.noEvents();
-//        } else {
-//            return true;
-//        }
-//    }
+    public static boolean isPostEventQueueEmpty()  {
+        AppContext appContext = AppContext.getAppContext();
+        PostEventQueue postEventQueue =
+            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
+        return (postEventQueue == null || postEventQueue.noEvents());
+    }
 
     /*
      * Execute a chunk of code on the Java event handler thread for the
@@ -867,7 +849,7 @@ public abstract class SunToolkit extends Toolkit
         Image img = (Image)imgCache.get(filename);
         if (img == null) {
             try {
-            //JS                 img = tk.createImage(new FileImageSource(filename));
+            // SwingJS  ??                  img = tk.createImage(new FileImageSource(filename));
                 imgCache.put(filename, img);
             } catch (Exception e) {
             }
@@ -889,7 +871,7 @@ public abstract class SunToolkit extends Toolkit
             security.checkRead(filename);
         }
         return null;
-      //JS         return createImage(new FileImageSource(filename));
+      // SwingJS  ??          return createImage(new FileImageSource(filename));
     }
 
     public Image createImage(URL url) {
@@ -925,16 +907,16 @@ public abstract class SunToolkit extends Toolkit
 
     public Image createImage(byte[] data, int offset, int length) {
     	return null;
-    //JS         return createImage(new ByteArrayImageSource(data, offset, length));
+    // SwingJS  ??          return createImage(new ByteArrayImageSource(data, offset, length));
     }
 
     public Image createImage(ImageProducer producer) {
  return  null;
-//JS         return new ToolkitImage(producer);
+// SwingJS  ??          return new ToolkitImage(producer);
     }
 
     public int checkImage(Image img, int w, int h, ImageObserver o) {
-    //JS 
+    // SwingJS  ??  
 //        if (!(img instanceof ToolkitImage)) {
 //            return ImageObserver.ALLBITS;
 //        }
@@ -1117,7 +1099,7 @@ public abstract class SunToolkit extends Toolkit
         return Toolkit.getNativeContainer(c);
     }
 
-//JS    /**
+// SwingJS  ??     /**
 //     * Returns a new input method window, with behavior as specified in
 //     * {@link jsjava.awt.im.spi.InputMethodContext#createInputMethodWindow}.
 //     * If the inputContext is not null, the window should return it from its
@@ -1146,7 +1128,7 @@ public abstract class SunToolkit extends Toolkit
      */
     public static Locale getStartupLocale() {
         if (startupLocale == null) {
-        	//SwingJS TODO -- set startup locale
+        	// SwingJS  TODO -- set startup locale
         	/**
         	 * @j2sNative
         	 */
@@ -1234,7 +1216,7 @@ public abstract class SunToolkit extends Toolkit
         }
     }
 
-  //JS     private static DefaultMouseInfoPeer mPeer = null;
+  // SwingJS  ??      private static DefaultMouseInfoPeer mPeer = null;
 
 //    protected synchronized MouseInfoPeer getMouseInfoPeer() {
 //    	return null;
@@ -1354,26 +1336,26 @@ public abstract class SunToolkit extends Toolkit
 //        window.setModalExclusionType(DEFAULT_MODAL_EXCLUSION_TYPE);
 //    }
 //
-//    /*
-//     * Returns whether the specified window is blocked by modal dialogs.
-//     * If the modal exclusion API isn't supported by the current toolkit,
-//     * it returns false for all windows.
-//     *
-//     * @param window Window to test for modal exclusion
-//     *
-//     * @return true if the window is modal excluded, false otherwise. If
-//     * the modal exclusion isn't supported by the current Toolkit, false
-//     * is returned
-//     *
-//     * @see jssun.awt.SunToolkit#isModalExcludedSupported
-//     * @see jssun.awt.SunToolkit#setModalExcluded(jsjava.awt.Window)
-//     *
-//     * @since 1.5
-//     */
-//    public static boolean isModalExcluded(Window window)
-//    {
-//        return window.getModalExclusionType().compareTo(DEFAULT_MODAL_EXCLUSION_TYPE) >= 0;
-//    }
+    /*
+     * Returns whether the specified window is blocked by modal dialogs.
+     * If the modal exclusion API isn't supported by the current toolkit,
+     * it returns false for all windows.
+     *
+     * @param window Window to test for modal exclusion
+     *
+     * @return true if the window is modal excluded, false otherwise. If
+     * the modal exclusion isn't supported by the current Toolkit, false
+     * is returned
+     *
+     * @see jssun.awt.SunToolkit#isModalExcludedSupported
+     * @see jssun.awt.SunToolkit#setModalExcluded(jsjava.awt.Window)
+     *
+     * @since 1.5
+     */
+    public static boolean isModalExcluded(Window window)
+    {
+        return true;//SwingJS was window.getModalExclusionType().compareTo(DEFAULT_MODAL_EXCLUSION_TYPE) >= 0;
+    }
 //
 //    /**
 //     * Overridden in XToolkit and WToolkit
@@ -1621,7 +1603,7 @@ public abstract class SunToolkit extends Toolkit
 //        return AWTAccessor.getEventQueueAccessor().noEvents(queue);
 //    }
 //
-//SwingJS CANNOT DO THIS  waitForIdle 
+// SwingJS  CANNOT DO THIS  waitForIdle 
 //    
 //    /**
 //     * Waits for the Java event queue to empty.  Ensures that all
@@ -1657,7 +1639,7 @@ public abstract class SunToolkit extends Toolkit
 //                              synchronized(waitLock) {
 //                                  queueEmpty = isEQEmpty();
 //                                  eventDispatched = true;
-//                                //SwingJS CANNOT DO THIS                waitLock.notifyAll();
+//                                // SwingJS  CANNOT DO THIS                waitLock.notifyAll();
 //                              }
 //                          }
 //                      });
@@ -1887,7 +1869,7 @@ public abstract class SunToolkit extends Toolkit
 //    }
 
 //    protected static void dumpPeers(final Logger aLog) {
-//    //JS         AWTAutoShutdown.getInstance().dumpPeers(aLog);
+//    // SwingJS  ??          AWTAutoShutdown.getInstance().dumpPeers(aLog);
 //    }
 //
     /**

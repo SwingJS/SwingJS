@@ -267,7 +267,7 @@ public class TransferHandler {// {
 //                          : ((DropTargetDropEvent)source).getLocation();
 //
 //            if (component instanceof JTextComponent) {
-////JS                try {
+//// SwingJS  ??                 try {
 ////                    AccessibleMethod method
 ////                        = new AccessibleMethod(JTextComponent.class,
 ////                                               "dropLocationForPoint",
@@ -1358,7 +1358,7 @@ public class TransferHandler {// {
 //
 //            if (component instanceof JTextComponent) {
 ////                try {
-////JS                    AccessibleMethod method =
+//// SwingJS  ??                     AccessibleMethod method =
 ////                        new AccessibleMethod(JTextComponent.class,
 ////                                             "setDropLocation",
 ////                                             DropLocation.class,

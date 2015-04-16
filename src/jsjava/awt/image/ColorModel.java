@@ -1196,7 +1196,7 @@ public abstract class ColorModel implements Transparency{
     }
     
     protected int getDataElementInt(int[] components, int offset) {    	
-    	//SwingJS THIS is the method that needs to be implemented, not getDataElement(int[], int)
+    	// SwingJS  THIS is the method that needs to be implemented, not getDataElement(int[], int)
         throw new UnsupportedOperationException("This method is not supported "+
                                     "by this color model.");
     }

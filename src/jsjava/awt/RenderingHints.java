@@ -1183,7 +1183,7 @@ public class RenderingHints
   	            Integer.toHexString(privatekey);
   	    }
   	
-  	    //SwingJS  was static:
+  	    // SwingJS   was static:
   	    private void recordIdentity(Key k) {
   	        Object identity = k.getIdentity();
   	        Object otherref = identitymap.get(identity);
@@ -1396,7 +1396,7 @@ public class RenderingHints
            * System.identityHashCode() method.
            */
           public final int hashCode() {
-          	//SwingJS -- TODO
+          	// SwingJS  -- TODO
               return description.hashCode();//System.identityHashCode(this);
           }
 

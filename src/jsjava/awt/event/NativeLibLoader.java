@@ -53,7 +53,7 @@ class NativeLibLoader {
      * that the name of the library is "awt".  -br.
      */
     static void loadLibraries() {
-        //jsjava.security.AccessController.doPrivileged(
+        // SwingJS  ?? java.security.AccessController.doPrivileged(
           //      new jssun.security.action.LoadLibraryAction("awt"));
     }
 }

@@ -85,15 +85,15 @@ public class InputMethodEvent extends AWTEvent {
      */
     public static final int INPUT_METHOD_LAST = INPUT_METHOD_FIRST + 1;
 
-//    /**
-//     * The time stamp that indicates when the event was created.
-//     *
-//     * @serial
-//     * @see #getWhen
-//     * @since 1.4
-//     */
-//    long when;
-//
+    /**
+     * The time stamp that indicates when the event was created.
+     *
+     * @serial
+     * @see #getWhen
+     * @since 1.4
+     */
+    long when;
+
 //    // Text object
     private transient AttributedCharacterIterator text;
     private transient int committedCharacterCount;
@@ -332,15 +332,15 @@ public class InputMethodEvent extends AWTEvent {
 //        return consumed;
 //    }
 //
-//    /**
-//     * Returns the time stamp of when this event occurred.
-//     *
-//     * @return this event's timestamp
-//     * @since 1.4
-//     */
-//    public long getWhen() {
-//      return when;
-//    }
+    /**
+     * Returns the time stamp of when this event occurred.
+     *
+     * @return this event's timestamp
+     * @since 1.4
+     */
+    public long getWhen() {
+      return when;
+    }
 //
 //    /**
 //     * Returns a parameter string identifying this event.

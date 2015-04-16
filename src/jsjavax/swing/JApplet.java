@@ -149,7 +149,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
         setRootPaneCheckingEnabled(true);
 
         setFocusTraversalPolicyProvider(true);
-        //jssun.awt.SunToolkit.checkAndSetPolicy(this, true);
+        // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
 
         enableEvents(AWTEvent.KEY_EVENT_MASK);
     }
@@ -516,7 +516,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
 
     //The call to make for repainting from SwingJS
     public void repaintNow() {
-    	//SwingJS
+    	// SwingJS 
     	repaint(100, 0, 0, getWidth(), getHeight());
     }
 

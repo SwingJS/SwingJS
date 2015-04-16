@@ -531,7 +531,7 @@ final class DigitList implements Cloneable {
             int left = MAX_COUNT;
             int right;
             while (source >= 1) {
-//SwingJS -- integers will not go to 0 upon div by 10            while (source > 0) {
+// SwingJS  -- integers will not go to 0 upon div by 10            while (source > 0) {
                 digits[--left] = (char)('0' + (source % 10));
                 source = source / 10;
             }

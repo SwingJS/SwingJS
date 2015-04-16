@@ -345,7 +345,7 @@ public class UIManager
     static {
         ArrayList iLAFs = new ArrayList(4);
         iLAFs.add(new LookAndFeelInfo("SwingJS", "swingjs.plaf.SwingJSLookAndFeel"));
-//SwingJS        iLAFs.add(new LookAndFeelInfo(
+// SwingJS         iLAFs.add(new LookAndFeelInfo(
 //                      "Metal", "jsjavax.swing.plaf.metal.MetalLookAndFeel"));
 //        iLAFs.add(new LookAndFeelInfo(
 //                      "Nimbus", "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"));
@@ -585,7 +585,7 @@ public class UIManager
 //        if (systemLAF != null) {
 //            return systemLAF;
 //        }
-//JS        OSInfo.OSType osType = AccessController.doPrivileged(OSInfo.getOSTypeAction());
+// SwingJS  ??         OSInfo.OSType osType = AccessController.doPrivileged(OSInfo.getOSTypeAction());
 //        if (osType == OSInfo.OSType.WINDOWS) {
 //            return "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 //        } else {
@@ -1405,7 +1405,7 @@ private static UIDefaults uid;
      * Only called by maybeInitialize().
      */
     private static void initialize() {
-//SwingJS				Properties swingProps = loadSwingProperties();
+// SwingJS 				Properties swingProps = loadSwingProperties();
 //				initializeSystemDefaults(swingProps);
 //				initializeDefaultLAF(swingProps);
 //				initializeAuxiliaryLAFs(swingProps);
@@ -1424,7 +1424,7 @@ private static UIDefaults uid;
 
         // Install Swing's PaintEventDispatcher
         if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
-        	//SwingJS: We set this flag true
+        	// SwingJS : We set this flag true
             jssun.awt.PaintEventDispatcher.setPaintEventDispatcher(
                                         new SwingPaintEventDispatcher());
         }
@@ -1435,7 +1435,7 @@ private static UIDefaults uid;
         // the bindings again, unless the Component is disabled, in which
         // case KeyEvents will no longer be dispatched to it so that we
         // handle it here.
-//SwingJS        KeyboardFocusManager.getCurrentKeyboardFocusManager().
+// SwingJS         KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //                addKeyEventPostProcessor(new KeyEventPostProcessor() {
 //                    public boolean postProcessKeyEvent(KeyEvent e) {
 //                        Component c = e.getComponent();

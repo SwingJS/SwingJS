@@ -1134,7 +1134,7 @@ public class Font
      * @since JDK1.1
      */
     public String getFamily() {
-    	//SwingJS 
+    	// SwingJS  
     	  return (family == null ? family = JSToolkit.getFontFamily(this) : family);
 //        return getFamily_NoClientCode();
     }
@@ -1854,7 +1854,7 @@ public class Font
      * @since 1.2
      */
     public Font deriveFont(float size){
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
 //        if (values == null) {
             return new Font(name, style, size);
 //        }
@@ -1887,7 +1887,7 @@ public class Font
      * @since 1.2
      */
     public Font deriveFont(int style){
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
 //        if (values == null) {
            return new Font(name, style, size);
 //        }

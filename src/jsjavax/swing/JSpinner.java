@@ -927,7 +927,7 @@ public class JSpinner extends JComponent
 
 
 
-//SwingJS
+// SwingJS 
 // TODO /**
 //     * This subclass of jsjavax.swing.DateFormatter maps the minimum/maximum
 //     * properties to te start/end properties of a SpinnerDateModel.

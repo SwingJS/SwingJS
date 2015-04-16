@@ -626,7 +626,7 @@ public class JDialog extends Dialog implements WindowConstants,
                 getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
             }
         }
-        //jssun.awt.SunToolkit.checkAndSetPolicy(this, true);
+        // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
     }
 
     /**

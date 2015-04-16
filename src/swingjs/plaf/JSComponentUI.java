@@ -86,7 +86,7 @@ public abstract class JSComponentUI extends ComponentUI {
   	return d;
   }
 
-	protected static int incr; //SwingJS
+	protected static int incr; // SwingJS 
 	
 	public void installUI(JComponent c) {
 		System.out.println(id + " installUI called on " + c);

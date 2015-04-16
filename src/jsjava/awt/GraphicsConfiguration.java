@@ -176,7 +176,7 @@ public abstract class GraphicsConfiguration {
             throw new IllegalArgumentException("Unknown transparency: " +
                                                transparency);
         }
-//SwingJS TODO
+// SwingJS  TODO
 //        WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
 //        return new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
     	return null;

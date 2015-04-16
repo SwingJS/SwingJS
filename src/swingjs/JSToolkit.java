@@ -1,36 +1,31 @@
 package swingjs;
 
-//import java.lang.reflect.Constructor;
 import java.net.URL;
-//import java.security.PrivilegedAction;
 import java.util.Hashtable;
 import java.util.Map;
 
-import swingjs.api.HTMLCanvasContext2D;
-import swingjs.api.Interface;
-import swingjs.api.JQuery;
-import swingjs.plaf.JSComponentUI;
-import swingjs.plaf.SwingJSLookAndFeel;
-
 import jsjava.awt.AWTEvent;
+import jsjava.awt.Component;
+import jsjava.awt.Dialog.ModalExclusionType;
+import jsjava.awt.Dialog.ModalityType;
 import jsjava.awt.Dimension;
-import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
-import jsjava.awt.Dialog.ModalExclusionType;
-import jsjava.awt.Dialog.ModalityType;
 import jsjava.awt.Window;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.lang.Thread;
-//import jsjava.lang.ThreadGroup;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
-import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
+import swingjs.api.HTMLCanvasContext2D;
+import swingjs.api.Interface;
+import swingjs.api.JQuery;
+import swingjs.plaf.JSComponentUI;
+import swingjs.plaf.SwingJSLookAndFeel;
 
 public class JSToolkit extends SunToolkit {
 
@@ -40,31 +35,7 @@ public class JSToolkit extends SunToolkit {
 	 */
 
 	public JSToolkit() {
-		/*
-		 * If awt.threadgroup is set to class name the instance of this class is
-		 * created (should be subclass of ThreadGroup) and EventDispatchThread is
-		 * created inside of it
-		 * 
-		 * If loaded class overrides uncaughtException instance handles all uncaught
-		 * exception on EventDispatchThread
-		 */
-		// ThreadGroup threadGroup = new ThreadGroup("AWT-ThreadGroup");
-		AppContext appContext = AppContext.getAppContext();
-		// EventQueue postEventQueue = ;
-		// PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
-		appContext.put(POST_EVENT_QUEUE_KEY, new EventQueue());
-		// if (threadGroup != null) {
-		// Thread eqInitThread = new Thread(threadGroup, initEQ, "EventQueue-Init");
-		// eqInitThread.start();
-		// try {
-		// eqInitThread.join();
-		// } catch (InterruptedException e) {
-		// System.out.println("Suntoolkit error in threadgroup " + e);
-		// e.printStackTrace();
-		// }
-		// } else {
-		// initEQ.run();
-		// }
+		super();
 		System.out.println("JSToolkit initialized");
 	}
 
@@ -165,19 +136,12 @@ public class JSToolkit extends SunToolkit {
 		return null;
 	}
 
-	@Override
-	public boolean isModalityTypeSupported(ModalityType modalityType) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	// ////// sun.awt.SunToolkit /////////
 
 	@Override
 	public boolean isModalExclusionTypeSupported(
 			ModalExclusionType modalExclusionType) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -428,15 +392,15 @@ public class JSToolkit extends SunToolkit {
 
 	private static int dispatchID = 0;
 
-	public static void postSystemEvent(Runnable runnable) {
+	public static void dispatchSystemEvent(Runnable runnable) {
 		Object f = null;
 		/**
 		 * @param eventQueue
 		 * @j2sNative
 		 * 
-		 *            System.out.println("JST postSystemEvent " +
+		 *            System.out.println("JST dispatchSystemEvent " +
 		 *            runnable.run.toString()); f =
-		 *            function(_JSToolkit_postSystemEvent) {
+		 *            function(_JSToolkit_dispatchSystemEvent) {
 		 *            System.out.println("JST running " +
 		 *            runnable.run.toString());runnable.run()};
 		 */
@@ -445,20 +409,24 @@ public class JSToolkit extends SunToolkit {
 		setTimeout(f);
 	}
 
-	public static void postJavaEvent(EventQueue eventQueue, AWTEvent event,
-			int priority) {
+	public static void dispatchEvent(AWTEvent event, Object src, boolean andWait) {
 		Object f = null;
 		/**
 		 * @j2sNative
 		 * 
-		 *            System.out.println("JST postJavaEvent " + event); f =
-		 *            function() {System.out.println("JST dispatching event " +
-		 *            event); eventQueue.dispatchEvent(event)};
+		 *            System.out.println("JST dispatchAWTEvent andWait=" + andWait +
+		 *            "," + event + " src=" + src); f = function()
+		 *            {System.out.println("JST dispatching AWTEvent " + event); if
+		 *            (src == null) event.dispatch(); else src.dispatchEvent(event);
+		 *            };
 		 * 
 		 */
 		{
 		}
-		setTimeout(f);
+		if (andWait)
+			runNow(f);
+		else
+			setTimeout(f);
 	}
 
 	/**
@@ -468,6 +436,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param f
 	 */
 	private static void setTimeout(Object f) {
+		@SuppressWarnings("unused")
 		int id = ++dispatchID;
 
 		/**
@@ -475,12 +444,9 @@ public class JSToolkit extends SunToolkit {
 		 * 
 		 *            var thread = java.lang.Thread.thisThread;
 		 *            setTimeout(function(_JSToolkit_setTimeout) {
-		 *            
-		 *            SwingJS.eventID = id; 
-		 *            java.lang.Thread.thisThread = thread; 
-		 *            f(); 
-		 *            delete SwingJS.eventID;
-		 *            });
+		 *            System.out.println("setTimeout " + id); SwingJS.eventID = id;
+		 *            java.lang.Thread.thisThread = thread; f(); delete
+		 *            SwingJS.eventID; });
 		 * 
 		 * 
 		 * 
@@ -489,12 +455,62 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
-	public static boolean isDispachThread() {
+	/**
+	 * encapsulate timeout with an anonymous function that re-instates the
+	 * "current thread" prior to execution. This is in case of multiple applets.
+	 * 
+	 * @param f
+	 */
+	private static void runNow(Object f) {
+		@SuppressWarnings("unused")
+		int id = ++dispatchID;
+
+		/**
+		 * @j2sNative
+		 * 
+		 *            var thread = java.lang.Thread.thisThread;
+		 *            (function(_JSToolkit_setTimeout) {
+		 *            System.out.println("runNow " + id); SwingJS.eventID = id;
+		 *            java.lang.Thread.thisThread = thread; f(); delete
+		 *            SwingJS.eventID; })();
+		 * 
+		 * 
+		 * 
+		 */
+		{
+		}
+	}
+
+	public static boolean isDispatchThread() {
 		/**
 		 * @j2sNative
 		 * 
 		 *            System.out.println("checking dispatch thread " +
 		 *            SwingJS.eventID); return (!!SwingJS.eventID);
+		 * 
+		 */
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * check if a J2S class implements a specific method with a specific signature
+	 * 
+	 * @param component
+	 * @param fname
+	 *          "coalesceEvents
+	 * @param signature
+	 *          "\\jsjava.awt.AWTEvent\\jsjava.awt.AWTEvent"
+	 * @return
+	 */
+	public static boolean checkClassMethod(Component component, String fname,
+			String signature) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            return component[fname] && component[fname][signature];
 		 * 
 		 */
 		{

@@ -322,7 +322,7 @@ public abstract class GraphicsDevice {
      */
     public Window getFullScreenWindow() {
     	return null;
-//SwingJS ignored
+// SwingJS  ignored
 // Window returnWindow = null;
 //        synchronized (fsAppContextLock) {
 //            // Only return a handle to the current fs window if we are in the
@@ -501,7 +501,7 @@ public abstract class GraphicsDevice {
      */
     static boolean isWindowShapingSupported() {
     	return false;
-//SwingJS not supported
+// SwingJS  not supported
 //        Toolkit curToolkit = Toolkit.getDefaultToolkit();
 //        if (!(curToolkit instanceof SunToolkit)) {
 //            return false;
@@ -517,7 +517,7 @@ public abstract class GraphicsDevice {
      * translucency (due to the bugs in the windowing system).
      */
     static boolean isWindowOpacitySupported() {
-    //SwingJS not supported FOR NOW
+    // SwingJS  not supported FOR NOW
     	return false;
 //    	
 //        Toolkit curToolkit = Toolkit.getDefaultToolkit();
@@ -529,7 +529,7 @@ public abstract class GraphicsDevice {
 
     boolean isWindowPerpixelTranslucencySupported() {
     	return true;
-//SwingJS 
+// SwingJS  
 //    	
 //        /*
 //         * Per-pixel alpha is supported if all the conditions are TRUE:

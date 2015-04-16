@@ -218,7 +218,7 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
             return comparator;
         }
         return null;
-//Swingjs ignore
+// SwingJS  ignore
 //        Class columnClass = getModel().getColumnClass(column);
 //        if (columnClass == String.class) {
 //            return Collator.getInstance();

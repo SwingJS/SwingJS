@@ -208,7 +208,7 @@ public class RepaintManager {
 //		}
 		HANDLE_TOP_LEVEL_PAINT = true;
 		
-//SwingJS		"true"
+// SwingJS 		"true"
 //				.equals(AccessController.doPrivileged(new GetPropertyAction(
 //						"swing.handleTopLevelPaint", "true")));
 //		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -236,7 +236,7 @@ public class RepaintManager {
 		// component is ever used to determine the current
 		// RepaintManager, DisplayChangedRunnable will need to be modified
 		// accordingly.
-//SwingJS		return currentManager(AppContext.getAppContext());
+// SwingJS 		return currentManager(AppContext.getAppContext());
 //	}
 //
 //	/**
@@ -337,7 +337,7 @@ public class RepaintManager {
 		 */
 		for (Component c = invalidComponent; c != null; c = c.getParent()) {
 			if ((c instanceof CellRendererPane) 
-			  //SwingJS || c.getPeer() == null
+			  // SwingJS  || c.getPeer() == null
 					) {
 				System.out.println("RM noParent");
 				return;
@@ -366,7 +366,7 @@ public class RepaintManager {
 
 		for (Component c = validateRoot; c != null; c = c.getParent()) {
 			if (!c.isVisible()
-					//SwingJS || (c.getPeer() == null)
+					// SwingJS  || (c.getPeer() == null)
 				) {
 				System.out.println("RM noVisibleParent");
 				return;
@@ -1144,7 +1144,7 @@ public class RepaintManager {
 	 * @see #isDoubleBufferingEnabled
 	 */
 	public void setDoubleBufferingEnabled(boolean aFlag) {
-//SwingJS ignore
+// SwingJS  ignore
 //    doubleBufferingEnabled = aFlag;
 //		PaintManager paintManager = getPaintManager();
 //		if (!aFlag && paintManager.getClass() != PaintManager.class) {
@@ -1385,9 +1385,9 @@ public class RepaintManager {
 
 	private void scheduleProcessingRunnable(AppContext context) {
 		if (processingRunnable.markPending()) {
-			JSToolkit.postSystemEvent(processingRunnable);
-			//SunToolkit.getSystemEventQueueImplPP(context).postEvent(
-				//new InvocationEvent(Toolkit.getDefaultToolkit(), processingRunnable));
+//			JSToolkit.postSystemEvent(processingRunnable);
+			SunToolkit.getSystemEventQueueImplPP(context).postEvent(
+				new InvocationEvent(Toolkit.getDefaultToolkit(), processingRunnable));
 		}
 	}
 

@@ -364,7 +364,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @param pressTime the time to "hold down" the button, in milliseconds
      */
     public void doClick(int pressTime) {
-//SwingJS        Dimension size = getSize();
+// SwingJS         Dimension size = getSize();
 //        model.setArmed(true);
 //        model.setPressed(true);
 //        paintImmediately(new Rectangle(0,0, size.width, size.height));

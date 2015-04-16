@@ -169,10 +169,10 @@ public class CalendarUtils {
         }
         for (int i = 1; i < width && d < n; i++) {
             sb.append('0');
-            //SwingJS fix
+            // SwingJS  fix
             n = n / 10;
         }
-        //SwingJS coerce integer to string for append
+        // SwingJS  coerce integer to string for append
         sb.append("" + d);
         return sb;
     }
@@ -190,10 +190,10 @@ public class CalendarUtils {
         }
         for (int i = 1; i < width && d < n; i++) {
             sb.append('0');
-            //SwingJS fix
+            // SwingJS  fix
             n = n / 10;
         }
-        //SwingJS coerce integer to string for append
+        // SwingJS  coerce integer to string for append
         sb.append("" + d);
         return sb;
     }

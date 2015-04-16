@@ -369,7 +369,7 @@ public class JTabbedPane extends JComponent
 
             /* if the new component is non-null and different */
             if (newComp != null && newComp != visComp) {
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //                boolean shouldChangeFocus = false;
 
                 /* Note: the following (clearing of the old visible component)
@@ -380,7 +380,7 @@ public class JTabbedPane extends JComponent
 
                 /* if there was a previous visible component */
                 if (visComp != null) {
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //                    shouldChangeFocus =
 //                        (SwingUtilities.findFocusOwner(visComp) != null);
 
@@ -395,7 +395,7 @@ public class JTabbedPane extends JComponent
                     newComp.setVisible(true);
                 }
 
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //                if (shouldChangeFocus) {
 //                    SwingUtilities2.tabbedPaneChangeFocusTo(newComp);
 //                }
@@ -594,7 +594,7 @@ public class JTabbedPane extends JComponent
 
 
     private void setSelectedIndexImpl(int index, boolean doAccessibleChanges) {
-//SwingJSX: Accessibility
+// SwingJS X: Accessibility
 //        int oldIndex = model.getSelectedIndex();
 //        Page oldPage = null, newPage = null;
 //        String oldName = null;
@@ -617,13 +617,13 @@ public class JTabbedPane extends JComponent
 //
         model.setSelectedIndex(index);
 
-//SwingJSX: Accessibility
+// SwingJS X: Accessibility
 //        if (doAccessibleChanges) {
 //            changeAccessibleSelection(oldPage, oldName, newPage);
 //        }
     }
 
-//SwingJSX: Accessibility
+// SwingJS X: Accessibility
 //    private void changeAccessibleSelection(Page oldPage, String oldName, Page newPage) {
 //        if (accessibleContext == null) {
 //            return;
@@ -936,20 +936,20 @@ public class JTabbedPane extends JComponent
         checkIndex(index);
 
         Component component = getComponentAt(index);
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //        boolean shouldChangeFocus = false;
         int selected = getSelectedIndex();
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //        String oldName = null;
 
         /* if we're about to remove the visible component */
         if (component == visComp) {
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //            shouldChangeFocus = (SwingUtilities.findFocusOwner(visComp) != null);
             visComp = null;
         }
 
-//SwingJSX: Accessibility
+// SwingJS X: Accessibility
 //        if (accessibleContext != null) {
 //            /* if we're removing the selected page */
 //            if (index == selected) {
@@ -988,13 +988,13 @@ public class JTabbedPane extends JComponent
 //                ? pages.get(selected - 1)
 //                : null;
 
-//SwingJSX: Accessibility
+// SwingJS X: Accessibility
 //            changeAccessibleSelection(null, oldName, newSelected);
 
         /* selected index hasn't changed, but the associated tab has */
         } else if (index == selected) {
             fireStateChanged();
-//SwingJSX: Accessibility
+// SwingJS X: Accessibility
 //            changeAccessibleSelection(null, oldName, pages.get(index));
         }
 
@@ -1012,7 +1012,7 @@ public class JTabbedPane extends JComponent
             }
         }
 
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //        if (shouldChangeFocus) {
 //            SwingUtilities2.tabbedPaneChangeFocusTo(getSelectedComponent());
 //        }
@@ -1543,11 +1543,11 @@ public class JTabbedPane extends JComponent
     public void setComponentAt(int index, Component component) {
         Page page = pages.get(index);
         if (component != page.component) {
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //            boolean shouldChangeFocus = false;
 
             if (page.component != null) {
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //                shouldChangeFocus =
 //                    (SwingUtilities.findFocusOwner(page.component) != null);
 
@@ -1575,7 +1575,7 @@ public class JTabbedPane extends JComponent
                 component.setVisible(selectedPage);
                 addImpl(component, null, -1);
 
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //                if (shouldChangeFocus) {
 //                    SwingUtilities2.tabbedPaneChangeFocusTo(component);
 //                }

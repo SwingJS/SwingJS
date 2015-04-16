@@ -835,7 +835,7 @@ public class JFormattedTextField extends JTextField {
      * Object type.
      */
     private AbstractFormatterFactory getDefaultFormatterFactory(Object type) {
-//SwingJS
+// SwingJS 
 //TODO  if (type instanceof DateFormat) {
 //            return new DefaultFormatterFactory(new DateFormatter
 //                                               ((DateFormat)type));

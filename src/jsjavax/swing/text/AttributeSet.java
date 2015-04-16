@@ -178,7 +178,7 @@ public interface AttributeSet {
      */
     public AttributeSet getResolveParent();
 
-//SwingJS -- note, these two cause circular loading with StyleConstants
+// SwingJS  -- note, these two cause circular loading with StyleConstants
 //    /**
 //     * Attribute name used to name the collection of
 //     * attributes.

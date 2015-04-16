@@ -168,7 +168,7 @@ import java.util.HashMap;
 
 public final class Locale implements Cloneable, Serializable {
 
-	//SwingJS just a minimal implementation
+	// SwingJS  just a minimal implementation
 	
     // cache to store singleton Locales
     private final static HashMap<String, Locale> cache =
@@ -401,7 +401,7 @@ public final class Locale implements Cloneable, Serializable {
         if (defaultLocale == null) {
             String language/*, region*/, country, variant;
             
-            //SwingJS TODO? we could use System.getProperty() here
+            // SwingJS  TODO? we could use System.getProperty() here
             
             language = "en";//AccessController.doPrivileged(
                 //new GetPropertyAction("user.language", "en"));

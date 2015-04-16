@@ -1248,7 +1248,7 @@ public class SimpleDateFormat extends DateFormat {
 	 *              if <code>text</code> or <code>pos</code> is null.
 	 */
 	public Date parse(String text, ParsePosition pos) {
-		//SwingJS brute force
+		// SwingJS  brute force
 		
 		/**
 		 *

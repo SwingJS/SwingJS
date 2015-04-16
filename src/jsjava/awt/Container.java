@@ -1741,7 +1741,7 @@ public class Container extends Component {
      * @see   Component#update(Graphics)
      */
     public void paint(Graphics g) {
-    	//SwingJS: The developer should override paint() to draw;
+    	// SwingJS : The developer should override paint() to draw;
     	//this method will take care of all buttons, in case the
     	//paintComponent() method for them has been overridden.
 //    	
@@ -2559,7 +2559,7 @@ public class Container extends Component {
             for (int i = 0; i < component.size(); i++) {
                 component.get(i).addNotify();
             }
-//SwingJS            // Update stacking order if native platform allows
+// SwingJS             // Update stacking order if native platform allows
 //            ContainerPeer cpeer = (ContainerPeer)peer;
 //            if (cpeer.isRestackSupported()) {
 //                cpeer.restack();
@@ -3950,7 +3950,7 @@ public class Container extends Component {
                 if (comp.isVisible()) {
                     ComponentPeer peer = comp.getPeer();
                     if (peer != null) {
-                        peer.setVisible(true);//SwingJS was show();
+                        peer.setVisible(true);// SwingJS  was show();
                     }
                 }
             }
@@ -3971,7 +3971,7 @@ public class Container extends Component {
                 if (comp.isVisible()) {
                     ComponentPeer peer = comp.getPeer();
                     if (peer != null) {
-                        peer.setVisible(false);//SwingJS was hide();
+                        peer.setVisible(false);// SwingJS  was hide();
                     }
                 }
             }

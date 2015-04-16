@@ -278,7 +278,7 @@ class Thread implements Runnable {
      * and allow other threads to execute.
      */
     public static void yield() {
-    	//SwingJS;
+    	// SwingJS ;
     }
 
     /**
@@ -294,7 +294,7 @@ class Thread implements Runnable {
      * @see        Object#notify()
      */
     public static void sleep(long millis) throws InterruptedException {
-    	//SwingJS;
+    	// SwingJS ;
     }
     /**
      * Causes the currently executing thread to sleep (cease execution)
@@ -371,7 +371,7 @@ class Thread implements Runnable {
             }
         }
         
-        //SwingJS -- this can happen for the first thread
+        // SwingJS  -- this can happen for the first thread
         if (g == null) {
         	g = newThreadGroup(null, name);
         	parent = this; // ?? 
@@ -702,7 +702,7 @@ class Thread implements Runnable {
     }
 
     private void start0(){
-    	//SwingJS;
+    	// SwingJS ;
     }
 
     /**
@@ -999,7 +999,7 @@ class Thread implements Runnable {
      * passed.
      */
     private boolean isInterrupted(boolean ClearInterrupted){
-    	//SwingJS;
+    	// SwingJS ;
     	return false;
     }
 
@@ -1033,7 +1033,7 @@ class Thread implements Runnable {
      *          <code>false</code> otherwise.
      */
     public final boolean isAlive(){
-    	//SwingJS;
+    	// SwingJS ;
     	return true;
     }
 
@@ -1228,7 +1228,7 @@ class Thread implements Runnable {
      */
     @Deprecated
     public int countStackFrames(){
-    	//SwingJS;
+    	// SwingJS ;
     	return  0;
     }
 
@@ -1481,7 +1481,7 @@ class Thread implements Runnable {
      * @since 1.4
      */
     public static boolean holdsLock(Object obj){
-    	//SwingJS;
+    	// SwingJS ;
     	return false;
     }
 //    private static final StackTraceElement[] EMPTY_STACK_TRACE
@@ -1676,12 +1676,12 @@ class Thread implements Runnable {
 //    }
 
     private static StackTraceElement[][] dumpThreads(Thread[] threads){
-    	//SwingJS;
+    	// SwingJS ;
     	return  null;
     }
     private static Thread[] getThreads(){
     	return null;
-    	//SwingJS;
+    	// SwingJS ;
     }
 
     /**
@@ -1963,19 +1963,19 @@ class Thread implements Runnable {
 //
     /* Some private helper methods */
     private void setPriority0(int newPriority){
-    	//SwingJS;
+    	// SwingJS ;
     }
     private void stop0(Object o){
-    	//SwingJS;
+    	// SwingJS ;
     }
     private void suspend0(){
-    	//SwingJS;
+    	// SwingJS ;
     }
     private void resume0(){
-    	//SwingJS;
+    	// SwingJS ;
     }
     private void interrupt0(){
-    	//SwingJS;
+    	// SwingJS ;
     }
 
 }

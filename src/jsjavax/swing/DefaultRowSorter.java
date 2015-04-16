@@ -696,7 +696,7 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
         int keySize = keys.size();
         sortComparators = new Comparator[keySize];
         for (int i = 0; i < keySize; i++) {
-        	//Swingjs -- may be null
+        	// SwingJS  -- may be null
             sortComparators[i] = getComparator0(keys.get(i).getColumn());
         }
         cachedSortKeys = keys.toArray(new SortKey[keySize]);
@@ -792,7 +792,7 @@ public abstract class DefaultRowSorter<M, I> extends RowSorter<M> {
             return comparator;
         }
         return null;
-//Swingjs ignore
+// SwingJS  ignore
 //        // This should be ok as useToString(column) should have returned
 //        // true in this case.
 //        return Collator.getInstance();

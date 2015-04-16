@@ -166,7 +166,7 @@ public abstract class ImageDecoder {
         aborted = true;
         source.doneDecoding(this);
         close();
-        //jsjava.security.AccessController.doPrivileged(
+        // SwingJS  ?? java.security.AccessController.doPrivileged(
           //  new jsjava.security.PrivilegedAction() {
             //public Object run() {
                 feeder.interrupt();

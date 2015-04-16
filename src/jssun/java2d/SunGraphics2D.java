@@ -94,7 +94,7 @@ import jsjava.awt.Color;
 //import jssun.misc.PerformanceLogger;
 
 /**
- *  //SwingJS: A full implementation of graphics would require implementing much of this. 
+ *  // SwingJS : A full implementation of graphics would require implementing much of this. 
  * This is a the master Graphics2D superclass for all of the Sun
  * Graphics implementations.  This class relies on subclasses to
  * manage the various device information, but provides an overall

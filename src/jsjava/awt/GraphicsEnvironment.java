@@ -360,7 +360,7 @@ public abstract class GraphicsEnvironment {
      * @since 1.5
      */
     public void preferLocaleFonts() {
-        //jssun.font.FontManager.preferLocaleFonts();
+        // SwingJS  ?? sun.font.FontManager.preferLocaleFonts();
     }
 
     /**

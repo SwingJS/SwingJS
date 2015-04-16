@@ -823,7 +823,7 @@ public class JRootPane extends JComponent {
     }
 
     final void disableTrueDoubleBuffering() {
-//SwingJS        if (useTrueDoubleBuffering) {
+// SwingJS         if (useTrueDoubleBuffering) {
 //            if (!IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING) {
 //                if (LOG_DISABLE_TRUE_DOUBLE_BUFFERING) {
 //                    System.out.println("Disabling true double buffering for " +

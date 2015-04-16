@@ -3172,7 +3172,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
 		if (numPts == 0)
 			return;
 		if (!AU.isAD(srcPts)) {
-			//SwingJS -- check for array of doubles; trick to use correct function
+			// SwingJS  -- check for array of doubles; trick to use correct function
 			// note that this cannot be used to compare float[] with double[], but
 			// here we are using it to check Point2D[] vs. double[]
 			Object src = srcPts;

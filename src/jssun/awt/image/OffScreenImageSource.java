@@ -84,7 +84,7 @@ public class OffScreenImageSource implements ImageProducer {
 
     private void sendPixels() {
     	//TODO
-    	//SwingJS lots to do here
+    	// SwingJS  lots to do here
         ColorModel cm = image.getColorModel();
         //WritableRaster raster = image.getRaster();
         //int numDataElements = raster.getNumDataElements();

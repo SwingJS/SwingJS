@@ -183,7 +183,7 @@ public class DirectColorModel extends PackedColorModel {
                bits, rmask, gmask, bmask, amask, false,
                amask == 0 ? Transparency.OPAQUE : Transparency.TRANSLUCENT,
                ColorModel.getDefaultTransferType(bits));
-        //SwingJS setFields();
+        // SwingJS  setFields();
     }
 
     /**
@@ -235,7 +235,7 @@ public class DirectColorModel extends PackedColorModel {
                isAlphaPremultiplied,
                amask == 0 ? Transparency.OPAQUE : Transparency.TRANSLUCENT,
                transferType);
-//SwingJS         if (ColorModel.isLinearRGBspace(colorSpace)) {
+// SwingJS          if (ColorModel.isLinearRGBspace(colorSpace)) {
 //            is_LinearRGB = true;
 //            if (maxBits <= 8) {
 //                lRGBprecision = 8;

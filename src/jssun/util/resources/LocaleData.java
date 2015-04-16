@@ -69,7 +69,7 @@ public class LocaleData {
          static final Locale[] localeList = createLocaleList();
     }
 
-//    //SwingJS for now, just en files are present in sun.text.resources
+//    // SwingJS  for now, just en files are present in sun.text.resources
 //		private static String SwingJSSupportedLocales = "en|"; 
 //
     /**
@@ -249,7 +249,7 @@ public class LocaleData {
      *
      */
     private static Locale[] createLocaleList() {
-        String supportedLocaleString = "en|";//SwingJSSupportedLocales ;
+        String supportedLocaleString = "en|";// SwingJS SupportedLocales ;
 //        LocaleDataMetaInfo.
 //            getSupportedLocaleString("jssun.text.resources.FormatData");
 

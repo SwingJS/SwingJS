@@ -593,7 +593,7 @@ public abstract class AWTEvent extends EventObject {
      */
     void copyPrivateDataInto(AWTEvent that) {
         that.bdata = this.bdata;
-//SwingJS TODO
+// SwingJS  TODO
         // Copy canAccessSystemClipboard value from this into that.
 //        if (this instanceof InputEvent && that instanceof InputEvent) {
 ////            Field field = get_InputEvent_CanAccessSystemClipboard();

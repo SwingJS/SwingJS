@@ -1438,7 +1438,7 @@ public class SwingUtilities2 {
     public static Object makeIcon(final Class<?> baseClass,
                                   final Class<?> rootClass,
                                   final String imageFile) {
-    //SWingJS TODO
+    // SwingJS  TODO
     	return null;
 //        return new UIDefaults.LazyValue() {
 //            public Object createValue(UIDefaults table) {
@@ -1593,7 +1593,7 @@ public class SwingUtilities2 {
         return defaultValue;
     }
 
-//SwingJSX: Key Focus
+// SwingJS X: Key Focus
 //    // At this point we need this method here. But we assume that there
 //    // will be a common method for this purpose in the future releases.
 //    public static Component compositeRequestFocus(Component component) {

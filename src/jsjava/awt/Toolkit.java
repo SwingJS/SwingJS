@@ -1848,7 +1848,7 @@ public abstract class Toolkit {
 
     // 8014736: logging has been removed from Toolkit
 
-    private static final int LONG_BITS = 32;//SwingJS wass 64;
+    private static final int LONG_BITS = 32;// SwingJS  wass 64;
     private int[] calls = new int[LONG_BITS];
     private static volatile long enabledOnToolkitMask;
     private AWTEventListener eventListener = null;

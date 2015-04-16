@@ -405,7 +405,7 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
 
         if (!tree.isEnabled()) {
             setEnabled(false);
-//SwingJS            LookAndFeel laf = UIManager.getLookAndFeel();
+// SwingJS             LookAndFeel laf = UIManager.getLookAndFeel();
 //            Icon disabledIcon = laf.getDisabledIcon(tree, icon);
 //            if (disabledIcon != null) icon = disabledIcon;
             setDisabledIcon(icon);

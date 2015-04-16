@@ -29,7 +29,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public BufferedImage createCompatibleImage(int width, int height) {
-		//SwingJS TODO
+		// SwingJS  TODO
 		/*
 		 *
 		 * @j2sNative
@@ -40,7 +40,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public ColorModel getColorModel() {
-		//SwingJS TODO
+		// SwingJS  TODO
 		/*
 		 *
 		 * @j2sNative
@@ -51,7 +51,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public ColorModel getColorModel(int transparency) {
-		//SwingJS TODO
+		// SwingJS  TODO
 		/*
 		 *
 		 * @j2sNative
@@ -62,7 +62,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public AffineTransform getDefaultTransform() {
-		//SwingJS TODO
+		// SwingJS  TODO
 		/*
 		 *
 		 * @j2sNative
@@ -73,7 +73,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public AffineTransform getNormalizingTransform() {
-		//SwingJS TODO
+		// SwingJS  TODO
 		/*
 		 *
 		 * @j2sNative
@@ -84,7 +84,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public Rectangle getBounds() {
-		//SwingJS TODO
+		// SwingJS  TODO
 		/*
 		 *
 		 * @j2sNative

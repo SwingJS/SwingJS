@@ -790,7 +790,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 
 		doInit = true; // allow restarts
 
-		validate(); //SwingJS
+		validate(); // SwingJS 
 		// Validate the applet in event dispatch thread
 		// to avoid deadlock.
 		// try {
@@ -914,7 +914,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 	public void appletResize(int width, int height) {
 		currentAppletSize.width = width;
 		currentAppletSize.height = height;
-		validate(); //SwingJS
+		validate(); // SwingJS 
 
 		
 //		final Dimension currentSize = new Dimension(currentAppletSize.width,

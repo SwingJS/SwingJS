@@ -12,12 +12,12 @@ import jsjava.awt.EventQueue;
  * We do this because EventQueue.postEvent() may be overridden by client
  * code, and we mustn't ever call client code from the toolkit thread.
  */
-class PostEventQueue {
+public class PostEventQueue {
     private EventQueueItem queueHead = null;
     private EventQueueItem queueTail = null;
     private final EventQueue eventQueue;
 
-    PostEventQueue(EventQueue eq) {
+    public PostEventQueue(EventQueue eq) {
         eventQueue = eq;
     }
 
@@ -65,6 +65,7 @@ class PostEventQueue {
                 queueTail = item;
             }
         }
-      //JS         SunToolkit.wakeupEventQueue(eventQueue, event.getSource() == AWTAutoShutdown.getInstance());
+      SunToolkit.wakeupEventQueue(eventQueue, event.getSource() == AWTAutoShutdown.getInstance());
     }
-} // class PostEventQueue
+} 
+// SwingJS  -- hidden classes EventQueueItem and were removed from this file

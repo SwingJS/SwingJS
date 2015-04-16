@@ -312,7 +312,7 @@ public abstract class ResourceBundle {
      */
     private static final HashMap<CacheKey, ResourceBundle> cacheList
         = new HashMap<CacheKey, ResourceBundle>(INITIAL_CACHE_SIZE);
-    //SwingJS was ConcurrentMap
+    // SwingJS  was ConcurrentMap
 
 //    /**
 //     * This ConcurrentMap is used to keep multiple threads from loading the
@@ -323,7 +323,7 @@ public abstract class ResourceBundle {
 //     */
 //    private static final HashMap<CacheKey, Thread> underConstruction
 //        = new HashMap<CacheKey, Thread>();
-//    //SwingJS was ConcurrentMap
+//    // SwingJS  was ConcurrentMap
 
 //    /**
 //     * Queue for reference objects referring to class loaders or bundles.
@@ -1021,7 +1021,7 @@ public abstract class ResourceBundle {
 //        if (loader == null) {
 //            throw new NullPointerException();
 //        }
-        return getBundleImpl(baseName, locale, null, Control.INSTANCE);//SwingJS loader, Control.INSTANCE);
+        return getBundleImpl(baseName, locale, null, Control.INSTANCE);// SwingJS  loader, Control.INSTANCE);
     }
 
     /**
@@ -2498,7 +2498,7 @@ public abstract class ResourceBundle {
 				// final boolean reloadFlag = reload;
 				String data = JSToolkit.getJavaResource(resourceName);
 				InputStream stream = null;
-				//SwingJS - we just get the resource as a string here
+				// SwingJS  - we just get the resource as a string here
 				// J2S compiler bug converts these variables to a b c d e
 				stream = (data == null ? null : new BufferedInputStream(
 						new ByteArrayInputStream(data.getBytes())));

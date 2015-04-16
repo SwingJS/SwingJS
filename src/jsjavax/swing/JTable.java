@@ -26,7 +26,7 @@
 package jsjavax.swing;
 
 import java.lang.reflect.Constructor;
-//SwingJS TODO import jsjava.text.DateFormat;
+// SwingJS  TODO import jsjava.text.DateFormat;
 import jsjava.text.NumberFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -5379,7 +5379,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         }
     }
 
-//SwingJS TODO    static class DateRenderer extends DefaultTableCellRenderer.UIResource {
+// SwingJS  TODO    static class DateRenderer extends DefaultTableCellRenderer.UIResource {
 //        DateFormat formatter;
 //        public DateRenderer() { super(); }
 //

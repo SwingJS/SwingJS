@@ -519,7 +519,7 @@ public class DecimalFormat extends NumberFormat {
                                FieldPosition fieldPosition) {
         fieldPosition.setBeginIndex(0);
         fieldPosition.setEndIndex(0);
-        //SwingJS setting difference here by whether it is an integer or not
+        // SwingJS  setting difference here by whether it is an integer or not
         boolean isInt = (number == (int) number && Math.abs(number) < Integer.MAX_VALUE);
         if (isInt)
           return formatLong((int)number, result, fieldPosition.getFieldDelegate());
@@ -1339,7 +1339,7 @@ public class DecimalFormat extends NumberFormat {
                 } else {
                     // Avoid converting to double if we can
                     if (longResult % multiplier == 0) {
-                    	//SwingJS fix
+                    	// SwingJS  fix
                         longResult = longResult / multiplier;
                     } else {
                         doubleResult = ((double)longResult) / multiplier;

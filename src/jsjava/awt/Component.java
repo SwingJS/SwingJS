@@ -25,6 +25,8 @@
 package jsjava.awt;
 
 import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
 //import java.util.HashMap;
 import jsjava.util.Locale;
 //import java.util.Map;
@@ -969,7 +971,7 @@ protected  transient ComponentPeer peer;
      * @since 1.3
      */
     public GraphicsConfiguration getGraphicsConfiguration() {
-    	//SwingJS
+    	// SwingJS 
     	return JSToolkit.getGraphicsConfiguration();
 //        synchronized(getTreeLock()) {
 //            if (graphicsConfig != null) {
@@ -1001,7 +1003,7 @@ protected  transient ComponentPeer peer;
      * Called from the Toolkit thread, so NO CLIENT CODE.
      */
     void resetGC() {
-//SwingJS ignore
+// SwingJS  ignore
 //        synchronized(getTreeLock()) {
 //            graphicsConfig = null;
 //        }
@@ -1319,7 +1321,7 @@ protected  transient ComponentPeer peer;
                 enabled = true;
                 ComponentPeer peer = this.peer;
                 if (peer != null) {
-                    peer.setEnabled(true);//SwingJS was enable();
+                    peer.setEnabled(true);// SwingJS  was enable();
                     if (visible) {
                         updateCursorImmediately();
                     }
@@ -1368,7 +1370,7 @@ protected  transient ComponentPeer peer;
 //                }
                 ComponentPeer peer = this.peer;
                 if (peer != null) {
-                    peer.setEnabled(false); //SwingJS was disable();
+                    peer.setEnabled(false); // SwingJS  was disable();
                     if (visible) {
                         updateCursorImmediately();
                     }
@@ -1523,7 +1525,7 @@ protected  transient ComponentPeer peer;
 //                }
                 ComponentPeer peer = this.peer;
                 if (peer != null) {
-                    peer.setVisible(false);//SwingJS was hide();
+                    peer.setVisible(false);// SwingJS  was hide();
                     createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
                                           this, parent,
                                           HierarchyEvent.SHOWING_CHANGED,
@@ -5052,53 +5054,54 @@ protected  transient ComponentPeer peer;
 
     transient EventQueueItem[] eventCache;
 
-//    /**
-//     * @see #isCoalescingEnabled
-//     * @see #checkCoalescing
-//     */
-//    transient private boolean coalescingEnabled = false;//checkCoalescing();
-//
-//    /**
-//     * Weak map of known coalesceEvent overriders.
-//     * Value indicates whether overriden.
-//     * Bootstrap classes are not included.
-//     */
-//    private static final Map<Class<?>, Boolean> coalesceMap =
-//        new HashMap<Class<?>, Boolean>(); // was weakHashmap
+    /**
+     * @see #isCoalescingEnabled
+     * @see #checkCoalescing
+     */
+    transient private boolean coalescingEnabled = checkCoalescing();
 
-//    /**
-//     * Indicates whether this class overrides coalesceEvents.
-//     * It is assumed that all classes that are loaded from the bootstrap
-//     *   do not.
-//     * The boostrap class loader is assumed to be represented by null.
-//     * We do not check that the method really overrides
-//     *   (it might be static, private or package private).
-//     */
-//     private boolean checkCoalescing() {
-//         if (getClass().getClassLoader()==null) {
-//             return false;
-//         }
-//         final Class<? extends Component> clazz = getClass();
-//         synchronized (coalesceMap) {
-//             // Check cache.
-//             Boolean value = coalesceMap.get(clazz);
-//             if (value != null) {
-//                 return value;
-//             }
-//
-//             // Need to check non-bootstraps.
-//             Boolean enabled = jsjava.security.AccessController.doPrivileged(
-//                 new jsjava.security.PrivilegedAction<Boolean>() {
-//                     public Boolean run() {
-//                         return isCoalesceEventsOverriden(clazz);
-//                     }
-//                 }
-//                 );
-//             coalesceMap.put(clazz, enabled);
-//             return enabled;
-//         }
-//     }
-//
+    /**
+     * Weak map of known coalesceEvent overriders.
+     * Value indicates whether overriden.
+     * Bootstrap classes are not included.
+     */
+    private static final Map<Class<?>, Boolean> coalesceMap =
+        new HashMap<Class<?>, Boolean>(); // was weakHashmap
+
+	/**
+	 * Indicates whether this class overrides coalesceEvents. It is assumed that
+	 * all classes that are loaded from the bootstrap do not. The boostrap class
+	 * loader is assumed to be represented by null. We do not check that the
+	 * method really overrides (it might be static, private or package private).
+	 */
+	private boolean checkCoalescing() {
+		if (getClass().getClassLoader() == null) {
+			return false;
+		}
+		final Class<? extends Component> clazz = getClass();
+		synchronized (coalesceMap) {
+			// Check cache.
+			Boolean value = coalesceMap.get(clazz);
+			if (value != null) {
+				return value;
+			}
+
+			Boolean enabled = Boolean.valueOf(JSToolkit.checkClassMethod(this,
+					"coalesceEvents", "\\jsjava.awt.AWTEvent\\jsjava.awt.AWTEvent"));
+			// SwingJS untested
+			// // Need to check non-bootstraps.
+			// Boolean enabled = jsjava.security.AccessController.doPrivileged(
+			// new jsjava.security.PrivilegedAction<Boolean>() {
+			// public Boolean run() {
+			// return isCoalesceEventsOverriden(clazz);
+			// }
+			// }
+			// );
+			coalesceMap.put(clazz, enabled);
+			return enabled;
+		}
+	}
+
 //    /**
 //     * Parameter types of coalesceEvents(AWTEvent,AWTEVent).
 //     */
@@ -5115,10 +5118,11 @@ protected  transient ComponentPeer peer;
 //        //assert Thread.holdsLock(coalesceMap);
 //
 //        // First check superclass - we may not need to bother ourselves.
+//    	
 //        Class<?> superclass = clazz.getSuperclass();
 //        if (superclass == null) {
 //            // Only occurs on implementations that
-//            //   do not use null to represent the bootsrap class loader.
+//            //   do not use null to represent the bootstrap class loader.
 //            return false;
 //        }
 //        if (superclass.getClassLoader() != null) {
@@ -5145,13 +5149,13 @@ protected  transient ComponentPeer peer;
 //            return false;
 //        }
 //    }
-
-//    /**
-//     * Indicates whether coalesceEvents may do something.
-//     */
-//    final boolean isCoalescingEnabled() {
-//        return coalescingEnabled;
-//     }
+//
+    /**
+     * Indicates whether coalesceEvents may do something.
+     */
+    final boolean isCoalescingEnabled() {
+        return coalescingEnabled;
+     }
 
 
     /**
@@ -5845,7 +5849,7 @@ protected  transient ComponentPeer peer;
             invalidate();
 
 //            int npopups = (popups != null? popups.size() : 0);
-            //SwingJS TODO 
+            // SwingJS  TODO 
 //            for (int i = 0 ; i < npopups ; i++) {
 //                PopupMenu popup = (PopupMenu)popups.elementAt(i);
 //                popup.addNotify();
@@ -5944,14 +5948,14 @@ protected  transient ComponentPeer peer;
             }
 
 //            int npopups = (popups != null? popups.size() : 0);
-//SwingJS TODO            for (int i = 0 ; i < npopups ; i++) {
+// SwingJS  TODO            for (int i = 0 ; i < npopups ; i++) {
 //                PopupMenu popup = (PopupMenu)popups.elementAt(i);
 //                popup.removeNotify();
 //            }
             // If there is any input context for this component, notify
             // that this component is being removed. (This has to be done
             // before hiding peer.)
-//SwingJS ignore?            if ((eventMask & AWTEvent.INPUT_METHODS_ENABLED_MASK) != 0) {
+// SwingJS  ignore?            if ((eventMask & AWTEvent.INPUT_METHODS_ENABLED_MASK) != 0) {
 //                InputContext inputContext = getInputContext();
 //                if (inputContext != null) {
 //                    inputContext.removeNotify(this);
@@ -5969,7 +5973,7 @@ protected  transient ComponentPeer peer;
 //                if (dropTarget != null) dropTarget.removeNotify(peer);
 
                 // Hide peer first to stop system events such as cursor moves.
-//SwingJS unnec?                if (visible) {
+// SwingJS  unnec?                if (visible) {
 //                    p.hide();
 //                }
 
@@ -5987,7 +5991,7 @@ protected  transient ComponentPeer peer;
                 isAddNotifyComplete = false;
                 // Nullifying compoundShape means that the component has normal shape
                 // (or has no shape at all).
-//SwingJS not implemented                this.compoundShape = null;
+// SwingJS  not implemented                this.compoundShape = null;
             }
 
             if (hierarchyListener != null ||
@@ -7278,7 +7282,7 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7297,7 +7301,7 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, char oldValue, char newValue) {
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7316,7 +7320,7 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, short oldValue, short newValue) {
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7336,7 +7340,7 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, long oldValue, long newValue) {
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7355,7 +7359,7 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, float oldValue, float newValue) {
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
@@ -7374,7 +7378,7 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, double oldValue, double newValue) {
-    	//SwingJS -- MUST FIX SIGNATURE
+    	// SwingJS  -- MUST FIX SIGNATURE
         if (changeSupport == null || oldValue == newValue) {
             return;
         }

@@ -267,7 +267,7 @@ public class JWindow extends Window implements /* Accessible */
         setLocale( JComponent.getDefaultLocale() );
         setRootPane(createRootPane());
         setRootPaneCheckingEnabled(true);
-        //jssun.awt.SunToolkit.checkAndSetPolicy(this, true);
+        // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
     }
 
     /**

@@ -40,7 +40,7 @@ class CubicIterator implements PathIterator {
     int index;
     
     CubicIterator(){
-    	//SwingJS for reflection
+    	// SwingJS  for reflection
     }
     
     CubicIterator(CubicCurve2D q, AffineTransform at) {

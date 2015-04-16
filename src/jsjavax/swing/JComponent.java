@@ -581,7 +581,7 @@ public abstract class JComponent extends Container
         // bindings will work everywhere. This is a partial fix to BugID
         // 4282211.
         enableEvents(AWTEvent.KEY_EVENT_MASK);
-//SwingJS        if (isManagingFocus()) {
+// SwingJS         if (isManagingFocus()) {
 //            LookAndFeel.installProperty(this,
 //                                        "focusTraversalKeysForward",
 //                                  getManagingFocusForwardTraversalKeys());
@@ -823,9 +823,9 @@ public abstract class JComponent extends Container
 			for (; i >= 0; i--) {
 				Component comp = getComponent(i);
 				isJComponent = (comp instanceof JComponent);
-				//SwingJS here is where we need to differentiate between types
+				// SwingJS  here is where we need to differentiate between types
 				// and probably not do this.
-				//SwingJS TODO -- allow JSpecView-like layer for writing over buttons
+				// SwingJS  TODO -- allow JSpecView-like layer for writing over buttons
 				if (comp != null && (isJComponent || isLightweightComponent(comp)) &&
 						isSwingJSPaintable(comp) && (comp.isVisible() == true)) {
 					Rectangle cr;
@@ -900,7 +900,7 @@ public abstract class JComponent extends Container
 	}
 
     private boolean isSwingJSPaintable(Component c) {
-    	//SwingJS FOR NOW NOT SUPPORTING print(g) in a button.  
+    	// SwingJS  FOR NOW NOT SUPPORTING print(g) in a button.  
     	return (c instanceof JPanel);
     			}
 
@@ -980,7 +980,7 @@ public abstract class JComponent extends Container
         try {
 //            RepaintManager repaintManager = RepaintManager.currentManager(this);
         	
-          //SwingJS -- we are not going to worry about components having special clipping
+          // SwingJS  -- we are not going to worry about components having special clipping
         	// bounds. The assumption is that what we are working with are
         	// standard JPanels and JApplets, which have simple bounds based on 
         	// width and height. No need to do anything else. Painting over a button, 
@@ -3122,7 +3122,7 @@ public abstract class JComponent extends Container
      * description: Determines if this component automatically scrolls its contents when dragged.
      */
     public void setAutoscrolls(boolean autoscrolls) {
-//SwingJS not implemented    	
+// SwingJS  not implemented    	
 //        setFlag(AUTOSCROLLS_SET, true);
 //        if (this.autoscrolls != autoscrolls) {
 //            this.autoscrolls = autoscrolls;

@@ -214,7 +214,7 @@ public class UIDefaults extends Hashtable<Object,Object>
                     else {
                         super.put(key, value);
                     }
-                  //SwingJS CANNOT DO THIS                notifyAll();
+                  // SwingJS  CANNOT DO THIS                notifyAll();
                 }
             }
         }
@@ -741,7 +741,7 @@ public class UIDefaults extends Hashtable<Object,Object>
      * @return the <code>ComponentUI</code> object
      */
     public ComponentUI getUI(JComponent target) {
-    //SwingJS 
+    // SwingJS  
     	return JSToolkit.getComponentUI(target);
     			//        Object cl = get("ClassLoader");
 //        ClassLoader uiClassLoader =
