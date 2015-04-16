@@ -9,6 +9,7 @@ import jsjava.awt.Component;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
 import jsjava.awt.Dimension;
+import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.GraphicsConfiguration;
@@ -20,6 +21,8 @@ import jsjava.awt.image.ImageProducer;
 import jsjava.lang.Thread;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
+import jssun.awt.AppContext;
+import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
 import swingjs.api.HTMLCanvasContext2D;
 import swingjs.api.Interface;
@@ -37,6 +40,18 @@ public class JSToolkit extends SunToolkit {
 	public JSToolkit() {
 		super();
 		System.out.println("JSToolkit initialized");
+	}
+
+	/**
+	 * for SwingJS debugging
+	 * 
+	 * @param isPost
+	 * @return
+	 */
+	public static Object getPostEventQueue(boolean isPost) {
+		return (isPost ? (PostEventQueue) AppContext.getAppContext().get(
+				POST_EVENT_QUEUE_KEY) : (EventQueue) AppContext.getAppContext().get(
+				AppContext.EVENT_QUEUE_KEY));
 	}
 
 	// ////// jsjava.awt.Toolkit /////////
@@ -142,6 +157,12 @@ public class JSToolkit extends SunToolkit {
 	public boolean isModalExclusionTypeSupported(
 			ModalExclusionType modalExclusionType) {
 		return true;
+	}
+
+	@Override
+	public boolean isModalityTypeSupported(ModalityType modalityType) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
