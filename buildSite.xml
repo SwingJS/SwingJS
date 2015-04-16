@@ -152,10 +152,6 @@
             swingjs/JSThreadGroup.js
             swingjs/JSUtil.js
             swingjs/JSToolkit.js
-            swingjs/JSAppletPanel.js
-            javax/swing/JComponent.js
-            java/awt/Container.js
-            java/awt/Component.js
             java/util/Locale.js
             java/util/ResourceBundle.js
             javajs/util/Rdr.js
@@ -170,7 +166,6 @@
             javajs/util/Encoding.js
             java/util/MissingResourceException.js
             java/awt/geom/Point2D.js
-            jssun/applet/AppletPanel.js
             jssun/misc/MessageUtils.js
             java/awt/Dimension.js
             java/awt/geom/Dimension2D.js
@@ -178,9 +173,7 @@
             java/util/ArrayList.js
             java/util/AbstractList.js
             java/util/AbstractCollection.js
-            java/awt/event/AWTEventListener.js
             java/awt/ComponentOrientation.js
-            java/awt/AWTEvent.js
             java/security/AccessController.js
             java/security/AccessControlContext.js
             java/util/HashMap.js
@@ -196,7 +189,6 @@
             java/lang/AbstractStringBuilder.js
             java/util/Arrays.js
             java/util/Locale.js
-            java/awt/AWTEventMulticaster.js
             java/awt/event/ActionListener.js
             java/awt/event/AdjustmentListener.js
             java/awt/event/ComponentListener.js
@@ -215,13 +207,8 @@
             java/awt/event/WindowListener.js
             java/awt/event/WindowStateListener.js
             java/awt/Cursor.js
-            java/awt/EventQueue.js
-            java/awt/ActiveEvent.js
-            java/awt/event/InvocationEvent.js
             java/awt/event/MouseEvent.js
             java/awt/event/InputEvent.js
-            java/awt/event/ComponentEvent.js
-            java/awt/Toolkit.js
             java/awt/AWTError.js
             java/awt/Insets.js
             java/awt/RenderingHints.js
@@ -243,9 +230,6 @@
             java/lang/StringBuffer.js
             java/util/IdentityHashMap.js
             java/util/HashSet.js
-            java/lang/Thread.js
-            java/lang/ThreadGroup.js
-            jssun/awt/SunToolkit.js
             jssun/awt/ComponentFactory.js
             jssun/awt/WindowClosingListener.js
             jssun/awt/WindowClosingSupport.js
@@ -264,9 +248,6 @@
             java/util/Hashtable.js
             java/util/Dictionary.js
             java/net/MalformedURLException.js
-            java/awt/BorderLayout.js
-            java/awt/LayoutManager2.js
-            java/awt/LayoutManager.js
             java/awt/GraphicsEnvironment.js
             java/awt/event/WindowEvent.js
             javax/swing/Action.js
@@ -294,11 +275,11 @@
             java/awt/event/MouseWheelEvent.js
             javax/swing/JRootPane.js
             javax/swing/AbstractAction.js
+            javax/swing/AbstractButton.js
             javax/swing/ArrayTable.js
             javax/swing/event/SwingPropertyChangeSupport.js
             javax/swing/JLayeredPane.js
             javax/swing/JPanel.js
-            java/awt/FlowLayout.js
             javax/swing/UIManager.js
             javax/swing/MultiUIDefaults.js
             javax/swing/UIDefaults.js
@@ -377,7 +358,6 @@
             javax/swing/JViewport.js
             java/awt/event/ComponentAdapter.js
             javax/swing/CellRendererPane.js
-            javax/swing/RepaintManager.js
             jssun/awt/AWTAccessor.js
             javax/swing/ViewportLayout.js
             javax/swing/event/CaretListener.js
@@ -450,8 +430,6 @@
             jssun/awt/image/ImageFetcher.js
             java/awt/event/FocusEvent.js
             java/awt/event/HierarchyEvent.js
-            java/awt/GraphicsCallback.js
-            jssun/awt/SunGraphicsCallback.js
             jssun/awt/ConstrainableGraphics.js
             jssun/awt/Graphics2Delegate.js
             java/awt/event/ContainerEvent.js
@@ -473,10 +451,33 @@
     
    	<!-- 
    	
+            jssun/applet/AppletPanel.js
+            java/awt/EventQueue.js
+            java/awt/AWTEventMulticaster.js
+            java/awt/AWTEvent.js
+            java/awt/event/AWTEventListener.js
+            java/awt/ActiveEvent.js
+            java/awt/event/InvocationEvent.js
+            java/awt/event/ComponentEvent.js
+            java/awt/Toolkit.js
+            java/lang/Thread.js
+            java/lang/ThreadGroup.js
+            jssun/awt/SunToolkit.js
+            swingjs/JSAppletPanel.js
+            javax/swing/RepaintManager.js
+            java/awt/FlowLayout.js
+            java/awt/BorderLayout.js
+            java/awt/LayoutManager2.js
+            java/awt/LayoutManager.js
+            java/awt/GraphicsCallback.js
+            jssun/awt/SunGraphicsCallback.js
+            javax/swing/JComponent.js
+            java/awt/Container.js
+            java/awt/Component.js
+
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
-            javax/swing/AbstractButton.js
     jssun/java2d/SunGraphics2D.js
     swingjs/JSGraphics2D.js
     
