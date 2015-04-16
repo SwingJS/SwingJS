@@ -43,6 +43,9 @@ import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.PaintEvent;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.ComponentPeer;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
+
 import jssun.awt.AWTAutoShutdown;
 //import jsjava.security.PrivilegedAction;
 import jssun.awt.AppContext;
@@ -212,6 +215,7 @@ public class EventQueue {
 	 *           if <code>theEvent</code> is <code>null</code>
 	 */
 	public void postEvent(AWTEvent theEvent) {
+		JSToolkit.log("---Post Event---" + theEvent.getID() + "." + theEvent.num);
 		SunToolkit.flushPendingEvents();
 		postEventPrivate(theEvent);
 	}
@@ -239,7 +243,7 @@ public class EventQueue {
 				nextQueue.postEventPrivate(theEvent);
 				return;
 			}
-			postEvent(theEvent, getPriority(theEvent));
+			postEventNow(theEvent, getPriority(theEvent));
 		}
 	}
 
@@ -275,7 +279,7 @@ public class EventQueue {
 	 * @param priority
 	 *          the desired priority of the event
 	 */
-	private void postEvent(AWTEvent theEvent, int priority) {
+	private void postEventNow(AWTEvent theEvent, int priority) {
 
 //		JSToolkit.postJavaEvent(this, theEvent, priority);
 
@@ -489,7 +493,7 @@ public class EventQueue {
 	 *              if any thread has interrupted this thread
 	 */
 	public AWTEvent getNextEvent() throws InterruptedException {
-		do {
+		//SwingJS cannot wait do {
 			/*
 			 * SunToolkit.flushPendingEvents must be called outside of the
 			 * synchronized block to avoid deadlock when event queues are nested with
@@ -508,14 +512,15 @@ public class EventQueue {
 						return entry.event;
 					}
 				}
-				// AWTAutoShutdown.getInstance().notifyThreadFree(dispatchThread);
-				wait();
+				AWTAutoShutdown.getInstance().notifyThreadFree(dispatchThread);
+				//wait();
 			}
-		} while (true);
+		//} while (true);
+		return null;
 	}
 
-	AWTEvent getNextEvent(int id) throws InterruptedException {
-		do {
+	AWTEvent getNextEventForID(int id) throws InterruptedException {
+		//SwingJS cannot wait do {
 			/*
 			 * SunToolkit.flushPendingEvents must be called outside of the
 			 * synchronized block to avoid deadlock when event queues are nested with
@@ -540,10 +545,11 @@ public class EventQueue {
 					}
 				}
 				this.waitForID = id;
-				wait();
+				//wait();
 				this.waitForID = 0;
 			}
-		} while (true);
+		//} while (true);
+		return null;
 	}
 
 	/**
@@ -627,6 +633,7 @@ public class EventQueue {
 	 * @since 1.2
 	 */
 	protected void dispatchEvent(final AWTEvent event) {
+		JSToolkit.log("---Dispatch Event---" + event.getID() + "." + event.num);
 		final Object src = event.getSource();
 		// final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
 		// public Void run() {
@@ -755,16 +762,13 @@ public class EventQueue {
 	 * @since 1.4
 	 */
 	public static AWTEvent getCurrentEvent() {
-		return null;
-		// return Toolkit.getEventQueue().getCurrentEventImpl();
+		return Toolkit.getEventQueue().getCurrentEventImpl();
 	}
 
-	// private synchronized AWTEvent getCurrentEventImpl() {
-	// return null;
-	// // return (Thread.currentThread() == dispatchThread)
-	// // ? ((AWTEvent)currentEvent.get())
-	// // : null;
-	// }
+	private synchronized AWTEvent getCurrentEventImpl() {
+		return (Thread.currentThread() == dispatchThread) ? ((AWTEvent) currentEvent)
+				: null;
+	}
 
 	/**
 	 * Replaces the existing <code>EventQueue</code> with the specified one. Any
@@ -784,10 +788,10 @@ public class EventQueue {
 		// eventLog.log(Level.FINE, "EventQueue.push(" + newEventQueue + ")");
 		// }
 
-		// if (nextQueue != null) {
-		// nextQueue.push(newEventQueue);
-		// return;
-		// }
+		if (nextQueue != null) {
+			nextQueue.push(newEventQueue);
+			return;
+		}
 
 		synchronized (newEventQueue) {
 			// Transfer all events forward to new EventQueue.
@@ -812,11 +816,11 @@ public class EventQueue {
 		 * synchronize on this EventQueue object it will never exit since we already
 		 * hold this lock.
 		 */
-		// if (dispatchThread != null) {
-		// dispatchThread.stopDispatchingLater();
-		// }
+		if (dispatchThread != null) {
+			dispatchThread.stopDispatchingLater();
+		}
 
-		// nextQueue = newEventQueue;
+		nextQueue = newEventQueue;
 
 		AppContext appContext = AppContext.getAppContext();
 		if (appContext.get(AppContext.EVENT_QUEUE_KEY) == this) {
@@ -876,16 +880,16 @@ public class EventQueue {
 			}
 		}
 
-		// EventDispatchThread dt = this.dispatchThread;
-		// if (dt != null) {
-		// dt.stopDispatching(); // Must be done outside synchronized
-		// // block to avoid possible deadlock
-		// }
+		EventDispatchThread dt = this.dispatchThread;
+		if (dt != null) {
+			dt.stopDispatching(); // Must be done outside synchronized
+			// block to avoid possible deadlock
+		}
 	}
 
 	/**
 	 * Returns true if the calling thread is the current AWT
-	 * <code>EventQueue</code>'s dispatch thread. Use this call the ensure that a
+	 * <code>EventQueue</code>'s dispatch thread. Use this call to ensure that a
 	 * given task is being executed (or not being) on the current AWT
 	 * <code>EventDispatchThread</code>.
 	 * 
@@ -1108,10 +1112,14 @@ public class EventQueue {
 				// Forward call to the top of EventQueue stack.
 				nextQueue.wakeup(isShutdown);
 			} else if (dispatchThread != null) {
-				dispatchThread.notify();
-//				
-//				// SwingJS -- TODO -- need to handle this
-//				notifyAll();
+				// SwingJS: we try to start, but perhaps need to run
+				try {
+					dispatchThread.start();
+				} catch (IllegalThreadStateException e) {
+					dispatchThread.run();
+				}
+				// SwingJS cannot do this:
+				// notifyAll();
 			} else if (!isShutdown) {
 				initDispatchThread();
 			}

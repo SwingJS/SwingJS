@@ -2765,23 +2765,23 @@ public class Container extends Component {
 
     /* End of JOptionPane support code */
 //
-//    /**
-//     * Returns a string representing the state of this <code>Container</code>.
-//     * This method is intended to be used only for debugging purposes, and the
-//     * content and format of the returned string may vary between
-//     * implementations. The returned string may be empty but may not be
-//     * <code>null</code>.
-//     *
-//     * @return    the parameter string of this container
-//     */
-//    protected String paramString() {
-//        String str = super.paramString();
-//        LayoutManager layoutMgr = this.layoutMgr;
-//        if (layoutMgr != null) {
-//            str += ",layout=" + layoutMgr.getClass().getName();
-//        }
-//        return str;
-//    }
+    /**
+     * Returns a string representing the state of this <code>Container</code>.
+     * This method is intended to be used only for debugging purposes, and the
+     * content and format of the returned string may vary between
+     * implementations. The returned string may be empty but may not be
+     * <code>null</code>.
+     *
+     * @return    the parameter string of this container
+     */
+    protected String paramString() {
+        String str = super.paramString();
+        LayoutManager layoutMgr = this.layoutMgr;
+        if (layoutMgr != null) {
+            str += ",layout=" + layoutMgr.getClass().getName();
+        }
+        return str;
+    }
 //
 //    /**
 //     * Prints a listing of this container to the specified output

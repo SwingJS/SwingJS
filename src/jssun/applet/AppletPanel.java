@@ -280,62 +280,62 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		listeners = AppletEventMulticaster.remove(listeners, l);
 	}
 
-	/**
-	 * Dispatch event to the listeners..
-	 */
-	public void dispatchAppletEvent(int id, Object argument) {
-		// System.out.println("SEND= " + id);
-		if (listeners != null) {
-			AppletEvent evt = new AppletEvent(this, id, argument);
-			listeners.appletStateChanged(evt);
-		}
-	}
-
-	/**
-	 * Send an event. Queue it for execution by the handler thread.
-	 */
-	public void sendEvent(int id) {
-		synchronized (this) {
-			if (queue == null) {
-				// System.out.println("SEND0= " + id);
-				queue = new Queue();
-			}
-			Integer eventId = new Integer(id);
-			queue.enqueue(eventId);
-			notifyAll();
-		}
-		// if (id == APPLET_QUIT) {
-		// try {
-		// joinAppletThread(); // Let the applet event handler exit
-		// } catch (InterruptedException e) {
-		// }
-		//
-		// // AppletClassLoader.release() must be called by a Thread
-		// // not within the applet's ThreadGroup
-		// if (loader == null)
-		// loader = getClassLoader(getCodeBase(), getClassLoaderCacheKey());
-		// release();
-		// }
-	}
-
-	/**
-	 * Get an event from the queue.
-	 */
-	synchronized AppletEvent getNextEvent() throws InterruptedException {
-		while (queue == null || queue.isEmpty()) {
-			wait();
-		}
-		Integer eventId = (Integer) queue.dequeue();
-		return new AppletEvent(this, eventId.intValue(), null);
-	}
-
-	boolean emptyEventQueue() {
-		if ((queue == null) || (queue.isEmpty()))
-			return true;
-		else
-			return false;
-	}
-
+//	/**
+//	 * Dispatch event to the listeners..
+//	 */
+//	public void dispatchAppletEvent(int id, Object argument) {
+//		// System.out.println("SEND= " + id);
+//		if (listeners != null) {
+//			AppletEvent evt = new AppletEvent(this, id, argument);
+//			listeners.appletStateChanged(evt);
+//		}
+//	}
+//
+//	/**
+//	 * Send an event. Queue it for execution by the handler thread.
+//	 */
+//	public void sendEvent(int id) {
+//		synchronized (this) {
+//			if (queue == null) {
+//				// System.out.println("SEND0= " + id);
+//				queue = new Queue();
+//			}
+//			Integer eventId = new Integer(id);
+//			queue.enqueue(eventId);
+//			notifyAll();
+//		}
+//		// if (id == APPLET_QUIT) {
+//		// try {
+//		// joinAppletThread(); // Let the applet event handler exit
+//		// } catch (InterruptedException e) {
+//		// }
+//		//
+//		// // AppletClassLoader.release() must be called by a Thread
+//		// // not within the applet's ThreadGroup
+//		// if (loader == null)
+//		// loader = getClassLoader(getCodeBase(), getClassLoaderCacheKey());
+//		// release();
+//		// }
+//	}
+//
+//	/**
+//	 * Get an event from the queue.
+//	 */
+//	synchronized AppletEvent getNextEvent() throws InterruptedException {
+//		while (queue == null || queue.isEmpty()) {
+//			wait();
+//		}
+//		Integer eventId = (Integer) queue.dequeue();
+//		return new AppletEvent(this, eventId.intValue(), null);
+//	}
+//
+//	boolean emptyEventQueue() {
+//		if ((queue == null) || (queue.isEmpty()))
+//			return true;
+//		else
+//			return false;
+//	}
+//
 	// /**
 	// * This kludge is specific to get over AccessControlException thrown during
 	// * Applet.stop() or destroy() when static thread is suspended. Set a flag
@@ -642,7 +642,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 			return;
 		}
 
-		dispatchAppletEvent(APPLET_LOADING, null);
+//		dispatchAppletEvent(APPLET_LOADING, null);
 
 		// REMIND -- might be cool to visually indicate loading here --
 		// maybe do animation?
@@ -699,7 +699,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 			return;
 		} finally {
 			// notify that loading is no longer going on
-			dispatchAppletEvent(APPLET_LOADING_COMPLETED, null);
+			//dispatchAppletEvent(APPLET_LOADING_COMPLETED, null);
 		}
 
 		// Fixed #4508194: NullPointerException thrown during

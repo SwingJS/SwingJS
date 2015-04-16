@@ -28,10 +28,109 @@ package swingjs;
 import jsjava.lang.Thread;
 import jsjava.lang.ThreadGroup;
 
+/**
+ * A class that takes care of simple threading.
+ * 
+ * @author RM
+ *
+ */
 public class JSThread extends Thread {
 
-	public JSThread(ThreadGroup group, String name) {
+	protected static final int INIT = 0;
+	protected static final int LOOP = 1;
+	protected static final int DONE = 2;
+
+	protected boolean isJS;
+	protected boolean doDispatch = true;
+
+	public JSThread(ThreadGroup group, String name, boolean isJS) {
 		super(group, name);
+		this.isJS = isJS;
 	}
+
+	public void run() {
+		run1(INIT);
+	}
+	
+  @SuppressWarnings("unused")
+	@Override
+  public synchronized void start() {
+    if (!isJS) {
+      super.start();
+      return;
+    }
+		Object f = null;
+		Object me = this;
+		/**
+		 * @j2sNative
+		 * 
+		 * f = function() { me.run(); };
+		 * 
+		 */
+		{}
+		JSToolkit.setTimeout(f);
+  }
+
+	/**
+	 * a generic method that loops until done,
+	 * or in JavaScript, will reenter and continue
+	 * at the appropriate spot
+	 * 
+	 * @param mode
+	 */
+	protected void run1(int mode) {
+		try {
+			while (true)
+				switch (mode) {
+				case INIT:
+					// once-through stuff here
+					mode = LOOP;
+					break;
+				case LOOP:
+					if (!doDispatch) {
+						mode = DONE;
+					} else {
+						Runnable r = new Runnable(){ 
+							public void run(){
+								// put the loop code here
+							}
+						};
+						dispatchAndReturn(r);
+						if (isJS)
+							return;
+					}
+					break;
+			  // add more cases as needed
+				case DONE:
+					// finish up here
+					if (!doDispatch)
+						return;
+					// or here
+					break;
+				}
+		} finally {
+			// stuff here to be executed after each loop in JS or at the end in Java
+		}
+	}
+
+	@SuppressWarnings("unused")
+	protected void dispatchAndReturn(Runnable r) {
+		if (!isJS) {
+			r.run();
+			return;
+		}
+		Object f = null;
+		int mode = LOOP;
+		Object me = this;
+		/**
+		 * @j2sNative
+		 * 
+		 * f = function() { r.run();me.run1(mode) };
+		 * 
+		 */
+		{}
+		JSToolkit.setTimeout(f);
+	}
+
 
 }

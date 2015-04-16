@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import jsjava.lang.Thread;
+import jsjava.lang.ThreadGroup;
 
 //import jssun.misc.ThreadGroupUtils;
 

@@ -33,13 +33,78 @@ import swingjs.plaf.SwingJSLookAndFeel;
 public class JSToolkit extends SunToolkit {
 
 	/*
-	 * NOTE: This class is called from jsjava.awt.Toolkit within in j2sNative
-	 * block.
+	 * NOTE: This class is constructed from jsjava.awt.Toolkit.getDefaultToolkit()
+	 * 
 	 */
 
 	public JSToolkit() {
 		super();
 		System.out.println("JSToolkit initialized");
+	}
+
+	/**
+	 * important warnings for TODO list
+	 *  
+	 * @param msg
+	 */
+	public static void warn(String msg) {
+		alert(msg);
+	}
+
+  /**
+	 * JavaScript alert
+	 */
+	public static void alert(Object object) {
+		/**
+		 * @j2sNative
+		 * 
+		 * console.log("[JSToolkit] " + object);
+		 * alert("[JSToolkit] " + object);
+		 */
+		{}
+	}
+
+	/**
+	 * JavaScript console.log
+	 */
+	public static void log(String msg) {
+		/**
+		 * @j2sNative
+		 * 
+		 * System.out.println(msg);
+		 * console.log(msg);
+		 */
+		{}
+	}
+
+	/**
+	 * JavaScript confirm
+	 * 
+	 */
+	public static boolean confirm(String msg) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return confirm(msg);
+		 */
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * JavaScript confirm
+	 * 
+	 */
+	public static String prompt(String msg, String defaultRet) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return confirm(msg, defaultRet);
+		 */
+		{
+			return null;
+		}
 	}
 
 	/**
@@ -456,7 +521,7 @@ public class JSToolkit extends SunToolkit {
 	 * 
 	 * @param f
 	 */
-	private static void setTimeout(Object f) {
+	static public void setTimeout(Object f) {
 		@SuppressWarnings("unused")
 		int id = ++dispatchID;
 

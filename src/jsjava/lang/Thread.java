@@ -38,6 +38,8 @@ import java.util.HashMap;
 //import jssun.reflect.Reflection;
 //import jssun.security.util.SecurityConstants;
 
+import swingjs.JSToolkit;
+
 
 /**
  * A <i>thread</i> is a thread of execution in a program. The Java
@@ -1250,6 +1252,7 @@ class Thread implements Runnable {
             throw new IllegalArgumentException("timeout value is negative");
         }
 
+        JSToolkit.warn("Cannot wait in Thread");
         if (millis == 0) {
             while (isAlive()) {
                 wait(0);

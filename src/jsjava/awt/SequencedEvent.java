@@ -25,7 +25,10 @@
 
 package jsjava.awt;
 
+import jsjava.lang.Thread;
 import java.util.LinkedList;
+
+import swingjs.JSToolkit;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
 
@@ -98,6 +101,7 @@ class SequencedEvent extends AWTEvent implements ActiveEvent {
                     while(!isFirstOrDisposed()) {
                         synchronized (SequencedEvent.class) {
                             try {
+                          	  JSToolkit.warn("Cannot wait in SequenceEvent");
                                 SequencedEvent.class.wait(1000);
                             } catch (InterruptedException e) {
                                 break;

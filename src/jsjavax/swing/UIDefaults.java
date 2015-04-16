@@ -163,8 +163,10 @@ public class UIDefaults extends Hashtable<Object,Object>
          */
         Object value = super.get(key);
         if ((value != PENDING) &&
-            !(value instanceof ActiveValue) &&
-            !(value instanceof LazyValue)) {
+            !(value instanceof ActiveValue)
+//            &&
+//            !(value instanceof LazyValue)
+            ) {
             return value;
         }
 
@@ -174,54 +176,56 @@ public class UIDefaults extends Hashtable<Object,Object>
          * We use the special value PENDING to mark LazyValues that
          * are being constructed.
          */
-        synchronized(this) {
+//        synchronized(this) {
             value = super.get(key);
-            if (value == PENDING) {
-                do {
-                    try {
-                        this.wait();
-                    }
-                    catch (InterruptedException e) {
-                    }
-                    value = super.get(key);
-                }
-                while(value == PENDING);
+//            return value;
+//SwingJS no laziness            if (value == PENDING) {
+//                do {
+//                    try {
+//                        this.wait();
+//                    }
+//                    catch (InterruptedException e) {
+//                    }
+//                    value = super.get(key);
+//                }
+//                while(value == PENDING);
+//                return value;
+//            }
+//            else if (value instanceof LazyValue) {
+//                super.put(key, PENDING);
+//            }
+//            else 
+            if (!(value instanceof ActiveValue)) {
                 return value;
             }
-            else if (value instanceof LazyValue) {
-                super.put(key, PENDING);
-            }
-            else if (!(value instanceof ActiveValue)) {
-                return value;
-            }
-        }
+//        }
 
-        /* At this point we know that the value of key was
-         * a LazyValue or an ActiveValue.
-         */
-        if (value instanceof LazyValue) {
-            try {
-                /* If an exception is thrown we'll just put the LazyValue
-                 * back in the table.
-                 */
-                value = ((LazyValue)value).createValue(this);
-            }
-            finally {
-                synchronized(this) {
-                    if (value == null) {
-                        super.remove(key);
-                    }
-                    else {
-                        super.put(key, value);
-                    }
-                  // SwingJS  CANNOT DO THIS                notifyAll();
-                }
-            }
-        }
-        else {
+//        /* At this point we know that the value of key was
+//         * a LazyValue or an ActiveValue.
+//         */
+//        if (value instanceof LazyValue) {
+//            try {
+//                /* If an exception is thrown we'll just put the LazyValue
+//                 * back in the table.
+//                 */
+//                value = ((LazyValue)value).createValue(this);
+//            }
+//            finally {
+//                synchronized(this) {
+//                    if (value == null) {
+//                        super.remove(key);
+//                    }
+//                    else {
+//                        super.put(key, value);
+//                    }
+//                  // SwingJS  CANNOT DO THIS                notifyAll();
+//                }
+//            }
+//        }
+//        else {
             value = ((ActiveValue)value).createValue(this);
-        }
-
+//        }
+//
         return value;
     }
 
@@ -987,24 +991,24 @@ public class UIDefaults extends Hashtable<Object,Object>
         Object createValue(UIDefaults table);
     }
 
-    /**
-     * This class provides an implementation of <code>LazyValue</code>
-     * which can be
-     * used to delay loading of the Class for the instance to be created.
-     * It also avoids creation of an anonymous inner class for the
-     * <code>LazyValue</code>
-     * subclass.  Both of these improve performance at the time that a
-     * a Look and Feel is loaded, at the cost of a slight performance
-     * reduction the first time <code>createValue</code> is called
-     * (since Reflection APIs are used).
-     * @since 1.3
-     */
-    public static class ProxyLazyValue implements LazyValue {
+//    /**
+//     * This class provides an implementation of <code>LazyValue</code>
+//     * which can be
+//     * used to delay loading of the Class for the instance to be created.
+//     * It also avoids creation of an anonymous inner class for the
+//     * <code>LazyValue</code>
+//     * subclass.  Both of these improve performance at the time that a
+//     * a Look and Feel is loaded, at the cost of a slight performance
+//     * reduction the first time <code>createValue</code> is called
+//     * (since Reflection APIs are used).
+//     * @since 1.3
+//     */
+//    public static class ProxyLazyValue implements LazyValue {
 //        private AccessControlContext acc;
 //        private String className;
 //        private String methodName;
 //        private Object[] args;
-
+//
 //        /**
 //         * Creates a <code>LazyValue</code> which will construct an instance
 //         * when asked.
@@ -1062,16 +1066,15 @@ public class UIDefaults extends Hashtable<Object,Object>
 //                args = (Object[])o.clone();
 //            }
 //        }
-
-        /**
-         * Creates the value retrieved from the <code>UIDefaults</code> table.
-         * The object is created each time it is accessed.
-         *
-         * @param table  a <code>UIDefaults</code> table
-         * @return the created <code>Object</code>
-         */
-        public Object createValue(final UIDefaults table) {
-        	return null;
+//
+//        /**
+//         * Creates the value retrieved from the <code>UIDefaults</code> table.
+//         * The object is created each time it is accessed.
+//         *
+//         * @param table  a <code>UIDefaults</code> table
+//         * @return the created <code>Object</code>
+//         */
+//        public Object createValue(final UIDefaults table) {
 //            // In order to pick up the security policy in effect at the
 //            // time of creation we use a doPrivileged with the
 //            // AccessControlContext that was in place when this was created.
@@ -1116,8 +1119,8 @@ public class UIDefaults extends Hashtable<Object,Object>
 ////                    return null;
 ////                }
 ////            }, acc);
-        }
-        
+//        }
+//        
 //        /* 
 //         * Coerce the array of class types provided into one which
 //         * looks the way the Reflection APIs expect.  This is done
@@ -1167,41 +1170,41 @@ public class UIDefaults extends Hashtable<Object,Object>
 //            }
 //            return s;
 //        }
-    }
-
-
-    /**
-     * <code>LazyInputMap</code> will create a <code>InputMap</code>
-     * in its <code>createValue</code>
-     * method. The bindings are passed in in the constructor.
-     * The bindings are an array with
-     * the even number entries being string <code>KeyStrokes</code>
-     * (eg "alt SPACE") and
-     * the odd number entries being the value to use in the
-     * <code>InputMap</code> (and the key in the <code>ActionMap</code>).
-     * @since 1.3
-     */
-    public static class LazyInputMap implements LazyValue {
-        /** Key bindings are registered under. */
-        private Object[] bindings;
-
-        public LazyInputMap(Object[] bindings) {
-            this.bindings = bindings;
-        }
-
-        /**
-         * Creates an <code>InputMap</code> with the bindings that are
-         * passed in.
-         *
-         * @param table a <code>UIDefaults</code> table
-         * @return the <code>InputMap</code>
-         */
-        public Object createValue(UIDefaults table) {
-            if (bindings != null) {
-                InputMap km = LookAndFeel.makeInputMap(bindings);
-                return km;
-            }
-            return null;
-        }
-    }
+//    }
+//
+//
+//    /**
+//     * <code>LazyInputMap</code> will create a <code>InputMap</code>
+//     * in its <code>createValue</code>
+//     * method. The bindings are passed in in the constructor.
+//     * The bindings are an array with
+//     * the even number entries being string <code>KeyStrokes</code>
+//     * (eg "alt SPACE") and
+//     * the odd number entries being the value to use in the
+//     * <code>InputMap</code> (and the key in the <code>ActionMap</code>).
+//     * @since 1.3
+//     */
+//    public static class LazyInputMap implements LazyValue {
+//        /** Key bindings are registered under. */
+//        private Object[] bindings;
+//
+//        public LazyInputMap(Object[] bindings) {
+//            this.bindings = bindings;
+//        }
+//
+//        /**
+//         * Creates an <code>InputMap</code> with the bindings that are
+//         * passed in.
+//         *
+//         * @param table a <code>UIDefaults</code> table
+//         * @return the <code>InputMap</code>
+//         */
+//        public Object createValue(UIDefaults table) {
+//            if (bindings != null) {
+//                InputMap km = LookAndFeel.makeInputMap(bindings);
+//                return km;
+//            }
+//            return null;
+//        }
+//    }
 }

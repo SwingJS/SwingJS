@@ -85,6 +85,8 @@ import jsjava.awt.peer.LightweightPeer;
  */
 public abstract class AWTEvent extends EventObject {
 
+	private static int idnum; // SwingJS for testing
+
     private byte bdata[];
 
     /**
@@ -94,6 +96,8 @@ public abstract class AWTEvent extends EventObject {
      * @see #AWTEvent
      */
     protected int id;
+    
+    public int num;
 
     /**
      * Controls whether or not the event is sent back down to the peer once the
@@ -342,6 +346,7 @@ public abstract class AWTEvent extends EventObject {
     public AWTEvent(Object source, int id) {
         super(source);
         this.id = id;
+        this.num = ++idnum;
         switch(id) {
           case ActionEvent.ACTION_PERFORMED:
           case ItemEvent.ITEM_STATE_CHANGED:

@@ -5,23 +5,15 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import swingjs.api.HTML5Applet;
-import swingjs.api.HTML5Canvas;
-
-import swingjs.api.JSInterface;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
-import jsjava.awt.AWTEvent;
-import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
-import jsjava.awt.event.PaintEvent;
-import jsjava.awt.image.ColorModel;
-import jsjava.awt.peer.ComponentPeer;
-import jsjava.awt.peer.ContainerPeer;
 import jsjavax.swing.JApplet;
 import jssun.applet.AppletPanel;
-import jssun.awt.CausedFocusEvent.Cause;
+import swingjs.api.HTML5Applet;
+import swingjs.api.HTML5Canvas;
+import swingjs.api.JSInterface;
 
 /**
  * SwingJS class to start an applet. 
@@ -125,16 +117,16 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		display = params.get("display");
 
 		threadGroup = new JSThreadGroup(appletName);
-		myThread = new JSThread(threadGroup, appletName);
+		myThread = new JSThread(threadGroup, appletName, true);
 		((JSThreadGroup) threadGroup).setHtmlApplet(html5Applet);
 		/**
 		 * @j2sNative
 		 * 
 		 *            Jmol._applets[this.appletName + "_thread"] =
 		 *            jsjava.lang.Thread.thisThread = this.myThread; this.appContext =
-		 *            jssun.awt.SunToolkit.createNewAppContext(); if
-		 *            (SwingJS._JSToolkit == null) SwingJS._JSToolkit =
-		 *            swingjs.api.Interface.getInstance("swingjs.JSToolkit", false);
+		 *            jssun.awt.SunToolkit.createNewAppContext();
+		 *            jsjava.awt.Toolkit.getDefaultToolkit();
+		 *            
 		 */
 		{
 		}
@@ -298,6 +290,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 
 	@Override
 	public void showStatus(String status) {
+		JSToolkit.log(status);
 		/**
 		 * @j2sNative
 		 * 

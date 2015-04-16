@@ -6995,8 +6995,7 @@ protected  transient ComponentPeer peer;
      */
     protected String paramString() {
         String thisName = getName();
-        String str = (thisName != null? thisName : "") + ",parent:" 
-        + (parent == null ? null : parent.getName()) + "," + x + "," + y + "," + width + "x" + height;
+        String str = (thisName != null? thisName : "");
         if (!isValid()) {
             str += ",invalid";
         }
@@ -7006,6 +7005,9 @@ protected  transient ComponentPeer peer;
         if (!enabled) {
             str += ",disabled";
         }
+        str +=  ",parent:" 
+            + (parent == null ? null : parent.getName()) + "," + x + "," + y + "," + width + "x" + height;
+
         return str;
     }
 

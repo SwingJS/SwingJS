@@ -40,6 +40,8 @@ import java.net.URL;
 import java.util.HashMap;
 import jsjava.util.Locale;
 import java.util.Map;
+
+import swingjs.JSToolkit;
 //import java.util.WeakHashMap;
 //import java.util.concurrent.TimeUnit;
 //import java.util.concurrent.locks.Condition;
@@ -311,6 +313,7 @@ public abstract class SunToolkit extends Toolkit implements
 
 	static final AppContext createNewAppContext(ThreadGroup threadGroup) {
 		EventQueue eventQueue;
+		
 		String eqName = System.getProperty("AWT.EventQueueClass",
 				"jsjava.awt.EventQueue");
 		try {

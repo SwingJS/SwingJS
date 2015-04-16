@@ -1,5 +1,6 @@
 package jssun.awt;
 
+import swingjs.JSToolkit;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.EventQueue;
 
@@ -44,6 +45,7 @@ public class PostEventQueue {
                  * different threads tempQueue will be null for one of them.
                  */
                 while (tempQueue != null) {
+                	JSToolkit.alert("postevent " + tempQueue.event);
                     eventQueue.postEvent(tempQueue.event);
                     tempQueue = tempQueue.next;
                 }
