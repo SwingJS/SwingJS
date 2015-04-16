@@ -1,5 +1,16 @@
 PROGRESS
 ========
+4/15/2015
+
+AWT Events reintroduced. Just about ready for JApplet painting via 
+
+  testApplet._appletPanel.paint(null)
+  
+The "EventQueue" is really an immediate setTimeout dispatcher.
+The "current thread" (which identifies which applet this is in its name)
+is maintained by anonymous function wrapping.
+  
+
 4/14/2015
 
 -- preliminary "native" user interface components implemented -- see swingjs.plaf
