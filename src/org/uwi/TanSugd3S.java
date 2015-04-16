@@ -32,6 +32,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 	TSd3Controls controls;
 
 	public TanSugd3S() {
+		setName("TanSugd3S");
 	}
 
 	public void init() {
@@ -398,6 +399,7 @@ class TSd3Canvas extends JPanel implements MouseListener {
 	Rectangle outPRec = new Rectangle(650, 10, 685, 360);
 
 	public TSd3Canvas() {
+		setName("T3d3Canvas");
 		setBackground(Color.blue);
 		start_x = 0;
 		end_x = 50;
@@ -741,6 +743,7 @@ class TSd3Controls extends JPanel implements ItemListener {
   public JComponent bg0;
 
 	public TSd3Controls(TSd3Canvas canvas) {
+		setName("T3d3Controls");
 		this.canvas = canvas;
 		range = 0;
 		ButtonGroup bg = new ButtonGroup();
@@ -756,6 +759,7 @@ class TSd3Controls extends JPanel implements ItemListener {
 	private JComponent addButton(ButtonGroup bg, String text, boolean b) {
 		JRadioButton c;
 		bg.add(c = new JRadioButton(text, b));
+		c.setName(text);
 		add(c);
 		c.addItemListener(this);
 		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));

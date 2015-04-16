@@ -11,13 +11,17 @@ import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
+import jsjava.awt.AWTEvent;
+import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
+import jsjava.awt.event.PaintEvent;
+import jsjava.awt.image.ColorModel;
+import jsjava.awt.peer.ComponentPeer;
+import jsjava.awt.peer.ContainerPeer;
 import jsjavax.swing.JApplet;
 import jssun.applet.AppletPanel;
-//import org.jmol.api.Interface;
-//import org.jmol.util.Logger;
-//import org.jmol.viewer.Viewer.ACCESS;
+import jssun.awt.CausedFocusEvent.Cause;
 
 /**
  * SwingJS class to start an applet. 
@@ -141,6 +145,7 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		runLoader(); // applet created here
 		System.out.println("JSAppletPane  init");
 		appletInit();
+		this.applet.invalidate();
 		System.out.println("JSAppletPanel start");
 		appletStart();
 		System.out.println("JSAppletPanel done");
@@ -240,11 +245,6 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 	@Override
 	public boolean isActive() {
 		return true;
-	}
-
-	@Override
-	public void appletResize(int width, int height) {
-		System.out.println("resize applet to " + width + " " + height + " (ignored)");
 	}
 
 	///// AppletContext /////
@@ -412,5 +412,6 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		}
 		return g;
 	}
+
 
 }

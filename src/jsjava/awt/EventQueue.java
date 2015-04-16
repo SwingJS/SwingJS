@@ -28,6 +28,8 @@ package jsjava.awt;
 //import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EmptyStackException;
+
+import swingjs.JSToolkit;
 //import jsjava.util.logging.Level;
 //import jsjava.util.logging.Logger;
 
@@ -219,8 +221,8 @@ public class EventQueue {
      *          or a subclass of it
      */
     final void postEventPrivate(AWTEvent theEvent) {
-//        theEvent.isPosted = true;
-//        synchronized(this) {
+        theEvent.isPosted = true;
+        synchronized(this) {
 //            if (dispatchThread == null && nextQueue == null) {
 //                if (theEvent.getSource() == AWTAutoShutdown.getInstance()) {
 //                    return;
@@ -228,13 +230,13 @@ public class EventQueue {
 //                    initDispatchThread();
 //                }
 //            }
-//            if (nextQueue != null) {
-//                // Forward event to top of EventQueue stack.
-//                nextQueue.postEventPrivate(theEvent);
-//                return;
-//            }
-//            postEvent(theEvent, getPriority(theEvent));
-//        }
+            if (nextQueue != null) {
+                // Forward event to top of EventQueue stack.
+                nextQueue.postEventPrivate(theEvent);
+                return;
+            }
+            postEvent(theEvent, getPriority(theEvent));
+        }
     }
 
     private static int getPriority(AWTEvent theEvent) {
@@ -275,6 +277,12 @@ public class EventQueue {
      * @param priority  the desired priority of the event
      */
     private void postEvent(AWTEvent theEvent, int priority) {
+    	
+    	JSToolkit.postJavaEvent(this, theEvent, priority);
+
+    	
+    	
+    	
 //        if (coalesceEvent(theEvent, priority)) {
 //            return;
 //        }
@@ -767,10 +775,10 @@ public class EventQueue {
 //            eventLog.log(Level.FINE, "EventQueue.push(" + newEventQueue + ")");
 //        }
 
-        if (nextQueue != null) {
-            nextQueue.push(newEventQueue);
-            return;
-        }
+//        if (nextQueue != null) {
+//            nextQueue.push(newEventQueue);
+//            return;
+//        }
 
         synchronized (newEventQueue) {
             // Transfer all events forward to new EventQueue.
@@ -800,7 +808,7 @@ public class EventQueue {
 //            dispatchThread.stopDispatchingLater();
 //        }
 
-        nextQueue = newEventQueue;
+//        nextQueue = newEventQueue;
 
         AppContext appContext = AppContext.getAppContext();
         if (appContext.get(AppContext.EVENT_QUEUE_KEY) == this) {
@@ -879,7 +887,7 @@ public class EventQueue {
      * @since           1.2
      */
     public static boolean isDispatchThread() {
-    	return false;
+    	return JSToolkit.isDispachThread();
 //        EventQueue eq = Toolkit.getEventQueue();
 //        EventQueue next = eq.nextQueue;
 //        while (next != null) {
@@ -1027,8 +1035,8 @@ public class EventQueue {
      * @since           1.2
      */
     public static void invokeLater(Runnable runnable) {
-        //Toolkit.getEventQueue().postEvent(
-          //  new InvocationEvent(Toolkit.getDefaultToolkit(), runnable));
+        Toolkit.getEventQueue().postEvent(
+          new InvocationEvent(Toolkit.getDefaultToolkit(), runnable));
     }
 
     /**

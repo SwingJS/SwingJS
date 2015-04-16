@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1995, 2007, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -22,25 +22,14 @@
  * or visit www.oracle.com if you need additional information or have any
  * questions.
  */
+package jsjava.awt.peer;
 
-package swingjs.plaf;
-
-import swingjs.api.DOMObject;
-import jsjavax.swing.AbstractButton;
-
-public class JSRadioButtonUI extends JSComponentUI {
-
-	private DOMObject radio;
-	private DOMObject label;
-
-	@Override
-	public DOMObject getDomObject() {
-		radio = getDOMObject("input", id, "type", "radio");
-		label = getDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
-				((AbstractButton) c).getText());
-		domObj = getDiv(id, radio, label);
-		setCssFont(domObj, c.getFont());
-		return domObj;
-	}
-
+/**
+ * The peer interfaces are intended only for use in porting
+ * the AWT. They are not intended for use by application
+ * developers, and developers should not implement peers
+ * nor invoke any of the peer methods directly on the peer
+ * instances.
+ */
+public interface PanelPeer extends ContainerPeer {
 }

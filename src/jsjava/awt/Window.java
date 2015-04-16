@@ -770,6 +770,7 @@ public class Window extends Container {
          * @j2sNative
          *  //TODO
          */
+        {}
 //        if (parent != null && parent.getPeer() == null) {
 //            parent.addNotify();
 //        }
@@ -1103,22 +1104,22 @@ public class Window extends Container {
         }
     }
         DisposeAction action = new DisposeAction();
-        if (EventQueue.isDispatchThread()) {
+//        if (EventQueue.isDispatchThread()) {
             action.run();
-        }
-        else {
-            try {
-                EventQueue.invokeAndWait(this, action);
-            }
-            catch (InterruptedException e) {
-                System.err.println("Disposal was interrupted:");
-                e.printStackTrace();
-            }
-            catch (InvocationTargetException e) {
-                System.err.println("Exception during disposal:");
-                e.printStackTrace();
-            }
-        }
+//        }
+//SwingJS can't invokeAndWait        else {
+//            try {
+//                EventQueue.invokeAndWait(this, action);
+//            }
+//            catch (InterruptedException e) {
+//                System.err.println("Disposal was interrupted:");
+//                e.printStackTrace();
+//            }
+//            catch (InvocationTargetException e) {
+//                System.err.println("Exception during disposal:");
+//                e.printStackTrace();
+//            }
+//        }
         // Execute outside the Runnable because postWindowEvent is
         // synchronized on (this). We don't need to synchronize the call
         // on the EventQueue anyways.

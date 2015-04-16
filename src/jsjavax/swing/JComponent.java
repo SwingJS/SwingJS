@@ -765,15 +765,15 @@ public abstract class JComponent extends Container
      * @see ComponentUI
      */
     protected void paintComponent(Graphics g) {
-//        if (ui != null) {
-//            Graphics scratchGraphics = (g == null) ? null : g.createSwingJS();
-//            try {
-//                ui.update(scratchGraphics, this);
-//            }
-//            finally {
-//                scratchGraphics.dispose();
-//            }
-//        }
+        if (ui != null) {
+            Graphics scratchGraphics = (g == null) ? null : g.createSwingJS();
+            try {
+                ui.update(scratchGraphics, this);
+            }
+            finally {
+                scratchGraphics.dispose();
+            }
+        }
     }
 
 	/**
@@ -4789,6 +4789,7 @@ public abstract class JComponent extends Container
      * @see RepaintManager#addInvalidComponent
      */
     public void revalidate() {
+    	System.out.println("revalidate on " + this);
         if (getParent() == null) {
             // Note: We don't bother invalidating here as once added
             // to a valid parent invalidate will be invoked (addImpl
@@ -4799,10 +4800,12 @@ public abstract class JComponent extends Container
             return;
         }
         if (SwingUtilities.isEventDispatchThread()) {
+          System.out.println("JC revalidate invalidating dispatch " + this);
             invalidate();
             RepaintManager.currentManager(this).addInvalidComponent(this);
         }
         else {
+          System.out.println("JC revalidate checking flag " + getFlag(REVALIDATE_RUNNABLE_SCHEDULED) + " " + this);
             // To avoid a flood of Runnables when constructing GUIs off
             // the EDT, a flag is maintained as to whether or not
             // a Runnable has been scheduled.
@@ -4812,11 +4815,14 @@ public abstract class JComponent extends Container
                 }
                 setFlag(REVALIDATE_RUNNABLE_SCHEDULED, true);
             }
+            System.out.println("JC revalidate invoking later " + this);
+            final Object me = this;
             Runnable callRevalidate = new Runnable() {
                 public void run() {
                     synchronized(JComponent.this) {
                         setFlag(REVALIDATE_RUNNABLE_SCHEDULED, false);
                     }
+                    System.out.println("JC revalidating " + me);
                     revalidate();
                 }
             };

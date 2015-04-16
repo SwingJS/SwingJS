@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1999, 2006, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,21 +26,18 @@
 package swingjs.plaf;
 
 import swingjs.api.DOMObject;
-import jsjavax.swing.AbstractButton;
 
-public class JSRadioButtonUI extends JSComponentUI {
-
-	private DOMObject radio;
-	private DOMObject label;
+/**
+ * Pluggable look and feel interface for JRootPane.
+ *
+ * @author Scott Violet
+ * @since 1.3
+ */
+public class JSRootPaneUI extends JSComponentUI {
 
 	@Override
 	public DOMObject getDomObject() {
-		radio = getDOMObject("input", id, "type", "radio");
-		label = getDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
-				((AbstractButton) c).getText());
-		domObj = getDiv(id, radio, label);
-		setCssFont(domObj, c.getFont());
+		domObj = getDOMObject("canvas", id);
 		return domObj;
 	}
-
 }

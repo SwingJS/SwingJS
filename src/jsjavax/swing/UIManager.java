@@ -1390,6 +1390,7 @@ private static UIDefaults uid;
     private static void maybeInitialize() {
     	if (uid == null) {
     		uid = JSToolkit.getLookAndFeelDefaults();
+    		initialize();
     	}
 //        synchronized (classLock) {
 //            if (!getLAFState().initialized) {
@@ -1400,69 +1401,70 @@ private static UIDefaults uid;
     }
 
 
-//    /*
-//     * Only called by maybeInitialize().
-//     */
-//    private static void initialize() {
-//        //Properties swingProps = loadSwingProperties();
-//        //initializeSystemDefaults(swingProps);
-//        //initializeDefaultLAF(swingProps);
-//        //initializeAuxiliaryLAFs(swingProps);
-//        //initializeInstalledLAFs(swingProps);
+    /*
+     * Only called by maybeInitialize().
+     */
+    private static void initialize() {
+//SwingJS				Properties swingProps = loadSwingProperties();
+//				initializeSystemDefaults(swingProps);
+//				initializeDefaultLAF(swingProps);
+//				initializeAuxiliaryLAFs(swingProps);
+//				initializeInstalledLAFs(swingProps);
 //
 //        // Enable the Swing default LayoutManager.
-////        String toolkitName = Toolkit.getDefaultToolkit().getClass().getName();
-////        // don't set default policy if this is XAWT.
-////        if (!"jssun.awt.X11.XToolkit".equals(toolkitName)) {
-////            if (FocusManager.isFocusManagerEnabled()) {
-////                KeyboardFocusManager.getCurrentKeyboardFocusManager().
-////                    setDefaultFocusTraversalPolicy(
-////                        new LayoutFocusTraversalPolicy());
-////            }
-////        }
+//        String toolkitName = Toolkit.getDefaultToolkit().getClass().getName();
+//        // don't set default policy if this is XAWT.
+//        if (!"jssun.awt.X11.XToolkit".equals(toolkitName)) {
+//            if (FocusManager.isFocusManagerEnabled()) {
+//                KeyboardFocusManager.getCurrentKeyboardFocusManager().
+//                    setDefaultFocusTraversalPolicy(
+//                        new LayoutFocusTraversalPolicy());
+//            }
+//        }
+
+        // Install Swing's PaintEventDispatcher
+        if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
+        	//SwingJS: We set this flag true
+            jssun.awt.PaintEventDispatcher.setPaintEventDispatcher(
+                                        new SwingPaintEventDispatcher());
+        }
+        // Install a hook that will be invoked if no one consumes the
+        // KeyEvent.  If the source isn't a JComponent this will process
+        // key bindings, if the source is a JComponent it implies that
+        // processKeyEvent was already invoked and thus no need to process
+        // the bindings again, unless the Component is disabled, in which
+        // case KeyEvents will no longer be dispatched to it so that we
+        // handle it here.
+//SwingJS        KeyboardFocusManager.getCurrentKeyboardFocusManager().
+//                addKeyEventPostProcessor(new KeyEventPostProcessor() {
+//                    public boolean postProcessKeyEvent(KeyEvent e) {
+//                        Component c = e.getComponent();
 //
-//        // Install Swing's PaintEventDispatcher
-////JS        if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
-////            jssun.awt.PaintEventDispatcher.setPaintEventDispatcher(
-////                                        new SwingPaintEventDispatcher());
-////        }
-//        // Install a hook that will be invoked if no one consumes the
-//        // KeyEvent.  If the source isn't a JComponent this will process
-//        // key bindings, if the source is a JComponent it implies that
-//        // processKeyEvent was already invoked and thus no need to process
-//        // the bindings again, unless the Component is disabled, in which
-//        // case KeyEvents will no longer be dispatched to it so that we
-//        // handle it here.
-////        KeyboardFocusManager.getCurrentKeyboardFocusManager().
-////                addKeyEventPostProcessor(new KeyEventPostProcessor() {
-////                    public boolean postProcessKeyEvent(KeyEvent e) {
-////                        Component c = e.getComponent();
-////
-////                        if ((!(c instanceof JComponent) ||
-////                             (c != null && !((JComponent)c).isEnabled())) &&
-////                                JComponent.KeyboardState.shouldProcess(e) &&
-////                                SwingUtilities.processKeyBindings(e)) {
-////                            e.consume();
-////                            return true;
-////                        }
-////                        return false;
-////                    }
-////                });
-////        try {
-////            Method setRequestFocusControllerM = jsjava.security.AccessController.doPrivileged(
-////                    new jsjava.security.PrivilegedExceptionAction<Method>() {
-////                        public Method run() throws Exception {
-////                            Method method =
-////                            Component.class.getDeclaredMethod("setRequestFocusController",
-////                                                              jssun.awt.RequestFocusController.class);
-////                            method.setAccessible(true);
-////                            return method;
-////                        }
-////                    });
-////            setRequestFocusControllerM.invoke(null, JComponent.focusController);
-////        } catch (Exception e) {
-////            // perhaps we should log this
-////            assert false;
-////        }
-//    }
+//                        if ((!(c instanceof JComponent) ||
+//                             (c != null && !((JComponent)c).isEnabled())) &&
+//                                JComponent.KeyboardState.shouldProcess(e) &&
+//                                SwingUtilities.processKeyBindings(e)) {
+//                            e.consume();
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+//        try {
+//            Method setRequestFocusControllerM = jsjava.security.AccessController.doPrivileged(
+//                    new jsjava.security.PrivilegedExceptionAction<Method>() {
+//                        public Method run() throws Exception {
+//                            Method method =
+//                            Component.class.getDeclaredMethod("setRequestFocusController",
+//                                                              jssun.awt.RequestFocusController.class);
+//                            method.setAccessible(true);
+//                            return method;
+//                        }
+//                    });
+//            setRequestFocusControllerM.invoke(null, JComponent.focusController);
+//        } catch (Exception e) {
+//            // perhaps we should log this
+//            assert false;
+//        }
+    }
 }

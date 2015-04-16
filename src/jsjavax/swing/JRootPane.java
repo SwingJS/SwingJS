@@ -37,6 +37,7 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.plaf.RootPaneUI;
 import jssun.awt.AWTAccessor;
+import jssun.awt.AppContext;
 
 
 /**
@@ -364,6 +365,8 @@ public class JRootPane extends JComponent {
      * and <code>contentPane</code>.
      */
     public JRootPane() {
+    	String appletName = AppContext.getAppContext().getThreadGroup().getName();
+    	setName(appletName + ".JRootPane");
         setGlassPane(createGlassPane());
         setLayeredPane(createLayeredPane());
         setContentPane(createContentPane());

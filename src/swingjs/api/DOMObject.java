@@ -40,4 +40,16 @@ public abstract class DOMObject {
 		}
 	}
 
+	public static String getOuterHTML(DOMObject d) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            return d.outerHTML;
+		 * 
+		 */
+		{
+			return null;
+		}
+	}
+
 }

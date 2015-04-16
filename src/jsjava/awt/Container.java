@@ -36,6 +36,9 @@ import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseWheelEvent;
+import jsjava.awt.peer.ComponentPeer;
+import jsjava.awt.peer.ContainerPeer;
+import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
 import jssun.awt.AppContext;
 
@@ -492,21 +495,21 @@ public class Container extends Component {
             component.add(newIndex, comp);
         }
         if (comp.parent == null) { // was actually removed
-//            if (containerListener != null ||
-//                (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0 ||
-//                Toolkit.enabledOnToolkit(AWTEvent.CONTAINER_EVENT_MASK)) {
-//                ContainerEvent e = new ContainerEvent(this,
-//                                                      ContainerEvent.COMPONENT_REMOVED,
-//                                                      comp);
-//                dispatchEvent(e);
-//
-//            }
-//            comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
-//                                       this, HierarchyEvent.PARENT_CHANGED,
-//                                       Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-//            if (peer != null && layoutMgr == null && isVisible()) {
-//                updateCursorImmediately();
-//            }
+            if (containerListener != null ||
+                (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0 ||
+                Toolkit.enabledOnToolkit(AWTEvent.CONTAINER_EVENT_MASK)) {
+                ContainerEvent e = new ContainerEvent(this,
+                                                      ContainerEvent.COMPONENT_REMOVED,
+                                                      comp);
+                dispatchEvent(e);
+
+            }
+            comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
+                                       this, HierarchyEvent.PARENT_CHANGED,
+                                       Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+            if (peer != null && layoutMgr == null && isVisible()) {
+                updateCursorImmediately();
+            }
         }
         return needRemoveNotify;
     }
@@ -568,12 +571,11 @@ public class Container extends Component {
      */
     Container getHeavyweightContainer() {
         //checkTreeLock();
-//        if (peer != null && !(peer instanceof LightweightPeer)) {
-//            return this;
-//        } else {
-//            return getNativeContainer();
-//        }
-    	return this;
+        if (peer != null && !(peer instanceof LightweightPeer)) {
+            return this;
+        } else {
+            return getNativeContainer();
+        }
     }
 
     /**
@@ -699,49 +701,49 @@ public class Container extends Component {
          }
     }
 
-//    /**
-//     * Traverses the tree of components and reparents children heavyweight component
-//     * to new heavyweight parent.
-//     * @since 1.5
-//     */
-//    private void reparentTraverse(ContainerPeer parentPeer, Container child) {
-//        checkTreeLock();
-//
-//        for (int i = 0; i < child.getComponentCount(); i++) {
-//            Component comp = child.getComponent(i);
-//            if (comp.isLightweight()) {
-//                // If components is lightweight check if it is container
-//                // If it is container it might contain heavyweight children we need to reparent
-//                if (comp instanceof Container) {
-//                    reparentTraverse(parentPeer, (Container)comp);
-//                }
-//            } else {
-//                // Q: Need to update NativeInLightFixer?
-//                comp.getPeer().reparent(parentPeer);
-//            }
-//        }
-//    }
+    /**
+     * Traverses the tree of components and reparents children heavyweight component
+     * to new heavyweight parent.
+     * @since 1.5
+     */
+    private void reparentTraverse(ContainerPeer parentPeer, Container child) {
+        checkTreeLock();
 
-//    /**
-//     * Reparents child component peer to this container peer.
-//     * Container must be heavyweight.
-//     * @since 1.5
-//     */
-//    private void reparentChild(Component comp) {
-//////        checkTreeLock();
-////        if (comp == null) {
-////            return;
-////        }
-////        if (comp.isLightweight()) {
-////            // If component is lightweight container we need to reparent all its explicit  heavyweight children
-//////            if (comp instanceof Container) {
-//////                // Traverse component's tree till depth-first until encountering heavyweight component
-//////                reparentTraverse((ContainerPeer)getPeer(), (Container)comp);
-//////            }
-////        } else {
-////            comp.getPeer().reparent((ContainerPeer)getPeer());
-////        }
-//    }
+        for (int i = 0; i < child.getComponentCount(); i++) {
+            Component comp = child.getComponent(i);
+            if (comp.isLightweight()) {
+                // If components is lightweight check if it is container
+                // If it is container it might contain heavyweight children we need to reparent
+                if (comp instanceof Container) {
+                    reparentTraverse(parentPeer, (Container)comp);
+                }
+            } else {
+                // Q: Need to update NativeInLightFixer?
+                comp.getPeer().reparent(parentPeer);
+            }
+        }
+    }
+
+    /**
+     * Reparents child component peer to this container peer.
+     * Container must be heavyweight.
+     * @since 1.5
+     */
+    private void reparentChild(Component comp) {
+//        checkTreeLock();
+        if (comp == null) {
+            return;
+        }
+        if (comp.isLightweight()) {
+            // If component is lightweight container we need to reparent all its explicit  heavyweight children
+            if (comp instanceof Container) {
+                // Traverse component's tree till depth-first until encountering heavyweight component
+                reparentTraverse((ContainerPeer)getPeer(), (Container)comp);
+            }
+        } else {
+            comp.getPeer().reparent((ContainerPeer)getPeer());
+        }
+    }
 
     /**
      * Adds component to this container. Tries to minimize side effects of this adding -
@@ -773,36 +775,36 @@ public class Container extends Component {
         }
 
         invalidateIfValid();
-//        if (peer != null) {
-//            if (comp.peer == null) { // Remove notify was called or it didn't have peer - create new one
-//                comp.addNotify();
-//                // New created peer creates component on top of the stacking order
-//                Container newNativeContainer = getHeavyweightContainer();
+        if (peer != null) {
+            if (comp.peer == null) { // Remove notify was called or it didn't have peer - create new one
+                comp.addNotify();
+                // New created peer creates component on top of the stacking order
+                Container newNativeContainer = getHeavyweightContainer();
 //                if (((ContainerPeer)newNativeContainer.getPeer()).isRestackSupported()) {
 //                    ((ContainerPeer)newNativeContainer.getPeer()).restack();
 //                }
-//            } else { // Both container and child have peers, it means child peer should be reparented.
-//                // In both cases we need to reparent native widgets.
-//                Container newNativeContainer = getHeavyweightContainer();
-//                Container oldNativeContainer = curParent.getHeavyweightContainer();
-//                if (oldNativeContainer != newNativeContainer) {
-//                    // Native container changed - need to reparent native widgets
-//                    newNativeContainer.reparentChild(comp);
-//                }
-//                // If component still has a peer and it is either container or heavyweight
-//                // and restack is supported we have to restack native windows since order might have changed
+            } else { // Both container and child have peers, it means child peer should be reparented.
+                // In both cases we need to reparent native widgets.
+                Container newNativeContainer = getHeavyweightContainer();
+                Container oldNativeContainer = curParent.getHeavyweightContainer();
+                if (oldNativeContainer != newNativeContainer) {
+                    // Native container changed - need to reparent native widgets
+                    newNativeContainer.reparentChild(comp);
+                }
+                // If component still has a peer and it is either container or heavyweight
+                // and restack is supported we have to restack native windows since order might have changed
 //                if ((!comp.isLightweight() || (comp instanceof Container))
 //                    && ((ContainerPeer)newNativeContainer.getPeer()).isRestackSupported())
 //                {
 //                    ((ContainerPeer)newNativeContainer.getPeer()).restack();
 //                }
-//                if (!comp.isLightweight() && isLightweight()) {
-//                    // If component is heavyweight and one of the containers is lightweight
-//                    // the location of the component should be fixed.
-//                    comp.relocateComponent();
-//                }
-//            }
-//        }
+                if (!comp.isLightweight() && isLightweight()) {
+                    // If component is heavyweight and one of the containers is lightweight
+                    // the location of the component should be fixed.
+                    comp.relocateComponent();
+                }
+            }
+        }
         if (curParent != this) {
             /* Notify the layout manager of the added component. */
             if (layoutMgr != null) {
@@ -840,9 +842,9 @@ public class Container extends Component {
                                        Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
         }
 
-//        if (peer != null && layoutMgr == null && isVisible()) {
-//            updateCursorImmediately();
-//        }
+        if (peer != null && layoutMgr == null && isVisible()) {
+            updateCursorImmediately();
+        }
     }
 
     private void checkTreeLock() {
@@ -1040,9 +1042,9 @@ public class Container extends Component {
             adjustDescendants(comp.countHierarchyMembers());
 
             invalidateIfValid();
-//            if (peer != null) {
-//                comp.addNotify();
-//            }
+            if (peer != null) {
+                comp.addNotify();
+            }
 
             /* Notify the layout manager of the added component. */
             if (layoutMgr != null) {
@@ -1064,9 +1066,9 @@ public class Container extends Component {
             comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
                                        this, HierarchyEvent.PARENT_CHANGED,
                                        Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-//            if (peer != null && layoutMgr == null && isVisible()) {
-//                updateCursorImmediately();
-//            }
+            if (peer != null && layoutMgr == null && isVisible()) {
+                updateCursorImmediately();
+            }
         }
     }
 
@@ -1112,9 +1114,9 @@ public class Container extends Component {
                 throw new ArrayIndexOutOfBoundsException(index);
             }
             Component comp = component.get(index);
-//            if (peer != null) {
-//                comp.removeNotify();
-//            }
+            if (peer != null) {
+                comp.removeNotify();
+            }
             if (layoutMgr != null) {
                 layoutMgr.removeLayoutComponent(comp);
             }
@@ -1141,9 +1143,9 @@ public class Container extends Component {
             comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
                                        this, HierarchyEvent.PARENT_CHANGED,
                                        Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-//            if (peer != null && layoutMgr == null && isVisible()) {
-//                updateCursorImmediately();
-//            }
+            if (peer != null && layoutMgr == null && isVisible()) {
+                updateCursorImmediately();
+            }
         }
     }
 
@@ -1196,9 +1198,9 @@ public class Container extends Component {
             while (!component.isEmpty()) {
                 Component comp = component.remove(component.size()-1);
 
-//                if (peer != null) {
-//                    comp.removeNotify();
-//                }
+                if (peer != null) {
+                    comp.removeNotify();
+                }
                 if (layoutMgr != null) {
                     layoutMgr.removeLayoutComponent(comp);
                 }
@@ -1217,9 +1219,9 @@ public class Container extends Component {
                                            HierarchyEvent.PARENT_CHANGED,
                                            Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
             }
-//            if (peer != null && layoutMgr == null && isVisible()) {
-//                updateCursorImmediately();
-//            }
+            if (peer != null && layoutMgr == null && isVisible()) {
+                updateCursorImmediately();
+            }
             invalidateIfValid();
         }
     }
@@ -1453,29 +1455,29 @@ public class Container extends Component {
      * @see #validateTree
      */
     public void validate() {
-//        /* Avoid grabbing lock unless really necessary. */
-//        if (!isValid()) {
-//            boolean updateCur = false;
-//            synchronized (getTreeLock()) {
-//                if (!isValid() && peer != null) {
-//                    ContainerPeer p = null;
-//                    if (peer instanceof ContainerPeer) {
-//                        p = (ContainerPeer) peer;
-//                    }
-//                    if (p != null) {
-//                        p.beginValidate();
-//                    }
-//                    validateTree();
-//                    if (p != null) {
-//                        p.endValidate();
-//                        updateCur = isVisible();
-//                    }
-//                }
-//            }
-//            if (updateCur) {
-//                updateCursorImmediately();
-//            }
-//        }
+        /* Avoid grabbing lock unless really necessary. */
+        if (!isValid()) {
+            boolean updateCur = false;
+            synchronized (getTreeLock()) {
+                if (!isValid() && peer != null) {
+                    ContainerPeer p = null;
+                    if (peer instanceof ContainerPeer) {
+                        p = (ContainerPeer) peer;
+                    }
+                    if (p != null) {
+                        p.beginValidate();
+                    }
+                    validateTree();
+                    if (p != null) {
+                        p.endValidate();
+                        updateCur = isVisible();
+                    }
+                }
+            }
+            if (updateCur) {
+                updateCursorImmediately();
+            }
+        }
     }
 
     /**
@@ -1488,25 +1490,25 @@ public class Container extends Component {
      * @see #validate
      */
     protected void validateTree() {
-//        if (!isValid()) {
-//            if (peer instanceof ContainerPeer) {
-//                ((ContainerPeer)peer).beginLayout();
-//            }
-//            doLayout();
-//            for (int i = 0; i < component.size(); i++) {
-//                Component comp = component.get(i);
-//                if (   (comp instanceof Container)
-//                       && !(comp instanceof Window)
-//                       && !comp.isValid()) {
-//                    ((Container)comp).validateTree();
-//                } else {
-//                    comp.validate();
-//                }
-//            }
-//            if (peer instanceof ContainerPeer) {
-//                ((ContainerPeer)peer).endLayout();
-//            }
-//        }
+        if (!isValid()) {
+            if (peer instanceof ContainerPeer) {
+                ((ContainerPeer)peer).beginLayout();
+            }
+            doLayout();
+            for (int i = 0; i < component.size(); i++) {
+                Component comp = component.get(i);
+                if (   (comp instanceof Container)
+                       && !(comp instanceof Window)
+                       && !comp.isValid()) {
+                    ((Container)comp).validateTree();
+                } else {
+                    comp.validate();
+                }
+            }
+            if (peer instanceof ContainerPeer) {
+                ((ContainerPeer)peer).endLayout();
+            }
+        }
         super.validate();
     }
 
@@ -2071,9 +2073,9 @@ public class Container extends Component {
             // as a result of the sending the lightweight event,
             // the peer reference will be null.
             e.consume();
-//            if (peer != null) {
-//                peer.handleEvent(e);
-//            }
+            if (peer != null) {
+                peer.handleEvent(e);
+            }
             return;
         }
 
@@ -2539,32 +2541,32 @@ public class Container extends Component {
      * @see #removeNotify
      */
     public void addNotify() {
-//        synchronized (getTreeLock()) {
-//            // addNotify() on the children may cause proxy event enabling
-//            // on this instance, so we first call super.addNotify() and
-//            // possibly create an lightweight event dispatcher before calling
-//            // addNotify() on the children which may be lightweight.
-//            super.addNotify();
-//            if (! (peer instanceof LightweightPeer)) {
-//                dispatcher = new LightweightDispatcher(this);
-//            }
-//
-//            // We shouldn't use iterator because of the Swing menu
-//            // implementation specifics:
-//            // the menu is being assigned as a child to JLayeredPane
-//            // instead of particular component so always affect
-//            // collection of component if menu is becoming shown or hidden.
-//            for (int i = 0; i < component.size(); i++) {
-//                component.get(i).addNotify();
-//            }
-//            // Update stacking order if native platform allows
+        synchronized (getTreeLock()) {
+            // addNotify() on the children may cause proxy event enabling
+            // on this instance, so we first call super.addNotify() and
+            // possibly create an lightweight event dispatcher before calling
+            // addNotify() on the children which may be lightweight.
+            super.addNotify();
+            if (! (peer instanceof LightweightPeer)) {
+                dispatcher = new LightweightDispatcher(this);
+            }
+
+            // We shouldn't use iterator because of the Swing menu
+            // implementation specifics:
+            // the menu is being assigned as a child to JLayeredPane
+            // instead of particular component so always affect
+            // collection of component if menu is becoming shown or hidden.
+            for (int i = 0; i < component.size(); i++) {
+                component.get(i).addNotify();
+            }
+//SwingJS            // Update stacking order if native platform allows
 //            ContainerPeer cpeer = (ContainerPeer)peer;
 //            if (cpeer.isRestackSupported()) {
 //                cpeer.restack();
 //            }
-//
-//
-//        }
+
+
+        }
     }
 
     /**
@@ -3766,61 +3768,61 @@ public class Container extends Component {
 
     // ************************** MIXING CODE *******************************
 
-//    final void increaseComponentCount(Component c) {
-////        synchronized (getTreeLock()) {
-//            if (!c.isDisplayable()) {
-//                throw new IllegalStateException(
-//                    "Peer does not exist while invoking the increaseComponentCount() method"
-//                );
-//            }
-//
-//            int addHW = 0;
-//            int addLW = 0;
-//
-//            if (c instanceof Container) {
-//                addLW = ((Container)c).numOfLWComponents;
-//                addHW = ((Container)c).numOfHWComponents;
-//            }
-//            if (c.isLightweight()) {
-//                addLW++;
-//            } else {
-//                addHW++;
-//            }
-//
-//            for (Container cont = this; cont != null; cont = cont.getContainer()) {
-//                cont.numOfLWComponents += addLW;
-//                cont.numOfHWComponents += addHW;
-//            }
-//  //      }
-//    }
-//
-//    final void decreaseComponentCount(Component c) {
-//    //    synchronized (getTreeLock()) {
-//            if (!c.isDisplayable()) {
-//                throw new IllegalStateException(
-//                    "Peer does not exist while invoking the decreaseComponentCount() method"
-//                );
-//            }
-//
-//            int subHW = 0;
-//            int subLW = 0;
-//
-//            if (c instanceof Container) {
-//                subLW = ((Container)c).numOfLWComponents;
-//                subHW = ((Container)c).numOfHWComponents;
-//            }
-//            if (c.isLightweight()) {
-//                subLW++;
-//            } else {
-//                subHW++;
-//            }
-//
-//            for (Container cont = this; cont != null; cont = cont.getContainer()) {
-//                cont.numOfLWComponents -= subLW;
-//                cont.numOfHWComponents -= subHW;
-//            }
-//      //  }
-//    }
+    final void increaseComponentCount(Component c) {
+//        synchronized (getTreeLock()) {
+            if (!c.isDisplayable()) {
+                throw new IllegalStateException(
+                    "Peer does not exist while invoking the increaseComponentCount() method"
+                );
+            }
+
+            int addHW = 0;
+            int addLW = 0;
+
+            if (c instanceof Container) {
+                addLW = ((Container)c).numOfLWComponents;
+                addHW = ((Container)c).numOfHWComponents;
+            }
+            if (c.isLightweight()) {
+                addLW++;
+            } else {
+                addHW++;
+            }
+
+            for (Container cont = this; cont != null; cont = cont.getContainer()) {
+                cont.numOfLWComponents += addLW;
+                cont.numOfHWComponents += addHW;
+            }
+  //      }
+    }
+
+    final void decreaseComponentCount(Component c) {
+    //    synchronized (getTreeLock()) {
+            if (!c.isDisplayable()) {
+                throw new IllegalStateException(
+                    "Peer does not exist while invoking the decreaseComponentCount() method"
+                );
+            }
+
+            int subHW = 0;
+            int subLW = 0;
+
+            if (c instanceof Container) {
+                subLW = ((Container)c).numOfLWComponents;
+                subHW = ((Container)c).numOfHWComponents;
+            }
+            if (c.isLightweight()) {
+                subLW++;
+            } else {
+                subHW++;
+            }
+
+            for (Container cont = this; cont != null; cont = cont.getContainer()) {
+                cont.numOfLWComponents -= subLW;
+                cont.numOfHWComponents -= subHW;
+            }
+      //  }
+    }
 //
 //    private int getTopmostComponentIndex() {
 //        checkTreeLock();
@@ -3934,47 +3936,47 @@ public class Container extends Component {
 //        }
 //    }
 
-//    private void recursiveShowHeavyweightChildren() {
-//        if (!hasHeavyweightDescendants() || !isVisible()) {
-//            return;
-//        }
-//        for (int index = 0; index < getComponentCount(); index++) {
-//            Component comp = getComponent(index);
-//            if (comp.isLightweight()) {
-//                if  (comp instanceof Container) {
-//                    ((Container)comp).recursiveShowHeavyweightChildren();
-//                }
-//            } else {
-//                if (comp.isVisible()) {
-//                    ComponentPeer peer = comp.getPeer();
-//                    if (peer != null) {
-//                        peer.show();
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    private void recursiveHideHeavyweightChildren() {
-//        if (!hasHeavyweightDescendants()) {
-//            return;
-//        }
-//        for (int index = 0; index < getComponentCount(); index++) {
-//            Component comp = getComponent(index);
-//            if (comp.isLightweight()) {
-//                if  (comp instanceof Container) {
-//                    ((Container)comp).recursiveHideHeavyweightChildren();
-//                }
-//            } else {
-//                if (comp.isVisible()) {
-//                    ComponentPeer peer = comp.getPeer();
-//                    if (peer != null) {
-//                        peer.hide();
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private void recursiveShowHeavyweightChildren() {
+        if (!hasHeavyweightDescendants() || !isVisible()) {
+            return;
+        }
+        for (int index = 0; index < getComponentCount(); index++) {
+            Component comp = getComponent(index);
+            if (comp.isLightweight()) {
+                if  (comp instanceof Container) {
+                    ((Container)comp).recursiveShowHeavyweightChildren();
+                }
+            } else {
+                if (comp.isVisible()) {
+                    ComponentPeer peer = comp.getPeer();
+                    if (peer != null) {
+                        peer.setVisible(true);//SwingJS was show();
+                    }
+                }
+            }
+        }
+    }
+
+    private void recursiveHideHeavyweightChildren() {
+        if (!hasHeavyweightDescendants()) {
+            return;
+        }
+        for (int index = 0; index < getComponentCount(); index++) {
+            Component comp = getComponent(index);
+            if (comp.isLightweight()) {
+                if  (comp instanceof Container) {
+                    ((Container)comp).recursiveHideHeavyweightChildren();
+                }
+            } else {
+                if (comp.isVisible()) {
+                    ComponentPeer peer = comp.getPeer();
+                    if (peer != null) {
+                        peer.setVisible(false);//SwingJS was hide();
+                    }
+                }
+            }
+        }
+    }
 
 //    private void recursiveRelocateHeavyweightChildren(Point origin) {
 //        for (int index = 0; index < getComponentCount(); index++) {
@@ -3998,17 +4000,17 @@ public class Container extends Component {
 //        }
 //    }
 //
-//    /*
-//     * Consider the heavyweight container hides or shows the HW descendants
-//     * automatically. Therefore we care of LW containers' visibility only.
-//     */
-//    private boolean isRecursivelyVisibleUpToHeavyweightContainer() {
-//        if (!isLightweight()) {
-//            return true;
-//        }
-//        return isVisible() && (getContainer() == null ||
-//             getContainer().isRecursivelyVisibleUpToHeavyweightContainer());
-//    }
+    /*
+     * Consider the heavyweight container hides or shows the HW descendants
+     * automatically. Therefore we care of LW containers' visibility only.
+     */
+    private boolean isRecursivelyVisibleUpToHeavyweightContainer() {
+        if (!isLightweight()) {
+            return true;
+        }
+        return isVisible() && (getContainer() == null ||
+             getContainer().isRecursivelyVisibleUpToHeavyweightContainer());
+    }
 
 //    @Override
 //    void mixOnShowing() {

@@ -37,8 +37,10 @@ import jsjava.awt.event.ItemEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.TextEvent;
+import jsjava.awt.peer.ComponentPeer;
 //import jsjava.security.AccessControlContext;
 //import jsjava.security.AccessController;
+import jsjava.awt.peer.LightweightPeer;
 
 /**
  * The root event class for all AWT events.
@@ -368,15 +370,15 @@ public abstract class AWTEvent extends EventObject {
             return;
         }
 
-//        Component comp = null;
-//        if (newSource instanceof Component) {
-//            comp = (Component)newSource;
-//            while (comp != null && comp.peer != null &&
-//                   (comp.peer instanceof LightweightPeer)) {
-//                comp = comp.parent;
-//            }
-//        }
-//
+        Component comp = null;
+        if (newSource instanceof Component) {
+            comp = (Component)newSource;
+            while (comp != null && comp.peer != null &&
+                   (comp.peer instanceof LightweightPeer)) {
+                comp = comp.parent;
+            }
+        }
+
 //        synchronized (this) {
             source = newSource;
 //            if (comp != null) {
@@ -402,11 +404,11 @@ public abstract class AWTEvent extends EventObject {
      */
     public String toString() {
         String srcName = null;
-//        if (source instanceof Component) {
+        if (source instanceof Component) {
             srcName = ((Component)source).getName();
 //        } else if (source instanceof MenuComponent) {
 //            srcName = ((MenuComponent)source).getName();
-//        }
+        }
         return getClass().getName() + "[" + paramString() + "] on " +
             (srcName != null? srcName : source);
     }

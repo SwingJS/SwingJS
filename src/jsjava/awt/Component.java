@@ -53,11 +53,15 @@ import jsjava.awt.event.MouseListener;
 import jsjava.awt.event.MouseMotionListener;
 import jsjava.awt.event.MouseWheelEvent;
 import jsjava.awt.event.MouseWheelListener;
+import jsjava.awt.event.PaintEvent;
 import jsjava.awt.event.TextEvent;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
+import jsjava.awt.peer.ComponentPeer;
+import jsjava.awt.peer.ContainerPeer;
+import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.lang.Thread;
@@ -169,8 +173,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //   * added to a container that also is a peer.
 //   * @see #addNotify
 //   * @see #removeNotify
-//   */
-//  transient ComponentPeer peer;
+protected  transient ComponentPeer peer;
 
   /**
      * The parent of the object. It may be <code>null</code>
@@ -698,15 +701,15 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //     */
 //    private transient Region mixingCutoutRegion = null;
 
-//    /*
-//     * Indicates whether addNotify() is complete
-//     * (i.e. the peer is created).
-//     */
-//    private transient boolean isAddNotifyComplete = false;
+    /*
+     * Indicates whether addNotify() is complete
+     * (i.e. the peer is created).
+     */
+    private transient boolean isAddNotifyComplete = false;
 
 //    /**
 //     * Should only be used in subclass getBounds to check that part of bounds
-//     * is actualy changing
+//     * is actually changing
 //     */
 //    int getBoundsOp() {
 //        assert Thread.holdsLock(getTreeLock());
@@ -854,6 +857,7 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
             this.name = name;
             nameExplicitlySet = true;
         }
+      	System.out.println("Component setName " + this);
         firePropertyChange("name", oldName, name);
     }
 
@@ -881,15 +885,15 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
         return getParent();
     }
 
-//    /**
-//     * @deprecated As of JDK version 1.1,
-//     * programs should not directly manipulate peers;
-//     * replaced by <code>boolean isDisplayable()</code>.
-//     */
-//    @Deprecated
-//    public ComponentPeer getPeer() {
-//        return peer;
-//    }
+    /**
+     * @deprecated As of JDK version 1.1,
+     * programs should not directly manipulate peers;
+     * replaced by <code>boolean isDisplayable()</code>.
+     */
+    @Deprecated
+    public ComponentPeer getPeer() {
+        return peer;
+    }
 
     /**
      * Associate a <code>DropTarget</code> with this component.
@@ -1313,13 +1317,13 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
         if (!enabled) {
  //           synchronized (getTreeLock()) {
                 enabled = true;
-//                ComponentPeer peer = this.peer;
-//                if (peer != null) {
-//                    peer.enable();
-//                    if (visible) {
-//                        updateCursorImmediately();
-//                    }
-//                }
+                ComponentPeer peer = this.peer;
+                if (peer != null) {
+                    peer.setEnabled(true);//SwingJS was enable();
+                    if (visible) {
+                        updateCursorImmediately();
+                    }
+                }
 //            }
 //            if (accessibleContext != null) {
 //                accessibleContext.firePropertyChange(
@@ -1362,13 +1366,13 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //                    // makes sense to the user.
 //                    transferFocus(false);
 //                }
-//                ComponentPeer peer = this.peer;
-//                if (peer != null) {
-//                    peer.disable();
-//                    if (visible) {
-//                        updateCursorImmediately();
-//                    }
-//                }
+                ComponentPeer peer = this.peer;
+                if (peer != null) {
+                    peer.setEnabled(false); //SwingJS was disable();
+                    if (visible) {
+                        updateCursorImmediately();
+                    }
+                }
 //            }
 //            if (accessibleContext != null) {
 //                accessibleContext.firePropertyChange(
@@ -1457,22 +1461,23 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
     }
 
 	public void show() {
+		System.out.println("Component " + name + " setVisible");
 		if (!visible) {
 			// synchronized (getTreeLock()) {
 			visible = true;
 			// mixOnShowing();
-			// ComponentPeer peer = this.peer;
-			// if (peer != null) {
-			// peer.show();
-			// createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
-			// this, parent,
-			// HierarchyEvent.SHOWING_CHANGED,
-			// Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-			// if (peer instanceof LightweightPeer) {
-			// repaint();
-			// }
-			// updateCursorImmediately();
-			// }
+			 ComponentPeer peer = this.peer;
+			 if (peer != null) {
+			 peer.setVisible(true);//was show();
+			 createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
+			 this, parent,
+			 HierarchyEvent.SHOWING_CHANGED,
+			 Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+			 if (peer instanceof LightweightPeer) {
+			 repaint();
+			 }
+			 updateCursorImmediately();
+			 }
 
 			if (componentListener != null
 					|| (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
@@ -1512,22 +1517,22 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //            clearMostRecentFocusOwnerOnHide();
 //            synchronized (getTreeLock()) {
                 visible = false;
-//                mixOnHiding(isLightweight());
+                mixOnHiding(isLightweight());
 //                if (containsFocus() && KeyboardFocusManager.isAutoFocusTransferEnabled()) {
 //                    transferFocus(true);
 //                }
-//                ComponentPeer peer = this.peer;
-//                if (peer != null) {
-//                    peer.hide();
-//                    createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
-//                                          this, parent,
-//                                          HierarchyEvent.SHOWING_CHANGED,
-//                                          Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-//                    if (peer instanceof LightweightPeer) {
-//                        repaint();
-//                    }
-//                    updateCursorImmediately();
-//                }
+                ComponentPeer peer = this.peer;
+                if (peer != null) {
+                    peer.setVisible(false);//SwingJS was hide();
+                    createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
+                                          this, parent,
+                                          HierarchyEvent.SHOWING_CHANGED,
+                                          Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+                    if (peer instanceof LightweightPeer) {
+                        repaint();
+                    }
+                    updateCursorImmediately();
+                }
                 if (componentListener != null ||
                     (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0 ||
                     Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {
@@ -1697,18 +1702,18 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
         Font oldFont, newFont;
         oldFont = font;
         newFont = font = f;
-//        synchronized(getTreeLock()) {
-//            synchronized (this) {
-//            }
-//            ComponentPeer peer = this.peer;
-//            if (peer != null) {
-//                f = getFont();
-//                if (f != null) {
-//                    peer.setFont(f);
-//                    peerFont = f;
-//                }
-//            }
-//        }
+        synchronized(getTreeLock()) {
+            synchronized (this) {
+            }
+            ComponentPeer peer = this.peer;
+            if (peer != null) {
+                f = getFont();
+                if (f != null) {
+                    peer.setFont(f);
+                    peerFont = f;
+                }
+            }
+        }
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
         firePropertyChange("font", oldFont, newFont);
@@ -1844,25 +1849,24 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * used by GlobalCursormanager to update cursor
      */
     final Point getLocationOnScreen_NoTreeLock() {
-			return null;
-//        if (isShowing()) {
-//            if (peer instanceof LightweightPeer) {
-//                // lightweight component location needs to be translated
-//                // relative to a native component.
-//                Container host = getNativeContainer();
-//                Point pt = host.peer.getLocationOnScreen();
-//                for(Component c = this; c != host; c = c.getParent()) {
-//                    pt.x += c.x;
-//                    pt.y += c.y;
-//                }
-//                return pt;
-//            } else {
-//                Point pt = peer.getLocationOnScreen();
-//                return pt;
-//            }
-//        } else {
-//            throw new IllegalComponentStateException("component must be showing on the screen to determine its location");
-//        }
+        if (isShowing()) {
+            if (peer instanceof LightweightPeer) {
+                // lightweight component location needs to be translated
+                // relative to a native component.
+                Container host = getNativeContainer();
+                Point pt = host.peer.getLocationOnScreen();
+                for(Component c = this; c != host; c = c.getParent()) {
+                    pt.x += c.x;
+                    pt.y += c.y;
+                }
+                return pt;
+            } else {
+                Point pt = peer.getLocationOnScreen();
+                return pt;
+            }
+        } else {
+            throw new IllegalComponentStateException("component must be showing on the screen to determine its location");
+        }
     }
 
 
@@ -2618,26 +2622,25 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since     JDK1.0
      */
     public void validate() {
-    	// only relevant for peers? 
-    	// todo
-//        synchronized (getTreeLock()) {
-//            ComponentPeer peer = this.peer;
-//            boolean wasValid = isValid();
-//            if (!wasValid && peer != null) {
-//                Font newfont = getFont();
-//                Font oldfont = peerFont;
-//                if (newfont != oldfont && (oldfont == null
-//                                           || !oldfont.equals(newfont))) {
-//                    peer.setFont(newfont);
-//                    peerFont = newfont;
-//                }
-//                peer.layout();
-//            }
+        synchronized (getTreeLock()) {
+            ComponentPeer peer = this.peer;
+            boolean wasValid = isValid();
+            if (!wasValid && peer != null) {
+                Font newfont = getFont();
+                Font oldfont = peerFont;
+                if (newfont != oldfont && (oldfont == null
+                                           || !oldfont.equals(newfont))) {
+                    peer.setFont(newfont);
+                    peerFont = newfont;
+                }
+                peer.layout();
+            }
             valid = true;
-//            if (!wasValid) {
-//                mixOnValidating();
-//            }
-//        }
+            System.out.println("C is valid now: " + this);
+            if (!wasValid) {
+                mixOnValidating();
+            }
+        }
     }
 
     /**
@@ -3052,27 +3055,26 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
     	repaintImpl(tm, x, y, width, height);
     }
     public void repaintImpl(long tm, int x, int y, int width, int height) {
-
-//        if (this.peer instanceof LightweightPeer) {
-//            // Needs to be translated to parent coordinates since
-//            // a parent native container provides the actual repaint
-//            // services.  Additionally, the request is restricted to
-//            // the bounds of the component.
-//            if (parent != null) {
-//                int px = this.x + ((x < 0) ? 0 : x);
-//                int py = this.y + ((y < 0) ? 0 : y);
-//                int pwidth = (width > this.width) ? this.width : width;
-//                int pheight = (height > this.height) ? this.height : height;
-//                parent.repaint(tm, px, py, pwidth, pheight);
-//            }
-//        } else {
-//            if (isVisible() && (this.peer != null) &&
-//                (width > 0) && (height > 0)) {
-//                PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE,
-//                                              new Rectangle(x, y, width, height));
-//                Toolkit.getEventQueue().postEvent(e);
-//            }
-//        }
+        if (this.peer instanceof LightweightPeer) {
+            // Needs to be translated to parent coordinates since
+            // a parent native container provides the actual repaint
+            // services.  Additionally, the request is restricted to
+            // the bounds of the component.
+            if (parent != null) {
+                int px = this.x + ((x < 0) ? 0 : x);
+                int py = this.y + ((y < 0) ? 0 : y);
+                int pwidth = (width > this.width) ? this.width : width;
+                int pheight = (height > this.height) ? this.height : height;
+                parent.repaint(tm, px, py, pwidth, pheight);
+            }
+        } else {
+            if (isVisible() && (this.peer != null) &&
+                (width > 0) && (height > 0)) {
+                PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE,
+                                              new Rectangle(x, y, width, height));
+                Toolkit.getEventQueue().postEvent(e);
+            }
+        }
     }
 
     /**
@@ -5796,53 +5798,54 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      * @since JDK1.0
      */
     public void addNotify() {
-//        synchronized (getTreeLock()) {
-//            ComponentPeer peer = this.peer;
-//            if (peer == null || peer instanceof LightweightPeer){
-//                if (peer == null) {
-//                    // Update both the Component's peer variable and the local
-//                    // variable we use for thread safety.
-//                    this.peer = peer = getToolkit().createComponent(this);
-//                }
-//
-//                // This is a lightweight component which means it won't be
-//                // able to get window-related events by itself.  If any
-//                // have been enabled, then the nearest native container must
-//                // be enabled.
-//                if (parent != null) {
-//                    long mask = 0;
-//                    if ((mouseListener != null) || ((eventMask & AWTEvent.MOUSE_EVENT_MASK) != 0)) {
-//                        mask |= AWTEvent.MOUSE_EVENT_MASK;
-//                    }
-//                    if ((mouseMotionListener != null) ||
-//                        ((eventMask & AWTEvent.MOUSE_MOTION_EVENT_MASK) != 0)) {
-//                        mask |= AWTEvent.MOUSE_MOTION_EVENT_MASK;
-//                    }
-//                    if ((mouseWheelListener != null ) ||
-//                        ((eventMask & AWTEvent.MOUSE_WHEEL_EVENT_MASK) != 0)) {
-//                        mask |= AWTEvent.MOUSE_WHEEL_EVENT_MASK;
-//                    }
-//                    if (focusListener != null || (eventMask & AWTEvent.FOCUS_EVENT_MASK) != 0) {
-//                        mask |= AWTEvent.FOCUS_EVENT_MASK;
-//                    }
-//                    if (keyListener != null || (eventMask & AWTEvent.KEY_EVENT_MASK) != 0) {
-//                        mask |= AWTEvent.KEY_EVENT_MASK;
-//                    }
-//                    if (mask != 0) {
-//                        parent.proxyEnableEvents(mask);
-//                    }
-//                }
-//            } else {
-//                // It's native.  If the parent is lightweight it
-//                // will need some help.
-//                Container parent = this.parent;
-//                if (parent != null && parent.peer instanceof LightweightPeer) {
-//                    relocateComponent();
-//                }
-//            }
-//            invalidate();
-//
+        synchronized (getTreeLock()) {
+            ComponentPeer peer = this.peer;
+            if (peer == null || peer instanceof LightweightPeer){
+                if (peer == null) {
+                    // Update both the Component's peer variable and the local
+                    // variable we use for thread safety.
+                    this.peer = peer = getToolkit().createComponent(this); 
+                }
+
+                // This is a lightweight component which means it won't be
+                // able to get window-related events by itself.  If any
+                // have been enabled, then the nearest native container must
+                // be enabled.
+                if (parent != null) {
+                    long mask = 0;
+                    if ((mouseListener != null) || ((eventMask & AWTEvent.MOUSE_EVENT_MASK) != 0)) {
+                        mask |= AWTEvent.MOUSE_EVENT_MASK;
+                    }
+                    if ((mouseMotionListener != null) ||
+                        ((eventMask & AWTEvent.MOUSE_MOTION_EVENT_MASK) != 0)) {
+                        mask |= AWTEvent.MOUSE_MOTION_EVENT_MASK;
+                    }
+                    if ((mouseWheelListener != null ) ||
+                        ((eventMask & AWTEvent.MOUSE_WHEEL_EVENT_MASK) != 0)) {
+                        mask |= AWTEvent.MOUSE_WHEEL_EVENT_MASK;
+                    }
+                    if (focusListener != null || (eventMask & AWTEvent.FOCUS_EVENT_MASK) != 0) {
+                        mask |= AWTEvent.FOCUS_EVENT_MASK;
+                    }
+                    if (keyListener != null || (eventMask & AWTEvent.KEY_EVENT_MASK) != 0) {
+                        mask |= AWTEvent.KEY_EVENT_MASK;
+                    }
+                    if (mask != 0) {
+                        parent.proxyEnableEvents(mask);
+                    }
+                }
+            } else {
+                // It's native.  If the parent is lightweight it
+                // will need some help.
+                Container parent = this.parent;
+                if (parent != null && parent.peer instanceof LightweightPeer) {
+                    relocateComponent();
+                }
+            }
+            invalidate();
+
 //            int npopups = (popups != null? popups.size() : 0);
+            //SwingJS TODO 
 //            for (int i = 0 ; i < npopups ; i++) {
 //                PopupMenu popup = (PopupMenu)popups.elementAt(i);
 //                popup.addNotify();
@@ -5850,51 +5853,63 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //
 //            if (dropTarget != null) dropTarget.addNotify(peer);
 //
-//            peerFont = getFont();
-//
-//            if (getContainer() != null && !isAddNotifyComplete) {
-//                getContainer().increaseComponentCount(this);
-//            }
-//
-//
-//            // Update stacking order
-//            if (parent != null && parent.peer != null) {
-//                ContainerPeer parentContPeer = (ContainerPeer) parent.peer;
-//                // if our parent is lightweight and we are not
-//                // we should call restack on nearest heavyweight
-//                // container.
-//                if (parentContPeer instanceof LightweightPeer
-//                    && ! (peer instanceof LightweightPeer))
-//                {
-//                    Container hwParent = getNativeContainer();
-//                    if (hwParent != null && hwParent.peer != null) {
-//                        parentContPeer = (ContainerPeer) hwParent.peer;
-//                    }
-//                }
+            peerFont = getFont();
+
+            if (getContainer() != null && !isAddNotifyComplete) {
+                getContainer().increaseComponentCount(this);
+            }
+
+
+            // Update stacking order
+            if (parent != null && parent.peer != null) {
+                ContainerPeer parentContPeer = (ContainerPeer) parent.peer;
+                // if our parent is lightweight and we are not
+                // we should call restack on nearest heavyweight
+                // container.
+                if (parentContPeer instanceof LightweightPeer
+                    && ! (peer instanceof LightweightPeer))
+                {
+                    Container hwParent = getNativeContainer();
+                    if (hwParent != null && hwParent.peer != null) {
+                        parentContPeer = (ContainerPeer) hwParent.peer;
+                    }
+                }
 //                if (parentContPeer.isRestackSupported()) {
 //                    parentContPeer.restack();
 //                }
-//            }
-//
-//            if (!isAddNotifyComplete) {
-//                mixOnShowing();
-//            }
-//
-//            isAddNotifyComplete = true;
-//
-//            if (hierarchyListener != null ||
-//                (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0 ||
-//                Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK)) {
-//                HierarchyEvent e =
-//                    new HierarchyEvent(this, HierarchyEvent.HIERARCHY_CHANGED,
-//                                       this, parent,
-//                                       HierarchyEvent.DISPLAYABILITY_CHANGED |
-//                                       ((isRecursivelyVisible())
-//                                        ? HierarchyEvent.SHOWING_CHANGED
-//                                        : 0));
-//                dispatchEvent(e);
-//            }
-//        }
+            }
+
+            if (!isAddNotifyComplete) {
+                mixOnShowing();
+            }
+
+            isAddNotifyComplete = true;
+
+            if (hierarchyListener != null ||
+                (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0 ||
+                Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK)) {
+                HierarchyEvent e =
+                    new HierarchyEvent(this, HierarchyEvent.HIERARCHY_CHANGED,
+                                       this, parent,
+                                       HierarchyEvent.DISPLAYABILITY_CHANGED |
+                                       ((isRecursivelyVisible())
+                                        ? HierarchyEvent.SHOWING_CHANGED
+                                        : 0));
+                dispatchEvent(e);
+            }
+        }
+    }
+
+    /*
+     * Fetches the native container somewhere higher up in the component
+     * tree that contains this component.
+     */
+    Container getNativeContainer() {
+        Container p = parent;
+        while (p != null && p.peer instanceof LightweightPeer) {
+            p = p.getParent();
+        }
+        return p;
     }
 
     /**
@@ -5918,76 +5933,76 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
 //            KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //                setGlobalPermanentFocusOwner(null);
 //        }
-//
-//        synchronized (getTreeLock()) {
+
+        synchronized (getTreeLock()) {
 //            if (isFocusOwner() && KeyboardFocusManager.isAutoFocusTransferEnabledFor(this)) {
 //                transferFocus(true);
 //            }
-//
-//            if (getContainer() != null && isAddNotifyComplete) {
-//                getContainer().decreaseComponentCount(this);
-//            }
-//
+
+            if (getContainer() != null && isAddNotifyComplete) {
+                getContainer().decreaseComponentCount(this);
+            }
+
 //            int npopups = (popups != null? popups.size() : 0);
-//            for (int i = 0 ; i < npopups ; i++) {
+//SwingJS TODO            for (int i = 0 ; i < npopups ; i++) {
 //                PopupMenu popup = (PopupMenu)popups.elementAt(i);
 //                popup.removeNotify();
 //            }
-//            // If there is any input context for this component, notify
-//            // that this component is being removed. (This has to be done
-//            // before hiding peer.)
-//            if ((eventMask & AWTEvent.INPUT_METHODS_ENABLED_MASK) != 0) {
+            // If there is any input context for this component, notify
+            // that this component is being removed. (This has to be done
+            // before hiding peer.)
+//SwingJS ignore?            if ((eventMask & AWTEvent.INPUT_METHODS_ENABLED_MASK) != 0) {
 //                InputContext inputContext = getInputContext();
 //                if (inputContext != null) {
 //                    inputContext.removeNotify(this);
 //                }
 //            }
-//
-//            ComponentPeer p = peer;
-//            if (p != null) {
-//                boolean isLightweight = isLightweight();
-//
+
+            ComponentPeer p = peer;
+            if (p != null) {
+                boolean isLightweight = isLightweight();
+
 //                if (bufferStrategy instanceof FlipBufferStrategy) {
 //                    ((FlipBufferStrategy)bufferStrategy).destroyBuffers();
 //                }
 //
 //                if (dropTarget != null) dropTarget.removeNotify(peer);
-//
-//                // Hide peer first to stop system events such as cursor moves.
-//                if (visible) {
+
+                // Hide peer first to stop system events such as cursor moves.
+//SwingJS unnec?                if (visible) {
 //                    p.hide();
 //                }
-//
-//                peer = null; // Stop peer updates.
-//                peerFont = null;
-//
-//                Toolkit.getEventQueue().removeSourceEvents(this, false);
+
+                peer = null; // Stop peer updates.
+                peerFont = null;
+
+                Toolkit.getEventQueue().removeSourceEvents(this, false);
 //                KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //                    discardKeyEvents(this);
-//
-//                p.dispose();
-//
-//                mixOnHiding(isLightweight);
-//
-//                isAddNotifyComplete = false;
-//                // Nullifying compoundShape means that the component has normal shape
-//                // (or has no shape at all).
-//                this.compoundShape = null;
-//            }
-//
-//            if (hierarchyListener != null ||
-//                (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0 ||
-//                Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK)) {
-//                HierarchyEvent e =
-//                    new HierarchyEvent(this, HierarchyEvent.HIERARCHY_CHANGED,
-//                                       this, parent,
-//                                       HierarchyEvent.DISPLAYABILITY_CHANGED |
-//                                       ((isRecursivelyVisible())
-//                                        ? HierarchyEvent.SHOWING_CHANGED
-//                                        : 0));
-//                dispatchEvent(e);
-//            }
-//        }
+
+                p.dispose();
+
+                mixOnHiding(isLightweight);
+
+                isAddNotifyComplete = false;
+                // Nullifying compoundShape means that the component has normal shape
+                // (or has no shape at all).
+//SwingJS not implemented                this.compoundShape = null;
+            }
+
+            if (hierarchyListener != null ||
+                (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0 ||
+                Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK)) {
+                HierarchyEvent e =
+                    new HierarchyEvent(this, HierarchyEvent.HIERARCHY_CHANGED,
+                                       this, parent,
+                                       HierarchyEvent.DISPLAYABILITY_CHANGED |
+                                       ((isRecursivelyVisible())
+                                        ? HierarchyEvent.SHOWING_CHANGED
+                                        : 0));
+                dispatchEvent(e);
+            }
+        }
     }
 
     /**
@@ -6976,7 +6991,8 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
      */
     protected String paramString() {
         String thisName = getName();
-        String str = (thisName != null? thisName : "") + "," + x + "," + y + "," + width + "x" + height;
+        String str = (thisName != null? thisName : "") + ",parent:" 
+        + (parent == null ? null : parent.getName()) + "," + x + "," + y + "," + width + "x" + height;
         if (!isValid()) {
             str += ",invalid";
         }

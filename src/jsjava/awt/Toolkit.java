@@ -55,8 +55,10 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
+import jssun.awt.NullComponentPeer;
 
 /**
  * This class is the abstract superclass of all actual
@@ -413,21 +415,21 @@ public abstract class Toolkit {
 //        throw new UnsupportedOperationException("Not implemented");
 //    }
 //
-//    private static LightweightPeer lightweightMarker;
-//
-//    /**
-//     * Creates a peer for a component or container.  This peer is windowless
-//     * and allows the Component and Container classes to be extended directly
-//     * to create windowless components that are defined entirely in java.
-//     *
-//     * @param target The Component to be created.
-//     */
-//    protected LightweightPeer createComponent(Component target) {
-//        if (lightweightMarker == null) {
-//            lightweightMarker = new NullComponentPeer();
-//        }
-//        return lightweightMarker;
-//    }
+    private static LightweightPeer lightweightMarker;
+
+    /**
+     * Creates a peer for a component or container.  This peer is windowless
+     * and allows the Component and Container classes to be extended directly
+     * to create windowless components that are defined entirely in java.
+     *
+     * @param target The Component to be created.
+     */
+    protected LightweightPeer createComponent(Component target) {
+        if (lightweightMarker == null) {
+            lightweightMarker = new NullComponentPeer();
+        }
+        return lightweightMarker;
+    }
 //
 //    /**
 //     * Creates this toolkit's implementation of <code>Font</code> using
@@ -1606,10 +1608,10 @@ public abstract class Toolkit {
      * @see     jsjava.awt.AWTPermission
     */
     public final EventQueue getSystemEventQueue() {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-          security.checkAwtEventQueueAccess();
-        }
+//        SecurityManager security = System.getSecurityManager();
+//        if (security != null) {
+//          security.checkAwtEventQueueAccess();
+//        }
         return getSystemEventQueueImpl();
     }
 
@@ -1846,7 +1848,7 @@ public abstract class Toolkit {
 
     // 8014736: logging has been removed from Toolkit
 
-    private static final int LONG_BITS = 64;
+    private static final int LONG_BITS = 32;//SwingJS wass 64;
     private int[] calls = new int[LONG_BITS];
     private static volatile long enabledOnToolkitMask;
     private AWTEventListener eventListener = null;

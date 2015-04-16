@@ -53,6 +53,7 @@ class SwingPaintEventDispatcher extends jssun.awt.PaintEventDispatcher {
 
     public PaintEvent createPaintEvent(Component component, int x, int y,
                                          int w, int h) {
+    	System.out.println("SPaintEventDisp for " + component + "xywh " + x + " " + y + " " + w + " " + h);
         if (component instanceof RootPaneContainer) {
             AppContext appContext = SunToolkit.targetToAppContext(component);
             RepaintManager rm = RepaintManager.currentManager(component); // BH was appContext

@@ -33,7 +33,7 @@ package jssun.awt;
 //import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_VRGB;
 //import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 //
-import java.lang.reflect.Constructor;
+//import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 //import java.util.Collections;
@@ -53,7 +53,7 @@ import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.GraphicsConfiguration;
-import jsjava.awt.GraphicsEnvironment;
+//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
 import jsjava.awt.RenderingHints;
@@ -96,65 +96,65 @@ public abstract class SunToolkit extends Toolkit
 //    private static Method  wakeupMethod;
     /* The key to put()/get() the PostEventQueue into/from the AppContext.
      */
-    private static final String POST_EVENT_QUEUE_KEY = "PostEventQueue";
+    protected static final String POST_EVENT_QUEUE_KEY = "PostEventQueue";
 
     public SunToolkit() {
-        /* If awt.threadgroup is set to class name the instance of
-         * this class is created (should be subclass of ThreadGroup)
-         * and EventDispatchThread is created inside of it
-         *
-         * If loaded class overrides uncaughtException instance
-         * handles all uncaught exception on EventDispatchThread
-         */
-        ThreadGroup threadGroup = null;
-        String tgName = System.getProperty("awt.threadgroup", "");
-
-        if (tgName.length() != 0) {
-            try {
-                Constructor ctor = Class.forName(tgName).
-                    getConstructor(new Class[] {String.class});
-                threadGroup = (ThreadGroup)ctor.newInstance(new Object[] {"AWT-ThreadGroup"});
-            } catch (Exception e) {
-                System.err.println("Failed loading " + tgName + ": " + e);
-            }
-        }
-
-        Runnable initEQ = new Runnable() {
-            public void run () {
-                EventQueue eventQueue;
-
-                String eqName = System.getProperty("AWT.EventQueueClass",
-                                                   "jsjava.awt.EventQueue");
-
-                try {
-                    eventQueue = (EventQueue)Class.forName(eqName).newInstance();
-                } catch (Exception e) {
-                    System.err.println("Failed loading " + eqName + ": " + e);
-                    e.printStackTrace();
-                    eventQueue = new EventQueue();
-                }
-                AppContext appContext = AppContext.getAppContext();
-                
-                
-                appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
-
-                PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
-                appContext.put(POST_EVENT_QUEUE_KEY, postEventQueue);
-            }
-        };
-
-        if (threadGroup != null) {
-            Thread eqInitThread = new Thread(threadGroup, initEQ, "EventQueue-Init");
-            eqInitThread.start();
-            try {
-                eqInitThread.join();
-            } catch (InterruptedException e) {
-            	System.out.println("Suntoolkit error in threadgroup " + e);
-                e.printStackTrace();
-            }
-        } else {
-            initEQ.run();
-        }
+//        /* If awt.threadgroup is set to class name the instance of
+//         * this class is created (should be subclass of ThreadGroup)
+//         * and EventDispatchThread is created inside of it
+//         *
+//         * If loaded class overrides uncaughtException instance
+//         * handles all uncaught exception on EventDispatchThread
+//         */
+//        ThreadGroup threadGroup = null;
+//        String tgName = System.getProperty("awt.threadgroup", "");
+//
+//        if (tgName.length() != 0) {
+//            try {
+//                Constructor ctor = Class.forName(tgName).
+//                    getConstructor(new Class[] {String.class});
+//                threadGroup = (ThreadGroup)ctor.newInstance(new Object[] {"AWT-ThreadGroup"});
+//            } catch (Exception e) {
+//                System.err.println("Failed loading " + tgName + ": " + e);
+//            }
+//        }
+//
+//        Runnable initEQ = new Runnable() {
+//            public void run () {
+//                EventQueue eventQueue;
+//
+//                String eqName = System.getProperty("AWT.EventQueueClass",
+//                                                   "jsjava.awt.EventQueue");
+//
+//                try {
+//                    eventQueue = (EventQueue)Class.forName(eqName).newInstance();
+//                } catch (Exception e) {
+//                    System.err.println("Failed loading " + eqName + ": " + e);
+//                    e.printStackTrace();
+//                    eventQueue = new EventQueue();
+//                }
+//                AppContext appContext = AppContext.getAppContext();
+//                
+//                
+//                appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
+//
+//                PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
+//                appContext.put(POST_EVENT_QUEUE_KEY, postEventQueue);
+//            }
+//        };
+//
+//        if (threadGroup != null) {
+//            Thread eqInitThread = new Thread(threadGroup, initEQ, "EventQueue-Init");
+//            eqInitThread.start();
+//            try {
+//                eqInitThread.join();
+//            } catch (InterruptedException e) {
+//            	System.out.println("Suntoolkit error in threadgroup " + e);
+//                e.printStackTrace();
+//            }
+//        } else {
+//            initEQ.run();
+//        }
     }
 
     public boolean useBufferPerWindow() {
@@ -616,24 +616,24 @@ public abstract class SunToolkit extends Toolkit
      * EventQueue yet.
      */
     public static void flushPendingEvents()  {
-        AppContext appContext = AppContext.getAppContext();
-        PostEventQueue postEventQueue =
-            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
-        if(postEventQueue != null) {
-            postEventQueue.flush();
-        }
+//SwingJS unnec        AppContext appContext = AppContext.getAppContext();
+//        PostEventQueue postEventQueue =
+//            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
+//        if(postEventQueue != null) {
+//            postEventQueue.flush();
+//        }
     }
 
-    public static boolean isPostEventQueueEmpty()  {
-        AppContext appContext = AppContext.getAppContext();
-        PostEventQueue postEventQueue =
-            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
-        if (postEventQueue != null) {
-            return postEventQueue.noEvents();
-        } else {
-            return true;
-        }
-    }
+//SwingJS unnec    public static boolean isPostEventQueueEmpty()  {
+//        AppContext appContext = AppContext.getAppContext();
+//        PostEventQueue postEventQueue =
+//            (PostEventQueue)appContext.get(POST_EVENT_QUEUE_KEY);
+//        if (postEventQueue != null) {
+//            return postEventQueue.noEvents();
+//        } else {
+//            return true;
+//        }
+//    }
 
     /*
      * Execute a chunk of code on the Java event handler thread for the
@@ -1993,79 +1993,3 @@ public abstract class SunToolkit extends Toolkit
     }
 
 } // class SunToolkit
-
-
-/*
- * PostEventQueue is a Thread that runs in the same AppContext as the
- * Java EventQueue.  It is a queue of AWTEvents to be posted to the
- * Java EventQueue.  The toolkit Thread (AWT-Windows/AWT-Motif) posts
- * events to this queue, which then calls EventQueue.postEvent().
- *
- * We do this because EventQueue.postEvent() may be overridden by client
- * code, and we mustn't ever call client code from the toolkit thread.
- */
-class PostEventQueue {
-    private EventQueueItem queueHead = null;
-    private EventQueueItem queueTail = null;
-    private final EventQueue eventQueue;
-
-    PostEventQueue(EventQueue eq) {
-        eventQueue = eq;
-    }
-
-    public boolean noEvents() {
-        return queueHead == null;
-    }
-
-    /*
-     * Continually post pending AWTEvents to the Java EventQueue.
-     */
-    public void flush() {
-        if (queueHead != null) {
-            EventQueueItem tempQueue;
-            /*
-             * We have to execute the loop inside the synchronized block
-             * to ensure that the flush is completed before a new event
-             * can be posted to this queue.
-             */
-            synchronized (this) {
-                tempQueue = queueHead;
-                queueHead = queueTail = null;
-                /*
-                 * If this PostEventQueue is flushed in parallel on two
-                 * different threads tempQueue will be null for one of them.
-                 */
-                while (tempQueue != null) {
-                    eventQueue.postEvent(tempQueue.event);
-                    tempQueue = tempQueue.next;
-                }
-            }
-        }
-    }
-
-    /*
-     * Enqueue an AWTEvent to be posted to the Java EventQueue.
-     */
-    void postEvent(AWTEvent event) {
-        EventQueueItem item = new EventQueueItem(event);
-
-        synchronized (this) {
-            if (queueHead == null) {
-                queueHead = queueTail = item;
-            } else {
-                queueTail.next = item;
-                queueTail = item;
-            }
-        }
-      //JS         SunToolkit.wakeupEventQueue(eventQueue, event.getSource() == AWTAutoShutdown.getInstance());
-    }
-} // class PostEventQueue
-
-class EventQueueItem {
-    AWTEvent event;
-    EventQueueItem next;
-
-    EventQueueItem(AWTEvent evt) {
-        event = evt;
-    }
-} // class EventQueueItem

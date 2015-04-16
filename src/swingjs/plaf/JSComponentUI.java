@@ -49,14 +49,19 @@ public abstract class JSComponentUI extends ComponentUI {
 		DOMObject d = DOMObject.createElement(key, id);
 		for (int i = 0; i < attr.length;)
 			DOMObject.setAttr(d, attr[i++], attr[i++]);
+		debugDump(d);
 		return d;
 	}
 
-	protected DOMObject getSpan(String id, Object... elements) {
-		DOMObject span = getDOMObject("span", id + "s");
+	private void debugDump(DOMObject d) {
+		System.out.println(DOMObject.getOuterHTML(d));
+	}
+
+	protected DOMObject getDiv(String id, Object... elements) {
+		DOMObject div = getDOMObject("div", id + "s");
 		for (int i = 0; i < elements.length; i++)
-			span.appendChild(elements[i]);
-		return span;
+			div.appendChild(elements[i]);
+		return div;
 	}
 
 	protected Dimension getDimension(DOMObject obj) {
@@ -67,6 +72,7 @@ public abstract class JSComponentUI extends ComponentUI {
 		int w = jq.$(obj).width();
 		int h = jq.$(obj).height();
 		jo.html("");
+		System.out.println("JSComponent " + div + " (" + w + "," + h+")");
 		return new Dimension(w, h);
 	}
 
@@ -94,11 +100,12 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	public void update(Graphics g, JComponent c) {
-		// if (c.isOpaque()) {
-		// g.setColor(c.getBackground());
-		// g.fillRect(0, 0, c.getWidth(),c.getHeight());
-		// }
-		// paint(g, c);
+		System.out.println(id + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight() + JSToolkit.getStackTrace(-10));
+		 if (c.isOpaque()) {
+			 g.setColor(c.getBackground());
+			 g.fillRect(0, 0, c.getWidth(),c.getHeight());
+		 }
+		 paint(g, c);
 	}
 
 	public Dimension getMinimumSize(JComponent c) {

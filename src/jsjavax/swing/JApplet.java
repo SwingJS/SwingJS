@@ -504,13 +504,20 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @since     1.6
      */
     public void repaint(long time, int x, int y, int width, int height) {
-        if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
-            RepaintManager.currentManager(this).addDirtyRegion(
-                              this, x, y, width, height);
-        }
-        else {
-            super.repaint(time, x, y, width, height);
-        }
+      if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
+      	System.out.println("repaintNow " + this);
+          RepaintManager.currentManager(this).addDirtyRegion(
+                            this, x, y, width, height);
+      }
+      else {
+          super.repaint(time, x, y, width, height);
+      }
+    }
+
+    //The call to make for repainting from SwingJS
+    public void repaintNow() {
+    	//SwingJS
+    	repaint(100, 0, 0, getWidth(), getHeight());
     }
 
     /**

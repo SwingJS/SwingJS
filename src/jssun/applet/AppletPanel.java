@@ -708,7 +708,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		if (applet != null) {
 			// Stick it in the frame
 			applet.setStub(this);
-			applet.hide();
+			applet.setVisible(false);
 			add("Center", applet);
 			showAppletStatus("loaded");
 			validate();
@@ -790,6 +790,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 
 		doInit = true; // allow restarts
 
+		validate(); //SwingJS
 		// Validate the applet in event dispatch thread
 		// to avoid deadlock.
 		// try {
@@ -905,7 +906,7 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 		return status == APPLET_START;
 	}
 
-	private EventQueue appEvtQ = null;
+//	private EventQueue appEvtQ = null;
 
 	/**
 	 * Is called when the applet wants to be resized.
@@ -913,20 +914,22 @@ public abstract class AppletPanel extends Panel implements AppletStub {
 	public void appletResize(int width, int height) {
 		currentAppletSize.width = width;
 		currentAppletSize.height = height;
-		final Dimension currentSize = new Dimension(currentAppletSize.width,
-				currentAppletSize.height);
+		validate(); //SwingJS
 
-		final AppletPanel ap = this;
-		if (appEvtQ != null) {
-			appEvtQ.postEvent(new InvocationEvent(Toolkit.getDefaultToolkit(),
-					new Runnable() {
-						public void run() {
-							if (ap != null) {
-								ap.dispatchAppletEvent(APPLET_RESIZE, currentSize);
-							}
-						}
-					}));
-		}
+		
+//		final Dimension currentSize = new Dimension(currentAppletSize.width,
+//				currentAppletSize.height);
+//		final AppletPanel ap = this;
+//		if (appEvtQ != null) {
+//			appEvtQ.postEvent(new InvocationEvent(Toolkit.getDefaultToolkit(),
+//					new Runnable() {
+//						public void run() {
+//							if (ap != null) {
+//								ap.dispatchAppletEvent(APPLET_RESIZE, currentSize);
+//							}
+//						}
+//					}));
+//		}
 	}
 
 	public void setBounds(int x, int y, int width, int height) {

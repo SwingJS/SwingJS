@@ -27,7 +27,7 @@ package jssun.awt;
 
 import jsjava.lang.Thread;
 import jsjava.lang.ThreadGroup;
-//import jsjava.awt.EventQueue;
+import jsjava.awt.EventQueue;
 //import jsjava.security.AccessController;
 //import jsjava.security.PrivilegedAction;
 import java.util.Collections;
@@ -314,6 +314,7 @@ public final class AppContext {
 //                            return threadGroup2appContext.get(smThreadGroup);
 //                        }
 //                    }
+                  System.out.println("AppContext returning null");
                     return null;
                 }
                 appContext = threadGroup2appContext.get(threadGroup);
@@ -329,7 +330,7 @@ public final class AppContext {
             mostRecentThreadAppContext =
                 new MostRecentThreadAppContext(currentThread, appContext);
         }
-
+        System.out.println("AppContext returning " + appContext);
         return appContext;
     }
 

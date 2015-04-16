@@ -70,6 +70,7 @@ import jsjava.util.MissingResourceException;
 import java.util.Set;
 
 import swingjs.J2SRequireImport;
+import swingjs.JSToolkit;
 import swingjs.api.Interface;
 
 //import jsjava.security.AccessController;
@@ -1274,17 +1275,11 @@ public abstract class ResourceBundle {
 	private static ResourceBundle getBundleImpl(String baseName, Locale locale,
 			Object loader, Control control) {
 
-		/**
-		 * @j2sNative
-		 * 
-		 */
-		{
-			if (locale == null || control == null) {
-				throw new NullPointerException(
-						"ResourceBundle locale or control is null");
-			}
+		// SwingJS - don't worry about null locale
+		
+		if (/* locale == null || */control == null) {
+			throw new NullPointerException("ResourceBundle locale or control is null");
 		}
-
 		// We create a CacheKey here for use by this call. The base
 		// name and loader will never change during the bundle loading
 		// process. We have to make sure that the locale is set before
@@ -2501,19 +2496,10 @@ public abstract class ResourceBundle {
 				}
 				// final ClassLoader ClassLoader = loader;
 				// final boolean reloadFlag = reload;
-				String data = "";
+				String data = JSToolkit.getJavaResource(resourceName);
 				InputStream stream = null;
 				//SwingJS - we just get the resource as a string here
 				// J2S compiler bug converts these variables to a b c d e
-				/**
-				 * @j2sNative
-				 * 
-				 *            if (typeof h == "undefined") { data =
-				 *            SwingJS.getJavaResource(resourceName); } else { i =
-				 *            SwingJS.getJavaResource(h); }
-				 */
-				{
-				}
 				stream = (data == null ? null : new BufferedInputStream(
 						new ByteArrayInputStream(data.getBytes())));
 				// // try {

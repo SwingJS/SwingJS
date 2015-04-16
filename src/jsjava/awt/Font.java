@@ -436,10 +436,6 @@ public class Font
 //
 //    private Font2D getFont2D() {
 //    	// TODO
-//    	/**
-//    	 * @j2sNative
-//    	 */
-//    	{}
 ////        if (FontManager.usingPerAppContextComposites &&
 ////            font2DHandle != null &&
 ////            font2DHandle.font2D instanceof CompositeFont &&

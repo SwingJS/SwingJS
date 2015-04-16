@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import swingjs.JSToolkit;
+
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -206,7 +208,7 @@ public class RepaintManager {
 //		}
 		HANDLE_TOP_LEVEL_PAINT = true;
 		
-//		"true"
+//SwingJS		"true"
 //				.equals(AccessController.doPrivileged(new GetPropertyAction(
 //						"swing.handleTopLevelPaint", "true")));
 //		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -234,7 +236,7 @@ public class RepaintManager {
 		// component is ever used to determine the current
 		// RepaintManager, DisplayChangedRunnable will need to be modified
 		// accordingly.
-//		return currentManager(AppContext.getAppContext());
+//SwingJS		return currentManager(AppContext.getAppContext());
 //	}
 //
 //	/**
@@ -264,6 +266,8 @@ public class RepaintManager {
 	 * @param c
 	 *          a JComponent -- unused
 	 * @return the RepaintManager object
+	 * 
+	 * @j2sIgnore
 	 */
 	public static RepaintManager currentManager(JComponent c) {
 		return currentManager((Component) c);
@@ -326,12 +330,16 @@ public class RepaintManager {
 	public synchronized void addInvalidComponent(JComponent invalidComponent) {
 		Component validateRoot = null;
 
+		System.out.println("RM addInvalidComponent " + invalidComponent);
 		/*
 		 * Find the first JComponent ancestor of this component whose
 		 * isValidateRoot() method returns true.
 		 */
 		for (Component c = invalidComponent; c != null; c = c.getParent()) {
-			if ((c instanceof CellRendererPane) || (c.isLightweight() /*getPeer() == null*/)) {
+			if ((c instanceof CellRendererPane) 
+			  //SwingJS || c.getPeer() == null
+					) {
+				System.out.println("RM noParent");
 				return;
 			}
 			if ((c instanceof JComponent) && (((JComponent) c).isValidateRoot())) {
@@ -344,9 +352,11 @@ public class RepaintManager {
 		 * There's no validateRoot to apply validate to, so we're done.
 		 */
 		if (validateRoot == null) {
+			System.out.println("RM noValidateRoot");
 			return;
 		}
 
+		System.out.println("RM validateRoot = " + validateRoot);
 		/*
 		 * If the validateRoot and all of its ancestors aren't visible then we don't
 		 * do anything. While we're walking up the tree we find the root Window or
@@ -355,7 +365,10 @@ public class RepaintManager {
 		Component root = null;
 
 		for (Component c = validateRoot; c != null; c = c.getParent()) {
-			if (!c.isVisible() || (c.isLightweight()/*c.getPeer() == null*/)) {
+			if (!c.isVisible()
+					//SwingJS || (c.getPeer() == null)
+				) {
+				System.out.println("RM noVisibleParent");
 				return;
 			}
 			if ((c instanceof Window) || (c instanceof Applet)) {
@@ -365,6 +378,7 @@ public class RepaintManager {
 		}
 
 		if (root == null) {
+			System.out.println("RM noRoot");
 			return;
 		}
 
@@ -1371,8 +1385,9 @@ public class RepaintManager {
 
 	private void scheduleProcessingRunnable(AppContext context) {
 		if (processingRunnable.markPending()) {
-			SunToolkit.getSystemEventQueueImplPP(context).postEvent(
-					new InvocationEvent(Toolkit.getDefaultToolkit(), processingRunnable));
+			JSToolkit.postSystemEvent(processingRunnable);
+			//SunToolkit.getSystemEventQueueImplPP(context).postEvent(
+				//new InvocationEvent(Toolkit.getDefaultToolkit(), processingRunnable));
 		}
 	}
 
