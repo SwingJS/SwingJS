@@ -1,5 +1,17 @@
 PROGRESS
 ========
+4/16/2015
+
+swingjs.JSThread extends jsjava.lang.Thread and shows how to add a thread that 
+can be run or started and can continue indefinitely or upon "notification"
+using setTimeout calls with anonymous function callbacks to return to the loop
+
+AWTEvent dispatch thread working properly
+revalidation working
+peer preferredSize working for radio buttons (but not for panels).
+ 
+
+
 4/15/2015
 
 AWT Events reintroduced. Just about ready for JApplet painting via 

@@ -148,10 +148,7 @@
             java/awt/BasicStroke.js
             java/awt/Stroke.js
             swingjs/api/JSInterface.js
-            swingjs/JSThread.js
-            swingjs/JSThreadGroup.js
             swingjs/JSUtil.js
-            swingjs/JSToolkit.js
             java/util/Locale.js
             java/util/ResourceBundle.js
             javajs/util/Rdr.js
@@ -392,7 +389,6 @@
             javax/swing/event/AncestorEvent.js
             javax/swing/event/AncestorListener.js
             javax/swing/ClientPropertyKey.js
-            javax/swing/JApplet.js
             javax/swing/JDialog.js
             java/awt/Dialog.js
             javax/swing/WindowConstants.js
@@ -451,7 +447,13 @@
     
    	<!-- 
    	
-            jssun/applet/AppletPanel.js
+            javax/swing/JApplet.js
+
+            swingjs/JSToolkit.js
+            swingjs/JSThread.js
+            swingjs/JSThreadGroup.js
+            swingjs/JSAppletPanel.js
+
             java/awt/EventQueue.js
             java/awt/AWTEventMulticaster.js
             java/awt/AWTEvent.js
@@ -462,18 +464,19 @@
             java/awt/Toolkit.js
             java/lang/Thread.js
             java/lang/ThreadGroup.js
-            jssun/awt/SunToolkit.js
-            swingjs/JSAppletPanel.js
-            javax/swing/RepaintManager.js
             java/awt/FlowLayout.js
             java/awt/BorderLayout.js
             java/awt/LayoutManager2.js
             java/awt/LayoutManager.js
             java/awt/GraphicsCallback.js
-            jssun/awt/SunGraphicsCallback.js
-            javax/swing/JComponent.js
             java/awt/Container.js
             java/awt/Component.js
+            jssun/awt/SunGraphicsCallback.js
+
+            javax/swing/JComponent.js
+            javax/swing/RepaintManager.js
+            jssun/awt/SunToolkit.js
+            jssun/applet/AppletPanel.js
 
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug

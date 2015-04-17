@@ -41,7 +41,6 @@ import java.util.HashMap;
 import jsjava.util.Locale;
 import java.util.Map;
 
-import swingjs.JSToolkit;
 //import java.util.WeakHashMap;
 //import java.util.concurrent.TimeUnit;
 //import java.util.concurrent.locks.Condition;
@@ -64,6 +63,7 @@ import jsjava.awt.Window;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjava.awt.peer.PanelPeer;
 import jssun.awt.image.URLImageSource;
 import jssun.font.FontDesignMetrics;
 //import java.lang.reflect.Method;
@@ -745,9 +745,9 @@ public abstract class SunToolkit extends Toolkit implements
 		return hardwiredFontList;
 	}
 
-	// public PanelPeer createPanel(Panel target) {
-	// return (PanelPeer)createComponent(target);
-	// }
+ public PanelPeer createPanel(Panel target) {
+ return (PanelPeer)createComponent(target);
+ }
 	//
 	// public CanvasPeer createCanvas(Canvas target) {
 	// return (CanvasPeer)createComponent(target);

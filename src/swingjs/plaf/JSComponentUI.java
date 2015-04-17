@@ -58,21 +58,22 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	protected DOMObject getDiv(String id, Object... elements) {
-		DOMObject div = getDOMObject("div", id + "s");
+		DOMObject span = getDOMObject("span", id + "s");
 		for (int i = 0; i < elements.length; i++)
-			div.appendChild(elements[i]);
-		return div;
+			span.appendChild(elements[i]);
+//		DOMObject div = getDOMObject("div", id + "d");
+//		div.appendChild(span);
+		return span;
 	}
 
-	protected Dimension getDimension(DOMObject obj) {
+	protected Dimension getHTMLSize(DOMObject obj) {
 		String div = JSToolkit.getSwingDivId();
 		JQuery jq = JSToolkit.getJQuery();
 		JQueryObject jo = jq.$("#" + div);
-		jo.append(obj);
+		jo.append(obj);	
 		int w = jq.$(obj).width();
 		int h = jq.$(obj).height();
 		jo.html("");
-		System.out.println("JSComponent " + div + " (" + w + "," + h+")");
 		return new Dimension(w, h);
 	}
 
@@ -81,7 +82,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	 */
 	public Dimension getPreferredSize(JComponent c) {
 		newID();
-		Dimension d = getDimension(getDomObject());
+		Dimension d = getHTMLSize(getDomObject());
 		System.out.println(id + " getPreferredSize " + d + " called on " + c);
   	return d;
   }

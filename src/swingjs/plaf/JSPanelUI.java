@@ -25,8 +25,8 @@
 
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
 import swingjs.api.DOMObject;
-import jsjavax.swing.JLabel;
 
 public class JSPanelUI extends JSComponentUI {
 
@@ -34,6 +34,12 @@ public class JSPanelUI extends JSComponentUI {
 	public DOMObject getDomObject() {
 		domObj = getDOMObject("canvas", id);
 		return domObj;
+	}
+
+	@Override
+  protected Dimension getHTMLSize(DOMObject obj) {
+		// SwingJS for now: just designated container width/height 
+		return new Dimension(c.getWidth(), c.getHeight());
 	}
 
 }

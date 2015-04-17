@@ -246,6 +246,7 @@ public class Container extends Component {
      * (such as Frame for example).
      */
     public Container() {
+      setAppContext();
     }
 
     void initializeFocusTraversalKeys() {
@@ -319,11 +320,11 @@ public class Container extends Component {
      */
     public Insets getInsets() {
     	// needs to be overridden in JFrame and JDialog
-//        ComponentPeer peer = this.peer;
-//        if (peer instanceof ContainerPeer) {
-//            ContainerPeer cpeer = (ContainerPeer)peer;
-//            return (Insets)cpeer.insets().clone();
-//        }
+        ComponentPeer peer = this.peer;
+        if (peer instanceof ContainerPeer) {
+            ContainerPeer cpeer = (ContainerPeer)peer;
+            return (Insets)cpeer.getInsets().clone();
+        }
         return new Insets(0, 0, 0, 0);
     }
 
@@ -776,10 +777,11 @@ public class Container extends Component {
 
         invalidateIfValid();
         if (peer != null) {
-            if (comp.peer == null) { // Remove notify was called or it didn't have peer - create new one
+            if (comp.peer == null) { 
+            	// Remove notify was called or it didn't have peer - create new one
                 comp.addNotify();
                 // New created peer creates component on top of the stacking order
-                Container newNativeContainer = getHeavyweightContainer();
+//                Container newNativeContainer = getHeavyweightContainer();
 //                if (((ContainerPeer)newNativeContainer.getPeer()).isRestackSupported()) {
 //                    ((ContainerPeer)newNativeContainer.getPeer()).restack();
 //                }
@@ -2580,38 +2582,38 @@ public class Container extends Component {
      */
     public void removeNotify() {
 //        synchronized (getTreeLock()) {
-//            // We shouldn't use iterator because of the Swing menu
-//            // implementation specifics:
-//            // the menu is being assigned as a child to JLayeredPane
-//            // instead of particular component so always affect
-//            // collection of component if menu is becoming shown or hidden.
-//            for (int i = component.size()-1 ; i >= 0 ; i--) {
-//                Component comp = component.get(i);
-//                if (comp != null) {
-//                    // Fix for 6607170.
-//                    // We want to suppress focus change on disposal
-//                    // of the focused component. But because of focus
-//                    // is asynchronous, we should suppress focus change
-//                    // on every component in case it receives native focus
-//                    // in the process of disposal.
-//                    comp.setAutoFocusTransferOnDisposal(false);
-//                    comp.removeNotify();
-//                    comp.setAutoFocusTransferOnDisposal(true);
-//                 }
-//             }
-//            // If some of the children had focus before disposal then it still has.
-//            // Auto-transfer focus to the next (or previous) component if auto-transfer
-//            // is enabled.
-//            if (containsFocus() && KeyboardFocusManager.isAutoFocusTransferEnabledFor(this)) {
+            // We shouldn't use iterator because of the Swing menu
+            // implementation specifics:
+            // the menu is being assigned as a child to JLayeredPane
+            // instead of particular component so always affect
+            // collection of component if menu is becoming shown or hidden.
+            for (int i = component.size()-1 ; i >= 0 ; i--) {
+                Component comp = component.get(i);
+                if (comp != null) {
+                    // Fix for 6607170.
+                    // We want to suppress focus change on disposal
+                    // of the focused component. But because of focus
+                    // is asynchronous, we should suppress focus change
+                    // on every component in case it receives native focus
+                    // in the process of disposal.
+                    comp.setAutoFocusTransferOnDisposal(false);
+                    comp.removeNotify();
+                    comp.setAutoFocusTransferOnDisposal(true);
+                 }
+             }
+            // If some of the children had focus before disposal then it still has.
+            // Auto-transfer focus to the next (or previous) component if auto-transfer
+            // is enabled.
+//SwingJS            if (containsFocus() && KeyboardFocusManager.isAutoFocusTransferEnabledFor(this)) {
 //                if (!transferFocus(false)) {
 //                    transferFocusBackward(true);
 //                }
 //            }
-//            if ( dispatcher != null ) {
-//                dispatcher.dispose();
-//                dispatcher = null;
-//            }
-//            super.removeNotify();
+            if ( dispatcher != null ) {
+                dispatcher.dispose();
+                dispatcher = null;
+            }
+            super.removeNotify();
 //        }
     }
 
@@ -2782,7 +2784,7 @@ public class Container extends Component {
         }
         return str;
     }
-//
+    //
 //    /**
 //     * Prints a listing of this container to the specified output
 //     * stream. The listing starts at the specified indentation.

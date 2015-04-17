@@ -56,6 +56,7 @@ import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.peer.LightweightPeer;
+import jsjava.awt.peer.PanelPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
 import jssun.awt.NullComponentPeer;
@@ -112,6 +113,10 @@ import jssun.awt.NullComponentPeer;
  */
 public abstract class Toolkit {
 
+	// SwingJS note: Most of these are AWT classes that we do not need to worry about 
+	// because we are not allowing the heavyweights from AWT, but we do need 
+	// PanelPeer, because our RootPanel extends Panel.
+	
 //    /**
 //     * Creates this toolkit's implementation of the <code>Desktop</code>
 //     * using the specified peer interface.
@@ -279,16 +284,16 @@ public abstract class Toolkit {
 //     */
 //    protected abstract CanvasPeer       createCanvas(Canvas target);
 //
-//    /**
-//     * Creates this toolkit's implementation of <code>Panel</code> using
-//     * the specified peer interface.
-//     * @param     target the panel to be implemented.
-//     * @return    this toolkit's implementation of <code>Panel</code>.
-//     * @see       jsjava.awt.Panel
-//     * @see       jsjava.awt.peer.PanelPeer
-//     */
-//    protected abstract PanelPeer        createPanel(Panel target);
-//
+    /**
+     * Creates this toolkit's implementation of <code>Panel</code> using
+     * the specified peer interface.
+     * @param     target the panel to be implemented.
+     * @return    this toolkit's implementation of <code>Panel</code>.
+     * @see       jsjava.awt.Panel
+     * @see       jsjava.awt.peer.PanelPeer
+     */
+    protected abstract PanelPeer        createPanel(Panel target);
+
 //    /**
 //     * Creates this toolkit's implementation of <code>Window</code> using
 //     * the specified peer interface.

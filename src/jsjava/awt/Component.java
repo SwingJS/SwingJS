@@ -812,14 +812,18 @@ protected  transient ComponentPeer peer;
      * tree (for example, by a <code>Frame</code> object).
      */
     protected Component() {
-        appContext = AppContext.getAppContext();
+    	setAppContext();
     }
 
 //    void initializeFocusTraversalKeys() {
 //        focusTraversalKeys = new Set[3];
 //    }
 
-    /**
+    protected void setAppContext() {
+      appContext = AppContext.getAppContext();
+		}
+
+		/**
      * Constructs a name for this component.  Called by <code>getName</code>
      * when the name is <code>null</code>.
      */
@@ -1069,14 +1073,14 @@ protected  transient ComponentPeer peer;
      * be called on the toolkit thread.
      */
     final Toolkit getToolkitImpl() {
-//        ComponentPeer peer = this.peer;
-//        if ((peer != null) && ! (peer instanceof LightweightPeer)){
-//            return peer.getToolkit();
-//        }
-//        Container parent = this.parent;
-//        if (parent != null) {
-//            return parent.getToolkitImpl();
-//        }
+        ComponentPeer peer = this.peer;
+        if ((peer != null) && ! (peer instanceof LightweightPeer)){
+            return peer.getToolkit();
+        }
+        Container parent = this.parent;
+        if (parent != null) {
+            return parent.getToolkitImpl();
+        }
         return Toolkit.getDefaultToolkit();
     }
 
@@ -5809,6 +5813,7 @@ protected  transient ComponentPeer peer;
                     // Update both the Component's peer variable and the local
                     // variable we use for thread safety.
                     this.peer = peer = getToolkit().createComponent(this); 
+                  	System.out.println("C creating peeer for " +  this + " " + peer);
                 }
 
                 // This is a lightweight component which means it won't be

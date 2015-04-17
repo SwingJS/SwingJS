@@ -51,10 +51,15 @@ public class Panel extends Container {
      * <code>FlowLayout</code> class.
      */
     public Panel() {
-        this(new FlowLayout());
+    	setPanel();
     }
 
-    /**
+    protected void setPanel() {
+    	setAppContext();
+    	setLayout(new FlowLayout());
+		}
+
+		/**
      * Creates a new panel with the specified layout manager.
      * @param layout the layout manager for this panel.
      * @since JDK1.1
@@ -80,9 +85,9 @@ public class Panel extends Container {
 
     public void addNotify() {
 //        synchronized (getTreeLock()) {
-//            if (peer == null)
-//                peer = getToolkit().createPanel(this);
-//            super.addNotify();
+            if (peer == null)
+                peer = getToolkit().createPanel(this);
+            super.addNotify();
 //        }
     }
 

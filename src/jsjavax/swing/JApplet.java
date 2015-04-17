@@ -127,35 +127,40 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see JComponent#getDefaultLocale
      */
     public JApplet() {
-        super();
-//        // Check the timerQ and restart if necessary.
-//        TimerQueue q = TimerQueue.sharedInstance();
-//        if(q != null) {
-//            q.startIfNeeded();
-//        }
-
-        /* Workaround for bug 4155072.  The shared double buffer image
-         * may hang on to a reference to this applet; unfortunately
-         * Image.getGraphics() will continue to call JApplet.getForeground()
-         * and getBackground() even after this applet has been destroyed.
-         * So we ensure that these properties are non-null here.
-         */
-        setForeground(Color.black);
-        setBackground(Color.white);
-
-        setLocale( JComponent.getDefaultLocale() );
-        setLayout(new BorderLayout());
-        setRootPane(createRootPane());
-        setRootPaneCheckingEnabled(true);
-
-        setFocusTraversalPolicyProvider(true);
-        // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
-
-        enableEvents(AWTEvent.KEY_EVENT_MASK);
+    	setJApplet();
     }
 
 
-    /** Called by the constructor methods to create the default rootPane. */
+    private void setJApplet() {
+    	setPanel();
+//    // Check the timerQ and restart if necessary.
+//    TimerQueue q = TimerQueue.sharedInstance();
+//    if(q != null) {
+//        q.startIfNeeded();
+//    }
+
+    /* Workaround for bug 4155072.  The shared double buffer image
+     * may hang on to a reference to this applet; unfortunately
+     * Image.getGraphics() will continue to call JApplet.getForeground()
+     * and getBackground() even after this applet has been destroyed.
+     * So we ensure that these properties are non-null here.
+     */
+    setForeground(Color.black);
+    setBackground(Color.white);
+
+    setLocale( JComponent.getDefaultLocale() );
+    setLayout(new BorderLayout());
+    setRootPane(createRootPane());
+    setRootPaneCheckingEnabled(true);
+
+    setFocusTraversalPolicyProvider(true);
+    // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
+
+    enableEvents(AWTEvent.KEY_EVENT_MASK);
+		}
+
+
+		/** Called by the constructor methods to create the default rootPane. */
     protected JRootPane createRootPane() {
         JRootPane rp = new JRootPane();
         // NOTE: this uses setOpaque vs LookAndFeel.installProperty as there

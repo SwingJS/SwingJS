@@ -12,7 +12,6 @@ if (typeof(SwingJS) == "undefined") {
 
 (function (SwingJS, $) {
 
-  SwingJS._JSToolkit == null
 	SwingJS.getApplet = function(id, Info, checkOnly) {
 		return SwingJS._Applet._get(id, Info, checkOnly);
 	}

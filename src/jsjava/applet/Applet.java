@@ -61,6 +61,8 @@ public class Applet extends Panel {
      * @since 1.4
      */
     public Applet()  {
+    	setPanel();
+
 //        if (GraphicsEnvironment.isHeadless()) {
 //            throw new HeadlessException();
 //        }

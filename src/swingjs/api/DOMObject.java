@@ -8,8 +8,9 @@ public abstract class DOMObject {
 		/**
 		 * 
 		 * @j2sNative
-		 * 
-		 *            return document.createElement(key); d.id = id;
+		 * 					var d = document.createElement(key); 
+		 *          d.id = id;
+		 *            return d;
 		 */
 		{
 		}

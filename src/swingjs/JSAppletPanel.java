@@ -138,6 +138,10 @@ public class JSAppletPanel extends AppletPanel implements AppletContext, JSInter
 		System.out.println("JSAppletPane  init");
 		appletInit();
 		this.applet.invalidate();
+		if (this.applet instanceof JApplet)
+			((JApplet) this.applet).getRootPane().addNotify(); // force peer creation now
+		else
+			System.out.println(this.applet + "is not a JApplet!?");
 		System.out.println("JSAppletPanel start");
 		appletStart();
 		System.out.println("JSAppletPanel done");
