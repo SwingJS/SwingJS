@@ -10,6 +10,7 @@ AWTEvent dispatch thread working properly
 revalidation working
 peer preferredSize working for radio buttons (but not for panels).
  
+JSToolkit JavaScript methods alert, log, prompt, and confirm added
 
 
 4/15/2015
