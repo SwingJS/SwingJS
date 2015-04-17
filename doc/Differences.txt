@@ -10,7 +10,8 @@ using setTimeout calls with anonymous function callbacks to return to the loop
 
 AWTEvent dispatch thread working properly
 revalidation working
-peer preferredSize working for radio buttons (but not for panels).
+peer preferredSize (w,h) working for radio buttons but not for panels; no positioning (x,y) yet
+
  
 JSToolkit JavaScript methods alert, log, prompt, and confirm added
 
