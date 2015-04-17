@@ -2,6 +2,8 @@ PROGRESS
 ========
 4/16/2015
 
+SimpleDateFormat was being excluded in JSmolJavaExt.js
+
 swingjs.JSThread extends jsjava.lang.Thread and shows how to add a thread that 
 can be run or started and can continue indefinitely or upon "notification"
 using setTimeout calls with anonymous function callbacks to return to the loop
