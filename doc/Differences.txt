@@ -4,6 +4,25 @@ PROGRESS
 
 JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
 
+/**
+ * JSAppletPanel 
+ * 
+ * SwingJS class to start an applet. Note that this must be a JApplet,
+ * not just java.awt.Applet. The implementation (for now) does not allow
+ * "mixed" contents -- That is, no non-Swing Applet components are allowed.
+ * 
+ * The basic start up in JavaScript involves:
+ * 
+ * Clazz.loadClass("swingjs.JSAppletPanel"); 
+ * var _appletPanel = new JSAppletPanel(viewerOptions);
+ * _appletPanel.start();
+ * 
+ * where viewerOptions holds critical information needed to create this applet
+ * 
+ * 
+ * @author Bob Hanson
+ * 
+ */
 
 4/16/2015
 

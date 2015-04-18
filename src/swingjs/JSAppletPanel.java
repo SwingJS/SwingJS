@@ -23,12 +23,17 @@ import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
 
 /**
- * SwingJS class to start an applet.
+ * JSAppletPanel 
  * 
- * For now we use the following, but this will be different once we compress
+ * SwingJS class to start an applet. Note that this must be a JApplet,
+ * not just java.awt.Applet. The implementation (for now) does not allow
+ * "mixed" contents -- That is, no non-Swing Applet components are allowed.
  * 
- * Clazz.loadClass("swingjs.JSAppletPanel"); this._appletPanel = new
- * JSAppletPanel(viewerOptions);
+ * The basic start up in JavaScript involves:
+ * 
+ * Clazz.loadClass("swingjs.JSAppletPanel"); 
+ * var _appletPanel = new JSAppletPanel(viewerOptions);
+ * _appletPanel.start();
  * 
  * where viewerOptions holds critical information needed to create this applet
  * 
