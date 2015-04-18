@@ -198,7 +198,7 @@ class EventDispatchThread extends JSThread {
 						pumpOneEventForFilters(myid);
 					}
 				};
-				dispatchAndReturn(r);
+				dispatchAndReturn(r, LOOP);
 				if (isJS)
 					return;
 				break;

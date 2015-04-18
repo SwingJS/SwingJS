@@ -32,7 +32,7 @@ import jsjava.lang.ThreadGroup;
  * A class that takes care of simple threading.
  * 
  * @author RM
- *
+ * 
  */
 public abstract class JSThread extends Thread {
 
@@ -52,28 +52,34 @@ public abstract class JSThread extends Thread {
 	public void run() {
 		run1(INIT);
 	}
-	
-	protected abstract void run1(int state);
-	@Override
-  public synchronized void start() {
-    if (!isJS) {
-      super.start();
-      return;
-    }
-		JSToolkit.setTimeout(this, msDelay, 0);
-  }
-  
-  public void setDelayMillis(int ms) {
-  	msDelay = ms;
-  }
 
-//	/**
-//	 * a generic method that loops until done,
-//	 * or in JavaScript, will reenter and continue
-//	 * at the appropriate spot
-//	 * 
-//	 * @param mode
-//	 */
+	@Override
+	public synchronized void start() {
+		if (!isJS) {
+			super.start();
+			return;
+		}
+		JSToolkit.setTimeout(this, msDelay, 0);
+	}
+
+	/**
+	 * set the delay time between run1 calls
+	 * 
+	 * @param ms
+	 */
+	public void setDelayMillis(int ms) {
+		msDelay = ms;
+	}
+
+	/**
+	 * a generic method that loops until done, or in JavaScript, will reenter and
+	 * continue at the appropriate spot. Example given here
+	 * 
+	 * @param mode
+	 */
+	protected abstract void run1(int state);
+
+	
 //	protected void run1(int mode) {
 //		try {
 //			while (true)
@@ -83,11 +89,11 @@ public abstract class JSThread extends Thread {
 //					mode = LOOP;
 //					break;
 //				case LOOP:
-//					if (!doDispatch) {
+//					if (!doDispatch || isInterrupted()) {
 //						mode = DONE;
 //					} else {
-//						Runnable r = new Runnable(){ 
-//							public void run(){
+//						Runnable r = new Runnable() {
+//							public void run() {
 //								// put the loop code here
 //							}
 //						};
@@ -96,10 +102,10 @@ public abstract class JSThread extends Thread {
 //							return;
 //					}
 //					break;
-//			  // add more cases as needed
+//				// add more cases as needed
 //				case DONE:
 //					// finish up here
-//					if (!doDispatch)
+//					if (isInterrupted())
 //						return;
 //					// or here
 //					break;
@@ -110,7 +116,7 @@ public abstract class JSThread extends Thread {
 //	}
 
 	@SuppressWarnings("unused")
-	protected void dispatchAndReturn(Runnable r) {
+	protected void dispatchAndReturn(Runnable r, int mode) {
 		if (!isJS) {
 			r.run();
 			try {
@@ -121,17 +127,17 @@ public abstract class JSThread extends Thread {
 			return;
 		}
 		Object f = null;
-		int mode = LOOP;
 		Object me = this;
 		/**
 		 * @j2sNative
 		 * 
-		 * f = function() { r && (r.run ? r.run() : r() );me.run1(mode) };
+		 *            f = function() { r && (r.run ? r.run() : r() );me.run1(mode)
+		 *            };
 		 * 
 		 */
-		{}
+		{
+		}
 		JSToolkit.setTimeout(f, msDelay, 0);
 	}
-
 
 }

@@ -13,8 +13,8 @@ public class JSAppletThread extends JSThread {
 
 	@Override
 	public void run1(int mode) {
-		if (ap.run1(mode)) {
-			dispatchAndReturn(null);
-		}
+		mode = ap.run1(mode);
+		if (mode != DONE)
+			dispatchAndReturn(null, mode);
 	}
 }

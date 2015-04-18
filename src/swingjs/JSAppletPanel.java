@@ -65,8 +65,8 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	private JSThread myThread;
 	private JApplet applet;
 
-	///// AppletPanel fields //////
-	
+	// /// AppletPanel fields //////
+
 	/**
 	 * The initial applet size.
 	 */
@@ -110,11 +110,12 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	private AppletListener listeners;
 
 	/**
-	 * SwingJS initialization is through a Hashtable provided by the page JavaScript
+	 * SwingJS initialization is through a Hashtable provided by the page
+	 * JavaScript
 	 * 
-	 * After the applet is instantiated is the opportunity to add a listener
-	 * using setAppletListener(x), where x.appletStateChanged(AppletEvent evt) exists
-	 *
+	 * After the applet is instantiated is the opportunity to add a listener using
+	 * setAppletListener(x), where x.appletStateChanged(AppletEvent evt) exists
+	 * 
 	 * next command on page should be appletPanel.start();
 	 * 
 	 * @param params
@@ -461,39 +462,48 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		 * @j2sNative
 		 * 
 		 *            this.showAppletStatus("error " + (t.getMessage ?
-		 *            t.getMessage() : t)); t.printStackTrace && t.printStackTrace();
+		 *            t.getMessage() : t)); t.printStackTrace &&
+		 *            t.printStackTrace();
 		 */
 		{
 		}
 		repaint();
 	}
 
-	public boolean run1(int mode) {
+	/**
+	 * 
+	 * @param mode
+	 * @return LOOP or DONE
+	 */
+	public int run1(int mode) {
+		boolean ok = false;
 		switch (mode) {
 		case JSThread.INIT:
 			currentAppletSize.width = defaultAppletSize.width = getWidth();
 			currentAppletSize.height = defaultAppletSize.height = getHeight();
 			setLayout(new BorderLayout());
 			nextStatus = APPLET_LOAD;
-			return true;
+			ok = true;
+			break;
 		case JSThread.LOOP:
 			switch (nextStatus) {
 			case APPLET_LOAD:
 				if (status != APPLET_UNINITIALIZED) {
 					showAppletStatus("notdisposed");
 					status = APPLET_ERROR;
-					return false;
+					break;
 				}
 				System.out.println("JSAppletPanel runloader");
 				runLoader(); // applet created here
 				nextStatus = APPLET_INIT;
-				return true;
+				ok = true;
+				break;
 			case APPLET_INIT:
 				// AppletViewer "Restart" will jump from destroy method to
 				// init, that is why we need to check status w/ APPLET_DESTROY
 				if (status != APPLET_LOAD && status != APPLET_DESTROY) {
 					showAppletStatus("notloaded");
-					return false;
+					break;
 				}
 				System.out.println("JSAppletPanel init");
 				applet.resize(defaultAppletSize);
@@ -508,12 +518,13 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				status = APPLET_INIT;
 				showAppletStatus("initialized");
 				nextStatus = APPLET_START;
-				return true;
+				ok = true;
+				break;
 			case APPLET_START:
 				if (status != APPLET_INIT && status != APPLET_STOP) {
 					showAppletStatus("notstarted");
 					status = APPLET_ERROR;
-					return false;
+					break;
 				}
 				applet.invalidate();
 				applet.getRootPane().addNotify();
@@ -526,7 +537,8 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				status = APPLET_START;
 				showAppletStatus("started");
 				nextStatus = APPLET_READY;
-				return true;
+				ok = true;
+				break;
 			case APPLET_READY:
 				System.out.println("JSAppletPanel ready");
 				/**
@@ -540,7 +552,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				{
 				}
 				// we are done here
-				return false;
+				break;
 			case APPLET_STOP:
 				if (status == APPLET_START) {
 					status = APPLET_STOP;
@@ -551,7 +563,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					showAppletStatus("notstopped");
 					status = APPLET_ERROR;
 				}
-				return false;
+				break;
 			case APPLET_DESTROY:
 				if (status == APPLET_STOP || status == APPLET_INIT) {
 					status = APPLET_DESTROY;
@@ -561,7 +573,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					showAppletStatus("notdestroyed");
 					status = APPLET_ERROR;
 				}
-				return false;
+				break;
 			case APPLET_DISPOSE:
 				if (status == APPLET_DESTROY || status == APPLET_LOAD) {
 					showAppletStatus("notdisposed");
@@ -572,17 +584,19 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					applet = null;
 					showAppletStatus("disposed");
 				}
-				return false;
+				break;
 			case APPLET_QUIT:
-				return false;
+				break;
 			default:
 				System.out.println("unrecognized JSAppletPanel status: " + nextStatus);
-				return false;
+				break;
 			}
+			break;
 		default:
 			System.out.println("unrecognized JSAppletThread mode: " + mode);
-			return false;
+			break;
 		}
+		return (ok ? JSThread.LOOP : JSThread.DONE);
 	}
 
 	private void runLoader() {

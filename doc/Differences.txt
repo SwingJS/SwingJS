@@ -1,5 +1,10 @@
 PROGRESS
 ========
+4/18/2015
+
+JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
+
+
 4/16/2015
 
 SimpleDateFormat was being excluded in JSmolJavaExt.js
@@ -93,6 +98,13 @@ Thread.currentThread() working. For example, this works:
     var s = Jmol._getFileData(path);
     return (s.startsWith("[Exception") ? null : s);
   }
+  
+  
+ThreadGroup points to objects unique to an applet. 
+This will allow easy access to applet-specific quantities
+
+
+  
   
 3/19/2015
 
@@ -288,7 +300,6 @@ MAJOR ISSUES--for Bob and Udo within SwingJS
 fonts
 OS-dependent classes
 AWT component peers
-no threads
 
 
 MAJOR ISSUES--to be resolved by implementers
@@ -296,7 +307,7 @@ MAJOR ISSUES--to be resolved by implementers
 
 fonts
 specific AWT components not implemented
-no threads
+threads
 image loading
 no BigInteger; no BigDecimal
 no format internationalization
@@ -539,28 +550,6 @@ present but unimplemented; methods returning key bindings or other arrays return
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
 
-no threads
-----------
-
-Thread locking and synchronization are not relevant to JavaSCript.
-However, anything requiring "notify.." or "waitFor.." could be a serious issue.
- 
-All threading must be "faked" in JavaScript. Specifically not available is:
-
-  Thread.sleep()
-  
-  which is used only sparingly: 
-  
-    javax.swing.AbstractButton#doClick(pressTime)
-    
-  and in sun.awt.SunToolkit#waitForIdle() 
-  
-  
-  
-ThreadGroup should point to objects unique to an applet. 
-This will allow easy access to applet-specific quantitities
-
-
 fonts
 -----
 
@@ -616,16 +605,67 @@ The only AWT components implemented are Dialog, Frame, Panel, and Window
 They are subclassed as JDialog, JFrame, JPanel/JApplet, and JWindow, respectively
 
 
-no threads
-----------
+threads
+-------
 
-Thread locking and synchronization are not relevant to JavaSCript.
-However, anything requiring "notify.." or "waitFor.." could be a serious issue.
+Thread locking and synchronization are not relevant to JavaScript.
+Thus, anything requiring "notify.." or "waitFor.." could be a serious issue.
  
 All threading must be "faked" in JavaScript. Specifically not available is:
 
   Thread.sleep()
   
+javax.swing.AbstractButton#doClick(pressTime) will not work, as it requires Thread.sleep();
+    
+However, java.lang.Thread itself is implemented and used extensively. 
+
+Methods thread.start() and thread.run() both work fine. 
+
+In addition, SwingJS provides swingjs.JSThread, which can be subclassed
+if desired. This class allows simple 
+
+  while(!interrupted()){
+  	wait()
+  	...
+  }  
+
+action through an asynchronous function run1(mode). For example:
+
+	protected void run1(int mode) {
+		try {
+			while (true)
+				switch (mode) {
+				case INIT:
+					// once-through stuff here
+					mode = LOOP;
+					break;
+				case LOOP:
+					if (!doDispatch || isInterrupted()) {
+						mode = DONE;
+					} else {
+						Runnable r = new Runnable() {
+							public void run() {
+								// put the loop code here
+							}
+						};
+						dispatchAndReturn(r);
+						if (isJS)
+							return;
+					}
+					break;
+				// add more cases as needed
+				case DONE:
+					// finish up here
+					if (isInterrupted())
+						return;
+					// or here
+					break;
+				}
+		} finally {
+			// stuff here to be executed after each loop in JS or at the end in Java
+		}
+	}
+
 
 image loading
 -------------
