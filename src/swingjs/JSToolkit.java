@@ -492,11 +492,18 @@ public class JSToolkit extends SunToolkit {
 		 */
 		{
 		}
-		setTimeout(f);
+		setTimeout(f, 0, 0);
 	}
 
+	/**
+	 * dispatch an event "on the event thread"
+	 * @param event
+	 * @param src
+	 * @param andWait
+	 */
 	public static void dispatchEvent(AWTEvent event, Object src, boolean andWait) {
 		Object f = null;
+		int id = ++dispatchID;
 		/**
 		 * @j2sNative
 		 * 
@@ -510,29 +517,38 @@ public class JSToolkit extends SunToolkit {
 		{
 		}
 		if (andWait)
-			runNow(f);
+			invokeAndWait(f, id);
 		else
-			setTimeout(f);
+			setTimeout(f, 0, id);
 	}
 
 	/**
 	 * encapsulate timeout with an anonymous function that re-instates the
 	 * "current thread" prior to execution. This is in case of multiple applets.
 	 * 
-	 * @param f
+	 * @param f a function or Runnable
+	 * @param msDelay a time to wait for, in milliseconds
+	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	static public void setTimeout(Object f) {
-		@SuppressWarnings("unused")
-		int id = ++dispatchID;
-
+	public static void setTimeout(Object f, int msDelay, int id) {
+			
 		/**
 		 * @j2sNative
 		 * 
 		 *            var thread = java.lang.Thread.thisThread;
+		 *            var thread0 = thread;
+		 *            var id0 = SwingJS.eventID || 0;
 		 *            setTimeout(function(_JSToolkit_setTimeout) {
-		 *            System.out.println("setTimeout " + id); SwingJS.eventID = id;
-		 *            java.lang.Thread.thisThread = thread; f(); delete
-		 *            SwingJS.eventID; });
+		 *            System.out.println("setTimeout " + id); 
+		 *            SwingJS.eventID = id;
+		 *            java.lang.Thread.thisThread = thread; 
+		 *            if (f.run)
+		 *             f.run();
+		 *            else
+		 *             f();
+		 *            SwingJS.eventID = id0; 
+		 *            java.lang.Thread.thisThread = thread0; 
+		 *            }, msDelay);
 		 * 
 		 * 
 		 * 
@@ -545,20 +561,27 @@ public class JSToolkit extends SunToolkit {
 	 * encapsulate timeout with an anonymous function that re-instates the
 	 * "current thread" prior to execution. This is in case of multiple applets.
 	 * 
-	 * @param f
+	 * 
+	 * @param f a function or Runnable
+	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	private static void runNow(Object f) {
-		@SuppressWarnings("unused")
-		int id = ++dispatchID;
-
+	private static void invokeAndWait(Object f, int id) {
 		/**
 		 * @j2sNative
 		 * 
 		 *            var thread = java.lang.Thread.thisThread;
+		 *            var thread0 = thread;
 		 *            (function(_JSToolkit_setTimeout) {
+		 *            var id0 = SwingJS.eventID || 0;
 		 *            System.out.println("runNow " + id); SwingJS.eventID = id;
-		 *            java.lang.Thread.thisThread = thread; f(); delete
-		 *            SwingJS.eventID; })();
+		 *            java.lang.Thread.thisThread = thread; 
+		 *            if (f.run)
+		 *             f.run();
+		 *            else
+		 *             f();
+		 *            SwingJS.eventID = id0;
+		 *            java.lang.Thread.thisThread = thread0; 
+		 *            })();
 		 * 
 		 * 
 		 * 

@@ -8,6 +8,7 @@ import java.awt.Container;
 import java.awt.Event;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -743,6 +744,9 @@ class TSd3Controls extends JPanel implements ItemListener {
   public JComponent bg0;
 
 	public TSd3Controls(TSd3Canvas canvas) {
+		setLayout(new FlowLayout()); 
+		// default for JPanel, but 
+		// being explicit allows debugging.
 		setName("T3d3Controls");
 		this.canvas = canvas;
 		range = 0;

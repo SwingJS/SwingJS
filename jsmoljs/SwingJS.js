@@ -229,6 +229,7 @@ if (typeof(SwingJS) == "undefined") {
 		this._viewerOptions = viewerOptions;
     // for now assigning this._applet here instead of in readyCallback
 		this._appletPanel = new swingjs.JSAppletPanel(viewerOptions);
+    this._appletPanel.start();
 	}
 	
 	proto._addCoreFiles = function() {
