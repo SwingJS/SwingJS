@@ -49,21 +49,19 @@ public abstract class JSComponentUI extends ComponentUI {
 		DOMObject d = DOMObject.createElement(key, id);
 		for (int i = 0; i < attr.length;)
 			DOMObject.setAttr(d, attr[i++], attr[i++]);
-		debugDump(d);
 		return d;
+	}
+
+	protected DOMObject getSpan(String id, Object... elements) {
+		DOMObject span = getDOMObject("span", id + "s");
+		for (int i = 0; i < elements.length; i++)
+			span.appendChild(elements[i]);
+		debugDump(span);
+		return span;
 	}
 
 	private void debugDump(DOMObject d) {
 		System.out.println(DOMObject.getOuterHTML(d));
-	}
-
-	protected DOMObject getDiv(String id, Object... elements) {
-		DOMObject span = getDOMObject("span", id + "s");
-		for (int i = 0; i < elements.length; i++)
-			span.appendChild(elements[i]);
-//		DOMObject div = getDOMObject("div", id + "d");
-//		div.appendChild(span);
-		return span;
 	}
 
 	protected Dimension getHTMLSize(DOMObject obj) {

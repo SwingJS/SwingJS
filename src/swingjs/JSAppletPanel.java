@@ -61,8 +61,6 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	private HTML5Canvas canvas;
 	private JSGraphics2D jsgraphics;
 	private String htmlName;
-	private JSThreadGroup threadGroup;
-	private JSThread myThread;
 	private JApplet applet;
 
 	// /// AppletPanel fields //////
