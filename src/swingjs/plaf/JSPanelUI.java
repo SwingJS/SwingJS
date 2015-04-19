@@ -26,6 +26,7 @@
 package swingjs.plaf;
 
 import jsjava.awt.Dimension;
+import jsjavax.swing.JComponent;
 import swingjs.api.DOMObject;
 
 public class JSPanelUI extends JSComponentUI {
@@ -40,6 +41,11 @@ public class JSPanelUI extends JSComponentUI {
   protected Dimension getHTMLSize(DOMObject obj) {
 		// SwingJS for now: just designated container width/height 
 		return new Dimension(c.getWidth(), c.getHeight());
+	}
+	
+	@Override
+	public Dimension getPreferredSize(JComponent c) {
+		return null;
 	}
 
 }
