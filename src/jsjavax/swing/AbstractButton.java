@@ -260,7 +260,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             if (getAction() != null) {
                 setTextFromAction(getAction(), false);
             }
-            firePropertyChange("hideActionText", !hideActionText,
+            firePropertyChangeBool("hideActionText", !hideActionText,
                                hideActionText);
         }
     }
@@ -302,7 +302,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setText(String text) {
         String oldValue = this.text;
         this.text = text;
-        firePropertyChange(TEXT_CHANGED_PROPERTY, oldValue, text);
+        firePropertyChangeObject(TEXT_CHANGED_PROPERTY, oldValue, text);
         updateDisplayedMnemonicIndex(text, getMnemonic());
 
 //        if (accessibleContext != null) {
@@ -409,7 +409,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
 
         Insets old = margin;
         margin = m;
-        firePropertyChange(MARGIN_CHANGED_PROPERTY, old, m);
+        firePropertyChangeObject(MARGIN_CHANGED_PROPERTY, old, m);
         if (old == null || !old.equals(m)) {
             revalidate();
             repaint();
@@ -463,7 +463,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             disabledIcon = null;
         }
 
-        firePropertyChange(ICON_CHANGED_PROPERTY, oldValue, defaultIcon);
+        firePropertyChangeObject(ICON_CHANGED_PROPERTY, oldValue, defaultIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -500,7 +500,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setPressedIcon(Icon pressedIcon) {
         Icon oldValue = this.pressedIcon;
         this.pressedIcon = pressedIcon;
-        firePropertyChange(PRESSED_ICON_CHANGED_PROPERTY, oldValue, pressedIcon);
+        firePropertyChangeObject(PRESSED_ICON_CHANGED_PROPERTY, oldValue, pressedIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -546,7 +546,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             disabledSelectedIcon = null;
         }
 
-        firePropertyChange(SELECTED_ICON_CHANGED_PROPERTY, oldValue, selectedIcon);
+        firePropertyChangeObject(SELECTED_ICON_CHANGED_PROPERTY, oldValue, selectedIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -580,7 +580,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setRolloverIcon(Icon rolloverIcon) {
         Icon oldValue = this.rolloverIcon;
         this.rolloverIcon = rolloverIcon;
-        firePropertyChange(ROLLOVER_ICON_CHANGED_PROPERTY, oldValue, rolloverIcon);
+        firePropertyChangeObject(ROLLOVER_ICON_CHANGED_PROPERTY, oldValue, rolloverIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -617,7 +617,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setRolloverSelectedIcon(Icon rolloverSelectedIcon) {
         Icon oldValue = this.rolloverSelectedIcon;
         this.rolloverSelectedIcon = rolloverSelectedIcon;
-        firePropertyChange(ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY, oldValue, rolloverSelectedIcon);
+        firePropertyChangeObject(ROLLOVER_SELECTED_ICON_CHANGED_PROPERTY, oldValue, rolloverSelectedIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -650,7 +650,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         if (disabledIcon == null) {
             disabledIcon = UIManager.getLookAndFeel().getDisabledIcon(this, getIcon());
             if (disabledIcon != null) {
-                firePropertyChange(DISABLED_ICON_CHANGED_PROPERTY, null, disabledIcon);
+                firePropertyChangeObject(DISABLED_ICON_CHANGED_PROPERTY, null, disabledIcon);
             }
         }
         return disabledIcon;
@@ -668,7 +668,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setDisabledIcon(Icon disabledIcon) {
         Icon oldValue = this.disabledIcon;
         this.disabledIcon = disabledIcon;
-        firePropertyChange(DISABLED_ICON_CHANGED_PROPERTY, oldValue, disabledIcon);
+        firePropertyChangeObject(DISABLED_ICON_CHANGED_PROPERTY, oldValue, disabledIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -721,7 +721,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setDisabledSelectedIcon(Icon disabledSelectedIcon) {
         Icon oldValue = this.disabledSelectedIcon;
         this.disabledSelectedIcon = disabledSelectedIcon;
-        firePropertyChange(DISABLED_SELECTED_ICON_CHANGED_PROPERTY, oldValue, disabledSelectedIcon);
+        firePropertyChangeObject(DISABLED_SELECTED_ICON_CHANGED_PROPERTY, oldValue, disabledSelectedIcon);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -776,7 +776,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         if (alignment == verticalAlignment) return;
         int oldValue = verticalAlignment;
         verticalAlignment = checkVerticalKey(alignment, "verticalAlignment");
-        firePropertyChange(VERTICAL_ALIGNMENT_CHANGED_PROPERTY, oldValue, verticalAlignment);         repaint();
+        firePropertyChangeInt(VERTICAL_ALIGNMENT_CHANGED_PROPERTY, oldValue, verticalAlignment);         repaint();
     }
 
     /**
@@ -828,7 +828,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         int oldValue = horizontalAlignment;
         horizontalAlignment = checkHorizontalKey(alignment,
                                                  "horizontalAlignment");
-        firePropertyChange(HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY,
+        firePropertyChangeInt(HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY,
                            oldValue, horizontalAlignment);
         repaint();
     }
@@ -868,7 +868,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         if (textPosition == verticalTextPosition) return;
         int oldValue = verticalTextPosition;
         verticalTextPosition = checkVerticalKey(textPosition, "verticalTextPosition");
-        firePropertyChange(VERTICAL_TEXT_POSITION_CHANGED_PROPERTY, oldValue, verticalTextPosition);
+        firePropertyChangeInt(VERTICAL_TEXT_POSITION_CHANGED_PROPERTY, oldValue, verticalTextPosition);
         revalidate();
         repaint();
     }
@@ -916,7 +916,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         int oldValue = horizontalTextPosition;
         horizontalTextPosition = checkHorizontalKey(textPosition,
                                                     "horizontalTextPosition");
-        firePropertyChange(HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY,
+        firePropertyChangeInt(HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY,
                            oldValue,
                            horizontalTextPosition);
         revalidate();
@@ -956,7 +956,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         int oldValue = this.iconTextGap;
         this.iconTextGap = iconTextGap;
         iconTextGapSet = true;
-        firePropertyChange("iconTextGap", oldValue, iconTextGap);
+        firePropertyChangeInt("iconTextGap", oldValue, iconTextGap);
         if (iconTextGap != oldValue) {
             revalidate();
             repaint();
@@ -1112,7 +1112,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
                 actionPropertyChangeListener = createActionPropertyChangeListener(action);
                 action.addPropertyChangeListener(actionPropertyChangeListener);
             }
-            firePropertyChange("action", oldValue, action);
+            firePropertyChangeObject("action", oldValue, action);
         }
     }
 
@@ -1391,7 +1391,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         boolean oldValue = paintBorder;
         paintBorder = b;
         borderPaintedSet = true;
-        firePropertyChange(BORDER_PAINTED_CHANGED_PROPERTY, oldValue, paintBorder);
+        firePropertyChangeBool(BORDER_PAINTED_CHANGED_PROPERTY, oldValue, paintBorder);
         if (b != oldValue) {
             revalidate();
             repaint();
@@ -1440,7 +1440,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
     public void setFocusPainted(boolean b) {
         boolean oldValue = paintFocus;
         paintFocus = b;
-        firePropertyChange(FOCUS_PAINTED_CHANGED_PROPERTY, oldValue, paintFocus);
+        firePropertyChangeBool(FOCUS_PAINTED_CHANGED_PROPERTY, oldValue, paintFocus);
         if (b != oldValue && isFocusOwner()) {
             revalidate();
             repaint();
@@ -1485,7 +1485,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         boolean oldValue = contentAreaFilled;
         contentAreaFilled = b;
         contentAreaFilledSet = true;
-        firePropertyChange(CONTENT_AREA_FILLED_CHANGED_PROPERTY, oldValue, contentAreaFilled);
+        firePropertyChangeBool(CONTENT_AREA_FILLED_CHANGED_PROPERTY, oldValue, contentAreaFilled);
         if (b != oldValue) {
             repaint();
         }
@@ -1520,7 +1520,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         boolean oldValue = rolloverEnabled;
         rolloverEnabled = b;
         rolloverEnabledSet = true;
-        firePropertyChange(ROLLOVER_ENABLED_CHANGED_PROPERTY, oldValue, rolloverEnabled);
+        firePropertyChangeBool(ROLLOVER_ENABLED_CHANGED_PROPERTY, oldValue, rolloverEnabled);
         if (b != oldValue) {
             repaint();
         }
@@ -1628,7 +1628,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             }
         }
         mnemonicIndex = index;
-        firePropertyChange("displayedMnemonicIndex", oldValue, index);
+        firePropertyChangeInt("displayedMnemonicIndex", oldValue, index);
         if (index != oldValue) {
             revalidate();
             repaint();
@@ -1668,7 +1668,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         if (mnemonic != newMnemonic) {
             int oldValue = mnemonic;
             mnemonic = newMnemonic;
-            firePropertyChange(MNEMONIC_CHANGED_PROPERTY,
+            firePropertyChangeInt(MNEMONIC_CHANGED_PROPERTY,
                                oldValue, mnemonic);
             updateDisplayedMnemonicIndex(getText(), mnemonic);
             revalidate();
@@ -1768,7 +1768,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
 
         updateDisplayedMnemonicIndex(getText(), mnemonic);
 
-        firePropertyChange(MODEL_CHANGED_PROPERTY, oldModel, newModel);
+        firePropertyChangeObject(MODEL_CHANGED_PROPERTY, oldModel, newModel);
         if (newModel != oldModel) {
             revalidate();
             repaint();
@@ -1839,11 +1839,11 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @exception IllegalArgumentException if adding a window to a container
      * @since 1.5
      */
-    protected void addImpl(Component comp, Object constraints, int index) {
+    protected Component addImpl(Component comp, Object constraints, int index) {
         if (!setLayout) {
             setLayout(new OverlayLayout(this));
         }
-        super.addImpl(comp, constraints, index);
+        return addImplSAEM(comp, constraints, index);
     }
 
     /**

@@ -874,7 +874,7 @@ public class Dialog extends Window {
 //                peer.setTitle(title);
 //            }
         }
-        firePropertyChange("title", oldTitle, title);
+        firePropertyChangeObject("title", oldTitle, title);
     }
 
 //    /**

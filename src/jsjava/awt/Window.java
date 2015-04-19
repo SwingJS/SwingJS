@@ -25,7 +25,7 @@
 package jsjava.awt;
 
 //import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationTargetException;
+//import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventListener;
@@ -47,6 +47,7 @@ import jsjava.awt.event.WindowFocusListener;
 import jsjava.awt.event.WindowListener;
 import jsjava.awt.event.WindowStateListener;
 import jsjava.awt.image.BufferedImage;
+import jsjava.awt.peer.WindowPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JLayeredPane;
@@ -681,7 +682,7 @@ public class Window extends Container {
 //            peer.updateIconImages();
 //        }
         // Always send a property change event
-        firePropertyChange("iconImage", null, null);
+        firePropertyChangeObject("iconImage", null, null);
     }
 
     /**
@@ -766,26 +767,20 @@ public class Window extends Container {
      */
     public void pack() {
         Container parent = this.parent;
-        /**
-         * @j2sNative
-         *  //TODO
-         */
-        {}
-//        if (parent != null && parent.getPeer() == null) {
-//            parent.addNotify();
-//        }
-//        if (peer == null) {
-//            addNotify();
-//        }
-//        Dimension newSize = getPreferredSize();
-//        if (peer != null) {
-//            setClientSize(newSize.width, newSize.height);
-//        }
+        if (parent != null && parent.getPeer() == null) {
+            parent.addNotify();
+        }
+        if (peer == null) {
+            addNotify();
+        }
+        Dimension newSize = getPreferredSize();
+        if (peer != null) {
+            setClientSize(newSize.width, newSize.height);
+        }
 
         if(beforeFirstShow) {
             isPacked = true;
         }
-
         validate();
     }
 
@@ -1914,7 +1909,7 @@ public class Window extends Container {
             }
             return;
         }
-        super.processEvent(e);
+        processEventCont(e);
     }
 
     /**
@@ -2127,7 +2122,7 @@ public class Window extends Container {
 //                    }
 //                }
             }
-            firePropertyChange("alwaysOnTop", oldAlwaysOnTop, alwaysOnTop);
+            firePropertyChangeBool("alwaysOnTop", oldAlwaysOnTop, alwaysOnTop);
         }
     }
 
@@ -2446,7 +2441,7 @@ public class Window extends Container {
 //        if (peer != null) {
 //            peer.updateFocusableWindowState();
 //        }
-        firePropertyChange("focusableWindowState", oldFocusableWindowState,
+        firePropertyChangeBool("focusableWindowState", oldFocusableWindowState,
                            focusableWindowState);
         if (oldFocusableWindowState && !focusableWindowState && isFocused()) {
             for (Window owner = getOwner();
@@ -2983,7 +2978,6 @@ public class Window extends Container {
      * @see java.awt.GraphicsEnvironment#getCenterPoint
      * @since 1.4
      */
-    @SuppressWarnings("null")
     public void setLocationRelativeTo(Component c) {
         Container root=null;
 
@@ -3258,6 +3252,8 @@ public class Window extends Container {
      * @see #setLocationByPlatform
      * @see #isLocationByPlatform
      * @since 1.6
+      * @j2sIgnore
+     * 
      */
     public void setBounds(Rectangle r) {
         setBounds(r.x, r.y, r.width, r.height);
@@ -3409,21 +3405,21 @@ public class Window extends Container {
 //            }
             setLayersOpaque(this, opaque);
             this.opaque = opaque;
-//            WindowPeer peer = (WindowPeer)getPeer();
-//            if (peer != null) {
-//                peer.setOpaque(opaque);
-//            }
+            WindowPeer peer = (WindowPeer)getPeer();
+            if (peer != null) {
+                peer.setOpaque(opaque);
+            }
         }
     }
 
-    private void updateWindow(BufferedImage backBuffer) {
+//    private void updateWindow(BufferedImage backBuffer) {
 //        synchronized (getTreeLock()) {
 //            WindowPeer peer = (WindowPeer)getPeer();
 //            if (peer != null) {
 //                peer.updateWindow(backBuffer);
 //            }
 //        }
-    }
+//    }
 
     private static final Color TRANSPARENT_BACKGROUND_COLOR = new Color(0, 0, 0, 0);
 

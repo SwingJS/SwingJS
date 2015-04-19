@@ -61,6 +61,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 		controls.setEnabled(true);
 		controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
 		controls.revalidate();
+
 	}
 
 	public void stop() {
@@ -741,7 +742,7 @@ class TSd3Controls extends JPanel implements ItemListener {
 	JTextField e;
 	TSd3Canvas canvas;
 	int range;
-  public JComponent bg0;
+  public JComponent bg0, bg5;
 
 	public TSd3Controls(TSd3Canvas canvas) {
 		setLayout(new FlowLayout()); 
@@ -756,7 +757,7 @@ class TSd3Controls extends JPanel implements ItemListener {
 		addButton(bg, "10-20", false);
 		addButton(bg, "20-30", false);
 		addButton(bg, "30-40", false);
-		addButton(bg, "40-50", false);
+		bg5 = addButton(bg, "40-50", false);
 		setVisible(true);
 	}
 

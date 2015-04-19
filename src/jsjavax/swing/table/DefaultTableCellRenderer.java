@@ -334,19 +334,19 @@ public class DefaultTableCellRenderer extends JLabel
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        // Strings get interned...
-        if (propertyName=="text"
-                || propertyName == "labelFor"
-                || propertyName == "displayedMnemonic"
-                || ((propertyName == "font" || propertyName == "foreground")
-                    && oldValue != newValue
-                    //&& getClientProperty(jsjavax.swing.plaf.basic.BasicHTML.propertyKey) != null
-                    )
-                    ) {
-
-            super.firePropertyChange(propertyName, oldValue, newValue);
-        }
+    protected void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+//        // Strings get interned...
+//        if (propertyName=="text"
+//                || propertyName == "labelFor"
+//                || propertyName == "displayedMnemonic"
+//                || ((propertyName == "font" || propertyName == "foreground")
+//                    && oldValue != newValue
+//                    //&& getClientProperty(jsjavax.swing.plaf.basic.BasicHTML.propertyKey) != null
+//                    )
+//                    ) {
+//
+//            super.firePropertyChangeObject(propertyName, oldValue, newValue);
+//        }
     }
 
     /**
@@ -354,7 +354,7 @@ public class DefaultTableCellRenderer extends JLabel
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { }
+    public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) { }
 
 
     /**

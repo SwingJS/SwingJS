@@ -453,7 +453,7 @@ public class JTabbedPane extends JComponent
             model.addChangeListener(changeListener);
         }
 
-        firePropertyChange("model", oldModel, model);
+        firePropertyChangeObject("model", oldModel, model);
         repaint();
     }
 
@@ -498,7 +498,7 @@ public class JTabbedPane extends JComponent
         if (this.tabPlacement != tabPlacement) {
             int oldValue = this.tabPlacement;
             this.tabPlacement = tabPlacement;
-            firePropertyChange("tabPlacement", oldValue, tabPlacement);
+            firePropertyChangeInt("tabPlacement", oldValue, tabPlacement);
             revalidate();
             repaint();
         }
@@ -551,7 +551,7 @@ public class JTabbedPane extends JComponent
         if (this.tabLayoutPolicy != tabLayoutPolicy) {
             int oldValue = this.tabLayoutPolicy;
             this.tabLayoutPolicy = tabLayoutPolicy;
-            firePropertyChange("tabLayoutPolicy", oldValue, tabLayoutPolicy);
+            firePropertyChangeInt("tabLayoutPolicy", oldValue, tabLayoutPolicy);
             revalidate();
             repaint();
         }
@@ -724,10 +724,10 @@ public class JTabbedPane extends JComponent
 
 
         if (component != null) {
-            addImpl(component, null, -1);
+            addImplSAEM(component, null, -1);
             component.setVisible(false);
         } else {
-            firePropertyChange("indexForNullComponent", -1, index);
+            firePropertyChangeInt("indexForNullComponent", -1, index);
         }
 
         if (pages.size() == 1) {
@@ -907,7 +907,7 @@ public class JTabbedPane extends JComponent
      * @see #insertTab
      * @see #removeTabAt
      */
-    public void add(Component component, Object constraints, int index) {
+    public Component add(Component component, Object constraints, int index) {
         if (!(component instanceof UIResource)) {
 
             Icon icon = constraints instanceof Icon? (Icon)constraints : null;
@@ -916,8 +916,9 @@ public class JTabbedPane extends JComponent
             // the index appropriately to be handled by the vector
             insertTab(title, icon, component, null, index == -1? getTabCount() : index);
         } else {
-            super.add(component, constraints, index);
+            addImpl(component, constraints, index);
         }
+        return component;
     }
 
     /**
@@ -1328,7 +1329,7 @@ public class JTabbedPane extends JComponent
         page.title = title;
 
         if (oldTitle != title) {
-            firePropertyChange("indexForTitle", -1, index);
+            firePropertyChangeInt("indexForTitle", -1, index);
         }
         page.updateDisplayedMnemonicIndex();
 //        if ((oldTitle != title) && (accessibleContext != null)) {
@@ -1573,7 +1574,7 @@ public class JTabbedPane extends JComponent
 
             if (component != null) {
                 component.setVisible(selectedPage);
-                addImpl(component, null, -1);
+                addImplSAEM(component, null, -1);
 
 // SwingJS X: Key Focus
 //                if (shouldChangeFocus) {
@@ -1669,7 +1670,7 @@ public class JTabbedPane extends JComponent
         Page page = pages.get(tabIndex);
         page.setMnemonic(mnemonic);
 
-        firePropertyChange("mnemonicAt", null, null);
+        firePropertyChangeObject("mnemonicAt", null, null);
     }
 
 // end of Page setters
@@ -2103,7 +2104,7 @@ public class JTabbedPane extends JComponent
                                 "Invalid mnemonic index: " + mnemonicIndex);
                 }
                 this.mnemonicIndex = mnemonicIndex;
-                JTabbedPane.this.firePropertyChange("displayedMnemonicIndexAt",
+                JTabbedPane.this.firePropertyChangeObject("displayedMnemonicIndexAt",
                                                     null, null);
             }
         }
@@ -2381,7 +2382,7 @@ public class JTabbedPane extends JComponent
                 setTabComponentAt(tabComponentIndex, null);
             }
             pages.get(index).tabComponent = component;
-            firePropertyChange("indexForTabComponent", -1, index);
+            firePropertyChangeInt("indexForTabComponent", -1, index);
         }
     }
 

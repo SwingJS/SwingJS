@@ -261,7 +261,7 @@ public class JToolBar extends JComponent implements SwingConstants
      {
          Insets old = margin;
          margin = m;
-         firePropertyChange("margin", old, m);
+         firePropertyChangeObject("margin", old, m);
          revalidate();
          repaint();
      }
@@ -314,7 +314,7 @@ public class JToolBar extends JComponent implements SwingConstants
          {
              boolean old = paintBorder;
              paintBorder = b;
-             firePropertyChange("borderPainted", old, b);
+             firePropertyChangeBool("borderPainted", old, b);
              revalidate();
              repaint();
          }
@@ -374,7 +374,7 @@ public class JToolBar extends JComponent implements SwingConstants
             boolean old = floatable;
             floatable = b;
 
-            firePropertyChange("floatable", old, b);
+            firePropertyChangeBool("floatable", old, b);
             revalidate();
             repaint();
         }
@@ -420,7 +420,7 @@ public class JToolBar extends JComponent implements SwingConstants
             int old = orientation;
             orientation = o;
 
-            firePropertyChange("orientation", old, o);
+            firePropertyChangeInt("orientation", old, o);
             revalidate();
             repaint();
         }
@@ -559,7 +559,7 @@ public class JToolBar extends JComponent implements SwingConstants
      * @param index the index of the component
      *
      */
-    protected void addImpl(Component comp, Object constraints, int index) {
+    protected Component addImpl(Component comp, Object constraints, int index) {
         if (comp instanceof Separator) {
             if (getOrientation() == VERTICAL) {
                 ( (Separator)comp ).setOrientation(JSeparator.HORIZONTAL);
@@ -567,10 +567,11 @@ public class JToolBar extends JComponent implements SwingConstants
                 ( (Separator)comp ).setOrientation(JSeparator.VERTICAL);
             }
         }
-        super.addImpl(comp, constraints, index);
+        addImplSAEM(comp, constraints, index);
         if (comp instanceof JButton) {
             ((JButton)comp).setDefaultCapable(false);
         }
+        return comp;
     }
 
 
@@ -681,7 +682,7 @@ public class JToolBar extends JComponent implements SwingConstants
             if (separatorSize != null) {
                 return separatorSize.getSize();
             } else {
-                return super.getPreferredSize();
+                return getPrefSizeJComp();
             }
         }
     }

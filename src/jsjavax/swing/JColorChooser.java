@@ -400,7 +400,7 @@ public class JColorChooser extends JComponent {
         if (previewPanel != preview) {
             JComponent oldPreview = previewPanel;
             previewPanel = preview;
-            firePropertyChange(JColorChooser.PREVIEW_PANEL_PROPERTY, oldPreview, preview);
+            firePropertyChangeObject(JColorChooser.PREVIEW_PANEL_PROPERTY, oldPreview, preview);
         }
     }
 
@@ -483,7 +483,7 @@ public class JColorChooser extends JComponent {
     public void setChooserPanels( AbstractColorChooserPanel[] panels) {
         AbstractColorChooserPanel[] oldValue = chooserPanels;
         chooserPanels = panels;
-        firePropertyChange(CHOOSER_PANELS_PROPERTY, oldValue, panels);
+        firePropertyChangeObject(CHOOSER_PANELS_PROPERTY, oldValue, panels);
     }
 
     /**
@@ -518,7 +518,7 @@ public class JColorChooser extends JComponent {
     public void setSelectionModel(ColorSelectionModel newModel ) {
         ColorSelectionModel oldModel = selectionModel;
         selectionModel = newModel;
-        firePropertyChange(JColorChooser.SELECTION_MODEL_PROPERTY, oldModel, newModel);
+        firePropertyChangeObject(JColorChooser.SELECTION_MODEL_PROPERTY, oldModel, newModel);
     }
 
 

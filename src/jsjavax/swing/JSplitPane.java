@@ -425,7 +425,7 @@ public class JSplitPane extends JComponent
         dividerSizeSet = true;
         if (oldSize != newSize) {
             dividerSize = newSize;
-            firePropertyChange(DIVIDER_SIZE_PROPERTY, oldSize, newSize);
+            firePropertyChangeInt(DIVIDER_SIZE_PROPERTY, oldSize, newSize);
         }
     }
 
@@ -567,7 +567,7 @@ public class JSplitPane extends JComponent
 
         oneTouchExpandable = newValue;
         oneTouchExpandableSet = true;
-        firePropertyChange(ONE_TOUCH_EXPANDABLE_PROPERTY, oldValue, newValue);
+        firePropertyChangeBool(ONE_TOUCH_EXPANDABLE_PROPERTY, oldValue, newValue);
         repaint();
     }
 
@@ -598,7 +598,7 @@ public class JSplitPane extends JComponent
         int               oldLocation = lastDividerLocation;
 
         lastDividerLocation = newLastLocation;
-        firePropertyChange(LAST_DIVIDER_LOCATION_PROPERTY, oldLocation,
+        firePropertyChangeInt(LAST_DIVIDER_LOCATION_PROPERTY, oldLocation,
                            newLastLocation);
     }
 
@@ -643,7 +643,7 @@ public class JSplitPane extends JComponent
         int           oldOrientation = this.orientation;
 
         this.orientation = orientation;
-        firePropertyChange(ORIENTATION_PROPERTY, oldOrientation, orientation);
+        firePropertyChangeInt(ORIENTATION_PROPERTY, oldOrientation, orientation);
     }
 
 
@@ -680,7 +680,7 @@ public class JSplitPane extends JComponent
         boolean           oldCD = continuousLayout;
 
         continuousLayout = newContinuousLayout;
-        firePropertyChange(CONTINUOUS_LAYOUT_PROPERTY, oldCD,
+        firePropertyChangeBool(CONTINUOUS_LAYOUT_PROPERTY, oldCD,
                            newContinuousLayout);
     }
 
@@ -720,7 +720,7 @@ public class JSplitPane extends JComponent
         double         oldWeight = resizeWeight;
 
         resizeWeight = value;
-        firePropertyChange(RESIZE_WEIGHT_PROPERTY, oldWeight, value);
+        firePropertyChangeObject(RESIZE_WEIGHT_PROPERTY, oldWeight, value);
     }
 
     /**
@@ -809,7 +809,7 @@ public class JSplitPane extends JComponent
         }
 
         // Then listeners
-        firePropertyChange(DIVIDER_LOCATION_PROPERTY, oldValue, location);
+        firePropertyChangeInt(DIVIDER_LOCATION_PROPERTY, oldValue, location);
 
         // And update the last divider location.
         setLastDividerLocation(oldValue);
@@ -945,86 +945,88 @@ public class JSplitPane extends JComponent
     }
 
 
-    /**
-     * Adds the specified component to this split pane.
-     * If <code>constraints</code> identifies the left/top or
-     * right/bottom child component, and a component with that identifier
-     * was previously added, it will be removed and then <code>comp</code>
-     * will be added in its place. If <code>constraints</code> is not
-     * one of the known identifiers the layout manager may throw an
-     * <code>IllegalArgumentException</code>.
-     * <p>
-     * The possible constraints objects (Strings) are:
-     * <ul>
-     * <li>JSplitPane.TOP
-     * <li>JSplitPane.LEFT
-     * <li>JSplitPane.BOTTOM
-     * <li>JSplitPane.RIGHT
-     * </ul>
-     * If the <code>constraints</code> object is <code>null</code>,
-     * the component is added in the
-     * first available position (left/top if open, else right/bottom).
-     *
-     * @param comp        the component to add
-     * @param constraints an <code>Object</code> specifying the
-     *                    layout constraints
-     *                    (position) for this component
-     * @param index       an integer specifying the index in the container's
-     *                    list.
-     * @exception IllegalArgumentException  if the <code>constraints</code>
-     *          object does not match an existing component
-     * @see jsjava.awt.Container#addImpl(Component, Object, int)
-     */
-    protected void addImpl(Component comp, Object constraints, int index)
-    {
-        Component             toRemove;
+	/**
+	 * Adds the specified component to this split pane. If
+	 * <code>constraints</code> identifies the left/top or right/bottom child
+	 * component, and a component with that identifier was previously added, it
+	 * will be removed and then <code>comp</code> will be added in its place. If
+	 * <code>constraints</code> is not one of the known identifiers the layout
+	 * manager may throw an <code>IllegalArgumentException</code>.
+	 * <p>
+	 * The possible constraints objects (Strings) are:
+	 * <ul>
+	 * <li>JSplitPane.TOP
+	 * <li>JSplitPane.LEFT
+	 * <li>JSplitPane.BOTTOM
+	 * <li>JSplitPane.RIGHT
+	 * </ul>
+	 * If the <code>constraints</code> object is <code>null</code>, the component
+	 * is added in the first available position (left/top if open, else
+	 * right/bottom).
+	 * 
+	 * @param comp
+	 *          the component to add
+	 * @param constraints
+	 *          an <code>Object</code> specifying the layout constraints
+	 *          (position) for this component
+	 * @param index
+	 *          an integer specifying the index in the container's list.
+	 * @exception IllegalArgumentException
+	 *              if the <code>constraints</code> object does not match an
+	 *              existing component
+	 * @see jsjava.awt.Container#addImpl(Component, Object, int)
+	 */
+	protected Component addImpl(Component comp, Object constraints, int index) {
+		Component toRemove;
 
-        if (constraints != null && !(constraints instanceof String)) {
-            throw new IllegalArgumentException("cannot add to layout: " +
-                                               "constraint must be a string " +
-                                               "(or null)");
-        }
+		if (constraints != null && !(constraints instanceof String)) {
+			throw new IllegalArgumentException("cannot add to layout: "
+					+ "constraint must be a string " + "(or null)");
+		}
 
-        /* If the constraints are null and the left/right component is
-           invalid, add it at the left/right component. */
-        if (constraints == null) {
-            if (getLeftComponent() == null) {
-                constraints = JSplitPane.LEFT;
-            } else if (getRightComponent() == null) {
-                constraints = JSplitPane.RIGHT;
-            }
-        }
+		/*
+		 * If the constraints are null and the left/right component is invalid, add
+		 * it at the left/right component.
+		 */
+		if (constraints == null) {
+			if (getLeftComponent() == null) {
+				constraints = JSplitPane.LEFT;
+			} else if (getRightComponent() == null) {
+				constraints = JSplitPane.RIGHT;
+			}
+		}
 
-        /* Find the Component that already exists and remove it. */
-        if (constraints != null && (constraints.equals(JSplitPane.LEFT) ||
-                                   constraints.equals(JSplitPane.TOP))) {
-            toRemove = getLeftComponent();
-            if (toRemove != null) {
-                remove(toRemove);
-            }
-            leftComponent = comp;
-            index = -1;
-        } else if (constraints != null &&
-                   (constraints.equals(JSplitPane.RIGHT) ||
-                    constraints.equals(JSplitPane.BOTTOM))) {
-            toRemove = getRightComponent();
-            if (toRemove != null) {
-                remove(toRemove);
-            }
-            rightComponent = comp;
-            index = -1;
-        } else if (constraints != null &&
-                constraints.equals(JSplitPane.DIVIDER)) {
-            index = -1;
-        }
-        /* LayoutManager should raise for else condition here. */
+		/* Find the Component that already exists and remove it. */
+		if (constraints != null
+				&& (constraints.equals(JSplitPane.LEFT) || constraints
+						.equals(JSplitPane.TOP))) {
+			toRemove = getLeftComponent();
+			if (toRemove != null) {
+				remove(toRemove);
+			}
+			leftComponent = comp;
+			index = -1;
+		} else if (constraints != null
+				&& (constraints.equals(JSplitPane.RIGHT) || constraints
+						.equals(JSplitPane.BOTTOM))) {
+			toRemove = getRightComponent();
+			if (toRemove != null) {
+				remove(toRemove);
+			}
+			rightComponent = comp;
+			index = -1;
+		} else if (constraints != null && constraints.equals(JSplitPane.DIVIDER)) {
+			index = -1;
+		}
+		/* LayoutManager should raise for else condition here. */
 
-        super.addImpl(comp, constraints, index);
+		addImplSAEM(comp, constraints, index);
 
-        // Update the JSplitPane on the screen
-        revalidate();
-        repaint();
-    }
+		// Update the JSplitPane on the screen
+		revalidate();
+		repaint();
+		return comp;
+	}
 
 
     /**

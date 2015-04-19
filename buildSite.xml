@@ -270,7 +270,6 @@
             java/awt/event/ActionEvent.js
             java/awt/event/KeyEvent.js
             java/awt/event/MouseWheelEvent.js
-            javax/swing/JRootPane.js
             javax/swing/AbstractAction.js
             javax/swing/AbstractButton.js
             javax/swing/ArrayTable.js
@@ -446,6 +445,7 @@
     </antcall>
     
    	<!-- 
+            javax/swing/JRootPane.js
    	
             javax/swing/JApplet.js
 

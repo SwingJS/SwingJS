@@ -399,7 +399,7 @@ public class JProgressBar extends JComponent implements SwingConstants
             case HORIZONTAL:
                 int oldOrientation = orientation;
                 orientation = newOrientation;
-                firePropertyChange("orientation", oldOrientation, newOrientation);
+                firePropertyChangeInt("orientation", oldOrientation, newOrientation);
 //                if (accessibleContext != null) {
 //                    accessibleContext.firePropertyChange(
 //                            AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
@@ -454,7 +454,7 @@ public class JProgressBar extends JComponent implements SwingConstants
         //         or just leave that to the L&F?
         boolean oldValue = paintString;
         paintString = b;
-        firePropertyChange("stringPainted", oldValue, paintString);
+        firePropertyChangeBool("stringPainted", oldValue, paintString);
         if (paintString != oldValue) {
             revalidate();
             repaint();
@@ -505,7 +505,7 @@ public class JProgressBar extends JComponent implements SwingConstants
     public void setString(String s){
         String oldValue = progressString;
         progressString = s;
-        firePropertyChange("string", oldValue, progressString);
+        firePropertyChangeObject("string", oldValue, progressString);
         if (progressString == null || oldValue == null || !progressString.equals(oldValue)) {
             repaint();
         }
@@ -555,7 +555,7 @@ public class JProgressBar extends JComponent implements SwingConstants
     public void setBorderPainted(boolean b) {
         boolean oldValue = paintBorder;
         paintBorder = b;
-        firePropertyChange("borderPainted", oldValue, paintBorder);
+        firePropertyChangeBool("borderPainted", oldValue, paintBorder);
         if (paintBorder != oldValue) {
             repaint();
         }
@@ -925,7 +925,7 @@ public class JProgressBar extends JComponent implements SwingConstants
     public void setIndeterminate(boolean newValue) {
         boolean oldValue = indeterminate;
         indeterminate = newValue;
-        firePropertyChange("indeterminate", oldValue, indeterminate);
+        firePropertyChangeBool("indeterminate", oldValue, indeterminate);
     }
 
     /**

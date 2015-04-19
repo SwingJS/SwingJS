@@ -481,7 +481,7 @@ public abstract class JComponent extends Container
     public void setInheritsPopupMenu(boolean value) {
         boolean oldValue = getFlag(INHERITS_POPUP_MENU);
         setFlag(INHERITS_POPUP_MENU, value);
-        firePropertyChange("inheritsPopupMenu", oldValue, value);
+        firePropertyChangeBool("inheritsPopupMenu", oldValue, value);
     }
 
     /**
@@ -524,7 +524,7 @@ public abstract class JComponent extends Container
         }
         JPopupMenu oldPopup = this.popupMenu;
         this.popupMenu = popup;
-        firePropertyChange("componentPopupMenu", oldPopup, popup);
+        firePropertyChangeObject("componentPopupMenu", oldPopup, popup);
     }
 
     /**
@@ -1178,13 +1178,13 @@ public abstract class JComponent extends Container
      */
     public void print(Graphics g) {
         setFlag(IS_PRINTING, true);
-        firePropertyChange("paintingForPrint", false, true);
+        firePropertyChangeBool("paintingForPrint", false, true);
         try {
             paint(g);
         }
         finally {
             setFlag(IS_PRINTING, false);
-            firePropertyChange("paintingForPrint", true, false);
+            firePropertyChangeBool("paintingForPrint", true, false);
         }
     }
 
@@ -1571,7 +1571,7 @@ public abstract class JComponent extends Container
         boolean oldVerifyInputWhenFocusTarget =
             this.verifyInputWhenFocusTarget;
         this.verifyInputWhenFocusTarget = verifyInputWhenFocusTarget;
-        firePropertyChange("verifyInputWhenFocusTarget",
+        firePropertyChangeBool("verifyInputWhenFocusTarget",
                            oldVerifyInputWhenFocusTarget,
                            verifyInputWhenFocusTarget);
     }
@@ -1617,33 +1617,34 @@ public abstract class JComponent extends Container
      *   preferred: true
      *       bound: true
      * description: The preferred size of the component.
+     * 
+     * @j2sIgnore
+     * 
      */
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize);
     }
 
 
-    /**
-     * If the <code>preferredSize</code> has been set to a
-     * non-<code>null</code> value just returns it.
-     * If the UI delegate's <code>getPreferredSize</code>
-     * method returns a non <code>null</code> value then return that;
-     * otherwise defer to the component's layout manager.
-     *
-     * @return the value of the <code>preferredSize</code> property
-     * @see #setPreferredSize
-     * @see ComponentUI
-     */
-    public Dimension getPreferredSize() {
-        if (isPreferredSizeSet()) {
-            return super.getPreferredSize();
-        }
-        Dimension size = null;
-        if (ui != null) {
-            size = ui.getPreferredSize(this);
-        }
-        return (size != null) ? size : super.getPreferredSize();
-    }
+	/**
+	 * If the <code>preferredSize</code> has been set to a non-<code>null</code>
+	 * value just returns it. If the UI delegate's <code>getPreferredSize</code>
+	 * method returns a non <code>null</code> value then return that; otherwise
+	 * defer to the component's layout manager.
+	 * 
+	 * @return the value of the <code>preferredSize</code> property
+	 * @see #setPreferredSize
+	 * @see ComponentUI
+	 */
+	public Dimension getPreferredSize() {
+		return getPrefSizeJComp();
+	}
+	
+	public Dimension getPrefSizeJComp() {
+		Dimension size = (isPreferredSizeSet() || ui == null ? null : ui
+				.getPreferredSize(this));
+		return (size == null ? preferredSize() : size);
+	}
 
 
     /**
@@ -1772,7 +1773,7 @@ public abstract class JComponent extends Container
         Border         oldBorder = this.border;
 
         this.border = border;
-        firePropertyChange("border", oldBorder, border);
+        firePropertyChangeObject("border", oldBorder, border);
         if (border != oldBorder) {
             if (border == null || oldBorder == null ||
                 !(border.getBorderInsets(this).equals(oldBorder.getBorderInsets(this)))) {
@@ -1912,7 +1913,7 @@ public abstract class JComponent extends Container
         InputVerifier oldInputVerifier = (InputVerifier)getClientProperty(
                                          JComponent_INPUT_VERIFIER);
         putClientProperty(JComponent_INPUT_VERIFIER, inputVerifier);
-        firePropertyChange("inputVerifier", oldInputVerifier, inputVerifier);
+        firePropertyChangeObject("inputVerifier", oldInputVerifier, inputVerifier);
     }
 
     /**
@@ -2656,7 +2657,7 @@ public abstract class JComponent extends Container
     public void setEnabled(boolean enabled) {
         boolean oldEnabled = isEnabled();
         super.setEnabled(enabled);
-        firePropertyChange("enabled", oldEnabled, enabled);
+        firePropertyChangeBool("enabled", oldEnabled, enabled);
         if (enabled != oldEnabled) {
             repaint();
         }
@@ -4046,7 +4047,7 @@ public abstract class JComponent extends Container
             }
         }
         clientPropertyChanged(key, oldValue, value);
-        firePropertyChange(key.toString(), oldValue, value);
+        firePropertyChangeObject(key.toString(), oldValue, value);
     }
 
     // Invoked from putClientProperty.  This is provided for subclasses
@@ -4323,7 +4324,7 @@ public abstract class JComponent extends Container
         boolean oldValue = getFlag(IS_OPAQUE);
         setFlag(IS_OPAQUE, isOpaque);
         setFlag(OPAQUE_SET, true);
-        firePropertyChange("opaque", oldValue, isOpaque);
+        firePropertyChangeBool("opaque", oldValue, isOpaque);
     }
 
 
@@ -4436,42 +4437,42 @@ public abstract class JComponent extends Container
         return visibleRect;
     }
 
-    /**
-     * Support for reporting bound property changes for boolean properties.
-     * This method can be called when a bound property has changed and it will
-     * send the appropriate PropertyChangeEvent to any registered
-     * PropertyChangeListeners.
-     *
-     * @param propertyName the property whose value has changed
-     * @param oldValue the property's previous value
-     * @param newValue the property's new value
-     */
-    public void firePropertyChange(String propertyName,
-                                   boolean oldValue, boolean newValue) {
-        super.firePropertyChange(propertyName, oldValue, newValue);
-    }
-
-
-    /**
-     * Support for reporting bound property changes for integer properties.
-     * This method can be called when a bound property has changed and it will
-     * send the appropriate PropertyChangeEvent to any registered
-     * PropertyChangeListeners.
-     *
-     * @param propertyName the property whose value has changed
-     * @param oldValue the property's previous value
-     * @param newValue the property's new value
-     */
-    public void firePropertyChange(String propertyName,
-                                      int oldValue, int newValue) {
-        super.firePropertyChange(propertyName, oldValue, newValue);
-    }
-
-    // XXX This method is implemented as a workaround to a JLS issue with ambiguous
-    // methods. This should be removed once 4758654 is resolved.
-    public void firePropertyChange(String propertyName, char oldValue, char newValue) {
-        super.firePropertyChange(propertyName, oldValue, newValue);
-    }
+//    /**
+//     * Support for reporting bound property changes for boolean properties.
+//     * This method can be called when a bound property has changed and it will
+//     * send the appropriate PropertyChangeEvent to any registered
+//     * PropertyChangeListeners.
+//     *
+//     * @param propertyName the property whose value has changed
+//     * @param oldValue the property's previous value
+//     * @param newValue the property's new value
+//     */
+//    public void firePropertyChangeBool(String propertyName,
+//                                   boolean oldValue, boolean newValue) {
+//        firePropertyChangeBool0(propertyName, oldValue, newValue);
+//    }
+//
+//
+//    /**
+//     * Support for reporting bound property changes for integer properties.
+//     * This method can be called when a bound property has changed and it will
+//     * send the appropriate PropertyChangeEvent to any registered
+//     * PropertyChangeListeners.
+//     *
+//     * @param propertyName the property whose value has changed
+//     * @param oldValue the property's previous value
+//     * @param newValue the property's new value
+//     */
+//    public void firePropertyChange(String propertyName,
+//                                      int oldValue, int newValue) {
+//        firePropertyChangeInt(propertyName, oldValue, newValue);
+//    }
+//
+//    // XXX This method is implemented as a workaround to a JLS issue with ambiguous
+//    // methods. This should be removed once 4758654 is resolved.
+//    public void firePropertyChange(String propertyName, char oldValue, char newValue) {
+//        firePropertyChangeChar(propertyName, oldValue, newValue);
+//    }
 //
 //    /**
 //     * Supports reporting constrained property changes.
@@ -4696,7 +4697,7 @@ public abstract class JComponent extends Container
      */
     public void addNotify() {
         super.addNotify();
-        firePropertyChange("ancestor", null, getParent());
+        firePropertyChangeObject("ancestor", null, getParent());
 
         registerWithKeyboardManager(false);
         registerNextFocusableComponent();
@@ -4715,7 +4716,7 @@ public abstract class JComponent extends Container
         // This isn't strictly correct.  The event shouldn't be
         // fired until *after* the parent is set to null.  But
         // we only get notified before that happens
-        firePropertyChange("ancestor", getParent(), null);
+        firePropertyChangeObject("ancestor", getParent(), null);
 
         unregisterWithKeyboardManager();
         deregisterNextFocusableComponent();

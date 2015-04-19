@@ -124,7 +124,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	 * @param params
 	 */
 	public JSAppletPanel(Hashtable params) {
-		super();
+		setPanel();
 		set(params);
 	}
 
@@ -240,6 +240,9 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				currentAppletSize.height);
 		currentAppletSize.width = width;
 		currentAppletSize.height = height;
+		applet.setBounds(0, 0, getWidth(), getHeight());
+		applet.getRootPane().setBounds(0, 0, getWidth(), getHeight());
+		applet.getContentPane().setBounds(0, 0, getWidth(), getHeight());
 		validate(); // SwingJS
 		dispatchAppletEvent(APPLET_RESIZE, currentSize);
 	}
@@ -288,7 +291,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		super.setBounds(x, y, width, height);
+		reshape(x, y, width, height); // straight to component
 		currentAppletSize.width = width;
 		currentAppletSize.height = height;
 	}
@@ -479,6 +482,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	 * @return LOOP or DONE
 	 */
 	public int run1(int mode) {
+		System.out.println("JSAP run1 mode " + mode);
 		boolean ok = false;
 		switch (mode) {
 		case JSThread.INIT:
@@ -583,7 +587,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					status = APPLET_ERROR;
 				} else {
 					status = APPLET_UNINITIALIZED;
-					remove(applet);
+					removeChild(applet);
 					applet = null;
 					showAppletStatus("disposed");
 				}

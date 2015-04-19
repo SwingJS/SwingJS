@@ -636,7 +636,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
             updateFixedCellSize();
         }
 
-        firePropertyChange("prototypeCellValue", oldValue, prototypeCellValue);
+        firePropertyChangeObject("prototypeCellValue", oldValue, prototypeCellValue);
     }
 
 
@@ -672,7 +672,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setFixedCellWidth(int width) {
         int oldValue = fixedCellWidth;
         fixedCellWidth = width;
-        firePropertyChange("fixedCellWidth", oldValue, fixedCellWidth);
+        firePropertyChangeInt("fixedCellWidth", oldValue, fixedCellWidth);
     }
 
 
@@ -708,7 +708,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setFixedCellHeight(int height) {
         int oldValue = fixedCellHeight;
         fixedCellHeight = height;
-        firePropertyChange("fixedCellHeight", oldValue, fixedCellHeight);
+        firePropertyChangeInt("fixedCellHeight", oldValue, fixedCellHeight);
     }
 
 
@@ -757,7 +757,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
             updateFixedCellSize();
         }
 
-        firePropertyChange("cellRenderer", oldValue, cellRenderer);
+        firePropertyChangeObject("cellRenderer", oldValue, cellRenderer);
     }
 
 
@@ -804,7 +804,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setSelectionForeground(Color selectionForeground) {
         Color oldValue = this.selectionForeground;
         this.selectionForeground = selectionForeground;
-        firePropertyChange("selectionForeground", oldValue, selectionForeground);
+        firePropertyChangeObject("selectionForeground", oldValue, selectionForeground);
     }
 
 
@@ -851,7 +851,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setSelectionBackground(Color selectionBackground) {
         Color oldValue = this.selectionBackground;
         this.selectionBackground = selectionBackground;
-        firePropertyChange("selectionBackground", oldValue, selectionBackground);
+        firePropertyChangeObject("selectionBackground", oldValue, selectionBackground);
     }
 
 
@@ -907,7 +907,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setVisibleRowCount(int visibleRowCount) {
         int oldValue = this.visibleRowCount;
         this.visibleRowCount = Math.max(0, visibleRowCount);
-        firePropertyChange("visibleRowCount", oldValue, visibleRowCount);
+        firePropertyChangeInt("visibleRowCount", oldValue, visibleRowCount);
     }
 
 
@@ -992,7 +992,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
         case VERTICAL_WRAP:
         case HORIZONTAL_WRAP:
             this.layoutOrientation = layoutOrientation;
-            firePropertyChange("layoutOrientation", oldValue, layoutOrientation);
+            firePropertyChangeInt("layoutOrientation", oldValue, layoutOrientation);
             break;
         default:
             throw new IllegalArgumentException("layoutOrientation must be one of: VERTICAL, HORIZONTAL_WRAP or VERTICAL_WRAP");
@@ -1650,7 +1650,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
         }
         ListModel oldValue = dataModel;
         dataModel = model;
-        firePropertyChange("model", oldValue, dataModel);
+        firePropertyChangeObject("model", oldValue, dataModel);
         clearSelection();
     }
 
@@ -1874,7 +1874,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
 
         ListSelectionModel oldValue = this.selectionModel;
         this.selectionModel = selectionModel;
-        firePropertyChange("selectionModel", oldValue, selectionModel);
+        firePropertyChangeObject("selectionModel", oldValue, selectionModel);
     }
 
 

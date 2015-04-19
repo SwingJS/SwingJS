@@ -489,7 +489,7 @@ public class JSlider extends JComponent implements SwingConstants {
 //            }
         }
 
-        firePropertyChange("model", oldModel, sliderModel);
+        firePropertyChangeObject("model", oldModel, sliderModel);
     }
 
 
@@ -579,7 +579,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setMinimum(int minimum) {
         int oldMin = getModel().getMinimum();
         getModel().setMinimum(minimum);
-        firePropertyChange( "minimum", new Integer( oldMin ), new Integer( minimum ) );
+        firePropertyChangeObject( "minimum", new Integer( oldMin ), new Integer( minimum ) );
     }
 
 
@@ -620,7 +620,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setMaximum(int maximum) {
         int oldMax = getModel().getMaximum();
         getModel().setMaximum(maximum);
-        firePropertyChange( "maximum", new Integer( oldMax ), new Integer( maximum ) );
+        firePropertyChangeObject( "maximum", new Integer( oldMax ), new Integer( maximum ) );
     }
 
 
@@ -736,7 +736,7 @@ public class JSlider extends JComponent implements SwingConstants {
         checkOrientation(orientation);
         int oldValue = this.orientation;
         this.orientation = orientation;
-        firePropertyChange("orientation", oldValue, orientation);
+        firePropertyChangeInt("orientation", oldValue, orientation);
 
 //        if ((oldValue != orientation) && (accessibleContext != null)) {
 //            accessibleContext.firePropertyChange(
@@ -806,7 +806,7 @@ public class JSlider extends JComponent implements SwingConstants {
         Dictionary oldTable = labelTable;
         labelTable = labels;
         updateLabelUIs();
-        firePropertyChange("labelTable", oldTable, labelTable );
+        firePropertyChangeObject("labelTable", oldTable, labelTable );
         if (labels != oldTable) {
             revalidate();
             repaint();
@@ -1038,7 +1038,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setInverted( boolean b ) {
         boolean oldValue = isInverted;
         isInverted = b;
-        firePropertyChange("inverted", oldValue, isInverted);
+        firePropertyChangeBool("inverted", oldValue, isInverted);
         if (b != oldValue) {
             repaint();
         }
@@ -1097,7 +1097,7 @@ public class JSlider extends JComponent implements SwingConstants {
         if ( labelTable == null && getMajorTickSpacing() > 0 && getPaintLabels() ) {
             setLabelTable( createStandardLabels( getMajorTickSpacing() ) );
         }
-        firePropertyChange("majorTickSpacing", oldValue, majorTickSpacing);
+        firePropertyChangeInt("majorTickSpacing", oldValue, majorTickSpacing);
         if (majorTickSpacing != oldValue && getPaintTicks()) {
             repaint();
         }
@@ -1141,7 +1141,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setMinorTickSpacing(int n) {
         int oldValue = minorTickSpacing;
         minorTickSpacing = n;
-        firePropertyChange("minorTickSpacing", oldValue, minorTickSpacing);
+        firePropertyChangeInt("minorTickSpacing", oldValue, minorTickSpacing);
         if (minorTickSpacing != oldValue && getPaintTicks()) {
             repaint();
         }
@@ -1189,7 +1189,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setSnapToTicks(boolean b) {
         boolean oldValue = snapToTicks;
         snapToTicks = b;
-        firePropertyChange("snapToTicks", oldValue, snapToTicks);
+        firePropertyChangeBool("snapToTicks", oldValue, snapToTicks);
     }
 
 
@@ -1210,7 +1210,7 @@ public class JSlider extends JComponent implements SwingConstants {
     void setSnapToValue(boolean b) {
         boolean oldValue = snapToValue;
         snapToValue = b;
-        firePropertyChange("snapToValue", oldValue, snapToValue);
+        firePropertyChangeBool("snapToValue", oldValue, snapToValue);
     }
 
 
@@ -1238,7 +1238,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setPaintTicks(boolean b) {
         boolean oldValue = paintTicks;
         paintTicks = b;
-        firePropertyChange("paintTicks", oldValue, paintTicks);
+        firePropertyChangeBool("paintTicks", oldValue, paintTicks);
         if (paintTicks != oldValue) {
             revalidate();
             repaint();
@@ -1269,7 +1269,7 @@ public class JSlider extends JComponent implements SwingConstants {
     public void setPaintTrack(boolean b) {
         boolean oldValue = paintTrack;
         paintTrack = b;
-        firePropertyChange("paintTrack", oldValue, paintTrack);
+        firePropertyChangeBool("paintTrack", oldValue, paintTrack);
         if (paintTrack != oldValue) {
             repaint();
         }
@@ -1314,7 +1314,7 @@ public class JSlider extends JComponent implements SwingConstants {
         if ( labelTable == null && getMajorTickSpacing() > 0 ) {
             setLabelTable( createStandardLabels( getMajorTickSpacing() ) );
         }
-        firePropertyChange("paintLabels", oldValue, paintLabels);
+        firePropertyChangeBool("paintLabels", oldValue, paintLabels);
         if (paintLabels != oldValue) {
             revalidate();
             repaint();

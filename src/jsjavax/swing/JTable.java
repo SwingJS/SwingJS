@@ -904,7 +904,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             if (tableHeader != null) {
                 tableHeader.setTable(this);
             }
-            firePropertyChange("tableHeader", old, tableHeader);
+            firePropertyChangeObject("tableHeader", old, tableHeader);
         }
     }
 
@@ -944,7 +944,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         }
         isRowHeightSet = true;
         resizeAndRepaint();
-        firePropertyChange("rowHeight", old, rowHeight);
+        firePropertyChangeInt("rowHeight", old, rowHeight);
     }
 
     /**
@@ -1014,7 +1014,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         int old = this.rowMargin;
         this.rowMargin = rowMargin;
         resizeAndRepaint();
-        firePropertyChange("rowMargin", old, rowMargin);
+        firePropertyChangeInt("rowMargin", old, rowMargin);
     }
 
     /**
@@ -1077,7 +1077,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         }
         Color old = this.gridColor;
         this.gridColor = gridColor;
-        firePropertyChange("gridColor", old, gridColor);
+        firePropertyChangeObject("gridColor", old, gridColor);
         // Redraw
         repaint();
     }
@@ -1130,7 +1130,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     public void setShowHorizontalLines(boolean showHorizontalLines) {
         boolean old = this.showHorizontalLines;
         this.showHorizontalLines = showHorizontalLines;
-        firePropertyChange("showHorizontalLines", old, showHorizontalLines);
+        firePropertyChangeBool("showHorizontalLines", old, showHorizontalLines);
 
         // Redraw
         repaint();
@@ -1151,7 +1151,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     public void setShowVerticalLines(boolean showVerticalLines) {
         boolean old = this.showVerticalLines;
         this.showVerticalLines = showVerticalLines;
-        firePropertyChange("showVerticalLines", old, showVerticalLines);
+        firePropertyChangeBool("showVerticalLines", old, showVerticalLines);
         // Redraw
         repaint();
     }
@@ -1215,7 +1215,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             if (tableHeader != null) {
                 tableHeader.resizeAndRepaint();
             }
-            firePropertyChange("autoResizeMode", old, autoResizeMode);
+            firePropertyChangeInt("autoResizeMode", old, autoResizeMode);
         }
     }
 
@@ -1251,7 +1251,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             if (autoCreateColumnsFromModel) {
                 createDefaultColumnsFromModel();
             }
-            firePropertyChange("autoCreateColumnsFromModel", old, autoCreateColumnsFromModel);
+            firePropertyChangeBool("autoCreateColumnsFromModel", old, autoCreateColumnsFromModel);
         }
     }
 
@@ -1844,7 +1844,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         if (autoCreateRowSorter) {
             setRowSorter(new TableRowSorter(getModel()));
         }
-        firePropertyChange("autoCreateRowSorter", oldValue,
+        firePropertyChangeBool("autoCreateRowSorter", oldValue,
                            autoCreateRowSorter);
     }
 
@@ -1877,7 +1877,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     public void setUpdateSelectionOnSort(boolean update) {
         if (updateSelectionOnSort != update) {
             updateSelectionOnSort = update;
-            firePropertyChange("updateSelectionOnSort", !update, update);
+            firePropertyChangeBool("updateSelectionOnSort", !update, update);
         }
     }
 
@@ -1918,8 +1918,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             sortManager = new SortManager(sorter);
         }
         resizeAndRepaint();
-        firePropertyChange("rowSorter", oldRowSorter, sorter);
-        firePropertyChange("sorter", oldRowSorter, sorter);
+        firePropertyChangeObject("rowSorter", oldRowSorter, sorter);
+        firePropertyChangeObject("sorter", oldRowSorter, sorter);
     }
 
     /**
@@ -1983,7 +1983,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         if (old != rowSelectionAllowed) {
             repaint();
         }
-        firePropertyChange("rowSelectionAllowed", old, rowSelectionAllowed);
+        firePropertyChangeBool("rowSelectionAllowed", old, rowSelectionAllowed);
     }
 
     /**
@@ -2012,7 +2012,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         if (old != columnSelectionAllowed) {
             repaint();
         }
-        firePropertyChange("columnSelectionAllowed", old, columnSelectionAllowed);
+        firePropertyChangeBool("columnSelectionAllowed", old, columnSelectionAllowed);
     }
 
     /**
@@ -2050,7 +2050,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         setColumnSelectionAllowed(cellSelectionEnabled);
         boolean old = this.cellSelectionEnabled;
         this.cellSelectionEnabled = cellSelectionEnabled;
-        firePropertyChange("cellSelectionEnabled", old, cellSelectionEnabled);
+        firePropertyChangeBool("cellSelectionEnabled", old, cellSelectionEnabled);
     }
 
     /**
@@ -2499,7 +2499,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     public void setSelectionForeground(Color selectionForeground) {
         Color old = this.selectionForeground;
         this.selectionForeground = selectionForeground;
-        firePropertyChange("selectionForeground", old, selectionForeground);
+        firePropertyChangeObject("selectionForeground", old, selectionForeground);
         if ( !selectionForeground.equals(old) )
         {
             repaint();
@@ -2540,7 +2540,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     public void setSelectionBackground(Color selectionBackground) {
         Color old = this.selectionBackground;
         this.selectionBackground = selectionBackground;
-        firePropertyChange("selectionBackground", old, selectionBackground);
+        firePropertyChangeObject("selectionBackground", old, selectionBackground);
         if ( !selectionBackground.equals(old) )
         {
             repaint();
@@ -3700,7 +3700,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 
             tableChanged(new TableModelEvent(dataModel, TableModelEvent.HEADER_ROW));
 
-            firePropertyChange("model", old, dataModel);
+            firePropertyChangeObject("model", old, dataModel);
 
             if (getAutoCreateRowSorter()) {
                 setRowSorter(new TableRowSorter(dataModel));
@@ -3748,7 +3748,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
                 tableHeader.setColumnModel(columnModel);
             }
 
-            firePropertyChange("columnModel", old, columnModel);
+            firePropertyChangeObject("columnModel", old, columnModel);
             resizeAndRepaint();
         }
     }
@@ -3790,7 +3790,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             selectionModel = newModel;
             newModel.addListSelectionListener(this);
 
-            firePropertyChange("selectionModel", oldModel, newModel);
+            firePropertyChangeObject("selectionModel", oldModel, newModel);
             repaint();
         }
     }
@@ -4111,7 +4111,6 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * Invoked when <code>sorterChanged</code> is invoked, or
      * when <code>tableChanged</code> is invoked and sorting is enabled.
      */
-    @SuppressWarnings("null")
     private void sortedTableChanged(RowSorterEvent sortedEvent,
                                     TableModelEvent e) {
         int editingModelIndex = -1;
@@ -5248,7 +5247,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         boolean old = this.fillsViewportHeight;
         this.fillsViewportHeight = fillsViewportHeight;
         resizeAndRepaint();
-        firePropertyChange("fillsViewportHeight", old, fillsViewportHeight);
+        firePropertyChangeBool("fillsViewportHeight", old, fillsViewportHeight);
     }
 
     /**
@@ -5647,7 +5646,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     public void setCellEditor(TableCellEditor anEditor) {
         TableCellEditor oldEditor = cellEditor;
         cellEditor = anEditor;
-        firePropertyChange("tableCellEditor", oldEditor, anEditor);
+        firePropertyChangeObject("tableCellEditor", oldEditor, anEditor);
     }
 
     /**

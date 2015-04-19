@@ -446,7 +446,7 @@ public class JRootPane extends JComponent {
         }
         int oldWindowDecorationStyle = getWindowDecorationStyle();
         this.windowDecorationStyle = windowDecorationStyle;
-        firePropertyChange("windowDecorationStyle",
+        firePropertyChangeInt("windowDecorationStyle",
                             oldWindowDecorationStyle,
                             windowDecorationStyle);
     }
@@ -802,7 +802,7 @@ public class JRootPane extends JComponent {
             }
         }
 
-        firePropertyChange("defaultButton", oldDefault, defaultButton);
+        firePropertyChangeObject("defaultButton", oldDefault, defaultButton);
     }
 
     /**
@@ -873,8 +873,8 @@ public class JRootPane extends JComponent {
      * @param constraints the constraints to be respected
      * @param index the index
      */
-    protected void addImpl(Component comp, Object constraints, int index) {
-        super.addImpl(comp, constraints, index);
+    protected Component addImpl(Component comp, Object constraints, int index) {
+        addImplSAEM(comp, constraints, index);
 
         /// We are making sure the glassPane is on top.
         if(glassPane != null
@@ -882,6 +882,7 @@ public class JRootPane extends JComponent {
             && getComponent(0) != glassPane) {
             add(glassPane, 0);
         }
+        return comp;
     }
 
 

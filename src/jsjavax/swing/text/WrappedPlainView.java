@@ -826,7 +826,6 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          * @param startPos position to start breaking from
          * @return the cache created, ot null if text breaks into one line
          */
-        @SuppressWarnings("null")
         final int[] breakLines(int startPos) {
             int[] lineEnds = null;//(lineCache == null) ? null : lineCache.get();
 //            int[] oldLineEnds = lineEnds;

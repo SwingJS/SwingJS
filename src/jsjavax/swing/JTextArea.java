@@ -266,7 +266,7 @@ public class JTextArea extends JTextComponent {
         if (doc != null) {
             int old = getTabSize();
             doc.putProperty(PlainDocument.tabSizeAttribute, new Integer(size));
-            firePropertyChange("tabSize", old, size);
+            firePropertyChangeInt("tabSize", old, size);
         }
     }
 
@@ -306,7 +306,7 @@ public class JTextArea extends JTextComponent {
     public void setLineWrap(boolean wrap) {
         boolean old = this.wrap;
         this.wrap = wrap;
-        firePropertyChange("lineWrap", old, wrap);
+        firePropertyChangeBool("lineWrap", old, wrap);
     }
 
     /**
@@ -340,7 +340,7 @@ public class JTextArea extends JTextComponent {
     public void setWrapStyleWord(boolean word) {
         boolean old = this.word;
         this.word = word;
-        firePropertyChange("wrapStyleWord", old, word);
+        firePropertyChangeBool("wrapStyleWord", old, word);
     }
 
     /**
@@ -629,7 +629,7 @@ public class JTextArea extends JTextComponent {
      * @return the size
      */
     public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
+        Dimension d = getPrefSizeJComp();
         d = (d == null) ? new Dimension(400,400) : d;
         Insets insets = getInsets();
 

@@ -170,7 +170,7 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
     public void setTable(JTable table) {
         JTable old = this.table;
         this.table = table;
-        firePropertyChange("table", old, table);
+        firePropertyChangeObject("table", old, table);
     }
 
     /**
@@ -194,7 +194,7 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
     public void setReorderingAllowed(boolean reorderingAllowed) {
         boolean old = this.reorderingAllowed;
         this.reorderingAllowed = reorderingAllowed;
-        firePropertyChange("reorderingAllowed", old, reorderingAllowed);
+        firePropertyChangeBool("reorderingAllowed", old, reorderingAllowed);
     }
 
     /**
@@ -222,7 +222,7 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
     public void setResizingAllowed(boolean resizingAllowed) {
         boolean old = this.resizingAllowed;
         this.resizingAllowed = resizingAllowed;
-        firePropertyChange("resizingAllowed", old, resizingAllowed);
+        firePropertyChangeBool("resizingAllowed", old, resizingAllowed);
     }
 
     /**
@@ -515,7 +515,7 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
             this.columnModel = columnModel;
             columnModel.addColumnModelListener(this);
 
-            firePropertyChange("columnModel", old, columnModel);
+            firePropertyChangeObject("columnModel", old, columnModel);
             resizeAndRepaint();
         }
     }

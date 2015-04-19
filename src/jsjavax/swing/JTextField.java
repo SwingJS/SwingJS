@@ -355,7 +355,7 @@ public class JTextField extends JTextComponent implements SwingConstants {
         } else {
             throw new IllegalArgumentException("horizontalAlignment");
         }
-        firePropertyChange("horizontalAlignment", oldValue, horizontalAlignment);
+        firePropertyChangeInt("horizontalAlignment", oldValue, horizontalAlignment);
         invalidate();
         repaint();
     }
@@ -428,16 +428,20 @@ public class JTextField extends JTextComponent implements SwingConstants {
      * @return the dimension of this textfield
      */
     public Dimension getPreferredSize() {
-        Dimension size = super.getPreferredSize();
-        if (columns != 0) {
-            Insets insets = getInsets();
-            size.width = columns * getColumnWidth() +
-                insets.left + insets.right;
-        }
-        return size;
+    	return getPrefSizeJTF();
     }
 
-    /**
+    protected Dimension getPrefSizeJTF() {
+      Dimension size = getPrefSizeJComp();
+      if (columns != 0) {
+          Insets insets = getInsets();
+          size.width = columns * getColumnWidth() +
+              insets.left + insets.right;
+      }
+      return size;
+		}
+
+		/**
      * Sets the current font.  This removes cached row height and column
      * width so the new font will be reflected.
      * <code>revalidate</code> is called after setting the font.
@@ -589,7 +593,7 @@ public class JTextField extends JTextComponent implements SwingConstants {
                 actionPropertyChangeListener = createActionPropertyChangeListener(action);
                 action.addPropertyChangeListener(actionPropertyChangeListener);
             }
-            firePropertyChange("action", oldValue, action);
+            firePropertyChangeObject("action", oldValue, action);
         }
     }
 

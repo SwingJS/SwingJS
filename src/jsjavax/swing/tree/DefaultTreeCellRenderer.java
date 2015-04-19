@@ -35,8 +35,6 @@ import jsjava.awt.Rectangle;
 import jsjavax.swing.Icon;
 import jsjavax.swing.JLabel;
 import jsjavax.swing.JTree;
-import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.UIManager;
 import jsjavax.swing.border.EmptyBorder;
 import jsjavax.swing.plaf.ColorUIResource;
 import jsjavax.swing.plaf.FontUIResource;
@@ -495,18 +493,15 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
         return 0;
     }
 
-    /**
-     * Overrides <code>JComponent.getPreferredSize</code> to
-     * return slightly wider preferred size value.
-     */
-    public Dimension getPreferredSize() {
-        Dimension        retDimension = super.getPreferredSize();
-
-        if(retDimension != null)
-            retDimension = new Dimension(retDimension.width + 3,
-                                         retDimension.height);
-        return retDimension;
-    }
+	/**
+	 * Overrides <code>JComponent.getPreferredSize</code> to return slightly wider
+	 * preferred size value.
+	 */
+	public Dimension getPreferredSize() {
+		Dimension retDimension = getPrefSizeJComp();
+		return (retDimension == null ? null : new Dimension(retDimension.width + 3,
+				retDimension.height));
+	}
 
    /**
     * Overridden for performance reasons.
@@ -559,16 +554,16 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        // Strings get interned...
-        if (propertyName == "text"
-                || ((propertyName == "font" || propertyName == "foreground")
-                    && oldValue != newValue
-                    //&& getClientProperty(jsjavax.swing.plaf.basic.BasicHTML.propertyKey) != null
-                    )) {
-
-            super.firePropertyChange(propertyName, oldValue, newValue);
-        }
+    protected void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+//        // Strings get interned...
+//        if (propertyName == "text"
+//                || ((propertyName == "font" || propertyName == "foreground")
+//                    && oldValue != newValue
+//                    && getClientProperty(jsjavax.swing.plaf.basic.BasicHTML.propertyKey) != null
+//                    )) {
+//
+//            super.firePropertyChangeObject(propertyName, oldValue, newValue);
+//        }
     }
 
    /**
@@ -597,7 +592,7 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void firePropertyChange(String propertyName, int oldValue, int newValue) {}
+    public void firePropertyChangeInt(String propertyName, int oldValue, int newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -625,6 +620,6 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
+    public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) {}
 
 }

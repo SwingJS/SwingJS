@@ -59,21 +59,24 @@ public class PropertyChangeSupport {
      * @param listener  The PropertyChangeListener to be added
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        if (listener == null) {
-            return;
-        }
-        if (listener instanceof PropertyChangeListenerProxy) {
-            PropertyChangeListenerProxy proxy =
-                   (PropertyChangeListenerProxy)listener;
-            // Call two argument add method.
-            addPropertyChangeListener(proxy.getPropertyName(),
-                    (PropertyChangeListener)proxy.getListener());
-        } else {
-            this.map.add(null, listener);
-        }
+    	addPropertyChangeListener1(listener);
     }
 
-    /**
+	public void addPropertyChangeListener1(PropertyChangeListener listener) {
+		if (listener == null) {
+			return;
+		}
+		if (listener instanceof PropertyChangeListenerProxy) {
+			PropertyChangeListenerProxy proxy = (PropertyChangeListenerProxy) listener;
+			// Call two argument add method.
+			addPropertyChangeListener(proxy.getPropertyName(),
+					(PropertyChangeListener) proxy.getListener());
+		} else {
+			this.map.add(null, listener);
+		}
+	}
+
+		/**
      * Remove a PropertyChangeListener from the listener list.
      * This removes a PropertyChangeListener that was registered
      * for all properties.
@@ -150,16 +153,31 @@ public class PropertyChangeSupport {
     public void addPropertyChangeListener(
                 String propertyName,
                 PropertyChangeListener listener) {
-        if (listener == null || propertyName == null) {
-            return;
-        }
-        listener = this.map.extract(listener);
-        if (listener != null) {
-            this.map.add(propertyName, listener);
-        }
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (arguments.length == 1) {
+    	 *   this.addPropertyChangeListener1(propertyName);
+    	 *   return;
+    	 * } 
+    	 * 
+    	 */
+    	{}
+    	addPropertyChangeListener2(propertyName, listener);
     }
 
-    /**
+	public void addPropertyChangeListener2(String propertyName,
+			PropertyChangeListener listener) {
+		if (listener == null || propertyName == null) {
+			return;
+		}
+		listener = this.map.extract(listener);
+		if (listener != null) {
+			this.map.add(propertyName, listener);
+		}
+	}
+
+		/**
      * Remove a PropertyChangeListener for a specific property.
      * If <code>listener</code> was added more than once to the same event
      * source for the specified property, it will be notified one less time

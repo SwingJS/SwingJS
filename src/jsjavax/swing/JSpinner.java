@@ -295,7 +295,7 @@ public class JSpinner extends JComponent
                 oldModel.removeChangeListener(modelListener);
                 this.model.addChangeListener(modelListener);
             }
-            firePropertyChange("model", oldModel, model);
+            firePropertyChangeObject("model", oldModel, model);
             if (!editorExplicitlySet) {
                 setEditor(createEditor(model)); // sets editorExplicitlySet true
                 editorExplicitlySet = false;
@@ -523,7 +523,7 @@ public class JSpinner extends JComponent
                 ((DefaultEditor)oldEditor).dismiss(this);
             }
             editorExplicitlySet = true;
-            firePropertyChange("editor", oldEditor, editor);
+            firePropertyChangeObject("editor", oldEditor, editor);
             revalidate();
             repaint();
         }

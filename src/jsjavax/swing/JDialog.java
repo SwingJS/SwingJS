@@ -727,7 +727,7 @@ public class JDialog extends Dialog implements WindowConstants,
 
         int oldValue = this.defaultCloseOperation;
         this.defaultCloseOperation = operation;
-        firePropertyChange("defaultCloseOperation", oldValue, operation);
+        firePropertyChangeInt("defaultCloseOperation", oldValue, operation);
     }
 
    /**
@@ -778,7 +778,7 @@ public class JDialog extends Dialog implements WindowConstants,
         TransferHandler oldHandler = transferHandler;
         transferHandler = newHandler;
         SwingUtilities.installSwingDropTargetAsNecessary(this, transferHandler);
-        firePropertyChange("transferHandler", oldHandler, newHandler);
+        firePropertyChangeObject("transferHandler", oldHandler, newHandler);
     }
 
     /**
@@ -866,34 +866,34 @@ public class JDialog extends Dialog implements WindowConstants,
         rootPaneCheckingEnabled = enabled;
     }
 
-    /**
-     * Adds the specified child <code>Component</code>.
-     * This method is overridden to conditionally forward calls to the
-     * <code>contentPane</code>.
-     * By default, children are added to the <code>contentPane</code> instead
-     * of the frame, refer to {@link jsjavax.swing.RootPaneContainer} for
-     * details.
-     *
-     * @param comp the component to be enhanced
-     * @param constraints the constraints to be respected
-     * @param index the index
-     * @exception IllegalArgumentException if <code>index</code> is invalid
-     * @exception IllegalArgumentException if adding the container's parent
-     *                  to itself
-     * @exception IllegalArgumentException if adding a window to a container
-     *
-     * @see #setRootPaneCheckingEnabled
-     * @see jsjavax.swing.RootPaneContainer
-     */
-    protected void addImpl(Component comp, Object constraints, int index)
-    {
-        if(isRootPaneCheckingEnabled()) {
-            getContentPane().add(comp, constraints, index);
-        }
-        else {
-            super.addImpl(comp, constraints, index);
-        }
-    }
+	/**
+	 * Adds the specified child <code>Component</code>. This method is overridden
+	 * to conditionally forward calls to the <code>contentPane</code>. By default,
+	 * children are added to the <code>contentPane</code> instead of the frame,
+	 * refer to {@link jsjavax.swing.RootPaneContainer} for details.
+	 * 
+	 * @param comp
+	 *          the component to be enhanced
+	 * @param constraints
+	 *          the constraints to be respected
+	 * @param index
+	 *          the index
+	 * @exception IllegalArgumentException
+	 *              if <code>index</code> is invalid
+	 * @exception IllegalArgumentException
+	 *              if adding the container's parent to itself
+	 * @exception IllegalArgumentException
+	 *              if adding a window to a container
+	 * 
+	 * @see #setRootPaneCheckingEnabled
+	 * @see jsjavax.swing.RootPaneContainer
+	 */
+	protected Component addImpl(Component comp, Object constraints, int index) {
+		if (isRootPaneCheckingEnabled()) {
+			return getContentPane().add(comp, constraints, index);
+		}
+		return addImplSAEM(comp, constraints, index);
+	}
 
     /**
      * Removes the specified component from the container. If
@@ -909,9 +909,9 @@ public class JDialog extends Dialog implements WindowConstants,
      */
     public void remove(Component comp) {
         if (comp == rootPane) {
-            super.remove(comp);
+            removeChild(comp);
         } else {
-            getContentPane().remove(comp);
+            getContentPane().removeChild(comp);
         }
     }
 

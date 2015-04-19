@@ -664,7 +664,7 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          *   the preferred size
          */
         public Dimension getPreferredSize() {
-            Dimension      size = super.getPreferredSize();
+            Dimension      size = getPrefSizeJTF();
 
             // If not font has been set, prefer the renderers height.
             if(renderer != null &&

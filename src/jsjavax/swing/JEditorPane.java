@@ -524,7 +524,7 @@ public class JEditorPane extends JTextComponent {
             }
             getDocument().putProperty(Document.StreamDescriptionProperty, page);
         }
-        firePropertyChange("page", loaded, page);
+        firePropertyChangeObject("page", loaded, page);
     }
 
     /**
@@ -725,7 +725,7 @@ public class JEditorPane extends JTextComponent {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         if (pageLoaded) {
-                            firePropertyChange("page", old, page);
+                            firePropertyChangeObject("page", old, page);
                         }
                     }
                 });
@@ -1152,7 +1152,7 @@ public class JEditorPane extends JTextComponent {
             this.kit.install(this);
             setDocument(this.kit.createDefaultDocument());
         }
-        firePropertyChange("editorKit", old, kit);
+        firePropertyChangeObject("editorKit", old, kit);
     }
 
     /**
@@ -1427,7 +1427,7 @@ public class JEditorPane extends JTextComponent {
      * @return a <code>Dimension</code> containing the preferred size
      */
     public Dimension getPreferredSize() {
-        Dimension d = super.getPreferredSize();
+        Dimension d = getPrefSizeJComp();
         if (getParent() instanceof JViewport) {
             JViewport port = (JViewport)getParent();
             TextUI ui = getUI();

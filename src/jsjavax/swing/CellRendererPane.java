@@ -98,12 +98,12 @@ public class CellRendererPane extends Container
      * bother doing anything - stacking order doesn't matter for cell
      * renderer components (CellRendererPane doesn't paint anyway).<
      */
-    protected void addImpl(Component x, Object constraints, int index) {
+    protected Component addImpl(Component x, Object constraints, int index) {
         if (x.getParent() == this) {
-            return;
+            return null;
         }
         else {
-            super.addImpl(x, constraints, index);
+            return addImplSAEM(x, constraints, index);
         }
     }
 

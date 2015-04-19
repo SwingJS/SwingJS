@@ -2467,7 +2467,6 @@ public abstract class ResourceBundle {
 		 *              if an error occurred when reading resources using any I/O
 		 *              operations
 		 */
-		@SuppressWarnings("unused")
 		public ResourceBundle newBundle(String baseName, Locale locale,
 				String format, Object loader, boolean reload)
 				throws IllegalAccessException, InstantiationException, IOException {

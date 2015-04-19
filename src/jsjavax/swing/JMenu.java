@@ -797,10 +797,12 @@ public class JMenu extends JMenuItem implements MenuElement
      * popup menu, this method will have no effect.
      *
      * @param    item the <code>JMenuItem</code> to be removed from the menu
+     * 
+     * @j2sIgnore
+     * 
      */
     public void remove(JMenuItem item) {
-        if (popupMenu != null)
-            popupMenu.remove(item);
+    	remove((Component) item);
     }
 
     /**
@@ -828,6 +830,9 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param       c the component to be removed
      */
     public void remove(Component c) {
+    	if (c instanceof JMenuItem)
+        if (popupMenu != null)
+            popupMenu.remove(c);
         if (popupMenu != null)
             popupMenu.remove(c);
     }

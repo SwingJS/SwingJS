@@ -2814,25 +2814,25 @@ public class GregorianCalendar extends Calendar {
         return monthLength(month, year);
     }
 
-    private final int actualMonthLength() {
-        int year = cdate.getNormalizedYear();
-//        if (year != gregorianCutoverYear && year != gregorianCutoverYearJulian) {
-            return calsys.getMonthLength(cdate);
-//        }
-//        BaseCalendar.Date date = (BaseCalendar.Date) cdate.clone();
-//        long fd = calsys.getFixedDate(date);
-//        long month1 = getFixedDateMonth1(date, fd);
-//        long next1 = month1 + calsys.getMonthLength(date);
-//        if (next1 < gregorianCutoverDate) {
-//            return (int)(next1 - month1);
-//        }
-//        if (cdate != gdate) {
-//            date = (BaseCalendar.Date) gcal.newCalendarDate(TimeZone.NO_TIMEZONE);
-//        }
-//        gcal.getCalendarDateFromFixedDate(date, next1);
-//        next1 = getFixedDateMonth1(date, next1);
-//        return (int)(next1 - month1);
-    }
+//    private final int actualMonthLength() {
+////        int year = cdate.getNormalizedYear();
+////        if (year != gregorianCutoverYear && year != gregorianCutoverYearJulian) {
+//            return calsys.getMonthLength(cdate);
+////        }
+////        BaseCalendar.Date date = (BaseCalendar.Date) cdate.clone();
+////        long fd = calsys.getFixedDate(date);
+////        long month1 = getFixedDateMonth1(date, fd);
+////        long next1 = month1 + calsys.getMonthLength(date);
+////        if (next1 < gregorianCutoverDate) {
+////            return (int)(next1 - month1);
+////        }
+////        if (cdate != gdate) {
+////            date = (BaseCalendar.Date) gcal.newCalendarDate(TimeZone.NO_TIMEZONE);
+////        }
+////        gcal.getCalendarDateFromFixedDate(date, next1);
+////        next1 = getFixedDateMonth1(date, next1);
+////        return (int)(next1 - month1);
+//    }
 
     /**
      * Returns the length (in days) of the specified year. The year

@@ -347,7 +347,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
         this.accelerator = keyStroke;
         repaint();
         revalidate();
-        firePropertyChange("accelerator", oldAccelerator, accelerator);
+        firePropertyChangeObject("accelerator", oldAccelerator, accelerator);
     }
 
     /**

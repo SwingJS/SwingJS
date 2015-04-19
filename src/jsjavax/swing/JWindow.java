@@ -337,7 +337,7 @@ public class JWindow extends Window implements /* Accessible */
         TransferHandler oldHandler = transferHandler;
         transferHandler = newHandler;
         SwingUtilities.installSwingDropTargetAsNecessary(this, transferHandler);
-        firePropertyChange("transferHandler", oldHandler, newHandler);
+        firePropertyChangeObject("transferHandler", oldHandler, newHandler);
     }
 
     /**
@@ -384,34 +384,34 @@ public class JWindow extends Window implements /* Accessible */
     }
 
 
-    /**
-     * Adds the specified child <code>Component</code>.
-     * This method is overridden to conditionally forward calls to the
-     * <code>contentPane</code>.
-     * By default, children are added to the <code>contentPane</code> instead
-     * of the frame, refer to {@link jsjavax.swing.RootPaneContainer} for
-     * details.
-     *
-     * @param comp the component to be enhanced
-     * @param constraints the constraints to be respected
-     * @param index the index
-     * @exception IllegalArgumentException if <code>index</code> is invalid
-     * @exception IllegalArgumentException if adding the container's parent
-     *                  to itself
-     * @exception IllegalArgumentException if adding a window to a container
-     *
-     * @see #setRootPaneCheckingEnabled
-     * @see jsjavax.swing.RootPaneContainer
-     */
-    protected void addImpl(Component comp, Object constraints, int index)
-    {
-        if(isRootPaneCheckingEnabled()) {
-            getContentPane().add(comp, constraints, index);
-        }
-        else {
-            super.addImpl(comp, constraints, index);
-        }
-    }
+	/**
+	 * Adds the specified child <code>Component</code>. This method is overridden
+	 * to conditionally forward calls to the <code>contentPane</code>. By default,
+	 * children are added to the <code>contentPane</code> instead of the frame,
+	 * refer to {@link jsjavax.swing.RootPaneContainer} for details.
+	 * 
+	 * @param comp
+	 *          the component to be enhanced
+	 * @param constraints
+	 *          the constraints to be respected
+	 * @param index
+	 *          the index
+	 * @exception IllegalArgumentException
+	 *              if <code>index</code> is invalid
+	 * @exception IllegalArgumentException
+	 *              if adding the container's parent to itself
+	 * @exception IllegalArgumentException
+	 *              if adding a window to a container
+	 * 
+	 * @see #setRootPaneCheckingEnabled
+	 * @see jsjavax.swing.RootPaneContainer
+	 */
+	protected Component addImpl(Component comp, Object constraints, int index) {
+		if (isRootPaneCheckingEnabled()) {
+			return getContentPane().add(comp, constraints, index);
+		}
+		return addImplSAEM(comp, constraints, index);
+	}
 
     /**
      * Removes the specified component from the container. If
@@ -427,9 +427,9 @@ public class JWindow extends Window implements /* Accessible */
      */
     public void remove(Component comp) {
         if (comp == rootPane) {
-            super.remove(comp);
+           removeChild(comp);
         } else {
-            getContentPane().remove(comp);
+            getContentPane().removeChild(comp);
         }
     }
 

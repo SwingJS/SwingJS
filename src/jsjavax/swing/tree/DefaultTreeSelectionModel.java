@@ -205,7 +205,6 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param pPaths new selection
       */
-    @SuppressWarnings("null")
     public void setSelectionPaths(TreePath[] pPaths) {
         int            newCount, newCounter, oldCount, oldCounter;
         TreePath[]     paths = pPaths;
@@ -340,7 +339,6 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param paths the new path to add to the current selection
       */
-    @SuppressWarnings("null")
     public void addSelectionPaths(TreePath[] paths) {
         int       newPathLength = ((paths == null) ? 0 : paths.length);
 

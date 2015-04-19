@@ -626,7 +626,6 @@ public class InternationalFormatter extends DefaultFormatter {
         return (direction == -1) ? 0 : max;
     }
 
-    @SuppressWarnings("null")
     /**
      * Overriden in an attempt to honor the literals.
      * <p>

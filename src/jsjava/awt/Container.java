@@ -345,10 +345,12 @@ public class Container extends Component {
      * @see #validate
      * @see javax.swing.JComponent#revalidate()
      * @return    the component argument
+     * 
+     * @j2sIgnore
+     * 
      */
     public Component add(Component comp) {
-        addImpl(comp, null, -1);
-        return comp;
+        return addImpl(comp, null, -1);
     }
 
     /**
@@ -359,10 +361,12 @@ public class Container extends Component {
      * method <code>add(Component, Object)</code> instead.
      * @exception NullPointerException if {@code comp} is {@code null}
      * @see #add(Component, Object)
+     * 
+     * @j2sIgnore
+     * 
      */
     public Component add(String name, Component comp) {
-        addImpl(comp, name, -1);
-        return comp;
+        return addImpl(comp, name, -1);
     }
 
     /**
@@ -388,10 +392,12 @@ public class Container extends Component {
      * @see #remove
      * @see #validate
      * @see javax.swing.JComponent#revalidate()
+     * 
+     * @j2sIgnore
+     * 
      */
     public Component add(Component comp, int index) {
-        addImpl(comp, null, index);
-        return comp;
+        return addImpl(comp, null, index);
     }
 
     /**
@@ -902,6 +908,9 @@ public class Container extends Component {
      * @see javax.swing.JComponent#revalidate()
      * @see       LayoutManager
      * @since     JDK1.1
+     * 
+     * @j2sIgnore
+     * 
      */
     public void add(Component comp, Object constraints) {
         addImpl(comp, constraints, -1);
@@ -935,8 +944,39 @@ public class Container extends Component {
      * @see #remove
      * @see LayoutManager
      */
-    public void add(Component comp, Object constraints, int index) {
-       addImpl(comp, constraints, index);
+    public Component add(Component comp, Object constraints, int index) {
+    	/**
+    	 * 
+    	 * add(Component)
+    	 * add(String, Component)
+    	 * add(Component, int)
+    	 * add(Component, Object)
+    	 * add(Component, Object, int)
+    	 * @j2sNative
+    	 * 
+    	 * switch (arguments.length) {
+    	 * case 1:
+    	 *   
+    	 *   constraints = null;
+    	 *   index = -1;
+    	 *   break;
+    	 * case 2:
+    	 *   if (typeof comp == "string") {
+    	 *     index = -1;
+    	 *     var c = constraints;
+    	 *     constraints = comp; 
+    	 *     comp = c;
+    	 *   } else if (typeof constraints == "number") {
+    	 *   	 index = constraints;
+    	 *     constraints = null;
+    	 *   } else {
+    	 *     index = -1;
+    	 *   }
+    	 *   break;   
+    	 * }
+    	 */
+    	{}
+       return addImpl(comp, constraints, index);
     }
 
     /**
@@ -1000,81 +1040,89 @@ public class Container extends Component {
      * @see       LayoutManager2
      * @since     JDK1.1
      */
-    protected void addImpl(Component comp, Object constraints, int index) {
-        synchronized (getTreeLock()) {
-            /* Check for correct arguments:  index in bounds,
-             * comp cannot be one of this container's parents,
-             * and comp cannot be a window.
-             * comp and container must be on the same GraphicsDevice.
-             * if comp is container, all sub-components must be on
-             * same GraphicsDevice.
-             */
-//            GraphicsConfiguration thisGC = this.getGraphicsConfiguration();
-
-            if (index > component.size() || (index < 0 && index != -1)) {
-                throw new IllegalArgumentException(
-                          "illegal component position");
-            }
-            checkAddToSelf(comp);
-            checkNotAWindow(comp);
-//        if (thisGC != null) {
-//            comp.checkGD(thisGC.getDevice().getIDstring());
-//        }
-
-            /* Reparent the component and tidy up the tree's state. */
-            if (comp.parent != null) {
-                comp.parent.remove(comp);
-                    if (index > component.size()) {
-                        throw new IllegalArgumentException("illegal component position");
-                    }
-            }
-
-            //index == -1 means add to the end.
-            if (index == -1) {
-                component.add(comp);
-            } else {
-                component.add(index, comp);
-            }
-            comp.parent = this;
-
-            adjustListeningChildren(AWTEvent.HIERARCHY_EVENT_MASK,
-                comp.numListening(AWTEvent.HIERARCHY_EVENT_MASK));
-            adjustListeningChildren(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
-                comp.numListening(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK));
-            adjustDescendants(comp.countHierarchyMembers());
-
-            invalidateIfValid();
-            if (peer != null) {
-                comp.addNotify();
-            }
-
-            /* Notify the layout manager of the added component. */
-            if (layoutMgr != null) {
-                if (layoutMgr instanceof LayoutManager2) {
-                    ((LayoutManager2)layoutMgr).addLayoutComponent(comp, constraints);
-                } else if (constraints instanceof String) {
-                    layoutMgr.addLayoutComponent((String)constraints, comp);
-                }
-            }
-            if (containerListener != null ||
-                (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0 ||
-                Toolkit.enabledOnToolkit(AWTEvent.CONTAINER_EVENT_MASK)) {
-                ContainerEvent e = new ContainerEvent(this,
-                                     ContainerEvent.COMPONENT_ADDED,
-                                     comp);
-                dispatchEvent(e);
-            }
-
-            comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
-                                       this, HierarchyEvent.PARENT_CHANGED,
-                                       Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-            if (peer != null && layoutMgr == null && isVisible()) {
-                updateCursorImmediately();
-            }
-        }
+    protected Component addImpl(Component comp, Object constraints, int index) {
+    	return addImplSAEM(comp, constraints, index);
     }
 
-    /**
+    protected Component addImplSAEM(Component comp, Object constraints, int index) {
+      synchronized (getTreeLock()) {
+      	
+      	//SwingJS used for all add methods
+      	
+          /* Check for correct arguments:  index in bounds,
+           * comp cannot be one of this container's parents,
+           * and comp cannot be a window.
+           * comp and container must be on the same GraphicsDevice.
+           * if comp is container, all sub-components must be on
+           * same GraphicsDevice.
+           */
+//          GraphicsConfiguration thisGC = this.getGraphicsConfiguration();
+
+          if (index > component.size() || (index < 0 && index != -1)) {
+              throw new IllegalArgumentException(
+                        "illegal component position");
+          }
+          checkAddToSelf(comp);
+          checkNotAWindow(comp);
+//      if (thisGC != null) {
+//          comp.checkGD(thisGC.getDevice().getIDstring());
+//      }
+
+          /* Reparent the component and tidy up the tree's state. */
+          if (comp.parent != null) {
+              comp.parent.remove(comp);
+                  if (index > component.size()) {
+                      throw new IllegalArgumentException("illegal component position");
+                  }
+          }
+
+          //index == -1 means add to the end.
+          if (index == -1) {
+              component.add(comp);
+          } else {
+              component.add(index, comp);
+          }
+          comp.parent = this;
+
+          adjustListeningChildren(AWTEvent.HIERARCHY_EVENT_MASK,
+              comp.numListening(AWTEvent.HIERARCHY_EVENT_MASK));
+          adjustListeningChildren(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+              comp.numListening(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK));
+          adjustDescendants(comp.countHierarchyMembers());
+
+          invalidateIfValid();
+          if (peer != null) {
+              comp.addNotify();
+          }
+
+          /* Notify the layout manager of the added component. */
+          if (layoutMgr != null) {
+              if (layoutMgr instanceof LayoutManager2) {
+                  ((LayoutManager2)layoutMgr).addLayoutComponent(comp, constraints);
+              } else if (constraints instanceof String) {
+                  layoutMgr.addLayoutComponent((String)constraints, comp);
+              }
+          }
+          if (containerListener != null ||
+              (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0 ||
+              Toolkit.enabledOnToolkit(AWTEvent.CONTAINER_EVENT_MASK)) {
+              ContainerEvent e = new ContainerEvent(this,
+                                   ContainerEvent.COMPONENT_ADDED,
+                                   comp);
+              dispatchEvent(e);
+          }
+
+          comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
+                                     this, HierarchyEvent.PARENT_CHANGED,
+                                     Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+          if (peer != null && layoutMgr == null && isVisible()) {
+              updateCursorImmediately();
+          }
+      }
+      return comp;
+		}
+
+		/**
      * Checks that all Components that this Container contains are on
      * the same GraphicsDevice as this Container.  If not, throws an
      * IllegalArgumentException.
@@ -1109,49 +1157,56 @@ public class Container extends Component {
      * @see #validate
      * @see #getComponentCount
      * @since JDK1.1
+     * 
+     * @j2sIgnore
      */
     public void remove(int index) {
-        synchronized (getTreeLock()) {
-            if (index < 0  || index >= component.size()) {
-                throw new ArrayIndexOutOfBoundsException(index);
-            }
-            Component comp = component.get(index);
-            if (peer != null) {
-                comp.removeNotify();
-            }
-            if (layoutMgr != null) {
-                layoutMgr.removeLayoutComponent(comp);
-            }
-
-            adjustListeningChildren(AWTEvent.HIERARCHY_EVENT_MASK,
-                -comp.numListening(AWTEvent.HIERARCHY_EVENT_MASK));
-            adjustListeningChildren(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
-                -comp.numListening(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK));
-            adjustDescendants(-(comp.countHierarchyMembers()));
-
-            comp.parent = null;
-            component.remove(index);
-
-            invalidateIfValid();
-            if (containerListener != null ||
-                (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0 ||
-                Toolkit.enabledOnToolkit(AWTEvent.CONTAINER_EVENT_MASK)) {
-                ContainerEvent e = new ContainerEvent(this,
-                                     ContainerEvent.COMPONENT_REMOVED,
-                                     comp);
-                dispatchEvent(e);
-            }
-
-            comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp,
-                                       this, HierarchyEvent.PARENT_CHANGED,
-                                       Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-            if (peer != null && layoutMgr == null && isVisible()) {
-                updateCursorImmediately();
-            }
-        }
+    	// SwingJS SAEM
+    	removeInt(index);
     }
 
-    /**
+	public void removeInt(int index) {
+  	// SwingJS SAEM
+		synchronized (getTreeLock()) {
+			if (index < 0 || index >= component.size()) {
+				throw new ArrayIndexOutOfBoundsException(index);
+			}
+			Component comp = component.get(index);
+			if (peer != null) {
+				comp.removeNotify();
+			}
+			if (layoutMgr != null) {
+				layoutMgr.removeLayoutComponent(comp);
+			}
+
+			adjustListeningChildren(AWTEvent.HIERARCHY_EVENT_MASK,
+					-comp.numListening(AWTEvent.HIERARCHY_EVENT_MASK));
+			adjustListeningChildren(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK,
+					-comp.numListening(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK));
+			adjustDescendants(-(comp.countHierarchyMembers()));
+
+			comp.parent = null;
+			component.remove(index);
+
+			invalidateIfValid();
+			if (containerListener != null
+					|| (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0
+					|| Toolkit.enabledOnToolkit(AWTEvent.CONTAINER_EVENT_MASK)) {
+				ContainerEvent e = new ContainerEvent(this,
+						ContainerEvent.COMPONENT_REMOVED, comp);
+				dispatchEvent(e);
+			}
+
+			comp.createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, comp, this,
+					HierarchyEvent.PARENT_CHANGED,
+					Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+			if (peer != null && layoutMgr == null && isVisible()) {
+				updateCursorImmediately();
+			}
+		}
+	}
+
+		/**
      * Removes the specified component from this container.
      * This method also notifies the layout manager to remove the
      * component from this container's layout via the
@@ -1171,17 +1226,29 @@ public class Container extends Component {
      * @see #remove(int)
      */
     public void remove(Component comp) {
-        synchronized (getTreeLock()) {
-            if (comp.parent == this)  {
-                int index = component.indexOf(comp);
-                if (index >= 0) {
-                    remove(index);
-                }
-            }
-        }
+    	//SwingJS SAEM
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (typeof comp == "number")
+    	 *   return removeInt(comp);
+    	 */
+    	removeChild(comp);
     }
 
-    /**
+	public void removeChild(Component comp) {
+  	//SwingJS SAEM
+		synchronized (getTreeLock()) {
+			if (comp.parent == this) {
+				int index = component.indexOf(comp);
+				if (index >= 0) {
+					remove(index);
+				}
+			}
+		}
+	}
+
+		/**
      * Removes all the components from this container.
      * This method also notifies the layout manager to remove the
      * components from this container's layout via the
@@ -1230,7 +1297,7 @@ public class Container extends Component {
 
     // Should only be called while holding tree lock
     int numListening(long mask) {
-        int superListening = super.numListening(mask);
+        int superListening = numListeningMask(mask);
 
         if (mask == AWTEvent.HIERARCHY_EVENT_MASK) {
 //            if (eventLog.isLoggable(Level.FINE)) {
@@ -1348,7 +1415,7 @@ public class Container extends Component {
                 changedParent, changeFlags, enabledOnToolkit);
         }
         return listeners +
-            super.createHierarchyEvents(id, changed, changedParent,
+            createHierEventsComp(id, changed, changedParent,
                                         changeFlags, enabledOnToolkit);
     }
 
@@ -1435,7 +1502,7 @@ public class Container extends Component {
             LayoutManager2 lm = (LayoutManager2) layoutMgr;
             lm.invalidateLayout(this);
         }
-        super.invalidate();
+        invalidateComp();
     }
 
     /**
@@ -1455,6 +1522,9 @@ public class Container extends Component {
      * @see Component#invalidate
      * @see javax.swing.JComponent#revalidate()
      * @see #validateTree
+     * 
+     * @j2sOverride
+     * 
      */
     public void validate() {
         /* Avoid grabbing lock unless really necessary. */
@@ -1511,7 +1581,7 @@ public class Container extends Component {
                 ((ContainerPeer)peer).endLayout();
             }
         }
-        super.validate();
+        validateComponent();
     }
 
     /**
@@ -1533,23 +1603,22 @@ public class Container extends Component {
         }
     }
 
-    /**
-     * Sets the font of this container.
-     * @param f The font to become this container's font.
-     * @see Component#getFont
-     * @since JDK1.0
-     */
-    public void setFont(Font f) {
-//        boolean shouldinvalidate = false;
-
-        Font oldfont = getFont();
-        super.setFont(f);
-        Font newfont = getFont();
-        if (newfont != oldfont && (oldfont == null ||
-                                   !oldfont.equals(newfont))) {
-            invalidateTree();
-        }
-    }
+	/**
+	 * Sets the font of this container.
+	 * 
+	 * @param f
+	 *          The font to become this container's font.
+	 * @see Component#getFont
+	 * @since JDK1.0
+	 */
+	public void setFont(Font f) {
+		Font oldfont = getFont();
+		setFontComp(f);
+		Font newfont = getFont();
+		if (newfont != oldfont && (oldfont == null || !oldfont.equals(newfont))) {
+			invalidateTree();
+		}
+	}
 
     /**
      * Returns the preferred size of this container.  If the preferred size has
@@ -1590,16 +1659,11 @@ public class Container extends Component {
             synchronized (getTreeLock()) {
                 prefSize = (layoutMgr != null) ?
                     layoutMgr.preferredLayoutSize(this) :
-                    super.preferredSize();
+                    prefSizeComp();
                 dim = prefSize;
             }
         }
-        if (dim != null){
-            return new Dimension(dim);
-        }
-        else{
-            return dim;
-        }
+        return (dim == null ? null : new Dimension(dim));
     }
 
     /**
@@ -1633,7 +1697,7 @@ public class Container extends Component {
             synchronized (getTreeLock()) {
                 minSize = (layoutMgr != null) ?
                     layoutMgr.minimumLayoutSize(this) :
-                    super.minimumSize();
+                    minimumSize();
                 dim = minSize;
             }
         }
@@ -1678,7 +1742,7 @@ public class Container extends Component {
                     LayoutManager2 lm = (LayoutManager2) layoutMgr;
                     maxSize = lm.maximumLayoutSize(this);
                } else {
-                    maxSize = super.getMaximumSize();
+                    maxSize = getMaxSizeComp();
                }
                dim = maxSize;
             }
@@ -1706,7 +1770,7 @@ public class Container extends Component {
                 xAlign = lm.getLayoutAlignmentX(this);
             }
         } else {
-            xAlign = super.getAlignmentX();
+            xAlign = getAlignmentXComp();
         }
         return xAlign;
     }
@@ -1726,7 +1790,7 @@ public class Container extends Component {
                 yAlign = lm.getLayoutAlignmentY(this);
             }
         } else {
-            yAlign = super.getAlignmentY();
+            yAlign = getAlignmentYComp();
         }
         return yAlign;
     }
@@ -1843,7 +1907,7 @@ public class Container extends Component {
      * @see       #printComponents
      */
     void lightweightPaint(Graphics g) {
-        super.lightweightPaint(g);
+        lwPaintComp(g);
         paintHeavyweightComponents(g);
     }
 
@@ -1987,7 +2051,7 @@ public class Container extends Component {
         if  (listenerType == ContainerListener.class) {
             l = containerListener;
         } else {
-            return super.getListeners(listenerType);
+            return getListenersComp(listenerType);
         }
         return AWTEventMulticaster.getListeners(l, listenerType);
     }
@@ -2004,7 +2068,7 @@ public class Container extends Component {
             }
             return false;
         }
-        return super.eventEnabled(e);
+        return eventTypeEnabled(e.id);
     }
 
     /**
@@ -2019,12 +2083,18 @@ public class Container extends Component {
      * @param e the event
      */
     protected void processEvent(AWTEvent e) {
-        if (e instanceof ContainerEvent) {
-            processContainerEvent((ContainerEvent)e);
-            return;
-        }
-        super.processEvent(e);
+      // SwingJS SAEM
+    	processEventCont(e);
     }
+
+	protected void processEventCont(AWTEvent e) {
+		// SwingJS SAEM
+		if (e instanceof ContainerEvent) {
+			processContainerEvent((ContainerEvent) e);
+			return;
+		}
+		processEventComp(e);
+	}
 
     /**
      * Processes container events occurring on this container by
@@ -2081,7 +2151,7 @@ public class Container extends Component {
             return;
         }
 
-        super.dispatchEventImpl(e);
+        dispatchEventImplComp(e);
 
         synchronized (getTreeLock()) {
             switch (e.getID()) {
@@ -2105,7 +2175,7 @@ public class Container extends Component {
      * @param e the event
      */
     void dispatchEventToSelf(AWTEvent e) {
-        super.dispatchEventImpl(e);
+        dispatchEventImplComp(e);
     }
 
     /**
@@ -2545,10 +2615,10 @@ public class Container extends Component {
     public void addNotify() {
         synchronized (getTreeLock()) {
             // addNotify() on the children may cause proxy event enabling
-            // on this instance, so we first call super.addNotify() and
+            // on this instance, so we first call addNotifyComp() and
             // possibly create an lightweight event dispatcher before calling
             // addNotify() on the children which may be lightweight.
-            super.addNotify();
+            addNotifyComp();
             if (! (peer instanceof LightweightPeer)) {
                 dispatcher = new LightweightDispatcher(this);
             }
@@ -2613,7 +2683,7 @@ public class Container extends Component {
                 dispatcher.dispose();
                 dispatcher = null;
             }
-            super.removeNotify();
+            removeNotifyComp();
 //        }
     }
 
@@ -2777,7 +2847,7 @@ public class Container extends Component {
      * @return    the parameter string of this container
      */
     protected String paramString() {
-        String str = super.paramString();
+        String str = paramStringComp();
         LayoutManager layoutMgr = this.layoutMgr;
         if (layoutMgr != null) {
             str += ",layout=" + layoutMgr.getClass().getName();
@@ -3016,7 +3086,7 @@ public class Container extends Component {
         if (isFocusCycleRoot() && container == this) {
             return true;
         } else {
-            return super.isFocusCycleRoot(container);
+            return isFocusCycleRootComp(container);
         }
     }
 
@@ -3266,7 +3336,7 @@ public class Container extends Component {
             oldProvider = focusTraversalPolicyProvider;
             focusTraversalPolicyProvider = provider;
         }
-        firePropertyChange("focusTraversalPolicyProvider", oldProvider, provider);
+        firePropertyChangeBool("focusTraversalPolicyProvider", oldProvider, provider);
     }
 
     /**
@@ -3345,7 +3415,7 @@ public class Container extends Component {
      * @since 1.4
      */
     public void applyComponentOrientation(ComponentOrientation o) {
-        super.applyComponentOrientation(o);
+        applyCompOrientComp(o);
         synchronized (getTreeLock()) {
             for (int i = 0; i < component.size(); i++) {
                 Component comp = component.get(i);
@@ -3386,9 +3456,12 @@ public class Container extends Component {
      *
      * @see Component#removePropertyChangeListener
      * @see #addPropertyChangeListener(java.lang.String,java.beans.PropertyChangeListener)
+     * 
+     * @j2sIgnore
+     * 
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        super.addPropertyChangeListener(listener);
+        addPropChangeListenerComp(listener);
     }
 
     /**
@@ -3429,7 +3502,7 @@ public class Container extends Component {
      */
     public void addPropertyChangeListener(String propertyName,
                                           PropertyChangeListener listener) {
-        super.addPropertyChangeListener(propertyName, listener);
+        addPropChangeListComp(propertyName, listener);
     }
 
     // Serialization support. A Container is responsible for restoring the

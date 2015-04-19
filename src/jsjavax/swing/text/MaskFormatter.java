@@ -691,7 +691,6 @@ public class MaskFormatter extends DefaultFormatter {
         return true;
     }
 
-    @SuppressWarnings("null")
     /**
      * This method does the following (assuming !getAllowsInvalid()):
      * iterate over the max of the deleted region or the text length, for

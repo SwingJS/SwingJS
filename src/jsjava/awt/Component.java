@@ -589,13 +589,13 @@ protected  transient ComponentPeer peer;
 //
     boolean isPacked = false;
 
-//    /**
-//     * Pseudoparameter for direct Geometry API (setLocation, setBounds setSize
-//     * to signal setBounds what's changing. Should be used under TreeLock.
-//     * This is only needed due to the inability to change the cross-calling
-//     * order of public and deprecated methods.
-//     */
-//    private int boundsOp = ComponentPeer.DEFAULT_OPERATION;
+    /**
+     * Pseudoparameter for direct Geometry API (setLocation, setBounds setSize
+     * to signal setBounds what's changing. Should be used under TreeLock.
+     * This is only needed due to the inability to change the cross-calling
+     * order of public and deprecated methods.
+     */
+    private int boundsOp = ComponentPeer.DEFAULT_OPERATION;
 
     /**
      * Enumeration of the common ways the baseline of a component can
@@ -709,24 +709,24 @@ protected  transient ComponentPeer peer;
      */
     private transient boolean isAddNotifyComplete = false;
 
-//    /**
-//     * Should only be used in subclass getBounds to check that part of bounds
-//     * is actually changing
-//     */
-//    int getBoundsOp() {
-//        assert Thread.holdsLock(getTreeLock());
-//        return boundsOp;
-//    }
+    /**
+     * Should only be used in subclass getBounds to check that part of bounds
+     * is actually changing
+     */
+    int getBoundsOp() {
+        assert Thread.holdsLock(getTreeLock());
+        return boundsOp;
+    }
 
-//    void setBoundsOp(int op) {
-//        assert Thread.holdsLock(getTreeLock());
-//        if (op == ComponentPeer.RESET_OPERATION) {
-//            boundsOp = ComponentPeer.DEFAULT_OPERATION;
-//        } else
-//            if (boundsOp == ComponentPeer.DEFAULT_OPERATION) {
-//                boundsOp = op;
-//            }
-//    }
+    void setBoundsOp(int op) {
+        assert Thread.holdsLock(getTreeLock());
+        if (op == ComponentPeer.RESET_OPERATION) {
+            boundsOp = ComponentPeer.DEFAULT_OPERATION;
+        } else
+            if (boundsOp == ComponentPeer.DEFAULT_OPERATION) {
+                boundsOp = op;
+            }
+    }
 
     // Whether this Component has had the background erase flag
     // specified via SunToolkit.disableBackgroundErase(). This is
@@ -864,7 +864,7 @@ protected  transient ComponentPeer peer;
             nameExplicitlySet = true;
         }
       	System.out.println("Component setName " + this);
-        firePropertyChange("name", oldName, name);
+        firePropertyChangeObject("name", oldName, name);
     }
 
     /**
@@ -1453,12 +1453,20 @@ protected  transient ComponentPeer peer;
     public void setVisible(boolean b) {
     	show(b);
     }
-
+    
     /**
      * @deprecated As of JDK version 1.1,
      * replaced by <code>setVisible(boolean)</code>.
+     * 
+     * @j2sIgnore
+     * 
      */
     public void show(boolean b) {
+    	  /**
+    	   * @j2sNative
+    	   * 
+    	   * (arguments.length == 0) && (b = true);
+    	   */
         if (b) {
             show();
         } else {
@@ -1594,7 +1602,7 @@ protected  transient ComponentPeer peer;
 //        }
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
-        firePropertyChange("foreground", oldColor, c);
+        firePropertyChangeObject("foreground", oldColor, c);
     }
 
     /**
@@ -1654,7 +1662,7 @@ protected  transient ComponentPeer peer;
 //        }
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
-        firePropertyChange("background", oldColor, c);
+        firePropertyChangeObject("background", oldColor, c);
     }
 
     /**
@@ -1705,33 +1713,38 @@ protected  transient ComponentPeer peer;
      *       bound: true
      */
     public void setFont(Font f) {
-        Font oldFont, newFont;
-        oldFont = font;
-        newFont = font = f;
-        synchronized(getTreeLock()) {
-            synchronized (this) {
-            }
-            ComponentPeer peer = this.peer;
-            if (peer != null) {
-                f = getFont();
-                if (f != null) {
-                    peer.setFont(f);
-                    peerFont = f;
-                }
-            }
-        }
-        // This is a bound property, so report the change to
-        // any registered listeners.  (Cheap if there are none.)
-        firePropertyChange("font", oldFont, newFont);
-
-        // This could change the preferred size of the Component.
-        // Fix for 6213660. Should compare old and new fonts and do not
-        // call invalidate() if they are equal.
-        if (f != oldFont && (oldFont == null ||
-                                      !oldFont.equals(f))) {
-            invalidateIfValid();
-        }
+    	// SwingJS SAEM
+    	setFontComp(f);
     }
+
+	protected void setFontComp(Font f) {
+		// SwingJS SAEM
+		Font oldFont, newFont;
+		oldFont = font;
+		newFont = font = f;
+		synchronized (getTreeLock()) {
+			synchronized (this) {
+			}
+			ComponentPeer peer = this.peer;
+			if (peer != null) {
+				f = getFont();
+				if (f != null) {
+					peer.setFont(f);
+					peerFont = f;
+				}
+			}
+		}
+		// This is a bound property, so report the change to
+		// any registered listeners. (Cheap if there are none.)
+		firePropertyChangeObject("font", oldFont, newFont);
+
+		// This could change the preferred size of the Component.
+		// Fix for 6213660. Should compare old and new fonts and do not
+		// call invalidate() if they are equal.
+		if (f != oldFont && (oldFont == null || !oldFont.equals(f))) {
+			invalidateIfValid();
+		}
+	}
 
     /**
      * Returns whether the font has been explicitly set for this Component. If
@@ -1783,7 +1796,7 @@ protected  transient ComponentPeer peer;
 
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
-        firePropertyChange("locale", oldValue, l);
+        firePropertyChangeObject("locale", oldValue, l);
 
         // This could change the preferred size of the Component.
         invalidateIfValid();
@@ -1903,7 +1916,7 @@ protected  transient ComponentPeer peer;
      */
     public void setLocation(int x, int y) {
 //        synchronized(getTreeLock()) {
-//            setBoundsOp(ComponentPeer.SET_LOCATION);
+            setBoundsOp(ComponentPeer.SET_LOCATION);
             setBounds(x, y, width, height);
 //        }
     }
@@ -1958,6 +1971,18 @@ protected  transient ComponentPeer peer;
      * @since JDK1.1
      */
     public void setSize(int width, int height) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (arguments.length == 1) {
+    	 *   var d = arguments[0];
+    	 *   width = d.width;
+    	 *   height = d.height;
+    	 * 
+    	 * }
+    	 */
+    	{
+    	}
         resize(width, height);
     }
 
@@ -1968,7 +1993,7 @@ protected  transient ComponentPeer peer;
     @Deprecated
     public void resize(int width, int height) {
 //        synchronized(getTreeLock()) {
-//            setBoundsOp(ComponentPeer.SET_SIZE);
+            setBoundsOp(ComponentPeer.SET_SIZE);
             setBounds(x, y, width, height);
 //        }
     }
@@ -1981,6 +2006,9 @@ protected  transient ComponentPeer peer;
      * @see #setSize
      * @see #setBounds
      * @since JDK1.1
+     * 
+     * @j2sIgnore
+     * 
      */
     public void setSize(Dimension d) {
         setSize(d.width, d.height);
@@ -2017,127 +2045,140 @@ protected  transient ComponentPeer peer;
      * @since JDK1.1
      */
     public void setBounds(int x, int y, int width, int height) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (arguments.length == 1) {
+    	 *   var r = arguments[0];
+    	 *   x = r.x;
+    	 *   y = r.y;
+    	 *   width = r.width;
+    	 *   height = r.height;
+    	 * 
+    	 * }
+    	 */
+    	{}
       reshape(x, y, width, height);
   }
 
-  /**
-   * @deprecated As of JDK version 1.1,
-   * replaced by <code>setBounds(int, int, int, int)</code>.
-   */
-  @Deprecated
-  public void reshape(int x, int y, int width, int height) {
-//            try {
-//                setBoundsOp(ComponentPeer.SET_BOUNDS);
-                boolean resized = (this.width != width) || (this.height != height);
-                boolean moved = (this.x != x) || (this.y != y);
-                if (!resized && !moved) {
-                    return;
-                }
-//                int oldX = this.x;
-//                int oldY = this.y;
-//                int oldWidth = this.width;
-//                int oldHeight = this.height;
-                this.x = x;
-                this.y = y;
-                this.width = width;
-                this.height = height;
+	/**
+	 * @deprecated As of JDK version 1.1, replaced by
+	 *             <code>setBounds(int, int, int, int)</code>.
+	 */
+	@Deprecated
+	public void reshape(int x, int y, int width, int height) {
+		try {
+			setBoundsOp(ComponentPeer.SET_BOUNDS);
+			boolean resized = (this.width != width) || (this.height != height);
+			boolean moved = (this.x != x) || (this.y != y);
+			if (!resized && !moved) {
+				return;
+			}
+			int oldX = this.x;
+			int oldY = this.y;
+			int oldWidth = this.width;
+			int oldHeight = this.height;
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
 
-                if (resized) {
-                    isPacked = false;
-                }
+			if (resized) {
+				isPacked = false;
+			}
 
-//                boolean needNotify = true;
-                mixOnReshaping();
-//                if (peer != null) {
-//                    // LightwightPeer is an empty stub so can skip peer.reshape
-//                    if (!(peer instanceof LightweightPeer)) {
-//                        reshapeNativePeer(x, y, width, height, getBoundsOp());
-//                        // Check peer actualy changed coordinates
-//                        resized = (oldWidth != this.width) || (oldHeight != this.height);
-//                        moved = (oldX != this.x) || (oldY != this.y);
-//                        // fix for 5025858: do not send ComponentEvents for toplevel
-//                        // windows here as it is done from peer or native code when
-//                        // the window is really resized or moved, otherwise some
-//                        // events may be sent twice
-//                        if (this instanceof Window) {
-//                            needNotify = false;
-//                        }
-//                    }
-//                    if (resized) {
-//                        invalidate();
-//                    }
-//                    if (parent != null) {
-//                        parent.invalidateIfValid();
-//                    }
-//                }
-//                if (needNotify) {
-//                    notifyNewBounds(resized, moved);
-//                }
-//                repaintParentIfNeeded(oldX, oldY, oldWidth, oldHeight);
-//            } finally {
-//                setBoundsOp(ComponentPeer.RESET_OPERATION);
-//            }
-//        }
+			boolean needNotify = true;
+			mixOnReshaping();
+			if (peer != null) {
+				// LightwightPeer is an empty stub so can skip peer.reshape
+				if (!(peer instanceof LightweightPeer)) {
+					reshapeNativePeer(x, y, width, height, getBoundsOp());
+					// Check peer actually changed coordinates
+					resized = (oldWidth != this.width) || (oldHeight != this.height);
+					moved = (oldX != this.x) || (oldY != this.y);
+					// fix for 5025858: do not send ComponentEvents for toplevel
+					// windows here as it is done from peer or native code when
+					// the window is really resized or moved, otherwise some
+					// events may be sent twice
+					if (this instanceof Window) {
+						needNotify = false;
+					}
+				}
+				if (resized) {
+					invalidate();
+				}
+				if (parent != null) {
+					parent.invalidateIfValid();
+				}
+			}
+			if (needNotify) {
+				notifyNewBounds(resized, moved);
+			}
+			repaintParentIfNeeded(oldX, oldY, oldWidth, oldHeight);
+		} finally {
+			setBoundsOp(ComponentPeer.RESET_OPERATION);
+		}
+	}
+    //}
+
+    private void repaintParentIfNeeded(int oldX, int oldY, int oldWidth,
+                                       int oldHeight)
+    {
+        if (parent != null && peer instanceof LightweightPeer && isShowing()) {
+            // Have the parent redraw the area this component occupied.
+            parent.repaint(oldX, oldY, oldWidth, oldHeight);
+            // Have the parent redraw the area this component *now* occupies.
+            repaint();
+        }
     }
 
-//    private void repaintParentIfNeeded(int oldX, int oldY, int oldWidth,
-//                                       int oldHeight)
-//    {
-//        if (parent != null && peer instanceof LightweightPeer && isShowing()) {
-//            // Have the parent redraw the area this component occupied.
-//            parent.repaint(oldX, oldY, oldWidth, oldHeight);
-//            // Have the parent redraw the area this component *now* occupies.
-//            repaint();
-//        }
-//    }
-//
-//    private void reshapeNativePeer(int x, int y, int width, int height, int op) {
-//        // native peer might be offset by more than direct
-//        // parent since parent might be lightweight.
-//        int nativeX = x;
-//        int nativeY = y;
-//        for (Component c = parent;
-//             (c != null) && (c.peer instanceof LightweightPeer);
-//             c = c.parent)
-//        {
-//            nativeX += c.x;
-//            nativeY += c.y;
-//        }
-//        peer.setBounds(nativeX, nativeY, width, height, op);
-//    }
-//
-//
-//    private void notifyNewBounds(boolean resized, boolean moved) {
-//        if (componentListener != null
-//            || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
-//            || Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK))
-//            {
-//                if (resized) {
-//                    ComponentEvent e = new ComponentEvent(this,
-//                                                          ComponentEvent.COMPONENT_RESIZED);
-//                    Toolkit.getEventQueue().postEvent(e);
-//                }
-//                if (moved) {
-//                    ComponentEvent e = new ComponentEvent(this,
-//                                                          ComponentEvent.COMPONENT_MOVED);
-//                    Toolkit.getEventQueue().postEvent(e);
-//                }
-//            } else {
-//                if (this instanceof Container && ((Container)this).countComponents() > 0) {
-//                    boolean enabledOnToolkit =
-//                        Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK);
-//                    if (resized) {
-//
-//                        ((Container)this).createChildHierarchyEvents(
-//                                                                     HierarchyEvent.ANCESTOR_RESIZED, 0, enabledOnToolkit);
-//                    }
-//                    if (moved) {
-//                        ((Container)this).createChildHierarchyEvents(
-//                                                                     HierarchyEvent.ANCESTOR_MOVED, 0, enabledOnToolkit);
-//                    }
-//                }
-//                }
-//    }
+    private void reshapeNativePeer(int x, int y, int width, int height, int op) {
+        // native peer might be offset by more than direct
+        // parent since parent might be lightweight.
+        int nativeX = x;
+        int nativeY = y;
+        for (Component c = parent;
+             (c != null) && (c.peer instanceof LightweightPeer);
+             c = c.parent)
+        {
+            nativeX += c.x;
+            nativeY += c.y;
+        }
+        peer.setBounds(nativeX, nativeY, width, height, op);
+    }
+
+
+    private void notifyNewBounds(boolean resized, boolean moved) {
+        if (componentListener != null
+            || (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
+            || Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK))
+            {
+                if (resized) {
+                    ComponentEvent e = new ComponentEvent(this,
+                                                          ComponentEvent.COMPONENT_RESIZED);
+                    Toolkit.getEventQueue().postEvent(e);
+                }
+                if (moved) {
+                    ComponentEvent e = new ComponentEvent(this,
+                                                          ComponentEvent.COMPONENT_MOVED);
+                    Toolkit.getEventQueue().postEvent(e);
+                }
+            } else {
+                if (this instanceof Container && ((Container)this).countComponents() > 0) {
+                    boolean enabledOnToolkit =
+                        Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK);
+                    if (resized) {
+
+                        ((Container)this).createChildHierarchyEvents(
+                                                                     HierarchyEvent.ANCESTOR_RESIZED, 0, enabledOnToolkit);
+                    }
+                    if (moved) {
+                        ((Container)this).createChildHierarchyEvents(
+                                                                     HierarchyEvent.ANCESTOR_MOVED, 0, enabledOnToolkit);
+                    }
+                }
+                }
+    }
 
     /**
      * Moves and resizes this component to conform to the new
@@ -2152,6 +2193,9 @@ protected  transient ComponentPeer peer;
      * @see       #setSize(int, int)
      * @see       #setSize(Dimension)
      * @since     JDK1.1
+     * 
+     * @j2sIgnore
+     * 
      */
     public void setBounds(Rectangle r) {
         setBounds(r.x, r.y, r.width, r.height);
@@ -2343,20 +2387,18 @@ protected  transient ComponentPeer peer;
      * @since 1.5
      */
     public void setPreferredSize(Dimension preferredSize) {
-        Dimension old;
-        // If the preferred size was set, use it as the old value, otherwise
-        // use null to indicate we didn't previously have a set preferred
-        // size.
-        if (prefSizeSet) {
-            old = this.prefSize;
-        }
-        else {
-            old = null;
-        }
-        this.prefSize = preferredSize;
-        prefSizeSet = (preferredSize != null);
-        firePropertyChange("preferredSize", old, preferredSize);
+    	setPrefSizeComp(preferredSize);
     }
+
+	public void setPrefSizeComp(Dimension preferredSize) {
+		// If the preferred size was set, use it as the old value, otherwise
+		// use null to indicate we didn't previously have a set preferred
+		// size.
+		Dimension old = (prefSizeSet ? prefSize : null);
+		prefSize = preferredSize;
+		prefSizeSet = (preferredSize != null);
+		firePropertyChangeObject("preferredSize", old, preferredSize);
+	}
 
 
     /**
@@ -2383,6 +2425,10 @@ protected  transient ComponentPeer peer;
     }
     
     protected Dimension preferredSize() {
+    	return prefSizeComp();
+    }
+    
+    protected Dimension prefSizeComp() {
         /* Avoid grabbing the lock if a reasonable cached size value
          * is available.
          */
@@ -2423,7 +2469,7 @@ protected  transient ComponentPeer peer;
         }
         this.minSize = minimumSize;
         minSizeSet = (minimumSize != null);
-        firePropertyChange("minimumSize", old, minimumSize);
+        firePropertyChangeObject("minimumSize", old, minimumSize);
     }
 
     /**
@@ -2491,7 +2537,7 @@ protected  transient ComponentPeer peer;
         }
         this.maxSize = maximumSize;
         maxSizeSet = (maximumSize != null);
-        firePropertyChange("maximumSize", old, maximumSize);
+        firePropertyChangeObject("maximumSize", old, maximumSize);
     }
 
     /**
@@ -2514,13 +2560,19 @@ protected  transient ComponentPeer peer;
      * @see LayoutManager
      */
     public Dimension getMaximumSize() {
-        if (isMaximumSizeSet()) {
-            return new Dimension(maxSize);
-        }
-        return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+    	// SwingJS SAEM
+    	return getMaxSizeComp();
     }
 
-    /**
+	protected Dimension getMaxSizeComp() {
+		// SwingJS SAEM
+		if (isMaximumSizeSet()) {
+			return new Dimension(maxSize);
+		}
+		return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+	}
+
+		/**
      * Returns the alignment along the x axis.  This specifies how
      * the component would like to be aligned relative to other
      * components.  The value should be a number between 0 and 1
@@ -2528,6 +2580,11 @@ protected  transient ComponentPeer peer;
      * the furthest away from the origin, 0.5 is centered, etc.
      */
     public float getAlignmentX() {
+    	// SwingJS SAEM
+    	return getAlignmentXComp();
+    }
+    protected float getAlignmentXComp() {
+    	// SwingJS SAEM
         return CENTER_ALIGNMENT;
     }
 
@@ -2539,6 +2596,11 @@ protected  transient ComponentPeer peer;
      * the furthest away from the origin, 0.5 is centered, etc.
      */
     public float getAlignmentY() {
+    	// SwingJS SAEM
+    	return getAlignmentYComp();
+    }
+    protected float getAlignmentYComp() {
+    	// SwingJS SAEM
         return CENTER_ALIGNMENT;
     }
 
@@ -2628,27 +2690,31 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public void validate() {
-        synchronized (getTreeLock()) {
-            ComponentPeer peer = this.peer;
-            boolean wasValid = isValid();
-            if (!wasValid && peer != null) {
-                Font newfont = getFont();
-                Font oldfont = peerFont;
-                if (newfont != oldfont && (oldfont == null
-                                           || !oldfont.equals(newfont))) {
-                    peer.setFont(newfont);
-                    peerFont = newfont;
-                }
-                peer.layout();
-            }
-            valid = true;
-            System.out.println("C is valid now: " + this);
-            if (!wasValid) {
-                mixOnValidating();
-            }
-        }
+    	// SwingJS SAEM
+    	validateComponent();
     }
 
+	public void validateComponent() {
+  	// SwingJS SAEM
+		synchronized (getTreeLock()) {
+			ComponentPeer peer = this.peer;
+			boolean wasValid = isValid();
+			if (!wasValid && peer != null) {
+				Font newfont = getFont();
+				Font oldfont = peerFont;
+				if (newfont != oldfont && (oldfont == null || !oldfont.equals(newfont))) {
+					peer.setFont(newfont);
+					peerFont = newfont;
+				}
+				peer.layout();
+			}
+			valid = true;
+			System.out.println("C is valid now: " + this);
+			if (!wasValid) {
+				mixOnValidating();
+			}
+		}
+	}
     /**
      * Invalidates this component.  This component and all parents
      * above it are marked as needing to be laid out.  This method can
@@ -2659,6 +2725,12 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public void invalidate() {
+    	// SwingJS SAEM
+    	invalidateComp();
+    }
+    
+    protected void invalidateComp() {
+    	// SwingJS SAEM
 //        synchronized (getTreeLock()) {
             /* Nullify cached layout and size information.
              * For efficiency, propagate invalidate() upwards only if
@@ -2961,10 +3033,16 @@ protected  transient ComponentPeer peer;
      * @see       #paintAll
      */
     void lightweightPaint(Graphics g) {
-        paint(g);
+    	// SwingJS SAEM
+    	lwPaintComp(g);
     }
 
-    /**
+    protected void lwPaintComp(Graphics g) {
+    	// SwingJS SAEM
+      paint(g);
+		}
+
+		/**
      * Paints all the heavyweight subcomponents.
      */
     void paintHeavyweightComponents(Graphics g) {
@@ -3689,251 +3767,258 @@ protected  transient ComponentPeer peer;
     }
 
     void dispatchEventImpl(AWTEvent e) {
-        int id = e.getID();
+    	dispatchEventImplComp(e);
+    }
+    
+	protected void dispatchEventImplComp(AWTEvent e) {
+		int id = e.getID();
 
-        // Check that this component belongs to this app-context
-//        AppContext compContext = appContext;
-//        if (compContext != null && !compContext.equals(AppContext.getAppContext())) {
-////            if (eventLog.isLoggable(Level.FINE)) {
-////                eventLog.log(Level.FINE, "Event " + e + " is being dispatched on the wrong AppContext");
-////            }
-//        }
+		// Check that this component belongs to this app-context
+		// AppContext compContext = appContext;
+		// if (compContext != null &&
+		// !compContext.equals(AppContext.getAppContext())) {
+		// // if (eventLog.isLoggable(Level.FINE)) {
+		// // eventLog.log(Level.FINE, "Event " + e +
+		// " is being dispatched on the wrong AppContext");
+		// // }
+		// }
 
-//        if (eventLog.isLoggable(Level.FINEST)) {
-//            eventLog.log(Level.FINEST, "{0}", String.valueOf(e));
-//        }
+		// if (eventLog.isLoggable(Level.FINEST)) {
+		// eventLog.log(Level.FINEST, "{0}", String.valueOf(e));
+		// }
 
-        /*
-         * 0. Set timestamp and modifiers of current event.
-         */
-        EventQueue.setCurrentEventAndMostRecentTime(e);
+		/*
+		 * 0. Set timestamp and modifiers of current event.
+		 */
+		EventQueue.setCurrentEventAndMostRecentTime(e);
 
-        /*
-         * 1. Pre-dispatchers. Do any necessary retargeting/reordering here
-         *    before we notify AWTEventListeners.
-         */
+		/*
+		 * 1. Pre-dispatchers. Do any necessary retargeting/reordering here before
+		 * we notify AWTEventListeners.
+		 */
 
-//        if (e instanceof SunDropTargetEvent) {
-//            ((SunDropTargetEvent)e).dispatch();
-//            return;
-//        }
+		// if (e instanceof SunDropTargetEvent) {
+		// ((SunDropTargetEvent)e).dispatch();
+		// return;
+		// }
 
-        if (!e.focusManagerIsDispatching) {
-            // Invoke the private focus retargeting method which provides
-            // lightweight Component support
-            if (e.isPosted) {
-//                e = KeyboardFocusManager.retargetFocusEvent(e);
-                e.isPosted = true;
-            }
+		if (!e.focusManagerIsDispatching) {
+			// Invoke the private focus retargeting method which provides
+			// lightweight Component support
+			if (e.isPosted) {
+				// e = KeyboardFocusManager.retargetFocusEvent(e);
+				e.isPosted = true;
+			}
 
-            // Now, with the event properly targeted to a lightweight
-            // descendant if necessary, invoke the public focus retargeting
-            // and dispatching function
-//            if (KeyboardFocusManager.getCurrentKeyboardFocusManager().
-//                dispatchEvent(e))
-//            {
-//                return;
-//            }
-        }
-//        if ((e instanceof FocusEvent) && focusLog.isLoggable(Level.FINEST)) {
-//            focusLog.log(Level.FINEST, "" + e);
-//        }
-        // MouseWheel may need to be retargeted here so that
-        // AWTEventListener sees the event go to the correct
-        // Component.  If the MouseWheelEvent needs to go to an ancestor,
-        // the event is dispatched to the ancestor, and dispatching here
-        // stops.
-//        if (id == MouseEvent.MOUSE_WHEEL &&
-//            (!eventTypeEnabled(id)) &&
-//            (peer != null && !peer.handlesWheelScrolling()) &&
-//            (dispatchMouseWheelToAncestor((MouseWheelEvent)e)))
-//        {
-//            return;
-//        }
+			// Now, with the event properly targeted to a lightweight
+			// descendant if necessary, invoke the public focus retargeting
+			// and dispatching function
+			// if (KeyboardFocusManager.getCurrentKeyboardFocusManager().
+			// dispatchEvent(e))
+			// {
+			// return;
+			// }
+		}
+		// if ((e instanceof FocusEvent) && focusLog.isLoggable(Level.FINEST)) {
+		// focusLog.log(Level.FINEST, "" + e);
+		// }
+		// MouseWheel may need to be retargeted here so that
+		// AWTEventListener sees the event go to the correct
+		// Component. If the MouseWheelEvent needs to go to an ancestor,
+		// the event is dispatched to the ancestor, and dispatching here
+		// stops.
+		// if (id == MouseEvent.MOUSE_WHEEL &&
+		// (!eventTypeEnabled(id)) &&
+		// (peer != null && !peer.handlesWheelScrolling()) &&
+		// (dispatchMouseWheelToAncestor((MouseWheelEvent)e)))
+		// {
+		// return;
+		// }
 
-        /*
-         * 2. Allow the Toolkit to pass this to AWTEventListeners.
-         */
-//        Toolkit toolkit = Toolkit.getDefaultToolkit();
-//        toolkit.notifyAWTEventListeners(e);
+		/*
+		 * 2. Allow the Toolkit to pass this to AWTEventListeners.
+		 */
+		// Toolkit toolkit = Toolkit.getDefaultToolkit();
+		// toolkit.notifyAWTEventListeners(e);
 
+		/*
+		 * 3. If no one has consumed a key event, allow the KeyboardFocusManager to
+		 * process it.
+		 */
+		if (!e.isConsumed()) {
+			if (e instanceof KeyEvent) {
+				// KeyboardFocusManager.getCurrentKeyboardFocusManager().
+				// processKeyEvent(this, (KeyEvent)e);
+				if (e.isConsumed()) {
+					return;
+				}
+			}
+		}
 
-        /*
-         * 3. If no one has consumed a key event, allow the
-         *    KeyboardFocusManager to process it.
-         */
-        if (!e.isConsumed()) {
-            if (e instanceof KeyEvent) {
-//                KeyboardFocusManager.getCurrentKeyboardFocusManager().
-//                    processKeyEvent(this, (KeyEvent)e);
-                if (e.isConsumed()) {
-                    return;
-                }
-            }
-        }
+		/*
+		 * 4. Allow input methods to process the event
+		 */
+		if (areInputMethodsEnabled()) {
+			// We need to pass on InputMethodEvents since some host
+			// input method adapters send them through the Java
+			// event queue instead of directly to the component,
+			// and the input context also handles the Java composition window
+			if (
+			// ((e instanceof InputMethodEvent) && !(this instanceof CompositionArea))
+			// ||
+			// Otherwise, we only pass on input and focus events, because
+			// a) input methods shouldn't know about semantic or component-level
+			// events
+			// b) passing on the events takes time
+			// c) isConsumed() is always true for semantic events.
+			(e instanceof InputEvent) || (e instanceof FocusEvent)) {
+				// InputContext inputContext = getInputContext();
+				//
+				//
+				// if (inputContext != null) {
+				// inputContext.dispatchEvent(e);
+				// if (e.isConsumed()) {
+				// // if ((e instanceof FocusEvent) &&
+				// focusLog.isLoggable(Level.FINEST)) {
+				// // focusLog.log(Level.FINEST, "3579: Skipping " + e);
+				// // }
+				// return;
+				// }
+				// }
+			}
+		} else {
+			// When non-clients get focus, we need to explicitly disable the native
+			// input method. The native input method is actually not disabled when
+			// the active/passive/peered clients loose focus.
+			if (id == FocusEvent.FOCUS_GAINED) {
+				// InputContext inputContext = getInputContext();
+				// if (inputContext != null && inputContext instanceof
+				// sun.awt.im.InputContext) {
+				// ((sun.awt.im.InputContext)inputContext).disableNativeIM();
+				// }
+			}
+		}
 
-        /*
-         * 4. Allow input methods to process the event
-         */
-        if (areInputMethodsEnabled()) {
-            // We need to pass on InputMethodEvents since some host
-            // input method adapters send them through the Java
-            // event queue instead of directly to the component,
-            // and the input context also handles the Java composition window
-            if(
-//            		((e instanceof InputMethodEvent) && !(this instanceof CompositionArea))
-//               ||
-               // Otherwise, we only pass on input and focus events, because
-               // a) input methods shouldn't know about semantic or component-level events
-               // b) passing on the events takes time
-               // c) isConsumed() is always true for semantic events.
-               (e instanceof InputEvent) || (e instanceof FocusEvent)) {
-//                InputContext inputContext = getInputContext();
-//
-//
-//                if (inputContext != null) {
-//                    inputContext.dispatchEvent(e);
-//                    if (e.isConsumed()) {
-////                        if ((e instanceof FocusEvent) && focusLog.isLoggable(Level.FINEST)) {
-////                            focusLog.log(Level.FINEST, "3579: Skipping " + e);
-////                        }
-//                        return;
-//                    }
-//                }
-            }
-        } else {
-            // When non-clients get focus, we need to explicitly disable the native
-            // input method. The native input method is actually not disabled when
-            // the active/passive/peered clients loose focus.
-            if (id == FocusEvent.FOCUS_GAINED) {
-//                InputContext inputContext = getInputContext();
-//                if (inputContext != null && inputContext instanceof sun.awt.im.InputContext) {
-//                    ((sun.awt.im.InputContext)inputContext).disableNativeIM();
-//                }
-            }
-        }
+		/*
+		 * 5. Pre-process any special events before delivery
+		 */
+		switch (id) {
+		// Handling of the PAINT and UPDATE events is now done in the
+		// peer's handleEvent() method so the background can be cleared
+		// selectively for non-native components on Windows only.
+		// - Fred.Ecks@Eng.sun.com, 5-8-98
 
+		case KeyEvent.KEY_PRESSED:
+		case KeyEvent.KEY_RELEASED:
+			Container p = (Container) ((this instanceof Container) ? this : parent);
+			if (p != null) {
+				p.preProcessKeyEvent((KeyEvent) e);
+			}
+			break;
 
-        /*
-         * 5. Pre-process any special events before delivery
-         */
-        switch(id) {
-            // Handling of the PAINT and UPDATE events is now done in the
-            // peer's handleEvent() method so the background can be cleared
-            // selectively for non-native components on Windows only.
-            // - Fred.Ecks@Eng.sun.com, 5-8-98
+		case WindowEvent.WINDOW_CLOSING:
+			// if (toolkit instanceof WindowClosingListener) {
+			// windowClosingException = ((WindowClosingListener)
+			// toolkit).windowClosingNotify((WindowEvent)e);
+			// if (checkWindowClosingException()) {
+			// return;
+			// }
+			// }
+			break;
 
-          case KeyEvent.KEY_PRESSED:
-          case KeyEvent.KEY_RELEASED:
-              Container p = (Container)((this instanceof Container) ? this : parent);
-              if (p != null) {
-                  p.preProcessKeyEvent((KeyEvent)e);
-              }
-              break;
+		default:
+			break;
+		}
 
-          case WindowEvent.WINDOW_CLOSING:
-//              if (toolkit instanceof WindowClosingListener) {
-//                  windowClosingException = ((WindowClosingListener)
-//                                            toolkit).windowClosingNotify((WindowEvent)e);
-//                  if (checkWindowClosingException()) {
-//                      return;
-//                  }
-//              }
-              break;
+		/*
+		 * 6. Deliver event for normal processing
+		 */
+		if (newEventsOnly) {
+			// Filtering needs to really be moved to happen at a lower
+			// level in order to get maximum performance gain; it is
+			// here temporarily to ensure the API spec is honored.
+			//
+			if (eventEnabled(e)) {
+				processEvent(e);
+			}
+		} else if (id == MouseEvent.MOUSE_WHEEL) {
+			// newEventsOnly will be false for a listenerless ScrollPane, but
+			// MouseWheelEvents still need to be dispatched to it so scrolling
+			// can be done.
+			autoProcessMouseWheel((MouseWheelEvent) e);
+		} else if (!(e instanceof MouseEvent && !postsOldMouseEvents())) {
+			// //
+			// // backward compatibility
+			// //
+			// Event olde = e.convertToOld();
+			// if (olde != null) {
+			// int key = olde.key;
+			// int modifiers = olde.modifiers;
+			//
+			// postEvent(olde);
+			// if (olde.isConsumed()) {
+			// e.consume();
+			// }
+			// // if target changed key or modifier values, copy them
+			// // back to original event
+			// //
+			// switch(olde.id) {
+			// case Event.KEY_PRESS:
+			// case Event.KEY_RELEASE:
+			// case Event.KEY_ACTION:
+			// case Event.KEY_ACTION_RELEASE:
+			// if (olde.key != key) {
+			// ((KeyEvent)e).setKeyChar(olde.getKeyEventChar());
+			// }
+			// if (olde.modifiers != modifiers) {
+			// ((KeyEvent)e).setModifiers(olde.modifiers);
+			// }
+			// break;
+			// default:
+			// break;
+			// }
+			// }
+		}
 
-          default:
-              break;
-        }
+		/*
+		 * 8. Special handling for 4061116 : Hook for browser to close modal
+		 * dialogs.
+		 */
+		if (id == WindowEvent.WINDOW_CLOSING && !e.isConsumed()) {
+			// if (toolkit instanceof WindowClosingListener) {
+			// windowClosingException =
+			// ((WindowClosingListener)toolkit).
+			// windowClosingDelivered((WindowEvent)e);
+			// if (checkWindowClosingException()) {
+			// return;
+			// }
+			// }
+		}
 
-        /*
-         * 6. Deliver event for normal processing
-         */
-        if (newEventsOnly) {
-            // Filtering needs to really be moved to happen at a lower
-            // level in order to get maximum performance gain;  it is
-            // here temporarily to ensure the API spec is honored.
-            //
-            if (eventEnabled(e)) {
-                processEvent(e);
-            }
-        } else if (id == MouseEvent.MOUSE_WHEEL) {
-            // newEventsOnly will be false for a listenerless ScrollPane, but
-            // MouseWheelEvents still need to be dispatched to it so scrolling
-            // can be done.
-            autoProcessMouseWheel((MouseWheelEvent)e);
-        } else if (!(e instanceof MouseEvent && !postsOldMouseEvents())) {
-//            //
-//            // backward compatibility
-//            //
-//            Event olde = e.convertToOld();
-//            if (olde != null) {
-//                int key = olde.key;
-//                int modifiers = olde.modifiers;
-//
-//                postEvent(olde);
-//                if (olde.isConsumed()) {
-//                    e.consume();
-//                }
-//                // if target changed key or modifier values, copy them
-//                // back to original event
-//                //
-//                switch(olde.id) {
-//                  case Event.KEY_PRESS:
-//                  case Event.KEY_RELEASE:
-//                  case Event.KEY_ACTION:
-//                  case Event.KEY_ACTION_RELEASE:
-//                      if (olde.key != key) {
-//                          ((KeyEvent)e).setKeyChar(olde.getKeyEventChar());
-//                      }
-//                      if (olde.modifiers != modifiers) {
-//                          ((KeyEvent)e).setModifiers(olde.modifiers);
-//                      }
-//                      break;
-//                  default:
-//                      break;
-//                }
-//            }
-        }
-
-        /*
-         * 8. Special handling for 4061116 : Hook for browser to close modal
-         *    dialogs.
-         */
-        if (id == WindowEvent.WINDOW_CLOSING && !e.isConsumed()) {
-//            if (toolkit instanceof WindowClosingListener) {
-//                windowClosingException =
-//                    ((WindowClosingListener)toolkit).
-//                    windowClosingDelivered((WindowEvent)e);
-//                if (checkWindowClosingException()) {
-//                    return;
-//                }
-//            }
-        }
-
-        /*
-         * 9. Allow the peer to process the event.
-         * Except KeyEvents, they will be processed by peer after
-         * all KeyEventPostProcessors
-         * (see DefaultKeyboardFocusManager.dispatchKeyEvent())
-         */
-        if (!(e instanceof KeyEvent)) {
-//            ComponentPeer tpeer = peer;
-//            if (e instanceof FocusEvent && (tpeer == null || tpeer instanceof LightweightPeer)) {
-//                // if focus owner is lightweight then its native container
-//                // processes event
-//                Component source = (Component)e.getSource();
-//                if (source != null) {
-//                    Container target = source.getNativeContainer();
-//                    if (target != null) {
-//                        tpeer = target.getPeer();
-//                    }
-//                }
-//            }
-//            if (tpeer != null) {
-//                tpeer.handleEvent(e);
-//            }
-        }
-    } // dispatchEventImpl()
+		/*
+		 * 9. Allow the peer to process the event. Except KeyEvents, they will be
+		 * processed by peer after all KeyEventPostProcessors (see
+		 * DefaultKeyboardFocusManager.dispatchKeyEvent())
+		 */
+		if (!(e instanceof KeyEvent)) {
+			// ComponentPeer tpeer = peer;
+			// if (e instanceof FocusEvent && (tpeer == null || tpeer instanceof
+			// LightweightPeer)) {
+			// // if focus owner is lightweight then its native container
+			// // processes event
+			// Component source = (Component)e.getSource();
+			// if (source != null) {
+			// Container target = source.getNativeContainer();
+			// if (target != null) {
+			// tpeer = target.getPeer();
+			// }
+			// }
+			// }
+			// if (tpeer != null) {
+			// tpeer.handleEvent(e);
+			// }
+		}
+	} // dispatchEventImpl()
 
     /*
      * If newEventsOnly is false, method is called so that ScrollPane can
@@ -4437,6 +4522,13 @@ protected  transient ComponentPeer peer;
 
     // Should only be called while holding the tree lock
     int numListening(long mask) {
+    	// SwingJS SAEM
+    	return numListeningMask(mask);
+    }
+    
+    // Should only be called while holding the tree lock
+    int numListeningMask(long mask) {
+    	// SwingJS SAEM
         // One mask or the other, but not neither or both.
 //        if (eventLog.isLoggable(Level.FINE)) {
 //            if ((mask != AWTEvent.HIERARCHY_EVENT_MASK) &&
@@ -4465,6 +4557,11 @@ protected  transient ComponentPeer peer;
     int createHierarchyEvents(int id, Component changed,
                               Container changedParent, long changeFlags,
                               boolean enabledOnToolkit) {
+    	return createHierEventsComp(id, changed, changedParent, changeFlags, enabledOnToolkit);
+    }
+    protected int createHierEventsComp(int id, Component changed,
+        Container changedParent, long changeFlags,
+        boolean enabledOnToolkit) {
         switch (id) {
           case HierarchyEvent.HIERARCHY_CHANGED:
               if (hierarchyListener != null ||
@@ -4920,31 +5017,36 @@ protected  transient ComponentPeer peer;
      * @since 1.3
      */
     public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
-        EventListener l = null;
-        if  (listenerType == ComponentListener.class) {
-            l = componentListener;
-        } else if (listenerType == FocusListener.class) {
-            l = focusListener;
-        } else if (listenerType == HierarchyListener.class) {
-            l = hierarchyListener;
-        } else if (listenerType == HierarchyBoundsListener.class) {
-            l = hierarchyBoundsListener;
-        } else if (listenerType == KeyListener.class) {
-            l = keyListener;
-        } else if (listenerType == MouseListener.class) {
-            l = mouseListener;
-        } else if (listenerType == MouseMotionListener.class) {
-            l = mouseMotionListener;
-        } else if (listenerType == MouseWheelListener.class) {
-            l = mouseWheelListener;
-        } else if (listenerType == InputMethodListener.class) {
-            l = inputMethodListener;
-        } else if (listenerType == PropertyChangeListener.class) {
-            return (T[])getPropertyChangeListeners();
-        }
-        return AWTEventMulticaster.getListeners(l, listenerType);
+    	// SwingJS SAEM
+    	return getListenersComp(listenerType);
     }
+    protected <T extends EventListener> T[] getListenersComp(Class<T> listenerType) {
+    	// SwingJS SAEM
+    EventListener l = null;
+    if  (listenerType == ComponentListener.class) {
+        l = componentListener;
+    } else if (listenerType == FocusListener.class) {
+        l = focusListener;
+    } else if (listenerType == HierarchyListener.class) {
+        l = hierarchyListener;
+    } else if (listenerType == HierarchyBoundsListener.class) {
+        l = hierarchyBoundsListener;
+    } else if (listenerType == KeyListener.class) {
+        l = keyListener;
+    } else if (listenerType == MouseListener.class) {
+        l = mouseListener;
+    } else if (listenerType == MouseMotionListener.class) {
+        l = mouseMotionListener;
+    } else if (listenerType == MouseWheelListener.class) {
+        l = mouseWheelListener;
+    } else if (listenerType == InputMethodListener.class) {
+        l = inputMethodListener;
+    } else if (listenerType == PropertyChangeListener.class) {
+        return (T[])getPropertyChangeListeners();
+    }
+    return AWTEventMulticaster.getListeners(l, listenerType);
 
+}
 //    /**
 //     * Gets the input method request handler which supports
 //     * requests from input methods for this component. A component
@@ -5214,46 +5316,54 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.1
      */
     protected void processEvent(AWTEvent e) {
-        if (e instanceof FocusEvent) {
-            processFocusEvent((FocusEvent)e);
-
-        } else if (e instanceof MouseEvent) {
-            switch(e.getID()) {
-              case MouseEvent.MOUSE_PRESSED:
-              case MouseEvent.MOUSE_RELEASED:
-              case MouseEvent.MOUSE_CLICKED:
-              case MouseEvent.MOUSE_ENTERED:
-              case MouseEvent.MOUSE_EXITED:
-                  processMouseEvent((MouseEvent)e);
-                  break;
-              case MouseEvent.MOUSE_MOVED:
-              case MouseEvent.MOUSE_DRAGGED:
-                  processMouseMotionEvent((MouseEvent)e);
-                  break;
-              case MouseEvent.MOUSE_WHEEL:
-                  processMouseWheelEvent((MouseWheelEvent)e);
-                  break;
-            }
-
-        } else if (e instanceof KeyEvent) {
-            processKeyEvent((KeyEvent)e);
-
-        } else if (e instanceof ComponentEvent) {
-            processComponentEvent((ComponentEvent)e);
-        } else if (e instanceof InputMethodEvent) {
-            processInputMethodEvent((InputMethodEvent)e);
-        } else if (e instanceof HierarchyEvent) {
-            switch (e.getID()) {
-              case HierarchyEvent.HIERARCHY_CHANGED:
-                  processHierarchyEvent((HierarchyEvent)e);
-                  break;
-              case HierarchyEvent.ANCESTOR_MOVED:
-              case HierarchyEvent.ANCESTOR_RESIZED:
-                  processHierarchyBoundsEvent((HierarchyEvent)e);
-                  break;
-            }
-        }
+  		// SwingJS SAEM
+    	processEventComp(e);
     }
+    
+	protected void processEventComp(AWTEvent e) {
+
+		// SwingJS SAEM
+		
+		if (e instanceof FocusEvent) {
+			processFocusEvent((FocusEvent) e);
+
+		} else if (e instanceof MouseEvent) {
+			switch (e.getID()) {
+			case MouseEvent.MOUSE_PRESSED:
+			case MouseEvent.MOUSE_RELEASED:
+			case MouseEvent.MOUSE_CLICKED:
+			case MouseEvent.MOUSE_ENTERED:
+			case MouseEvent.MOUSE_EXITED:
+				processMouseEvent((MouseEvent) e);
+				break;
+			case MouseEvent.MOUSE_MOVED:
+			case MouseEvent.MOUSE_DRAGGED:
+				processMouseMotionEvent((MouseEvent) e);
+				break;
+			case MouseEvent.MOUSE_WHEEL:
+				processMouseWheelEvent((MouseWheelEvent) e);
+				break;
+			}
+
+		} else if (e instanceof KeyEvent) {
+			processKeyEvent((KeyEvent) e);
+
+		} else if (e instanceof ComponentEvent) {
+			processComponentEvent((ComponentEvent) e);
+		} else if (e instanceof InputMethodEvent) {
+			processInputMethodEvent((InputMethodEvent) e);
+		} else if (e instanceof HierarchyEvent) {
+			switch (e.getID()) {
+			case HierarchyEvent.HIERARCHY_CHANGED:
+				processHierarchyEvent((HierarchyEvent) e);
+				break;
+			case HierarchyEvent.ANCESTOR_MOVED:
+			case HierarchyEvent.ANCESTOR_RESIZED:
+				processHierarchyBoundsEvent((HierarchyEvent) e);
+				break;
+			}
+		}
+	}
 
     /**
      * Processes component events occurring on this component by
@@ -5806,6 +5916,10 @@ protected  transient ComponentPeer peer;
      * @since JDK1.0
      */
     public void addNotify() {
+    	addNotifyComp();
+    }
+
+    protected void addNotifyComp() {
         synchronized (getTreeLock()) {
             ComponentPeer peer = this.peer;
             if (peer == null || peer instanceof LightweightPeer){
@@ -5935,6 +6049,11 @@ protected  transient ComponentPeer peer;
      * @since JDK1.0
      */
     public void removeNotify() {
+    	// SwingJS SAEM
+    	removeNotifyComp();
+    }
+    protected void removeNotifyComp() {
+    	// SwingJS SAEM
 //        KeyboardFocusManager.clearMostRecentFocusOwner(this);
 //        if (KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //            getPermanentFocusOwner() == this)
@@ -6080,7 +6199,7 @@ protected  transient ComponentPeer peer;
         }
         isFocusTraversableOverridden = FOCUS_TRAVERSABLE_SET;
 
-        firePropertyChange("focusable", oldFocusable, focusable);
+        firePropertyChangeObject("focusable", oldFocusable, focusable);
 //        if (oldFocusable && !focusable) {
 //            if (isFocusOwner() && KeyboardFocusManager.isAutoFocusTransferEnabled()) {
 //                transferFocus(true);
@@ -6720,6 +6839,11 @@ protected  transient ComponentPeer peer;
      * @since 1.4
      */
     public boolean isFocusCycleRoot(Container container) {
+   	 // SwingJS SAEM
+    	return isFocusCycleRootComp(container);
+    }
+    protected boolean isFocusCycleRootComp(Container container) {
+    	 // SwingJS SAEM
         Container rootAncestor = getFocusCycleRootAncestor();
         return (rootAncestor == container);
     }
@@ -6999,6 +7123,10 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     protected String paramString() {
+    	return paramStringComp();
+    }
+    
+    protected String paramStringComp() {
         String thisName = getName();
         String str = (thisName != null? thisName : "");
         if (!isValid()) {
@@ -7025,75 +7153,81 @@ protected  transient ComponentPeer peer;
         return getClass().getName() + "[" + paramString() + "]";
     }
 
-    /**
-     * Adds a PropertyChangeListener to the listener list. The listener is
-     * registered for all bound properties of this class, including the
-     * following:
-     * <ul>
-     *    <li>this Component's font ("font")</li>
-     *    <li>this Component's background color ("background")</li>
-     *    <li>this Component's foreground color ("foreground")</li>
-     *    <li>this Component's focusability ("focusable")</li>
-     *    <li>this Component's focus traversal keys enabled state
-     *        ("focusTraversalKeysEnabled")</li>
-     *    <li>this Component's Set of FORWARD_TRAVERSAL_KEYS
-     *        ("forwardFocusTraversalKeys")</li>
-     *    <li>this Component's Set of BACKWARD_TRAVERSAL_KEYS
-     *        ("backwardFocusTraversalKeys")</li>
-     *    <li>this Component's Set of UP_CYCLE_TRAVERSAL_KEYS
-     *        ("upCycleFocusTraversalKeys")</li>
-     *    <li>this Component's preferred size ("preferredSize")</li>
-     *    <li>this Component's minimum size ("minimumSize")</li>
-     *    <li>this Component's maximum size ("maximumSize")</li>
-     *    <li>this Component's name ("name")</li>
-     * </ul>
-     * Note that if this <code>Component</code> is inheriting a bound property, then no
-     * event will be fired in response to a change in the inherited property.
-     * <p>
-     * If <code>listener</code> is <code>null</code>,
-     * no exception is thrown and no action is performed.
-     *
-     * @param    listener  the property change listener to be added
-     *
-     * @see #removePropertyChangeListener
-     * @see #getPropertyChangeListeners
-     * @see #addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
-     */
-    public void addPropertyChangeListener(
-                                                       PropertyChangeListener listener) {
-        synchronized (getChangeSupportLock()) {
-            if (listener == null) {
-                return;
-            }
-            if (changeSupport == null) {
-                changeSupport = new PropertyChangeSupport(this);
-            }
-            changeSupport.addPropertyChangeListener(listener);
-        }
-    }
+	/**
+	 * Adds a PropertyChangeListener to the listener list. The listener is
+	 * registered for all bound properties of this class, including the following:
+	 * <ul>
+	 * <li>this Component's font ("font")</li>
+	 * <li>this Component's background color ("background")</li>
+	 * <li>this Component's foreground color ("foreground")</li>
+	 * <li>this Component's focusability ("focusable")</li>
+	 * <li>this Component's focus traversal keys enabled state
+	 * ("focusTraversalKeysEnabled")</li>
+	 * <li>this Component's Set of FORWARD_TRAVERSAL_KEYS
+	 * ("forwardFocusTraversalKeys")</li>
+	 * <li>this Component's Set of BACKWARD_TRAVERSAL_KEYS
+	 * ("backwardFocusTraversalKeys")</li>
+	 * <li>this Component's Set of UP_CYCLE_TRAVERSAL_KEYS
+	 * ("upCycleFocusTraversalKeys")</li>
+	 * <li>this Component's preferred size ("preferredSize")</li>
+	 * <li>this Component's minimum size ("minimumSize")</li>
+	 * <li>this Component's maximum size ("maximumSize")</li>
+	 * <li>this Component's name ("name")</li>
+	 * </ul>
+	 * Note that if this <code>Component</code> is inheriting a bound property,
+	 * then no event will be fired in response to a change in the inherited
+	 * property.
+	 * <p>
+	 * If <code>listener</code> is <code>null</code>, no exception is thrown and
+	 * no action is performed.
+	 * 
+	 * @param listener
+	 *          the property change listener to be added
+	 * 
+	 * @see #removePropertyChangeListener
+	 * @see #getPropertyChangeListeners
+	 * @see #addPropertyChangeListener(java.lang.String,
+	 *      java.beans.PropertyChangeListener)
+	 *    @j2sIgnore
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		addPropChangeListenerComp(listener);
+	}
 
-    /**
-     * Removes a PropertyChangeListener from the listener list. This method
-     * should be used to remove PropertyChangeListeners that were registered
-     * for all bound properties of this class.
-     * <p>
-     * If listener is null, no exception is thrown and no action is performed.
-     *
-     * @param listener the PropertyChangeListener to be removed
-     *
-     * @see #addPropertyChangeListener
-     * @see #getPropertyChangeListeners
-     * @see #removePropertyChangeListener(java.lang.String,java.beans.PropertyChangeListener)
-     */
-    public void removePropertyChangeListener(
-                                                          PropertyChangeListener listener) {
-        synchronized (getChangeSupportLock()) {
-            if (listener == null || changeSupport == null) {
-                return;
-            }
-            changeSupport.removePropertyChangeListener(listener);
-        }
-    }
+	protected void addPropChangeListenerComp(PropertyChangeListener listener) {
+		synchronized (getChangeSupportLock()) {
+			if (listener == null) {
+				return;
+			}
+			if (changeSupport == null) {
+				changeSupport = new PropertyChangeSupport(this);
+			}
+			changeSupport.addPropertyChangeListener1(listener);
+		}
+	}
+
+	/**
+	 * Removes a PropertyChangeListener from the listener list. This method should
+	 * be used to remove PropertyChangeListeners that were registered for all
+	 * bound properties of this class.
+	 * <p>
+	 * If listener is null, no exception is thrown and no action is performed.
+	 * 
+	 * @param listener
+	 *          the PropertyChangeListener to be removed
+	 * 
+	 * @see #addPropertyChangeListener
+	 * @see #getPropertyChangeListeners
+	 * @see #removePropertyChangeListener(java.lang.String,java.beans.PropertyChangeListener)
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		synchronized (getChangeSupportLock()) {
+			if (listener == null || changeSupport == null) {
+				return;
+			}
+			changeSupport.removePropertyChangeListener(listener);
+		}
+	}
 
     /**
      * Returns an array of all the property change listeners
@@ -7152,18 +7286,31 @@ protected  transient ComponentPeer peer;
     public void addPropertyChangeListener(
                                                        String propertyName,
                                                        PropertyChangeListener listener) {
-        synchronized (getChangeSupportLock()) {
-            if (listener == null) {
-                return;
-            }
-            if (changeSupport == null) {
-                changeSupport = new PropertyChangeSupport(this);
-            }
-            changeSupport.addPropertyChangeListener(propertyName, listener);
-        }
+    	addPropChangeListComp(propertyName, listener);
     }
+   
+    protected void addPropChangeListComp(String propertyName,
+				PropertyChangeListener listener) {
+  		/**
+  		 * @j2sNative
+  		 * 
+  		 *            if (argments.length == 1) {
+  		 *            addPropertyChangeListener1(propertyName); return; }
+  		 * 
+  		 */
+      	{}
+    		synchronized (getChangeSupportLock()) {
+    			if (listener == null) {
+    				return;
+    			}
+    			if (changeSupport == null) {
+    				changeSupport = new PropertyChangeSupport(this);
+    			}
+    			changeSupport.addPropertyChangeListener2(propertyName, listener);
+    		}
+		}
 
-    /**
+		/**
      * Removes a <code>PropertyChangeListener</code> from the listener
      * list for a specific property. This method should be used to remove
      * <code>PropertyChangeListener</code>s
@@ -7223,9 +7370,15 @@ protected  transient ComponentPeer peer;
      * @param propertyName the property whose value has changed
      * @param oldValue the property's previous value
      * @param newValue the property's new value
+     * @deprecated
      */
     protected void firePropertyChange(String propertyName,
                                       Object oldValue, Object newValue) {
+    	// SwingJS SAEM
+    	firePropertyChangeObject(propertyName, oldValue, newValue);
+    }
+    protected void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+    	// SwingJS SAEM
         PropertyChangeSupport changeSupport;
         synchronized (getChangeSupportLock()) {
             changeSupport = this.changeSupport;
@@ -7247,9 +7400,16 @@ protected  transient ComponentPeer peer;
      * @param oldValue the property's previous value
      * @param newValue the property's new value
      * @since 1.4
+     * 
+     * @deprecated
      */
     protected void firePropertyChange(String propertyName,
                                       boolean oldValue, boolean newValue) {
+    	// SwingJS SAEM
+    	firePropertyChangeBool(propertyName, oldValue, newValue);
+    }
+    protected void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) {
+    	// SwingJS SAEM
         PropertyChangeSupport changeSupport = this.changeSupport;
         if (changeSupport == null || oldValue == newValue) {
             return;
@@ -7267,9 +7427,16 @@ protected  transient ComponentPeer peer;
      * @param oldValue the property's previous value
      * @param newValue the property's new value
      * @since 1.4
+     * 
+     * @deprecated
      */
     protected void firePropertyChange(String propertyName,
                                       int oldValue, int newValue) {
+    	// SwingJS SAEM
+    	firePropertyChangeInt(propertyName, oldValue, newValue);
+    }
+    protected void firePropertyChangeInt(String propertyName, int oldValue, int newValue) {
+    	// SwingJS SAEM
         PropertyChangeSupport changeSupport = this.changeSupport;
         if (changeSupport == null || oldValue == newValue) {
             return;
@@ -7284,16 +7451,18 @@ protected  transient ComponentPeer peer;
      *          that was changed
      * @param oldValue the old value of the property (as a byte)
      * @param newValue the new value of the property (as a byte)
-     * @see #firePropertyChange(java.lang.String, java.lang.Object,
+     * @see #firePropertyChangeObject(java.lang.String, java.lang.Object,
      *          java.lang.Object)
      * @since 1.5
+     * 
+     * @j2sIgnore
      */
-    public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {
-    	// SwingJS  -- MUST FIX SIGNATURE
+    public void firePropertyChangeByte(String propertyName, byte oldValue, byte newValue) {
+    	// SwingJS was "firePropertyChange"
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        firePropertyChange(propertyName, Byte.valueOf(oldValue), Byte.valueOf(newValue));
+        firePropertyChangeObject(propertyName, Byte.valueOf(oldValue), Byte.valueOf(newValue));
     }
 
     /**
@@ -7303,16 +7472,20 @@ protected  transient ComponentPeer peer;
      *          that was changed
      * @param oldValue the old value of the property (as a char)
      * @param newValue the new value of the property (as a char)
-     * @see #firePropertyChange(java.lang.String, java.lang.Object,
+     * @see #firePropertyChangeObject(java.lang.String, java.lang.Object,
      *          java.lang.Object)
      * @since 1.5
      */
     public void firePropertyChange(String propertyName, char oldValue, char newValue) {
-    	// SwingJS  -- MUST FIX SIGNATURE
+    	// SwingJS SAEM
+    	firePropertyChangeChar(propertyName, oldValue, newValue);
+    }
+    public void firePropertyChangeChar(String propertyName, char oldValue, char newValue) {
+    	// SwingJS SAEM
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        firePropertyChange(propertyName, new Character(oldValue), new Character(newValue));
+        firePropertyChangeObject(propertyName, new Character(oldValue), new Character(newValue));
     }
 
     /**
@@ -7322,16 +7495,18 @@ protected  transient ComponentPeer peer;
      *          that was changed
      * @param oldValue the old value of the property (as a short)
      * @param newValue the old value of the property (as a short)
-     * @see #firePropertyChange(java.lang.String, java.lang.Object,
+     * @see #firePropertyChangeObject(java.lang.String, java.lang.Object,
      *          java.lang.Object)
      * @since 1.5
+     *      * @j2sIgnore
+
      */
-    public void firePropertyChange(String propertyName, short oldValue, short newValue) {
-    	// SwingJS  -- MUST FIX SIGNATURE
+    public void firePropertyChangeShort(String propertyName, short oldValue, short newValue) {
+    	// SwingJS was "firePropertyChange"
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        firePropertyChange(propertyName, Short.valueOf(oldValue), Short.valueOf(newValue));
+        firePropertyChangeObject(propertyName, Short.valueOf(oldValue), Short.valueOf(newValue));
     }
 
 
@@ -7342,16 +7517,16 @@ protected  transient ComponentPeer peer;
      *          that was changed
      * @param oldValue the old value of the property (as a long)
      * @param newValue the new value of the property (as a long)
-     * @see #firePropertyChange(java.lang.String, java.lang.Object,
+     * @see #firePropertyChangeObject(java.lang.String, java.lang.Object,
      *          java.lang.Object)
      * @since 1.5
      */
-    public void firePropertyChange(String propertyName, long oldValue, long newValue) {
-    	// SwingJS  -- MUST FIX SIGNATURE
+    public void firePropertyChangeLong(String propertyName, long oldValue, long newValue) {
+    	// SwingJS was "firePropertyChange"
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        firePropertyChange(propertyName, Long.valueOf(oldValue), Long.valueOf(newValue));
+        firePropertyChangeObject(propertyName, Long.valueOf(oldValue), Long.valueOf(newValue));
     }
 
     /**
@@ -7361,16 +7536,16 @@ protected  transient ComponentPeer peer;
      *          that was changed
      * @param oldValue the old value of the property (as a float)
      * @param newValue the new value of the property (as a float)
-     * @see #firePropertyChange(java.lang.String, java.lang.Object,
+     * @see #firePropertyChangeObject(java.lang.String, java.lang.Object,
      *          java.lang.Object)
      * @since 1.5
      */
-    public void firePropertyChange(String propertyName, float oldValue, float newValue) {
-    	// SwingJS  -- MUST FIX SIGNATURE
+    public void firePropertyChangeFloat(String propertyName, float oldValue, float newValue) {
+    	// SwingJS was "firePropertyChange"
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        firePropertyChange(propertyName, Float.valueOf(oldValue), Float.valueOf(newValue));
+        firePropertyChangeObject(propertyName, Float.valueOf(oldValue), Float.valueOf(newValue));
     }
 
     /**
@@ -7380,16 +7555,16 @@ protected  transient ComponentPeer peer;
      *          that was changed
      * @param oldValue the old value of the property (as a double)
      * @param newValue the new value of the property (as a double)
-     * @see #firePropertyChange(java.lang.String, java.lang.Object,
+     * @see #firePropertyChangeObject(java.lang.String, java.lang.Object,
      *          java.lang.Object)
      * @since 1.5
      */
-    public void firePropertyChange(String propertyName, double oldValue, double newValue) {
-    	// SwingJS  -- MUST FIX SIGNATURE
+    public void firePropertyChangeDouble(String propertyName, double oldValue, double newValue) {
+    	// SwingJS was "firePropertyChange"
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        firePropertyChange(propertyName, Double.valueOf(oldValue), Double.valueOf(newValue));
+        firePropertyChangeObject(propertyName, Double.valueOf(oldValue), Double.valueOf(newValue));
     }
 
 
@@ -7698,7 +7873,7 @@ protected  transient ComponentPeer peer;
 
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
-        firePropertyChange("componentOrientation", oldValue, o);
+        firePropertyChangeObject("componentOrientation", oldValue, o);
 
         // This could change the preferred size of the Component.
         invalidateIfValid();
@@ -7731,6 +7906,11 @@ protected  transient ComponentPeer peer;
      * @since 1.4
      */
     public void applyComponentOrientation(ComponentOrientation orientation) {
+    	// SwingJS SAEM
+    	applyCompOrientComp(orientation);
+    }
+    protected void applyCompOrientComp(ComponentOrientation orientation) {
+    	// SwingJS SAEM
         if (orientation == null) {
             throw new NullPointerException();
         }

@@ -247,16 +247,16 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        // Strings get interned...
-        if (propertyName == "text"
-                || ((propertyName == "font" || propertyName == "foreground")
-                    && oldValue != newValue
-                    //&& getClientProperty(jsjavax.swing.plaf.basic.BasicHTML.propertyKey) != null
-                    )) {
-
-            super.firePropertyChange(propertyName, oldValue, newValue);
-        }
+    public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+//        // Strings get interned...
+//        if (propertyName == "text"
+//                || ((propertyName == "font" || propertyName == "foreground")
+//                    && oldValue != newValue
+//                    && getClientProperty(jsjavax.swing.plaf.basic.BasicHTML.propertyKey) != null
+//                    )) {
+//
+//            firePropertyChangeObject(propertyName, oldValue, newValue);
+//        }
     }
 
    /**
@@ -265,7 +265,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, byte oldValue, byte newValue) {}
+    public void firePropertyChangeByte(String propertyName, byte oldValue, byte newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -273,7 +273,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, char oldValue, char newValue) {}
+    public void firePropertyChangeChar(String propertyName, char oldValue, char newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -281,7 +281,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, short oldValue, short newValue) {}
+    public void firePropertyChangeShort(String propertyName, short oldValue, short newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -289,7 +289,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, int oldValue, int newValue) {}
+    public void firePropertyChangeInt(String propertyName, int oldValue, int newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -297,7 +297,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, long oldValue, long newValue) {}
+    public void firePropertyChangeLong(String propertyName, long oldValue, long newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -305,7 +305,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, float oldValue, float newValue) {}
+    public void firePropertyChangeFloat(String propertyName, float oldValue, float newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -313,7 +313,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, double oldValue, double newValue) {}
+    public void firePropertyChangeDouble(String propertyName, double oldValue, double newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -321,7 +321,7 @@ public class DefaultListCellRenderer extends JLabel
     * for more information.
     */
     @Override
-    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {}
+    public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) {}
 
     /**
      * A subclass of DefaultListCellRenderer that implements UIResource.

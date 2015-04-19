@@ -121,7 +121,7 @@ public class JToolTip extends JComponent {
     public void setTipText(String tipText) {
         String oldValue = this.tipText;
         this.tipText = tipText;
-        firePropertyChange("tiptext", oldValue, tipText);
+        firePropertyChangeObject("tiptext", oldValue, tipText);
     }
 
     /**
@@ -151,7 +151,7 @@ public class JToolTip extends JComponent {
         JComponent oldValue = this.component;
 
         component = c;
-        firePropertyChange("component", oldValue, c);
+        firePropertyChangeObject("component", oldValue, c);
     }
 
     /**

@@ -498,7 +498,7 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
     public void setLabel(String label) {
         String oldValue = this.label;
         this.label = label;
-        firePropertyChange("label", oldValue, label);
+        firePropertyChangeObject("label", oldValue, label);
 //        if (accessibleContext != null) {
 //            accessibleContext.firePropertyChange(
 //                AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY,
@@ -752,14 +752,14 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
         if(b) {
             firePopupMenuWillBecomeVisible();
             popup = getPopup();
-            firePropertyChange("visible", Boolean.FALSE, Boolean.TRUE);
+            firePropertyChangeObject("visible", Boolean.FALSE, Boolean.TRUE);
 
 
         } else if(popup != null) {
             firePopupMenuWillBecomeInvisible();
             popup.hide();
             popup = null;
-            firePropertyChange("visible", Boolean.TRUE, Boolean.FALSE);
+            firePropertyChangeObject("visible", Boolean.TRUE, Boolean.FALSE);
             // 4694797: When popup menu is made invisible, selected path
             // should be cleared
             if (isPopupMenu()) {

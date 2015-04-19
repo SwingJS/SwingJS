@@ -730,7 +730,6 @@ public class PopupFactory {
             component.removeAll();
             //recycleLightWeightPopup(this);
         }
-        @SuppressWarnings("null")
         public void show() {
             Container parent = null;
 
@@ -888,7 +887,6 @@ public class PopupFactory {
             rootPane.getContentPane().removeAll();
             recycleMediumWeightPopup(this);
         }
-        @SuppressWarnings("null")
         public void show() {
             Component component = getComponent();
             Container parent = null;

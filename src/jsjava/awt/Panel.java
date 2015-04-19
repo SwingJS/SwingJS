@@ -49,12 +49,16 @@ public class Panel extends Container {
      * Creates a new panel using the default layout manager.
      * The default layout manager for all panels is the
      * <code>FlowLayout</code> class.
+     * 
+     * @j2sIgnore
      */
     public Panel() {
+    	// SwingJS SAEM
     	setPanel();
     }
 
     protected void setPanel() {
+    	// SwingJS called directly by JSAppletPanel
     	setAppContext();
     	setLayout(new FlowLayout());
 		}
@@ -65,7 +69,11 @@ public class Panel extends Container {
      * @since JDK1.1
      */
     public Panel(LayoutManager layout) {
-        setLayout(layout);
+    	// SwingJS SAEM
+    	if (layout == null)
+    		layout = new FlowLayout();
+    	setAppContext();
+      setLayout(layout);
     }
 
     /**

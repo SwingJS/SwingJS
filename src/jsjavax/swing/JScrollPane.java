@@ -498,7 +498,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         }
         int old = verticalScrollBarPolicy;
         verticalScrollBarPolicy = policy;
-        firePropertyChange("verticalScrollBarPolicy", old, policy);
+        firePropertyChangeInt("verticalScrollBarPolicy", old, policy);
         revalidate();
         repaint();
     }
@@ -546,7 +546,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         }
         int old = horizontalScrollBarPolicy;
         horizontalScrollBarPolicy = policy;
-        firePropertyChange("horizontalScrollBarPolicy", old, policy);
+        firePropertyChangeInt("horizontalScrollBarPolicy", old, policy);
         revalidate();
         repaint();
     }
@@ -585,7 +585,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
     public void setViewportBorder(Border viewportBorder) {
         Border oldValue = this.viewportBorder;
         this.viewportBorder = viewportBorder;
-        firePropertyChange("viewportBorder", oldValue, viewportBorder);
+        firePropertyChangeObject("viewportBorder", oldValue, viewportBorder);
     }
 
 
@@ -842,7 +842,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         else if (old != null) {
             remove(old);
         }
-        firePropertyChange("horizontalScrollBar", old, horizontalScrollBar);
+        firePropertyChangeObject("horizontalScrollBar", old, horizontalScrollBar);
 
         revalidate();
         repaint();
@@ -895,7 +895,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         JScrollBar old = getVerticalScrollBar();
         this.verticalScrollBar = verticalScrollBar;
         add(verticalScrollBar, VERTICAL_SCROLLBAR);
-        firePropertyChange("verticalScrollBar", old, verticalScrollBar);
+        firePropertyChangeObject("verticalScrollBar", old, verticalScrollBar);
 
         revalidate();
         repaint();
@@ -962,7 +962,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         else if (old != null) {
             remove(old);
         }
-        firePropertyChange("viewport", old, viewport);
+        firePropertyChangeObject("viewport", old, viewport);
 
 //        if (accessibleContext != null) {
 //            ((AccessibleJScrollPane)accessibleContext).resetViewPort();
@@ -1038,7 +1038,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         else if (old != null) {
             remove(old);
         }
-        firePropertyChange("rowHeader", old, rowHeader);
+        firePropertyChangeObject("rowHeader", old, rowHeader);
         revalidate();
         repaint();
     }
@@ -1103,7 +1103,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         else if (old != null) {
             remove(old);
         }
-        firePropertyChange("columnHeader", old, columnHeader);
+        firePropertyChangeObject("columnHeader", old, columnHeader);
 
         revalidate();
         repaint();
@@ -1253,7 +1253,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
         if (corner != null) {
             add(corner, key);
         }
-        firePropertyChange(key, old, corner);
+        firePropertyChangeObject(key, old, corner);
         revalidate();
         repaint();
     }
@@ -1309,7 +1309,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
     public void setWheelScrollingEnabled(boolean handleWheel) {
         boolean old = wheelScrollState;
         wheelScrollState = handleWheel;
-        firePropertyChange("wheelScrollingEnabled", old, handleWheel);
+        firePropertyChangeBool("wheelScrollingEnabled", old, handleWheel);
     }
 
 //    /**

@@ -1,5 +1,11 @@
 PROGRESS
 ========
+4/19/2015
+
+FlowLayout reporting proper positions and sizes for JRadioButtons
+
+code: "super.xxx" out in Component, Container, and JComponent
+
 4/18/2015
 
 JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel

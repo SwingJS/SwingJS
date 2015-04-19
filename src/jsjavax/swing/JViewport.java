@@ -349,8 +349,9 @@ public class JViewport extends JComponent
      * @param index       the index
      * @see #setView
      */
-    protected void addImpl(Component child, Object constraints, int index) {
+    protected Component addImpl(Component child, Object constraints, int index) {
       setView(child);
+      return child;
     }
 
 
@@ -361,7 +362,7 @@ public class JViewport extends JComponent
      */
     public void remove(Component child) {
         child.removeComponentListener(viewListener);
-        super.remove(child);
+        removeChild(child);
     }
 
 
@@ -1007,7 +1008,7 @@ public class JViewport extends JComponent
         isViewSizeSet = false;
 
         if (view != null) {
-            super.addImpl(view, null, -1);
+            addImplSAEM(view, null, -1);
             viewListener = createViewListener();
             view.addComponentListener(viewListener);
         }
@@ -1470,9 +1471,9 @@ public class JViewport extends JComponent
      * @param oldValue the old value of the property
      * @param newValue  the new value of the property
      */
-    protected void firePropertyChange(String propertyName, Object oldValue,
+    protected void firePropertyChangeObject(String propertyName, Object oldValue,
                                       Object newValue) {
-        super.firePropertyChange(propertyName, oldValue, newValue);
+        super.firePropertyChangeObject(propertyName, oldValue, newValue);
         if (propertyName.equals(EnableWindowBlit)) {
             if (newValue != null) {
                 setScrollMode(BLIT_SCROLL_MODE);

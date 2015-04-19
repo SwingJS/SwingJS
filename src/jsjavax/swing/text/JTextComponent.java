@@ -450,7 +450,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //            if (runDir != doc.getProperty(TextAttribute.RUN_DIRECTION)) {
 //                doc.putProperty(TextAttribute.RUN_DIRECTION, runDir );
 //            }
-            firePropertyChange("document", old, doc);
+            firePropertyChangeObject("document", old, doc);
         } finally {
             if (old instanceof AbstractDocument) {
                 ((AbstractDocument)old).readUnlock();
@@ -526,7 +526,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setMargin(Insets m) {
         Insets old = margin;
         margin = m;
-        firePropertyChange("margin", old, m);
+        firePropertyChangeObject("margin", old, m);
         invalidate();
     }
 
@@ -598,7 +598,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             caret.install(this);
             caret.addChangeListener(caretEvent);
         }
-        firePropertyChange("caret", old, caret);
+        firePropertyChangeObject("caret", old, caret);
     }
 
     /**
@@ -634,7 +634,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         if (highlighter != null) {
             highlighter.install(this);
         }
-        firePropertyChange("highlighter", old, h);
+        firePropertyChangeObject("highlighter", old, h);
     }
 
     /**
@@ -653,7 +653,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setKeymap(Keymap map) {
         Keymap old = keymap;
         keymap = map;
-        firePropertyChange("keymap", old, keymap);
+        firePropertyChangeObject("keymap", old, keymap);
         updateInputMap(old, map);
     }
 
@@ -1246,7 +1246,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setCaretColor(Color c) {
         Color old = caretColor;
         caretColor = c;
-        firePropertyChange("caretColor", old, caretColor);
+        firePropertyChangeObject("caretColor", old, caretColor);
     }
 
     /**
@@ -1275,7 +1275,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setSelectionColor(Color c) {
         Color old = selectionColor;
         selectionColor = c;
-        firePropertyChange("selectionColor", old, selectionColor);
+        firePropertyChangeObject("selectionColor", old, selectionColor);
     }
 
     /**
@@ -1304,7 +1304,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setSelectedTextColor(Color c) {
         Color old = selectedTextColor;
         selectedTextColor = c;
-        firePropertyChange("selectedTextColor", old, selectedTextColor);
+        firePropertyChangeObject("selectedTextColor", old, selectedTextColor);
     }
 
     /**
@@ -1332,7 +1332,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setDisabledTextColor(Color c) {
         Color old = disabledTextColor;
         disabledTextColor = c;
-        firePropertyChange("disabledTextColor", old, disabledTextColor);
+        firePropertyChangeObject("disabledTextColor", old, disabledTextColor);
     }
 
     /**
@@ -1791,7 +1791,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             boolean oldVal = editable;
             editable = b;
 //            enableInputMethods(editable);
-            firePropertyChange("editable", Boolean.valueOf(oldVal), Boolean.valueOf(editable));
+            firePropertyChangeObject("editable", Boolean.valueOf(oldVal), Boolean.valueOf(editable));
             repaint();
         }
     }
