@@ -1,6 +1,7 @@
 package swingjs;
 
 import jsjava.lang.ThreadGroup;
+import jsjavax.swing.SwingUtilities;
 
 public class JSAppletThread extends JSThread {
 
@@ -17,4 +18,18 @@ public class JSAppletThread extends JSThread {
 		if (mode != DONE)
 			dispatchAndReturn(null, mode);
 	}
+	
+	/**
+	 * dispatch applet threads on the main EventQueue
+	 */
+	protected void dispatchAndReturn(Runnable r, int mode) {
+		final int m = mode;
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				run1(m);
+			}
+		});
+	}
+
 }

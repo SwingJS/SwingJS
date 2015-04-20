@@ -526,13 +526,26 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void setClip(int x, int y, int width, int height) {
+		/**
+		 * @j2sNative
+		 *  
+		 *  if (arguments.length == 1) { setClip1(x); return; }
+		 */
+		{}
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
 		ctx.clip();
 	}
 
+	/**
+	 * @j2sIgnore
+	 */
 	@Override
 	public void setClip(Shape clip) {
+		setClip1(clip);
+	}
+
+	public void setClip1(Shape clip) {
 		ctx.beginPath();
 		doShape(clip);
 		ctx.clip();

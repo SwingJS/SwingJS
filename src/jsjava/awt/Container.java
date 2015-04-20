@@ -1805,6 +1805,9 @@ public class Container extends Component {
      *
      * @param g the specified Graphics window
      * @see   Component#update(Graphics)
+     * 
+     * @j2sOverride
+     * 
      */
     public void paint(Graphics g) {
     	// SwingJS : The developer should override paint() to draw;

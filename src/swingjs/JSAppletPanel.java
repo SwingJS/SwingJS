@@ -21,6 +21,7 @@ import jssun.applet.AppletListener;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
+import jsjavax.swing.JPanel;
 
 /**
  * JSAppletPanel 
@@ -243,7 +244,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		applet.setBounds(0, 0, getWidth(), getHeight());
 		applet.getRootPane().setBounds(0, 0, getWidth(), getHeight());
 		applet.getContentPane().setBounds(0, 0, getWidth(), getHeight());
-		validate(); // SwingJS
+		((JPanel) applet.getContentPane()).revalidate();
 		dispatchAppletEvent(APPLET_RESIZE, currentSize);
 	}
 
@@ -281,12 +282,12 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 
 	@Override
 	public int getHeight() {
-		return JSToolkit.getJQuery().$(getCanvas()).height();
+		return this.html5Applet._getHeight();
 	}
 
 	@Override
 	public int getWidth() {
-		return JSToolkit.getJQuery().$(getCanvas()).width();
+		return this.html5Applet._getWidth();
 	}
 
 	@Override
@@ -410,7 +411,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	@Override
 	public void setScreenDimension(int width, int height) {
 		setGraphics(jsgraphics = null);
-		resize(width, height);
+		//resize(width, height);
 		if (applet != null)
 			applet.resize(width, height);
 	}
@@ -427,6 +428,9 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 
 	}
 
+	/**
+	 * @j2sOverride
+	 */
 	@Override
 	public void paint(Graphics g) {
 		// Note that this "Panel" is never painted.
@@ -482,7 +486,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	 * @return LOOP or DONE
 	 */
 	public int run1(int mode) {
-		System.out.println("JSAP run1 mode " + mode);
+		System.out.println("JSAP run1 mode " + mode + " " + nextStatus);
 		boolean ok = false;
 		switch (mode) {
 		case JSThread.INIT:
@@ -533,32 +537,18 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					status = APPLET_ERROR;
 					break;
 				}
-				applet.invalidate();
 				applet.getRootPane().addNotify();
 				// force peer creation now
-				System.out.println("JSAppletPanel start");
+				System.out.println("JSAppletPanel start" + currentAppletSize);
 				applet.resize(currentAppletSize);
 				applet.start();
-				validate();
-				applet.setVisible(true);
 				status = APPLET_START;
 				showAppletStatus("started");
 				nextStatus = APPLET_READY;
 				ok = true;
 				break;
 			case APPLET_READY:
-				System.out.println("JSAppletPanel ready");
-				/**
-				 * 
-				 * @j2sNative
-				 * 
-				 *            Jmol._readyCallback(this.appletName, this.fullName, true,
-				 *            this.applet, this);
-				 * 
-				 */
-				{
-				}
-				// we are done here
+				JSToolkit.readyCallback(appletName,fullName,applet,this);
 				break;
 			case APPLET_STOP:
 				if (status == APPLET_START) {

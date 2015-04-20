@@ -147,7 +147,6 @@
        		../js/JSmolJavaExt.js
             java/awt/BasicStroke.js
             java/awt/Stroke.js
-            swingjs/api/JSInterface.js
             swingjs/JSUtil.js
             java/util/Locale.js
             java/util/ResourceBundle.js
@@ -454,6 +453,7 @@
             swingjs/JSThreadGroup.js
             swingjs/JSAppletPanel.js
 
+            swingjs/api/JSInterface.js
             java/awt/EventQueue.js
             java/awt/AWTEventMulticaster.js
             java/awt/AWTEvent.js

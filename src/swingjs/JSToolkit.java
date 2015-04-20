@@ -627,4 +627,17 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
+	public static void readyCallback(String aname, String fname, Object a,
+			Object me) {
+		/**
+		 * 
+		 * @j2sNative
+		 * 
+		 *            Jmol._readyCallback(aname, fname, true,a, me);
+		 * 
+		 */
+		{
+		}
+	}
+
 }

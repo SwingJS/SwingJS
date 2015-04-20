@@ -1462,11 +1462,6 @@ protected  transient ComponentPeer peer;
      * 
      */
     public void show(boolean b) {
-    	  /**
-    	   * @j2sNative
-    	   * 
-    	   * (arguments.length == 0) && (b = true);
-    	   */
         if (b) {
             show();
         } else {
@@ -1475,7 +1470,15 @@ protected  transient ComponentPeer peer;
     }
 
 	public void show() {
-		System.out.println("Component " + name + " setVisible");
+	  /**
+	   * @j2sNative
+	   * 
+	   * if (arguments.length == 1 && !arguments[0]) {
+	   *  this.hide();
+	   *  return;
+	   *  }
+	   */
+		System.out.println("Component " + name + " setVisible TRUE");
 		if (!visible) {
 			// synchronized (getTreeLock()) {
 			visible = true;
@@ -2015,20 +2018,6 @@ protected  transient ComponentPeer peer;
     }
 
     /**
-     * Gets the bounds of this component in the form of a
-     * <code>Rectangle</code> object. The bounds specify this
-     * component's width, height, and location relative to
-     * its parent.
-     * @return a rectangle indicating this component's bounds
-     * @see #setBounds
-     * @see #getLocation
-     * @see #getSize
-     */
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    /**
      * Moves and resizes this component. The new location of the top-left
      * corner is specified by <code>x</code> and <code>y</code>, and the
      * new size is specified by <code>width</code> and <code>height</code>.
@@ -2060,6 +2049,28 @@ protected  transient ComponentPeer peer;
     	{}
       reshape(x, y, width, height);
   }
+
+    /**
+     * Moves and resizes this component to conform to the new
+     * bounding rectangle <code>r</code>. This component's new
+     * position is specified by <code>r.x</code> and <code>r.y</code>,
+     * and its new size is specified by <code>r.width</code> and
+     * <code>r.height</code>
+     * @param r the new bounding rectangle for this component
+     * @see       #getBounds
+     * @see       #setLocation(int, int)
+     * @see       #setLocation(Point)
+     * @see       #setSize(int, int)
+     * @see       #setSize(Dimension)
+     * @since     JDK1.1
+     * 
+     * @j2sIgnore
+     * 
+     */
+    public void setBounds(Rectangle r) {
+        setBounds(r.x, r.y, r.width, r.height);
+    }
+
 
 	/**
 	 * @deprecated As of JDK version 1.1, replaced by
@@ -2181,28 +2192,6 @@ protected  transient ComponentPeer peer;
     }
 
     /**
-     * Moves and resizes this component to conform to the new
-     * bounding rectangle <code>r</code>. This component's new
-     * position is specified by <code>r.x</code> and <code>r.y</code>,
-     * and its new size is specified by <code>r.width</code> and
-     * <code>r.height</code>
-     * @param r the new bounding rectangle for this component
-     * @see       #getBounds
-     * @see       #setLocation(int, int)
-     * @see       #setLocation(Point)
-     * @see       #setSize(int, int)
-     * @see       #setSize(Dimension)
-     * @since     JDK1.1
-     * 
-     * @j2sIgnore
-     * 
-     */
-    public void setBounds(Rectangle r) {
-        setBounds(r.x, r.y, r.width, r.height);
-    }
-
-
-    /**
      * Returns the current x coordinate of the components origin.
      * This method is preferable to writing
      * <code>component.getBounds().x</code>,
@@ -2262,25 +2251,38 @@ protected  transient ComponentPeer peer;
     }
 
     /**
-     * Stores the bounds of this component into "return value" <b>rv</b> and
-     * return <b>rv</b>.  If rv is <code>null</code> a new
-     * <code>Rectangle</code> is allocated.
-     * This version of <code>getBounds</code> is useful if the caller
-     * wants to avoid allocating a new <code>Rectangle</code> object
-     * on the heap.
-     *
-     * @param rv the return value, modified to the components bounds
-     * @return rv
+     * Gets the bounds of this component in the form of a
+     * <code>Rectangle</code> object. The bounds specify this
+     * component's width, height, and location relative to
+     * its parent.
+     * @return a rectangle indicating this component's bounds
+     * @see #setBounds
+     * @see #getLocation
+     * @see #getSize
+     * 
+     * 
      */
-    public Rectangle getBounds(Rectangle rv) {
-        if (rv == null) {
-            return new Rectangle(getX(), getY(), getWidth(), getHeight());
-        }
-        else {
-            rv.setBounds(getX(), getY(), getWidth(), getHeight());
-            return rv;
-        }
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
     }
+
+	/**
+	 * Stores the bounds of this component into "return value" <b>rv</b> and
+	 * return <b>rv</b>. If rv is <code>null</code> a new <code>Rectangle</code>
+	 * is allocated. This version of <code>getBounds</code> is useful if the
+	 * caller wants to avoid allocating a new <code>Rectangle</code> object on the
+	 * heap.
+	 * 
+	 * @param rv
+	 *          the return value, modified to the components bounds
+	 * @return rv
+	 */
+	public Rectangle getBounds(Rectangle rv) {
+		if (rv == null)
+			return new Rectangle(getX(), getY(), getWidth(), getHeight());
+		rv.setBounds(getX(), getY(), getWidth(), getHeight());
+		return rv;
+	}
 
     /**
      * Stores the width/height of this component into "return value" <b>rv</b>
@@ -3017,13 +3019,13 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public void paintAll(Graphics g) {
-        if (isShowing()) {
+//      if (isShowing()) {
 //            GraphicsCallback.PeerPaintCallback.getInstance().
 //                runOneComponent(this, new Rectangle(0, 0, width, height),
 //                                g, g.getClip(),
 //                                GraphicsCallback.LIGHTWEIGHTS |
 //                                GraphicsCallback.HEAVYWEIGHTS);
-        }
+//        }
     }
 
     /**

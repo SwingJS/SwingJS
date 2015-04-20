@@ -45,6 +45,7 @@ public class JSPanelUI extends JSComponentUI {
 	
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
+		// SwingJS must defer to Panel or JPanel to set its own dimensions
 		return null;
 	}
 

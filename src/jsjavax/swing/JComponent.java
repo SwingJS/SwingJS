@@ -827,7 +827,7 @@ public abstract class JComponent extends Container
 				// and probably not do this.
 				// SwingJS  TODO -- allow JSpecView-like layer for writing over buttons
 				if (comp != null && (isJComponent || isLightweightComponent(comp)) &&
-						isSwingJSPaintable(comp) && (comp.isVisible() == true)) {
+						(comp.isVisible() == true)) {
 					Rectangle cr;
 					cr = comp.getBounds(tmpRect);
 //
@@ -854,6 +854,7 @@ public abstract class JComponent extends Container
 						cg.setColor(comp.getForeground());
 						cg.setFont(comp.getFont());
 						boolean shouldSetFlagBack = false;
+						System.out.println("JC Painting " + comp.getName() + " " + cr);
 						try {
 							if (isJComponent) {
 //								if (getFlag(ANCESTOR_USING_BUFFER)) {
@@ -899,32 +900,28 @@ public abstract class JComponent extends Container
 		}
 	}
 
-    private boolean isSwingJSPaintable(Component c) {
-    	// SwingJS  FOR NOW NOT SUPPORTING print(g) in a button.  
-    	return (c instanceof JPanel);
-    			}
-
-		/**
-     * Paints the component's border.
-     * <p>
-     * If you override this in a subclass you should not make permanent
-     * changes to the passed in <code>Graphics</code>. For example, you
-     * should not alter the clip <code>Rectangle</code> or modify the
-     * transform. If you need to do these operations you may find it
-     * easier to create a new <code>Graphics</code> from the passed in
-     * <code>Graphics</code> and manipulate it.
-     *
-     * @param g  the <code>Graphics</code> context in which to paint
-     *
-     * @see #paint
-     * @see #setBorder
-     */
-    protected void paintBorder(Graphics g) {
-        Border border = getBorder();
-        if (border != null) {
-            border.paintBorder(this, g, 0, 0, getWidth(), getHeight());
-        }
-    }
+	/**
+	 * Paints the component's border.
+	 * <p>
+	 * If you override this in a subclass you should not make permanent changes to
+	 * the passed in <code>Graphics</code>. For example, you should not alter the
+	 * clip <code>Rectangle</code> or modify the transform. If you need to do
+	 * these operations you may find it easier to create a new
+	 * <code>Graphics</code> from the passed in <code>Graphics</code> and
+	 * manipulate it.
+	 * 
+	 * @param g
+	 *          the <code>Graphics</code> context in which to paint
+	 * 
+	 * @see #paint
+	 * @see #setBorder
+	 */
+	protected void paintBorder(Graphics g) {
+		Border border = getBorder();
+		if (border != null) {
+			border.paintBorder(this, g, 0, 0, getWidth(), getHeight());
+		}
+	}
 
 
     /**
@@ -974,7 +971,7 @@ public abstract class JComponent extends Container
             return;
         }
 
-        // BH just sets font and color
+        // just sets font and color
         Graphics componentGraphics = getComponentGraphics(g);
         Graphics co = componentGraphics.createSwingJS();
         try {
@@ -2426,6 +2423,9 @@ public abstract class JComponent extends Container
      *
      * @return the <code>ActionMap</code> containing the key/action bindings
      * @since 1.3
+     * 
+     * @j2sIgnore
+     * 
      */
     public final ActionMap getActionMap() {
         return getActionMap(true);
@@ -2502,6 +2502,13 @@ public abstract class JComponent extends Container
      *          current <code>ActionMap</code>, returns <code>null</code>
      */
     final ActionMap getActionMap(boolean create) {
+    	/**
+    	 * @j2sNative
+    	 *
+    	 *  (arguments.length == 0) && (create = true);
+    	 * 
+    	 */
+    	{}
         if (getFlag(ACTIONMAP_CREATED)) {
             return actionMap;
         }
@@ -3566,37 +3573,37 @@ public abstract class JComponent extends Container
      * --- Accessibility Support ---
      */
 
-    /**
-     * @deprecated As of JDK version 1.1,
-     * replaced by <code>jsjava.awt.Component.setEnabled(boolean)</code>.
-     */
-    @Deprecated
-    public void enable() {
-        if (isEnabled() != true) {
-            super.enable();
-//            if (accessibleContext != null) {
-//                accessibleContext.firePropertyChange(
-//                    AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
-//                    null, AccessibleState.ENABLED);
-//            }
-        }
-    }
+//    /**
+//     * @deprecated As of JDK version 1.1,
+//     * replaced by <code>jsjava.awt.Component.setEnabled(boolean)</code>.
+//     */
+//    @Deprecated
+//    public void enable() {
+//        if (isEnabled() != true) {
+//            super.enable();
+////            if (accessibleContext != null) {
+////                accessibleContext.firePropertyChange(
+////                    AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
+////                    null, AccessibleState.ENABLED);
+////            }
+//        }
+//    }
 
-    /**
-     * @deprecated As of JDK version 1.1,
-     * replaced by <code>jsjava.awt.Component.setEnabled(boolean)</code>.
-     */
-    @Deprecated
-    public void disable() {
-        if (isEnabled() != false) {
-            super.disable();
-//            if (accessibleContext != null) {
-//                accessibleContext.firePropertyChange(
-//                    AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
-//                    AccessibleState.ENABLED, null);
-//            }
-        }
-    }
+//    /**
+//     * @deprecated As of JDK version 1.1,
+//     * replaced by <code>jsjava.awt.Component.setEnabled(boolean)</code>.
+//     */
+//    @Deprecated
+//    public void disable() {
+//        if (isEnabled() != false) {
+//            super.disable();
+////            if (accessibleContext != null) {
+////                accessibleContext.firePropertyChange(
+////                    AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
+////                    AccessibleState.ENABLED, null);
+////            }
+//        }
+//    }
 
 //    /**
 //     * The <code>AccessibleContext</code> associated with this
@@ -4151,139 +4158,139 @@ public abstract class JComponent extends Container
     }
 
 
-    /**
-     * @deprecated As of JDK 5,
-     * replaced by <code>Component.setBounds(int, int, int, int)</code>.
-     * <p>
-     * Moves and resizes this component.
-     *
-     * @param x  the new horizontal location
-     * @param y  the new vertical location
-     * @param w  the new width
-     * @param h  the new height
-     * @see jsjava.awt.Component#setBounds
-     */
-    @Deprecated
-    public void reshape(int x, int y, int w, int h) {
-        super.reshape(x, y, w, h);
-    }
-
-
-    /**
-     * Stores the bounds of this component into "return value"
-     * <code>rv</code> and returns <code>rv</code>.
-     * If <code>rv</code> is <code>null</code> a new <code>Rectangle</code>
-     * is allocated.  This version of <code>getBounds</code> is useful
-     * if the caller wants to avoid allocating a new <code>Rectangle</code>
-     * object on the heap.
-     *
-     * @param rv the return value, modified to the component's bounds
-     * @return <code>rv</code>; if <code>rv</code> is <code>null</code>
-     *          return a newly created <code>Rectangle</code> with this
-     *          component's bounds
-     */
-    public Rectangle getBounds(Rectangle rv) {
-        if (rv == null) {
-            return new Rectangle(getX(), getY(), getWidth(), getHeight());
-        }
-        else {
-            rv.setBounds(getX(), getY(), getWidth(), getHeight());
-            return rv;
-        }
-    }
-
-
-    /**
-     * Stores the width/height of this component into "return value"
-     * <code>rv</code> and returns <code>rv</code>.
-     * If <code>rv</code> is <code>null</code> a new <code>Dimension</code>
-     * object is allocated.  This version of <code>getSize</code>
-     * is useful if the caller wants to avoid allocating a new
-     * <code>Dimension</code> object on the heap.
-     *
-     * @param rv the return value, modified to the component's size
-     * @return <code>rv</code>
-     */
-    public Dimension getSize(Dimension rv) {
-        if (rv == null) {
-            return new Dimension(getWidth(), getHeight());
-        }
-        else {
-            rv.setSize(getWidth(), getHeight());
-            return rv;
-        }
-    }
-
-
-    /**
-     * Stores the x,y origin of this component into "return value"
-     * <code>rv</code> and returns <code>rv</code>.
-     * If <code>rv</code> is <code>null</code> a new <code>Point</code>
-     * is allocated.  This version of <code>getLocation</code> is useful
-     * if the caller wants to avoid allocating a new <code>Point</code>
-     * object on the heap.
-     *
-     * @param rv the return value, modified to the component's location
-     * @return <code>rv</code>
-     */
-    public Point getLocation(Point rv) {
-        if (rv == null) {
-            return new Point(getX(), getY());
-        }
-        else {
-            rv.setLocation(getX(), getY());
-            return rv;
-        }
-    }
-
-
-    /**
-     * Returns the current x coordinate of the component's origin.
-     * This method is preferable to writing
-     * <code>component.getBounds().x</code>, or
-     * <code>component.getLocation().x</code> because it doesn't cause any
-     * heap allocations.
-     *
-     * @return the current x coordinate of the component's origin
-     */
-    public int getX() { return super.getX(); }
-
-
-    /**
-     * Returns the current y coordinate of the component's origin.
-     * This method is preferable to writing
-     * <code>component.getBounds().y</code>, or
-     * <code>component.getLocation().y</code> because it doesn't cause any
-     * heap allocations.
-     *
-     * @return the current y coordinate of the component's origin
-     */
-    public int getY() { return super.getY(); }
-
-
-    /**
-     * Returns the current width of this component.
-     * This method is preferable to writing
-     * <code>component.getBounds().width</code>, or
-     * <code>component.getSize().width</code> because it doesn't cause any
-     * heap allocations.
-     *
-     * @return the current width of this component
-     */
-    public int getWidth() { return super.getWidth(); }
-
-
-    /**
-     * Returns the current height of this component.
-     * This method is preferable to writing
-     * <code>component.getBounds().height</code>, or
-     * <code>component.getSize().height</code> because it doesn't cause any
-     * heap allocations.
-     *
-     * @return the current height of this component
-     */
-    public int getHeight() { return super.getHeight(); }
-
+//    /**
+//     * @deprecated As of JDK 5,
+//     * replaced by <code>Component.setBounds(int, int, int, int)</code>.
+//     * <p>
+//     * Moves and resizes this component.
+//     *
+//     * @param x  the new horizontal location
+//     * @param y  the new vertical location
+//     * @param w  the new width
+//     * @param h  the new height
+//     * @see jsjava.awt.Component#setBounds
+//     */
+//    @Deprecated
+//    public void reshape(int x, int y, int w, int h) {
+//        super.reshape(x, y, w, h);
+//    }
+//
+//
+//    /**
+//     * Stores the bounds of this component into "return value"
+//     * <code>rv</code> and returns <code>rv</code>.
+//     * If <code>rv</code> is <code>null</code> a new <code>Rectangle</code>
+//     * is allocated.  This version of <code>getBounds</code> is useful
+//     * if the caller wants to avoid allocating a new <code>Rectangle</code>
+//     * object on the heap.
+//     *
+//     * @param rv the return value, modified to the component's bounds
+//     * @return <code>rv</code>; if <code>rv</code> is <code>null</code>
+//     *          return a newly created <code>Rectangle</code> with this
+//     *          component's bounds
+//     */
+//    public Rectangle getBounds(Rectangle rv) {
+//        if (rv == null) {
+//            return new Rectangle(getX(), getY(), getWidth(), getHeight());
+//        }
+//        else {
+//            rv.setBounds(getX(), getY(), getWidth(), getHeight());
+//            return rv;
+//        }
+//    }
+//
+//
+//    /**
+//     * Stores the width/height of this component into "return value"
+//     * <code>rv</code> and returns <code>rv</code>.
+//     * If <code>rv</code> is <code>null</code> a new <code>Dimension</code>
+//     * object is allocated.  This version of <code>getSize</code>
+//     * is useful if the caller wants to avoid allocating a new
+//     * <code>Dimension</code> object on the heap.
+//     *
+//     * @param rv the return value, modified to the component's size
+//     * @return <code>rv</code>
+//     */
+//    public Dimension getSize(Dimension rv) {
+//        if (rv == null) {
+//            return new Dimension(getWidth(), getHeight());
+//        }
+//        else {
+//            rv.setSize(getWidth(), getHeight());
+//            return rv;
+//        }
+//    }
+//
+//
+//    /**
+//     * Stores the x,y origin of this component into "return value"
+//     * <code>rv</code> and returns <code>rv</code>.
+//     * If <code>rv</code> is <code>null</code> a new <code>Point</code>
+//     * is allocated.  This version of <code>getLocation</code> is useful
+//     * if the caller wants to avoid allocating a new <code>Point</code>
+//     * object on the heap.
+//     *
+//     * @param rv the return value, modified to the component's location
+//     * @return <code>rv</code>
+//     */
+//    public Point getLocation(Point rv) {
+//        if (rv == null) {
+//            return new Point(getX(), getY());
+//        }
+//        else {
+//            rv.setLocation(getX(), getY());
+//            return rv;
+//        }
+//    }
+//
+//
+//    /**
+//     * Returns the current x coordinate of the component's origin.
+//     * This method is preferable to writing
+//     * <code>component.getBounds().x</code>, or
+//     * <code>component.getLocation().x</code> because it doesn't cause any
+//     * heap allocations.
+//     *
+//     * @return the current x coordinate of the component's origin
+//     */
+//    public int getX() { return super.getX(); }
+//
+//
+//    /**
+//     * Returns the current y coordinate of the component's origin.
+//     * This method is preferable to writing
+//     * <code>component.getBounds().y</code>, or
+//     * <code>component.getLocation().y</code> because it doesn't cause any
+//     * heap allocations.
+//     *
+//     * @return the current y coordinate of the component's origin
+//     */
+//    public int getY() { return super.getY(); }
+//
+//
+//    /**
+//     * Returns the current width of this component.
+//     * This method is preferable to writing
+//     * <code>component.getBounds().width</code>, or
+//     * <code>component.getSize().width</code> because it doesn't cause any
+//     * heap allocations.
+//     *
+//     * @return the current width of this component
+//     */
+//    public int getWidth() { return super.getWidth(); }
+//
+//
+//    /**
+//     * Returns the current height of this component.
+//     * This method is preferable to writing
+//     * <code>component.getBounds().height</code>, or
+//     * <code>component.getSize().height</code> because it doesn't cause any
+//     * heap allocations.
+//     *
+//     * @return the current height of this component
+//     */
+//    public int getHeight() { return super.getHeight(); }
+//
     /**
      * Returns true if this component is completely opaque.
      * <p>
@@ -4790,7 +4797,7 @@ public abstract class JComponent extends Container
      * @see RepaintManager#addInvalidComponent
      */
     public void revalidate() {
-    	System.out.println("revalidate on " + this);
+    	//System.out.println("revalidate on " + this);
         if (getParent() == null) {
             // Note: We don't bother invalidating here as once added
             // to a valid parent invalidate will be invoked (addImpl
@@ -4801,12 +4808,12 @@ public abstract class JComponent extends Container
             return;
         }
         if (SwingUtilities.isEventDispatchThread()) {
-          System.out.println("JC revalidate invalidating dispatch " + this);
+          //System.out.println("JC revalidate invalidating dispatch " + this);
             invalidate();
             RepaintManager.currentManager(this).addInvalidComponent(this);
         }
         else {
-          System.out.println("JC revalidate checking flag " + getFlag(REVALIDATE_RUNNABLE_SCHEDULED) + " " + this);
+          //System.out.println("JC revalidate checking flag " + getFlag(REVALIDATE_RUNNABLE_SCHEDULED) + " " + this);
             // To avoid a flood of Runnables when constructing GUIs off
             // the EDT, a flag is maintained as to whether or not
             // a Runnable has been scheduled.
@@ -4816,14 +4823,14 @@ public abstract class JComponent extends Container
                 }
                 setFlag(REVALIDATE_RUNNABLE_SCHEDULED, true);
             }
-            System.out.println("JC revalidate invoking later " + this);
+            //System.out.println("JC revalidate invoking later " + this);
             final Object me = this;
             Runnable callRevalidate = new Runnable() {
                 public void run() {
                     synchronized(JComponent.this) {
                         setFlag(REVALIDATE_RUNNABLE_SCHEDULED, false);
                     }
-                    System.out.println("JC revalidating " + me);
+                    //System.out.println("JC revalidating " + me);
                     revalidate();
                 }
             };

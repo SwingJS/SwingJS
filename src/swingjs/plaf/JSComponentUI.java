@@ -99,7 +99,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	public void update(Graphics g, JComponent c) {
-		System.out.println(id + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight() + JSToolkit.getStackTrace(-10));
+		System.out.println(id + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight());
 		 if (c.isOpaque()) {
 			 g.setColor(c.getBackground());
 			 g.fillRect(0, 0, c.getWidth(),c.getHeight());

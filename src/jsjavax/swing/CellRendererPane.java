@@ -24,9 +24,6 @@
  */
 package jsjavax.swing;
 
-//import java.io.IOException;
-//import java.io.ObjectOutputStream;
-//
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Container;

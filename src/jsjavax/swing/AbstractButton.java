@@ -26,6 +26,7 @@ package jsjavax.swing;
 
 import javax.swing.event.EventListenerList;
 
+import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
@@ -1407,7 +1408,13 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @see #setBorder
      */
     protected void paintBorder(Graphics g) {
-        if (isBorderPainted()) {
+  		{
+  			System.out.println("AB testing paintBorder");
+  			g.setColor(Color.red);
+  			g.drawRect(0, 0, getWidth(), getHeight());
+  		}
+
+  		if (isBorderPainted()) {
             super.paintBorder(g);
         }
     }
