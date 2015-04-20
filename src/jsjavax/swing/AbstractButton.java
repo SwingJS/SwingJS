@@ -1408,12 +1408,6 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @see #setBorder
      */
     protected void paintBorder(Graphics g) {
-  		{
-  			System.out.println("AB testing paintBorder");
-  			g.setColor(Color.red);
-  			g.drawRect(0, 0, getWidth(), getHeight());
-  		}
-
   		if (isBorderPainted()) {
             super.paintBorder(g);
         }

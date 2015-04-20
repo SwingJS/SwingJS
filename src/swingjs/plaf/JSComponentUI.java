@@ -4,6 +4,7 @@ import swingjs.JSToolkit;
 import swingjs.api.DOMObject;
 import swingjs.api.JQuery;
 import swingjs.api.JQueryObject;
+import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
@@ -104,6 +105,11 @@ public abstract class JSComponentUI extends ComponentUI {
 			 g.setColor(c.getBackground());
 			 g.fillRect(0, 0, c.getWidth(),c.getHeight());
 		 }
+ 		{
+			g.setColor(Color.red);
+			g.drawRect(0, 0, c.getWidth(), c.getHeight());
+		}
+
 		 paint(g, c);
 	}
 
