@@ -25,22 +25,48 @@
 
 package swingjs.plaf;
 
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+
 import swingjs.api.DOMObject;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.ButtonGroup;
+import jsjavax.swing.DefaultButtonModel;
+import jsjavax.swing.JRadioButton;
 
 public class JSRadioButtonUI extends JSComponentUI {
 
 	private DOMObject radio;
 	private DOMObject label;
+	private String groupName;
+	private static Map<ButtonGroup, String> groupNames;
 
 	@Override
-	public DOMObject getDomObject() {
-		radio = getDOMObject("input", id, "type", "radio");
+	public DOMObject getDOMObject() {
+		isContainer = false;
+		if (groupNames == null)
+			groupNames = new HashMap<ButtonGroup, String>();
+		JRadioButton b = (JRadioButton) c;
+		ButtonGroup bg = null;
+		String name = id;
+		boolean isNew = true;
+		if (b.getModel() instanceof DefaultButtonModel) {
+			bg = ((DefaultButtonModel) b.getModel()).getGroup();
+		  name = groupNames.get(bg);
+		  if (name == null)
+		  	groupNames.put(bg, name = id);
+		  else
+		  	isNew = false;
+		}
+		radio = getDOMObject("input", id, "type", "radio", "name", name);
+		if (b.isSelected() || isNew)
+			DOMObject.setAttr(radio, "selected", "true");
 		label = getDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
 				((AbstractButton) c).getText());
-		domObj = getSpan(id, radio, label);
-		setCssFont(domObj, c.getFont());
-		return domObj;
+		tempObj = getSpan(id, radio, label);
+		setCssFont(tempObj, c.getFont());
+		return tempObj;
 	}
 
 }

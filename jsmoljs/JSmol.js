@@ -214,8 +214,14 @@
 			else
 				this._GLmol.create();
 		};
-    
+
+//////// swingjs.api.HTML5Applet interface    
     proto._getHtml5Canvas = function() { return this._canvas }; 
+    proto._getWidth = function() { return this._canvas.width }; 
+    proto._getHeight = function() { return this._canvas.height };
+    proto._getContentLayer = function() { return Jmol.$(this, "contentLayer")[0] }; 
+////////
+
 
 		proto._createCanvas2d = function(doReplace) {
 			var container = Jmol.$(this, "appletdiv");
@@ -227,8 +233,8 @@
 				container[0].removeChild(this._canvas.frontLayer);
 			if (this._canvas.rearLayer)
 				container[0].removeChild(this._canvas.rearLayer);
-			if (this._canvas.imageLayer)
-				container[0].removeChild(this._canvas.imageLayer);
+			if (this._canvas.contentLayer)
+				container[0].removeChild(this._canvas.contentLayer);
 			Jmol._jsUnsetMouse(this._mouseInterface);
 			} catch (e) {}
 			//}
@@ -246,23 +252,26 @@
 			Jmol._$(canvas.id).css({"z-index":Jmol._getZ(this, "main")});
 			if (this._isLayered){
 				var img = document.createElement("div");
-				canvas.imageLayer = img;
-				img.id = this._id + "_imagelayer";
+				canvas.contentLayer = img;
+				img.id = this._id + "_contentLayer";
 				container.append(img);
-				Jmol._$(img.id).css({zIndex:Jmol._getZ(this, "image"),position:"absolute",left:"0px",top:"0px", width:"0px", height:"0px", overflow:"hidden"});
-				this._mouseInterface = this._getLayer("front", container, w, h, false);
+				Jmol._$(img.id).css({zIndex:Jmol._getZ(this, "image"),position:"absolute",left:"0px",top:"0px",
+        width:(this._isSwing ? w : 0) + "px", height:(this._isSwing ? h : 0) +"px", overflow:"hidden"});
         if (this._isSwing) {
         	var d = document.createElement("div");
           d.id = this._id + "_swingdiv";
         	Jmol._$(this._id + "_appletinfotablediv").append(d);
 				  Jmol._$(d.id).css({zIndex:Jmol._getZ(this, "rear"),position:"absolute",left:"0px",top:"0px", width:w +"px", height:h+"px", overflow:"hidden"});
+  				this._mouseInterface = canvas;
+        } else {
+  				this._mouseInterface = this._getLayer("front", container, w, h, false);
         }
 				//this._getLayer("rear", container, w, h, true);
 				//Jmol._$(canvas.id).css({background:"rgb(0,0,0,0.001)", "z-index":Jmol._z.main}); 
 			} else {
 				this._mouseInterface = canvas;
 			}
-			Jmol._jsSetMouse(this._mouseInterface);
+			//Jmol._jsSetMouse(this._mouseInterface);
 		}
     
     proto._getLayer = function(name, container, w, h, isOpaque) {
@@ -514,7 +523,7 @@
 		}
 		var width = image.width;
 		var height = image.height; 
-		var id = "echo_" + echoNameAndPath[0];
+		var id = "echo_" + echoNameAndPath[0];  
 		var canvas = Jmol._getHiddenCanvas(platform.vwr.html5Applet, id, width, height, true);
 		canvas.imageWidth = width;
 		canvas.imageHeight = height;

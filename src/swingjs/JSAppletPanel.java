@@ -14,6 +14,7 @@ import jsjava.awt.Font;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
+import jsjava.awt.Toolkit;
 import jsjavax.swing.JApplet;
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
@@ -66,7 +67,6 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	public Object display;
 	private HTML5Canvas canvas;
 	private JSGraphics2D jsgraphics;
-	private String htmlName;
 	private JApplet applet;
 
 	// /// AppletPanel fields //////
@@ -180,13 +180,13 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		 * @j2sNative
 		 * 
 		 *            Jmol._applets[this.appletName + "_thread"] =
-		 *            jsjava.lang.Thread.thisThread = this.myThread; this.appContext
-		 *            = jssun.awt.SunToolkit.createNewAppContext();
-		 *            jsjava.awt.Toolkit.getDefaultToolkit();
+		 *            jsjava.lang.Thread.thisThread = this.myThread; 
 		 * 
 		 */
 		{
 		}
+		appContext = JSToolkit.createNewAppContext();
+		Toolkit.getDefaultToolkit();
 		System.out.println("JSAppletPanel initialized");
 	}
 

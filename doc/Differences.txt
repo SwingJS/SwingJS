@@ -3,6 +3,9 @@ PROGRESS
 4/19/2015
 
 FlowLayout reporting proper positions and sizes for JRadioButtons
+HTML alignment may be a bit off. 
+HTML5 implementation of panels and buttons working. 
+ButtonGroups working.
 
 code: "super.xxx" out in Component, Container, and JComponent
 

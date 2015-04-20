@@ -109,7 +109,7 @@ import jsjavax.swing.UIDefaults;
  *
  * @author unattributed
  */
-public class SwingJSLookAndFeel extends LookAndFeel
+public class HTML5LookAndFeel extends LookAndFeel
 {
 //    /**
 //     * Whether or not the developer has created a JPopupMenu.

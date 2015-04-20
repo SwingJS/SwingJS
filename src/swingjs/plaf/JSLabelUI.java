@@ -31,10 +31,11 @@ import jsjavax.swing.JLabel;
 public class JSLabelUI extends JSComponentUI {
 
 	@Override
-	public DOMObject getDomObject() {
-		domObj = getDOMObject("label", id, "innerHTML",((JLabel) c).getText());
-		setCssFont(domObj, c.getFont());
-		return domObj;
+	public DOMObject getDOMObject() {
+		isContainer = false;
+		tempObj = getDOMObject("label", id, "innerHTML",((JLabel) c).getText());
+		setCssFont(tempObj, c.getFont());
+		return tempObj;
 	}
 
 }

@@ -344,7 +344,7 @@ public class UIManager
 
     static {
         ArrayList iLAFs = new ArrayList(4);
-        iLAFs.add(new LookAndFeelInfo("SwingJS", "swingjs.plaf.SwingJSLookAndFeel"));
+        iLAFs.add(new LookAndFeelInfo("HTML5", "swingjs.plaf.HTML5LookAndFeel"));
 // SwingJS         iLAFs.add(new LookAndFeelInfo(
 //                      "Metal", "jsjavax.swing.plaf.metal.MetalLookAndFeel"));
 //        iLAFs.add(new LookAndFeelInfo(

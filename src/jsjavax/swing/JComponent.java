@@ -662,6 +662,9 @@ public abstract class JComponent extends Container
         repaint();
     }
 
+    public ComponentUI getUI() {
+    	return ui;
+    }
     /**
      * Uninstalls the UI, if any, and any client properties designated
      * as being specific to the installed UI - instances of
@@ -828,8 +831,7 @@ public abstract class JComponent extends Container
 				// SwingJS  TODO -- allow JSpecView-like layer for writing over buttons
 				if (comp != null && (isJComponent || isLightweightComponent(comp)) &&
 						(comp.isVisible() == true)) {
-					Rectangle cr;
-					cr = comp.getBounds(tmpRect);
+					Rectangle cr = comp.getBounds(tmpRect);
 //
 //					boolean hitClip = g.hitClip(cr.x, cr.y, cr.width, cr.height);
 //
@@ -5508,5 +5510,6 @@ public abstract class JComponent extends Container
         ",minimumSize=" + minimumSizeString +
         ",preferredSize=" + preferredSizeString;
     }
+
 
 }

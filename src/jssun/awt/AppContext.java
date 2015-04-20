@@ -27,7 +27,6 @@ package jssun.awt;
 
 import jsjava.lang.Thread;
 import jsjava.lang.ThreadGroup;
-import jsjava.awt.EventQueue;
 //import jsjava.security.AccessController;
 //import jsjava.security.PrivilegedAction;
 import java.util.Collections;
@@ -36,11 +35,13 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
+
+import swingjs.JSThreadGroup;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 //import java.util.concurrent.atomic.AtomicInteger;
-import jsjava.lang.Thread; // OH YES IT IS!
-import jsjava.lang.ThreadGroup; // OH YES IT IS!
+import jsjava.lang.Thread; // DO NOT REMOVE!
+import jsjava.lang.ThreadGroup; // DO NOT REMOVE!
 
 /**
  * The AppContext is a table referenced by ThreadGroup which stores
@@ -188,7 +189,7 @@ public final class AppContext {
      * number is 1.  If so, it returns the sole AppContext without
      * checking Thread.currentThread().
      */
-    private static int numAppContexts = 0;
+     static int numAppContexts = 0;
 
 //    /*
 //     * The context ClassLoader that was used to create this AppContext.

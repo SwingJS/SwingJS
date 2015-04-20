@@ -32,9 +32,9 @@ import swingjs.api.DOMObject;
 public class JSPanelUI extends JSComponentUI {
 
 	@Override
-	public DOMObject getDomObject() {
-		domObj = getDOMObject("canvas", id);
-		return domObj;
+	public DOMObject getDOMObject() {
+		isContainer = true;
+    return tempObj = getDOMObject("label", id);
 	}
 
 	@Override

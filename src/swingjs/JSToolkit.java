@@ -24,11 +24,12 @@ import jsjavax.swing.UIDefaults;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
+import swingjs.api.HTML5Applet;
 import swingjs.api.HTMLCanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
 import swingjs.plaf.JSComponentUI;
-import swingjs.plaf.SwingJSLookAndFeel;
+import swingjs.plaf.HTML5LookAndFeel;
 
 public class JSToolkit extends SunToolkit {
 
@@ -429,7 +430,7 @@ public class JSToolkit extends SunToolkit {
 
 	public static UIDefaults getLookAndFeelDefaults() {
 		if (uid == null)
-			uid = ((SwingJSLookAndFeel) getInstance("swingjs.plaf.SwingJSLookAndFeel"))
+			uid = ((HTML5LookAndFeel) getInstance("swingjs.plaf.HTML5LookAndFeel"))
 					.getDefaults();
 		return uid;
 	}
@@ -638,6 +639,10 @@ public class JSToolkit extends SunToolkit {
 		 */
 		{
 		}
+	}
+
+	public static HTML5Applet getHTML5Applet(JComponent c) {
+		return ((JSThreadGroup) c.getAppContext().getThreadGroup()).getHtmlApplet();
 	}
 
 }

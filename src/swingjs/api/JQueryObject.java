@@ -10,4 +10,6 @@ public interface JQueryObject {
 
 	void html(String html);
 
+	JQueryObject clone(boolean withData, boolean deepCopy);
+
 }

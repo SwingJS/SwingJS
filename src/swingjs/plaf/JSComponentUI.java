@@ -16,14 +16,18 @@ public abstract class JSComponentUI extends ComponentUI {
 
 	protected JComponent c;
 	protected String id;
-	protected DOMObject domObj;
+	protected DOMObject tempObj, divObj;
 	protected int num;
+	protected boolean isTainted = true;
+	private int x, y;
+	protected boolean isContainer = false;
+
 
 	public JSComponentUI() {
 		// for reflection
 	}
 
-  public abstract DOMObject getDomObject();
+  public abstract DOMObject getDOMObject();
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
@@ -33,7 +37,7 @@ public abstract class JSComponentUI extends ComponentUI {
 
 	protected void newID() {
 		num = ++incr;
-		id = c.getUIClassID() + num;
+		id = c.getHTMLName(c.getUIClassID()) + "_" + num;
 	}
 
 	protected void setCssFont(DOMObject obj, Font font) {
@@ -61,11 +65,21 @@ public abstract class JSComponentUI extends ComponentUI {
 		return span;
 	}
 
+	protected DOMObject getDiv(DOMObject elem) {
+		if (divObj != null)
+			return divObj;
+	  divObj = getDOMObject("div", id + "d");
+		divObj.appendChild(elem);
+		return divObj;
+	}
+	
 	private void debugDump(DOMObject d) {
 		System.out.println(DOMObject.getOuterHTML(d));
 	}
-
+	
 	protected Dimension getHTMLSize(DOMObject obj) {
+		if (obj == null)
+			return null;
 		String div = JSToolkit.getSwingDivId();
 		JQuery jq = JSToolkit.getJQuery();
 		JQueryObject jo = jq.$("#" + div);
@@ -76,12 +90,37 @@ public abstract class JSComponentUI extends ComponentUI {
 		return new Dimension(w, h);
 	}
 
+	private void setHTMLElement() {
+		if (!isTainted)
+			return;
+		if (divObj == null) {
+			if (tempObj == null)
+				getDOMObject();
+			divObj = getDiv(tempObj);
+		}
+		if (x != c.getX() || y != c.getY()) {
+			DOMObject.setStyle(divObj, "position", "absolute");
+			DOMObject.setStyle(divObj, "left", (x = c.getX()) + "px");
+			DOMObject.setStyle(divObj, "top", (y = c.getY()) + "px");
+		}
+		if (isContainer) {
+			DOMObject.setStyle(divObj, "width", c.getWidth() + "px");
+			DOMObject.setStyle(divObj, "height", c.getHeight() + "px");
+		}
+		debugDump(divObj);
+		JSComponentUI parentUI = (JSComponentUI) ((JComponent) c.getParent())
+				.getUI();
+		DOMObject parentDiv = (parentUI == null ? JSToolkit.getHTML5Applet(c)
+				._getContentLayer() : parentUI.divObj);
+		parentDiv.appendChild(divObj);
+	}
+
 	/**
 	 * c ignored because JSComponentUI is one per component
 	 */
 	public Dimension getPreferredSize(JComponent c) {
 		newID();
-		Dimension d = getHTMLSize(getDomObject());
+		Dimension d = getHTMLSize(getDOMObject());
 		System.out.println(id + " getPreferredSize " + d + " called on " + c);
   	return d;
   }
@@ -97,6 +136,10 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	public void paint(Graphics g, JComponent c) {
+		// for users to use. Note that for now, button graphics 
+		// are BEHIND the button. We will need to paint onto the
+		// glass pane for this to work, and then also manage
+		// mouse clicks and key clicks with that in mind. 
 	}
 
 	public void update(Graphics g, JComponent c) {
@@ -110,6 +153,9 @@ public abstract class JSComponentUI extends ComponentUI {
 			g.drawRect(0, 0, c.getWidth(), c.getHeight());
 		}
 
+ 		setHTMLElement();
+ 		
+ 		
 		 paint(g, c);
 	}
 

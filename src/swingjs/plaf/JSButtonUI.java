@@ -31,11 +31,12 @@ import jsjavax.swing.AbstractButton;
 public class JSButtonUI extends JSComponentUI {
 
 	@Override
-	public DOMObject getDomObject() {
-		domObj = getDOMObject("label", id, "innerHTML",
+	public DOMObject getDOMObject() {
+		isContainer = false;
+		tempObj = getDOMObject("label", id, "innerHTML",
 				((AbstractButton) c).getText());
-		setCssFont(domObj, c.getFont());
-		return domObj;
+		setCssFont(tempObj, c.getFont());
+		return tempObj;
 	}
 
 }

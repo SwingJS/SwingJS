@@ -190,7 +190,11 @@ protected  transient ComponentPeer peer;
      */
     protected transient AppContext appContext;
 
-    /**
+		public AppContext getAppContext() {
+			return appContext;
+		}
+
+		/**
      * The x position of the component in the parent's coordinate system.
      *
      * @serial
@@ -734,6 +738,9 @@ protected  transient ComponentPeer peer;
     // where currently there is no chance to interpose on the creation
     // of the peer and therefore the call to XSetBackground.
     transient boolean backgroundEraseDisabled;
+		protected String htmlName;
+		private int num;
+		private static int incr;
 
 //    static {
 //        AWTAccessor.setComponentAccessor(new AWTAccessor.ComponentAccessor() {
@@ -821,7 +828,13 @@ protected  transient ComponentPeer peer;
 
     protected void setAppContext() {
       appContext = AppContext.getAppContext();
+      num = ++incr;
 		}
+    
+    public String getHTMLName(String uid) {
+    	return (htmlName == null ? htmlName = appContext.getThreadGroup().getName() 
+    			+ "_" + uid + "_" + num : htmlName);
+    }
 
 		/**
      * Constructs a name for this component.  Called by <code>getName</code>

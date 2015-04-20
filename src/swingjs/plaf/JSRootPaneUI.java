@@ -25,6 +25,7 @@
 
 package swingjs.plaf;
 
+import swingjs.JSToolkit;
 import swingjs.api.DOMObject;
 
 /**
@@ -36,8 +37,8 @@ import swingjs.api.DOMObject;
 public class JSRootPaneUI extends JSComponentUI {
 
 	@Override
-	public DOMObject getDomObject() {
-		domObj = getDOMObject("canvas", id);
-		return domObj;
+	public DOMObject getDOMObject() {
+		isContainer = false;
+  	return null;
 	}
 }
