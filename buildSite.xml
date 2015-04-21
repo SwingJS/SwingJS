@@ -66,13 +66,12 @@
       </fileset>
     </copy>
   	
-    <echo>...adding to swingjs/j2s jssun and swingjs JavaScript files from bin</echo>
+    <echo>...adding to swingjs/j2s all other JavaScript files from bin</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
-        <include name="javajs/**/*.js" />
-        <include name="jssun/**/*.js" />
-        <include name="swingjs/**/*.js" />
-        <include name="org/**/*.js" />
+        <include name="**/*.js" />
+        <exclude name="jsjava/**/*.js" />
+        <exclude name="jsjavax/**/*.js" />
       </fileset>
     </copy>
    	
