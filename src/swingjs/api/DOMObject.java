@@ -5,21 +5,19 @@ public abstract class DOMObject {
 	public abstract void appendChild(Object object);
 
 	public static DOMObject createElement(String key, String id) {
+		DOMObject obj = null;
 		/**
 		 * 
 		 * @j2sNative
-		 * 					var d = document.createElement(key); 
-		 *          d.id = id;
-		 *            return d;
+		 * 					obj = document.createElement(key); 
+		 *          obj.id = id;
 		 */
 		{
 		}
-
-		// TODO Auto-generated method stub
-		return null;
+		return obj;
 	};
 
-	public static void setAttr(DOMObject obj, String attr, String val) {
+	public static DOMObject setAttr(DOMObject obj, String attr, String val) {
 		/**
 		 * @j2sNative
 		 * 
@@ -28,29 +26,33 @@ public abstract class DOMObject {
 		 */
 		{
 		}
+		return obj;
 	}
 
-	public static void setStyle(DOMObject obj, String attr, String val) {
+	public static DOMObject setStyle(DOMObject obj, String... attr) {
 		/**
 		 * @j2sNative
 		 * 
-		 *            obj.style[attr] = val;
+		 * for (var i = 0; i < attr.length;)
+		 *            obj.style[attr[i++]] = attr[i++];
 		 * 
 		 */
 		{
 		}
+		return obj;
 	}
 
 	public static String getOuterHTML(DOMObject d) {
+		String s = null;
 		/**
 		 * @j2sNative
 		 * 
-		 *            return d.outerHTML;
+		 *            s = d.outerHTML;
 		 * 
 		 */
 		{
-			return null;
 		}
+		return s;
 	}
 
 }

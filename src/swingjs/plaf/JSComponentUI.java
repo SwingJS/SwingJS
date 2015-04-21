@@ -40,54 +40,66 @@ public abstract class JSComponentUI extends ComponentUI {
 		id = c.getHTMLName(c.getUIClassID()) + "_" + num;
 	}
 
-	protected void setCssFont(DOMObject obj, Font font) {
-		if (font == null)
-			return;
+	protected DOMObject setCssFont(DOMObject obj, Font font) {
+		if (font != null) {
 		int istyle = font.getStyle();
-		DOMObject.setStyle(obj, "font-family", font.getFamily());
-		DOMObject.setStyle(obj, "font-size", font.getSize() + "px");
-		DOMObject.setStyle(obj, "font-style", ((istyle & Font.ITALIC) == 0 ? "normal" : "italic"));
-		DOMObject.setStyle(obj, "font-weight", ((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
+		DOMObject.setStyle(obj, 
+				"font-family", font.getFamily(), 
+				"font-size", font.getSize() + "px", 
+				"font-style", ((istyle & Font.ITALIC) == 0 ? "normal" : "italic"),
+				"font-weight", ((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
+		}
+		return obj;
 	}
 
-	protected DOMObject getDOMObject(String key, String id, String... attr) {
-		DOMObject d = DOMObject.createElement(key, id);
+	protected DOMObject createDOMObject(String key, String id, String... attr) {
+		DOMObject obj = DOMObject.createElement(key, id);
 		for (int i = 0; i < attr.length;)
-			DOMObject.setAttr(d, attr[i++], attr[i++]);
-		return d;
+			DOMObject.setAttr(obj, attr[i++], attr[i++]);
+		return obj;
 	}
 
-	protected DOMObject getSpan(String id, Object... elements) {
-		DOMObject span = getDOMObject("span", id + "s");
+	protected DOMObject wrap(String type, String id, DOMObject... elements) {
+		DOMObject obj = createDOMObject(type, id + type);
 		for (int i = 0; i < elements.length; i++)
-			span.appendChild(elements[i]);
-		debugDump(span);
-		return span;
+			obj.appendChild(elements[i]);
+		return obj;
 	}
 
-	protected DOMObject getDiv(DOMObject elem) {
-		if (divObj != null)
-			return divObj;
-	  divObj = getDOMObject("div", id + "d");
-		divObj.appendChild(elem);
-		return divObj;
-	}
-	
 	private void debugDump(DOMObject d) {
 		System.out.println(DOMObject.getOuterHTML(d));
 	}
 	
-	protected Dimension getHTMLSize(DOMObject obj) {
+	protected static void vCenter(DOMObject obj, int offset) {
+		DOMObject.setStyle(obj, 
+				"top", "50%", 
+				"transform","translateY(" + offset + "%)");
+	}
+	
+	protected Dimension setHTMLSize(DOMObject obj, boolean addCSS) {
 		if (obj == null)
 			return null;
 		String div = JSToolkit.getSwingDivId();
 		JQuery jq = JSToolkit.getJQuery();
+		// Wow! A <div> is necessary for the height, 
+		//      and a <span> is necessary for the width!
 		JQueryObject jo = jq.$("#" + div);
 		jo.append(obj);	
 		int w = jq.$(obj).width();
-		int h = jq.$(obj).height();
+		DOMObject d = wrap("div", id, obj);
+		jo.append(d);	
+		int h = jq.$(d).height();		
 		jo.html("");
+		DOMObject.setStyle(obj, "position", "absolute");
+		if (addCSS)
+			setDims(obj, w, h);
 		return new Dimension(w, h);
+	}
+
+	protected DOMObject setDims(DOMObject obj, int w, int h) {
+		return DOMObject.setStyle(obj, 
+				"width", w + "px", 
+				"height", h + "px");
 	}
 
 	private void setHTMLElement() {
@@ -95,17 +107,20 @@ public abstract class JSComponentUI extends ComponentUI {
 			return;
 		if (divObj == null) {
 			if (tempObj == null)
-				getDOMObject();
-			divObj = getDiv(tempObj);
+				tempObj = getDOMObject();
+			divObj = wrap("div", id, tempObj);
 		}
 		if (x != c.getX() || y != c.getY()) {
-			DOMObject.setStyle(divObj, "position", "absolute");
-			DOMObject.setStyle(divObj, "left", (x = c.getX()) + "px");
-			DOMObject.setStyle(divObj, "top", (y = c.getY()) + "px");
+			DOMObject.setStyle(divObj, 
+					"position", "absolute", 
+					"left", (x = c.getX()) + "px", 
+					"top", (y = c.getY()) + "px");
 		}
 		if (isContainer) {
-			DOMObject.setStyle(divObj, "width", c.getWidth() + "px");
-			DOMObject.setStyle(divObj, "height", c.getHeight() + "px");
+			DOMObject.setStyle(divObj, 
+					"width", c.getWidth() + "px", 
+  					"height", c.getHeight() + "px");
+//			DOMObject.setStyle(divObj, "background-color", JSToolkit.getCSSColor(c.getBackground()));			
 		}
 		debugDump(divObj);
 		JSComponentUI parentUI = (JSComponentUI) ((JComponent) c.getParent())
@@ -120,7 +135,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	 */
 	public Dimension getPreferredSize(JComponent c) {
 		newID();
-		Dimension d = getHTMLSize(getDOMObject());
+		Dimension d = setHTMLSize(tempObj = getDOMObject(), true);
 		System.out.println(id + " getPreferredSize " + d + " called on " + c);
   	return d;
   }
@@ -148,7 +163,8 @@ public abstract class JSComponentUI extends ComponentUI {
 			 g.setColor(c.getBackground());
 			 g.fillRect(0, 0, c.getWidth(),c.getHeight());
 		 }
- 		{
+		boolean testing = false;
+ 		if (testing) {
 			g.setColor(Color.red);
 			g.drawRect(0, 0, c.getWidth(), c.getHeight());
 		}

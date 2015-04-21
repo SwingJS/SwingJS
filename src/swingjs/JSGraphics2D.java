@@ -240,7 +240,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	public void setGraphicsColor(Color c) {
-		String s = toCSSString(c);
+		String s = JSToolkit.getCSSColor(c);
 		/**
 		 * @j2sNative this.ctx.fillStyle = s; this.ctx.strokeStyle = s;
 		 */
@@ -248,11 +248,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx._setFillStyle(s);
 			ctx._setStrokeStyle(s);
 		}
-	}
-
-	private String toCSSString(Color c) {
-		String s = "000000" + Integer.toHexString(c.getRGB() & 0xFFFFFF);
-		return "#" + s.substring(s.length() - 6);
 	}
 
 	public void setFont(Font font) {

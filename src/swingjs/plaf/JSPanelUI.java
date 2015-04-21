@@ -34,11 +34,11 @@ public class JSPanelUI extends JSComponentUI {
 	@Override
 	public DOMObject getDOMObject() {
 		isContainer = true;
-    return tempObj = getDOMObject("label", id);
+    return createDOMObject("label", id);
 	}
 
 	@Override
-  protected Dimension getHTMLSize(DOMObject obj) {
+  protected Dimension setHTMLSize(DOMObject obj, boolean addCSS) {
 		// SwingJS for now: just designated container width/height 
 		return new Dimension(c.getWidth(), c.getHeight());
 	}

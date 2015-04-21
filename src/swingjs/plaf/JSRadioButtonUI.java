@@ -30,6 +30,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import swingjs.api.DOMObject;
+import jsjava.awt.Dimension;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.ButtonGroup;
 import jsjavax.swing.DefaultButtonModel;
@@ -39,12 +40,10 @@ public class JSRadioButtonUI extends JSComponentUI {
 
 	private DOMObject radio;
 	private DOMObject label;
-	private String groupName;
 	private static Map<ButtonGroup, String> groupNames;
 
 	@Override
 	public DOMObject getDOMObject() {
-		isContainer = false;
 		if (groupNames == null)
 			groupNames = new HashMap<ButtonGroup, String>();
 		JRadioButton b = (JRadioButton) c;
@@ -59,14 +58,22 @@ public class JSRadioButtonUI extends JSComponentUI {
 		  else
 		  	isNew = false;
 		}
-		radio = getDOMObject("input", id, "type", "radio", "name", name);
+		radio = createDOMObject("input", id, "type", "radio", "name", name);
 		if (b.isSelected() || isNew)
-			DOMObject.setAttr(radio, "selected", "true");
-		label = getDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
-				((AbstractButton) c).getText());
-		tempObj = getSpan(id, radio, label);
-		setCssFont(tempObj, c.getFont());
-		return tempObj;
+			DOMObject.setAttr(radio, "checked", "true");
+		label = setCssFont(createDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
+				((AbstractButton) c).getText()), c.getFont());
+		// now wrap the two with a sapn and get its dimensions
+		// along with the dimensions of the radio button by itself.
+		// This is a hack, for sure. 
+		DOMObject obj = wrap("span", "", radio, label);
+		Dimension d = setHTMLSize(obj, true);
+		Dimension drad = setHTMLSize(radio, false);
+		setHTMLSize(label, false);
+		vCenter(radio, -75);
+		vCenter(label, -50);
+	  DOMObject.setStyle(label, "left", (drad.width + 8)+"px");
+		obj = wrap("div", id + "_0", radio, label);
+		return setDims(obj, d.width, d.height);
 	}
-
 }

@@ -5,6 +5,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import jsjava.awt.AWTEvent;
+import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
@@ -385,6 +386,11 @@ public class JSToolkit extends SunToolkit {
 		JSFontMetrics fm = (JSFontMetrics) getInstance("swingjs.JSFontMetrics");
 		fm.setFont(font);
 		return fm;
+	}
+
+	public static String getCSSColor(Color c) {
+		String s = "000000" + Integer.toHexString(c.getRGB() & 0xFFFFFF);
+		return "#" + s.substring(s.length() - 6);
 	}
 
 	private static Map<String, Boolean> mapNotImpl;
