@@ -772,26 +772,22 @@ class TSd3Controls extends JPanel implements ItemListener {
 	}
 
 	public void itemStateChanged(ItemEvent e) {
-		if (e.getSource() instanceof JRadioButton) {
-			if (((JRadioButton) e.getItemSelectable()).getText() == "0-50") {
+		if (e.getSource() instanceof JRadioButton && e.getStateChange() == ItemEvent.SELECTED) {
+			String b = ((JRadioButton) e.getItemSelectable()).getText();
+			if (b == "0-50") {
 				range = 0;
-				canvas.redraw(range);
-			} else if (((JRadioButton) e.getItemSelectable()).getText() == "0-10") {
+			} else if (b == "0-10") {
 				range = 1;
-				canvas.redraw(range);
-			} else if (((JRadioButton) e.getItemSelectable()).getText() == "10-20") {
+			} else if (b == "10-20") {
 				range = 2;
-				canvas.redraw(range);
-			} else if (((JRadioButton) e.getItemSelectable()).getText() == "20-30") {
+			} else if (b == "20-30") {
 				range = 3;
-				canvas.redraw(range);
-			} else if (((JRadioButton) e.getItemSelectable()).getText() == "30-40") {
+			} else if (b == "30-40") {
 				range = 4;
-				canvas.redraw(range);
-			} else if (((JRadioButton) e.getItemSelectable()).getText() == "40-50") {
+			} else if (b == "40-50") {
 				range = 5;
-				canvas.redraw(range);
 			}
+			canvas.redraw(range);
 		}
 	}
 } // End Class TSd3Controls
