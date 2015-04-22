@@ -105,6 +105,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	private void setHTMLElement() {
 		if (!isTainted)
 			return;
+		isTainted = false;
 		if (divObj == null) {
 			if (tempObj == null)
 				tempObj = getDOMObject();

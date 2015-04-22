@@ -3,7 +3,12 @@ PROGRESS
 4/21/2015
 
 MouseListener working; ItemListener still not working
+MouseMotionListener working
 
+Component properties are not adjustable ("isTainted" is not set back to TRUE
+in swingjs.plaf.JSComponentUI
+
+   
 4/19/2015
 
 FlowLayout reporting proper positions and sizes for JRadioButtons

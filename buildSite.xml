@@ -437,10 +437,6 @@
             javajs/util/M34.js
             javajs/util/M4.js
             javajs/util/T3.js
-    	"/>
-    </antcall>
-    
-   	<!-- 
             javax/swing/JRootPane.js
    	
             javax/swing/JApplet.js
@@ -475,7 +471,48 @@
             javax/swing/JComponent.js
             javax/swing/RepaintManager.js
             jssun/awt/SunToolkit.js
-            jssun/applet/AppletPanel.js
+
+            java/awt/Conditional.js
+            java/awt/event/PaintEvent.js
+            java/awt/EventDispatchThread.js
+            java/awt/EventFilter.js
+            java/awt/geom/Point2D.js
+            java/awt/ModalEventFilter.js
+            java/awt/peer/CanvasPeer.js
+            java/awt/peer/ComponentPeer.js
+            java/awt/peer/ContainerPeer.js
+            java/awt/peer/LightweightPeer.js
+            java/awt/peer/PanelPeer.js
+            java/awt/SentEvent.js
+            java/awt/SequencedEvent.js
+            java/util/AbstractSequentialList.js
+            java/util/LinkedList.js
+            javajs/util/V3.js
+            javax/swing/ButtonGroup.js
+            javax/swing/JComponent.js
+            javax/swing/plaf/ComponentUI.js
+            javax/swing/SwingPaintEventDispatcher.js
+            jssun/awt/AWTAutoShutdown.js
+            jssun/awt/EventQueueItem.js
+            jssun/awt/ModalExclude.js
+            jssun/awt/NullComponentPeer.js
+            jssun/awt/PaintEventDispatcher.js
+            jssun/awt/PostEventQueue.js
+            jssun/java2d/SunGraphics2D.js
+            swingjs/api/DOMObject.js
+            swingjs/JSAppletThread.js
+            swingjs/JSGraphics2D.js
+            swingjs/JSMouse.js
+            swingjs/plaf/HTML5LookAndFeel.js
+            swingjs/plaf/JSComponentUI.js
+            swingjs/plaf/JSPanelUI.js
+            swingjs/plaf/JSRadioButtonUI.js
+            swingjs/plaf/JSRootPaneUI.js
+
+        	"/>
+    </antcall>
+    
+   	<!-- 
 
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
