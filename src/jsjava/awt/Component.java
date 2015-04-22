@@ -3154,7 +3154,7 @@ protected  transient ComponentPeer peer;
     	repaintImpl(tm, x, y, width, height);
     }
     public void repaintImpl(long tm, int x, int y, int width, int height) {
-    	System.out.println("C repaint " + this.name);
+    	//System.out.println("C repaint " + this.name);
         if (peer instanceof LightweightPeer) {
             // Needs to be translated to parent coordinates since
             // a parent native container provides the actual repaint
@@ -3165,11 +3165,11 @@ protected  transient ComponentPeer peer;
                 int py = this.y + ((y < 0) ? 0 : y);
                 int pwidth = (width > this.width) ? this.width : width;
                 int pheight = (height > this.height) ? this.height : height;
-              	System.out.println("C repaint to " + parent.getName());
+              	//System.out.println("C repaint to " + parent.getName());
                 parent.repaint(tm, px, py, pwidth, pheight);
             }
         } else {
-        	System.out.println("C firing Paint event on " + this.name);
+        	//System.out.println("C firing Paint event on " + this.name);
             if (isVisible() && (peer != null) &&
                 (width > 0) && (height > 0)) {
                 PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE,

@@ -27,6 +27,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 
+import java.awt.event.MouseMotionListener;
+
 public class TanSugd3S extends JApplet implements WindowListener {
 
 	TSd3Canvas canvas;
@@ -374,7 +376,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 } // End Class TanSugd3
 
 // ------------------------------------------------------
-class TSd3Canvas extends JPanel implements MouseListener {
+class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 	double y; // Coordinates used for drawing graphs
 	Point bottomLeft, btmLeft;
@@ -408,6 +410,7 @@ class TSd3Canvas extends JPanel implements MouseListener {
 		hlines = 10;
 		vlines = 10;
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		mouseOn = false;
 	}
 
@@ -731,6 +734,17 @@ class TSd3Canvas extends JPanel implements MouseListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		mousePressed(e);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 } // End Class TSd3Canvas
