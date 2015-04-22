@@ -30,7 +30,7 @@ import java.lang.reflect.Constructor;
 import jsjava.text.NumberFormat;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.EventObject;
+import jsjava.util.EventObject;
 import java.util.Hashtable;
 import java.util.Vector;
 

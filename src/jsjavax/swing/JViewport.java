@@ -1628,10 +1628,10 @@ public class JViewport extends JComponent
         int bdx = blitToX - blitFromX;
         int bdy = blitToY - blitFromY;
 
-        // Shift the scrolled region
-        rm.copyArea(this, g, blitFromX, blitFromY, blitW, blitH, bdx, bdy,
-                    false);
-
+// SwingJS        // Shift the scrolled region
+//        rm.copyArea(this, g, blitFromX, blitFromY, blitW, blitH, bdx, bdy,
+//                    false);
+//
         // Paint the newly exposed region.
         int x = view.getX();
         int y = view.getY();

@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.event;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 import java.net.URL;
 import jsjavax.swing.text.Element;
 

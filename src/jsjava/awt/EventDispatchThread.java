@@ -154,6 +154,7 @@ class EventDispatchThread extends JSThread {
 	// }
 	//
 	void pumpEvents(int id, Conditional cond) {
+		//System.out.println("EventDispatch pumpEvents" + id);
 		pumpEventsForHierarchy(id, cond, null);
 	}
 

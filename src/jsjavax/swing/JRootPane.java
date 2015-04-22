@@ -36,7 +36,6 @@ import jsjava.awt.LayoutManager2;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.plaf.RootPaneUI;
-import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
 
 
@@ -205,18 +204,18 @@ public class JRootPane extends JComponent {
 
     private static final String uiClassID = "RootPaneUI";
 
-    /**
-     * Whether or not we should dump the stack when true double buffering
-     * is disabled. Default is false.
-     */
-    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING;
-
-    /**
-     * Whether or not we should ignore requests to disable true double
-     * buffering. Default is false.
-     */
-    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING;
-
+//    /**
+//     * Whether or not we should dump the stack when true double buffering
+//     * is disabled. Default is false.
+//     */
+//    private static final boolean LOG_DISABLE_TRUE_DOUBLE_BUFFERING;
+//
+//    /**
+//     * Whether or not we should ignore requests to disable true double
+//     * buffering. Default is false.
+//     */
+//    private static final boolean IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING;
+//
     /**
      * Constant used for the windowDecorationStyle property. Indicates that
      * the <code>JRootPane</code> should not provide any sort of
@@ -349,15 +348,15 @@ public class JRootPane extends JComponent {
      */
     boolean useTrueDoubleBuffering = true;
 
-    static {
-        LOG_DISABLE_TRUE_DOUBLE_BUFFERING = false;
-        
-//            AccessController.doPrivileged(new GetBooleanAction(
-//                                   "swing.logDoubleBufferingDisable"));
-        IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING = true;
-//            AccessController.doPrivileged(new GetBooleanAction(
-//                                   "swing.ignoreDoubleBufferingDisable"));
-    }
+//    static {
+//        LOG_DISABLE_TRUE_DOUBLE_BUFFERING = false;
+//        
+////            AccessController.doPrivileged(new GetBooleanAction(
+////                                   "swing.logDoubleBufferingDisable"));
+//        IGNORE_DISABLE_TRUE_DOUBLE_BUFFERING = true;
+////            AccessController.doPrivileged(new GetBooleanAction(
+////                                   "swing.ignoreDoubleBufferingDisable"));
+//    }
 
     /**
      * Creates a <code>JRootPane</code>, setting up its

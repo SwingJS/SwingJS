@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 
 import jsjavax.swing.event.CellEditorListener;
 import jsjavax.swing.event.ChangeEvent;

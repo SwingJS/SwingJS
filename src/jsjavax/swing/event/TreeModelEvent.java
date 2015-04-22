@@ -25,7 +25,7 @@
 
 package jsjavax.swing.event;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 import jsjavax.swing.tree.TreePath;
 
 

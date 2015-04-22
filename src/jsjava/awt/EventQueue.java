@@ -209,15 +209,16 @@ public class EventQueue {
 	 * existing event on the queue with the same ID and event source, the source
 	 * <code>Component</code>'s <code>coalesceEvents</code> method will be called.
 	 * 
-	 * @param theEvent
+	 * @param event
 	 *          an instance of <code>java.awt.AWTEvent</code>, or a subclass of it
 	 * @throws NullPointerException
 	 *           if <code>theEvent</code> is <code>null</code>
 	 */
-	public void postEvent(AWTEvent theEvent) {
-		JSToolkit.log("---Post Event---" + theEvent.getID() + "." + theEvent.num);
+	public void postEvent(AWTEvent event) {
+		if (event.getID() != MouseEvent.MOUSE_MOVED)
+			JSToolkit.log("---Post Event---" + event.getID() + "." + event.num);
 		SunToolkit.flushPendingEvents();
-		postEventPrivate(theEvent);
+		postEventPrivate(event);
 	}
 
 	/**
@@ -633,7 +634,8 @@ public class EventQueue {
 	 * @since 1.2
 	 */
 	protected void dispatchEvent(final AWTEvent event) {
-		JSToolkit.log("---Dispatch Event---" + event.getID() + "." + event.num);
+		if (event.getID() != MouseEvent.MOUSE_MOVED)
+			JSToolkit.log("---Dispatch Event---" + event.getID() + "." + event.num);
 		final Object src = event.getSource();
 		// final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
 		// public Void run() {
@@ -766,8 +768,7 @@ public class EventQueue {
 	}
 
 	private synchronized AWTEvent getCurrentEventImpl() {
-		return (Thread.currentThread() == dispatchThread) ? ((AWTEvent) currentEvent)
-				: null;
+		return (JSToolkit.isDispatchThread() ? ((AWTEvent) currentEvent) : null);
 	}
 
 	/**
@@ -1004,7 +1005,7 @@ public class EventQueue {
 	}
 
 	private synchronized void setCurrentEventAndMostRecentTimeImpl(AWTEvent e) {
-		if (Thread.currentThread() != dispatchThread) {
+		if (JSToolkit.isDispatchThread()) {
 			return;
 		}
 

@@ -25,7 +25,7 @@
 
 package jsjavax.swing.tree;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 
 import jsjava.awt.Color;
 import jsjava.awt.Component;

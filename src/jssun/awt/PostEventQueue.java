@@ -45,7 +45,7 @@ public class PostEventQueue {
                  * different threads tempQueue will be null for one of them.
                  */
                 while (tempQueue != null) {
-                	JSToolkit.alert("postevent " + tempQueue.event);
+                	 JSToolkit.alert("postevent IS NOT IMPLEMENTED " + tempQueue.event);
                     eventQueue.postEvent(tempQueue.event);
                     tempQueue = tempQueue.next;
                 }
@@ -67,7 +67,7 @@ public class PostEventQueue {
                 queueTail = item;
             }
         }
-      SunToolkit.wakeupEventQueue(eventQueue, event.getSource() == AWTAutoShutdown.getInstance());
+      SunToolkit.wakeupEventQueue(eventQueue, false);//SwingJS was event.getSource() == AWTAutoShutdown.getInstance());
     }
 } 
 // SwingJS  -- hidden classes EventQueueItem and were removed from this file

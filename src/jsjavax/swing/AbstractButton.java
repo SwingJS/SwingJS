@@ -777,7 +777,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         if (alignment == verticalAlignment) return;
         int oldValue = verticalAlignment;
         verticalAlignment = checkVerticalKey(alignment, "verticalAlignment");
-        firePropertyChangeInt(VERTICAL_ALIGNMENT_CHANGED_PROPERTY, oldValue, verticalAlignment);         repaint();
+        firePropertyChangeInt(VERTICAL_ALIGNMENT_CHANGED_PROPERTY, oldValue, verticalAlignment);
+        repaint();
     }
 
     /**

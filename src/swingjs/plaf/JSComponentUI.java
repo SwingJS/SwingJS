@@ -122,7 +122,7 @@ public abstract class JSComponentUI extends ComponentUI {
   					"height", c.getHeight() + "px");
 //			DOMObject.setStyle(divObj, "background-color", JSToolkit.getCSSColor(c.getBackground()));			
 		}
-		debugDump(divObj);
+		//debugDump(divObj);
 		JSComponentUI parentUI = (JSComponentUI) ((JComponent) c.getParent())
 				.getUI();
 		DOMObject parentDiv = (parentUI == null ? JSToolkit.getHTML5Applet(c)
@@ -136,7 +136,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	public Dimension getPreferredSize(JComponent c) {
 		newID();
 		Dimension d = setHTMLSize(tempObj = getDOMObject(), true);
-		System.out.println(id + " getPreferredSize " + d + " called on " + c);
+		//System.out.println(id + " getPreferredSize " + d + " called on " + c);
   	return d;
   }
 
@@ -158,7 +158,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	public void update(Graphics g, JComponent c) {
-		System.out.println(id + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight());
+		//System.out.println(id + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight());
 		 if (c.isOpaque()) {
 			 g.setColor(c.getBackground());
 			 g.fillRect(0, 0, c.getWidth(),c.getHeight());

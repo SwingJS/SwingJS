@@ -25,7 +25,7 @@
 
 package jsjava.awt;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 //import jsjava.util.logging.Level;
 //import jsjava.util.logging.Logger;
 
@@ -37,7 +37,6 @@ import jsjava.awt.event.ItemEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.TextEvent;
-import jsjava.awt.peer.ComponentPeer;
 //import jsjava.security.AccessControlContext;
 //import jsjava.security.AccessController;
 import jsjava.awt.peer.LightweightPeer;
@@ -597,9 +596,8 @@ public abstract class AWTEvent extends EventObject {
      * this event is not changed.
      */
     void copyPrivateDataInto(AWTEvent that) {
-        that.bdata = this.bdata;
-// SwingJS  TODO
-        // Copy canAccessSystemClipboard value from this into that.
+        that.bdata = bdata;
+//        // Copy canAccessSystemClipboard value from this into that.
 //        if (this instanceof InputEvent && that instanceof InputEvent) {
 ////            Field field = get_InputEvent_CanAccessSystemClipboard();
 ////            if (field != null) {

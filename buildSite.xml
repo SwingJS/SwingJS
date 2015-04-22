@@ -75,17 +75,17 @@
       </fileset>
     </copy>
    	
-  	<echo>...adding customized js from JSmol</echo>
+  	<echo>...adding customized js from JSmol but not java.awt.event </echo>
    	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="jsmol/bin">
         <include name="**/*.js" />
+        <exclude name="java/awt/event/*.js" />
       </fileset>
-    </copy>
+    </copy>	
 
     <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
   	<copy todir="site/swingjs/j2s" overwrite="true" >
       <fileset dir="j2shack">
-        <include name="**/*.js" />
       </fileset>
     </copy>
    	
@@ -202,8 +202,6 @@
             java/awt/event/WindowListener.js
             java/awt/event/WindowStateListener.js
             java/awt/Cursor.js
-            java/awt/event/MouseEvent.js
-            java/awt/event/InputEvent.js
             java/awt/AWTError.js
             java/awt/Insets.js
             java/awt/RenderingHints.js
@@ -460,6 +458,8 @@
             java/awt/ActiveEvent.js
             java/awt/event/InvocationEvent.js
             java/awt/event/ComponentEvent.js
+            java/awt/event/MouseEvent.js
+            java/awt/event/InputEvent.js
             java/awt/Toolkit.js
             java/lang/Thread.js
             java/lang/ThreadGroup.js

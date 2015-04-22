@@ -511,12 +511,17 @@ public class JSToolkit extends SunToolkit {
 	public static void dispatchEvent(AWTEvent event, Object src, boolean andWait) {
 		Object f = null;
 		int id = ++dispatchID;
+		
+//		 *            System.out.println("JST dispatchAWTEvent andWait=" + andWait +
+//		 *            "," + event + " src=" + src); 
+//		 *            System.out.println("JST dispatching AWTEvent " + event); 
+
 		/**
 		 * @j2sNative
 		 * 
-		 *            System.out.println("JST dispatchAWTEvent andWait=" + andWait +
-		 *            "," + event + " src=" + src); f = function()
-		 *            {System.out.println("JST dispatching AWTEvent " + event); if
+		 *            f = function()
+		 *            {
+		 *            if
 		 *            (src == null) event.dispatch(); else src.dispatchEvent(event);
 		 *            };
 		 * 
@@ -538,6 +543,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
 	public static void setTimeout(Object f, int msDelay, int id) {
+// 		 *            System.out.println("setTimeout " + id); 
 			
 		/**
 		 * @j2sNative
@@ -546,7 +552,6 @@ public class JSToolkit extends SunToolkit {
 		 *            var thread0 = thread;
 		 *            var id0 = SwingJS.eventID || 0;
 		 *            setTimeout(function(_JSToolkit_setTimeout) {
-		 *            System.out.println("setTimeout " + id); 
 		 *            SwingJS.eventID = id;
 		 *            java.lang.Thread.thisThread = thread; 
 		 *            if (f.run)
@@ -598,11 +603,13 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static boolean isDispatchThread() {
+//		 *            System.out.println("checking dispatch thread " +
+//		 *            SwingJS.eventID); 
+//		 *            
 		/**
 		 * @j2sNative
 		 * 
-		 *            System.out.println("checking dispatch thread " +
-		 *            SwingJS.eventID); return (!!SwingJS.eventID);
+		 *            return (!!SwingJS.eventID);
 		 * 
 		 */
 		{
@@ -647,6 +654,11 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
+	public static void forceRepaint(Component c) {
+		System.out.println("JSToolkit forcing paint on component " + c.getName());
+	  getHTML5Applet((JComponent) c)._repaintNow(); 
+	}
+	
 	public static HTML5Applet getHTML5Applet(JComponent c) {
 		return ((JSThreadGroup) c.getAppContext().getThreadGroup()).getHtmlApplet();
 	}

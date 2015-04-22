@@ -53,28 +53,28 @@ class SwingPaintEventDispatcher extends jssun.awt.PaintEventDispatcher {
 
     public PaintEvent createPaintEvent(Component component, int x, int y,
                                          int w, int h) {
-    	System.out.println("SPaintEventDisp for " + component + "xywh " + x + " " + y + " " + w + " " + h);
-        if (component instanceof RootPaneContainer) {
-            AppContext appContext = SunToolkit.targetToAppContext(component);
-            RepaintManager rm = RepaintManager.currentManager(component); // BH was appContext
-            if (!SHOW_FROM_DOUBLE_BUFFER ||
-                  !rm.show((Container)component, x, y, w, h)) {
-                rm.nativeAddDirtyRegion(appContext, (Container)component,
-                                        x, y, w, h);
-            }
-            // For backward compatibility generate an empty paint
-            // event.  Not doing this broke parts of Netbeans.
-            return new IgnorePaintEvent(component, PaintEvent.PAINT,
-                                        new Rectangle(x, y, w, h));
-        }
-        else if (component instanceof SwingHeavyWeight) {
-            AppContext appContext = SunToolkit.targetToAppContext(component);
-            RepaintManager rm = RepaintManager.currentManager(component);// BH was appContext
-            rm.nativeAddDirtyRegion(appContext, (Container)component,
-                                    x, y, w, h);
-            return new IgnorePaintEvent(component, PaintEvent.PAINT,
-                                        new Rectangle(x, y, w, h));
-        }
+//    	System.out.println("SPaintEventDisp for " + component + "xywh " + x + " " + y + " " + w + " " + h);
+//        if (component instanceof RootPaneContainer) {
+//            AppContext appContext = SunToolkit.targetToAppContext(component);
+//            RepaintManager rm = RepaintManager.currentManager(component); // BH was appContext
+////            if (!SHOW_FROM_DOUBLE_BUFFER ||
+////                  !rm.show((Container)component, x, y, w, h)) {
+////                rm.nativeAddDirtyRegion(appContext, (Container)component,
+////                                        x, y, w, h);
+////            }
+//            // For backward compatibility generate an empty paint
+//            // event.  Not doing this broke parts of Netbeans.
+//            return new IgnorePaintEvent(component, PaintEvent.PAINT,
+//                                        new Rectangle(x, y, w, h));
+//        }
+//        else if (component instanceof SwingHeavyWeight) {
+//            AppContext appContext = SunToolkit.targetToAppContext(component);
+//            RepaintManager rm = RepaintManager.currentManager(component);// BH was appContext
+//            rm.nativeAddDirtyRegion(appContext, (Container)component,
+//                                    x, y, w, h);
+//            return new IgnorePaintEvent(component, PaintEvent.PAINT,
+//                                        new Rectangle(x, y, w, h));
+//        }
         return super.createPaintEvent(component, x, y, w, h);
     }
 

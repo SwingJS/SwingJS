@@ -856,7 +856,7 @@ public abstract class JComponent extends Container
 						cg.setColor(comp.getForeground());
 						cg.setFont(comp.getFont());
 						boolean shouldSetFlagBack = false;
-						System.out.println("JC Painting " + comp.getName() + " " + cr);
+						//System.out.println("JC Painting " + comp.getName() + " " + cr);
 						try {
 							if (isJComponent) {
 //								if (getFlag(ANCESTOR_USING_BUFFER)) {
@@ -4899,6 +4899,18 @@ public abstract class JComponent extends Container
      * @see #repaint
      */
     public void paintImmediately(int x,int y,int w, int h) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (arguments.length == 1) {
+    	 *   var r = x;
+    	 *   x = r.x;
+    	 *   y = r.y;
+    	 *   w = r.width;
+    	 *   h = r.height;
+    	 *  }
+    	 */
+    	{}
         Component c = this;
         Component parent;
 
@@ -4930,6 +4942,9 @@ public abstract class JComponent extends Container
      * Paints the specified region now.
      *
      * @param r a <code>Rectangle</code> containing the region to be painted
+     * 
+     * @j2sIgnore;
+     * 
      */
     public void paintImmediately(Rectangle r) {
         paintImmediately(r.x,r.y,r.width,r.height);

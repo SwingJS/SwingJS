@@ -41,7 +41,7 @@ import jsjavax.swing.undo.UndoableEdit;
  *
  * @author Ray Ryan
  */
-public class UndoableEditEvent extends java.util.EventObject {
+public class UndoableEditEvent extends jsjava.util.EventObject {
     private UndoableEdit myEdit;
 
     /**

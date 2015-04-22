@@ -25,7 +25,7 @@
 
 package jsjavax.swing;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 
 import jsjava.awt.Component;
 import jsjava.awt.event.ActionEvent;

@@ -219,8 +219,7 @@
     proto._getHtml5Canvas = function() { return this._canvas }; 
     proto._getWidth = function() { return this._canvas.width }; 
     proto._getHeight = function() { return this._canvas.height };
-    proto._getContentLayer = function() { return Jmol.$(this, "contentLayer")[0] };
-    proto._repaintNow = function() { Jmol._repaint(this, false) }; 
+    proto._getContentLayer = function() { return Jmol.$(this, "contentLayer")[0] }; 
 ////////
 
 
@@ -263,8 +262,7 @@
           d.id = this._id + "_swingdiv";
         	Jmol._$(this._id + "_appletinfotablediv").append(d);
 				  Jmol._$(d.id).css({zIndex:Jmol._getZ(this, "rear"),position:"absolute",left:"0px",top:"0px", width:w +"px", height:h+"px", overflow:"hidden"});
-  				this._mouseInterface = canvas.contentLayer;
-          canvas.contentLayer.applet = this;
+  				this._mouseInterface = canvas;
         } else {
   				this._mouseInterface = this._getLayer("front", container, w, h, false);
         }

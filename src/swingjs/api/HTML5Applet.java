@@ -10,4 +10,6 @@ public interface HTML5Applet {
 
 	DOMObject _getContentLayer();
 
+	void _repaintNow();
+
 }

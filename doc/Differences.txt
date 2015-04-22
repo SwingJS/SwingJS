@@ -1,5 +1,9 @@
 PROGRESS
 ========
+4/21/2015
+
+MouseListener working; ItemListener still not working
+
 4/19/2015
 
 FlowLayout reporting proper positions and sizes for JRadioButtons
@@ -174,6 +178,28 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#8 There are times where J2S does not execute initialization in the proper order
+when constructing subclasses. In this case, in the creation of JApplet, the ArrayList
+(Container).component was cleared in Clazz.prepareFields for Container AFTER it was
+used in the constructor for JApplet. 
+
+The way around this is to not instantiate Objects in-line:
+
+public class Container
+...
+   List<Component> component =  new ArrayList();
+...
+
+but instead put that in the constructor.
+
+public class Container
+...
+   List<Component> component;
+...
+public Container () {
+   component =  new ArrayList();
+}
+
 
 #7 J2S does not properly do integer/long/short/byte  /=
 
@@ -308,6 +334,8 @@ MINOR ISSUES--requiring some rewriting/refactoring by Bob and Udo
 
 java.util.BitSet must be 16-bit
 
+Thread.currentThread() == dispatchThread
+
 
 MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
 =====================================================================
@@ -373,6 +401,7 @@ because one needs exactly the same Java version to save and restore serialized o
 MINOR ISSUES--requiring some rewriting/refactoring by Bob and Udo  
 =================================================================
 
+
 java.util.BitSet must be 16-bit
 -------------------------------
 
@@ -387,6 +416,12 @@ Math.pow(2,31)&Math.pow(2,31)
 -2147483648
 
 This is no real consequence; it's just something that has to be done.
+
+
+Thread.currentThread() == dispatchThread
+----------------------------------------
+
+changed to JSToolkit.isDispatchThread()
 
 
 MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  

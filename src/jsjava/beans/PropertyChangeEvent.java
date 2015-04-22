@@ -25,6 +25,8 @@
 
 package jsjava.beans;
 
+import jsjava.util.EventObject;
+
 /**
  * A "PropertyChange" event gets delivered whenever a bean changes a "bound"
  * or "constrained" property.  A PropertyChangeEvent object is sent as an
@@ -43,7 +45,7 @@ package jsjava.beans;
  * old and new values should also be null.
  */
 
-public class PropertyChangeEvent extends java.util.EventObject {
+public class PropertyChangeEvent extends EventObject {
 
     /**
      * Constructs a new <code>PropertyChangeEvent</code>.

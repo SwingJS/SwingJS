@@ -79,7 +79,7 @@ public class Container extends Component {
      * @see #add
      * @see #getComponents
      */
-    private java.util.List<Component> component = new java.util.ArrayList<Component>();
+    private java.util.List<Component> component;
 
     /**
      * Layout manager for this container.
@@ -95,7 +95,7 @@ public class Container extends Component {
      * retargeting the events to lightweight components contained
      * (if any).
      */
-    private LightweightDispatcher dispatcher;
+    protected LightweightDispatcher dispatcher;
 
     /**
      * The focus traversal policy that will manage keyboard traversal of this
@@ -244,9 +244,12 @@ public class Container extends Component {
      * but are lightweight in this case and must be contained by a parent
      * somewhere higher up in the component tree that is native.
      * (such as Frame for example).
+     * 
+     * @j2sIgnoreSuperConstructor
      */
     public Container() {
-      setAppContext();
+    	component = new java.util.ArrayList<Component>();
+    	setAppContext();
     }
 
     void initializeFocusTraversalKeys() {
@@ -2172,6 +2175,16 @@ public class Container extends Component {
         }
     }
 
+//  /**
+//  * Fetches the top-most (deepest) component to receive SunDropTargetEvents.
+//  */
+// Component getDropTargetEventTarget(int x, int y, boolean includeSelf) {
+//     return getMouseEventTarget(x, y, includeSelf,
+//                                DropTargetEventTargetFilter.FILTER,
+//                                SEARCH_HEAVYWEIGHTS);
+// }
+
+
     /*
      * Dispatches an event to this component, without trying to forward
      * it to any subcomponents
@@ -2184,21 +2197,15 @@ public class Container extends Component {
     /**
      * Fetchs the top-most (deepest) lightweight component that is interested
      * in receiving mouse events.
+     * 
+     * @j2sIgnore
+     * 
      */
     Component getMouseEventTarget(int x, int y, boolean includeSelf) {
         return getMouseEventTarget(x, y, includeSelf,
                                    MouseEventTargetFilter.FILTER,
                                    !SEARCH_HEAVYWEIGHTS);
     }
-
-//    /**
-//     * Fetches the top-most (deepest) component to receive SunDropTargetEvents.
-//     */
-//    Component getDropTargetEventTarget(int x, int y, boolean includeSelf) {
-//        return getMouseEventTarget(x, y, includeSelf,
-//                                   DropTargetEventTargetFilter.FILTER,
-//                                   SEARCH_HEAVYWEIGHTS);
-//    }
 
     /**
      * A private version of getMouseEventTarget which has two additional
@@ -2215,6 +2222,15 @@ public class Container extends Component {
     private Component getMouseEventTarget(int x, int y, boolean includeSelf,
                                           EventTargetFilter filter,
                                           boolean searchHeavyweights) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (arguments.length == 5) {
+    	 *   filter = jsjava.awt.Container.MouseEventTargetFilter.FILTER;
+    	 *   searchHeavyWeights = false;
+    	 * }
+    	 */
+    	{}
         Component comp = null;
 //        if (searchHeavyweights) {
 //            comp = getMouseEventTargetImpl(x, y, includeSelf, filter,
@@ -2222,94 +2238,94 @@ public class Container extends Component {
 //                                           searchHeavyweights);
 //        }
 //
-//        if (comp == null || comp == this) {
-//            comp = getMouseEventTargetImpl(x, y, includeSelf, filter,
-//                                           !SEARCH_HEAVYWEIGHTS,
-//                                           searchHeavyweights);
-//        }
-//
+        if (comp == null || comp == this) {
+            comp = getMouseEventTargetImpl(x, y, includeSelf, filter,
+                                           !SEARCH_HEAVYWEIGHTS,
+                                           searchHeavyweights);
+        }
+
         return comp;
     }
 
-//    /**
-//     * A private version of getMouseEventTarget which has three additional
-//     * controllable behaviors. This method searches for the top-most
-//     * descendant of this container that contains the given coordinates
-//     * and is accepted by the given filter. The search will be constrained to
-//     * descendants of only lightweight children or only heavyweight children
-//     * of this container depending on searchHeavyweightChildren. The search will
-//     * be constrained to only lightweight descendants of the searched children
-//     * of this container if searchHeavyweightDescendants is <code>false</code>.
-//     *
-//     * @param filter EventTargetFilter instance to determine whether the
-//     *        selected component is a valid target for this event.
-//     * @param searchHeavyweightChildren if <code>true</code>, the method
-//     *        will bypass immediate lightweight children during the search.
-//     *        If <code>false</code>, the methods will bypass immediate
-//     *        heavyweight children during the search.
-//     * @param searchHeavyweightDescendants if <code>false</code>, the method
-//     *        will bypass heavyweight descendants which are not immediate
-//     *        children during the search. If <code>true</code>, the method
-//     *        will traverse both lightweight and heavyweight descendants during
-//     *        the search.
-//     */
-//    private Component getMouseEventTargetImpl(int x, int y, boolean includeSelf,
-//                                         EventTargetFilter filter,
-//                                         boolean searchHeavyweightChildren,
-//                                         boolean searchHeavyweightDescendants) {
-//        synchronized (getTreeLock()) {
-//
-//            for (int i = 0; i < component.size(); i++) {
-//                Component comp = component.get(i);
-//                if (comp != null && comp.visible &&
-//                    ((!searchHeavyweightChildren &&
-//                      comp.peer instanceof LightweightPeer) ||
-//                     (searchHeavyweightChildren &&
-//                      !(comp.peer instanceof LightweightPeer))) &&
-//                    comp.contains(x - comp.x, y - comp.y)) {
-//
-//                    // found a component that intersects the point, see if there
-//                    // is a deeper possibility.
-//                    if (comp instanceof Container) {
-//                        Container child = (Container) comp;
-//                        Component deeper = child.getMouseEventTarget(
-//                                x - child.x,
-//                                y - child.y,
-//                                includeSelf,
-//                                filter,
-//                                searchHeavyweightDescendants);
-//                        if (deeper != null) {
-//                            return deeper;
-//                        }
-//                    } else {
-//                        if (filter.accept(comp)) {
-//                            // there isn't a deeper target, but this component
-//                            // is a target
-//                            return comp;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            boolean isPeerOK;
-//            boolean isMouseOverMe;
-//
-//            isPeerOK = 
-//            		
-//            		//(peer instanceof LightweightPeer) || 
-//            		
-//            		includeSelf;
-//            isMouseOverMe = contains(x,y);
-//
-//            // didn't find a child target, return this component if it's
-//            // a possible target
-//            if (isMouseOverMe && isPeerOK && filter.accept(this)) {
-//                return this;
-//            }
-//            // no possible target
-//            return null;
-//        }
-//    }
+    /**
+     * A private version of getMouseEventTarget which has three additional
+     * controllable behaviors. This method searches for the top-most
+     * descendant of this container that contains the given coordinates
+     * and is accepted by the given filter. The search will be constrained to
+     * descendants of only lightweight children or only heavyweight children
+     * of this container depending on searchHeavyweightChildren. The search will
+     * be constrained to only lightweight descendants of the searched children
+     * of this container if searchHeavyweightDescendants is <code>false</code>.
+     *
+     * @param filter EventTargetFilter instance to determine whether the
+     *        selected component is a valid target for this event.
+     * @param searchHeavyweightChildren if <code>true</code>, the method
+     *        will bypass immediate lightweight children during the search.
+     *        If <code>false</code>, the methods will bypass immediate
+     *        heavyweight children during the search.
+     * @param searchHeavyweightDescendants if <code>false</code>, the method
+     *        will bypass heavyweight descendants which are not immediate
+     *        children during the search. If <code>true</code>, the method
+     *        will traverse both lightweight and heavyweight descendants during
+     *        the search.
+     */
+    private Component getMouseEventTargetImpl(int x, int y, boolean includeSelf,
+                                         EventTargetFilter filter,
+                                         boolean searchHeavyweightChildren,
+                                         boolean searchHeavyweightDescendants) {
+        synchronized (getTreeLock()) {
+
+            for (int i = 0; i < component.size(); i++) {
+                Component comp = component.get(i);
+                if (comp != null && comp.visible &&
+                    ((!searchHeavyweightChildren &&
+                      comp.peer instanceof LightweightPeer) ||
+                     (searchHeavyweightChildren &&
+                      !(comp.peer instanceof LightweightPeer))) &&
+                    comp.contains(x - comp.x, y - comp.y)) {
+
+                    // found a component that intersects the point, see if there
+                    // is a deeper possibility.
+                    if (comp instanceof Container) {
+                        Container child = (Container) comp;
+                        Component deeper = child.getMouseEventTarget(
+                                x - child.x,
+                                y - child.y,
+                                includeSelf,
+                                filter,
+                                searchHeavyweightDescendants);
+                        if (deeper != null) {
+                            return deeper;
+                        }
+                    } else {
+                        if (filter.accept(comp)) {
+                            // there isn't a deeper target, but this component
+                            // is a target
+                            return comp;
+                        }
+                    }
+                }
+            }
+
+            boolean isPeerOK;
+            boolean isMouseOverMe;
+
+            isPeerOK = 
+            		
+            		//(peer instanceof LightweightPeer) || 
+            		
+            		includeSelf;
+            isMouseOverMe = contains(x,y);
+
+            // didn't find a child target, return this component if it's
+            // a possible target
+            if (isMouseOverMe && isPeerOK && filter.accept(this)) {
+                return this;
+            }
+            // no possible target
+            return null;
+        }
+    }
 
     static interface EventTargetFilter {
         boolean accept(final Component comp);
@@ -2361,9 +2377,9 @@ public class Container extends Component {
 //            // a peer has been created we don't yet have a dispatcher
 //            // because it has not yet been determined if this instance
 //            // is lightweight.
-//            if (dispatcher != null) {
-//                dispatcher.enableEvents(events);
-//            }
+            if (dispatcher != null) {
+                dispatcher.enableEvents(events);
+            }
 //        }
     }
 
@@ -2623,7 +2639,7 @@ public class Container extends Component {
             // addNotify() on the children which may be lightweight.
             addNotifyComp();
             if (! (peer instanceof LightweightPeer)) {
-                dispatcher = new LightweightDispatcher(this);
+            	setDispatcher();
             }
 
             // We shouldn't use iterator because of the Swing menu
@@ -2644,6 +2660,12 @@ public class Container extends Component {
         }
     }
 
+    /**
+     * SwingJS set by JSAppletPanel
+     */
+    public void setDispatcher() {
+      dispatcher = new LightweightDispatcher(this);    	
+    }
     /**
      * Makes this Container undisplayable by removing its connection
      * to its native screen resource.  Making a container undisplayable
@@ -4285,9 +4307,9 @@ class LightweightDispatcher implements AWTEventListener {
                 ret = processMouseEvent(me);
             }
 
-            if (e.getID() == MouseEvent.MOUSE_MOVED) {
-                nativeContainer.updateCursorImmediately();
-            }
+//            if (e.getID() == MouseEvent.MOUSE_MOVED) {
+//                nativeContainer.updateCursorImmediately();
+//            }
 //        }
 
         return ret;

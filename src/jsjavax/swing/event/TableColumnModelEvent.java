@@ -44,7 +44,7 @@ import jsjavax.swing.table.TableColumnModel;
  * @author Alan Chung
  * @see TableColumnModelListener
  */
-public class TableColumnModelEvent extends java.util.EventObject
+public class TableColumnModelEvent extends jsjava.util.EventObject
 {
 //
 //  Instance Variables

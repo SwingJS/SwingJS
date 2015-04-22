@@ -430,6 +430,7 @@ public abstract class Toolkit {
      * @param target The Component to be created.
      */
     protected LightweightPeer createComponent(Component target) {
+    	System.out.println("SunToolkit creating peeer for " +  this);
         if (lightweightMarker == null) {
             lightweightMarker = new NullComponentPeer();
         }
@@ -1629,7 +1630,7 @@ public abstract class Toolkit {
     protected abstract EventQueue getSystemEventQueueImpl();
 
     /* Accessor method for use by AWT package routines. */
-    static EventQueue getEventQueue() {
+    public static EventQueue getEventQueue() {
         return getDefaultToolkit().getSystemEventQueueImpl();
     }
 

@@ -67,7 +67,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	public Object display;
 	private HTML5Canvas canvas;
 	private JSGraphics2D jsgraphics;
-	private JApplet applet;
+	JApplet applet;
 
 	// /// AppletPanel fields //////
 
@@ -112,6 +112,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	private int status = APPLET_UNINITIALIZED;
 
 	private AppletListener listeners;
+	private JSMouse mouse;
 
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
@@ -394,13 +395,17 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	@Override
 	public boolean processMouseEvent(int id, int x, int y, int modifiers,
 			long time) {
-		// TODO Auto-generated method stub
+		getMouse().processEvent(id, x, y, modifiers, time);
 		return false;
+	}
+
+	private JSMouse getMouse() {
+		return (mouse == null ? mouse = new JSMouse(this) : mouse);
 	}
 
 	@Override
 	public void processTwoPointGesture(float[][][] touches) {
-		// TODO Auto-generated method stub
+		getMouse().processTwoPointGesture(touches);
 	}
 
 	@Override
@@ -486,7 +491,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	 * @return LOOP or DONE
 	 */
 	public int run1(int mode) {
-		System.out.println("JSAP run1 mode " + mode + " " + nextStatus);
+		//System.out.println("JSAP run1 mode " + mode + " " + nextStatus);
 		boolean ok = false;
 		switch (mode) {
 		case JSThread.INIT:
@@ -634,6 +639,8 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 			applet.setStub(this);
 			applet.setVisible(false);
 			add("Center", applet);
+      applet.setDispatcher();
+			applet.addNotify(); // we need this here because there is no frame
 			showAppletStatus("loaded");
 			validate();
 		}

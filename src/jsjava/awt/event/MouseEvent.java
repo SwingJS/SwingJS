@@ -738,36 +738,7 @@ public class MouseEvent extends InputEvent {
      */
     public String paramString() {
         StringBuilder str = new StringBuilder(80);
-
-        switch(id) {
-          case MOUSE_PRESSED:
-              str.append("MOUSE_PRESSED");
-              break;
-          case MOUSE_RELEASED:
-              str.append("MOUSE_RELEASED");
-              break;
-          case MOUSE_CLICKED:
-              str.append("MOUSE_CLICKED");
-              break;
-          case MOUSE_ENTERED:
-              str.append("MOUSE_ENTERED");
-              break;
-          case MOUSE_EXITED:
-              str.append("MOUSE_EXITED");
-              break;
-          case MOUSE_MOVED:
-              str.append("MOUSE_MOVED");
-              break;
-          case MOUSE_DRAGGED:
-              str.append("MOUSE_DRAGGED");
-              break;
-          case MOUSE_WHEEL:
-              str.append("MOUSE_WHEEL");
-              break;
-           default:
-              str.append("unknown type");
-        }
-
+        str.append(getIdString(id));
         // (x,y) coordinates
         str.append(",(").append("" + x).append(",").append("" + y).append(")");
         str.append(",absolute(").append("" + xAbs).append(",").append("" + yAbs).append(")");
@@ -787,7 +758,45 @@ public class MouseEvent extends InputEvent {
         return str.toString();
     }
 
-    /**
+	/**
+	 * SwingJS convenience for debugging
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static String getIdString(int id) {
+		switch (id) {
+		case MOUSE_PRESSED:
+			return "MOUSE_PRESSED";
+
+		case MOUSE_RELEASED:
+			return "MOUSE_RELEASED";
+
+		case MOUSE_CLICKED:
+			return "MOUSE_CLICKED";
+
+		case MOUSE_ENTERED:
+			return "MOUSE_ENTERED";
+
+		case MOUSE_EXITED:
+			return "MOUSE_EXITED";
+
+		case MOUSE_MOVED:
+			return "MOUSE_MOVED";
+
+		case MOUSE_DRAGGED:
+			return "MOUSE_DRAGGED";
+
+		case MOUSE_WHEEL:
+			return "MOUSE_WHEEL";
+
+		default:
+			return "unknown type";
+		}
+
+	}
+
+		/**
      * Sets new modifiers by the old ones.
      * Also sets button.
      */

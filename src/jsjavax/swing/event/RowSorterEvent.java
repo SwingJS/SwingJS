@@ -40,7 +40,7 @@ import jsjavax.swing.RowSorter;
  * @see jsjavax.swing.RowSorter
  * @since 1.6
  */
-public class RowSorterEvent extends java.util.EventObject {
+public class RowSorterEvent extends jsjava.util.EventObject {
     private Type type;
     private int[] oldViewToModel;
 

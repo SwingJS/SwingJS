@@ -24,7 +24,7 @@
  */
 package jsjavax.swing.event;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 
 /**
  * PopupMenuEvent only contains the source of the event which is the JPoupMenu

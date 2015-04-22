@@ -25,7 +25,7 @@
 
 package jssun.applet;
 
-import java.util.EventObject;
+import jsjava.util.EventObject;
 
 
 /**

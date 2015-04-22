@@ -64,7 +64,7 @@ import jsjavax.swing.table.TableModel;
  * @author Philip Milne
  * @see TableModel
  */
-public class TableModelEvent extends java.util.EventObject
+public class TableModelEvent extends jsjava.util.EventObject
 {
     /** Identifies the addtion of new rows or columns. */
     public static final int INSERT =  1;
