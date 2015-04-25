@@ -1,11 +1,13 @@
 // JSmolJavaExt.js
 
+
 // This library will be wrapped by an additional anonymous function using ANT in 
 // build_03_tojs.xml. This task will also modify variable names. References 
 // to Clazz._ will not be changed, but other Clazz.xxx will be changed to 
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 4/23/2015 9:08:59 AM xx.getComponentType() is nonfunctional. Array.newInstance now defines a wrapper for .getClass().getComponentType() that works  
 // BH 4/12/2015 1:37:44 PM adding Math.rint = Math.round
 // BH 1/16/2015 10:09:38 AM Chrome failure jqGrig due to new String("x").toString() not being a simple string
 // BH 8/14/2014 6:49:22 PM Character class efficiencies
@@ -1736,12 +1738,25 @@ Clazz.defineStatics(c$,
 "TYPE",null);
 
 java.lang.Character.TYPE=java.lang.Character.prototype.TYPE=java.lang.Character;
-Array.getComponentType=function(){
-return Object;
-};c$=Clazz.declareType(java.lang.reflect,"Array");
-c$.newInstance=Clazz.defineMethod(c$,"newInstance",
+
+
+
+Clazz._ArrayWrapper = function(a, type) {
+ return {
+   a: a,
+   __CLASS_NAME__:"Array",
+   superClazz: Array,
+   getComponentType: function() {return type},
+   instanceOf: function(o) { return  Clazz.instanceOf(type, o) },
+   getName: function() { return this.__CLASS_NAME__ }
+ };
+}
+c$=Clazz_declareType(java.lang.reflect,"Array");
+c$.newInstance=Clazz_defineMethod(c$,"newInstance",
 function(componentType,size){
-return Clazz.newArray(length);
+var a = Clazz_newArray(size);
+ a.getClass = function() { return new Clazz._ArrayWrapper(this, componentType);};
+return a;
 },"Class,~N");
 
 javautil.Date=Date;
@@ -2794,7 +2809,7 @@ return this.name;
 });
 Clazz.defineMethod(c$,"getParameterTypes",
 function(){
-return this.parameterTypes;
+return this.parameterTypes; 
 });
 Clazz.defineMethod(c$,"getReturnType",
 function(){

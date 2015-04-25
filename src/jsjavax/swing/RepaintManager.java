@@ -334,7 +334,7 @@ public class RepaintManager {
 	public synchronized void addInvalidComponent(JComponent invalidComponent) {
 		Component validateRoot = null;
 
-		System.out.println("RM addInvalidComponent " + invalidComponent);
+		//System.out.println("RM addInvalidComponent " + invalidComponent);
 		/*
 		 * Find the first JComponent ancestor of this component whose
 		 * isValidateRoot() method returns true.
@@ -343,7 +343,7 @@ public class RepaintManager {
 			if ((c instanceof CellRendererPane)
 			// SwingJS || c.getPeer() == null
 			) {
-				System.out.println("RM noParent");
+				//System.out.println("RM noParent");
 				return;
 			}
 			if ((c instanceof JComponent) && (((JComponent) c).isValidateRoot())) {
@@ -356,11 +356,11 @@ public class RepaintManager {
 		 * There's no validateRoot to apply validate to, so we're done.
 		 */
 		if (validateRoot == null) {
-			System.out.println("RM noValidateRoot");
+			//System.out.println("RM noValidateRoot");
 			return;
 		}
 
-		System.out.println("RM validateRoot = " + validateRoot);
+		//System.out.println("RM validateRoot = " + validateRoot);
 		/*
 		 * If the validateRoot and all of its ancestors aren't visible then we don't
 		 * do anything. While we're walking up the tree we find the root Window or
@@ -372,7 +372,7 @@ public class RepaintManager {
 			if (!c.isVisible()
 			// SwingJS || (c.getPeer() == null)
 			) {
-				System.out.println("RM noVisibleParent");
+				//System.out.println("RM noVisibleParent");
 				return;
 			}
 			if ((c instanceof Window) || (c instanceof Applet)) {
@@ -382,7 +382,7 @@ public class RepaintManager {
 		}
 
 		if (root == null) {
-			System.out.println("RM noRoot");
+			//System.out.println("RM noRoot");
 			return;
 		}
 

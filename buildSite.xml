@@ -88,7 +88,6 @@
       <fileset dir="j2shack">
       </fileset>
     </copy>
-   	
    	<echo>Fixing "jsjava" references</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
   	<replace dir="site/swingjs/" includes="**/*.js" token="J.util" value="JU" />
@@ -161,6 +160,8 @@
             javajs/util/Encoding.js
             java/util/MissingResourceException.js
             java/awt/geom/Point2D.js
+        	
+
             jssun/misc/MessageUtils.js
             java/awt/Dimension.js
             java/awt/geom/Dimension2D.js
@@ -275,6 +276,8 @@
             javax/swing/UIManager.js
             javax/swing/MultiUIDefaults.js
             javax/swing/UIDefaults.js
+            javax/swing/plaf/ActionMapUIResource.js
+
             java/awt/Font.js
             java/awt/font/TextAttribute.js
             java/text/AttributedCharacterIterator.js
@@ -365,15 +368,12 @@
             jssun/swing/DefaultLayoutStyle.js
             javax/swing/LayoutStyle.js
             javax/swing/JCheckBox.js
-            javax/swing/JToggleButton.js
             java/awt/ItemSelectable.js
             java/awt/event/ItemEvent.js
             javax/swing/DefaultButtonModel.js
-            javax/swing/ButtonModel.js
             javax/swing/OverlayLayout.js
             javax/swing/SizeRequirements.js
             javax/swing/JLabel.js
-            javax/swing/JRadioButton.js
             javax/swing/border/Border.js
             javax/swing/RootPaneContainer.js
             javax/swing/event/MenuDragMouseEvent.js
@@ -439,6 +439,10 @@
             javajs/util/T3.js
             javax/swing/JRootPane.js
    	
+            javax/swing/JToggleButton.js
+            javax/swing/ButtonModel.js
+            javax/swing/JRadioButton.js
+
             javax/swing/JApplet.js
 
             swingjs/JSToolkit.js
@@ -508,6 +512,10 @@
             swingjs/plaf/JSPanelUI.js
             swingjs/plaf/JSRadioButtonUI.js
             swingjs/plaf/JSRootPaneUI.js
+            swingjs/plaf/JSButtonListener.js
+            swingjs/plaf/JSButtonUI.js
+            swingjs/plaf/JSToggleButtonUI.js
+            swingjs/plaf/LazyActionMap.js
 
         	"/>
     </antcall>
@@ -517,8 +525,7 @@
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
-    jssun/java2d/SunGraphics2D.js
-    swingjs/JSGraphics2D.js
+
     
    	minimize additional JSmol JavaScript -->
 

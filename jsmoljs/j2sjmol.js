@@ -42,6 +42,11 @@
  // NOTES by Bob Hanson: 
  
  // J2S class changes:
+
+ // BH 4/25/2015 9:16:12 AM SAEM misrepresnting Number as Object in parameters and Integer as Number 
+ // BH 4/24/2015 7:32:54 AM Object.hashCode() and System.getIdentityHashCode() fail. changed to:     return this._$hashcode || (this._$hashcode = ++Clazz._hashCode)
+ // BH 4/23/2015 9:08:59 AM Clazz.instanceOf(a, b) needs to check for a == b.   
+ // BH 4/23/2015 9:08:59 AM xx.getContentType() is nonfunctional. Array.newInstance now defines a wrapper for .getClass().getComponentType() that works  
  // BH 4/12/2015 11:48:03 AM added Clazz.getStackTrace(-n) -- reports actual parameter values for n levels
  // BH 4/10/2015 8:23:05 AM adding Int32Array.prototype.clone and Float64.prototype.clone
  // BH 4/5/2015 8:12:57 AM refactoring j2slib (this file) to make private functions really private using var
@@ -218,6 +223,7 @@ if (Clazz._supportsNativeObject) {
 
 Clazz.Console = {};
 Clazz.dateToString = Date.prototype.toString;
+Clazz._hashCode = 0;
 
 var addProto = function(proto, name, func) {
 	return proto[name] = func;
@@ -229,6 +235,10 @@ var addProto = function(proto, name, func) {
 	});
 
 	addProto(proto, "hashCode", function () {
+  
+    return this._$hashcode || (this._$hashcode = ++Clazz._hashCode)
+
+  
 		try {
 			return this.toString ().hashCode ();
 		} catch (e) {
@@ -302,9 +312,9 @@ Clazz.getClassName = function (obj) {
 		return obj.clazzName;
 	switch(typeof obj) {
 	case "number":
-		return "Number";
+		return "n";
 	case "boolean":
-		return "Boolean";
+		return "b";
 	case "string":
 		// Always treat the constant string as String object.
 		// This will be compatiable with Java String instance.
@@ -567,7 +577,8 @@ Clazz.getInheritedLevel = function (clazzTarget, clazzBase) {
  */
 /* public */
 Clazz.instanceOf = function (obj, clazz) {
-	return (obj != null && clazz && (obj instanceof clazz || Clazz.getInheritedLevel(Clazz.getClassName(obj), clazz) >= 0));
+  // allows obj to be a class already, from arrayX.getClass().isInstance(y)
+	return (obj && clazz && (obj == clazz || obj instanceof clazz || Clazz.getInheritedLevel(Clazz.getClassName(obj), clazz) >= 0));
 };
 
 /**
@@ -1050,9 +1061,9 @@ var formatParameters = function (funParams) {
       function ($0, $1) {
       	switch ($1) {
       	case 'N':
-      		return "Number";
+      		return "n";
       	case 'B':
-      		return "Boolean";
+      		return "b";
       	case 'S':
       		return "String";
       	case 'O':
@@ -1136,11 +1147,15 @@ Clazz.getParamsType = function (funParams) {
 		params.typeString = "\\void";
 		return params;
 	case 1:
-		// just so common
-		var obj = funParams[0];
-		if (obj && typeof obj == "number") {
-			var params = ["Number"];
-			params.typeString = "\\Number";
+	  // BH just so common
+    switch (typeof obj) {
+    case "number":
+			var params = ["n"];
+			params.typeString = "\\n";
+			return params;
+    case "boolean":
+			var params = ["b"];
+			params.typeString = "\\b";
 			return params;
 		}
 	}
@@ -1597,7 +1612,7 @@ Clazz.instantialize = function (objThis, args) {
  */
 /* protected */
 Clazz.innerFunctionNames = [
-	"equals", "hashCode", /*"toString",*/ "getName", "getClassLoader", "getResource", "getResourceAsStream" /*# {$no.javascript.support} >>x #*/, "defineMethod", "defineStaticMethod",
+	"isInstance", "equals", "hashCode", /*"toString",*/ "getName", "getClassLoader", "getResource", "getResourceAsStream" /*# {$no.javascript.support} >>x #*/, "defineMethod", "defineStaticMethod",
 	"makeConstructor" /*# x<< #*/
 ];
 
@@ -1608,6 +1623,11 @@ Clazz._innerFunctions = {
 	/*
 	 * Similar to Object#equals
 	 */
+   
+  isInstance: function(c) {
+    return Clazz.instanceOf(c, this);
+  },
+  
 	equals : function (aFun) {
 		return this === aFun;
 	},
@@ -2753,6 +2773,10 @@ System.setProperty("os.name", navigator.userAgent) //BH
 System.identityHashCode=function(obj){
   if(obj==null)
     return 0;
+    
+        return obj._$hashcode || (obj._$hashcode = ++Clazz._hashCode)
+
+/*    
   try{
     return obj.toString().hashCode();
   }catch(e){
@@ -2762,6 +2786,7 @@ System.identityHashCode=function(obj){
     }
     return str.hashCode();
   }
+*/  
 }
 
 System.out = new Clazz._O ();
@@ -5228,7 +5253,7 @@ Sys.out.print = function (s) {
 	Con.consoleOutput (s);
 };
 /* public */
-Sys.out.println = function(s) {
+Sys.out.println = function(s) { 
 	Con.consoleOutput(typeof s == "undefined" ? "\r\n" : s == null ?  s = "null\r\n" : s + "\r\n");
 };
 

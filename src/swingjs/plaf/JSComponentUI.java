@@ -354,8 +354,8 @@ public abstract class JSComponentUI extends ComponentUI {
   }
 
 	public void notifyPropertyChanged(String prop) {
-		System.out.println("-----------------JSComponent " + c.getName() + " propertyChange " + prop);
-		isTainted = true;
+		//System.out.println("-----------------JSComponent " + c.getName() + " propertyChange " + prop);
+		setTainted();
 		// more needs to be done here...
 //		tempObj = null;
 //		setHTMLElement();

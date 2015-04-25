@@ -1,5 +1,31 @@
+Notes
+=====
+
+Bob needs to test that jsmol.bin.java works in JSmol as well
+
+
+
 PROGRESS
 ========
+4/25/2015
+
+Mouse callback action is very smooth and fast as long as 
+clipping is not carried out for each component as created.
+ 
+JRadiobuttons are working with ItemEvent (retargeted from MouseEvent)
+
+repaint() is now completely handled using synthetic JavaScript AWT EventQueue
+
+So this means:
+
+-- we have working HTML5 components in swingjs.plaf
+-- we have a working "Java" AWT event queue
+-- basic Thread operations are working - just not sleep, wait, or notify
+   but these can be handled by other means using swingjs.JSThread
+
+
+
+---------   
 4/21/2015
 
 MouseListener working; ItemListener still not working
@@ -8,7 +34,7 @@ MouseMotionListener working
 Component properties are not adjustable ("isTainted" is not set back to TRUE
 in swingjs.plaf.JSComponentUI
 
-   
+---------   
 4/19/2015
 
 FlowLayout reporting proper positions and sizes for JRadioButtons
@@ -18,6 +44,7 @@ ButtonGroups working.
 
 code: "super.xxx" out in Component, Container, and JComponent
 
+---------   
 4/18/2015
 
 JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
@@ -42,6 +69,7 @@ JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
  * 
  */
 
+---------   
 4/16/2015
 
 SimpleDateFormat was being excluded in JSmolJavaExt.js
@@ -57,7 +85,7 @@ peer preferredSize (w,h) working for radio buttons but not for panels; no positi
  
 JSToolkit JavaScript methods alert, log, prompt, and confirm added
 
-
+---------   
 4/15/2015
 
 AWT Events reintroduced. Just about ready for JApplet painting via 
@@ -68,7 +96,7 @@ The "EventQueue" is really an immediate setTimeout dispatcher.
 The "current thread" (which identifies which applet this is in its name)
 is maintained by anonymous function wrapping.
   
-
+---------   
 4/14/2015
 
 -- preliminary "native" user interface components implemented -- see swingjs.plaf
@@ -92,12 +120,13 @@ the need for @j2sNative blocks. For example, in swingjs.plaf.JSComponentUI:
 		return new Dimension(w, h);
 	}
 
-
+---------   
 4/12/2015
 
 basic very limited graphics working; no AffineTransform
 still no layout
 
+---------   
 4/4/2015
 
 j2sjmol.js updated due to problems with incomplete loading
@@ -112,6 +141,7 @@ several issues found in getting SimpleDateFormat working
  -- SimpleDateFormat working
  -- fixed sb.append(int) --> sb.append("" + i)
 
+---------   
 4/3/2015
 
 ResourceBundle working with property loading. 
@@ -119,6 +149,7 @@ But ResourceBundle.Control calls new PropertyResourceBundle(), and that
 causes a loading loop. Solution is to give PropertyResourceBundle() an empty
 constructor and to call it with reflection.
 
+---------   
 4/2/2015
 
 JApplet loading successful
@@ -139,13 +170,11 @@ Thread.currentThread() working. For example, this works:
   
 ThreadGroup points to objects unique to an applet. 
 This will allow easy access to applet-specific quantities
-
-
   
-  
+---------   
 3/19/2015
 
-Project initiated
+Project initiated - files from GrepCode
 
 ========================================================================== 
 J2S tips
@@ -183,6 +212,42 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#11 Integer parameter is considered Number(int,float,etc.) not Object in SAEM
+
+	private void test1(Object ja) {
+		System.out.println(ja + " is an Object");
+	}
+
+	private void test1(int ja) {
+		System.out.println(ja + " is an int");
+	}
+
+	private String name;
+
+	public static void main(String[] args) {
+		
+		BugTest t = new BugTest();
+		t.name = "test";
+
+		t.test1(Integer.valueOf(33));
+		t.test1(33);
+   ,,,		
+
+    -- fixed for SwingJS
+
+
+#10 array.getClass().getComponentType() is not implemented. This breaks 
+    AbstractCollection.toArray(aa[])
+    
+    -- fixed for SwingJS
+
+#9 array.getClass() returns "array" -- there is no way to determine the class of an array
+   if it has no elements. However a work-around is to use
+   
+     java.lang.reflect.Array.newInstance(xxxx.class, n)
+     
+   which I have adjusted to allow for testing using .getClass().getComponentType() 
+   
 #8 There are times where J2S does not execute initialization in the proper order
 when constructing subclasses. In this case, in the creation of JApplet, the ArrayList
 (Container).component was cleared in Clazz.prepareFields for Container AFTER it was
@@ -277,6 +342,15 @@ However, there is a flaw in j2slib (jmolj2s) in that the called
 method receives a "null" URL object, which does not in JavaScript
 evaluate to true for "== null". Thus, testing for null within 
 functions called this way process improperly.
+
+For example, in javax.swing.RepaintManager:
+
+	public static RepaintManager currentManager(JComponent c) {
+		return currentManager((Component) c);
+	}
+
+This causes an infinite loop.
+
 
 j2sjmol.js (j2slib.js)
 ----------------------
