@@ -26,17 +26,14 @@ package jsjava.awt;
 
 //import java.lang.ref.WeakReference;
 //import java.lang.reflect.InvocationTargetException;
+import java.awt.AWTPermission;
+import java.awt.HeadlessException;
+import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventListener;
-import jsjava.util.Locale;
-import jsjava.util.ResourceBundle;
 import java.util.Set;
 import java.util.Vector;
-
-import swingjs.JSToolkit;
-//import java.util.concurrent.atomic.AtomicBoolean;
-//import jsjava.util.logging.Logger;
 
 import jsjava.applet.Applet;
 import jsjava.awt.event.ComponentEvent;
@@ -46,14 +43,18 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.WindowFocusListener;
 import jsjava.awt.event.WindowListener;
 import jsjava.awt.event.WindowStateListener;
-import jsjava.awt.image.BufferedImage;
 import jsjava.awt.peer.WindowPeer;
 import jsjava.beans.PropertyChangeListener;
+import jsjava.util.Locale;
+import jsjava.util.ResourceBundle;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JLayeredPane;
 import jsjavax.swing.JRootPane;
 import jsjavax.swing.RootPaneContainer;
 import jssun.awt.AppContext;
+import swingjs.JSToolkit;
+//import java.util.concurrent.atomic.AtomicBoolean;
+//import jsjava.util.logging.Logger;
 
 /**
  * A <code>Window</code> object is a top-level window with no borders and no
@@ -3252,7 +3253,6 @@ public class Window extends Container {
      * @see #setLocationByPlatform
      * @see #isLocationByPlatform
      * @since 1.6
-      * @j2sIgnore
      * 
      */
     public void setBounds(Rectangle r) {
@@ -3388,7 +3388,7 @@ public class Window extends Container {
     void setOpaque(boolean opaque) {
         synchronized (getTreeLock()) {
         	//TODO ?
-            GraphicsConfiguration gc = getGraphicsConfiguration();
+//            GraphicsConfiguration gc = getGraphicsConfiguration();
 //            if (!opaque && !com.sun.awt.AWTUtilities.isTranslucencyCapable(gc)) {
 //            throw new IllegalArgumentException(
 //                    "The window must use a translucency-compatible graphics configuration");
@@ -3423,73 +3423,71 @@ public class Window extends Container {
 
     private static final Color TRANSPARENT_BACKGROUND_COLOR = new Color(0, 0, 0, 0);
 
-    private static void setLayersOpaque(Component component, boolean isOpaque) {
-        // Shouldn't use instanceof to avoid loading Swing classes
-        //    if it's a pure AWT application.
-        if (component instanceof RootPaneContainer) {
-            RootPaneContainer rpc = (RootPaneContainer)component;
-            JRootPane root = rpc.getRootPane();
-            JLayeredPane lp = root.getLayeredPane();
-            Container c = root.getContentPane();
-            JComponent content =
-                (c instanceof JComponent) ? (JComponent)c : null;
-            JComponent gp =
-                (rpc.getGlassPane() instanceof JComponent) ?
-                (JComponent)rpc.getGlassPane() : null;
-//            if (gp != null) {
-//                gp.setDoubleBuffered(isOpaque);
-//            }
-            lp.setOpaque(isOpaque);
-            root.setOpaque(isOpaque);
-            root.setDoubleBuffered(isOpaque); //XXX: the "white rect" workaround
-            if (content != null) {
-                content.setOpaque(isOpaque);
-                content.setDoubleBuffered(isOpaque); //XXX: the "white rect" workaround
+	private static void setLayersOpaque(Component component, boolean isOpaque) {
+		// Shouldn't use instanceof to avoid loading Swing classes
+		// if it's a pure AWT application.
+		if (component instanceof RootPaneContainer) {
+			RootPaneContainer rpc = (RootPaneContainer) component;
+			JRootPane root = rpc.getRootPane();
+			JLayeredPane lp = root.getLayeredPane();
+			Container c = root.getContentPane();
+			JComponent content = (c instanceof JComponent) ? (JComponent) c : null;
+//			JComponent gp = (rpc.getGlassPane() instanceof JComponent) ? (JComponent) rpc
+//					.getGlassPane() : null;
+			// if (gp != null) {
+			// gp.setDoubleBuffered(isOpaque);
+			// }
+			lp.setOpaque(isOpaque);
+			root.setOpaque(isOpaque);
+			root.setDoubleBuffered(isOpaque); // XXX: the "white rect" workaround
+			if (content != null) {
+				content.setOpaque(isOpaque);
+				content.setDoubleBuffered(isOpaque); // XXX: the "white rect" workaround
 
-                // Iterate down one level to see whether we have a JApplet
-                // (which is also a RootPaneContainer) which requires processing
-                int numChildren = content.getComponentCount();
-                if (numChildren > 0) {
-                    Component child = content.getComponent(0);
-                    // It's OK to use instanceof here because we've
-                    // already loaded the RootPaneContainer class by now
-                    if (child instanceof RootPaneContainer) {
-                        setLayersOpaque(child, isOpaque);
-                    }
-                }
-            }
-        }
+				// Iterate down one level to see whether we have a JApplet
+				// (which is also a RootPaneContainer) which requires processing
+				int numChildren = content.getComponentCount();
+				if (numChildren > 0) {
+					Component child = content.getComponent(0);
+					// It's OK to use instanceof here because we've
+					// already loaded the RootPaneContainer class by now
+					if (child instanceof RootPaneContainer) {
+						setLayersOpaque(child, isOpaque);
+					}
+				}
+			}
+		}
 
-        Color bg = component.getBackground();
-        boolean hasTransparentBg = TRANSPARENT_BACKGROUND_COLOR.equals(bg);
+		Color bg = component.getBackground();
+		boolean hasTransparentBg = TRANSPARENT_BACKGROUND_COLOR.equals(bg);
 
-        Container container = null;
-        if (component instanceof Container) {
-            container = (Container) component;
-        }
+		Container container = null;
+		if (component instanceof Container) {
+			container = (Container) component;
+		}
 
-        if (isOpaque) {
-            if (hasTransparentBg) {
-                // Note: we use the SystemColor.window color as the default.
-                // This color is used in the WindowPeer implementations to
-                // initialize the background color of the window if it is null.
-                // (This might not be the right thing to do for other
-                // RootPaneContainers we might be invoked with)
-                Color newColor = null;
-                if (container != null && container.preserveBackgroundColor != null) {
-                    newColor = container.preserveBackgroundColor;
-                } else {
-                    newColor = new Color(255,255,255);//SystemColor.window;
-                }
-                component.setBackground(newColor);
-            }
-        } else {
-            if (!hasTransparentBg && container != null) {
-                container.preserveBackgroundColor = bg;
-            }
-            component.setBackground(TRANSPARENT_BACKGROUND_COLOR);
-        }
-    }
+		if (isOpaque) {
+			if (hasTransparentBg) {
+				// Note: we use the SystemColor.window color as the default.
+				// This color is used in the WindowPeer implementations to
+				// initialize the background color of the window if it is null.
+				// (This might not be the right thing to do for other
+				// RootPaneContainers we might be invoked with)
+				Color newColor = null;
+				if (container != null && container.preserveBackgroundColor != null) {
+					newColor = container.preserveBackgroundColor;
+				} else {
+					newColor = new Color(255, 255, 255);// SystemColor.window;
+				}
+				component.setBackground(newColor);
+			}
+		} else {
+			if (!hasTransparentBg && container != null) {
+				container.preserveBackgroundColor = bg;
+			}
+			component.setBackground(TRANSPARENT_BACKGROUND_COLOR);
+		}
+	}
 
 
     // ************************** MIXING CODE *******************************

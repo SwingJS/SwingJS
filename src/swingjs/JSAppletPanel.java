@@ -22,6 +22,7 @@ import jssun.applet.AppletListener;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
+import swingjs.plaf.JSComponentUI;
 import jsjavax.swing.JPanel;
 
 /**
@@ -451,8 +452,16 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	 * @return
 	 */
 	private Graphics setGraphics(Graphics g) {
-		if (g == null || (g = jsgraphics) == null) {
-			g = jsgraphics = new JSGraphics2D(getCanvas());
+		return (g == null ? getGraphics() : g);
+	}
+	
+	/**
+	 * Specifically for JSAppletPanel, we get new graphics when necessary
+	 */
+	@Override
+	public Graphics getGraphics() {
+		if (jsgraphics == null) {
+			jsgraphics = new JSGraphics2D(getCanvas());
 			// set methods for HTMLCanvasContext2D that are just direct assignments
 			// did not work /**
 			// * @j2sNative
@@ -463,9 +472,9 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 			// * g.ctx._setStrokeStyle = function(s) {this.strokeStyle = s};
 			// */
 			// {}
-			((JSGraphics2D) g).setWindowParameters(getWidth(), getHeight());
+			jsgraphics.setWindowParameters(getWidth(), getHeight());
 		}
-		return g;
+		return jsgraphics;
 	}
 
 	private void showAppletStatus(String status) {
@@ -522,14 +531,10 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					break;
 				}
 				System.out.println("JSAppletPanel init");
+			  setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
 				applet.resize(defaultAppletSize);
 				applet.init();
 				// Need the default(fallback) font to be created in this AppContext
-				Font f = getFont();
-				if (f == null || "dialog".equals(f.getFamily().toLowerCase())// Locale.ENGLISH))
-						&& f.getSize() == 12 && f.getStyle() == Font.PLAIN) {
-					setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
-				}
 				validate(); // SwingJS
 				status = APPLET_INIT;
 				showAppletStatus("initialized");
@@ -644,6 +649,14 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 			showAppletStatus("loaded");
 			validate();
 		}
+	}
+	
+	/**
+	 * called by swingjs.plaf.JSComponentUI
+	 * @return
+	 */
+	JSComponentUI getUI()  {
+		return  null;
 	}
 
 }

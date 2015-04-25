@@ -31,9 +31,12 @@ import swingjs.api.DOMObject;
 
 public class JSPanelUI extends JSComponentUI {
 
+	public JSPanelUI() {
+		isContainer = true;		
+	}
+	
 	@Override
 	public DOMObject getDOMObject() {
-		isContainer = true;
     return createDOMObject("label", id);
 	}
 
@@ -47,6 +50,18 @@ public class JSPanelUI extends JSComponentUI {
 	public Dimension getPreferredSize(JComponent c) {
 		// SwingJS must defer to Panel or JPanel to set its own dimensions
 		return null;
+	}
+
+	@Override
+	protected void installJSUI() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void uninstallJSUI() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

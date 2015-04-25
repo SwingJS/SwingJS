@@ -36,7 +36,7 @@ import jsjavax.swing.ButtonGroup;
 import jsjavax.swing.DefaultButtonModel;
 import jsjavax.swing.JRadioButton;
 
-public class JSRadioButtonUI extends JSComponentUI {
+public class JSRadioButtonUI extends JSToggleButtonUI {
 
 	private DOMObject radio;
 	private DOMObject label;

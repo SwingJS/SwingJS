@@ -29,8 +29,8 @@ import swingjs.api.HTML5Applet;
 import swingjs.api.HTMLCanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
-import swingjs.plaf.JSComponentUI;
 import swingjs.plaf.HTML5LookAndFeel;
+import swingjs.plaf.JSComponentUI;
 
 public class JSToolkit extends SunToolkit {
 
@@ -374,11 +374,8 @@ public class JSToolkit extends SunToolkit {
 	 * @return CSS family name
 	 */
 	public static String getFontFamily(Font font) {
-		// SwingJS TODO
 		String name = font.getName();
-		if (name.equalsIgnoreCase("Display"))
-			return "Courier";
-		return name;
+		return (name.equalsIgnoreCase("Display") ? "Courier" : name);
 	}
 
 	@Override
@@ -397,28 +394,40 @@ public class JSToolkit extends SunToolkit {
 
 	/**
 	 * report ONCE to System.out; can check in JavaScript
+	 * @param msg TODO
 	 * 
 	 */
-	public static void notImplemented() {
+	public static void notImplemented(String msg) {
 		String s = null;
 		if (mapNotImpl == null)
 			mapNotImpl = new Hashtable<String, Boolean>();
 		/**
 		 * @j2sNative
 		 * 
-		 *            s = arguments.callee.caller.exClazz &&
-		 *            arguments.callee.caller.exClazz.__CLASS_NAME__; s += "." +
+		 *            s = arguments.callee.caller; s = s.__CLASS_NAME__ ||
+		 *            s.claxxOwner.__CLASS_NAME__; s += "." +
 		 *            arguments.callee.caller.exName;
-		 * 
 		 */
 		{
 		}
 		if (mapNotImpl.containsKey(s))
 			return;
 		mapNotImpl.put(s, Boolean.TRUE);
-		System.out.println(s + " has not been implemented in SwingJS."
+		System.out.println(s + " has not been implemented in SwingJS. "
+				+ (msg == null ? "" : msg)
 				+ getStackTrace(-5));
 
+	}
+
+	public static String getStackTrace() {
+		/**
+		 * @j2sNative
+		 * 
+		 *            return Clazz.getStackTrace();
+		 */
+		{
+			return null;
+		}
 	}
 
 	public static String getStackTrace(int n) {
@@ -543,7 +552,6 @@ public class JSToolkit extends SunToolkit {
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
 	public static void setTimeout(Object f, int msDelay, int id) {
-// 		 *            System.out.println("setTimeout " + id); 
 			
 		/**
 		 * @j2sNative
@@ -554,10 +562,12 @@ public class JSToolkit extends SunToolkit {
 		 *            setTimeout(function(_JSToolkit_setTimeout) {
 		 *            SwingJS.eventID = id;
 		 *            java.lang.Thread.thisThread = thread; 
+		 *            try {
 		 *            if (f.run)
 		 *             f.run();
 		 *            else
 		 *             f();
+		 *             } catch (e) {alert("JSToolkit.setTimeout(" + id +"): " + e)}
 		 *            SwingJS.eventID = id0; 
 		 *            java.lang.Thread.thisThread = thread0; 
 		 *            }, msDelay);
@@ -655,12 +665,34 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static void forceRepaint(Component c) {
-		System.out.println("JSToolkit forcing paint on component " + c.getName());
-	  getHTML5Applet((JComponent) c)._repaintNow(); 
+		// NO LONGER NECESSARY :)
+//		System.out.println("JSToolkit not forcing paint on component " + c.getName());
+//		try {
+//			getHTML5Applet((JComponent) c)._repaintNow();
+//		} catch (Throwable e) {
+//			alert("Repaint error:" + e);
+//		}
 	}
 	
 	public static HTML5Applet getHTML5Applet(JComponent c) {
 		return ((JSThreadGroup) c.getAppContext().getThreadGroup()).getHtmlApplet();
+	}
+
+	public static void notifyUIPropertyChanged(JComponent b, String prop) {
+		((JSComponentUI) b.getUI()).notifyPropertyChanged(prop);
+	}
+
+	public static void taintUI(Component c) {
+		// JApplet is a JComponent, but it does not have a getUI
+		// some components may have getUI but currently no UI
+		
+		/**
+		 * @j2sNative
+		 * 
+		 * c.getUI && c.getUI() && c.getUI().setTainted(); 
+		 * 
+		 */
+		{}
 	}
 
 }

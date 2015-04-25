@@ -162,7 +162,7 @@ public abstract class LookAndFeel
                                      String defaultBgName,
                                      String defaultFgName)
     {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        Color bg = c.getBackground();
 //        if (bg == null || bg instanceof UIResource) {
 //            c.setBackground(UIManager.getColor(defaultBgName));
@@ -196,7 +196,7 @@ public abstract class LookAndFeel
                                          String defaultBgName,
                                          String defaultFgName,
                                          String defaultFontName) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        Font f = c.getFont();
 //        if (f == null || f instanceof UIResource) {
 //            c.setFont(UIManager.getFont(defaultFontName));
@@ -217,7 +217,7 @@ public abstract class LookAndFeel
      *         <a href="#exceptions">exceptions</a>
      */
     public static void installBorder(JComponent c, String defaultBorderName) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        Border b = c.getBorder();
 //        if (b == null || b instanceof UIResource) {
 //            c.setBorder(UIManager.getBorder(defaultBorderName));
@@ -234,7 +234,7 @@ public abstract class LookAndFeel
      * @throws NullPointerException if {@code c} is {@code null}
      */
     public static void uninstallBorder(JComponent c) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        if (c.getBorder() instanceof UIResource) {
 //            c.setBorder(null);
 //        }
@@ -268,7 +268,7 @@ public abstract class LookAndFeel
         // this is a special case because the JPasswordField's ancestor heirarchy
         // includes a class outside of jsjavax.swing, thus we cannot call setUIProperty
         // directly.
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        if (c instanceof JPasswordField) {
 //            if (!((JPasswordField)c).customSetUIProperty(propertyName, propertyValue)) {
 //                c.setUIProperty(propertyName, propertyValue);
@@ -327,7 +327,7 @@ public abstract class LookAndFeel
      */
     public static JTextComponent.KeyBinding[] makeKeyBindings(Object[] keyBindingList)
     {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        JTextComponent.KeyBinding[] rv = new JTextComponent.KeyBinding[keyBindingList.length / 2];
 //
 //        for(int i = 0; i < keyBindingList.length; i += 2) {
@@ -356,7 +356,7 @@ public abstract class LookAndFeel
      * @since 1.3
      */
     public static InputMap makeInputMap(Object[] keys) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        InputMap retMap = new InputMapUIResource();
 //        loadKeyBindings(retMap, keys);
 //        return retMap;
@@ -384,7 +384,7 @@ public abstract class LookAndFeel
      */
     public static ComponentInputMap makeComponentInputMap(JComponent c,
                                                           Object[] keys) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        ComponentInputMap retMap = new ComponentInputMapUIResource(c);
 //        loadKeyBindings(retMap, keys);
 //        return retMap;
@@ -431,7 +431,7 @@ public abstract class LookAndFeel
      * @since 1.3
      */
     public static void loadKeyBindings(InputMap retMap, Object[] keys) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        if (keys != null) {
 //            for (int counter = 0, maxCounter = keys.length;
 //                 counter < maxCounter; counter++) {
@@ -467,7 +467,7 @@ public abstract class LookAndFeel
      * @see Class#getResourceAsStream(String)
      */
     public static Object makeIcon(final Class<?> baseClass, final String gifFile) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
     	return null;
 //        return SwingUtilities2.makeIcon(baseClass, baseClass, gifFile);
     }
@@ -502,7 +502,7 @@ public abstract class LookAndFeel
      * @since 1.4
      */
     public void provideErrorFeedback(Component component) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        Toolkit toolkit = null;
 //        if (component != null) {
 //            toolkit = component.getToolkit();
@@ -527,7 +527,7 @@ public abstract class LookAndFeel
      * @since 1.4
      */
     public static Object getDesktopPropertyValue(String systemPropertyName, Object fallbackValue) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        Object value = Toolkit.getDefaultToolkit().getDesktopProperty(systemPropertyName);
 //        if (value == null) {
             return fallbackValue;
@@ -559,7 +559,7 @@ public abstract class LookAndFeel
      * @since 1.5
      */
     public Icon getDisabledIcon(JComponent component, Icon icon) {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        if (icon instanceof ImageIcon) {
 //            return new ImageIconUIResource(GrayFilter.
 //                   createDisabledImage(((ImageIcon)icon).getImage()));

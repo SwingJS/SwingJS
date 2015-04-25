@@ -980,45 +980,44 @@ public class AWTEventMulticaster implements
         }
     }
 
-    /**
-     * Returns an array of all the objects chained as
-     * <code><em>Foo</em>Listener</code>s by the specified
-     * <code>java.util.EventListener</code>.
-     * <code><em>Foo</em>Listener</code>s are chained by the
-     * <code>AWTEventMulticaster</code> using the
-     * <code>add<em>Foo</em>Listener</code> method.
-     * If a <code>null</code> listener is specified, this method returns an
-     * empty array. If the specified listener is not an instance of
-     * <code>AWTEventMulticaster</code>, this method returns an array which
-     * contains only the specified listener. If no such listeners are chanined,
-     * this method returns an empty array.
-     *
-     * @param l the specified <code>java.util.EventListener</code>
-     * @param listenerType the type of listeners requested; this parameter
-     *          should specify an interface that descends from
-     *          <code>java.util.EventListener</code>
-     * @return an array of all objects chained as
-     *          <code><em>Foo</em>Listener</code>s by the specified multicast
-     *          listener, or an empty array if no such listeners have been
-     *          chained by the specified multicast listener
-     * @exception NullPointerException if the specified
-     *             {@code listenertype} parameter is {@code null}
-     * @exception ClassCastException if <code>listenerType</code>
-     *          doesn't specify a class or interface that implements
-     *          <code>java.util.EventListener</code>
-     *
-     * @since 1.4
-     */
-    public static <T extends EventListener> T[]
-        getListeners(EventListener l, Class<T> listenerType)
-    {
-        if (listenerType == null) {
-            throw new NullPointerException ("Listener type should not be null");
-        }
+	/**
+	 * Returns an array of all the objects chained as
+	 * <code><em>Foo</em>Listener</code>s by the specified
+	 * <code>java.util.EventListener</code>. <code><em>Foo</em>Listener</code>s
+	 * are chained by the <code>AWTEventMulticaster</code> using the
+	 * <code>add<em>Foo</em>Listener</code> method. If a <code>null</code>
+	 * listener is specified, this method returns an empty array. If the specified
+	 * listener is not an instance of <code>AWTEventMulticaster</code>, this
+	 * method returns an array which contains only the specified listener. If no
+	 * such listeners are chanined, this method returns an empty array.
+	 * 
+	 * @param l
+	 *          the specified <code>java.util.EventListener</code>
+	 * @param listenerType
+	 *          the type of listeners requested; this parameter should specify an
+	 *          interface that descends from <code>java.util.EventListener</code>
+	 * @return an array of all objects chained as
+	 *         <code><em>Foo</em>Listener</code>s by the specified multicast
+	 *         listener, or an empty array if no such listeners have been chained
+	 *         by the specified multicast listener
+	 * @exception NullPointerException
+	 *              if the specified {@code listenertype} parameter is
+	 *              {@code null}
+	 * @exception ClassCastException
+	 *              if <code>listenerType</code> doesn't specify a class or
+	 *              interface that implements <code>java.util.EventListener</code>
+	 * 
+	 * @since 1.4
+	 */
+	public static <T extends EventListener> T[] getListeners(EventListener l,
+			Class<T> listenerType) {
+		if (listenerType == null) {
+			throw new NullPointerException("Listener type should not be null");
+		}
 
-        int n = getListenerCount(l, listenerType);
-        T[] result = (T[])Array.newInstance(listenerType, n);
-        populateListenerArray(result, l, 0);
-        return result;
-    }
+		int n = getListenerCount(l, listenerType);
+		T[] result = (T[]) Array.newInstance(listenerType, n);
+		populateListenerArray(result, l, 0);
+		return result;
+	}
 }

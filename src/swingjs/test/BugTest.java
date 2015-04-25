@@ -28,6 +28,14 @@ public class BugTest extends HashMap {
 		System.out.println(ja + " is an Object");
 	}
 
+	private void test1(Number ja) {
+		System.out.println(ja + " is a Number");
+	}
+
+	private void test1(int ja) {
+		System.out.println(ja + " is an int");
+	}
+
 	private String name;
 
 	public static void main(String[] args) {
@@ -35,6 +43,9 @@ public class BugTest extends HashMap {
 		BugTest t = new BugTest();
 		t.name = "test";
 
+		t.test1(Integer.valueOf(33));
+		t.test1(33);
+		
 		t.test(t);
 		t.test((Object) t);
 

@@ -117,6 +117,18 @@ public abstract class Graphics {
     }
 
     
+	/**
+	 * 
+	 * Creates a new <code>Graphics</code> object that is a copy of this
+	 * <code>Graphics</code> object.
+	 * 
+	 * @return a new graphics context that is a copy of this graphics context.
+	 * @deprecated
+	 */
+    public Graphics create() {
+    	return  createSwingJS();
+    }
+
     /**
      * 
      * SwingJS name change from "create" to avoid SAEM colision with Graphics.create(clipx,...)
@@ -162,15 +174,20 @@ public abstract class Graphics {
      * @see        java.awt.Graphics#clipRect
      */
     public Graphics create(int x, int y, int width, int height) {
-    	// cell renderer pane and JComponent
-        Graphics g = createSwingJS();
-        if (g == null) return null;
-        g.translate(x, y);
-        g.clipRect(0, 0, width, height);
-        return g;
+    	return create4(x, y, width, height);
     }
 
-    /**
+    public Graphics create4(int x, int y, int width, int height) {
+    	// cell renderer pane and JComponent
+      Graphics g = createSwingJS();
+      if (g == null) return null;
+      g.translate(x, y);
+      g.clipRect(0, 0, width, height);
+      return g;
+		}
+
+
+		/**
      * Translates the origin of the graphics context to the point
      * (<i>x</i>,&nbsp;<i>y</i>) in the current coordinate system.
      * Modifies this graphics context so that its new origin corresponds

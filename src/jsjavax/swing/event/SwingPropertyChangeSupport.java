@@ -83,18 +83,18 @@ public final class SwingPropertyChangeSupport extends PropertyChangeSupport {
      *         {@code null}
      * @since 1.6
      */
-    public void firePropertyChange(final PropertyChangeEvent evt) {
+    public void firePropertyChangeEvt(final PropertyChangeEvent evt) {
         if (evt == null) {
             throw new NullPointerException();
         }
         if (! isNotifyOnEDT()
             || SwingUtilities.isEventDispatchThread()) {
-            super.firePropertyChange(evt);
+            super.firePropertyChangeEvt(evt);
         } else {
             SwingUtilities.invokeLater(
                 new Runnable() {
                     public void run() {
-                        firePropertyChange(evt);
+                        firePropertyChangeEvt(evt);
                     }
                 });
         }

@@ -215,8 +215,8 @@ public class EventQueue {
 	 *           if <code>theEvent</code> is <code>null</code>
 	 */
 	public void postEvent(AWTEvent event) {
-		if (event.getID() != MouseEvent.MOUSE_MOVED)
-			JSToolkit.log("---Post Event---" + event.getID() + "." + event.num);
+		//if (event.getID() != MouseEvent.MOUSE_MOVED)
+			//JSToolkit.log("EventQueue ---Post Event---" + event.getID() + "." + event.num);
 		SunToolkit.flushPendingEvents();
 		postEventPrivate(event);
 	}
@@ -634,8 +634,8 @@ public class EventQueue {
 	 * @since 1.2
 	 */
 	protected void dispatchEvent(final AWTEvent event) {
-		if (event.getID() != MouseEvent.MOUSE_MOVED)
-			JSToolkit.log("---Dispatch Event---" + event.getID() + "." + event.num);
+		//if (event.getID() != MouseEvent.MOUSE_MOVED)
+			//JSToolkit.log("---Dispatch Event---" + event.getID() + "." + event.num);
 		final Object src = event.getSource();
 		// final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {
 		// public Void run() {

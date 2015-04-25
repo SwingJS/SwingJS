@@ -36,9 +36,20 @@ import swingjs.api.DOMObject;
  */
 public class JSRootPaneUI extends JSComponentUI {
 
+	public JSRootPaneUI() {
+		isContainer = true;		
+	}
+	
 	@Override
 	public DOMObject getDOMObject() {
-		isContainer = false;
   	return null;
+	}
+
+	@Override
+	protected void installJSUI() {
+	}
+
+	@Override
+	protected void uninstallJSUI() {
 	}
 }

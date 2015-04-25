@@ -143,7 +143,7 @@ public class CellRendererPane extends Container
 //            ((JComponent)c).setDoubleBuffered(false);
 //        }
 
-        Graphics cg = g.create(x, y, w, h);
+        Graphics cg = g.create4(x, y, w, h); // SwingJS SAEM
         try {
             c.paint(cg);
         }

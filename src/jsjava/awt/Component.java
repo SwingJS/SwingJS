@@ -24,16 +24,13 @@
  */
 package jsjava.awt;
 
+import java.awt.Canvas;
+import java.awt.HeadlessException;
+import java.awt.KeyboardFocusManager;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
-//import java.util.HashMap;
-import jsjava.util.Locale;
-//import java.util.Map;
-//import java.util.Set;
 import java.util.Vector;
-
-import swingjs.JSToolkit;
 
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.AdjustmentEvent;
@@ -68,8 +65,10 @@ import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.lang.Thread;
 import jsjava.lang.ThreadGroup;
+import jsjava.util.Locale;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
+import swingjs.JSToolkit;
 
 /**
  * A <em>component</em> is an object having a graphical representation
@@ -2047,19 +2046,6 @@ protected  transient ComponentPeer peer;
      * @since JDK1.1
      */
     public void setBounds(int x, int y, int width, int height) {
-    	/**
-    	 * @j2sNative
-    	 * 
-    	 * if (arguments.length == 1) {
-    	 *   var r = arguments[0];
-    	 *   x = r.x;
-    	 *   y = r.y;
-    	 *   width = r.width;
-    	 *   height = r.height;
-    	 * 
-    	 * }
-    	 */
-    	{}
       reshape(x, y, width, height);
   }
 
@@ -2076,8 +2062,6 @@ protected  transient ComponentPeer peer;
      * @see       #setSize(int, int)
      * @see       #setSize(Dimension)
      * @since     JDK1.1
-     * 
-     * @j2sIgnore
      * 
      */
     public void setBounds(Rectangle r) {
@@ -2385,8 +2369,7 @@ protected  transient ComponentPeer peer;
      * @since 1.2
      */
     public boolean isLightweight() {
-    	return false;//TODO
-//        return getPeer() instanceof LightweightPeer;
+      return false;//peer instanceof LightweightPeer;
     }
 
 
@@ -2775,45 +2758,47 @@ protected  transient ComponentPeer peer;
         }
     }
 
-    /**
-     * Creates a graphics context for this component. This method will
-     * return <code>null</code> if this component is currently not
-     * displayable.
-     * @return a graphics context for this component, or <code>null</code>
-     *             if it has none
-     * @see       #paint
-     * @since     JDK1.0
-     */
-    public Graphics getGraphics() {
-    	// todo for JApplet, JFrame, JDialog, JWindow only
-    	return null;
-//        if (peer instanceof LightweightPeer) {
-//            // This is for a lightweight component, need to
-//            // translate coordinate spaces and clip relative
-//            // to the parent.
-//            if (parent == null) return null;
-//            Graphics g = parent.getGraphics();
-//            if (g == null) return null;
-//            if (g instanceof ConstrainableGraphics) {
-//                ((ConstrainableGraphics) g).constrain(x, y, width, height);
-//            } else {
-//                g.translate(x,y);
-//                g.setClip(0, 0, width, height);
-//            }
-//            g.setFont(getFont());
-//            return g;
-//        } else {
-//            ComponentPeer peer = this.peer;
-//            return (peer != null) ? peer.getGraphics() : null;
-//        }
-    }
+	/**
+	 * Creates a graphics context for this component. This method will return
+	 * <code>null</code> if this component is currently not displayable.
+	 * 
+	 * @return a graphics context for this component, or <code>null</code> if it
+	 *         has none
+	 * @see #paint
+	 * @since JDK1.0
+	 */
+	public Graphics getGraphics() {
+		// only executed for JRootPane and JApplet
+		if (peer instanceof LightweightPeer) {
+			// This is for a lightweight component, need to
+			// translate coordinate spaces and clip relative
+			// to the parent.
+			if (parent == null)
+				return null;
+			Graphics g = parent.getGraphics();
+			if (g == null)
+				return null;
+//			if (g instanceof ConstrainableGraphics) {
+//				((ConstrainableGraphics) g).constrain(x, y, width, height);
+//			} else {
+				//g.translate(x, y);
+				//g.setClip(0, 0, width, height);
+//			}
+			g.setFont(getFont());
+			return g;
+		} else {
+			ComponentPeer peer = this.peer;
+			return (peer != null) ? peer.getGraphics() : null;
+		}
+	}
 
     public Object getTreeLock() {
     	return this;
 		}
 
-    final Graphics getGraphics_NoClientCode() {
-    	return getGraphics();
+// SwingJS only called from Component.BltBufferStrategy, not implemented
+//    final Graphics getGraphics_NoClientCode() {
+//    	return getGraphics();
 //        ComponentPeer peer = this.peer;
 //        if (peer instanceof LightweightPeer) {
 //            // This is for a lightweight component, need to
@@ -2834,7 +2819,7 @@ protected  transient ComponentPeer peer;
 //        } else {
 //            return (peer != null) ? peer.getGraphics() : null;
 //        }
-    }
+//    }
 
     /**
      * Gets the font metrics for the specified font.
@@ -7205,7 +7190,6 @@ protected  transient ComponentPeer peer;
 	 * @see #getPropertyChangeListeners
 	 * @see #addPropertyChangeListener(java.lang.String,
 	 *      java.beans.PropertyChangeListener)
-	 *    @j2sIgnore
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		addPropChangeListenerComp(listener);
@@ -7431,7 +7415,8 @@ protected  transient ComponentPeer peer;
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        changeSupport.firePropertyChange(propertyName, oldValue, newValue);
+        changeSupport.firePropertyChange(propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
+//        changeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
     /**
@@ -7458,7 +7443,8 @@ protected  transient ComponentPeer peer;
         if (changeSupport == null || oldValue == newValue) {
             return;
         }
-        changeSupport.firePropertyChange(propertyName, oldValue, newValue);
+        changeSupport.firePropertyChange(propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
+        //changeSupport.firePropertyChange(propertyName, oldValue, newValue);
     }
 
     /**
@@ -8419,6 +8405,7 @@ protected  transient ComponentPeer peer;
     }
 
     void mixOnReshaping() {
+    	JSToolkit.taintUI(this);
 //        synchronized (getTreeLock()) {
 //            if (mixingLog.isLoggable(Level.FINE)) {
 //                mixingLog.fine("this = " + this);

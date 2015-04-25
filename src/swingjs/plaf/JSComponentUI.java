@@ -10,8 +10,25 @@ import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.Graphics;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.JRootPane;
 import jsjavax.swing.plaf.ComponentUI;
 
+/**
+ * The JSComponentUI subclasses are where all the detailed HTML5 implementation is 
+ * carried out. These subclasses mirror the subclasses found in the actual javax.swing.plaf
+ * but have an important difference in that that effectively act as both the UI (a single
+ * implementation for a given AppContext in Swing) and a peer (one implementation per component).
+ * 
+ * So here we store both the constants for the HTML5 "LookAndFeel", but also
+ * HTML5 objects that really are on the page. 
+ * 
+ * Essentially, at least for now, we are not implementing the HTML5LookAndFeel as such. We'll see how that goes. 
+ * 
+ *  
+ *   
+ * @author RM
+ *
+ */
 public abstract class JSComponentUI extends ComponentUI {
 
 	protected JComponent c;
@@ -20,18 +37,35 @@ public abstract class JSComponentUI extends ComponentUI {
 	protected int num;
 	protected boolean isTainted = true;
 	private int x, y;
-	protected boolean isContainer = false;
-
-
+	protected boolean isContainer;
+	private JSComponentUI parent;
+	protected static int incr; // SwingJS 
+	
 	public JSComponentUI() {
 		// for reflection
 	}
 
+	protected abstract void installJSUI();
+	protected abstract void uninstallJSUI();
+	
+	public void installUI(JComponent c) {
+		installJSUI();
+	}
+
+	public void uninstallUI(JComponent c) {
+		uninstallJSUI();
+	}
+
+  public void setTainted() {
+  	isTainted = true;
+  }
+  
   public abstract DOMObject getDOMObject();
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
 		newID();
+		installJSUI();
 		return this;
 	}
 
@@ -42,12 +76,11 @@ public abstract class JSComponentUI extends ComponentUI {
 
 	protected DOMObject setCssFont(DOMObject obj, Font font) {
 		if (font != null) {
-		int istyle = font.getStyle();
-		DOMObject.setStyle(obj, 
-				"font-family", font.getFamily(), 
-				"font-size", font.getSize() + "px", 
-				"font-style", ((istyle & Font.ITALIC) == 0 ? "normal" : "italic"),
-				"font-weight", ((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
+			int istyle = font.getStyle();
+			DOMObject.setStyle(obj, "font-family", font.getFamily(), "font-size",
+					font.getSize() + "px", "font-style",
+					((istyle & Font.ITALIC) == 0 ? "normal" : "italic"), "font-weight",
+					((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
 		}
 		return obj;
 	}
@@ -67,7 +100,7 @@ public abstract class JSComponentUI extends ComponentUI {
 	}
 
 	private void debugDump(DOMObject d) {
-		System.out.println(DOMObject.getOuterHTML(d));
+		System.out.println(DOMObject.getAttr(d, "outerHTML"));
 	}
 	
 	protected static void vCenter(DOMObject obj, int offset) {
@@ -102,33 +135,76 @@ public abstract class JSComponentUI extends ComponentUI {
 				"height", h + "px");
 	}
 
+	/**
+	 * createst the DOM object and inserts it into the tree at the correct place,
+	 * iterating through all children if this is a container
+	 * 
+	 */
 	private void setHTMLElement() {
 		if (!isTainted)
 			return;
-		isTainted = false;
+
+		//System.out.println("JSCUI setHTMLElement " + c);
+
+		JRootPane root = (isContainer ? c.getRootPane() : null);
+		if (c == root) {
+			isTainted = false;
+			return;
+		}
+		
+
+		// tempObj will need recreating if a propertyChange event has occurred
+		
+		if (tempObj == null)
+			tempObj = getDOMObject();
+
+		// divObj will need recreating if a propertyChange event has occurred
+		// check for content pane -- needs to be added to the HTML5 content layer div
+
+		// needs some work for changes after applet creation
+		
 		if (divObj == null) {
-			if (tempObj == null)
-				tempObj = getDOMObject();
 			divObj = wrap("div", id, tempObj);
+			if (root != null && root.getContentPane() == c)
+				swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
+						.appendChild(divObj);
 		}
-		if (x != c.getX() || y != c.getY()) {
-			DOMObject.setStyle(divObj, 
-					"position", "absolute", 
-					"left", (x = c.getX()) + "px", 
-					"top", (y = c.getY()) + "px");
-		}
+
+		// set position
+		
+		DOMObject.setStyle(divObj, "position", "absolute", "left", (x = c.getX())
+				+ "px", "top", (y = c.getY()) + "px");
+		
 		if (isContainer) {
-			DOMObject.setStyle(divObj, 
-					"width", c.getWidth() + "px", 
-  					"height", c.getHeight() + "px");
-//			DOMObject.setStyle(divObj, "background-color", JSToolkit.getCSSColor(c.getBackground()));			
+			// check for root pane -- not included in DOM
+			// set width from component
+
+			DOMObject.setStyle(divObj, "width", c.getWidth() + "px", "height",
+					c.getHeight() + "px");
+			// DOMObject.setStyle(divObj, "background-color",
+			// JSToolkit.getCSSColor(c.getBackground()));
+
+			// add all children
+			Component[] children = c.getComponents();
+			for (int i = children.length; --i >= 0;) {
+				JSComponentUI ui = ((JSComponentUI) ((JComponent) children[i]).getUI());
+				if (ui.divObj == null)
+					ui.setHTMLElement();
+				if (ui.divObj == null) {
+					//System.out.println("JSCUI could not add " + ui.c.getName() + " to "
+						//	+ c.getName());
+				} else {
+					//System.out.println("JSCUI appending " + ui.c.getName() + " to "
+						//	+ c.getName());
+					divObj.appendChild(ui.divObj);
+					//System.out.println("JSCUI appending OK");
+				}
+				ui.parent = this;
+			}
 		}
+		// mark as not tainted
 		//debugDump(divObj);
-		JSComponentUI parentUI = (JSComponentUI) ((JComponent) c.getParent())
-				.getUI();
-		DOMObject parentDiv = (parentUI == null ? JSToolkit.getHTML5Applet(c)
-				._getContentLayer() : parentUI.divObj);
-		parentDiv.appendChild(divObj);
+		isTainted = false;
 	}
 
 	/**
@@ -137,19 +213,8 @@ public abstract class JSComponentUI extends ComponentUI {
 	public Dimension getPreferredSize(JComponent c) {
 		newID();
 		Dimension d = setHTMLSize(tempObj = getDOMObject(), true);
-		//System.out.println(id + " getPreferredSize " + d + " called on " + c);
   	return d;
   }
-
-	protected static int incr; // SwingJS 
-	
-	public void installUI(JComponent c) {
-		System.out.println(id + " installUI called on " + c);
-	}
-
-	public void uninstallUI(JComponent c) {
-		System.out.println(id + " uninstallUI called on " + c);
-	}
 
 	public void paint(Graphics g, JComponent c) {
 		// for users to use. Note that for now, button graphics 
@@ -218,7 +283,18 @@ public abstract class JSComponentUI extends ComponentUI {
    * should never be invoked.
    */
   public static ComponentUI createUI(JComponent c) {
-      throw new Error("ComponentUI.createUI not implemented.");
+  	// SwingJS  so, actually, we don't do this. This class is NOT stateless.
+  	// Instead, what we do is to create a unique instance 
+  	// right in UIManager. The sequence is:
+  	// JRadioButton.updateUI() 
+  	// --> jsjavax.swing.UIManager.getUI(this)
+  	// --> jsjavax.swing.UIManager.getDefaults().getUI(target) 
+  	// --> JSToolkit.getComponentUI(target)
+  	// --> creates an instance of JRadioButtonUI and returns
+  	// that instance as JRadioButton.ui, which is NOT static.
+  	// 
+//      throw new Error("ComponentUI.createUI not implemented.");
+  	return null;
   }
 
   /**
@@ -276,5 +352,13 @@ public abstract class JSComponentUI extends ComponentUI {
       }
       return Component.BaselineResizeBehavior.OTHER;
   }
+
+	public void notifyPropertyChanged(String prop) {
+		System.out.println("-----------------JSComponent " + c.getName() + " propertyChange " + prop);
+		isTainted = true;
+		// more needs to be done here...
+//		tempObj = null;
+//		setHTMLElement();
+	}
   
 }

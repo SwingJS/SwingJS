@@ -313,7 +313,6 @@ public class Rectangle extends Rectangle2D
      * @see       #getBounds
      * @see       java.awt.Component#setBounds(java.awt.Rectangle)
      * @since     1.1
-     * @j2sIgnore
      * 
      */
     public void setBounds(Rectangle r) {

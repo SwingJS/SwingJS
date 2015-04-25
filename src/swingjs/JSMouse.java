@@ -23,16 +23,12 @@
  */
 package swingjs;
 
+import javajs.util.V3;
 import jsjava.awt.Component;
 import jsjava.awt.Event;
 import jsjava.awt.Toolkit;
-import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseWheelEvent;
-
-import javajs.J2SRequireImport;
-import javajs.util.PT;
-import javajs.util.V3;
 
 /**
  * JavaScript interface from JmolJSmol.js via handleOldJvm10Event (for now)
@@ -430,8 +426,8 @@ public class JSMouse {
 		int button = getButton(modifiers);
 		Component source = ap.applet;
 		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);
-		if (id != Event.MOUSE_MOVE)
-			System.out.println(e.paramString());
+//		if (id != Event.MOUSE_MOVE)
+//			System.out.println(e.paramString());
 		Toolkit.getEventQueue().postEvent(e);
 	}
 

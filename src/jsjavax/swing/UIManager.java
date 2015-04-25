@@ -45,6 +45,7 @@ import jsjava.util.Locale;
 
 //import jssun.swing.SwingUtilities2;
 
+// SwingJS just sketching in the LookAndFeel idea here; assuming there is one -- "HTML5LookAndFeel"
 
 /**
  * {@code UIManager} manages the current look and feel, the set of
@@ -421,7 +422,7 @@ public class UIManager
     public static void setInstalledLookAndFeels(LookAndFeelInfo[] infos)
         throws SecurityException
     {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        maybeInitialize();
 //        LookAndFeelInfo[] newInfos = new LookAndFeelInfo[infos.length];
 //        System.arraycopy(infos, 0, newInfos, 0, infos.length);
@@ -469,7 +470,7 @@ public class UIManager
      * @see #setLookAndFeel
      */
     public static LookAndFeel getLookAndFeel() {
-    	JSToolkit.notImplemented();
+    	JSToolkit.notImplemented(null);
 //        maybeInitialize();
 //        return getLAFState().lookAndFeel;
     	return null;

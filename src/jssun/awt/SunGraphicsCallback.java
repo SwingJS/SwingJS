@@ -89,6 +89,8 @@ public abstract class SunGraphicsCallback {
     public final void runComponents(Component[] comps, Graphics g,
                                     int weightFlags) {
         int ncomponents = comps.length;
+        
+        // SwingJS -- this will be null because it is not implemented
         Shape clip = g.getClip();
 
 //        if (log.isLoggable(Level.FINER) && (clip != null)) {

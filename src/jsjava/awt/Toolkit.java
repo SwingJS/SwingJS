@@ -430,7 +430,7 @@ public abstract class Toolkit {
      * @param target The Component to be created.
      */
     protected LightweightPeer createComponent(Component target) {
-    	System.out.println("SunToolkit creating peeer for " +  this);
+    	System.out.println("SunToolkit creating peer for " +  target);
         if (lightweightMarker == null) {
             lightweightMarker = new NullComponentPeer();
         }

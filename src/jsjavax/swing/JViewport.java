@@ -1136,7 +1136,7 @@ public class JViewport extends JComponent
                 if (dirty == null || !dirty.contains(jview.getVisibleRect())) {
                     rm.beginPaint();
                     try {
-                        Graphics g = JComponent.safelyGetGraphics(this);
+                        Graphics g = JComponent.safelyGetGraphics(this, SwingUtilities.getRoot(this)); // SwingJS SAEM
                         flushViewDirtyRegion(g, dirty);
                         view.setLocation(newX, newY);
                         g.setClip(0,0,getWidth(), Math.min(getHeight(),

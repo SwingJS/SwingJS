@@ -35,6 +35,9 @@ public class TanSugd3S extends JApplet implements WindowListener {
 	TSd3Controls controls;
 
 	public TanSugd3S() {
+//	  Object xx = java.lang.reflect.Array.newInstance(JApplet.class, 3);
+	//	Class y = xx.getClass().getComponentType();
+		//System.out.println(y.getName());  
 		setName("TanSugd3S");
 	}
 
@@ -61,9 +64,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 
 	public void start() {
 		controls.setEnabled(true);
-		controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
-		controls.revalidate();
-
+		//testing controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
 	}
 
 	public void stop() {
@@ -403,7 +404,7 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	Rectangle outPRec = new Rectangle(650, 10, 685, 360);
 
 	public TSd3Canvas() {
-		setName("T3d3Canvas");
+		setName("TSd3Canvas");
 		setBackground(Color.blue);
 		start_x = 0;
 		end_x = 50;
@@ -415,41 +416,37 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	}
 
 	public void paint(Graphics g) {
+		//System.out.println("TanSugd3S painting ");
 		//g.setPaintMode();
 		drawDiagram(g);
 	}
 
 	public void redraw(int range) {
+		lrange = range;
 		switch (range) {
 		case 0:
 			start_x = 0;
 			end_x = 50;
-			lrange = 0;
 			break;
 		case 1:
 			start_x = 0;
 			end_x = 10;
-			lrange = 1;
 			break;
 		case 2:
 			start_x = 10;
 			end_x = 20;
-			lrange = 2;
 			break;
 		case 3:
 			start_x = 20;
 			end_x = 30;
-			lrange = 3;
 			break;
 		case 4:
 			start_x = 30;
 			end_x = 40;
-			lrange = 4;
 			break;
 		case 5:
 			start_x = 40;
 			end_x = 50;
-			lrange = 4;
 			break;
 		}
 		repaint();

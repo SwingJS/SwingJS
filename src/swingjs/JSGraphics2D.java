@@ -151,11 +151,22 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		doArc(x, y, width, height, startAngle, arcAngle, false);
 	}
 
+	private static int saveLevel;
+	private void save() {
+		ctx.save();
+		//System.out.println("JSGraphics " + System.identityHashCode(this) + " saveLevel to " + (saveLevel++));
+	}
+
+	private void restore() {
+		ctx.restore();
+		//System.out.println("JSGraphics " + System.identityHashCode(this) + " restLevel to " + (--saveLevel));
+	}
+
 	private void doArc(int x, int y, int width, int height, int startAngle,
 			int arcAngle, boolean fill) {
 		// width
 		boolean isCircle = (arcAngle - startAngle == 360);
-		ctx.save();
+		save();
 		ctx.translate(x, y);
 		ctx.scale(width / height, height);
 		ctx.beginPath();
@@ -166,7 +177,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		if (isCircle)
 			ctx.closePath();
 		ctx.stroke();
-		ctx.restore();
+		restore();
 	}
 
 	private double toRad(int a) {
@@ -349,34 +360,34 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public boolean hit(Rectangle rect, Shape s, boolean onStroke) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public void setPaint(Paint paint) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@SuppressWarnings("unused")
@@ -479,14 +490,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public Object clone() {
-		ctx.save();
+		//System.out.println("new graphics");
+		save();
 		JSGraphics2D g = (JSGraphics2D) super.clone();
 		return g;
 	}
 
 	@Override
 	public void dispose() {
-		ctx.restore();
+		restore();
+		//System.out.println("disposed");
 	}
 
 	@Override
@@ -521,6 +534,9 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void setClip(int x, int y, int width, int height) {
+		// clipping is disabled because for general component painting
+		// because it consumes so much processing.
+		// it is presumed that the user will clip when desired
 		/**
 		 * @j2sNative
 		 *  
@@ -563,131 +579,131 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawRoundRect(int x, int y, int width, int height, int arcWidth,
 			int arcHeight) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		drawRect(x, y, width, height);
 	}
 
 	@Override
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth,
 			int arcHeight) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		fillRect(x, y, width, height);
 	}
 
 	@Override
 	public void drawOval(int x, int y, int width, int height) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public Shape getClip() {
 		// not available in JavaScript?
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return null;
 	}
 
 	@Override
 	public void drawStringTrans(String str, float x, float y) {
 		// apply affine transformation first
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawString(AttributedCharacterIterator iterator, int x, int y) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawStringAttrTrans(AttributedCharacterIterator iterator,
 			float x, float y) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void translateTrans(double tx, double ty) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void rotate(double theta) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void rotate(double theta, double x, double y) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void shear(double shx, double shy) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void transform(AffineTransform xform) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void setTransform(AffineTransform Tx) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public AffineTransform getTransform() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return null;
 	}
 
@@ -696,36 +712,36 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
    * rectangle.
    */
   public AffineTransform cloneTransform() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
     return null;
   }
 
 	@Override
 	public Paint getPaint() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return null;
 	}
 
 	@Override
 	public Stroke getStroke() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return null;
 	}
 
 	@Override
 	public FontRenderContext getFontRenderContext() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return null;
 	}
 
 	@Override
 	public void setPaintMode() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void setXORMode(Color c1) {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 	}
 
 	@SuppressWarnings("unused")
@@ -753,7 +769,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private Rectangle getClipBoundsImpl() {
-		JSToolkit.notImplemented();
+		JSToolkit.notImplemented(null);
 		return null;
 	}
 

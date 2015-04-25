@@ -165,7 +165,8 @@ final public class AU {
     /**
      * @j2sNative
      * 
-     * return new Array(n);
+     * if (!array.getClass().getComponentType)
+     * 	 return new Array(n);
      * 
      */
     {

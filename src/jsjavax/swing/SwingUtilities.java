@@ -1228,7 +1228,7 @@ public class SwingUtilities implements SwingConstants
 
     private static void updateComponentTreeUI0(Component c) {
         if (c instanceof JComponent) {
-            JComponent jc = (JComponent) c;
+            JComponent jc = (JComponent) c;	
             jc.updateUI();
             JPopupMenu jpm =jc.getComponentPopupMenu();
             if(jpm != null) {

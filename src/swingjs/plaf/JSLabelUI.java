@@ -35,4 +35,16 @@ public class JSLabelUI extends JSComponentUI {
 		return setCssFont(createDOMObject("label", id, "innerHTML",((JLabel) c).getText()), c.getFont());
 	}
 
+	@Override
+	protected void installJSUI() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void uninstallJSUI() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

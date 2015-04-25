@@ -32,8 +32,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import swingjs.JSToolkit;
-
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -47,11 +45,10 @@ import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.event.InvocationEvent;
 import jsjava.awt.image.VolatileImage;
+import jsjava.lang.Thread;
 import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 /**
  * This class manages repaint requests, allowing the number of repaints to be
@@ -180,6 +177,8 @@ public class RepaintManager {
 	 */
 	private final ProcessingRunnable processingRunnable;
 
+	private Component myComponent;
+
 	// private final static JavaSecurityAccess javaSecurityAccess = SharedSecrets
 	// .getJavaSecurityAccess();
 
@@ -251,29 +250,31 @@ public class RepaintManager {
 		RepaintManager rm = (RepaintManager) appContext.get(repaintManagerKey);
 		if (rm == null) {
 			rm = new RepaintManager();
-			rm.set();
+			rm.set(c);
 			// rm.bufferStrategyType = BUFFER_STRATEGY_TYPE;
 			appContext.put(repaintManagerKey, rm);
 		}
 		return rm;
 	}
 
-	/**
-	 * Return the RepaintManager for the calling thread given a JComponent.
-	 * <p>
-	 * Note: This method exists for backward binary compatibility with earlier
-	 * versions of the Swing library. It simply returns the result returned by
-	 * {@link #currentManager(Component)}.
-	 * 
-	 * @param c
-	 *          a JComponent -- unused
-	 * @return the RepaintManager object
-	 * 
-	 * @j2sIgnore
-	 */
-	public static RepaintManager currentManager(JComponent c) {
-		return currentManager((Component) c);
-	}
+// SwingJS - VERY important that this be commented out!
+//	/**
+//	 * Return the RepaintManager for the calling thread given a JComponent.
+//	 * <p>
+//	 * Note: This method exists for backward binary compatibility with earlier
+//	 * versions of the Swing library. It simply returns the result returned by
+//	 * {@link #currentManager(Component)}.
+//	 * 
+//	 * @param c
+//	 *          a JComponent -- unused
+//	 * @return the RepaintManager object
+//	 * 
+//	 * @j2sIgnore
+//	 * 
+//	 */
+//	public static RepaintManager currentManager(JComponent c) {
+//		return currentManager((Component) c);
+//	}
 
 	/**
 	 * Set the RepaintManager that should be used for the calling thread.
@@ -296,17 +297,18 @@ public class RepaintManager {
 	 * directly. To get the default RepaintManager, use
 	 * RepaintManager.currentManager(JComponent) (normally "this").
 	 */
-	public RepaintManager() {
+	private RepaintManager() { // SwingJS was public
 		// Because we can't know what a subclass is doing with the
 		// volatile image we immediately punt in subclasses. If this
 		// poses a problem we'll need a more sophisticated detection algorithm,
 		// or API.
-		set();
+//		set();
 		// bufferStrategyType = BUFFER_STRATEGY_SPECIFIED_OFF;
 		processingRunnable = new ProcessingRunnable();
 	}
 
-	private void set() {
+	private void set(Component c) {
+		myComponent = c;
 		// If native doublebuffering is being used, do NOT use
 		// Swing doublebuffering.
 		// doubleBufferingEnabled = !nativeDoubleBuffering;
@@ -403,7 +405,7 @@ public class RepaintManager {
 
 		// Queue a Runnable to invoke paintDirtyRegions and
 		// validateInvalidComponents.
-		scheduleProcessingRunnable();
+		scheduleProcessingRunnable(root);
 	}
 
 	/**
@@ -487,10 +489,7 @@ public class RepaintManager {
 		// Queue a Runnable to invoke paintDirtyRegions and
 		// validateInvalidComponents.
 
-		// SwingJS -- this is what does the mouse-action painting
-		swingjs.JSToolkit.forceRepaint(root);
-
-		scheduleProcessingRunnable();
+		scheduleProcessingRunnable(c);
 	}
 
 	/**
@@ -750,7 +749,7 @@ public class RepaintManager {
 		if (dirtyComponents.size() > 0) {
 			// This'll only happen if a subclass isn't correctly dealing
 			// with toplevels.
-			paintDirtyRegions(dirtyComponents);
+			paintDirtyRegions1(dirtyComponents);
 		}
 	}
 
@@ -800,10 +799,10 @@ public class RepaintManager {
 			dirtyComponents = tmp;
 			dirtyComponents.clear();
 		}
-		paintDirtyRegions(tmpDirtyComponents);
+		paintDirtyRegions1(tmpDirtyComponents);
 	}
 
-	private void paintDirtyRegions(
+	private void paintDirtyRegions1(
 			final Map<Component, Rectangle> tmpDirtyComponents) {
 		if (tmpDirtyComponents.isEmpty()) {
 			return;
@@ -849,7 +848,7 @@ public class RepaintManager {
 					// If the Graphics goes away, it means someone disposed of
 					// the window, don't do anything.
 					if (g != null) {
-						g.setClip(rect.x, rect.y, rect.width, rect.height);
+						// SwingJS not clipping, for performance g.setClip(rect.x, rect.y, rect.width, rect.height);
 						try {
 							dirtyComponent.paint(g);
 						} finally {
@@ -924,12 +923,9 @@ public class RepaintManager {
 		dy = rootDy = 0;
 		tmp.setBounds((Rectangle) dirtyComponents.get(dirtyComponent));
 
-		// System.out.println("Collect dirty component for bound " + tmp +
-		// "component bounds is " + cBounds);;
 		SwingUtilities.computeIntersection(0, 0, w, h, tmp);
 
 		if (tmp.isEmpty()) {
-			// System.out.println("Empty 1");
 			return;
 		}
 
@@ -954,7 +950,6 @@ public class RepaintManager {
 			tmp = SwingUtilities.computeIntersection(0, 0, w, h, tmp);
 
 			if (tmp.isEmpty()) {
-				// System.out.println("Empty 2");
 				return;
 			}
 
@@ -1255,7 +1250,7 @@ public class RepaintManager {
 		// }
 		// if (!paintManager.paint(paintingComponent, bufferComponent, g, x, y, w,
 		// h)) {
-		g.setClip(x, y, w, h);
+		// SwingJS not clipping, for performance g.setClip(x, y, w, h);
 		paintingComponent.paintToOffscreen(g, x, y, w, h, x + w, y + h);
 		// }
 	}
@@ -1394,8 +1389,8 @@ public class RepaintManager {
 	// // return paintManager;
 	// }
 
-	private void scheduleProcessingRunnable() {
-		scheduleProcessingRunnable(AppContext.getAppContext());
+	private void scheduleProcessingRunnable(Component c) {
+		scheduleProcessingRunnable(c.getAppContext());
 	}
 
 	private void scheduleProcessingRunnable(AppContext context) {
@@ -1652,10 +1647,16 @@ public class RepaintManager {
 			// the second one is processed nothing will happen. This is not
 			// ideal, but the logic needed to suppress the second request is
 			// more headache than it's worth.
+			
+//			System.out.println("RepaintManager run() start");
 			scheduleHeavyWeightPaints();
 			// Do the actual validation and painting.
 			validateInvalidComponents();
 			prePaintDirtyRegions();
+			// SwingJS -- this is what does the mouse-action painting
+			swingjs.JSToolkit.forceRepaint(myComponent);
+
+//			System.out.println("RepaintManager run() done");
 		}
 	}
 }

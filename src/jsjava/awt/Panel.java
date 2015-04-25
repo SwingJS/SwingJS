@@ -50,7 +50,6 @@ public class Panel extends Container {
      * The default layout manager for all panels is the
      * <code>FlowLayout</code> class.
      * 
-     * @j2sIgnore
      */
     public Panel() {
     	// SwingJS SAEM

@@ -2,8 +2,10 @@ package swingjs.api;
 
 public abstract class DOMObject {
 
-	public abstract void appendChild(Object object);
+	public abstract void appendChild(DOMObject object);
 
+	public abstract void removeChild(DOMObject object);
+	
 	public static DOMObject createElement(String key, String id) {
 		DOMObject obj = null;
 		/**
@@ -42,17 +44,15 @@ public abstract class DOMObject {
 		return obj;
 	}
 
-	public static String getOuterHTML(DOMObject d) {
-		String s = null;
+	public static Object getAttr(DOMObject obj, String attr) {
 		/**
 		 * @j2sNative
 		 * 
-		 *            s = d.outerHTML;
+		 *            return obj[attr];
 		 * 
 		 */
 		{
+			return null;
 		}
-		return s;
 	}
-
 }

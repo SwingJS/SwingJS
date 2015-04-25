@@ -245,11 +245,10 @@ public class Container extends Component {
      * somewhere higher up in the component tree that is native.
      * (such as Frame for example).
      * 
-     * @j2sIgnoreSuperConstructor
      */
     public Container() {
     	component = new java.util.ArrayList<Component>();
-    	setAppContext();
+//    	setAppContext();
     }
 
     void initializeFocusTraversalKeys() {
@@ -2225,7 +2224,7 @@ public class Container extends Component {
     	/**
     	 * @j2sNative
     	 * 
-    	 * if (arguments.length == 5) {
+    	 * if (arguments.length == 3) {
     	 *   filter = jsjava.awt.Container.MouseEventTargetFilter.FILTER;
     	 *   searchHeavyWeights = false;
     	 * }
@@ -3481,8 +3480,6 @@ public class Container extends Component {
      *
      * @see Component#removePropertyChangeListener
      * @see #addPropertyChangeListener(java.lang.String,java.beans.PropertyChangeListener)
-     * 
-     * @j2sIgnore
      * 
      */
     public void addPropertyChangeListener(PropertyChangeListener listener) {

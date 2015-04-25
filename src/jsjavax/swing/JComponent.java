@@ -374,6 +374,14 @@ public abstract class JComponent extends Container
      */
     transient private Object aaTextInfo;
 
+    /**
+     * 
+     * @param c
+     * @return
+     * 
+     * @deprecated  
+     * @j2sIgnore
+     */
     static Graphics safelyGetGraphics(Component c) {
         return safelyGetGraphics(c, SwingUtilities.getRoot(c));
     }
@@ -852,7 +860,7 @@ public abstract class JComponent extends Container
 //							cr.width = width;
 //							cr.height = height;
 //						}
-						Graphics cg = sg.create(cr.x, cr.y, cr.width, cr.height);
+						Graphics cg = sg.create4(cr.x, cr.y, cr.width, cr.height); // SwingJS SAEM
 						cg.setColor(comp.getForeground());
 						cg.setFont(comp.getFont());
 						boolean shouldSetFlagBack = false;
@@ -1028,7 +1036,7 @@ public abstract class JComponent extends Container
 //            else {
                 // Will ocassionaly happen in 1.2, especially when printing.
 //                if (clipRect == null) {
-                    co.setClip(clipX, clipY, clipW, clipH);
+                    // SwingJS not clipping for performance co.setClip(clipX, clipY, clipW, clipH);
 //                }
 
 //                if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
@@ -1617,7 +1625,6 @@ public abstract class JComponent extends Container
      *       bound: true
      * description: The preferred size of the component.
      * 
-     * @j2sIgnore
      * 
      */
     public void setPreferredSize(Dimension preferredSize) {
@@ -2426,7 +2433,6 @@ public abstract class JComponent extends Container
      * @return the <code>ActionMap</code> containing the key/action bindings
      * @since 1.3
      * 
-     * @j2sIgnore
      * 
      */
     public final ActionMap getActionMap() {
@@ -4943,7 +4949,6 @@ public abstract class JComponent extends Container
      *
      * @param r a <code>Rectangle</code> containing the region to be painted
      * 
-     * @j2sIgnore;
      * 
      */
     public void paintImmediately(Rectangle r) {
@@ -5119,7 +5124,8 @@ public abstract class JComponent extends Container
         }
 
         try {
-            g = safelyGetGraphics(paintingComponent, c);
+        	//SwingJS added .createSwingJS()
+            g = safelyGetGraphics(paintingComponent, c).createSwingJS();
             try {
                 if (hasBuffer) {
                     RepaintManager rm = RepaintManager.currentManager(
@@ -5136,8 +5142,9 @@ public abstract class JComponent extends Container
                     }
                 }
                 else {
-                    g.setClip(paintImmediatelyClip.x,paintImmediatelyClip.y,
-                       paintImmediatelyClip.width,paintImmediatelyClip.height);
+                	// SwingJS not clipping for better performance
+                  //  g.setClip(paintImmediatelyClip.x,paintImmediatelyClip.y,
+                    //   paintImmediatelyClip.width,paintImmediatelyClip.height);
                     paintingComponent.paint(g);
                 }
             } finally {
