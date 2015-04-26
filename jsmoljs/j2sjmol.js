@@ -578,7 +578,7 @@ Clazz.getInheritedLevel = function (clazzTarget, clazzBase) {
 /* public */
 Clazz.instanceOf = function (obj, clazz) {
   // allows obj to be a class already, from arrayX.getClass().isInstance(y)
-	return (obj && clazz && (obj == clazz || obj instanceof clazz || Clazz.getInheritedLevel(Clazz.getClassName(obj), clazz) >= 0));
+	return (obj != null && clazz && (obj == clazz || obj instanceof clazz || Clazz.getInheritedLevel(Clazz.getClassName(obj), clazz) >= 0));
 };
 
 /**

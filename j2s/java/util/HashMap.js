@@ -1,3 +1,5 @@
+// BH minor efficiencies only
+
 Clazz.load(["java.util.AbstractMap","$.AbstractSet","$.Iterator","$.Map","$.MapEntry"],"java.util.HashMap",["java.lang.IllegalArgumentException","$.IllegalStateException","java.util.AbstractCollection","$.Arrays","$.ConcurrentModificationException","java.util.MapEntry.Type","java.util.NoSuchElementException"],function(){
 c$=Clazz.decorateAsClass(function(){
 this.elementCount=0;

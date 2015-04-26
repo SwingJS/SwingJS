@@ -48,7 +48,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 		Container c = getContentPane();
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
-		c.add(controls = new TSd3Controls(canvas), BorderLayout.SOUTH);
+		c.add(controls = new TSd3Controls(canvas), BorderLayout.NORTH);
 		System.out.println("Hello, world!");
 	}
 
