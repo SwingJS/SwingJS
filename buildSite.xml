@@ -70,28 +70,51 @@
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
         <include name="**/*.js" />
+        <exclude name="javajs/**/*.js" />
         <exclude name="jsjava/**/*.js" />
         <exclude name="jsjavax/**/*.js" />
       </fileset>
     </copy>
    	
+   	<echo>...JU (javajs/utl, com/jcraft/jzlib)</echo>
+   	<copy todir="site/swingjs/j2s/JU" >
+      <fileset dir="jsmol/bin/javajs/util">
+        <include name="**/*.js" />
+      </fileset>
+        <fileset dir="jsmol/bin/com/jcraft/jzlib">
+          <include name="**/*.js" />
+        </fileset>
+    </copy>
+   	   	
   	<echo>...adding customized js from JSmol but not java.awt.event </echo>
    	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="jsmol/bin">
         <include name="**/*.js" />
+        <exclude name="com/**/*" />
         <exclude name="java/awt/event/*.js" />
+        <exclude name="javajs/**/*" />
       </fileset>
     </copy>	
+
+    <echo>...adding to swingjs/j2s jsmol/bin/javajs/api</echo>
+  	<copy todir="site/swingjs/j2s/javajs/api"  overwrite="true" >
+      <fileset dir="jsmol/bin/javajs/api">
+        <include name="*.js" />
+      </fileset>
+    </copy>
+
+<!-- try without this - uses JSmol's version of BufferedInputStream and InputStream
 
     <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
   	<copy todir="site/swingjs/j2s" overwrite="true" >
       <fileset dir="j2shack">
       </fileset>
     </copy>
-   	<echo>Fixing "jsjava" references</echo>
-  	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
-  	<replace dir="site/swingjs/" includes="**/*.js" token="J.util" value="JU" />
+-->
 
+  	<echo>Fixing "jsjava" references</echo>
+  	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
+  	<replace dir="site/swingjs/" includes="**/*.js" token="javajs.util" value="JU" />
   		
   	<echo>...adding to swingjs/j2s property files from src (for CalendarData)</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
@@ -100,11 +123,31 @@
       </fileset>
     </copy>
    	
-	
    	<echo>Fixing J2S compiler errors</echo>
   	<!-- no idea what this problem could be -->
   	<replace dir="site/swingjs/j2s/java/lang" includes="Thread.js" token="(g.Thread" value="(java.lang.Thread" />
 
+  	<!-- modify class names -->		
+
+    <echo>removing j2s globals Class and JavaObject</echo>
+    <echo>...replacing Class.forName with Clazz._4Name</echo>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Class.forName" value="Clazz._4Name"/>
+    <echo>...replacing JavaObject with Clazz._O</echo>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token=" JavaObject" value=" Clazz._O"/>
+    <echo>...removing all $fz references for sub/superclass common private function names</echo>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="($fz =" value=""/>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token=", $fz.isPrivate = true, $fz)" value=""/>
+  	<echo>...changing Clazz.pu$h() to Clazz.pu$h(self.c$) (only a partial fix)</echo>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h()" value="Clazz.pu$h(self.c$)"/>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(self.c$)"/>
+   	   	
+
+    <echo>...abbreviating class name "javajs.util", and "com.jcraft.jzlib" to "JU"</echo>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="javajs.util" value="JU"/>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/>
+   	  	   	  	
+  	
+  	
   	<echo>...adding jQuery and minimizing it</echo>
   	<copy todir="site/swingjs/jquery">
   	  <fileset dir="lib/jquery">
@@ -148,7 +191,7 @@
             swingjs/JSUtil.js
             java/util/Locale.js
             java/util/ResourceBundle.js
-            javajs/util/Rdr.js
+            JU/Rdr.js
             javajs/api/GenericLineReader.js
             java/io/BufferedInputStream.js
             java/io/FilterInputStream.js
@@ -156,8 +199,8 @@
             java/io/BufferedReader.js
             java/io/ByteArrayInputStream.js
             java/io/StringReader.js
-            javajs/util/Base64.js
-            javajs/util/Encoding.js
+            JU/Base64.js
+            JU/Encoding.js
             java/util/MissingResourceException.js
             java/awt/geom/Point2D.js
         	
@@ -428,15 +471,15 @@
             jssun/applet/AppletEventMulticaster.js
             jssun/applet/AppletListener.js
             jssun/misc/Queue.js
-            javajs/util/PT.js
+            JU/PT.js
             javajs/api/JSONEncodable.js
-            javajs/util/AU.js
-            javajs/util/Lst.js
-            javajs/util/DF.js
-            javajs/util/SB.js
-            javajs/util/M34.js
-            javajs/util/M4.js
-            javajs/util/T3.js
+            JU/AU.js
+            JU/Lst.js
+            JU/DF.js
+            JU/SB.js
+            JU/M34.js
+            JU/M4.js
+            JU/T3.js
             javax/swing/JRootPane.js
    	
             javax/swing/JToggleButton.js
@@ -491,7 +534,7 @@
             java/awt/SequencedEvent.js
             java/util/AbstractSequentialList.js
             java/util/LinkedList.js
-            javajs/util/V3.js
+            JU/V3.js
             javax/swing/ButtonGroup.js
             javax/swing/JComponent.js
             javax/swing/plaf/ComponentUI.js
