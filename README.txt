@@ -93,7 +93,7 @@ src/swingjs/
 
   JavaScript-specific "native" classes called from within java classes
 
-src/swintjs/test/
+src/swingjs/test/
 
   Test suite for SwingjS
   
