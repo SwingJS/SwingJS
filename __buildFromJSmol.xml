@@ -12,7 +12,6 @@
 	
   <target name="fromJSmol" id="fromJSmol">
 
-  	<!--   holding off on this until progress in SwingJS is put back in JSmol 
    	<echo>...copying Jmol javajs/ java from Jmol</echo>
    	<copy todir="src" >
       <fileset dir="${jmol.path}/src">
@@ -29,18 +28,13 @@
       </fileset>
     </copy>
   	
-   	<echo>...creating jsmol/bin/ (JSmol customized code - JSmol must have been compiled already)</echo>
    	<copy todir="jsmol/bin" >
       <fileset dir="${jsmol.path}/bin">
         <include name="com/**/*.js" />
         <include name="java/**/*.js" />
-        <include name="javajs/**/*.js" />
       </fileset>
-        <fileset dir="${jsmol.path}/site/jsmol/j2s">
-          <include name="JU/**/*.js" />
-        </fileset>
     </copy>
-  	
+
    	<echo>...creating lib/jquery/</echo>
   	<copy todir="lib/jquery">
   	  <fileset dir="${jsmol.path}/lib/jquery">
@@ -48,6 +42,16 @@
   	  </fileset>
     </copy>
 
+   	<echo>...adding jsmol.php</echo>
+  	<copy todir="php">
+  	  <fileset dir="${jsmol.path}/php">
+  	    <include name="**/*" />
+  	  </fileset>
+    </copy>
+  	
+  	<!--   holding off on this until progress in SwingJS is put back in JSmol 
+   	<echo>...creating jsmol/bin/ (JSmol customized code - JSmol must have been compiled already)</echo>
+  	
    	<echo>...creating jsmoljs/ </echo>
    	<copy todir="jsmoljs">
   	  <fileset dir="${jsmol.path}/jsmoljs">		
@@ -60,14 +64,7 @@
   	  </fileset>
     </copy> 
    	
-   	<echo>...adding jsmol.php</echo>
-  	<copy todir="php">
-  	  <fileset dir="${jsmol.path}/php">
-  	    <include name="**/*" />
-  	  </fileset>
-    </copy>
   
-  	
   	-->
   	
   </target>
