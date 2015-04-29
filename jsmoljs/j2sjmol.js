@@ -1816,12 +1816,12 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
 	}
 	var qName = (prefixName ? prefixName + "." : "") + name;
   
-  if (Clazz._Loader && Clazz._Loader._checkLoad) {
     if (Clazz._Loader._classPending[qName]) {
       delete Clazz._Loader._classPending[qName];
       Clazz._Loader._classCountOK++;
       Clazz._Loader._classCountPending--;
     }
+  if (Clazz._Loader && Clazz._Loader._checkLoad) {
     System.out.println("decorating class " + prefixName + "." + name);
   }
 	var cf = Clazz.unloadedClasses[qName];
@@ -3905,10 +3905,10 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
 	// also remove from queue
 	removeArrayItem(classQueue, file);
 
-  if (_Loader._checkLoad) {
     // forces not-found message
     isUsingXMLHttpRequest = true;
     isAsynchronousLoading = false;
+  if (_Loader._checkLoad) {
     System.out.println("\t" + file + (why ? "\n -- required by " + why : "") + "  ajax=" + isUsingXMLHttpRequest + " async=" + isAsynchronousLoading)
   }
 
@@ -3932,7 +3932,7 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
 	}
   
   
-//System.out.println("for file " + file +" fSuccess = " + (fSuccess ? fSuccess.toString() : ""))
+System.out.println("for file " + file +" fSuccess = " + (fSuccess ? fSuccess.toString() : ""))
 	var info = {
 		dataType:"script",
 		async:true, 

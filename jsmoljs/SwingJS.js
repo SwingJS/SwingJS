@@ -1,5 +1,6 @@
 // SwingJS.js
 
+// BH 4/28/2015 10:15:32 PM adds getAppletHtml 
 // BH 4/2/2015 5:17:44 PM  adds SwingJS.getJavaResource(path)
 
 // BH 3/27/2015 6:34:49 AM  just a shell
@@ -379,6 +380,13 @@ if (typeof(SwingJS) == "undefined") {
 			Jmol._repaint(this, true);
 	}
 
+	proto._cover = function (doCover) {
+    // from using getAppletHtml()
+		this._newCanvas(false);
+		this._showInfo(false);
+		this._init();
+	};
+
 /*
 
 	proto._show2d = function(tf) {
@@ -675,31 +683,6 @@ if (typeof(SwingJS) == "undefined") {
 		return false;
 	}
 
-	proto._cover = function (doCover) {
-		if (doCover || !this._deferApplet) {
-			this._displayCoverImage(doCover);
-			return;
-		}
-		// uncovering UNMADE applet upon clicking image
-		var s = (this._coverScript ? this._coverScript : "");
-		this._coverScript = "";
-		if (this._deferUncover)
-			s += ";refresh;javascript " + this._id + "._displayCoverImage(false)";
-		this._script(s, true);
-		if (this._deferUncover && this._coverTitle == "activate 3D model")
-			Jmol._getElement(this, "coverimage").title = "3D model is loading...";
-		if (!this._isJava)
-			this._newCanvas(false);
-		if (this._defaultModel)	
-			Jmol._search(this, this._defaultModel);
-		this._showInfo(false);
-		if (!this._deferUncover)
-			this._displayCoverImage(false);
-		if (this._isJava)
-			Jmol.$html(Jmol.$(this, "appletdiv"), this._javaCode);
-		if (this._init)
-			this._init();
-	};
 
 	proto._displayCoverImage = function(TF) {
 		if (!this._coverImage || this._isCovered == TF) return;
