@@ -9,7 +9,7 @@ PROGRESS
 
 adjustments in JSmol made to be compatible with SwingJS
 
-JCheckBox added; not tested 
+JSCheckBoxUI added; not tested 
 Verification added that the actual DOM button was clicked for checkboxes and radio buttons.
 
 4/25/2015
