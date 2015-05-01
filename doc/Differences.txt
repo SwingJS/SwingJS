@@ -1,12 +1,17 @@
 Notes
 =====
 
-Bob needs to test that jsmol.bin.java works in JSmol as well
-
 
 
 PROGRESS
 ========
+4/30/2015
+
+adjustments in JSmol made to be compatible with SwingJS
+
+JCheckBox added; not tested 
+Verification added that the actual DOM button was clicked for checkboxes and radio buttons.
+
 4/25/2015
 
 Mouse callback action is very smooth and fast as long as 

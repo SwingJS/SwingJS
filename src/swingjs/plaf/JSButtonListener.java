@@ -43,6 +43,7 @@ import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
+import jsjavax.swing.plaf.ComponentUI;
 import jssun.swing.UIAction;
 import swingjs.JSToolkit;
 
@@ -219,35 +220,40 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
     public void mouseClicked(MouseEvent e) {
     }
 
-    public void mousePressed(MouseEvent e) {
-       if (SwingUtilities.isLeftMouseButton(e) ) {
-          AbstractButton b = (AbstractButton) e.getSource();
+	public void mousePressed(MouseEvent e) {
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			System.out.println("JSBL " + e);
+			AbstractButton b = (AbstractButton) e.getSource();
+			if (!b.contains(e.getX(), e.getY()))
+				return;
+			// We need to check the state before and after the button click 
+			// for radio and checkboxes to make sure the DOM button actually got hit.
+			// mousePress is an "arm"; mouseRelease is a "click"
+			
+			((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(false);
+			long multiClickThreshhold = b.getMultiClickThreshhold();
+			long lastTime = lastPressedTimestamp;
+			long currentTime = lastPressedTimestamp = e.getWhen();
+			if (lastTime != -1 && currentTime - lastTime < multiClickThreshhold) {
+				shouldDiscardRelease = true;
+				return;
+			}
 
-          if(b.contains(e.getX(), e.getY())) {
-              long multiClickThreshhold = b.getMultiClickThreshhold();
-              long lastTime = lastPressedTimestamp;
-              long currentTime = lastPressedTimestamp = e.getWhen();
-              if (lastTime != -1 && currentTime - lastTime < multiClickThreshhold) {
-                  shouldDiscardRelease = true;
-                  return;
-              }
-
-             ButtonModel model = b.getModel();
-             if (!model.isEnabled()) {
-                // Disabled buttons ignore all input...
-                return;
-             }
-             if (!model.isArmed()) {
-                // button not armed, should be
-                model.setArmed(true);
-             }
-             model.setPressed(true);
-             if(!b.hasFocus() && b.isRequestFocusEnabled()) {
-                b.requestFocus();
-             }
-          }
-       }
-    };
+			ButtonModel model = b.getModel();
+			if (!model.isEnabled()) {
+				// Disabled buttons ignore all input...
+				return;
+			}
+			if (!model.isArmed()) {
+				// button not armed, should be
+				model.setArmed(true);
+			}
+			model.setPressed(true);
+			if (!b.hasFocus() && b.isRequestFocusEnabled()) {
+				b.requestFocus();
+			}
+		}
+	};
 
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
@@ -257,6 +263,8 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
                 return;
             }
             AbstractButton b = (AbstractButton) e.getSource();
+      			if (!((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(true))
+      				return;
             ButtonModel model = b.getModel();
             model.setPressed(false);
             model.setArmed(false);
@@ -324,3 +332,4 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
         }
     }
 }
+  

@@ -38,12 +38,17 @@ import jsjavax.swing.JRadioButton;
 
 public class JSRadioButtonUI extends JSToggleButtonUI {
 
-	private DOMObject radio;
 	private DOMObject label;
 	private static Map<ButtonGroup, String> groupNames;
+	
 
 	@Override
 	public DOMObject getDOMObject() {
+		return getButtonObject("radio");
+	}
+
+
+	protected DOMObject getButtonObject(String myType) {
 		if (groupNames == null)
 			groupNames = new HashMap<ButtonGroup, String>();
 		JRadioButton b = (JRadioButton) c;
@@ -58,22 +63,25 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 		  else
 		  	isNew = false;
 		}
-		radio = createDOMObject("input", id, "type", "radio", "name", name);
+		domBtn = createDOMObject("input", id, "type", myType, "name", name);
+		
 		if (b.isSelected() || isNew)
-			DOMObject.setAttr(radio, "checked", "true");
+			DOMObject.setAttr(domBtn, "checked", "true");
 		label = setCssFont(createDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
 				((AbstractButton) c).getText()), c.getFont());
 		// now wrap the two with a sapn and get its dimensions
 		// along with the dimensions of the radio button by itself.
 		// This is a hack, for sure. 
-		DOMObject obj = wrap("span", "", radio, label);
+		DOMObject obj = wrap("span", "", domBtn, label);
 		Dimension d = setHTMLSize(obj, true);
-		Dimension drad = setHTMLSize(radio, false);
+		Dimension drad = setHTMLSize(domBtn, false);
 		setHTMLSize(label, false);
-		vCenter(radio, -75);
+		vCenter(domBtn, -75);
 		vCenter(label, -50);
 	  DOMObject.setStyle(label, "left", (drad.width + 8)+"px");
-		obj = wrap("div", id + "_0", radio, label);
+		obj = wrap("div", id + "_0", domBtn, label);
 		return setDims(obj, d.width, d.height);
 	}
+
+	
 }

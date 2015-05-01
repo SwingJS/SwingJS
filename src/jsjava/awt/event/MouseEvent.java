@@ -740,7 +740,7 @@ public class MouseEvent extends InputEvent {
         StringBuilder str = new StringBuilder(80);
         str.append(getIdString(id));
         // (x,y) coordinates
-        str.append(",(").append("" + x).append(",").append("" + y).append(")");
+        str.append(",(" + x).append("," + y).append("," + when).append(")");
         str.append(",absolute(").append("" + xAbs).append(",").append("" + yAbs).append(")");
 
         str.append(",button=").append("" + getButton());

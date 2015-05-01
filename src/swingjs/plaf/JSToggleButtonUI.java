@@ -1,9 +1,25 @@
 package swingjs.plaf;
 
+import swingjs.api.DOMObject;
+
 
 public abstract class JSToggleButtonUI extends JSButtonUI {
 
-// SwingJS nothing here
+	private boolean isDomChecked;
+
+	boolean verifyButtonClick(boolean isRelease) {
+		// state should change upon mouse release
+
+		// Yes, we could do this with an HTML5 click event, but I want to try this...
+
+		boolean checked = ((Boolean) DOMObject.getAttr(domBtn, "checked") == true);
+		System.out.println(c.getName() + this.id + " JSTogglebutton verify " + checked + " " + isRelease);
+		if (isRelease && isDomChecked == checked)
+			return false;
+		isDomChecked = checked;
+		return true;
+	}
+
 	
 //  private static final Object BASIC_TOGGLE_BUTTON_UI_KEY = new Object();
 

@@ -4718,6 +4718,7 @@ protected  transient ComponentPeer peer;
         if (l == null) {
             return;
         }
+        System.out.println("adding mouse listener " + name + " " + l);
         mouseListener = AWTEventMulticaster.add(mouseListener,l);
         newEventsOnly = true;
 
