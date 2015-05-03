@@ -111,16 +111,13 @@ srcjs/js/
 
   package.js used for site implementation
 
-test/
-
-  random test files
 
 unused/
 
   java classes that were pulled from Java 1.6 but not used; quite randomly
   ordered -- no real directory structure maintained; just in case we need them.
 
-buildFromJSmol.xml
+_buildFromJSmol.xml
 
   ANT task Bob will adapt to pull files from the JSmol project as needed.
 
