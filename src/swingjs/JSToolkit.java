@@ -19,10 +19,12 @@ import jsjava.awt.Window;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjava.awt.peer.LightweightPeer;
 import jsjava.lang.Thread;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jssun.awt.AppContext;
+import jssun.awt.NullComponentPeer;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
 import swingjs.api.HTML5Applet;
@@ -394,7 +396,9 @@ public class JSToolkit extends SunToolkit {
 
 	/**
 	 * report ONCE to System.out; can check in JavaScript
-	 * @param msg TODO
+	 * 
+	 * @param msg
+	 *          TODO
 	 * 
 	 */
 	public static void notImplemented(String msg) {
@@ -414,8 +418,7 @@ public class JSToolkit extends SunToolkit {
 			return;
 		mapNotImpl.put(s, Boolean.TRUE);
 		System.out.println(s + " has not been implemented in SwingJS. "
-				+ (msg == null ? "" : msg)
-				+ getStackTrace(-5));
+				+ (msg == "" ? "" : (msg == null ? "" : msg) + getStackTrace(-5)));
 
 	}
 
@@ -694,5 +697,18 @@ public class JSToolkit extends SunToolkit {
 		 */
 		{}
 	}
+
+	/**
+	 * Provide a LightweightPeer for all Components. The JSComponentUI itself
+	 * serves as a peer for all JComponents; others will need the generic jSComponentPeer
+	 *  
+	 */
+	@Override
+  protected LightweightPeer createComponent(Component target) {
+  	System.out.println("JSToolkit creating peer for " +  target);
+  	LightweightPeer peer = (target instanceof JComponent ? (JSComponentUI) ((JComponent)target).getUI() : null);
+  	// layeredPane will need JSComponentPeer
+  	return (peer == null ? new JSComponentPeer(target) : peer);
+  }
 
 }

@@ -222,7 +222,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			System.out.println("JSBL " + e);
+			System.out.println("JSButtonListener " + e);
 			AbstractButton b = (AbstractButton) e.getSource();
 			if (!b.contains(e.getX(), e.getY()))
 				return;

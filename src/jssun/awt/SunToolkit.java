@@ -745,9 +745,9 @@ public abstract class SunToolkit extends Toolkit implements
 		return hardwiredFontList;
 	}
 
- public PanelPeer createPanel(Panel target) {
- return (PanelPeer)createComponent(target);
- }
+	public PanelPeer createPanel(Panel target) {
+		return (PanelPeer) createComponent(target);
+	}
 	//
 	// public CanvasPeer createCanvas(Canvas target) {
 	// return (CanvasPeer)createComponent(target);

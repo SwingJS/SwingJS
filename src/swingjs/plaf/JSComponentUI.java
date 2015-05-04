@@ -4,14 +4,29 @@ import swingjs.JSToolkit;
 import swingjs.api.DOMObject;
 import swingjs.api.JQuery;
 import swingjs.api.JQueryObject;
+import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
+import jsjava.awt.GraphicsConfiguration;
+import jsjava.awt.Image;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.Toolkit;
+import jsjava.awt.event.PaintEvent;
+import jsjava.awt.image.ColorModel;
+import jsjava.awt.image.ImageObserver;
+import jsjava.awt.image.ImageProducer;
+import jsjava.awt.image.VolatileImage;
+import jsjava.awt.peer.ContainerPeer;
+import jsjava.awt.peer.LightweightPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JRootPane;
 import jsjavax.swing.plaf.ComponentUI;
+import jssun.awt.CausedFocusEvent.Cause;
 
 /**
  * The JSComponentUI subclasses are where all the detailed HTML5 implementation is 
@@ -29,16 +44,16 @@ import jsjavax.swing.plaf.ComponentUI;
  * @author RM
  *
  */
-public abstract class JSComponentUI extends ComponentUI {
+public abstract class JSComponentUI extends ComponentUI implements LightweightPeer {
 
 	protected JComponent c;
 	protected String id;
 	protected DOMObject tempObj, divObj;
 	protected int num;
 	protected boolean isTainted = true;
-	private int x, y;
+	protected int x, y;
 	protected boolean isContainer;
-	private JSComponentUI parent;
+	protected JSComponentUI parent;
 	protected static int incr; // SwingJS 
 	
 	public JSComponentUI() {
@@ -359,6 +374,229 @@ public abstract class JSComponentUI extends ComponentUI {
 		// more needs to be done here...
 //		tempObj = null;
 //		setHTMLElement();
+	}
+
+	@Override
+	public boolean isObscured() {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public boolean canDetermineObscurity() {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public void setVisible(boolean b) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void setEnabled(boolean b) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void repaint(long tm, int x, int y, int width, int height) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void print(Graphics g) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height, int op) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void handleEvent(AWTEvent e) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void coalescePaintEvent(PaintEvent e) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public Point getLocationOnScreen() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public Dimension getMinimumSize() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public ColorModel getColorModel() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public Toolkit getToolkit() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public Graphics getGraphics() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public FontMetrics getFontMetrics(Font font) {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public void dispose() {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void setForeground(Color c) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void setBackground(Color c) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void setFont(Font f) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void updateCursorImmediately() {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public boolean requestFocus(Component lightweightChild, boolean temporary,
+			boolean focusedWindowChangeAllowed, long time, Cause cause) {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public boolean isFocusable() {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public Image createImage(ImageProducer producer) {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public Image createImage(int width, int height) {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public VolatileImage createVolatileImage(int width, int height) {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public boolean prepareImage(Image img, int w, int h, ImageObserver o) {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public int checkImage(Image img, int w, int h, ImageObserver o) {
+		JSToolkit.notImplemented("");
+		return 0;
+	}
+
+	@Override
+	public GraphicsConfiguration getGraphicsConfiguration() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public boolean handlesWheelScrolling() {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public Image getBackBuffer() {
+		JSToolkit.notImplemented("");
+		return null;
+	}
+
+	@Override
+	public void destroyBuffers() {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public void reparent(ContainerPeer newContainer) {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public boolean isReparentSupported() {
+		JSToolkit.notImplemented("");
+		return false;
+	}
+
+	@Override
+	public void layout() {
+		JSToolkit.notImplemented("");
+		
+	}
+
+	@Override
+	public Rectangle getBounds() {
+		JSToolkit.notImplemented("");
+		return null;
 	}
   
 }

@@ -31,8 +31,8 @@ import java.awt.event.MouseMotionListener;
 
 public class TanSugd3S extends JApplet implements WindowListener {
 
-	Test2Canvas canvas;
-	Test2Controls controls;
+	TSd3Canvas canvas;
+	TSd3Controls controls;
 
 	public TanSugd3S() {
 //	  Object xx = java.lang.reflect.Array.newInstance(JApplet.class, 3);
@@ -43,12 +43,12 @@ public class TanSugd3S extends JApplet implements WindowListener {
 
 	public void init() {
 		setLayout(new BorderLayout());
-		canvas = new Test2Canvas();
+		canvas = new TSd3Canvas();
 		canvas.setSize(850, 500);
 		Container c = getContentPane();
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
-		c.add(controls = new Test2Controls(canvas), BorderLayout.NORTH);
+		c.add(controls = new TSd3Controls(canvas), BorderLayout.NORTH);
 		System.out.println("Hello, world!");
 	}
 
@@ -751,11 +751,11 @@ class TSd3Controls extends JPanel implements ItemListener {
 
 	JTextField s;
 	JTextField e;
-	Test2Canvas canvas;
+	TSd3Canvas canvas;
 	int range;
   public JComponent bg0, bg5;
 
-	public TSd3Controls(Test2Canvas canvas) {
+	public TSd3Controls(TSd3Canvas canvas) {
 		setLayout(new FlowLayout()); 
 		// default for JPanel, but 
 		// being explicit allows debugging.
