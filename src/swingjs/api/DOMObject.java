@@ -23,7 +23,7 @@ public abstract class DOMObject {
 		/**
 		 * @j2sNative
 		 * 
-		 *            obj[attr] = val;
+		 *            obj[attr] = (val instanceof Boolean ? val.valueOf() : val);
 		 * 
 		 */
 		{
@@ -55,4 +55,5 @@ public abstract class DOMObject {
 			return null;
 		}
 	}
+
 }

@@ -105,6 +105,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		DOMObject obj = DOMObject.createElement(key, id);
 		for (int i = 0; i < attr.length;)
 			DOMObject.setAttr(obj, attr[i++], attr[i++]);
+		if (!c.isEnabled())
+			DOMObject.setAttr(obj, "disabled", Boolean.TRUE);
 		return obj;
 	}
 
@@ -411,7 +413,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	@Override
 	public void setEnabled(boolean b) {	
 		if (enableObj != null)
-		  DOMObject.setAttr(enableObj, "disabled", Boolean.valueOf(!b));
+		  DOMObject.setAttr(enableObj, "disabled", (b ? Boolean.FALSE : Boolean.TRUE));
 	}
 
 	@Override
