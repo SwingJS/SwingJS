@@ -35,26 +35,26 @@ import javax.swing.JComponent;
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
-public class Test2 extends JApplet implements WindowListener {
+public class Test_2 extends JApplet implements WindowListener {
 
-	Test2Canvas canvas;
-	Test2Controls controls;
+	Test_2Canvas canvas;
+	Test_2Controls controls;
 
-	public Test2() {
+	public Test_2() {
 //	  Object xx = java.lang.reflect.Array.newInstance(JApplet.class, 3);
 	//	Class y = xx.getClass().getComponentType();
 		//System.out.println(y.getName());  
-		setName("Test2");
+		setName("Test_2");
 	}
 
 	public void init() {
 		setLayout(new BorderLayout());
-		canvas = new Test2Canvas();
+		canvas = new Test_2Canvas();
 		canvas.setSize(850, 500);
 		Container c = getContentPane();
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
-		c.add(controls = new Test2Controls(canvas), BorderLayout.NORTH);
+		c.add(controls = new Test_2Controls(canvas), BorderLayout.NORTH);
 		System.out.println("Hello, world!");
 	}
 
@@ -85,7 +85,7 @@ public class Test2 extends JApplet implements WindowListener {
 
 	public static void main(String args[]) {
 		Frame f = new Frame("Tanabe-Sugano");
-		Test2 tanabe = new Test2();
+		Test_2 tanabe = new Test_2();
 		tanabe.init();
 		tanabe.start();
 		f.add("Center", tanabe);
@@ -383,7 +383,7 @@ public class Test2 extends JApplet implements WindowListener {
 } 
 
 // ------------------------------------------------------
-class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
+class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 	double y; // Coordinates used for drawing graphs
 	Point bottomLeft, btmLeft;
@@ -409,8 +409,8 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	Rectangle graphRec = new Rectangle(50, 10, 600, 460);
 	Rectangle outPRec = new Rectangle(650, 10, 685, 360);
 
-	public Test2Canvas() {
-		setName("Test2Canvas");
+	public Test_2Canvas() {
+		setName("Test_2Canvas");
 		setBackground(Color.blue);
 		start_x = 0;
 		end_x = 50;
@@ -422,7 +422,7 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	}
 
 	public void paint(Graphics g) {
-		//System.out.println("Test2 painting ");
+		//System.out.println("Test_2 painting ");
 		//g.setPaintMode();
 		drawDiagram(g);
 	}
@@ -492,9 +492,9 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 		xScale = ((double) graphRec.width / (end_x - start_x));
 		if (end_x < 35) {
-			yDivisor = Test2.CalcD2T2g(end_x);
+			yDivisor = Test_2.CalcD2T2g(end_x);
 		} else
-			yDivisor = Test2.CalcP4T1g(end_x);
+			yDivisor = Test_2.CalcP4T1g(end_x);
 
 		yScale = (double) graphRec.height / yDivisor;
 
@@ -515,26 +515,26 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		int[] start_x11 = { (int) (bottomLeft.x) };
 
 		int[] start_y1 = { (int) (bottomLeft.y - (start_x * yScale)) };
-		y = Test2.CalcF4T1g(start_x);
+		y = Test_2.CalcF4T1g(start_x);
 		int[] start_y2 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcP4T1g(start_x);
+		y = Test_2.CalcP4T1g(start_x);
 		int[] start_y3 = { (int) (bottomLeft.y - (yScale * y)) };
 
-		y = Test2.CalcG2Eg(start_x);
+		y = Test_2.CalcG2Eg(start_x);
 		int[] start_y4 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcG2T1g(start_x);
+		y = Test_2.CalcG2T1g(start_x);
 		int[] start_y5 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcG2T2g(start_x);
+		y = Test_2.CalcG2T2g(start_x);
 		int[] start_y6 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcG2A1g(start_x);
+		y = Test_2.CalcG2A1g(start_x);
 		int[] start_y7 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcD2T2g(start_x);
+		y = Test_2.CalcD2T2g(start_x);
 		int[] start_y8 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcH2T2g(start_x);
+		y = Test_2.CalcH2T2g(start_x);
 		int[] start_y9 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcH2T1g(start_x);
+		y = Test_2.CalcH2T1g(start_x);
 		int[] start_y10 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test2.CalcH2Eg(start_x);
+		y = Test_2.CalcH2Eg(start_x);
 		int[] start_y11 = { (int) (bottomLeft.y - (yScale * y)) };
 
 		int hSlines = graphRec.height / hlines;
@@ -563,53 +563,53 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 			// line 2
 			g2.setColor(Color.blue);
-			y = Test2.CalcF4T1g(x);
+			y = Test_2.CalcF4T1g(x);
 			drawXtoY(x, y, start_x2, start_y2, g);
 
 			// line 3
 			g2.setColor(dkgreen);
-			y = Test2.CalcP4T1g(x);
+			y = Test_2.CalcP4T1g(x);
 			drawXtoY(x, y, start_x3, start_y3, g);
 
 			// first forbidden line
 			g2.setStroke(stroke_d1);
 			g2.setColor(teal);
-			y = Test2.CalcG2Eg(x);
+			y = Test_2.CalcG2Eg(x);
 			drawXtoY(x, y, start_x4, start_y4, g);
 
 			// second forbidden line
 			g2.setColor(Color.orange);
-			y = Test2.CalcG2T1g(x);
+			y = Test_2.CalcG2T1g(x);
 			drawXtoY(x, y, start_x5, start_y5, g);
 
 			// third forbidden line
 			g2.setColor(gold);
-			y = Test2.CalcG2T2g(x);
+			y = Test_2.CalcG2T2g(x);
 			drawXtoY(x, y, start_x6, start_y6, g);
 
 			// fourth forbidden line
 			g2.setColor(Color.gray);
-			y = Test2.CalcG2A1g(x);
+			y = Test_2.CalcG2A1g(x);
 			drawXtoY(x, y, start_x7, start_y7, g);
 
 			// fifth forbidden line
 			g2.setColor(purple);
-			y = Test2.CalcD2T2g(x);
+			y = Test_2.CalcD2T2g(x);
 			drawXtoY(x, y, start_x8, start_y8, g);
 
 			// sixth forbidden line
 			g2.setColor(lgreen);
-			y = Test2.CalcH2T2g(x);
+			y = Test_2.CalcH2T2g(x);
 			drawXtoY(x, y, start_x9, start_y9, g);
 
 			// seventh forbidden line
 			g2.setColor(copper);
-			y = Test2.CalcH2Eg(x);
+			y = Test_2.CalcH2Eg(x);
 			drawXtoY(x, y, start_x11, start_y11, g);
 
 			// eight forbidden line
 			g2.setColor(dgreen);
-			y = Test2.CalcH2T1g(x);
+			y = Test_2.CalcH2T1g(x);
 			drawXtoY(x, y, start_x10, start_y10, g);
 		}
 		g2.setStroke(stroke1);
@@ -708,17 +708,17 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		if ((deltaB >= start_x) && (deltaB <= end_x)) {
 			x1 = deltaB;
 			y1 = x1;
-			y2 = Test2.CalcF4T1g(x1);
-			y3 = Test2.CalcP4T1g(x1);
+			y2 = Test_2.CalcF4T1g(x1);
+			y3 = Test_2.CalcP4T1g(x1);
 
-			fE = Test2.CalcG2Eg(x1);
-			fT1 = Test2.CalcG2T1g(x1);
-			fT2 = Test2.CalcG2T2g(x1);
-			fA1 = Test2.CalcG2A1g(x1);
-			fT2b = Test2.CalcD2T2g(x1);
-			fT2H = Test2.CalcH2T2g(x1);
-			fEH = Test2.CalcH2Eg(x1);
-			fT1H = Test2.CalcH2T1g(x1);
+			fE = Test_2.CalcG2Eg(x1);
+			fT1 = Test_2.CalcG2T1g(x1);
+			fT2 = Test_2.CalcG2T2g(x1);
+			fA1 = Test_2.CalcG2A1g(x1);
+			fT2b = Test_2.CalcD2T2g(x1);
+			fT2H = Test_2.CalcH2T2g(x1);
+			fEH = Test_2.CalcH2Eg(x1);
+			fT1H = Test_2.CalcH2T1g(x1);
 
 			ratio21 = y2 / y1;
 			ratio31 = y3 / y1;
@@ -750,19 +750,19 @@ class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		
 	}
 
-} // End Class Test2Canvas
+} // End Class Test_2Canvas
 
 // ------------------------------------------------------
-class Test2Controls extends JPanel implements ItemListener {
+class Test_2Controls extends JPanel implements ItemListener {
 
 	JTextField s;
 	JTextField e;
-	Test2Canvas canvas;
+	Test_2Canvas canvas;
 	int range;
   public JComponent bg0, bg5;
 	private ButtonGroup bg;
 
-	public Test2Controls(Test2Canvas canvas) {
+	public Test_2Controls(Test_2Canvas canvas) {
 		setLayout(new FlowLayout()); 
 		// default for JPanel, but 
 		// being explicit allows debugging.
@@ -826,4 +826,4 @@ class Test2Controls extends JPanel implements ItemListener {
 			canvas.redraw(range);
 		}
 	}
-} // End Class Test2Controls
+} // End Class Test_2Controls
