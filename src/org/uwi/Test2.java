@@ -16,29 +16,35 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 
 import java.awt.event.MouseMotionListener;
+import java.util.Enumeration;
 
-public class TanSugd3S extends JApplet implements WindowListener {
+public class Test2 extends JApplet implements WindowListener {
 
 	Test2Canvas canvas;
 	Test2Controls controls;
 
-	public TanSugd3S() {
+	public Test2() {
 //	  Object xx = java.lang.reflect.Array.newInstance(JApplet.class, 3);
 	//	Class y = xx.getClass().getComponentType();
 		//System.out.println(y.getName());  
-		setName("TanSugd3S");
+		setName("Test2");
 	}
 
 	public void init() {
@@ -79,7 +85,7 @@ public class TanSugd3S extends JApplet implements WindowListener {
 
 	public static void main(String args[]) {
 		Frame f = new Frame("Tanabe-Sugano");
-		TanSugd3S tanabe = new TanSugd3S();
+		Test2 tanabe = new Test2();
 		tanabe.init();
 		tanabe.start();
 		f.add("Center", tanabe);
@@ -374,10 +380,10 @@ public class TanSugd3S extends JApplet implements WindowListener {
 
 	}
 
-} // End Class TanSugd3
+} 
 
 // ------------------------------------------------------
-class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
+class Test2Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 	double y; // Coordinates used for drawing graphs
 	Point bottomLeft, btmLeft;
@@ -403,8 +409,8 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	Rectangle graphRec = new Rectangle(50, 10, 600, 460);
 	Rectangle outPRec = new Rectangle(650, 10, 685, 360);
 
-	public TSd3Canvas() {
-		setName("TSd3Canvas");
+	public Test2Canvas() {
+		setName("Test2Canvas");
 		setBackground(Color.blue);
 		start_x = 0;
 		end_x = 50;
@@ -416,7 +422,7 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	}
 
 	public void paint(Graphics g) {
-		//System.out.println("TanSugd3S painting ");
+		//System.out.println("Test2 painting ");
 		//g.setPaintMode();
 		drawDiagram(g);
 	}
@@ -486,9 +492,9 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 		xScale = ((double) graphRec.width / (end_x - start_x));
 		if (end_x < 35) {
-			yDivisor = TanSugd3S.CalcD2T2g(end_x);
+			yDivisor = Test2.CalcD2T2g(end_x);
 		} else
-			yDivisor = TanSugd3S.CalcP4T1g(end_x);
+			yDivisor = Test2.CalcP4T1g(end_x);
 
 		yScale = (double) graphRec.height / yDivisor;
 
@@ -509,26 +515,26 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		int[] start_x11 = { (int) (bottomLeft.x) };
 
 		int[] start_y1 = { (int) (bottomLeft.y - (start_x * yScale)) };
-		y = TanSugd3S.CalcF4T1g(start_x);
+		y = Test2.CalcF4T1g(start_x);
 		int[] start_y2 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcP4T1g(start_x);
+		y = Test2.CalcP4T1g(start_x);
 		int[] start_y3 = { (int) (bottomLeft.y - (yScale * y)) };
 
-		y = TanSugd3S.CalcG2Eg(start_x);
+		y = Test2.CalcG2Eg(start_x);
 		int[] start_y4 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcG2T1g(start_x);
+		y = Test2.CalcG2T1g(start_x);
 		int[] start_y5 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcG2T2g(start_x);
+		y = Test2.CalcG2T2g(start_x);
 		int[] start_y6 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcG2A1g(start_x);
+		y = Test2.CalcG2A1g(start_x);
 		int[] start_y7 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcD2T2g(start_x);
+		y = Test2.CalcD2T2g(start_x);
 		int[] start_y8 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcH2T2g(start_x);
+		y = Test2.CalcH2T2g(start_x);
 		int[] start_y9 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcH2T1g(start_x);
+		y = Test2.CalcH2T1g(start_x);
 		int[] start_y10 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = TanSugd3S.CalcH2Eg(start_x);
+		y = Test2.CalcH2Eg(start_x);
 		int[] start_y11 = { (int) (bottomLeft.y - (yScale * y)) };
 
 		int hSlines = graphRec.height / hlines;
@@ -557,53 +563,53 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 			// line 2
 			g2.setColor(Color.blue);
-			y = TanSugd3S.CalcF4T1g(x);
+			y = Test2.CalcF4T1g(x);
 			drawXtoY(x, y, start_x2, start_y2, g);
 
 			// line 3
 			g2.setColor(dkgreen);
-			y = TanSugd3S.CalcP4T1g(x);
+			y = Test2.CalcP4T1g(x);
 			drawXtoY(x, y, start_x3, start_y3, g);
 
 			// first forbidden line
 			g2.setStroke(stroke_d1);
 			g2.setColor(teal);
-			y = TanSugd3S.CalcG2Eg(x);
+			y = Test2.CalcG2Eg(x);
 			drawXtoY(x, y, start_x4, start_y4, g);
 
 			// second forbidden line
 			g2.setColor(Color.orange);
-			y = TanSugd3S.CalcG2T1g(x);
+			y = Test2.CalcG2T1g(x);
 			drawXtoY(x, y, start_x5, start_y5, g);
 
 			// third forbidden line
 			g2.setColor(gold);
-			y = TanSugd3S.CalcG2T2g(x);
+			y = Test2.CalcG2T2g(x);
 			drawXtoY(x, y, start_x6, start_y6, g);
 
 			// fourth forbidden line
 			g2.setColor(Color.gray);
-			y = TanSugd3S.CalcG2A1g(x);
+			y = Test2.CalcG2A1g(x);
 			drawXtoY(x, y, start_x7, start_y7, g);
 
 			// fifth forbidden line
 			g2.setColor(purple);
-			y = TanSugd3S.CalcD2T2g(x);
+			y = Test2.CalcD2T2g(x);
 			drawXtoY(x, y, start_x8, start_y8, g);
 
 			// sixth forbidden line
 			g2.setColor(lgreen);
-			y = TanSugd3S.CalcH2T2g(x);
+			y = Test2.CalcH2T2g(x);
 			drawXtoY(x, y, start_x9, start_y9, g);
 
 			// seventh forbidden line
 			g2.setColor(copper);
-			y = TanSugd3S.CalcH2Eg(x);
+			y = Test2.CalcH2Eg(x);
 			drawXtoY(x, y, start_x11, start_y11, g);
 
 			// eight forbidden line
 			g2.setColor(dgreen);
-			y = TanSugd3S.CalcH2T1g(x);
+			y = Test2.CalcH2T1g(x);
 			drawXtoY(x, y, start_x10, start_y10, g);
 		}
 		g2.setStroke(stroke1);
@@ -702,17 +708,17 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		if ((deltaB >= start_x) && (deltaB <= end_x)) {
 			x1 = deltaB;
 			y1 = x1;
-			y2 = TanSugd3S.CalcF4T1g(x1);
-			y3 = TanSugd3S.CalcP4T1g(x1);
+			y2 = Test2.CalcF4T1g(x1);
+			y3 = Test2.CalcP4T1g(x1);
 
-			fE = TanSugd3S.CalcG2Eg(x1);
-			fT1 = TanSugd3S.CalcG2T1g(x1);
-			fT2 = TanSugd3S.CalcG2T2g(x1);
-			fA1 = TanSugd3S.CalcG2A1g(x1);
-			fT2b = TanSugd3S.CalcD2T2g(x1);
-			fT2H = TanSugd3S.CalcH2T2g(x1);
-			fEH = TanSugd3S.CalcH2Eg(x1);
-			fT1H = TanSugd3S.CalcH2T1g(x1);
+			fE = Test2.CalcG2Eg(x1);
+			fT1 = Test2.CalcG2T1g(x1);
+			fT2 = Test2.CalcG2T2g(x1);
+			fA1 = Test2.CalcG2A1g(x1);
+			fT2b = Test2.CalcD2T2g(x1);
+			fT2H = Test2.CalcH2T2g(x1);
+			fEH = Test2.CalcH2Eg(x1);
+			fT1H = Test2.CalcH2T1g(x1);
 
 			ratio21 = y2 / y1;
 			ratio31 = y3 / y1;
@@ -744,31 +750,49 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		
 	}
 
-} // End Class TSd3Canvas
+} // End Class Test2Canvas
 
 // ------------------------------------------------------
-class TSd3Controls extends JPanel implements ItemListener {
+class Test2Controls extends JPanel implements ItemListener {
 
 	JTextField s;
 	JTextField e;
 	Test2Canvas canvas;
 	int range;
   public JComponent bg0, bg5;
+	private ButtonGroup bg;
 
-	public TSd3Controls(Test2Canvas canvas) {
+	public Test2Controls(Test2Canvas canvas) {
 		setLayout(new FlowLayout()); 
 		// default for JPanel, but 
 		// being explicit allows debugging.
 		setName("T3d3Controls");
 		this.canvas = canvas;
 		range = 0;
-		ButtonGroup bg = new ButtonGroup();
+		bg = new ButtonGroup();
 		bg0 = addButton(bg, "0-50", true);
 		addButton(bg, "0-10", false);
 		addButton(bg, "10-20", false);
 		addButton(bg, "20-30", false);
 		addButton(bg, "30-40", false);
 		bg5 = addButton(bg, "40-50", false);
+		final JButton enableBtn = new JButton("Enable");
+		add(enableBtn);
+		enableBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				enableButtons(enableBtn.getText().equals("Enable"));
+			}
+
+			private void enableButtons(boolean isEnable) {
+				Enumeration<AbstractButton> x = bg.getElements();
+				while (x.hasMoreElements())
+					x.nextElement().setEnabled(isEnable);
+				enableBtn.setText(isEnable ? "Disable" : "Enable");
+			}
+			
+		});
 		setVisible(true);
 	}
 
@@ -777,6 +801,7 @@ class TSd3Controls extends JPanel implements ItemListener {
 		bg.add(c = new JRadioButton(text, b));
 		c.setName(text);
 		add(c);
+		c.setEnabled(false);
 		c.addItemListener(this);
 		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
 		return c;
@@ -801,4 +826,4 @@ class TSd3Controls extends JPanel implements ItemListener {
 			canvas.redraw(range);
 		}
 	}
-} // End Class TSd3Controls
+} // End Class Test2Controls
