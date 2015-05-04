@@ -74,6 +74,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
+		System.out.println("JSButtonListener property change: " + prop + " " + e.getSource());
 		if (prop == AbstractButton.MNEMONIC_CHANGED_PROPERTY) {
 			updateMnemonicBinding((AbstractButton) e.getSource());
 		} else if (prop == AbstractButton.CONTENT_AREA_FILLED_CHANGED_PROPERTY) {
@@ -81,7 +82,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 		} else if (prop == AbstractButton.TEXT_CHANGED_PROPERTY || "font" == prop
 				|| "foreground" == prop) {
 			AbstractButton b = (AbstractButton) e.getSource();
-			JSToolkit.notifyUIPropertyChanged(b, prop);
+			((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged(prop);
 		}
 	}
 
@@ -222,7 +223,6 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			System.out.println("JSButtonListener " + e);
 			AbstractButton b = (AbstractButton) e.getSource();
 			if (!b.contains(e.getX(), e.getY()))
 				return;
@@ -238,6 +238,8 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 				shouldDiscardRelease = true;
 				return;
 			}
+
+			System.out.println("JSButtonListener press " + b.getName() + " " + e);
 
 			ButtonModel model = b.getModel();
 			if (!model.isEnabled()) {
@@ -265,6 +267,9 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
             AbstractButton b = (AbstractButton) e.getSource();
       			if (!((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(true))
       				return;
+      			
+      			System.out.println("JSButtonListener released " + b.getName() + " " + e);
+
             ButtonModel model = b.getModel();
             model.setPressed(false);
             model.setArmed(false);

@@ -18,7 +18,7 @@ public class JSButtonUI extends JSComponentUI {
 
 	@Override
 	public DOMObject getDOMObject() {
-		return setCssFont( createDOMObject("input", id, "type", "button", "value",
+		return domBtn = enableObj = valueObj = setCssFont( createDOMObject("input", id, "type", "button", "value",
 				((AbstractButton) c).getText()), c.getFont());
 	}
 

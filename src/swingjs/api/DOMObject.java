@@ -19,7 +19,7 @@ public abstract class DOMObject {
 		return obj;
 	};
 
-	public static DOMObject setAttr(DOMObject obj, String attr, String val) {
+	public static DOMObject setAttr(DOMObject obj, String attr, Object val) {
 		/**
 		 * @j2sNative
 		 * 

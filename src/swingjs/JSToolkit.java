@@ -681,10 +681,6 @@ public class JSToolkit extends SunToolkit {
 		return ((JSThreadGroup) c.getAppContext().getThreadGroup()).getHtmlApplet();
 	}
 
-	public static void notifyUIPropertyChanged(JComponent b, String prop) {
-		((JSComponentUI) b.getUI()).notifyPropertyChanged(prop);
-	}
-
 	public static void taintUI(Component c) {
 		// JApplet is a JComponent, but it does not have a getUI
 		// some components may have getUI but currently no UI

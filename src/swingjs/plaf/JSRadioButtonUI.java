@@ -63,11 +63,11 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 		  else
 		  	isNew = false;
 		}
-		domBtn = createDOMObject("input", id, "type", myType, "name", name);
+		domBtn = enableObj = createDOMObject("input", id, "type", myType, "name", name);
 		
 		if (b.isSelected() || isNew)
 			DOMObject.setAttr(domBtn, "checked", "true");
-		label = setCssFont(createDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
+		label = textObj = setCssFont(createDOMObject("label", id + "l", "htmlFor", id, "innerHTML",
 				((AbstractButton) c).getText()), c.getFont());
 		// now wrap the two with a sapn and get its dimensions
 		// along with the dimensions of the radio button by itself.

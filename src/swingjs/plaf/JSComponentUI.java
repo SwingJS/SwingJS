@@ -23,6 +23,7 @@ import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.LightweightPeer;
+import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JRootPane;
 import jsjavax.swing.plaf.ComponentUI;
@@ -48,7 +49,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	protected JComponent c;
 	protected String id;
-	protected DOMObject tempObj, divObj;
+	protected DOMObject tempObj, divObj, enableObj, textObj, valueObj;
 	protected int num;
 	protected boolean isTainted = true;
 	protected int x, y;
@@ -369,11 +370,24 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
   }
 
 	public void notifyPropertyChanged(String prop) {
-		//System.out.println("-----------------JSComponent " + c.getName() + " propertyChange " + prop);
-		setTainted();
-		// more needs to be done here...
-//		tempObj = null;
-//		setHTMLElement();
+		DOMObject obj = null;
+		String val = null;
+		if (prop == "text") {
+			val = ((AbstractButton) c).getText();
+			if (textObj != null) {
+				prop = "innerHTML";
+				obj = textObj;
+			} else if (valueObj != null) {
+				prop = "value";
+				obj = valueObj;
+			}
+		}
+		if (obj == null) {
+			System.out.println("JSComponentUI: unrecognized prop: " + prop);
+		} else {
+			System.out.println("JSComponentUI: setting " + id + " " + prop + " " + val);
+			DOMObject.setAttr(obj, prop, val);
+		}
 	}
 
 	@Override
@@ -395,9 +409,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	@Override
-	public void setEnabled(boolean b) {
-		JSToolkit.notImplemented("");
-		
+	public void setEnabled(boolean b) {	
+		if (enableObj != null)
+		  DOMObject.setAttr(enableObj, "disabled", Boolean.valueOf(!b));
 	}
 
 	@Override
