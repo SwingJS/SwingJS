@@ -18,17 +18,17 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 	super();
   }
 
-  public void paint(Graphics g)   {
-   	g.setColor(getForeground());
-	g.setPaintMode();
-    displayBoltz(g);
-  }
+	public void paint(Graphics g) {
+		g.setColor(getForeground());
+		g.setPaintMode();
+		displayBoltz(g);
+	}
 
   void displayBoltz(Graphics g)   {
-     
     int i;
     
     Rectangle r = getBounds();
+  	System.out.println("painting" + r);
 //    g.clearRect(r.x, r.y, r.width, r.height);
     
     g.setColor(Color.black);
