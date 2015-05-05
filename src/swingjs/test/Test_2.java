@@ -1,4 +1,4 @@
-package org.uwi;
+package swingjs.test;
 
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
