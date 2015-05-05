@@ -308,40 +308,6 @@ public class Boltzmann extends JApplet {
 
 	}
 
-	protected void sjs_finalizeGraph() {
-		int i;
-
-		// ensure top energy level is occupied
-		for (i = curMaxEnergy; i > 0; i--) {
-			if (DispBoltz.energyLevels[i] < 1)
-				curMaxEnergy--;
-			else
-				break;
-		}
-		//
-
-		for (i = 1; i <= curMaxEnergy; i++) {
-			ShowText.levelInfo = ShowText.levelInfo + "EL " + i + "= "
-					+ DispBoltz.energyLevels[i] + "\n";
-		}
-
-		DecimalFormat df = new DecimalFormat("0.00");
-		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
-		for (i = 0; i < EntropyCalcs; i++) {
-			ShowText.levelInfo = ShowText.levelInfo + "WL " + i + "= "
-					+ df.format(DispEntropy.Entropy[i]) + "\n";
-		}
-		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
-		ShowText.levelInfo = ShowText.levelInfo + "Init. Energy   = "
-				+ initialEnergy + "\n";
-		ShowText.levelInfo = ShowText.levelInfo + "No. particles  = "
-				+ maxParticles + "\n";
-		ShowText.levelInfo = ShowText.levelInfo + "No. collisions = "
-				+ maxCollisions + "\n";
-		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
-		ShowText.setText(ShowText.levelInfo);
-	}
-
 	int particle1, particle2;
 	int e1, e2; // Energy of particle1 and particle2
 	int collisionEnergy;
@@ -426,10 +392,44 @@ public class Boltzmann extends JApplet {
 
 		DispBoltz.maxEnergy = curMaxEnergy;
 
-		return (--numOfCollisions != 0);
+		return (--numOfCollisions > 0);
 //		// Delay to slow down display
 //		for (int i = 0; i < (10000 / displayFactor); i++)
 //			;
+	}
+
+	protected void sjs_finalizeGraph() {
+		int i;
+
+		// ensure top energy level is occupied
+		for (i = curMaxEnergy; i > 0; i--) {
+			if (DispBoltz.energyLevels[i] < 1)
+				curMaxEnergy--;
+			else
+				break;
+		}
+		//
+
+		for (i = 1; i <= curMaxEnergy; i++) {
+			ShowText.levelInfo = ShowText.levelInfo + "EL " + i + "= "
+					+ DispBoltz.energyLevels[i] + "\n";
+		}
+
+		DecimalFormat df = new DecimalFormat("0.00");
+		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
+		for (i = 0; i < EntropyCalcs; i++) {
+			ShowText.levelInfo = ShowText.levelInfo + "WL " + i + "= "
+					+ df.format(DispEntropy.Entropy[i]) + "\n";
+		}
+		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
+		ShowText.levelInfo = ShowText.levelInfo + "Init. Energy   = "
+				+ initialEnergy + "\n";
+		ShowText.levelInfo = ShowText.levelInfo + "No. particles  = "
+				+ maxParticles + "\n";
+		ShowText.levelInfo = ShowText.levelInfo + "No. collisions = "
+				+ maxCollisions + "\n";
+		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
+		ShowText.setText(ShowText.levelInfo);
 	}
 
 
