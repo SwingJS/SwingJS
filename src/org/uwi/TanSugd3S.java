@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -29,7 +30,7 @@ import javax.swing.JComponent;
 
 import java.awt.event.MouseMotionListener;
 
-public class TanSugd3S extends JApplet implements WindowListener {
+public class TanSugd3S extends JApplet {
 
 	TSd3Canvas canvas;
 	TSd3Controls controls;
@@ -78,13 +79,14 @@ public class TanSugd3S extends JApplet implements WindowListener {
 	}
 
 	public static void main(String args[]) {
-		Frame f = new Frame("Tanabe-Sugano");
+		JFrame f = new JFrame("Tanabe-Sugano");
 		TanSugd3S tanabe = new TanSugd3S();
 		tanabe.init();
 		tanabe.start();
 		f.add("Center", tanabe);
 		f.pack();
 		f.setVisible(true);
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public String getAppletInfo() {
@@ -328,50 +330,6 @@ public class TanSugd3S extends JApplet implements WindowListener {
 		canvas.repaint();
 
 		return ret.toString();
-	}
-
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-		System.exit(0);
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		System.exit(0);
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 } // End Class TanSugd3

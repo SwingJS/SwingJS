@@ -28,6 +28,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -38,7 +39,7 @@ import swingjs.JSToolkit;
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
-public class Test_2 extends JApplet implements WindowListener {
+public class Test_2 extends JApplet {
 
 	Test_2Canvas canvas;
 	Test_2Controls controls;
@@ -87,13 +88,14 @@ public class Test_2 extends JApplet implements WindowListener {
 	}
 
 	public static void main(String args[]) {
-		Frame f = new Frame("Tanabe-Sugano");
+		JFrame f = new JFrame("Tanabe-Sugano");
 		Test_2 tanabe = new Test_2();
 		tanabe.init();
 		tanabe.start();
 		f.add("Center", tanabe);
 		f.pack();
 		f.setVisible(true);
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	public String getAppletInfo() {
@@ -337,50 +339,6 @@ public class Test_2 extends JApplet implements WindowListener {
 		canvas.repaint();
 
 		return ret.toString();
-	}
-
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-		System.exit(0);
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		System.exit(0);
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 } 
