@@ -14,16 +14,20 @@ import swingjs.api.DOMNode;
  */
 public class JSButtonUI extends JSComponentUI {
 
+	/**
+	 * the radio or check-box or simple button
+	 * 
+	 */
 	protected DOMNode domBtn;
 
 	@Override
 	public DOMNode getDOMObject() {
-		if (domObj == null)
-			domBtn = enableObj = valueObj = domObj = createDOMObject("input", id,
+		if (domNode == null)
+			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "button");
-		setCssFont(DOMNode.setAttr(domObj, "value", ((AbstractButton) c).getText()),
+		setCssFont(DOMNode.setAttr(domNode, "value", ((AbstractButton) c).getText()),
 				c.getFont());
-		return domObj;
+		return domNode;
 	}
 
 	/**

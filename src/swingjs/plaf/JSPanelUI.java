@@ -37,9 +37,9 @@ public class JSPanelUI extends JSComponentUI {
 	
 	@Override
 	public DOMNode getDOMObject() {
-		if (domObj == null)
-			domObj = createDOMObject("label", id);
-    return domObj;
+		if (domNode == null)
+			domNode = createDOMObject("label", id);
+    return domNode;
 	}
 
 	@Override

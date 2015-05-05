@@ -46,16 +46,78 @@ import jssun.awt.CausedFocusEvent.Cause;
  */
 public abstract class JSComponentUI extends ComponentUI implements LightweightPeer {
 
-	protected JComponent c;
-	protected String id;
-	protected DOMNode domObj, divObj, enableObj, textObj, valueObj;
-	protected int num;
-	protected boolean isTainted = true;
-	protected int x, y;
-	protected boolean isContainer;
-	protected JSComponentUI parent;
+	/**
+	 * provides a unique id for any component; set on instantiation
+	 */
 	protected static int incr;  
 
+	
+	/**
+	 * a unique id
+	 */
+	protected String id;
+	
+	/**
+	 * the associated JComponent; for which this is c.ui
+	 * 
+	 */
+	protected JComponent c;
+
+		
+	/**
+	 * the outermost div holding a component -- left, top, and for a container width and height
+	 */
+	protected DOMNode divNode; 
+
+	/**
+	 * the main object for the component, possibly containing others, such as radio button with its label
+	 */
+	protected DOMNode domNode;
+	
+	/**
+	 * a component or subcomponent that can be enabled/disabled 
+	 */
+	protected DOMNode enableNode; 
+	
+	/**
+	 * the part of a component that can hold text
+	 */
+	protected DOMNode textNode;
+	
+	/**
+	 * the subcomponent with the value field
+	 */
+	protected DOMNode valueNode;
+	
+	/**
+	 * a numberical reference for an ID
+	 */
+	protected int num;
+	
+	/**
+	 * not implemented/needed currently. Java handles this nicedly 
+	 * 
+	 */
+	protected boolean isTainted = true;
+	
+	/**
+	 * left and top coordinates
+	 */
+	protected int x, y;
+	
+	/**
+	 * panels 
+	 * 
+	 */
+	protected boolean isContainer;
+	
+	/**
+	 * linked nodes of this class
+	 * 
+	 */
+	protected JSComponentUI parent;
+	
+	
 	public JSComponentUI() {
 		// for reflection
 	}
@@ -140,40 +202,41 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		return setHTMLSize1(obj, addCSS);
 	}
 
-	protected Dimension setHTMLSize1(DOMNode obj, boolean addCSS) {
-		if (obj == null)
+	protected Dimension setHTMLSize1(DOMNode node, boolean addCSS) {
+		if (node == null)
 			return null;
-		DOMNode p = DOMNode.remove(obj);
-		//System.out.println("object " + obj + " removed from " + p);
+		
+		// save the parent node -- we wil need to reset that.
+		DOMNode parent = DOMNode.remove(node);
 
-		// Wow! A <div> is necessary for the height,
-		// and a <span> is necessary for the width!
-		// JQueryObject jo = jq.$("#" + div);
-		// append object to the main div to get width
-		DOMNode.setStyles(obj, "position", null, "width", null, "height", null);
+		// remove position, width, and height, because those are what we are setting here
+		DOMNode.setStyles(node, "position", null, "width", null, "height", null);
 
-		DOMNode d;
-		if (obj.getAttribute("tagName") == "DIV")
-			d = obj;
+		DOMNode div;
+		if (node.getAttribute("tagName") == "DIV")
+			div = node;
 		else
-			d = wrap("div", id + "_temp", obj);
-		DOMNode.setStyles(d, "position", "absolute");
+			div = wrap("div", id + "_temp", node);
+		DOMNode.setStyles(div, "position", "absolute");
 
+		// process of discovering width and height is facilitated using jQuery and by 
+		// appending to document.body. 
+		
 		DOMNode body = DOMNode.getBody();
-		body.appendChild(d);
+		body.appendChild(div);
 		JQuery jq = JSToolkit.getJQuery();
-		int h = jq.$(d).height();
-		int w = jq.$(d).width();
-		body.removeChild(d);
+		int h = jq.$(div).height();
+		int w = jq.$(div).width();
+		body.removeChild(div);
 
 		if (addCSS) {
-			DOMNode.setStyles(obj, "position", "absolute");
-			setDims(obj, w, h);
+			DOMNode.setStyles(node, "position", "absolute");
+			setDims(node, w, h);
 		} else {
-			DOMNode.setStyles(obj, "position", null);
+			DOMNode.setStyles(node, "position", null);
 		}
-		if (p != null)
-			p.appendChild(obj);
+		if (parent != null)
+			parent.appendChild(node);
 		//System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " " + p);
 		return new Dimension(w, h);
 	}
@@ -185,7 +248,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	/**
-	 * createst the DOM object and inserts it into the tree at the correct place,
+	 * creates the DOM node and inserts it into the tree at the correct place,
 	 * iterating through all children if this is a container
 	 * 
 	 */
@@ -193,55 +256,52 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		if (!isTainted)
 			return;
 
-		//System.out.println("JSCUI setHTMLElement " + c);
-
+		// check for root pane -- not included in DOM
 		JRootPane root = (isContainer ? c.getRootPane() : null);
 		if (c == root) {
 			isTainted = false;
 			return;
 		}
 		
-		domObj = getDOMObject();
+		domNode = getDOMObject();
 
 		// divObj will need recreating if a propertyChange event has occurred
 		// check for content pane -- needs to be added to the HTML5 content layer div
 
 		// needs some work for changes after applet creation
 		
-		if (divObj == null) {
-			divObj = wrap("div", id, domObj);
+		if (divNode == null) {
+			divNode = wrap("div", id, domNode);
 			if (root != null && root.getContentPane() == c)
 				swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
-						.appendChild(divObj);
+						.appendChild(divNode);
 		}
 
 		// set position
 		
-		DOMNode.setStyles(divObj, "position", "absolute", "left", (x = c.getX())
+		DOMNode.setStyles(divNode, "position", "absolute", "left", (x = c.getX())
 				+ "px", "top", (y = c.getY()) + "px");
 		
 		if (isContainer) {
-			// check for root pane -- not included in DOM
+
 			// set width from component
 
-			DOMNode.setStyles(divObj, "width", c.getWidth() + "px", "height",
+			DOMNode.setStyles(divNode, "width", c.getWidth() + "px", "height",
 					c.getHeight() + "px");
-			// DOMObject.setStyle(divObj, "background-color",
-			// JSToolkit.getCSSColor(c.getBackground()));
 
 			// add all children
 			Component[] children = c.getComponents();
 			for (int i = children.length; --i >= 0;) {
 				JSComponentUI ui = ((JSComponentUI) ((JComponent) children[i]).getUI());
-				if (ui.divObj == null)
+				if (ui.divNode == null)
 					ui.setHTMLElement();
-				if (ui.divObj == null) {
+				if (ui.divNode == null) {
 					//System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 						//	+ c.getName());
 				} else {
 					//System.out.println("JSCUI appending " + ui.c.getName() + " to "
 						//	+ c.getName());
-					divObj.appendChild(ui.divObj);
+					divNode.appendChild(ui.divNode);
 					//System.out.println("JSCUI appending OK");
 				}
 				ui.parent = this;
@@ -270,21 +330,20 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	public void update(Graphics g, JComponent c) {
-		//System.out.println("JComponentUI " + id + " tainted " + isTainted + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight());
-		 if (c.isOpaque()) {
-			 g.setColor(c.getBackground());
-			 g.fillRect(0, 0, c.getWidth(),c.getHeight());
-		 }
+		// System.out.println("JComponentUI " + id + " tainted " + isTainted +
+		// " update/paint at " + c.getLocation() + " " + c.getWidth() + " " +
+		// c.getHeight());
+		if (c.isOpaque()) {
+			g.setColor(c.getBackground());
+			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		}
 		boolean testing = false;
- 		if (testing) {
+		if (testing) {
 			g.setColor(Color.red);
 			g.drawRect(0, 0, c.getWidth(), c.getHeight());
 		}
-
- 		setHTMLElement();
- 		
- 		
-		 paint(g, c);
+		setHTMLElement();
+		paint(g, c);
 	}
 
 	public Dimension getMinimumSize(JComponent c) {
@@ -405,12 +464,12 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		if (prop == "text") {
 			//doResize = true;
 			val = ((AbstractButton) c).getText();
-			if (textObj != null) {
+			if (textNode != null) {
 				prop = "innerHTML";
-				obj = textObj;
-			} else if (valueObj != null) {
+				obj = textNode;
+			} else if (valueNode != null) {
 				prop = "value";
-				obj = valueObj;
+				obj = valueNode;
 			}
 		}
 		if (obj == null) {
@@ -441,8 +500,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void setEnabled(boolean b) {	
-		if (enableObj != null)
-		  DOMNode.setAttr(enableObj, "disabled", (b ? null : "TRUE"));
+		if (enableNode != null)
+		  DOMNode.setAttr(enableNode, "disabled", (b ? null : "TRUE"));
 	}
 
 	@Override
@@ -489,8 +548,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public Dimension getPreferredSize() {
-		JSToolkit.notImplemented("");
-		return null;
+		return getPreferredSize(c);
 	}
 
 	@Override
@@ -507,20 +565,18 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public Toolkit getToolkit() {
-		JSToolkit.notImplemented("");
-		return null;
+		return Toolkit.getDefaultToolkit();
 	}
 
 	@Override
 	public Graphics getGraphics() {
-		JSToolkit.notImplemented("");
+		// called from java.awt.Component when NOT a LightweightPeer.
 		return null;
 	}
 
 	@Override
 	public FontMetrics getFontMetrics(Font font) {
-		JSToolkit.notImplemented("");
-		return null;
+		return c.getFontMetrics(font);
 	}
 
 	@Override

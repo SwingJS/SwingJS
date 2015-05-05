@@ -60,7 +60,7 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 		JRadioButton b = (JRadioButton) c;
 		boolean isNew = false;
 		boolean doAll = false;
-		if (domObj == null) {
+		if (domNode == null) {
 			doAll = true;
 			if (groupNames == null)
 				groupNames = new HashMap<ButtonGroup, String>();
@@ -75,9 +75,9 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 				else
 					isNew = false;
 			}
-			domBtn = enableObj = createDOMObject("input", id, "type", myType, "name",
+			domBtn = enableNode = createDOMObject("input", id, "type", myType, "name",
 					name);
-			label = textObj = createDOMObject("label", id + "l", "htmlFor", id);
+			label = textNode = createDOMObject("label", id + "l", "htmlFor", id);
 		}
 		if (b.isSelected() || isNew)
 			DOMNode.setAttr(domBtn, "checked", "true");
@@ -103,7 +103,7 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 			DOMNode.setStyles(obj, "position", "absolute");
 		} else {
 			// must re-introduce these to the original object
-			obj = domObj;
+			obj = domNode;
 			obj.appendChild(domBtn);
 			obj.appendChild(label);
 		}
