@@ -212,7 +212,6 @@
             JU/Base64.js
             JU/Encoding.js
             java/util/MissingResourceException.js
-            java/awt/geom/Point2D.js
         	
 
             jssun/misc/MessageUtils.js
@@ -272,7 +271,6 @@
             java/beans/PropertyChangeListener.js
             java/security/PrivilegedAction.js
             java/awt/Point.js
-            java/awt/geom/Point2D.js
             jssun/awt/AppContext.js
             java/lang/StringBuffer.js
             java/util/IdentityHashMap.js
@@ -525,7 +523,6 @@
             java/awt/Component.js
             jssun/awt/SunGraphicsCallback.js
 
-            javax/swing/JComponent.js
             javax/swing/RepaintManager.js
             jssun/awt/SunToolkit.js
 
@@ -556,11 +553,12 @@
             jssun/awt/PaintEventDispatcher.js
             jssun/awt/PostEventQueue.js
             jssun/java2d/SunGraphics2D.js
-            swingjs/api/DOMObject.js
+            swingjs/api/DOMNode.js
             swingjs/JSAppletThread.js
             swingjs/JSGraphics2D.js
             swingjs/JSMouse.js
             swingjs/plaf/HTML5LookAndFeel.js
+            swingjs/JSComponentPeer.js
             swingjs/plaf/JSComponentUI.js
             swingjs/plaf/JSPanelUI.js
             swingjs/plaf/JSRadioButtonUI.js

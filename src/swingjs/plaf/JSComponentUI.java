@@ -1,9 +1,8 @@
 package swingjs.plaf;
 
 import swingjs.JSToolkit;
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 import swingjs.api.JQuery;
-import swingjs.api.JQueryObject;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -49,14 +48,14 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	protected JComponent c;
 	protected String id;
-	protected DOMObject tempObj, divObj, enableObj, textObj, valueObj;
+	protected DOMNode domObj, divObj, enableObj, textObj, valueObj;
 	protected int num;
 	protected boolean isTainted = true;
 	protected int x, y;
 	protected boolean isContainer;
 	protected JSComponentUI parent;
-	protected static int incr; // SwingJS 
-	
+	protected static int incr;  
+
 	public JSComponentUI() {
 		// for reflection
 	}
@@ -72,11 +71,15 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		uninstallJSUI();
 	}
 
+	/**
+	 * mark this component as in need of update; 
+	 * maybe not necessary, though. It comes after the value  callback 
+	 */
   public void setTainted() {
   	isTainted = true;
   }
   
-  public abstract DOMObject getDOMObject();
+  public abstract DOMNode getDOMObject();
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
@@ -86,69 +89,97 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	protected void newID() {
-		num = ++incr;
-		id = c.getHTMLName(c.getUIClassID()) + "_" + num;
+		if (id == null) {
+			num = ++incr;
+			id = c.getHTMLName(c.getUIClassID()) + "_" + num;
+		}
 	}
 
-	protected DOMObject setCssFont(DOMObject obj, Font font) {
+	protected DOMNode setCssFont(DOMNode obj, Font font) {
 		if (font != null) {
 			int istyle = font.getStyle();
-			DOMObject.setStyle(obj, "font-family", font.getFamily(), "font-size",
+			DOMNode.setStyles(obj, "font-family", font.getFamily(), "font-size",
 					font.getSize() + "px", "font-style",
 					((istyle & Font.ITALIC) == 0 ? "normal" : "italic"), "font-weight",
-					((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
+					((istyle & Font.BOLD) == 0 ? "nor	mal" : "bold"));
 		}
 		return obj;
 	}
 
-	protected DOMObject createDOMObject(String key, String id, String... attr) {
-		DOMObject obj = DOMObject.createElement(key, id);
+	protected DOMNode createDOMObject(String key, String id, String... attr) {
+		DOMNode obj = DOMNode.createElement(key, id);
 		for (int i = 0; i < attr.length;)
-			DOMObject.setAttr(obj, attr[i++], attr[i++]);
+			DOMNode.setAttr(obj, attr[i++], attr[i++]);
 		if (!c.isEnabled())
-			DOMObject.setAttr(obj, "disabled", Boolean.TRUE);
+			setEnabled(false);
 		return obj;
 	}
 
-	protected DOMObject wrap(String type, String id, DOMObject... elements) {
-		DOMObject obj = createDOMObject(type, id + type);
-		for (int i = 0; i < elements.length; i++)
+	protected DOMNode wrap(String type, String id, DOMNode... elements) {
+		return append(createDOMObject(type, id + type), elements);
+	}
+
+	protected DOMNode append(DOMNode obj, DOMNode[] elements) {
+		for (int i = 0; i < elements.length; i++) {
 			obj.appendChild(elements[i]);
+		}
 		return obj;
 	}
 
-	private void debugDump(DOMObject d) {
-		System.out.println(DOMObject.getAttr(d, "outerHTML"));
+	protected void debugDump(DOMNode d) {
+		System.out.println(d.getAttribute("outerHTML"));
 	}
 	
-	protected static void vCenter(DOMObject obj, int offset) {
-		DOMObject.setStyle(obj, 
+	protected static void vCenter(DOMNode obj, int offset) {
+		DOMNode.setStyles(obj, 
 				"top", "50%", 
 				"transform","translateY(" + offset + "%)");
 	}
 	
-	protected Dimension setHTMLSize(DOMObject obj, boolean addCSS) {
+	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+		return setHTMLSize1(obj, addCSS);
+	}
+
+	protected Dimension setHTMLSize1(DOMNode obj, boolean addCSS) {
 		if (obj == null)
 			return null;
-		String div = JSToolkit.getSwingDivId();
+		DOMNode p = DOMNode.remove(obj);
+		//System.out.println("object " + obj + " removed from " + p);
+
+		// Wow! A <div> is necessary for the height,
+		// and a <span> is necessary for the width!
+		// JQueryObject jo = jq.$("#" + div);
+		// append object to the main div to get width
+		DOMNode.setStyles(obj, "position", null, "width", null, "height", null);
+
+		DOMNode d;
+		if (obj.getAttribute("tagName") == "DIV")
+			d = obj;
+		else
+			d = wrap("div", id + "_temp", obj);
+		DOMNode.setStyles(d, "position", "absolute");
+
+		DOMNode body = DOMNode.getBody();
+		body.appendChild(d);
 		JQuery jq = JSToolkit.getJQuery();
-		// Wow! A <div> is necessary for the height, 
-		//      and a <span> is necessary for the width!
-		JQueryObject jo = jq.$("#" + div);
-		jo.append(obj);	
-		int w = jq.$(obj).width();
-		DOMObject d = wrap("div", id, obj);
-		jo.append(d);	
-		int h = jq.$(d).height();		
-		jo.html("");
-		DOMObject.setStyle(obj, "position", "absolute");
-		if (addCSS)
+		int h = jq.$(d).height();
+		int w = jq.$(d).width();
+		body.removeChild(d);
+
+		if (addCSS) {
+			DOMNode.setStyles(obj, "position", "absolute");
 			setDims(obj, w, h);
+		} else {
+			DOMNode.setStyles(obj, "position", null);
+		}
+		if (p != null)
+			p.appendChild(obj);
+		//System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " " + p);
 		return new Dimension(w, h);
 	}
 
-	protected DOMObject setDims(DOMObject obj, int w, int h) {
-		return DOMObject.setStyle(obj, 
+	protected DOMNode setDims(DOMNode obj, int w, int h) {
+		return DOMNode.setStyles(obj, 
 				"width", w + "px", 
 				"height", h + "px");
 	}
@@ -170,11 +201,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			return;
 		}
 		
-
-		// tempObj will need recreating if a propertyChange event has occurred
-		
-		if (tempObj == null)
-			tempObj = getDOMObject();
+		domObj = getDOMObject();
 
 		// divObj will need recreating if a propertyChange event has occurred
 		// check for content pane -- needs to be added to the HTML5 content layer div
@@ -182,7 +209,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		// needs some work for changes after applet creation
 		
 		if (divObj == null) {
-			divObj = wrap("div", id, tempObj);
+			divObj = wrap("div", id, domObj);
 			if (root != null && root.getContentPane() == c)
 				swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
 						.appendChild(divObj);
@@ -190,14 +217,14 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 		// set position
 		
-		DOMObject.setStyle(divObj, "position", "absolute", "left", (x = c.getX())
+		DOMNode.setStyles(divObj, "position", "absolute", "left", (x = c.getX())
 				+ "px", "top", (y = c.getY()) + "px");
 		
 		if (isContainer) {
 			// check for root pane -- not included in DOM
 			// set width from component
 
-			DOMObject.setStyle(divObj, "width", c.getWidth() + "px", "height",
+			DOMNode.setStyles(divObj, "width", c.getWidth() + "px", "height",
 					c.getHeight() + "px");
 			// DOMObject.setStyle(divObj, "background-color",
 			// JSToolkit.getCSSColor(c.getBackground()));
@@ -229,8 +256,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * c ignored because JSComponentUI is one per component
 	 */
 	public Dimension getPreferredSize(JComponent c) {
-		newID();
-		Dimension d = setHTMLSize(tempObj = getDOMObject(), true);
+		//System.out.println("getPreferredSize for " + id + " " + c);
+		Dimension d = setHTMLSize(getDOMObject(), true);
+		//System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
   	return d;
   }
 
@@ -242,7 +270,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	public void update(Graphics g, JComponent c) {
-		//System.out.println(id + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight());
+		//System.out.println("JComponentUI " + id + " tainted " + isTainted + " update/paint at " + c.getLocation() + " " + c.getWidth() + " " + c.getHeight());
 		 if (c.isOpaque()) {
 			 g.setColor(c.getBackground());
 			 g.fillRect(0, 0, c.getWidth(),c.getHeight());
@@ -372,9 +400,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
   }
 
 	public void notifyPropertyChanged(String prop) {
-		DOMObject obj = null;
+		DOMNode obj = null;
 		String val = null;
 		if (prop == "text") {
+			//doResize = true;
 			val = ((AbstractButton) c).getText();
 			if (textObj != null) {
 				prop = "innerHTML";
@@ -388,7 +417,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			System.out.println("JSComponentUI: unrecognized prop: " + prop);
 		} else {
 			System.out.println("JSComponentUI: setting " + id + " " + prop + " " + val);
-			DOMObject.setAttr(obj, prop, val);
+			DOMNode.setAttr(obj, prop, val);
 		}
 	}
 
@@ -413,7 +442,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	@Override
 	public void setEnabled(boolean b) {	
 		if (enableObj != null)
-		  DOMObject.setAttr(enableObj, "disabled", (b ? Boolean.FALSE : Boolean.TRUE));
+		  DOMNode.setAttr(enableObj, "disabled", (b ? null : "TRUE"));
 	}
 
 	@Override

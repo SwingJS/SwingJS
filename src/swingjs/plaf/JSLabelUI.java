@@ -25,14 +25,16 @@
 
 package swingjs.plaf;
 
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 import jsjavax.swing.JLabel;
 
 public class JSLabelUI extends JSComponentUI {
 
 	@Override
-	public DOMObject getDOMObject() {
-		return textObj = setCssFont(createDOMObject("label", id, "innerHTML",((JLabel) c).getText()), c.getFont());
+	public DOMNode getDOMObject() {
+		if (domObj == null)
+			textObj = domObj = createDOMObject("label", id);
+		return setCssFont(DOMNode.setAttr(domObj, "innerHTML",((JLabel) c).getText()), c.getFont());
 	}
 
 	@Override

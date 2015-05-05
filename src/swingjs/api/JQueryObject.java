@@ -2,14 +2,14 @@ package swingjs.api;
 
 public interface JQueryObject {
 
-	JQueryObject append(Object span);
+	public abstract JQueryObject append(Object span);
 
-	int width();
+	public abstract int width();
 
-	int height();
+	public abstract int height();
 
-	void html(String html);
+	public abstract void html(String html);
 
-	JQueryObject clone(boolean withData, boolean deepCopy);
+	public abstract DOMNode get(int i);
 
 }

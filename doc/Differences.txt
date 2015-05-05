@@ -5,6 +5,40 @@ Notes
 
 PROGRESS
 ========
+5/5/2015 (day 46)
+
+Now implemented, at least minimally:
+
+JButton
+JCheckBox
+JRadioButton, with ButtonGroup
+
+Control of components is now completely handled by swingjs.plaf.JSComponentUI and its subclasses.
+These classes implement the LightweightPeer interface, which should take care of just about 
+everything we need. They are also component change listeners. 
+
+Mouse clicks on buttons are being properly retargeted by jsjava.awt.Container and 
+then are passed on to swingjs.plaf.JSButtonListener for processing as Item.    
+
+Event queues are working, although it appears to me that we are getting two dispatches for
+every mouse event. So something is odd there.
+
+Repainting is working properly.
+
+Possible next steps:
+
+1. Filling in the missing pieces in the LightweightPeer interface 
+   so that all program actions are reflected properly in HTML5. 
+
+2. Adding text boxes and starting in on handling keyboard events. 
+
+3. Adding icons for buttons.
+
+4. Implementing additional details in button classes.
+ 
+among about 1000 other possibilities....
+  
+
 4/30/2015
 
 adjustments in JSmol made to be compatible with SwingJS

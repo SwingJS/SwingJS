@@ -27,10 +27,13 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
+
+import swingjs.JSToolkit;
 
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
@@ -769,6 +772,10 @@ class Test_2Controls extends JPanel implements ItemListener {
 		setName("T3d3Controls");
 		this.canvas = canvas;
 		range = 0;
+		JCheckBox c = new JCheckBox("test");
+		c.addItemListener(this);
+		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
+		add(c);
 		bg = new ButtonGroup();
 		bg0 = addButton(bg, "0-50", true);
 		addButton(bg, "0-10", false);
@@ -808,6 +815,10 @@ class Test_2Controls extends JPanel implements ItemListener {
 	}
 
 	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource() instanceof JCheckBox) {
+			JSToolkit.alert("OK, this box.isSelected()=" + ((JCheckBox) e.getSource()).isSelected());
+			return;
+		}
 		if (e.getSource() instanceof JRadioButton && e.getStateChange() == ItemEvent.SELECTED) {
 			String b = ((JRadioButton) e.getItemSelectable()).getText();
 			if (b == "0-50") {

@@ -26,7 +26,7 @@
 package swingjs.plaf;
 
 import swingjs.JSToolkit;
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 
 /**
  * Pluggable look and feel interface for JRootPane.
@@ -41,7 +41,7 @@ public class JSRootPaneUI extends JSComponentUI {
 	}
 	
 	@Override
-	public DOMObject getDOMObject() {
+	public DOMNode getDOMObject() {
   	return null;
 	}
 

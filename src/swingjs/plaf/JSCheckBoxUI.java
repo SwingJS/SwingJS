@@ -25,7 +25,7 @@
 
 package swingjs.plaf;
 
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 
 
 /**
@@ -45,7 +45,7 @@ import swingjs.api.DOMObject;
 public class JSCheckBoxUI extends JSRadioButtonUI {
 
   	@Override
-  	public DOMObject getDOMObject() {
+  	public DOMNode getDOMObject() {
   		return getButtonObject("checkBox");
   	}
 

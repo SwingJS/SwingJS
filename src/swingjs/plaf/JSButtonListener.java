@@ -45,7 +45,6 @@ import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.swing.UIAction;
-import swingjs.JSToolkit;
 
 /**
  * Button Listener
@@ -239,7 +238,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 				return;
 			}
 
-			System.out.println("JSButtonListener press " + b.getName() + " " + e);
+			//System.out.println("JSButtonListener press " + b.getName() + " " + e);
 
 			ButtonModel model = b.getModel();
 			if (!model.isEnabled()) {
@@ -268,7 +267,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
       			if (!((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(true))
       				return;
       			
-      			System.out.println("JSButtonListener released " + b.getName() + " " + e);
+      			//System.out.println("JSButtonListener released " + b.getName() + " " + e);
 
             ButtonModel model = b.getModel();
             model.setPressed(false);

@@ -3,7 +3,7 @@ package swingjs.plaf;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 
 /**
  * SWingJS implementation of stateful user interface for buttons. 
@@ -14,12 +14,16 @@ import swingjs.api.DOMObject;
  */
 public class JSButtonUI extends JSComponentUI {
 
-	protected DOMObject domBtn;
+	protected DOMNode domBtn;
 
 	@Override
-	public DOMObject getDOMObject() {
-		return domBtn = enableObj = valueObj = setCssFont( createDOMObject("input", id, "type", "button", "value",
-				((AbstractButton) c).getText()), c.getFont());
+	public DOMNode getDOMObject() {
+		if (domObj == null)
+			domBtn = enableObj = valueObj = domObj = createDOMObject("input", id,
+					"type", "button");
+		setCssFont(DOMNode.setAttr(domObj, "value", ((AbstractButton) c).getText()),
+				c.getFont());
+		return domObj;
 	}
 
 	/**

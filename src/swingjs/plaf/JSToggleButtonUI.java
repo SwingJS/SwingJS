@@ -1,6 +1,6 @@
 package swingjs.plaf;
 
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 
 
 public abstract class JSToggleButtonUI extends JSButtonUI {
@@ -12,8 +12,9 @@ public abstract class JSToggleButtonUI extends JSButtonUI {
 
 		// Yes, we could do this with an HTML5 click event, but I want to try this...
 
-		boolean checked = ((Boolean) DOMObject.getAttr(domBtn, "checked") == true);
-		System.out.println(c.getName() + this.id + " JSTogglebutton verify " + checked + " " + isRelease);
+		// cannot use node.getAttribute here because that returns "null" in FF
+		boolean checked = ((Boolean) DOMNode.getAttr(domBtn, "checked") == true);
+		System.out.println(c.getName() + this.id + " JSTogglebutton verify checked=" + checked + " isReleased=" + isRelease + " isDomChecked=" + isDomChecked);
 		if (isRelease && isDomChecked == checked)
 			return false;
 		isDomChecked = checked;

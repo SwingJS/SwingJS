@@ -27,7 +27,7 @@ package swingjs.plaf;
 
 import jsjava.awt.Dimension;
 import jsjavax.swing.JComponent;
-import swingjs.api.DOMObject;
+import swingjs.api.DOMNode;
 
 public class JSPanelUI extends JSComponentUI {
 
@@ -36,12 +36,14 @@ public class JSPanelUI extends JSComponentUI {
 	}
 	
 	@Override
-	public DOMObject getDOMObject() {
-    return createDOMObject("label", id);
+	public DOMNode getDOMObject() {
+		if (domObj == null)
+			domObj = createDOMObject("label", id);
+    return domObj;
 	}
 
 	@Override
-  protected Dimension setHTMLSize(DOMObject obj, boolean addCSS) {
+  protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		// SwingJS for now: just designated container width/height 
 		return new Dimension(c.getWidth(), c.getHeight());
 	}

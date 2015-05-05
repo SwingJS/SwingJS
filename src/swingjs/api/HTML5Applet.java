@@ -8,7 +8,7 @@ public interface HTML5Applet {
 
 	int _getWidth();
 
-	DOMObject _getContentLayer();
+	DOMNode _getContentLayer();
 
 	void _repaintNow();
 

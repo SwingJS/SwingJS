@@ -65,7 +65,9 @@ public class JSToolkit extends SunToolkit {
 		 * console.log("[JSToolkit] " + object);
 		 * alert("[JSToolkit] " + object);
 		 */
-		{}
+		{
+			System.out.println(object);
+		}
 	}
 
 	/**
