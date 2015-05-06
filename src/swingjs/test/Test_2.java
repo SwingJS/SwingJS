@@ -31,8 +31,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 
-import swingjs.JSToolkit;
-
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
@@ -771,7 +769,7 @@ class Test_2Controls extends JPanel implements ItemListener {
 
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() instanceof JCheckBox) {
-			JSToolkit.alert("OK, this box.isSelected()=" + ((JCheckBox) e.getSource()).isSelected());
+			System.out.println("OK, box " + ((JCheckBox)e.getSource()).getName() + " isSelected=" + ((JCheckBox) e.getSource()).isSelected());
 			return;
 		}
 		if (e.getSource() instanceof JRadioButton && e.getStateChange() == ItemEvent.SELECTED) {

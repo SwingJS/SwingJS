@@ -126,7 +126,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	protected abstract void uninstallJSUI();
 	
 	public void installUI(JComponent c) {
-		installJSUI();
+		// already done installJSUI();
 	}
 
 	public void uninstallUI(JComponent c) {
@@ -146,7 +146,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	public JSComponentUI set(JComponent target) {
 		c = target;
 		newID();
-		installJSUI();
+		installJSUI(); // need to do this immediately, not later
 		return this;
 	}
 

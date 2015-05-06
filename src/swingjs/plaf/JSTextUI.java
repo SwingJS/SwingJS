@@ -840,7 +840,7 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
      * @param c the editor component
      * @see ComponentUI#installUI
      */
-    public void installUI(JComponent c) {
+    protected void installJSUI() {
             editor = (JTextComponent) c;
             updateHandler = new JSTextListener(editor);
 

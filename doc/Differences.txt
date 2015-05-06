@@ -5,7 +5,14 @@ Notes
 
 PROGRESS
 ========
-5/5/2015 (day 46)
+5/7/2015
+
+Problem with duplicate Event queue dispatches for every mouse event found. 
+  (JSComponentUI.installUI() needs to be empty)
+  
+very preliminary JTextField added -- not functional yet
+
+5/5/2015
 
 Now implemented, at least minimally:
 

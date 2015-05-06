@@ -58,6 +58,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 {
     private long lastPressedTimestamp = -1;
     private boolean shouldDiscardRelease = false;
+		private AbstractButton btn;
 
     /**
      * Populates Buttons actions.
@@ -69,6 +70,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 
     public JSButtonListener(AbstractButton b) {
+    	btn = b;
     }
 
 	public void propertyChange(PropertyChangeEvent e) {
