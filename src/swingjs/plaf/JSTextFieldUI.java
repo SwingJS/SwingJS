@@ -1,8 +1,8 @@
 package swingjs.plaf;
 
-import jsjava.awt.FontMetrics;
+//import jsjava.awt.FontMetrics;
 import jsjava.awt.event.MouseMotionListener;
-import jsjavax.swing.AbstractButton;
+import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
 
 /**
@@ -12,7 +12,7 @@ import swingjs.api.DOMNode;
  * @author RM
  *
  */
-public class JSButtonUI extends JSComponentUI {
+public class JSTextFieldUI extends JSTextUI {
 
 	/**
 	 * the radio or check-box or simple button
@@ -24,86 +24,73 @@ public class JSButtonUI extends JSComponentUI {
 	public DOMNode getDOMObject() {
 		if (domNode == null)
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
-					"type", "button");
-		setCssFont(DOMNode.setAttr(domNode, "value", ((AbstractButton) c).getText()),
+					"type", "text");
+		setCssFont(DOMNode.setAttr(domNode, "value", ((JTextComponent) c).getText()),
 				c.getFont());
 		return domNode;
-	}
-
-	/**
-	 * validate a button press -- with a simple button, this is just TRUE.
-	 * This is needed because sometimes the area near the button is pressed
-	 * but not the actual button.
-	 * @param isRelease TODO
-	 * 
-	 * @return true if the HTML5 button was actually pressed
-	 */
-  boolean verifyButtonClick(boolean isRelease) {
-		return true;
 	}
 
 
 	// from BasicButtonUI
 	
 	protected void installJSUI() {
-		// installDefaults((AbstractButton) c);
-		installListeners((AbstractButton) c);
-		installKeyboardActions((AbstractButton) c);
+		// installDefaults((JTextComponent) c);
+		installListeners((JTextComponent) c);
+		//installKeyboardActions((JTextComponent) c);
 	}
   
 	protected void uninstallJSUI() {
-		uninstallKeyboardActions((AbstractButton) c);
-		uninstallListeners((AbstractButton) c);
-		//uninstallDefaults((AbstractButton) c);
+		//uninstallKeyboardActions((JTextComponent) c);
+		uninstallListeners((JTextComponent) c);
+		//uninstallDefaults((JTextComponent) c);
 	}
 	
-	protected void installListeners(AbstractButton b) {
-		JSButtonListener listener = new JSButtonListener(b);
+	protected void installListeners(JTextComponent b) {
+		JSTextListener listener = new JSTextListener(b);
 		if (listener != null) {
 			b.addMouseListener(listener);
 			b.addMouseMotionListener(listener);
 			b.addFocusListener(listener);
       b.addPropertyChangeListener(listener);
-			b.addChangeListener(listener);
+//			b.addChangeListener(listener);
 		}
 	}
 
-	protected void uninstallListeners(AbstractButton b) {
-		JSButtonListener listener = getButtonListener(b);
+	protected void uninstallListeners(JTextComponent b) {
+		JSTextListener listener = getTextListener(b);
 		if (listener != null) {
 			b.removeMouseListener(listener);
 			b.removeMouseMotionListener(listener);
 			b.removeFocusListener(listener);
-			b.removeChangeListener(listener);
+//			b.removeChangeListener(listener);
 			b.removePropertyChangeListener(listener);
 		}
 	}
 
-	protected void installKeyboardActions(AbstractButton b) {
-		JSButtonListener listener = getButtonListener(b);
-		if (listener != null) {
-			listener.installKeyboardActions(b);
-		}
-	}
-	
-  protected void uninstallKeyboardActions(AbstractButton b) {
-      JSButtonListener listener = getButtonListener(b);
-      if(listener != null) {
-          listener.uninstallKeyboardActions(b);
-      }
-  }
-
+//	protected void installKeyboardActions(JTextComponent b) {
+//		JSTextListener listener = getTextListener(b);
+//		if (listener != null) {
+//			listener.installKeyboardActions(b);
+//		}
+//	}
+//	
+//  protected void uninstallKeyboardActions(JTextComponent b) {
+//      JSTextListener listener = getTextListener(b);
+//      if(listener != null) {
+//          listener.uninstallKeyboardActions(b);
+//      }
+//  }
+//
   /**
    * Returns the ButtonListener for the passed in Button, or null if one
    * could not be found.
    */
-  private JSButtonListener getButtonListener(AbstractButton b) {
+  private JSTextListener getTextListener(JTextComponent b) {
       MouseMotionListener[] listeners = b.getMouseMotionListeners();
-
       if (listeners != null) {
           for (int counter = 0; counter < listeners.length; counter++) {
-              if (listeners[counter] instanceof JSButtonListener) {
-                  return (JSButtonListener)listeners[counter];
+              if (listeners[counter] instanceof JSTextListener) {
+                  return (JSTextListener)listeners[counter];
               }
           }
       }
@@ -114,7 +101,7 @@ public class JSButtonUI extends JSComponentUI {
   // to implement, ultimately. SwingUtilities.layoutCompoundLabel
   // details what we are going to have to do somewhere. 
   
-	private String layout(AbstractButton b, FontMetrics fm, int width, int height) {
+//	private String layout(JTextComponent b, FontMetrics fm, int width, int height) {
 //		Insets i = b.getInsets();
 //		viewRect.x = i.left;
 //		viewRect.y = i.top;
@@ -129,10 +116,17 @@ public class JSButtonUI extends JSComponentUI {
 //				b.getVerticalAlignment(), b.getHorizontalAlignment(),
 //				b.getVerticalTextPosition(), b.getHorizontalTextPosition(), viewRect,
 //				iconRect, textRect, b.getText() == null ? 0 : b.getIconTextGap());
-		return null;
-	}
+//		return null;
+//	}
 
-
+//
+//	@Override
+//	protected String getPropertyPrefix() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//
 //  // Visual constants
 //  // NOTE: This is not used or set any where. Were we allowed to remove
 //  // fields, this would be removed.
@@ -172,13 +166,13 @@ public class JSButtonUI extends JSComponentUI {
 //  //          Install PLAF
 //  // ********************************
 //  public void installUI(JComponent c) {
-//      installDefaults((AbstractButton) c);
-//      installListeners((AbstractButton) c);
-//      installKeyboardActions((AbstractButton) c);
-//      BasicHTML.updateRenderer(c, ((AbstractButton) c).getText());
+//      installDefaults((JTextComponent) c);
+//      installListeners((JTextComponent) c);
+//      installKeyboardActions((JTextComponent) c);
+//      BasicHTML.updateRenderer(c, ((JTextComponent) c).getText());
 //  }
 //
-//  protected void installDefaults(AbstractButton b) {
+//  protected void installDefaults(JTextComponent b) {
 //      // load shared instance defaults
 //      String pp = getPropertyPrefix();
 //
@@ -207,7 +201,7 @@ public class JSButtonUI extends JSComponentUI {
 //      LookAndFeel.installProperty(b, "iconTextGap", new Integer(4));
 //  }
 //
-//  protected void installListeners(AbstractButton b) {
+//  protected void installListeners(JTextComponent b) {
 //      JSButtonListener listener = createButtonListener(b);
 //      if(listener != null) {
 //          b.addMouseListener(listener);
@@ -218,7 +212,7 @@ public class JSButtonUI extends JSComponentUI {
 //      }
 //  }
 //
-//  protected void installKeyboardActions(AbstractButton b){
+//  protected void installKeyboardActions(JTextComponent b){
 //      JSButtonListener listener = getButtonListener(b);
 //
 //      if(listener != null) {
@@ -231,20 +225,20 @@ public class JSButtonUI extends JSComponentUI {
 //  //         Uninstall PLAF
 //  // ********************************
 //  public void uninstallUI(JComponent c) {
-//      uninstallKeyboardActions((AbstractButton) c);
-//      uninstallListeners((AbstractButton) c);
-//      uninstallDefaults((AbstractButton) c);
+//      uninstallKeyboardActions((JTextComponent) c);
+//      uninstallListeners((JTextComponent) c);
+//      uninstallDefaults((JTextComponent) c);
 //      BasicHTML.updateRenderer(c, "");
 //  }
 //
-//  protected void uninstallKeyboardActions(AbstractButton b) {
+//  protected void uninstallKeyboardActions(JTextComponent b) {
 //      JSButtonListener listener = getButtonListener(b);
 //      if(listener != null) {
 //          listener.uninstallKeyboardActions(b);
 //      }
 //  }
 //
-//  protected void uninstallListeners(AbstractButton b) {
+//  protected void uninstallListeners(JTextComponent b) {
 //      JSButtonListener listener = getButtonListener(b);
 //      if(listener != null) {
 //          b.removeMouseListener(listener);
@@ -255,18 +249,18 @@ public class JSButtonUI extends JSComponentUI {
 //      }
 //  }
 //
-//  protected void uninstallDefaults(AbstractButton b) {
+//  protected void uninstallDefaults(JTextComponent b) {
 //      LookAndFeel.uninstallBorder(b);
 //  }
 //
 //  // ********************************
 //  //        Create Listeners
 //  // ********************************
-//  protected JSButtonListener createButtonListener(AbstractButton b) {
+//  protected JSButtonListener createButtonListener(JTextComponent b) {
 //      return new JSButtonListener(b);
 //  }
 //
-//  public int getDefaultTextIconGap(AbstractButton b) {
+//  public int getDefaultTextIconGap(JTextComponent b) {
 //      return defaultTextIconGap;
 //  }
 //
@@ -285,7 +279,7 @@ public class JSButtonUI extends JSComponentUI {
 //
 //  public void paint(Graphics g, JComponent c)
 //  {
-//      AbstractButton b = (AbstractButton) c;
+//      JTextComponent b = (JTextComponent) c;
 //      ButtonModel model = b.getModel();
 //
 //      String text = layout(b, SwingUtilities2.getFontMetrics(b, g),
@@ -319,7 +313,7 @@ public class JSButtonUI extends JSComponentUI {
 //  }
 //
 //  protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect){
-//          AbstractButton b = (AbstractButton) c;
+//          JTextComponent b = (JTextComponent) c;
 //          ButtonModel model = b.getModel();
 //          Icon icon = b.getIcon();
 //          Icon tmpIcon = null;
@@ -383,10 +377,10 @@ public class JSButtonUI extends JSComponentUI {
 //
 //  /**
 //   * As of Java 2 platform v 1.4 this method should not be used or overriden.
-//   * Use the paintText method which takes the AbstractButton argument.
+//   * Use the paintText method which takes the JTextComponent argument.
 //   */
 //  protected void paintText(Graphics g, JComponent c, Rectangle textRect, String text) {
-//      AbstractButton b = (AbstractButton) c;
+//      JTextComponent b = (JTextComponent) c;
 //      ButtonModel model = b.getModel();
 //      FontMetrics fm = SwingUtilities2.getFontMetrics(c, g);
 //      int mnemonicIndex = b.getDisplayedMnemonicIndex();
@@ -419,19 +413,19 @@ public class JSButtonUI extends JSComponentUI {
 //   * @param text String to render
 //   * @since 1.4
 //   */
-//  protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
+//  protected void paintText(Graphics g, JTextComponent b, Rectangle textRect, String text) {
 //      paintText(g, (JComponent)b, textRect, text);
 //  }
 //
 //  // Method signature defined here overriden in subclasses.
 //  // Perhaps this class should be abstract?
-//  protected void paintFocus(Graphics g, AbstractButton b,
+//  protected void paintFocus(Graphics g, JTextComponent b,
 //                            Rectangle viewRect, Rectangle textRect, Rectangle iconRect){
 //  }
 //
 //
 //
-//  protected void paintButtonPressed(Graphics g, AbstractButton b){
+//  protected void paintButtonPressed(Graphics g, JTextComponent b){
 //  }
 //
 //  protected void clearTextShiftOffset(){
@@ -459,7 +453,7 @@ public class JSButtonUI extends JSComponentUI {
 //  }
 //
 //  public Dimension getPreferredSize(JComponent c) {
-//      AbstractButton b = (AbstractButton)c;
+//      JTextComponent b = (JTextComponent)c;
 //      return BasicGraphicsUtils.getPreferredButtonSize(b, b.getIconTextGap());
 //  }
 //
@@ -482,7 +476,7 @@ public class JSButtonUI extends JSComponentUI {
 //   */
 //  public int getBaseline(JComponent c, int width, int height) {
 //      super.getBaseline(c, width, height);
-//      AbstractButton b = (AbstractButton)c;
+//      JTextComponent b = (JTextComponent)c;
 //      String text = b.getText();
 //      if (text == null || "".equals(text)) {
 //          return -1;
@@ -507,18 +501,18 @@ public class JSButtonUI extends JSComponentUI {
 //      if (c.getClientProperty(BasicHTML.propertyKey) != null) {
 //          return Component.BaselineResizeBehavior.OTHER;
 //      }
-//      switch(((AbstractButton)c).getVerticalAlignment()) {
-//      case AbstractButton.TOP:
+//      switch(((JTextComponent)c).getVerticalAlignment()) {
+//      case JTextComponent.TOP:
 //          return Component.BaselineResizeBehavior.CONSTANT_ASCENT;
-//      case AbstractButton.BOTTOM:
+//      case JTextComponent.BOTTOM:
 //          return Component.BaselineResizeBehavior.CONSTANT_DESCENT;
-//      case AbstractButton.CENTER:
+//      case JTextComponent.CENTER:
 //          return Component.BaselineResizeBehavior.CENTER_OFFSET;
 //      }
 //      return Component.BaselineResizeBehavior.OTHER;
 //  }
 //
-//  private String layout(AbstractButton b, FontMetrics fm,
+//  private String layout(JTextComponent b, FontMetrics fm,
 //                        int width, int height) {
 //      Insets i = b.getInsets();
 //      viewRect.x = i.left;
@@ -542,7 +536,7 @@ public class JSButtonUI extends JSComponentUI {
 //   * Returns the ButtonListener for the passed in Button, or null if one
 //   * could not be found.
 //   */
-//  private JSButtonListener getButtonListener(AbstractButton b) {
+//  private JSButtonListener getButtonListener(JTextComponent b) {
 //      MouseMotionListener[] listeners = b.getMouseMotionListeners();
 //
 //      if (listeners != null) {
