@@ -120,7 +120,7 @@ public abstract class JSThread extends Thread {
 		if (!isJS) {
 			r.run();
 			try {
-				wait(msDelay);
+				sleep(msDelay);
 			} catch (InterruptedException e) {
 				// ignore
 			}

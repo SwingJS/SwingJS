@@ -36,6 +36,8 @@ import swingjs.JSThread;
 // SwingJS       (and probably should never be done even in AWT -- 
 // SwingJS        see http://stackoverflow.com/questions/18816251/calling-the-paint-method-from-another-class
 // SwingJS[5] -- We use a thread here instead of a blocking loop -- this caused a thread-clash
+
+// SwingJS TODO: thread in JS, JTextArea, JTextField
 /*
  A basic extension of the JApplet class
  */
@@ -147,6 +149,7 @@ public class Boltzmann extends JApplet {
 		DispResults.setOpaque(true);
 		getContentPane().add(DispResults);
 		DispResults.setBounds(384, 156, 180, 240);
+	//SwingJS TODO 
 		ShowText.setRows(10000);
 		ShowText.setDisabledTextColor(new Color(153, 153, 153));
 		DispResults.getViewport().add(ShowText);
@@ -208,7 +211,7 @@ public class Boltzmann extends JApplet {
 			else if (object == tCollisions)
 				tCollisions_actionPerformed(event);
 
-			ShowText.levelInfo = "";
+		  ShowText.levelInfo = "";
 		}
 	}
 

@@ -10,7 +10,7 @@ public class SimThread extends Thread {
 //	public SimThread(ThreadGroup group, String name, boolean isJS) {
 //		super(group, name, isJS);
 //	}
-
+//
 	static boolean isJS;
 
 	
@@ -38,22 +38,22 @@ public class SimThread extends Thread {
 
 	// @Override
 	protected void run1(int state) {
-		while (true) {
+		while (!interrupted()) {
 			try {
 				switch (state) {
 				case JSThread.INIT:
 					boltzmann.sjs_initSimulation();
 					state = JSThread.LOOP;
-					//$FALL-THROUGH$
+					continue;
 				case JSThread.LOOP:
 					boolean repainted = boltzmann.sjs_checkRepaint();
-					if (boltzmann.sjs_loopSimulation()) {
-						if (!repainted)
-							continue;
-						break;
+					if (!boltzmann.sjs_loopSimulation()) {
+						state = JSThread.DONE;
+						continue;
 					}
-					state = JSThread.DONE;
-					//$FALL-THROUGH$
+					if (!repainted)
+						continue;
+					break;
 				case JSThread.DONE:
 					boltzmann.sjs_finalizeGraph();
 					return;
@@ -63,6 +63,7 @@ public class SimThread extends Thread {
 				state = JSThread.DONE;
 			}
 		}
+		// normal exit
 	}
 
 }
