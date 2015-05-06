@@ -14,7 +14,7 @@ public abstract class JSToggleButtonUI extends JSButtonUI {
 
 		// cannot use node.getAttribute here because that returns "null" in FF
 		boolean checked = ((Boolean) DOMNode.getAttr(domBtn, "checked") == true);
-		System.out.println(c.getName() + this.id + " JSTogglebutton verify checked=" + checked + " isReleased=" + isRelease + " isDomChecked=" + isDomChecked);
+		//   System.out.println(c.getName() + this.id + " JSTogglebutton verify checked=" + checked + " isReleased=" + isRelease + " isDomChecked=" + isDomChecked);
 		if (isRelease && isDomChecked == checked)
 			return false;
 		isDomChecked = checked;
