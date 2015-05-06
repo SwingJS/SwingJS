@@ -1,5 +1,6 @@
 package org.uwi;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -18,17 +19,18 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 	super();
   }
 
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		g.setColor(getForeground());
 		g.setPaintMode();
 		displayBoltz(g);
 	}
 
+	static int nPaint;
+	
   void displayBoltz(Graphics g)   {
     int i;
-    
+    nPaint++;  
     Rectangle r = getBounds();
-  	System.out.println("painting" + r);
 //    g.clearRect(r.x, r.y, r.width, r.height);
     
     g.setColor(Color.black);

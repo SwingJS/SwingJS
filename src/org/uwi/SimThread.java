@@ -12,6 +12,7 @@ public class SimThread extends Thread {
 //	}
 
 	static boolean isJS;
+
 	
 	static {
 		/**
@@ -45,8 +46,12 @@ public class SimThread extends Thread {
 					state = JSThread.LOOP;
 					//$FALL-THROUGH$
 				case JSThread.LOOP:
-					if (boltzmann.sjs_loopSimulation())
+					boolean repainted = boltzmann.sjs_checkRepaint();
+					if (boltzmann.sjs_loopSimulation()) {
+						if (!repainted)
+							continue;
 						break;
+					}
 					state = JSThread.DONE;
 					//$FALL-THROUGH$
 				case JSThread.DONE:

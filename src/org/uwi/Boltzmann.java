@@ -1,7 +1,9 @@
 package org.uwi;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -27,12 +29,13 @@ import javax.swing.border.Border;
 
 import swingjs.JSThread;
 
-// SwingJS -- move explicit java.awt... references to imports.
-// SwingJS -- Clipboard is not supported in JavaScript.
-// SwingJS -- original calls Canvas.paint(Graphics) directly; this does not work with JPanel
-// SwingJS    (and probably should never be done even in AWT -- 
-// SwingJS     see http://stackoverflow.com/questions/18816251/calling-the-paint-method-from-another-class
-
+// SwingJS[1] -- move explicit java.awt... references to imports.
+// SwingJS[2] -- Clipboard is not supported in JavaScript.
+// SwingJS[3] -- It is necessary to use setPreferredSize() on a JPanel.
+// SwingJS[4] -- original calls Canvas.paint(Graphics) directly; this does not work with JPanel
+// SwingJS       (and probably should never be done even in AWT -- 
+// SwingJS        see http://stackoverflow.com/questions/18816251/calling-the-paint-method-from-another-class
+// SwingJS[5] -- We use a thread here instead of a blocking loop -- this caused a thread-clash
 /*
  A basic extension of the JApplet class
  */
@@ -47,7 +50,6 @@ public class Boltzmann extends JApplet {
 	int EntropyCalcs;
 	// double Entropy[]; //Entropy of the system
 	boolean start_pressed;
-	int entCounter; // Counter used to move through Array of Entropy values
 
 	public Boltzmann() {
 		setName("Boltzmann");
@@ -71,14 +73,21 @@ public class Boltzmann extends JApplet {
 		getContentPane().add(BoltzSimGraph);
 		BoltzSimGraph.setBackground(Color.white);
 		BoltzSimGraph.setBounds(0, 0, 384, 300);
+
 		BoltzSimGraph.add(DispBoltz);
-		DispBoltz.setBounds(2, 6, 380, 294);
+		DispBoltz.setPreferredSize(new Dimension(380, 294)); // SwingJS[3]
+		DispBoltz.setBounds(2,6,380,294);
+		
+
 		EntropyGraph.setBorder(lineBorder1);
 		EntropyGraph.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
 		getContentPane().add(EntropyGraph);
+
 		EntropyGraph.setBackground(java.awt.Color.white);
 		EntropyGraph.setBounds(384, 0, 180, 156);
 		EntropyGraph.add(DispEntropy);
+		DispEntropy.setPreferredSize(new Dimension(178, 150)); // SwingJS[3]
 		DispEntropy.setBounds(1, 6, 178, 150);
 		// $$ lineBorder1.move(0,392);
 		// $$ lineBorder2.move(24,392);
@@ -164,7 +173,6 @@ public class Boltzmann extends JApplet {
 		tParticles.setText(Integer.toString(maxParticles));
 		tCollisions.setText(Integer.toString(maxCollisions));
 		initEnvironment();
-
 	}
 
 	// {{DECLARE_CONTROLS
@@ -216,7 +224,12 @@ public class Boltzmann extends JApplet {
 	void bStartSim_actionPerformed(ActionEvent event)
 	// Action performed on pressing start button
 	{
-		sjs_startSimulation();
+		// SwingJS[5]
+    //Graphics canvasGraphics = DispBoltz.getGraphics();
+		initEnvironment();
+    //DispBoltz.paint(canvasGraphics);
+		Thread simThread = new SimThread(this);
+		simThread.start();
 	}
 
 	void tEnergy_actionPerformed(ActionEvent event)
@@ -258,7 +271,7 @@ public class Boltzmann extends JApplet {
 		DispEntropy.Entropy = new double[EntropyCalcs + 1];
 		DispEntropy.EntropyCalc = EntropyCalcs;
 
-		entCounter = 0;
+		DispEntropy.entCounter = 0;
 
 		for (i = 0; i < maxParticles; i++) {
 			particleEnergy[i] = initialEnergy;
@@ -293,7 +306,7 @@ public class Boltzmann extends JApplet {
 	// Upon a button click in the Text Window selects all data
 	// and copies to clipboard
 	void ShowText_mouseReleased(MouseEvent event) {
-		// SwingJS n/a
+	  // SwingJS[2]
 		// Clipboard cb = Toolkit.getDefaultToolkit().
 		// getSystemClipboard();
 		// String s = ShowText.getText();
@@ -301,13 +314,6 @@ public class Boltzmann extends JApplet {
 		// cb.setContents(contents, null);
 	}
 	
-	private void sjs_startSimulation() {
-		initEnvironment();
-		Thread simThread = new SimThread(this);
-		simThread.start();
-
-	}
-
 	int particle1, particle2;
 	int e1, e2; // Energy of particle1 and particle2
 	int collisionEnergy;
@@ -336,13 +342,6 @@ public class Boltzmann extends JApplet {
 	}
 
 	public boolean sjs_loopSimulation() {
-		if ((numOfCollisions % displayFactor) == 0)
-			repaint();
-
-		if ((numOfCollisions % entropyFactor) == 0) {
-			calcEntropy(entCounter);
-			entCounter++;
-		}
 		// Select two particles at random
 		particle1 = (int) ((maxParticles - 1) * Math.random());
 		particle2 = (int) ((maxParticles - 1) * Math.random());
@@ -430,6 +429,18 @@ public class Boltzmann extends JApplet {
 				+ maxCollisions + "\n";
 		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
 		ShowText.setText(ShowText.levelInfo);
+	}
+
+	public boolean sjs_checkRepaint() {
+		if ((numOfCollisions % entropyFactor) == 0) {
+			calcEntropy(DispEntropy.entCounter++);
+			DispEntropy.invalidate();			
+		}
+		if ((numOfCollisions % displayFactor) == 0) {
+		  repaint();
+		  return true;
+		}
+		return false;
 	}
 
 
