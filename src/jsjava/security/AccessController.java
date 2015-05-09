@@ -1,7 +1,5 @@
 package jsjava.security;
 
-import java.io.InputStream;
-
 public class AccessController implements AccessControlContext {
 
 	// a dummy class

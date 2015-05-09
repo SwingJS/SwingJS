@@ -25,7 +25,6 @@
 
 package jssun.util.calendar;
 
-import jsjava.util.Locale;
 import jsjava.util.TimeZone;
 
 /**

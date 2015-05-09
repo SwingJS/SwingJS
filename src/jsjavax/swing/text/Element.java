@@ -135,5 +135,4 @@ public interface Element {
      */
     public boolean isLeaf();
 
-
 }

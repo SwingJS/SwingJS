@@ -45,6 +45,7 @@ import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
+import jsjava.awt.event.MouseMotionListener;
 //import jsjava.awt.im.InputContext;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
@@ -420,14 +421,10 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 //
 //        String prefix = getPropertyPrefix();
 
-//        Caret caret = editor.getCaret();
-//        if (caret == null || caret instanceof UIResource) {
-//            caret = createCaret();
-//            editor.setCaret(caret);
-//
-//            int rate = DefaultLookup.getInt(getComponent(), this, prefix + ".caretBlinkRate", 500);
-//            caret.setBlinkRate(rate);
-//        }
+        Caret caret = editor.getCaret();
+        if (caret == null || caret instanceof UIResource) {
+            editor.setCaret(new JSCaret());
+        }
 //
 //        Highlighter highlighter = editor.getHighlighter();
 //        if (highlighter == null || highlighter instanceof UIResource) {
@@ -439,6 +436,26 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 //            editor.setTransferHandler(getTransferHandler());
 //        }
     }
+
+  	/**
+  	 * called by JmolCore.js
+  	 * @return handled
+  	 */
+  	public boolean handleJSEvent(String eventType, Object jQueryEvent) {
+  		int dot = 0, mark = 0;
+  		/**
+  		 * @j2sNative
+  		 * 
+  		 * dot = jQueryEvent.target.selectionStart;
+  		 * mark = jQueryEvent.target.selectionEnd;
+  		 */
+  		{}
+  		editor.getCaret().setDot(dot);
+  		if (dot != mark)
+  			editor.getCaret().moveDot(mark);
+  		System.out.println(id + " handling event " + eventType + " " + editor.getCaret());
+  		return true;
+  	}
 
     /**
      * Sets the component properties that haven't been explicitly overridden to
@@ -492,18 +509,6 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 //        if (editor.getCursor() instanceof UIResource) {
 //            editor.setCursor(null);
 //        }
-    }
-
-    /**
-     * Installs listeners for the UI.
-     */
-    protected void installListeners() {
-    }
-
-    /**
-     * Uninstalls listeners for the UI.
-     */
-    protected void uninstallListeners() {
     }
 
     protected void installKeyboardActions() {
@@ -859,20 +864,19 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 //            }
 //
             // attach to the model and editor
-            editor.addPropertyChangeListener(updateHandler);
-            Document doc = editor.getDocument();
-            if (doc == null) {
-                // no model, create a default one.  This will
-                // fire a notification to the updateHandler
-                // which takes care of the rest.
-                editor.setDocument(getEditorKit(editor).createDefaultDocument());
-            } else {
-//                doc.addDocumentListener(updateHandler);
-//                modelChanged();
-            }
+//            Document doc = editor.getDocument();
+//            if (doc == null) {
+//                // no model, create a default one.  This will
+//                // fire a notification to the updateHandler
+//                // which takes care of the rest.
+//                editor.setDocument(getEditorKit(editor).createDefaultDocument());
+//            } else {
+////                doc.addDocumentListener(updateHandler);
+////                modelChanged();
+//            }
 
             // install keymap
-            installListeners();
+            installListeners(editor);
             installKeyboardActions();
 
 //            LayoutManager oldLayout = editor.getLayout();
@@ -892,9 +896,9 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
      * @param c the editor component
      * @see ComponentUI#uninstallUI
      */
-    public void uninstallUI(JComponent c) {
+    public void uninstallJSUI() {
         // detach from the model
-        editor.removePropertyChangeListener(updateHandler);
+//        editor.removePropertyChangeListener(updateHandler);
 //        editor.getDocument().removeDocumentListener(updateHandler);
 
         // view part
@@ -909,10 +913,29 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 
         // controller part
         uninstallKeyboardActions();
-        uninstallListeners();
+        uninstallListeners(editor);
 
         editor = null;
+        updateHandler = null;
     }
+
+	protected void installListeners(JTextComponent b) {
+		JSTextListener listener = updateHandler;
+		b.addMouseListener(listener);
+		b.addMouseMotionListener(listener);
+		b.addFocusListener(listener);
+	  b.addPropertyChangeListener(listener);
+		// b.addChangeListener(listener);
+	}
+
+	protected void uninstallListeners(JTextComponent b) {
+		JSTextListener listener = updateHandler;
+		b.removeMouseListener(listener);
+		b.removeMouseMotionListener(listener);
+		b.removeFocusListener(listener);
+		// b.removeChangeListener(listener);
+		b.removePropertyChangeListener(listener);
+	}
 
 //    /**
 //     * Superclass paints background in an uncontrollable way
@@ -955,46 +978,46 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 //        }
 //    }
 
-    /**
-     * Gets the preferred size for the editor component.  If the component
-     * has been given a size prior to receiving this request, it will
-     * set the size of the view hierarchy to reflect the size of the component
-     * before requesting the preferred size of the view hierarchy.  This
-     * allows formatted views to format to the current component size before
-     * answering the request.  Other views don't care about currently formatted
-     * size and give the same answer either way.
-     *
-     * @param c the editor component
-     * @return the size
-     */
-    public Dimension getPreferredSize(JComponent c) {
-      Dimension d = c.getSize();
-//        Document doc = editor.getDocument();
-//        Insets i = c.getInsets();
-//
-//        if (doc instanceof AbstractDocument) {
-//            ((AbstractDocument)doc).readLock();
-//        }
-//        try {
-//            if ((d.width > (i.left + i.right)) && (d.height > (i.top + i.bottom))) {
-//                rootView.setSize(d.width - i.left - i.right, d.height - i.top - i.bottom);
-//            }
-//            else if (d.width == 0 && d.height == 0) {
-//                // Probably haven't been layed out yet, force some sort of
-//                // initial sizing.
-//                rootView.setSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-//            }
-//            d.width = (int) Math.min((long) rootView.getPreferredSpan(View.X_AXIS) +
-//                                     (long) i.left + (long) i.right, Integer.MAX_VALUE);
-//            d.height = (int) Math.min((long) rootView.getPreferredSpan(View.Y_AXIS) +
-//                                      (long) i.top + (long) i.bottom, Integer.MAX_VALUE);
-//        } finally {
-//            if (doc instanceof AbstractDocument) {
-//                ((AbstractDocument)doc).readUnlock();
-//            }
-//        }
-        return d;
-    }
+//    /**
+//     * Gets the preferred size for the editor component.  If the component
+//     * has been given a size prior to receiving this request, it will
+//     * set the size of the view hierarchy to reflect the size of the component
+//     * before requesting the preferred size of the view hierarchy.  This
+//     * allows formatted views to format to the current component size before
+//     * answering the request.  Other views don't care about currently formatted
+//     * size and give the same answer either way.
+//     *
+//     * @param c the editor component
+//     * @return the size
+//     */
+//    public Dimension getPreferredSize(JComponent c) {
+//      Dimension d = c.getSize();
+////        Document doc = editor.getDocument();
+////        Insets i = c.getInsets();
+////
+////        if (doc instanceof AbstractDocument) {
+////            ((AbstractDocument)doc).readLock();
+////        }
+////        try {
+////            if ((d.width > (i.left + i.right)) && (d.height > (i.top + i.bottom))) {
+////                rootView.setSize(d.width - i.left - i.right, d.height - i.top - i.bottom);
+////            }
+////            else if (d.width == 0 && d.height == 0) {
+////                // Probably haven't been layed out yet, force some sort of
+////                // initial sizing.
+////                rootView.setSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+////            }
+////            d.width = (int) Math.min((long) rootView.getPreferredSpan(View.X_AXIS) +
+////                                     (long) i.left + (long) i.right, Integer.MAX_VALUE);
+////            d.height = (int) Math.min((long) rootView.getPreferredSpan(View.Y_AXIS) +
+////                                      (long) i.top + (long) i.bottom, Integer.MAX_VALUE);
+////        } finally {
+////            if (doc instanceof AbstractDocument) {
+////                ((AbstractDocument)doc).readUnlock();
+////            }
+////        }
+//        return d;
+//    }
 
     /**
      * Gets the minimum size for the editor component.

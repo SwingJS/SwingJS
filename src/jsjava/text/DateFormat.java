@@ -39,17 +39,14 @@
 package jsjava.text;
 
 import java.io.InvalidObjectException;
-import java.text.spi.DateFormatProvider;
-import jsjava.util.Calendar;
 import java.util.Date;
-import jsjava.util.GregorianCalendar;
 import java.util.HashMap;
-import jsjava.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-import jsjava.util.ResourceBundle;
+
+import jsjava.util.Calendar;
+import jsjava.util.Locale;
 import jsjava.util.TimeZone;
-import jsjava.util.spi.LocaleServiceProvider;
 //import jssun.util.LocaleServiceProviderPool;
 
 /**

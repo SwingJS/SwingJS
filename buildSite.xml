@@ -76,7 +76,7 @@
       </fileset>
     </copy>
    	
-   	<echo>...JU (javajs/utl, com/jcraft/jzlib)</echo>
+   	<echo>...JU (javajs/util, com/jcraft/jzlib)</echo>
    	<copy todir="site/swingjs/j2s/JU" >
       <fileset dir="jsmol/bin/javajs/util">
         <include name="**/*.js" />
@@ -342,64 +342,23 @@
             javax/swing/JTextField.js
             javax/swing/ActionPropertyChangeListener.js
             javax/swing/event/ChangeListener.js
-            javax/swing/text/JTextComponent.js
             javax/swing/ActionMap.js
             javax/swing/InputMap.js
             javax/swing/Scrollable.js
             javax/swing/event/CaretEvent.js
-            javax/swing/text/DefaultCaret.js
             javax/swing/event/DocumentListener.js
-            javax/swing/text/Caret.js
-            javax/swing/text/NavigationFilter.js
             javax/swing/event/EventListenerList.js
             javax/swing/event/ChangeEvent.js
-            javax/swing/text/AbstractDocument.js
-            javax/swing/event/DocumentEvent.js
-            javax/swing/text/Document.js
-            javax/swing/text/DocumentFilter.js
-            javax/swing/text/Element.js
-            javax/swing/text/MutableAttributeSet.js
-            javax/swing/text/AttributeSet.js
-            javax/swing/tree/TreeNode.js
-            javax/swing/undo/AbstractUndoableEdit.js
-            javax/swing/undo/UndoableEdit.js
-            javax/swing/undo/CannotRedoException.js
-            javax/swing/undo/CannotUndoException.js
-            javax/swing/undo/CompoundEdit.js
-            javax/swing/event/UndoableEditEvent.js
-            javax/swing/event/UndoableEditListener.js
-            javax/swing/text/BadLocationException.js
-            javax/swing/text/SegmentCache.js
-            javax/swing/text/Segment.js
-            javax/swing/text/SimpleAttributeSet.js
-            javax/swing/text/StyleConstants.js
-            javax/swing/text/StateInvariantError.js
-            javax/swing/text/StyleContext.js
-            javax/swing/text/Style.js
-            javax/swing/text/Utilities.js
-            javax/swing/text/CompositeView.js
-            javax/swing/text/View.js
-            javax/swing/text/Position.js
-            javax/swing/text/StyledDocument.js
-            jssun/swing/SwingUtilities2.js
-            java/awt/font/FontRenderContext.js
             jssun/swing/StringUIClientPropertyKey.js
             jssun/swing/UIClientPropertyKey.js
             java/awt/Graphics2D.js
             java/awt/Graphics.js
             jssun/font/FontDesignMetrics.js
             java/awt/FontMetrics.js
-            javax/swing/text/DefaultEditorKit.js
-            javax/swing/text/EditorKit.js
-            javax/swing/text/TextAction.js
-            java/io/InputStreamReader.js
-            java/io/Reader.js
-            javax/swing/text/PlainDocument.js
-            javax/swing/text/DefaultHighlighter.js
-            javax/swing/text/Highlighter.js
-            javax/swing/text/LayeredHighlighter.js
-            javax/swing/text/Keymap.js
+            
+        	
             javax/swing/DropMode.js
+            java/awt/font/FontRenderContext.js
             java/awt/event/InputMethodEvent.js
             javax/swing/JViewport.js
             java/awt/event/ComponentAdapter.js
@@ -597,6 +556,53 @@
   	   
   	<replaceregexp file="site/swingjs/js/core2.js" match="(Clazz.defineStatics ?\(((?![\[\(]).)*?\);)" flags="gs" replace="/*\1*/" /> 
   	<copy file="site/swingjs/js/core2.js" tofile="site/swingjs/js/core${call-core.name}3.js" />
+  	
+  	
+  	            java/io/InputStreamReader.js
+            java/io/Reader.js
+        	
+            javax/swing/text/JTextComponent.js
+            javax/swing/text/DefaultCaret.js
+            javax/swing/text/Caret.js
+            javax/swing/text/NavigationFilter.js
+            javax/swing/text/AbstractDocument.js
+            javax/swing/event/DocumentEvent.js
+            javax/swing/text/Document.js
+            javax/swing/text/DocumentFilter.js
+            javax/swing/text/Element.js
+            javax/swing/text/MutableAttributeSet.js
+            javax/swing/text/AttributeSet.js
+            javax/swing/tree/TreeNode.js
+            javax/swing/undo/AbstractUndoableEdit.js
+            javax/swing/undo/UndoableEdit.js
+            javax/swing/undo/CannotRedoException.js
+            javax/swing/undo/CannotUndoException.js
+            javax/swing/undo/CompoundEdit.js
+            javax/swing/event/UndoableEditEvent.js
+            javax/swing/event/UndoableEditListener.js
+            javax/swing/text/BadLocationException.js
+            javax/swing/text/SegmentCache.js
+            javax/swing/text/Segment.js
+            javax/swing/text/SimpleAttributeSet.js
+            javax/swing/text/StyleConstants.js
+            javax/swing/text/StateInvariantError.js
+            javax/swing/text/StyleContext.js
+            javax/swing/text/Style.js
+            javax/swing/text/Utilities.js
+            javax/swing/text/CompositeView.js
+            javax/swing/text/View.js
+            javax/swing/text/Position.js
+            javax/swing/text/StyledDocument.js
+            jssun/swing/SwingUtilities2.js
+        	javax/swing/text/DefaultEditorKit.js
+        	javax/swing/text/EditorKit.js
+            javax/swing/text/TextAction.js
+            javax/swing/text/PlainDocument.js
+            javax/swing/text/DefaultHighlighter.js
+            javax/swing/text/Highlighter.js
+            javax/swing/text/LayeredHighlighter.js
+            javax/swing/text/Keymap.js
+  	
   	 -->
 
   	<replace dir="site/swingjs/js" includes="core2.js" token="Clazz." value="Clazz_"/>

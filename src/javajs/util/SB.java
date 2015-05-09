@@ -1,7 +1,7 @@
 
 package javajs.util;
 
-import swingjs.J2SIgnoreImport;
+import javajs.J2SIgnoreImport;
 
 /**
  * Interesting thing here is that JavaScript is 3x faster than Java in handling strings.
@@ -323,5 +323,20 @@ public class SB {
       b[--j] = (byte) charAt(i);
     return b;
   }
+
+	public void replace(int start, int end, String str) {
+		/**
+		 * @j2sNative
+		 * 
+		 * s = s.substring(0, start) + str + s.substring(end);
+		 */
+		{
+			sb.replace(start, end, str);
+		}
+	}
+
+	public void insert(int offset, String str) {
+		replace(offset, offset, str);
+	}
 
 }

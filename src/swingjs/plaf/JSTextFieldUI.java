@@ -22,9 +22,11 @@ public class JSTextFieldUI extends JSTextUI {
 
 	@Override
 	public DOMNode getDOMObject() {
-		if (domNode == null)
+		if (domNode == null) {
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "text");
+			bindMouse(domNode);
+		}
 		setCssFont(DOMNode.setAttr(domNode, "value", ((JTextComponent) c).getText()),
 				c.getFont());
 		return domNode;
@@ -33,40 +35,6 @@ public class JSTextFieldUI extends JSTextUI {
 
 	// from BasicButtonUI
 	
-	protected void installJSUI() {
-		// installDefaults((JTextComponent) c);
-		installListeners((JTextComponent) c);
-		//installKeyboardActions((JTextComponent) c);
-	}
-  
-	protected void uninstallJSUI() {
-		//uninstallKeyboardActions((JTextComponent) c);
-		uninstallListeners((JTextComponent) c);
-		//uninstallDefaults((JTextComponent) c);
-	}
-	
-	protected void installListeners(JTextComponent b) {
-		JSTextListener listener = new JSTextListener(b);
-		if (listener != null) {
-			b.addMouseListener(listener);
-			b.addMouseMotionListener(listener);
-			b.addFocusListener(listener);
-      b.addPropertyChangeListener(listener);
-//			b.addChangeListener(listener);
-		}
-	}
-
-	protected void uninstallListeners(JTextComponent b) {
-		JSTextListener listener = getTextListener(b);
-		if (listener != null) {
-			b.removeMouseListener(listener);
-			b.removeMouseMotionListener(listener);
-			b.removeFocusListener(listener);
-//			b.removeChangeListener(listener);
-			b.removePropertyChangeListener(listener);
-		}
-	}
-
 //	protected void installKeyboardActions(JTextComponent b) {
 //		JSTextListener listener = getTextListener(b);
 //		if (listener != null) {
@@ -81,22 +49,6 @@ public class JSTextFieldUI extends JSTextUI {
 //      }
 //  }
 //
-  /**
-   * Returns the ButtonListener for the passed in Button, or null if one
-   * could not be found.
-   */
-  private JSTextListener getTextListener(JTextComponent b) {
-      MouseMotionListener[] listeners = b.getMouseMotionListeners();
-      if (listeners != null) {
-          for (int counter = 0; counter < listeners.length; counter++) {
-              if (listeners[counter] instanceof JSTextListener) {
-                  return (JSTextListener)listeners[counter];
-              }
-          }
-      }
-      return null;
-  }
-
   // SwingJS -- this is interesting, as it summarizes everything we will need
   // to implement, ultimately. SwingUtilities.layoutCompoundLabel
   // details what we are going to have to do somewhere. 

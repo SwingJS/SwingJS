@@ -63,8 +63,7 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
 		System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
-		if ("font" == prop
-				|| "foreground" == prop) {
+		if ("font" == prop || "foreground" == prop || "preferredSize" == prop) {
 			JTextComponent b = (JTextComponent) e.getSource();
 			((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged(prop);
 		}
@@ -212,13 +211,10 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            // Support for multiClickThreshhold
-            JTextComponent b = (JTextComponent) e.getSource();
-      			if (!((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(true))
-      				return;
-      			
-      			//System.out.println("JSButtonListener released " + b.getName() + " " + e);
-
+//            // Support for multiClickThreshhold
+//            JTextComponent b = (JTextComponent) e.getSource();
+//      			//System.out.println("JSTextListener released " + b.getName() + " " + e);
+//
         }
     };
 

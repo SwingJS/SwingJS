@@ -25,12 +25,10 @@
 
 package jssun.util.calendar;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import jsjava.util.Locale;
 import java.util.Map;
+
+import jsjava.util.Calendar;
 import jsjava.util.SimpleTimeZone;
 import jsjava.util.TimeZone;
 
@@ -72,7 +70,7 @@ public class ZoneInfo extends TimeZone {
     private static final long DST_MASK = 0xf0L;
     private static final int DST_NSHIFT = 4;
     // this bit field is reserved for abbreviation support
-    private static final long ABBR_MASK = 0xf00L;
+//    private static final long ABBR_MASK = 0xf00L;
     private static final int TRANSITION_NSHIFT = 12;
 
 //    // Flag for supporting JDK backward compatible IDs, such as "EST".
@@ -179,7 +177,7 @@ public class ZoneInfo extends TimeZone {
      */
     transient private boolean dirty = false;
 
-    private static final long serialVersionUID = 2653134537216586139L;
+//    private static final long serialVersionUID = 2653134537216586139L;
 
     /**
      * A constructor.

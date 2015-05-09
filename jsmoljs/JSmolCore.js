@@ -5,6 +5,7 @@
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
+// BH 5/9/2015 3:38:52 PM adds data-ignoreMouse attribute for JTextField
 // BH 3/30/2015 9:46:53 PM adds JSAppletPanel for ready callback
 // BH 12/6/2014 3:32:54 PM Jmol.setAppletCss() broken
 // BH 9/13/2014 2:15:51 PM embedded JSME loads from SEARCH when Jmol should 
@@ -132,7 +133,7 @@ Jmol = (function(document) {
 		}
 	};
 	var j = {
-		_version: "$Date: 2015-04-13 06:11:50 -0500 (Mon, 13 Apr 2015) $", // svn.keywords:lastUpdated
+		_version: "$Date: 2015-04-26 10:57:08 -0500 (Sun, 26 Apr 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
 		_allowedJmolSize: [25, 2048, 300],   // min, max, default (pixels)
@@ -1536,6 +1537,9 @@ Jmol = (function(document) {
 		Jmol.$bind(canvas, 'mousedown touchstart', function(ev) {
 			Jmol._setMouseOwner(canvas, true);
 			ev.stopPropagation();
+      var ui = ev.target["data-UI"];
+      if (ui && ui.handleJSEvent("mouse_down", ev))
+        return true;
 			ev.preventDefault();
 			canvas.isDragging = true;
 			if ((ev.type == "touchstart") && Jmol._gestureUpdate(canvas, ev))
@@ -1553,6 +1557,9 @@ Jmol = (function(document) {
 		Jmol.$bind(canvas, 'mouseup touchend', function(ev) {
 			Jmol._setMouseOwner(null);
 			ev.stopPropagation();
+      var ui = ev.target["data-UI"];
+      if (ui && ui.handleJSEvent("mouse_up", ev))
+        return true;
 			ev.preventDefault();
 			canvas.isDragging = false;
 			if (ev.type == "touchend" && Jmol._gestureUpdate(canvas, ev))

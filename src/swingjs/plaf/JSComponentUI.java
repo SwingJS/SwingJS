@@ -106,6 +106,13 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	protected int x, y;
 	
 	/**
+	 * preferred dimension set by user
+	 * 
+	 */
+	protected Dimension preferredSize;
+	
+	
+	/**
 	 * panels 
 	 * 
 	 */
@@ -177,6 +184,23 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		return obj;
 	}
 
+	/**
+	 * JSmolCore.js will look for  data-UI attribute  and, if found, reroute directly here 
+	 * @param node 
+	 */
+	protected void bindMouse(DOMNode node) {
+		DOMNode.setAttr(node, "data-UI", this);		
+	}
+	
+	/**
+	 * called by JmolCore.js
+	 * @return
+	 */
+	public boolean handleJSEvent(String eventType, Object jQueryEvent) {
+		System.out.println(id + " handling event " + eventType + jQueryEvent);
+		return true;
+	}
+
 	protected DOMNode wrap(String type, String id, DOMNode... elements) {
 		return append(createDOMObject(type, id + type), elements);
 	}
@@ -205,29 +229,40 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	protected Dimension setHTMLSize1(DOMNode node, boolean addCSS) {
 		if (node == null)
 			return null;
-		
-		// save the parent node -- we wil need to reset that.
-		DOMNode parent = DOMNode.remove(node);
+		int h, w;
+		DOMNode parentNode = null;
 
-		// remove position, width, and height, because those are what we are setting here
-		DOMNode.setStyles(node, "position", null, "width", null, "height", null);
+		if (addCSS && preferredSize != null) {
+			// user has set preferred size
+			w = preferredSize.width;
+			h = preferredSize.height;
+		} else {
 
-		DOMNode div;
-		if (node.getAttribute("tagName") == "DIV")
-			div = node;
-		else
-			div = wrap("div", id + "_temp", node);
-		DOMNode.setStyles(div, "position", "absolute");
+			// save the parent node -- we wil need to reset that.
+			parentNode = DOMNode.remove(node);
 
-		// process of discovering width and height is facilitated using jQuery and by 
-		// appending to document.body. 
-		
-		DOMNode body = DOMNode.getBody();
-		body.appendChild(div);
-		JQuery jq = JSToolkit.getJQuery();
-		int h = jq.$(div).height();
-		int w = jq.$(div).width();
-		body.removeChild(div);
+			// remove position, width, and height, because those are what we are
+			// setting here
+			DOMNode.setStyles(node, "position", null, "width", null, "height", null);
+
+			DOMNode div;
+			if (node.getAttribute("tagName") == "DIV")
+				div = node;
+			else
+				div = wrap("div", id + "_temp", node);
+			DOMNode.setStyles(div, "position", "absolute");
+
+			// process of discovering width and height is facilitated using jQuery and
+			// by
+			// appending to document.body.
+
+			DOMNode body = DOMNode.getBody();
+			body.appendChild(div);
+			JQuery jq = JSToolkit.getJQuery();
+			w = jq.$(div).width();
+			h = jq.$(div).height();
+			body.removeChild(div);
+		}
 
 		if (addCSS) {
 			DOMNode.setStyles(node, "position", "absolute");
@@ -235,9 +270,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		} else {
 			DOMNode.setStyles(node, "position", null);
 		}
-		if (parent != null)
-			parent.appendChild(node);
-		//System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " " + p);
+		if (parentNode != null)
+			parentNode.appendChild(node);
+		// System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h +
+		// " " + p);
 		return new Dimension(w, h);
 	}
 
@@ -316,9 +352,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * c ignored because JSComponentUI is one per component
 	 */
 	public Dimension getPreferredSize(JComponent c) {
-		//System.out.println("getPreferredSize for " + id + " " + c);
+		System.out.println("getPreferredSize for " + id + " " + c);
 		Dimension d = setHTMLSize(getDOMObject(), true);
-		//System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
+		System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
   	return d;
   }
 
@@ -471,6 +507,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 				prop = "value";
 				obj = valueNode;
 			}
+		} else if (prop == "preferredSize") {
+			preferredSize = c.getPreferredSize(); // may be null
+			getPreferredSize();
+			return;
 		}
 		if (obj == null) {
 			System.out.println("JSComponentUI: unrecognized prop: " + prop);

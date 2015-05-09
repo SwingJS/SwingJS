@@ -24,6 +24,7 @@
  */
 package jsjavax.swing;
 
+import swingjs.JSToolkit;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
@@ -245,7 +246,9 @@ public class JTextArea extends JTextComponent {
      * @return the default document model
      */
     protected Document createDefaultModel() {
-        return new PlainDocument();
+    	// SwingJS 
+    	return JSToolkit.getPlainDocument(this);
+//        return new PlainDocument();
     }
 
     /**

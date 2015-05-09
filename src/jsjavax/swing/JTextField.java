@@ -24,6 +24,7 @@
  */
 package jsjavax.swing;
 
+import swingjs.JSToolkit;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
@@ -31,7 +32,7 @@ import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Insets;
-import jsjava.awt.Rectangle;
+//import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.ActionListener;
 import jsjava.awt.event.InputEvent;
@@ -41,7 +42,7 @@ import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.JTextComponent;
-import jsjavax.swing.text.PlainDocument;
+//import jsjavax.swing.text.PlainDocument;
 import jsjavax.swing.text.TextAction;
 
 /**
@@ -234,11 +235,12 @@ public class JTextField extends JTextComponent implements SwingConstants {
      * @exception IllegalArgumentException if <code>columns</code> < 0
      */
     public JTextField(Document doc, String text, int columns) {
+    	super();
         if (columns < 0) {
             throw new IllegalArgumentException("columns less than zero.");
         }
-        visibility = new DefaultBoundedRangeModel();
-        visibility.addChangeListener(new ScrollRepainter());
+//        visibility = new DefaultBoundedRangeModel();
+//        visibility.addChangeListener(new ScrollRepainter());
         this.columns = columns;
         if (doc == null) {
             doc = createDefaultModel();
@@ -368,7 +370,9 @@ public class JTextField extends JTextComponent implements SwingConstants {
      * @return the default model implementation
      */
     protected Document createDefaultModel() {
-        return new PlainDocument();
+    	// SwingJS 
+    	return JSToolkit.getPlainDocument(this);
+//        return new PlainDocument();
     }
 
     /**
@@ -735,61 +739,61 @@ public class JTextField extends JTextComponent implements SwingConstants {
 
     // --- Scrolling support -----------------------------------
 
-    /**
-     * Gets the visibility of the text field.  This can
-     * be adjusted to change the location of the visible
-     * area if the size of the field is greater than
-     * the area that was allocated to the field.
-     *
-     * <p>
-     * The fields look-and-feel implementation manages
-     * the values of the minimum, maximum, and extent
-     * properties on the <code>BoundedRangeModel</code>.
-     *
-     * @return the visibility
-     * @see BoundedRangeModel
-     */
-    public BoundedRangeModel getHorizontalVisibility() {
-        return visibility;
-    }
-
-    /**
-     * Gets the scroll offset, in pixels.
-     *
-     * @return the offset >= 0
-     */
-    public int getScrollOffset() {
-        return visibility.getValue();
-    }
-
-    /**
-     * Sets the scroll offset, in pixels.
-     *
-     * @param scrollOffset the offset >= 0
-     */
-    public void setScrollOffset(int scrollOffset) {
-        visibility.setValue(scrollOffset);
-    }
-
-    /**
-     * Scrolls the field left or right.
-     *
-     * @param r the region to scroll
-     */
-    public void scrollRectToVisible(Rectangle r) {
-        // convert to coordinate system of the bounded range
-        Insets i = getInsets();
-        int x0 = r.x + visibility.getValue() - i.left;
-        int x1 = x0 + r.width;
-        if (x0 < visibility.getValue()) {
-            // Scroll to the left
-            visibility.setValue(x0);
-        } else if(x1 > visibility.getValue() + visibility.getExtent()) {
-            // Scroll to the right
-            visibility.setValue(x1 - visibility.getExtent());
-        }
-    }
-
+// SwingJS n/a    /**
+//     * Gets the visibility of the text field.  This can
+//     * be adjusted to change the location of the visible
+//     * area if the size of the field is greater than
+//     * the area that was allocated to the field.
+//     *
+//     * <p>
+//     * The fields look-and-feel implementation manages
+//     * the values of the minimum, maximum, and extent
+//     * properties on the <code>BoundedRangeModel</code>.
+//     *
+//     * @return the visibility
+//     * @see BoundedRangeModel
+//     */
+//    public BoundedRangeModel getHorizontalVisibility() {
+//        return visibility;
+//    }
+//
+//    /**
+//     * Gets the scroll offset, in pixels.
+//     *
+//     * @return the offset >= 0
+//     */
+//    public int getScrollOffset() {
+//        return visibility.getValue();
+//    }
+//
+//    /**
+//     * Sets the scroll offset, in pixels.
+//     *
+//     * @param scrollOffset the offset >= 0
+//     */
+//    public void setScrollOffset(int scrollOffset) {
+//        visibility.setValue(scrollOffset);
+//    }
+//
+//    /**
+//     * Scrolls the field left or right.
+//     *
+//     * @param r the region to scroll
+//     */
+//    public void scrollRectToVisible(Rectangle r) {
+//        // convert to coordinate system of the bounded range
+//        Insets i = getInsets();
+//        int x0 = r.x + visibility.getValue() - i.left;
+//        int x1 = x0 + r.width;
+//        if (x0 < visibility.getValue()) {
+//            // Scroll to the left
+//            visibility.setValue(x0);
+//        } else if(x1 > visibility.getValue() + visibility.getExtent()) {
+//            // Scroll to the right
+//            visibility.setValue(x1 - visibility.getExtent());
+//        }
+//    }
+//
     /**
      * Returns true if the receiver has an <code>ActionListener</code>
      * installed.
@@ -816,7 +820,7 @@ public class JTextField extends JTextComponent implements SwingConstants {
      */
     public static final String notifyAction = "notify-field-accept";
 
-    private BoundedRangeModel visibility;
+//    private BoundedRangeModel visibility;
     private int horizontalAlignment = LEADING;
     private int columns;
     private int columnWidth;

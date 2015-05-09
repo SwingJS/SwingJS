@@ -24,18 +24,13 @@
  */
 package jsjavax.swing.text;
 
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Method;
-//import jsjava.text.AttributedCharacterIterator;
-//import jsjava.text.AttributedString;
-//import jsjava.text.CharacterIterator;
-//import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
 import java.util.Vector;
 
 import jsjava.awt.AWTEvent;
@@ -51,29 +46,37 @@ import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
 import jsjava.awt.event.InputEvent;
-import jsjava.awt.event.InputMethodEvent;
 import jsjava.awt.event.InputMethodListener;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseListener;
-//import jsjava.security.AccessController;
-//import jsjava.security.PrivilegedAction;
 import jsjavax.swing.Action;
 import jsjavax.swing.ActionMap;
 import jsjavax.swing.DropMode;
 import jsjavax.swing.InputMap;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.JScrollBar;
 import jsjavax.swing.JViewport;
 import jsjavax.swing.KeyStroke;
 import jsjavax.swing.Scrollable;
 import jsjavax.swing.SwingConstants;
+import jsjavax.swing.TransferHandler;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.event.CaretEvent;
 import jsjavax.swing.event.CaretListener;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.DocumentListener;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.TextUI;
 import jssun.awt.AppContext;
+//import jsjava.text.AttributedCharacterIterator;
+//import jsjava.text.AttributedString;
+//import jsjava.text.CharacterIterator;
+//import java.util.Collections;
+//import jsjava.security.AccessController;
+//import jsjava.security.PrivilegedAction;
 
 /**
  * <code>JTextComponent</code> is the base class for swing text
@@ -430,9 +433,9 @@ public abstract class JTextComponent extends JComponent implements Scrollable
          * mutations while we disconnecting the old model.
          */
         try {
-            if (old instanceof AbstractDocument) {
-                ((AbstractDocument)old).readLock();
-            }
+//            if (old instanceof AbstractDocument) {
+//                ((AbstractDocument)old).readLock();
+//            }
 //            if (accessibleContext != null) {
 //                model.removeDocumentListener(
 //                    ((AccessibleJTextComponent)accessibleContext));
@@ -452,9 +455,9 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //            }
             firePropertyChangeObject("document", old, doc);
         } finally {
-            if (old instanceof AbstractDocument) {
-                ((AbstractDocument)old).readUnlock();
-            }
+//            if (old instanceof AbstractDocument) {
+//                ((AbstractDocument)old).readUnlock();
+//            }
         }
 
         revalidate();
@@ -1179,46 +1182,46 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         }
     }
 
-    /**
-     * Returns true if <code>klass</code> is NOT a JTextComponent and it or
-     * one of its superclasses (stoping at JTextComponent) overrides
-     * <code>processInputMethodEvent</code>. It is assumed this will be
-     * invoked from within a <code>doPrivileged</code>, and it is also
-     * assumed <code>klass</code> extends <code>JTextComponent</code>.
-     */
-    private static Boolean isProcessInputMethodEventOverridden(Class klass) {
-        if (klass == JTextComponent.class) {
-            return Boolean.FALSE;
-        }
-        Boolean retValue = (Boolean)overrideMap.get(klass.getName());
-
-        if (retValue != null) {
-            return retValue;
-        }
-        Boolean sOverriden = isProcessInputMethodEventOverridden(
-                                       klass.getSuperclass());
-
-        if (sOverriden.booleanValue()) {
-            // If our superclass has overriden it, then by definition klass
-            // overrides it.
-            overrideMap.put(klass.getName(), sOverriden);
-            return sOverriden;
-        }
-        // klass's superclass didn't override it, check for an override in
-        // klass.
-        try {
-            Class[] classes = new Class[1];
-            classes[0] = InputMethodEvent.class;
-
-            Method m = klass.getDeclaredMethod("processInputMethodEvent",
-                                               classes);
-            retValue = Boolean.TRUE;
-        } catch (NoSuchMethodException nsme) {
-            retValue = Boolean.FALSE;
-        }
-        overrideMap.put(klass.getName(), retValue);
-        return retValue;
-    }
+//    /**
+//     * Returns true if <code>klass</code> is NOT a JTextComponent and it or
+//     * one of its superclasses (stoping at JTextComponent) overrides
+//     * <code>processInputMethodEvent</code>. It is assumed this will be
+//     * invoked from within a <code>doPrivileged</code>, and it is also
+//     * assumed <code>klass</code> extends <code>JTextComponent</code>.
+//     */
+//    private static Boolean isProcessInputMethodEventOverridden(Class klass) {
+//        if (klass == JTextComponent.class) {
+//            return Boolean.FALSE;
+//        }
+//        Boolean retValue = (Boolean)overrideMap.get(klass.getName());
+//
+//        if (retValue != null) {
+//            return retValue;
+//        }
+//        Boolean sOverriden = isProcessInputMethodEventOverridden(
+//                                       klass.getSuperclass());
+//
+//        if (sOverriden.booleanValue()) {
+//            // If our superclass has overriden it, then by definition klass
+//            // overrides it.
+//            overrideMap.put(klass.getName(), sOverriden);
+//            return sOverriden;
+//        }
+//        // klass's superclass didn't override it, check for an override in
+//        // klass.
+//        try {
+//            Class[] classes = new Class[1];
+//            classes[0] = InputMethodEvent.class;
+//
+//            Method m = klass.getDeclaredMethod("processInputMethodEvent",
+//                                               classes);
+//            retValue = Boolean.TRUE;
+//        } catch (NoSuchMethodException nsme) {
+//            retValue = Boolean.FALSE;
+//        }
+//        overrideMap.put(klass.getName(), retValue);
+//        return retValue;
+//    }
 
     /**
      * Fetches the current color used to render the
@@ -3899,11 +3902,11 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //     */
 //    private static DefaultTransferHandler defaultTransferHandler;
 //
-    /**
-     * Maps from class name to Boolean indicating if
-     * <code>processInputMethodEvent</code> has been overriden.
-     */
-    private static Map overrideMap;
+//    /**
+//     * Maps from class name to Boolean indicating if
+//     * <code>processInputMethodEvent</code> has been overriden.
+//     */
+//    private static Map overrideMap;
 
     /**
      * Returns a string representation of this <code>JTextComponent</code>.
@@ -4395,9 +4398,12 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             JTextComponent c = (JTextComponent) getSource();
             if (c != null) {
                 Caret caret = c.getCaret();
-                dot = caret.getDot();
-                mark = caret.getMark();
-                c.fireCaretUpdate(this);
+                // SwingJS TODO -- no caret yet
+                if (caret != null) {
+                	dot = caret.getDot();
+                	mark = caret.getMark();
+                	c.fireCaretUpdate(this);
+                }
             }
         }
 

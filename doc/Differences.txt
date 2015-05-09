@@ -5,6 +5,11 @@ Notes
 
 PROGRESS
 ========
+5/9/2015
+
+JTextField works, including tracking selection caret -- see test_3.htm
+JSPlainDocument implemented
+
 5/7/2015
 
 Problem with duplicate Event queue dispatches for every mouse event found. 

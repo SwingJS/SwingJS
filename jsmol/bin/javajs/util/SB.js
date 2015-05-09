@@ -140,3 +140,12 @@ for (var i = off + len, j = i - off; --i >= off; ) b[--j] = (this.charAt (i)).ch
 
 return b;
 }, "~N,~N");
+Clazz.defineMethod (c$, "replace", 
+function (start, end, str) {
+{
+this.s = this.s.substring(0, start) + str + this.s.substring(end);
+}}, "~N,~N,~S");
+Clazz.defineMethod (c$, "insert", 
+function (offset, str) {
+this.replace (offset, offset, str);
+}, "~N,~S");

@@ -716,6 +716,7 @@ class Test_3Controls extends JPanel implements ItemListener {
 
 	JTextField s;
 	JTextField e;
+	JTextField f;
 	Test_3Canvas canvas;
 	int range;
   public JComponent bg0, bg5;
@@ -728,10 +729,10 @@ class Test_3Controls extends JPanel implements ItemListener {
 		setName("T3d3Controls");
 		this.canvas = canvas;
 		range = 0;
-		JTextField f = new JTextField("test");
+		f = new JTextField("test");
 		f.setFont(new Font("Arial", Font.PLAIN, 20));
 		add(f);
-		f.setPreferredSize(new Dimension(100,25));
+		f.setPreferredSize(new Dimension(50,25));
 		JCheckBox c = new JCheckBox("test");
 		c.addItemListener(this);
 		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));

@@ -29,8 +29,8 @@ import jsjavax.swing.undo.AbstractUndoableEdit;
 import jsjavax.swing.undo.CannotRedoException;
 import jsjavax.swing.undo.CannotUndoException;
 import jsjavax.swing.undo.UndoableEdit;
-import java.lang.ref.WeakReference;
-import java.lang.ref.ReferenceQueue;
+//import java.lang.ref.WeakReference;
+//import java.lang.ref.ReferenceQueue;
 
 /**
  * An implementation of the AbstractDocument.Content interface
@@ -79,7 +79,7 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
 
         marks = new MarkVector();
         search = new MarkData(0);
-        queue = new ReferenceQueue();
+        //queue = new ReferenceQueue();
     }
 
     /**
@@ -223,12 +223,12 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @exception BadLocationException if the specified position is invalid
      */
     public Position createPosition(int offset) throws BadLocationException {
-        while ( queue.poll() != null ) {
-            unusedMarks++;
-        }
-        if (unusedMarks > Math.max(5, (marks.size() / 10))) {
-            removeUnusedMarks();
-        }
+//        while ( queue.poll() != null ) {
+//            unusedMarks++;
+//        }
+//        if (unusedMarks > Math.max(5, (marks.size() / 10))) {
+//            removeUnusedMarks();
+//        }
         int g0 = getGapStart();
         int g1 = getGapEnd();
         int index = (offset < g0) ? offset : offset + (g1 - g0);
@@ -242,7 +242,7 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
             //position references the correct StickyPostition
         } else {
             position = new StickyPosition();
-            m = new MarkData(index,position,queue);
+            m = new MarkData(index,position);// SwingJS ,queue);
             position.setMark(m);
             marks.insertElementAt(m, sortIndex);
         }
@@ -258,14 +258,16 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * it.  The update table holds only a reference
      * to this data.
      */
-    final class MarkData extends WeakReference {
+    final class MarkData {//extends WeakReference {
 
-        MarkData(int index) {
-            super(null);
+        private StickyPosition ref;
+				MarkData(int index) {
+//            super(null);
             this.index = index;
         }
-        MarkData(int index, StickyPosition position, ReferenceQueue queue) {
-            super(position, queue);
+        MarkData(int index, StickyPosition position /*, ReferenceQueue queue*/) {
+//            super(position, queue);
+        	this.ref = position;
             this.index = index;
         }
 
@@ -283,7 +285,7 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
         }
 
         StickyPosition getPosition() {
-            return (StickyPosition)get();
+            return ref;//(StickyPosition)get();
         }
         int index;
     }
@@ -323,9 +325,9 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
     /**
      * The number of unused mark entries
      */
-    private transient int unusedMarks = 0;
+//    private transient int unusedMarks = 0;
 
-    private transient ReferenceQueue queue;
+//    private transient ReferenceQueue queue;
 
     final static int GROWTH_SIZE = 1024 * 512;
 
@@ -565,12 +567,12 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
         MarkVector cleaned = new MarkVector(n);
         for (int i = 0; i < n; i++) {
             MarkData mark = marks.elementAt(i);
-            if (mark.get() != null) {
+            if (mark != null) {
                 cleaned.addElement(mark);
             }
         }
         marks = cleaned;
-        unusedMarks = 0;
+        //unusedMarks = 0;
     }
 
 

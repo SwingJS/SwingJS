@@ -23,8 +23,8 @@ import jsjava.awt.peer.LightweightPeer;
 import jsjava.lang.Thread;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
+import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
-import jssun.awt.NullComponentPeer;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
 import swingjs.api.HTML5Applet;
@@ -708,5 +708,9 @@ public class JSToolkit extends SunToolkit {
   	// layeredPane will need JSComponentPeer
   	return (peer == null ? new JSComponentPeer(target) : peer);
   }
+
+	public static Document getPlainDocument(JComponent c) {
+		return (Document) getInstance("swingjs.JSPlainDocument");
+	}
 
 }

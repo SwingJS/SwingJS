@@ -40,11 +40,10 @@ package jsjava.util;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
-//import jssun.util.TimeZoneNameUtility;
 import jssun.util.calendar.ZoneInfo;
+//import jssun.util.TimeZoneNameUtility;
 //import jssun.util.calendar.ZoneInfoFile;
 
 /**
@@ -155,14 +154,14 @@ abstract public class TimeZone implements Cloneable {
     public static final int LONG  = 1;
 
     // Constants used internally; unit is milliseconds
-    private static final int ONE_MINUTE = 60*1000;
-    private static final int ONE_HOUR   = 60*ONE_MINUTE;
-    private static final int ONE_DAY    = 24*ONE_HOUR;
+//    private static final int ONE_MINUTE = 60*1000;
+//    private static final int ONE_HOUR   = 60*ONE_MINUTE;
+//    private static final int ONE_DAY    = 24*ONE_HOUR;
 
     /**
      * Cache to hold the SimpleDateFormat objects for a Locale.
      */
-    private static Hashtable cachedLocaleData = new Hashtable(3);
+//    private static Hashtable cachedLocaleData = new Hashtable(3);
 
     // Proclaim serialization compatibility with JDK 1.1
     static final long serialVersionUID = 3581463369166924961L;
@@ -631,19 +630,19 @@ abstract public class TimeZone implements Cloneable {
 //        }
 //        return null;
 //    }
-
-    /**
-     * Sets the default TimeZone in the AppContext to the given tz if
-     * allowSetDefault is true. null is handled special: do nothing if any
-     * AppContext hasn't been used, remove the default TimeZone in the
-     * AppContext otherwise.
-     *
-     * Note that javaAWTAccess may be null if sun.awt.AppContext class hasn't
-     * been loaded. If so, it implies that AWTSecurityManager is not our
-     * SecurityManager and we can use a local static variable.
-     * This works around a build time issue.
-     */
-    private static void setDefaultInAppContext(TimeZone tz) {
+//
+//    /**
+//     * Sets the default TimeZone in the AppContext to the given tz if
+//     * allowSetDefault is true. null is handled special: do nothing if any
+//     * AppContext hasn't been used, remove the default TimeZone in the
+//     * AppContext otherwise.
+//     *
+//     * Note that javaAWTAccess may be null if sun.awt.AppContext class hasn't
+//     * been loaded. If so, it implies that AWTSecurityManager is not our
+//     * SecurityManager and we can use a local static variable.
+//     * This works around a build time issue.
+//     */
+//    private static void setDefaultInAppContext(TimeZone tz) {
 //        if (allowSetDefault) {
 //            // JavaAWTAccess provides access implementation-private methods without using reflection.
 //            JavaAWTAccess javaAWTAccess = SharedSecrets.getJavaAWTAccess();
@@ -658,7 +657,7 @@ abstract public class TimeZone implements Cloneable {
 //                }
 //            }
 //        }
-    }
+//    }
 
     /**
      * Returns true if this zone has the same rule and offset as another zone.
@@ -712,7 +711,7 @@ abstract public class TimeZone implements Cloneable {
     private static final int    GMT_ID_LENGTH = 3;
 
     // a static TimeZone we can reference if no AppContext is in place
-    private static volatile TimeZone mainAppContextDefault;
+//    private static volatile TimeZone mainAppContextDefault;
 
 		private static Map<String, ZoneInfo> zoneInfoObjects;
 
@@ -727,11 +726,11 @@ abstract public class TimeZone implements Cloneable {
 	 *         saving time, or null if the id cannot be parsed.
 	 */
 	private static final TimeZone parseCustomTimeZone(String id) {
-		int length;
+		//int length;
 
 		// Error if the length of id isn't long enough or id doesn't
 		// start with "GMT".
-		if ((length = id.length()) < (GMT_ID_LENGTH + 2) || id.indexOf(GMT_ID) != 0) {
+		if ((/*length = */id.length()) < (GMT_ID_LENGTH + 2) || id.indexOf(GMT_ID) != 0) {
 			return null;
 		}
 
