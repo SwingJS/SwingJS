@@ -334,7 +334,7 @@ public class DefaultTableCellRenderer extends JLabel
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    protected void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+    public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
 //        // Strings get interned...
 //        if (propertyName=="text"
 //                || propertyName == "labelFor"

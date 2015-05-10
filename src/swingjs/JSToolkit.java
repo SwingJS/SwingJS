@@ -31,6 +31,7 @@ import swingjs.api.HTML5Applet;
 import swingjs.api.HTMLCanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
+import swingjs.api.JSFunction;
 import swingjs.plaf.HTML5LookAndFeel;
 import swingjs.plaf.JSComponentUI;
 
@@ -500,7 +501,7 @@ public class JSToolkit extends SunToolkit {
 	private static int dispatchID = 0;
 
 	public static void dispatchSystemEvent(Runnable runnable) {
-		Object f = null;
+		JSFunction f = null;
 		/**
 		 * @param eventQueue
 		 * @j2sNative
@@ -523,7 +524,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param andWait
 	 */
 	public static void dispatchEvent(AWTEvent event, Object src, boolean andWait) {
-		Object f = null;
+		JSFunction f = null;
 		int id = ++dispatchID;
 		
 //		 *            System.out.println("JST dispatchAWTEvent andWait=" + andWait +
@@ -556,7 +557,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param msDelay a time to wait for, in milliseconds
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	public static void setTimeout(Object f, int msDelay, int id) {
+	public static void setTimeout(JSFunction f, int msDelay, int id) {
 			
 		/**
 		 * @j2sNative
@@ -592,7 +593,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param f a function or Runnable
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	private static void invokeAndWait(Object f, int id) {
+	private static void invokeAndWait(JSFunction f, int id) {
 		/**
 		 * @j2sNative
 		 * 

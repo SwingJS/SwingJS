@@ -20,6 +20,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -31,10 +33,18 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import swingjs.JSToolkit;
 
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
 public class Test_3 extends JApplet {
@@ -723,8 +733,8 @@ class Test_3Controls extends JPanel implements ItemListener {
 	private ButtonGroup bg;
 
 	public Test_3Controls(Test_3Canvas canvas) {
-		setLayout(new FlowLayout()); 
-		// default for JPanel, but 
+		setLayout(new FlowLayout());
+		// default for JPanel, but
 		// being explicit allows debugging.
 		setName("T3d3Controls");
 		this.canvas = canvas;
@@ -732,7 +742,23 @@ class Test_3Controls extends JPanel implements ItemListener {
 		f = new JTextField("test");
 		f.setFont(new Font("Arial", Font.PLAIN, 20));
 		add(f);
-		f.setPreferredSize(new Dimension(50,25));
+		f.setPreferredSize(new Dimension(50, 25));
+		f.addCaretListener(new CaretListener() {
+
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				System.out.println("Test_3.JTextField caretEvent " + e.getDot() + " " + e.getMark());
+			}
+		});
+		f.addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				System.out.println("Test_3.JTextField property change "
+						+ evt.getPropertyName() + " " + f.getText());
+			}
+
+		});
 		JCheckBox c = new JCheckBox("test");
 		c.addItemListener(this);
 		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
@@ -759,7 +785,7 @@ class Test_3Controls extends JPanel implements ItemListener {
 					x.nextElement().setEnabled(isEnable);
 				enableBtn.setText(isEnable ? "Disable" : "Enable");
 			}
-			
+
 		});
 		setVisible(true);
 	}

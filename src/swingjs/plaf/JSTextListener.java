@@ -29,6 +29,7 @@ import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
 import jsjava.awt.event.InputEvent;
+import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseListener;
 import jsjava.awt.event.MouseMotionListener;
@@ -54,7 +55,7 @@ import jssun.swing.UIAction;
  */
 
 public class JSTextListener implements MouseListener, MouseMotionListener,
-                                   FocusListener, ChangeListener, PropertyChangeListener
+                                   FocusListener, ChangeListener, PropertyChangeListener, JSEventHandler
 {
 
     public JSTextListener(JTextComponent b) {
@@ -270,5 +271,52 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
             }
         }
     }
+
+
+	@Override
+	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
+		JSTextUI ui = (JSTextUI) target;
+		int dot = 0, mark = 0;
+		String evType = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            dot = jQueryEvent.target.selectionStart; mark =
+		 *            jQueryEvent.target.selectionEnd; evType = jQueryEvent.type;
+		 */
+		{
+		}
+		if (dot > mark) {
+			int t = dot;
+			dot = mark;
+			mark = t;
+		}
+		switch (eventType) {
+		case MouseEvent.MOUSE_PRESSED:
+		case MouseEvent.MOUSE_RELEASED:
+		case MouseEvent.MOUSE_CLICKED:
+			break;
+		case KeyEvent.KEY_PRESSED:
+		case KeyEvent.KEY_RELEASED:
+		case KeyEvent.KEY_TYPED:
+			String val = ui.getJSValue();
+			if (!val.equals(ui.currentValue)) {
+				String oldval = ui.currentValue;
+				ui.currentValue = val; // prevents overwriting of new value same as old
+				ui.editor.setText(val);
+				ui.editor.firePropertyChangeObject("text", oldval, val);
+			}
+		}
+		if (dot != ui.editor.getCaret().getDot()
+				|| mark != ui.editor.getCaret().getMark()) {
+			ui.editor.getCaret().setDot(dot);
+			if (dot != mark)
+				ui.editor.getCaret().moveDot(mark);
+			ui.editor.caretEvent.fire();
+		}
+		System.out.println(ui.id + " handling event " + evType + " " + eventType
+				+ " " + ui.editor.getCaret() + " " + ui.editor.getText());
+		return true;
+	}
 }
   

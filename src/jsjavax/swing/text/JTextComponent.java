@@ -3825,7 +3825,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      */
     private transient Keymap keymap;
 
-    private transient MutableCaretEvent caretEvent;
+    public transient MutableCaretEvent caretEvent; //SwingJS -- was private
     private Color caretColor;
     private Color selectionColor;
     private Color selectedTextColor;
@@ -4388,13 +4388,13 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * position.  This is mutable so that the event can be reused
      * since caret events can be fairly high in bandwidth.
      */
-    static class MutableCaretEvent extends CaretEvent implements ChangeListener, FocusListener, MouseListener {
+    public static class MutableCaretEvent extends CaretEvent implements ChangeListener, FocusListener, MouseListener {
 
         MutableCaretEvent(JTextComponent c) {
             super(c);
         }
 
-        final void fire() {
+        public final void fire() { // SwingJS was not public
             JTextComponent c = (JTextComponent) getSource();
             if (c != null) {
                 Caret caret = c.getCaret();

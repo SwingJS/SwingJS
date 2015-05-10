@@ -44,7 +44,7 @@ import jssun.awt.CausedFocusEvent.Cause;
  * @author RM
  *
  */
-public abstract class JSComponentUI extends ComponentUI implements LightweightPeer {
+public abstract class JSComponentUI extends ComponentUI implements LightweightPeer, JSEventHandler {
 
 	/**
 	 * provides a unique id for any component; set on instantiation
@@ -123,6 +123,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * 
 	 */
 	protected JSComponentUI parent;
+
+
+	String currentValue;
 	
 	
 	public JSComponentUI() {
@@ -194,11 +197,11 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	
 	/**
 	 * called by JmolCore.js
-	 * @return
+	 * @return true if handled
 	 */
-	public boolean handleJSEvent(String eventType, Object jQueryEvent) {
+	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		System.out.println(id + " handling event " + eventType + jQueryEvent);
-		return true;
+		return false;
 	}
 
 	protected DOMNode wrap(String type, String id, DOMNode... elements) {
@@ -494,12 +497,17 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
       return Component.BaselineResizeBehavior.OTHER;
   }
 
+  public String getJSValue() {
+  	return (String) DOMNode.getAttr(domNode, valueNode == null ? "innerHTML" : "value");
+  }
+  
 	public void notifyPropertyChanged(String prop) {
 		DOMNode obj = null;
 		String val = null;
 		if (prop == "text") {
-			//doResize = true;
 			val = ((AbstractButton) c).getText();
+			if (val.equals(currentValue)) // we set it here, then fired the property change
+				return;
 			if (textNode != null) {
 				prop = "innerHTML";
 				obj = textNode;

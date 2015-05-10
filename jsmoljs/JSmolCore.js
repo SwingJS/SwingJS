@@ -1538,7 +1538,7 @@ Jmol = (function(document) {
 			Jmol._setMouseOwner(canvas, true);
 			ev.stopPropagation();
       var ui = ev.target["data-UI"];
-      if (!ui || !ui.handleJSEvent(501, ev)) 
+      if (!ui || !ui.handleJSEvent(canvas, 501, ev)) 
   			ev.preventDefault();
 			canvas.isDragging = true;
 			if ((ev.type == "touchstart") && Jmol._gestureUpdate(canvas, ev))
@@ -1556,7 +1556,7 @@ Jmol = (function(document) {
 			Jmol._setMouseOwner(null);
 			ev.stopPropagation();
       var ui = ev.target["data-UI"];
-      if (!ui || !ui.handleJSEvent(502, ev))
+      if (!ui || !ui.handleJSEvent(canvas, 502, ev))
   			ev.preventDefault();
 			canvas.isDragging = false;
 			if (ev.type == "touchend" && Jmol._gestureUpdate(canvas, ev))
@@ -1584,10 +1584,14 @@ Jmol = (function(document) {
 				return false;
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if(!xym) return false;
+      
 			if (!canvas.isDragging)
 				xym[2] = 0;
-			canvas.applet._processEvent((canvas.isDragging ? 506 : 503), xym); // J.api.Event.MOUSE_DRAG : J.api.Event.MOUSE_MOVE
-			return false;
+
+      var ui = ev.target["data-UI"];
+      if (canvas.isdragging && (!ui || !ui.handleJSEvent(canvas, 506, ev))) {}
+			canvas.applet._processEvent((canvas.isDragging ? 506 : 503), xym); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
+			return !!ui;
 		}
 		
 		Jmol.$bind(canvas, 'DOMMouseScroll mousewheel', function(ev) { // Zoom

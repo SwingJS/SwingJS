@@ -9,6 +9,7 @@ PROGRESS
 
 JTextField works, including tracking selection caret -- see test_3.htm
 JSPlainDocument implemented
+CaretListener and PropertyChangeListener "text" working
 
 5/7/2015
 

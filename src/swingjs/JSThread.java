@@ -25,6 +25,7 @@
 
 package swingjs;
 
+import swingjs.api.JSFunction;
 import jsjava.lang.Thread;
 import jsjava.lang.ThreadGroup;
 
@@ -34,7 +35,7 @@ import jsjava.lang.ThreadGroup;
  * @author RM
  * 
  */
-public abstract class JSThread extends Thread {
+public abstract class JSThread extends Thread implements JSFunction {
 
 	public static final int INIT = 0;
 	public static final int LOOP = 1;
@@ -126,8 +127,8 @@ public abstract class JSThread extends Thread {
 			}
 			return;
 		}
-		Object f = null;
-		Object me = this;
+		JSFunction f = null;
+		JSThread me = this;
 		/**
 		 * @j2sNative
 		 * 

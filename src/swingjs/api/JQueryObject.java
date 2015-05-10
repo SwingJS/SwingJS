@@ -12,4 +12,6 @@ public interface JQueryObject {
 
 	public abstract DOMNode get(int i);
 
+	public abstract void bind(String actions, JSFunction f);
+
 }

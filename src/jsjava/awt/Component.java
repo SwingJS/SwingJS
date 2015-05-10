@@ -7379,8 +7379,9 @@ protected  transient ComponentPeer peer;
     	// SwingJS SAEM
     	firePropertyChangeObject(propertyName, oldValue, newValue);
     }
-    protected void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+    public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
     	// SwingJS SAEM
+    	// SwingJS called by swingjs.plaf.JSTextListener "text"
         PropertyChangeSupport changeSupport;
         synchronized (getChangeSupportLock()) {
             changeSupport = this.changeSupport;

@@ -3,7 +3,9 @@ package swingjs.plaf;
 //import jsjava.awt.FontMetrics;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.text.JTextComponent;
+import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
+import swingjs.api.JSFunction;
 
 /**
  * SWingJS implementation of stateful user interface for buttons. 
@@ -26,10 +28,28 @@ public class JSTextFieldUI extends JSTextUI {
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "text");
 			bindMouse(domNode);
+			bindKeys(domNode);
 		}
 		setCssFont(DOMNode.setAttr(domNode, "value", ((JTextComponent) c).getText()),
 				c.getFont());
 		return domNode;
+	}
+
+	private void bindKeys(DOMNode domNode) {
+		JSFunction f = null;
+		JSEventHandler me = this;
+		/**
+		 * @j2sNative
+		 *   
+		 *    f = function(event) { me.handleJSEvent(me.domNode, 401, event) }
+		 */
+		{
+		  System.out.println(me);
+		}
+		JSToolkit.getJQuery().$(domNode).bind("keydown keypress keyup", f);
+
+		// TODO Auto-generated method stub
+		
 	}
 
 

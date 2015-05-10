@@ -49,6 +49,7 @@ import jsjava.awt.event.MouseMotionListener;
 //import jsjava.awt.im.InputContext;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
+import java.awt.Event;
 //import jsjava.io.IOException;
 //import jsjava.io.InputStream;
 //import jsjava.io.Reader;
@@ -59,6 +60,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
+
 
 import jsjavax.swing.AbstractAction;
 import jsjavax.swing.Action;
@@ -441,20 +443,8 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
   	 * called by JmolCore.js
   	 * @return handled
   	 */
-  	public boolean handleJSEvent(String eventType, Object jQueryEvent) {
-  		int dot = 0, mark = 0;
-  		/**
-  		 * @j2sNative
-  		 * 
-  		 * dot = jQueryEvent.target.selectionStart;
-  		 * mark = jQueryEvent.target.selectionEnd;
-  		 */
-  		{}
-  		editor.getCaret().setDot(dot);
-  		if (dot != mark)
-  			editor.getCaret().moveDot(mark);
-  		System.out.println(id + " handling event " + eventType + " " + editor.getCaret());
-  		return true;
+  	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
+  		return updateHandler.handleJSEvent(this, eventType, jQueryEvent);
   	}
 
     /**

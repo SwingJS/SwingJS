@@ -1471,7 +1471,7 @@ public class JViewport extends JComponent
      * @param oldValue the old value of the property
      * @param newValue  the new value of the property
      */
-    protected void firePropertyChangeObject(String propertyName, Object oldValue,
+    public void firePropertyChangeObject(String propertyName, Object oldValue,
                                       Object newValue) {
         super.firePropertyChangeObject(propertyName, oldValue, newValue);
         if (propertyName.equals(EnableWindowBlit)) {
