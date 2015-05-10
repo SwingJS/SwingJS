@@ -754,6 +754,7 @@ class Test_3Controls extends JPanel implements ItemListener {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
+				// oddly enough, this is not fired when the text is changed by the user.
 				System.out.println("Test_3.JTextField property change "
 						+ evt.getPropertyName() + " " + f.getText());
 			}
