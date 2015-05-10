@@ -915,7 +915,8 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 		b.addMouseMotionListener(listener);
 		b.addFocusListener(listener);
 	  b.addPropertyChangeListener(listener);
-		// b.addChangeListener(listener);
+	  // SwingJS there won't be a document yet; this is in constructor
+	  //b.getDocument().addDocumentListener(listener);
 	}
 
 	protected void uninstallListeners(JTextComponent b) {
@@ -923,8 +924,8 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 		b.removeMouseListener(listener);
 		b.removeMouseMotionListener(listener);
 		b.removeFocusListener(listener);
-		// b.removeChangeListener(listener);
 		b.removePropertyChangeListener(listener);
+	  b.getDocument().removeDocumentListener(listener);
 	}
 
 //    /**

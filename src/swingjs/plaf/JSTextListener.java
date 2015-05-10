@@ -43,6 +43,8 @@ import jsjavax.swing.KeyStroke;
 import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.swing.UIAction;
@@ -55,12 +57,24 @@ import jssun.swing.UIAction;
  */
 
 public class JSTextListener implements MouseListener, MouseMotionListener,
-                                   FocusListener, ChangeListener, PropertyChangeListener, JSEventHandler
+                                   FocusListener, ChangeListener, PropertyChangeListener, DocumentListener, JSEventHandler
 {
 
-    public JSTextListener(JTextComponent b) {
+    private JTextComponent b;
+    
+    boolean haveDocument;
+
+		public JSTextListener(JTextComponent b) {
+    	this.b = b;
+    	
     }
 
+  void checkDocument() {
+  	if (!haveDocument && b.getDocument() != null) {
+  		haveDocument = true;
+  		b.getDocument().addDocumentListener(this);
+  	}
+  }
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
 		System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
@@ -281,16 +295,12 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		/**
 		 * @j2sNative
 		 * 
-		 *            dot = jQueryEvent.target.selectionStart; mark =
+		 *            mark = jQueryEvent.target.selectionStart; dot =
 		 *            jQueryEvent.target.selectionEnd; evType = jQueryEvent.type;
 		 */
 		{
 		}
-		if (dot > mark) {
-			int t = dot;
-			dot = mark;
-			mark = t;
-		}
+		System.out.println("JSTextListener mark/dot " + mark + " " + dot);
 		switch (eventType) {
 		case MouseEvent.MOUSE_PRESSED:
 		case MouseEvent.MOUSE_RELEASED:
@@ -306,17 +316,36 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 				ui.editor.setText(val);
 				ui.editor.firePropertyChangeObject("text", oldval, val);
 			}
+			break;
 		}
 		if (dot != ui.editor.getCaret().getDot()
 				|| mark != ui.editor.getCaret().getMark()) {
-			ui.editor.getCaret().setDot(dot);
+			ui.editor.getCaret().setDot(mark);
 			if (dot != mark)
-				ui.editor.getCaret().moveDot(mark);
+				ui.editor.getCaret().moveDot(dot);
 			ui.editor.caretEvent.fire();
 		}
 		System.out.println(ui.id + " handling event " + evType + " " + eventType
 				+ " " + ui.editor.getCaret() + " " + ui.editor.getText());
 		return true;
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		setText();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		setText();
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+	}
+
+	private void setText() {
+		((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged("text");	
 	}
 }
   

@@ -5,11 +5,19 @@ Notes
 
 PROGRESS
 ========
+5/10/2015
+
+JTextFields responding to DocumentListeners
+JLabel default font and baseline considerations
+see test_3.htm
+
+
 5/9/2015
 
 JTextField works, including tracking selection caret -- see test_3.htm
-JSPlainDocument implemented
-CaretListener and PropertyChangeListener "text" working
+JSPlainDocument implemented (roughly)
+JSAbstractDocument implemented (roughly)
+CaretListener working
 
 5/7/2015
 
@@ -498,9 +506,8 @@ threads
 image loading
 no BigInteger; no BigDecimal
 no format internationalization
-no javax.swing.AutoScroller public static methods .stop, .isRunning, .processMouseDragged
-no AbstractButton    public void doClick(int pressTime), as it requires Thread.sleep()
-
+text-related field implementation
+ 
 //////////////////////////////////////////////////////////////////////////////
 
 MINOR ISSUES--requiring no rewriting
@@ -881,4 +888,31 @@ no format internationalization
 
 For now, just en for number and date formatters
 
+
+
+text-related field implementation
+---------------------------------
+
+Text fields are:
+
+JTextField   (JavaScript <input type="text">)
+JTextArea    (JavaScript <textarea>; TODO)
+JTextPane    (JavaScript <div>; non-editing; TODO)
+JEditorPane  NOT IMPLEMENTED
+
+For the initial implementation, we don't implement infinite undo/redo, and the abstract 
+document model is much less elaborate. Only PlainDocument (in the form of JSPlainDocument)
+is implemented. 
+Thus, the Document returned by JTextField.getDocument() is a javax.swing.text.Document, but it
+is a swingjs.JSPlainDocument (extending swingjs.JSAbstractDocument)
+rather than a javax.swing.text.PlainDocument (extending javax.swing.text.AbstractDocument).
+
+all scrolling is handled by HTML5
+javax.swing.AutoScroller is not implemented
+public static methods .stop, .isRunning, .processMouseDragged require true Java threading
+javax.swing.text.View and its subclasses are not implemented. 
+
+The JS document model does not allow two fields to address the same underlying document. 
+
+ 
 

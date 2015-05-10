@@ -29,6 +29,7 @@ import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -377,14 +378,16 @@ class Test_3Canvas extends JPanel implements MouseListener, MouseMotionListener 
 	Color copper = new Color(179, 100, 13);
 	Rectangle graphRec = new Rectangle(50, 10, 600, 460);
 	Rectangle outPRec = new Rectangle(650, 10, 685, 360);
+	
+	Color backgroundColor;
 
 	public Test_3Canvas() {
 		setName("Test_3Canvas");
-		setBackground(Color.blue);
 		start_x = 0;
 		end_x = 50;
 		hlines = 10;
 		vlines = 10;
+		backgroundColor = ltgrey;
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		mouseOn = false;
@@ -396,35 +399,20 @@ class Test_3Canvas extends JPanel implements MouseListener, MouseMotionListener 
 		drawDiagram(g);
 	}
 
-	public void redraw(int range) {
-		lrange = range;
-		switch (range) {
-		case 0:
+	public void setRange(String start_end) {
+		try {
+			int pt = start_end.indexOf('-');
+			int start = Integer.valueOf(start_end.substring(0, pt));
+			int end = Integer.valueOf(start_end.substring(pt + 1));
+			if (start >= end) 
+				return;
+			lrange = (start == 0 && end == 50 ? 0 : -1);
+			start_x = start;
+			end_x = end;
+		} catch (NumberFormatException e) {
 			start_x = 0;
 			end_x = 50;
-			break;
-		case 1:
-			start_x = 0;
-			end_x = 10;
-			break;
-		case 2:
-			start_x = 10;
-			end_x = 20;
-			break;
-		case 3:
-			start_x = 20;
-			end_x = 30;
-			break;
-		case 4:
-			start_x = 30;
-			end_x = 40;
-			break;
-		case 5:
-			start_x = 40;
-			end_x = 50;
-			break;
 		}
-		repaint();
 	}
 
 	private void drawDiagram(Graphics g) {
@@ -436,7 +424,7 @@ class Test_3Canvas extends JPanel implements MouseListener, MouseMotionListener 
 		
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setColor(ltgrey);
+		g2.setColor(backgroundColor);
 		g2.fillRect(0,  0, getWidth(), getHeight());
 		g2.setBackground(g2.getBackground());
 
@@ -722,13 +710,12 @@ class Test_3Canvas extends JPanel implements MouseListener, MouseMotionListener 
 } // End Class Test_3Canvas
 
 // ------------------------------------------------------
-class Test_3Controls extends JPanel implements ItemListener {
+class Test_3Controls extends JPanel implements ItemListener, DocumentListener {
 
 	JTextField s;
 	JTextField e;
-	JTextField f;
+	JTextField f1,f2;
 	Test_3Canvas canvas;
-	int range;
   public JComponent bg0, bg5;
 	private ButtonGroup bg;
 
@@ -738,31 +725,41 @@ class Test_3Controls extends JPanel implements ItemListener {
 		// being explicit allows debugging.
 		setName("T3d3Controls");
 		this.canvas = canvas;
-		range = 0;
-		f = new JTextField("test");
-		f.setFont(new Font("Arial", Font.PLAIN, 20));
-		add(f);
-		f.setPreferredSize(new Dimension(50, 25));
-		f.addCaretListener(new CaretListener() {
+		f1 = new JTextField("0");
+		f1.setFont(new Font("Arial", Font.PLAIN, 15));
+		add(new JLabel("from"));
+		add(f1);
+		f1.setPreferredSize(new Dimension(25, 19));
+		f1.getDocument().addDocumentListener(this);
+		f1.addCaretListener(new CaretListener() {
 
 			@Override
 			public void caretUpdate(CaretEvent e) {
 				System.out.println("Test_3.JTextField caretEvent " + e.getDot() + " " + e.getMark());
 			}
 		});
-		f.addPropertyChangeListener(new PropertyChangeListener() {
+		f1.addPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				// oddly enough, this is not fired when the text is changed by the user.
 				System.out.println("Test_3.JTextField property change "
-						+ evt.getPropertyName() + " " + f.getText());
+						+ evt.getPropertyName() + " " + f1.getText());
 			}
 
 		});
-		JCheckBox c = new JCheckBox("test");
+		
+		add(new JLabel("to"));
+		f2 = new JTextField("50");
+		f2.setFont(new Font("Arial", Font.PLAIN, 15));
+		add(f2);
+		f2.setPreferredSize(new Dimension(25, 19));
+		f2.getDocument().addDocumentListener(this);
+
+		
+		JCheckBox c = new JCheckBox("white");
 		c.addItemListener(this);
-		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
+		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 15));
 		add(c);
 		bg = new ButtonGroup();
 		bg0 = addButton(bg, "0-50", true);
@@ -791,6 +788,28 @@ class Test_3Controls extends JPanel implements ItemListener {
 		setVisible(true);
 	}
 
+
+	@Override
+	public void insertUpdate(DocumentEvent evt) {
+		resetGraph();//System.out.println("Test_3.JTextField insert " + f1.getText());
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent evt) {
+		resetGraph();//System.out.println("Test_3.JTextField remove " + f1.getText());
+	}
+
+	private void resetGraph() {
+		canvas.setRange(f1.getText() + "-" + f2.getText());
+		canvas.repaint();
+	}
+
+
+	@Override
+	public void changedUpdate(DocumentEvent evt) {
+		System.out.println("Test_3.JTextField changed " + f1.getText());
+	}
+
 	private JComponent addButton(ButtonGroup bg, String text, boolean b) {
 		JRadioButton c;
 		bg.add(c = new JRadioButton(text, b));
@@ -798,31 +817,28 @@ class Test_3Controls extends JPanel implements ItemListener {
 		add(c);
 		c.setEnabled(false);
 		c.addItemListener(this);
-		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
+		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 15));
 		return c;
 	}
 
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() instanceof JCheckBox) {
-			JSToolkit.alert("OK, this box.isSelected()=" + ((JCheckBox) e.getSource()).isSelected());
+			if (((JCheckBox) e.getSource()).isSelected()) {
+				canvas.backgroundColor = Color.white;
+			} else {
+				canvas.backgroundColor = canvas.ltgrey;
+			}
+			canvas.repaint();
 			return;
 		}
-		if (e.getSource() instanceof JRadioButton && e.getStateChange() == ItemEvent.SELECTED) {
-			String b = ((JRadioButton) e.getItemSelectable()).getText();
-			if (b == "0-50") {
-				range = 0;
-			} else if (b == "0-10") {
-				range = 1;
-			} else if (b == "10-20") {
-				range = 2;
-			} else if (b == "20-30") {
-				range = 3;
-			} else if (b == "30-40") {
-				range = 4;
-			} else if (b == "40-50") {
-				range = 5;
-			}
-			canvas.redraw(range);
+		if (e.getSource() instanceof JRadioButton
+				&& e.getStateChange() == ItemEvent.SELECTED) {
+			canvas.setRange(((JRadioButton) e.getItemSelectable()).getText());
+			int start = canvas.start_x;
+			int end = canvas.end_x;
+			f1.setText("" + start);
+			f2.setText("" + end);
+			canvas.repaint();
 		}
 	}
 } // End Class Test_3Controls

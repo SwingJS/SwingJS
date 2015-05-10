@@ -2,6 +2,8 @@ package swingjs;
 
 import java.util.Hashtable;
 
+import jsjavax.swing.event.DocumentEvent;
+
 import javajs.util.AU;
 import javajs.util.SB;
 
@@ -39,12 +41,6 @@ public class JSPlainDocument extends JSAbstractDocument {
 		return sb.length();
 	}
 
-	private void checkLoc(int start, int end) throws BadLocationException {
-		if (start < 0 || end > sb.length())
-			throw new BadLocationException("JSPlainDocument: out of range",
-					(start < 0 ? start : end));
-	}
-
 	private void taint() {
 		tempChar = null;
 	}
@@ -58,6 +54,7 @@ public class JSPlainDocument extends JSAbstractDocument {
 		fixPositions(offs, offs + len, false);
 		if (str.indexOf('\n') >= 0)
 			setLines();
+		handleRemove(offs, len);
 	}
 
 	@Override
@@ -70,6 +67,7 @@ public class JSPlainDocument extends JSAbstractDocument {
 		if (str.indexOf('\n') >= 0)
 			setLines();
 		// TODO: what about attributes set?
+		handleInsertString(offset, str, a);
 	}
 
 	private void setLines() {

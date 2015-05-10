@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import swingjs.JSToolkit;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.ComponentOrientation;
@@ -1378,7 +1380,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
                     restoreComposedText();
                 }
             } catch (BadLocationException e) {
-                UIManager.getLookAndFeel().provideErrorFeedback(JTextComponent.this);
+            	JSToolkit.alert("SWINGJS BAD LOCATION EXCEPTION (replace):" + e.getMessage() + JSToolkit.getStackTrace(-10));
+                //UIManager.getLookAndFeel().provideErrorFeedback(JTextComponent.this);
             }
         }
     }
@@ -1713,7 +1716,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
                 doc.insertString(0, t, null);
             }
         } catch (BadLocationException e) {
-            UIManager.getLookAndFeel().provideErrorFeedback(JTextComponent.this);
+        	JSToolkit.alert("SWINGJS BAD LOCATION EXCEPTION (setText):" + e.getMessage() + JSToolkit.getStackTrace(-10));
         }
     }
 

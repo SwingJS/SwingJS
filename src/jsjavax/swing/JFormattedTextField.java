@@ -32,6 +32,8 @@ import jsjava.text.NumberFormat;
 import jsjava.text.ParseException;
 import java.util.Date;
 
+import swingjs.JSToolkit;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
@@ -591,7 +593,7 @@ public class JFormattedTextField extends JTextField {
      * implementation beeps.
      */
     protected void invalidEdit() {
-        UIManager.getLookAndFeel().provideErrorFeedback(JFormattedTextField.this);
+    	JSToolkit.alert("SWINGJS INVALID EDIT" + JSToolkit.getStackTrace(-10));
     }
 
     /**

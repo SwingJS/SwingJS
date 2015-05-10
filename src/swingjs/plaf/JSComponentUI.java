@@ -508,6 +508,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			val = ((AbstractButton) c).getText();
 			if (val.equals(currentValue)) // we set it here, then fired the property change
 				return;
+			currentValue = val;
 			if (textNode != null) {
 				prop = "innerHTML";
 				obj = textNode;

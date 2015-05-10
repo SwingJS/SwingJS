@@ -25,6 +25,7 @@ public class JSTextFieldUI extends JSTextUI {
 	@Override
 	public DOMNode getDOMObject() {
 		if (domNode == null) {
+			updateHandler.checkDocument();
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "text");
 			bindMouse(domNode);

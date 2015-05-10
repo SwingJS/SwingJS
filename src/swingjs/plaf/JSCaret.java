@@ -94,12 +94,8 @@ class JSCaret implements Caret, UIResource {
 
 	@Override
 	public void moveDot(int dot) {
-		if (dot > this.dot) {
-			this.mark = dot;
-		} else {
-			this.mark = this.dot;
-			this.dot = dot;
-		}
+		this.mark = this.dot;
+		this.dot = dot;
 	}
 
 	@Override
