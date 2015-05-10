@@ -1476,7 +1476,7 @@ Jmol = (function(document) {
 	Jmol._jsGetXY = function(canvas, ev) {
 		if (!canvas.applet._ready || Jmol._touching && ev.type.indexOf("touch") < 0)
 			return false;
-		ev.preventDefault();
+		//ev.preventDefault(); // removed 5/9/2015 -- caused loss of focus on text-box clicking in SwingJS
 		var offsets = Jmol.$offset(canvas.id);
 		var x, y;
 		var oe = ev.originalEvent;
@@ -1538,36 +1538,34 @@ Jmol = (function(document) {
 			Jmol._setMouseOwner(canvas, true);
 			ev.stopPropagation();
       var ui = ev.target["data-UI"];
-      if (ui && ui.handleJSEvent("mouse_down", ev))
-        return true;
-			ev.preventDefault();
+      if (!ui || !ui.handleJSEvent(501, ev)) 
+  			ev.preventDefault();
 			canvas.isDragging = true;
 			if ((ev.type == "touchstart") && Jmol._gestureUpdate(canvas, ev))
-				return false;
+				return !!ui;
 			Jmol._setConsoleDiv(canvas.applet._console);
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if(!xym)
-				return false;
+		  	return !!ui;
 			if (ev.button != 2)
 				Jmol.Swing.hideMenus(canvas.applet);
-
-			canvas.applet._processEvent(501, xym); //J.api.Event.MOUSE_DOWN
-			return false;
+			canvas.applet._processEvent(501, xym); //java.awt.Event.MOUSE_DOWN
+			return !!ui;
 		});
 		Jmol.$bind(canvas, 'mouseup touchend', function(ev) {
 			Jmol._setMouseOwner(null);
 			ev.stopPropagation();
       var ui = ev.target["data-UI"];
-      if (ui && ui.handleJSEvent("mouse_up", ev))
-        return true;
-			ev.preventDefault();
+      if (!ui || !ui.handleJSEvent(502, ev))
+  			ev.preventDefault();
 			canvas.isDragging = false;
 			if (ev.type == "touchend" && Jmol._gestureUpdate(canvas, ev))
 				return false;
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if(!xym) return false;
-			canvas.applet._processEvent(502, xym);//J.api.Event.MOUSE_UP
-			return false;
+			canvas.applet._processEvent(502, xym);//java.awt.Event.MOUSE_UP
+      System.out.println("JSmolCore " + !!ui)
+			return !!ui;
 		});
 		Jmol.$bind(canvas, 'mousemove touchmove', function(ev) { // touchmove
 		  // defer to console or menu when dragging within this canvas
