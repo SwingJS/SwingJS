@@ -63,8 +63,6 @@ import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 import jsjava.util.Locale;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;
@@ -2099,7 +2097,8 @@ protected  transient ComponentPeer peer;
 			mixOnReshaping();
 			if (peer != null) {
 				// LightwightPeer is an empty stub so can skip peer.reshape
-				if (!(peer instanceof LightweightPeer)) {
+				// SwingJS -- all "lightweight" peers still need to be resized 
+				// if (!(peer instanceof LightweightPeer)) {
 					reshapeNativePeer(x, y, width, height, getBoundsOp());
 					// Check peer actually changed coordinates
 					resized = (oldWidth != this.width) || (oldHeight != this.height);
@@ -2111,7 +2110,7 @@ protected  transient ComponentPeer peer;
 					if (this instanceof Window) {
 						needNotify = false;
 					}
-				}
+				//}
 				if (resized) {
 					invalidate();
 				}

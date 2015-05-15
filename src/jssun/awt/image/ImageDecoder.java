@@ -31,7 +31,6 @@ import java.util.Hashtable;
 
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageConsumer;
-import jsjava.lang.Thread;
 
 public abstract class ImageDecoder {
     InputStreamImageSource source;

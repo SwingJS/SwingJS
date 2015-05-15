@@ -101,8 +101,10 @@ public abstract class DOMNode {
 		/**
 		 * @j2sNative
 		 * 
-		 * for (var i = 0; i < attr.length;)
+		 * for (var i = 0; i < attr.length;) {
+		 * System.out.println(["DOMNode.setStyles ",attr[i],attr[i+1]]);
 		 *            obj.style[attr[i++]] = attr[i++];
+		 *            }
 		 * 
 		 */
 		{

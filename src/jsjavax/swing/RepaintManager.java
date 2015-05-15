@@ -45,7 +45,6 @@ import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.event.InvocationEvent;
 import jsjava.awt.image.VolatileImage;
-import jsjava.lang.Thread;
 import jssun.awt.AWTAccessor;
 import jssun.awt.AppContext;
 import jssun.awt.SunToolkit;

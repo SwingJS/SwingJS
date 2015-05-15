@@ -36,15 +36,8 @@ package jssun.awt;
 //import java.lang.reflect.Constructor;
 //import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-//import java.util.Collections;
 import java.util.HashMap;
-import jsjava.util.Locale;
 import java.util.Map;
-
-//import java.util.WeakHashMap;
-//import java.util.concurrent.TimeUnit;
-//import java.util.concurrent.locks.Condition;
-//import java.util.concurrent.locks.ReentrantLock;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Component;
@@ -54,7 +47,6 @@ import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.GraphicsConfiguration;
-//import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
 import jsjava.awt.RenderingHints;
@@ -64,15 +56,20 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.peer.PanelPeer;
+import jsjava.util.Locale;
 import jssun.awt.image.URLImageSource;
 import jssun.font.FontDesignMetrics;
+//import java.util.Collections;
+//import java.util.WeakHashMap;
+//import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.locks.Condition;
+//import java.util.concurrent.locks.ReentrantLock;
+//import jsjava.awt.GraphicsEnvironment;
 //import java.lang.reflect.Method;
 //import java.util.Iterator;
 //import jsjava.awt.Graphics2D;
 //import jsjava.awt.GraphicsEnvironment;
 //import jsjava.awt.image.BufferedImage;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 public abstract class SunToolkit extends Toolkit implements
 		WindowClosingSupport, WindowClosingListener, ComponentFactory {// ,

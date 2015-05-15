@@ -25,11 +25,6 @@
 
 package swingjs;
 
-//import java.io.PrintStream;
-
-import jsjava.lang.ThreadGroup;
-//import sun.misc.VM;
-
 import swingjs.api.HTML5Applet;
 
 /**

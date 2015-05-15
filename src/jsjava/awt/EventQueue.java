@@ -43,8 +43,6 @@ import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.PaintEvent;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.ComponentPeer;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 import jssun.awt.AWTAutoShutdown;
 //import jsjava.security.PrivilegedAction;

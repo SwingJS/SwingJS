@@ -33,8 +33,6 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 //import jssun.misc.ThreadGroupUtils;
 
@@ -190,7 +188,7 @@ public final class AWTAutoShutdown implements Runnable {
      * @see     AWTAutoShutdown#notifyThreadBusy
      * @see     AWTAutoShutdown#isReadyToShutdown
      */
-    public void notifyThreadFree(final Thread thread) {
+    public void notifyThreadFree(Thread thread) { // SwingJS was final
 //        synchronized (activationLock) {
 //            synchronized (mainLock) {
                 busyThreadSet.remove(thread);

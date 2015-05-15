@@ -60,6 +60,7 @@ import jsjava.awt.Shape;
 import jsjava.awt.Stroke;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.awt.geom.AffineTransform;
+import jsjava.awt.geom.Path2D;
 import jsjava.awt.geom.PathIterator;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
@@ -325,7 +326,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		ctx.stroke();
 	}
 
-	private void doShape(Shape s) {
+	private int doShape(Shape s) {
 		ctx.beginPath();
 		double[] pts = new double[6];
 		PathIterator pi = s.getPathIterator(null);
@@ -349,13 +350,21 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			}
 			pi.next();
 		}
+		return pi.getWindingRule();
 		// then fill or stroke or clip
 	}
 
 	@Override
 	public void fill(Shape s) {
-		doShape(s);
-		ctx.fill();
+		if (doShape(s) == Path2D.WIND_EVEN_ODD)
+		/**
+		 * @j2sNative
+		 * 
+		 *            this.ctx.fill("evenodd");
+		 */
+		{
+		} else
+			ctx.fill();
 	}
 
 	@Override

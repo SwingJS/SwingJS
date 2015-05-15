@@ -6,9 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-//import java.awt.Toolkit;
-//import java.awt.datatransfer.Clipboard;
-//import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -25,8 +22,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
-
-import swingjs.JSThread;
+//import java.awt.Toolkit;
+//import java.awt.datatransfer.Clipboard;
+//import java.awt.datatransfer.StringSelection;
 
 // SwingJS[1] -- move explicit java.awt... references to imports.
 // SwingJS[2] -- Clipboard is not supported in JavaScript.
@@ -36,7 +34,7 @@ import swingjs.JSThread;
 // SwingJS        see http://stackoverflow.com/questions/18816251/calling-the-paint-method-from-another-class
 // SwingJS[5] -- We use a thread here instead of a blocking loop -- this caused a thread-clash
 
-// SwingJS TODO: thread in JS, JTextArea, JTextField
+// SwingJS TODO: thread in JS, JTextArea
 /*
  A basic extension of the JApplet class
  */
@@ -141,18 +139,17 @@ public class Boltzmann extends JApplet {
 		bStartSim.setBackground(Color.green);
 		bStartSim.setBounds(160, 64, 63, 25);
 		// $$ lineBorder3.move(48,392);
-		DispResults
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		DispResults
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		DispResults.setOpaque(true);
-		getContentPane().add(DispResults);
-		DispResults.setBounds(384, 156, 180, 240);
-	//SwingJS TODO 
-		ShowText.setRows(10000);
-		ShowText.setDisabledTextColor(new Color(153, 153, 153));
-		DispResults.getViewport().add(ShowText);
-		ShowText.setBounds(0, 0, 162, 150000);
+//x		DispResults
+//x				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+//x	DispResults
+//x				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+//x		DispResults.setOpaque(true);
+//x		getContentPane().add(DispResults);
+//x		DispResults.setBounds(384, 156, 180, 240);
+//x		ShowText.setRows(10000);
+//x		ShowText.setDisabledTextColor(new Color(153, 153, 153));
+//x		DispResults.getViewport().add(ShowText);
+//x		ShowText.setBounds(0, 0, 162, 150000);
 		// }}
 
 		// {{REGISTER_LISTENERS
@@ -162,7 +159,7 @@ public class Boltzmann extends JApplet {
 		tParticles.addActionListener(lSymAction);
 		tCollisions.addActionListener(lSymAction);
 		SymMouse aSymMouse = new SymMouse();
-		ShowText.addMouseListener(aSymMouse);
+//x		ShowText.addMouseListener(aSymMouse);
 		// }}
 		// Initialize the environment
 		setBackground(Color.white);
@@ -193,8 +190,8 @@ public class Boltzmann extends JApplet {
 	JTextField tCollisions = new JTextField();
 	JButton bStartSim = new JButton();
 	Border lineBorder3 = BorderFactory.createLineBorder(Color.black);
-	JScrollPane DispResults = new JScrollPane();
-	LevelInfoArea ShowText = new LevelInfoArea();
+	//JScrollPane DispResults = new JScrollPane();
+	//LevelInfoArea ShowText = new LevelInfoArea();
 
 	// }}
 
@@ -210,7 +207,7 @@ public class Boltzmann extends JApplet {
 			else if (object == tCollisions)
 				tCollisions_actionPerformed(event);
 
-		  ShowText.levelInfo = "";
+//x		  ShowText.levelInfo = "";
 		}
 	}
 
@@ -300,8 +297,8 @@ public class Boltzmann extends JApplet {
 	class SymMouse extends MouseAdapter {
 		public void mouseReleased(MouseEvent event) {
 			Object object = event.getSource();
-			if (object == ShowText)
-				ShowText_mouseReleased(event);
+//x			if (object == ShowText)
+//x				ShowText_mouseReleased(event);
 		}
 	}
 
@@ -400,37 +397,38 @@ public class Boltzmann extends JApplet {
 	}
 
 	protected void sjs_finalizeGraph() {
-		int i;
-
 		// ensure top energy level is occupied
-		for (i = curMaxEnergy; i > 0; i--) {
+		for (int i = curMaxEnergy; i > 0; i--) {
 			if (DispBoltz.energyLevels[i] < 1)
 				curMaxEnergy--;
 			else
 				break;
 		}
-		//
+		
+		showTheText();
+	}
 
-		for (i = 1; i <= curMaxEnergy; i++) {
-			ShowText.levelInfo = ShowText.levelInfo + "EL " + i + "= "
-					+ DispBoltz.energyLevels[i] + "\n";
-		}
-
-		DecimalFormat df = new DecimalFormat("0.00");
-		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
-		for (i = 0; i < EntropyCalcs; i++) {
-			ShowText.levelInfo = ShowText.levelInfo + "WL " + i + "= "
-					+ df.format(DispEntropy.Entropy[i]) + "\n";
-		}
-		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
-		ShowText.levelInfo = ShowText.levelInfo + "Init. Energy   = "
-				+ initialEnergy + "\n";
-		ShowText.levelInfo = ShowText.levelInfo + "No. particles  = "
-				+ maxParticles + "\n";
-		ShowText.levelInfo = ShowText.levelInfo + "No. collisions = "
-				+ maxCollisions + "\n";
-		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
-		ShowText.setText(ShowText.levelInfo);
+	private void showTheText() {
+//		for (int i = 1; i <= curMaxEnergy; i++) {
+//			ShowText.levelInfo = ShowText.levelInfo + "EL " + i + "= "
+//					+ DispBoltz.energyLevels[i] + "\n";
+//		}
+//
+//		DecimalFormat df = new DecimalFormat("0.00");
+//		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
+//		for (i = 0; i < EntropyCalcs; i++) {
+//			ShowText.levelInfo = ShowText.levelInfo + "WL " + i + "= "
+//					+ df.format(DispEntropy.Entropy[i]) + "\n";
+//		}
+//		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
+//		ShowText.levelInfo = ShowText.levelInfo + "Init. Energy   = "
+//				+ initialEnergy + "\n";
+//		ShowText.levelInfo = ShowText.levelInfo + "No. particles  = "
+//				+ maxParticles + "\n";
+//		ShowText.levelInfo = ShowText.levelInfo + "No. collisions = "
+//				+ maxCollisions + "\n";
+//		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
+//		ShowText.setText(ShowText.levelInfo);
 	}
 
 	public boolean sjs_checkRepaint() {

@@ -28,14 +28,17 @@ public class JSTextFieldUI extends JSTextUI {
 			updateHandler.checkDocument();
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "text");
+			vCenter(domNode, -10);
 			bindMouse(domNode);
 			bindKeys(domNode);
 		}
-		setCssFont(DOMNode.setAttr(domNode, "value", ((JTextComponent) c).getText()),
+		setCssFont(
+				DOMNode.setAttr(domNode, "value", ((JTextComponent) c).getText()),
 				c.getFont());
 		return domNode;
 	}
 
+	
 	private void bindKeys(DOMNode domNode) {
 		JSFunction f = null;
 		JSEventHandler me = this;

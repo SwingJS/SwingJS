@@ -1,10 +1,21 @@
 Notes
 =====
 
-
-
 PROGRESS
 ========
+5/15/2015
+- better JLabel/JTextField positioning
+- GridBagLayout working
+- winding rules: in javax.swing.border.LineBorder 
+           Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+  needs checking with browsers that ctx.fill("evenodd") works  
+
+5/11/2015
+
+BH working on Boltzmann
+- found j2s bug #12; easy fix
+- JSThread 
+
 5/10/2015
 
 JTextFields responding to DocumentListeners
@@ -272,6 +283,18 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#12 Inner classes must not call other inner classes defined after them in a file.
+    This showed up in java.awt.geom.Path2D.Float.CopyIterator, which extends
+    java.awt.geom.Path2D.Iterator. Since the Iterator is in the code after CopyIterator,
+    the reference to java.awt.geom.Path2D.Iterator in
+    
+    c$ = Clazz.decorateAsClass (function () {
+		this.floatCoords = null;
+		Clazz.instantialize (this, arguments);
+	}, java.awt.geom.Path2D.Float, "CopyIterator", java.awt.geom.Path2D.Iterator);
+     
+    is null, and then CopyIterator does not extend Iterator.
+   
 #11 Integer parameter is considered Number(int,float,etc.) not Object in SAEM
 
 	private void test1(Object ja) {
@@ -488,6 +511,7 @@ javax.swing.JFileDialog
 key focus
 static methods and classes -- order is important
 LookAndFeel
+inner class order
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -506,6 +530,7 @@ threads
 image loading
 no BigInteger; no BigDecimal
 no format internationalization
+no winding rules
 text-related field implementation
  
 //////////////////////////////////////////////////////////////////////////////
@@ -747,6 +772,23 @@ LookAndFeel
 SwingJS implements the native browser LookAndFeel. Token UIManager methods are
 present but unimplemented; methods returning key bindings or other arrays return null.
 
+inner class order
+-----------------
+For J2S, inner classes must not call other inner classes defined after them in a file.
+
+This showed up in java.awt.geom.Path2D.Float.CopyIterator, which extends
+java.awt.geom.Path2D.Iterator. Since the Iterator is in the code after CopyIterator,
+the reference to java.awt.geom.Path2D.Iterator in
+    
+    c$ = Clazz.decorateAsClass (function () {
+		this.floatCoords = null;
+		Clazz.instantialize (this, arguments);
+	}, java.awt.geom.Path2D.Float, "CopyIterator", java.awt.geom.Path2D.Iterator);
+     
+is null, and then CopyIterator does not extend Iterator.
+
+Solution is to simply move the inner class definitions in the .java file
+
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -867,7 +909,6 @@ action through an asynchronous function run1(mode). For example:
 		}
 	}
 
-
 image loading
 -------------
 - JavaScript does not allow synchronous image loading. A callback is required, and 
@@ -887,6 +928,11 @@ no format internationalization
 ------------------------------
 
 For now, just en for number and date formatters
+
+no winding rules
+----------------
+
+  When filling a graphic, only nonzero winding rule is implemented in HTML5 Canvas2D.
 
 
 

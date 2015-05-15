@@ -630,6 +630,10 @@ public class Polygon implements Shape {
          * @see PathIterator#SEG_MOVETO
          * @see PathIterator#SEG_LINETO
          * @see PathIterator#SEG_CLOSE
+         * 
+         * SwingJS: duplicates double[] coords
+         * @j2sIgnore
+         * 
          */
         public int currentSegment(float[] coords) {
             if (index >= poly.npoints) {

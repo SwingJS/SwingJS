@@ -39,8 +39,6 @@ import jssun.awt.SunToolkit;
 import java.util.Vector;
 //import java.util.logging.*;
 
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 import swingjs.JSThread;
 
 //import sun.awt.dnd.SunDragSourceContextPeer;
@@ -78,7 +76,7 @@ class EventDispatchThread extends JSThread {
 	private int id;
 
 	EventDispatchThread(ThreadGroup group, String name, EventQueue queue) {
-		super(group, name, true);
+		super(group, name);
 		theQueue = queue;
 	}
 

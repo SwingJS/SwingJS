@@ -37,8 +37,6 @@ import jsjava.awt.Shape;
 import jsjava.awt.Window;
 import jsjava.awt.geom.Point2D;
 import jsjava.awt.image.BufferedImage;
-import jsjava.lang.Thread;
-//import jsjava.lang.ThreadGroup;
 
 /**
  * The AWTAccessor utility class.

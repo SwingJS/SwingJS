@@ -25,7 +25,6 @@
 
 package jsjava.awt;
 
-import jsjava.lang.Thread;
 import java.util.LinkedList;
 
 import swingjs.JSToolkit;

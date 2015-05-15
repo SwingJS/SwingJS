@@ -25,8 +25,6 @@
 
 package jssun.awt;
 
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 //import jsjava.security.AccessController;
 //import jsjava.security.PrivilegedAction;
 import java.util.Collections;
@@ -36,12 +34,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
-import swingjs.JSThreadGroup;
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 //import java.util.concurrent.atomic.AtomicInteger;
-import jsjava.lang.Thread; // DO NOT REMOVE!
-import jsjava.lang.ThreadGroup; // DO NOT REMOVE!
 
 /**
  * The AppContext is a table referenced by ThreadGroup which stores

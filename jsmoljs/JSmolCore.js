@@ -1564,7 +1564,6 @@ Jmol = (function(document) {
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if(!xym) return false;
 			canvas.applet._processEvent(502, xym);//java.awt.Event.MOUSE_UP
-      System.out.println("JSmolCore " + !!ui)
 			return !!ui;
 		});
 		Jmol.$bind(canvas, 'mousemove touchmove', function(ev) { // touchmove

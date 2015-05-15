@@ -30,7 +30,6 @@ import java.io.InputStream;
 
 import jsjava.awt.image.ImageConsumer;
 import jsjava.awt.image.ImageProducer;
-import jsjava.lang.Thread;
 
 public abstract class InputStreamImageSource implements ImageProducer,
                                                         ImageFetchable

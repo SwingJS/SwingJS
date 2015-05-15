@@ -1,6 +1,5 @@
 package swingjs;
 
-import jsjava.lang.ThreadGroup;
 import jsjavax.swing.SwingUtilities;
 
 public class JSAppletThread extends JSThread {
@@ -8,7 +7,7 @@ public class JSAppletThread extends JSThread {
 	private JSAppletPanel ap;
 
 	public JSAppletThread(JSAppletPanel ap, ThreadGroup group, String name) {
-		super(group, name, true);
+		super(group, name);
 		this.ap = ap;
 	}
 

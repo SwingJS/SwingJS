@@ -26,8 +26,6 @@
 package swingjs;
 
 import swingjs.api.JSFunction;
-import jsjava.lang.Thread;
-import jsjava.lang.ThreadGroup;
 
 /**
  * A class that takes care of simple threading.
@@ -45,9 +43,14 @@ public abstract class JSThread extends Thread implements JSFunction {
 	protected boolean doDispatch = true;
 	private int msDelay;
 
-	public JSThread(ThreadGroup group, String name, boolean isJS) {
+	public JSThread(ThreadGroup group, String name) {
 		super(group, name);
-		this.isJS = isJS;
+		/**
+		 * @j2sNative
+		 * 
+		 * this.isJS = true;
+		 */
+		{}
 	}
 
 	public void run() {
@@ -119,7 +122,8 @@ public abstract class JSThread extends Thread implements JSFunction {
 	@SuppressWarnings("unused")
 	protected void dispatchAndReturn(Runnable r, int mode) {
 		if (!isJS) {
-			r.run();
+			if (r != null)
+				r.run();
 			try {
 				sleep(msDelay);
 			} catch (InterruptedException e) {

@@ -49,13 +49,6 @@ import jsjavax.swing.plaf.ComponentInputMapUIResource;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.swing.UIAction;
 
-/**
- * Button Listener
- *
- * @author Jeff Dinkins
- * @author Arnaud Weber (keyboard UI support)
- */
-
 public class JSTextListener implements MouseListener, MouseMotionListener,
                                    FocusListener, ChangeListener, PropertyChangeListener, DocumentListener, JSEventHandler
 {
@@ -84,98 +77,16 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		}
 	}
 
-//    protected void checkOpacity(JTextComponent b) {
-//        b.setOpaque( b.isContentAreaFilled() );
-//    }
-//
-//    /**
-//     * Register default key actions: pressing space to "click" a
-//     * button and registring the keyboard mnemonic (if any).
-//     */
-//    public void installKeyboardActions(JComponent c) {
-//        JTextComponent b = (JTextComponent)c;
-//        // Update the mnemonic binding.
-//        updateMnemonicBinding(b);
-//
-//        LazyActionMap.installLazyActionMap(c, JSButtonListener.class,
-//                                           "Button.actionMap");
-//
-//        InputMap km = getInputMap(JComponent.WHEN_FOCUSED, c);
-//
-//        SwingUtilities.replaceUIInputMap(c, JComponent.WHEN_FOCUSED, km);
-//    }
-
-//    /**
-//     * Unregister's default key actions
-//     */
-//    public void uninstallKeyboardActions(JComponent c) {
-//        SwingUtilities.replaceUIInputMap(c, JComponent.
-//                                         WHEN_IN_FOCUSED_WINDOW, null);
-//        SwingUtilities.replaceUIInputMap(c, JComponent.WHEN_FOCUSED, null);
-//        SwingUtilities.replaceUIActionMap(c, null);
-//    }
-
-    /**
-     * Returns the InputMap for condition <code>condition</code>. Called as
-     * part of <code>installKeyboardActions</code>.
-     */
-    InputMap getInputMap(int condition, JComponent c) {
-//        if (condition == JComponent.WHEN_FOCUSED) {
-//            BasicButtonUI ui = (BasicButtonUI)BasicLookAndFeel.getUIOfType(
-//                         ((JTextComponent)c).getUI(), BasicButtonUI.class);
-//            if (ui != null) {
-//                return (InputMap)DefaultLookup.get(
-//                             c, ui, ui.getPropertyPrefix() + "focusInputMap");
-//            }
-//        }
-        return null;
-    }
-
-    public void stateChanged(ChangeEvent e) {
+  public void stateChanged(ChangeEvent e) {
         JTextComponent b = (JTextComponent) e.getSource();
         b.repaint();
     }
 
     public void focusGained(FocusEvent e) {
-//        JTextComponent b = (JTextComponent) e.getSource();
-//        if (b instanceof JButton && ((JButton)b).isDefaultCapable()) {
-//            JRootPane root = b.getRootPane();
-//            if (root != null) {
-//               BasicButtonUI ui = (BasicButtonUI)BasicLookAndFeel.getUIOfType(
-//                         ((JTextComponent)b).getUI(), BasicButtonUI.class);
-//               if (ui != null && DefaultLookup.getBoolean(b, ui,
-//                                   ui.getPropertyPrefix() +
-//                                   "defaultButtonFollowsFocus", true)) {
-//                   root.putClientProperty("temporaryDefaultButton", b);
-//                   root.setDefaultButton((JButton)b);
-//                   root.putClientProperty("temporaryDefaultButton", null);
-//               }
-//            }
-//        }
-//        b.repaint();
     }
 
     public void focusLost(FocusEvent e) {
         JTextComponent b = (JTextComponent) e.getSource();
-//        JRootPane root = b.getRootPane();
-//        if (root != null) {
-//           JButton initialDefault = (JButton)root.getClientProperty("initialDefaultButton");
-//           if (b != initialDefault) {
-//               BasicButtonUI ui = (BasicButtonUI)BasicLookAndFeel.getUIOfType(
-//                         ((JTextComponent)b).getUI(), BasicButtonUI.class);
-//               if (ui != null && DefaultLookup.getBoolean(b, ui,
-//                                   ui.getPropertyPrefix() +
-//                                   "defaultButtonFollowsFocus", true)) {
-//                   root.setDefaultButton(initialDefault);
-//               }
-//           }
-//        }
-//
-//        ButtonModel model = b.getModel();
-//        model.setArmed(false);
-//        model.setPressed(false);
-//
-//        b.repaint();
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -193,31 +104,6 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 			JTextComponent b = (JTextComponent) e.getSource();
 			if (!b.contains(e.getX(), e.getY()))
 				return;
-//			// We need to check the state before and after the button click 
-//			// for radio and checkboxes to make sure the DOM button actually got hit.
-//			// mousePress is an "arm"; mouseRelease is a "click"
-//			
-//			((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(false);
-//			long multiClickThreshhold = b.getMultiClickThreshhold();
-//			long lastTime = lastPressedTimestamp;
-//			long currentTime = lastPressedTimestamp = e.getWhen();
-//			if (lastTime != -1 && currentTime - lastTime < multiClickThreshhold) {
-//				shouldDiscardRelease = true;
-//				return;
-//			}
-//
-//			//System.out.println("JSButtonListener press " + b.getName() + " " + e);
-//
-//			ButtonModel model = b.getModel();
-//			if (!model.isEnabled()) {
-//				// Disabled buttons ignore all input...
-//				return;
-//			}
-//			if (!model.isArmed()) {
-//				// button not armed, should be
-//				model.setArmed(true);
-//			}
-//			model.setPressed(true);
 			if (!b.hasFocus() && b.isRequestFocusEnabled()) {
 				b.requestFocus();
 			}
@@ -225,22 +111,9 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 	};
 
     public void mouseReleased(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e)) {
-//            // Support for multiClickThreshhold
-//            JTextComponent b = (JTextComponent) e.getSource();
-//      			//System.out.println("JSTextListener released " + b.getName() + " " + e);
-//
-        }
     };
 
     public void mouseEntered(MouseEvent e) {
-//        JTextComponent b = (JTextComponent) e.getSource();
-//        ButtonModel model = b.getModel();
-//        if (b.isRolloverEnabled() && !SwingUtilities.isLeftMouseButton(e)) {
-//            model.setRollover(true);
-//        }
-//        if (model.isPressed())
-//                model.setArmed(true);
     };
 
     public void mouseExited(MouseEvent e) {
@@ -251,40 +124,6 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 //        }
 //        model.setArmed(false);
     };
-
-
-    /**
-     * Actions for Buttons. Two types of action are supported:
-     * pressed: Moves the button to a pressed state
-     * released: Disarms the button.
-     */
-    private static class Actions extends UIAction {
-        private static final String PRESS = "pressed";
-        private static final String RELEASE = "released";
-
-        Actions(String name) {
-            super(name);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            JTextComponent b = (JTextComponent)e.getSource();
-            String key = getName();
-            if (key == PRESS) {
-                if(!b.hasFocus()) {
-                    b.requestFocus();
-                }
-            }
-        }
-
-        public boolean isEnabled(Object sender) {
-            if(sender != null && (sender instanceof JTextComponent) &&
-                      !((JTextComponent)sender).isEnabled()) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
 
 
 	@Override
@@ -300,7 +139,16 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		 */
 		{
 		}
-		System.out.println("JSTextListener mark/dot " + mark + " " + dot);
+
+		// HTML5 selection is always mark....dot
+		// but Java can be oldDot....oldMark
+
+		int oldDot = ui.editor.getCaret().getDot();
+		int oldMark = ui.editor.getCaret().getMark();
+		if (dot != mark && oldMark == dot) {
+			dot = mark;
+			mark = oldMark;
+		}
 		switch (eventType) {
 		case MouseEvent.MOUSE_PRESSED:
 		case MouseEvent.MOUSE_RELEASED:
@@ -318,11 +166,10 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 			}
 			break;
 		}
-		if (dot != ui.editor.getCaret().getDot()
-				|| mark != ui.editor.getCaret().getMark()) {
-			ui.editor.getCaret().setDot(mark);
+		if (dot != oldDot || mark != oldMark) {
+			ui.editor.getCaret().setDot(dot);
 			if (dot != mark)
-				ui.editor.getCaret().moveDot(dot);
+				ui.editor.getCaret().moveDot(mark);
 			ui.editor.caretEvent.fire();
 		}
 		System.out.println(ui.id + " handling event " + evType + " " + eventType
@@ -345,6 +192,11 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 	}
 
 	private void setText() {
+		// this method will only be run in JavaScript; so as not to 
+		// have to modify the actual javax.swing code so much, we use
+		// the double qualification to prevent Java compilation errors.
+		// Not a great idea in general....
+	
 		((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged("text");	
 	}
 }

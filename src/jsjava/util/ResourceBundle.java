@@ -44,7 +44,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import jsjava.lang.Thread;
 //import java.lang.ref.ReferenceQueue;
 //import java.lang.ref.SoftReference;
 //import java.lang.ref.WeakReference;

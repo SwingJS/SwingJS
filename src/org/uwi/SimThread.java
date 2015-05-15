@@ -1,34 +1,15 @@
 package org.uwi;
 
-import jsjava.lang.ThreadGroup;
 import swingjs.JSThread;
 
-public class SimThread extends Thread {
+public class SimThread extends JSThread {
 
 	private Boltzmann boltzmann;
 
-//	public SimThread(ThreadGroup group, String name, boolean isJS) {
-//		super(group, name, isJS);
-//	}
-//
-	static boolean isJS;
-
-	
-	static {
-		/**
-		 * @j2sNative
-		 * 
-		 *            isJS = true;
-		 */
-		{
-		}
-
-	}
-	
 	public SimThread(Boltzmann boltzmann) {
-		super("BoltzmannThread");
-//		super(null, "BoltzmannThread", isJS);
+		super(null, "BoltzmannThread");
 		this.boltzmann = boltzmann;
+		this.setDelayMillis(1);
 	}
 
 
@@ -53,12 +34,16 @@ public class SimThread extends Thread {
 					}
 					if (!repainted)
 						continue;
+					dispatchAndReturn(null, state);
+					if (isJS) {
+						return;
+					}
 					break;
 				case JSThread.DONE:
 					boltzmann.sjs_finalizeGraph();
 					return;
 				}
-				sleep(1);
+
 			} catch (Exception e) {
 				state = JSThread.DONE;
 			}

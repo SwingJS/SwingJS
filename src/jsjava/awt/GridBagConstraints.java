@@ -642,6 +642,11 @@ public class GridBagConstraints implements Cloneable {
         this.weighty = weighty;
     }
 
+   @ Override
+   public String toString() { // SwingJS added for debugging
+  	 return "[" + gridx + "," + gridy + "," + gridwidth + "," + gridheight + "," + fill + "," 
+  			 + ipadx + "," + ipady + "," + insets + "," + anchor + "," + weightx + "," + weighty + "]";
+   }
     /**
      * Creates a copy of this grid bag constraint.
      * @return     a copy of this grid bag constraint

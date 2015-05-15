@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import jsjava.lang.Thread;
 
 /**
  * This class is used to represent a Resource that has been loaded

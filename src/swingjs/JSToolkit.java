@@ -20,7 +20,6 @@ import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.peer.LightweightPeer;
-import jsjava.lang.Thread;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.text.Document;
@@ -335,13 +334,15 @@ public class JSToolkit extends SunToolkit {
 		String fontInfo = getCanvasFont(font);
 		if (context == null)
 			context = getDefaultCanvasContext2d();
+		int w = 0;
 		/**
-		 * context.font = fontInfo; return
-		 * Math.ceil(context.measureText(text).width);
+		 * @j2sNative
+		 * context.font = fontInfo; 
+		 * w = Math.ceil(context.measureText(text).width);
 		 */
 		{
-			return 0;
 		}
+		return w;
 	}
 
 	public static HTMLCanvasContext2D getDefaultCanvasContext2d() {
@@ -351,6 +352,7 @@ public class JSToolkit extends SunToolkit {
 		 *            if (this.defaultContext == null) this.defaultContext =
 		 *            document.createElement( 'canvas' ).getContext('2d');
 		 */
+		{}
 		return defaultContext;
 	}
 

@@ -112,6 +112,7 @@ public abstract class Path2D implements Shape, Cloneable {
     }
 
     /**
+     * 
      * Constructs a new {@code Path2D} object from the given
      * specified initial values.
      * This method is only intended for internal use and should
@@ -139,6 +140,34 @@ public abstract class Path2D implements Shape, Cloneable {
     abstract int rectCrossings(double rxmin, double rymin,
                                double rxmax, double rymax);
 
+    /**
+     * SwingJS j2s compiler error requires that inner classes be declared prior to use
+     *      *
+     */
+    static abstract class Iterator implements PathIterator {
+      int typeIdx;
+      int pointIdx;
+      Path2D path;
+
+      static final int curvecoords[] = {2, 2, 4, 6, 0};
+
+      Iterator(Path2D path) {
+          this.path = path;
+      }
+
+      public int getWindingRule() {
+          return path.getWindingRule();
+      }
+
+      public boolean isDone() {
+          return (typeIdx >= path.numTypes);
+      }
+
+      public void next() {
+          int type = path.pointTypes[typeIdx++];
+          pointIdx += curvecoords[type];
+      }
+    }
     /**
      * The {@code Float} class defines a geometric path with
      * coordinates stored in single precision floating point.
@@ -918,6 +947,9 @@ public abstract class Path2D implements Shape, Cloneable {
                 this.floatCoords = p2df.floatCoords;
             }
 
+            /**
+             * @j2sIgnore
+             */
             public int currentSegment(float[] coords) {
                 int type = path.pointTypes[typeIdx];
                 int numCoords = curvecoords[type];
@@ -950,6 +982,9 @@ public abstract class Path2D implements Shape, Cloneable {
                 this.affine = at;
             }
 
+            /**
+             * @j2sIgnore
+             */
             public int currentSegment(float[] coords) {
                 int type = path.pointTypes[typeIdx];
                 int numCoords = curvecoords[type];
@@ -2566,28 +2601,4 @@ public abstract class Path2D implements Shape, Cloneable {
 //        }
 //    }
 
-    static abstract class Iterator implements PathIterator {
-        int typeIdx;
-        int pointIdx;
-        Path2D path;
-
-        static final int curvecoords[] = {2, 2, 4, 6, 0};
-
-        Iterator(Path2D path) {
-            this.path = path;
-        }
-
-        public int getWindingRule() {
-            return path.getWindingRule();
-        }
-
-        public boolean isDone() {
-            return (typeIdx >= path.numTypes);
-        }
-
-        public void next() {
-            int type = path.pointTypes[typeIdx++];
-            pointIdx += curvecoords[type];
-        }
-    }
 }

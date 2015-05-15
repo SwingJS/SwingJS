@@ -41,7 +41,7 @@ import jssun.awt.CausedFocusEvent.Cause;
  * 
  *  
  *   
- * @author RM
+ * @author Bob Hanson
  *
  */
 public abstract class JSComponentUI extends ComponentUI implements LightweightPeer, JSEventHandler {
@@ -255,15 +255,14 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 				div = wrap("div", id + "_temp", node);
 			DOMNode.setStyles(div, "position", "absolute");
 
-			// process of discovering width and height is facilitated using jQuery and
-			// by
-			// appending to document.body.
+			// process of discovering width and height is facilitated using jQuery
+			// and appending to document.body.
 
 			DOMNode body = DOMNode.getBody();
 			body.appendChild(div);
 			JQuery jq = JSToolkit.getJQuery();
-			w = jq.$(div).width();
-			h = jq.$(div).height();
+			w = (int) Math.ceil(jq.$(div).width() + 0.5);
+			h = (int) Math.ceil(jq.$(div).height() + 0.5);
 			body.removeChild(div);
 		}
 
@@ -376,10 +375,11 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			g.setColor(c.getBackground());
 			g.fillRect(0, 0, c.getWidth(), c.getHeight());
 		}
-		boolean testing = false;
+		boolean testing = false;//true;
 		if (testing) {
 			g.setColor(Color.red);
 			g.drawRect(0, 0, c.getWidth(), c.getHeight());
+			System.out.println("drawing " + c.getWidth() + " " + c.getHeight());
 		}
 		setHTMLElement();
 		paint(g, c);
@@ -573,8 +573,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void setBounds(int x, int y, int width, int height, int op) {
-		JSToolkit.notImplemented("");
-		
+		if (domNode != null)
+			setDims(domNode, width, height);
 	}
 
 	@Override

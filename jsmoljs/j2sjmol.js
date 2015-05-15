@@ -68,7 +68,7 @@
  // 												   LOAD command and load() function without ASYNC
  //                            getInterface() 
  //                         see JSmol.js and Jmol._isAsync flag
- 
+ // BH 5/11/2015 5:58:42 AM adding __signatures for debugging SAEM issues 
  // BH 3/29/2015 8:12:44 PM System.getProperty(x, "") does not return ""
  // BH 8/23/2014 10:04:19 AM cleaning up a few general methods; Clazz.removeArrayItem
  // BH 6/1/2014 10:58:46 AM fix for Clazz.isAP() not working
@@ -1114,8 +1114,10 @@ Clazz.overrideMethod = function(clazzThis, funName, funBody, funParams) {
  * This is critical for performance optimization.
  */ 
 
+  var __signatures = ""; 
+
 Clazz.getProfile = function() {
-	var s = "";
+  	var s = "";
 	if (_profile) {
 		var l = [];
 		for (var i in _profile) {
@@ -1125,11 +1127,13 @@ Clazz.getProfile = function() {
 		s = l.sort().reverse().join("\r\n");
 		_profile = {};
 	}
-	return s;
+	return s + __signatures;
 }
 
 var addProfile = function(c, f, p, id) {
 	var s = id + " " + c.__CLASS_NAME__ + " " + f + " " + JSON.stringify(p);
+  if (__signatures.indexOf(s) < 0)
+    __signatures += s + "\n";    
 	_profile[s] || (_profile[s] = 0);
 	_profile[s]++;
 }
@@ -1205,8 +1209,6 @@ var SAEMid = 0;
  *  
  */   
 
-Clazz.signatures = {};
-
 
 /**
  * Search the given class prototype, find the method with the same
@@ -1229,8 +1231,8 @@ var searchAndExecuteMethod = function (id, objThis, claxxRef, fxName, args) {
 //  }
 	fx = objThis[fxName];
 	var params = Clazz.getParamsType(args);
-  if (!fx) 
-    System.out.println(Clazz.getStackTrace())
+  if (!fx)    
+    try {System.out.println(Clazz.getStackTrace(5))} catch (e){}
 	_profile && addProfile(claxxRef, fxName, params, id);
 	// Cache last matched method
 	if (fx.lastParams == params.typeString && fx.lastClaxxRef === claxxRef) {
