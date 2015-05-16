@@ -54,9 +54,10 @@ public final class GeneralPath extends Path2D.Float {
      * with a default winding rule of {@link #WIND_NON_ZERO}.
      *
      * @since 1.2
+     * @j2sIgnore
      */
     public GeneralPath() {
-        super(WIND_NON_ZERO, INIT_SIZE);
+        init1(WIND_NON_ZERO, INIT_SIZE);
     }
 
     /**
@@ -68,9 +69,10 @@ public final class GeneralPath extends Path2D.Float {
      * @see #WIND_EVEN_ODD
      * @see #WIND_NON_ZERO
      * @since 1.2
+     * @j2sIgnore
      */
     public GeneralPath(int rule) {
-        super(rule, INIT_SIZE);
+        init1(rule, INIT_SIZE);
     }
 
     /**
@@ -89,7 +91,7 @@ public final class GeneralPath extends Path2D.Float {
      * @since 1.2
      */
     public GeneralPath(int rule, int initialCapacity) {
-        super(rule, initialCapacity);
+        init1(rule, initialCapacity);
     }
 
     /**
@@ -100,25 +102,28 @@ public final class GeneralPath extends Path2D.Float {
      *
      * @param s the specified <code>Shape</code> object
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public GeneralPath(Shape s) {
         super(s, null);
     }
 
-    GeneralPath(int windingRule,
-                byte[] pointTypes,
-                int numTypes,
-                float[] pointCoords,
-                int numCoords)
-    {
-        // used to construct from native
-
-        this.windingRule = windingRule;
-        this.pointTypes = pointTypes;
-        this.numTypes = numTypes;
-        this.floatCoords = pointCoords;
-        this.numCoords = numCoords;
-    }
+//    GeneralPath(int windingRule,
+//                byte[] pointTypes,
+//                int numTypes,
+//                float[] pointCoords,
+//                int numCoords)
+//    {
+//        // used to construct from native
+//
+//        this.windingRule = windingRule;
+//        this.pointTypes = pointTypes;
+//        this.numTypes = numTypes;
+//        this.floatCoords = pointCoords;
+//        this.numCoords = numCoords;
+//    }
 
     /*
      * JDK 1.6 serialVersionUID

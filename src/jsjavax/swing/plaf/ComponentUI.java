@@ -127,7 +127,7 @@ public abstract class ComponentUI {
      *
      * @see #update
      */
-    public void paint(Graphics g, JComponent c) {
+    public void paintC(Graphics g, JComponent c) {
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class ComponentUI {
             g.setColor(c.getBackground());
             g.fillRect(0, 0, c.getWidth(),c.getHeight());
         }
-        paint(g, c);
+        paintC(g, c);
     }
 
     /**

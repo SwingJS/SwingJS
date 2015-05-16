@@ -3,6 +3,8 @@ c$=Clazz.decorateAsClass(function(){
 this.backingMap=null;
 Clazz.instantialize(this,arguments);
 },java.util,"HashSet",java.util.AbstractSet,[java.util.Set,Cloneable,java.io.Serializable]);
+
+
 Clazz.makeConstructor(c$,
 function(){
 this.construct(new java.util.HashMap());
@@ -27,6 +29,7 @@ function(backingMap){
 Clazz.superConstructor(this,java.util.HashSet,[]);
 this.backingMap=backingMap;
 },"java.util.HashMap");
+
 Clazz.overrideMethod(c$,"add",
 function(object){
 return this.backingMap.put(object,this)==null;

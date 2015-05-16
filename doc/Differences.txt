@@ -3,7 +3,13 @@ Notes
 
 PROGRESS
 ========
+5/16/2015
+
+- Boltzmann.java working
+- JSThread adds JSThread.JSEVENT = 2000 to EventQueue for very low (after painting) processing
+
 5/15/2015
+
 - better JLabel/JTextField positioning
 - GridBagLayout working
 - winding rules: in javax.swing.border.LineBorder 

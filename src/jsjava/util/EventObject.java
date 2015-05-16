@@ -43,7 +43,7 @@ public class EventObject {
     /**
      * The object on which the Event initially occurred.
      */
-    protected transient Object  source;
+    protected transient Object source;
 
     public EventObject() {
     	// ignored

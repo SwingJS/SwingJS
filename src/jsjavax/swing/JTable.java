@@ -2983,7 +2983,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             int rm = Math.min(getRowMargin(), r.height);
             int cm = Math.min(getColumnModel().getColumnMargin(), r.width);
             // This is not the same as grow(), it rounds differently.
-            r.setBounds(r.x + cm/2, r.y + rm/2, r.width - cm, r.height - rm);
+            // SwingJS SAEM setBounds --> reshape
+            r.reshape(r.x + cm/2, r.y + rm/2, r.width - cm, r.height - rm);
         }
         return r;
     }

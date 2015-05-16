@@ -360,7 +360,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
   	return d;
   }
 
-	public void paint(Graphics g, JComponent c) {
+	public void paintC(Graphics g, JComponent c) {
 		// for users to use. Note that for now, button graphics 
 		// are BEHIND the button. We will need to paint onto the
 		// glass pane for this to work, and then also manage
@@ -382,7 +382,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			System.out.println("drawing " + c.getWidth() + " " + c.getHeight());
 		}
 		setHTMLElement();
-		paint(g, c);
+		paintC(g, c);
 	}
 
 	public Dimension getMinimumSize(JComponent c) {

@@ -106,6 +106,9 @@ public abstract class Rectangle2D extends RectangularShape {
          * Constructs a new <code>Rectangle2D</code>, initialized to
          * location (0.0,&nbsp;0.0) and size (0.0,&nbsp;0.0).
          * @since 1.2
+         * 
+         * @j2sIgnore
+         * 
          */
         public Float() {
         }
@@ -125,6 +128,13 @@ public abstract class Rectangle2D extends RectangularShape {
          * @since 1.2
         */
         public Float(float x, float y, float w, float h) {
+        	/**
+        	 * @j2sNative
+        	 * 
+        	 * if (arguments.length == 0)
+        	 *  return;
+        	 */
+        	{}
             setRect(x, y, w, h);
         }
 

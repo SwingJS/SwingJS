@@ -539,6 +539,8 @@ public class SwingUtilities implements SwingConstants
         Rectangle result[];
         int rectCount = 0;
 
+        
+        // SwingJS SAEM setBounds --> reshape
         /* rectA contains rectB */
         if (isRectangleContainingRectangle(rectA,rectB)) {
             t.x = rectA.x; t.y = rectA.y; t.width = rectB.x - rectA.x; t.height = rectA.height;
@@ -578,14 +580,14 @@ public class SwingUtilities implements SwingConstants
                         rectCount++;
                     }
                 } else if ((rectB.y + rectB.height) > (rectA.y + rectA.height)) {
-                    t.setBounds((rectB.x + rectB.width), rectA.y,
+                    t.reshape((rectB.x + rectB.width), rectA.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width), rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         a = t;
                         rectCount++;
                     }
                 } else {
-                    t.setBounds((rectB.x + rectB.width), rectA.y,
+                    t.reshape((rectB.x + rectB.width), rectA.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width),
                                 (rectB.y + rectB.height) - rectA.y);
                     if(t.width > 0 && t.height > 0) {
@@ -593,7 +595,7 @@ public class SwingUtilities implements SwingConstants
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, (rectB.y + rectB.height), rectA.width,
+                    t.reshape(rectA.x, (rectB.y + rectB.height), rectA.width,
                                 (rectA.y + rectA.height) - (rectB.y + rectB.height));
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
@@ -602,18 +604,18 @@ public class SwingUtilities implements SwingConstants
                 }
             } else if (rectB.x <= rectA.x && (rectB.y + rectB.height) >= (rectA.y + rectA.height)) {
                 if ((rectB.x + rectB.width) > (rectA.x + rectA.width)) {
-                    t.setBounds(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
+                    t.reshape(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         a = t;
                         rectCount++;
                     }
                 } else {
-                    t.setBounds(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
+                    t.reshape(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
-                    t.setBounds((rectB.x + rectB.width), rectB.y,
+                    t.reshape((rectB.x + rectB.width), rectB.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width),
                                 (rectA.y + rectA.height) - rectB.y);
                     if(t.width > 0 && t.height > 0) {
@@ -623,26 +625,26 @@ public class SwingUtilities implements SwingConstants
                 }
             } else if (rectB.x <= rectA.x) {
                 if ((rectB.x + rectB.width) >= (rectA.x + rectA.width)) {
-                    t.setBounds(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
+                    t.reshape(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
                     if(t.width>0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, (rectB.y + rectB.height), rectA.width,
+                    t.reshape(rectA.x, (rectB.y + rectB.height), rectA.width,
                                 (rectA.y + rectA.height) - (rectB.y + rectB.height));
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
                         rectCount++;
                     }
                 } else {
-                    t.setBounds(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
+                    t.reshape(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds((rectB.x + rectB.width), rectB.y,
+                    t.reshape((rectB.x + rectB.width), rectB.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width),
                                 rectB.height);
                     if(t.width > 0 && t.height > 0) {
@@ -650,7 +652,7 @@ public class SwingUtilities implements SwingConstants
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, (rectB.y + rectB.height), rectA.width,
+                    t.reshape(rectA.x, (rectB.y + rectB.height), rectA.width,
                                 (rectA.y + rectA.height) - (rectB.y + rectB.height));
                     if(t.width > 0 && t.height > 0) {
                         c = new Rectangle(t);
@@ -659,53 +661,53 @@ public class SwingUtilities implements SwingConstants
                 }
             } else if (rectB.x <= (rectA.x + rectA.width) && (rectB.x + rectB.width) > (rectA.x + rectA.width)) {
                 if (rectB.y <= rectA.y && (rectB.y + rectB.height) > (rectA.y + rectA.height)) {
-                    t.setBounds(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
+                    t.reshape(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         a = t;
                         rectCount++;
                     }
                 } else if (rectB.y <= rectA.y) {
-                    t.setBounds(rectA.x, rectA.y, rectB.x - rectA.x,
+                    t.reshape(rectA.x, rectA.y, rectB.x - rectA.x,
                                 (rectB.y + rectB.height) - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, (rectB.y + rectB.height), rectA.width,
+                    t.reshape(rectA.x, (rectB.y + rectB.height), rectA.width,
                                 (rectA.y + rectA.height) - (rectB.y + rectB.height));
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
                         rectCount++;
                     }
                 } else if ((rectB.y + rectB.height) > (rectA.y + rectA.height)) {
-                    t.setBounds(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
+                    t.reshape(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, rectB.y, rectB.x - rectA.x,
+                    t.reshape(rectA.x, rectB.y, rectB.x - rectA.x,
                                 (rectA.y + rectA.height) - rectB.y);
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
                         rectCount++;
                     }
                 } else {
-                    t.setBounds(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
+                    t.reshape(rectA.x, rectA.y, rectA.width, rectB.y - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, rectB.y, rectB.x - rectA.x,
+                    t.reshape(rectA.x, rectB.y, rectB.x - rectA.x,
                                 rectB.height);
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectA.x, (rectB.y + rectB.height), rectA.width,
+                    t.reshape(rectA.x, (rectB.y + rectB.height), rectA.width,
                                 (rectA.y + rectA.height) - (rectB.y + rectB.height));
                     if(t.width > 0 && t.height > 0) {
                         c = new Rectangle(t);
@@ -714,25 +716,25 @@ public class SwingUtilities implements SwingConstants
                 }
             } else if (rectB.x >= rectA.x && (rectB.x + rectB.width) <= (rectA.x + rectA.width)) {
                 if (rectB.y <= rectA.y && (rectB.y + rectB.height) > (rectA.y + rectA.height)) {
-                    t.setBounds(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
+                    t.reshape(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
-                    t.setBounds((rectB.x + rectB.width), rectA.y,
+                    t.reshape((rectB.x + rectB.width), rectA.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width), rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
                         rectCount++;
                     }
                 } else if (rectB.y <= rectA.y) {
-                    t.setBounds(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
+                    t.reshape(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectB.x, (rectB.y + rectB.height),
+                    t.reshape(rectB.x, (rectB.y + rectB.height),
                                 rectB.width,
                                 (rectA.y + rectA.height) - (rectB.y + rectB.height));
                     if(t.width > 0 && t.height > 0) {
@@ -740,27 +742,27 @@ public class SwingUtilities implements SwingConstants
                         rectCount++;
                     }
 
-                    t.setBounds((rectB.x + rectB.width), rectA.y,
+                    t.reshape((rectB.x + rectB.width), rectA.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width), rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         c = new Rectangle(t);
                         rectCount++;
                     }
                 } else {
-                    t.setBounds(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
+                    t.reshape(rectA.x, rectA.y, rectB.x - rectA.x, rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         a = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds(rectB.x, rectA.y, rectB.width,
+                    t.reshape(rectB.x, rectA.y, rectB.width,
                                 rectB.y - rectA.y);
                     if(t.width > 0 && t.height > 0) {
                         b = new Rectangle(t);
                         rectCount++;
                     }
 
-                    t.setBounds((rectB.x + rectB.width), rectA.y,
+                    t.reshape((rectB.x + rectB.width), rectA.y,
                                 (rectA.x + rectA.width) - (rectB.x + rectB.width), rectA.height);
                     if(t.width > 0 && t.height > 0) {
                         c = new Rectangle(t);

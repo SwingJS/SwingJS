@@ -2256,6 +2256,7 @@ protected  transient ComponentPeer peer;
      * @see #getLocation
      * @see #getSize
      * 
+     * @j2sIgnore
      * 
      */
     public Rectangle getBounds() {
@@ -2276,7 +2277,8 @@ protected  transient ComponentPeer peer;
 	public Rectangle getBounds(Rectangle rv) {
 		if (rv == null)
 			return new Rectangle(getX(), getY(), getWidth(), getHeight());
-		rv.setBounds(getX(), getY(), getWidth(), getHeight());
+    // SwingJS SAEM setBounds --> reshape
+		rv.reshape(getX(), getY(), getWidth(), getHeight());
 		return rv;
 	}
 
@@ -3680,6 +3682,14 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.1
      */
     public boolean contains(int x, int y) {
+    	/**
+    	 * SwingJS SAEM
+    	 * 
+    	 * @j2sNative
+    	 * 
+    	 * if (arguments.length == 1) 
+    	 *   return inside(x.x, x.y);
+    	 */
         return inside(x, y);
     }
 
@@ -3699,6 +3709,8 @@ protected  transient ComponentPeer peer;
      * @param     p     the point
      * @see       #getComponentAt(Point)
      * @since     JDK1.1
+     * 
+     * @j2sIgnore
      */
     public boolean contains(Point p) {
         return contains(p.x, p.y);

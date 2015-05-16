@@ -457,6 +457,43 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
                             double m01, double m11,
                             double m02, double m12,
                             int state) {
+    	
+		/**
+		 * @j2sNative
+		 * 
+		 *            switch (arguments.length) { case 0: this.m00 = this.m11 = 1.0;
+		 *            return; 
+		 *            case 1: 
+		 *            if (Clazz.instanceOf(m00, jsjava.awt.geom.AffineTransform)) { 
+		 *            var Tx = m00; this.m00 =
+		 *            Tx.m00; this.m10 = Tx.m10; this.m01 = Tx.m01; this.m11 =
+		 *            Tx.m11; this.m02 = Tx.m02; this.m12 = Tx.m12; this.state =
+		 *            Tx.state; this.type = Tx.type;
+		 *            } else {
+		 *            var flatmatrix = m00;
+        this.m00 = flatmatrix[0];
+        this.m10 = flatmatrix[1];
+        this.m01 = flatmatrix[2];
+        this.m11 = flatmatrix[3];
+        if (flatmatrix.length > 5) {
+            this.m02 = flatmatrix[4];
+            this.m12 = flatmatrix[5];
+        }
+        this.updateState();
+		 *            } 
+		 *            return; 
+		 *            case 6:
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.updateState();
+        return;
+		 *            }
+		 */
+    	{} 
         this.m00 = m00;
         this.m10 = m10;
         this.m01 = m01;
@@ -471,6 +508,9 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * Constructs a new <code>AffineTransform</code> representing the
      * Identity transformation.
      * @since 1.2
+     * 
+     * @j2sIgnore
+     * 
      */
     public AffineTransform() {
         m00 = m11 = 1.0;
@@ -484,6 +524,8 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * the specified <code>AffineTransform</code> object.
      * @param Tx the <code>AffineTransform</code> object to copy
      * @since 1.2
+     * 
+     * @j2sIgnore
      */
     public AffineTransform(AffineTransform Tx) {
         this.m00 = Tx.m00;
@@ -563,6 +605,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * @param m02 the X coordinate translation element of the 3x3 matrix
      * @param m12 the Y coordinate translation element of the 3x3 matrix
      * @since 1.2
+     * @j2sIgnore
      */
     public AffineTransform(double m00, double m10,
                            double m01, double m11,
@@ -588,6 +631,8 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * less than 6, only the first 4 values are taken. If the length of
      * the array is greater than 6, the first 6 values are taken.
      * @since 1.2
+     * 
+     * @j2sIgnore
      */
     public AffineTransform(double[] flatmatrix) {
         m00 = flatmatrix[0];

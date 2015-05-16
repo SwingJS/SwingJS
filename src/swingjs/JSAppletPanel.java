@@ -14,7 +14,9 @@ import jsjava.awt.Font;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
+import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
+import jsjava.awt.event.PaintEvent;
 import jsjavax.swing.JApplet;
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
@@ -658,5 +660,21 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	JSComponentUI getUI()  {
 		return  null;
 	}
+
+  /**
+   * repaint from JApplet class via Component.repaint()
+   * 
+   */
+  @Override 
+  public void repaintImpl(long tm, int x, int y, int width, int height) {
+      if (applet.isVisible() && 
+          applet.getWidth() > 0 && applet.getHeight() > 0) {
+      	applet.getContentPane().repaint(tm, x, y, width, height);
+      	
+   //   	  PaintEvent e = new PaintEvent(applet.getContentPane(), PaintEvent.UPDATE,
+     //                                   new Rectangle(x, y, width, height));
+       //   Toolkit.getEventQueue().postEvent(e);
+      }    		
+  	}
 
 }

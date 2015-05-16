@@ -29,6 +29,7 @@ package jsjava.awt;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EmptyStackException;
 
+import swingjs.JSEvent;
 import swingjs.JSToolkit;
 //import jsjava.util.logging.Level;
 //import jsjava.util.logging.Logger;
@@ -247,26 +248,23 @@ public class EventQueue {
 	}
 
 	private static int getPriority(AWTEvent theEvent) {
-		if (theEvent instanceof PeerEvent
-				&& (((PeerEvent) theEvent).getFlags() & PeerEvent.ULTIMATE_PRIORITY_EVENT) != 0) {
+		if (theEvent instanceof PeerEvent) {
+			long flags = ((PeerEvent) theEvent).getFlags();
+			if ((flags & PeerEvent.ULTIMATE_PRIORITY_EVENT) != 0)
 			return ULTIMATE_PRIORITY;
-		}
-
-		if (theEvent instanceof PeerEvent
-				&& (((PeerEvent) theEvent).getFlags() & PeerEvent.PRIORITY_EVENT) != 0) {
+			if ((flags & PeerEvent.PRIORITY_EVENT) != 0)
 			return HIGH_PRIORITY;
-		}
-
-		if (theEvent instanceof PeerEvent
-				&& (((PeerEvent) theEvent).getFlags() & PeerEvent.LOW_PRIORITY_EVENT) != 0) {
+			if ((flags & PeerEvent.LOW_PRIORITY_EVENT) != 0)
 			return LOW_PRIORITY;
 		}
-
-		int id = theEvent.getID();
-		if (id == PaintEvent.PAINT || id == PaintEvent.UPDATE) {
+		switch (theEvent.getID()) {
+		case InvocationEvent.SWINGJS_INVOCATION_LOW: // SwingJS must execute JSThread.run1(mode) after all other events
+		case PaintEvent.PAINT:
+		case PaintEvent.UPDATE:
 			return LOW_PRIORITY;
+		default:
+			return NORM_PRIORITY;
 		}
-		return NORM_PRIORITY;
 	}
 
 	/**
@@ -279,8 +277,6 @@ public class EventQueue {
 	 *          the desired priority of the event
 	 */
 	private void postEventNow(AWTEvent theEvent, int priority) {
-
-//		JSToolkit.postJavaEvent(this, theEvent, priority);
 
 		if (coalesceEvent(theEvent, priority)) {
 			return;

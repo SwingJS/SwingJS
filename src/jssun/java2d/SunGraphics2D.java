@@ -265,8 +265,22 @@ public abstract class SunGraphics2D
 //    }
 //
     protected Object clone() {
+    	return clone0();
+    }
+    
+    protected Object clone0() {
         try {
-            SunGraphics2D g = (SunGraphics2D) super.clone();
+          SunGraphics2D g;
+        	/**
+        	 * avoid super call to Object.clone();
+        	 * @j2sNative
+        	 * 
+        	 * g = Clazz.clone(this);
+        	 * 
+        	 */
+        	{
+            g = (SunGraphics2D) super.clone();
+        	}
             g.transform = new AffineTransform(this.transform);
             if (hints != null) {
                 g.hints = (RenderingHints) this.hints.clone();
@@ -274,7 +288,7 @@ public abstract class SunGraphics2D
             /* FontInfos are re-used, so must be cloned too, if they
              * are valid, and be nulled out if invalid.
              * The implied trade-off is that there is more to be gained
-             * from re-using these objects than is lost by having to
+             * from re-using these objects than is lost by having		 to
              * clone them when the SG2D is cloned.
              */
 //            if (this.fontInfo != null) {
@@ -300,7 +314,7 @@ public abstract class SunGraphics2D
      * Create a new SunGraphics2D based on this one.
      */
     public Graphics create() {
-        return (Graphics) clone();
+        return (Graphics) clone0();
     }
 //
 //    public void setDevClip(int x, int y, int w, int h) {

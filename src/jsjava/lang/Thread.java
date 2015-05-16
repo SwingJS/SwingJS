@@ -975,7 +975,7 @@ class Thread implements Runnable {
      * @revised 6.0
      */
     public static boolean interrupted() {
-        return currentThread().isInterrupted(true);
+        return currentThread().isInterruptedB(true);
     }
 
     /**
@@ -990,19 +990,25 @@ class Thread implements Runnable {
      *          <code>false</code> otherwise.
      * @see     #interrupted()
      * @revised 6.0
+     * 
+     * @js2Ignore
+     * 
      */
     public boolean isInterrupted() {
-        return isInterrupted(false);
+        return isInterruptedB(false);
     }
 
     /**
      * Tests if some Thread has been interrupted.  The interrupted state
-     * is reset or not based on the value of ClearInterrupted that is
+     * is reset or not based on the value of clearInterrupted that is
      * passed.
      */
-    private boolean isInterrupted(boolean ClearInterrupted){
-    	// SwingJS ;
-    	return false;
+    private boolean isInterruptedB(boolean clearInterrupted){
+    	// SwingJS
+    	boolean wasInt = interrupted;
+    	if (clearInterrupted)
+    		interrupted = false;
+    	return wasInt;
     }
 
     /**
@@ -1863,6 +1869,8 @@ class Thread implements Runnable {
 
     // null unless explicitly set
     private volatile UncaughtExceptionHandler uncaughtExceptionHandler;
+		private boolean interrupted;
+		private boolean stopped;
 
     // null unless explicitly set
     private static volatile UncaughtExceptionHandler defaultUncaughtExceptionHandler;
@@ -1965,20 +1973,19 @@ class Thread implements Runnable {
 //    }
 //
     /* Some private helper methods */
+    
+    // SwingJS -- these were native calls
     private void setPriority0(int newPriority){
-    	// SwingJS ;
     }
     private void stop0(Object o){
-    	// SwingJS ;
+    	stopped = true;
     }
     private void suspend0(){
-    	// SwingJS ;
     }
     private void resume0(){
-    	// SwingJS ;
     }
     private void interrupt0(){
-    	// SwingJS ;
+    	interrupted = true;
     }
 
 }

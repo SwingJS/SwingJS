@@ -40,6 +40,8 @@ import java.util.Vector;
 //import java.util.logging.*;
 
 import swingjs.JSThread;
+import swingjs.JSToolkit;
+import swingjs.api.JSFunction;
 
 //import sun.awt.dnd.SunDragSourceContextPeer;
 
@@ -177,6 +179,7 @@ class EventDispatchThread extends JSThread {
 	 * has a function callback to restart this method at the "LOOP" mode.
 	 * 
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	protected void run1(int mode) {
 		try {
@@ -197,7 +200,7 @@ class EventDispatchThread extends JSThread {
 						pumpOneEventForFilters(myid);
 					}
 				};
-				dispatchAndReturn(r, LOOP);
+				dispatchAndReturn(r, mode);
 				if (isJS)
 					return;
 				break;
@@ -209,6 +212,25 @@ class EventDispatchThread extends JSThread {
 			if (!doDispatch)
 				finish();
 		}
+	}
+
+	/**
+	 * override JSThread so that we do not use any queuing
+	 */
+	@SuppressWarnings("unused")
+	protected void dispatchAndReturn(Runnable r, int mode) {
+		JSFunction f = null;
+		JSThread me = this;
+		/**
+		 * @j2sNative
+		 * 
+		 *            f = function() {r.run();me.run1(mode)
+		 *            };
+		 * 
+		 */
+		{
+		}
+		JSToolkit.setTimeout(f, 0, 0);
 	}
 
 	private void finish() {

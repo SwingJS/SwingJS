@@ -316,7 +316,7 @@ public class Rectangle extends Rectangle2D
      * 
      */
     public void setBounds(Rectangle r) {
-        setBounds(r.x, r.y, r.width, r.height);
+        reshape(r.x, r.y, r.width, r.height);
     }
 
     /**

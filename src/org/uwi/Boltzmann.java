@@ -176,7 +176,7 @@ public class Boltzmann extends JApplet {
 
 	// {{DECLARE_CONTROLS
 	JPanel BoltzSimGraph = new JPanel();
-	BoltzCanvas DispBoltz = new BoltzCanvas();
+	BoltzCanvas DispBoltz = new BoltzCanvas(this);
 	JPanel EntropyGraph = new JPanel();
 	EntropyCanvas DispEntropy = new EntropyCanvas();
 	Border lineBorder1 = BorderFactory.createLineBorder(Color.black);
@@ -326,13 +326,25 @@ public class Boltzmann extends JApplet {
 	public void sjs_initSimulation() {
 		numOfCollisions = maxCollisions;
 		entropyFactor = (int) Math.ceil(maxCollisions / EntropyCalcs);
-		// Adjust displayFactor based on maxCollisions
-		if (maxCollisions <= 5000)
-			displayFactor = 1;
-		else if (maxCollisions <= 20000)
-			displayFactor = 4;
-		else
-			displayFactor = 10;
+		
+		
+		/**
+		 * just too slow 
+		 * 
+		 * @j2sNative
+		 * 
+		 * this.displayFactor = 100;
+		 */
+		{
+			// Adjust displayFactor based on maxCollisions
+			
+			if (maxCollisions <= 5000)
+				displayFactor = 1;
+			else if (maxCollisions <= 20000)
+				displayFactor = 4;
+			else
+				displayFactor = 10;
+		}
 
 		// Show the intial graph with all particles having E of initialEnergy
 
@@ -434,13 +446,12 @@ public class Boltzmann extends JApplet {
 	public boolean sjs_checkRepaint() {
 		if ((numOfCollisions % entropyFactor) == 0) {
 			calcEntropy(DispEntropy.entCounter++);
-			DispEntropy.invalidate();			
+			DispEntropy.invalidate();
 		}
-		if ((numOfCollisions % displayFactor) == 0) {
-		  repaint();
-		  return true;
-		}
-		return false;
+		if ((numOfCollisions % displayFactor) != 0)
+			return false;
+		repaint();
+		return true;
 	}
 
 

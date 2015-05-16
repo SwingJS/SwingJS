@@ -217,8 +217,9 @@ public abstract class Path2D implements Shape, Cloneable {
          * @since 1.6
          */
         public Float(int rule, int initialCapacity) {
-            super(rule, initialCapacity);
-            floatCoords = new float[initialCapacity * 2];
+          setWindingRule(rule);
+          pointTypes = new byte[initialCapacity];
+          floatCoords = new float[initialCapacity * 2];
         }
 
         /**
@@ -247,24 +248,27 @@ public abstract class Path2D implements Shape, Cloneable {
          * @since 1.6
          */
         public Float(Shape s, AffineTransform at) {
-            if (s instanceof Path2D) {
-                Path2D p2d = (Path2D) s;
-                setWindingRule(p2d.windingRule);
-                this.numTypes = p2d.numTypes;
-                this.pointTypes = Arrays.copyOf(p2d.pointTypes,
-                                                p2d.pointTypes.length);
-                this.numCoords = p2d.numCoords;
-                this.floatCoords = p2d.cloneCoordsFloat(at);
-            } else {
-                PathIterator pi = s.getPathIterator(at);
-                setWindingRule(pi.getWindingRule());
-                this.pointTypes = new byte[INIT_SIZE];
-                this.floatCoords = new float[INIT_SIZE * 2];
-                append(pi, false);
-            }
+        	setPath(s, at);
         }
 
-        float[] cloneCoordsFloat(AffineTransform at) {
+		private void setPath(Shape s, AffineTransform at) {
+			if (s instanceof Path2D) {
+				Path2D p2d = (Path2D) s;
+				setWindingRule(p2d.windingRule);
+				this.numTypes = p2d.numTypes;
+				this.pointTypes = Arrays.copyOf(p2d.pointTypes, p2d.pointTypes.length);
+				this.numCoords = p2d.numCoords;
+				this.floatCoords = p2d.cloneCoordsFloat(at);
+			} else {
+				PathIterator pi = s.getPathIterator(at);
+				setWindingRule(pi.getWindingRule());
+				this.pointTypes = new byte[INIT_SIZE];
+				this.floatCoords = new float[INIT_SIZE * 2];
+				append(pi, false);
+			}
+		}
+
+				float[] cloneCoordsFloat(AffineTransform at) {
             float ret[];
             if (at == null) {
                 ret = Arrays.copyOf(this.floatCoords, this.floatCoords.length);
@@ -287,14 +291,77 @@ public abstract class Path2D implements Shape, Cloneable {
             return ret;
         }
 
+        /**
+         * @j2sIgnore
+         * 
+         */
         void append(float x, float y) {
             floatCoords[numCoords++] = x;
             floatCoords[numCoords++] = y;
         }
 
+        /**
+         * @j2sIgnore
+         * 
+         */
         void append(double x, double y) {
             floatCoords[numCoords++] = (float) x;
             floatCoords[numCoords++] = (float) y;
+        }
+
+        /**
+         * {@inheritDoc}
+         * @since 1.6
+         */
+        public final void append(PathIterator pi, boolean connect) {
+        	/**
+        	 * @j2sNative
+        	 * 
+        	 * if (typeof pi == "number") {
+        	 * 
+            this.floatCoords[this.numCoords++] = pi;
+            this.floatCoords[this.numCoords++] = connect;
+            return;
+            }
+        	 * 
+        	 * 
+        	 */
+        	{}
+            float coords[] = new float[6];
+            while (!pi.isDone()) {
+                switch (pi.currentSegment(coords)) {
+                case SEG_MOVETO:
+                    if (!connect || numTypes < 1 || numCoords < 1) {
+                        moveTo(coords[0], coords[1]);
+                        break;
+                    }
+                    if (pointTypes[numTypes - 1] != SEG_CLOSE &&
+                        floatCoords[numCoords-2] == coords[0] &&
+                        floatCoords[numCoords-1] == coords[1])
+                    {
+                        // Collapse out initial moveto/lineto
+                        break;
+                    }
+          					//$FALL-THROUGH$
+                case SEG_LINETO:
+                    lineTo(coords[0], coords[1]);
+                    break;
+                case SEG_QUADTO:
+                    quadTo(coords[0], coords[1],
+                           coords[2], coords[3]);
+                    break;
+                case SEG_CUBICTO:
+                    curveTo(coords[0], coords[1],
+                            coords[2], coords[3],
+                            coords[4], coords[5]);
+                    break;
+                case SEG_CLOSE:
+                    closePath();
+                    break;
+                }
+                pi.next();
+                connect = false;
+            }
         }
 
         Point2D getPoint(int coordindex) {
@@ -678,48 +745,6 @@ public abstract class Path2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.6
          */
-        public final void append(PathIterator pi, boolean connect) {
-            float coords[] = new float[6];
-            while (!pi.isDone()) {
-                switch (pi.currentSegment(coords)) {
-                case SEG_MOVETO:
-                    if (!connect || numTypes < 1 || numCoords < 1) {
-                        moveTo(coords[0], coords[1]);
-                        break;
-                    }
-                    if (pointTypes[numTypes - 1] != SEG_CLOSE &&
-                        floatCoords[numCoords-2] == coords[0] &&
-                        floatCoords[numCoords-1] == coords[1])
-                    {
-                        // Collapse out initial moveto/lineto
-                        break;
-                    }
-          					//$FALL-THROUGH$
-                case SEG_LINETO:
-                    lineTo(coords[0], coords[1]);
-                    break;
-                case SEG_QUADTO:
-                    quadTo(coords[0], coords[1],
-                           coords[2], coords[3]);
-                    break;
-                case SEG_CUBICTO:
-                    curveTo(coords[0], coords[1],
-                            coords[2], coords[3],
-                            coords[4], coords[5]);
-                    break;
-                case SEG_CLOSE:
-                    closePath();
-                    break;
-                }
-                pi.next();
-                connect = false;
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         * @since 1.6
-         */
         public final void transform(AffineTransform at) {
             at.transform(floatCoords, 0, floatCoords, 0, numCoords / 2);
         }
@@ -781,11 +806,11 @@ public abstract class Path2D implements Shape, Cloneable {
             // offer "public Object clone()" for backwards
             // compatibility so we cannot restrict it further.
             // REMIND: Can we do both somehow?
-            if (this instanceof GeneralPath) {
-                return new GeneralPath(this);
-            } else {
+//            if (this instanceof GeneralPath) {
+//                return new GeneralPath(this);
+//            } else {
                 return new Path2D.Float(this);
-            }
+//            }
         }
 
 //        /*
@@ -1128,14 +1153,78 @@ public abstract class Path2D implements Shape, Cloneable {
             return ret;
         }
 
+        /**
+         * @j2sIgnore
+         * 
+         */
         void append(float x, float y) {
             doubleCoords[numCoords++] = x;
             doubleCoords[numCoords++] = y;
         }
 
+        /**
+         * @j2sIgnore
+         * 
+         */
         void append(double x, double y) {
             doubleCoords[numCoords++] = x;
             doubleCoords[numCoords++] = y;
+        }
+
+        /**
+         * {@inheritDoc}
+         * @since 1.6
+         */
+        public final void append(PathIterator pi, boolean connect) {
+        	/**
+        	 * @j2sNative
+        	 * 
+        	 * if (typeof pi == "number") {
+        	 * 
+            this.floatCoords[this.numCoords++] = pi;
+            this.floatCoords[this.numCoords++] = connect;
+            return;
+            
+            }
+        	 * 
+        	 * 
+        	 */
+        	{}
+            double coords[] = new double[6];
+            while (!pi.isDone()) {
+                switch (pi.currentSegment(coords)) {
+                case SEG_MOVETO:
+                    if (!connect || numTypes < 1 || numCoords < 1) {
+                        moveTo(coords[0], coords[1]);
+                        break;
+                    }
+                    if (pointTypes[numTypes - 1] != SEG_CLOSE &&
+                        doubleCoords[numCoords-2] == coords[0] &&
+                        doubleCoords[numCoords-1] == coords[1])
+                    {
+                        // Collapse out initial moveto/lineto
+                        break;
+                    }
+          					//$FALL-THROUGH$
+                case SEG_LINETO:
+                    lineTo(coords[0], coords[1]);
+                    break;
+                case SEG_QUADTO:
+                    quadTo(coords[0], coords[1],
+                           coords[2], coords[3]);
+                    break;
+                case SEG_CUBICTO:
+                    curveTo(coords[0], coords[1],
+                            coords[2], coords[3],
+                            coords[4], coords[5]);
+                    break;
+                case SEG_CLOSE:
+                    closePath();
+                    break;
+                }
+                pi.next();
+                connect = false;
+            }
         }
 
         Point2D getPoint(int coordindex) {
@@ -1403,48 +1492,6 @@ public abstract class Path2D implements Shape, Cloneable {
             // Count should always be a multiple of 2 here.
             // assert((crossings & 1) != 0);
             return crossings;
-        }
-
-        /**
-         * {@inheritDoc}
-         * @since 1.6
-         */
-        public final void append(PathIterator pi, boolean connect) {
-            double coords[] = new double[6];
-            while (!pi.isDone()) {
-                switch (pi.currentSegment(coords)) {
-                case SEG_MOVETO:
-                    if (!connect || numTypes < 1 || numCoords < 1) {
-                        moveTo(coords[0], coords[1]);
-                        break;
-                    }
-                    if (pointTypes[numTypes - 1] != SEG_CLOSE &&
-                        doubleCoords[numCoords-2] == coords[0] &&
-                        doubleCoords[numCoords-1] == coords[1])
-                    {
-                        // Collapse out initial moveto/lineto
-                        break;
-                    }
-          					//$FALL-THROUGH$
-                case SEG_LINETO:
-                    lineTo(coords[0], coords[1]);
-                    break;
-                case SEG_QUADTO:
-                    quadTo(coords[0], coords[1],
-                           coords[2], coords[3]);
-                    break;
-                case SEG_CUBICTO:
-                    curveTo(coords[0], coords[1],
-                            coords[2], coords[3],
-                            coords[4], coords[5]);
-                    break;
-                case SEG_CLOSE:
-                    closePath();
-                    break;
-                }
-                pi.next();
-                connect = false;
-            }
         }
 
         /**

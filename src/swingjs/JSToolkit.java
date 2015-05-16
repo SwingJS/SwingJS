@@ -559,7 +559,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param msDelay a time to wait for, in milliseconds
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	public static void setTimeout(JSFunction f, int msDelay, int id) {
+	public static void setTimeout(Object f, int msDelay, int id) {
 			
 		/**
 		 * @j2sNative

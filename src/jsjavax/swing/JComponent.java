@@ -1739,9 +1739,11 @@ public abstract class JComponent extends Container
      * @return true if this component logically contains x,y
      * @see jsjava.awt.Component#contains(int, int)
      * @see ComponentUI
+     * 
+     * @j2sOverride
      */
     public boolean contains(int x, int y) {
-        return (ui != null) ? ui.contains(this, x, y) : super.contains(x, y);
+        return (ui != null) ? ui.contains(this, x, y) : inside(x, y);
     }
 
     /**
@@ -4410,7 +4412,8 @@ public abstract class JComponent extends Container
         Rectangle bounds = c.getBounds();
 
         if (p == null || p instanceof Window || p instanceof Applet) {
-            visibleRect.setBounds(0, 0, bounds.width, bounds.height);
+          // SwingJS SAEM setBounds --> reshape
+            visibleRect.reshape(0, 0, bounds.width, bounds.height);
         } else {
             computeVisibleRect(p, visibleRect);
             visibleRect.x -= bounds.x;

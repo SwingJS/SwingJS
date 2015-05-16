@@ -501,8 +501,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public Object clone() {
 		//System.out.println("new graphics");
 		save();
-		JSGraphics2D g = (JSGraphics2D) super.clone();
-		return g;
+		return (JSGraphics2D) clone0();
 	}
 
 	@Override

@@ -104,13 +104,14 @@
     </copy>
 
 <!-- try without this - uses JSmol's version of BufferedInputStream and InputStream
+-->
 
     <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
   	<copy todir="site/swingjs/j2s" overwrite="true" >
       <fileset dir="j2shack">
+        <include name="**/*.js" />
       </fileset>
     </copy>
--->
 
   	<echo>Fixing "jsjava" references</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
@@ -485,7 +486,9 @@
             javax/swing/RepaintManager.js
             jssun/awt/SunToolkit.js
 
-            java/awt/Conditional.js
+            swingjs/JSGraphics2D.js
+
+        	java/awt/Conditional.js
             java/awt/event/PaintEvent.js
             java/awt/EventDispatchThread.js
             java/awt/EventFilter.js
@@ -526,6 +529,7 @@
             swingjs/plaf/JSToggleButtonUI.js
             swingjs/plaf/LazyActionMap.js
 
+
         	"/>
     </antcall>
     
@@ -534,8 +538,6 @@
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
-            swingjs/JSGraphics2D.js
-
     
    	minimize additional JSmol JavaScript -->
 

@@ -814,6 +814,9 @@ public class RenderingHints
      * from the specified Map object which may be null.
      * @param init a map of key/value pairs to initialize the hints
      *          or null if the object should be empty
+     *          
+     *  @j2sIgnore
+     *  
      */
     public RenderingHints(Map<Key,?> init) {
         if (init != null) {
@@ -821,15 +824,31 @@ public class RenderingHints
         }
     }
 
-    /**
-     * Constructs a new object with the specified key/value pair.
-     * @param key the key of the particular hint property
-     * @param value the value of the hint property specified with
-     * <code>key</code>
-     */
-    public RenderingHints(Key key, Object value) {
-        hintmap.put(key, value);
-    }
+	/**
+	 * Constructs a new object with the specified key/value pair.
+	 * 
+	 * @param key
+	 *          the key of the particular hint property
+	 * @param value
+	 *          the value of the hint property specified with <code>key</code>
+	 * 
+	 * @j2sIgnore
+	 * 
+	 */
+	public RenderingHints(Key key, Object value) {
+		Map<Key, ?> init = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            if (arguments.length == 1) init = key;
+		 */
+		{
+		}
+		if (init == null && key != null)
+			hintmap.put(key, value);
+		else if (init != null)
+			hintmap.putAll(init);
+	}
 
     /**
      * Returns the number of key-value mappings in this
@@ -1116,26 +1135,37 @@ public class RenderingHints
         return hintmap.hashCode();
     }
 
-    /**
-     * Creates a clone of this <code>RenderingHints</code> object
-     * that has the same contents as this <code>RenderingHints</code>
-     * object.
-     * @return a clone of this instance.
-     */
-    public Object clone() {
-        RenderingHints rh;
-        try {
-            rh = (RenderingHints) super.clone();
-            if (hintmap != null) {
-                rh.hintmap = (HashMap) hintmap.clone();
-            }
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
+	/**
+	 * Creates a clone of this <code>RenderingHints</code> object that has the
+	 * same contents as this <code>RenderingHints</code> object.
+	 * 
+	 * @return a clone of this instance.
+	 * 
+	 * @j2sOverride
+	 */
+	public Object clone() {
+		RenderingHints rh;
+		try {
+			/**
+			 * @j2sNative
+			 * 
+			 *            rh = Clazz.clone(this);
+			 *            if (this.hintmap != null) { rh.hintmap =
+			 *            this.hintmap.cloneHM(); }
+			 */
+			{
+				rh = (RenderingHints) super.clone();
+				if (hintmap != null) {
+					rh.hintmap = (HashMap) hintmap.clone();
+				}
+			}
+		} catch (CloneNotSupportedException e) {
+			// this shouldn't happen, since we are Cloneable
+			throw new InternalError();
+		}
 
-        return rh;
-    }
+		return rh;
+	}
 
     /**
      * Returns a rather long string representation of the hashmap

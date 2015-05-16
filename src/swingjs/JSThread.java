@@ -25,6 +25,9 @@
 
 package swingjs;
 
+import jsjava.awt.EventQueue;
+import jsjava.awt.Toolkit;
+import jsjava.awt.event.InvocationEvent;
 import swingjs.api.JSFunction;
 
 /**
@@ -41,7 +44,7 @@ public abstract class JSThread extends Thread implements JSFunction {
 
 	protected boolean isJS;
 	protected boolean doDispatch = true;
-	private int msDelay;
+	protected int msDelay;
 
 	public JSThread(ThreadGroup group, String name) {
 		super(group, name);
@@ -84,40 +87,40 @@ public abstract class JSThread extends Thread implements JSFunction {
 	protected abstract void run1(int state);
 
 	
-//	protected void run1(int mode) {
-//		try {
-//			while (true)
-//				switch (mode) {
-//				case INIT:
-//					// once-through stuff here
-//					mode = LOOP;
-//					break;
-//				case LOOP:
-//					if (!doDispatch || isInterrupted()) {
-//						mode = DONE;
-//					} else {
-//						Runnable r = new Runnable() {
-//							public void run() {
-//								// put the loop code here
-//							}
-//						};
-//						dispatchAndReturn(r);
-//						if (isJS)
-//							return;
-//					}
-//					break;
-//				// add more cases as needed
-//				case DONE:
-//					// finish up here
-//					if (isInterrupted())
-//						return;
-//					// or here
-//					break;
-//				}
-//		} finally {
-//			// stuff here to be executed after each loop in JS or at the end in Java
-//		}
-//	}
+	// protected void run1(int mode) {
+	// try {
+	// while (true)
+	// switch (mode) {
+	// case INIT:
+	// // once-through stuff here
+	// mode = LOOP;
+	// break;
+	// case LOOP:
+	// if (!doDispatch || isInterrupted()) {
+	// mode = DONE;
+	// } else {
+	// Runnable r = new Runnable() {
+	// public void run() {
+	// // put the loop code here
+	// }
+	// };
+	// dispatchAndReturn(r);
+	// if (isJS)
+	// return;
+	// }
+	// break;
+	// // add more cases as needed
+	// case DONE:
+	// // finish up here
+	// if (isInterrupted())
+	// return;
+	// // or here
+	// break;
+	// }
+	// } finally {
+	// // stuff here to be executed after each loop in JS or at the end in Java
+	// }
+	// }
 
 	@SuppressWarnings("unused")
 	protected void dispatchAndReturn(Runnable r, int mode) {
@@ -131,18 +134,40 @@ public abstract class JSThread extends Thread implements JSFunction {
 			}
 			return;
 		}
-		JSFunction f = null;
+		if (r != null) {
+			EventQueue.invokeLater(r);
+		}
+		final JSFunction f = null;
 		JSThread me = this;
 		/**
 		 * @j2sNative
 		 * 
-		 *            f = function() { r && (r.run ? r.run() : r() );me.run1(mode)
-		 *            };
+		 *            f = function() {me.run1(mode)};
 		 * 
 		 */
 		{
 		}
-		JSToolkit.setTimeout(f, msDelay, 0);
+		r = new Runnable() {
+
+			@Override
+			public void run() {
+				notifyMe(f);
+			}
+
+			private void notifyMe(JSFunction f) {
+				/**
+				 * @j2sNative
+				 * 
+				 *            f();
+				 * 
+				 */
+				{
+				}
+			}
+		};
+		// need msDelay
+		Toolkit.getEventQueue().postEvent(new JSEvent(this, r));
+
 	}
 
 }

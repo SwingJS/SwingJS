@@ -52,6 +52,11 @@ import jsjava.awt.AWTEvent;
  */
 public class InvocationEvent extends AWTEvent implements ActiveEvent {
 
+  /**
+   * Marks the first integer id for the range of invocation event ids.
+   */
+  public static final int SWINGJS_INVOCATION_LOW = 1201;
+
     /**
      * Marks the first integer id for the range of invocation event ids.
      */
@@ -65,7 +70,7 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
     /**
      * Marks the last integer id for the range of invocation event ids.
      */
-    public static final int INVOCATION_LAST = INVOCATION_DEFAULT;
+    public static final int INVOCATION_LAST = SWINGJS_INVOCATION_LOW;
 
     /**
      * The Runnable whose run() method will be called.
