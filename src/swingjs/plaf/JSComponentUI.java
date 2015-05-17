@@ -235,7 +235,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	protected void debugDump(DOMNode d) {
-		System.out.println(d.getAttribute("outerHTML"));
+		System.out.println(DOMNode.getAttr(d, "outerHTML"));
 	}
 	
 	protected static void vCenter(DOMNode obj, int offset) {
@@ -282,21 +282,35 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 			DOMNode body = DOMNode.getBody();
 			body.appendChild(div);
+			
+			System.out.println(DOMNode.getAttr(node, "outerHTML"));
 			JQuery jq = JSToolkit.getJQuery();
 			w = (int) Math.ceil(jq.$(div).width() + 0.5);
 			h = (int) Math.ceil(jq.$(div).height() + 0.5);
 			body.removeChild(div);
 		}
 
+		Dimension size = getCSSDimension(w, h);
 		if (addCSS) {
 			DOMNode.setStyles(node, "position", "absolute");
-			setDims(node, w, h);
+			setDims(node, size.width, size.height);
 		} else {
 			DOMNode.setStyles(node, "position", null);
 		}
 		if (parentNode != null)
 			parentNode.appendChild(node);
-		System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " " + DOMNode.getAttr(parentNode,"id"));	
+		System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " parent=" + DOMNode.getAttr(parentNode,"id"));	
+		return size;
+	}
+
+	/**
+	 * can be overloaded to allow some special adjustments
+	 * 
+	 * @param w
+	 * @param h
+	 * @return
+	 */
+	protected Dimension getCSSDimension(int w, int h) {
 		return new Dimension(w, h);
 	}
 

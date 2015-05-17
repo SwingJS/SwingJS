@@ -6,8 +6,10 @@ PROGRESS
 5/16/2015
 
 - basic JTextArea/JScrollPane combination working
-- Boltzmann.java working; did require reduction of repaint frequency for performance
+- height problem solved for JTextFields (HTML5 default 3px padding removed)
 - JSThread adds JSThread.JSEVENT = 2000 to EventQueue for very low (after painting) processing
+- Boltzmann.java working; did require reduction of repaint frequency for performance
+- see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/Boltzmann.htm
 
 5/15/2015
 

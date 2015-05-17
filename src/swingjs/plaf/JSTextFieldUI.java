@@ -1,6 +1,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.text.JTextComponent;
 import swingjs.JSToolkit;
@@ -26,8 +27,8 @@ public class JSTextFieldUI extends JSTextUI {
 	public DOMNode getDOMObject() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
-			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
-					"type", "text");
+			domBtn = enableNode = valueNode = domNode = DOMNode.setStyles(createDOMObject("input", id,
+					"type", "text"), "padding", "0px 1px");
 			vCenter(domNode, -10);
 			bindMouse(domNode);
 			bindKeys(domNode);
@@ -38,6 +39,11 @@ public class JSTextFieldUI extends JSTextUI {
 		return domNode;
 	}
 
+	
+	@Override
+	protected Dimension getCSSDimension(int w, int h) {
+		return new Dimension(w, h - 2);
+	}
 	
 	private void bindKeys(DOMNode domNode) {
 		JSFunction f = null;
