@@ -1,8 +1,12 @@
 package swingjs;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Map;
+
+import javajs.util.Rdr;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
@@ -34,6 +38,7 @@ import swingjs.api.JSFunction;
 import swingjs.plaf.HTML5LookAndFeel;
 import swingjs.plaf.JSComponentUI;
 
+@J2SIgnoreImport(URL.class)
 public class JSToolkit extends SunToolkit {
 
 	/*
@@ -728,6 +733,21 @@ public class JSToolkit extends SunToolkit {
 		 */
 		{
 			return null;
+		}
+	}
+
+	public static Object getFileContents(String uri) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return Jmol._getFileData(uri);
+		 */
+		{
+			try {
+				return Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) new URL(uri).getContent()));
+			} catch (Exception e) {
+				return null;
+			}
 		}
 	}
 
