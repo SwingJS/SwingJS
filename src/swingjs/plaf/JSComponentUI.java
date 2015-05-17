@@ -1,8 +1,5 @@
 package swingjs.plaf;
 
-import swingjs.JSToolkit;
-import swingjs.api.DOMNode;
-import swingjs.api.JQuery;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -25,9 +22,11 @@ import jsjava.awt.peer.LightweightPeer;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JRootPane;
-import jsjavax.swing.JViewport;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
+import swingjs.JSToolkit;
+import swingjs.api.DOMNode;
+import swingjs.api.JQuery;
 
 /**
  * The JSComponentUI subclasses are where all the detailed HTML5 implementation is 
@@ -64,7 +63,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 */
 	protected JComponent c;
 
-		
+
 	/**
 	 * the outermost div holding a component -- left, top, and for a container width and height
 	 */
@@ -103,12 +102,12 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	protected Component[] components;
 
 	/**
-	 * a numberical reference for an ID
+	 * a numerical reference for an ID
 	 */
 	protected int num;
 	
 	/**
-	 * not implemented/needed currently. Java handles this nicedly 
+	 * not implemented/needed currently. Java handles this nicely 
 	 * 
 	 */
 	protected boolean isTainted = true;
@@ -194,6 +193,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 					((istyle & Font.ITALIC) == 0 ? "normal" : "italic"), "font-weight",
 					((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
 		}
+		if (c.isBackgroundSet())
+			setBackground(c.getBackground());
+    setForeground(c.getForeground());
 		return obj;
 	}
 
@@ -219,7 +221,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * @return true if handled
 	 */
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
-		System.out.println(id + " handling event " + eventType + jQueryEvent);
+		//System.out.println(id + " handling event " + eventType + jQueryEvent);
 		return false;
 	}
 
@@ -675,15 +677,15 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	@Override
-	public void setForeground(Color c) {
-		JSToolkit.notImplemented("");
-		
+	public void setForeground(Color color) {
+		if (domNode != null)
+			DOMNode.setStyles(domNode, "color", JSToolkit.getCSSColor(color == null ? Color.black : color));
 	}
 
 	@Override
-	public void setBackground(Color c) {
-		JSToolkit.notImplemented("");
-		
+	public void setBackground(Color color) {
+		if (domNode != null)
+			DOMNode.setStyles(domNode, "background-color", JSToolkit.getCSSColor(color == null ? Color.white : color));
 	}
 
 	@Override

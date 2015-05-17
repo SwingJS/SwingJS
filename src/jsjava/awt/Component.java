@@ -1605,14 +1605,14 @@ protected  transient ComponentPeer peer;
      */
     public void setForeground(Color c) {
         Color oldColor = foreground;
-//        ComponentPeer peer = this.peer;
+        ComponentPeer peer = this.peer;
         foreground = c;
-//        if (peer != null) {
-//            c = getForeground();
-//            if (c != null) {
-//                peer.setForeground(c);
-//            }
-//        }
+        if (peer != null) {
+            c = getForeground();
+            if (c != null) {
+                peer.setForeground(c);
+            }
+        }
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
         firePropertyChangeObject("foreground", oldColor, c);
@@ -1665,14 +1665,14 @@ protected  transient ComponentPeer peer;
      */
     public void setBackground(Color c) {
         Color oldColor = background;
-//        ComponentPeer peer = this.peer;
+        ComponentPeer peer = this.peer;
         background = c;
-//        if (peer != null) {
-//            c = getBackground();
-//            if (c != null) {
-//                peer.setBackground(c);
-//            }
-//        }
+        if (peer != null) {
+            c = getBackground();
+            if (c != null) {
+                peer.setBackground(c);
+            }
+        }
         // This is a bound property, so report the change to
         // any registered listeners.  (Cheap if there are none.)
         firePropertyChangeObject("background", oldColor, c);

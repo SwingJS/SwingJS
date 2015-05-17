@@ -1,6 +1,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.text.JTextComponent;

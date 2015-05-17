@@ -7,9 +7,16 @@ PROGRESS
 
 - basic JTextArea/JScrollPane combination working
 - height problem solved for JTextFields (HTML5 default 3px padding removed)
+- background/foreground colors enabled
 - JSThread adds JSThread.JSEVENT = 2000 to EventQueue for very low (after painting) processing
 - Boltzmann.java working; did require reduction of repaint frequency for performance
 - see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/Boltzmann.htm
+
+Note: it is quite nice to see that from the developer console you can issue
+
+  testApplet._applet.tCollisions.setSize(80,30)
+  
+and it will do it. 
 
 5/15/2015
 
