@@ -5,7 +5,8 @@ PROGRESS
 ========
 5/16/2015
 
-- Boltzmann.java working
+- basic JTextArea/JScrollPane combination working
+- Boltzmann.java working; did require reduction of repaint frequency for performance
 - JSThread adds JSThread.JSEVENT = 2000 to EventQueue for very low (after painting) processing
 
 5/15/2015

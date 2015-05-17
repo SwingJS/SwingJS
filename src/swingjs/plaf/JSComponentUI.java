@@ -25,6 +25,7 @@ import jsjava.awt.peer.LightweightPeer;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JRootPane;
+import jsjavax.swing.JViewport;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 
@@ -88,7 +89,19 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * the subcomponent with the value field
 	 */
 	protected DOMNode valueNode;
-	
+
+	/**
+	 * a component that is being scrolled by a JScrollPane
+	 */
+	protected DOMNode scrollNode;
+
+
+	/**
+	 * DOM components pre-defined (JScrollPane)
+	 * 
+	 */
+	protected Component[] components;
+
 	/**
 	 * a numberical reference for an ID
 	 */
@@ -126,6 +139,12 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 
 	String currentValue;
+
+
+	/**
+	 * the scroller for a text area
+	 */
+	public JSScrollPaneUI scrollerNode;
 	
 	
 	public JSComponentUI() {
@@ -173,7 +192,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			DOMNode.setStyles(obj, "font-family", font.getFamily(), "font-size",
 					font.getSize() + "px", "font-style",
 					((istyle & Font.ITALIC) == 0 ? "normal" : "italic"), "font-weight",
-					((istyle & Font.BOLD) == 0 ? "nor	mal" : "bold"));
+					((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
 		}
 		return obj;
 	}
@@ -235,7 +254,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		int h, w;
 		DOMNode parentNode = null;
 
-		if (addCSS && preferredSize != null) {
+		if (addCSS && scrollerNode != null) {
+			w = scrollerNode.c.getWidth();
+			h = scrollerNode.c.getHeight();	
+		} else if (addCSS && preferredSize != null) {
 			// user has set preferred size
 			w = preferredSize.width;
 			h = preferredSize.height;
@@ -274,8 +296,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		}
 		if (parentNode != null)
 			parentNode.appendChild(node);
-		// System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h +
-		// " " + p);
+		System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " " + DOMNode.getAttr(parentNode,"id"));	
 		return new Dimension(w, h);
 	}
 
@@ -288,17 +309,18 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	/**
 	 * creates the DOM node and inserts it into the tree at the correct place,
 	 * iterating through all children if this is a container
+	 * @return 
 	 * 
 	 */
-	private void setHTMLElement() {
+	protected DOMNode setHTMLElement() {
 		if (!isTainted)
-			return;
+			return divNode;
 
 		// check for root pane -- not included in DOM
 		JRootPane root = (isContainer ? c.getRootPane() : null);
 		if (c == root) {
 			isTainted = false;
-			return;
+			return divNode;
 		}
 		
 		domNode = getDOMObject();
@@ -324,37 +346,41 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 			// set width from component
 
+			System.out.println("JSComponentUI container " + id + " " + c.getBounds());
 			DOMNode.setStyles(divNode, "width", c.getWidth() + "px", "height",
 					c.getHeight() + "px");
+			
 
 			// add all children
-			Component[] children = c.getComponents();
+			Component[] children = (components == null ? c.getComponents() : components);
 			for (int i = children.length; --i >= 0;) {
 				JSComponentUI ui = ((JSComponentUI) ((JComponent) children[i]).getUI());
 				if (ui.divNode == null)
 					ui.setHTMLElement();
 				if (ui.divNode == null) {
-					//System.out.println("JSCUI could not add " + ui.c.getName() + " to "
-						//	+ c.getName());
+					System.out.println("JSCUI could not add " + ui.c.getName() + " to "
+						 + c.getName());
 				} else {
-					//System.out.println("JSCUI appending " + ui.c.getName() + " to "
-						//	+ c.getName());
+					System.out.println("JSCUI appending " + ui.c.getName() + " to "
+							+ c.getName());
 					divNode.appendChild(ui.divNode);
-					//System.out.println("JSCUI appending OK");
+					System.out.println("JSCUI appending OK");
 				}
 				ui.parent = this;
 			}
 		}
+		
 		// mark as not tainted
 		//debugDump(divObj);
 		isTainted = false;
+		return divNode;
 	}
 
 	/**
 	 * c ignored because JSComponentUI is one per component
 	 */
 	public Dimension getPreferredSize(JComponent c) {
-		System.out.println("getPreferredSize for " + id + " " + c);
+		System.out.println("getPreferredSize for " + id + " " + c.getName());
 		Dimension d = setHTMLSize(getDOMObject(), true);
 		System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
   	return d;
@@ -524,7 +550,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		if (obj == null) {
 			System.out.println("JSComponentUI: unrecognized prop: " + prop);
 		} else {
-			System.out.println("JSComponentUI: setting " + id + " " + prop + " " + val);
+			System.out.println("JSComponentUI: setting " + id + " " + prop);// + " " + val);
 			DOMNode.setAttr(obj, prop, val);
 		}
 	}

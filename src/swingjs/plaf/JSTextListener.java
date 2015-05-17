@@ -173,7 +173,7 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 			ui.editor.caretEvent.fire();
 		}
 		System.out.println(ui.id + " handling event " + evType + " " + eventType
-				+ " " + ui.editor.getCaret() + " " + ui.editor.getText());
+				+ " " + ui.editor.getCaret());// + " " + ui.editor.getText());
 		return true;
 	}
 

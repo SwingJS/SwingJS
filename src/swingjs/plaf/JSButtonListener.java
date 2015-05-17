@@ -75,7 +75,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
-		System.out.println("JSButtonListener property change: " + prop + " " + e.getSource());
+		//System.out.println("JSButtonListener property change: " + prop + " " + e.getSource());
 		if (prop == AbstractButton.MNEMONIC_CHANGED_PROPERTY) {
 			updateMnemonicBinding((AbstractButton) e.getSource());
 		} else if (prop == AbstractButton.CONTENT_AREA_FILLED_CHANGED_PROPERTY) {

@@ -12,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
+import javajs.util.SB;
+
 import javax.swing.BorderFactory;
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -39,6 +41,25 @@ import javax.swing.border.Border;
  A basic extension of the JApplet class
  */
 public class Boltzmann extends JApplet {
+
+	//_CONTROLS
+	JPanel BoltzSimGraph = new JPanel();
+	BoltzCanvas DispBoltz = new BoltzCanvas(this);
+	JPanel EntropyGraph = new JPanel();
+	EntropyCanvas DispEntropy = new EntropyCanvas();
+	Border lineBorder1 = BorderFactory.createLineBorder(Color.black);
+	Border lineBorder2 = BorderFactory.createLineBorder(Color.black);
+	JPanel UserInput = new JPanel();
+	JLabel lQuanta = new JLabel();
+	JLabel lParticles = new JLabel();
+	JLabel lCollisions = new JLabel();
+	JTextField tEnergy = new JTextField();
+	JTextField tParticles = new JTextField();
+	JTextField tCollisions = new JTextField();
+	JButton bStartSim = new JButton();
+	// Border lineBorder3 = BorderFactory.createLineBorder(Color.black);
+	JScrollPane DispResults = new JScrollPane();
+	LevelInfoArea ShowText = new LevelInfoArea();
 
 	// My variables
 	int initialEnergy; // Initial Energy of all particles
@@ -75,8 +96,7 @@ public class Boltzmann extends JApplet {
 
 		BoltzSimGraph.add(DispBoltz);
 		DispBoltz.setPreferredSize(new Dimension(380, 294)); // SwingJS[3]
-		DispBoltz.setBounds(2,6,380,294);
-		
+		DispBoltz.setBounds(2, 6, 380, 294);
 
 		EntropyGraph.setBorder(lineBorder1);
 		EntropyGraph.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -138,19 +158,18 @@ public class Boltzmann extends JApplet {
 						0), 0, 0));
 		bStartSim.setBackground(Color.green);
 		bStartSim.setBounds(160, 64, 63, 25);
-		// $$ lineBorder3.move(48,392);
-//x		DispResults
-//x				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-//x	DispResults
-//x				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//x		DispResults.setOpaque(true);
-//x		getContentPane().add(DispResults);
-//x		DispResults.setBounds(384, 156, 180, 240);
-//x		ShowText.setRows(10000);
-//x		ShowText.setDisabledTextColor(new Color(153, 153, 153));
-//x		DispResults.getViewport().add(ShowText);
-//x		ShowText.setBounds(0, 0, 162, 150000);
-		// }}
+		// lineBorder3.move(48,392);
+		DispResults
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		DispResults
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		DispResults.setOpaque(true);
+		getContentPane().add(DispResults);
+		DispResults.setBounds(384, 156, 180, 240);
+		ShowText.setRows(10000);
+		ShowText.setDisabledTextColor(new Color(153, 153, 153));
+		DispResults.getViewport().add(ShowText);
+		ShowText.setBounds(0, 0, 162, 150000);
 
 		// {{REGISTER_LISTENERS
 		SymAction lSymAction = new SymAction();
@@ -159,7 +178,7 @@ public class Boltzmann extends JApplet {
 		tParticles.addActionListener(lSymAction);
 		tCollisions.addActionListener(lSymAction);
 		SymMouse aSymMouse = new SymMouse();
-//x		ShowText.addMouseListener(aSymMouse);
+		ShowText.addMouseListener(aSymMouse);
 		// }}
 		// Initialize the environment
 		setBackground(Color.white);
@@ -174,25 +193,6 @@ public class Boltzmann extends JApplet {
 		initEnvironment();
 	}
 
-	// {{DECLARE_CONTROLS
-	JPanel BoltzSimGraph = new JPanel();
-	BoltzCanvas DispBoltz = new BoltzCanvas(this);
-	JPanel EntropyGraph = new JPanel();
-	EntropyCanvas DispEntropy = new EntropyCanvas();
-	Border lineBorder1 = BorderFactory.createLineBorder(Color.black);
-	Border lineBorder2 = BorderFactory.createLineBorder(Color.black);
-	JPanel UserInput = new JPanel();
-	JLabel lQuanta = new JLabel();
-	JLabel lParticles = new JLabel();
-	JLabel lCollisions = new JLabel();
-	JTextField tEnergy = new JTextField();
-	JTextField tParticles = new JTextField();
-	JTextField tCollisions = new JTextField();
-	JButton bStartSim = new JButton();
-	Border lineBorder3 = BorderFactory.createLineBorder(Color.black);
-	//JScrollPane DispResults = new JScrollPane();
-	//LevelInfoArea ShowText = new LevelInfoArea();
-
 	// }}
 
 	class SymAction implements ActionListener {
@@ -200,68 +200,64 @@ public class Boltzmann extends JApplet {
 			Object object = event.getSource();
 			if (object == bStartSim)
 				bStartSim_actionPerformed(event);
-			else if (object == tEnergy)
-				tEnergy_actionPerformed(event);
-			else if (object == tParticles)
-				tParticles_actionPerformed(event);
-			else if (object == tCollisions)
-				tCollisions_actionPerformed(event);
+//			else if (object == tEnergy)
+//				tEnergy_actionPerformed(event);
+//			else if (object == tParticles)
+//				tParticles_actionPerformed(event);
+//			else if (object == tCollisions)
+//				tCollisions_actionPerformed(event);
 
-//x		  ShowText.levelInfo = "";
+			ShowText.levelInfo.setLength(0);
 		}
 	}
 
 	public class LevelInfoArea extends JTextArea {
-		String levelInfo;
+		SB levelInfo = new SB();
 
 		public LevelInfoArea() {
 			super();
-			levelInfo = "";
+			levelInfo.setLength(0);
+		}
+
+		public void appendLine(String s) {
+			levelInfo.append(s).append("\n");
 		}
 	}
 
+	private Thread simThread;
+	
 	void bStartSim_actionPerformed(ActionEvent event)
 	// Action performed on pressing start button
 	{
 		// SwingJS[5]
-    //Graphics canvasGraphics = DispBoltz.getGraphics();
-		initEnvironment();
-    //DispBoltz.paint(canvasGraphics);
-		Thread simThread = new SimThread(this);
+		// Graphics canvasGraphics = DispBoltz.getGraphics();
+		// initEnvironment()
+		// DispBoltz.paint(canvasGraphics);
+		
+		if (!initEnvironment())
+			return;
+		if (simThread != null)
+			simThread.interrupt();
+		simThread = new SimThread(this);
 		simThread.start();
 	}
 
-	void tEnergy_actionPerformed(ActionEvent event)
-	// Get intial Energy of Particles from Text Field
-	// Particles must start off with more than 0 quanta of Energy
-	// if not use default from constructor
-	{
-		int tmp = (Integer.parseInt(tEnergy.getText().trim()));
-		if (tmp > 0)
-			initialEnergy = tmp;
-	}
+  boolean initEnvironment() {
 
-	// Get initial number of Particles from Text Field
-	// Must start off with more than 50 particles
-	// if not use default from constructor
-	void tParticles_actionPerformed(ActionEvent event) {
-		int tmp = (Integer.parseInt(tParticles.getText().trim()));
-		if (tmp >= 50)
-			maxParticles = tmp;
-	}
-
-	// Get number of Collisions to be simulated from text field
-	// Must start off with more than 200 collisions
-	// if not use default from constructor
-	void tCollisions_actionPerformed(ActionEvent event) {
+		try {
 		int tmp = (Integer.parseInt(tCollisions.getText().trim()));
 		if (tmp >= 200)
 			maxCollisions = tmp;
-	}
-
-	void initEnvironment() {
-		int i; // Counter used to traverse arrays
-
+		tmp = (Integer.parseInt(tEnergy.getText().trim()));
+		if (tmp > 0)
+			initialEnergy = tmp;
+		tmp = (Integer.parseInt(tParticles.getText().trim()));
+		if (tmp >= 50)
+			maxParticles = tmp;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
 		// Initialize environment
 		DispBoltz.maxEnergy = 20 * initialEnergy; // Highest Energy Level displayed
 		particleEnergy = new int[maxParticles];
@@ -272,16 +268,17 @@ public class Boltzmann extends JApplet {
 
 		DispEntropy.entCounter = 0;
 
-		for (i = 0; i < maxParticles; i++) {
+		for (int i = 0; i < maxParticles; i++) {
 			particleEnergy[i] = initialEnergy;
 		}
-		for (i = 0; i <= DispBoltz.maxEnergy; i++) {
+		for (int i = 0; i <= DispBoltz.maxEnergy; i++) {
 			DispBoltz.energyLevels[i] = 0;
 		}
-		for (i = 0; i < EntropyCalcs; i++) {
+		for (int i = 0; i < EntropyCalcs; i++) {
 			DispEntropy.Entropy[i] = 0;
 		}
 		DispBoltz.energyLevels[initialEnergy] = maxParticles;
+		return  true;
 	}
 
 	void calcEntropy(int x) {
@@ -297,22 +294,22 @@ public class Boltzmann extends JApplet {
 	class SymMouse extends MouseAdapter {
 		public void mouseReleased(MouseEvent event) {
 			Object object = event.getSource();
-//x			if (object == ShowText)
-//x				ShowText_mouseReleased(event);
+			if (object == ShowText)
+				ShowText_mouseReleased(event);
 		}
 	}
 
 	// Upon a button click in the Text Window selects all data
 	// and copies to clipboard
 	void ShowText_mouseReleased(MouseEvent event) {
-	  // SwingJS[2]
+		// SwingJS[2]
 		// Clipboard cb = Toolkit.getDefaultToolkit().
 		// getSystemClipboard();
 		// String s = ShowText.getText();
 		// StringSelection contents = new StringSelection(s);
 		// cb.setContents(contents, null);
 	}
-	
+
 	int particle1, particle2;
 	int e1, e2; // Energy of particle1 and particle2
 	int collisionEnergy;
@@ -321,23 +318,23 @@ public class Boltzmann extends JApplet {
 	int displayFactor;
 	// find out when to perform Entropy calculation
 	int entropyFactor;
+
 	// int systemEnergy = maxParticles * initialEnergy;
 
 	public void sjs_initSimulation() {
 		numOfCollisions = maxCollisions;
 		entropyFactor = (int) Math.ceil(maxCollisions / EntropyCalcs);
-		
-		
+
 		/**
-		 * just too slow 
+		 * just too slow
 		 * 
 		 * @j2sNative
 		 * 
-		 * this.displayFactor = 100;
+		 *            this.displayFactor = 100;
 		 */
 		{
 			// Adjust displayFactor based on maxCollisions
-			
+
 			if (maxCollisions <= 5000)
 				displayFactor = 1;
 			else if (maxCollisions <= 20000)
@@ -349,7 +346,7 @@ public class Boltzmann extends JApplet {
 		// Show the intial graph with all particles having E of initialEnergy
 
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean sjs_loopSimulation() {
@@ -403,9 +400,9 @@ public class Boltzmann extends JApplet {
 		DispBoltz.maxEnergy = curMaxEnergy;
 
 		return (--numOfCollisions > 0);
-//		// Delay to slow down display
-//		for (int i = 0; i < (10000 / displayFactor); i++)
-//			;
+		// // Delay to slow down display
+		// for (int i = 0; i < (10000 / displayFactor); i++)
+		// ;
 	}
 
 	protected void sjs_finalizeGraph() {
@@ -416,31 +413,25 @@ public class Boltzmann extends JApplet {
 			else
 				break;
 		}
-		
+
 		showTheText();
 	}
 
 	private void showTheText() {
-//		for (int i = 1; i <= curMaxEnergy; i++) {
-//			ShowText.levelInfo = ShowText.levelInfo + "EL " + i + "= "
-//					+ DispBoltz.energyLevels[i] + "\n";
-//		}
-//
-//		DecimalFormat df = new DecimalFormat("0.00");
-//		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
-//		for (i = 0; i < EntropyCalcs; i++) {
-//			ShowText.levelInfo = ShowText.levelInfo + "WL " + i + "= "
-//					+ df.format(DispEntropy.Entropy[i]) + "\n";
-//		}
-//		ShowText.levelInfo = ShowText.levelInfo + "-------------\n";
-//		ShowText.levelInfo = ShowText.levelInfo + "Init. Energy   = "
-//				+ initialEnergy + "\n";
-//		ShowText.levelInfo = ShowText.levelInfo + "No. particles  = "
-//				+ maxParticles + "\n";
-//		ShowText.levelInfo = ShowText.levelInfo + "No. collisions = "
-//				+ maxCollisions + "\n";
-//		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
-//		ShowText.setText(ShowText.levelInfo);
+		ShowText.levelInfo.setLength(0);
+		ShowText.appendLine("Init. Energy   = " + initialEnergy);
+		ShowText.appendLine("No. particles  = " + maxParticles);
+		ShowText.appendLine("No. collisions = " + maxCollisions);
+		ShowText.appendLine("-------------");
+		for (int i = 1; i <= curMaxEnergy; i++)
+			ShowText.appendLine("EL " + i + "= " + DispBoltz.energyLevels[i]);
+		ShowText.appendLine("-------------");
+		DecimalFormat df = new DecimalFormat("0.00");
+		for (int i = 0; i < EntropyCalcs; i++)
+			ShowText.appendLine("WL " + i + "= " + df.format(DispEntropy.Entropy[i]));
+		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
+		ShowText.setText(ShowText.levelInfo.toString());
+		repaint();
 	}
 
 	public boolean sjs_checkRepaint() {
@@ -448,11 +439,10 @@ public class Boltzmann extends JApplet {
 			calcEntropy(DispEntropy.entCounter++);
 			DispEntropy.invalidate();
 		}
-		if ((numOfCollisions % displayFactor) != 0)
+		if ((numOfCollisions % displayFactor) != 1) // BH: was 0
 			return false;
 		repaint();
 		return true;
 	}
-
 
 }

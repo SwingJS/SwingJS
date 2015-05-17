@@ -76,7 +76,7 @@ public abstract class DOMNode {
 		/**
 		 * @j2sNative
 		 * 
-		 *            return obj[attr];
+		 *       if (obj)return obj[attr];
 		 * 
 		 */
 		{

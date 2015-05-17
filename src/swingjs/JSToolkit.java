@@ -575,7 +575,10 @@ public class JSToolkit extends SunToolkit {
 		 *             f.run();
 		 *            else
 		 *             f();
-		 *             } catch (e) {alert("JSToolkit.setTimeout(" + id +"): " + e)}
+		 *             } catch (e) {
+		 *             var s = "JSToolkit.setTimeout(" + id +"): " + e;
+		 *             System.out.println(s);
+		 *             alert(s)}
 		 *            SwingJS.eventID = id0; 
 		 *            java.lang.Thread.thisThread = thread0; 
 		 *            }, msDelay);
@@ -715,5 +718,18 @@ public class JSToolkit extends SunToolkit {
 	public static Document getPlainDocument(JComponent c) {
 		return (Document) getInstance("swingjs.JSPlainDocument");
 	}
+
+	public static String getClassName(Object c) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            return c.__CLASS_NAME__;
+		 * 
+		 */
+		{
+			return null;
+		}
+	}
+
 
 }

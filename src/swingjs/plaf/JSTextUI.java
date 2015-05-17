@@ -444,6 +444,7 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
   	 * @return handled
   	 */
   	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
+  		System.out.println("Handling for " + id + " " + eventType + " " + jQueryEvent);
   		return updateHandler.handleJSEvent(this, eventType, jQueryEvent);
   	}
 

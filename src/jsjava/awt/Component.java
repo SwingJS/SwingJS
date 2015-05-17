@@ -2091,6 +2091,7 @@ protected  transient ComponentPeer peer;
 
 			if (resized) {
 				isPacked = false;
+				System.out.println("C " + JSToolkit.getClassName(this) + " resized to " + getBounds());
 			}
 
 			boolean needNotify = true;
@@ -2126,7 +2127,6 @@ protected  transient ComponentPeer peer;
 			setBoundsOp(ComponentPeer.RESET_OPERATION);
 		}
 	}
-    //}
 
     private void repaintParentIfNeeded(int oldX, int oldY, int oldWidth,
                                        int oldHeight)
