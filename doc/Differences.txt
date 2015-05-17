@@ -3,6 +3,22 @@ Notes
 
 PROGRESS
 ========
+5/17/2015
+
+- adds SAX XML parsing (needed for VARNA) 
+- uses sax2r3(final) from http://sourceforge.net/projects/sax/files/sax/	
+- implements org.xml.sax and javax.xml.sax
+- includes swingjs.JSSAXParser, swingjs.JSSAXContentHandler, singjs.JSSAXAttributes
+- see swingjs.test.TestXML.java
+	    String s = "<testing></testing>"
+		InputSource is = new InputSource(Rdr.getBR(s));
+	    javax.xml.parsers.SAXParserFactory.newInstance().newSAXParser()
+					.parse(is, new JSSAXContentHandler());
+- to test, from a developer console, enter: 
+
+  Clazz.loadClass("swingjs.test.TestXML", function() { new swingjs.test.TestXML([]) })
+  
+
 5/16/2015
 
 - basic JTextArea/JScrollPane combination working
