@@ -123,9 +123,11 @@ public abstract class SunToolkit extends Toolkit implements
 		eventQueue = new EventQueue();
 		// }
 		AppContext appContext = AppContext.getAppContext();
-		appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
-		PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
-		appContext.put(POST_EVENT_QUEUE_KEY, postEventQueue);
+		if (appContext != null) {
+			appContext.put(AppContext.EVENT_QUEUE_KEY, eventQueue);
+			PostEventQueue postEventQueue = new PostEventQueue(eventQueue);
+			appContext.put(POST_EVENT_QUEUE_KEY, postEventQueue);
+		}
 		// }
 		// };
 

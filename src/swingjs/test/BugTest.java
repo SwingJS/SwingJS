@@ -9,6 +9,11 @@ package swingjs.test;
 //import jsjavax.swing.JPanel;
 //import jsjavax.swing.JWindow;
 
+/**
+ * run in JavaScript from a developer console with
+ * 
+ * Clazz.loadClass("swingjs.test.BugTest", function() { new swingjs.test.BugTest().main([])})
+ */
 import java.util.AbstractMap;
 import java.util.HashMap;
 
@@ -54,9 +59,9 @@ public class BugTest extends HashMap {
 		int[][] a23 = new int[2][3];
 
 		printit(2, 3, 4, 5);
-		Toolkit tk = Toolkit.getDefaultToolkit();
+		//Toolkit tk = Toolkit.getDefaultToolkit();
 
-		System.out.println(tk.toString());
+		//System.out.println(tk.toString());
 
 		// JPanel ca = new JPanel();
 		// JWindow jp = new JWindow();
@@ -81,6 +86,11 @@ public class BugTest extends HashMap {
 		// String[][] sd = new String[][] {new String[]{"a","b","c","d"},new
 		// String[]{"a","b","c","d"}};
 		System.out.println(args);
+		
+		char[] test = new char[] {'1', '2','3','4','5'};
+		String s = new String(test, 2, 3);
+		
+		System.out.println("char test: 345 = " + s);
 	}
 
 	static void printit(int... t) {
