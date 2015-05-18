@@ -8,7 +8,7 @@ PROGRESS
 - adds SAX XML parsing (needed for VARNA) 
 - uses sax2r3(final) from http://sourceforge.net/projects/sax/files/sax/	
 - implements org.xml.sax and javax.xml.sax
-- includes swingjs.JSSAXParser, swingjs.JSSAXContentHandler, singjs.JSSAXAttributes
+- includes swingjs.JSSAXParser, swingjs.JSSAXContentHandler, swingjs.JSSAXAttributes
 - see swingjs.test.TestXML.java
 	    String s = "<testing></testing>"
 		InputSource is = new InputSource(Rdr.getBR(s));
