@@ -31,7 +31,8 @@ public class TestXML {
 			// below fails with JavaScript -- missing DTD: 
 			// s = "<DocumentElement param=\"value\">     <yyi:FirstElement>         &#xb6; Some Text     </yyi:FirstElement>    <SecondElement xxi:param2=\"something\">       Pre-Text <Inline>Inlined text</Inline> Post-text.     </SecondElement></DocumentElement>";
 			// no problem here:
-			//s = (String) JSToolkit.getFileContents("http://chemapps.stolaf.edu/jmol/jsmol/data/estron.cml");
+			// s = (String) JSToolkit.getFileContents("file:///c:/temp/t.cml");
+			s = (String) JSToolkit.getFileContents("http://chemapps.stolaf.edu/jmol/jsmol/data/estron.cml");
 			break;
 		case 1:
 			s = args[0];

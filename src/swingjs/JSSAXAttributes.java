@@ -184,9 +184,9 @@ class JSSAXAttributes implements Attributes2, AttributeList {
 //	}
 
 	public static String getFullName(String uri, String localName, String qName) {
-		return (uri == null || uri.length() == 0 ? "" : uri) + ", "
-				+ (localName == null ? "" : localName) + ", "
-				+ (qName == null || qName.equals(localName) ? "" : qName);
+		return (uri == null || uri.length() == 0 ? "" : uri + "#")
+				+ (qName == null || qName.length() == 0 || qName.equals(localName)
+				? localName : qName);
 	}
 
 
