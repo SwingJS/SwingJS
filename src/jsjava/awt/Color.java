@@ -365,14 +365,12 @@ public class Color implements Paint /*, java.io.Serializable*/ {
     	 * switch(a.length) {
     	 * case 0:
     	 *   break;
-    	 * case 2:
-    	 *   if (a[1]) {
-    	 *    	this.value = a[0];
-    	 *      break;
-    	 *   }
     	 * case 1:
-       *   this.value = 0xff000000 | a[0];
+    	 *   this.value = (a[0].value ? a[0].value : 0xff000000 | a[0]);
     	 *   break;
+    	 * case 2:
+    	 *   this.value = (a[1] ? a[0] : 0xff000000 | a[0]);
+       *   break;
     	 * case 3:
     	 *   this.setColor4(a[0], a[1], a[2], 255);
     	 *   break;

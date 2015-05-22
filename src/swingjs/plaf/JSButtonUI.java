@@ -1,10 +1,12 @@
 package swingjs.plaf;
 
-import jsjava.awt.FontMetrics;
+//import jsjava.awt.FontMetrics;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.LookAndFeel;
+import jsjavax.swing.UIManager;
 import swingjs.api.DOMNode;
-
+import jsjavax.swing.plaf.UIResource;
 /**
  * SWingJS implementation of stateful user interface for buttons. 
  * Modeled after javax.swing.plaf.basic.BasicButtonUI.java (commented out below).
@@ -46,7 +48,7 @@ public class JSButtonUI extends JSComponentUI {
 	// from BasicButtonUI
 	
 	protected void installJSUI() {
-		// installDefaults((AbstractButton) c);
+		installDefaults((AbstractButton) c);
 		installListeners((AbstractButton) c);
 		installKeyboardActions((AbstractButton) c);
 	}
@@ -114,7 +116,7 @@ public class JSButtonUI extends JSComponentUI {
   // to implement, ultimately. SwingUtilities.layoutCompoundLabel
   // details what we are going to have to do somewhere. 
   
-	private String layout(AbstractButton b, FontMetrics fm, int width, int height) {
+//	private String layout(AbstractButton b, FontMetrics fm, int width, int height) {
 //		Insets i = b.getInsets();
 //		viewRect.x = i.left;
 //		viewRect.y = i.top;
@@ -129,8 +131,8 @@ public class JSButtonUI extends JSComponentUI {
 //				b.getVerticalAlignment(), b.getHorizontalAlignment(),
 //				b.getVerticalTextPosition(), b.getHorizontalTextPosition(), viewRect,
 //				iconRect, textRect, b.getText() == null ? 0 : b.getIconTextGap());
-		return null;
-	}
+//		return null;
+//	}
 
 
 //  // Visual constants
@@ -138,14 +140,17 @@ public class JSButtonUI extends JSComponentUI {
 //  // fields, this would be removed.
 //  protected int defaultTextIconGap;
 //
-//  // Amount to offset text, the value of this comes from
-//  // defaultTextShiftOffset once setTextShiftOffset has been invoked.
-//  private int shiftOffset = 0;
-//  // Value that is set in shiftOffset once setTextShiftOffset has been
-//  // invoked. The value of this comes from the defaults table.
-//  protected int defaultTextShiftOffset;
+  /** Amount to offset text, the value of this comes from
+   defaultTextShiftOffset once setTextShiftOffset has been invoked.
+   */
+  protected int shiftOffset = 0;
+	
+  /** Value that is set in shiftOffset once setTextShiftOffset has been
+   invoked. The value of this comes from the defaults table.
+   */
+  protected int defaultTextShiftOffset;
 //
-//  private final static String propertyPrefix = "Button" + ".";
+//protected String propertyPrefix = "Button.";
 //  
 //  private static final Object BASIC_BUTTON_UI_KEY = new Object();
 //
@@ -163,9 +168,9 @@ public class JSButtonUI extends JSComponentUI {
 //      return buttonUI;
 //  }
 //
-//  protected String getPropertyPrefix() {
-//      return propertyPrefix;
-//  }
+  protected String getPropertyPrefix() {
+      return "Button.";
+  }
 //
 //
 //  // ********************************
@@ -178,34 +183,33 @@ public class JSButtonUI extends JSComponentUI {
 //      BasicHTML.updateRenderer(c, ((AbstractButton) c).getText());
 //  }
 //
-//  protected void installDefaults(AbstractButton b) {
-//      // load shared instance defaults
-//      String pp = getPropertyPrefix();
-//
-//      defaultTextShiftOffset = UIManager.getInt(pp + "textShiftOffset");
-//
+  protected void installDefaults(AbstractButton b) {
+      // load shared instance defaults
+      String pp = getPropertyPrefix();
+
+      defaultTextShiftOffset = UIManager.getInt(pp + "textShiftOffset");
+
 //      // set the following defaults on the button
 //      if (b.isContentAreaFilled()) {
 //          LookAndFeel.installProperty(b, "opaque", Boolean.TRUE);
 //      } else {
 //          LookAndFeel.installProperty(b, "opaque", Boolean.FALSE);
 //      }
-//
-//      if(b.getMargin() == null || (b.getMargin() instanceof UIResource)) {
-//          b.setMargin(UIManager.getInsets(pp + "margin"));
-//      }
-//
-//      LookAndFeel.installColorsAndFont(b, pp + "background",
-//                                       pp + "foreground", pp + "font");
+
+      if(b.getMargin() == null || (b.getMargin() instanceof UIResource)) {
+          b.setMargin(UIManager.getInsets(pp + "margin"));
+      }
+
+      LookAndFeel.installColorsAndFont(b, pp + "background",
+                                       pp + "foreground", pp + "font");
 //      LookAndFeel.installBorder(b, pp + "border");
 //
 //      Object rollover = UIManager.get(pp + "rollover");
 //      if (rollover != null) {
 //          LookAndFeel.installProperty(b, "rolloverEnabled", rollover);
 //      }
-//
-//      LookAndFeel.installProperty(b, "iconTextGap", new Integer(4));
-//  }
+      LookAndFeel.installProperty(b, "iconTextGap", new Integer(4));
+  }
 //
 //  protected void installListeners(AbstractButton b) {
 //      JSButtonListener listener = createButtonListener(b);

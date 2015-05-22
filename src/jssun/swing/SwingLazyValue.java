@@ -24,8 +24,8 @@
  */
 package jssun.swing;
 
-//import java.lang.reflect.Constructor;
-//import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 //import java.lang.reflect.AccessibleObject;
 //import jsjava.security.AccessController;
 //import jsjava.security.PrivilegedAction;
@@ -62,28 +62,27 @@ public class SwingLazyValue implements UIDefaults.LazyValue {
     }
 
     public Object createValue(final UIDefaults table) {
-//        try {
-//            Class c;
+        try {
 //            Object cl;
-//            c = Class.forName(className, true, null);
-//            if (methodName != null) {
-//                Class[] types = getClassArray(args);
-//                Method m = c.getMethod(methodName, types);
+            Class c = Class.forName(className, true, null);
+            if (methodName != null) {
+                Class[] types = getClassArray(args);
+                Method m = c.getMethod(methodName, types);
 //                makeAccessible(m);
-//                return m.invoke(c, args);
-//            } else {
-//                Class[] types = getClassArray(args);
-//                Constructor constructor = c.getConstructor(types);
+                return m.invoke(c, args);
+            } else {
+                Class[] types = getClassArray(args);
+                Constructor constructor = c.getConstructor(types);
 //                makeAccessible(constructor);
-//                return constructor.newInstance(args);
-//            }
-//        } catch (Exception e) {
-//            // Ideally we would throw an exception, unfortunately
-//            // often times there are errors as an initial look and
-//            // feel is loaded before one can be switched. Perhaps a
-//            // flag should be added for debugging, so that if true
-//            // the exception would be thrown.
-//        }
+                return constructor.newInstance(args);
+            }
+        } catch (Exception e) {
+            // Ideally we would throw an exception, unfortunately
+            // often times there are errors as an initial look and
+            // feel is loaded before one can be switched. Perhaps a
+            // flag should be added for debugging, so that if true
+            // the exception would be thrown.
+        }
         return null;
     }
 

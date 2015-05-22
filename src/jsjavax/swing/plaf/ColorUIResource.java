@@ -44,21 +44,45 @@ import jsjava.awt.Color;
  * @author Hans Muller
  *
  */
-public class ColorUIResource extends Color implements UIResource
-{
-    public ColorUIResource(int r, int g, int b) {
-        super(r, g, b);
-    }
+public class ColorUIResource extends Color implements UIResource {
+	
+	public ColorUIResource() {
+		super();
+	}
 
-    public ColorUIResource(int rgb) {
-        super(rgb);
-    }
+	/**
+	 * @j2sIgnore
+	 * 
+	 * @param rgb
+	 */
+	public ColorUIResource(int r, int g, int b) {
+		super(r, g, b);
+	}
 
-    public ColorUIResource(float r, float g, float b) {
-        super(r, g, b);
-    }
+	/**
+	 * @j2sIgnore
+	 * 
+	 * @param rgb
+	 */
+	public ColorUIResource(int rgb) {
+		super(rgb);
+	}
 
-    public ColorUIResource(Color c) {
-        super(c.getRGB(), (c.getRGB() & 0xFF000000) != 0xFF000000);
-    }
+	/**
+	 * @j2sIgnore
+	 * 
+	 * @param rgb
+	 */
+	public ColorUIResource(float r, float g, float b) {
+		super(r, g, b);
+	}
+
+	/**
+	 * @j2sIgnore
+	 * 
+	 * @param rgb
+	 */
+	public ColorUIResource(Color c) {
+		super(c.getRGB(), (c.getRGB() & 0xFF000000) != 0xFF000000);
+	}
 }

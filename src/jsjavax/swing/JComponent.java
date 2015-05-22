@@ -60,6 +60,7 @@ import jsjavax.swing.border.Border;
 import jsjavax.swing.event.AncestorListener;
 import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.ComponentUI;
+import jssun.font.FontDesignMetrics;
 import jssun.swing.SwingUtilities2;
 //import jssun.swing.UIClientPropertyKey;
 
@@ -369,10 +370,10 @@ public abstract class JComponent extends Container
     private static Component componentObtainingGraphicsFrom;
     private static Object componentObtainingGraphicsFromLock = new Object(); // componentObtainingGraphicsFrom
 
-    /**
-     * AA text hints.
-     */
-    transient private Object aaTextInfo;
+//    /**
+//     * AA text hints.
+//     */
+//    transient private Object aaTextInfo;
 
     /**
      * 
@@ -656,9 +657,9 @@ public abstract class JComponent extends Container
 
         uninstallUIAndProperties();
 
-        // aaText shouldn't persist between look and feels, reset it.
-        aaTextInfo =
-            UIManager.getDefaults().get(SwingUtilities2.AA_TEXT_PROPERTY_KEY);
+//        // aaText shouldn't persist between look and feels, reset it.
+//        aaTextInfo =
+//            UIManager.getDefaults().get(SwingUtilities2.AA_TEXT_PROPERTY_KEY);
 //        ComponentUI oldUI = ui;
         ui = newUI;
         if (ui != null) {
@@ -1612,7 +1613,8 @@ public abstract class JComponent extends Container
      * @since 1.5
      */
     public FontMetrics getFontMetrics(Font font) {
-        return SwingUtilities2.getFontMetrics(this, font);
+    	return FontDesignMetrics.getMetrics(font);
+//        return SwingUtilities2.getFontMetrics(this, font);
     }
 
 
@@ -3998,11 +4000,11 @@ public abstract class JComponent extends Container
      * @see #putClientProperty
      */
     public final Object getClientProperty(Object key) {
-        if (key == SwingUtilities2.AA_TEXT_PROPERTY_KEY) {
-            return aaTextInfo;
-        } else if (key == SwingUtilities2.COMPONENT_UI_PROPERTY_KEY) {
-            return ui;
-        }
+//        if (key == SwingUtilities2.AA_TEXT_PROPERTY_KEY) {
+//            return aaTextInfo;
+//        } else if (key == SwingUtilities2.COMPONENT_UI_PROPERTY_KEY) {
+//            return ui;
+//        }
          if(clientProperties == null) {
             return null;
         } else {
@@ -4041,10 +4043,10 @@ public abstract class JComponent extends Container
      * @see #addPropertyChangeListener
      */
     public final void putClientProperty(Object key, Object value) {
-        if (key == SwingUtilities2.AA_TEXT_PROPERTY_KEY) {
-            aaTextInfo = value;
-            return;
-        }
+//        if (key == SwingUtilities2.AA_TEXT_PROPERTY_KEY) {
+//            aaTextInfo = value;
+//            return;
+//        }
         if (value == null && clientProperties == null) {
             // Both the value and ArrayTable are null, implying we don't
             // have to do anything.

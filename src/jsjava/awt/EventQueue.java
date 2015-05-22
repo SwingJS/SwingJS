@@ -286,7 +286,7 @@ public class EventQueue {
 
 		cacheEQItem(newItem);
 
-		boolean notifyID = (theEvent.getID() == this.waitForID);
+//		boolean notifyID = (theEvent.getID() == this.waitForID);
 
 		if (queues[priority].head == null) {
 			boolean shouldNotify = noEvents();
@@ -297,17 +297,17 @@ public class EventQueue {
 					AWTAutoShutdown.getInstance().notifyThreadBusy(dispatchThread);
 				}
 				// SwingJS CANNOT DO THIS notifyAll();
-			} else if (notifyID) {
-				// SwingJS CANNOT DO THIS notifyAll();
+//			} else if (notifyID) {
+//				// SwingJS CANNOT DO THIS notifyAll();
 			}
 		} else {
 			// The event was not coalesced or has non-Component source.
 			// Insert it at the end of the appropriate Queue.
 			queues[priority].tail.next = newItem;
 			queues[priority].tail = newItem;
-			if (notifyID) {
-				// SwingJS CANNOT DO THIS notifyAll();
-			}
+//			if (notifyID) {
+//				// SwingJS CANNOT DO THIS notifyAll();
+//			}
 		}
 	}
 

@@ -67,7 +67,7 @@ import jsjavax.swing.SwingUtilities;
 //import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.table.TableCellRenderer;
-import jsjavax.swing.text.DefaultCaret;
+//import jsjavax.swing.text.DefaultCaret;
 import jsjavax.swing.text.DefaultHighlighter;
 import jsjavax.swing.text.Highlighter;
 import jsjavax.swing.text.JTextComponent;
@@ -191,19 +191,19 @@ public class SwingUtilities2 {
 //    private static final Object charsBufferLock = new Object();
 //    private static char[] charsBuffer = new char[CHAR_BUFFER_SIZE];
 
-    /**
-     * checks whether TextLayout is required to handle characters.
-     *
-     * @param text characters to be tested
-     * @param start start
-     * @param limit limit
-     * @return <tt>true</tt>  if TextLayout is required
-     *         <tt>false</tt> if TextLayout is not required
-     */
-    public static final boolean isComplexLayout(char[] text, int start, int limit) {
-    	return false;
-//        return FontManager.isComplexText(text, start, limit);
-    }
+//    /**
+//     * checks whether TextLayout is required to handle characters.
+//     *
+//     * @param text characters to be tested
+//     * @param start start
+//     * @param limit limit
+//     * @return <tt>true</tt>  if TextLayout is required
+//     *         <tt>false</tt> if TextLayout is not required
+//     */
+//    public static final boolean isComplexLayout(char[] text, int start, int limit) {
+//    	return false;
+////        return FontManager.isComplexText(text, start, limit);
+//    }
 
     //
     // WARNING WARNING WARNING WARNING WARNING WARNING
@@ -980,22 +980,22 @@ public class SwingUtilities2 {
         }
     }
 
-    /*
-     * Returns FontRenderContext associated with Component.
-     * FontRenderContext from Component.getFontMetrics is associated
-     * with the component.
-     *
-     * Uses Component.getFontMetrics to get the FontRenderContext from.
-     * see JComponent.getFontMetrics and TextLayoutStrategy.java
-     */
-    public static FontRenderContext getFontRenderContext(Component c) {
-        //assert c != null;
-        if (c == null) {
-            return DEFAULT_FRC;
-        } else {
-            return c.getFontMetrics(c.getFont()).getFontRenderContext();
-        }
-    }
+//    /*
+//     * Returns FontRenderContext associated with Component.
+//     * FontRenderContext from Component.getFontMetrics is associated
+//     * with the component.
+//     *
+//     * Uses Component.getFontMetrics to get the FontRenderContext from.
+//     * see JComponent.getFontMetrics and TextLayoutStrategy.java
+//     */
+//    public static FontRenderContext getFontRenderContext(Component c) {
+//        //assert c != null;
+//        if (c == null) {
+//            return DEFAULT_FRC;
+//        } else {
+//            return c.getFontMetrics(c.getFont()).getFontRenderContext();
+//        }
+//    }
 
 //    /**
 //     * A convenience method to get FontRenderContext.
@@ -1008,19 +1008,19 @@ public class SwingUtilities2 {
 //            : getFontRenderContext(c);
 //    }
 
-    /*
-     * This method is to be used only for JComponent.getFontMetrics.
-     * In all other places to get FontMetrics we need to use
-     * JComponent.getFontMetrics.
-     *
-     */
-    public static FontMetrics getFontMetrics(JComponent c, Font font) {
-        FontRenderContext  frc = DEFAULT_FRC;//getFRCProperty(c);
-//        if (frc == null) {
-//            frc = DEFAULT_FRC;
-//        }
-        return FontDesignMetrics.getMetrics(font, frc);
-    }
+//    /*
+//     * This method is to be used only for JComponent.getFontMetrics.
+//     * In all other places to get FontMetrics we need to use
+//     * JComponent.getFontMetrics.
+//     *
+//     */
+//    public static FontMetrics getFontMetrics(JComponent c, Font font) {
+////        FontRenderContext  frc = DEFAULT_FRC;//getFRCProperty(c);
+////        if (frc == null) {
+////            frc = DEFAULT_FRC;
+////        }
+//        return FontDesignMetrics.getMetrics(font);//, frc);
+//    }
 
 //
 //    /* Get any FontRenderContext associated with a JComponent
@@ -1234,17 +1234,17 @@ public class SwingUtilities2 {
 //            || canCurrentEventAccessSystemClipboard(false);
     }
 
-    /**
-     * Returns true if the given event has permissions to access the
-     * system clipboard
-     *
-     * @param e AWTEvent to check
-     */
-    public static boolean canEventAccessSystemClipboard(AWTEvent e) {
-    	return false;
-//        return isTrustedContext()
-//            || canEventAccessSystemClipboard(e, false);
-    }
+//    /**
+//     * Returns true if the given event has permissions to access the
+//     * system clipboard
+//     *
+//     * @param e AWTEvent to check
+//     */
+//    public static boolean canEventAccessSystemClipboard(AWTEvent e) {
+//    	return false;
+////        return isTrustedContext()
+////            || canEventAccessSystemClipboard(e, false);
+//    }
 
 //    /**
 //     * returns canAccessSystemClipboard field from InputEvent
@@ -1688,44 +1688,43 @@ public class SwingUtilities2 {
 //    private static void execute(Runnable command) {
 //        SwingUtilities.invokeLater(command);
 //    }
+//    /**
+//     * Sets the {@code SKIP_CLICK_COUNT} client property on the component
+//     * if it is an instance of {@code JTextComponent} with a
+//     * {@code DefaultCaret}. This property, used for text components acting
+//     * as editors in a table or tree, tells {@code DefaultCaret} how many
+//     * clicks to skip before starting selection.
+//     */
+//    public static void setSkipClickCount(Component comp, int count) {
+//        if (comp instanceof JTextComponent
+//                && ((JTextComponent) comp).getCaret() instanceof DefaultCaret) {
+//
+//            ((JTextComponent) comp).putClientProperty(SKIP_CLICK_COUNT, count);
+//        }
+//    }
 
-    /**
-     * Sets the {@code SKIP_CLICK_COUNT} client property on the component
-     * if it is an instance of {@code JTextComponent} with a
-     * {@code DefaultCaret}. This property, used for text components acting
-     * as editors in a table or tree, tells {@code DefaultCaret} how many
-     * clicks to skip before starting selection.
-     */
-    public static void setSkipClickCount(Component comp, int count) {
-        if (comp instanceof JTextComponent
-                && ((JTextComponent) comp).getCaret() instanceof DefaultCaret) {
-
-            ((JTextComponent) comp).putClientProperty(SKIP_CLICK_COUNT, count);
-        }
-    }
-
-    /**
-     * Return the MouseEvent's click count, possibly reduced by the value of
-     * the component's {@code SKIP_CLICK_COUNT} client property. Clears
-     * the {@code SKIP_CLICK_COUNT} property if the mouse event's click count
-     * is 1. In order for clearing of the property to work correctly, there
-     * must be a mousePressed implementation on the caller with this
-     * call as the first line.
-     */
-    public static int getAdjustedClickCount(JTextComponent comp, MouseEvent e) {
-        int cc = e.getClickCount();
-
-        if (cc == 1) {
-            comp.putClientProperty(SKIP_CLICK_COUNT, null);
-        } else {
-            Integer sub = (Integer) comp.getClientProperty(SKIP_CLICK_COUNT);
-            if (sub != null) {
-                return cc - sub;
-            }
-        }
-
-        return cc;
-    }
+//    /**
+//     * Return the MouseEvent's click count, possibly reduced by the value of
+//     * the component's {@code SKIP_CLICK_COUNT} client property. Clears
+//     * the {@code SKIP_CLICK_COUNT} property if the mouse event's click count
+//     * is 1. In order for clearing of the property to work correctly, there
+//     * must be a mousePressed implementation on the caller with this
+//     * call as the first line.
+//     */
+//    public static int getAdjustedClickCount(JTextComponent comp, MouseEvent e) {
+//        int cc = e.getClickCount();
+//
+//        if (cc == 1) {
+//            comp.putClientProperty(SKIP_CLICK_COUNT, null);
+//        } else {
+//            Integer sub = (Integer) comp.getClientProperty(SKIP_CLICK_COUNT);
+//            if (sub != null) {
+//                return cc - sub;
+//            }
+//        }
+//
+//        return cc;
+//    }
 
     /**
      * Used by the {@code liesIn} method to return which section

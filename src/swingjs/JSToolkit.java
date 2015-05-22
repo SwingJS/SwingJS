@@ -162,10 +162,15 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	@Override
-	@Deprecated
 	public String[] getFontList() {
-		// TODO Auto-generated method stub
-		return null;
+		String[] hardwiredFontList = { Font.SANS_SERIF, Font.SANS_SERIF, Font.SERIF,
+				Font.MONOSPACED, Font.DIALOG_INPUT
+
+		// -- Obsolete font names from 1.0.2. It was decided that
+		// -- getFontList should not return these old names:
+		// "Helvetica", "TimesRoman", "Courier", "ZapfDingbats"
+		};
+		return hardwiredFontList;
 	}
 
 	@Override
@@ -386,8 +391,7 @@ public class JSToolkit extends SunToolkit {
 	 * @return CSS family name
 	 */
 	public static String getFontFamily(Font font) {
-		String name = font.getName();
-		return (name.equalsIgnoreCase("Display") ? "Courier" : name);
+		return font.getName();
 	}
 
 	@Override

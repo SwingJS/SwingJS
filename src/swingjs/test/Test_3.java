@@ -58,6 +58,7 @@ public class Test_3 extends JApplet {
 	//	Class y = xx.getClass().getComponentType();
 		//System.out.println(y.getName());  
 		setName("Test_3");
+//		System.out.println(javax.swing.plaf.metal.MetalLookAndFeel);
 	}
 
 	public void init() {

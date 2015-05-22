@@ -43,8 +43,20 @@ public class BugTest extends HashMap {
 
 	private String name;
 
+	private static String getFont(String f) {
+		return  f;
+	}
+	
+	private static String getFont(String f, String y) {
+		return  f + y;
+	}
+	
 	public static void main(String[] args) {
 		
+	  System.out.println(getFont("f"));
+	  System.out.println(getFont("f","y"));
+	  
+	  
 		BugTest t = new BugTest();
 		t.name = "test";
 

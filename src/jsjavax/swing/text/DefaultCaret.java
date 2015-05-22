@@ -416,32 +416,34 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
      * @see MouseListener#mouseClicked
      */
     public void mouseClicked(MouseEvent e) {
-        int nclicks = SwingUtilities2.getAdjustedClickCount(getComponent(), e);
+        int nclicks = e.getClickCount();
+        
+        //SwingJS n/a SwingUtilities2.getAdjustedClickCount(getComponent(), e);
 
         if (! e.isConsumed()) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 // mouse 1 behavior
                 if(nclicks == 1) {
                     selectedWordEvent = null;
-                } else if(nclicks == 2
-                          && SwingUtilities2.canEventAccessSystemClipboard(e)) {
-                    selectWord(e);
-                    selectedWordEvent = null;
-                } else if(nclicks == 3
-                          && SwingUtilities2.canEventAccessSystemClipboard(e)) {
-                    Action a = null;
-                    ActionMap map = getComponent().getActionMap();
-                    if (map != null) {
-                        a = map.get(DefaultEditorKit.selectLineAction);
-                    }
-                    if (a == null) {
-                        if (selectLine == null) {
-                            selectLine = new DefaultEditorKit.SelectLineAction();
-                        }
-                        a = selectLine;
-                    }
-                    a.actionPerformed(new ActionEvent(getComponent(),
-                                                      ActionEvent.ACTION_PERFORMED, null, e.getWhen(), e.getModifiers()));
+//                } else if(nclicks == 2
+//                          && SwingUtilities2.canEventAccessSystemClipboard(e)) {
+//                    selectWord(e);
+//                    selectedWordEvent = null;
+//                } else if(nclicks == 3
+//                          && SwingUtilities2.canEventAccessSystemClipboard(e)) {
+//                    Action a = null;
+//                    ActionMap map = getComponent().getActionMap();
+//                    if (map != null) {
+//                        a = map.get(DefaultEditorKit.selectLineAction);
+//                    }
+//                    if (a == null) {
+//                        if (selectLine == null) {
+//                            selectLine = new DefaultEditorKit.SelectLineAction();
+//                        }
+//                        a = selectLine;
+//                    }
+//                    a.actionPerformed(new ActionEvent(getComponent(),
+//                                                      ActionEvent.ACTION_PERFORMED, null, e.getWhen(), e.getModifiers()));
                 }
             } else if (SwingUtilities.isMiddleMouseButton(e)) {
                 // mouse 2 behavior
@@ -495,7 +497,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
      * @see MouseListener#mousePressed
      */
     public void mousePressed(MouseEvent e) {
-        int nclicks = SwingUtilities2.getAdjustedClickCount(getComponent(), e);
+//        int nclicks = SwingUtilities2.getAdjustedClickCount(getComponent(), e);
 
         if (SwingUtilities.isLeftMouseButton(e)) {
             if (e.isConsumed()) {
@@ -503,10 +505,10 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
             } else {
                 shouldHandleRelease = false;
                 adjustCaretAndFocus(e);
-                if (nclicks == 2
-                    && SwingUtilities2.canEventAccessSystemClipboard(e)) {
-                    selectWord(e);
-                }
+//                if (nclicks == 2
+//                    && SwingUtilities2.canEventAccessSystemClipboard(e)) {
+//                    selectWord(e);
+//                }
             }
         }
     }

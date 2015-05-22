@@ -143,36 +143,32 @@ import jssun.swing.SwingUtilities2;
 public abstract class LookAndFeel
 {
 
-    /**
-     * Convenience method for setting a component's foreground
-     * and background color properties with values from the
-     * defaults.  The properties are only set if the current
-     * value is either {@code null} or a {@code UIResource}.
-     *
-     * @param c component to set the colors on
-     * @param defaultBgName key for the background
-     * @param defaultFgName key for the foreground
-     *
-     * @see #installColorsAndFont
-     * @see UIManager#getColor
-     * @throws NullPointerException as described in
-     *         <a href="#exceptions">exceptions</a>
-     */
-    public static void installColors(JComponent c,
-                                     String defaultBgName,
-                                     String defaultFgName)
-    {
-    	JSToolkit.notImplemented(null);
-//        Color bg = c.getBackground();
-//        if (bg == null || bg instanceof UIResource) {
-//            c.setBackground(UIManager.getColor(defaultBgName));
-//        }
-//
-//        Color fg = c.getForeground();
-//        if (fg == null || fg instanceof UIResource) {
-//            c.setForeground(UIManager.getColor(defaultFgName));
-//        }
-    }
+	/**
+	 * Convenience method for setting a component's foreground and background
+	 * color properties with values from the defaults. The properties are only set
+	 * if the current value is either {@code null} or a {@code UIResource}.
+	 * 
+	 * @param c
+	 *          component to set the colors on
+	 * @param defaultBgName
+	 *          key for the background
+	 * @param defaultFgName
+	 *          key for the foreground
+	 * 
+	 * @see #installColorsAndFont
+	 * @see UIManager#getColor
+	 * @throws NullPointerException
+	 *           as described in <a href="#exceptions">exceptions</a>
+	 */
+	public static void installColors(JComponent c, String defaultBgName,
+			String defaultFgName) {
+		Color bg = c.getBackground();
+		if (bg == null || bg instanceof UIResource)
+			c.setBackground(UIManager.getColor(defaultBgName));
+		Color fg = c.getForeground();
+		if (fg == null || fg instanceof UIResource)
+			c.setForeground(UIManager.getColor(defaultFgName));
+	}
 
 
     /**
@@ -196,13 +192,12 @@ public abstract class LookAndFeel
                                          String defaultBgName,
                                          String defaultFgName,
                                          String defaultFontName) {
-    	JSToolkit.notImplemented(null);
-//        Font f = c.getFont();
-//        if (f == null || f instanceof UIResource) {
-//            c.setFont(UIManager.getFont(defaultFontName));
-//        }
-//
-//        installColors(c, defaultBgName, defaultFgName);
+        Font f = c.getFont();
+        if (f == null || f instanceof UIResource) {
+            c.setFont(UIManager.getFont(defaultFontName));
+        }
+
+        installColors(c, defaultBgName, defaultFgName);
     }
 
 
@@ -268,14 +263,14 @@ public abstract class LookAndFeel
         // this is a special case because the JPasswordField's ancestor heirarchy
         // includes a class outside of jsjavax.swing, thus we cannot call setUIProperty
         // directly.
-    	JSToolkit.notImplemented(null);
-//        if (c instanceof JPasswordField) {
-//            if (!((JPasswordField)c).customSetUIProperty(propertyName, propertyValue)) {
-//                c.setUIProperty(propertyName, propertyValue);
-//            }
-//        } else {
-//            c.setUIProperty(propertyName, propertyValue);
-//        }
+//    	JSToolkit.notImplemented(null);
+        if (c instanceof JPasswordField) {
+            if (!((JPasswordField)c).customSetUIProperty(propertyName, propertyValue)) {
+                c.setUIProperty(propertyName, propertyValue);
+            }
+        } else {
+            c.setUIProperty(propertyName, propertyValue);
+        }
     }
 
     /**

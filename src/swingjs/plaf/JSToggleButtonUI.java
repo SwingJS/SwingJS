@@ -24,8 +24,6 @@ public abstract class JSToggleButtonUI extends JSButtonUI {
 	
 //  private static final Object BASIC_TOGGLE_BUTTON_UI_KEY = new Object();
 
-//  private final static String propertyPrefix = "ToggleButton" + ".";
-
 //  // ********************************
 //  //          Create PLAF
 //  // ********************************
@@ -40,10 +38,11 @@ public abstract class JSToggleButtonUI extends JSButtonUI {
 //      return toggleButtonUI;
 //  }
 //
-//  protected String getPropertyPrefix() {
-//      return propertyPrefix;
-//  }
-//
+	@Override
+  protected String getPropertyPrefix() {
+      return "ToggleButton.";
+  }
+
 
 //  // ********************************
 //  //          Paint Methods

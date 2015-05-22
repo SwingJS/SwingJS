@@ -199,7 +199,6 @@
        		../js/JSmolJavaExt.js
             java/awt/BasicStroke.js
             java/awt/Stroke.js
-            swingjs/JSUtil.js
             java/util/Locale.js
             java/util/ResourceBundle.js
             JU/Rdr.js
@@ -209,6 +208,7 @@
             java/io/InputStream.js
             java/io/BufferedReader.js
             java/io/ByteArrayInputStream.js
+            java/io/Reader.js	        	
             java/io/StringReader.js
             JU/Base64.js
             JU/Encoding.js
@@ -296,6 +296,7 @@
             java/net/MalformedURLException.js
             java/awt/GraphicsEnvironment.js
             java/awt/event/WindowEvent.js
+            javax/swing/JComponent.js
             javax/swing/Action.js
             javax/swing/SwingUtilities.js
             java/awt/Frame.js
@@ -325,20 +326,17 @@
             javax/swing/event/SwingPropertyChangeSupport.js
             javax/swing/JLayeredPane.js
             javax/swing/JPanel.js
-            javax/swing/UIManager.js
             javax/swing/MultiUIDefaults.js
-            javax/swing/UIDefaults.js
-            javax/swing/plaf/ActionMapUIResource.js
 
             java/awt/Font.js
             java/awt/font/TextAttribute.js
             java/text/AttributedCharacterIterator.js
             java/text/CharacterIterator.js
+        	java/awt/geom/Point2D.js
             java/awt/geom/AffineTransform.js
             java/awt/geom/NoninvertibleTransformException.js
             java/awt/geom/Path2D.js
             javax/swing/Icon.js
-            javax/swing/LookAndFeel.js
             javax/swing/JPasswordField.js
             javax/swing/JTextField.js
             javax/swing/ActionPropertyChangeListener.js
@@ -357,7 +355,75 @@
             jssun/font/FontDesignMetrics.js
             java/awt/FontMetrics.js
             
-        	
+            JU/PT.js
+            javajs/api/JSONEncodable.js
+            JU/AU.js
+            JU/Lst.js
+            JU/DF.js
+            JU/SB.js
+            JU/M34.js
+            JU/M4.js
+            JU/T3.js
+            javax/swing/JRootPane.js
+   	
+            javax/swing/JToggleButton.js
+            javax/swing/ButtonModel.js
+            javax/swing/JRadioButton.js
+
+            javax/swing/JApplet.js
+
+            java/awt/EventQueue.js
+            java/awt/AWTEventMulticaster.js
+            java/awt/AWTEvent.js
+            java/awt/event/AWTEventListener.js
+            java/awt/ActiveEvent.js
+            java/awt/event/InvocationEvent.js
+            java/awt/event/ComponentEvent.js
+            java/awt/event/MouseEvent.js
+            java/awt/event/InputEvent.js
+            java/awt/Toolkit.js
+            java/lang/Thread.js
+            java/lang/ThreadGroup.js
+            java/awt/FlowLayout.js
+            java/awt/BorderLayout.js
+            java/awt/LayoutManager2.js
+            java/awt/LayoutManager.js
+            java/awt/GraphicsCallback.js
+            java/awt/Container.js
+            java/awt/Component.js
+            jssun/awt/SunGraphicsCallback.js
+
+            javax/swing/RepaintManager.js
+            jssun/awt/SunToolkit.js
+
+        	java/awt/Conditional.js
+            java/awt/event/PaintEvent.js
+            java/awt/EventDispatchThread.js
+            java/awt/EventFilter.js
+            java/awt/ModalEventFilter.js
+            java/awt/peer/CanvasPeer.js
+            java/awt/peer/ComponentPeer.js
+            java/awt/peer/ContainerPeer.js
+            java/awt/peer/LightweightPeer.js
+            java/awt/peer/PanelPeer.js
+            java/awt/SentEvent.js
+            java/awt/SequencedEvent.js
+            java/util/AbstractSequentialList.js
+            java/util/LinkedList.js
+            JU/V3.js
+            javax/swing/ButtonGroup.js
+            javax/swing/SwingPaintEventDispatcher.js
+            jssun/awt/AWTAutoShutdown.js
+            jssun/awt/EventQueueItem.js
+            jssun/awt/ModalExclude.js
+            jssun/awt/NullComponentPeer.js
+            jssun/awt/PaintEventDispatcher.js
+            jssun/awt/PostEventQueue.js
+            jssun/java2d/SunGraphics2D.js
+
+        	javax/swing/UIManager.js
+            javax/swing/UIDefaults.js
+            javax/swing/LookAndFeel.js
             javax/swing/DropMode.js
             java/awt/font/FontRenderContext.js
             java/awt/event/InputMethodEvent.js
@@ -372,10 +438,7 @@
             javax/swing/KeyStroke.js
             java/awt/AWTKeyStroke.js
             java/util/StringTokenizer.js
-            javax/swing/plaf/ComponentInputMapUIResource.js
             javax/swing/ComponentInputMap.js
-            javax/swing/plaf/UIResource.js
-            javax/swing/plaf/InputMapUIResource.js
             jssun/swing/DefaultLayoutStyle.js
             javax/swing/LayoutStyle.js
             javax/swing/JCheckBox.js
@@ -389,7 +452,6 @@
             javax/swing/RootPaneContainer.js
             javax/swing/event/MenuDragMouseEvent.js
             jssun/swing/UIAction.js
-            swingjs/api/Interface.js
             jssun/awt/RequestFocusController.js
             javax/swing/AncestorNotifier.js
             javax/swing/event/AncestorEvent.js
@@ -439,87 +501,32 @@
             jssun/applet/AppletEventMulticaster.js
             jssun/applet/AppletListener.js
             jssun/misc/Queue.js
-            JU/PT.js
-            javajs/api/JSONEncodable.js
-            JU/AU.js
-            JU/Lst.js
-            JU/DF.js
-            JU/SB.js
-            JU/M34.js
-            JU/M4.js
-            JU/T3.js
-            javax/swing/JRootPane.js
-   	
-            javax/swing/JToggleButton.js
-            javax/swing/ButtonModel.js
-            javax/swing/JRadioButton.js
 
-            javax/swing/JApplet.js
+            javax/swing/plaf/UIResource.js
+            javax/swing/plaf/InputMapUIResource.js
+            javax/swing/plaf/ActionMapUIResource.js
+            javax/swing/plaf/ComponentUI.js
+            javax/swing/plaf/FontUIResource.js
+            javax/swing/plaf/ColorUIResource.js
+            javax/swing/plaf/ComponentInputMapUIResource.js
 
+        	swingjs/api/JSFunction.js
+            swingjs/api/JSInterface.js
+            swingjs/api/Interface.js
+            swingjs/api/DOMNode.js
+
+        	swingjs/JSUtil.js
             swingjs/JSToolkit.js
-            swingjs/JSThread.js
+        	swingjs/JSEvent.js
+        	swingjs/JSThread.js
             swingjs/JSThreadGroup.js
             swingjs/JSAppletPanel.js
-
-            swingjs/api/JSInterface.js
-            java/awt/EventQueue.js
-            java/awt/AWTEventMulticaster.js
-            java/awt/AWTEvent.js
-            java/awt/event/AWTEventListener.js
-            java/awt/ActiveEvent.js
-            java/awt/event/InvocationEvent.js
-            java/awt/event/ComponentEvent.js
-            java/awt/event/MouseEvent.js
-            java/awt/event/InputEvent.js
-            java/awt/Toolkit.js
-            java/lang/Thread.js
-            java/lang/ThreadGroup.js
-            java/awt/FlowLayout.js
-            java/awt/BorderLayout.js
-            java/awt/LayoutManager2.js
-            java/awt/LayoutManager.js
-            java/awt/GraphicsCallback.js
-            java/awt/Container.js
-            java/awt/Component.js
-            jssun/awt/SunGraphicsCallback.js
-
-            javax/swing/RepaintManager.js
-            jssun/awt/SunToolkit.js
-
             swingjs/JSGraphics2D.js
-
-        	java/awt/Conditional.js
-            java/awt/event/PaintEvent.js
-            java/awt/EventDispatchThread.js
-            java/awt/EventFilter.js
-            java/awt/geom/Point2D.js
-            java/awt/ModalEventFilter.js
-            java/awt/peer/CanvasPeer.js
-            java/awt/peer/ComponentPeer.js
-            java/awt/peer/ContainerPeer.js
-            java/awt/peer/LightweightPeer.js
-            java/awt/peer/PanelPeer.js
-            java/awt/SentEvent.js
-            java/awt/SequencedEvent.js
-            java/util/AbstractSequentialList.js
-            java/util/LinkedList.js
-            JU/V3.js
-            javax/swing/ButtonGroup.js
-            javax/swing/JComponent.js
-            javax/swing/plaf/ComponentUI.js
-            javax/swing/SwingPaintEventDispatcher.js
-            jssun/awt/AWTAutoShutdown.js
-            jssun/awt/EventQueueItem.js
-            jssun/awt/ModalExclude.js
-            jssun/awt/NullComponentPeer.js
-            jssun/awt/PaintEventDispatcher.js
-            jssun/awt/PostEventQueue.js
-            jssun/java2d/SunGraphics2D.js
-            swingjs/api/DOMNode.js
             swingjs/JSAppletThread.js
             swingjs/JSMouse.js
-            swingjs/plaf/HTML5LookAndFeel.js
             swingjs/JSComponentPeer.js
+
+			swingjs/plaf/HTML5LookAndFeel.js
             swingjs/plaf/JSComponentUI.js
             swingjs/plaf/JSPanelUI.js
             swingjs/plaf/JSRadioButtonUI.js
@@ -528,7 +535,7 @@
             swingjs/plaf/JSButtonUI.js
             swingjs/plaf/JSToggleButtonUI.js
             swingjs/plaf/LazyActionMap.js
-
+    
 
         	"/>
     </antcall>
@@ -538,7 +545,7 @@
    	put classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
-    
+        	
    	minimize additional JSmol JavaScript -->
 
   </target>
@@ -560,9 +567,7 @@
   	<copy file="site/swingjs/js/core2.js" tofile="site/swingjs/js/core${call-core.name}3.js" />
   	
   	
-  	            java/io/InputStreamReader.js
-            java/io/Reader.js
-        	
+  	        java/io/InputStreamReader.js
             javax/swing/text/JTextComponent.js
             javax/swing/text/DefaultCaret.js
             javax/swing/text/Caret.js
@@ -595,7 +600,6 @@
             javax/swing/text/View.js
             javax/swing/text/Position.js
             javax/swing/text/StyledDocument.js
-            jssun/swing/SwingUtilities2.js
         	javax/swing/text/DefaultEditorKit.js
         	javax/swing/text/EditorKit.js
             javax/swing/text/TextAction.js

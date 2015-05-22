@@ -54,7 +54,9 @@ public class Test_2 extends JApplet {
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
 		c.add(controls = new Test_2Controls(canvas), BorderLayout.NORTH);
-		System.out.println("Hello, world!");
+		System.out.println( controls.bg0.getForeground()); 
+//				+ " "+ controls.bg0.getBackground() 
+	//			+ " \n cb " + controls.getForeground() + " cf " + controls.getBackground());
 	}
 
 	public void setSize(int width, int height) {
@@ -715,7 +717,7 @@ class Test_2Controls extends JPanel implements ItemListener {
 	JTextField e;
 	Test_2Canvas canvas;
 	int range;
-  public JComponent bg0, bg5;
+  public JComponent bg0, bg5, b;
 	private ButtonGroup bg;
 
 	public Test_2Controls(Test_2Canvas canvas) {
@@ -737,6 +739,7 @@ class Test_2Controls extends JPanel implements ItemListener {
 		addButton(bg, "30-40", false);
 		bg5 = addButton(bg, "40-50", false);
 		final JButton enableBtn = new JButton("Enable");
+		b = enableBtn;
 		add(enableBtn);
 		enableBtn.addActionListener(new ActionListener() {
 

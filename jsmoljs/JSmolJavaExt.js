@@ -7,6 +7,7 @@
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 5/21/2015 5:46:30 PM Number("0xFFFFFFFF") is not -1
 // BH 4/23/2015 9:08:59 AM xx.getComponentType() is nonfunctional. Array.newInstance now defines a wrapper for .getClass().getComponentType() that works  
 // BH 4/12/2015 1:37:44 PM adding Math.rint = Math.round
 // BH 1/16/2015 10:09:38 AM Chrome failure jqGrig due to new String("x").toString() not being a simple string
@@ -274,7 +275,7 @@ if(d.valueOf)d=d.valueOf();
 if (d < 0) {
 var b = d & 0xFFFFFF;
 var c = ((d>>24)&0xFF);
-return c._numberToString(16) + (b = b._numberToString(16)).substring(b.length - 6);
+return c._numberToString(16) + (b = "000000" + b._numberToString(16)).substring(b.length - 6);
 }
 return d._numberToString(16);};
 Integer.toOctalString=Integer.prototype.toOctalString=function(d){if(d.valueOf)d=d.valueOf();return d._numberToString(8);};
@@ -287,7 +288,8 @@ n = n.replace(/\#/, "0x").toLowerCase();
 var radix=(n.startsWith("0x", i) ? 16 : n.startsWith("0", i) ? 8 : 10);
 // The general problem with parseInt is that is not strict -- ParseInt("10whatever") == 10.
 // Number is strict, but Number("055") does not work, though ParseInt("055", 8) does.
-n = Number(n);
+// need to make sure negative numbers are negative
+n = Number(n) & 0xFFFFFFFF;
 return (radix == 8 ? parseInt(n, 8) : n);
 },"~S");
 

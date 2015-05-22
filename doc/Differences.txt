@@ -3,6 +3,14 @@ Notes
 
 PROGRESS
 ========
+5/21/2015
+
+- fixes JSmol bug in JSmolJavaExt for Integer.parseRadix
+
+- adds "metal ocean" LookAndFeel theme to match generic Java LookAndFeel
+- TODO: text alignments
+- TODO: icons
+
 5/17/2015
 
 - adds SAX XML parsing (needed for VARNA) 

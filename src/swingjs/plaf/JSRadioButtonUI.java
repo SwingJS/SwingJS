@@ -46,6 +46,11 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 		return getButtonObject("radio");
 	}
 
+	@Override
+	protected String getPropertyPrefix() {
+		return "RadioButton.";
+	}
+
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		// "absolute" is required for positioning of button, but must not be there for setting the size. 
 		DOMNode.setStyles(domBtn, "position", null);

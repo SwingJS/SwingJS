@@ -31,7 +31,6 @@ import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import jsjava.awt.font.TextAttribute;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
@@ -44,7 +43,6 @@ import jsjavax.swing.undo.CannotRedoException;
 import jsjavax.swing.undo.CannotUndoException;
 import jsjavax.swing.undo.CompoundEdit;
 import jsjavax.swing.undo.UndoableEdit;
-import jssun.swing.SwingUtilities2;
 
 /**
  * An implementation of the document interface to serve as a
@@ -740,17 +738,17 @@ public abstract class AbstractDocument implements Document {
 
         // see if complex glyph layout support is needed
         if( getProperty(I18NProperty).equals( Boolean.FALSE ) ) {
-            // if a default direction of right-to-left has been specified,
-            // we want complex layout even if the text is all left to right.
-            Object d = getProperty(TextAttribute.RUN_DIRECTION);
-            if ((d != null) && (d.equals(TextAttribute.RUN_DIRECTION_RTL))) {
-                putProperty( I18NProperty, Boolean.TRUE);
-            } else {
-                char[] chars = str.toCharArray();
-                if (SwingUtilities2.isComplexLayout(chars, 0, chars.length)) {
-                    putProperty( I18NProperty, Boolean.TRUE);
-                }
-            }
+//            // if a default direction of right-to-left has been specified,
+//            // we want complex layout even if the text is all left to right.
+//            Object d = getProperty(TextAttribute.RUN_DIRECTION);
+//            if ((d != null) && (d.equals(TextAttribute.RUN_DIRECTION_RTL))) {
+//                putProperty( I18NProperty, Boolean.TRUE);
+//            } else {
+//                char[] chars = str.toCharArray();
+// SwingJS n/a                if (SwingUtilities2.isComplexLayout(chars, 0, chars.length)) {
+//                    putProperty( I18NProperty, Boolean.TRUE);
+//                }
+//            }
         }
 
         insertUpdate(e, a);

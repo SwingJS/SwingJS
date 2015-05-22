@@ -153,81 +153,82 @@ public class UIDefaults extends Hashtable<Object,Object>
         return (value != null) ? value : getFromResourceBundle(key, null);
     }
 
-    /**
-     * Looks up up the given key in our Hashtable and resolves LazyValues
-     * or ActiveValues.
-     */
-    private Object getFromHashtable(Object key) {
-        /* Quickly handle the common case, without grabbing
-         * a lock.
-         */
-        Object value = super.get(key);
-        if ((value != PENDING) &&
-            !(value instanceof ActiveValue)
-//            &&
-//            !(value instanceof LazyValue)
-            ) {
-            return value;
-        }
+	/**
+	 * Looks up up the given key in our Hashtable and resolves LazyValues or
+	 * ActiveValues.
+	 */
+	private Object getFromHashtable(Object key) {
+		/*
+		 * Quickly handle the common case, without grabbing a lock.
+		 */
+		Object value = super.get(key);
+		if (value == null && (key instanceof String)) {
+			// SwingJS adds a default option *.font, *.background, *.foreground
+			String skey = (String) key;
+			if (skey.endsWith(".font") || skey.endsWith(".background")
+					|| skey.endsWith(".foreground"))
+				value = super.get("*" + skey.substring(skey.lastIndexOf (".")));
+		}
+		if ((value != PENDING) && !(value instanceof ActiveValue)
+				&& !(value instanceof LazyValue)) {
+			return value;
+		}
 
-        /* If the LazyValue for key is being constructed by another
-         * thread then wait and then return the new value, otherwise drop
-         * the lock and construct the ActiveValue or the LazyValue.
-         * We use the special value PENDING to mark LazyValues that
-         * are being constructed.
-         */
-//        synchronized(this) {
-            value = super.get(key);
-//            return value;
-//SwingJS no laziness            if (value == PENDING) {
-//                do {
-//                    try {
-//                        this.wait();
-//                    }
-//                    catch (InterruptedException e) {
-//                    }
-//                    value = super.get(key);
-//                }
-//                while(value == PENDING);
-//                return value;
-//            }
-//            else if (value instanceof LazyValue) {
-//                super.put(key, PENDING);
-//            }
-//            else 
-            if (!(value instanceof ActiveValue)) {
-                return value;
-            }
-//        }
+		/*
+		 * If the LazyValue for key is being constructed by another thread then wait
+		 * and then return the new value, otherwise drop the lock and construct the
+		 * ActiveValue or the LazyValue. We use the special value PENDING to mark
+		 * LazyValues that are being constructed.
+		 */
+		// synchronized(this) {
+//		value = super.get(key);
+//		if (value == PENDING) { 
+// SwingJS can't do this -- not quite THAT lazy!
+//			do {
+//				try {
+//					this.wait();
+//				} catch (InterruptedException e) {
+//				}
+//				value = super.get(key);
+//			} while (value == PENDING);
+//			return value;
+//		} else 
+//			if (value instanceof LazyValue
+//					) {
+//			super.put(key, PENDING);
+//		} else 			
+			if (!(value instanceof ActiveValue)) {
+			return value;
+		}
+		// }
 
-//        /* At this point we know that the value of key was
-//         * a LazyValue or an ActiveValue.
-//         */
-//        if (value instanceof LazyValue) {
-//            try {
-//                /* If an exception is thrown we'll just put the LazyValue
-//                 * back in the table.
-//                 */
-//                value = ((LazyValue)value).createValue(this);
-//            }
-//            finally {
-//                synchronized(this) {
-//                    if (value == null) {
-//                        super.remove(key);
-//                    }
-//                    else {
-//                        super.put(key, value);
-//                    }
-//                  // SwingJS  CANNOT DO THIS                notifyAll();
-//                }
-//            }
-//        }
-//        else {
-            value = ((ActiveValue)value).createValue(this);
-//        }
-//
-        return value;
-    }
+		/*
+		 * At this point we know that the value of key was a LazyValue or an
+		 * ActiveValue.
+		 */
+		if (value instanceof LazyValue) {
+			try {
+				/*
+				 * If an exception is thrown we'll just put the LazyValue back in the
+				 * table.
+				 */
+				value = ((LazyValue) value).createValue(this);
+			} finally {
+				// synchronized(this) {
+				if (value == null) {
+					super.remove(key);
+				} else {
+					super.put(key, value);
+				}
+				// SwingJS CANNOT DO THIS 
+				// notifyAll();
+				// }
+			}
+		} else {
+			value = ((ActiveValue) value).createValue(this);
+		}
+		return value;
+	}
 
 
     /**

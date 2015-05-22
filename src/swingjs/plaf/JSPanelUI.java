@@ -25,8 +25,12 @@
 
 package swingjs.plaf;
 
+
 import jsjava.awt.Dimension;
+
 import jsjavax.swing.JComponent;
+import jsjavax.swing.LookAndFeel;
+
 import swingjs.api.DOMNode;
 
 public class JSPanelUI extends JSComponentUI {
@@ -56,8 +60,10 @@ public class JSPanelUI extends JSComponentUI {
 
 	@Override
 	protected void installJSUI() {
-		// TODO Auto-generated method stub
-		
+    LookAndFeel.installColorsAndFont(c,
+        "Panel.background",
+        "Panel.foreground",
+        "Panel.font");
 	}
 
 	@Override

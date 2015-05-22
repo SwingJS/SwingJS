@@ -188,7 +188,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	protected DOMNode setCssFont(DOMNode obj, Font font) {
 		if (font != null) {
 			int istyle = font.getStyle();
-			DOMNode.setStyles(obj, "font-family", font.getFamily(), "font-size",
+			String name = font.getFamily();
+			if (name == "Dialog")
+				name = "Arial";
+			DOMNode.setStyles(obj, "font-family", name, "font-size",
 					font.getSize() + "px", "font-style",
 					((istyle & Font.ITALIC) == 0 ? "normal" : "italic"), "font-weight",
 					((istyle & Font.BOLD) == 0 ? "normal" : "bold"));
@@ -285,7 +288,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			DOMNode body = DOMNode.getBody();
 			body.appendChild(div);
 			
-			System.out.println(DOMNode.getAttr(node, "outerHTML"));
+			//System.out.println(DOMNode.getAttr(node, "outerHTML"));
 			JQuery jq = JSToolkit.getJQuery();
 			w = (int) Math.ceil(jq.$(div).width() + 0.5);
 			h = (int) Math.ceil(jq.$(div).height() + 0.5);
@@ -301,7 +304,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		}
 		if (parentNode != null)
 			parentNode.appendChild(node);
-		System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " parent=" + DOMNode.getAttr(parentNode,"id"));	
+		//System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h + " parent=" + DOMNode.getAttr(parentNode,"id"));	
 		return size;
 	}
 
@@ -377,10 +380,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 					System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 						 + c.getName());
 				} else {
-					System.out.println("JSCUI appending " + ui.c.getName() + " to "
-							+ c.getName());
 					divNode.appendChild(ui.divNode);
-					System.out.println("JSCUI appending OK");
 				}
 				ui.parent = this;
 			}
@@ -396,9 +396,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * c ignored because JSComponentUI is one per component
 	 */
 	public Dimension getPreferredSize(JComponent c) {
-		System.out.println("getPreferredSize for " + id + " " + c.getName());
+		//System.out.println("getPreferredSize for " + id + " " + c.getName());
 		Dimension d = setHTMLSize(getDOMObject(), true);
-		System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
+		//System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
   	return d;
   }
 
@@ -690,8 +690,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void setFont(Font f) {
-		JSToolkit.notImplemented("");
-		
+		if (domNode != null)
+			setCssFont(domNode, f);
 	}
 
 	@Override

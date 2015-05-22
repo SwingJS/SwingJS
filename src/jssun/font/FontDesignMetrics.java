@@ -34,7 +34,7 @@ import swingjs.JSToolkit;
 
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
-import jsjava.awt.font.FontRenderContext;
+//import jsjava.awt.font.FontRenderContext;
 //import jsjava.awt.geom.AffineTransform;
 //import jssun.java2d.Disposer;
 //import jssun.java2d.DisposerRecord;
@@ -132,31 +132,31 @@ private float leading;
 //    private transient float[] advCache; // transient since values could change across runtimes
     private transient int height = -1;
 
-    private transient FontRenderContext frc;
+//    private transient FontRenderContext frc;
 
 //   private transient double[] devmatrix = null;
 
 //    private transient FontStrike fontStrike;
 
-    private static FontRenderContext DEFAULT_FRC = null;
+//    private static FontRenderContext DEFAULT_FRC = null;
 
-    private static FontRenderContext getDefaultFrc() {
-
-        if (DEFAULT_FRC == null) {
-//            AffineTransform tx;
-//            tx = new AffineTransform();
-//            if (GraphicsEnvironment.isHeadless()) {
-//            } else {
-//                tx =  GraphicsEnvironment
-//                    .getLocalGraphicsEnvironment()
-//                    .getDefaultScreenDevice()
-//                    .getDefaultConfiguration()
-//                    .getDefaultTransform();
-//            }
-//            DEFAULT_FRC = new FontRenderContext(tx, false, false);
-        }
-        return DEFAULT_FRC;
-    }
+//    private static FontRenderContext getDefaultFrc() {
+//
+//        if (DEFAULT_FRC == null) {
+////            AffineTransform tx;
+////            tx = new AffineTransform();
+////            if (GraphicsEnvironment.isHeadless()) {
+////            } else {
+////                tx =  GraphicsEnvironment
+////                    .getLocalGraphicsEnvironment()
+////                    .getDefaultScreenDevice()
+////                    .getDefaultConfiguration()
+////                    .getDefaultTransform();
+////            }
+////            DEFAULT_FRC = new FontRenderContext(tx, false, false);
+//        }
+//        return DEFAULT_FRC;
+//    }
 
     /* Strongly cache up to 5 most recently requested FontMetrics objects,
      * and softly cache as many as GC allows. In practice this means we
@@ -251,11 +251,12 @@ private float leading;
     private static int recentIndex = 0;
 
     public static FontDesignMetrics getMetrics(Font font) {
-        return getMetrics(font, getDefaultFrc());
-     }
-
-    public static FontDesignMetrics getMetrics(Font font,
-                                               FontRenderContext frc) {
+// SwingJS -- FontRenderContext is not implemented    	
+//        return getMetrics(font, getDefaultFrc());
+//     }
+//
+//    public static FontDesignMetrics getMetrics(Font font,
+//                                               FontRenderContext frcs) {
 
 
         /* When using alternate composites, can't cache based just on
@@ -303,7 +304,7 @@ private float leading;
              * non-default. Its constructed from local vars so we are
              * thread-safe - no need to worry about the shared key changing.
              */
-            m = new FontDesignMetrics(font, frc);
+            m = new FontDesignMetrics(font);//, frc);
 //            if (usefontkey) {
                 metricsCache.put(font, new KeyReference(font, m));
 //            } else /* use hybrid key */ {
@@ -335,15 +336,15 @@ private float leading;
    */
 
     private FontDesignMetrics(Font font) {
-
-        this(font, getDefaultFrc());
-    }
-
-    /* private to enable caching - call getMetrics() instead. */
-    private FontDesignMetrics(Font font, FontRenderContext frc) {
+//
+//        this(font, getDefaultFrc());
+//    }
+//
+//    /* private to enable caching - call getMetrics() instead. */
+//    private FontDesignMetrics(Font font, FontRenderContext dfrc) {
       super(font);
       this.font = font;
-      this.frc = frc;
+//      this.frc = frc;
 
 //      this.isAntiAliased = frc.isAntiAliased();
 //      this.usesFractionalMetrics = frc.usesFractionalMetrics();
@@ -399,11 +400,11 @@ private float leading;
 //    }
 
 
-    /* Override of FontMetrics.getFontRenderContext() */
-    public FontRenderContext getFontRenderContext() {
-        return frc;
-    }
-
+//    /* Override of FontMetrics.getFontRenderContext() */
+//    public FontRenderContext getFontRenderContext() {
+//        return frc;
+//    }
+//
     public int charWidth(char ch) {
         // default metrics for compatibility with legacy code
     	String s = "";
