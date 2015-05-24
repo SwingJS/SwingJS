@@ -5,6 +5,12 @@ PROGRESS
 ========
 5/23/2015 BH
 
+- fix for java.util.Random.nextInt(bits)
+
+- adds loadimage.htm and jumbledimage.htm 
+
+- Q: What sets the "south" button to be the full width?
+
 - reading and drawing of PNG, JPG, GIF, and BMP image formats
     
     java.awt.Toolkit.getDefaultToolkit().getImage(String filename)

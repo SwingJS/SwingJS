@@ -44,7 +44,7 @@ import java.util.Map.Entry;
 
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;
-import swingjs.api.HTMLCanvasContext2D;
+import swingjs.api.HTML5CanvasContext2D;
 
 import jsjava.awt.BasicStroke;
 import jsjava.awt.Color;
@@ -91,7 +91,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	private int windowHeight;
 	private HTML5Canvas canvas;
 
-	private HTMLCanvasContext2D ctx;
+	private HTML5CanvasContext2D ctx;
 	private GraphicsConfiguration gc;
 
   public int paintState;
@@ -441,7 +441,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			{
 			}
 			if (imgNode != null)
-				HTMLCanvasContext2D.stretchImage(ctx, imgNode, sx1, sy1, sx2 - sx1, sy2
+				HTML5CanvasContext2D.stretchImage(ctx, imgNode, sx1, sy1, sx2 - sx1, sy2
 						- sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
 			if (observer != null)
 				observe(img, observer, imgNode != null);

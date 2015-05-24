@@ -61,6 +61,10 @@ return Math.ceil(0xffff*Math.random())-0x8000;
 Clazz.defineMethod(c$,"nextInt",
 function(n){
 if(n>0){
+n = Math.min(n, 31);
+return Math.floor((2 << (n - 1)) * Math.random())
+
+/*
 if((n&-n)==n){
 return((n*this.next(31))>>31);
 }var bits;
@@ -69,8 +73,13 @@ do{
 bits=this.next(31);
 val=bits%n;
 }while(bits-val+(n-1)<0);
+
+
 return val;
-}throw new IllegalArgumentException();
+
+*/
+}
+throw new IllegalArgumentException();
 },"~N");
 Clazz.defineMethod(c$,"nextLong",
 function(){

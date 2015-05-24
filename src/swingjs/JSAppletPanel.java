@@ -272,7 +272,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	@Override
 	public URL getCodeBase() {
 		try {
-			return new URL((String) params.get("codeBase"));
+			return new URL((String) params.get("codePath"));
 		} catch (MalformedURLException e) {
 			return null;
 		}

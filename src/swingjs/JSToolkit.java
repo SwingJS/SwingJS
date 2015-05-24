@@ -37,7 +37,7 @@ import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
 import swingjs.api.HTML5Applet;
-import swingjs.api.HTMLCanvasContext2D;
+import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
 import swingjs.api.JSFunction;
@@ -259,7 +259,7 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	private static GraphicsConfiguration gc;
-	private static HTMLCanvasContext2D defaultContext;
+	private static HTML5CanvasContext2D defaultContext;
 
 	public static GraphicsConfiguration getGraphicsConfiguration() {
 		// TODO Auto-generated method stub
@@ -290,7 +290,7 @@ public class JSToolkit extends SunToolkit {
 		return css;
 	}
 
-	public static float getStringWidth(HTMLCanvasContext2D context, Font font,
+	public static float getStringWidth(HTML5CanvasContext2D context, Font font,
 			String text) {
 		@SuppressWarnings("unused")
 		String fontInfo = getCanvasFont(font);
@@ -307,7 +307,7 @@ public class JSToolkit extends SunToolkit {
 		return w;
 	}
 
-	public static HTMLCanvasContext2D getDefaultCanvasContext2d() {
+	public static HTML5CanvasContext2D getDefaultCanvasContext2d() {
 		/**
 		 * @j2sNative
 		 * 
