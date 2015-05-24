@@ -6,12 +6,6 @@ PROGRESS
 5/23/2015 BH
 
 - reading and drawing of PNG, JPG, GIF, and BMP image formats
-
-- implementation of:
-    
-    java.util.Arrays.copyOfRange(T[])
-    
-    java.net.URL.getInputStream() -- works for binary and ascii files
     
     java.awt.Toolkit.getDefaultToolkit().getImage(String filename)
     java.awt.Toolkit.getDefaultToolkit().getImage(URL)
@@ -22,9 +16,18 @@ PROGRESS
 
 	java.awt.Graphics2D.drawImage(...)
     
+- implementation of focus, though not traversal:
+
+    java.awt.Component.hasFocus()
+    java.awt.Component.isFocusable()
     java.awt.Component.requestFocus()
     java.awt.Component.requestFocusInWindow()  // same as requestFocus here
+
+- reading files, both binary and ASCII
     
+    java.net.URL.getInputStream() -- works for binary and ascii files
+    swingjs.JSToolkit.getFileAsBytes(String filename)
+    swingjs.JSToolkit.ensureSignedBytes(byte[])
     
 ========
 5/21/2015 BH
