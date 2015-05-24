@@ -1,11 +1,8 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
-import jsjava.awt.Color;
 import jsjava.awt.Dimension;
-import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.text.JTextComponent;
-import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JSFunction;
 
@@ -28,7 +25,7 @@ public class JSTextFieldUI extends JSTextUI {
 	public DOMNode getDOMObject() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
-			domBtn = enableNode = valueNode = domNode = DOMNode.setStyles(createDOMObject("input", id,
+			domBtn = focusNode = enableNode = valueNode = domNode = DOMNode.setStyles(createDOMObject("input", id,
 					"type", "text"), "padding", "0px 1px");
 			vCenter(domNode, -10);
 			bindMouse(domNode);
@@ -57,10 +54,7 @@ public class JSTextFieldUI extends JSTextUI {
 		{
 		  System.out.println(me);
 		}
-		JSToolkit.getJQuery().$(domNode).bind("keydown keypress keyup", f);
-
-		// TODO Auto-generated method stub
-		
+		$(domNode).bind("keydown keypress keyup", f);
 	}
 
 

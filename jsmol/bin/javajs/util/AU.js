@@ -84,6 +84,7 @@ return t;
 c$.newInstanceO = Clazz.defineMethod (c$, "newInstanceO", 
 ($fz = function (array, n) {
 {
+if (!array.getClass().getComponentType)
 return new Array(n);
 }}, $fz.isPrivate = true, $fz), "~O,~N");
 c$.getLength = Clazz.defineMethod (c$, "getLength", 
@@ -278,4 +279,72 @@ for (var i = list.size (); --i >= 0; ) map.remove (list.get (i));
 
 return list.size ();
 }, "java.util.Map,~S");
+c$.isAS = Clazz.defineMethod (c$, "isAS", 
+function (x) {
+{
+return Clazz.isAS(x);
+}}, "~O");
+c$.isASS = Clazz.defineMethod (c$, "isASS", 
+function (x) {
+{
+return Clazz.isASS(x);
+}}, "~O");
+c$.isAP = Clazz.defineMethod (c$, "isAP", 
+function (x) {
+{
+return Clazz.isAP(x);
+}}, "~O");
+c$.isAF = Clazz.defineMethod (c$, "isAF", 
+function (x) {
+{
+return Clazz.isAF(x);
+}}, "~O");
+c$.isAFloat = Clazz.defineMethod (c$, "isAFloat", 
+function (x) {
+{
+return Clazz.isAFloat(x);
+}}, "~O");
+c$.isAD = Clazz.defineMethod (c$, "isAD", 
+function (x) {
+{
+return Clazz.isAF(x);
+}}, "~O");
+c$.isADD = Clazz.defineMethod (c$, "isADD", 
+function (x) {
+{
+return Clazz.isAFF(x);
+}}, "~O");
+c$.isAB = Clazz.defineMethod (c$, "isAB", 
+function (x) {
+{
+return Clazz.isAI(x);
+}}, "~O");
+c$.isAI = Clazz.defineMethod (c$, "isAI", 
+function (x) {
+{
+return Clazz.isAI(x);
+}}, "~O");
+c$.isAII = Clazz.defineMethod (c$, "isAII", 
+function (x) {
+{
+return Clazz.isAII(x);
+}}, "~O");
+c$.isAFF = Clazz.defineMethod (c$, "isAFF", 
+function (x) {
+{
+return Clazz.isAFF(x);
+}}, "~O");
+c$.isAFFF = Clazz.defineMethod (c$, "isAFFF", 
+function (x) {
+{
+return Clazz.isAFFF(x);
+}}, "~O");
+c$.ensureSignedBytes = Clazz.defineMethod (c$, "ensureSignedBytes", 
+function (b) {
+if (b != null) {
+{
+for (var i = b.length; --i >= 0;) { var j = b[i] & 0xFF; if
+(j >= 0x80) j -= 0x100; b[i] = j; }
+}}return b;
+}, "~A");
 });

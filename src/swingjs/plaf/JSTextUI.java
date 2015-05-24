@@ -24,88 +24,36 @@
  */
 package swingjs.plaf;
 
-import jsjava.awt.Color;
-import jsjava.awt.Component;
-import jsjava.awt.Container;
-import jsjava.awt.Cursor;
 import jsjava.awt.Dimension;
-import jsjava.awt.Font;
-import jsjava.awt.Graphics;
-import jsjava.awt.Insets;
-//import jsjava.awt.KeyboardFocusManager;
 import jsjava.awt.LayoutManager;
-import jsjava.awt.LayoutManager2;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
-import jsjava.awt.Shape;
+import jsjava.awt.event.ActionEvent;
+import jsjavax.swing.AbstractAction;
+import jsjavax.swing.Action;
+import jsjavax.swing.ActionMap;
+import jsjavax.swing.InputMap;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.plaf.ActionMapUIResource;
+import jsjavax.swing.plaf.ComponentUI;
+import jsjavax.swing.plaf.InputMapUIResource;
+import jsjavax.swing.plaf.TextUI;
+import jsjavax.swing.plaf.UIResource;
+import jsjavax.swing.text.Caret;
+import jsjavax.swing.text.DefaultEditorKit;
+import jsjavax.swing.text.EditorKit;
+import jsjavax.swing.text.JTextComponent;
+import jsjavax.swing.text.TextAction;
+//import jsjava.awt.KeyboardFocusManager;
 //import jsjava.awt.datatransfer.DataFlavor;
 //import jsjava.awt.datatransfer.Transferable;
 //import jsjava.awt.datatransfer.UnsupportedFlavorException;
-import jsjava.awt.event.ActionEvent;
-import jsjava.awt.event.InputEvent;
-import jsjava.awt.event.KeyEvent;
-import jsjava.awt.event.MouseEvent;
-import jsjava.awt.event.MouseMotionListener;
 //import jsjava.awt.im.InputContext;
-import jsjava.beans.PropertyChangeEvent;
-import jsjava.beans.PropertyChangeListener;
-import java.awt.Event;
 //import jsjava.io.IOException;
 //import jsjava.io.InputStream;
 //import jsjava.io.Reader;
 //import jsjava.io.StringBufferInputStream;
 //import jsjava.io.StringReader;
 //import jsjava.io.StringWriter;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
-
-
-import jsjavax.swing.AbstractAction;
-import jsjavax.swing.Action;
-import jsjavax.swing.ActionMap;
-import jsjavax.swing.DropMode;
-import jsjavax.swing.InputMap;
-import jsjavax.swing.JComponent;
-import jsjavax.swing.JEditorPane;
-import jsjavax.swing.JPasswordField;
-import jsjavax.swing.JTextArea;
-import jsjavax.swing.KeyStroke;
-import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.TransferHandler;
-import jsjavax.swing.UIManager;
-import jsjavax.swing.border.Border;
-import jsjavax.swing.event.DocumentEvent;
-import jsjavax.swing.event.DocumentListener;
-import jsjavax.swing.event.MouseInputAdapter;
-import jsjavax.swing.plaf.ActionMapUIResource;
-import jsjavax.swing.plaf.ComponentInputMapUIResource;
-import jsjavax.swing.plaf.ComponentUI;
-import jsjavax.swing.plaf.InputMapUIResource;
-import jsjavax.swing.plaf.TextUI;
-import jsjavax.swing.plaf.UIResource;
-import jsjavax.swing.text.AbstractDocument;
-import jsjavax.swing.text.AttributeSet;
-import jsjavax.swing.text.BadLocationException;
-import jsjavax.swing.text.Caret;
-import jsjavax.swing.text.DefaultCaret;
-import jsjavax.swing.text.DefaultEditorKit;
-import jsjavax.swing.text.DefaultHighlighter;
-import jsjavax.swing.text.Document;
-import jsjavax.swing.text.EditorKit;
-import jsjavax.swing.text.Element;
-import jsjavax.swing.text.Highlighter;
-import jsjavax.swing.text.JTextComponent;
-import jsjavax.swing.text.Keymap;
-import jsjavax.swing.text.Position;
-import jsjavax.swing.text.TextAction;
-import jsjavax.swing.text.View;
-import jsjavax.swing.text.ViewFactory;
-
-import jssun.awt.AppContext;
-import jssun.swing.DefaultLookup;
 //import jsjavax.swing.plaf.basic.DragRecognitionSupport.BeforeDrag;
 
 /**
@@ -1042,8 +990,10 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
      * @return the size
      */
     public Dimension getMaximumSize(JComponent c) {
-        Document doc = editor.getDocument();
-        Insets i = c.getInsets();
+    	// SwingJS TODO 
+    	
+//        Document doc = editor.getDocument();
+//        Insets i = c.getInsets();
         Dimension d = new Dimension();
 //        if (doc instanceof AbstractDocument) {
 //            ((AbstractDocument)doc).readLock();

@@ -1,12 +1,17 @@
 package swingjs;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLStreamHandlerFactory;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.util.AU;
 import javajs.util.Rdr;
+import javajs.util.SB;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
@@ -23,6 +28,7 @@ import jsjava.awt.Window;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjava.awt.image.MemoryImageSource;
 import jsjava.awt.peer.LightweightPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
@@ -178,60 +184,6 @@ public class JSToolkit extends SunToolkit {
 		// n/a?
 	}
 
-	@Override
-	public Image getImage(String filename) {
-		// TODO Auto-generated method stub
-		return getImageObj(filename);
-	}
-
-	@Override
-	public Image getImage(URL url) {
-		return getImageObj(url);
-	}
-
-	private Image getImageObj(Object nameOrURL) {
-		// send off to get this
-		return null;
-	}
-
-	@Override
-	public Image createImage(String filename) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Image createImage(URL url) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean prepareImage(Image image, int width, int height,
-			ImageObserver observer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int checkImage(Image image, int width, int height,
-			ImageObserver observer) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Image createImage(ImageProducer producer) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Image createImage(byte[] imagedata, int imageoffset, int imagelength) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	// ////// sun.awt.SunToolkit /////////
 
 	@Override
@@ -264,12 +216,12 @@ public class JSToolkit extends SunToolkit {
 		return 0;
 	}
 
-	@Override
-	protected boolean syncNativeQueue(long timeout) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+//	@Override
+//	protected boolean syncNativeQueue(long timeout) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
+//
 	@Override
 	public void grab(Window w) {
 		// TODO Auto-generated method stub
@@ -740,6 +692,26 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
+	/**
+	 * A protected version of Rdr.getStreamAsBytes
+	 * @param bis
+	 * @return
+	 */
+	public static byte[] getSignedStreamBytes(BufferedInputStream bis) {
+		try {
+			return AU.ensureSignedBytes((byte[]) Rdr.getStreamAsBytes(bis, null));
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * This could be a simple String, a javajs.util.SB, or unsigned or signed bytes
+	 * depending upon the browser and the file type.
+	 * 
+	 * @param uri
+	 * @return
+	 */
 	public static Object getFileContents(String uri) {
 		/**
 		 * @j2sNative
@@ -753,6 +725,98 @@ public class JSToolkit extends SunToolkit {
 				return null;
 			}
 		}
+	}
+
+
+	/**
+	 * Regardless of how returned by Jmol._getFileContents(), 
+	 * this method ensures that we get signed bytes.
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public byte[] getFileAsBytes(String filename) {
+		Object data = getFileContents(filename);
+		byte[] b = null;
+		if (AU.isAB(data))
+			b = (byte[]) data;
+		else if (data instanceof String) 
+			b = ((String) data).getBytes();
+		else if (data instanceof SB)
+			b = Rdr.getBytesFromSB((SB) data);
+		else if (data instanceof InputStream)
+			try {
+				b = Rdr.getLimitedStreamBytes((InputStream) data, -1);
+			} catch (IOException e) {
+			}
+		return AU.ensureSignedBytes(b);
+	}
+
+
+	//////////////// images ///////////////
+	
+	private JSImagekit imageKit;
+	
+	private JSImagekit getImagekit() {
+		return (imageKit == null ? imageKit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", false) : imageKit);
+	}
+
+	@Override
+	public Image createImage(ImageProducer producer) {
+		producer.startProduction(null);
+		return null;//return getImagekit().createImage(producer.data, imageoffset, imagelength);
+	}
+
+	@Override
+	public Image createImage(String filename) {
+		return getImagekit().createImageFromBytes(getSignedStreamBytes(new BufferedInputStream(new ByteArrayInputStream(getFileAsBytes(filename)))), 0, -1);
+	}
+
+	@Override
+	public Image createImage(URL url) {
+		try {
+			return getImagekit().createImageFromBytes(getSignedStreamBytes(new BufferedInputStream(url.openStream())), 0, -1);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public Image createImage(byte[] data, int imageoffset, int imagelength) {
+		return getImagekit().createImageFromBytes(data, imageoffset, imagelength);
+	}
+	
+	@Override
+	public int checkImage(Image image, int width, int height,
+			ImageObserver observer) {
+		return 63; // everything is here -- always has been - images are loaded asynchronously
+	}
+
+	@Override
+	public boolean prepareImage(Image image, int width, int height,
+			ImageObserver observer) {
+		// It's all synchronous
+		return true;
+	}
+
+	public static boolean hasFocus(Component c) {
+		return ((JSComponentUI) ((JComponent) c).getUI()).hasFocus();
+	}
+
+	public static boolean requestFocus(Component c) {
+		final JSComponentUI ui = ((JSComponentUI) ((JComponent) c).getUI());
+		if (!ui.isFocusable())
+			return  false;
+		Runnable r = new Runnable() {
+
+			@Override
+			public void run() {
+				ui.requestFocus(null, false, false, 0, null);
+			}
+			
+		};
+		setTimeout(r, 50, 0);
+		return true;
 	}
 
 

@@ -35,6 +35,8 @@ import java.util.Hashtable;
 import jsjava.util.Locale;
 import java.util.Set;
 
+import swingjs.JSToolkit;
+
 import jsjava.applet.Applet;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.AWTKeyStroke;
@@ -5537,6 +5539,4 @@ public abstract class JComponent extends Container
         ",minimumSize=" + minimumSizeString +
         ",preferredSize=" + preferredSizeString;
     }
-
-
 }

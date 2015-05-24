@@ -2,6 +2,7 @@ package swingjs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLStreamHandlerFactory;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -23,6 +24,7 @@ import jssun.applet.AppletEventMulticaster;
 import jssun.applet.AppletListener;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
+import swingjs.api.Interface;
 import swingjs.api.JSInterface;
 import swingjs.plaf.JSComponentUI;
 import jsjavax.swing.JPanel;
@@ -184,13 +186,19 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		 * @j2sNative
 		 * 
 		 *            Jmol._applets[this.appletName + "_thread"] =
-		 *            jsjava.lang.Thread.thisThread = this.myThread; 
+		 *            jsjava.lang.Thread.thisThread = this.myThread;
 		 * 
 		 */
 		{
 		}
 		appContext = JSToolkit.createNewAppContext();
 		Toolkit.getDefaultToolkit();
+		try {
+			URL.setURLStreamHandlerFactory((URLStreamHandlerFactory) Interface
+					.getInstance("javajs.util.AjaxURLStreamHandlerFactory", false));
+		} catch (Throwable e) {
+			// that's fine -- already created
+		}
 		System.out.println("JSAppletPanel initialized");
 	}
 
@@ -444,7 +452,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		// Note that this "Panel" is never painted.
 		// This class simply maintains valuable information for applet loading.
 		// Here we go straight to the contentPane and paint that.
-		applet.getContentPane().paint(setGraphics(g));
+		applet.paint(setGraphics(g));
 	}
 
 	/**

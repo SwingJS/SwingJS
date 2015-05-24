@@ -14,4 +14,10 @@ public interface JQueryObject {
 
 	public abstract void bind(String actions, JSFunction f);
 
+	public abstract Object offset();
+
+	public abstract JQueryObject focus();
+
+	public abstract JQueryObject select();
+
 }

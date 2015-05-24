@@ -58,7 +58,7 @@
 	Clazz._Loader.ignore([
 		"net.sf.j2s.ajax.HttpRequest",
 		sJU + ".MapEntry.Type",
-		"java.net.UnknownServiceException",
+		//"java.net.UnknownServiceException",
 		"java.lang.Runtime",
 		"java.security.AccessController",
 		"java.security.PrivilegedExceptionAction",

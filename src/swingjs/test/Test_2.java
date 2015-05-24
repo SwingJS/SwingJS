@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.JComponent;
 
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 
 public class Test_2 extends JApplet {
@@ -44,6 +45,7 @@ public class Test_2 extends JApplet {
 	//	Class y = xx.getClass().getComponentType();
 		//System.out.println(y.getName());  
 		setName("Test_2");
+		
 	}
 
 	public void init() {
@@ -54,7 +56,7 @@ public class Test_2 extends JApplet {
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
 		c.add(controls = new Test_2Controls(canvas), BorderLayout.NORTH);
-		System.out.println( controls.bg0.getForeground()); 
+//		System.out.println( controls.bg0.getForeground()); 
 //				+ " "+ controls.bg0.getBackground() 
 	//			+ " \n cb " + controls.getForeground() + " cf " + controls.getBackground());
 	}

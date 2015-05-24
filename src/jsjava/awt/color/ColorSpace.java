@@ -287,12 +287,14 @@ public class ColorSpace {
     {
     ColorSpace    theColorSpace;
 
+    // SwingJS -- for now, just implementing standard RGB color space
+    
         switch (colorspace) {
         default:
         case CS_sRGB:
 //            synchronized(ColorSpace.class) {
                 if (sRGBspace == null) {
-                	sRGBspace = new ColorSpace(CS_sRGB, 4);
+                	sRGBspace = new ColorSpace(TYPE_RGB, 3); // SwingJS
 //                    ICC_Profile theProfile = ICC_Profile.getInstance (CS_sRGB);
 //                    sRGBspace = new ICC_ColorSpace (theProfile);
                 }

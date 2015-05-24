@@ -9,6 +9,7 @@ import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
+import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
@@ -26,7 +27,7 @@ import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
-import swingjs.api.JQuery;
+import swingjs.api.JQueryObject;
 
 /**
  * The JSComponentUI subclasses are where all the detailed HTML5 implementation is 
@@ -67,7 +68,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	/**
 	 * the outermost div holding a component -- left, top, and for a container width and height
 	 */
-	protected DOMNode divNode; 
+	protected DOMNode outerNode; 
 
 	/**
 	 * the main object for the component, possibly containing others, such as radio button with its label
@@ -93,6 +94,12 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * a component that is being scrolled by a JScrollPane
 	 */
 	protected DOMNode scrollNode;
+
+
+	/**
+	 * a component that is focusable
+	 */
+	protected DOMNode focusNode;
 
 
 	/**
@@ -161,6 +168,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		uninstallJSUI();
 	}
 
+	protected JQueryObject $(DOMNode node) {
+		return JSToolkit.getJQuery().$(node);
+	}
+	
 	/**
 	 * mark this component as in need of update; 
 	 * maybe not necessary, though. It comes after the value  callback 
@@ -289,9 +300,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			body.appendChild(div);
 			
 			//System.out.println(DOMNode.getAttr(node, "outerHTML"));
-			JQuery jq = JSToolkit.getJQuery();
-			w = (int) Math.ceil(jq.$(div).width() + 0.5);
-			h = (int) Math.ceil(jq.$(div).height() + 0.5);
+			w = (int) Math.ceil($(div).width() + 0.5);
+			h = (int) Math.ceil($(div).height() + 0.5);
 			body.removeChild(div);
 		}
 
@@ -333,13 +343,13 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 */
 	protected DOMNode setHTMLElement() {
 		if (!isTainted)
-			return divNode;
+			return outerNode;
 
 		// check for root pane -- not included in DOM
 		JRootPane root = (isContainer ? c.getRootPane() : null);
 		if (c == root) {
 			isTainted = false;
-			return divNode;
+			return outerNode;
 		}
 		
 		domNode = getDOMObject();
@@ -349,16 +359,16 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 		// needs some work for changes after applet creation
 		
-		if (divNode == null) {
-			divNode = wrap("div", id, domNode);
+		if (outerNode == null) {
+			outerNode = wrap("div", id, domNode);
 			if (root != null && root.getContentPane() == c)
 				swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
-						.appendChild(divNode);
+						.appendChild(outerNode);
 		}
 
 		// set position
 		
-		DOMNode.setStyles(divNode, "position", "absolute", "left", (x = c.getX())
+		DOMNode.setStyles(outerNode, "position", "absolute", "left", (x = c.getX())
 				+ "px", "top", (y = c.getY()) + "px");
 		
 		if (isContainer) {
@@ -366,7 +376,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			// set width from component
 
 			System.out.println("JSComponentUI container " + id + " " + c.getBounds());
-			DOMNode.setStyles(divNode, "width", c.getWidth() + "px", "height",
+			DOMNode.setStyles(outerNode, "width", c.getWidth() + "px", "height",
 					c.getHeight() + "px");
 			
 
@@ -374,13 +384,13 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			Component[] children = (components == null ? c.getComponents() : components);
 			for (int i = children.length; --i >= 0;) {
 				JSComponentUI ui = ((JSComponentUI) ((JComponent) children[i]).getUI());
-				if (ui.divNode == null)
+				if (ui.outerNode == null)
 					ui.setHTMLElement();
-				if (ui.divNode == null) {
+				if (ui.outerNode == null) {
 					System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 						 + c.getName());
 				} else {
-					divNode.appendChild(ui.divNode);
+					outerNode.appendChild(ui.outerNode);
 				}
 				ui.parent = this;
 			}
@@ -389,7 +399,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		// mark as not tainted
 		//debugDump(divObj);
 		isTainted = false;
-		return divNode;
+		return outerNode;
 	}
 
 	/**
@@ -402,21 +412,19 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
   	return d;
   }
 
-	public void paintC(Graphics g, JComponent c) {
-		// for users to use. Note that for now, button graphics 
+	public void paint(Graphics g, JComponent c) {
+    // Note that for now, button graphics 
 		// are BEHIND the button. We will need to paint onto the
 		// glass pane for this to work, and then also manage
 		// mouse clicks and key clicks with that in mind. 
-	}
-
-	public void update(Graphics g, JComponent c) {
-		// System.out.println("JComponentUI " + id + " tainted " + isTainted +
-		// " update/paint at " + c.getLocation() + " " + c.getWidth() + " " +
-		// c.getHeight());
 		if (c.isOpaque()) {
 			g.setColor(c.getBackground());
 			g.fillRect(0, 0, c.getWidth(), c.getHeight());
 		}
+	}
+
+	public void update(Graphics g, JComponent c) {
+		// called from JComponent.paintComponent
 		boolean testing = false;//true;
 		if (testing) {
 			g.setColor(Color.red);
@@ -424,7 +432,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			System.out.println("drawing " + c.getWidth() + " " + c.getHeight());
 		}
 		setHTMLElement();
-		paintC(g, c);
+		paint(g, c);
 	}
 
 	public Dimension getMinimumSize(JComponent c) {
@@ -585,8 +593,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void setVisible(boolean b) {
-		JSToolkit.notImplemented("");
-		
+		DOMNode.setStyles(outerNode, "display", b ? "block" : "none");
 	}
 
 	@Override
@@ -597,20 +604,17 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void paint(Graphics g) {
-		JSToolkit.notImplemented("");
-		
+		// nothing to do here
 	}
 
 	@Override
 	public void repaint(long tm, int x, int y, int width, int height) {
-		JSToolkit.notImplemented("");
-		
+		// nothing to do here
 	}
 
 	@Override
 	public void print(Graphics g) {
-		JSToolkit.notImplemented("");
-		
+		JSToolkit.notImplemented("");		
 	}
 
 	@Override
@@ -631,10 +635,14 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		
 	}
 
+	/**
+	 * Coordinates relative to the document
+	 * 
+	 */
 	@Override
 	public Point getLocationOnScreen() {
-		JSToolkit.notImplemented("");
-		return null;
+		Insets offset = (Insets) $(outerNode).offset();
+		return new Point(offset.left, offset.top);
 	}
 
 	@Override
@@ -645,7 +653,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	@Override
 	public Dimension getMinimumSize() {
 		JSToolkit.notImplemented("");
-		return null;
+		return getPreferredSize(c);
 	}
 
 	@Override
@@ -661,7 +669,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public Graphics getGraphics() {
-		// called from java.awt.Component when NOT a LightweightPeer.
+		// n/a  -- called from java.awt.Component when NOT a LightweightPeer.
 		return null;
 	}
 
@@ -673,7 +681,6 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	@Override
 	public void dispose() {
 		JSToolkit.notImplemented("");
-		
 	}
 
 	@Override
@@ -696,21 +703,23 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void updateCursorImmediately() {
-		JSToolkit.notImplemented("");
-		
+		JSToolkit.notImplemented("");		
 	}
 
 	@Override
 	public boolean requestFocus(Component lightweightChild, boolean temporary,
 			boolean focusedWindowChangeAllowed, long time, Cause cause) {
-		JSToolkit.notImplemented("");
-		return false;
+		if (focusNode == null)
+			return false;
+		$(focusNode).focus();
+		if (textNode != null)
+			$(textNode).select();
+		return true;
 	}
 
 	@Override
 	public boolean isFocusable() {
-		JSToolkit.notImplemented("");
-		return false;
+		return (focusNode != null);
 	}
 
 	@Override
@@ -789,6 +798,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	public Rectangle getBounds() {
 		JSToolkit.notImplemented("");
 		return null;
+	}
+
+	public boolean hasFocus() {
+		return focusNode != null && focusNode.hasFocus();
 	}
   
 }

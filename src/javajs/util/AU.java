@@ -23,6 +23,7 @@
  */
 package javajs.util;
 
+// 4/23/15 BH getComponentType fix
 
 import java.lang.reflect.Array;
 
@@ -626,6 +627,27 @@ final public class AU {
 	  {
 	  return x instanceof float[][][];
 	  }
+	}
+	
+	/**
+	 * Ensure that we have signed and not unsigned bytes coming out of any
+	 * process, but particularly out of file reading.
+	 * 
+	 * @param b
+	 */
+	public static byte[] ensureSignedBytes(byte[] b) {
+		if (b != null) {
+			/**
+			 * @j2sNative
+			 * 
+			 *            for (var i = b.length; --i >= 0;) { var j = b[i] & 0xFF; if
+			 *            (j >= 0x80) j -= 0x100; b[i] = j; }
+			 * 
+			 */
+			{
+			}
+		}
+		return b;
 	}
 
 

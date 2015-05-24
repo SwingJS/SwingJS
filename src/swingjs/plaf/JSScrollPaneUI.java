@@ -25,14 +25,12 @@
 
 package swingjs.plaf;
 
-import swingjs.JSToolkit;
-import swingjs.api.DOMNode;
 import jsjava.awt.Component;
 import jsjavax.swing.JComponent;
-import jsjavax.swing.JLabel;
 import jsjavax.swing.JScrollPane;
-import jsjavax.swing.JTextArea;
 import jsjavax.swing.JViewport;
+
+import swingjs.api.DOMNode;
 
 public class JSScrollPaneUI extends JSComponentUI {
 
@@ -62,7 +60,7 @@ public class JSScrollPaneUI extends JSComponentUI {
 			if (sc != null && sc != scrolledComponent) {
 				scrolledComponent = sc;
 				scrolledUI = ((JSComponentUI)sc.getUI());
-				scrollNode = scrolledUI.divNode;
+				scrollNode = scrolledUI.outerNode;
 				if (scrollNode == null)
 					scrollNode = scrolledUI.setHTMLElement();
 				setDims(scrollNode, c.getWidth(), c.getHeight());

@@ -127,7 +127,7 @@ public abstract class ComponentUI {
      *
      * @see #update
      */
-    public void paintC(Graphics g, JComponent c) {
+    public void paint(Graphics g, JComponent c) {
     }
 
     /**
@@ -151,11 +151,12 @@ public abstract class ComponentUI {
      * @see jsjavax.swing.JComponent#paintComponent
      */
     public void update(Graphics g, JComponent c) {
-        if (c.isOpaque()) {
-            g.setColor(c.getBackground());
-            g.fillRect(0, 0, c.getWidth(),c.getHeight());
-        }
-        paintC(g, c);
+// SwingJS unnec
+//       if (c.isOpaque()) {
+//            g.setColor(c.getBackground());
+//            g.fillRect(0, 0, c.getWidth(),c.getHeight());
+//        }
+//        paint(g, c);
     }
 
     /**

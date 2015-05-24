@@ -224,6 +224,16 @@ public class JApplet extends Applet implements /* Accessible ,*/
         return transferHandler;
     }
 
+    
+    /**
+     * SwingJS -- needed to allow JApplet.paint() override
+     */
+    public void paint(Graphics g) {
+    	// SwingJS adding this so that it can be overridden
+    	// by a call to appletPanel to paint the applet
+    	getContentPane().paint(g);
+    }
+    
     /**
      * Just calls <code>paint(g)</code>.  This method was overridden to
      * prevent an unnecessary call to clear the background.

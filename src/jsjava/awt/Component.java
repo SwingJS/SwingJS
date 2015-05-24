@@ -1480,31 +1480,28 @@ protected  transient ComponentPeer peer;
     }
 
 	public void show() {
-	  /**
-	   * @j2sNative
-	   * 
-	   * if (arguments.length == 1 && !arguments[0]) {
-	   *  this.hide();
-	   *  return;
-	   *  }
-	   */
-//		System.out.println("Component " + name + " setVisible TRUE");
+		/**
+		 * @j2sNative
+		 * 
+		 *            if (arguments.length == 1 && !arguments[0]) { this.hide();
+		 *            return; }
+		 */
+		// System.out.println("Component " + name + " setVisible TRUE");
 		if (!visible) {
 			// synchronized (getTreeLock()) {
 			visible = true;
 			// mixOnShowing();
-			 ComponentPeer peer = this.peer;
-			 if (peer != null) {
-			 peer.setVisible(true);//was show();
-			 createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
-			 this, parent,
-			 HierarchyEvent.SHOWING_CHANGED,
-			 Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-			 if (peer instanceof LightweightPeer) {
-			 repaint();
-			 }
-			 updateCursorImmediately();
-			 }
+			ComponentPeer peer = this.peer;
+			if (peer != null) {
+				peer.setVisible(true);// was show();
+				createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
+						HierarchyEvent.SHOWING_CHANGED,
+						Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+				if (peer instanceof LightweightPeer) {
+					repaint();
+				}
+				updateCursorImmediately();
+			}
 
 			if (componentListener != null
 					|| (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
@@ -6466,75 +6463,77 @@ protected  transient ComponentPeer peer;
      * @since JDK1.0
      */
     public void requestFocus() {
-//        requestFocusHelper(false, true);
+    	JSToolkit.requestFocus(this);
+    	//        requestFocusHelper(false, true);
     }
 
 //    void requestFocus(CausedFocusEvent.Cause cause) {
 //        requestFocusHelper(false, true, cause);
 //    }
 //
-//    /**
-//     * Requests that this <code>Component</code> get the input focus,
-//     * and that this <code>Component</code>'s top-level ancestor
-//     * become the focused <code>Window</code>. This component must be
-//     * displayable, focusable, visible and all of its ancestors (with
-//     * the exception of the top-level Window) must be visible for the
-//     * request to be granted. Every effort will be made to honor the
-//     * request; however, in some cases it may be impossible to do
-//     * so. Developers must never assume that this component is the
-//     * focus owner until this component receives a FOCUS_GAINED
-//     * event. If this request is denied because this component's
-//     * top-level window cannot become the focused window, the request
-//     * will be remembered and will be granted when the window is later
-//     * focused by the user.
-//     * <p>
-//     * This method returns a boolean value. If <code>false</code> is returned,
-//     * the request is <b>guaranteed to fail</b>. If <code>true</code> is
-//     * returned, the request will succeed <b>unless</b> it is vetoed, or an
-//     * extraordinary event, such as disposal of the component's peer, occurs
-//     * before the request can be granted by the native windowing system. Again,
-//     * while a return value of <code>true</code> indicates that the request is
-//     * likely to succeed, developers must never assume that this component is
-//     * the focus owner until this component receives a FOCUS_GAINED event.
-//     * <p>
-//     * This method cannot be used to set the focus owner to no component at
-//     * all. Use <code>KeyboardFocusManager.clearGlobalFocusOwner</code>
-//     * instead.
-//     * <p>
-//     * Because the focus behavior of this method is platform-dependent,
-//     * developers are strongly encouraged to use
-//     * <code>requestFocusInWindow</code> when possible.
-//     * <p>
-//     * Every effort will be made to ensure that <code>FocusEvent</code>s
-//     * generated as a
-//     * result of this request will have the specified temporary value. However,
-//     * because specifying an arbitrary temporary state may not be implementable
-//     * on all native windowing systems, correct behavior for this method can be
-//     * guaranteed only for lightweight <code>Component</code>s.
-//     * This method is not intended
-//     * for general use, but exists instead as a hook for lightweight component
-//     * libraries, such as Swing.
-//     *
-//     * <p>Note: Not all focus transfers result from invoking this method. As
-//     * such, a component may receive focus without this or any of the other
-//     * {@code requestFocus} methods of {@code Component} being invoked.
-//     *
-//     * @param temporary true if the focus change is temporary,
-//     *        such as when the window loses the focus; for
-//     *        more information on temporary focus changes see the
-//     *<a href="../../java/awt/doc-files/FocusSpec.html">Focus Specification</a>
-//     * @return <code>false</code> if the focus change request is guaranteed to
-//     *         fail; <code>true</code> if it is likely to succeed
-//     * @see java.awt.event.FocusEvent
-//     * @see #addFocusListener
-//     * @see #isFocusable
-//     * @see #isDisplayable
-//     * @see KeyboardFocusManager#clearGlobalFocusOwner
-//     * @since 1.4
-//     */
-//    protected boolean requestFocus(boolean temporary) {
+    /**
+     * Requests that this <code>Component</code> get the input focus,
+     * and that this <code>Component</code>'s top-level ancestor
+     * become the focused <code>Window</code>. This component must be
+     * displayable, focusable, visible and all of its ancestors (with
+     * the exception of the top-level Window) must be visible for the
+     * request to be granted. Every effort will be made to honor the
+     * request; however, in some cases it may be impossible to do
+     * so. Developers must never assume that this component is the
+     * focus owner until this component receives a FOCUS_GAINED
+     * event. If this request is denied because this component's
+     * top-level window cannot become the focused window, the request
+     * will be remembered and will be granted when the window is later
+     * focused by the user.
+     * <p>
+     * This method returns a boolean value. If <code>false</code> is returned,
+     * the request is <b>guaranteed to fail</b>. If <code>true</code> is
+     * returned, the request will succeed <b>unless</b> it is vetoed, or an
+     * extraordinary event, such as disposal of the component's peer, occurs
+     * before the request can be granted by the native windowing system. Again,
+     * while a return value of <code>true</code> indicates that the request is
+     * likely to succeed, developers must never assume that this component is
+     * the focus owner until this component receives a FOCUS_GAINED event.
+     * <p>
+     * This method cannot be used to set the focus owner to no component at
+     * all. Use <code>KeyboardFocusManager.clearGlobalFocusOwner</code>
+     * instead.
+     * <p>
+     * Because the focus behavior of this method is platform-dependent,
+     * developers are strongly encouraged to use
+     * <code>requestFocusInWindow</code> when possible.
+     * <p>
+     * Every effort will be made to ensure that <code>FocusEvent</code>s
+     * generated as a
+     * result of this request will have the specified temporary value. However,
+     * because specifying an arbitrary temporary state may not be implementable
+     * on all native windowing systems, correct behavior for this method can be
+     * guaranteed only for lightweight <code>Component</code>s.
+     * This method is not intended
+     * for general use, but exists instead as a hook for lightweight component
+     * libraries, such as Swing.
+     *
+     * <p>Note: Not all focus transfers result from invoking this method. As
+     * such, a component may receive focus without this or any of the other
+     * {@code requestFocus} methods of {@code Component} being invoked.
+     *
+     * @param temporary true if the focus change is temporary,
+     *        such as when the window loses the focus; for
+     *        more information on temporary focus changes see the
+     *<a href="../../java/awt/doc-files/FocusSpec.html">Focus Specification</a>
+     * @return <code>false</code> if the focus change request is guaranteed to
+     *         fail; <code>true</code> if it is likely to succeed
+     * @see java.awt.event.FocusEvent
+     * @see #addFocusListener
+     * @see #isFocusable
+     * @see #isDisplayable
+     * @see KeyboardFocusManager#clearGlobalFocusOwner
+     * @since 1.4
+     */
+    protected boolean requestFocus(boolean temporary) {
+    	return JSToolkit.requestFocus(this);
 //        return requestFocusHelper(temporary, true);
-//    }
+    }
 
 //    boolean requestFocus(boolean temporary, CausedFocusEvent.Cause cause) {
 //        return requestFocusHelper(temporary, true, cause);
@@ -6584,7 +6583,7 @@ protected  transient ComponentPeer peer;
      * @since 1.4
      */
     public boolean requestFocusInWindow() {
-    	return false;// TODO
+    	return JSToolkit.requestFocus(this);
 //        return requestFocusHelper(false, false);
     }
 
@@ -6649,9 +6648,10 @@ protected  transient ComponentPeer peer;
 //     * @see KeyboardFocusManager#clearGlobalFocusOwner
 //     * @since 1.4
 //     */
-//    protected boolean requestFocusInWindow(boolean temporary) {
+    protected boolean requestFocusInWindow(boolean temporary) {
+    	return JSToolkit.requestFocus(this);
 //        return requestFocusHelper(temporary, false);
-//    }
+    }
 
 //    boolean requestFocusInWindow(boolean temporary, CausedFocusEvent.Cause cause) {
 //        return requestFocusHelper(temporary, false, cause);
@@ -7043,7 +7043,7 @@ protected  transient ComponentPeer peer;
      * @since 1.2
      */
     public boolean hasFocus() {
-    	return false;
+      	return JSToolkit.hasFocus(this);
 //        return (KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //                getFocusOwner() == this);
     }

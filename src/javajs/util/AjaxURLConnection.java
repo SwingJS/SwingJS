@@ -1,6 +1,7 @@
 package javajs.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -61,6 +62,17 @@ public class AjaxURLConnection extends URLConnection {
   	//     type = "application/x-www-form-urlencoded";
   }
 
+  public InputStream getInputStream() {
+  	InputStream is = null;
+  	Object o = doAjax();
+  	if (AU.isAB(o))
+  		is = Rdr.getBIS((byte[]) o);
+  	else if (o instanceof SB) 
+  		is = Rdr.getBIS(Rdr.getBytesFromSB((SB)o));
+  	else if (o instanceof String)
+  		is = Rdr.getBIS(((String) o).getBytes());
+  	return is;
+  }
   /**
    * @return javajs.util.SB or byte[], depending upon the file type
    */

@@ -1,9 +1,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
-import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.text.JTextComponent;
-import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JSFunction;
 
@@ -26,7 +24,7 @@ public class JSTextAreaUI extends JSTextUI {
 	public DOMNode getDOMObject() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
-			domBtn = enableNode = textNode = domNode = createDOMObject("textarea", id);
+			domBtn = focusNode = enableNode = textNode = domNode = createDOMObject("textarea", id);
 			bindMouse(domNode);
 			bindKeys(domNode);
 		}
@@ -48,7 +46,7 @@ public class JSTextAreaUI extends JSTextUI {
 		{
 		  System.out.println(me);
 		}
-		JSToolkit.getJQuery().$(domNode).bind("keydown keypress keyup", f);
+		$(domNode).bind("keydown keypress keyup", f);
 
 		// TODO Auto-generated method stub
 		

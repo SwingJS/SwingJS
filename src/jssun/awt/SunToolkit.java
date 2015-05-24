@@ -54,10 +54,11 @@ import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ImageObserver;
-import jsjava.awt.image.ImageProducer;
+//import jsjava.awt.image.ImageProducer;
 import jsjava.awt.peer.PanelPeer;
 import jsjava.util.Locale;
-import jssun.awt.image.URLImageSource;
+//import jssun.awt.image.FileImageSource;
+//import jssun.awt.image.URLImageSource;
 import jssun.font.FontDesignMetrics;
 //import java.util.Collections;
 //import java.util.WeakHashMap;
@@ -811,37 +812,35 @@ public abstract class SunToolkit extends Toolkit implements
 	static HashMap imgCache = new HashMap();
 
 	static synchronized Image getImageFromHash(Toolkit tk, URL url) {
-		// SecurityManager sm = System.getSecurityManager();
-		// if (sm != null) {
-		// try {
-		// jsjava.security.Permission perm =
-		// url.openConnection().getPermission();
-		// if (perm != null) {
-		// try {
-		// sm.checkPermission(perm);
-		// } catch (SecurityException se) {
-		// // fallback to checkRead/checkConnect for pre 1.2
-		// // security managers
-		// if ((perm instanceof java.io.FilePermission) &&
-		// perm.getActions().indexOf("read") != -1) {
-		// sm.checkRead(perm.getName());
-		// } else if ((perm instanceof
-		// java.net.SocketPermission) &&
-		// perm.getActions().indexOf("connect") != -1) {
-		// sm.checkConnect(url.getHost(), url.getPort());
-		// } else {
-		// throw se;
-		// }
-		// }
-		// }
-		// } catch (java.io.IOException ioe) {
-		// sm.checkConnect(url.getHost(), url.getPort());
-		// }
-		// }
+//		SecurityManager sm = System.getSecurityManager();
+//		if (sm != null) {
+//			try {
+//				jsjava.security.Permission perm = url.openConnection().getPermission();
+//				if (perm != null) {
+//					try {
+//						sm.checkPermission(perm);
+//					} catch (SecurityException se) {
+//						// fallback to checkRead/checkConnect for pre 1.2
+//						// security managers
+//						if ((perm instanceof java.io.FilePermission)
+//								&& perm.getActions().indexOf("read") != -1) {
+//							sm.checkRead(perm.getName());
+//						} else if ((perm instanceof java.net.SocketPermission)
+//								&& perm.getActions().indexOf("connect") != -1) {
+//							sm.checkConnect(url.getHost(), url.getPort());
+//						} else {
+//							throw se;
+//						}
+//					}
+//				}
+//			} catch (java.io.IOException ioe) {
+//				sm.checkConnect(url.getHost(), url.getPort());
+//			}
+//		}
 		Image img = (Image) imgCache.get(url);
 		if (img == null) {
 			try {
-				img = tk.createImage(new URLImageSource(url));
+				img = tk.createImage(url);
 				imgCache.put(url, img);
 			} catch (Exception e) {
 			}
@@ -850,14 +849,14 @@ public abstract class SunToolkit extends Toolkit implements
 	}
 
 	static synchronized Image getImageFromHash(Toolkit tk, String filename) {
-		SecurityManager security = System.getSecurityManager();
-		if (security != null) {
-			security.checkRead(filename);
-		}
+//		SecurityManager security = System.getSecurityManager();
+//		if (security != null) {
+//			security.checkRead(filename);
+//		}
 		Image img = (Image) imgCache.get(filename);
 		if (img == null) {
 			try {
-				// SwingJS ?? img = tk.createImage(new FileImageSource(filename));
+				tk.createImage(filename); //new FileImageSource(filename);
 				imgCache.put(filename, img);
 			} catch (Exception e) {
 			}
@@ -873,57 +872,56 @@ public abstract class SunToolkit extends Toolkit implements
 		return getImageFromHash(this, url);
 	}
 
-	public Image createImage(String filename) {
-		SecurityManager security = System.getSecurityManager();
-		if (security != null) {
-			security.checkRead(filename);
-		}
-		return null;
-		// SwingJS ?? return createImage(new FileImageSource(filename));
-	}
+	public abstract Image createImage(String filename);
+//	{
+//		SecurityManager security = System.getSecurityManager();
+//		if (security != null) {
+//			security.checkRead(filename);
+//		}
+//		return null;
+//		// SwingJS ?? return createImage(new FileImageSource(filename));
+//	}
 
-	public Image createImage(URL url) {
-		// SecurityManager sm = System.getSecurityManager();
-		// if (sm != null) {
-		// try {
-		// jsjava.security.Permission perm =
-		// url.openConnection().getPermission();
-		// if (perm != null) {
-		// try {
-		// sm.checkPermission(perm);
-		// } catch (SecurityException se) {
-		// // fallback to checkRead/checkConnect for pre 1.2
-		// // security managers
-		// if ((perm instanceof java.io.FilePermission) &&
-		// perm.getActions().indexOf("read") != -1) {
-		// sm.checkRead(perm.getName());
-		// } else if ((perm instanceof
-		// java.net.SocketPermission) &&
-		// perm.getActions().indexOf("connect") != -1) {
-		// sm.checkConnect(url.getHost(), url.getPort());
-		// } else {
-		// throw se;
-		// }
-		// }
-		// }
-		// } catch (java.io.IOException ioe) {
-		// sm.checkConnect(url.getHost(), url.getPort());
-		// }
-		// }
-		return createImage(new URLImageSource(url));
-	}
+	public abstract Image createImage(URL url);// {
+//		SecurityManager sm = System.getSecurityManager();
+//		if (sm != null) {
+//			try {
+//				jsjava.security.Permission perm = url.openConnection().getPermission();
+//				if (perm != null) {
+//					try {
+//						sm.checkPermission(perm);
+//					} catch (SecurityException se) {
+//						// fallback to checkRead/checkConnect for pre 1.2
+//						// security managers
+//						if ((perm instanceof java.io.FilePermission)
+//								&& perm.getActions().indexOf("read") != -1) {
+//							sm.checkRead(perm.getName());
+//						} else if ((perm instanceof java.net.SocketPermission)
+//								&& perm.getActions().indexOf("connect") != -1) {
+//							sm.checkConnect(url.getHost(), url.getPort());
+//						} else {
+//							throw se;
+//						}
+//					}
+//				}
+//			} catch (java.io.IOException ioe) {
+//				sm.checkConnect(url.getHost(), url.getPort());
+//			}
+//		}
+//		return createImage(new URLImageSource(url));
+//	}
 
-	public Image createImage(byte[] data, int offset, int length) {
-		return null;
-		// SwingJS ?? return createImage(new ByteArrayImageSource(data, offset,
-		// length));
-	}
+//	public Image createImage(byte[] data, int offset, int length) {
+//		return null;
+//		// SwingJS ?? return createImage(new ByteArrayImageSource(data, offset,
+//		// length));
+//	}
 
-	public Image createImage(ImageProducer producer) {
-		return null;
-		// SwingJS ?? return new ToolkitImage(producer);
-	}
-
+//	public Image createImage(ImageProducer producer) {
+//		return null;
+//		// SwingJS ?? return new ToolkitImage(producer);
+//	}
+//
 	public int checkImage(Image img, int w, int h, ImageObserver o) {
 		// SwingJS ??
 		// if (!(img instanceof ToolkitImage)) {
@@ -1614,14 +1612,14 @@ public abstract class SunToolkit extends Toolkit implements
 	// MAX_ITERS);
 	// }
 
-	/**
-	 * Platform toolkits need to implement this method to perform the sync of the
-	 * native queue. The method should wait until native requests are processed,
-	 * all native events are processed and corresponding Java events are
-	 * generated. Should return <code>true</code> if some events were processed,
-	 * <code>false</code> otherwise.
-	 */
-	protected abstract boolean syncNativeQueue(final long timeout);
+//	/**
+//	 * Platform toolkits need to implement this method to perform the sync of the
+//	 * native queue. The method should wait until native requests are processed,
+//	 * all native events are processed and corresponding Java events are
+//	 * generated. Should return <code>true</code> if some events were processed,
+//	 * <code>false</code> otherwise.
+//	 */
+//	protected abstract boolean syncNativeQueue(final long timeout);
 
 	// private boolean eventDispatched = false;
 	// private boolean queueEmpty = false;

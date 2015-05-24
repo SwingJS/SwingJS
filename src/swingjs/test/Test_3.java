@@ -84,6 +84,7 @@ public class Test_3 extends JApplet {
 
 	public void start() {
 		controls.setEnabled(true);
+		controls.f1.requestFocus();
 		//testing controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
 	}
 

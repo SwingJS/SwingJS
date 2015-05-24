@@ -3,7 +3,31 @@ Notes
 
 PROGRESS
 ========
-5/21/2015
+5/23/2015 BH
+
+- reading and drawing of PNG, JPG, GIF, and BMP image formats
+
+- implementation of:
+    
+    java.util.Arrays.copyOfRange(T[])
+    
+    java.net.URL.getInputStream() -- works for binary and ascii files
+    
+    java.awt.Toolkit.getDefaultToolkit().getImage(String filename)
+    java.awt.Toolkit.getDefaultToolkit().getImage(URL)
+    java.awt.Toolkit.getDefaultToolkit().createImage(String filename)
+    java.awt.Toolkit.getDefaultToolkit().createImage(URL)
+    java.awt.Toolkit.getDefaultToolkit().createImage(byte[], intOffset, intLength)
+    javax.imageio.ImageIO.read(URL)
+
+	java.awt.Graphics2D.drawImage(...)
+    
+    java.awt.Component.requestFocus()
+    java.awt.Component.requestFocusInWindow()  // same as requestFocus here
+    
+    
+========
+5/21/2015 BH
 
 - fixes JSmol bug in JSmolJavaExt for Integer.parseRadix
 
@@ -11,7 +35,7 @@ PROGRESS
 - TODO: text alignments
 - TODO: icons
 
-5/17/2015
+5/17/2015 BH
 
 - adds SAX XML parsing (needed for VARNA) 
 - uses sax2r3(final) from http://sourceforge.net/projects/sax/files/sax/	
@@ -27,7 +51,7 @@ PROGRESS
   Clazz.loadClass("swingjs.test.TestXML", function() { new swingjs.test.TestXML([]) })
   
 
-5/16/2015
+5/16/2015 BH
 
 - basic JTextArea/JScrollPane combination working
 - height problem solved for JTextFields (HTML5 default 3px padding removed)
@@ -42,7 +66,7 @@ Note: it is quite nice to see that from the developer console you can issue
   
 and it will do it. 
 
-5/15/2015
+5/15/2015 BH
 
 - better JLabel/JTextField positioning
 - GridBagLayout working
@@ -50,34 +74,34 @@ and it will do it.
            Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
   needs checking with browsers that ctx.fill("evenodd") works  
 
-5/11/2015
+5/11/2015 BH
 
 BH working on Boltzmann
 - found j2s bug #12; easy fix
 - JSThread 
 
-5/10/2015
+5/10/2015 BH
 
 JTextFields responding to DocumentListeners
 JLabel default font and baseline considerations
 see test_3.htm
 
 
-5/9/2015
+5/9/2015 BH
 
 JTextField works, including tracking selection caret -- see test_3.htm
 JSPlainDocument implemented (roughly)
 JSAbstractDocument implemented (roughly)
 CaretListener working
 
-5/7/2015
+5/7/2015 BH
 
 Problem with duplicate Event queue dispatches for every mouse event found. 
   (JSComponentUI.installUI() needs to be empty)
   
 very preliminary JTextField added -- not functional yet
 
-5/5/2015
+5/5/2015 BH
 
 Now implemented, at least minimally:
 
@@ -111,14 +135,14 @@ Possible next steps:
 among about 1000 other possibilities....
   
 
-4/30/2015
+4/30/2015 BH
 
 adjustments in JSmol made to be compatible with SwingJS
 
 JSCheckBoxUI added; not tested 
 Verification added that the actual DOM button was clicked for checkboxes and radio buttons.
 
-4/25/2015
+4/25/2015 BH
 
 Mouse callback action is very smooth and fast as long as 
 clipping is not carried out for each component as created.
@@ -137,7 +161,7 @@ So this means:
 
 
 ---------   
-4/21/2015
+4/21/2015 BH
 
 MouseListener working; ItemListener still not working
 MouseMotionListener working
@@ -146,7 +170,7 @@ Component properties are not adjustable ("isTainted" is not set back to TRUE
 in swingjs.plaf.JSComponentUI
 
 ---------   
-4/19/2015
+4/19/2015 BH
 
 FlowLayout reporting proper positions and sizes for JRadioButtons
 HTML alignment may be a bit off. 
@@ -156,7 +180,7 @@ ButtonGroups working.
 code: "super.xxx" out in Component, Container, and JComponent
 
 ---------   
-4/18/2015
+4/18/2015 BH
 
 JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
 
@@ -181,7 +205,7 @@ JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
  */
 
 ---------   
-4/16/2015
+4/16/2015 BH
 
 SimpleDateFormat was being excluded in JSmolJavaExt.js
 
@@ -197,7 +221,7 @@ peer preferredSize (w,h) working for radio buttons but not for panels; no positi
 JSToolkit JavaScript methods alert, log, prompt, and confirm added
 
 ---------   
-4/15/2015
+4/15/2015 BH
 
 AWT Events reintroduced. Just about ready for JApplet painting via 
 
@@ -208,7 +232,7 @@ The "current thread" (which identifies which applet this is in its name)
 is maintained by anonymous function wrapping.
   
 ---------   
-4/14/2015
+4/14/2015 BH
 
 -- preliminary "native" user interface components implemented -- see swingjs.plaf
    
@@ -232,13 +256,13 @@ the need for @j2sNative blocks. For example, in swingjs.plaf.JSComponentUI:
 	}
 
 ---------   
-4/12/2015
+4/12/2015 BH
 
 basic very limited graphics working; no AffineTransform
 still no layout
 
 ---------   
-4/4/2015
+4/4/2015 BH
 
 j2sjmol.js updated due to problems with incomplete loading
 
@@ -253,7 +277,7 @@ several issues found in getting SimpleDateFormat working
  -- fixed sb.append(int) --> sb.append("" + i)
 
 ---------   
-4/3/2015
+4/3/2015 BH
 
 ResourceBundle working with property loading. 
 But ResourceBundle.Control calls new PropertyResourceBundle(), and that 
@@ -261,7 +285,7 @@ causes a loading loop. Solution is to give PropertyResourceBundle() an empty
 constructor and to call it with reflection.
 
 ---------   
-4/2/2015
+4/2/2015 BH
 
 JApplet loading successful
 
@@ -283,7 +307,7 @@ ThreadGroup points to objects unique to an applet.
 This will allow easy access to applet-specific quantities
   
 ---------   
-3/19/2015
+3/19/2015 BH
 
 Project initiated - files from GrepCode
 

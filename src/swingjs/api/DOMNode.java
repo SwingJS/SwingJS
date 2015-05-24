@@ -4,9 +4,12 @@ public abstract class DOMNode {
 
 	public abstract void appendChild(DOMNode object);
 
+	public abstract boolean hasFocus();
+
 	public abstract DOMNode removeChild(DOMNode object);
 
 	public abstract DOMNode removeAttribute(String attr);
+	
 	public abstract Object getAttribute(String attr);
 
 	public static DOMNode createElement(String key, String id) {
@@ -124,6 +127,5 @@ public abstract class DOMNode {
 			return null;
 		}
 	}
-
 
 }

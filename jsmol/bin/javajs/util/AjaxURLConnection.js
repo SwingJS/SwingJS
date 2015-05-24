@@ -1,5 +1,5 @@
 Clazz.declarePackage ("javajs.util");
-Clazz.load (["java.net.URLConnection"], "javajs.util.AjaxURLConnection", null, function () {
+Clazz.load (["java.net.URLConnection"], "javajs.util.AjaxURLConnection", ["javajs.util.AU", "$.Rdr", "$.SB"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.bytesOut = null;
 this.postOut = "";
@@ -21,6 +21,15 @@ Clazz.defineMethod (c$, "outputString",
 function (post) {
 this.postOut = post;
 }, "~S");
+Clazz.overrideMethod (c$, "getInputStream", 
+function () {
+var is = null;
+var o = this.doAjax ();
+if (javajs.util.AU.isAB (o)) is = javajs.util.Rdr.getBIS (o);
+ else if (Clazz.instanceOf (o, javajs.util.SB)) is = javajs.util.Rdr.getBIS (javajs.util.Rdr.getBytesFromSB (o));
+ else if (Clazz.instanceOf (o, String)) is = javajs.util.Rdr.getBIS ((o).getBytes ());
+return is;
+});
 Clazz.defineMethod (c$, "getContents", 
 function () {
 return this.doAjax ();

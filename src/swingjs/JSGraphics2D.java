@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.HTMLCanvasContext2D;
 
@@ -367,6 +368,94 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.fill();
 	}
 
+	@SuppressWarnings("unused")
+	@Override
+	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
+		if (img != null) {
+			DOMNode imgNode = null;
+			/**
+			 * @j2sNative
+			 * 
+			 *            imgNode = img.imgNode;
+			 */
+			{
+			}
+			if (imgNode != null)
+				ctx.drawImage(imgNode, x, y, img.getWidth(null), img.getHeight(null));
+			if (observer != null)
+				observe(img, observer, imgNode != null);
+		}
+		return true;
+	}
+
+	private void observe(Image img, ImageObserver observer, boolean isOK) {
+		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
+	}
+
+	@SuppressWarnings("unused")
+	@Override
+	public boolean drawImage(Image img, int x, int y, int width, int height,
+			ImageObserver observer) {
+		if (img != null) {
+			DOMNode imgNode = null;
+			/**
+			 * @j2sNative
+			 * 
+			 *            imgNode = img.imgNode;
+			 */
+			{
+			}
+			if (imgNode != null)
+				ctx.drawImage(imgNode, x, y, width, height);
+			if (observer != null)
+				observe(img, observer, imgNode != null);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean drawImage(Image img, int x, int y, Color bgcolor,
+			ImageObserver observer) {
+		JSToolkit.notImplemented(null);
+		return drawImage(img, x, y, null);
+	}
+
+	@Override
+	public boolean drawImage(Image img, int x, int y, int width, int height,
+			Color bgcolor, ImageObserver observer) {
+		JSToolkit.notImplemented(null);
+		return drawImage(img, x, y, width, height, null);
+	}
+
+	@SuppressWarnings("unused")
+	@Override
+	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+		if (img != null) {
+			DOMNode imgNode = null;
+			/**
+			 * @j2sNative
+			 * 
+			 *            imgNode = img.imgNode;
+			 */
+			{
+			}
+			if (imgNode != null)
+				HTMLCanvasContext2D.stretchImage(ctx, imgNode, sx1, sy1, sx2 - sx1, sy2
+						- sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
+			if (observer != null)
+				observe(img, observer, imgNode != null);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
+			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
+		JSToolkit.notImplemented(null);
+		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
+	}
+
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
 		JSToolkit.notImplemented(null);
@@ -375,6 +464,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
+		drawImage(img, x, y, null);
 		JSToolkit.notImplemented(null);
 	}
 
@@ -612,47 +702,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		JSToolkit.notImplemented(null);
-	}
-
-	@Override
-	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		JSToolkit.notImplemented(null);
-		return false;
-	}
-
-	@Override
-	public boolean drawImage(Image img, int x, int y, int width, int height,
-			ImageObserver observer) {
-		JSToolkit.notImplemented(null);
-		return false;
-	}
-
-	@Override
-	public boolean drawImage(Image img, int x, int y, Color bgcolor,
-			ImageObserver observer) {
-		JSToolkit.notImplemented(null);
-		return false;
-	}
-
-	@Override
-	public boolean drawImage(Image img, int x, int y, int width, int height,
-			Color bgcolor, ImageObserver observer) {
-		JSToolkit.notImplemented(null);
-		return false;
-	}
-
-	@Override
-	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		JSToolkit.notImplemented(null);
-		return false;
-	}
-
-	@Override
-	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-		JSToolkit.notImplemented(null);
-		return false;
 	}
 
 	@Override

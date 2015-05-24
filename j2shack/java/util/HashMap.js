@@ -71,7 +71,6 @@ Clazz.defineMethod(c$, "doConstruct",
 function(capacity,loadFactor) {
 capacity || (capacity = 16);
 loadFactor || (loadFactor = 0.75);
-alert([capacity,loadFactor])
 if (typeof capacity != "number") {
  var map = capacity;
  this.loadFactor=loadFactor;
