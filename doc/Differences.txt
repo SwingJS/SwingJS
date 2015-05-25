@@ -3,6 +3,10 @@ Notes
 
 PROGRESS
 ========
+5/24/2015 BH
+
+- fix for "south" button not spanning full width
+
 5/23/2015 BH
 
 - fix for java.util.Random.nextInt(bits)

@@ -4099,21 +4099,22 @@ public abstract class JComponent extends Container
                 setAutoscrolls(((Boolean)value).booleanValue());
                 setFlag(AUTOSCROLLS_SET, false);
             }
-//        } else if (propertyName == "focusTraversalKeysForward") {
+        } else if (propertyName == "focusTraversalKeysForward") {
 //            if (!getFlag(FOCUS_TRAVERSAL_KEYS_FORWARD_SET)) {
 //                super.setFocusTraversalKeys(KeyboardFocusManager.
 //                                            FORWARD_TRAVERSAL_KEYS,
 //                                            (Set)value);
 //            }
-//        } else if (propertyName == "focusTraversalKeysBackward") {
+        } else if (propertyName == "focusTraversalKeysBackward") {
 //            if (!getFlag(FOCUS_TRAVERSAL_KEYS_BACKWARD_SET)) {
 //                super.setFocusTraversalKeys(KeyboardFocusManager.
 //                                            BACKWARD_TRAVERSAL_KEYS,
 //                                            (Set)value);
 //            }
         } else {
-            throw new IllegalArgumentException("property \""+
-                                               propertyName+ "\" cannot be set using this method");
+            //SwingJS throw new IllegalArgumentException
+            System.out.println(JSToolkit.getClassName(this) + " property \""+
+                                               propertyName+ "\" cannot be set using this method" + JSToolkit.getStackTrace(5));
         }
     }
 

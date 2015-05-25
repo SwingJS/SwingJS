@@ -55,7 +55,7 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 		// "absolute" is required for positioning of button, but must not be there for setting the size. 
 		DOMNode.setStyles(domBtn, "position", null);
 		DOMNode.setStyles(label, "position", null);
-		Dimension d = setHTMLSize1(obj, addCSS);
+		Dimension d = setHTMLSize1(obj, addCSS, false);
 		DOMNode.setStyles(domBtn, "position", "absolute");
 		DOMNode.setStyles(label, "position", "absolute");
 		return d;
@@ -93,11 +93,11 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 		// along with the dimensions of the radio button by itself.
 		// This is a hack, for sure.
 
-		Dimension drad = setHTMLSize1(domBtn, false);
-		/*Dimension dlab = */ setHTMLSize1(label, false);
+		Dimension drad = setHTMLSize1(domBtn, false, false);
+		/*Dimension dlab = */ setHTMLSize1(label, false, false);
 		
 		DOMNode obj = wrap("div", "", domBtn, label);
-		Dimension dobj = setHTMLSize1(obj, true);
+		Dimension dobj = setHTMLSize1(obj, true, true);
 		vCenter(domBtn, -75);
 		vCenter(label, -50);
 		DOMNode.setStyles(label, "position", "absolute", "left", drad.width + "px");

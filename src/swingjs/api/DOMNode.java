@@ -117,15 +117,4 @@ public abstract class DOMNode {
 		return obj;
 	}
 
-	public static DOMNode getBody() {
-		/**
-		 * @j2sNative
-		 * 
-		 * return document.body;
-		 */
-		{
-			return null;
-		}
-	}
-
 }

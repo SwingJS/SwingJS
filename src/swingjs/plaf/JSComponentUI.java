@@ -151,10 +151,19 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 * the scroller for a text area
 	 */
 	public JSScrollPaneUI scrollerNode;
+
+
+	private DOMNode document, body;
 	
 	
 	public JSComponentUI() {
-		// for reflection
+		/**
+		 * @j2sNative
+		 * 
+		 * this.document = document;
+		 * this.body = document.body;
+		 */
+		{}
 	}
 
 	protected abstract void installJSUI();
@@ -260,32 +269,48 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 				"transform","translateY(" + offset + "%)");
 	}
 	
+	/**
+	 * overloaded to allow panel and radiobutton to handle slightly differently 
+	 * 
+	 * @param obj
+	 * @param addCSS
+	 * @return
+	 */
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		return setHTMLSize1(obj, addCSS);
+		return setHTMLSize1(obj, addCSS, true);
 	}
 
-	protected Dimension setHTMLSize1(DOMNode node, boolean addCSS) {
+	protected Dimension setHTMLSize1(DOMNode node, boolean addCSS, boolean usePreferred) {
 		if (node == null)
 			return null;
 		int h, w;
+		String w0 = null, h0 = null;
 		DOMNode parentNode = null;
 
-		if (addCSS && scrollerNode != null) {
+		if (scrollerNode != null) {
 			w = scrollerNode.c.getWidth();
-			h = scrollerNode.c.getHeight();	
-		} else if (addCSS && preferredSize != null) {
+			h = scrollerNode.c.getHeight();
+			w0 = w + "px";
+			h0 = h + "px";
+		} else if (usePreferred && preferredSize != null) {
 			// user has set preferred size
 			w = preferredSize.width;
 			h = preferredSize.height;
 		} else {
-
+      // determine the natural size of this object
 			// save the parent node -- we wil need to reset that.
 			parentNode = DOMNode.remove(node);
 
 			// remove position, width, and height, because those are what we are
 			// setting here
+			/**
+			 * @j2sNative
+			 * 
+			 * h0 = node.style.height;
+			 * w0 = node.style.width;
+			 */
+			{}
 			DOMNode.setStyles(node, "position", null, "width", null, "height", null);
-
 			DOMNode div;
 			if (node.getAttribute("tagName") == "DIV")
 				div = node;
@@ -296,7 +321,6 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			// process of discovering width and height is facilitated using jQuery
 			// and appending to document.body.
 
-			DOMNode body = DOMNode.getBody();
 			body.appendChild(div);
 			
 			//System.out.println(DOMNode.getAttr(node, "outerHTML"));
@@ -311,6 +335,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			setDims(node, size.width, size.height);
 		} else {
 			DOMNode.setStyles(node, "position", null);
+			// check to reset width/height after getPreferredSize
+			if (h0 != null)
+				DOMNode.setStyles(node, "width", w0, "height", h0);
 		}
 		if (parentNode != null)
 			parentNode.appendChild(node);
@@ -407,7 +434,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	 */
 	public Dimension getPreferredSize(JComponent c) {
 		//System.out.println("getPreferredSize for " + id + " " + c.getName());
-		Dimension d = setHTMLSize(getDOMObject(), true);
+		Dimension d = setHTMLSize(getDOMObject(), false);
 		//System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
   	return d;
   }
@@ -801,7 +828,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	public boolean hasFocus() {
-		return focusNode != null && focusNode.hasFocus();
+		return focusNode != null && focusNode == DOMNode.getAttr(document, "activeElement");
 	}
   
 }
