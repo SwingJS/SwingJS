@@ -1,5 +1,7 @@
 package swingjs;
 
+import swingjs.api.DOMNode;
+import swingjs.api.JQueryObject;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.GraphicsDevice;
 import jsjava.awt.GraphicsEnvironment;
@@ -7,6 +9,7 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ColorModel;
+import jsjava.awt.image.WritableRaster;
 
 
 public class JSGraphicsConfiguration extends GraphicsConfiguration {
@@ -29,67 +32,41 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public BufferedImage createCompatibleImage(int width, int height) {
-		// SwingJS  TODO
-		/*
-		 *
-		 * @j2sNative
-		 */
-		{}
-		return null;
+    ColorModel cm = getColorModel();
+    WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
+    return new BufferedImage(cm, wr, false, null);
 	}
 
 	@Override
 	public ColorModel getColorModel() {
-		// SwingJS  TODO
-		/*
-		 *
-		 * @j2sNative
-		 */
-		{}
-		return null;
+		return ColorModel.getRGBdefault();
 	}
 
 	@Override
 	public ColorModel getColorModel(int transparency) {
-		// SwingJS  TODO
-		/*
-		 *
-		 * @j2sNative
-		 */
-		{}
-		return null;
+		return ColorModel.getRGBdefault();
 	}
 
 	@Override
 	public AffineTransform getDefaultTransform() {
-		// SwingJS  TODO
-		/*
-		 *
-		 * @j2sNative
-		 */
-		{}
-		return null;
+		return new AffineTransform();
 	}
 
 	@Override
 	public AffineTransform getNormalizingTransform() {
-		// SwingJS  TODO
-		/*
-		 *
-		 * @j2sNative
-		 */
-		{}
-		return null;
+		return new AffineTransform();
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		// SwingJS  TODO
-		/*
-		 *
+		DOMNode doc = null;
+		/**
 		 * @j2sNative
+		 * 
+		 *  doc = document;
 		 */
 		{}
-		return null;
+		JQueryObject d = JSToolkit.getJQuery().$(doc);
+		return new Rectangle(d.width(), d.height());
 	}
 }

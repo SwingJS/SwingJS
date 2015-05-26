@@ -112,7 +112,7 @@ public class JSRadioButtonUI extends JSToggleButtonUI {
 			obj.appendChild(domBtn);
 			obj.appendChild(label);
 		}
-		return setDims(obj, dobj.width, dobj.height);
+		return DOMNode.setSize(obj, dobj.width, dobj.height);
 	}
 
 	

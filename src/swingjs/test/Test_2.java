@@ -28,6 +28,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
 
@@ -49,6 +50,7 @@ public class Test_2 extends JApplet {
 	}
 
 	public void init() {
+		new JSlider();
 		setLayout(new BorderLayout());
 		canvas = new Test_2Canvas();
 		canvas.setSize(850, 500);

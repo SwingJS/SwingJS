@@ -1,5 +1,6 @@
 package swingjs;
 
+import swingjs.api.DOMNode;
 import jsjava.util.Locale;
 
 import jsjava.awt.Font;
@@ -24,8 +25,41 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 
 	@Override
 	public Graphics2D createGraphics(BufferedImage img) {
-		// TODO Auto-generated method stub
-		return null;
+		// get a canvas for an image
+		JSGraphics2D g = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *     g = img._g;
+		 * 
+		 */
+		{
+		}
+		if (g == null) {
+			DOMNode canvas = DOMNode.createElement("canvas", "img" + System.currentTimeMillis());
+		  @SuppressWarnings("unused")
+			int width = img.getWidth();
+			@SuppressWarnings("unused")
+			int height = img.getHeight();
+			/**
+			 * @j2sNative
+			 * 
+			 * canvas.width = width;
+			 * canvas.height = height;
+			 * img._canvas = canvas;
+			 * 	
+			 */
+			{}
+			g = new JSGraphics2D(canvas);
+			/**
+			 * @j2sNative
+			 * img._g = g;
+			 * 
+			 */
+			{
+			}
+		}
+		return g;
 	}
 
 	@Override

@@ -5,14 +5,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLStreamHandlerFactory;
 import java.util.Hashtable;
 import java.util.Map;
 
 import javajs.util.AU;
 import javajs.util.Rdr;
 import javajs.util.SB;
-
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -25,17 +23,23 @@ import jsjava.awt.FontMetrics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Window;
+import jsjava.awt.image.BufferedImage;
+import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
-import jsjava.awt.image.MemoryImageSource;
+import jsjava.awt.image.Raster;
+import jsjava.awt.image.RasterOp;
+import jsjava.awt.image.WritableRaster;
 import jsjava.awt.peer.LightweightPeer;
+import jsjava.awt.Toolkit;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
+import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
@@ -163,8 +167,7 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	public ColorModel getColorModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return ColorModel.getRGBdefault();
 	}
 
 	@Override
@@ -817,6 +820,32 @@ public class JSToolkit extends SunToolkit {
 		};
 		setTimeout(r, 50, 0);
 		return true;
+	}
+
+	private static JSGraphicsCompositor compositor;
+
+  static JSGraphicsCompositor getCompositor() {
+		return (compositor == null ? compositor = (JSGraphicsCompositor) Interface
+				.getInstance("swingjs.JSGraphicsCompositor", false) : compositor);
+	}
+
+	public static boolean setGraphicsCompositeAlpha(JSGraphics2D g, int rule) {
+		return getCompositor().setGraphicsCompositeAlpha(g, rule);
+	}
+
+	public static boolean drawImageOp(JSGraphics2D g,
+			BufferedImage img, BufferedImageOp op, int x, int y) {
+		return getCompositor().drawImageOp(g, img, op, x, y);
+	}
+
+	public static WritableRaster filterRaster(Raster src, WritableRaster dst,
+			RasterOp op) {
+		return getCompositor().filterRaster(src, dst, op);
+	}
+
+	public static BufferedImage filterImage(BufferedImage src, BufferedImage dst,
+			BufferedImageOp op) {
+		return getCompositor().filterImage(src, dst, op);
 	}
 
 

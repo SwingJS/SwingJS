@@ -6,9 +6,10 @@ import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ImageObserver;
 
 public class JSImage extends BufferedImage {
+	// a BufferedImage in name only, actually;
 	int typeRequested;
 	int[] pix;
-	private DOMNode imgNode;
+	public DOMNode _imgNode; // used by JSGraphics2D directly
 	private int width, height;
 	
 	public JSImage() {
@@ -19,6 +20,8 @@ public class JSImage extends BufferedImage {
 		pix = argb;
 		this.width = width;
 		this.height = height;
+		colorModel.createCompatibleWritableRaster(width,
+        height);
 		return this;
 	}
 	
@@ -76,7 +79,7 @@ public class JSImage extends BufferedImage {
 		DOMNode canvas = DOMNode.createElement("canvas", "JSImage");
 		int w = width;
 		int h = height;
-		imgNode = img;
+		_imgNode = img;
 		/**
 		 * @j2sNative
 		 * 

@@ -133,4 +133,5 @@ public interface BufferedImageOp {
      * null if no hints have been set.
      */
     public RenderingHints getRenderingHints();
+
 }

@@ -502,10 +502,10 @@ public class DirectColorModel extends PackedColorModel {
                byte bdata[] = (byte[])inData;
                pixel = bdata[0] & 0xff;
             break;
-            case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-            break;
+//            case DataBuffer.TYPE_USHORT:
+//               short sdata[] = (short[])inData;
+//               pixel = sdata[0] & 0xffff;
+//            break;
             case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
@@ -555,10 +555,10 @@ public class DirectColorModel extends PackedColorModel {
                byte bdata[] = (byte[])inData;
                pixel = bdata[0] & 0xff;
             break;
-            case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-            break;
+//            case DataBuffer.TYPE_USHORT:
+//               short sdata[] = (short[])inData;
+//               pixel = sdata[0] & 0xffff;
+//            break;
             case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
@@ -608,10 +608,10 @@ public class DirectColorModel extends PackedColorModel {
                byte bdata[] = (byte[])inData;
                pixel = bdata[0] & 0xff;
             break;
-            case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-            break;
+//            case DataBuffer.TYPE_USHORT:
+//               short sdata[] = (short[])inData;
+//               pixel = sdata[0] & 0xffff;
+//            break;
             case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
@@ -658,10 +658,10 @@ public class DirectColorModel extends PackedColorModel {
                byte bdata[] = (byte[])inData;
                pixel = bdata[0] & 0xff;
             break;
-            case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-            break;
+//            case DataBuffer.TYPE_USHORT:
+//               short sdata[] = (short[])inData;
+//               pixel = sdata[0] & 0xffff;
+//            break;
             case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
@@ -706,10 +706,10 @@ public class DirectColorModel extends PackedColorModel {
                byte bdata[] = (byte[])inData;
                pixel = bdata[0] & 0xff;
             break;
-            case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-            break;
+//            case DataBuffer.TYPE_USHORT:
+//               short sdata[] = (short[])inData;
+//               pixel = sdata[0] & 0xffff;
+//            break;
             case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
@@ -885,16 +885,16 @@ public class DirectColorModel extends PackedColorModel {
                bdata[0] = (byte)(0xff&intpixel[0]);
                return bdata;
             }
-            case DataBuffer.TYPE_USHORT:{
-               short sdata[];
-               if (pixel == null) {
-                   sdata = new short[1];
-               } else {
-                   sdata = (short[])pixel;
-               }
-               sdata[0] = (short)(intpixel[0]&0xffff);
-               return sdata;
-            }
+//            case DataBuffer.TYPE_USHORT:{
+//               short sdata[];
+//               if (pixel == null) {
+//                   sdata = new short[1];
+//               } else {
+//                   sdata = (short[])pixel;
+//               }
+//               sdata[0] = (short)(intpixel[0]&0xffff);
+//               return sdata;
+//            }
             case DataBuffer.TYPE_INT:
                return intpixel;
         }
@@ -982,10 +982,10 @@ public class DirectColorModel extends PackedColorModel {
                byte bdata[] = (byte[])pixel;
                intpixel = bdata[0] & 0xff;
             break;
-            case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])pixel;
-               intpixel = sdata[0] & 0xffff;
-            break;
+//            case DataBuffer.TYPE_USHORT:
+//               short sdata[] = (short[])pixel;
+//               intpixel = sdata[0] & 0xffff;
+//            break;
             case DataBuffer.TYPE_INT:
                int idata[] = (int[])pixel;
                intpixel = idata[0];
@@ -997,50 +997,50 @@ public class DirectColorModel extends PackedColorModel {
         return getComponents(intpixel, components, offset);
     }
 
-//    /**
-//     * Creates a <code>WritableRaster</code> with the specified width and
-//     * height that has a data layout (<code>SampleModel</code>) compatible
-//     * with this <code>ColorModel</code>.
-//     * @param w the width to apply to the new <code>WritableRaster</code>
-//     * @param h the height to apply to the new <code>WritableRaster</code>
-//     * @return a <code>WritableRaster</code> object with the specified
-//     * width and height.
-//     * @throws IllegalArgumentException if <code>w</code> or <code>h</code>
-//     *         is less than or equal to zero
-//     * @see WritableRaster
-//     * @see SampleModel
-//     */
-//    final public WritableRaster createCompatibleWritableRaster (int w,
-//                                                                int h) {
-//        if ((w <= 0) || (h <= 0)) {
-//            throw new IllegalArgumentException("Width (" + w + ") and height (" + h +
-//                                               ") cannot be <= 0");
-//        }
-//        int[] bandmasks;
-//        if (supportsAlpha) {
-//            bandmasks = new int[4];
-//            bandmasks[3] = alpha_mask;
-//        }
-//        else {
-//            bandmasks = new int[3];
-//        }
-//        bandmasks[0] = red_mask;
-//        bandmasks[1] = green_mask;
-//        bandmasks[2] = blue_mask;
-//
-//        if (pixel_bits > 16) {
-//            return Raster.createPackedRaster(DataBuffer.TYPE_INT,
-//                                             w,h,bandmasks,null);
-//        }
+    /**
+     * Creates a <code>WritableRaster</code> with the specified width and
+     * height that has a data layout (<code>SampleModel</code>) compatible
+     * with this <code>ColorModel</code>.
+     * @param w the width to apply to the new <code>WritableRaster</code>
+     * @param h the height to apply to the new <code>WritableRaster</code>
+     * @return a <code>WritableRaster</code> object with the specified
+     * width and height.
+     * @throws IllegalArgumentException if <code>w</code> or <code>h</code>
+     *         is less than or equal to zero
+     * @see WritableRaster
+     * @see SampleModel
+     */
+    final public WritableRaster createCompatibleWritableRaster (int w,
+                                                                int h) {
+        if ((w <= 0) || (h <= 0)) {
+            throw new IllegalArgumentException("Width (" + w + ") and height (" + h +
+                                               ") cannot be <= 0");
+        }
+        int[] bandmasks;
+        if (supportsAlpha) {
+            bandmasks = new int[4];
+            bandmasks[3] = alpha_mask;
+        }
+        else {
+            bandmasks = new int[3];
+        }
+        bandmasks[0] = red_mask;
+        bandmasks[1] = green_mask;
+        bandmasks[2] = blue_mask;
+
+        if (pixel_bits > 8) {// SwingJS 16) {
+            return Raster.createPackedRaster(DataBuffer.TYPE_INT,
+                                             w,h,bandmasks,null);
+        }
 //        else if (pixel_bits > 8) {
 //            return Raster.createPackedRaster(DataBuffer.TYPE_USHORT,
 //                                             w,h,bandmasks,null);
 //        }
-//        else {
-//            return Raster.createPackedRaster(DataBuffer.TYPE_BYTE,
-//                                             w,h,bandmasks,null);
-//        }
-//    }
+        else {
+            return Raster.createPackedRaster(DataBuffer.TYPE_BYTE,
+                                             w,h,bandmasks,null);
+        }
+    }
 
     /**
      * Returns a pixel value represented as an <code>int</code> in this
@@ -1125,15 +1125,15 @@ public class DirectColorModel extends PackedColorModel {
                    byte bdata[] = {(byte)(pixel&0xff)};
                    return bdata;
                }
-            case DataBuffer.TYPE_USHORT:
-               if (obj instanceof short[]) {
-                   short sdata[] = (short[])obj;
-                   sdata[0] = (short)(pixel&0xffff);
-                   return sdata;
-               } else {
-                   short sdata[] = {(short)(pixel&0xffff)};
-                   return sdata;
-               }
+//            case DataBuffer.TYPE_USHORT:
+//               if (obj instanceof short[]) {
+//                   short sdata[] = (short[])obj;
+//                   sdata[0] = (short)(pixel&0xffff);
+//                   return sdata;
+//               } else {
+//                   short sdata[] = {(short)(pixel&0xffff)};
+//                   return sdata;
+//               }
             case DataBuffer.TYPE_INT:
                if (obj instanceof int[]) {
                    int idata[] = (int[])obj;

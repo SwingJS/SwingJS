@@ -25,50 +25,24 @@
 
 package swingjs.plaf;
 
-import jsjava.awt.Component;
+
+import jsjava.awt.Dimension;
+
 import jsjavax.swing.JComponent;
-import jsjavax.swing.JScrollPane;
-import jsjavax.swing.JViewport;
+import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSScrollPaneUI extends JSComponentUI {
+public class JSSliderUI extends JSComponentUI {
 
-	private JComponent scrolledComponent;
-	private JScrollPane scrollpane;
-	private JViewport viewport;
-	private JSComponentUI scrolledUI;
+	public JSSliderUI() {
+	}
 	
 	@Override
 	public DOMNode getDOMObject() {
-		isContainer = true;
-		scrollpane = (JScrollPane) c;
-		if (domNode == null) {
-			domNode = createDOMObject("div", id);
-		}
-		JViewport v = scrollpane.getViewport();
-		
-		if (v != null) {
-			viewport = v;
-			System.out.println("JSScrollPaneUI v=" + v);
-			JComponent sc = null;
-			try {
-				sc = (JComponent) v.getComponent(0);
-			} catch (Exception e) {
-				// unusable 
-			}
-			if (sc != null && sc != scrolledComponent) {
-				scrolledComponent = sc;
-				scrolledUI = ((JSComponentUI)sc.getUI());
-				scrollNode = scrolledUI.outerNode;
-				if (scrollNode == null)
-					scrollNode = scrolledUI.setHTMLElement();
-				DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
-				scrolledUI.scrollerNode = this;
-				components = new Component[] { scrolledComponent };
-			}
-		}
-		return domNode;
+		if (domNode == null)
+			domNode = createDOMObject("label", id);
+    return domNode;
 	}
 
 	@Override

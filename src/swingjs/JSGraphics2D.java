@@ -46,8 +46,10 @@ import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.HTML5CanvasContext2D;
 
+import jsjava.awt.AlphaComposite;
 import jsjava.awt.BasicStroke;
 import jsjava.awt.Color;
+import jsjava.awt.Composite;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
@@ -82,6 +84,7 @@ import jssun.java2d.SunGraphics2D;
  * @author Bob Hanson hansonr@stolaf.edu
  */
 
+@J2SIgnoreImport(jsjava.awt.AlphaComposite.class)
 public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
   public int constrainX;
@@ -95,7 +98,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	private GraphicsConfiguration gc;
 
   public int paintState;
-  public int compositeState;
+  public int compositeState = Integer.MIN_VALUE;
   public int strokeState;
   public int transformState;
   public int clipState;
@@ -368,20 +371,12 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.fill();
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
 		if (img != null) {
-			DOMNode imgNode = null;
-			/**
-			 * @j2sNative
-			 * 
-			 *            imgNode = img.imgNode;
-			 */
-			{
-			}
+			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
-				ctx.drawImage(imgNode, x, y, img.getWidth(null), img.getHeight(null));
+				ctx.drawImage(imgNode, x, y, img.getWidth(observer), img.getHeight(observer));
 			if (observer != null)
 				observe(img, observer, imgNode != null);
 		}
@@ -392,19 +387,11 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
 		if (img != null) {
-			DOMNode imgNode = null;
-			/**
-			 * @j2sNative
-			 * 
-			 *            imgNode = img.imgNode;
-			 */
-			{
-			}
+			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
 				ctx.drawImage(imgNode, x, y, width, height);
 			if (observer != null)
@@ -427,19 +414,11 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		return drawImage(img, x, y, width, height, null);
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
 		if (img != null) {
-			DOMNode imgNode = null;
-			/**
-			 * @j2sNative
-			 * 
-			 *            imgNode = img.imgNode;
-			 */
-			{
-			}
+			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
 				HTML5CanvasContext2D.stretchImage(ctx, imgNode, sx1, sy1, sx2 - sx1, sy2
 						- sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
@@ -447,6 +426,20 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 				observe(img, observer, imgNode != null);
 		}
 		return true;
+	}
+
+	private DOMNode getImageNode(Image img) {
+		DOMNode imgNode = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            imgNode = img._imgNode;
+		 */
+		{
+		}
+		if (imgNode == null)
+			imgNode = JSToolkit.getCompositor().createImageNode(img);
+		return imgNode;
 	}
 
 	@Override
@@ -460,12 +453,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
 		JSToolkit.notImplemented(null);
 		return false;
-	}
-
-	@Override
-	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
-		drawImage(img, x, y, null);
-		JSToolkit.notImplemented(null);
 	}
 
 	@Override
@@ -596,6 +583,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void dispose() {
+		if (compositeState >= 0)
+			setComposite(null);
 		restore();
 		//System.out.println("disposed");
 	}
@@ -828,6 +817,31 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	private Rectangle getClipBoundsImpl() {
 		JSToolkit.notImplemented(null);
 		return null;
+	}
+
+	@Override
+	public void setComposite(Composite comp) {
+		// alpha composite only here
+		int newRule = 0;
+		boolean isValid = (comp == null || (comp instanceof AlphaComposite) && (newRule = ((AlphaComposite) comp).getRule()) != compositeState);
+		if (!isValid)
+			return;
+		if (JSToolkit.setGraphicsCompositeAlpha(this, newRule))
+			compositeState = newRule;
+	}
+
+	@Override
+	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
+		JSToolkit.drawImageOp(this, img, op, x, y);
+	}
+
+	public void setAlpha(float f) {
+		/**
+		 * @j2sNative
+		 *
+		 * this.ctx.globalAlpha = f;
+		 */
+		{}		
 	}
 
 }

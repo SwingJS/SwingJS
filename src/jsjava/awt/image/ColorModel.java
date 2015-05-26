@@ -1509,88 +1509,88 @@ public abstract class ColorModel implements Transparency{
 //            ("This method is not supported by this color model");
 //    }
 //
-//    /**
-//      * Returns <code>true</code> if <code>raster</code> is compatible
-//      * with this <code>ColorModel</code> and <code>false</code> if it is
-//      * not.
-//      * Since <code>ColorModel</code> is an abstract class,
-//      * any instance is an instance of a subclass.  Subclasses must
-//      * override this method since the implementation in this abstract
-//      * class throws an <code>UnsupportedOperationException</code>.
-//      * @param raster the {@link Raster} object to test for compatibility
-//      * @return <code>true</code> if <code>raster</code> is compatible
-//      * with this <code>ColorModel</code>.
-//      * @throws UnsupportedOperationException if this
-//      *         method has not been implemented for this
-//      *         <code>ColorModel</code>
-//      */
-//    public boolean isCompatibleRaster(Raster raster) {
-//        throw new UnsupportedOperationException(
-//            "This method has not been implemented for this ColorModel.");
-//    }
-//
-//    /**
-//     * Creates a <code>WritableRaster</code> with the specified width and
-//     * height that has a data layout (<code>SampleModel</code>) compatible
-//     * with this <code>ColorModel</code>.
-//     * Since <code>ColorModel</code> is an abstract class,
-//     * any instance is an instance of a subclass.  Subclasses must
-//     * override this method since the implementation in this abstract
-//     * class throws an <code>UnsupportedOperationException</code>.
-//     * @param w the width to apply to the new <code>WritableRaster</code>
-//     * @param h the height to apply to the new <code>WritableRaster</code>
-//     * @return a <code>WritableRaster</code> object with the specified
-//     * width and height.
-//     * @throws UnsupportedOperationException if this
-//     *          method is not supported by this <code>ColorModel</code>
-//     * @see WritableRaster
-//     * @see SampleModel
-//     */
-//    public WritableRaster createCompatibleWritableRaster(int w, int h) {
-//        throw new UnsupportedOperationException
-//            ("This method is not supported by this color model");
-//    }
-//
-//    /**
-//     * Creates a <code>SampleModel</code> with the specified width and
-//     * height that has a data layout compatible with this
-//     * <code>ColorModel</code>.
-//     * Since <code>ColorModel</code> is an abstract class,
-//     * any instance is an instance of a subclass.  Subclasses must
-//     * override this method since the implementation in this abstract
-//     * class throws an <code>UnsupportedOperationException</code>.
-//     * @param w the width to apply to the new <code>SampleModel</code>
-//     * @param h the height to apply to the new <code>SampleModel</code>
-//     * @return a <code>SampleModel</code> object with the specified
-//     * width and height.
-//     * @throws UnsupportedOperationException if this
-//     *          method is not supported by this <code>ColorModel</code>
-//     * @see SampleModel
-//     */
-//    public SampleModel createCompatibleSampleModel(int w, int h) {
-//        throw new UnsupportedOperationException
-//            ("This method is not supported by this color model");
-//    }
-//
-//    /** Checks if the <code>SampleModel</code> is compatible with this
-//     * <code>ColorModel</code>.
-//     * Since <code>ColorModel</code> is an abstract class,
-//     * any instance is an instance of a subclass.  Subclasses must
-//     * override this method since the implementation in this abstract
-//     * class throws an <code>UnsupportedOperationException</code>.
-//     * @param sm the specified <code>SampleModel</code>
-//     * @return <code>true</code> if the specified <code>SampleModel</code>
-//     * is compatible with this <code>ColorModel</code>; <code>false</code>
-//     * otherwise.
-//     * @throws UnsupportedOperationException if this
-//     *          method is not supported by this <code>ColorModel</code>
-//     * @see SampleModel
-//     */
-//    public boolean isCompatibleSampleModel(SampleModel sm) {
-//        throw new UnsupportedOperationException
-//            ("This method is not supported by this color model");
-//    }
-//
+    /**
+      * Returns <code>true</code> if <code>raster</code> is compatible
+      * with this <code>ColorModel</code> and <code>false</code> if it is
+      * not.
+      * Since <code>ColorModel</code> is an abstract class,
+      * any instance is an instance of a subclass.  Subclasses must
+      * override this method since the implementation in this abstract
+      * class throws an <code>UnsupportedOperationException</code>.
+      * @param raster the {@link Raster} object to test for compatibility
+      * @return <code>true</code> if <code>raster</code> is compatible
+      * with this <code>ColorModel</code>.
+      * @throws UnsupportedOperationException if this
+      *         method has not been implemented for this
+      *         <code>ColorModel</code>
+      */
+    public boolean isCompatibleRaster(Raster raster) {
+        throw new UnsupportedOperationException(
+            "This method has not been implemented for this ColorModel.");
+    }
+
+    /**
+     * Creates a <code>WritableRaster</code> with the specified width and
+     * height that has a data layout (<code>SampleModel</code>) compatible
+     * with this <code>ColorModel</code>.
+     * Since <code>ColorModel</code> is an abstract class,
+     * any instance is an instance of a subclass.  Subclasses must
+     * override this method since the implementation in this abstract
+     * class throws an <code>UnsupportedOperationException</code>.
+     * @param w the width to apply to the new <code>WritableRaster</code>
+     * @param h the height to apply to the new <code>WritableRaster</code>
+     * @return a <code>WritableRaster</code> object with the specified
+     * width and height.
+     * @throws UnsupportedOperationException if this
+     *          method is not supported by this <code>ColorModel</code>
+     * @see WritableRaster
+     * @see SampleModel
+     */
+    public WritableRaster createCompatibleWritableRaster(int w, int h) {
+        throw new UnsupportedOperationException
+            ("This method is not supported by this color model");
+    }
+
+    /**
+     * Creates a <code>SampleModel</code> with the specified width and
+     * height that has a data layout compatible with this
+     * <code>ColorModel</code>.
+     * Since <code>ColorModel</code> is an abstract class,
+     * any instance is an instance of a subclass.  Subclasses must
+     * override this method since the implementation in this abstract
+     * class throws an <code>UnsupportedOperationException</code>.
+     * @param w the width to apply to the new <code>SampleModel</code>
+     * @param h the height to apply to the new <code>SampleModel</code>
+     * @return a <code>SampleModel</code> object with the specified
+     * width and height.
+     * @throws UnsupportedOperationException if this
+     *          method is not supported by this <code>ColorModel</code>
+     * @see SampleModel
+     */
+    public SampleModel createCompatibleSampleModel(int w, int h) {
+        throw new UnsupportedOperationException
+            ("This method is not supported by this color model");
+    }
+
+    /** Checks if the <code>SampleModel</code> is compatible with this
+     * <code>ColorModel</code>.
+     * Since <code>ColorModel</code> is an abstract class,
+     * any instance is an instance of a subclass.  Subclasses must
+     * override this method since the implementation in this abstract
+     * class throws an <code>UnsupportedOperationException</code>.
+     * @param sm the specified <code>SampleModel</code>
+     * @return <code>true</code> if the specified <code>SampleModel</code>
+     * is compatible with this <code>ColorModel</code>; <code>false</code>
+     * otherwise.
+     * @throws UnsupportedOperationException if this
+     *          method is not supported by this <code>ColorModel</code>
+     * @see SampleModel
+     */
+    public boolean isCompatibleSampleModel(SampleModel sm) {
+        throw new UnsupportedOperationException
+            ("This method is not supported by this color model");
+    }
+
     /**
      * Disposes of system resources associated with this
      * <code>ColorModel</code> once this <code>ColorModel</code> is no
@@ -1599,35 +1599,35 @@ public abstract class ColorModel implements Transparency{
     public void finalize() {
     }
 
-//
-//    /**
-//     * Returns a <code>Raster</code> representing the alpha channel of an
-//     * image, extracted from the input <code>Raster</code>, provided that
-//     * pixel values of this <code>ColorModel</code> represent color and
-//     * alpha information as separate spatial bands (e.g.
-//     * {@link ComponentColorModel} and <code>DirectColorModel</code>).
-//     * This method assumes that <code>Raster</code> objects associated
-//     * with such a <code>ColorModel</code> store the alpha band, if
-//     * present, as the last band of image data.  Returns <code>null</code>
-//     * if there is no separate spatial alpha channel associated with this
-//     * <code>ColorModel</code>.  If this is an
-//     * <code>IndexColorModel</code> which has alpha in the lookup table,
-//     * this method will return <code>null</code> since
-//     * there is no spatially discrete alpha channel.
-//     * This method will create a new <code>Raster</code> (but will share
-//     * the data array).
-//     * Since <code>ColorModel</code> is an abstract class, any instance
-//     * is an instance of a subclass.  Subclasses must override this
-//     * method to get any behavior other than returning <code>null</code>
-//     * because the implementation in this abstract class returns
-//     * <code>null</code>.
-//     * @param raster the specified <code>Raster</code>
-//     * @return a <code>Raster</code> representing the alpha channel of
-//     * an image, obtained from the specified <code>Raster</code>.
-//     */
-//    public WritableRaster getAlphaRaster(WritableRaster raster) {
-//        return null;
-//    }
+
+    /**
+     * Returns a <code>Raster</code> representing the alpha channel of an
+     * image, extracted from the input <code>Raster</code>, provided that
+     * pixel values of this <code>ColorModel</code> represent color and
+     * alpha information as separate spatial bands (e.g.
+     * {@link ComponentColorModel} and <code>DirectColorModel</code>).
+     * This method assumes that <code>Raster</code> objects associated
+     * with such a <code>ColorModel</code> store the alpha band, if
+     * present, as the last band of image data.  Returns <code>null</code>
+     * if there is no separate spatial alpha channel associated with this
+     * <code>ColorModel</code>.  If this is an
+     * <code>IndexColorModel</code> which has alpha in the lookup table,
+     * this method will return <code>null</code> since
+     * there is no spatially discrete alpha channel.
+     * This method will create a new <code>Raster</code> (but will share
+     * the data array).
+     * Since <code>ColorModel</code> is an abstract class, any instance
+     * is an instance of a subclass.  Subclasses must override this
+     * method to get any behavior other than returning <code>null</code>
+     * because the implementation in this abstract class returns
+     * <code>null</code>.
+     * @param raster the specified <code>Raster</code>
+     * @return a <code>Raster</code> representing the alpha channel of
+     * an image, obtained from the specified <code>Raster</code>.
+     */
+    public WritableRaster getAlphaRaster(WritableRaster raster) {
+        return null;
+    }
 
     /**
      * Returns the <code>String</code> representation of the contents of
@@ -1646,9 +1646,10 @@ public abstract class ColorModel implements Transparency{
     }
 
     static int getDefaultTransferType(int pixel_bits) {
-//        if (pixel_bits <= 8) {
-//            return DataBuffer.TYPE_BYTE;
-//        } else if (pixel_bits <= 16) {
+        if (pixel_bits <= 8) {
+            return DataBuffer.TYPE_BYTE;
+        }
+//            else if (pixel_bits <= 16) {
 //            return DataBuffer.TYPE_USHORT;
 //        } else if (pixel_bits <= 32) {
             return DataBuffer.TYPE_INT;

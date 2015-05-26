@@ -845,34 +845,34 @@ public abstract class Graphics2D extends Graphics {
      */
     public abstract GraphicsConfiguration getDeviceConfiguration();
 
-//    /**
-//     * Sets the <code>Composite</code> for the <code>Graphics2D</code> context.
-//     * The <code>Composite</code> is used in all drawing methods such as
-//     * <code>drawImage</code>, <code>drawString</code>, <code>draw</code>,
-//     * and <code>fill</code>.  It specifies how new pixels are to be combined
-//     * with the existing pixels on the graphics device during the rendering
-//     * process.
-//     * <p>If this <code>Graphics2D</code> context is drawing to a
-//     * <code>Component</code> on the display screen and the
-//     * <code>Composite</code> is a custom object rather than an
-//     * instance of the <code>AlphaComposite</code> class, and if
-//     * there is a security manager, its <code>checkPermission</code>
-//     * method is called with an <code>AWTPermission("readDisplayPixels")</code>
-//     * permission.
-//     * @throws SecurityException
-//     *         if a custom <code>Composite</code> object is being
-//     *         used to render to the screen and a security manager
-//     *         is set and its <code>checkPermission</code> method
-//     *         does not allow the operation.
-//     * @param comp the <code>Composite</code> object to be used for rendering
-//     * @see java.awt.Graphics#setXORMode
-//     * @see java.awt.Graphics#setPaintMode
-//     * @see #getComposite
-//     * @see AlphaComposite
-//     * @see SecurityManager#checkPermission
-//     * @see java.awt.AWTPermission
-//     */
-//    public abstract void setComposite(Composite comp);
+    /**
+     * Sets the <code>Composite</code> for the <code>Graphics2D</code> context.
+     * The <code>Composite</code> is used in all drawing methods such as
+     * <code>drawImage</code>, <code>drawString</code>, <code>draw</code>,
+     * and <code>fill</code>.  It specifies how new pixels are to be combined
+     * with the existing pixels on the graphics device during the rendering
+     * process.
+     * <p>If this <code>Graphics2D</code> context is drawing to a
+     * <code>Component</code> on the display screen and the
+     * <code>Composite</code> is a custom object rather than an
+     * instance of the <code>AlphaComposite</code> class, and if
+     * there is a security manager, its <code>checkPermission</code>
+     * method is called with an <code>AWTPermission("readDisplayPixels")</code>
+     * permission.
+     * @throws SecurityException
+     *         if a custom <code>Composite</code> object is being
+     *         used to render to the screen and a security manager
+     *         is set and its <code>checkPermission</code> method
+     *         does not allow the operation.
+     * @param comp the <code>Composite</code> object to be used for rendering
+     * @see java.awt.Graphics#setXORMode
+     * @see java.awt.Graphics#setPaintMode
+     * @see #getComposite
+     * @see AlphaComposite
+     * @see SecurityManager#checkPermission
+     * @see java.awt.AWTPermission
+     */
+    public abstract void setComposite(Composite comp);
 
     /**
      * Sets the <code>Paint</code> attribute for the

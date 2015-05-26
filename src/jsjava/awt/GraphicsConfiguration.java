@@ -29,6 +29,7 @@ import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.VolatileImage;
+import jsjava.awt.image.WritableRaster;
 
 import jssun.awt.image.SunVolatileImage;
 
@@ -176,10 +177,8 @@ public abstract class GraphicsConfiguration {
             throw new IllegalArgumentException("Unknown transparency: " +
                                                transparency);
         }
-// SwingJS  TODO
-//        WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
-//        return new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
-    	return null;
+        WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
+        return new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
     }
 
 

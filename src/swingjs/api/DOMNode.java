@@ -117,4 +117,7 @@ public abstract class DOMNode {
 		return obj;
 	}
 
+	public static DOMNode setSize(DOMNode obj, int width, int height) {
+		return setStyles(obj, "width", width + "px", "height", height + "px");
+	}
 }

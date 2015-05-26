@@ -3,6 +3,15 @@ Notes
 
 PROGRESS
 ========
+5/25/2015 BH
+
+- found J2S bug #13,#14,#15
+
+- java.awt.image.BufferedImage implemented; RescaleOp working for alpha scaling
+- see seethroughimage.htm
+
+- working on SeeThroughImageApplet (slider, image filtering)
+
 5/24/2015 BH
 
 - fix for "south" button not spanning full width
@@ -360,6 +369,65 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#15 A subclass cannot have the same constructor signature as a superclass except for 
+a parameter of its class:
+
+public IntegerComponentRaster extends SunWriteableRaster
+	public IntegerComponentRaster(SampleModel sampleModel, DataBuffer dataBuffer,
+			Rectangle aRegion, Point origin, Raster parent)
+			
+public SunWriteableRaster extends WriteableRaster
+	public IntegerComponentRaster(SampleModel sampleModel, DataBuffer dataBuffer,
+			Rectangle aRegion, Point origin, SunWriteableRaster parent)
+			
+This results in an infinite loop.
+			
+			
+
+
+
+
+
+#14 in java.awt.image.Raster, we have a static block that 
+creates new Objects. In that case, we need to add the annotation:
+      
+      @J2SRequireImport({ jsjava.awt.image.SinglePixelPackedSampleModel.class, jssun.awt.image.IntegerInterleavedRaster.class, jssun.awt.image.ByteInterleavedRaster.class })
+      
+      
+      
+#13 in javax.swing.JSlider we have
+
+  ...
+    public Hashtable createStandardLabels( int increment, int start ) {
+      ...
+        class SmartHashtable extends Hashtable implements PropertyChangeListener {
+           ...
+            class LabelUIResource extends JLabel implements UIResource {
+               ...
+            }
+            ...
+            public void propertyChange( PropertyChangeEvent e ) {
+               ...
+
+                        if ( !(value instanceof LabelUIResource) ) {
+                            hashtable.put( key, value );
+                        }
+                    }
+                    
+               ...
+            }
+                  
+  but  for that last if check, we see in the JavaScript:
+  
+    if (!(Clazz.instanceOf (e, ))) {
+      d.put (c, e);
+    }
+  
+  where "LabelUIResource" is missing. 
+  
+  fixed by moving both of these inner classes to inside class JScroller, but not inside that method.
+  
+
 #12 Inner classes must not call other inner classes defined after them in a file.
     This showed up in java.awt.geom.Path2D.Float.CopyIterator, which extends
     java.awt.geom.Path2D.Iterator. Since the Iterator is in the code after CopyIterator,
