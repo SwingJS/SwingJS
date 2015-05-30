@@ -3,6 +3,88 @@ Notes
 
 PROGRESS
 ========
+5/30/2015 BH
+
+jQuery Slider is implemented for JSlider
+
+-- see site/swingjs/seethroughimage.htm 
+
+jQueryUI files may be found in swingjs.jquery:
+  
+  jquery-ui-slider.css
+  jquery-ui-slider.js
+  JQueryUI.js
+  
+
+JQueryUI.js is just a shell Java class; 
+loading of jQueryUI occurs when a class utilizes
+
+  @J2SRequireImport(swingjs.jquery.JQueryUI.class)
+
+and then also has a static block such as:
+
+static {
+  swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");
+  swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");
+}
+
+method in the loading a css style block or executing JavaScript, as appropriate.
+
+The CSS for the slider widget is scoped as "swingjs". On the page, a slider
+gets implemented as:
+
+ <div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">
+   <div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;">
+      <div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui">
+	    <a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a>
+      </div>
+   </div>
+ </div>
+
+The className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse
+action and work directly with jQuery events. These events fire a method in 
+the component UI class that looks like this:
+
+Clazz.defineMethod (c$, "jqueryCallback", 
+function (event, ui) {
+  var value = 0;
+  value = ui.value;
+  this.jSlider.setValue (this.val = value);
+}, "~O,swingjs.api.DOMNode");
+
+The widget itself is created using a standard jQuery widget constructor:
+
+me.$(me.jqSlider).slider({
+  orientation: me.orientation,
+  range: false,
+  min: me.min,
+  max: me.max,
+  value: me.val,
+  change: function( event, handle ) {
+    me.jqueryCallback(event, handle);
+  },
+  slide: function( event, handle ) {
+    me.jqueryCallback(event, handle);
+  }
+});
+
+It is nice to see that the jQuery bindings to key actions (UP, DOWN,
+LEFT, RIGHT, HOME, END, PGUP, PGDN all work properly.
+
+There is a complication with z-index, because jQuery sets that, and 
+we need to have it correct in the heirarchy of applets and dialogs. 
+So to implement that, we catch the "ancestor" change property event, and 
+hope that somewhere up the chain the z-index is set. I am not sure this is 
+completely correct. We probably need to adjust the z-index for all DOM child
+nodes when this happens.
+
+It seems that it is also possible to lose an event, in which case the 
+handle image just floats away from the handle with the user's mouse, and 
+a click is required to reset that.
+ 
+I have not tried tics and labels on sliders 
+
+
 5/25/2015 BH
 
 - found J2S bug #13,#14,#15

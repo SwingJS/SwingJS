@@ -5,6 +5,7 @@
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
+// BH 5/30/2015 9:33:12 AM adds class swingjs-ui to ignore 
 // BH 5/9/2015 3:38:52 PM adds data-ignoreMouse attribute for JTextField
 // BH 3/30/2015 9:46:53 PM adds JSAppletPanel for ready callback
 // BH 12/6/2014 3:32:54 PM Jmol.setAppletCss() broken
@@ -1531,10 +1532,15 @@ Jmol = (function(document) {
 			break;
 		}
 		return true;
-	}
+	}  
 
 	Jmol._jsSetMouse = function(canvas) {
+
+    var doIgnore = function(ev) { return (ev.target.className.indexOf("swingjs-ui") >= 0) };
+         
 		Jmol.$bind(canvas, 'mousedown touchstart', function(ev) {
+      if (doIgnore(ev))
+        return true;
 			Jmol._setMouseOwner(canvas, true);
 			ev.stopPropagation();
       var ui = ev.target["data-UI"];
@@ -1545,14 +1551,17 @@ Jmol = (function(document) {
 				return !!ui;
 			Jmol._setConsoleDiv(canvas.applet._console);
 			var xym = Jmol._jsGetXY(canvas, ev);
-			if(!xym)
-		  	return !!ui;
-			if (ev.button != 2)
-				Jmol.Swing.hideMenus(canvas.applet);
-			canvas.applet._processEvent(501, xym); //java.awt.Event.MOUSE_DOWN
+			if(xym) {
+		  	if (ev.button != 2)
+          Jmol.Swing.hideMenus(canvas.applet);
+        canvas.applet._processEvent(501, xym); //java.awt.Event.MOUSE_DOWN
+      }
 			return !!ui;
 		});
+    
 		Jmol.$bind(canvas, 'mouseup touchend', function(ev) {
+      if (doIgnore(ev))
+        return true;
 			Jmol._setMouseOwner(null);
 			ev.stopPropagation();
       var ui = ev.target["data-UI"];
@@ -1560,24 +1569,31 @@ Jmol = (function(document) {
   			ev.preventDefault();
 			canvas.isDragging = false;
 			if (ev.type == "touchend" && Jmol._gestureUpdate(canvas, ev))
-				return false;
+				return !!ui;
 			var xym = Jmol._jsGetXY(canvas, ev);
-			if(!xym) return false;
-			canvas.applet._processEvent(502, xym);//java.awt.Event.MOUSE_UP
+			if(xym)
+  			canvas.applet._processEvent(502, xym);//java.awt.Event.MOUSE_UP
 			return !!ui;
 		});
+    
 		Jmol.$bind(canvas, 'mousemove touchmove', function(ev) { // touchmove
+      if (doIgnore(ev))
+        return true;
 		  // defer to console or menu when dragging within this canvas
 			if (Jmol._mouseOwner && Jmol._mouseOwner != canvas && Jmol._mouseOwner.isDragging) {
-				Jmol._mouseOwner.mouseMove(ev);
+        if (!Jmol._mouseOwner.mouseMove)
+          return true;
+	   			Jmol._mouseOwner.mouseMove(ev);
 				return false;
 			}
 			return Jmol._drag(canvas, ev);
 		});
 		
 		Jmol._drag = function(canvas, ev) {
+      
 			ev.stopPropagation();
 			ev.preventDefault();
+      
 			var isTouch = (ev.type == "touchmove");
 			if (isTouch && Jmol._gestureUpdate(canvas, ev))
 				return false;
@@ -1594,6 +1610,8 @@ Jmol = (function(document) {
 		}
 		
 		Jmol.$bind(canvas, 'DOMMouseScroll mousewheel', function(ev) { // Zoom
+      if (doIgnore(ev))
+        return true;
 			ev.stopPropagation();
 			ev.preventDefault();
 			// Webkit or Firefox
@@ -1610,6 +1628,10 @@ Jmol = (function(document) {
 		Jmol.$bind(canvas, "contextmenu", function() {return false;});
 
 		Jmol.$bind(canvas, 'mouseout', function(ev) {
+      if (doIgnore(ev))
+        return true;
+      if (Jmol._mouseOwner && !Jmol._mouseOwner.mouseMove) 
+        Jmol._setMouseOwner(null);
 			if (canvas.applet._appletPanel)
 				canvas.applet._appletPanel.startHoverWatcher(false);
 			//canvas.isDragging = false;
@@ -1622,6 +1644,8 @@ Jmol = (function(document) {
 		});
 
 		Jmol.$bind(canvas, 'mouseenter', function(ev) {
+      if (doIgnore(ev))
+        return true;
 			if (canvas.applet._appletPanel)
 				canvas.applet._appletPanel.startHoverWatcher(true);
 			if (ev.buttons === 0 || ev.which === 0) {
@@ -1636,6 +1660,8 @@ Jmol = (function(document) {
 		});
 
 	Jmol.$bind(canvas, 'mousemoveoutjsmol', function(evspecial, target, ev) {
+      if (doIgnore(ev))
+        return true;
 		if (canvas == Jmol._mouseOwner && canvas.isDragging) {
 			return Jmol._drag(canvas, ev);
 		}
@@ -1649,6 +1675,8 @@ Jmol = (function(document) {
 			});
  
 		Jmol.$bind('body', 'mouseup touchend', function(ev) {
+      if (doIgnore(ev))
+        return true;
 			if (canvas.applet)
 				canvas.isDragging = false;
 			Jmol._setMouseOwner(null);

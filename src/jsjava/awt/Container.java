@@ -4032,49 +4032,49 @@ public class Container extends Component {
 //            }
 //        }
 //    }
-
-    private void recursiveShowHeavyweightChildren() {
-        if (!hasHeavyweightDescendants() || !isVisible()) {
-            return;
-        }
-        for (int index = 0; index < getComponentCount(); index++) {
-            Component comp = getComponent(index);
-            if (comp.isLightweight()) {
-                if  (comp instanceof Container) {
-                    ((Container)comp).recursiveShowHeavyweightChildren();
-                }
-            } else {
-                if (comp.isVisible()) {
-                    ComponentPeer peer = comp.getPeer();
-                    if (peer != null) {
-                        peer.setVisible(true);// SwingJS  was show();
-                    }
-                }
-            }
-        }
-    }
-
-    private void recursiveHideHeavyweightChildren() {
-        if (!hasHeavyweightDescendants()) {
-            return;
-        }
-        for (int index = 0; index < getComponentCount(); index++) {
-            Component comp = getComponent(index);
-            if (comp.isLightweight()) {
-                if  (comp instanceof Container) {
-                    ((Container)comp).recursiveHideHeavyweightChildren();
-                }
-            } else {
-                if (comp.isVisible()) {
-                    ComponentPeer peer = comp.getPeer();
-                    if (peer != null) {
-                        peer.setVisible(false);// SwingJS  was hide();
-                    }
-                }
-            }
-        }
-    }
-
+//
+//    private void recursiveShowHeavyweightChildren() {
+//        if (!hasHeavyweightDescendants() || !isVisible()) {
+//            return;
+//        }
+//        for (int index = 0; index < getComponentCount(); index++) {
+//            Component comp = getComponent(index);
+//            if (comp.isLightweight()) {
+//                if  (comp instanceof Container) {
+//                    ((Container)comp).recursiveShowHeavyweightChildren();
+//                }
+//            } else {
+//                if (comp.isVisible()) {
+//                    ComponentPeer peer = comp.getPeer();
+//                    if (peer != null) {
+//                        peer.setVisible(true);// SwingJS  was show();
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    private void recursiveHideHeavyweightChildren() {
+//        if (!hasHeavyweightDescendants()) {
+//            return;
+//        }
+//        for (int index = 0; index < getComponentCount(); index++) {
+//            Component comp = getComponent(index);
+//            if (comp.isLightweight()) {
+//                if  (comp instanceof Container) {
+//                    ((Container)comp).recursiveHideHeavyweightChildren();
+//                }
+//            } else {
+//                if (comp.isVisible()) {
+//                    ComponentPeer peer = comp.getPeer();
+//                    if (peer != null) {
+//                        peer.setVisible(false);// SwingJS  was hide();
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
 //    private void recursiveRelocateHeavyweightChildren(Point origin) {
 //        for (int index = 0; index < getComponentCount(); index++) {
 //            Component comp = getComponent(index);
@@ -4097,18 +4097,18 @@ public class Container extends Component {
 //        }
 //    }
 //
-    /*
-     * Consider the heavyweight container hides or shows the HW descendants
-     * automatically. Therefore we care of LW containers' visibility only.
-     */
-    private boolean isRecursivelyVisibleUpToHeavyweightContainer() {
-        if (!isLightweight()) {
-            return true;
-        }
-        return isVisible() && (getContainer() == null ||
-             getContainer().isRecursivelyVisibleUpToHeavyweightContainer());
-    }
-
+//    /*
+//     * Consider the heavyweight container hides or shows the HW descendants
+//     * automatically. Therefore we care of LW containers' visibility only.
+//     */
+//    private boolean isRecursivelyVisibleUpToHeavyweightContainer() {
+//        if (!isLightweight()) {
+//            return true;
+//        }
+//        return isVisible() && (getContainer() == null ||
+//             getContainer().isRecursivelyVisibleUpToHeavyweightContainer());
+//    }
+//
 //    @Override
 //    void mixOnShowing() {
 //        synchronized (getTreeLock()) {

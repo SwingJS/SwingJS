@@ -1,4 +1,5 @@
 package swingjs.test;
+
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *
@@ -28,8 +29,7 @@ package swingjs.test;
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
-
+ */
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -57,35 +57,35 @@ import javax.swing.event.ChangeListener;
 //SwingJS[2] getCodeBase() --> getDocumentBase()
 class SeeThroughComponent extends JPanel {
 
-    private BufferedImage bi;
-    float[] scales = { 1f, 1f, 1f, 0.5f };
-    float[] offsets = new float[4];
-    RescaleOp rop;
-    
-    public SeeThroughComponent(URL imageSrc) {
-        try {
-            BufferedImage img = ImageIO.read(imageSrc);
-            int w = img.getWidth(null);
-            int h = img.getHeight(null);
-            bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = bi.getGraphics();
-            g.drawImage(img, 0, 0, null);
+	private BufferedImage bi;
+	float[] scales = { 1f, 1f, 1f, 0.5f };
+	float[] offsets = new float[4];
+	RescaleOp rop;
 
-        } catch (IOException e) {
-            System.out.println("Image could not be read");
-//            System.exit(1);
-        }
-        setOpacity(0.5f);
-    }
+	public SeeThroughComponent(URL imageSrc) {
+		try {
+			BufferedImage img = ImageIO.read(imageSrc);
+			int w = img.getWidth(null);
+			int h = img.getHeight(null);
+			bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics g = bi.getGraphics();
+			g.drawImage(img, 0, 0, null);
 
-    public Dimension getPreferredSize() {
-        return new Dimension(bi.getWidth(null), bi.getHeight(null));
-    }
+		} catch (IOException e) {
+			System.out.println("Image could not be read");
+			// System.exit(1);
+		}
+		setOpacity(0.5f);
+	}
 
-    public void setOpacity(float opacity) {
-        scales[3] = opacity;
-        rop = new RescaleOp(scales, offsets, null);
-    }
+	public Dimension getPreferredSize() {
+		return new Dimension(bi.getWidth(null), bi.getHeight(null));
+	}
+
+	public void setOpacity(float opacity) {
+		scales[3] = opacity;
+		rop = new RescaleOp(scales, offsets, null);
+	}
 
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -93,31 +93,31 @@ class SeeThroughComponent extends JPanel {
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		g2d.setColor(Color.black);
 		g2d.setFont(new Font("Dialog", Font.BOLD, 24));
-		g2d.drawString("Java 2D is great!", 10, 80);
+		g2d.drawString("JavaScript is cool!", 5, 80);
 		g2d.drawImage(bi, rop, 0, 0);
 	}
 }
 
 public class SeeThroughImageApplet extends JApplet {
 
-    static String imageFileName = "examples/duke_skateboard.jpg";
-    private URL imageSrc;
+	static String imageFileName = "examples/duke_skateboard.jpg";
+	private URL imageSrc;
 
-    public SeeThroughImageApplet () {
-    }
+	public SeeThroughImageApplet() {
+	}
 
-    public SeeThroughImageApplet (URL imageSrc) {
-        this.imageSrc = imageSrc;
-    }
+	public SeeThroughImageApplet(URL imageSrc) {
+		this.imageSrc = imageSrc;
+	}
 
-    public void init() {
-        try {
-            imageSrc = pathTo(imageFileName);//new URL(getCodeBase(), imageFileName);
-        } catch (MalformedURLException e) {
-        }
-        buildUI();
-    }
-     
+	public void init() {
+		try {
+			imageSrc = pathTo(imageFileName);// new URL(getCodeBase(), imageFileName);
+		} catch (MalformedURLException e) {
+		}
+		buildUI();
+	}
+
 	public void buildUI() {
 		final SeeThroughComponent st = new SeeThroughComponent(imageSrc);
 		add("Center", st);
@@ -157,28 +157,27 @@ public class SeeThroughImageApplet extends JApplet {
 		f.pack();
 		f.setVisible(true);
 	}
-    
-  	/**
-  	 * SwingJS[2]: The original Applet called getCodebase(), but that is not
-  	 * appropriate for this demo. Instead, we switch to getDocumentBase()
-  	 * 
-  	 * SwingJS[3]: We do a switch of /bin/ to /html/ so that we can run it 
-  	 * as a Java applet within Eclipse.
-  	 *  
-  	 * @param file
-  	 * @return
-  	 * @throws MalformedURLException
-  	 */
-  	private URL pathTo(String file) throws MalformedURLException {
-  		String path = getDocumentBase().toString();
-  		int pt = path.indexOf("/bin/");
-  		if (pt > 0)
-  			path = path.substring(0, pt) + "/html/" + path.substring(pt + 5); 
-  		path = path.substring(0, path.lastIndexOf("/") + 1) + file;
-  		if (path.startsWith("/"))
-  			path = "file://" + path;
-  		return new URL(path);
-  	}
 
+	/**
+	 * SwingJS[2]: The original Applet called getCodebase(), but that is not
+	 * appropriate for this demo. Instead, we switch to getDocumentBase()
+	 * 
+	 * SwingJS[3]: We do a switch of /bin/ to /html/ so that we can run it as a
+	 * Java applet within Eclipse.
+	 * 
+	 * @param file
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	private URL pathTo(String file) throws MalformedURLException {
+		String path = getDocumentBase().toString();
+		int pt = path.indexOf("/bin/");
+		if (pt > 0)
+			path = path.substring(0, pt) + "/html/" + path.substring(pt + 5);
+		path = path.substring(0, path.lastIndexOf("/") + 1) + file;
+		if (path.startsWith("/"))
+			path = "file://" + path;
+		return new URL(path);
+	}
 
 }

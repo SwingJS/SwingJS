@@ -34,7 +34,9 @@ import jsjava.awt.image.WritableRaster;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.Toolkit;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIDefaults;
+import jsjavax.swing.UIManager;
 import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
@@ -417,8 +419,7 @@ public class JSToolkit extends SunToolkit {
 
 	public static UIDefaults getLookAndFeelDefaults() {
 		if (uid == null)
-			uid = ((HTML5LookAndFeel) getInstance("swingjs.plaf.HTML5LookAndFeel"))
-					.getDefaults();
+			uid = UIManager.getLookAndFeel().getDefaults();
 		return uid;
 	}
 
@@ -848,5 +849,22 @@ public class JSToolkit extends SunToolkit {
 		return getCompositor().filterImage(src, dst, op);
 	}
 
+	public static int getZIndex(JSComponentUI ui, String what) {
+		/**
+		 * looking for high-level content pane
+		 * 
+		 * @j2sNative
+		 * 
+		 * if (what) return getHTML5Applet(ui.c)._z[what];
+		 * var c = ui.domNode; var z;
+		 * while (c && !(z = c.style["z-index"])) {
+		 *  c = c.parentNode;
+		 * }
+		 * return z || 100000;
+		 */
+		{
+			return 0;
+		}
+	}
 
 }

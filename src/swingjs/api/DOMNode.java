@@ -10,8 +10,6 @@ public abstract class DOMNode {
 
 	public abstract DOMNode removeAttribute(String attr);
 	
-	public abstract Object getAttribute(String attr);
-
 	public static DOMNode createElement(String key, String id) {
 		DOMNode obj = null;
 		/**

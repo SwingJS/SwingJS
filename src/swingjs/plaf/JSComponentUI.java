@@ -154,6 +154,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 
 	private DOMNode document, body;
+
+
+	protected boolean needPreferred;
 	
 	
 	public JSComponentUI() {
@@ -194,6 +197,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	public JSComponentUI set(JComponent target) {
 		c = target;
 		newID();
+		if (needPreferred)
+			getPreferredSize(c);
 		installJSUI(); // need to do this immediately, not later
 		return this;
 	}
@@ -280,6 +285,15 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		return setHTMLSize1(obj, addCSS, true);
 	}
 
+	/**
+	 * also called by JSRadioButtonUI so that it can calculate
+	 * subset dimensions
+	 *  
+	 * @param node
+	 * @param addCSS
+	 * @param usePreferred
+	 * @return
+	 */
 	@SuppressWarnings("unused")
 	protected Dimension setHTMLSize1(DOMNode node, boolean addCSS, boolean usePreferred) {
 		if (node == null)
@@ -311,7 +325,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			{}
 			DOMNode.setStyles(node, "position", null, "width", null, "height", null);
 			DOMNode div;
-			if (node.getAttribute("tagName") == "DIV")
+			if (DOMNode.getAttr(node, "tagName") == "DIV")
 				div = node;
 			else
 				div = wrap("div", id + "_temp", node);
@@ -568,7 +582,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
       return Component.BaselineResizeBehavior.OTHER;
   }
 
-  public String getJSValue() {
+  public String getJSTextValue() {
   	return (String) DOMNode.getAttr(domNode, valueNode == null ? "innerHTML" : "value");
   }
   
@@ -640,6 +654,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void setBounds(int x, int y, int width, int height, int op) {
+		if (scrollerNode != null) {
+			width = Math.min(width, scrollerNode.c.getWidth());
+			height = Math.min(height, scrollerNode.c.getHeight());			
+		}
 		if (domNode != null)
 			DOMNode.setSize(domNode, width, height);
 	}

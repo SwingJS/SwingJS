@@ -41,6 +41,7 @@ import jsjava.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import swingjs.JSToolkit;
+import swingjs.plaf.HTML5LookAndFeel;
 import jsjava.util.Locale;
 
 //import jssun.swing.SwingUtilities2;
@@ -440,11 +441,12 @@ public class UIManager
      * @see #setInstalledLookAndFeels
      */
     public static void installLookAndFeel(LookAndFeelInfo info) {
-        LookAndFeelInfo[] infos = getInstalledLookAndFeels();
-        LookAndFeelInfo[] newInfos = new LookAndFeelInfo[infos.length + 1];
-        System.arraycopy(infos, 0, newInfos, 0, infos.length);
-        newInfos[infos.length] = info;
-        setInstalledLookAndFeels(newInfos);
+    	JSToolkit.notImplemented(null);
+//        LookAndFeelInfo[] infos = getInstalledLookAndFeels();
+//        LookAndFeelInfo[] newInfos = new LookAndFeelInfo[infos.length + 1];
+//        System.arraycopy(infos, 0, newInfos, 0, infos.length);
+//        newInfos[infos.length] = info;
+//        setInstalledLookAndFeels(newInfos);
     }
 
 
@@ -459,21 +461,21 @@ public class UIManager
      * @see #setInstalledLookAndFeels
      */
     public static void installLookAndFeel(String name, String className) {
-        installLookAndFeel(new LookAndFeelInfo(name, className));
+    	JSToolkit.notImplemented(null);
+//        installLookAndFeel(new LookAndFeelInfo(name, className));
     }
 
-
+	
+	private static LookAndFeel laf;
+	
     /**
-     * Returns the current look and feel or <code>null</code>.
+     * Returns the current (and only) look and feel.
      *
      * @return current look and feel, or <code>null</code>
      * @see #setLookAndFeel
      */
     public static LookAndFeel getLookAndFeel() {
-    	JSToolkit.notImplemented(null);
-//        maybeInitialize();
-//        return getLAFState().lookAndFeel;
-    	return null;
+    	return (laf == null ? (laf = (HTML5LookAndFeel) JSToolkit.getInstance("swingjs.plaf.HTML5LookAndFeel")) : laf);
     }
 
 
@@ -617,7 +619,8 @@ public class UIManager
      * @see #getSystemLookAndFeelClassName
      */
     public static String getCrossPlatformLookAndFeelClassName() {
-      return "jsjavax.swing.plaf.basic.BasicLookAndFeel";
+    	return  "swingjs.plaf.HTML5LookAndFeel";
+//      return "jsjavax.swing.plaf.basic.BasicLookAndFeel";
 //        String laf = (String)AccessController.doPrivileged(
 //                             new GetPropertyAction("swing.crossplatformlaf"));
 //        if (laf != null) {

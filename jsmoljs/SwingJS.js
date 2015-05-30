@@ -18,11 +18,26 @@ if (typeof(SwingJS) == "undefined") {
 	}
 
   SwingJS.getJavaResource = function(path) {
-   // path looks like jssun.util...., for example
-    var s = Jmol._getFileData(Jmol._applets[java.lang.Thread.currentThread().getName()].__Info.j2sPath + "/" + path);
-    return (s.startsWith("[Exception") ? null : s);
+  System.out.println("getJavaResource " + path)
+		if (path.indexOf("http") != 0)
+      path = Jmol._applets[java.lang.Thread.currentThread().getName()].__Info.j2sPath + "/" + path
+    var s = Jmol._getFileData(path);
+    if (s.indexOf("[Exception") == 0)
+      return null; 
+    if (path.lastIndexOf(".css") == path.length - 4) {
+      jQuery("head").append(jQuery("<style type='text/css'>" + s + "</style>"));
+      return s;
+    } else if (path.lastIndexOf(".js") == path.length - 3) {
+      try {
+        eval(s);
+      } catch (e) {
+      alert("error processing " + s)
+        return null;
+      }
+    }
+    return s; 
   }
-  
+
   	// optional Info here	
 	SwingJS.getAppletHtml = function(applet, Info) {
 		if (Info) {

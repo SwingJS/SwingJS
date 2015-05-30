@@ -117,10 +117,11 @@
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
   	<replace dir="site/swingjs/" includes="**/*.js" token="javajs.util" value="JU" />
   		
-  	<echo>...adding to swingjs/j2s property files from src (for CalendarData)</echo>
+  	<echo>...adding to swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="src">
         <include name="**/*.properties" />
+        <include name="**/*.css" />
       </fileset>
     </copy>
    	

@@ -20,4 +20,9 @@ public interface JQueryObject {
 
 	public abstract JQueryObject select();
 
+	public abstract JQueryObject attr(String key, String value);
+
+	public abstract JQueryObject addClass(String name);
+
+	
 }

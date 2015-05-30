@@ -415,9 +415,7 @@ public class JSMouse {
 	}
 
 	private void mouseEnterExit(long time, int x, int y, boolean isExit) {
-		System.out.println("JSMouse entry at " + x + " " + y + " " + !isExit);
-		// TODO Auto-generated method stub
-
+		// nothing here?
 	}
 
 	private void mouseAction(int id, long time, int x, int y,

@@ -157,7 +157,7 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		case KeyEvent.KEY_PRESSED:
 		case KeyEvent.KEY_RELEASED:
 		case KeyEvent.KEY_TYPED:
-			String val = ui.getJSValue();
+			String val = ui.getJSTextValue();
 			if (!val.equals(ui.currentValue)) {
 				String oldval = ui.currentValue;
 				ui.currentValue = val; // prevents overwriting of new value same as old
