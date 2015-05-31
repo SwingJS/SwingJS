@@ -56,9 +56,14 @@ import jssun.awt.CausedFocusEvent;
  * instances.
  */
 public interface ComponentPeer {
-	public static final int SET_LOCATION = 1, SET_SIZE = 2, SET_BOUNDS = 3,
-			SET_CLIENT_SIZE = 4, RESET_OPERATION = 5, NO_EMBEDDED_CHECK = (1 << 14),
-			DEFAULT_OPERATION = SET_BOUNDS;
+	public static final int 
+	SET_LOCATION = 1, 
+	SET_SIZE = 2, 
+	SET_BOUNDS = 3,
+	SET_CLIENT_SIZE = 4, 
+	RESET_OPERATION = 5, 
+	NO_EMBEDDED_CHECK = (1 << 14),
+  DEFAULT_OPERATION = SET_BOUNDS;
 
 	boolean isObscured();
 

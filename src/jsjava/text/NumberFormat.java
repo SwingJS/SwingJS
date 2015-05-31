@@ -289,6 +289,8 @@ public abstract class NumberFormat extends Format  {
      * @exception        ArithmeticException if rounding is needed with rounding
      *                   mode being set to RoundingMode.UNNECESSARY
      * @see java.text.Format#format
+     * 
+     * @j2sIgnore 
      */
     public final String format(long number) {
         return format(number, new StringBuffer(),
@@ -310,6 +312,9 @@ public abstract class NumberFormat extends Format  {
      * @exception        ArithmeticException if rounding is needed with rounding
      *                   mode being set to RoundingMode.UNNECESSARY
      * @see java.text.Format#format
+     * 
+     * 
+     * @j2sIgnore 
      */
     public abstract StringBuffer format(long number,
                                         StringBuffer toAppendTo,

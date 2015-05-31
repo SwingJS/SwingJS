@@ -419,6 +419,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 					: components);
 			for (int i = children.length; --i >= 0;) {
 				JSComponentUI ui = ((JSComponentUI) ((JComponent) children[i]).getUI());
+				if (ui == null) {
+					// Box.Filler has no ui.
+					continue;
+				}
 				if (ui.outerNode == null)
 					ui.setHTMLElement();
 				if (ui.outerNode == null) {
@@ -654,12 +658,19 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public void setBounds(int x, int y, int width, int height, int op) {
-		if (scrollerNode != null) {
-			width = Math.min(width, scrollerNode.c.getWidth());
-			height = Math.min(height, scrollerNode.c.getHeight());			
+		switch (op) {
+		case SET_SIZE:
+		case SET_BOUNDS:
+		case SET_CLIENT_SIZE:
+			if (scrollerNode != null) {
+				width = Math.min(width, scrollerNode.c.getWidth());
+				height = Math.min(height, scrollerNode.c.getHeight());			
+			}
+			System.out.println(id + " setBounds " + x + " " + y + " " + width + " " + height + " op=" + op);
+			if (domNode != null)
+				DOMNode.setSize(domNode, width, height);
+			break;
 		}
-		if (domNode != null)
-			DOMNode.setSize(domNode, width, height);
 	}
 
 	@Override
@@ -697,8 +708,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 
 	@Override
 	public ColorModel getColorModel() {
-		JSToolkit.notImplemented("");
-		return null;
+		return Toolkit.getDefaultToolkit().getColorModel();
 	}
 
 	@Override

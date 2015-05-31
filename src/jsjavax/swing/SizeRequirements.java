@@ -256,7 +256,7 @@ public class SizeRequirements  {
                                                SizeRequirements[] children,
                                                int[] offsets,
                                                int[] spans) {
-        calculateTiledPositions(allocated, total, children, offsets, spans, true);
+        calcTiled(allocated, total, children, offsets, spans, true);
     }
 
     /**
@@ -297,26 +297,31 @@ public class SizeRequirements  {
                                                int[] offsets,
                                                int[] spans,
                                                boolean forward) {
-        // The total argument turns out to be a bad idea since the
-        // total of all the children can overflow the integer used to
-        // hold the total.  The total must therefore be calculated and
-        // stored in long variables.
-        long min = 0;
-        long pref = 0;
-        long max = 0;
-        for (int i = 0; i < children.length; i++) {
-            min += children[i].minimum;
-            pref += children[i].preferred;
-            max += children[i].maximum;
-        }
-        if (allocated >= pref) {
-            expandedTile(allocated, min, pref, max, children, offsets, spans, forward);
-        } else {
-            compressedTile(allocated, min, pref, max, children, offsets, spans, forward);
-        }
+    	calcTiled(allocated, total, children, offsets, spans, forward);
     }
 
-    private static void compressedTile(int allocated, long min, long pref, long max,
+    public static void calcTiled(int allocated, SizeRequirements total,
+				SizeRequirements[] children, int[] offsets, int[] spans, boolean forward) {
+      // The total argument turns out to be a bad idea since the
+      // total of all the children can overflow the integer used to
+      // hold the total.  The total must therefore be calculated and
+      // stored in long variables.
+      long min = 0;
+      long pref = 0;
+      long max = 0;
+      for (int i = 0; i < children.length; i++) {
+          min += children[i].minimum;
+          pref += children[i].preferred;
+          max += children[i].maximum;
+      }
+      if (allocated >= pref) {
+          expandedTile(allocated, min, pref, max, children, offsets, spans, forward);
+      } else {
+          compressedTile(allocated, min, pref, max, children, offsets, spans, forward);
+      }
+		}
+
+		private static void compressedTile(int allocated, long min, long pref, long max,
                                        SizeRequirements[] request,
                                        int[] offsets, int[] spans,
                                        boolean forward) {
@@ -414,10 +419,27 @@ public class SizeRequirements  {
                                                  SizeRequirements[] children,
                                                  int[] offsets,
                                                  int[] spans) {
-        calculateAlignedPositions( allocated, total, children, offsets, spans, true );
+        calcAligned( allocated, total, children, offsets, spans, true );
     }
 
-    /**
+    public static void calcAligned(int allocated, SizeRequirements total,
+				SizeRequirements[] children, int[] offsets, int[] spans, boolean normal) {
+      float totalAlignment = normal ? total.alignment : 1.0f - total.alignment;
+      int totalAscent = (int)(allocated * totalAlignment);
+      int totalDescent = allocated - totalAscent;
+      for (int i = 0; i < children.length; i++) {
+          SizeRequirements req = children[i];
+          float alignment = normal ? req.alignment : 1.0f - req.alignment;
+          int maxAscent = (int)(req.maximum * alignment);
+          int maxDescent = req.maximum - maxAscent;
+          int ascent = Math.min(totalAscent, maxAscent);
+          int descent = Math.min(totalDescent, maxDescent);
+          offsets[i] = totalAscent - ascent;
+          spans[i] = (int) Math.min((long) ascent + (long) descent, Integer.MAX_VALUE);
+      }
+		}
+
+		/**
      * Creates a set of offset/span pairs specifying how to
      * lay out a set of components with the specified alignments.
      * The resulting span allocations will overlap, with each one
@@ -454,20 +476,7 @@ public class SizeRequirements  {
                                                  int[] offsets,
                                                  int[] spans,
                                                  boolean normal) {
-        float totalAlignment = normal ? total.alignment : 1.0f - total.alignment;
-        int totalAscent = (int)(allocated * totalAlignment);
-        int totalDescent = allocated - totalAscent;
-        for (int i = 0; i < children.length; i++) {
-            SizeRequirements req = children[i];
-            float alignment = normal ? req.alignment : 1.0f - req.alignment;
-            int maxAscent = (int)(req.maximum * alignment);
-            int maxDescent = req.maximum - maxAscent;
-            int ascent = Math.min(totalAscent, maxAscent);
-            int descent = Math.min(totalDescent, maxDescent);
-
-            offsets[i] = totalAscent - ascent;
-            spans[i] = (int) Math.min((long) ascent + (long) descent, Integer.MAX_VALUE);
-        }
+      calcAligned( allocated, total, children, offsets, spans, normal );
     }
 
     // This method was used by the JTable - which now uses a different technique.

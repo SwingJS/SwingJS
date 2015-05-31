@@ -26,6 +26,7 @@ package jsjavax.swing;
 
 //import jsjava.text.AttributedCharacterIterator;
 //TODO import jsjava.text.DateFormat;
+import jsjava.text.DateFormat;
 import jsjava.text.DecimalFormat;
 import jsjava.text.Format;
 import jsjava.text.NumberFormat;
@@ -837,11 +838,12 @@ public class JFormattedTextField extends JTextField {
      * Object type.
      */
     private AbstractFormatterFactory getDefaultFormatterFactory(Object type) {
-// SwingJS 
-//TODO  if (type instanceof DateFormat) {
+    	if (type instanceof DateFormat) {
+    		JSToolkit.notImplemented(null);
+    		return null;
 //            return new DefaultFormatterFactory(new DateFormatter
 //                                               ((DateFormat)type));
-//        }
+        }
         if (type instanceof NumberFormat) {
             return new DefaultFormatterFactory(new NumberFormatter(
                                                (NumberFormat)type));

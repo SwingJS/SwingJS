@@ -106,7 +106,7 @@ public class NumberFormatter extends InternationalFormatter {
      * <code>NumberFormat.getNumberInstance()</code>.
      */
     public NumberFormatter() {
-        this(NumberFormat.getNumberInstance());
+    	setN(NumberFormat.getNumberInstance());
     }
 
     /**
@@ -115,14 +115,17 @@ public class NumberFormatter extends InternationalFormatter {
      * @param format Format used to dictate legal values
      */
     public NumberFormatter(NumberFormat format) {
-        super(format);
-        setFormat(format);
-        setAllowsInvalid(true);
-        setCommitsOnValidEdit(false);
-        setOverwriteMode(false);
+    	setN(format);
     }
 
-    /**
+    private void setN(NumberFormat format) {
+      setFormat(format);
+      setAllowsInvalid(true);
+      setCommitsOnValidEdit(false);
+      setOverwriteMode(false);
+		}
+
+		/**
      * Sets the format that dictates the legal values that can be edited
      * and displayed.
      * <p>

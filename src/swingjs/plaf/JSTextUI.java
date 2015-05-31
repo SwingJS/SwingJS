@@ -25,6 +25,7 @@
 package swingjs.plaf;
 
 import jsjava.awt.Dimension;
+import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.AbstractAction;
@@ -40,6 +41,7 @@ import jsjavax.swing.plaf.TextUI;
 import jsjavax.swing.plaf.UIResource;
 import jsjavax.swing.text.Caret;
 import jsjavax.swing.text.DefaultEditorKit;
+import jsjavax.swing.text.Document;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.TextAction;
@@ -966,13 +968,17 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
      * @return the size
      */
     public Dimension getMinimumSize(JComponent c) {
-      Dimension d = new Dimension();
+      Dimension d = getPreferredSize();//new Dimension();
 //        Document doc = editor.getDocument();
-//        Insets i = c.getInsets();
+        Insets i = c.getInsets();
 //        if (doc instanceof AbstractDocument) {
 //            ((AbstractDocument)doc).readLock();
 //        }
 //        try {
+        	
+          d.width  += i.left + i.right;
+          d.height += i.top + i.bottom;
+        	
 //            d.width = (int) rootView.getMinimumSpan(View.X_AXIS) + i.left + i.right;
 //            d.height = (int)  rootView.getMinimumSpan(View.Y_AXIS) + i.top + i.bottom;
 //        } finally {
@@ -991,10 +997,11 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
      */
     public Dimension getMaximumSize(JComponent c) {
     	// SwingJS TODO 
+    	return getMinimumSize(c);
     	
 //        Document doc = editor.getDocument();
 //        Insets i = c.getInsets();
-        Dimension d = new Dimension();
+//        Dimension d = new Dimension();
 //        if (doc instanceof AbstractDocument) {
 //            ((AbstractDocument)doc).readLock();
 //        }
@@ -1008,7 +1015,7 @@ public abstract class JSTextUI extends JSComponentUI {//implements {ViewFactory 
 //                ((AbstractDocument)doc).readUnlock();
 //            }
 //        }
-        return d;
+//        return d;
     }
 
     // ---- TextUI methods -------------------------------------------

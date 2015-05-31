@@ -428,19 +428,19 @@ public class BoxLayout implements LayoutManager2 {
             checkRequests();
 
             if (absoluteAxis == X_AXIS) {
-                SizeRequirements.calculateTiledPositions(alloc.width, xTotal,
+                SizeRequirements.calcTiled(alloc.width, xTotal,
                                                          xChildren, xOffsets,
                                                          xSpans, ltr);
-                SizeRequirements.calculateAlignedPositions(alloc.height, yTotal,
+                SizeRequirements.calcAligned(alloc.height, yTotal,
                                                            yChildren, yOffsets,
-                                                           ySpans);
+                                                           ySpans, true);
             } else {
-                SizeRequirements.calculateAlignedPositions(alloc.width, xTotal,
+                SizeRequirements.calcAligned(alloc.width, xTotal,
                                                            xChildren, xOffsets,
                                                            xSpans, ltr);
-                SizeRequirements.calculateTiledPositions(alloc.height, yTotal,
+                SizeRequirements.calcTiled(alloc.height, yTotal,
                                                          yChildren, yOffsets,
-                                                         ySpans);
+                                                         ySpans, true);
             }
         }
 

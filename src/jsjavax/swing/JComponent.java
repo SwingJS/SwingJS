@@ -32,10 +32,9 @@ import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Hashtable;
-import jsjava.util.Locale;
 import java.util.Set;
 
-import swingjs.JSToolkit;
+import javax.swing.SortingFocusTraversalPolicy;
 
 import jsjava.applet.Applet;
 import jsjava.awt.AWTEvent;
@@ -57,14 +56,16 @@ import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjava.util.Locale;
 import jsjavax.swing.border.AbstractBorder;
 import jsjavax.swing.border.Border;
+import jsjavax.swing.border.CompoundBorder;
+import jsjavax.swing.event.AncestorEvent;
 import jsjavax.swing.event.AncestorListener;
 import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.font.FontDesignMetrics;
-import jssun.swing.SwingUtilities2;
-//import jssun.swing.UIClientPropertyKey;
+import swingjs.JSToolkit;
 
 /**
  * The base class for all Swing components except top-level containers.
@@ -996,14 +997,14 @@ public abstract class JComponent extends Container
         	// width and height. No need to do anything else. Painting over a button, 
         	// for instance, will paint into the rectangle associated with that button. 
  //       	Rectangle clipRect = co.getClipBounds();
-            int clipX;
-            int clipY;
-            int clipW;
-            int clipH;
+//            int clipX;
+//            int clipY;
+//            int clipW;
+//            int clipH;
  //           if (clipRect == null) {
-                clipX = clipY = 0;
-                clipW = getWidth();
-                clipH = getHeight();
+//                clipX = clipY = 0;
+//                clipW = getWidth();
+//                clipH = getHeight();
 //            }
 //            else {
 //                clipX = clipRect.x;
@@ -4840,7 +4841,7 @@ public abstract class JComponent extends Container
                 setFlag(REVALIDATE_RUNNABLE_SCHEDULED, true);
             }
             //System.out.println("JC revalidate invoking later " + this);
-            final Object me = this;
+//            final Object me = this;
             Runnable callRevalidate = new Runnable() {
                 public void run() {
                     synchronized(JComponent.this) {

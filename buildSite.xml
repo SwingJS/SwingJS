@@ -122,6 +122,7 @@
       <fileset dir="src">
         <include name="**/*.properties" />
         <include name="**/*.css" />
+        <include name="**/*.png" />
       </fileset>
     </copy>
    	

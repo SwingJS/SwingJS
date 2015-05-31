@@ -46,6 +46,7 @@ public class JSSliderUI extends JSComponentUI implements PropertyChangeListener,
 	private String orientation;
 	
 	protected DOMNode jqSlider;
+	private int z0 = Integer.MIN_VALUE;
 
 	public JSSliderUI() {
 		needPreferred = true;
@@ -100,9 +101,12 @@ public class JSSliderUI extends JSComponentUI implements PropertyChangeListener,
 	 */
 	private void setZ(boolean isNew) {
 		int z = JSToolkit.getZIndex(this, null);
+		if (z == z0)
+			return;
+		z0 = z;
+		System.out.println("JSSliderUI setting z to " + z);
 		DOMNode sliderTrack = null;
 		DOMNode sliderHandle = null;
-		System.out.println("JSSliderUI setting z to " + z);
 		/**
 		 * @j2sNative
 		 * 
@@ -185,7 +189,7 @@ public class JSSliderUI extends JSComponentUI implements PropertyChangeListener,
 		 * 
 		 *  var a = {};
 		 *  a[key]= val;
-		 *  this.$(this.jqSlider).attr(a);
+		 *  this.$(this.jqSlider).slider(a);
 		 */
 		{}
 	}
