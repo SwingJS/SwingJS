@@ -33,6 +33,10 @@ package swingjs.test;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
@@ -43,16 +47,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
-import swingjs.J2SRequireImport;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 
 // SwingJS[1] JPanel --> JApplet
@@ -161,9 +157,9 @@ implements ActionListener, PropertyChangeListener, FocusListener {
         fieldPane.add(amountField);
         fieldPane.add(rateField);
         fieldPane.add(numPeriodsField);
-//        fieldPane.add(paymentField);
+        fieldPane.add(paymentField);
         
-        fieldPane.add(new JPasswordField());
+// just testing        fieldPane.add(new JPasswordField());
 
         //Put the panels in this panel, labels on left,
         //text fields on right.
