@@ -27,6 +27,9 @@ package jsjavax.swing.text;
 import java.util.Vector;
 
 /**
+ * 
+ * NOT USED IN SwingJS
+ * 
  * A plain document that maintains no character attributes.  The
  * default element structure for this document is a map of the lines in
  * the text.  The Element returned by getDefaultRootElement is

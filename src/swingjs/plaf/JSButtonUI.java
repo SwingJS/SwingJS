@@ -11,11 +11,12 @@ import jsjavax.swing.plaf.UIResource;
  * SWingJS implementation of stateful user interface for buttons. 
  * Modeled after javax.swing.plaf.basic.BasicButtonUI.java (commented out below).
  * 
- * @author RM
+ * @author Bob Hanson
  *
  */
 public class JSButtonUI extends JSComponentUI {
 
+	
 	/**
 	 * the radio or check-box or simple button
 	 * 

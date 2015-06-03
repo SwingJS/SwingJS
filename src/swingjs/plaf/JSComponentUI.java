@@ -13,6 +13,7 @@ import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
+import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.PaintEvent;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
@@ -144,22 +145,33 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	protected JSComponentUI parent;
 
 
-	String currentValue;
+	String currentText;
 
 
 	/**
 	 * the scroller for a text area
 	 */
-	public JSScrollPaneUI scrollerNode;
+	protected JSScrollPaneUI scrollerNode;
 
+
+	/**
+	 * uiClassID for this component
+	 */
+	protected String classID;
+	
 
 	private DOMNode document, body;
 
 
 	protected boolean needPreferred;
-	
+
+
 	
 	public JSComponentUI() {
+		setDoc();
+	}
+
+	protected void setDoc() {
 		/**
 		 * @j2sNative
 		 * 
@@ -204,9 +216,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	}
 
 	protected void newID() {
+		classID = c.getUIClassID();
 		if (id == null) {
 			num = ++incr;
-			id = c.getHTMLName(c.getUIClassID()) + "_" + num;
+			id = c.getHTMLName(classID) + "_" + num;
 		}
 	}
 
@@ -586,6 +599,10 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
       return Component.BaselineResizeBehavior.OTHER;
   }
 
+  /**
+   * overridden in JSPasswordFieldUI
+   * @return texat
+   */
   public String getJSTextValue() {
   	return (String) DOMNode.getAttr(domNode, valueNode == null ? "innerHTML" : "value");
   }
@@ -595,9 +612,9 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 		String val = null;
 		if (prop == "text") {
 			val = ((AbstractButton) c).getText();
-			if (val.equals(currentValue)) // we set it here, then fired the property change
+			if (val.equals(currentText)) // we set it here, then fired the property change
 				return;
-			currentValue = val;
+			currentText = val;
 			if (textNode != null) {
 				prop = "innerHTML";
 				obj = textNode;
@@ -614,8 +631,12 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			System.out.println("JSComponentUI: unrecognized prop: " + prop);
 		} else {
 			System.out.println("JSComponentUI: setting " + id + " " + prop);// + " " + val);
-			DOMNode.setAttr(obj, prop, val);
+			setProp(obj, prop, val);
 		}
+	}
+
+	protected DOMNode setProp(DOMNode obj, String prop, String val) {
+		return DOMNode.setAttr(obj, prop, val);
 	}
 
 	@Override
@@ -852,5 +873,8 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 	public boolean hasFocus() {
 		return focusNode != null && focusNode == DOMNode.getAttr(document, "activeElement");
 	}
-  
+
+	public void notifyFocus(boolean focusGained) {
+		Toolkit.getEventQueue().postEvent(new FocusEvent(c, focusGained ? FocusEvent.FOCUS_GAINED : FocusEvent.FOCUS_LOST));
+	}
 }

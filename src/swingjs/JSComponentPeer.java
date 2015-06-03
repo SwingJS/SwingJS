@@ -27,7 +27,7 @@ import jssun.awt.CausedFocusEvent.Cause;
  * A class to provide a JavaScript peer interface for non-Swing AWT components
  * (Swing components have LightweightPeers in their JSComponentUIs)
  * 
- * @author RM
+ * @author Bob Hanson
  *
  */
 public class JSComponentPeer implements LightweightPeer {

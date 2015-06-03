@@ -45,6 +45,9 @@ import jsjavax.swing.undo.CompoundEdit;
 import jsjavax.swing.undo.UndoableEdit;
 
 /**
+ * 
+ * NOT USED IN SwingJS
+ * 
  * An implementation of the document interface to serve as a
  * basis for implementing various kinds of documents.  At this
  * level there is very little policy, so there is a corresponding
@@ -103,7 +106,7 @@ import jsjavax.swing.undo.UndoableEdit;
  *
  * @author  Timothy Prinzing
  */
-public abstract class AbstractDocument implements Document {
+public abstract class AbstractDocument implements JSMinimalAbstractDocument {
 
     /**
      * Constructs a new <code>AbstractDocument</code>, wrapped around some

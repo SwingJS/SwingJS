@@ -26,7 +26,6 @@
 package swingjs.plaf;
 
 import swingjs.api.DOMNode;
-import jsjavax.swing.JLabel;
 
 public class JSScrollBarUI extends JSComponentUI {
 

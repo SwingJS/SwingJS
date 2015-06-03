@@ -36,7 +36,8 @@ import swingjs.api.DOMNode;
 public class JSPanelUI extends JSComponentUI {
 
 	public JSPanelUI() {
-		isContainer = true;		
+		isContainer = true;
+		setDoc();
 	}
 	
 	@Override

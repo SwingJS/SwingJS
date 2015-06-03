@@ -43,6 +43,7 @@
  
  // J2S class changes:
 
+ // BH 5/31/2015 5:38:14 PM  NPEExceptionPredicate fix
  // BH 4/25/2015 9:16:12 AM SAEM misrepresnting Number as Object in parameters and Integer as Number 
  // BH 4/24/2015 7:32:54 AM Object.hashCode() and System.getIdentityHashCode() fail. changed to:     return this._$hashcode || (this._$hashcode = ++Clazz._hashCode)
  // BH 4/23/2015 9:08:59 AM Clazz.instanceOf(a, b) needs to check for a == b.   
@@ -777,6 +778,8 @@ var MethodNotFoundException = function () {
 	};
 };
 
+  var _isNPEExceptionPredicate;
+
 /* super private */
 ;(function() { 
   /* sgurin: native exception detection mechanism. Only NullPointerException detected and wrapped to java excepions */
@@ -788,7 +791,6 @@ var MethodNotFoundException = function () {
    */
   // reproduce NullPointerException for knowing how to detect them, and create detector function Clazz._isNPEExceptionPredicate
   var $$o$$ = null;
-  var _isNPEExceptionPredicate;
   
   try {
   	$$o$$.hello();

@@ -3,37 +3,58 @@ package swingjs;
 import java.util.HashMap;
 import java.util.Map;
 
-import swingjs.JSPlainDocument.JSElement;
-import jsjava.awt.font.TextAttribute;
+import javajs.util.AU;
+import javajs.util.SB;
+
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.event.EventListenerList;
-import jsjavax.swing.event.UndoableEditEvent;
 import jsjavax.swing.event.UndoableEditListener;
+//import jsjavax.swing.text.AbstractDocument;
 import jsjavax.swing.text.AttributeSet;
 import jsjavax.swing.text.BadLocationException;
 import jsjavax.swing.text.Document;
+import jsjavax.swing.text.DocumentFilter;
+import jsjavax.swing.text.DocumentFilter.FilterBypass;
 import jsjavax.swing.text.Element;
-import jsjavax.swing.text.StyleConstants;
-import jsjavax.swing.text.Utilities;
-import jsjavax.swing.text.AbstractDocument.DefaultDocumentEvent;
-import jsjavax.swing.undo.UndoableEdit;
-import jssun.swing.SwingUtilities2;
+import jsjavax.swing.text.JSMinimalAbstractDocument;
 
-public abstract class JSAbstractDocument  implements Document {
+public abstract class JSAbstractDocument implements JSMinimalAbstractDocument {
 	protected Map<Object, Object> props;
 	protected JSElement root;
 	protected Map<Integer, JSPosition> positions;
 	protected EventListenerList listenerList;
 	private boolean notifyingListeners;
+	protected FilterBypass filterBypass;
+	protected JSAbstractDocument me;
+
+	protected SB sb;
+	protected char[] tempChar;
+
+	/**
+	 * Name of elements used to represent paragraphs
+	 */
+	public static final String ParagraphElementName = "paragraph";
+
+	/**
+	 * Name of elements used to represent content
+	 */
+	public static final String ContentElementName = "content";
 
 	public JSAbstractDocument() {
+		me = this;
 		props = new HashMap<Object, Object>();
 	}
-	
+
 	@Override
 	public Element[] getRootElements() {
 		return new Element[] { root, null };
+	}
+
+	protected void checkLoc(int start, int end) throws BadLocationException {
+		if (start < 0 || end > getLength())
+			throw new BadLocationException("JSAbstractDocument: out of range",
+					(start < 0 ? start : end));
 	}
 
 	protected void fixPositions(int offset, int length, boolean isInsert) {
@@ -58,91 +79,168 @@ public abstract class JSAbstractDocument  implements Document {
 		}
 	}
 
-  /**
-   * Performs the actual work of inserting the text; it is assumed the
-   * caller has obtained a write lock before invoking this.
-   */
-	protected void handleInsertString(int offs, String str, AttributeSet a)
-                       throws BadLocationException {
-      if ((str == null) || (str.length() == 0)) {
-          return;
-      }
-      // SwingJS n/a
-      //UndoableEdit u = data.insertString(offs, str);
-      JSDocumentEvent e =
-          new JSDocumentEvent(this, offs, str.length(), DocumentEvent.EventType.INSERT);
-//      if (u != null) {
-//          e.addEdit(u);
-//      }
-
-//      // see if complex glyph layout support is needed
-//      if( getProperty(I18NProperty).equals( Boolean.FALSE ) ) {
-//          // if a default direction of right-to-left has been specified,
-//          // we want complex layout even if the text is all left to right.
-//          Object d = getProperty(TextAttribute.RUN_DIRECTION);
-//          if ((d != null) && (d.equals(TextAttribute.RUN_DIRECTION_RTL))) {
-//              putProperty( I18NProperty, Boolean.TRUE);
-//          } else {
-//              char[] chars = str.toCharArray();
-//              if (SwingUtilities2.isComplexLayout(chars, 0, chars.length)) {
-//                  putProperty( I18NProperty, Boolean.TRUE);
-//              }
-//          }
-//      }
-//
-//      insertUpdate(e, a);
-//      // Mark the edit as done.
-//      e.end();
-      fireInsertUpdate(e);
-      // only fire undo if Content implementation supports it
-      // undo for the composed text is not supported for now
-//      if (u != null &&
-//          (a == null || !a.isDefined(StyleConstants.ComposedTextAttribute))) {
-//          fireUndoableEditUpdate(new UndoableEditEvent(this, e));
-//      }
-  }
-
-	protected void checkLoc(int start, int end) throws BadLocationException {
-		if (start < 0 || end > getLength())
-			throw new BadLocationException("JSPlainDocument: out of range",
-					(start < 0 ? start : end));
+	/**
+	 * Returns the <code>FilterBypass</code>. This will create one if one does not
+	 * yet exist.
+	 */
+	private DocumentFilter.FilterBypass getFilterBypass() {
+		if (filterBypass == null) {
+			filterBypass = new DefaultFilterBypass();
+		}
+		return filterBypass;
 	}
 
-  /**
-   * Performs the actual work of the remove. It is assumed the caller
-   * will have obtained a <code>writeLock</code> before invoking this.
-   */
-  protected void handleRemove(int offs, int len) throws BadLocationException {
-      if (len > 0) {
-          DocumentEvent chng =
-                  new JSDocumentEvent(this, offs, len, DocumentEvent.EventType.REMOVE);
+	@Override
+	public void remove(int offs, int len) throws BadLocationException {
+		DocumentFilter filter = getDocumentFilter();
+		if (filter == null)
+			handleRemove(offs, len);
+		else
+			filter.remove(getFilterBypass(), offs, len);
+	}
 
-          //boolean isComposedTextElement = false;
-          // Check whether the position of interest is the composed text
-          //isComposedTextElement = Utilities.isComposedTextElement(this, offs);
+	@Override
+	public void insertString(int offset, String str, AttributeSet a)
+			throws BadLocationException {
+		DocumentFilter filter = getDocumentFilter();
+		if (filter == null)
+			handleInsertString(offset, str, a);
+		else
+			filter.insertString(getFilterBypass(), offset, str, a);
+	}
 
-          // SwingJS n/a
-          // removeUpdate(chng);
-          // SwingJS n/a 
-          // UndoableEdit u = data.remove(offs, len);
-          // if (u != null) {
-          //     chng.addEdit(u);
-          // }
-          // SwingJS BIDI only
-          // postRemoveUpdate(chng);
-          // Mark the edit as done.
-          ///chng.end();
-          fireRemoveUpdate(chng);
-          // only fire undo if Content implementation supports it
-          // undo for the composed text is not supported for now
-          // SwingJS n/a
-          //if ((u != null) && !isComposedTextElement) {
-          //    fireUndoableEditUpdate(new UndoableEditEvent(this, chng));
-          //}
-      }
-  }
+	@Override
+	public void replace(int offset, int length, String text, AttributeSet attrs)
+			throws BadLocationException {
+		if (length == 0 && (text == null || text.length() == 0))
+			return;
+		DocumentFilter filter = getDocumentFilter();
+		if (filter != null) {
+			filter.replace(getFilterBypass(), offset, length, text, attrs);
+		} else {
+			if (length > 0)
+				remove(offset, length);
+			if (text != null && text.length() > 0)
+				insertString(offset, text, attrs);
+		}
+	}
 
-  /**
+	private void taint() {
+		tempChar = null;
+	}
+
+	private void setLines() {
+		root = new JSElement();
+		String s = sb.toString();
+		if (s.lastIndexOf('\n') != s.length() - 1)
+			s += "\n";
+		int ilast = 0;
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) != '\n')
+				continue;
+			JSElement e = new JSElement();
+			e.start = ilast;
+			e.end = i;
+			ilast = i + 1;
+			root.addChild(e);
+		}
+	}
+
+	/**
+	 * Performs the actual work of inserting the text; it is assumed the caller
+	 * has obtained a write lock before invoking this.
+	 */
+	protected void handleInsertString(int offs, String str, AttributeSet a)
+			throws BadLocationException {
+		if ((str == null) || (str.length() == 0)) {
+			return;
+		}
+
+		checkLoc(offs, offs);
+		taint();
+		sb.insert(offs, str);
+		fixPositions(offs, str.length(), true);
+		if (str.indexOf('\n') >= 0)
+			setLines();
+		// TODO: what about attributes set?
+
+		// SwingJS n/a
+		// UndoableEdit u = data.insertString(offs, str);
+		JSDocumentEvent e = new JSDocumentEvent(this, offs, str.length(),
+				DocumentEvent.EventType.INSERT);
+		// if (u != null) {
+		// e.addEdit(u);
+		// }
+
+		// // see if complex glyph layout support is needed
+		// if( getProperty(I18NProperty).equals( Boolean.FALSE ) ) {
+		// // if a default direction of right-to-left has been specified,
+		// // we want complex layout even if the text is all left to right.
+		// Object d = getProperty(TextAttribute.RUN_DIRECTION);
+		// if ((d != null) && (d.equals(TextAttribute.RUN_DIRECTION_RTL))) {
+		// putProperty( I18NProperty, Boolean.TRUE);
+		// } else {
+		// char[] chars = str.toCharArray();
+		// if (SwingUtilities2.isComplexLayout(chars, 0, chars.length)) {
+		// putProperty( I18NProperty, Boolean.TRUE);
+		// }
+		// }
+		// }
+		//
+		// insertUpdate(e, a);
+		// // Mark the edit as done.
+		// e.end();
+		fireInsertUpdate(e);
+		// only fire undo if Content implementation supports it
+		// undo for the composed text is not supported for now
+		// if (u != null &&
+		// (a == null || !a.isDefined(StyleConstants.ComposedTextAttribute))) {
+		// fireUndoableEditUpdate(new UndoableEditEvent(this, e));
+		// }
+	}
+
+	/**
+	 * Performs the actual work of the remove. It is assumed the caller will have
+	 * obtained a <code>writeLock</code> before invoking this.
+	 */
+	protected void handleRemove(int offs, int len) throws BadLocationException {
+		checkLoc(offs, offs + len);
+		taint();
+		String str = sb.substring2(offs, offs + len);
+		sb.replace(offs, offs + len, "");
+		fixPositions(offs, offs + len, false);
+		if (str.indexOf('\n') >= 0)
+			setLines();
+		if (len > 0) {
+			DocumentEvent chng = new JSDocumentEvent(this, offs, len,
+					DocumentEvent.EventType.REMOVE);
+
+			// boolean isComposedTextElement = false;
+			// Check whether the position of interest is the composed text
+			// isComposedTextElement = Utilities.isComposedTextElement(this, offs);
+
+			// SwingJS n/a
+			// removeUpdate(chng);
+			// SwingJS n/a
+			// UndoableEdit u = data.remove(offs, len);
+			// if (u != null) {
+			// chng.addEdit(u);
+			// }
+			// SwingJS BIDI only
+			// postRemoveUpdate(chng);
+			// Mark the edit as done.
+			// /chng.end();
+			fireRemoveUpdate(chng);
+			// only fire undo if Content implementation supports it
+			// undo for the composed text is not supported for now
+			// SwingJS n/a
+			// if ((u != null) && !isComposedTextElement) {
+			// fireUndoableEditUpdate(new UndoableEditEvent(this, chng));
+			// }
+		}
+	}
+
+	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the parameters
 	 * passed into the fire method.
@@ -175,8 +273,8 @@ public abstract class JSAbstractDocument  implements Document {
 	}
 
 	/**
-	 * SwingJS note: SwingJS does not implement redo/undo and compound edits.  
-	 *   
+	 * SwingJS note: SwingJS does not implement redo/undo and compound edits.
+	 * 
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the parameters
 	 * passed into the fire method.
@@ -239,10 +337,11 @@ public abstract class JSAbstractDocument  implements Document {
 			notifyingListeners = false;
 		}
 	}
-	
+
 	private void checkAlreadyNotifying() {
 		if (notifyingListeners)
-			throw new IllegalStateException("One of the document listeners modifed the document. This is not allowed.");
+			throw new IllegalStateException(
+					"One of the document listeners modifed the document. This is not allowed.");
 	}
 
 	@Override
@@ -279,7 +378,173 @@ public abstract class JSAbstractDocument  implements Document {
 		props.put(key, value);
 	}
 
+	protected DocumentFilter filter;
 
+	@Override
+	public int getAsynchronousLoadPriority() {
+		// synchronous
+		return -1;
+	}
+
+	@Override
+	public void setDocumentFilter(DocumentFilter filter) {
+		this.filter = filter;
+	}
+
+	public DocumentFilter getDocumentFilter() {
+		return filter;
+	}
+
+	private class DefaultFilterBypass extends DocumentFilter.FilterBypass {
+		public Document getDocument() {
+			return me;
+		}
+
+		public void remove(int offset, int length) throws BadLocationException {
+			handleRemove(offset, length);
+		}
+
+		public void insertString(int offset, String string, AttributeSet attr)
+				throws BadLocationException {
+			handleInsertString(offset, string, attr);
+		}
+
+		public void replace(int offset, int length, String text, AttributeSet attrs)
+				throws BadLocationException {
+			handleRemove(offset, length);
+			handleInsertString(offset, text, attrs);
+		}
+	}
+
+	protected class JSElement implements Element {
+
+		protected Element parent;
+		protected AttributeSet attributeSet;
+		protected int start;
+		protected int end;
+		protected int nchildren;
+		protected JSElement[] children;
+		protected int lastIndex;
+
+		JSElement() {
+			children = null;
+			nchildren = 0;
+			lastIndex = -1;
+		}
+
+		public void addChild(JSElement e) {
+			if (children == null)
+				children = new JSElement[10];
+			else if (nchildren == children.length)
+				children = (JSElement[]) AU.doubleLength(children);
+			children[nchildren++] = e;
+		}
+
+		@Override
+		public Document getDocument() {
+			return me;
+		}
+
+		@Override
+		public Element getParentElement() {
+			return parent;
+		}
+
+		@Override
+		public String getName() {
+			return getName();
+		}
+
+		@Override
+		public AttributeSet getAttributes() {
+			return attributeSet;
+		}
+
+		@Override
+		public int getStartOffset() {
+			return start;
+		}
+
+		@Override
+		public int getEndOffset() {
+			return end;
+		}
+
+		@Override
+		public int getElementIndex(int offset) {
+			int index;
+			int lower = 0;
+			int upper = nchildren - 1;
+			int mid = 0;
+			int p0 = getStartOffset();
+			int p1;
+
+			if (nchildren == 0) {
+				return 0;
+			}
+			if (offset >= getEndOffset()) {
+				return nchildren - 1;
+			}
+
+			// see if the last index can be used.
+			if ((lastIndex >= lower) && (lastIndex <= upper)) {
+				Element lastHit = children[lastIndex];
+				p0 = lastHit.getStartOffset();
+				p1 = lastHit.getEndOffset();
+				if ((offset >= p0) && (offset < p1)) {
+					return lastIndex;
+				}
+
+				// last index wasn't a hit, but it does give useful info about
+				// where a hit (if any) would be.
+				if (offset < p0) {
+					upper = lastIndex;
+				} else {
+					lower = lastIndex;
+				}
+			}
+
+			while (lower <= upper) {
+				mid = lower + ((upper - lower) / 2);
+				Element elem = children[mid];
+				p0 = elem.getStartOffset();
+				p1 = elem.getEndOffset();
+				if ((offset >= p0) && (offset < p1)) {
+					// found the location
+					index = mid;
+					lastIndex = index;
+					return index;
+				} else if (offset < p0) {
+					upper = mid - 1;
+				} else {
+					lower = mid + 1;
+				}
+			}
+
+			// didn't find it, but we indicate the index of where it would belong
+			if (offset < p0) {
+				index = mid;
+			} else {
+				index = mid + 1;
+			}
+			lastIndex = index;
+			return index;
+		}
+
+		@Override
+		public int getElementCount() {
+			return nchildren;
+		}
+
+		@Override
+		public Element getElement(int index) {
+			return (index >= nchildren ? null : children[index]);
+		}
+
+		@Override
+		public boolean isLeaf() {
+			return (parent != null);
+		}
+
+	}
 }
-
-

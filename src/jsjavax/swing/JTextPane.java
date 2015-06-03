@@ -32,6 +32,7 @@ import jsjavax.swing.text.Caret;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.Element;
+import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.MutableAttributeSet;
 import jsjavax.swing.text.Style;
 import jsjavax.swing.text.StyleConstants;
@@ -194,8 +195,8 @@ public class JTextPane extends JEditorPane {
                 int p0 = Math.min(caret.getDot(), caret.getMark());
                 int p1 = Math.max(caret.getDot(), caret.getMark());
                 AttributeSet attr = getInputAttributes().copyAttributes();
-                if (doc instanceof AbstractDocument) {
-                    ((AbstractDocument)doc).replace(p0, p1 - p0, content,attr);
+                if (doc instanceof JSMinimalAbstractDocument) {
+                    ((JSMinimalAbstractDocument)doc).replace(p0, p1 - p0, content,attr);
                 }
                 else {
                     if (p0 != p1) {

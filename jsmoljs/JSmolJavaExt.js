@@ -1,5 +1,5 @@
 // JSmolJavaExt.js
-
+ 
 
 // This library will be wrapped by an additional anonymous function using ANT in 
 // build_03_tojs.xml. This task will also modify variable names. References 
@@ -7,6 +7,7 @@
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 5/31/2015 5:53:04 PM Number.compareTo added
 // BH 5/21/2015 5:46:30 PM Number("0xFFFFFFFF") is not -1
 // BH 4/23/2015 9:08:59 AM xx.getComponentType() is nonfunctional. Array.newInstance now defines a wrapper for .getClass().getComponentType() that works  
 // BH 4/12/2015 1:37:44 PM adding Math.rint = Math.round
@@ -90,7 +91,7 @@ Number.__CLASS_NAME__="Number";
 Clazz.implementOf(Number,java.io.Serializable);
 Number.equals=Clazz._innerFunctions.equals;
 Number.getName=Clazz._innerFunctions.getName;
-
+Number.prototype.compareTo = function(x) { var a = this.value, b = x.value; return (a < b ? -1 : a == b ? 0 : 1) };
 
 Clazz.defineMethod(Number,"shortValue",
 function(){
@@ -333,7 +334,7 @@ Long.TYPE=Long.prototype.TYPE=Long;
 
 Clazz.defineMethod(Long,"parseLong",
 function(s,radix){
- return Integer.parseInteger(s, radix || 10);
+ return Integer.parseInt(s, radix || 10);
 });
 
 Long.parseLong=Long.prototype.parseLong;

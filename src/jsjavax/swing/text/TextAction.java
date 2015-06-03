@@ -85,39 +85,38 @@ public abstract class TextAction extends AbstractAction {
         return getFocusedComponent();
     }
 
-    /**
-     * Takes one list of
-     * commands and augments it with another list
-     * of commands.  The second list takes precedence
-     * over the first list; that is, when both lists
-     * contain a command with the same name, the command
-     * from the second list is used.
-     *
-     * @param list1 the first list, may be empty but not
-     *              <code>null</code>
-     * @param list2 the second list, may be empty but not
-     *              <code>null</code>
-     * @return the augmented list
-     */
-    public static final Action[] augmentList(Action[] list1, Action[] list2) {
-        Hashtable h = new Hashtable();
-        for (int i = 0; i < list1.length; i++) {
-            Action a = list1[i];
-            String value = (String)a.getValue(Action.NAME);
-            h.put((value!=null ? value:""), a);
-        }
-        for (int i = 0; i < list2.length; i++) {
-            Action a = list2[i];
-            String value = (String)a.getValue(Action.NAME);
-            h.put((value!=null ? value:""), a);
-        }
-        Action[] actions = new Action[h.size()];
-        int index = 0;
-        for (Enumeration e = h.elements() ; e.hasMoreElements() ;) {
-            actions[index++] = (Action) e.nextElement();
-        }
-        return actions;
-    }
+	/**
+	 * Takes one list of commands and augments it with another list of commands.
+	 * The second list takes precedence over the first list; that is, when both
+	 * lists contain a command with the same name, the command from the second
+	 * list is used.
+	 * 
+	 * @param list1
+	 *          the first list, may be empty but not <code>null</code>
+	 * @param list2
+	 *          the second list, may be empty but not <code>null</code>
+	 * @return the augmented list
+	 */
+	public static final Action[] augmentList(Action[] list1, Action[] list2) {
+		Hashtable h = new Hashtable();
+		if (list1 != null) // Swingjs adds null test
+			for (int i = 0; i < list1.length; i++) {
+				Action a = list1[i];
+				String value = (String) a.getValue(Action.NAME);
+				h.put((value != null ? value : ""), a);
+			}
+		for (int i = 0; i < list2.length; i++) {
+			Action a = list2[i];
+			String value = (String) a.getValue(Action.NAME);
+			h.put((value != null ? value : ""), a);
+		}
+		Action[] actions = new Action[h.size()];
+		int index = 0;
+		for (Enumeration e = h.elements(); e.hasMoreElements();) {
+			actions[index++] = (Action) e.nextElement();
+		}
+		return actions;
+	}
 
     /**
      * Fetches the text component that currently has focus.

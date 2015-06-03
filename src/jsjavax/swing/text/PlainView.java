@@ -24,6 +24,7 @@
  */
 package jsjavax.swing.text;
 
+import swingjs.JSPlainDocument;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Font;
@@ -58,7 +59,8 @@ public class PlainView extends View implements TabExpander {
      * @return the tab size
      */
     protected int getTabSize() {
-        Integer i = (Integer) getDocument().getProperty(PlainDocument.tabSizeAttribute);
+    	// SwingJS -- temporarily using JSPlainDocument here
+        Integer i = (Integer) getDocument().getProperty(JSPlainDocument.tabSizeAttribute);
         int size = (i != null) ? i.intValue() : 8;
         return size;
     }

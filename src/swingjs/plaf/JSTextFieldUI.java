@@ -1,60 +1,56 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import java.awt.event.KeyEvent;
+
 import jsjava.awt.Dimension;
-import jsjavax.swing.text.JTextComponent;
+import jsjava.awt.event.ActionEvent;
+import jsjavax.swing.Action;
+import jsjavax.swing.JTextField;
 import swingjs.api.DOMNode;
-import swingjs.api.JSFunction;
 
 /**
- * SWingJS implementation of stateful user interface for buttons. 
- * Modeled after javax.swing.plaf.basic.BasicButtonUI.java (commented out below).
+ * A minimal implementation of a test field ui/peer
  * 
- * @author RM
+ * @author Bob Hanson
  *
  */
 public class JSTextFieldUI extends JSTextUI {
 
-	/**
-	 * the radio or check-box or simple button
-	 * 
-	 */
-	protected DOMNode domBtn;
+	protected String inputType = "text";
 
 	@Override
 	public DOMNode getDOMObject() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
-			domBtn = focusNode = enableNode = valueNode = domNode = DOMNode.setStyles(createDOMObject("input", id,
-					"type", "text"), "padding", "0px 1px");
+			focusNode = enableNode = valueNode = domNode = DOMNode
+					.setStyles(createDOMObject("input", id, "type", inputType),
+							"padding", "0px 1px");
 			vCenter(domNode, -10);
 			bindMouse(domNode);
 			bindKeys(domNode);
+			setFocusable();
 		}
-		setCssFont(
-				DOMNode.setAttr(domNode, "value", ((JTextComponent) c).getText()),
+		setCssFont(setProp(domNode, "value", getComponentText()),
 				c.getFont());
+		if (!editable)
+			DOMNode.setAttr(domNode, "readOnly", "true");
 		return domNode;
 	}
 
-	
 	@Override
 	protected Dimension getCSSDimension(int w, int h) {
 		return new Dimension(w, h - 2);
 	}
 	
-	private void bindKeys(DOMNode domNode) {
-		JSFunction f = null;
-		JSEventHandler me = this;
-		/**
-		 * @j2sNative
-		 *   
-		 *    f = function(event) { me.handleJSEvent(me.domNode, 401, event) }
-		 */
-		{
-		  System.out.println(me);
+	@Override
+	boolean handleEnter(int eventType) {
+		if (eventType == KeyEvent.KEY_PRESSED) {
+			Action a = getActionMap().get(JTextField.notifyAction);
+			if (a != null)
+				a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, JTextField.notifyAction, System.currentTimeMillis(), 0));
 		}
-		$(domNode).bind("keydown keypress keyup", f);
+		return true;
 	}
 
 

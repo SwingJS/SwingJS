@@ -626,8 +626,11 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				throw new InstantiationException("\"code\" must be specified.");
 			}
 			applet = (JApplet) JSToolkit.getInstance(code);
-			if (!(applet instanceof JApplet)) {
-				System.out.println(code + "is not a JApplet!?");
+			if (applet == null) {
+				System.out.println(code + " could not be launched");
+				status = APPLET_ERROR;
+			} else if (!(applet instanceof JApplet)) {
+				System.out.println(code + " is not a JApplet!?");
 				status = APPLET_ERROR;
 			}
 		} catch (InstantiationException e) {

@@ -7307,7 +7307,7 @@ protected  transient ComponentPeer peer;
   		/**
   		 * @j2sNative
   		 * 
-  		 *            if (argments.length == 1) {
+  		 *            if (arguments.length == 1) {
   		 *            addPropertyChangeListener1(propertyName); return; }
   		 * 
   		 */

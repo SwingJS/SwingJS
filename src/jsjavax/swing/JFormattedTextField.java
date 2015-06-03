@@ -26,34 +26,33 @@ package jsjavax.swing;
 
 //import jsjava.text.AttributedCharacterIterator;
 //TODO import jsjava.text.DateFormat;
-import jsjava.text.DateFormat;
-import jsjava.text.DecimalFormat;
-import jsjava.text.Format;
-import jsjava.text.NumberFormat;
-import jsjava.text.ParseException;
 import java.util.Date;
-
-import swingjs.JSToolkit;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.InputMethodEvent;
+import jsjava.text.DateFormat;
+import jsjava.text.DecimalFormat;
+import jsjava.text.Format;
+import jsjava.text.NumberFormat;
+import jsjava.text.ParseException;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.plaf.UIResource;
-import jsjavax.swing.text.AbstractDocument;
 import jsjavax.swing.text.DateFormatter;
 import jsjavax.swing.text.DefaultFormatter;
 import jsjavax.swing.text.DefaultFormatterFactory;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.DocumentFilter;
 import jsjavax.swing.text.InternationalFormatter;
-//import jsjavax.swing.text.InternationalFormatter;
+import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.NavigationFilter;
 import jsjavax.swing.text.NumberFormatter;
 import jsjavax.swing.text.TextAction;
+import swingjs.JSToolkit;
+//import jsjavax.swing.text.InternationalFormatter;
 
 /**
  * <code>JFormattedTextField</code> extends <code>JTextField</code> adding
@@ -280,10 +279,11 @@ public class JFormattedTextField extends JTextField {
 //     * Indicates the input method composed text is in the document
 //     */
 //    private boolean composedTextExists = false;
-//    /**
-//     * A handler for FOCUS_LOST event
-//     */
-//    private FocusLostHandler focusLostHandler;
+
+    /**
+     * A handler for FOCUS_LOST event
+     */
+    private FocusLostHandler focusLostHandler;
 
 
     /**
@@ -317,6 +317,8 @@ public class JFormattedTextField extends JTextField {
      * then wrapped in an <code>AbstractFormatterFactory</code>.
      *
      * @param format Format used to look up an AbstractFormatter
+     * 
+     *
      */
     public JFormattedTextField(jsjava.text.Format format) {
         this();
@@ -434,9 +436,7 @@ public class JFormattedTextField extends JTextField {
      *              AbstractFormatter that can format the current value.
      */
     public void setFormatterFactory(AbstractFormatterFactory tf) {
-        AbstractFormatterFactory oldFactory = factory;
-
-        factory = tf;
+        AbstractFormatterFactory oldFactory = factory = tf;
         firePropertyChangeObject("formatterFactory", oldFactory, tf);
         setValue(getValue(), true, false);
     }
@@ -594,7 +594,7 @@ public class JFormattedTextField extends JTextField {
      * implementation beeps.
      */
     protected void invalidEdit() {
-    	JSToolkit.alert("SWINGJS INVALID EDIT" + JSToolkit.getStackTrace(-10));
+    	// SwingJS -- no need to indicate anything
     }
 
     /**
@@ -638,16 +638,16 @@ public class JFormattedTextField extends JTextField {
 
         if (isEdited() && e.getID() == FocusEvent.FOCUS_LOST) {
 //            InputContext ic = getInputContext();
-//            if (focusLostHandler == null) {
-//                focusLostHandler = new FocusLostHandler();
-//            }
+            if (focusLostHandler == null) {
+                focusLostHandler = new FocusLostHandler();
+            }
 //
 //            // if there is a composed text, process it first
 //            if ((ic != null) && composedTextExists) {
 //                ic.endComposition();
 //                EventQueue.invokeLater(focusLostHandler);
 //            } else {
-//                focusLostHandler.run();
+                focusLostHandler.run();
 //            }
         }
         else if (!isEdited()) {
@@ -656,32 +656,32 @@ public class JFormattedTextField extends JTextField {
         }
     }
 
-//    /**
-//     * FOCUS_LOST behavior implementation
-//     */
-//    private class FocusLostHandler implements Runnable {
-//        public void run() {
-//            int fb = JFormattedTextField.this.getFocusLostBehavior();
-//            if (fb == JFormattedTextField.COMMIT ||
-//                fb == JFormattedTextField.COMMIT_OR_REVERT) {
-//                try {
-//                    JFormattedTextField.this.commitEdit();
-//                    // Give it a chance to reformat.
-//                    JFormattedTextField.this.setValue(
-//                        JFormattedTextField.this.getValue(), true, true);
-//                } catch (ParseException pe) {
-//                    if (fb == JFormattedTextField.COMMIT_OR_REVERT) {
-//                        JFormattedTextField.this.setValue(
-//                            JFormattedTextField.this.getValue(), true, true);
-//                    }
-//                }
-//            }
-//            else if (fb == JFormattedTextField.REVERT) {
-//                JFormattedTextField.this.setValue(
-//                    JFormattedTextField.this.getValue(), true, true);
-//            }
-//        }
-//    }
+    /**
+     * FOCUS_LOST behavior implementation
+     */
+    private class FocusLostHandler implements Runnable {
+        public void run() {
+            int fb = JFormattedTextField.this.getFocusLostBehavior();
+            if (fb == JFormattedTextField.COMMIT ||
+                fb == JFormattedTextField.COMMIT_OR_REVERT) {
+                try {
+                    JFormattedTextField.this.commitEdit();
+                    // Give it a chance to reformat.
+                    JFormattedTextField.this.setValue(
+                        JFormattedTextField.this.getValue(), true, true);
+                } catch (ParseException pe) {
+                    if (fb == JFormattedTextField.COMMIT_OR_REVERT) {
+                        JFormattedTextField.this.setValue(
+                            JFormattedTextField.this.getValue(), true, true);
+                    }
+                }
+            }
+            else if (fb == JFormattedTextField.REVERT) {
+                JFormattedTextField.this.setValue(
+                    JFormattedTextField.this.getValue(), true, true);
+            }
+        }
+    }
 
     /**
      * Fetches the command list for the editor.  This is
@@ -1112,8 +1112,8 @@ public class JFormattedTextField extends JTextField {
             if (ftf != null) {
                 Document doc = ftf.getDocument();
 
-                if (doc instanceof AbstractDocument) {
-                    ((AbstractDocument)doc).setDocumentFilter(filter);
+                if (doc instanceof JSMinimalAbstractDocument) {
+                    ((JSMinimalAbstractDocument)doc).setDocumentFilter(filter);
                 }
                 doc.putProperty(DocumentFilter.class, null);
             }

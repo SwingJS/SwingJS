@@ -3,6 +3,28 @@ Notes
 
 PROGRESS
 ========
+TODO: next: JComboBox
+
+6/3/2015 BH
+
+JTextField ENTER action enabled
+JPasswordField working using simple HTML5 type="password"
+JFormattedTextField working; proper validation enabled for number formatters with FocusLost action
+
+see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/formattedfield.htm
+    and swingjs/test/FormattedTextFieldDemo.java
+
+see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/converter.htm
+   (this app still needs selection boxes
+
+SwingJS J2S bug #16 NumberFormat.js includes the inner public class NumberFormat.Field, which is called here by instanceOf 
+
+Solution was to change the requirement to the outer class:
+@J2SRequireImport(NumberFormat.class)
+@J2SIgnoreImport(NumberFormat.Field.class)
+public class NumberFormatter extends InternationalFormatter...
+
+
 5/30/2015 BH
 
 jQuery Slider is implemented for JSlider
@@ -451,6 +473,17 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#16 when an inner public class is called by another class using instanceOf, that inner class becomes an optional load. 
+but optional loads must still be loaded, and unless declared in package.js, J2S will look for xxx.xxx.Outer/Inner.js
+because the inner classes are not fully declared. 
+
+Solution is to switch to requiring the outer class, not the inner class:
+
+@J2SRequireImport(NumberFormat.class)
+@J2SIgnoreImport(NumberFormat.Field.class)
+public class NumberFormatter extends InternationalFormatter...
+
+
 #15 A subclass cannot have the same constructor signature as a superclass except for 
 a parameter of its class:
 
@@ -464,7 +497,13 @@ public SunWriteableRaster extends WriteableRaster
 			
 This results in an infinite loop.
 			
+Solution: there is no need for this; just make all references to the superclass:
+
+public SunWriteableRaster extends WriteableRaster
+	public IntegerComponentRaster(SampleModel sampleModel, DataBuffer dataBuffer,
+			Rectangle aRegion, Point origin, Raster parent)
 			
+ 
 
 
 

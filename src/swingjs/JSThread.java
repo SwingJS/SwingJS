@@ -33,7 +33,7 @@ import swingjs.api.JSFunction;
 /**
  * A class that takes care of simple threading.
  * 
- * @author RM
+ * @author Bob Hanson
  * 
  */
 public abstract class JSThread extends Thread implements JSFunction {

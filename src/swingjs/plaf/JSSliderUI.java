@@ -50,6 +50,7 @@ public class JSSliderUI extends JSComponentUI implements PropertyChangeListener,
 
 	public JSSliderUI() {
 		needPreferred = true;
+		setDoc();
 	}
 
 	static {		

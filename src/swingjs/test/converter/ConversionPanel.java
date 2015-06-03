@@ -66,6 +66,7 @@ public class ConversionPanel extends JPanel
     Unit[] units;
     String title;
     NumberFormat numberFormat;
+		private NumberFormatter formatter;
 
     final static boolean MULTICOLORED = false;
     final static int MAX = 10000;
@@ -90,7 +91,8 @@ public class ConversionPanel extends JPanel
         //Create the text field format, and then the text field.
         numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setMaximumFractionDigits(2);
-        NumberFormatter formatter = new NumberFormatter(numberFormat);
+        //NumberFormatter 
+        formatter = new NumberFormatter(numberFormat);
         formatter.setAllowsInvalid(false);
         formatter.setCommitsOnValidEdit(true);//seems to be a no-op --
         //aha -- it changes the value property but doesn't cause the result to

@@ -24,6 +24,7 @@
  */
 package jsjavax.swing;
 
+import swingjs.JSPlainDocument;
 import swingjs.JSToolkit;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
@@ -34,6 +35,7 @@ import jsjavax.swing.text.AbstractDocument;
 import jsjavax.swing.text.BadLocationException;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.Element;
+import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.PlainDocument;
 
@@ -268,7 +270,8 @@ public class JTextArea extends JTextComponent {
         Document doc = getDocument();
         if (doc != null) {
             int old = getTabSize();
-            doc.putProperty(PlainDocument.tabSizeAttribute, new Integer(size));
+          	// SwingJS -- temporarily using JSPlainDocument here
+            doc.putProperty(JSPlainDocument.tabSizeAttribute, new Integer(size));
             firePropertyChangeInt("tabSize", old, size);
         }
     }
@@ -283,7 +286,8 @@ public class JTextArea extends JTextComponent {
         int size = 8;
         Document doc = getDocument();
         if (doc != null) {
-            Integer i = (Integer) doc.getProperty(PlainDocument.tabSizeAttribute);
+        	// SwingJS -- temporarily using JSPlainDocument here
+            Integer i = (Integer) doc.getProperty(JSPlainDocument.tabSizeAttribute);
             if (i != null) {
                 size = i.intValue();
             }
@@ -516,8 +520,8 @@ public class JTextArea extends JTextComponent {
         Document doc = getDocument();
         if (doc != null) {
             try {
-                if (doc instanceof AbstractDocument) {
-                    ((AbstractDocument)doc).replace(start, end - start, str,
+                if (doc instanceof JSMinimalAbstractDocument) {
+                    ((JSMinimalAbstractDocument)doc).replace(start, end - start, str,
                                                     null);
                 }
                 else {

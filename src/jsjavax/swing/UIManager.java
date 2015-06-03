@@ -184,7 +184,7 @@ public class UIManager
 //
 //        LookAndFeelInfo[] installedLAFs;
 //
-////        UIDefaults getLookAndFeelDefaults() { return tables[0]; }
+       public static UIDefaults getLookAndFeelDefaults() { return uid; }//tables[0]; }
 ////        void setLookAndFeelDefaults(UIDefaults x) { tables[0] = x; }
 ////
 ////        UIDefaults getSystemDefaults() { return tables[1]; }

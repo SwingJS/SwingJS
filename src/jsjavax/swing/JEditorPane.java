@@ -43,6 +43,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import swingjs.J2SIgnoreImport;
+import swingjs.JSAbstractDocument;
 import swingjs.api.Interface;
 
 
@@ -65,6 +66,7 @@ import jsjavax.swing.text.DefaultEditorKit;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.Element;
+import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.StyleConstants;
 import jsjavax.swing.text.StyledEditorKit;
@@ -549,8 +551,8 @@ public class JEditorPane extends JTextComponent {
      * Return load priority for the document or -1 if priority not supported.
      */
     private int getAsynchronousLoadPriority(Document doc) {
-        return (doc instanceof AbstractDocument ?
-            ((AbstractDocument) doc).getAsynchronousLoadPriority() : -1);
+        return (doc instanceof JSMinimalAbstractDocument ?
+            ((JSMinimalAbstractDocument) doc).getAsynchronousLoadPriority() : -1);
     }
 
     /**
@@ -1235,8 +1237,8 @@ public class JEditorPane extends JTextComponent {
                 Caret caret = getCaret();
                 int p0 = Math.min(caret.getDot(), caret.getMark());
                 int p1 = Math.max(caret.getDot(), caret.getMark());
-                if (doc instanceof AbstractDocument) {
-                    ((AbstractDocument)doc).replace(p0, p1 - p0, content,
+                if (doc instanceof JSMinimalAbstractDocument) {
+                    ((JSMinimalAbstractDocument)doc).replace(p0, p1 - p0, content,
                               ((StyledEditorKit)kit).getInputAttributes());
                 }
                 else {
@@ -2200,23 +2202,23 @@ public class JEditorPane extends JTextComponent {
          * @see View
          */
         public View create(Element elem) {
-            Document doc = elem.getDocument();
-            Object i18nFlag
-                = doc.getProperty("i18n"/*AbstractDocument.I18NProperty*/);
-            if ((i18nFlag != null) && i18nFlag.equals(Boolean.TRUE)) {
-                // build a view that support bidi
-                return createI18N(elem);
-            } else {
+//            Document doc = elem.getDocument();
+//            Object i18nFlag
+//                = doc.getProperty("i18n"/*AbstractDocument.I18NProperty*/);
+//            if ((i18nFlag != null) && i18nFlag.equals(Boolean.TRUE)) {
+//                // build a view that support bidi
+//                return createI18N(elem);
+//            } else {
                 return new WrappedPlainView(elem);
-            }
+//            }
         }
 
         View createI18N(Element elem) {
             String kind = elem.getName();
             if (kind != null) {
-                if (kind.equals(AbstractDocument.ContentElementName)) {
+                if (kind.equals(JSAbstractDocument.ContentElementName)) {
                     return new PlainParagraph(elem);
-                } else if (kind.equals(AbstractDocument.ParagraphElementName)){
+                } else if (kind.equals(JSAbstractDocument.ParagraphElementName)){
                     return new BoxView(elem, View.Y_AXIS);
                 }
             }

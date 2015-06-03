@@ -34,6 +34,9 @@ import jsjava.text.ParseException;
 import java.util.Iterator;
 import java.util.Map;
 
+import swingjs.J2SIgnoreImport;
+import swingjs.J2SRequireImport;
+
 
 /**
  * <code>NumberFormatter</code> subclasses <code>InternationalFormatter</code>
@@ -96,6 +99,10 @@ import java.util.Map;
  *
  * @since 1.4
  */
+
+// SwingJS J2S bug #16 NumberFormat.js includes the inner public class NumberFormat.Field, which is called here by instanceOf 
+@J2SRequireImport(NumberFormat.class)
+@J2SIgnoreImport(NumberFormat.Field.class)
 public class NumberFormatter extends InternationalFormatter {
     /** The special characters from the Format instance. */
     private String specialChars;
@@ -164,7 +171,7 @@ public class NumberFormatter extends InternationalFormatter {
      * Invokes <code>parseObject</code> on <code>f</code>, returning
      * its value.
      */
-    Object stringToValue(String text, Format f) throws ParseException {
+    Object stringToValueParse(String text, Format f) throws ParseException {
         if (f == null) {
             return text;
         }

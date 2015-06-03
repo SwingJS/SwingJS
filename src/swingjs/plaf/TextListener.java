@@ -25,68 +25,63 @@
 
 package swingjs.plaf;
 
-import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
-import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseListener;
 import jsjava.awt.event.MouseMotionListener;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
-import jsjavax.swing.text.JTextComponent;
-import jsjavax.swing.ButtonModel;
-import jsjavax.swing.InputMap;
-import jsjavax.swing.JComponent;
-import jsjavax.swing.KeyStroke;
 import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
-import jsjavax.swing.plaf.ComponentInputMapUIResource;
-import jsjavax.swing.plaf.ComponentUI;
-import jssun.swing.UIAction;
+import jsjavax.swing.text.JTextComponent;
 
-public class JSTextListener implements MouseListener, MouseMotionListener,
+public class TextListener implements MouseListener, MouseMotionListener,
                                    FocusListener, ChangeListener, PropertyChangeListener, DocumentListener, JSEventHandler
 {
 
-    private JTextComponent b;
+    private JTextComponent txtComp;
     
     boolean haveDocument;
 
-		public JSTextListener(JTextComponent b) {
-    	this.b = b;
-    	
+		private JSTextUI ui;
+
+		public TextListener(JSTextUI ui, JTextComponent txtComp) {
+    	this.txtComp = txtComp;
+    	this.ui = ui;
     }
 
   void checkDocument() {
-  	if (!haveDocument && b.getDocument() != null) {
+  	if (!haveDocument && txtComp.getDocument() != null) {
   		haveDocument = true;
-  		b.getDocument().addDocumentListener(this);
+  		txtComp.getDocument().addDocumentListener(this);
   	}
   }
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
 		System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
 		if ("font" == prop || "foreground" == prop || "preferredSize" == prop) {
-			JTextComponent b = (JTextComponent) e.getSource();
-			((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged(prop);
+			JTextComponent txtComp = (JTextComponent) e.getSource();
+			((JSComponentUI) (Object) txtComp.getUI()).notifyPropertyChanged(prop);
 		}
+		if ("editable" == prop)
+			ui.setEditable(((Boolean) e.getNewValue()).booleanValue());
 	}
 
   public void stateChanged(ChangeEvent e) {
-        JTextComponent b = (JTextComponent) e.getSource();
-        b.repaint();
+        JTextComponent txtComp = (JTextComponent) e.getSource();
+        txtComp.repaint();
     }
 
     public void focusGained(FocusEvent e) {
     }
 
     public void focusLost(FocusEvent e) {
-        JTextComponent b = (JTextComponent) e.getSource();
+//        JTextComponent b = (JTextComponent) e.getSource();
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -101,11 +96,11 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			JTextComponent b = (JTextComponent) e.getSource();
-			if (!b.contains(e.getX(), e.getY()))
+			JTextComponent txtComp = (JTextComponent) e.getSource();
+			if (!txtComp.contains(e.getX(), e.getY()))
 				return;
-			if (!b.hasFocus() && b.isRequestFocusEnabled()) {
-				b.requestFocus();
+			if (!txtComp.hasFocus() && txtComp.isRequestFocusEnabled()) {
+				txtComp.requestFocus();
 			}
 		}
 	};
@@ -131,11 +126,15 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		JSTextUI ui = (JSTextUI) target;
 		int dot = 0, mark = 0;
 		String evType = null;
+		int keyCode = 0;
 		/**
 		 * @j2sNative
 		 * 
-		 *            mark = jQueryEvent.target.selectionStart; dot =
-		 *            jQueryEvent.target.selectionEnd; evType = jQueryEvent.type;
+		 *            mark = jQueryEvent.target.selectionStart; 
+		 *            dot = jQueryEvent.target.selectionEnd; 
+		 *            evType = jQueryEvent.type;
+		 *            keyCode = jQueryEvent.keyCode;
+		 *            if (keyCode == 13) keyCode = 10; 
 		 */
 		{
 		}
@@ -157,12 +156,16 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		case KeyEvent.KEY_PRESSED:
 		case KeyEvent.KEY_RELEASED:
 		case KeyEvent.KEY_TYPED:
+			if (keyCode == KeyEvent.VK_ENTER && ui.handleEnter(eventType))
+				break;
 			String val = ui.getJSTextValue();
-			if (!val.equals(ui.currentValue)) {
-				String oldval = ui.currentValue;
-				ui.currentValue = val; // prevents overwriting of new value same as old
+			if (!val.equals(ui.currentText)) {
+				String oldval = ui.currentText;
 				ui.editor.setText(val);
+				// the text may have been filtered, but we should not change it yet
+				//val = ui.getComponentText();
 				ui.editor.firePropertyChangeObject("text", oldval, val);
+				ui.domNode.setSelectionRange(dot, dot);
 			}
 			break;
 		}
@@ -172,8 +175,8 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 				ui.editor.getCaret().moveDot(mark);
 			ui.editor.caretEvent.fire();
 		}
-		System.out.println(ui.id + " handling event " + evType + " " + eventType
-				+ " " + ui.editor.getCaret());// + " " + ui.editor.getText());
+		System.out.println(ui.id + " TextListener handling event " + evType + " " + eventType
+				+ " " + ui.editor.getCaret() + " " + ui.getComponentText().length());
 		return true;
 	}
 
@@ -197,7 +200,7 @@ public class JSTextListener implements MouseListener, MouseMotionListener,
 		// the double qualification to prevent Java compilation errors.
 		// Not a great idea in general....
 	
-		((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged("text");	
+		((JSComponentUI) (Object) txtComp.getUI()).notifyPropertyChanged("text");	
 	}
 }
   

@@ -33,21 +33,15 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import swingjs.JSToolkit;
-
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.ComponentOrientation;
 import jsjava.awt.Dimension;
-import jsjava.awt.EventQueue;
-import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
-import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
-import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.InputMethodListener;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
@@ -73,6 +67,8 @@ import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.TextUI;
 import jssun.awt.AppContext;
+import swingjs.JSPlainDocument;
+import swingjs.JSToolkit;
 //import jsjava.text.AttributedCharacterIterator;
 //import jsjava.text.AttributedString;
 //import jsjava.text.CharacterIterator;
@@ -500,18 +496,19 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         super.setComponentOrientation( o );
     }
 
-    /**
-     * Fetches the command list for the editor.  This is
-     * the list of commands supported by the plugged-in UI
-     * augmented by the collection of commands that the
-     * editor itself supports.  These are useful for binding
-     * to events, such as in a keymap.
-     *
-     * @return the command list
-     */
-    public Action[] getActions() {
-        return getUI().getEditorKit(this).getActions();
-    }
+	/**
+	 * Fetches the command list for the editor. This is the list of commands
+	 * supported by the plugged-in UI augmented by the collection of commands that
+	 * the editor itself supports. These are useful for binding to events, such as
+	 * in a keymap.
+	 * 
+	 * @return the command list
+	 */
+	public Action[] getActions() {
+		if (getUI() == null) // SwingJS adding null test
+			return null;
+		return getUI().getEditorKit(this).getActions();
+	}
 
     /**
      * Sets margin space between the text component's border
@@ -1365,8 +1362,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
                 boolean composedTextSaved = saveComposedText(caret.getDot());
                 int p0 = Math.min(caret.getDot(), caret.getMark());
                 int p1 = Math.max(caret.getDot(), caret.getMark());
-                if (doc instanceof AbstractDocument) {
-                    ((AbstractDocument)doc).replace(p0, p1 - p0, content,null);
+                if (doc instanceof JSMinimalAbstractDocument) {
+                    ((JSMinimalAbstractDocument)doc).replace(p0, p1 - p0, content,null);
                 }
                 else {
                     if (p0 != p1) {
@@ -1483,43 +1480,43 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //        }
     }
 
-    /**
-     * This is a conveniance method that is only useful for
-     * <code>cut</code>, <code>copy</code> and <code>paste</code>.  If
-     * an <code>Action</code> with the name <code>name</code> does not
-     * exist in the <code>ActionMap</code>, this will attemp to install a
-     * <code>TransferHandler</code> and then use <code>altAction</code>.
-     */
-    private void invokeAction(String name, Action altAction) {
-        ActionMap map = getActionMap();
-        Action action = null;
+//    /**
+//     * This is a conveniance method that is only useful for
+//     * <code>cut</code>, <code>copy</code> and <code>paste</code>.  If
+//     * an <code>Action</code> with the name <code>name</code> does not
+//     * exist in the <code>ActionMap</code>, this will attemp to install a
+//     * <code>TransferHandler</code> and then use <code>altAction</code>.
+//     */
+//    private void invokeAction(String name, Action altAction) {
+//        ActionMap map = getActionMap();
+//        Action action = null;
+//
+//        if (map != null) {
+//            action = map.get(name);
+//        }
+//        if (action == null) {
+//            installDefaultTransferHandlerIfNecessary();
+//            action = altAction;
+//        }
+//        action.actionPerformed(new ActionEvent(this,
+//                               ActionEvent.ACTION_PERFORMED, (String)action.
+//                               getValue(Action.NAME),
+//                               EventQueue.getMostRecentEventTime(),
+//                               getCurrentEventModifiers()));
+//    }
 
-        if (map != null) {
-            action = map.get(name);
-        }
-        if (action == null) {
-            installDefaultTransferHandlerIfNecessary();
-            action = altAction;
-        }
-        action.actionPerformed(new ActionEvent(this,
-                               ActionEvent.ACTION_PERFORMED, (String)action.
-                               getValue(Action.NAME),
-                               EventQueue.getMostRecentEventTime(),
-                               getCurrentEventModifiers()));
-    }
-
-    /**
-     * If the current <code>TransferHandler</code> is null, this will
-     * install a new one.
-     */
-    private void installDefaultTransferHandlerIfNecessary() {
+//    /**
+//     * If the current <code>TransferHandler</code> is null, this will
+//     * install a new one.
+//     */
+//    private void installDefaultTransferHandlerIfNecessary() {
 //        if (getTransferHandler() == null) {
 //            if (defaultTransferHandler == null) {
 //                defaultTransferHandler = new DefaultTransferHandler();
 //            }
 //            setTransferHandler(defaultTransferHandler);
 //        }
-    }
+//    }
 
     /**
      * Moves the caret to a new position, leaving behind a mark
@@ -1605,7 +1602,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      *  used to initialize
      * @see EditorKit#createDefaultDocument
      * @see #setDocument
-     * @see PlainDocument
+     * @see JSPlainDocument
      */
     public void read(Reader in, Object desc) throws IOException {
         EditorKit kit = getUI().getEditorKit(this);
@@ -1708,8 +1705,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void setText(String t) {
         try {
             Document doc = getDocument();
-            if (doc instanceof AbstractDocument) {
-                ((AbstractDocument)doc).replace(0, doc.getLength(), t,null);
+            if (doc instanceof JSMinimalAbstractDocument) {
+                ((JSMinimalAbstractDocument)doc).replace(0, doc.getLength(), t,null);
             }
             else {
                 doc.remove(0, doc.getLength());
@@ -4032,17 +4029,17 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             get(FOCUSED_COMPONENT);
     }
 
-    private int getCurrentEventModifiers() {
-        int modifiers = 0;
-        AWTEvent currentEvent = EventQueue.getCurrentEvent();
-        if (currentEvent instanceof InputEvent) {
-            modifiers = ((InputEvent)currentEvent).getModifiers();
-        } else if (currentEvent instanceof ActionEvent) {
-            modifiers = ((ActionEvent)currentEvent).getModifiers();
-        }
-        return modifiers;
-    }
-
+//    private int getCurrentEventModifiers() {
+//        int modifiers = 0;
+//        AWTEvent currentEvent = EventQueue.getCurrentEvent();
+//        if (currentEvent instanceof InputEvent) {
+//            modifiers = ((InputEvent)currentEvent).getModifiers();
+//        } else if (currentEvent instanceof ActionEvent) {
+//            modifiers = ((ActionEvent)currentEvent).getModifiers();
+//        }
+//        return modifiers;
+//    }
+//
     private static final Object KEYMAP_TABLE = new Object(); // JTextComponent_KeymapTable
 //    private JTextComponent editor;
     //
@@ -4955,91 +4952,91 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         return (composedTextStart != null);
     }
 
-    //
-    // Caret implementation for editing the composed text.
-    //
-    class ComposedTextCaret extends DefaultCaret  {
-        Color bg;
-
-        //
-        // Get the background color of the component
-        //
-        public void install(JTextComponent c) {
-            super.install(c);
-
-            Document doc = c.getDocument();
-            if (doc instanceof StyledDocument) {
-                StyledDocument sDoc = (StyledDocument)doc;
-                Element elem = sDoc.getCharacterElement(c.composedTextStart.getOffset());
-                AttributeSet attr = elem.getAttributes();
-                bg = sDoc.getBackground(attr);
-            }
-
-            if (bg == null) {
-                bg = c.getBackground();
-            }
-        }
-
-        //
-        // Draw caret in XOR mode.
-        //
-        public void paint(Graphics g) {
-            if(isVisible()) {
-                try {
-                    Rectangle r = component.modelToView(getDot());
-                    g.setXORMode(bg);
-                    g.drawLine(r.x, r.y, r.x, r.y + r.height - 1);
-                    g.setPaintMode();
-                } catch (BadLocationException e) {
-                    // can't render I guess
-                    //System.err.println("Can't render cursor");
-                }
-            }
-        }
-
-        //
-        // If some area other than the composed text is clicked by mouse,
-        // issue endComposition() to force commit the composed text.
-        //
-        protected void positionCaret(MouseEvent me) {
-            JTextComponent host = component;
-            Point pt = new Point(me.getX(), me.getY());
-            int offset = host.viewToModel(pt);
-            int composedStartIndex = host.composedTextStart.getOffset();
-            if ((offset < composedStartIndex) ||
-                (offset > composedTextEnd.getOffset())) {
-                try {
-                    // Issue endComposition
-                    Position newPos = host.getDocument().createPosition(offset);
-//                    host.getInputContext().endComposition();
-
-                    // Post a caret positioning runnable to assure that the positioning
-                    // occurs *after* committing the composed text.
-                    EventQueue.invokeLater(new DoSetCaretPosition(host, newPos));
-                } catch (BadLocationException ble) {
-                    System.err.println(ble);
-                }
-            } else {
-                // Normal processing
-                super.positionCaret(me);
-            }
-        }
-    }
-
-    //
-    // Runnable class for invokeLater() to set caret position later.
-    //
-    private class DoSetCaretPosition implements Runnable {
-        JTextComponent host;
-        Position newPos;
-
-        DoSetCaretPosition(JTextComponent host, Position newPos) {
-            this.host = host;
-            this.newPos = newPos;
-        }
-
-        public void run() {
-            host.setCaretPosition(newPos.getOffset());
-        }
-    }
+//    //
+//    // Caret implementation for editing the composed text.
+//    //
+//    class ComposedTextCaret extends DefaultCaret  {
+//        Color bg;
+//
+//        //
+//        // Get the background color of the component
+//        //
+//        public void install(JTextComponent c) {
+//            super.install(c);
+//
+//            Document doc = c.getDocument();
+//            if (doc instanceof StyledDocument) {
+//                StyledDocument sDoc = (StyledDocument)doc;
+//                Element elem = sDoc.getCharacterElement(c.composedTextStart.getOffset());
+//                AttributeSet attr = elem.getAttributes();
+//                bg = sDoc.getBackground(attr);
+//            }
+//
+//            if (bg == null) {
+//                bg = c.getBackground();
+//            }
+//        }
+//
+//        //
+//        // Draw caret in XOR mode.
+//        //
+//        public void paint(Graphics g) {
+//            if(isVisible()) {
+//                try {
+//                    Rectangle r = component.modelToView(getDot());
+//                    g.setXORMode(bg);
+//                    g.drawLine(r.x, r.y, r.x, r.y + r.height - 1);
+//                    g.setPaintMode();
+//                } catch (BadLocationException e) {
+//                    // can't render I guess
+//                    //System.err.println("Can't render cursor");
+//                }
+//            }
+//        }
+//
+//        //
+//        // If some area other than the composed text is clicked by mouse,
+//        // issue endComposition() to force commit the composed text.
+//        //
+//        protected void positionCaret(MouseEvent me) {
+//            JTextComponent host = component;
+//            Point pt = new Point(me.getX(), me.getY());
+//            int offset = host.viewToModel(pt);
+//            int composedStartIndex = host.composedTextStart.getOffset();
+//            if ((offset < composedStartIndex) ||
+//                (offset > composedTextEnd.getOffset())) {
+//                try {
+//                    // Issue endComposition
+//                    Position newPos = host.getDocument().createPosition(offset);
+////                    host.getInputContext().endComposition();
+//
+//                    // Post a caret positioning runnable to assure that the positioning
+//                    // occurs *after* committing the composed text.
+//                    EventQueue.invokeLater(new DoSetCaretPosition(host, newPos));
+//                } catch (BadLocationException ble) {
+//                    System.err.println(ble);
+//                }
+//            } else {
+//                // Normal processing
+//                super.positionCaret(me);
+//            }
+//        }
+//    }
+//
+//    //
+//    // Runnable class for invokeLater() to set caret position later.
+//    //
+//    private class DoSetCaretPosition implements Runnable {
+//        JTextComponent host;
+//        Position newPos;
+//
+//        DoSetCaretPosition(JTextComponent host, Position newPos) {
+//            this.host = host;
+//            this.newPos = newPos;
+//        }
+//
+//        public void run() {
+//            host.setCaretPosition(newPos.getOffset());
+//        }
+//    }
 }

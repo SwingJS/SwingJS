@@ -32,6 +32,8 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 
+import swingjs.JSPlainDocument;
+
 import jsjava.awt.ComponentOrientation;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
@@ -134,7 +136,8 @@ public class DefaultEditorKit extends EditorKit {
      * @return the model
      */
     public Document createDefaultDocument() {
-        return new PlainDocument();
+    	// SwingJS -- temporarily using JSPlainDocument here
+        return new JSPlainDocument();
     }
 
     /**

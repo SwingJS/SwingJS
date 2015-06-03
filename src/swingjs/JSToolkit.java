@@ -32,22 +32,18 @@ import jsjava.awt.image.Raster;
 import jsjava.awt.image.RasterOp;
 import jsjava.awt.image.WritableRaster;
 import jsjava.awt.peer.LightweightPeer;
-import jsjava.awt.Toolkit;
 import jsjavax.swing.JComponent;
-import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
-import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
 import swingjs.api.JSFunction;
-import swingjs.plaf.HTML5LookAndFeel;
 import swingjs.plaf.JSComponentUI;
 
 @J2SIgnoreImport(URL.class)

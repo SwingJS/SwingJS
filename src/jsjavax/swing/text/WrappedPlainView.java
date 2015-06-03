@@ -26,6 +26,7 @@ package jsjavax.swing.text;
 
 //import java.lang.ref.SoftReference;
 
+import swingjs.JSPlainDocument;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -89,7 +90,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      * @return the tab size
      */
     protected int getTabSize() {
-        Integer i = (Integer) getDocument().getProperty(PlainDocument.tabSizeAttribute);
+    	// SwingJS -- temporarily using JSPlainDocument here
+        Integer i = (Integer) getDocument().getProperty(JSPlainDocument.tabSizeAttribute);
         int size = (i != null) ? i.intValue() : 8;
         return size;
     }

@@ -10,6 +10,8 @@ public abstract class DOMNode {
 
 	public abstract DOMNode removeAttribute(String attr);
 	
+	public abstract void setSelectionRange(int pt0, int pt1);
+
 	public static DOMNode createElement(String key, String id) {
 		DOMNode obj = null;
 		/**
@@ -85,6 +87,17 @@ public abstract class DOMNode {
 		}
 	}
 
+	public String getStyle(String style) {
+		/**
+		 * @j2sNative
+		 * 
+		 *       if (obj)return obj.style[style];
+		 * 
+		 */
+		{
+			return null;
+		}
+	}
 	public static DOMNode setAttr(DOMNode obj, String attr, Object val) {
 		/**
 		 * @j2sNative
@@ -118,4 +131,5 @@ public abstract class DOMNode {
 	public static DOMNode setSize(DOMNode obj, int width, int height) {
 		return setStyles(obj, "width", width + "px", "height", height + "px");
 	}
+
 }
