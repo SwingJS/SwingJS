@@ -927,6 +927,23 @@ instead of
 month /= 367
 
 
+Because "-1" in JavaScript is not 0xFFFFFFFF one must take care to not compare a negative number with a 32-bit mask;
+
+(b & 0xFF000000) == 0xFF000000
+
+is true in Java for (int) b = -1, but is false in JavaScript, because 0xFF000000 is 4278190080, 
+while (-1 & 0xFF000000) is, strangely enough, -16777216, and, in fact, 
+
+(0xFF000000 & 0xFF000000) != 0xFF000000
+
+because -16777216 is not 4278190080.
+
+One must compare similar operations:
+
+if ((b & 0xFF000000) == (0xFF000000 & 0xFF000000)) .....
+
+
+
 distinguishing arrays
 ---------------------
 
