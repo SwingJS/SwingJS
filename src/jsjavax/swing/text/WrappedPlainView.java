@@ -349,7 +349,7 @@ public class WrappedPlainView extends BoxView implements TabExpander {
 
          switch (axis) {
             case View.X_AXIS:
-	       int defaultWidth = 80 * metrics.getWidths()['M'];
+	       int defaultWidth = 80 * metrics.charWidth('M');
                int parentWidth = 0;
                
                if (parent != null) {

@@ -76,6 +76,7 @@ class EventDispatchThread extends JSThread {
 	private EventFilter filter;
 	private Conditional cond;
 	private int id;
+	private boolean doDispatch = true;
 
 	EventDispatchThread(ThreadGroup group, String name, EventQueue queue) {
 		super(group, name);

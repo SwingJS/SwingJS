@@ -1,4 +1,5 @@
-// JSmoljQueryExt.js
+// SwingJSjQueryExt.js
+// BH 7/24/2015 7:24:30 AM renamed from JSmoljQueryExt.js
 // 9/2/2013 7:43:12 AM BH Opera/Safari fix for binary file reading
 // 3/11/2014 6:31:01 AM BH fix for MSIE not working locally
 

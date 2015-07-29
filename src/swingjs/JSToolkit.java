@@ -20,6 +20,7 @@ import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
+import jsjava.awt.Frame;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Window;
@@ -31,7 +32,9 @@ import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.Raster;
 import jsjava.awt.image.RasterOp;
 import jsjava.awt.image.WritableRaster;
+import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
+import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
@@ -347,10 +350,17 @@ public class JSToolkit extends SunToolkit {
 		return font.getName();
 	}
 
+	/**
+	 * In JavaScript we only have one font metric, so we can just save it with the font itself
+	 */
 	@Override
 	public FontMetrics getFontMetrics(Font font) {
-		JSFontMetrics fm = (JSFontMetrics) getInstance("swingjs.JSFontMetrics");
-		fm.setFont(font);
+		FontMetrics fm = font.getFontMetrics();
+		if (fm == null) {
+			fm = (FontMetrics) getInstance("swingjs.JSFontMetrics");
+			((JSFontMetrics) fm).setFont(font);
+			font.setFontMetrics(fm);
+		}
 		return fm;
 	}
 
@@ -449,12 +459,12 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
-	public static String getJavaResource(String resourceName) {
+	public static String getJavaResource(String resourceName, boolean isJavaPath) {
 		System.out.println("JSToolkit getting Java resource " + resourceName);
 		/**
 		 * @j2sNative
 		 * 
-		 *            return SwingJS.getJavaResource(resourceName);
+		 *            return SwingJS.getJavaResource(resourceName, isJavaPath);
 		 */
 		{
 			return null;
@@ -566,15 +576,15 @@ public class JSToolkit extends SunToolkit {
 		 *            var thread = java.lang.Thread.thisThread;
 		 *            var thread0 = thread;
 		 *            (function(_JSToolkit_setTimeout) {
-		 *            var id0 = SwingJS.eventID || 0;
-		 *            System.out.println("runNow " + id); SwingJS.eventID = id;
-		 *            java.lang.Thread.thisThread = thread; 
-		 *            if (f.run)
-		 *             f.run();
-		 *            else
-		 *             f();
-		 *            SwingJS.eventID = id0;
-		 *            java.lang.Thread.thisThread = thread0; 
+		 *              var id0 = SwingJS.eventID || 0;
+		 *              System.out.println("runNow " + id); SwingJS.eventID = id;
+		 *              java.lang.Thread.thisThread = thread; 
+		 *              if (f.run)
+		 *                f.run();
+		 *              else
+		 *                f();
+		 *              SwingJS.eventID = id0;
+		 *              java.lang.Thread.thisThread = thread0; 
 		 *            })();
 		 * 
 		 * 
@@ -670,9 +680,9 @@ public class JSToolkit extends SunToolkit {
 	 */
 	@Override
   protected LightweightPeer createComponent(Component target) {
-  	System.out.println("JSToolkit creating peer for " +  target);
-  	LightweightPeer peer = (target instanceof JComponent ? (JSComponentUI) ((JComponent)target).getUI() : null);
-  	// layeredPane will need JSComponentPeer
+  	System.out.println("JSToolkit creating LightweightPeer for " +  target);
+  	LightweightPeer peer = getUI(target, true);
+  	// JLayeredPane will need JSComponentPeer ?
   	return (peer == null ? new JSComponentPeer(target) : peer);
   }
 
@@ -800,12 +810,33 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static boolean hasFocus(Component c) {
-		return ((JSComponentUI) ((JComponent) c).getUI()).hasFocus();
+	  JSComponentUI ui = getUI(c, false);
+		return (ui != null && ui.hasFocus());
+	}
+
+	public static JSComponentUI getUI(Component c, boolean isQuiet) {
+		JSComponentUI ui = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *  ui = c.getUI && c.getUI();
+		 */
+		{
+			ui = (JSComponentUI) ((JComponent) c).getUI();
+		}
+	  if (ui == null) {
+	  	String s = "[JSToolkit] Component " + c.getClass().getName() + " has no cooresponding JSComponentUI.";
+//	  	if (isQuiet)
+	  		System.out.println(s);
+//	  	else
+//		  	alert(s + getStackTrace());
+	  }
+	  return ui;
 	}
 
 	public static boolean requestFocus(Component c) {
-		final JSComponentUI ui = ((JSComponentUI) ((JComponent) c).getUI());
-		if (!ui.isFocusable())
+		final JSComponentUI ui = getUI(c, false);
+		if (ui == null || !ui.isFocusable())
 			return  false;
 		Runnable r = new Runnable() {
 
@@ -861,6 +892,20 @@ public class JSToolkit extends SunToolkit {
 		{
 			return 0;
 		}
+	}
+
+	@Override
+	protected FramePeer createFrame(Frame target) {
+		return (FramePeer) createWindowPeer(target, true);
+	}
+
+	@Override
+	protected WindowPeer createWindow(Window target) {
+		return createWindowPeer(target, false);
+	}
+
+	private WindowPeer createWindowPeer(Window target, boolean isFrame) {
+		return ((WindowPeer) getInstance("swingjs.JSWindowPeer")).setFrame(target, true);
 	}
 
 }

@@ -9,7 +9,6 @@ public class SimThread extends JSThread {
 	public SimThread(Boltzmann boltzmann) {
 		super(null, "BoltzmannThread");
 		this.boltzmann = boltzmann;
-		this.setDelayMillis(1);
 	}
 
 
@@ -32,12 +31,8 @@ public class SimThread extends JSThread {
 						state = JSThread.DONE;
 						continue;
 					}
-					if (!repainted)
-						continue;
-					dispatchAndReturn(null, state);
-					if (isJS) {
+					if (repainted && sleepAndReturn(0, state))
 						return;
-					}
 					break;
 				case JSThread.DONE:
 					boltzmann.sjs_finalizeGraph();

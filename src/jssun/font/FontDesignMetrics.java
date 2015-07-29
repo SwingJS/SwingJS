@@ -540,10 +540,6 @@ private float leading;
         return widths;
     }
 
-//    public int getMaxAdvance() {
-//        return (int)(0.99f + this.maxAdvance);
-//    }
-//
   /*
    * Returns the typographic ascent of the font. This is the maximum distance
    * glyphs in this font extend above the base line (measured in typographic
@@ -588,4 +584,21 @@ private float leading;
         }
         return height;
     }
+
+	@Override
+	public int charWidth(int codePoint) {
+		// from FontMetrics
+		if (!Character.isValidCodePoint(codePoint)) {
+			codePoint = 0xffff; // substitute missing glyph width
+		}
+
+		if (codePoint < 256) {
+			return getWidths()[codePoint];
+		} else {
+			char[] buffer = new char[2];
+			int len = Character.toChars(codePoint, buffer, 0);
+			return charsWidth(buffer, 0, len);
+		}
+	}
+
 }

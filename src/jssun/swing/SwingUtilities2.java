@@ -53,6 +53,7 @@ import jsjava.awt.Graphics2D;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.RenderingHints;
+import jsjava.awt.Toolkit;
 //import jsjava.awt.event.InputEvent;
 //import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
@@ -379,7 +380,13 @@ public class SwingUtilities2 {
      * @param g Graphics Graphics
      */
     public static FontMetrics getFontMetrics(JComponent c, Graphics g) {
-        return getFontMetrics(c, g, g.getFont());
+      if (c != null) {
+        // Note: We assume that we're using the FontMetrics
+        // from the widget to layout out text, otherwise we can get
+        // mismatches when printing.
+        return c.getFontMetrics(g.getFont());
+    }
+    return Toolkit.getDefaultToolkit().getFontMetrics(g.getFont());
     }
 
 
@@ -396,6 +403,8 @@ public class SwingUtilities2 {
      * This does not necessarily return the FontMetrics from the
      * Graphics.
      *
+     * @j2sIgnore
+     * 
      * @param c JComponent requesting FontMetrics, may be null
      * @param c Graphics Graphics
      * @param font Font to get FontMetrics for
@@ -408,7 +417,7 @@ public class SwingUtilities2 {
             // mismatches when printing.
             return c.getFontMetrics(font);
         }
-        return null;//Toolkit.getDefaultToolkit().getFontMetrics(font);
+        return Toolkit.getDefaultToolkit().getFontMetrics(font);
     }
 
 

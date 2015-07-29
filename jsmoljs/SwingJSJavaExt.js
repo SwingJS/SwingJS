@@ -1,4 +1,4 @@
-// JSmolJavaExt.js
+// SwingJSJavaExt.js
  
 
 // This library will be wrapped by an additional anonymous function using ANT in 
@@ -7,6 +7,7 @@
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 7/24/2015 7:21:51 AM renamed from JSmolJavaExt.js
 // BH 5/31/2015 5:53:04 PM Number.compareTo added
 // BH 5/21/2015 5:46:30 PM Number("0xFFFFFFFF") is not -1
 // BH 4/23/2015 9:08:59 AM xx.getComponentType() is nonfunctional. Array.newInstance now defines a wrapper for .getClass().getComponentType() that works  

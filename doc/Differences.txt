@@ -5,6 +5,14 @@ PROGRESS
 ========
 TODO: next: JComboBox
 
+7/19/2015 BH -- j2s bug #20 no implicit primitive from wrapped primitive (int/Integer) in SAEM
+
+7/18/2015 BH -- j2s bug #19 improper signature identification in SAEM with untyped null parameter
+
+7/17/2015 BH -- j2s bug #18 (jalview.commands.EditCommand)
+
+7/15/2015 BH -- j2s bug #17 (jalview.analysis.RNA)
+
 6/3/2015 BH
 
 JTextField ENTER action enabled
@@ -473,6 +481,87 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#20 Java2Script can handle implicit conversion from Integer to int, Boolean to boolean, etc, 
+in general, but in the special case where a wrapped object is used in place of a 
+primitive and the signature of the method requires disambiguation, 
+Java2Script will not find the signature -- for example finding xxx(int) given xxx(Integer)
+when xxx is overloaded with other signatures. 
+
+#19 J2S runtime library failed to recognize null properly in a signature, allowing it to match int, float, double, short, long, or boolean.
+
+Fixed in j2sjmol.js
+
+#18 J2S compiler failed to process (in jalview.commands.EditCommand):
+
+  private static Hashtable<Character, Character> closingToOpening = new Hashtable<Character, Character>()
+  // Initializing final data structure
+  {
+    private static final long serialVersionUID = 1L;
+    {
+      for (int i = 0; i < openingPars.length; i++)
+      {
+        // System.out.println(closingPars[i] + "->" + openingPars[i]);
+        put(closingPars[i], openingPars[i]);
+      }
+    }
+  };
+
+What is happening is that the anonymous function created does not extend Hashtable. 
+I guess J2S is just considering "Hashtable" to be an interface. 
+
+Solution is to recast as:  
+  
+  private static Hashtable<Character, Character> closingToOpening = new Hashtable<Character, Character>();
+
+  // Initializing final data structure
+  static {
+      for (int i = 0; i < openingPars.length; i++)
+      {
+        // System.out.println(closingPars[i] + "->" + openingPars[i]);
+        closingToOpening.put(closingPars[i], openingPars[i]);
+      }
+  }
+
+
+#17 J2S compiler failed to process (in jalview.commands.EditCommand)
+
+  public enum Action 
+  {
+    INSERT_GAP
+    {
+      @Override
+      public Action getUndoAction()
+      {
+        ...
+      }
+    },
+    DELETE_GAP
+      ...
+    ;
+    abstract public Action getUndoAction();
+  }
+
+
+Solution is to recast this as:
+
+  public enum Action 
+  {
+    INSERT_GAP, DELETE_GAP,...;
+    
+    public Action getUndoAction() {
+    	switch (this) {
+    	case INSERT_GAP:
+    		return DELETE_GAP;
+        ...
+			case DELETE_GAP:
+				return INSERT_GAP;
+      ...
+    	}
+    	return null;
+    }
+  };
+
+
 #16 when an inner public class is called by another class using instanceOf, that inner class becomes an optional load. 
 but optional loads must still be loaded, and unless declared in package.js, J2S will look for xxx.xxx.Outer/Inner.js
 because the inner classes are not fully declared. 

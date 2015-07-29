@@ -12,17 +12,11 @@ public class JSImage extends BufferedImage {
 	public DOMNode _imgNode; // used by JSGraphics2D directly
 	private int width, height;
 	
-	public JSImage() {
-		super(1,1, TYPE_INT_ARGB);
-		
-	}
-	public JSImage setData(int width, int height, int[] argb) {
-		pix = argb;
+	public JSImage(int[] argb, int width, int height) {
+		super(width, height, TYPE_INT_ARGB);
 		this.width = width;
 		this.height = height;
-		colorModel.createCompatibleWritableRaster(width,
-        height);
-		return this;
+		pix = argb;
 	}
 	
 	/**

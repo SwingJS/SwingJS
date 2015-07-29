@@ -26,8 +26,6 @@
 package swingjs.plaf;
 
 import swingjs.api.DOMNode;
-import jsjavax.swing.JLabel;
-import jsjavax.swing.JViewport;
 
 public class JSViewportUI extends JSComponentUI {
 

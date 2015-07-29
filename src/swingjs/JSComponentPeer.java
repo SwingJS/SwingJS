@@ -24,8 +24,8 @@ import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 
 /**
- * A class to provide a JavaScript peer interface for non-Swing AWT components
- * (Swing components have LightweightPeers in their JSComponentUIs)
+ * A class to provide a JavaScript peer interface for Swing AWT components
+ * that have not been developed yet?
  * 
  * @author Bob Hanson
  *
@@ -37,7 +37,7 @@ public class JSComponentPeer implements LightweightPeer {
 
 	public JSComponentPeer(Component target) {
 		this.target = target;
-		this.ui = (target instanceof JComponent ? ((JComponent) target).getUI() : null);
+		this.ui = JSToolkit.getUI(target, false);
 	}
 
 	@Override

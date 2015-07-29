@@ -135,7 +135,10 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		set(params);
 	}
 
-	private void set(Hashtable params) {
+	/**
+	 * @param params
+	 */
+	private void set(Hashtable<String, Object> params) {
 		System.out.println("JSAppletPanel initializing");
 		this.params = params;
 		htmlName = JSUtil.split("" + getParameter("name"), "_object")[0];
@@ -232,9 +235,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	}
 
 	private HTML5Canvas getCanvas() {
-		if (canvas == null)
-			canvas = html5Applet._getHtml5Canvas();
-		return canvas;
+		return (canvas == null ? (canvas = html5Applet._getHtml5Canvas()) : canvas);
 	}
 
 	// ///////// AppletStub ////////////////
@@ -282,7 +283,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	public String getParameter(String name) {
 		String s = (String) params.get(name);
 		System.out.println("get parameter: " + name + " = " + s);
-		return s;
+		return (s == null ? null : "" + s); // because it may not be a string in JavaScript if inherited from Info
 	}
 
 	@Override

@@ -295,7 +295,7 @@ public class Window extends Container {
     private static final String base = "win";
     private static int nameCounter = 0;
 
-		private static ArrayList<Window>allWindows;
+		private static ArrayList<Window>allWindows = new ArrayList<Window>();
 
 //    /*
 //     * JDK 1.1 serialVersionUID
@@ -732,17 +732,17 @@ public class Window extends Container {
      */
     public void addNotify() {
 //        synchronized (getTreeLock()) {
-//            Container parent = this.parent;
-//            if (parent != null && parent.getPeer() == null) {
-//                parent.addNotify();
-//            }
-//            if (peer == null) {
-//                peer = getToolkit().createWindow(this);
-//            }
-//            synchronized (allWindows) {
-//                allWindows.add(this);
-//            }
-//            super.addNotify();
+            Container parent = this.parent;
+            if (parent != null && parent.getPeer() == null) {
+                parent.addNotify();
+            }
+            if (peer == null) {
+                peer = getToolkit().createWindow(this);
+            }
+            synchronized (allWindows) {
+                allWindows.add(this);
+            }
+            super.addNotify();
 //        }
     }
 
@@ -751,9 +751,9 @@ public class Window extends Container {
      */
     public void removeNotify() {
 //        synchronized (getTreeLock()) {
-//            synchronized (allWindows) {
-//                allWindows.remove(this);
-//            }
+            synchronized (allWindows) {
+                allWindows.remove(this);
+            }
             super.removeNotify();
  //       }
     }
@@ -2630,18 +2630,18 @@ public class Window extends Container {
 //        }
     }
 
-	// private static void removeFromWindowList(AppContext context, Window w) {
-	// synchronized (Window.class) {
-	// Vector<Window> windowList = (Vector<Window>)context.get(Window.class);
-	// if (windowList != null) {
-	// windowList.remove(w);
-	// }
-	// }
-	// }
+	private static void removeFromWindowList(AppContext context, Window w) {
+		synchronized (Window.class) {
+			Vector<Window> windowList = (Vector<Window>) context.get(Window.class);
+			if (windowList != null) {
+				windowList.remove(w);
+			}
+		}
+	}
 
-	// private void removeFromWindowList() {
-	// removeFromWindowList(appContext, this);
-	// }
+	private void removeFromWindowList() {
+		removeFromWindowList(appContext, this);
+	}
 
 	// /**
 	// * The window serialized data version.

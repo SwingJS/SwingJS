@@ -99,7 +99,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * Creates a <code>JMenuItem</code> with no set text or icon.
      */
     public JMenuItem() {
-        this(null, (Icon)null);
+    	init0(null, null, Integer.MIN_VALUE);
     }
 
     /**
@@ -108,7 +108,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param icon the icon of the <code>JMenuItem</code>
      */
     public JMenuItem(Icon icon) {
-        this(null, icon);
+    	init0(null, icon, Integer.MIN_VALUE);
     }
 
     /**
@@ -117,7 +117,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param text the text of the <code>JMenuItem</code>
      */
     public JMenuItem(String text) {
-        this(text, (Icon)null);
+    	init0(text, null, Integer.MIN_VALUE);
     }
 
     /**
@@ -128,35 +128,35 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @since 1.3
      */
     public JMenuItem(Action a) {
-        this();
+    	init0(null, null, Integer.MIN_VALUE);
         setAction(a);
     }
 
     /**
+     * 
      * Creates a <code>JMenuItem</code> with the specified text and icon.
      *
+     *     
+     * 
      * @param text the text of the <code>JMenuItem</code>
      * @param icon the icon of the <code>JMenuItem</code>
      */
     public JMenuItem(String text, Icon icon) {
-        setModel(new DefaultButtonModel());
-        init(text, icon);
-        initFocusability();
+    	init0(text, icon, Integer.MIN_VALUE);
     }
 
-    /**
-     * Creates a <code>JMenuItem</code> with the specified text and
-     * keyboard mnemonic.
-     *
-     * @param text the text of the <code>JMenuItem</code>
-     * @param mnemonic the keyboard mnemonic for the <code>JMenuItem</code>
-     */
-    public JMenuItem(String text, int mnemonic) {
-        setModel(new DefaultButtonModel());
-        init(text, null);
-        setMnemonic(mnemonic);
-        initFocusability();
-    }
+	/**
+	 * Creates a <code>JMenuItem</code> with the specified text and keyboard
+	 * mnemonic.
+	 * 
+	 * @param text
+	 *          the text of the <code>JMenuItem</code>
+	 * @param mnemonic
+	 *          the keyboard mnemonic for the <code>JMenuItem</code>
+	 */
+	public JMenuItem(String text, int mnemonic) {
+  	init0(text, null, mnemonic);
+	}
 
     /**
      * {@inheritDoc}
@@ -180,6 +180,13 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
         setFocusable(false);
     }
 
+    protected void init0(String text, Icon icon, int mnemonic) {
+  		setModel(new DefaultButtonModel());
+      init(text, icon);
+    	if (mnemonic >= 0)    		
+    		setMnemonic(mnemonic);
+      initFocusability();
+    }
     /**
      * Initializes the menu item with the specified text and icon.
      *
@@ -187,13 +194,11 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param icon the icon of the <code>JMenuItem</code>
      */
     protected void init(String text, Icon icon) {
-        if(text != null) {
+      updateUI();
+        if(text != null)
             setText(text);
-        }
-
-        if(icon != null) {
+        if(icon != null)
             setIcon(icon);
-        }
 
         // Listen for Focus events
         addFocusListener(new MenuItemFocusListener());
@@ -201,7 +206,6 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
         setFocusPainted(false);
         setHorizontalTextPosition(JButton.TRAILING);
         setHorizontalAlignment(JButton.LEADING);
-        updateUI();
     }
 
     private static class MenuItemFocusListener implements FocusListener

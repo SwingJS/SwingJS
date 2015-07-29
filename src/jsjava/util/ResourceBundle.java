@@ -2494,7 +2494,7 @@ public abstract class ResourceBundle {
 				}
 				// final ClassLoader ClassLoader = loader;
 				// final boolean reloadFlag = reload;
-				String data = JSToolkit.getJavaResource(resourceName);
+				String data = JSToolkit.getJavaResource(resourceName, false);
 				InputStream stream = null;
 				// SwingJS  - we just get the resource as a string here
 				// J2S compiler bug converts these variables to a b c d e

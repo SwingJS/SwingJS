@@ -1,7 +1,6 @@
 package swingjs.plaf;
 
 import swingjs.api.DOMNode;
-import swingjs.api.JSFunction;
 
 /**
  * SWingJS implementation of stateful user interface for buttons. 

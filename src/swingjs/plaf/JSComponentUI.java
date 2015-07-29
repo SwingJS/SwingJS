@@ -46,7 +46,7 @@ import swingjs.api.JQueryObject;
  * @author Bob Hanson
  *
  */
-public abstract class JSComponentUI extends ComponentUI implements LightweightPeer, JSEventHandler {
+public abstract class JSComponentUI extends ComponentUI implements JSEventHandler {
 
 	/**
 	 * provides a unique id for any component; set on instantiation
@@ -431,7 +431,7 @@ public abstract class JSComponentUI extends ComponentUI implements LightweightPe
 			Component[] children = (components == null ? c.getComponents()
 					: components);
 			for (int i = children.length; --i >= 0;) {
-				JSComponentUI ui = ((JSComponentUI) ((JComponent) children[i]).getUI());
+				JSComponentUI ui = JSToolkit.getUI(children[i], false);
 				if (ui == null) {
 					// Box.Filler has no ui.
 					continue;

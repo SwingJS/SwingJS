@@ -14,6 +14,7 @@ return this.$in.readByteAsInt ();
 });
 Clazz.defineMethod (c$, "read", 
 function (b, off, len) {
+    if (arguments.length == 1) { off = 0; len = b.length; }
 return this.$in.read (b, off, len);
 }, "~A,~N,~N");
 Clazz.defineMethod (c$, "skip", 

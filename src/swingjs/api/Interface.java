@@ -27,6 +27,14 @@ package swingjs.api;
 
 public class Interface {
 
+	public static Object getInstanceWithParams(String name, Class[] classes, Object... params) {
+		try {
+			Class<?> cl = Class.forName(name);
+			return  cl.getConstructor(classes).newInstance(params);
+		} catch (Exception e) {
+			return null;
+		}
+	}
   public static Object getInstance(String name, boolean isQuiet) {
     try {
     	/**

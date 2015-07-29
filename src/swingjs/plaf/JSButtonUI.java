@@ -100,7 +100,7 @@ public class JSButtonUI extends JSComponentUI {
    * Returns the ButtonListener for the passed in Button, or null if one
    * could not be found.
    */
-  private JSButtonListener getButtonListener(AbstractButton b) {
+  protected JSButtonListener getButtonListener(AbstractButton b) {
       MouseMotionListener[] listeners = b.getMouseMotionListeners();
 
       if (listeners != null) {

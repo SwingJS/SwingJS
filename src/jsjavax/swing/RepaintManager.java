@@ -429,6 +429,15 @@ public class RepaintManager {
 	 * @see JComponent#repaint
 	 */
 	private void addDirtyRegion0(Container c, int x, int y, int w, int h) {
+		/**
+		 * @j2sNative
+		 * 
+		 * var g = c.getGraphics();
+		 * if (g == null || g.gc == null)return;
+		 * 
+		 */
+		{}
+		
 		/*
 		 * Special cases we don't have to bother with.
 		 */
@@ -862,7 +871,7 @@ public class RepaintManager {
 					count = roots.size();
 					// paintManager.isRepaintingRoot = true;
 					repaintRoot.paintImmediately(0, 0, repaintRoot.getWidth(),
-							repaintRoot.getHeight());
+							repaintRoot.getHeight());	
 					// paintManager.isRepaintingRoot = false;
 					// Only service repaintRoot once.
 					repaintRoot = null;

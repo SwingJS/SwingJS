@@ -13,6 +13,7 @@ this.readBuffer =  Clazz.newByteArray (8, 0);
 });
 Clazz.overrideMethod (c$, "read", 
 function (b, off, len) {
+    if (arguments.length == 1) { off = 0; len = b.length; }
 return this.$in.read (b, off, len);
 }, "~A,~N,~N");
 Clazz.defineMethod (c$, "readFully", 

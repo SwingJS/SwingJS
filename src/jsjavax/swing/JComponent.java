@@ -399,6 +399,10 @@ public abstract class JComponent extends Container
         }
     }
 
+    /**
+     * called from JApplet, JDialog, JFrame, JWindow. 
+     * @param root
+     */
     static void getGraphicsInvoked(Component root) {
         if (!JComponent.isComponentObtainingGraphicsFrom(root)) {
             JRootPane rootPane = ((RootPaneContainer)root).getRootPane();

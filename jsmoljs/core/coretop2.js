@@ -58,7 +58,7 @@
 ,Clazz_defineMethod
 ,Clazz_overrideMethod
 ,Clazz_declareAnonymous
-//,Clazz_checkPrivateMethod
+,Clazz_checkPrivateMethod
 ,Clazz_cloneFinals
 ){
 var $t$;

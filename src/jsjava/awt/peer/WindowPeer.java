@@ -73,4 +73,6 @@ public interface WindowPeer extends ContainerPeer {
      * Instructs the peer to update the position of the security warning.
      */
     void repositionSecurityWarning();
+    
+		WindowPeer setFrame(Window target, boolean b);
 }

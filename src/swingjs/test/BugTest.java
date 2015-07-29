@@ -14,6 +14,7 @@ package swingjs.test;
  * 
  * Clazz.loadClass("swingjs.test.BugTest", function() { new swingjs.test.BugTest().main([])})
  */
+import java.lang.reflect.Constructor;
 import java.util.AbstractMap;
 import java.util.HashMap;
 
@@ -25,6 +26,27 @@ import jsjava.awt.Toolkit;
 
 public class BugTest extends HashMap {
 
+	private String me = "me";
+	
+	public BugTest() {
+	  System.out.println("this is BugTest()" + me);	
+	}
+	
+	
+	public BugTest(String s) {
+	  System.out.println("this is BugTest(String):" + s + me);	
+	}
+	
+	public BugTest(Object[] o) {
+	  System.out.println("this is BugTest(Object[]):" + o + me);	
+	}
+	
+	public BugTest(String s, String t) {
+	  System.out.println("this is BugTest(String,String):" + s + t + me);	
+	}
+	
+	
+	
 	private void test(AbstractMap a) {
 		System.out.println(a + " is an AbstractMap");
 	}
@@ -52,6 +74,27 @@ public class BugTest extends HashMap {
 	}
 	
 	public static void main(String[] args) {
+
+		new B().init();
+		
+// report should be:
+//	
+//	class B init
+//	class A init2
+//	class A init
+	
+		try {
+			Class<?> cl;
+			cl = Class.forName("swingjs.test.BugTest");
+		  cl.getConstructor(String.class, String.class).newInstance(new Object[] {"test1","test2"});
+		  cl.getConstructor(Object[].class).newInstance(new Object[] {new Object[]{"test1","test2"}});
+		  cl.getConstructor(String.class, String.class).newInstance("test1","test2");
+		  cl.getConstructor().newInstance();
+		  cl.newInstance();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	  System.out.println(getFont("f"));
 	  System.out.println(getFont("f","y"));
@@ -110,3 +153,31 @@ public class BugTest extends HashMap {
 			System.out.println(t[i]);
 	}
 }
+
+class A {
+	private void init() {
+		System.out.println("class A init");
+	}
+	
+	protected void init(String a) {
+		System.out.println("class A init String a");
+	}
+
+	protected void init2() {
+		System.out.println("class A init2");
+		init();
+	}
+}
+
+class B extends A {
+	protected void init() {
+		System.out.println("class B init");
+		super.init2();
+	}
+	
+	protected void init(String b) {
+		System.out.println("class B init String b");
+	}
+}
+
+

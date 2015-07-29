@@ -32,9 +32,20 @@ public class Interface {
       Class<?> x = Class.forName(name);
       return (x == null ? null : x.newInstance());
     } catch (Exception e) {
-      System.out.println("Interface.java Error creating instance for " + name + ": \n" + e);
+      System.out.println("Interface.getInterface Error creating instance for " + name + ": \n" + e);
       return null;
     }
   }
+  
+	public static Object getInstanceWithParams(String name, Class[] classes, Object... params) {
+		try {
+			Class<?> cl = Class.forName(name);
+			return  cl.getConstructor(classes).newInstance(params);
+		} catch (Exception e) {
+      System.out.println("Interface.getInterfaceWithParams Error creating instance for " + name + ": \n" + e);
+			return null;
+		}
+	}
+
 
 }

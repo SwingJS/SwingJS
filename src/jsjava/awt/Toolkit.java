@@ -55,8 +55,10 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.PanelPeer;
+import jsjava.awt.peer.WindowPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
 import jssun.awt.NullComponentPeer;
@@ -260,19 +262,18 @@ public abstract class Toolkit {
 //    protected abstract ChoicePeer createChoice(Choice target)
 //        ;
 //
-//    /**
-//     * Creates this toolkit's implementation of <code>Frame</code> using
-//     * the specified peer interface.
-//     * @param     target the frame to be implemented.
-//     * @return    this toolkit's implementation of <code>Frame</code>.
-//     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-//     * returns true
-//     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
-//     * @see       jsjava.awt.Frame
-//     * @see       jsjava.awt.peer.FramePeer
-//     */
-//    protected abstract FramePeer createFrame(Frame target)
-//        ;
+    /**
+     * Creates this toolkit's implementation of <code>Frame</code> using
+     * the specified peer interface.
+     * @param     target the frame to be implemented.
+     * @return    this toolkit's implementation of <code>Frame</code>.
+     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
+     * returns true
+     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
+     * @see       jsjava.awt.Frame
+     * @see       jsjava.awt.peer.FramePeer
+     */
+    protected abstract FramePeer createFrame(Frame target);
 //
 //    /**
 //     * Creates this toolkit's implementation of <code>Canvas</code> using
@@ -294,19 +295,18 @@ public abstract class Toolkit {
      */
     protected abstract PanelPeer        createPanel(Panel target);
 
-//    /**
-//     * Creates this toolkit's implementation of <code>Window</code> using
-//     * the specified peer interface.
-//     * @param     target the window to be implemented.
-//     * @return    this toolkit's implementation of <code>Window</code>.
-//     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-//     * returns true
-//     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
-//     * @see       jsjava.awt.Window
-//     * @see       jsjava.awt.peer.WindowPeer
-//     */
-//    protected abstract WindowPeer createWindow(Window target)
-//        ;
+    /**
+     * Creates this toolkit's implementation of <code>Window</code> using
+     * the specified peer interface.
+     * @param     target the window to be implemented.
+     * @return    this toolkit's implementation of <code>Window</code>.
+     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
+     * returns true
+     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
+     * @see       jsjava.awt.Window
+     * @see       jsjava.awt.peer.WindowPeer
+     */
+    protected abstract WindowPeer createWindow(Window target);
 //
 //    /**
 //     * Creates this toolkit's implementation of <code>Dialog</code> using

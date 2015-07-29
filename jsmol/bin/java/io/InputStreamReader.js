@@ -9,12 +9,14 @@ this.pos = 0;
 Clazz.instantialize (this, arguments);
 }, java.io, "InputStreamReader", java.io.Reader);
 Clazz.makeConstructor (c$, 
-function ($in, charsetName) {
-Clazz.superConstructor (this, java.io.InputStreamReader, [$in]);
+function ($in) {
+//just sets lock Clazz.superConstructor (this, java.io.InputStreamReader, [$in]);
 this.$in = $in;
+var charsetName = (arguments.length > 1 ? arguments[1] : "UTF-8");
+
 this.charsetName = charsetName;
 if (!(this.isUTF8 = "UTF-8".equals (charsetName)) && !"ISO-8859-1".equals (charsetName)) throw  new NullPointerException ("charsetName");
-}, "java.io.InputStream,~S");
+}, "java.io.InputStream");
 Clazz.defineMethod (c$, "getEncoding", 
 function () {
 return this.charsetName;

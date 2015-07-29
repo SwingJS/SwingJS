@@ -72,6 +72,10 @@ return cnt;
 }, $fz.isPrivate = true, $fz), "~A,~N,~N");
 Clazz.overrideMethod (c$, "read", 
 function (b, off, len) {
+if (arguments.length == 1) {
+  off = 0;
+  len  = b.length;
+}
 this.getBufIfOpen ();
 if ((off | len | (off + len) | (b.length - (off + len))) < 0) {
 throw  new IndexOutOfBoundsException ();

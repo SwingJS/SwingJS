@@ -4,7 +4,10 @@ Clazz.defineMethod (c$, "read",
 function (b, off, len) {
 if (b == null) {
 throw  new NullPointerException ();
-} else if (off < 0 || len < 0 || len > b.length - off) {
+} 
+    if (arguments.length == 1) { off = 0; len = b.length; }
+
+if (off < 0 || len < 0 || len > b.length - off) {
 throw  new IndexOutOfBoundsException ();
 } else if (len == 0) {
 return 0;

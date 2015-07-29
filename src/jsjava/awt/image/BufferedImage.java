@@ -64,7 +64,7 @@ public class BufferedImage extends Image implements Transparency // ,
 																																	// WritableRenderedImage
 {
 	int imageType = TYPE_CUSTOM;
-	protected ColorModel colorModel; // SwingJS for JSImage
+	ColorModel colorModel; 
 	WritableRaster raster;
 	OffScreenImageSource osis;
 	Hashtable properties;

@@ -161,9 +161,10 @@ public abstract class FontMetrics {
      * @see   #getAscent()
      * @see   #getDescent()
      */
-    public int getLeading() {
-        return 0;
-    }
+    public abstract int getLeading();
+//    {
+//        return 0;
+//    }
 
     /**
      * Determines the <em>font ascent</em> of the <code>Font</code>
@@ -174,9 +175,10 @@ public abstract class FontMetrics {
      * @return     the font ascent of the <code>Font</code>.
      * @see        #getMaxAscent()
      */
-    public int getAscent() {
-        return font.getSize();
-    }
+    public abstract int getAscent(); 
+//    {
+//        return font.getSize();
+//    }
 
     /**
      * Determines the <em>font descent</em> of the <code>Font</code>
@@ -189,9 +191,10 @@ public abstract class FontMetrics {
      * @return     the font descent of the <code>Font</code>.
      * @see        #getMaxDescent()
      */
-    public int getDescent() {
-        return 0;
-    }
+    public abstract int getDescent();
+//    {
+//        return 0;
+//    }
 
     /**
      * Gets the standard height of a line of text in this font.  This
@@ -206,7 +209,7 @@ public abstract class FontMetrics {
      * @see       #getAscent()
      * @see       #getDescent()
      */
-    public int getHeight() {
+    public int getHeight() { 
         return getLeading() + getAscent() + getDescent();
     }
 
@@ -238,6 +241,9 @@ public abstract class FontMetrics {
      * For backward compatibility only.
      * @return    the maximum descent of any character in the
      * <code>Font</code>.
+     * 
+     * @j2sIgnore
+     * 
      * @see #getMaxDescent()
      * @deprecated As of JDK version 1.1.1,
      * replaced by <code>getMaxDescent()</code>.
@@ -258,8 +264,9 @@ public abstract class FontMetrics {
      *            maximum advance width is not known.
      */
     public int getMaxAdvance() {
-        return -1;
-    }
+      return (int) charWidth('M');//from FontDesignMetrics (int)(0.99f + this.maxAdvance);
+  }
+
 
     /**
      * Returns the advance width of the specified character in this
@@ -282,19 +289,20 @@ public abstract class FontMetrics {
      * @see   #charsWidth(char[], int, int)
      * @see   #stringWidth(String)
      */
-    public int charWidth(int codePoint) {
-        if (!Character.isValidCodePoint(codePoint)) {
-            codePoint = 0xffff; // substitute missing glyph width
-        }
-
-        if (codePoint < 256) {
-            return getWidths()[codePoint];
-        } else {
-            char[] buffer = new char[2];
-            int len = Character.toChars(codePoint, buffer, 0);
-            return charsWidth(buffer, 0, len);
-        }
-    }
+    public abstract int charWidth(int codePoint);
+//    {
+//        if (!Character.isValidCodePoint(codePoint)) {
+//            codePoint = 0xffff; // substitute missing glyph width
+//        }
+//
+//        if (codePoint < 256) {
+//            return getWidths()[codePoint];
+//        } else {
+//            char[] buffer = new char[2];
+//            int len = Character.toChars(codePoint, buffer, 0);
+//            return charsWidth(buffer, 0, len);
+//        }
+//    }
 
     /**
      * Returns the advance width of the specified character in this
@@ -316,13 +324,14 @@ public abstract class FontMetrics {
      * @see        #charsWidth(char[], int, int)
      * @see        #stringWidth(String)
      */
-    public int charWidth(char ch) {
-        if (ch < 256) {
-            return getWidths()[ch];
-        }
-        char data[] = {ch};
-        return charsWidth(data, 0, 1);
-    }
+    public abstract int charWidth(char ch);
+//    {
+//        if (ch < 256) {
+//            return getWidths()[ch];
+//        }
+//        char data[] = {ch};
+//        return charsWidth(data, 0, 1);
+//    }
 
     /**
      * Returns the total advance width for showing the specified
@@ -336,17 +345,19 @@ public abstract class FontMetrics {
      * @return    the advance width of the specified <code>String</code>
      *                  in the <code>Font</code> described by this
      *                  <code>FontMetrics</code>.
+     *                  
      * @throws NullPointerException if str is null.
      * @see       #bytesWidth(byte[], int, int)
      * @see       #charsWidth(char[], int, int)
      * @see       #getStringBounds(String, Graphics)
      */
-    public int stringWidth(String str) {
-        int len = str.length();
-        char data[] = new char[len];
-        str.getChars(0, len, data, 0);
-        return charsWidth(data, 0, len);
-    }
+    public abstract int stringWidth(String str);
+//    {
+//        int len = str.length();
+//        char data[] = new char[len];
+//        str.getChars(0, len, data, 0);
+//        return charsWidth(data, 0, len);
+//    }
 
     /**
      * Returns the total advance width for showing the specified array
@@ -412,13 +423,14 @@ public abstract class FontMetrics {
      *                 characters in the <code>Font</code>
      *                 described by this <code>FontMetrics</code> object.
      */
-    public int[] getWidths() {
-        int widths[] = new int[256];
-        for (char ch = 0 ; ch < 256 ; ch++) {
-            widths[ch] = charWidth(ch);
-        }
-        return widths;
-    }
+    public abstract int[] getWidths();
+//    {
+//        int widths[] = new int[256];
+//        for (char ch = 0 ; ch < 256 ; ch++) {
+//            widths[ch] = charWidth(ch);
+//        }
+//        return widths;
+//    }
 
 //    /**
 //     * Checks to see if the <code>Font</code> has uniform line metrics.  A

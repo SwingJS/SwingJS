@@ -58,6 +58,6 @@
 ,Clazz.defineMethod
 ,Clazz.overrideMethod
 ,Clazz.declareAnonymous
-//,Clazz.checkPrivateMethod
+,Clazz.checkPrivateMethod
 ,Clazz.cloneFinals
 );

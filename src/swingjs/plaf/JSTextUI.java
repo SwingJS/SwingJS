@@ -489,7 +489,7 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 		ActionMap map = new ActionMapUIResource();
 		Action[] actions = editor.getActions();//defaultKit.getActions(); // SwingJS was editor.getEditorKit().getActions()
 		// System.out.println("building map for UI: " + getPropertyPrefix());
-		int n = actions.length;
+		int n = (actions == null ? 0 : actions.length);
 		for (int i = 0; i < n; i++) {
 			Action a = actions[i];
 			map.put(a.getValue(Action.NAME), a);

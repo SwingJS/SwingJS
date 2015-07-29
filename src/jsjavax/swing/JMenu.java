@@ -153,7 +153,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * Constructs a new <code>JMenu</code> with no text.
      */
     public JMenu() {
-        this("");
+    	init0("", null, Integer.MIN_VALUE);
     }
 
     /**
@@ -163,7 +163,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param s  the text for the menu label
      */
     public JMenu(String s) {
-        super(s);
+    	init0(s, null, Integer.MIN_VALUE);
     }
 
     /**
@@ -174,7 +174,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * @since 1.3
      */
     public JMenu(Action a) {
-        this();
+    	init0("", null, Integer.MIN_VALUE);
         setAction(a);
     }
 
@@ -186,7 +186,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param b can the menu be torn off (not yet implemented)
      */
     public JMenu(String s, boolean b) {
-        this(s);
+    	init0(s, null, Integer.MIN_VALUE);
     }
 
 

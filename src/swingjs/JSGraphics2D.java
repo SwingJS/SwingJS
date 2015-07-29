@@ -108,12 +108,11 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	boolean isShifted;// private, but only JavaScript
 	private Font font;
 
-	public JSGraphics2D(Object canvas) {
+	public JSGraphics2D(Object canvas) { // this must be Object, because we are passing an actual HTML5 canvas
 		hints = new RenderingHints(new HashMap());
 		this.canvas = (HTML5Canvas) canvas;
-		transform = new AffineTransform();
-
 		ctx = this.canvas.getContext("2d");
+		transform = new AffineTransform();
 		/**
 		 * @j2sNative
 		 * 
@@ -124,6 +123,9 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		}
 	}
 
+	/**
+	 * the SwingJS object
+	 */
 	@Override
 	public GraphicsConfiguration getDeviceConfiguration() {
 		return gc;
@@ -217,11 +219,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		ctx.stroke();
 	}
 
-	@Override
-	public void drawString(String s, int x, int y) {
-		ctx.fillText(s, x, y);
-	}
-
 	public void background(Color bgcolor) {
 		backgroundColor = bgcolor;
 		if (bgcolor == null) {
@@ -268,6 +265,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	public void setFont(Font font) {
 		this.font = font;
+		if (ctx == null) // some graphics do not include ctx. 
+			return;
 		String s = JSToolkit.getCanvasFont(font);
 		/**
 		 * @j2sNative
@@ -433,9 +432,10 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		/**
 		 * @j2sNative
 		 * 
-		 *            imgNode = img._imgNode;
+		 *            imgNode = img._imgNode || img._canvas;
 		 */
 		{
+			
 		}
 		if (imgNode == null)
 			imgNode = JSToolkit.getCompositor().createImageNode(img);
@@ -616,6 +616,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		// region
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
+		currentClip = new Rectangle(x, y, width, height);
 		ctx.clip();
 	}
 
@@ -624,6 +625,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		// clipping is disabled because for general component painting
 		// because it consumes so much processing.
 		// it is presumed that the user will clip when desired
+		currentClip = new Rectangle(x, y, width, height);
 		/**
 		 * @j2sNative
 		 *  
@@ -632,6 +634,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		{}
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
+		currentClip = new Rectangle(x, y, width, height);
 		ctx.clip();
 	}
 
@@ -698,6 +701,15 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		// not available in JavaScript?
 		JSToolkit.notImplemented(null);
 		return null;
+	}
+
+	@Override
+	public void drawString(String s, int x, int y) {
+		ctx.fillText(s, x, y);
+	}
+
+	public void drawStringUnique(String s, int x, int y) {
+		ctx.fillText(s, x, y);
 	}
 
 	@Override
@@ -801,22 +813,24 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		 */
 		{
 		}
-		if (r != null) {
-			Rectangle clipRect = getClipBoundsImpl();
-			if (clipRect != null) {
-				r.x = clipRect.x;
-				r.y = clipRect.y;
-				r.width = clipRect.width;
-				r.height = clipRect.height;
-			}
-			return r;
+		Rectangle clipRect = getClipBoundsImpl();
+		if (r == null) {
+			r = clipRect;
+		} else {
+			r.x = clipRect.x;
+			r.y = clipRect.y;
+			r.width = clipRect.width;
+			r.height = clipRect.height;
 		}
-		return getClipBoundsImpl();
+		return r;
 	}
 
+	Rectangle currentClip;
 	private Rectangle getClipBoundsImpl() {
-		JSToolkit.notImplemented(null);
-		return null;
+		if (currentClip == null) {
+			currentClip = new Rectangle(0, 0, windowWidth, windowHeight);
+		}
+		return currentClip;
 	}
 
 	@Override

@@ -372,10 +372,18 @@ public class Color implements Paint /*, java.io.Serializable*/ {
     	 *   this.value = (a[1] ? a[0] : 0xff000000 | a[0]);
        *   break;
     	 * case 3:
-    	 *   this.setColor4(a[0], a[1], a[2], 255);
+    	 *   var n = a[0] + a[1] + a[2];
+    	 *   if (n > 0 && n < 3.001) 
+    	 *     this.setFloat(a[0], a[1], a[2], 1);
+    	 *   else
+    	 *     this.setColor4(a[0], a[1], a[2], 255);
     	 *   break;
     	 * case 4:
-    	 *   this.setColor4(a[0], a[1], a[2], a[3]);  
+    	 *   var n = a[0] + a[1] + a[2] + a[3];
+    	 *   if (n > 0 && n < 4.001) 
+    	 *     this.setFloat(a[0], a[1], a[2], a[3]);
+    	 *   else
+    	 *     this.setColor4(a[0], a[1], a[2], a[3]);
     	 *   break;
     	 * }
     	 * 

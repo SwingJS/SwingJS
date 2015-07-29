@@ -1,6 +1,7 @@
 package swingjs;
 
 import swingjs.api.DOMNode;
+import swingjs.api.HTML5Canvas;
 import jsjava.util.Locale;
 
 import jsjava.awt.Font;
@@ -25,6 +26,10 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 
 	@Override
 	public Graphics2D createGraphics(BufferedImage img) {
+		return createGraphicsSized(img, img.getWidth(), img.getHeight());
+	}
+	
+	public Graphics2D createGraphicsSized(Object img, int width, int height) {
 		// get a canvas for an image
 		JSGraphics2D g = null;
 		/**
@@ -36,11 +41,7 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 		{
 		}
 		if (g == null) {
-			DOMNode canvas = DOMNode.createElement("canvas", "img" + System.currentTimeMillis());
-		  @SuppressWarnings("unused")
-			int width = img.getWidth();
-			@SuppressWarnings("unused")
-			int height = img.getHeight();
+			HTML5Canvas canvas = (HTML5Canvas) DOMNode.createElement("canvas", "img" + System.currentTimeMillis());
 			/**
 			 * @j2sNative
 			 * 

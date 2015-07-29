@@ -310,6 +310,7 @@ return i-this.firstIndex;
 },"~O");
 Clazz.overrideMethod(c$,"remove",
 function(location){
+if (0 + location != location)return this.removeObject(location)
 var result;
 var size=this.size();
 if(0<=location&&location<size){

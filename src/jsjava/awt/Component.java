@@ -3323,6 +3323,7 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public Image createImage(int width, int height) {
+    	return Toolkit.getDefaultToolkit().createImage(null, width, height);
 //        ComponentPeer peer = this.peer;
 //        if (peer instanceof LightweightPeer) {
 //            if (parent != null) { return parent.createImage(width, height); }
@@ -3330,7 +3331,6 @@ protected  transient ComponentPeer peer;
 //        } else {
 //            return (peer != null) ? peer.createImage(width, height) : null;
 //        }
-    	return null;
     }
 
     /**

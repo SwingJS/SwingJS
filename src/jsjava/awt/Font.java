@@ -28,7 +28,7 @@ package jsjava.awt;
 import swingjs.JSToolkit;
 import jsjava.text.AttributedCharacterIterator.Attribute;
 //import java.util.Hashtable;
-import jsjava.util.Locale;
+//import jsjava.util.Locale;
 
 import jsjava.awt.font.TextAttribute;
 import jsjava.awt.geom.AffineTransform;
@@ -195,6 +195,16 @@ import jsjava.awt.geom.AffineTransform;
 public class Font
 {
 
+  FontMetrics fm;
+  
+  public FontMetrics getFontMetrics() {
+  	return fm;
+  }
+  
+  public void setFontMetrics(FontMetrics fm) {
+    this.fm = fm;
+  }
+	
 //    /**
 //     * This is now only used during serialization.  Typically
 //     * it is null.
@@ -520,13 +530,13 @@ public class Font
         this.pointSize = size;
     }
 
-    private Font(String name, int style, float sizePts) {
-        this.name = (name != null) ? name : "Default";
-        this.style = (style & ~0x03) == 0 ? style : 0;
-        this.size = (int)(sizePts + 0.5);
-        this.pointSize = sizePts;
-    }
-
+//    private Font(String name, int style, float sizePts) {
+//        this.name = (name != null) ? name : "Default";
+//        this.style = (style & ~0x03) == 0 ? style : 0;
+//        this.size = (int)(sizePts + 0.5);
+//        this.pointSize = sizePts;
+//    }
+//
 //    /* This constructor is used by deriveFont when attributes is null */
 //    private Font(String name, int style, float sizePts,
 //                 boolean created, Font2DHandle handle) {
@@ -1816,9 +1826,11 @@ public class Font
      * @return a new <code>Font</code> object.
      * @since 1.2
      */
-    public Font deriveFont(int style, float size){
+    public Font deriveFont(int style, float sizePts){
   //      if (values == null) {
-            return new Font(name, style, size);
+            Font f =  new Font(name, style, (int)(sizePts + 0.5));
+            f.pointSize = sizePts;
+            return f;
 //        }
 //        AttributeValues newValues = getAttributeValues().clone();
 //        int oldStyle = (this.style != style) ? this.style : -1;
@@ -1853,10 +1865,12 @@ public class Font
      * @return a new <code>Font</code> object.
      * @since 1.2
      */
-    public Font deriveFont(float size){
+    public Font deriveFont(float sizePts){
     	// SwingJS  -- MUST FIX SIGNATURE
-//        if (values == null) {
-            return new Font(name, style, size);
+		// if (values == null) {
+      Font f =  new Font(name, style, (int)(sizePts + 0.5));
+      f.pointSize = sizePts;
+      return f;
 //        }
 //        AttributeValues newValues = getAttributeValues().clone();
 //        newValues.setSize(size);

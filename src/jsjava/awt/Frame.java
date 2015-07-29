@@ -24,6 +24,7 @@
  */
 package jsjava.awt;
 
+import jsjava.awt.peer.FramePeer;
 import java.util.Vector;
 
 import jsjava.awt.event.KeyEvent;
@@ -343,6 +344,9 @@ public class Frame extends Window {
      */
     Vector ownedWindows;
 
+
+		private Object menuBar; // JSSwing -- no real menubar here
+
     private static final String base = "frame";
     private static int nameCounter = 0;
 
@@ -404,7 +408,7 @@ public class Frame extends Window {
      * @see java.awt.GraphicsConfiguration#getBounds
      */
     public Frame(String title) {
-        init(title, null);
+        initFrame(title, null);
     }
 
     /**
@@ -430,10 +434,10 @@ public class Frame extends Window {
      */
     public Frame(String title, GraphicsConfiguration gc) {
         super(gc);
-        init(title, gc);
+        initFrame(title, gc);
     }
 
-    private void init(String title, GraphicsConfiguration gc) {
+    private void initFrame(String title, GraphicsConfiguration gc) {
         this.title = title;
         //SunToolkit.checkAndSetPolicy(this, false);
     }
@@ -459,19 +463,19 @@ public class Frame extends Window {
      */
     public void addNotify() {
 //        synchronized (getTreeLock()) {
-//            if (peer == null) {
-//                peer = getToolkit().createFrame(this);
-//            }
-//            FramePeer p = (FramePeer)peer;
+            if (peer == null) {
+                peer = getToolkit().createFrame(this);
+            }
+            FramePeer p = (FramePeer)peer;
 //            MenuBar menuBar = this.menuBar;
 //            if (menuBar != null) {
 //                mbManagement = true;
 //                menuBar.addNotify();
 //                p.setMenuBar(menuBar);
 //            }
-//            p.setMaximizedBounds(maximizedBounds);
-//            super.addNotify();
-//        }
+            p.setMaximizedBounds(maximizedBounds);
+            super.addNotify();
+  //      }
     }
 
     /**

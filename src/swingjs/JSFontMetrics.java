@@ -5,6 +5,10 @@ import jsjava.awt.FontMetrics;
 
 public class JSFontMetrics extends FontMetrics {
 	
+	private float[] fwidths;
+	private int[] iwidths;
+	private int FIRST_PRINTABLE = 32;
+
 	public JSFontMetrics() {
 		super(null);
 	}
@@ -56,5 +60,54 @@ public class JSFontMetrics extends FontMetrics {
   public int getDescent() {
       return font.getSize() / 4 + 1;
   }
+  
+  /**
+   * @j2sIgnore
+   * 
+   */
+  public int charWidth(char pt) {
+  	return (pt < 256 ? (int) getWidthsFloat()[pt] : stringWidth("" + pt));
+  }
+  
+  public int charWidth(int pt) {
+  	/**
+  	 * could be a character 
+  	 * 
+  	 * @j2sNative 
+  	 * 
+  	 * var spt;
+  	 * return ((pt + 0 == pt ? pt : (pt = (spt = pt).charCodeAt(0))) < 256 ? 
+  	 *       Clazz.floatToInt(this.getWidthsFloat()[pt])
+  	 *     : this.stringWidth(isChar ? spt : String.fromCharCode (pt)));
+  	 */
+  	{
+  		return (pt < 256 ? (int) getWidthsFloat()[pt] : stringWidth("" + (char) pt));
+  	}
+  }
+  
+	public int stringWidth(String s) {
+  	return (int) JSToolkit.getStringWidth(null, font, s);
+  }
+
+	public int[] getWidths() {
+		if (iwidths != null)
+			return iwidths;
+		iwidths = new int[256];
+		getWidthsFloat();
+		for (int ch = FIRST_PRINTABLE ; ch < 256; ch++) {
+			iwidths[ch] = (int) fwidths[ch];
+		}
+		return iwidths;
+	}
+
+	public float[] getWidthsFloat() {
+		if (fwidths != null)
+			return fwidths;
+		fwidths = new float[256];
+		for (int ch = FIRST_PRINTABLE; ch < 256; ch++) {
+			fwidths[ch] = JSToolkit.getStringWidth(null, font, "" + (char) ch);
+		}
+		return fwidths;
+	}
 
 }

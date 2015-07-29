@@ -348,8 +348,6 @@ public class Container extends Component {
      * @see javax.swing.JComponent#revalidate()
      * @return    the component argument
      * 
-     * @j2sIgnore
-     * 
      */
     public Component add(Component comp) {
         return addImpl(comp, null, -1);
@@ -363,8 +361,6 @@ public class Container extends Component {
      * method <code>add(Component, Object)</code> instead.
      * @exception NullPointerException if {@code comp} is {@code null}
      * @see #add(Component, Object)
-     * 
-     * @j2sIgnore
      * 
      */
     public Component add(String name, Component comp) {
@@ -394,8 +390,6 @@ public class Container extends Component {
      * @see #remove
      * @see #validate
      * @see javax.swing.JComponent#revalidate()
-     * 
-     * @j2sIgnore
      * 
      */
     public Component add(Component comp, int index) {
@@ -911,7 +905,6 @@ public class Container extends Component {
      * @see       LayoutManager
      * @since     JDK1.1
      * 
-     * @j2sIgnore
      * 
      */
     public void add(Component comp, Object constraints) {
@@ -947,37 +940,37 @@ public class Container extends Component {
      * @see LayoutManager
      */
     public Component add(Component comp, Object constraints, int index) {
-    	/**
-    	 * 
-    	 * add(Component)
-    	 * add(String, Component)
-    	 * add(Component, int)
-    	 * add(Component, Object)
-    	 * add(Component, Object, int)
-    	 * @j2sNative
-    	 * 
-    	 * switch (arguments.length) {
-    	 * case 1:
-    	 *   
-    	 *   constraints = null;
-    	 *   index = -1;
-    	 *   break;
-    	 * case 2:
-    	 *   if (typeof comp == "string") {
-    	 *     index = -1;
-    	 *     var c = constraints;
-    	 *     constraints = comp; 
-    	 *     comp = c;
-    	 *   } else if (typeof constraints == "number") {
-    	 *   	 index = constraints;
-    	 *     constraints = null;
-    	 *   } else {
-    	 *     index = -1;
-    	 *   }
-    	 *   break;   
-    	 * }
-    	 */
-    	{}
+//    	/**
+//    	 * 
+//    	 * add(Component)
+//    	 * add(String, Component)
+//    	 * add(Component, int)
+//    	 * add(Component, Object)
+//    	 * add(Component, Object, int)
+//    	 * j2sNative
+//    	 * 
+//    	 * switch (arguments.length) {
+//    	 * case 1:
+//    	 *   
+//    	 *   constraints = null;
+//    	 *   index = -1;
+//    	 *   break;
+//    	 * case 2:
+//    	 *   if (typeof comp == "string") {
+//    	 *     index = -1;
+//    	 *     var c = constraints;
+//    	 *     constraints = comp; 
+//    	 *     comp = c;
+//    	 *   } else if (typeof constraints == "number") {
+//    	 *   	 index = constraints;
+//    	 *     constraints = null;
+//    	 *   } else {
+//    	 *     index = -1;
+//    	 *   }
+//    	 *   break;   
+//    	 * }
+//    	 */
+//    	{}
        return addImpl(comp, constraints, index);
     }
 
@@ -1160,10 +1153,8 @@ public class Container extends Component {
      * @see #getComponentCount
      * @since JDK1.1
      * 
-     * @j2sIgnore
      */
     public void remove(int index) {
-    	// SwingJS SAEM
     	removeInt(index);
     }
 

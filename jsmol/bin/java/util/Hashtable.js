@@ -127,7 +127,7 @@ throw new java.util.NoSuchElementException();
 Clazz.load([],"java.util.HashtableEntrySet",[],function(){
 c$=Clazz.decorateAsClass(function(){
 Clazz.instantialize(this,arguments);
-},java.util,"HashtableEntrySet",null,java.util.AbstractSet);
+},java.util,"HashtableEntrySet",java.util.AbstractSet);
 
 Clazz.makeConstructor(c$,
 function(a){
@@ -171,7 +171,7 @@ return new java.util.HashtableIterator(this);
 Clazz.load([],"java.util.HashtableKeySet",[],function(){
 c$=Clazz.decorateAsClass(function(){
 Clazz.instantialize(this,arguments);
-},java.util,"HashtableKeySet",null,java.util.AbstractSet);
+},java.util,"HashtableKeySet",java.util.AbstractSet);
 
 Clazz.makeConstructor(c$,
 function(a){

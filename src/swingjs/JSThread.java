@@ -1,37 +1,13 @@
-/*
- * Copyright (c) 1994, 2010, Oracle and/or its affiliates. All rights reserved.
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 2 only, as
- * published by the Free Software Foundation.  Oracle designates this
- * particular file as subject to the "Classpath" exception as provided
- * by Oracle in the LICENSE file that accompanied this code.
- *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 2 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
- *
- * You should have received a copy of the GNU General Public License version
- * 2 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
- * or visit www.oracle.com if you need additional information or have any
- * questions.
- */
-
 package swingjs;
 
-import jsjava.awt.EventQueue;
-import jsjava.awt.Toolkit;
-import jsjava.awt.event.InvocationEvent;
+import java.awt.Toolkit;
+import java.awt.event.InvocationEvent;
 import swingjs.api.JSFunction;
 
 /**
- * A class that takes care of simple threading.
+ * A class that takes care of simple threading. There are three states: INIT, LOOP, and DONE.
+ * These states are passed into run1
+ * 
  * 
  * @author Bob Hanson
  * 
@@ -43,9 +19,7 @@ public abstract class JSThread extends Thread implements JSFunction {
 	public static final int DONE = 2;
 
 	protected boolean isJS;
-	protected boolean doDispatch = true;
-	protected int msDelay;
-
+	
 	public JSThread(ThreadGroup group, String name) {
 		super(group, name);
 		/**
@@ -62,49 +36,43 @@ public abstract class JSThread extends Thread implements JSFunction {
 
 	@Override
 	public synchronized void start() {
-		if (!isJS) {
-			super.start();
-			return;
-		}
-		JSToolkit.setTimeout(this, msDelay, 0);
-	}
 
-	/**
-	 * set the delay time between run1 calls
-	 * 
-	 * @param ms
-	 */
-	public void setDelayMillis(int ms) {
-		msDelay = ms;
+		/**
+		 * @j2sNative
+		 * 
+		 *            swingjs.JSToolkit.setTimeout(this, 1, 0);
+		 * 
+		 */
+		{
+			super.start();
+		}
+
 	}
 
 	/**
 	 * a generic method that loops until done, or in JavaScript, will reenter and
 	 * continue at the appropriate spot. Example given here
 	 * 
-	 * @param mode
+	 * @param state
 	 */
 	protected abstract void run1(int state);
 
 	
-	// protected void run1(int mode) {
+	// protected void run1(int state) {
 	// try {
 	// while (true)
-	// switch (mode) {
+	// switch (state) {
 	// case INIT:
 	// // once-through stuff here
-	// mode = LOOP;
+	// state = LOOP;
 	// break;
 	// case LOOP:
-	// if (!doDispatch || isInterrupted()) {
-	// mode = DONE;
+	// if (isInterrupted()) {
+	// state = DONE;
 	// } else {
-	// Runnable r = new Runnable() {
-	// public void run() {
 	// // put the loop code here
-	// }
 	// };
-	// dispatchAndReturn(r);
+	// dispatchAndReturn(state);
 	// if (isJS)
 	// return;
 	// }
@@ -122,52 +90,45 @@ public abstract class JSThread extends Thread implements JSFunction {
 	// }
 	// }
 
-	@SuppressWarnings("unused")
-	protected void dispatchAndReturn(Runnable r, int mode) {
+	/**
+	 * 
+	 * @param r
+	 * @param state
+	 * @return true if we should interrupt (i.e. JavaScript)
+	 * @throws InterruptedException
+	 */
+	protected boolean sleepAndReturn(final int delay, final int state)
+			throws InterruptedException {
 		if (!isJS) {
-			if (r != null)
-				r.run();
-			try {
-				sleep(msDelay);
-			} catch (InterruptedException e) {
-				// ignore
+			sleep(delay);
+			return false;
+		}
+
+		// in JavaScript, we need to do this through the system event queue,
+		// which in JSToolkit takes care of all the "thread" handling.
+
+		final JSThread me = this;
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				me.run1(state);
 			}
-			return;
-		}
-		if (r != null) {
-			EventQueue.invokeLater(r);
-		}
-		final JSFunction f = null;
-		JSThread me = this;
+		};
 		/**
 		 * @j2sNative
 		 * 
-		 *            f = function() {me.run1(mode)};
+		 *            setTimeout(
+		 *              function() {java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(new java.awt.event.InvocationEvent(me, r))}, 
+		 *              delay
+		 *             );
 		 * 
 		 */
 		{
+			// for reference only
+			Toolkit.getDefaultToolkit().getSystemEventQueue()
+					.postEvent(new InvocationEvent(me, r));
 		}
-		r = new Runnable() {
-
-			@Override
-			public void run() {
-				notifyMe(f);
-			}
-
-			private void notifyMe(JSFunction f) {
-				/**
-				 * @j2sNative
-				 * 
-				 *            f();
-				 * 
-				 */
-				{
-				}
-			}
-		};
-		// need msDelay
-		Toolkit.getEventQueue().postEvent(new JSEvent(this, r));
-
+		return true;
 	}
 
 }

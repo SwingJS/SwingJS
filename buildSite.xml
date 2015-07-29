@@ -27,14 +27,13 @@
    	<echo>...adding js subdirectory from jsmoljs and js</echo>
    	<copy todir="site/swingjs/js">
   	  <fileset dir="jsmoljs">		
-  	    <include name="core/**/*" />
-  	    <include name="j2sjmol.js" />
+  	    <include name="core/**/**" />
+  	    <include name="j2sSwingJS.js" />
   	  	<include name="JSmol.js" />
   	    <include name="JSmolCore.js" />
-  	  	<include name="JSmolJavaExt.js" />
-  	  	<include name="JSmoljQueryExt.js" />
+  	  	<include name="SwingJSJavaExt.js" />
+  	  	<include name="SwingJSjQueryExt.js" />
   	    <include name="SwingJS.js" />
-  	    <include name="tocore.bat" />
   	  </fileset>
     </copy> 
    	
@@ -47,26 +46,27 @@
   	  </fileset>
     </copy>
 
-  	<echo>...adding standard j2s JavaScript classes from j2s/</echo>
+  	<echo>...adding standard j2s classes from j2s/java </echo>
    	<copy todir="site/swingjs/j2s/java"  overwrite="true" >
       <fileset dir="j2s/java">
         <include name="**/*.js" />
       </fileset>
     </copy>
 
-    <echo>...moving swingjs/j2s jsjava and jsjavax JavaScript files from bin</echo>
+    <echo>...copying bin/jsjava JavaScript files to j2s/java</echo>
   	<copy todir="site/swingjs/j2s/java"  overwrite="true" >
       <fileset dir="bin/jsjava">
         <include name="**/*.js" />
       </fileset>
     </copy>
+    <echo>...copying bin/jsjavax JavaScript files to j2s/javax</echo>
   	<copy todir="site/swingjs/j2s/javax"  overwrite="true" >
       <fileset dir="bin/jsjavax">
         <include name="**/*.js" />
       </fileset>
     </copy>
   	
-    <echo>...adding to swingjs/j2s all other JavaScript files from bin</echo>
+    <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
         <include name="**/*.js" />
@@ -86,7 +86,7 @@
         </fileset>
     </copy>
    	   	
-  	<echo>...adding customized js from JSmol but not java.awt.event </echo>
+  	<echo>...adding customized js from jsmol/bin but not java.awt.event </echo>
    	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="jsmol/bin">
         <include name="**/*.js" />
@@ -190,7 +190,8 @@
     <antcall target="call-core">
         <param name="call-core.name" value="" />
         <param name="call-core.list" value="
-       		../js/JSmolJavaExt.js
+       		../js/SwingJSJavaExt.js
+            JU/DebugJS.js
         	"/>
     </antcall>
     
@@ -198,7 +199,8 @@
     <antcall target="call-core">
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
-       		../js/JSmolJavaExt.js
+       		../js/SwingJSJavaExt.js
+            JU/DebugJS.js
             java/awt/BasicStroke.js
             java/awt/Stroke.js
             java/util/Locale.js
@@ -338,6 +340,7 @@
             java/awt/geom/AffineTransform.js
             java/awt/geom/NoninvertibleTransformException.js
             java/awt/geom/Path2D.js
+        	
             javax/swing/Icon.js
             javax/swing/JPasswordField.js
             javax/swing/JTextField.js
@@ -406,8 +409,10 @@
             java/awt/peer/CanvasPeer.js
             java/awt/peer/ComponentPeer.js
             java/awt/peer/ContainerPeer.js
+            java/awt/peer/FramePeer.js
             java/awt/peer/LightweightPeer.js
             java/awt/peer/PanelPeer.js
+            java/awt/peer/WindowPeer.js
             java/awt/SentEvent.js
             java/awt/SequencedEvent.js
             java/util/AbstractSequentialList.js
@@ -472,6 +477,8 @@
             javax/swing/JMenu.js
             java/awt/event/WindowAdapter.js
             javax/swing/JMenuItem.js
+            javax/swing/JCheckBoxMenuItem.js
+            javax/swing/JRadioButtonMenuItem.js
             javax/swing/event/MenuDragMouseListener.js
             javax/swing/event/MenuKeyEvent.js
             javax/swing/event/MenuKeyListener.js
@@ -520,6 +527,7 @@
         	swingjs/JSUtil.js
             swingjs/JSToolkit.js
         	swingjs/JSEvent.js
+			swingjs/JSFontMetrics.js
         	swingjs/JSThread.js
             swingjs/JSThreadGroup.js
             swingjs/JSAppletPanel.js
@@ -527,7 +535,8 @@
             swingjs/JSAppletThread.js
             swingjs/JSMouse.js
             swingjs/JSComponentPeer.js
-
+            swingjs/JSWindowPeer.js
+            swingjs/JSGraphicsEnvironment.js
 			swingjs/plaf/HTML5LookAndFeel.js
             swingjs/plaf/JSComponentUI.js
             swingjs/plaf/JSPanelUI.js
@@ -541,24 +550,24 @@
 
         	"/>
     </antcall>
-    
+
    	<!-- 
 
-   	put classes in here temporarily to exclude them from the 
+    move classes in here temporarily to exclude them from the 
    	core load and make them easier to debug
    	
         	
    	minimize additional JSmol JavaScript -->
 
-  </target>
+	<delete quiet="true" dir="site/swingjs/js/core" />
 
+  </target>
 
   <target name="call-core" id="call-core">
    	<echo>......Creating core${call-core.name}.js</echo> 	
-   	<concat destfile="site/swingjs/js/core${call-core.name}.js">
+   	<concat destfile="site/swingjs/js/core/tmp.js">
    		<filelist dir="site/swingjs/j2s" files="${call-core.list}" />
    	</concat> 
-  	<copy file="site/swingjs/js/core${call-core.name}.js" tofile="site/swingjs/js/core2.js" />
   	<!--
 	   	<echo>...removing unnecessary Clazz.defineStatics blocks</echo>
   	  This next replacement does not work, because the j2s compiler does not 
@@ -613,20 +622,21 @@
   	
   	 -->
 
-  	<replace dir="site/swingjs/js" includes="core2.js" token="Clazz." value="Clazz_"/>
-  	<replace dir="site/swingjs/js" includes="core2.js" token="Clazz__" value="Clazz._"/>
-  	<replace dir="site/swingjs/js" includes="core2.js" token="($fz = " value=""/>
-  	<replace dir="site/swingjs/js" includes="core2.js" token=", $fz.isPrivate = true, $fz)" value=""/> 	
-   	<concat destfile="site/swingjs/js/core${call-core.name}.js"><filelist dir="site/swingjs/js" files="
+  	<replace dir="site/swingjs/js/core" includes="tmp.js" token="Clazz." value="Clazz_"/>
+  	<replace dir="site/swingjs/js/core" includes="tmp.js" token="Clazz__" value="Clazz._"/>
+  	<replace dir="site/swingjs/js/core" includes="tmp.js" token="($fz = " value=""/>
+  	<replace dir="site/swingjs/js/core" includes="tmp.js" token=", $fz.isPrivate = true, $fz)" value=""/> 	
+   	<concat destfile="site/swingjs/j2s/core/core${call-core.name}.js"><filelist dir="site/swingjs/js" files="
    		core/coretop2.js
-   		core2.js
+   		core/tmp.js
    		core/corebottom2.js
    		" />
    	</concat>
    	<echo>......Generating core${call-core.name}.z.js</echo> 	
-   	<java jar="jars/closure_compiler.jar" fork="true" dir="site/swingjs/js" failonerror="false">
-   		<arg line="--js core${call-core.name}.js --js_output_file ../j2s/core/core${call-core.name}.z.js" />
+   	<java jar="jars/closure_compiler.jar" fork="true" dir="site/swingjs/j2s/core" failonerror="false">
+   		<arg line="--js core${call-core.name}.js --js_output_file core${call-core.name}.z.js" />
     </java>
+ 	<delete quiet="true" file="site/swingjs/js/core/tmp.js" />
   </target>
 
   <target name="call-min" id="call-min">
