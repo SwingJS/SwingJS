@@ -163,16 +163,18 @@ final public class AU {
    * @return array
    */
   private static Object newInstanceO(Object array, int n) {
+    if (isAI(array)) 
+      return new int[n];
     /**
      * @j2sNative
      * 
-     * if (!array.getClass().getComponentType)
+     * if (!array.getClass || !array.getClass().getComponentType)
      * 	 return new Array(n);
      * 
      */
     {
-      return Array.newInstance(array.getClass().getComponentType(), n);
     }
+    return Array.newInstance(array.getClass().getComponentType(), n);
   }
 
   public static int getLength(Object array) {
