@@ -30,9 +30,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.jcraft.jzlib;
 
 /*
-import jsjava.io.IOException;
+import java.io.IOException;
 
-import jsjava.io.InputStream;
+import java.io.InputStream;
 */
 public class GZIPInputStream {// extends InflaterInputStream {
 

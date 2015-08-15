@@ -29,8 +29,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jzlib;
 
-import jsjava.io.EOFException;
-import jsjava.io.IOException;
+import java.io.EOFException;
+import java.io.IOException;
 
 import jsjava.io.FilterInputStream;
 import jsjava.io.InputStream;

@@ -11,6 +11,8 @@
   	
   	<echo>deleting the site directory</echo>
    	 	<delete quiet="true" dir="site" />
+  	
+  	working here
 
    	<echo>...adding html files</echo>
    	<copy todir="site/swingjs" overwrite="true" >
@@ -39,6 +41,8 @@
    	
    	<echo>creating site/swingjs/j2s</echo>   	
 
+  	<!--  we need a package.js; note that this is not compatible with Jmol, possibly. 
+  	      somehow we need to indicate multiple package.js option -->
   	<echo>...adding package.js from ${project.path}/package</echo>
    	<copy todir="site/swingjs/j2s/core">
   	  <fileset dir="${project.path}/package">
@@ -46,6 +50,7 @@
   	  </fileset>
     </copy>
 
+  	<!--      -->
   	<echo>...adding standard j2s classes from j2s/java </echo>
    	<copy todir="site/swingjs/j2s/java"  overwrite="true" >
       <fileset dir="j2s/java">
@@ -76,6 +81,8 @@
       </fileset>
     </copy>
    	
+  	<!--  no longer using jsmol/bin
+  	
    	<echo>...JU (javajs/util, com/jcraft/jzlib)</echo>
    	<copy todir="site/swingjs/j2s/JU" >
       <fileset dir="jsmol/bin/javajs/util">
@@ -85,7 +92,6 @@
           <include name="**/*.js" />
         </fileset>
     </copy>
-   	   	
   	<echo>...adding customized js from jsmol/bin but not java.awt.event </echo>
    	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="jsmol/bin">
@@ -102,9 +108,9 @@
         <include name="*.js" />
       </fileset>
     </copy>
+-->   	   	
 
 <!-- try without this - uses JSmol's version of BufferedInputStream and InputStream
--->
 
     <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
   	<copy todir="site/swingjs/j2s" overwrite="true" >
@@ -113,7 +119,10 @@
       </fileset>
     </copy>
 
-  	<echo>Fixing "jsjava" references</echo>
+-->
+
+   	 		
+   	<echo>Fixing "jsjava" references</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
   	<replace dir="site/swingjs/" includes="**/*.js" token="javajs.util" value="JU" />
   		

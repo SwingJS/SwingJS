@@ -29,9 +29,10 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jzlib;
 
-import jsjava.io.FilterOutputStream;
-import jsjava.io.IOException;
+import java.io.IOException;
 import jsjava.io.OutputStream;
+
+import jsjava.io.FilterOutputStream;
 
 public class DeflaterOutputStream extends FilterOutputStream {
 

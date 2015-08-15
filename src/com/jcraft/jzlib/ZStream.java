@@ -34,7 +34,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jzlib;
 
-import jsjava.io.UnsupportedEncodingException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Bob Hanson -- using this for Jmol; added ZStream.getBytes(s)

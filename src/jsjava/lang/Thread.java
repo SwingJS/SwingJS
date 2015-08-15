@@ -1870,7 +1870,7 @@ class Thread implements Runnable {
     // null unless explicitly set
     private volatile UncaughtExceptionHandler uncaughtExceptionHandler;
 		private boolean interrupted;
-		private boolean stopped;
+		boolean stopped;
 
     // null unless explicitly set
     private static volatile UncaughtExceptionHandler defaultUncaughtExceptionHandler;
