@@ -265,7 +265,7 @@ var addProto = function(proto, name, func) {
   
     return this._$hashcode || (this._$hashcode = ++Clazz._hashCode)
 
-  
+/*  
 		try {
 			return this.toString ().hashCode ();
 		} catch (e) {
@@ -275,6 +275,7 @@ var addProto = function(proto, name, func) {
 			}
 			return str.hashCode ();
 		}
+*/
 	});
 
 	addProto(proto, "getClass", function () { return Clazz.getClass (this); });
