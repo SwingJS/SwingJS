@@ -639,16 +639,16 @@ final public class AU {
 	 */
 	public static byte[] ensureSignedBytes(byte[] b) {
 		if (b != null) {
-			/**
-			 * @j2sNative
-			 * 
+	  /**
+	   * @j2sNative
+	   * 
 			 *            for (var i = b.length; --i >= 0;) { var j = b[i] & 0xFF; if
 			 *            (j >= 0x80) j -= 0x100; b[i] = j; }
-			 * 
-			 */
-			{
-			}
-		}
+	   * 
+	   */
+	  {
+	  }
+	}
 		return b;
 	}
 

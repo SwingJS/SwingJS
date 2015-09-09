@@ -328,7 +328,7 @@ public class SB {
 		/**
 		 * @j2sNative
 		 * 
-		 * s = s.substring(0, start) + str + s.substring(end);
+		 * this.s = this.s.substring(0, start) + str + this.s.substring(end);
 		 */
 		{
 			sb.replace(start, end, str);

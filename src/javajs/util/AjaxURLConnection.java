@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javajs.api.JmolObjectInterface;
+
 /**
  * 
  * A method to allow a JavaScript Ajax 
@@ -12,12 +14,12 @@ import java.net.URLConnection;
  */
 public class AjaxURLConnection extends URLConnection {
 
-	protected AjaxURLConnection(URL url) {
-		super(url);
-	}
+  protected AjaxURLConnection(URL url) {
+    super(url);
+  }
 
-	byte[] bytesOut;
-	String postOut = "";
+  byte[] bytesOut;
+  String postOut = "";
 
   /**
    * 
@@ -31,53 +33,57 @@ public class AjaxURLConnection extends URLConnection {
    * the method is "private", but in JavaScript that can still be overloaded.
    * Just set something to org.jmol.awtjs.JmolURLConnection.prototype.doAjax
    * 
-   * @return file data as a javajs.util.SB or byte[] depending upon the file type.
+   * @return file data as a javajs.util.SB or byte[] depending upon the file
+   *         type.
    * 
    * 
    */
+  @SuppressWarnings("null")
   private Object doAjax() {
+    JmolObjectInterface jmol = null;
     /**
      * @j2sNative
      * 
-     *            return Jmol._doAjax(this.url, this.postOut, this.bytesOut);
+     *            jmol = Jmol;
      * 
      */
     {
-      return null;
     }
+    return jmol._doAjax(url, postOut, bytesOut);
   }
 
   @Override
-	public void connect() throws IOException {
-		// not expected to be used. 
-	}
+  public void connect() throws IOException {
+    // not expected to be used. 
+  }
 
-	public void outputBytes(byte[] bytes) {
-  	//      type = "application/octet-stream;";
-		bytesOut = bytes;
+  public void outputBytes(byte[] bytes) {
+    //      type = "application/octet-stream;";
+    bytesOut = bytes;
   }
 
   public void outputString(String post) {
-  	postOut = post;
-  	//     type = "application/x-www-form-urlencoded";
+    postOut = post;
+    //     type = "application/x-www-form-urlencoded";
   }
 
+  @Override
   public InputStream getInputStream() {
-  	InputStream is = null;
-  	Object o = doAjax();
-  	if (AU.isAB(o))
-  		is = Rdr.getBIS((byte[]) o);
-  	else if (o instanceof SB) 
-  		is = Rdr.getBIS(Rdr.getBytesFromSB((SB)o));
-  	else if (o instanceof String)
-  		is = Rdr.getBIS(((String) o).getBytes());
-  	return is;
+    InputStream is = null;
+    Object o = doAjax();
+    if (AU.isAB(o))
+      is = Rdr.getBIS((byte[]) o);
+    else if (o instanceof SB) 
+      is = Rdr.getBIS(Rdr.getBytesFromSB((SB)o));
+    else if (o instanceof String)
+      is = Rdr.getBIS(((String) o).getBytes());
+    return is;
   }
   /**
    * @return javajs.util.SB or byte[], depending upon the file type
    */
-	public Object getContents() {
-		return doAjax();
-	}
+  public Object getContents() {
+    return doAjax();
+  }
 
 }

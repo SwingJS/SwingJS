@@ -14,13 +14,13 @@ public interface GenericCifDataParser {
 
   boolean getData() throws Exception;
 
-  String getField(int i);
+  String getColumnName(int i);
 
-  int getFieldCount();
+  int getColumnCount();
 
   String getFileHeader();
 
-  String getLoopData(int i);
+  String getColumnData(int i);
 
   String getNextDataToken() throws Exception;
 
@@ -28,7 +28,7 @@ public interface GenericCifDataParser {
 
   String getTokenPeeked();
 
-  int parseLoopParameters(String[] fields, int[] fieldOf, int[] propertyOf) throws Exception;
+  void parseDataBlockParameters(String[] fields, String key, String data, int[] key2col, int[] col2key) throws Exception;
 
   String peekToken() throws Exception;
 
@@ -38,7 +38,7 @@ public interface GenericCifDataParser {
 
   String toUnicode(String data);
 
-  void skipLoop() throws Exception;
+  String skipLoop(boolean doReport) throws Exception;
 
   String fixKey(String key);
 

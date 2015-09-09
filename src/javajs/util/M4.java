@@ -917,5 +917,27 @@ public class M4 extends M34 {
         + m20 + "\t" + m21 + "\t" + m22 + "\t" + m23 + "]" + "\n  [" + m30
         + "\t" + m31 + "\t" + m32 + "\t" + m33 + "] ]";
   }
+  public M4 round(float f) {
+    m00 = rnd(m00, f);
+    m01 = rnd(m01, f);
+    m02 = rnd(m02, f);
+    m03 = rnd(m03, f);
+    m10 = rnd(m10, f);
+    m11 = rnd(m11, f);
+    m12 = rnd(m12, f);
+    m13 = rnd(m13, f);
+    m20 = rnd(m20, f);
+    m21 = rnd(m21, f);
+    m22 = rnd(m22, f);
+    m23 = rnd(m23, f);
+    m30 = rnd(m30, f);
+    m31 = rnd(m31, f);
+    m32 = rnd(m32, f);
+    m33 = rnd(m33, f);
+    return this;
+  }
 
+  private float rnd(float n, float f) {
+    return (Math.abs(n) < f ? 0 : n);
+  }
 }

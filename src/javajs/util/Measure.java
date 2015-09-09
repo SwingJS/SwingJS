@@ -23,9 +23,9 @@
  */
 package javajs.util;
 
-import swingjs.api.Interface;
 import javajs.api.EigenInterface;
 
+import javajs.api.Interface;
 
 
 
@@ -179,21 +179,22 @@ final public class Measure {
   
   public static float distanceToPlane(P4 plane, T3 pt) {
     return (plane == null ? Float.NaN 
-        : (plane.x * pt.x + plane.y * pt.y + plane.z * pt.z + plane.w)
-        / (float) Math.sqrt(plane.x * plane.x + plane.y * plane.y + plane.z
-            * plane.z));
+        : (plane.dot(pt) + plane.w) / (float) Math.sqrt(plane.dot(plane)));
+  }
+
+  public static float directedDistanceToPlane(P3 pt, P4 plane, P3 ptref) {
+    float f = plane.dot(pt) + plane.w;
+    float f1 = plane.dot(ptref) + plane.w;
+    return Math.signum(f1) * f /  (float) Math.sqrt(plane.dot(plane));
   }
 
   public static float distanceToPlaneD(P4 plane, float d, P3 pt) {
-    return (plane == null ? Float.NaN : (plane.x * pt.x + plane.y
-        * pt.y + plane.z * pt.z + plane.w) / d);
+    return (plane == null ? Float.NaN : (plane.dot(pt) + plane.w) / d);
   }
 
   public static float distanceToPlaneV(V3 norm, float w, P3 pt) {
     return (norm == null ? Float.NaN 
-        : (norm.x * pt.x + norm.y * pt.y + norm.z * pt.z + w)
-        / (float) Math.sqrt(norm.x * norm.x + norm.y * norm.y + norm.z
-            * norm.z));
+        : (norm.dot(pt) + w)  / (float) Math.sqrt(norm.dot(norm)));
   }
 
   /**
@@ -264,18 +265,16 @@ final public class Measure {
    * @param ptB
    * @param ptC
    * @param isOutward
-   * @param normal
-   * @return        true if winding is proper; false if not
+   * @param normal set to be opposite to direction of ptCenter from ABC
+   * @param vTemp
+   * @return true if winding is CCW; false if CW
    */
-  public static boolean getNormalFromCenter(P3 ptCenter, P3 ptA, P3 ptB,
-                            P3 ptC, boolean isOutward, V3 normal) {
-    // for Polyhedra
-    V3 vAB = new V3();
-    float d = getNormalThroughPoints(ptA, ptB, ptC, normal, vAB);
+  public static boolean getNormalFromCenter(P3 ptCenter, P3 ptA, P3 ptB, P3 ptC,
+                                      boolean isOutward, V3 normal, V3 vTemp) {
+    float d = getNormalThroughPoints(ptA, ptB, ptC, normal, vTemp);
     boolean isReversed = (distanceToPlaneV(normal, d, ptCenter) > 0);
     if (isReversed == isOutward)
       normal.scale(-1f);
-    //System.out.println("Draw v vector scale 2.0 " + Escape.escape(ptCenter) + Escape.escape(normal));
     return !isReversed;
   }
 
@@ -675,7 +674,7 @@ final public class Measure {
 
     //this construction prevents JavaScript from requiring preloading of Eigen
     
-    float[] v = ((EigenInterface) Interface.getInstance("javajs.util.Eigen", false))
+    float[] v = ((EigenInterface) Interface.getInterface("javajs.util.Eigen"))
         .setM(N).getEigenvectorsFloatTransposed()[3];
     q = Quat.newP4(P4.new4(v[1], v[2], v[3], v[0]));
     retStddev[1] = getRmsd(centerAndPoints, q);

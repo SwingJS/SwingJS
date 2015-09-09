@@ -193,6 +193,7 @@ public class A4 implements JSONEncodable, Serializable {
     if (sin == 0 && cos == 1) {
       x = y = 0;
       z = 1;
+      angle = 0;
     } else {
       angle = (float) Math.atan2(sin, cos);
     }

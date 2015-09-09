@@ -28,8 +28,7 @@ import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import swingjs.J2SIgnoreImport;
-
+import javajs.J2SIgnoreImport;
 import javajs.api.JSONEncodable;
 
 /**
@@ -367,6 +366,14 @@ public class PT {
     return tokens;
   }
 
+  public static int countChar(String line, char c) {
+    int n = 0;
+    for (int i = line.lastIndexOf(c) + 1; --i >= 0;)
+      if (line.charAt(i) == c)
+        n++;
+    return n;
+  }
+  
   public static int countTokens(String line, int ich) {
     int tokenCount = 0;
     if (line != null) {
@@ -724,6 +731,8 @@ public class PT {
   }
 
   public static String trim(String str, String chars) {
+    if (str == null || str.length() == 0)
+      return str;
     if (chars.length() == 0)
       return str.trim();
     int len = str.length();
@@ -1008,20 +1017,6 @@ public class PT {
     return val;
   }
 
-  public static void getMapSubset(Map<String, ?> h, String key,
-                                      Map<String, Object> h2) {
-    Object val = h.get(key);
-    if (val != null) {
-      h2.put(key, val);
-      return;
-    }
-    for (Entry<String, ?> e : h.entrySet()) {
-      String k = e.getKey();
-      if (isLike(k, key))
-        h2.put(k, e.getValue());
-    }
-  }
-
   public static String clean(String s) {
     return rep(replaceAllCharacters(s, " \t\n\r", " "), "  ", " ").trim();
   }
@@ -1076,7 +1071,7 @@ public class PT {
    * @return         formatted string
    */
   
-  public static String formatString(String strFormat, String key, String strT,
+  private static String formatString(String strFormat, String key, String strT,
                                     float floatT, double doubleT, boolean doOne) {
     if (strFormat == null)
       return null;
@@ -1119,7 +1114,7 @@ public class PT {
         if (strFormat.charAt(ich) == '.') {
           ++ich;
           if ((ch = strFormat.charAt(ich)) == '-') {
-            isExponential = true;
+            isExponential = (strT == null);
             ++ich;
           } 
           if ((ch = strFormat.charAt(ich)) >= '0' && ch <= '9') {
@@ -1127,7 +1122,7 @@ public class PT {
             ++ich;
           }
           if (isExponential)
-            precision = -precision - (strT == null ? 1 : 0);
+            precision = -precision;
         }
         String st = strFormat.substring(ich, ich + len);
         if (!st.equals(key)) {

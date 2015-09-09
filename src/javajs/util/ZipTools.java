@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javajs.J2SIgnoreImport;
 import javajs.api.GenericZipInputStream;
 import javajs.api.GenericZipTools;
 import javajs.api.ZInputStream;
@@ -40,8 +41,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
-import swingjs.J2SIgnoreImport;
 
 
 /**
@@ -146,8 +145,7 @@ public class ZipTools implements GenericZipTools {
    * @return directory listing or subfile contents
    */
   @Override
-  public Object getZipFileDirectory(GenericZipTools jzt,
-                                    BufferedInputStream bis, String[] list,
+  public Object getZipFileDirectory(BufferedInputStream bis, String[] list,
                                     int listPtr, boolean asBufferedInputStream) {
     SB ret;
     if (list == null || listPtr >= list.length)
@@ -184,7 +182,7 @@ public class ZipTools implements GenericZipTools {
       if (bytes == null)
         return "";
       if (Rdr.isZipB(bytes) || Rdr.isPngZipB(bytes))
-        return getZipFileDirectory(jzt, Rdr.getBIS(bytes), list, ++listPtr,
+        return getZipFileDirectory(Rdr.getBIS(bytes), list, ++listPtr,
             asBufferedInputStream);
       if (asBufferedInputStream)
         return Rdr.getBIS(bytes);
@@ -307,7 +305,7 @@ public class ZipTools implements GenericZipTools {
     /**
      * @j2sNative
      * 
-     *            return swingjs.api.Interface.getInterface(
+     *            return javajs.api.Interface.getInterface(
      *            "java.util.zip.ZipOutputStream").setZOS(bos);
      * 
      */

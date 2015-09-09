@@ -11,64 +11,73 @@ import javajs.api.GenericLineReader;
 
 
 
+/**
+*
+* A special tokenizer class for dealing with quoted strings in CIF files.
+* 
+* Greek letters implemented in Jmol 13.3.9 and only for 
+* titles and space groups. All other mark ups ignored.
+* 
+*<p>
+* regarding the treatment of single quotes vs. primes in
+* cif file, PMR wrote:
+*</p>
+*<p>
+*   * There is a formal grammar for CIF
+* (see http://www.iucr.org/iucr-top/cif/index.html)
+* which confirms this. The textual explanation is
+*<p />
+*<p>
+* 14. Matching single or double quote characters (' or ") may
+* be used to bound a string representing a non-simple data value
+* provided the string does not extend over more than one line.
+*<p />
+*<p>
+* 15. Because data values are invariably separated from other
+* tokens in the file by white space, such a quote-delimited
+* character string may contain instances of the character used
+* to delimit the string provided they are not followed by white
+* space. For example, the data item
+*<code>
+*  _example  'a dog's life'
+*</code>
+* is legal; the data value is a dog's life.
+*</p>
+*<p>
+* [PMR - the terminating character(s) are quote+whitespace.
+* That would mean that:
+*<code>
+*  _example 'Jones' life'
+*</code>
+* would be an error
+*</p>
+*<p>
+* The CIF format was developed in that late 1980's under the aegis of the
+* International Union of Crystallography (I am a consultant to the COMCIFs 
+* committee). It was ratified by the Union and there have been several 
+* workshops. mmCIF is an extension of CIF which includes a relational 
+* structure. The formal publications are:
+*</p>
+*<p>
+* Hall, S. R. (1991). "The STAR File: A New Format for Electronic Data 
+* Transfer and Archiving", J. Chem. Inform. Comp. Sci., 31, 326-333.
+* Hall, S. R., Allen, F. H. and Brown, I. D. (1991). "The Crystallographic
+* Information File (CIF): A New Standard Archive File for Crystallography",
+* Acta Cryst., A47, 655-685.
+* Hall, S.R. & Spadaccini, N. (1994). "The STAR File: Detailed 
+* Specifications," J. Chem. Info. Comp. Sci., 34, 505-508.
+*</p>
+*/
+
 public class CifDataParser implements GenericCifDataParser {
+
   /**
-   *
-   * A special tokenizer class for dealing with quoted strings in CIF files.
+   * The maximum number of columns (data keys) passed to the parser or found in the file
+   * for a given loop_ or category.subkey listing.
    * 
-   * Greek letters implemented in Jmol 13.3.9 and only for 
-   * titles and space groups. All other mark ups ignored.
-   * 
-   *<p>
-   * regarding the treatment of single quotes vs. primes in
-   * cif file, PMR wrote:
-   *</p>
-   *<p>
-   *   * There is a formal grammar for CIF
-   * (see http://www.iucr.org/iucr-top/cif/index.html)
-   * which confirms this. The textual explanation is
-   *<p />
-   *<p>
-   * 14. Matching single or double quote characters (' or ") may
-   * be used to bound a string representing a non-simple data value
-   * provided the string does not extend over more than one line.
-   *<p />
-   *<p>
-   * 15. Because data values are invariably separated from other
-   * tokens in the file by white space, such a quote-delimited
-   * character string may contain instances of the character used
-   * to delimit the string provided they are not followed by white
-   * space. For example, the data item
-   *<code>
-   *  _example  'a dog's life'
-   *</code>
-   * is legal; the data value is a dog's life.
-   *</p>
-   *<p>
-   * [PMR - the terminating character(s) are quote+whitespace.
-   * That would mean that:
-   *<code>
-   *  _example 'Jones' life'
-   *</code>
-   * would be an error
-   *</p>
-   *<p>
-   * The CIF format was developed in that late 1980's under the aegis of the
-   * International Union of Crystallography (I am a consultant to the COMCIFs 
-   * committee). It was ratified by the Union and there have been several 
-   * workshops. mmCIF is an extension of CIF which includes a relational 
-   * structure. The formal publications are:
-   *</p>
-   *<p>
-   * Hall, S. R. (1991). "The STAR File: A New Format for Electronic Data 
-   * Transfer and Archiving", J. Chem. Inform. Comp. Sci., 31, 326-333.
-   * Hall, S. R., Allen, F. H. and Brown, I. D. (1991). "The Crystallographic
-   * Information File (CIF): A New Standard Archive File for Crystallography",
-   * Acta Cryst., A47, 655-685.
-   * Hall, S.R. & Spadaccini, N. (1994). "The STAR File: Detailed 
-   * Specifications," J. Chem. Info. Comp. Sci., 34, 505-508.
-   *</p>
    */
+  public static final int KEY_MAX = 100;
+
   private GenericLineReader reader;
   private BufferedReader br;
 
@@ -79,8 +88,12 @@ public class CifDataParser implements GenericCifDataParser {
   private boolean wasUnQuoted;
   private String strPeeked;
   private int ichPeeked;
-  private int fieldCount;
-  private String[] loopData;
+  private int columnCount;
+  private String[] columnNames;
+  private String[] columnData = new String[KEY_MAX];
+  private boolean isLoop;
+  private boolean haveData;
+
   private SB fileHeader = new SB();
   private boolean isHeader = true;
   private String nullString = "\0";
@@ -110,21 +123,19 @@ public class CifDataParser implements GenericCifDataParser {
     // for reflection
   }
     
-  private String[] fields;
-
   @Override
-  public String getLoopData(int i) {
-    return loopData[i];
+  public String getColumnData(int i) {
+    return columnData[i];
   }
 
   @Override
-  public int getFieldCount() {
-    return fieldCount;
+  public int getColumnCount() {
+    return columnCount;
   }
 
   @Override
-  public String getField(int i) {
-    return fields[i];
+  public String getColumnName(int i) {
+    return columnNames[i];
   }
 
   /**
@@ -223,13 +234,12 @@ public class CifDataParser implements GenericCifDataParser {
       keyWords.addLast(key);
       data.put(key, new  Lst<String>());
     }
-    fieldCount = keyWords.size();
-    if (fieldCount == 0)
+    columnCount = keyWords.size();
+    if (columnCount == 0)
       return;
-    loopData = new String[fieldCount];
     while (getData())
-      for (int i = 0; i < fieldCount; i++)
-        ((Lst<String>)data.get(keyWords.get(i))).addLast(loopData[i]);
+      for (int i = 0; i < columnCount; i++)
+        ((Lst<String>)data.get(keyWords.get(i))).addLast(columnData[i]);
   }
 
   @Override
@@ -251,8 +261,8 @@ public class CifDataParser implements GenericCifDataParser {
   }
   
   /**
-   * The work horse; a general reader for loop data.
-   * Fills loopData with fieldCount fields.
+   * The work horse; a general reader for loop data. Fills colunnData with
+   * fieldCount fields.
    * 
    * @return false if EOF
    * @throws Exception
@@ -260,10 +270,16 @@ public class CifDataParser implements GenericCifDataParser {
   @Override
   public boolean getData() throws Exception {
     // line is already present, and we leave with the next line to parse
-    for (int i = 0; i < fieldCount; ++i)
-      if ((loopData[i] = getNextDataToken()) == null)
-        return false;
-    return (fieldCount > 0);
+    if (isLoop) {
+      for (int i = 0; i < columnCount; ++i)
+        if ((columnData[i] = getNextDataToken()) == null)
+          return false;
+    } else if (haveData) {
+      haveData = false;
+    } else {
+      return false;
+    }
+    return (columnCount > 0);
   }
 
   /**
@@ -273,12 +289,25 @@ public class CifDataParser implements GenericCifDataParser {
    * @throws Exception
    */
   @Override
-  public void skipLoop() throws Exception {
+  public String skipLoop(boolean doReport) throws Exception {
     String str;
-    while ((str = peekToken()) != null && str.charAt(0) == '_')
+    SB ret = (doReport ? new SB() : null);
+    int n = 0;
+    while ((str = peekToken()) != null && str.charAt(0) == '_') {
+      if (ret != null)
+        ret.append(str).append("\n");
       getTokenPeeked();
-    while (getNextDataToken() != null) {
+      n++;
     }
+    int m = 0;
+    while ((str = getNextDataToken()) != null) {
+      if (ret == null)
+        continue; 
+      ret.append(str).append(" ");
+      if ((++m % n) == 0)
+        ret.append("\n");
+    }
+    return (ret == null ? null : ret.toString());
   }
 
   /**
@@ -397,57 +426,108 @@ public class CifDataParser implements GenericCifDataParser {
   }
 
   /**
-   * Passing an array of field names, this method fills two arrays. 
-   * The first, fieldOf, identifies 
-   * It does this by first creating a map of names to their indices in fields[].
+   * Process a data block, with or without a loop_.
    * 
-   * Alternatively, if fields is null, then a private array is filled, in order, 
-   * with key data. This is used in cases such as matrices for which there are simply
-   * too many possibilities to list, and the key name itself contains the x-y 
-   * information that we need.
+   * Passed an array of field names, this method fills two int[] arrays. The
+   * first, key2col, maps desired key values to actual order of appearance
+   * (column number) in the file; the second, col2key, is a reverse loop-up for
+   * that, mapping column numbers to desired field indices. 
    * 
+   * When called within a loop_ context, this.columnData will be created but not filled.
+   * 
+   * Alternatively, if fields is null, then this.fieldNames is
+   * filled, in order, with key data, and both key2col and col2key will be
+   * simply 0,1,2,... This array is used in cases such as matrices for which
+   * there are simply too many possibilities to list, and the key name itself
+   * contains information that we need.
+   * 
+   * When not a loop_ context, keys are expected to be in the mmCIF form
+   * category.subkey and will be unique within a data block (see
+   * http://mmcif.wwpdb.org/docs/tutorials/mechanics/pdbx-mmcif-syntax.html).
+   * Keys and data will be read for all data in the same category, filling this.columnData.
+   * 
+   * 
+   * In this way, the calling class does not need to enumerate all possible
+   * category names, but instead can focus on just those of interest.
+   * 
+   * 
+   * @param fields
+   *        list of normalized field names, such as
+   *        "_pdbx_struct_assembly_gen_assembly_id" (with "_" instead of ".")
+   * @param key
+   *        null to indicate a loop_ construct, otherwise the initial category.subkey
+   *        found
+   * @param data
+   *        when not loop_ the initial data read, otherwise ignored
+   * @param key2col
+   *        map of desired keys to actual columns
+   * @param col2key
+   *        map of actual columns to desired keys
+   * @throws Exception
    */
-   @Override
-  public int parseLoopParameters(String[] fields, int[] fieldOf, int[] propertyOf) throws Exception {
-     int propertyCount = 0;
-     if (fields == null) {
-       // for reading full list of keys, as for matrices
-       this.fields = new String[100];
-     } else {
-       if (!htFields.containsKey(fields[0]))
-         for (int i = fields.length; --i >= 0;)
-           htFields.put(fields[i], Integer.valueOf(i));
-       for (int i = fields.length; --i >= 0;)
-         fieldOf[i] = NONE;
-       propertyCount = fields.length;
-     }
-     fieldCount = 0;
-     while (true) {
-       String str = peekToken();
-       if (str == null) {
-         // we are PREMATURELY done; reset
-         fieldCount = 0;
-         break;
-       }
-       // end of the loop is a new token starting with underscore
-       if (str.charAt(0) != '_')
-         break;
-       
-       int pt = fieldCount++;
-       str = fixKey(getTokenPeeked());
-       if (fields == null) {
-         // just make a linear model, saving the list
-         this.fields[propertyOf[pt] = fieldOf[pt] = pt] = str;
-         continue;
-       }
-       Integer iField = htFields.get(str);
-       int i = (iField == null ? NONE : iField.intValue());
-       if ((propertyOf[pt] = i) != NONE)
-         fieldOf[i] = pt;
-     }
-     if (fieldCount > 0)
-       loopData = new String[fieldCount];
-     return propertyCount;
+  @Override
+  public void parseDataBlockParameters(String[] fields, String key,
+                                 String data, int[] key2col, int[] col2key) throws Exception {
+    isLoop = (key == null);
+    String s;
+    if (fields == null) {
+      // for reading full list of keys, as for matrices
+      columnNames = new String[KEY_MAX];
+    } else {
+      if (!htFields.containsKey(fields[0]))
+        for (int i = fields.length; --i >= 0;)
+          htFields.put(fields[i], Integer.valueOf(i));
+      for (int i = fields.length; --i >= 0;)
+        key2col[i] = NONE;
+    }
+    columnCount = 0;
+    int pt, i;
+    if (isLoop) {
+      while (true) {
+        s = peekToken();
+        if (s == null) {
+          // we are PREMATURELY done; reset
+          columnCount = 0;
+          break;
+        }
+        // end of the loop is a new token not starting with underscore
+        if (s.charAt(0) != '_')
+          break;
+
+        pt = columnCount++;
+        s = fixKey(getTokenPeeked());
+        if (fields == null) {
+          // just make a linear model, saving the list
+          columnNames[col2key[pt] = key2col[pt] = pt] = s;
+          continue;
+        }
+        Integer iField = htFields.get(s);
+        i = (iField == null ? NONE : iField.intValue());
+        if ((col2key[pt] = i) != NONE)
+          key2col[i] = pt;
+      }
+    } else {
+      pt = key.indexOf(".");
+      String str0 = (pt < 0 ? key : key.substring(0, pt + 1));
+      while (true) {
+        // end of the loop is a new token not starting with underscore
+        pt = columnCount++;
+        if (key == null) {
+          key = getTokenPeeked();
+          data = getNextToken();
+        }
+        Integer iField = htFields.get(fixKey(key));
+        i = (iField == null ? NONE : iField.intValue());
+        if ((col2key[pt] = i) != NONE) {
+          key2col[i] = pt;
+          columnData[i] = data;
+        }
+        if ((s = peekToken()) == null || !s.startsWith(str0))
+          break;
+        key = null;
+      }
+      haveData = (columnCount > 0);
+    }
   }
 
   @Override

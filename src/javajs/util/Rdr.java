@@ -38,7 +38,6 @@ import java.util.Map;
 import javajs.api.GenericCifDataParser;
 import javajs.api.GenericLineReader;
 import javajs.api.GenericZipTools;
-import javajs.api.ZInputStream;
 
 /**
  * A general helper class for a variety of stream and reader functionality
@@ -214,6 +213,22 @@ public class Rdr implements GenericLineReader {
     return abMagic;
   }
 
+  public static String guessMimeTypeForBytes(byte[] bytes) {
+     // only options here are JPEG, PNG, GIF, and BMP
+    switch (bytes.length < 2 ? -1 : bytes[1]) {
+    case 0:
+      return "image/jpg"; // 0xFF 0x00 ...
+    case 0x49:
+      return "image/gif"; // GIF89a...
+    case 0x4D:
+      return "image/BMP"; // BM...
+    case 0x50:
+      return "image/png";
+    default:
+      return  "image/unknown";
+    }
+  }
+
 
   ////////// stream/byte methods ///////////
   
@@ -236,7 +251,7 @@ public class Rdr implements GenericLineReader {
    */
   public static BufferedInputStream getUnzippedInputStream(GenericZipTools jzt, BufferedInputStream bis) throws IOException {
     while (isGzipS(bis))
-      bis = new BufferedInputStream(newGZIPInputStream(jzt, bis));
+      bis = new BufferedInputStream(jzt.newGZIPInputStream(bis));
     return bis;
   }
 
@@ -474,62 +489,6 @@ public class Rdr implements GenericLineReader {
       }
     }
     return getBIS(data);
-  }
-
-  //////// ZIP methods protected by reflection /////////
-
-  public static void readFileAsMap(GenericZipTools jzt, BufferedInputStream is,
-                                   Map<String, Object> bdata, String name) {
-    jzt.readFileAsMap(is, bdata, name);
-  }
-
-  public static String getZipDirectoryAsStringAndClose(GenericZipTools jzt, BufferedInputStream t) {
-    return jzt.getZipDirectoryAsStringAndClose(t);
-  }
-
-  public static InputStream newGZIPInputStream(GenericZipTools jzt, BufferedInputStream bis) throws IOException {
-    return jzt.newGZIPInputStream(bis);
-  }
-
-  public static ZInputStream newZipInputStream(GenericZipTools jzt, InputStream in) {
-    return jzt.newZipInputStream(in);
-  }
-
-  public static Object getZipFileDirectory(GenericZipTools jzt, BufferedInputStream bis,
-                                          String[] subFileList, int listPtr, boolean asBufferedInputStream) {
-    return jzt.getZipFileDirectory(jzt, bis, subFileList, listPtr, asBufferedInputStream);
-  }
-
-  public static String[] getZipDirectoryAndClose(GenericZipTools jzt, BufferedInputStream t,
-                                                 String manifestID) {
-    return jzt.getZipDirectoryAndClose(t, manifestID);
-  }
-
-  public static void getAllZipData(GenericZipTools jzt, BufferedInputStream bis, String[] subFileList,
-                                String replace, String string,
-                                Map<String, String> fileData) {
-    jzt.getAllZipData(bis, subFileList, replace, string, fileData);
-  }
-
-  public static Object getZipFileContentsAsBytes(GenericZipTools jzt, BufferedInputStream bis,
-                                                 String[] subFileList, int i) {
-    return jzt.getZipFileContentsAsBytes(bis, subFileList, i);
-  }
-
-  public static void addZipEntry(GenericZipTools jzt, Object zos, String fileName) throws IOException {
-    jzt.addZipEntry(zos, fileName);    
-  }
-
-  public static void closeZipEntry(GenericZipTools jzt, Object zos) throws IOException {
-    jzt.closeZipEntry(zos);
-  }
-
-  public static Object getZipOutputStream(GenericZipTools jzt, Object bos) {
-    return jzt.getZipOutputStream(bos);
-  }
-
-  public static int getCrcValue(GenericZipTools jzt, byte[] bytes) {
-    return jzt.getCrcValue(bytes);
   }
 
   /** We define a request for zip file extraction by vertical bar:

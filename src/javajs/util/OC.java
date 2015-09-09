@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import swingjs.J2SIgnoreImport;
 
 
-
+import javajs.J2SIgnoreImport;
 import javajs.api.BytePoster;
+import javajs.api.JmolObjectInterface;
 
 /**
  * 
@@ -251,64 +251,71 @@ public class OC extends OutputStream {
     closeChannel();
   }
 
-	public String closeChannel() {
-		if (closed)
-			return null;
-		// can't cancel file writers
-		try {
-			if (bw != null) {
-				bw.flush();
-				bw.close();
-			} else if (os != null) {
-				os.flush();
-				os.close();
-			}
-			if (os0 != null && isCanceled) {
-				os0.flush();
-				os0.close();
-			}
-		} catch (Exception e) {
-			// ignore closing issues
-		}
-		if (isCanceled) {
-			closed = true;
-			return null;
-		}
-		if (fileName == null) {
-			if (isBase64) {
-				String s = getBase64();
-				if (os0 != null) {
-					os = os0;
-					append(s);
-				}
-				sb = new SB();
-				sb.append(s);
-				isBase64 = false;
-				return closeChannel();
-			}
-			return (sb == null ? null : sb.toString());
-		}
-		closed = true;
-		/**
-		 * @j2sNative
-		 * 
-		 *            var data = (this.sb == null ? this.toByteArray() :
-		 *            this.sb.toString()); if (typeof this.fileName == "function") {
-		 *            this.fileName(data); } else { Jmol._doAjax(this.fileName,
-		 *            null, data); }
-		 * 
-		 * 
-		 */
-		{
-			if (!isLocalFile) {
-				String ret = postByteArray(); // unsigned applet could do this
-				if (ret.startsWith("java.net"))
-					byteCount = -1;
-				return ret;
-			}
-		}
-		return null;
-	}
+  @SuppressWarnings({ "null", "unused" })
+  public String closeChannel() {
+    if (closed)
+      return null;
+    // can't cancel file writers
+    try {
+      if (bw != null) {
+        bw.flush();
+        bw.close();
+      } else if (os != null) {
+        os.flush();
+        os.close();
+      }
+      if (os0 != null && isCanceled) {
+        os0.flush();
+        os0.close();
+      }
+    } catch (Exception e) {
+      // ignore closing issues
+    }
+    if (isCanceled) {
+      closed = true;
+      return null;
+    }
+    if (fileName == null) {
+      if (isBase64) {
+        String s = getBase64();
+        if (os0 != null) {
+          os = os0;
+          append(s);
+        }
+        sb = new SB();
+        sb.append(s);
+        isBase64 = false;
+        return closeChannel();
+      }
+      return (sb == null ? null : sb.toString());
+    }
+    closed = true;
+    JmolObjectInterface jmol = null;
+    Object _function = null;
+    /**
+     * @j2sNative
+     * 
+     *            jmol = Jmol; _function = (typeof this.fileName == "function" ?
+     *            this.fileName : null);
+     * 
+     */
+    {
+      if (!isLocalFile) {
+        String ret = postByteArray(); // unsigned applet could do this
+        if (ret.startsWith("java.net"))
+          byteCount = -1;
+        return ret;
+      }
+    }
+    if (jmol != null) {
+      Object data = (sb == null ? toByteArray() : sb.toString());
+      if (_function == null)
+        jmol._doAjax(fileName, null, data);
+      else
+        jmol._apply(fileName, data);
+    }
+    return null;
+  }
 
 	public boolean isBase64() {
 		return isBase64;
