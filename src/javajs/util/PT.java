@@ -1131,14 +1131,14 @@ public class PT {
           continue;
         }
         ich += len;
-        if (!Float.isNaN(floatT))
+        if (!Float.isNaN(floatT)) // 'f'
           strLabel += formatF(floatT, width, precision, alignLeft,
               zeroPad);
-        else if (strT != null)
+        else if (strT != null)  // 'd' 'i' or 's'
           strLabel += formatS(strT, width, precision, alignLeft,
               zeroPad);
-        else if (!Double.isNaN(doubleT))
-          strLabel += formatD(doubleT, width, precision, alignLeft,
+        else if (!Double.isNaN(doubleT)) // 'e'
+          strLabel += formatD(doubleT, width, precision - 1, alignLeft,
               zeroPad, true);
         if (doOne)
           break;
