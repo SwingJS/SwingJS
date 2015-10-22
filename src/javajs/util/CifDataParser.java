@@ -518,10 +518,8 @@ public class CifDataParser implements GenericCifDataParser {
         }
         Integer iField = htFields.get(fixKey(key));
         i = (iField == null ? NONE : iField.intValue());
-        if ((col2key[pt] = i) != NONE) {
-          key2col[i] = pt;
-          columnData[i] = data;
-        }
+        if ((col2key[pt] = i) != NONE) 
+          columnData[key2col[i] = pt] = data;
         if ((s = peekToken()) == null || !s.startsWith(str0))
           break;
         key = null;

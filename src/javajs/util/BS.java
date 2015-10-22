@@ -769,7 +769,7 @@ public class BS implements Cloneable, JSONEncodable {
    */
   @Override
   public String toString() {
-    return escape(this, '{', '}');
+    return escape(this, '(', ')');
   }
   
   private final static int[] emptyBitmap = new int[0];
