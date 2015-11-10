@@ -13,21 +13,6 @@ Clazz.defineMethod(c$,"newElementArray",
 function(s){
 return new Array(s);
 },"~N");
-//Clazz.makeConstructor(c$,
-//function(){
-//this.construct(16);
-//});
-//Clazz.makeConstructor(c$,
-//function(capacity){
-//Clazz.superConstructor(this,java.util.HashMap,[]);
-//if(capacity>=0){
-//this.elementCount=0;
-//this.elementData=this.newElementArray(capacity==0?1:capacity);
-//this.loadFactor=0.75;
-//this.computeMaxSize();
-//}else{
-//throw new IllegalArgumentException();
-//}},"~N");
 Clazz.makeConstructor(c$,
 function(){
 this.construct(16);
@@ -57,7 +42,7 @@ throw new IllegalArgumentException();
 Clazz.makeConstructor(c$,
 function(map){
 this.construct(map.size()<6?11:map.size()*2);
-Clazz.superCall(this,java.util.HashMap,"putAll",[map]);
+this.putAllAM(map);
 },"java.util.Map");
 
 
@@ -76,7 +61,7 @@ if (typeof capacity != "number") {
  this.loadFactor=loadFactor;
  this.elementData=this.newElementArray(map.size()<6?11:map.size()*2);
  this.computeMaxSize();
- this.putAllHM(map);
+ this.putAllAM(map);
  return;
 }
 
@@ -243,7 +228,7 @@ var capacity=this.elementCount+map.size();
 if(capacity>this.threshold){
 this.rehash(capacity);
 }
-this.putAllHM(map);
+this.putAllAM(map);
 
 }},"java.util.Map");
 Clazz.defineMethod(c$,"rehash",

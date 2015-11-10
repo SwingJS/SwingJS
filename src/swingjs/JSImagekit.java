@@ -3,6 +3,7 @@ package swingjs;
 import java.util.Arrays;
 
 import javajs.img.BMPDecoder;
+import javajs.util.AU;
 import swingjs.api.Interface;
 
 public class JSImagekit {
@@ -43,7 +44,10 @@ public class JSImagekit {
 		} else {
 			if (imagelength < 0)
 				imagelength = data.length;
-			b = Arrays.copyOfRange(data, imageoffset, imagelength);
+		  // not implemented in JavaScript:
+			// b = Arrays.copyOfRange(data, imageoffset, imagelength);
+			int n = imagelength - imageoffset;
+      System.arraycopy(data, imageoffset, b = new byte[n], 0, n);
 			if (b.length < 54)
 				return null;
 			switch (getSourceType(b)) {

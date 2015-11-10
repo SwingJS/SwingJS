@@ -173,7 +173,6 @@ return  this.cloneAM();
 Clazz.defineMethod(c$,"cloneAM",
 function(){
 var result = Clazz.clone(this);
-//var result=Clazz.superCall(this,java.util.AbstractMap,"clone",[]);
 result.$keySet=null;
 result.valuesCollection=null;
 return result;
