@@ -12,7 +12,7 @@
   	<echo>deleting the site directory</echo>
    	 	<delete quiet="true" dir="site" />
   	
-  	working here
+<!--  	working here -->
 
    	<echo>...adding html files</echo>
    	<copy todir="site/swingjs" overwrite="true" >
@@ -81,17 +81,21 @@
       </fileset>
     </copy>
    	
-  	<!--  no longer using jsmol/bin
+  	<!--  we need to remove this dependency -->
   	
    	<echo>...JU (javajs/util, com/jcraft/jzlib)</echo>
    	<copy todir="site/swingjs/j2s/JU" >
-      <fileset dir="jsmol/bin/javajs/util">
+      <fileset dir="bin/javajs/util">
         <include name="**/*.js" />
       </fileset>
-        <fileset dir="jsmol/bin/com/jcraft/jzlib">
+        <fileset dir="bin/com/jcraft/jzlib">
           <include name="**/*.js" />
         </fileset>
     </copy>
+  	
+  	<!--  we need to remove this dependency
+  	
+
   	<echo>...adding customized js from jsmol/bin but not java.awt.event </echo>
    	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="jsmol/bin">
@@ -101,14 +105,13 @@
         <exclude name="javajs/**/*" />
       </fileset>
     </copy>	
-
+ -->
     <echo>...adding to swingjs/j2s jsmol/bin/javajs/api</echo>
   	<copy todir="site/swingjs/j2s/javajs/api"  overwrite="true" >
-      <fileset dir="jsmol/bin/javajs/api">
+      <fileset dir="bin/javajs/api">
         <include name="*.js" />
       </fileset>
     </copy>
--->   	   	
 
 <!-- try without this - uses JSmol's version of BufferedInputStream and InputStream
 
