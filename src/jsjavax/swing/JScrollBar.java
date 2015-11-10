@@ -154,6 +154,19 @@ public class JScrollBar extends JComponent implements Adjustable
         updateUI();
     }
 
+    
+    /// BH for JScrollBarUI extends JSliderUI
+    
+    public void addChangeListener(ChangeListener l) {
+    	model.addChangeListener(l);
+    }
+    
+    /// BH for JScrollBarUI extends JSliderUI
+    
+    public void removeChangeListener(ChangeListener l) {
+    	model.removeChangeListener(l);
+    }
+    
 
     /**
      * Creates a scrollbar with the specified orientation
