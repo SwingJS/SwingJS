@@ -28,9 +28,9 @@
 package jsjava.net;
 
 import java.io.IOException;
-import jsjava.io.InputStream;
 import java.util.Hashtable;
-//import sun.security.util.SecurityConstants;
+
+import jsjava.io.InputStream;
 
 /**
  * Class <code>URL</code> represents a Uniform Resource
@@ -130,9 +130,9 @@ import java.util.Hashtable;
  * @author  James Gosling
  * @since JDK1.0
  */
-public final class URL implements java.io.Serializable {
+public final class URL {//implements Serializable {
 
-    static final long serialVersionUID = -7627629688361524110L;
+//    static final long serialVersionUID = -7627629688361524110L;
 
     /**
      * The property which specifies the package prefix list to be scanned
@@ -1029,7 +1029,7 @@ public final class URL implements java.io.Serializable {
      * @since      1.5
      *//*
     public URLConnection openConnection(Proxy proxy)
-        throws java.io.IOException {
+        throws IOException {
         if (proxy == null) {
             throw new IllegalArgumentException("proxy can not be null");
         }
@@ -1059,7 +1059,7 @@ public final class URL implements java.io.Serializable {
      * @see        java.net.URL#openConnection()
      * @see        java.net.URLConnection#getInputStream()
      */
-    public final InputStream openStream() throws java.io.IOException {
+    public final InputStream openStream() throws IOException {
         return openConnection().getInputStream();
     }
 
@@ -1144,73 +1144,73 @@ public final class URL implements java.io.Serializable {
 
     }
 
-    /**
-     * WriteObject is called to save the state of the URL to an
-     * ObjectOutputStream. The handler is not saved since it is
-     * specific to this system.
-     * @param s 
-     * @throws IOException 
-     *
-     * @serialData the default write object value. When read back in,
-     * the reader must ensure that calling getURLStreamHandler with
-     * the protocol variable returns a valid URLStreamHandler and
-     * throw an IOException if it does not.
-     */
-    private synchronized void writeObject(java.io.ObjectOutputStream s)
-        throws IOException
-    {
-        s.defaultWriteObject(); // write the fields
-    }
-
-    /**
-     * readObject is called to restore the state of the URL from the
-     * stream.  It reads the components of the URL and finds the local
-     * stream handler.
-     * @param s 
-     * @throws IOException 
-     * @throws ClassNotFoundException 
-     */
-    private synchronized void readObject(java.io.ObjectInputStream s)
-         throws IOException, ClassNotFoundException
-    {
-        s.defaultReadObject();  // read the fields
-        if ((handler = getURLStreamHandler(protocol)) == null) {
-            throw new IOException("unknown protocol: " + protocol);
-        }
-
-        // Construct authority part
-        if (authority == null &&
-            ((host != null && host.length() > 0) || port != -1)) {
-            if (host == null)
-                host = "";
-            authority = (port == -1) ? host : host + ":" + port;
-
-            // Handle hosts with userInfo in them
-            int at = host.lastIndexOf('@');
-            if (at != -1) {
-                userInfo = host.substring(0, at);
-                host = host.substring(at+1);
-            }
-        } else if (authority != null) {
-            // Construct user info part
-            int ind = authority.indexOf('@');
-            if (ind != -1)
-                userInfo = authority.substring(0, ind);
-        }
-
-        // Construct path and query part
-        path = null;
-        query = null;
-        if (file != null) {
-            // Fix: only do this if hierarchical?
-            int q = file.lastIndexOf('?');
-            if (q != -1) {
-                query = file.substring(q+1);
-                path = file.substring(0, q);
-            } else
-                path = file;
-        }
-    }
+//    /**
+//     * WriteObject is called to save the state of the URL to an
+//     * ObjectOutputStream. The handler is not saved since it is
+//     * specific to this system.
+//     * @param s 
+//     * @throws IOException 
+//     *
+//     * @serialData the default write object value. When read back in,
+//     * the reader must ensure that calling getURLStreamHandler with
+//     * the protocol variable returns a valid URLStreamHandler and
+//     * throw an IOException if it does not.
+//     */
+//    private synchronized void writeObject(ObjectOutputStream s)
+//        throws IOException
+//    {
+//        s.defaultWriteObject(); // write the fields
+//    }
+//
+//    /**
+//     * readObject is called to restore the state of the URL from the
+//     * stream.  It reads the components of the URL and finds the local
+//     * stream handler.
+//     * @param s 
+//     * @throws IOException 
+//     * @throws ClassNotFoundException 
+//     */
+//    private synchronized void readObject(ObjectInputStream s)
+//         throws IOException, ClassNotFoundException
+//    {
+//        s.defaultReadObject();  // read the fields
+//        if ((handler = getURLStreamHandler(protocol)) == null) {
+//            throw new IOException("unknown protocol: " + protocol);
+//        }
+//
+//        // Construct authority part
+//        if (authority == null &&
+//            ((host != null && host.length() > 0) || port != -1)) {
+//            if (host == null)
+//                host = "";
+//            authority = (port == -1) ? host : host + ":" + port;
+//
+//            // Handle hosts with userInfo in them
+//            int at = host.lastIndexOf('@');
+//            if (at != -1) {
+//                userInfo = host.substring(0, at);
+//                host = host.substring(at+1);
+//            }
+//        } else if (authority != null) {
+//            // Construct user info part
+//            int ind = authority.indexOf('@');
+//            if (ind != -1)
+//                userInfo = authority.substring(0, ind);
+//        }
+//
+//        // Construct path and query part
+//        path = null;
+//        query = null;
+//        if (file != null) {
+//            // Fix: only do this if hierarchical?
+//            int q = file.lastIndexOf('?');
+//            if (q != -1) {
+//                query = file.substring(q+1);
+//                path = file.substring(0, q);
+//            } else
+//                path = file;
+//        }
+//    }
 
 }
 

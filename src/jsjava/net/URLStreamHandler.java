@@ -9,7 +9,6 @@ package jsjava.net;
 
 
 import java.io.IOException;
-import jsjava.net.Proxy;
 
 /**
  * The abstract class <code>URLStreamHandler</code> is the common
