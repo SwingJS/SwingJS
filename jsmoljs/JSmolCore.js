@@ -5,6 +5,10 @@
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
+// BH 10/26/2015 12:47:16 PM adding two rcsb sites for direct access
+// BH 10/23/2015 9:20:39 PM minor coding adjustment
+// BH 10/13/2015 9:32:08 PM adding Jmol.__$ as jquery object used 
+// BH 15/09/2015 18:06:39 fixing mouse check for swingjs-ui since SVG element className is not a string 
 // BH 8/12/2015 11:43:52 PM adding isHttps2Http forcing call to server proxy
 // BH 8/9/2015 6:33:33 PM correcting bug in load ASYNC for x-domain access
 // BH 7/7/2015 1:42:31 PM Jmol._persistentMenu
@@ -138,7 +142,7 @@ Jmol = (function(document) {
 		}
 	};
 	var j = {
-		_version: "$Date: 2015-08-09 18:37:09 -0500 (Sun, 09 Aug 2015) $", // svn.keywords:lastUpdated
+		_version: "$Date: 2015-10-17 18:21:06 -0500 (Sat, 17 Oct 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
 		_allowedJmolSize: [25, 2048, 300],   // min, max, default (pixels)
@@ -169,6 +173,8 @@ Jmol = (function(document) {
 				// these sites are known to implement access-control-allow-origin * 
 				"cactus.nci.nih.gov": "%URL", 
 				"www.rcsb.org": "%URL",
+				"cdn.rcsb.org": "%URL",
+				"ftp.wwpdb.org": "%URL",
 				"pdbe.org": "%URL", 
 				"www.ebi.ac.uk": "%URL", 
 				"wwwdev.ebi.ac.uk": "%URL", 
@@ -216,6 +222,8 @@ Jmol = (function(document) {
 
 
 (function (Jmol, $) {
+
+  Jmol.__$ = $; // local jQuery object -- important if any other module needs to access it (JSmolMenu, for example)
 
 // this library is organized into the following sections:
 
@@ -610,9 +618,8 @@ Jmol = (function(document) {
 			return query;
 		var pt = 2;
 		var db;
-		var call = Jmol.db._DirectDatabaseCalls[query.substring(0,pt)];
-		if (!call)
-			call = Jmol.db._DirectDatabaseCalls[db = query.substring(0,--pt)];
+		var call = Jmol.db._DirectDatabaseCalls[query.substring(0,pt)]
+      || Jmol.db._DirectDatabaseCalls[db = query.substring(0,--pt)];
 		if (call) {
 			if (db == ":") {
 				var ql = query.toLowerCase();
@@ -1547,8 +1554,8 @@ Jmol = (function(document) {
 
 	Jmol._jsSetMouse = function(canvas) {
 
-    var doIgnore = function(ev) { return (!ev.target || ev.target.className.indexOf("swingjs-ui") >= 0) };
-         
+    var doIgnore = function(ev) { return (!ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
+
 		Jmol.$bind(canvas, 'mousedown touchstart', function(ev) {
       if (doIgnore(ev))
         return true;
