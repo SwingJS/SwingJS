@@ -873,8 +873,9 @@ public class PT {
     /**
      * @j2sNative
      * 
-     *            var s = x.toString(); return (s.startsWith("[object") &&
-     *            s.endsWith("Array]") ? null : s);
+     * var s = x.constructor.toString(); 
+     * var pt = s.indexOf("Array(");
+     * return (pt <= 0 || pt >= s.indexOf("{") ? x.toString() : null);
      * 
      */
     {
