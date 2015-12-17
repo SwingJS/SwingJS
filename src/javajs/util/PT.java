@@ -873,9 +873,7 @@ public class PT {
     /**
      * @j2sNative
      * 
-     * var s = x.constructor.toString(); 
-     * var pt = s.indexOf("Array(");
-     * return (pt <= 0 || pt >= s.indexOf("{") ? x.toString() : null);
+     * return (x.constructor == Array ? null : x.toString());
      * 
      */
     {
