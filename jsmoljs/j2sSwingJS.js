@@ -42,6 +42,8 @@
  // NOTES by Bob Hanson: 
   // J2S class changes:
 
+ // BH 12/20/2015 6:13:52 AM adding Int8Array; streamlining array checking
+ // BH 12/18/2015 5:02:52 PM adding .slice and also better array copy
  // BH 7/24/2015 6:48:50 AM adding optional ?j2sdebug flag on page URL
  //                      -- switches to using j2s/core/corexxx.js, not j2s/core/corexxx.z.js 
  //                      -- adds ";//# sourceURL="+file  in eval(js)
@@ -233,7 +235,11 @@ Clazz.setConsoleDiv = function(d) {
 
 // Jmol.getProfile()
 
-var _profile = (window["j2s.doProfile"]  && self.JSON ? {} : null);
+var _profile = null;
+
+Clazz._startProfiling = function(doProfile) {
+  _profile = (doProfile && self.JSON ? {} : null);
+}
 
 NullObject = function () {};
 
@@ -373,7 +379,7 @@ Clazz.getClassName = function (obj) {
 				return "Number";
 			if (obj instanceof Boolean)
 				return "Boolean";
-			if (obj instanceof Array)
+			if (obj instanceof Array || obj.BYTES_PER_ELEMENT)
 				return "Array";
 			var s = obj.toString();
       // "[object Int32Array]"
@@ -1165,11 +1171,11 @@ Clazz.getProfile = function() {
 		s = l.sort().reverse().join("\r\n");
 		_profile = {};
 	}
-	return s + __signatures;
+	return s; //+ __signatures;
 }
 
 var addProfile = function(c, f, p, id) {
-	var s = id + " " + c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
+	var s = c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
   if (__signatures.indexOf(s) < 0)
     __signatures += s + "\n";    
 	_profile[s] || (_profile[s] = 0);
@@ -1217,7 +1223,7 @@ Clazz.getParamsType = function (funParams) {
 };
 
 var SAEMid = 0;
-xxxSAEMlist = "";
+//xxxSAEMlist = "";
 
 //var SAEMarray = [];
 /**
@@ -1276,9 +1282,9 @@ var searchAndExecuteMethod = function (id, objThis, claxxRef, fxName, args, _sae
 	var params = Clazz.getParamsType(args);
 
 
-var s = "SAEM " + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params+ ")\n";
-if (xxxSAEMlist.length > 300)xxxSAEMlist = "";
-xxxSAEMlist += s;
+//var s = "SAEM " + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params+ ")\n";
+//if (xxxSAEMlist.length > 300)xxxSAEMlist = "";
+//xxxSAEMlist += s;
  
 
   if (!fx)    
@@ -2288,58 +2294,43 @@ Clazz.doubleToChar = Clazz.floatToChar;
 //
 //
 
-var getArrayClone = function(nbits) {
-  return function() {
-    var me = this;
-    var n = me.length;
-    var a = (nbits == 32 ? new Int32Array(n) : new Float64Array(n));
-    for (var i = n; --i >= 0;)
-      a[i] = me[i];
-    return a; 
+var getArrayType = function(n, nbits) {
+		if (!n) n = 0;
+    if (typeof n == "object") {
+      var b = n;
+    } else {
+  		var b = new Array(n);
+	   	for (var i = 0; i < n; i++)b[i] = 0
   }
+    b.BYTES_PER_ELEMENT = nbits >> 3;
+		return b;
 }
 
-if (self.Int32Array && self.Int32Array != Array) {
-	Clazz.haveInt32 = true;
+if ((Clazz.haveInt32 = !!(self.Int32Array && self.Int32Array != Array)) == true) {
 	if (!Int32Array.prototype.sort)
 		Int32Array.prototype.sort = Array.prototype.sort
-	if (!Int32Array.prototype.clone)
-		Int32Array.prototype.clone = getArrayClone(32);
 } else {
-	Int32Array = function(n) {
-		if (!n) n = 0;
-		var b = new Array(n);
-		b.toString = function(){return "[object Int32Array]"}
-		for (var i = 0; i < n; i++)b[i] = 0
-		return b;
-	}
-	Clazz.haveInt32 = false;
+	Int32Array = function(n) { return getArrayType(n, 32); };
 	Int32Array.prototype.sort = Array.prototype.sort
-	Int32Array.prototype.clone = getArrayClone(32);
 	Int32Array.prototype.int32Fake = function(){};
+  Int32Array.prototype.toString = function(){return "[object Int32Array]"};
+  Int32Array.prototype.slice = function(istart,iend) {start || (start = 0);end || (end = this.length); return new Int32Array(Array.slice.call(this,istart,iend));};
 }
+Int32Array.prototype.clone = function() { var a = this.slice(); a.BYTES_PER_ELEMENT = 4; return a; };
 
-if (self.Float64Array && self.Float64Array != Array) {
-	Clazz.haveFloat64 = true;
+if ((Clazz.haveFloat64 = !!(self.Float64Array && self.Float64Array != Array)) == true) {
 	if (!Float64Array.prototype.sort)
 		Float64Array.prototype.sort = Array.prototype.sort
-	if (!Float64Array.prototype.clone)
-		Float64Array.prototype.clone = getArrayClone(64);
 } else {
-	Clazz.haveFloat64 = false;
-	Float64Array = function(n) {
-		if (!n) n = 0;
-		var b = new Array(n);
-		for (var i = 0; i < n; i++)b[i] = 0.0
-		return b;
-	};
+	Float64Array = function(n) { return getArrayType(n, 64); };
 	Float64Array.prototype.sort = Array.prototype.sort
-	Float64Array.prototype.clone = getArrayClone(64);
 	Float64Array.prototype.float64Fake = function() {}; // "present"
 	Float64Array.prototype.toString = function() {return "[object Float64Array]"};
+  Float64Array.prototype.slice = function(istart,iend) {start || (start = 0);end || (end = this.length); return new Float64Array(Array.slice.call(this,istart,iend));};
 // Darn! Mozilla makes this a double, not a float. It's 64-bit.
 // and Safari 5.1 doesn't have Float64Array 
 }
+Float64Array.prototype.clone =  function() { return this.slice(); };
 
 /**
  * Make arrays.
@@ -2347,93 +2338,66 @@ if (self.Float64Array && self.Float64Array != Array) {
  * @return the created Array object
  */
 /* public */
-Clazz.newArray  = function () {
-	if (arguments[0] instanceof Array) {
-		// recursive, from newArray(n,m,value)
-		// as newArray([m, value], newInt32Array)
-		var args = arguments[0];
-		var f = arguments[1];
-	} else {
-		var args = arguments;
-		var f = Array;
+Clazz.newArray = function (a, b, c, d) {
+  if (a != -1 || arguments.length == 2) { 
+    // Clazz.newArray(36,null)
+    // Clazz.newArray(3, 0)
+    // Clazz.newArray(-1, ["A","B"])
+    // Clazz.newArray(3, 5, null)
+    return newTypedArray(arguments, 0);
 	}
-	var dim = args[0];
-	if (typeof dim == "string") {
-		dim = dim.charCodeAt (0); // char
-	}
-	var len = args.length - 1;
-	var val = args[len];
-  switch (args.length) {
-  case 0: // never
-  case 1:
-		return []; // maybe never?
-  case 2:
-		if (val == null)
-   		return new Array(dim);
-	  if (f === true && Clazz.haveInt32) return new Int32Array(dim);
-	  if (f === false && Clazz.haveFloat64) return new Float64Array(dim);
-		var arr = (f === true ? new Int32Array() : f === false ? new Float64Array() : dim < 0 ? val : new Array(dim));
-		for (var i = dim; --i >= 0;)
-   		arr[i] = val;
-	  return arr;
-  default:
-  	var xargs = new Array (len);
-  	for (var i = 0; i < len; i++) {
-  		xargs[i] = args[i + 1];
-  	}
-  	var arr = new Array (dim);
-  	if (val == null || val >= 0 || len > 2)
-  		for (var i = 0; i < dim; i++) {
-  	 	// Call recursively!
-  			arr[i] = Clazz.newArray (xargs, f);
-  		}
-  	return arr;
-	}
+  // truncate array using slice
+  // Clazz.newArray(-1, array, ifirst, ilast+1)
+  // from JU.AU; slice, ensuring BYTES_PER_ELEMENT is set correctly
+  a = b.slice(c, d);
+  a.BYTES_PER_ELEMENT = c.BYTES_PER_ELEMENT;
+  return a;
 };
 
-Clazz.newArray32 = function(args, isInt32) {
+
+var newTypedArray = function(args, nBits) {
 	var dim = args[0];
 	if (typeof dim == "string")
 		dim = dim.charCodeAt (0); // char
-	var len = args.length - 1;
-	var val = args[len];
-	switch (args.length) {
-	case 0:
-	case 1:  
-		alert ("ERROR IN newArray32 -- args.length < 2");
-		return new Array(0);
-	case 2:
-    var isDefined = (dim < 0);
-    if (isDefined)
-      dim = val.length;
-    var a = (val < 0 ? new Array(dim) : isInt32 ? new Int32Array(dim) : new Float64Array(dim));
-    if (isDefined)
-      for (var i = dim; --i >= 0;)
-        a[i] = val[i];
-    return a;
-	}
-	var xargs = new Array(len);
-	for (var i = len; --i >= 0;) {
+	var last = args.length - 1;
+	var val = args[last];
+  if (last > 1) {
+     // array of arrays
+     // Clazz.newArray(3, 5, null)
+    var xargs = new Array(last); // 2 in this case
+    for (var i = 0; i < last; i++)
 		xargs[i] = args[i + 1];
-	}
 	var arr = new Array (dim);
-	for (var i = 0; i < dim; i++) {
-		// Call newArray referencing this array type
-		// only for the final iteration, and only if val === 0
-		arr[i] = Clazz.newArray (xargs, isInt32);
+  	for (var i = 0; i < dim; i++)
+  		arr[i] = newTypedArray(xargs, nBits); // Call recursively
+    return arr;
 	}
+  // Clazz.newArray(36,null)
+  // Clazz.newArray(3, 0)
+  // Clazz.newArray(-1, ["A","B"])
+  if (nBits > 0 && dim < 0)
+    dim = val; // because we can initialize an array using new Int32Array([...])
+  switch (nBits) {
+  case 8:
+  	var arr = new Int8Array(dim);
+    arr.BYTES_PER_ELEMENT = 1;
 	return arr;
-};
-
-
-/**
- * Make arrays.
- *
- * @return the created Array object
- */
-/* public */
-Clazz.newInt32Array  = function () {
-	return Clazz.newArray32(arguments, true);
+  case 32:
+  	var arr = new Int32Array(dim);
+    arr.BYTES_PER_ELEMENT = 4;
+    return arr;
+  case 64:
+    var arr = new Float64Array(dim);
+    arr.BYTES_PER_ELEMENT = 8;
+    return arr;
+  default:
+  	var arr = (dim < 0 ? val : new Array(dim));
+    arr.BYTES_PER_ELEMENT = 0;
+    if (dim > 0 && val != null)
+    	for (var i = dim; --i >= 0;)
+     		arr[i] = val;
+    return arr;
+  }
 }
 
 /**
@@ -2442,51 +2406,58 @@ Clazz.newInt32Array  = function () {
  * @return the created Array object
  */
 /* public */
-Clazz.newFloat64Array  = function () {
-	return Clazz.newArray32(arguments, false);
+Clazz.newByteArray  = function () {
+	return newTypedArray(arguments, 8);
 }
 
-Clazz.newFloatArray = Clazz.newDoubleArray = Clazz.newFloat64Array;
-Clazz.newIntArray = Clazz.newLongArray = Clazz.newShortArray = Clazz.newByteArray = Clazz.newInt32Array;
+/**
+ * Make arrays.
+ *
+ * @return the created Array object
+ */
+/* public */
+Clazz.newIntArray  = function () {
+	return newTypedArray(arguments, 32);
+}
+
+/**
+ * Make arrays.
+ *
+ * @return the created Array object
+ */
+/* public */
+Clazz.newFloatArray  = function () {
+	return newTypedArray(arguments, 64);
+}
+
+Clazz.newDoubleArray = Clazz.newFloatArray;
+Clazz.newLongArray = Clazz.newShortArray = Clazz.newIntArray;
 Clazz.newCharArray = Clazz.newBooleanArray = Clazz.newArray;
+if ((Clazz.haveInt8 = !!self.Int8Array) == true) {
+	if (!Int8Array.prototype.sort)
+		Int8Array.prototype.sort = Array.prototype.sort
+} else {
+  Clazz.newByteArray = Clazz.newIntArray;
+}
+Int8Array.prototype.clone = function() { var a = this.slice(); a.BYTES_PER_ELEMENT = 1;return a; };
 
-//$_AI=Clazz.newIntArray;
-//$_AF=Clazz.newFloatArray;
-//$_AD=Clazz.newDoubleArray;
-//$_AL=Clazz.newLongArray;
-//$_AS=Clazz.newShortArray;
-//$_AB=Clazz.newByteArray;
-//$_AC=Clazz.newCharArray;
-//$_Ab=Clazz.newBooleanArray;
+Clazz.isAB = function(a) {
+	return (a && typeof a == "object" && a.BYTES_PER_ELEMENT == 1);
+}
+Clazz.isAI = function(a) {
+	return (a && typeof a == "object" && a.BYTES_PER_ELEMENT == 4);
+}
 
-
-var arrayIs = function(a, what) {
-	// for some reason, Number.constructor.toString() now gives "too much recursion"
-	return a.constructor && a.constructor != Number && a.constructor.toString().indexOf(what) >= 0
+Clazz.isAF = function(a) {
+	return (a && typeof a == "object" && a.BYTES_PER_ELEMENT == 8);
 }
 
 Clazz.isAS = function(a) { // just checking first parameter
-	return (a && typeof a == "object" && arrayIs(a, " Array") && (typeof a[0] == "string" || typeof a[0] == "undefined"));
-}
-
-Clazz.isASS = function(a) {
-	return (a && typeof a == "object" && Clazz.isAS(a[0]));
-}
-
-Clazz.isAP = function(a) {
-	return (a && Clazz.getClassName(a[0]) == "JU.P3");
-}
-
-Clazz.isAI = function(a) {
-	return (a && typeof a == "object" && (Clazz.haveInt32 ? arrayIs(a, "Int32Array") : a.int32Fake ? true : false));
+	return (a && typeof a == "object" && a.constructor == Array && (typeof a[0] == "string" || typeof a[0] == "undefined"));
 }
 
 Clazz.isAII = function(a) { // assumes non-null a[0]
 	return (a && typeof a == "object" && Clazz.isAI(a[0]));
-}
-
-Clazz.isAF = function(a) {
-	return (a && typeof a == "object" && (Clazz.haveFloat64 ? arrayIs(a, "Float64Array") : a.float64Fake ? true : false));
 }
 
 Clazz.isAFF = function(a) { // assumes non-null a[0]
@@ -2497,8 +2468,16 @@ Clazz.isAFFF = function(a) { // assumes non-null a[0]
 	return (a && typeof a == "object" && Clazz.isAFF(a[0]));
 }
 
+Clazz.isASS = function(a) {
+	return (a && typeof a == "object" && Clazz.isAS(a[0]));
+}
+
 Clazz.isAFloat = function(a) { // just checking first parameter
-	return (a && typeof a == "object" && arrayIs(a, " Array") && Clazz.instanceOf(a[0], Float));
+	return (a && typeof a == "object" && a.constructor == Array && Clazz.instanceOf(a[0], Float));
+}
+
+Clazz.isAP = function(a) {
+	return (a && Clazz.getClassName(a[0]) == "JU.P3");
 }
 
 
@@ -2830,18 +2809,14 @@ java.lang.System = System = {
 	props : null, //new java.util.Properties (),
 	$props : {},
 	arraycopy : function (src, srcPos, dest, destPos, length) {
-		if (src !== dest) {
-			for (var i = 0; i < length; i++) {
-				dest[destPos + i] = src[srcPos + i];
-			}
+		if (src !== dest || srcPos > destPos) {
+			for (var i = length; --i >= 0;)
+				dest[destPos++] = src[srcPos++];
 		} else {
-			var swap = [];
-			for (var i = 0; i < length; i++) {
-				swap[i] = src[srcPos + i];
-			}
-			for (var i = 0; i < length; i++) {
-				dest[destPos + i] = swap[i];
-			}
+      destPos += length;
+      srcPos += length;
+			for (var i = length; --i >= 0;)
+				src[--destPos] = src[--srcPos];
 		}
 	},
 	currentTimeMillis : function () {

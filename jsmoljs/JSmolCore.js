@@ -5,6 +5,11 @@
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
+// BH 12/17/2015 4:43:05 PM adding Jmol._requestRepaint to allow for MSIE9 not having requestAnimationFrame
+// BH 12/16/2015 3:01:06 PM adding $.ajaxSetup({ mimeType: "text/plain" });
+// BH 12/14/2015 6:42:03 PM adding check for MS Edge browser, which does not support dataURI
+// BH 12/2/2015 1:18:15 PM adding .dcd as binary file type
+// BH 12/1/2015 10:05:55 AM loading identical HTML5 page after Java page causes bad NPObject error 
 // BH 10/26/2015 12:47:16 PM adding two rcsb sites for direct access
 // BH 10/23/2015 9:20:39 PM minor coding adjustment
 // BH 10/13/2015 9:32:08 PM adding Jmol.__$ as jquery object used 
@@ -142,7 +147,7 @@ Jmol = (function(document) {
 		}
 	};
 	var j = {
-		_version: "$Date: 2015-10-17 18:21:06 -0500 (Sat, 17 Oct 2015) $", // svn.keywords:lastUpdated
+		_version: "$Date: 2015-12-20 16:06:27 -0600 (Sun, 20 Dec 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
 		_allowedJmolSize: [25, 2048, 300],   // min, max, default (pixels)
@@ -207,6 +212,8 @@ Jmol = (function(document) {
 	var ref = document.location.href.toLowerCase();
 	j._httpProto = (ref.indexOf("https") == 0 ? "https://" : "http://"); 
 	j._isFile = (ref.indexOf("file:") == 0);
+	if (j._isFile) // ensure no attempt to read XML in local request:
+	  $.ajaxSetup({ mimeType: "text/plain" });
 	j._ajaxTestSite = j._httpProto + "google.com";
 	var isLocal = (j._isFile || ref.indexOf("http://localhost") == 0 || ref.indexOf("http://127.") == 0);
 	j._tracker = (j._httpProto == "http://" && !isLocal && 'http://chemapps.stolaf.edu/jmol/JmolTracker.htm?id=UA-45940799-1');
@@ -214,8 +221,10 @@ Jmol = (function(document) {
 	j._isChrome = (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0);
 	j._isSafari = (!j._isChrome && navigator.userAgent.toLowerCase().indexOf("safari") >= 0);
 	j._isMsie = (window.ActiveXObject !== undefined);
-	j._useDataURI = !j._isSafari && !j._isMsie; // safari may be OK here -- untested
+  j._isEdge = (navigator.userAgent.indexOf("Edge/") >= 0);
+	j._useDataURI = !j._isSafari && !j._isMsie && !j._isEdge; // safari may be OK here -- untested
 
+  window.requestAnimationFrame || (window.requestAnimationFrame = window.setTimeout);
 	for(var i in Jmol) j[i] = Jmol[i]; // allows pre-definition
 	return j;
 })(document, Jmol);
@@ -868,7 +877,8 @@ Jmol = (function(document) {
 		return true;  
 	}
 
-	Jmol._binaryTypes = [".gz",".jpg",".gif",".png",".zip",".jmol",".bin",".smol",".spartan",".mrc",".pse", ".map", ".omap"];
+	Jmol._binaryTypes = [".gz",".jpg",".gif",".png",".zip",".jmol",".bin",".smol",".spartan",".mrc",".pse", ".map", ".omap", 
+  ".dcd"];
 
 	Jmol._isBinaryUrl = function(url) {
 		for (var i = Jmol._binaryTypes.length; --i >= 0;)
@@ -1112,18 +1122,20 @@ Jmol = (function(document) {
 	}
 
 	Jmol._registerApplet = function(id, applet) {
-		return window[id] = Jmol._applets[id] = Jmol._applets[applet] = Jmol._applets[id + "__" + Jmol._syncId + "__"] = applet;
+		return window[id] = Jmol._applets[id] = Jmol._applets[id + "__" + Jmol._syncId + "__"] = applet;
 	} 
 
 	Jmol._readyCallback = function (appId,fullId,isReady,javaApplet,javaAppletPanel) {
 		appId = appId.split("_object")[0];
-    javaAppletPanel || (javaAppletPanel = javaApplet);
+    var applet = Jmol._applets[appId];
 		isReady = (isReady.booleanValue ? isReady.booleanValue() : isReady);
 		// necessary for MSIE in strict mode -- apparently, we can't call 
 		// jmol._readyCallback, but we can call Jmol._readyCallback. Go figure...
-    var applet = Jmol._applets[appId];
-    applet._appletPanel = javaAppletPanel;
-    applet._applet = javaApplet;
+    if (isReady) {
+      // when leaving page, Java applet may be dead 
+      applet._appletPanel = (javaAppletPanel || javaApplet);
+      applet._applet = javaApplet;
+    }
 		Jmol._track(applet._readyCallback(appId, fullId, isReady));
 	}
 
@@ -1972,12 +1984,14 @@ Jmol._track = function(applet) {
 	return applet;
 }
 
-Jmol.getProfile = function() {
-	window["j2s.doProfile"] = true;
-	if (self.Clazz && self.JSON) {
-		Clazz._profile || (Clazz._profile = {});
-		return Clazz.getProfile();
-	}
+var __profiling;
+
+Jmol.getProfile = function(doProfile) {
+  if (!self.Clazz || !self.JSON)
+    return;
+  if (!__profiling)
+    Clazz._startProfiling(__profiling = (arguments.length == 0 || doProfile));
+	return Clazz.getProfile();
 }
 
 Jmol._getInChIKey = function(applet, data) {

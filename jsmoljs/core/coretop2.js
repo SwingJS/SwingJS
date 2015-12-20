@@ -1,5 +1,4 @@
 (function(Clazz
-,Clazz_getClassName
 ,Clazz_newLongArray
 ,Clazz_doubleToByte
 ,Clazz_doubleToInt
@@ -43,6 +42,7 @@
 ,Clazz_getInheritedLevel
 ,Clazz_getParamsType
 ,Clazz_isAF
+,Clazz_isAB
 ,Clazz_isAI
 ,Clazz_isAS
 ,Clazz_isASS
@@ -58,7 +58,7 @@
 ,Clazz_defineMethod
 ,Clazz_overrideMethod
 ,Clazz_declareAnonymous
-,Clazz_checkPrivateMethod
+//,Clazz_checkPrivateMethod
 ,Clazz_cloneFinals
 ){
 var $t$;
