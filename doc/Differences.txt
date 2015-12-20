@@ -5,6 +5,8 @@ PROGRESS
 ========
 TODO: next: JComboBox
 
+12/20/2015 BH -- j2s bug #21 (byte) ignored so that 0xFF remains 0xFF 
+
 7/19/2015 BH -- j2s bug #20 no implicit primitive from wrapped primitive (int/Integer) in SAEM
 
 7/18/2015 BH -- j2s bug #19 improper signature identification in SAEM with untyped null parameter
@@ -481,6 +483,26 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#21 (byte) ignored so that 0xFF remains 0xFF.
+
+With the implementation of Int8Array in j2sJmol, it becomes more important to consider
+the issue of no byte type in JavaScript. In particular, the construction
+
+   bytes[3] == (byte) 0xFF
+
+is being translated as
+
+   bytes[3] == 0xFF
+
+and will evaluate FALSE since JavaScript Int8Array elements cannot have value 255.
+
+The solution is to recast the byte as an integer, not the other way around:
+
+   (bytes[3] & 0xFF) == 0xFF
+
+which now works for both Java and JavaScript.
+ 
+ 
 #20 Java2Script can handle implicit conversion from Integer to int, Boolean to boolean, etc, 
 in general, but in the special case where a wrapped object is used in place of a 
 primitive and the signature of the method requires disambiguation, 
