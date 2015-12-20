@@ -728,9 +728,18 @@ public class BS implements Cloneable, JSONEncodable {
    * @param n 
    */
   private void setLength(int n) {
+    /**
+     * @j2sNative
+     *     if (n == this.words.length) return;
+     *     if (n == this.wordsInUse) {
+     *      this.words = Clazz.newArray(-1, this.words, 0, n);
+     *      return;
+     *     }
+     */
+    {}
     int[] a = new int[n];
-    System.arraycopy(words, 0, a, 0, Math.min(wordsInUse, n));
-    words = a;
+    System.arraycopy(words, 0, a, 0, wordsInUse);
+    words = a;    
   }
 
   /**
@@ -798,8 +807,21 @@ public class BS implements Cloneable, JSONEncodable {
     if (wordCount == 0) {
       bs.words = emptyBitmap;
     } else {
-      bs.words = new int[bs.wordsInUse = wordCount];
-      System.arraycopy(bitsetToCopy.words, 0, bs.words, 0, wordCount);
+      
+      /**
+       * Clazz.clone will copy wordsInUse and sizeIsSticky, 
+       * but just a pointer to the words array.
+       * 
+       * @j2sNative
+       * 
+       *   bs.words = Clazz.newArray(-1, bitsetToCopy.words, 0, bs.wordsInUse = wordCount);
+       * 
+       */
+      {
+        bs.words = new int[bs.wordsInUse = wordCount];
+        System.arraycopy(bitsetToCopy.words, 0, bs.words, 0, wordCount);
+      }
+
     }
     return bs;
   }
@@ -820,8 +842,8 @@ public class BS implements Cloneable, JSONEncodable {
   @Override
   public String toJSON() {
 
-    int numBits = (wordsInUse > 128) ? cardinality() : wordsInUse
-        * BITS_PER_WORD;
+    int numBits = (wordsInUse > 128 ? cardinality() : wordsInUse
+        * BITS_PER_WORD);
     SB b = SB.newN(6 * numBits + 2);
     b.appendC('[');
 

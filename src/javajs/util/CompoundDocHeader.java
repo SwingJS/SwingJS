@@ -77,10 +77,10 @@ class CompoundDocHeader {
   final boolean readData() {
     try {
       cd.readByteArray(magicNumbers, 0, 8);
-      if (magicNumbers[0] != (byte) 0xD0 || magicNumbers[1] != (byte) 0xCF
-          || magicNumbers[2] != (byte) 0x11 || magicNumbers[3] != (byte) 0xE0
-          || magicNumbers[4] != (byte) 0xA1 || magicNumbers[5] != (byte) 0xB1
-          || magicNumbers[6] != (byte) 0x1A || magicNumbers[7] != (byte) 0xE1)
+      if ((magicNumbers[0] & 0xFF) != 0xD0 || (magicNumbers[1] & 0xFF) != 0xCF
+          || (magicNumbers[2] & 0xFF) != 0x11 || (magicNumbers[3] & 0xFF) != 0xE0
+          || (magicNumbers[4] & 0xFF) != 0xA1 || (magicNumbers[5] & 0xFF) != 0xB1
+          || (magicNumbers[6] & 0xFF) != 0x1A || (magicNumbers[7] & 0xFF) != 0xE1)
         return false;
       cd.readByteArray(uniqueID16, 0, 16);
       revNumber = cd.readByte();

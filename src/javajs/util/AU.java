@@ -36,46 +36,36 @@ final public class AU {
 
   /**
    * Very important that this not be used with Int32Array or Float32Array,
-   * because it is not initialized to all zeros in MSIE 9.
+   * because it is not initialized to all zeros in MSIE 9. 
    * 
    * @param array
    * @param minimumLength
    * @return array
    */
   public static Object ensureLength(Object array, int minimumLength) {
-    if (array != null && getLength(array) >= minimumLength)
-      return array;
-    return arrayCopyObject(array, minimumLength);
+    return (array != null && getLength(array) >= minimumLength ? array 
+        : arrayCopyObject(array, minimumLength));
   }
 
   public static String[] ensureLengthS(String[] array, int minimumLength) {
-    if (array != null && array.length >= minimumLength)
-      return array;
-    return arrayCopyS(array, minimumLength);
+    return (array != null && array.length >= minimumLength ? array
+        : arrayCopyS(array, minimumLength));
   }
 
   public static float[] ensureLengthA(float[] array, int minimumLength) {
-    if (array != null && array.length >= minimumLength)
-      return array;
-    return arrayCopyF(array, minimumLength);
+   return (array != null && array.length >= minimumLength ? array: arrayCopyF(array, minimumLength));
   }
 
   public static int[] ensureLengthI(int[] array, int minimumLength) {
-    if (array != null && array.length >= minimumLength)
-      return array;
-    return arrayCopyI(array, minimumLength);
+    return (array != null && array.length >= minimumLength ? array : arrayCopyI(array, minimumLength));
   }
 
   public static short[] ensureLengthShort(short[] array, int minimumLength) {
-    if (array != null && array.length >= minimumLength)
-      return array;
-    return arrayCopyShort(array, minimumLength);
+    return (array != null && array.length >= minimumLength ? array : arrayCopyShort(array, minimumLength));
   }
 
   public static byte[] ensureLengthByte(byte[] array, int minimumLength) {
-    if (array != null && array.length >= minimumLength)
-      return array;
-    return arrayCopyByte(array, minimumLength);
+    return (array != null && array.length >= minimumLength ? array : arrayCopyByte(array, minimumLength));
   }
 
   /**
@@ -132,22 +122,26 @@ final public class AU {
   }
 
   /**
-   * note -- cannot copy if array is null!
+   * note -- cannot copy if array is null! does not copy if length is unchanged
    * 
    * @param array
    * @param newLength
    * @return array
    */
-  public static Object arrayCopyObject(Object array, int newLength) {
-    //System.out.println("ArrayUtil.copy " + newLength + " " + array + "  ");
-    if (array == null) {
-      return null; // We can't allocate since we don't know the type of array
-    }
-    int oldLength = getLength(array);
+  public static Object arrayCopyObject(Object array, int newLength) {  
+    int oldLength = (array == null ? -1 : getLength(array));
+    if (newLength < 0) newLength = oldLength;
     if (newLength == oldLength)
-      return array;
+     return array;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     Object t = newInstanceO(array, newLength);
-    System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
+    if (oldLength > 0)
+      System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
         : newLength);
     return t;
 
@@ -190,11 +184,16 @@ final public class AU {
   }
 
   public static String[] arrayCopyS(String[] array, int newLength) {
-    if (newLength < 0)
-      newLength = array.length;
+    int oldLength = (array == null ? -1 : array.length);
+    if (newLength < 0) newLength = oldLength;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     String[] t = new String[newLength];
     if (array != null) {
-      int oldLength = array.length;
       System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
           : newLength);
     }
@@ -224,11 +223,16 @@ final public class AU {
   }
 
   public static float[] arrayCopyF(float[] array, int newLength) {
-    if (newLength < 0)
-      newLength = array.length;
+    int oldLength = (array == null ? -1 : array.length);
+    if (newLength < 0) newLength = oldLength;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     float[] t = new float[newLength];
     if (array != null) {
-      int oldLength = array.length;
       System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
           : newLength);
     }
@@ -236,11 +240,16 @@ final public class AU {
   }
 
   public static int[] arrayCopyI(int[] array, int newLength) {
-    if (newLength < 0)
-      newLength = array.length;
+    int oldLength = (array == null ? -1 : array.length);
+    if (newLength < 0) newLength = oldLength;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     int[] t = new int[newLength];
     if (array != null) {
-      int oldLength = array.length;
       System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
           : newLength);
     }
@@ -261,29 +270,49 @@ final public class AU {
     int oldLength = array.length;
     if (n == -1) n = oldLength;
     if (n == -2) n = oldLength / 2;
-    n = n - i0;
-    int[] t = new int[n];
-    System.arraycopy(array, i0, t, 0, n);
-    return t;
+    /**
+     * @j2sNative
+     * 
+     * return Clazz.newArray(-1, array, i0, n);
+     * 
+     */
+    {
+      n -= i0;
+      int[] t = new int[n];
+      System.arraycopy(array, i0, t, 0, n);
+      return t;
+    }
   }
 
   public static int[] arrayCopyRangeRevI(int[] array, int i0, int n) {
     if (array == null)
       return null;
-    int[] t = arrayCopyRangeI(array, i0, n);
-    if (n < 0)
-      n = array.length;
-    for (int i = n / 2; --i >= 0;)
-      swapInt(t, i, n - 1 - i);
-    return t;
+    /**
+     * @j2sNative
+     * 
+     * return Clazz.newArray(-1, array, i0, n).reverse();
+     */
+    {
+      int[] t = arrayCopyRangeI(array, i0, n);
+      if (n < 0)
+        n = array.length;
+      for (int i = n / 2; --i >= 0;)
+        swapInt(t, i, n - 1 - i);
+      return t;
+    }
   }
 
   public static short[] arrayCopyShort(short[] array, int newLength) {
-    if (newLength < 0)
-      newLength = array.length;
+    int oldLength = (array == null ? -1 : array.length);
+    if (newLength < 0) newLength = oldLength;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     short[] t = new short[newLength];
     if (array != null) {
-      int oldLength = array.length;
       System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
           : newLength);
     }
@@ -291,11 +320,16 @@ final public class AU {
   }
 
   public static byte[] arrayCopyByte(byte[] array, int newLength) {
-    if (newLength < 0)
-      newLength = array.length;
+    int oldLength = (array == null ? -1 : array.length);
+    if (newLength < 0) newLength = oldLength;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     byte[] t = new byte[newLength];
     if (array != null) {
-      int oldLength = array.length;
       System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
           : newLength);
     }
@@ -303,11 +337,16 @@ final public class AU {
   }
 
   public static boolean[] arrayCopyBool(boolean[] array, int newLength) {
-    if (newLength < 0)
-      newLength = array.length;
+    int oldLength = (array == null ? -1 : array.length);
+    if (newLength < 0) newLength = oldLength;
+    /**
+     * @j2sNative
+     * 
+     *     if (newLength < oldLength) return Clazz.newArray(-1, array, 0, newLength);
+     */
+    {}
     boolean[] t = new boolean[newLength];
     if (array != null) {
-      int oldLength = array.length;
       System.arraycopy(array, 0, t, 0, oldLength < newLength ? oldLength
           : newLength);
     }
@@ -584,7 +623,7 @@ final public class AU {
 	public static boolean isAB(Object x) {
 	  /**
 	   * @j2sNative
-	   *  return Clazz.isAI(x);
+	   *  return Clazz.isAB(x);
 	   */
 	  {
 	  return x instanceof byte[];
@@ -636,6 +675,7 @@ final public class AU {
 	 * process, but particularly out of file reading.
 	 * 
 	 * @param b
+	 * @return b
 	 */
 	public static byte[] ensureSignedBytes(byte[] b) {
 		if (b != null) {
