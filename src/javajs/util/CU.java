@@ -386,6 +386,7 @@ public class CU {
     int len = 0;
     if (strColor == null || (len = strColor.length()) == 0)
       return 0;
+    strColor = strColor.toLowerCase();
     if (strColor.charAt(0) == '[' && strColor.charAt(len - 1) == ']') {
       String check;
       if (strColor.indexOf(",") >= 0) {
@@ -420,7 +421,7 @@ public class CU {
         return 0;
       }
     }
-    Integer boxedArgb = mapJavaScriptColors.get(strColor.toLowerCase());
+    Integer boxedArgb = mapJavaScriptColors.get(strColor);
     return (boxedArgb == null ? 0 : boxedArgb.intValue());
   }
 

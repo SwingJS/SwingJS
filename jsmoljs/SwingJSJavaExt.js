@@ -7,6 +7,7 @@
 // (local scope) Clazz_xxx, allowing them to be further compressed using
 // Google Closure Compiler in that same ANT task.
 
+// BH 12/21/2015 1:31:41 PM fixing String.instantialize for generic typed array
 // BH 7/24/2015 7:21:51 AM renamed from JSmolJavaExt.js
 // BH 5/31/2015 5:53:04 PM Number.compareTo added
 // BH 5/21/2015 5:46:30 PM Number("0xFFFFFFFF") is not -1
@@ -1522,18 +1523,11 @@ case 0:
 	return new String();
 case 1:
 	var x=arguments[0];
+  if (x.BYTES_PER_ELEMENT || x instanceof Array){
+		return (x.length == 0 ? "" : typeof x[0]=="number" ? Encoding.readUTF8(String.fromCharCode.apply(null, x)) : x.join(''));
+  }
 	if(typeof x=="string"||x instanceof String){
 		return new String(x);
-	}
-	if(x instanceof Array || x instanceof Int32Array){
-		if(x.length == 0)
-			return "";
-		if(typeof x[0]!="number")
-			return x.join('');
-		var arr=new Array(x.length);
-		for(var i=0;i<x.length;i++)
-			arr[i]=String.fromCharCode(x[i]&0xff);
-		return Encoding.readUTF8(arr.join(''));
 	}
 	if(x.__CLASS_NAME__=="StringBuffer"||x.__CLASS_NAME__=="java.lang.StringBuffer"){
 		var value=x.shareValue();

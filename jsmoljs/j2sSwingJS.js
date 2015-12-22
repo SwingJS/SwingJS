@@ -1,4 +1,5 @@
 // j2sSwingJS.js 
+// NOTE: updates to this file should be copies to j2sjmol.js
 
 // latest author: Bob Hanson, St. Olaf College, hansonr@stolaf.edu
  
@@ -42,6 +43,7 @@
  // NOTES by Bob Hanson: 
   // J2S class changes:
 
+ // BH 12/21/2015 6:14:59 PM adding typeArray.buffer.slice to be compatible with Safari
  // BH 12/20/2015 6:13:52 AM adding Int8Array; streamlining array checking
  // BH 12/18/2015 5:02:52 PM adding .slice and also better array copy
  // BH 7/24/2015 6:48:50 AM adding optional ?j2sdebug flag on page URL
@@ -2301,21 +2303,34 @@ var getArrayType = function(n, nbits) {
     } else {
   		var b = new Array(n);
 	   	for (var i = 0; i < n; i++)b[i] = 0
-  }
+    }
     b.BYTES_PER_ELEMENT = nbits >> 3;
+    b._fake = true;    
 		return b;
-}
+} 
 
+var arraySlice = function(istart, iend) {
+  // could be Safari or could be fake
+  istart || (istart = 0);
+  iend || (iend = this.length);
+  if (this._fake) {    
+    var b = new this.constructor(iend - istart); 
+    System.arraycopy(this, istart, b, 0, iend - istart); 
+    return b; 
+  }
+  return new this.constructor(this.buffer.slice(istart * this.BYTES_PER_ELEMENT, iend * this.BYTES_PER_ELEMENT));
+};
+      
 if ((Clazz.haveInt32 = !!(self.Int32Array && self.Int32Array != Array)) == true) {
 	if (!Int32Array.prototype.sort)
 		Int32Array.prototype.sort = Array.prototype.sort
 } else {
 	Int32Array = function(n) { return getArrayType(n, 32); };
 	Int32Array.prototype.sort = Array.prototype.sort
-	Int32Array.prototype.int32Fake = function(){};
   Int32Array.prototype.toString = function(){return "[object Int32Array]"};
-  Int32Array.prototype.slice = function(istart,iend) {start || (start = 0);end || (end = this.length); return new Int32Array(Array.slice.call(this,istart,iend));};
 }
+if (!Int32Array.prototype.slice)
+  Int32Array.prototype.slice = function() {return arraySlice.apply(this, arguments)};
 Int32Array.prototype.clone = function() { var a = this.slice(); a.BYTES_PER_ELEMENT = 4; return a; };
 
 if ((Clazz.haveFloat64 = !!(self.Float64Array && self.Float64Array != Array)) == true) {
@@ -2324,12 +2339,12 @@ if ((Clazz.haveFloat64 = !!(self.Float64Array && self.Float64Array != Array)) ==
 } else {
 	Float64Array = function(n) { return getArrayType(n, 64); };
 	Float64Array.prototype.sort = Array.prototype.sort
-	Float64Array.prototype.float64Fake = function() {}; // "present"
 	Float64Array.prototype.toString = function() {return "[object Float64Array]"};
-  Float64Array.prototype.slice = function(istart,iend) {start || (start = 0);end || (end = this.length); return new Float64Array(Array.slice.call(this,istart,iend));};
 // Darn! Mozilla makes this a double, not a float. It's 64-bit.
 // and Safari 5.1 doesn't have Float64Array 
 }
+if (!Float64Array.prototype.slice)
+  Float64Array.prototype.slice = function() {return arraySlice.apply(this, arguments)};
 Float64Array.prototype.clone =  function() { return this.slice(); };
 
 /**
@@ -2345,12 +2360,12 @@ Clazz.newArray = function (a, b, c, d) {
     // Clazz.newArray(-1, ["A","B"])
     // Clazz.newArray(3, 5, null)
     return newTypedArray(arguments, 0);
-	}
+  }
   // truncate array using slice
   // Clazz.newArray(-1, array, ifirst, ilast+1)
   // from JU.AU; slice, ensuring BYTES_PER_ELEMENT is set correctly
   a = b.slice(c, d);
-  a.BYTES_PER_ELEMENT = c.BYTES_PER_ELEMENT;
+  a.BYTES_PER_ELEMENT = b.BYTES_PER_ELEMENT;
   return a;
 };
 
@@ -2358,7 +2373,7 @@ Clazz.newArray = function (a, b, c, d) {
 var newTypedArray = function(args, nBits) {
 	var dim = args[0];
 	if (typeof dim == "string")
-		dim = dim.charCodeAt (0); // char
+		dim = dim.charCodeAt(0); // char
 	var last = args.length - 1;
 	var val = args[last];
   if (last > 1) {
@@ -2366,12 +2381,12 @@ var newTypedArray = function(args, nBits) {
      // Clazz.newArray(3, 5, null)
     var xargs = new Array(last); // 2 in this case
     for (var i = 0; i < last; i++)
-		xargs[i] = args[i + 1];
-	var arr = new Array (dim);
+    	xargs[i] = args[i + 1];
+    var arr = new Array(dim);
   	for (var i = 0; i < dim; i++)
   		arr[i] = newTypedArray(xargs, nBits); // Call recursively
     return arr;
-	}
+  }
   // Clazz.newArray(36,null)
   // Clazz.newArray(3, 0)
   // Clazz.newArray(-1, ["A","B"])
@@ -2381,7 +2396,7 @@ var newTypedArray = function(args, nBits) {
   case 8:
   	var arr = new Int8Array(dim);
     arr.BYTES_PER_ELEMENT = 1;
-	return arr;
+    return arr;
   case 32:
   	var arr = new Int32Array(dim);
     arr.BYTES_PER_ELEMENT = 4;
@@ -2436,6 +2451,8 @@ Clazz.newCharArray = Clazz.newBooleanArray = Clazz.newArray;
 if ((Clazz.haveInt8 = !!self.Int8Array) == true) {
 	if (!Int8Array.prototype.sort)
 		Int8Array.prototype.sort = Array.prototype.sort
+  if (!Int8Array.prototype.slice)
+    Int8Array.prototype.slice = function() {return arraySlice.apply(this, arguments)}; 
 } else {
   Clazz.newByteArray = Clazz.newIntArray;
 }
@@ -2804,11 +2821,10 @@ java.lang.Object = Clazz._O;
 
 Clazz._O.getName = Clazz._innerFunctions.getName;
 
-
 java.lang.System = System = {
 	props : null, //new java.util.Properties (),
 	$props : {},
-	arraycopy : function (src, srcPos, dest, destPos, length) {
+	arraycopy : function (src, srcPos, dest, destPos, length) {  
 		if (src !== dest || srcPos > destPos) {
 			for (var i = length; --i >= 0;)
 				dest[destPos++] = src[srcPos++];
