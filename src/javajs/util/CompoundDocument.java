@@ -35,6 +35,9 @@ import javajs.api.GenericZipTools;
 
 
 /* a simple compound document reader. 
+ * 
+ * DIRECTORY STRUCTURE IS NOT REGENERATED
+ * 
  * See http://sc.openoffice.org/compdocfileformat.pdf
  * 
  * random access file info: 
@@ -43,8 +46,7 @@ import javajs.api.GenericZipTools;
  * SHOOT! random access is only for applications, not applets!
  * 
  * With a bit more work, this could be set up to deliver binary files, but
- * right now I've only implemented it for string-based data. All Jmol is using
- * is getAllData().
+ * right now I've only implemented it for string-based data. 
  * 
  */
 
@@ -97,24 +99,19 @@ public class CompoundDocument extends BinaryDocument{
   }
 
   public String getDirectoryListing(String separator) {
-    String str = "";
+    SB sb = new SB();
     for (int i = 0; i < directory.size(); i++) {
       CompoundDocDirEntry thisEntry = directory.get(i);
       if (!thisEntry.isEmpty)
-        str += separator
-            + thisEntry.entryName
-            + "\tlen="
-            + thisEntry.lenStream
-            + "\tSID="
-            + thisEntry.SIDfirstSector
-            + (thisEntry.isStandard ? "\tfileOffset="
+        sb.append(separator).append(thisEntry.entryName)
+        .append("\tlen=").appendI(thisEntry.lenStream)
+        .append("\tSID=").appendI(thisEntry.SIDfirstSector)
+        .append(thisEntry.isStandard ? "\tfileOffset="
                 + getOffset(thisEntry.SIDfirstSector) : "");
     }
-    return str;
+    return sb.toString();
   }
 
-  SB data;
-  
   public SB getAllData() {
     return getAllDataFiles(null, null);
   }
@@ -141,7 +138,7 @@ public class CompoundDocument extends BinaryDocument{
     for (int i = 0; i < directory.size(); i++) {
       CompoundDocDirEntry thisEntry = directory.get(i);
       if (!thisEntry.isEmpty && thisEntry.entryType != 5) {
-        String name = thisEntry.entryName;
+      String name = thisEntry.entryName;
         System.out.println("CompoundDocument file " + name);
         boolean isBinary = (binaryFileList.indexOf("|" + name + "|") >= 0);
         if (isBinary)
@@ -158,32 +155,41 @@ public class CompoundDocument extends BinaryDocument{
 
   @Override
   public SB getAllDataFiles(String binaryFileList, String firstFile) {
-    if (firstFile != null) {
-      for (int i = 0; i < directory.size(); i++) {
-        CompoundDocDirEntry thisEntry = directory.get(i);
-        if (thisEntry.entryName.equals(firstFile)) {
-          directory.remove(i);
-          directory.add(1, thisEntry); // after ROOT_ENTRY
-          break;
-        }
-      }
-    }
-    data = new SB();
+// firstFile is now ignored
+//    if (firstFile != null) {
+//      for (int i = 0; i < directory.size(); i++) {
+//        CompoundDocDirEntry thisEntry = directory.get(i);
+//        if (thisEntry.entryName.equals(firstFile)) {
+//          directory.remove(i);
+//          directory.add(1, thisEntry); // after ROOT_ENTRY
+//          break;
+//        }
+//      }
+//    }
+    SB data = new SB();
     data.append("Compound Document File Directory: ");
     data.append(getDirectoryListing("|"));
     data.append("\n");
+    CompoundDocDirEntry thisEntry;
     binaryFileList = "|" + binaryFileList + "|";
-    for (int i = 0; i < directory.size(); i++) {
-      CompoundDocDirEntry thisEntry = directory.get(i);
+    for (int i = 0, n = directory.size(); i < n; i++) {
+      thisEntry = directory.get(i);
       //System.out.println("CompoundDocument reading " + thisEntry.entryName);
-      if (!thisEntry.isEmpty && thisEntry.entryType != 5) {
-        String name = thisEntry.entryName;
+      String name = thisEntry.entryName;
+      switch (thisEntry.entryType) {
+      case 5: // root
+        break;
+      case 1: // user storage (dir)
+        data.append("NEW Directory ").append(name).append("\n");            
+        break;
+      case 2: // user stream (file)
         if (name.endsWith(".gz"))
           name = name.substring(0, name.length() - 3);
         data.append("BEGIN Directory Entry ").append(name).append("\n");            
         data.appendSB(getEntryAsString(thisEntry, binaryFileList.indexOf("|" + thisEntry.entryName + "|") >= 0));
         data.append("\n");
         data.append("END Directory Entry ").append(thisEntry.entryName).append("\n");            
+        break;
       }
     }
     close();
@@ -292,10 +298,7 @@ public class CompoundDocument extends BinaryDocument{
         for (int j = nDirEntriesperSector; --j >= 0;) {
           thisEntry = new CompoundDocDirEntry(this);
           thisEntry.readData();
-          if (thisEntry.lenStream > 0) {
-            directory.addLast(thisEntry);
-            //System.out.println(thisEntry.entryName);
-          }
+          directory.addLast(thisEntry);
           if (thisEntry.entryType == 5)
             rootEntry = thisEntry;
         }
