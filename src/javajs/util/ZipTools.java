@@ -84,7 +84,7 @@ public class ZipTools implements GenericZipTools {
    */
   @Override
   public void getAllZipData(InputStream is, String[] subfileList,
-                                          String name0, String binaryFileList,
+                                          String name0, String binaryFileList, String exclude,
                                           Map<String, String> fileData) {
     ZipInputStream zis = (ZipInputStream) newZIS(is);
     ZipEntry ze;
@@ -101,7 +101,8 @@ public class ZipTools implements GenericZipTools {
       while ((ze = zis.getNextEntry()) != null) {
         String name = ze.getName();
         if (prefix != null && prefixd != null
-            && !(name.equals(prefix) || name.startsWith(prefixd)))
+            && !(name.equals(prefix) || name.startsWith(prefixd))
+            || exclude != null && name.contains(exclude))
           continue;
         //System.out.println("ziputil: " + name);
         listing.append(name).appendC('\n');
@@ -117,7 +118,8 @@ public class ZipTools implements GenericZipTools {
         }
         str = "BEGIN Directory Entry " + name + "\n" + str
             + "\nEND Directory Entry " + name + "\n";
-        fileData.put(name0 + "|" + name, str);
+        String key = name0 + "|" + name;
+        fileData.put(key, str);
       }
     } catch (Exception e) {
     }

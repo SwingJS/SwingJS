@@ -22,7 +22,7 @@ public interface GenericZipTools {
                                                  String manifestID);
 
   public void getAllZipData(InputStream bis, String[] subFileList,
-                                String replace, String string,
+                                String replace, String binaryFileList, String exclude,
                                 Map<String, String> fileData);
 
   public Object getZipFileContentsAsBytes(BufferedInputStream bis,
