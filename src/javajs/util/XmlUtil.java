@@ -25,13 +25,15 @@
 
 package javajs.util;
 
+/**
+ * A very simplistic XML generator
+ */
+
 public class XmlUtil {
 
   public XmlUtil() {
-    // Jmol's PropertyManager class uses reflection 
+    // Jmol's PropertyManager and JvxlCoder classes use reflection 
   }
-  // / simple Xml parser/generator ///
-
   public static void openDocument(SB data) {
     data.append("<?xml version=\"1.0\"?>\n");
   }
@@ -96,15 +98,6 @@ public class XmlUtil {
   }
   
   /**
-   * @param s
-   * @return   unwrapped text
-   */
-  public static String unwrapCdata(String s) {
-    return (s.startsWith("<![CDATA[") && s.endsWith("]]>") ?
-        PT.rep(s.substring(9, s.length()-3),"]]]]><![CDATA[>", "]]>") : s);
-  }
-  
-  /**
    * standard <name attr="..." attr="...">data</name>"
    * 
    * @param sb
@@ -161,5 +154,15 @@ public class XmlUtil {
     
     sb.append(" ").appendO(name).append("=\"").appendO(value).append("\"");
   }
+
+//  /**
+//   * @param s
+//   * @return   unwrapped text
+//   */
+//  public static String unwrapCdata(String s) {
+//    return (s.startsWith("<![CDATA[") && s.endsWith("]]>") ?
+//        PT.rep(s.substring(9, s.length()-3),"]]]]><![CDATA[>", "]]>") : s);
+//  }
+//  
 
 }

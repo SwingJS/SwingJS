@@ -305,7 +305,8 @@ public abstract class T3 implements JSONEncodable, Serializable {
   }
 
   public static int floatToIntBits0(float f) {
-    return (f == 0 ? 0 : Float.floatToIntBits(f));
+    // note: in JavaScript, Float.floatToIntBits(f)) does not exist 
+    return (f == 0 ? 0 : String.valueOf(f).hashCode());
   }
 
   /**
