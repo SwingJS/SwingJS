@@ -793,7 +793,8 @@ public class PT {
          * 
          */
         {}
-        if (s.indexOf('\\') >= 0 && s.indexOf("{\"") != 0) {
+        
+        if (s.indexOf("{\"") != 0) {
           //don't doubly fix JSON strings when retrieving status
           // what about  \1 \2 \3 etc.?
           s = esc(s);
