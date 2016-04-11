@@ -695,7 +695,7 @@ public class M4 extends M34 {
    * @param scalar
    *        The scalar multiplier.
    */
-  private void scale(float scalar) {
+  public void scale(float scalar) {
     mul33(scalar);
     m03 *= scalar;
     m13 *= scalar;
