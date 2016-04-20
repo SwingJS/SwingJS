@@ -299,6 +299,8 @@ public class CifDataParser implements GenericCifDataParser {
       getTokenPeeked();
       n++;
     }
+    if (n == 0)
+      n = columnCount; // end-of-label-section skip 
     int m = 0;
     while ((str = getNextDataToken()) != null) {
       if (ret == null)
