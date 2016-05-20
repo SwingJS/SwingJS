@@ -118,6 +118,7 @@ public class CU {
     "lightgoldenrodyellow", // FAFAD2
     "lightgreen",           // 90EE90
     "lightgrey",            // D3D3D3
+    "lightgray",            // D3D3D3
     "lightpink",            // FFB6C1
     "lightsalmon",          // FFA07A
     "lightseagreen",        // 20B2AA
@@ -194,6 +195,7 @@ public class CU {
     "greenblue",            // 2E8B57
     "greentint",            // 98FFB3
     "grey",                 // 808080
+    "gray",                 
     "pinktint",             // FFABBB
     "redorange",            // FF4500
     "yellowtint",           // F6F675
@@ -287,6 +289,7 @@ public class CU {
     0xFFFAFAD2, // lightgoldenrodyellow
     0xFF90EE90, // lightgreen
     0xFFD3D3D3, // lightgrey
+    0xFFD3D3D3, // lightgray
     0xFFFFB6C1, // lightpink
     0xFFFFA07A, // lightsalmon
     0xFF20B2AA, // lightseagreen
@@ -363,6 +366,7 @@ public class CU {
     0xFF2E8B57, // greenblue
     0xFF98FFB3, // greentint
     0xFF808080, // grey
+    0xFF808080, // gray
     0xFFFFABBB, // pinktint
     0xFFFF4500, // redorange
     0xFFF6F675, // yellowtint

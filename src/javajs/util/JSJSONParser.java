@@ -1,7 +1,10 @@
 package javajs.util;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
+
+import javajs.J2SIgnoreImport;
 
 
 
@@ -11,6 +14,8 @@ import java.util.Map;
  * 
  * A SUBSET of JSON with similarly to window.JSON.parse():
  * 
+ * In JavaScript returns "null" for a null value, not null
+ * 
  *  -- requires quoted strings for keys and values
  *  
  *  -- does not allow /xxx/ objects
@@ -18,11 +23,13 @@ import java.util.Map;
  *  @author Bob Hanson
  *  
  */
+@J2SIgnoreImport({ HashMap.class })
 public class JSJSONParser {
 
   private String str;
   private int index;
   private int len;
+  private boolean asHashTable;
 
   public JSJSONParser () {
     // for reflection
@@ -32,12 +39,14 @@ public class JSJSONParser {
    * requires { "key":"value", "key":"value",....}
    * 
    * @param str
+   * @param asHashTable TODO
    * 
    * @return Map or null
    */
   @SuppressWarnings("unchecked")
-  public Map<String, Object> parseMap(String str) {
+  public Map<String, Object> parseMap(String str, boolean asHashTable) {
     index = 0;
+    this.asHashTable = asHashTable;
     this.str = str;
     len = str.length();
     if (getChar() != '{')
@@ -147,7 +156,7 @@ public class JSJSONParser {
         return Boolean.FALSE;
       }
       if (string.equals("null")) {
-        return null;
+        return (asHashTable ? string : null);
       }
     }
     //  only numbers from here on:
@@ -166,6 +175,7 @@ public class JSJSONParser {
       } catch (Exception e) {
       }
     // not a valid number
+    System.out.println("JSON parser cannot parse " + string);
     throw new JSONException("invalid value");
   }
 
@@ -232,7 +242,7 @@ public class JSJSONParser {
   }
 
   private Object getObject() {
-    Map<String, Object> map = new HashMap<String, Object>();
+    Map<String, Object> map = (asHashTable ? new Hashtable<String, Object>() : new HashMap<String, Object>());
     String key = null;
     switch (getChar()) {
     case '}':
