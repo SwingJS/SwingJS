@@ -653,6 +653,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	@Override
 	public void setVisible(boolean b) {
+		if (outerNode == null)
+			setHTMLElement();
 		DOMNode.setStyles(outerNode, "display", b ? "block" : "none");
 	}
 

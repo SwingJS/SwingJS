@@ -235,7 +235,7 @@ public class ZoneInfo extends TimeZone {
      */
     public int getOffset(long date) {
         return getOffsets(date, null, UTC_TIME);
-    }
+    }	
 
     public int getOffsets(long utc, int[] offsets) {
         return getOffsets(utc, offsets, UTC_TIME);

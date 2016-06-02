@@ -1461,7 +1461,11 @@ protected  transient ComponentPeer peer;
      * @since JDK1.1
      */
     public void setVisible(boolean b) {
-    	show(b);
+      if (b) {
+        show();
+    } else {
+        hide();
+    }
     }
     
     /**
@@ -1472,11 +1476,7 @@ protected  transient ComponentPeer peer;
      * 
      */
     public void show(boolean b) {
-        if (b) {
-            show();
-        } else {
-            hide();
-        }
+    	setVisible(b);
     }
 
 	public void show() {

@@ -330,6 +330,11 @@ public class Container extends Component {
         return new Insets(0, 0, 0, 0);
     }
 
+    @Deprecated
+    public Insets insets() {
+    	return getInsets();
+    }
+    
     /**
      * Appends the specified component to the end of this container.
      * This is a convenience method for {@link #addImpl}.

@@ -2,17 +2,32 @@
 
 package swingjs.test;
 
-// Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege 
+// Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 // Changes include:
 //
 // import javax.swing.applet.Applet --> swingjs.awt
 // 
-// import java.awt.[Button, Canvas, Checkbox, Frame, Label, Scrollbar, TextArea] --> swingjs.awt
+// import java.awt.[Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar, TextArea] --> swingjs.awt
 //
 // RippleFrame.paint --> RippleFrame.paintComponent
+//
+// Applet.show does not trigger componentShown(e); showFrame() moved to Ripple.init()
+// 
+// RippleFrame.init() changed to RippleFrame.initRF
+//
+// Class.getMethod not implemented; timerMethod option removed
+// 
+// note: In JavaScript System.getProperty("java.class.version") is null, so useBufferedImage is false
+//
+// deprecated method .size --> .getSize
+// deprecated method .resize --> .setSize
+// deprecated method .move --> .setLocation
+// deprecated method .show --> .setVisible(true)
+// deprecated method .hide --> .setVisible(false)
 
-import java.awt.Choice;
+
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -48,6 +63,7 @@ import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
 import swingjs.awt.Checkbox;
+import swingjs.awt.Choice;
 import swingjs.awt.Frame;
 import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
@@ -80,14 +96,14 @@ class RippleLayout implements LayoutManager {
 	return new Dimension(100,100);
     }
     public void layoutContainer(Container target) {
-	Insets insets = target.insets();
-	int targetw = target.size().width - insets.left - insets.right;
+	Insets insets = target.getInsets();
+	int targetw = target.getSize().width - insets.left - insets.right;
 	int cw = targetw* 7/10;
 	if (target.getComponentCount() == 1)
 	    cw = targetw;
-	int targeth = target.size().height - (insets.top+insets.bottom);
-	target.getComponent(0).move(insets.left, insets.top);
-	target.getComponent(0).resize(cw, targeth);
+	int targeth = target.getSize().height - (insets.top+insets.bottom);
+	target.getComponent(0).setLocation(insets.left, insets.top);
+	target.getComponent(0).setSize(cw, targeth);
 	int barwidth = targetw - cw;
 	cw += insets.left;
 	int i;
@@ -104,8 +120,8 @@ class RippleLayout implements LayoutManager {
 		    h += d.height/5;
 		    d.width = barwidth;
 		}
-		m.move(cw, h);
-		m.resize(d.width, d.height);
+		m.setLocation(cw, h);
+		m.setSize(d.width, d.height);
 		h += d.height;
 	    }
 	}
@@ -122,19 +138,20 @@ public class Ripple extends Applet implements ComponentListener {
     }
     boolean started = false;
     public void init() {
-	addComponentListener(this);
+    	showFrame();
+	//addComponentListener(this);
     }
 
     public static void main(String args[]) {
 	ogf = new RippleFrame(null);
-	ogf.init();
+	ogf.initFrame();
     }
         
     void showFrame() {
 	if (ogf == null) {
 	    started = true;
 	    ogf = new RippleFrame(this);
-	    ogf.init();
+	    ogf.initFrame();
 	    repaint();
 	}
     }
@@ -300,7 +317,7 @@ class RippleFrame extends Frame
     
     boolean useBufferedImage = false;
 
-    public void init() {
+    public void initFrame() {
 	try {
 	    if (applet != null) {
 		String param = applet.getParameter("useFrame");
@@ -329,6 +346,11 @@ class RippleFrame extends Frame
         if (jvf >= 48)
 	    useBufferedImage = true;
 
+  /**
+   * @j2sIgnore
+   *         
+   */
+        {
 	try {
 	    Class sysclass = Class.forName("java.lang.System");
 	    timerMethod = sysclass.getMethod("nanoTime", null);
@@ -340,6 +362,7 @@ class RippleFrame extends Frame
 	} catch (Exception ee) {
 	    ee.printStackTrace();
 	}
+        }
 	
 	sources = new OscSource[20];
 	main.setLayout(new RippleLayout());
@@ -525,15 +548,15 @@ class RippleFrame extends Frame
 	startTime = getTimeMillis();
 
 	if (useFrame) {
-	    resize(800, 640);
+	    setSize(800, 640);
 	    handleResize();
 	    Dimension x = getSize();
 	    Dimension screen = getToolkit().getScreenSize();
 	    setLocation((screen.width  - x.width)/2,
 			(screen.height - x.height)/2);
-	    show();
+	    setVisible(true);
 	} else {
-	    hide();
+	    setVisible(false);
 	    handleResize();
 	    applet.validate();
 	}
@@ -570,7 +593,7 @@ class RippleFrame extends Frame
     
     public void triggerShow() {
 	if (!shown)
-	    show();
+	    setVisible(true);
 	shown = true;
     }
 
@@ -675,8 +698,15 @@ class RippleFrame extends Frame
 
     long getTimeMillis() {
 	try {
+		/**
+		 * @j2sNative 
+		 * 
+		 * return System.currentTimeMillis();
+		 */
+		{
 	    Long time = (Long) timerMethod.invoke(null, new Object[] { } );
 	    return time.longValue() / timerDiv;
+		}
 	} catch (Exception ee) { ee.printStackTrace(); return 0; } 
     }
     
@@ -1806,12 +1836,12 @@ class RippleFrame extends Frame
 	    auxLabel.setText("Source Speed");
 	} else {
 	    auxFunction = AUX_NONE;
-	    auxBar.hide();
-	    auxLabel.hide();
+	    auxBar.setVisible(false);
+	    auxLabel.setVisible(false);
 	}
 	if (auxFunction != AUX_NONE) {
-	    auxBar.show();
-	    auxLabel.show();
+	    auxBar.setVisible(true);
+	    auxLabel.setVisible(true);
 	}
 	validate();
 	
@@ -1893,7 +1923,7 @@ class RippleFrame extends Frame
 	    dump += (x ? "w " : "c ") + ct + " " + m + "\n";
 	}
 	impDialog = new ImportDialog(this, dump);
-	impDialog.show();
+	impDialog.setVisible(true);
     }
 
     void readImport(String s) {
@@ -1992,28 +2022,28 @@ class RippleFrame extends Frame
 	    return new Dimension(100,100);
 	}
 	public void layoutContainer(Container target) {
-	    Insets insets = target.insets();
-	    int targetw = target.size().width - insets.left - insets.right;
-	    int targeth = target.size().height - (insets.top+insets.bottom);
+	    Insets insets = target.getInsets();
+	    int targetw = target.getSize().width - insets.left - insets.right;
+	    int targeth = target.getSize().height - (insets.top+insets.bottom);
 	    int i;
 	    int pw = 300;
 	    if (target.getComponentCount() == 0)
 		return;
 	    Component cl = target.getComponent(target.getComponentCount()-1);
 	    Dimension dl = cl.getPreferredSize();
-	    target.getComponent(0).move(insets.left, insets.top);
-	    int cw = target.size().width - insets.left - insets.right;
-	    int ch = target.size().height - insets.top - insets.bottom -
+	    target.getComponent(0).setLocation(insets.left, insets.top);
+	    int cw = target.getSize().width - insets.left - insets.right;
+	    int ch = target.getSize().height - insets.top - insets.bottom -
 		dl.height;
-	    target.getComponent(0).resize(cw, ch);
+	    target.getComponent(0).setSize(cw, ch);
 	    int h = ch + insets.top;
 	    int x = 0;
 	    for (i = 1; i < target.getComponentCount(); i++) {
 		Component m = target.getComponent(i);
 		if (m.isVisible()) {
 		    Dimension d = m.getPreferredSize();
-		    m.move(insets.left+x, h);
-		    m.resize(d.width, d.height);
+		    m.setLocation(insets.left+x, h);
+		    m.setSize(d.width, d.height);
 		    x += d.width;
 		}
 	    }
@@ -2038,11 +2068,11 @@ class RippleFrame extends Frame
 	    add(closeButton = new Button("Close"));
 	    closeButton.addActionListener(this);
 	    Point x = rframe.getLocationOnScreen();
-	    resize(400, 300);
+	    setSize(400, 300);
 	    Dimension d = getSize();
 	    setLocation(x.x + (winSize.width-d.width)/2,
 			x.y + (winSize.height-d.height)/2);
-	    show();
+	    setVisible(true);
 	    if (str.length() > 0)
 		text.selectAll();
 	}
@@ -3721,7 +3751,7 @@ class RippleFrame extends Frame
 	    fixedEndsCheck.setState(false);
 	    setBrightness(16);
 	}
-	void doSetupSources() {
+	void doSetupSources() {		 
 	    setSources();
 	    sources[0].x = gridSizeX/2-2;
 	    sources[1].x = gridSizeX/2+2;
