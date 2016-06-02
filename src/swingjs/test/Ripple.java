@@ -2,10 +2,16 @@
 
 package swingjs.test;
 
-import swingjs.applet.Applet;
-import awt2swing.Button;
-import java.awt.Canvas;
-import awt2swing.Checkbox;
+// Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege 
+//
+// Changes include:
+//
+// import javax.swing.applet.Applet --> swingjs.awt
+// 
+// import java.awt.[Button, Canvas, Checkbox, Frame, Label, Scrollbar, TextArea] --> swingjs.awt
+//
+// RippleFrame.paint --> RippleFrame.paintComponent
+
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,15 +20,11 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FontMetrics;
-import awt2swing.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
-import awt2swing.Label;
 import java.awt.LayoutManager;
 import java.awt.Point;
-import awt2swing.Scrollbar;
-import awt2swing.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -41,6 +43,15 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import swingjs.awt.Applet;
+import swingjs.awt.Button;
+import swingjs.awt.Canvas;
+import swingjs.awt.Checkbox;
+import swingjs.awt.Frame;
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
+import swingjs.awt.TextArea;
 
 class RippleCanvas extends Canvas {
     RippleFrame pg;
@@ -137,6 +148,7 @@ public class Ripple extends Applet implements ComponentListener {
 	else if (ogf.useFrame)
 	    ogf.triggerShow();
 	g.drawString(s, 10, 30);
+	super.paint(g);
     }
     
     public void componentHidden(ComponentEvent e){}
@@ -711,7 +723,7 @@ class RippleFrame extends Frame
         g.drawString(s, (winSize.width-fm.stringWidth(s))/2, y);
     }
 
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
 	cv.repaint();
     }
 

@@ -1,4 +1,4 @@
-package swingjs.applet;
+package swingjs.awt;
 
 //import jsjava.awt.Font;
 //import jsjava.awt.FontMetrics;

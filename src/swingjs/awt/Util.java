@@ -1,4 +1,4 @@
-package awt2swing;
+package swingjs.awt;
 
 import java.awt.Graphics;
 

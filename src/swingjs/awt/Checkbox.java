@@ -4,24 +4,24 @@ import javax.swing.JCheckBox;
 
 public class Checkbox extends JCheckBox {
 
-	public Checkbox(String label) {
-		super(label);
+	public Checkbox(String string) {
+		super(string, false);
 	}
 
-	public Checkbox(String text, boolean selected) {
-		super(text,selected);
+	public Checkbox(String string, boolean b) {
+		super(string, b);
+	}
+
+	public Checkbox() {
+		super();
 	}
 
 	public boolean getState() {
-		super.isSelected();
-		return false;
+		return isSelected();
 	}
 
-	public void setState(boolean state) {
-		super.setSelected(state);
-		
+	public void setState(boolean b) {
+		setSelected(b);
 	}
 
 }
-
-

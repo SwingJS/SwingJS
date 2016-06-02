@@ -4,14 +4,21 @@ import javax.swing.JLabel;
 
 public class Label extends JLabel {
 
-	public Label(String title, int horizontalAlignment) {
-		super(title, horizontalAlignment);
+	public Label() {
+		super();
+	}
+	
+	public Label(String text) {
+		super(text);
+	}
+	
+	public Label(String text, int center) {
+		super(text, center);
 	}
 
-	public Label(String title) {
-    super(title);
+	public void setAlignment(int alignment) {
+		setAlignmentX(alignment);
+		
 	}
 
 }
-
-
