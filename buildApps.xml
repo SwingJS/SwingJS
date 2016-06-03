@@ -1,0 +1,78 @@
+<project name="swingjs" default="createApps" basedir=".">
+   			
+<!-- buildSite.xml for building site/ -->
+	
+	
+  <target name="createApps" id="createApps">
+
+  	<property name="project.path" value="." />
+
+  	<!-- create a NON svn local directory only containing JS files  -->
+  	
+  	<echo>deleting site/tmp directory</echo>
+   	 	<delete quiet="true" dir="site/tmp" />
+  	
+ 	
+<!--  	working here -->
+
+   	<echo>...adding html files</echo>
+   	<copy todir="site/swingjs" overwrite="true" >
+  	  <fileset dir="html">
+  	    <include name="**/*" />
+  	  </fileset>
+    </copy>
+
+    <echo>...copying all other bin/*.js to j2s</echo>
+  	<copy todir="site/tmp"  overwrite="true" >
+      <fileset dir="bin">
+        <include name="**/*.js" />
+        <exclude name="com/**/*.js" />
+        <exclude name="javajs/**/*.js" />
+        <exclude name="jsjava/**/*.js" />
+        <exclude name="jsjavax/**/*.js" />
+        <exclude name="jssun/**/*.js" />
+        <exclude name="swingjs/*.js" />
+        <exclude name="swingjs/api/**/*.js" />
+        <exclude name="swingjs/awt/**/*.js" />
+        <exclude name="swingjs/jquery/**/*.js" />
+        <exclude name="swingjs/plaf/**/*.js" />
+      </fileset>
+    </copy>
+   	
+   	<echo>Fixing "jsjava" references</echo>
+  	<replace dir="site/tmp" includes="**/*.*" token="jsjava" value="java" />
+  	<replace dir="site/tmp" includes="**/*.js" token="javajs.util" value="JU" />
+  		
+   	
+  	<!-- modify class names -->		
+
+    <echo>removing j2s globals Class and JavaObject</echo>
+    <echo>...replacing Class.forName with Clazz._4Name</echo>
+  	<replace dir="site/tmp" includes="**/*.js" token="Class.forName" value="Clazz._4Name"/>
+    <echo>...replacing JavaObject with Clazz._O</echo>
+  	<replace dir="site/tmp" includes="**/*.js" token=" JavaObject" value=" Clazz._O"/>
+    <echo>...removing all $fz references for sub/superclass common private function names</echo>
+  	<replace dir="site/tmp" includes="**/*.js" token="($fz =" value=""/>
+  	<replace dir="site/tmp" includes="**/*.js" token=", $fz.isPrivate = true, $fz)" value=""/>
+  	<echo>...changing Clazz.pu$h() to Clazz.pu$h(self.c$) (only a partial fix)</echo>
+  	<replace dir="site/tmp" includes="**/*.js" token="Clazz.pu$h()" value="Clazz.pu$h(self.c$)"/>
+  	<replace dir="site/tmp" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(self.c$)"/>
+   	   	
+
+    <echo>...abbreviating class name "javajs.util", and "com.jcraft.jzlib" to "JU"</echo>
+  	<replace dir="site/tmp" includes="**/*.js" token="javajs.util" value="JU"/>
+  	<replace dir="site/tmp" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/>
+   	  	   	  	
+  	<copy todir="site/swingjs/j2s"  overwrite="true" >
+      <fileset dir="site/tmp">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+
+  	<echo>deleting site/tmp directory</echo>
+   	 	<delete quiet="true" dir="site/tmp" />
+  	
+
+  </target>
+	
+  </project>
