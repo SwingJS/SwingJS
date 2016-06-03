@@ -43,7 +43,8 @@ public class Interface {
     	 * Clazz._isQuiet = isQuiet;
     	 */
     	{}
-      System.out.println("swingjs.api.Interface creating instance of " + name);
+    	if (!isQuiet)
+    		System.out.println("swingjs.api.Interface creating instance of " + name);
       Class<?> x = Class.forName(name);
     	/**
     	 * @j2sNative
