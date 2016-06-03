@@ -1,12 +1,18 @@
 package swingjs;
 
-import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Map;
 
+import javajs.api.GenericImageEncoder;
 import javajs.img.BMPDecoder;
 import javajs.util.AU;
+import javajs.util.OC;
+import jsjava.awt.Image;
+import jsjava.awt.image.ColorModel;
+import jsjava.awt.image.ImageConsumer;
 import swingjs.api.Interface;
 
-public class JSImagekit {
+public class JSImagekit implements ImageConsumer {
 
 	private static final int UNK = -1;
 	private static final int PNG = 0;
@@ -98,11 +104,17 @@ public class JSImagekit {
 		}
 		if (w == 0 || h == 0)
 			return null;
-		JSImage jsimage = new JSImage(argb, w, h);
+		JSImage jsimage = new JSImage(argb, w, h); 
 		if (data != null && argb == null)
 			jsimage.getDOMImage(b, type);
 		return jsimage;
 	}
+
+	@Override
+	public void imageComplete(int status) {
+		//TODO: not considering pixelbytes
+		jsimage = new JSImage(pixels, width, height);
+  }
 
 	private int getLong(byte[] b, int pt) {
 		return ((b[pt] & 0xFF) << 24) 
@@ -126,4 +138,79 @@ public class JSImagekit {
 				: b[0] == 'B' && b[1] == 'M' ? BMP 
 				: UNK);
 	}
+
+	
+	private int width;
+	private int height;
+	private Hashtable<?, ?> props;
+	private ColorModel colorModel;
+	private int hints;
+	private int x;
+	private int y;
+	private int off;
+	private int scansize;
+	private int[] pixels;
+	private JSImage jsimage;
+	private byte[] pixelBytes;
+	
+	public Image getCreatedImage() {
+		return jsimage;
+	}
+
+	@Override
+	public void setDimensions(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	public void setProperties(Hashtable<?, ?> props) {
+		this.props = props;
+	}
+
+	@Override
+	public void setColorModel(ColorModel model) {
+		colorModel =  model;
+	}
+
+	@Override
+	public void setHints(int hintflags) {
+		hints = hintflags;
+	}
+
+	@Override
+	public void setPixels(int x, int y, int w, int h, ColorModel model,
+			byte[] pixels, int off, int scansize) {
+		colorModel = model;
+		width = w;
+		height = h;
+		this.x = x;
+		this.y = y;
+		this.off = off;
+		this.scansize = scansize;
+		boolean isBytes = AU.isAB(pixels);
+		/**
+		 * @j2sNative
+		 * 
+		 * if (isBytes) {this.pixelBytes = pixels} else {this.pixels = pixels};
+		 * 
+		 */
+		{
+			this.pixelBytes = pixels;
+		}
+		if (isBytes)	
+			JSToolkit.notImplemented("byte-based image pixels");
+	}
+
+	/**
+	 * @j2sIgnore
+	 * 
+	 */
+	@Override
+	public void setPixels(int x, int y, int w, int h, ColorModel model,
+			int[] pixels, int off, int scansize) {
+		
+		// see above
+	}
+
 }

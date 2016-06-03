@@ -32,6 +32,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Enumeration;
 
+import javajs.util.AU;
+
+import swingjs.J2SRequireImport;
+
 /**
  * This class is an implementation of the ImageProducer interface which
  * uses an array to produce pixel values for an Image.  Here is an example
@@ -104,6 +108,7 @@ import java.util.Enumeration;
  * @author      Animation capabilities inspired by the
  *              MemoryAnimationSource class written by Garth Dickie
  */
+@J2SRequireImport (jsjava.awt.image.ColorModel.class)
 public class MemoryImageSource implements ImageProducer {
     int width;
     int height;
@@ -556,16 +561,15 @@ public class MemoryImageSource implements ImageProducer {
         }
     }
 
-    private void sendPixels(ImageConsumer ic, int x, int y, int w, int h) {
-        int off = pixeloffset + pixelscan * y + x;
-        if (isConsumer(ic)) {
-            if (pixels instanceof byte[]) {
-                ic.setPixels(x, y, w, h, model,
-                             ((byte[]) pixels), off, pixelscan);
-            } else {
-                ic.setPixels(x, y, w, h, model,
-                             ((int[]) pixels), off, pixelscan);
-            }
-        }
-    }
+	private void sendPixels(ImageConsumer ic, int x, int y, int w, int h) {
+		int off = pixeloffset + pixelscan * y + x;
+		if (isConsumer(ic)) {
+			boolean isbytes = AU.isAB(pixels);
+			if (isbytes) {
+				ic.setPixels(x, y, w, h, model, (byte[]) pixels, off, pixelscan);
+			} else {
+				ic.setPixels(x, y, w, h, model, (int[]) pixels, off, pixelscan);
+			}
+		}
+	}
 }

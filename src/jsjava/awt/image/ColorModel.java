@@ -25,10 +25,11 @@
 
 package jsjava.awt.image;
 
+import java.awt.image.ComponentColorModel;
+import java.awt.image.IndexColorModel;
 import java.util.Map;
 
 import javajs.util.AU;
-
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
 
@@ -192,7 +193,7 @@ public abstract class ColorModel implements Transparency{
      */
     public static ColorModel getRGBdefault() {
         if (RGBdefault == null) {
-            RGBdefault = new DirectColorModel(32,
+        	RGBdefault = new DirectColorModel(32,
                                               0x00ff0000,       // Red
                                               0x0000ff00,       // Green
                                               0x000000ff,       // Blue

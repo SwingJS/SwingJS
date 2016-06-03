@@ -303,6 +303,8 @@
             java/awt/ColorPaintContext.js
             java/awt/PaintContext.js
             java/awt/image/ColorModel.js
+            java/awt/image/PackedColorModel.js
+            java/awt/image/DirectColorModel.js
             java/awt/color/ColorSpace.js
             java/util/ResourceBundle.js
             java/applet/Applet.js

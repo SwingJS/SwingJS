@@ -370,20 +370,45 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.fill();
 	}
 
+	private void observe(Image img, ImageObserver observer, boolean isOK) {
+		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
+	}
+
+	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
 		if (img != null) {
-			DOMNode imgNode = getImageNode(img);
-			if (imgNode != null)
-				ctx.drawImage(imgNode, x, y, img.getWidth(observer), img.getHeight(observer));
+			int[] pixels = null;
+			/**
+			 * @j2sNative
+			 * 
+			 * pixels = img.pix;
+			 */
+			{
+				
+			}
+			DOMNode imgNode = null;
+			int width = img.getWidth(observer);
+			int height = img.getHeight(observer);
+			if (pixels == null) {
+				if ((imgNode = getImageNode(img)) != null)
+					ctx.drawImage(imgNode, x, y, width, height);
+			} else {
+				Object imageData = HTML5CanvasContext2D.getImageData(ctx, width, height);
+				int[] buf8 = HTML5CanvasContext2D.getBuf8(imageData);
+				for (int pt = 0, i = 0, n = Math.min(buf8.length/4, pixels.length); i < n; i++) {
+					int argb = pixels[i];
+					buf8[pt++] = (argb >> 16) & 0xFF;
+					buf8[pt++] = (argb >> 8) & 0xFF;
+					buf8[pt++] = argb & 0xFF;
+					buf8[pt++] = (argb >> 24) & 0xFF;
+				}
+				HTML5CanvasContext2D.putImageData(ctx, imageData, 0, 0);				
+			}
 			if (observer != null)
 				observe(img, observer, imgNode != null);
 		}
 		return true;
-	}
-
-	private void observe(Image img, ImageObserver observer, boolean isOK) {
-		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
 	}
 
 	@Override
@@ -403,24 +428,26 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
 		JSToolkit.notImplemented(null);
-		return drawImage(img, x, y, null);
+		return drawImage(img, x, y, observer);
 	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
 		JSToolkit.notImplemented(null);
-		return drawImage(img, x, y, width, height, null);
+		return drawImage(img, x, y, width, height, observer);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
 		if (img != null) {
-			DOMNode imgNode = getImageNode(img);
-			if (imgNode != null)
-				HTML5CanvasContext2D.stretchImage(ctx, imgNode, sx1, sy1, sx2 - sx1, sy2
-						- sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);
+			byte[] bytes = null;
+		  DOMNode imgNode = getImageNode(img);
+		  if (imgNode != null)
+					HTML5CanvasContext2D.stretchImage(ctx, imgNode, sx1, sy1, sx2 - sx1, sy2
+							- sy1, dx1, dy1, dx2 - dx1, dy2 - dy1);				
 			if (observer != null)
 				observe(img, observer, imgNode != null);
 		}
@@ -437,9 +464,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		{
 			
 		}
-		if (imgNode == null)
-			imgNode = JSToolkit.getCompositor().createImageNode(img);
-		return imgNode;
+		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
 	}
 
 	@Override

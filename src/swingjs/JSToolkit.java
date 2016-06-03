@@ -27,6 +27,7 @@ import jsjava.awt.Window;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.ColorModel;
+import jsjava.awt.image.ImageConsumer;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.Raster;
@@ -152,8 +153,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 *            d.setSize(jq.$(window).width(), jq.$(window).height()); return
-		 *            d;
+		 *  d.setSize(jq.$(window).width(), jq.$(window).height()); return d;
 		 */
 		{
 			return null;
@@ -773,8 +773,9 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	public Image createImage(ImageProducer producer) {
-		producer.startProduction(null);
-		return null;//return getImagekit().createImage(producer.data, imageoffset, imagelength);
+		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", false);
+		producer.startProduction(kit); // JSImageKit is the ImageConsumer here
+		return kit.getCreatedImage();
 	}
 
 	@Override

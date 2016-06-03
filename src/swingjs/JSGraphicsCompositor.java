@@ -337,7 +337,7 @@ public class JSGraphicsCompositor {
 		   * 
 		   */
 		  {}
-		  // TODO: This does not allow for images created some other way.		  
+		  // note: images created some other way are presumed to have int[] pix defined and possibly byte[pix]
 			return imgNode;
 		}
 		return null;

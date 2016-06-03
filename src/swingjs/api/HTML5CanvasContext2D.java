@@ -74,6 +74,37 @@ public abstract class HTML5CanvasContext2D {
 		 */
 		{}
 	}
+
+	public static Object getImageData(HTML5CanvasContext2D ctx, int width, int height) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   return ctx.getImageData(0, 0, width, height);
+		 */
+		{
+			return null;
+		}
+	}
 	
 
+	public static int[] getBuf8(Object imageData) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   return imageData.data
+		 */
+		{
+			return null;
+		}
+	}
+
+	public static void putImageData(HTML5CanvasContext2D ctx, Object imageData, int x, int y) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   ctx.putImageData(imageData, x, y);
+		 */
+		{
+		}
+	}
 }
