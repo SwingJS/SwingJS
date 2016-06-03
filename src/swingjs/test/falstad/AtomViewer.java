@@ -14,15 +14,17 @@ package swingjs.test.falstad;
 // 
 // import java.awt.[Button, Canvas, Checkbox, CheckboxMenuItem, Choice, Frame, Label, Scrollbar, Menu, MenuBar, MenuItem] --> swingjs.awt
 //
-// RippleFrame.paint --> RippleFrame.paintComponent
-//
-// Applet.show does not trigger componentShown(e); showFrame() moved to Ripple.init()
+// Applet.show does not trigger componentShown(e); showFrame() moved to AtomViewer.init()
 // 
-// RippleFrame.init() changed to RippleFrame.initRF
+// AtomViewerFrame.init() changed to AtomViewerFrame.initA
 //
-// Class.getMethod not implemented; timerMethod option removed
-// 
 // note: In JavaScript System.getProperty("java.class.version") is null, so useBufferedImage is false
+//
+// added else statement at the end of layoutContainer to set components visibility to true
+//
+// removed paint(Graphics g) entirely, allowing menubar to display
+//
+// in both setLValue() and setNValue() changed removeAll to removeAllItems
 //
 // deprecated method .insets --> .getInsets
 // deprecated method .size --> .getSize
@@ -33,6 +35,7 @@ package swingjs.test.falstad;
 // deprecated method .enable --> .setEnabled(true)
 // deprecated method .disable --> .setEnabled(false)
 // deprecated method .inside --> .contains
+// deprecated method .handleEvent --> .processEvent
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -130,7 +133,6 @@ class AtomViewerLayout implements LayoutManager {
 		int targeth = target.getSize().height - (insets.top + insets.bottom);
 		target.getComponent(0).setLocation(insets.left, insets.top);
 		target.getComponent(0).setSize(cw, targeth);
-		System.out.println("HERE"+target);
 		cw += insets.left;
 		int h = insets.top;
 		for (i = 1; i < target.getComponentCount(); i++) {
@@ -148,7 +150,8 @@ class AtomViewerLayout implements LayoutManager {
 				m.setLocation(cw, h);
 				m.setSize(d.width, d.height);
 				h += d.height;
-				System.out.println("HERE2" + m);
+			} else {
+				m.setVisible(true);
 			}
 		}
 	}
@@ -187,7 +190,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 		}
 	}
 
-	public void paint(Graphics g) {
+/*	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -197,7 +200,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 			ogf.setVisible(true);
 		g.drawString(s, 10, 30);
 		//super.paint(g);
-	}
+	}*/
 
 	public void componentHidden(ComponentEvent e) {
 	}
@@ -368,7 +371,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	AtomViewerFrame(AtomViewer a) {
 		super("Hydrogenic Atom Viewer v1.5b");
-		applet = a;
+		//applet = a;
 	}
 
 	boolean useBufferedImage = false;
@@ -393,6 +396,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		Menu m = new Menu("File");
 		mb.add(m);
 		m.add(exitItem = getMenuItem("Exit"));
+		
 		m = new Menu("View");
 		mb.add(m);
 		m.add(eCheckItem = getCheckItem("Energy"));
@@ -430,6 +434,8 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		m.add(samplesItems[4] = getCheckItem("Samples = 45"));
 		m.add(samplesItems[5] = getCheckItem("Samples = 55 (best)"));
 		samplesItems[1].setState(true);
+		mb.setVisible(true);
+		//add(mb); //adds menubar to side bar, but does display and function
 
 		viewChooser = new Choice();
 		viewChooser.add("Real Orbitals (chem.)");
@@ -457,7 +463,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		lChooser = new Choice();
 		lChooser.addItemListener(this);
 		add(lChooser);
-
+		
 		mChooser = new Choice();
 		mChooser.addItemListener(this);
 		add(mChooser);
@@ -565,8 +571,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		Dimension screen = getToolkit().getScreenSize();
 		setLocation((screen.width - x.width) / 2,
 				(screen.height - x.height) / 2);
-		//pack();
-		//validate();
 		setVisible(true);
 		finished = true;
 	}
@@ -916,7 +920,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			cubicItem.setEnabled(true);
 		else
 			cubicItem.setEnabled(false);
-		validate();
+		//validate();
 		repaint();
 	}
 
@@ -1341,7 +1345,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		int i;
 		int n = nChooser.getSelectedIndex() + 1;
 		int l = lChooser.getSelectedIndex();
-		lChooser.removeAll();
+		lChooser.removeAllItems();
 		for (i = 0; i < n; i++)
 			lChooser.add("l = " + i
 					+ ((i < 6) ? " (" + codeLetter[i] + ")" : ""));
@@ -1353,10 +1357,10 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	void setLValue() {
 		int l = getL();
 		int i;
-		mChooser.removeAll();
-		if (viewChooser.getSelectedIndex() == VIEW_REAL) {
-			if (l == 0)
-				mChooser.add(getN() + "s");
+		mChooser.removeAllItems();
+		if (viewChooser.getSelectedIndex() == VIEW_REAL) {	
+			if (l == 0){
+				mChooser.add(getN() + "s");}
 			else if (l == 1) {
 				for (i = 0; i != 3; i++)
 					mChooser.add(getN() + l1RealText[i]);
@@ -1381,7 +1385,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				mChooser.add("m = " + i);
 			mChooser.select(l);
 		}
-		validate();
 	}
 
 	String l1RealText[] = { "pz", "px", "py" };
@@ -1709,9 +1712,10 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		return x < 0 ? -1 : 1;
 	}
 
-	public void paint(Graphics g) {
-		cv.repaint();
-	}
+//	public void paint(Graphics g) {
+//		cv.repaint();
+//	}
+	//commenting this out might fix it?
 
 	long lastTime;
 	int frameLen;
