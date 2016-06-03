@@ -371,7 +371,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	AtomViewerFrame(AtomViewer a) {
 		super("Hydrogenic Atom Viewer v1.5b");
-		//applet = a;
+		applet = a;
 	}
 
 	boolean useBufferedImage = false;
@@ -3130,7 +3130,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		State state;
 	}
 
-	abstract class State extends Complex {
+	class State extends Complex {
 		double elevel;
 
 		void convertDerivedToBasis() {
@@ -3142,16 +3142,21 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		void setBasisActive() {
 		}
 
-		abstract String getText();
+		String getText(){
+			return null;
+		}
 	}
 
 	class BasisState extends State {
 		int n, l, m;
 		Orbital orb;
 
+		BasisState(){}
+		
 		String getText() {
 			return "n = " + n + ", l = " + l + ", m = " + m;
 		}
+		
 	}
 
 	class DerivedState extends State {
