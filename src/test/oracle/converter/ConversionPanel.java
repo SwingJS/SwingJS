@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package swingjs.test.converter;
+package test.oracle.converter;
 
 /*
  * A 1.4 class used by the Converter example.

@@ -1,4 +1,4 @@
-package swingjs.test;
+package test;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import swingjs.JSToolkit;
 /**
  * in JavaScript, run this as
  * 
- * Clazz.loadClass("swingjs.test.TestXML", function(){ new swingjs.test.TestXML([]); })
+ * Clazz.loadClass("test.TestXML", function(){ new test.TestXML([]); })
  * 
  * @author Bob Hanson	
  *

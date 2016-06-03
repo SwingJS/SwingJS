@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package swingjs.test;
+package test.oracle;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;

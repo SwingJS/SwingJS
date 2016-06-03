@@ -1,4 +1,4 @@
-package swingjs.test;
+package test;
 
 //import jsjava.awt.Font;
 //import jsjava.awt.FontMetrics;
@@ -12,7 +12,7 @@ package swingjs.test;
 /**
  * run in JavaScript from a developer console with
  * 
- * Clazz.loadClass("swingjs.test.BugTest", function() { new swingjs.test.BugTest().main([])})
+ * Clazz.loadClass("test.BugTest", function() { new test.BugTest().main([])})
  */
 import java.lang.reflect.Constructor;
 import java.util.AbstractMap;
@@ -85,7 +85,7 @@ public class BugTest extends HashMap {
 	
 		try {
 			Class<?> cl;
-			cl = Class.forName("swingjs.test.BugTest");
+			cl = Class.forName("test.BugTest");
 		  cl.getConstructor(String.class, String.class).newInstance(new Object[] {"test1","test2"});
 		  cl.getConstructor(Object[].class).newInstance(new Object[] {new Object[]{"test1","test2"}});
 		  cl.getConstructor(String.class, String.class).newInstance("test1","test2");

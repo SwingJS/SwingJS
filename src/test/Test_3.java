@@ -1,10 +1,11 @@
-package swingjs.test;
+package test;
 
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -19,6 +20,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -26,41 +29,47 @@ import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JComponent;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import swingjs.JSToolkit;
 
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
-public class Test_2 extends JApplet {
+public class Test_3 extends JApplet {
 
-	Test_2Canvas canvas;
-	Test_2Controls controls;
+	Test_3Canvas canvas;
+	Test_3Controls controls;
 
-	public Test_2() {
+	public Test_3() {
 //	  Object xx = java.lang.reflect.Array.newInstance(JApplet.class, 3);
 	//	Class y = xx.getClass().getComponentType();
 		//System.out.println(y.getName());  
-		setName("Test_2");
-		
+		setName("Test_3");
+//		System.out.println(javax.swing.plaf.metal.MetalLookAndFeel);
 	}
 
 	public void init() {
-		new JSlider();
 		setLayout(new BorderLayout());
-		canvas = new Test_2Canvas();
+		canvas = new Test_3Canvas();
 		canvas.setSize(850, 500);
 		Container c = getContentPane();
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
-		c.add(controls = new Test_2Controls(canvas), BorderLayout.NORTH);
-//		System.out.println( controls.bg0.getForeground()); 
-//				+ " "+ controls.bg0.getBackground() 
-	//			+ " \n cb " + controls.getForeground() + " cf " + controls.getBackground());
+		c.add(controls = new Test_3Controls(canvas), BorderLayout.NORTH);
+		System.out.println("Hello, world!");
 	}
 
 	public void setSize(int width, int height) {
@@ -75,6 +84,7 @@ public class Test_2 extends JApplet {
 
 	public void start() {
 		controls.setEnabled(true);
+		controls.f1.requestFocus();
 		//testing controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
 	}
 
@@ -90,7 +100,7 @@ public class Test_2 extends JApplet {
 
 	public static void main(String args[]) {
 		JFrame f = new JFrame("Tanabe-Sugano");
-		Test_2 tanabe = new Test_2();
+		Test_3 tanabe = new Test_3();
 		tanabe.init();
 		tanabe.start();
 		f.add("Center", tanabe);
@@ -345,7 +355,7 @@ public class Test_2 extends JApplet {
 } 
 
 // ------------------------------------------------------
-class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener {
+class Test_3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 	double y; // Coordinates used for drawing graphs
 	Point bottomLeft, btmLeft;
@@ -370,54 +380,41 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 	Color copper = new Color(179, 100, 13);
 	Rectangle graphRec = new Rectangle(50, 10, 600, 460);
 	Rectangle outPRec = new Rectangle(650, 10, 685, 360);
+	
+	Color backgroundColor;
 
-	public Test_2Canvas() {
-		setName("Test_2Canvas");
-		setBackground(Color.blue);
+	public Test_3Canvas() {
+		setName("Test_3Canvas");
 		start_x = 0;
 		end_x = 50;
 		hlines = 10;
 		vlines = 10;
+		backgroundColor = ltgrey;
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		mouseOn = false;
 	}
 
 	public void paint(Graphics g) {
-		//System.out.println("Test_2 painting ");
+		//System.out.println("Test_3 painting ");
 		//g.setPaintMode();
 		drawDiagram(g);
 	}
 
-	public void redraw(int range) {
-		lrange = range;
-		switch (range) {
-		case 0:
+	public void setRange(String start_end) {
+		try {
+			int pt = start_end.indexOf('-');
+			int start = Integer.valueOf(start_end.substring(0, pt));
+			int end = Integer.valueOf(start_end.substring(pt + 1));
+			if (start >= end) 
+				return;
+			lrange = (start == 0 && end == 50 ? 0 : -1);
+			start_x = start;
+			end_x = end;
+		} catch (NumberFormatException e) {
 			start_x = 0;
 			end_x = 50;
-			break;
-		case 1:
-			start_x = 0;
-			end_x = 10;
-			break;
-		case 2:
-			start_x = 10;
-			end_x = 20;
-			break;
-		case 3:
-			start_x = 20;
-			end_x = 30;
-			break;
-		case 4:
-			start_x = 30;
-			end_x = 40;
-			break;
-		case 5:
-			start_x = 40;
-			end_x = 50;
-			break;
 		}
-		repaint();
 	}
 
 	private void drawDiagram(Graphics g) {
@@ -429,7 +426,7 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 		
 		Graphics2D g2 = (Graphics2D) g;
 
-		g2.setColor(ltgrey);
+		g2.setColor(backgroundColor);
 		g2.fillRect(0,  0, getWidth(), getHeight());
 		g2.setBackground(g2.getBackground());
 
@@ -454,9 +451,9 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 
 		xScale = ((double) graphRec.width / (end_x - start_x));
 		if (end_x < 35) {
-			yDivisor = Test_2.CalcD2T2g(end_x);
+			yDivisor = Test_3.CalcD2T2g(end_x);
 		} else
-			yDivisor = Test_2.CalcP4T1g(end_x);
+			yDivisor = Test_3.CalcP4T1g(end_x);
 
 		yScale = (double) graphRec.height / yDivisor;
 
@@ -477,26 +474,26 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 		int[] start_x11 = { (int) (bottomLeft.x) };
 
 		int[] start_y1 = { (int) (bottomLeft.y - (start_x * yScale)) };
-		y = Test_2.CalcF4T1g(start_x);
+		y = Test_3.CalcF4T1g(start_x);
 		int[] start_y2 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcP4T1g(start_x);
+		y = Test_3.CalcP4T1g(start_x);
 		int[] start_y3 = { (int) (bottomLeft.y - (yScale * y)) };
 
-		y = Test_2.CalcG2Eg(start_x);
+		y = Test_3.CalcG2Eg(start_x);
 		int[] start_y4 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcG2T1g(start_x);
+		y = Test_3.CalcG2T1g(start_x);
 		int[] start_y5 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcG2T2g(start_x);
+		y = Test_3.CalcG2T2g(start_x);
 		int[] start_y6 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcG2A1g(start_x);
+		y = Test_3.CalcG2A1g(start_x);
 		int[] start_y7 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcD2T2g(start_x);
+		y = Test_3.CalcD2T2g(start_x);
 		int[] start_y8 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcH2T2g(start_x);
+		y = Test_3.CalcH2T2g(start_x);
 		int[] start_y9 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcH2T1g(start_x);
+		y = Test_3.CalcH2T1g(start_x);
 		int[] start_y10 = { (int) (bottomLeft.y - (yScale * y)) };
-		y = Test_2.CalcH2Eg(start_x);
+		y = Test_3.CalcH2Eg(start_x);
 		int[] start_y11 = { (int) (bottomLeft.y - (yScale * y)) };
 
 		int hSlines = graphRec.height / hlines;
@@ -525,53 +522,53 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 
 			// line 2
 			g2.setColor(Color.blue);
-			y = Test_2.CalcF4T1g(x);
+			y = Test_3.CalcF4T1g(x);
 			drawXtoY(x, y, start_x2, start_y2, g);
 
 			// line 3
 			g2.setColor(dkgreen);
-			y = Test_2.CalcP4T1g(x);
+			y = Test_3.CalcP4T1g(x);
 			drawXtoY(x, y, start_x3, start_y3, g);
 
 			// first forbidden line
 			g2.setStroke(stroke_d1);
 			g2.setColor(teal);
-			y = Test_2.CalcG2Eg(x);
+			y = Test_3.CalcG2Eg(x);
 			drawXtoY(x, y, start_x4, start_y4, g);
 
 			// second forbidden line
 			g2.setColor(Color.orange);
-			y = Test_2.CalcG2T1g(x);
+			y = Test_3.CalcG2T1g(x);
 			drawXtoY(x, y, start_x5, start_y5, g);
 
 			// third forbidden line
 			g2.setColor(gold);
-			y = Test_2.CalcG2T2g(x);
+			y = Test_3.CalcG2T2g(x);
 			drawXtoY(x, y, start_x6, start_y6, g);
 
 			// fourth forbidden line
 			g2.setColor(Color.gray);
-			y = Test_2.CalcG2A1g(x);
+			y = Test_3.CalcG2A1g(x);
 			drawXtoY(x, y, start_x7, start_y7, g);
 
 			// fifth forbidden line
 			g2.setColor(purple);
-			y = Test_2.CalcD2T2g(x);
+			y = Test_3.CalcD2T2g(x);
 			drawXtoY(x, y, start_x8, start_y8, g);
 
 			// sixth forbidden line
 			g2.setColor(lgreen);
-			y = Test_2.CalcH2T2g(x);
+			y = Test_3.CalcH2T2g(x);
 			drawXtoY(x, y, start_x9, start_y9, g);
 
 			// seventh forbidden line
 			g2.setColor(copper);
-			y = Test_2.CalcH2Eg(x);
+			y = Test_3.CalcH2Eg(x);
 			drawXtoY(x, y, start_x11, start_y11, g);
 
 			// eight forbidden line
 			g2.setColor(dgreen);
-			y = Test_2.CalcH2T1g(x);
+			y = Test_3.CalcH2T1g(x);
 			drawXtoY(x, y, start_x10, start_y10, g);
 		}
 		g2.setStroke(stroke1);
@@ -670,17 +667,17 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 		if ((deltaB >= start_x) && (deltaB <= end_x)) {
 			x1 = deltaB;
 			y1 = x1;
-			y2 = Test_2.CalcF4T1g(x1);
-			y3 = Test_2.CalcP4T1g(x1);
+			y2 = Test_3.CalcF4T1g(x1);
+			y3 = Test_3.CalcP4T1g(x1);
 
-			fE = Test_2.CalcG2Eg(x1);
-			fT1 = Test_2.CalcG2T1g(x1);
-			fT2 = Test_2.CalcG2T2g(x1);
-			fA1 = Test_2.CalcG2A1g(x1);
-			fT2b = Test_2.CalcD2T2g(x1);
-			fT2H = Test_2.CalcH2T2g(x1);
-			fEH = Test_2.CalcH2Eg(x1);
-			fT1H = Test_2.CalcH2T1g(x1);
+			fE = Test_3.CalcG2Eg(x1);
+			fT1 = Test_3.CalcG2T1g(x1);
+			fT2 = Test_3.CalcG2T2g(x1);
+			fA1 = Test_3.CalcG2A1g(x1);
+			fT2b = Test_3.CalcD2T2g(x1);
+			fT2H = Test_3.CalcH2T2g(x1);
+			fEH = Test_3.CalcH2Eg(x1);
+			fT1H = Test_3.CalcH2T1g(x1);
 
 			ratio21 = y2 / y1;
 			ratio31 = y3 / y1;
@@ -712,28 +709,59 @@ class Test_2Canvas extends JPanel implements MouseListener, MouseMotionListener 
 		
 	}
 
-} // End Class Test_2Canvas
+} // End Class Test_3Canvas
 
 // ------------------------------------------------------
-class Test_2Controls extends JPanel implements ItemListener {
+class Test_3Controls extends JPanel implements ItemListener, DocumentListener {
 
 	JTextField s;
 	JTextField e;
-	Test_2Canvas canvas;
-	int range;
-  public JComponent bg0, bg5, b;
+	JTextField f1,f2;
+	Test_3Canvas canvas;
+  public JComponent bg0, bg5;
 	private ButtonGroup bg;
 
-	public Test_2Controls(Test_2Canvas canvas) {
-		setLayout(new FlowLayout()); 
-		// default for JPanel, but 
+	public Test_3Controls(Test_3Canvas canvas) {
+		setLayout(new FlowLayout());
+		// default for JPanel, but
 		// being explicit allows debugging.
 		setName("T3d3Controls");
 		this.canvas = canvas;
-		range = 0;
-		JCheckBox c = new JCheckBox("test");
+		f1 = new JTextField("0");
+		f1.setFont(new Font("Arial", Font.PLAIN, 15));
+		add(new JLabel("from"));
+		add(f1);
+		f1.setPreferredSize(new Dimension(25, 19));
+		f1.getDocument().addDocumentListener(this);
+		f1.addCaretListener(new CaretListener() {
+
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				System.out.println("Test_3.JTextField caretEvent " + e.getDot() + " " + e.getMark());
+			}
+		});
+		f1.addPropertyChangeListener(new PropertyChangeListener() {
+
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				// oddly enough, this is not fired when the text is changed by the user.
+				System.out.println("Test_3.JTextField property change "
+						+ evt.getPropertyName() + " " + f1.getText());
+			}
+
+		});
+		
+		add(new JLabel("to"));
+		f2 = new JTextField("50");
+		f2.setFont(new Font("Arial", Font.PLAIN, 15));
+		add(f2);
+		f2.setPreferredSize(new Dimension(25, 19));
+		f2.getDocument().addDocumentListener(this);
+
+		
+		JCheckBox c = new JCheckBox("white");
 		c.addItemListener(this);
-		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
+		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 15));
 		add(c);
 		bg = new ButtonGroup();
 		bg0 = addButton(bg, "0-50", true);
@@ -743,7 +771,6 @@ class Test_2Controls extends JPanel implements ItemListener {
 		addButton(bg, "30-40", false);
 		bg5 = addButton(bg, "40-50", false);
 		final JButton enableBtn = new JButton("Enable");
-		b = enableBtn;
 		add(enableBtn);
 		enableBtn.addActionListener(new ActionListener() {
 
@@ -758,9 +785,31 @@ class Test_2Controls extends JPanel implements ItemListener {
 					x.nextElement().setEnabled(isEnable);
 				enableBtn.setText(isEnable ? "Disable" : "Enable");
 			}
-			
+
 		});
 		setVisible(true);
+	}
+
+
+	@Override
+	public void insertUpdate(DocumentEvent evt) {
+		resetGraph();//System.out.println("Test_3.JTextField insert " + f1.getText());
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent evt) {
+		resetGraph();//System.out.println("Test_3.JTextField remove " + f1.getText());
+	}
+
+	private void resetGraph() {
+		canvas.setRange(f1.getText() + "-" + f2.getText());
+		canvas.repaint();
+	}
+
+
+	@Override
+	public void changedUpdate(DocumentEvent evt) {
+		System.out.println("Test_3.JTextField changed " + f1.getText());
 	}
 
 	private JComponent addButton(ButtonGroup bg, String text, boolean b) {
@@ -770,31 +819,28 @@ class Test_2Controls extends JPanel implements ItemListener {
 		add(c);
 		c.setEnabled(false);
 		c.addItemListener(this);
-		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));
+		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 15));
 		return c;
 	}
 
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() instanceof JCheckBox) {
-			System.out.println("OK, box " + ((JCheckBox)e.getSource()).getName() + " isSelected=" + ((JCheckBox) e.getSource()).isSelected());
+			if (((JCheckBox) e.getSource()).isSelected()) {
+				canvas.backgroundColor = Color.white;
+			} else {
+				canvas.backgroundColor = canvas.ltgrey;
+			}
+			canvas.repaint();
 			return;
 		}
-		if (e.getSource() instanceof JRadioButton && e.getStateChange() == ItemEvent.SELECTED) {
-			String b = ((JRadioButton) e.getItemSelectable()).getText();
-			if (b == "0-50") {
-				range = 0;
-			} else if (b == "0-10") {
-				range = 1;
-			} else if (b == "10-20") {
-				range = 2;
-			} else if (b == "20-30") {
-				range = 3;
-			} else if (b == "30-40") {
-				range = 4;
-			} else if (b == "40-50") {
-				range = 5;
-			}
-			canvas.redraw(range);
+		if (e.getSource() instanceof JRadioButton
+				&& e.getStateChange() == ItemEvent.SELECTED) {
+			canvas.setRange(((JRadioButton) e.getItemSelectable()).getText());
+			int start = canvas.start_x;
+			int end = canvas.end_x;
+			f1.setText("" + start);
+			f2.setText("" + end);
+			canvas.repaint();
 		}
 	}
-} // End Class Test_2Controls
+} // End Class Test_3Controls

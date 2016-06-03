@@ -25,17 +25,7 @@
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/tmp"  overwrite="true" >
       <fileset dir="bin">
-        <include name="**/*.js" />
-        <exclude name="com/**/*.js" />
-        <exclude name="javajs/**/*.js" />
-        <exclude name="jsjava/**/*.js" />
-        <exclude name="jsjavax/**/*.js" />
-        <exclude name="jssun/**/*.js" />
-        <exclude name="swingjs/*.js" />
-        <exclude name="swingjs/api/**/*.js" />
-        <exclude name="swingjs/awt/**/*.js" />
-        <exclude name="swingjs/jquery/**/*.js" />
-        <exclude name="swingjs/plaf/**/*.js" />
+        <include name="test/**/*.js" />
       </fileset>
     </copy>
    	

@@ -4,7 +4,7 @@
 // We raytrace through a 3-d dataset, sampling a number of points and
 // integrating over them using Simpson's rule.
 
-package swingjs.test.falstad;
+package test.falstad;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;

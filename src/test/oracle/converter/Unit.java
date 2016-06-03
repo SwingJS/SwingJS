@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package swingjs.test.converter;
+package test.oracle.converter;
 
 /*
  * Works in 1.1+Swing, 1.4, and all releases in between.

@@ -1,7 +1,7 @@
 // Wave2d.java (c) 2004 by Paul Falstad, www.falstad.com
 
 
-package swingjs.test.falstad;
+package test.falstad;
 
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //

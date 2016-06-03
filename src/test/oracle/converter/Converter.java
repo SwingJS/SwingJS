@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package swingjs.test.converter;
+package test.oracle.converter;
 
 /**  SwingJS[1] JFrame --> JApplet
  *   SwingJS[2] adding init() and setting bounds 
