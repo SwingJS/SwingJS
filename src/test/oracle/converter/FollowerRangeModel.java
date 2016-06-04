@@ -57,50 +57,60 @@ public class FollowerRangeModel extends ConverterRangeModel
     }
 
     //The only method in the ChangeListener interface.
-    public void stateChanged(ChangeEvent e) {
+    @Override
+		public void stateChanged(ChangeEvent e) {
         fireStateChanged();
     }
 
-    public int getMaximum() {
+    @Override
+		public int getMaximum() {
         int modelMax = sourceModel.getMaximum();
         double multiplyBy = sourceModel.getMultiplier()/this.getMultiplier();
         return (int)(modelMax * multiplyBy);
     }
 
-    public void setMaximum(int newMaximum) {
+    @Override
+		public void setMaximum(int newMaximum) {
         sourceModel.setMaximum((int)(newMaximum *
                      (this.getMultiplier()/sourceModel.getMultiplier())));
     }
 
-    public int getValue() {
+    @Override
+		public int getValue() {
         return (int)getDoubleValue();
     }
 
-    public void setValue(int newValue) {
+    @Override
+		public void setValue(int newValue) {
         setDoubleValue((double)newValue);
     }
 
-    public double getDoubleValue() {
+    @Override
+		public double getDoubleValue() {
         return sourceModel.getDoubleValue()
                * sourceModel.getMultiplier()
                / this.getMultiplier();
     }
 
-    public void setDoubleValue(double newValue) {
+    @Override
+		public void setDoubleValue(double newValue) {
         sourceModel.setDoubleValue(
                      newValue * this.getMultiplier()
                      / sourceModel.getMultiplier());
     }
 
-    public int getExtent() {
+    @Override
+		public int getExtent() {
         return super.getExtent();
     }
 
-    public void setExtent(int newExtent) {
+    @Override
+		public void setExtent(int newExtent) {
         super.setExtent(newExtent);
     }
 
-    public void setRangeProperties(int value,
+    @Override
+		public void setRangeProperties(int value,
                                    int extent,
                                    int min,
                                    int max,

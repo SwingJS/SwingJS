@@ -176,7 +176,8 @@ public class JToggleButton extends AbstractButton {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ButtonUI)UIManager.getUI(this));
     }
 
@@ -190,7 +191,8 @@ public class JToggleButton extends AbstractButton {
      * @beaninfo
      *  description: A string that specifies the name of the L&F class
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -199,7 +201,8 @@ public class JToggleButton extends AbstractButton {
      * Overriden to return true, JToggleButton supports
      * the selected state.
      */
-    boolean shouldUpdateSelectedStateFromAction() {
+    @Override
+		boolean shouldUpdateSelectedStateFromAction() {
         return true;
     }
 
@@ -228,7 +231,8 @@ public class JToggleButton extends AbstractButton {
         /**
          * Checks if the button is selected.
          */
-        public boolean isSelected() {
+        @Override
+				public boolean isSelected() {
 //              if(getGroup() != null) {
 //                  return getGroup().isSelected(this);
 //              } else {
@@ -242,7 +246,8 @@ public class JToggleButton extends AbstractButton {
          * @param b true selects the toggle button,
          *          false deselects the toggle button.
          */
-        public void setSelected(boolean b) {
+        @Override
+				public void setSelected(boolean b) {
             ButtonGroup group = getGroup();
             if (group != null) {
                 // use the group model instead
@@ -275,7 +280,8 @@ public class JToggleButton extends AbstractButton {
         /**
          * Sets the pressed state of the toggle button.
          */
-        public void setPressed(boolean b) {
+        @Override
+				public void setPressed(boolean b) {
             if ((isPressed() == b) || !isEnabled()) {
                 return;
             }
@@ -336,7 +342,8 @@ public class JToggleButton extends AbstractButton {
      *
      * @return  a string representation of this JToggleButton.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 

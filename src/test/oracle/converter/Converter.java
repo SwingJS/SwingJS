@@ -167,7 +167,8 @@ public class Converter extends JApplet {
     /**
      * SwingJS[2] -- setting actual bounds
      */
-    public void init() {
+    @Override
+		public void init() {
     	resize(300, 170);
     	createAndShowGUI();
     }

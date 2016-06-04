@@ -117,14 +117,17 @@ public class ConversionPanel extends JPanel
         //Make the text field/slider group a fixed size
         //to make stacked ConversionPanels nicely aligned.
         JPanel unitGroup = new JPanel() {
-            public Dimension getMinimumSize() {
+            @Override
+						public Dimension getMinimumSize() {
                 return getPreferredSize();
             }
-            public Dimension getPreferredSize() {
+            @Override
+						public Dimension getPreferredSize() {
                 return new Dimension(150,
                                      super.getPreferredSize().height);
             }
-            public Dimension getMaximumSize() {
+            @Override
+						public Dimension getMaximumSize() {
                 return getPreferredSize();
             }
         };
@@ -162,7 +165,8 @@ public class ConversionPanel extends JPanel
     //Don't allow this panel to get taller than its preferred size.
     //BoxLayout pays attention to maximum size, though most layout
     //managers don't.
-    public Dimension getMaximumSize() {
+    @Override
+		public Dimension getMaximumSize() {
         return new Dimension(Integer.MAX_VALUE,
                              getPreferredSize().height);
     }
@@ -180,7 +184,8 @@ public class ConversionPanel extends JPanel
     }
 
     /** Updates the text field when the main data model is updated. */
-    public void stateChanged(ChangeEvent e) {
+    @Override
+		public void stateChanged(ChangeEvent e) {
         int min = sliderModel.getMinimum();
         int max = sliderModel.getMaximum();
         double value = sliderModel.getDoubleValue();
@@ -194,7 +199,8 @@ public class ConversionPanel extends JPanel
     /**
      * Responds to the user choosing a new unit from the combo box.
      */
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
         //Combo box event. Set new maximums for the sliders.
         int i = unitChooser.getSelectedIndex();
         sliderModel.setMultiplier(units[i].multiplier);
@@ -205,7 +211,8 @@ public class ConversionPanel extends JPanel
      * Detects when the value of the text field (not necessarily the same
      * number as you'd get from getText) changes.
      */
-    public void propertyChange(PropertyChangeEvent e) {
+    @Override
+		public void propertyChange(PropertyChangeEvent e) {
         if ("value".equals(e.getPropertyName())) {
             Number value = (Number)e.getNewValue();
             sliderModel.setDoubleValue(value.doubleValue());
