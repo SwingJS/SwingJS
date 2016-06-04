@@ -33,7 +33,8 @@ package test.oracle.converter;
 
 /**  SwingJS[1] JFrame --> JApplet
  *   SwingJS[2] adding init() and setting bounds 
- * A application that requires the following files:
+ *   
+ * An application that requires the following files:
  *   ConversionPanel.java
  *   ConverterRangeModel.java
  *   FollowerRangeModel.java

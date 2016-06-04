@@ -93,11 +93,9 @@ public class ConversionPanel extends JPanel
         numberFormat.setMaximumFractionDigits(2);
         //NumberFormatter 
         formatter = new NumberFormatter(numberFormat);
-        formatter.setAllowsInvalid(false);
-        formatter.setCommitsOnValidEdit(true);//seems to be a no-op --
-        //aha -- it changes the value property but doesn't cause the result to
-        //be parsed (that happens on focus loss/return, I think).
-        //
+        formatter.setAllowsInvalid(true);
+        formatter.setCommitsOnValidEdit(false);
+        //if this is set TRUE, then you can't type past a period.        //
         textField = new JFormattedTextField(formatter);
         textField.setColumns(10);
         textField.setValue(new Double(sliderModel.getDoubleValue()));
@@ -211,6 +209,8 @@ public class ConversionPanel extends JPanel
         if ("value".equals(e.getPropertyName())) {
             Number value = (Number)e.getNewValue();
             sliderModel.setDoubleValue(value.doubleValue());
+            if (textField.getCaretPosition() == 0)
+                textField.selectAll();
         }
     }
 }
