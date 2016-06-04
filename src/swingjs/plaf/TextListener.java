@@ -61,6 +61,7 @@ public class TextListener implements MouseListener, MouseMotionListener,
   		txtComp.getDocument().addDocumentListener(this);
   	}
   }
+	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
 		System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
@@ -72,28 +73,35 @@ public class TextListener implements MouseListener, MouseMotionListener,
 			ui.setEditable(((Boolean) e.getNewValue()).booleanValue());
 	}
 
-  public void stateChanged(ChangeEvent e) {
+  @Override
+	public void stateChanged(ChangeEvent e) {
         JTextComponent txtComp = (JTextComponent) e.getSource();
         txtComp.repaint();
     }
 
-    public void focusGained(FocusEvent e) {
+    @Override
+		public void focusGained(FocusEvent e) {
     }
 
-    public void focusLost(FocusEvent e) {
+    @Override
+		public void focusLost(FocusEvent e) {
 //        JTextComponent b = (JTextComponent) e.getSource();
     }
 
-    public void mouseMoved(MouseEvent e) {
+    @Override
+		public void mouseMoved(MouseEvent e) {
     }
 
 
-    public void mouseDragged(MouseEvent e) {
+    @Override
+		public void mouseDragged(MouseEvent e) {
     }
 
-    public void mouseClicked(MouseEvent e) {
+    @Override
+		public void mouseClicked(MouseEvent e) {
     }
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			JTextComponent txtComp = (JTextComponent) e.getSource();
@@ -103,22 +111,25 @@ public class TextListener implements MouseListener, MouseMotionListener,
 				txtComp.requestFocus();
 			}
 		}
-	};
+	}
 
-    public void mouseReleased(MouseEvent e) {
-    };
+    @Override
+		public void mouseReleased(MouseEvent e) {
+    }
 
-    public void mouseEntered(MouseEvent e) {
-    };
+    @Override
+		public void mouseEntered(MouseEvent e) {
+    }
 
-    public void mouseExited(MouseEvent e) {
+    @Override
+		public void mouseExited(MouseEvent e) {
 //        JTextComponent b = (JTextComponent) e.getSource();
 //        ButtonModel model = b.getModel();
 //        if(b.isRolloverEnabled()) {
 //            model.setRollover(false);
 //        }
 //        model.setArmed(false);
-    };
+    }
 
 
 	@Override

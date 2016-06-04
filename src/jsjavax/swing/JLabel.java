@@ -226,7 +226,8 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
      *
      * @return LabelUI object
      */
-    public LabelUI getUI() {
+    @Override
+		public LabelUI getUI() {
         return (LabelUI)ui;
     }
 
@@ -256,7 +257,8 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((LabelUI)UIManager.getUI(this));
     }
 
@@ -270,7 +272,8 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -872,7 +875,8 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
      * @see     jsjava.awt.image.ImageObserver
      * @see     jsjava.awt.Component#imageUpdate(jsjava.awt.Image, int, int, int, int, int)
      */
-    public boolean imageUpdate(Image img, int infoflags,
+    @Override
+		public boolean imageUpdate(Image img, int infoflags,
                                int x, int y, int w, int h) {
         // Don't use getDisabledIcon, will trigger creation of icon if icon
         // not set.
@@ -911,7 +915,8 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
      *
      * @return  a string representation of this JLabel.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String textString = (text != null ?
                              text : "");
         String defaultIconString = ((defaultIcon != null)

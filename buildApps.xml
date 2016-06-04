@@ -25,6 +25,7 @@
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/tmp"  overwrite="true" >
       <fileset dir="bin">
+        <include name="org/**/*.js" />
         <include name="test/**/*.js" />
       </fileset>
     </copy>

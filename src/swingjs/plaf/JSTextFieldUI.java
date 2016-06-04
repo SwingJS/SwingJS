@@ -7,6 +7,7 @@ import jsjava.awt.Dimension;
 import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.Action;
 import jsjavax.swing.JTextField;
+import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
 
 /**
@@ -28,8 +29,10 @@ public class JSTextFieldUI extends JSTextUI {
 							"padding", "0px 1px");
 			vCenter(domNode, -10);
 			bindMouse(domNode);
-			bindKeys(domNode);
-			setFocusable();
+			if (((JTextComponent) c).isEditable()) {
+				bindKeys(domNode);
+				setFocusable();
+			}
 		}
 		setCssFont(setProp(domNode, "value", getComponentText()),
 				c.getFont());

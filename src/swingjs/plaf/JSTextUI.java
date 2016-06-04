@@ -24,10 +24,6 @@
  */
 package swingjs.plaf;
 
-import swingjs.JSToolkit;
-import swingjs.api.DOMNode;
-import swingjs.api.JQueryObject;
-import swingjs.api.JSFunction;
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager;
@@ -49,6 +45,8 @@ import jsjavax.swing.text.DefaultEditorKit;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.TextAction;
+import swingjs.JSToolkit;
+import swingjs.api.DOMNode;
 //import jsjava.awt.KeyboardFocusManager;
 //import jsjava.awt.datatransfer.DataFlavor;
 //import jsjava.awt.datatransfer.Transferable;
@@ -116,43 +114,9 @@ import jsjavax.swing.text.TextAction;
  */
 public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 																											// {
-	@SuppressWarnings("unused")
-	protected void setFocusable() {
-		JQueryObject node = $(focusNode);
-		Object me = this;
-
-		/**
-		 * @j2sNative
-		 * 
-		 * node.focus(function() {me.notifyFocus(true)});
-		 * node.blur(function() {me.notifyFocus(false)});
-		 */
-		{}
-	}
-	
 
 	protected String getComponentText() {
 		return currentText = ((JTextComponent) c).getText();
-	}
-
-	protected void bindKeys(DOMNode domNode) {
-		JSFunction f = null;
-		JSEventHandler me = this;
-		if (!((JTextComponent) c).isEditable())
-			return;
-		/**
-		 * @j2sNative
-		 * 
-		 *            f = function(event) { me.handleJSEvent(me.domNode, 401, event)
-		 *            }
-		 */
-		{
-			System.out.println(me);
-		}
-		$(domNode).bind("keydown keypress keyup", f);
-
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -245,6 +209,7 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 	 * 
 	 * @return handled
 	 */
+	@Override
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		System.out.println("Handling for " + id + " " + eventType + " "
 				+ jQueryEvent);
@@ -638,6 +603,7 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 	 *          the editor component
 	 * @see ComponentUI#installUI
 	 */
+	@Override
 	protected void installJSUI() {
 		editor = (JTextComponent) c;
 		updateHandler = new TextListener(this, editor);
@@ -690,6 +656,7 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 	 *          the editor component
 	 * @see ComponentUI#uninstallUI
 	 */
+	@Override
 	public void uninstallJSUI() {
 		// detach from the model
 		// editor.removePropertyChangeListener(updateHandler);
@@ -823,6 +790,7 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 	 *          the editor component
 	 * @return the size
 	 */
+	@Override
 	public Dimension getMinimumSize(JComponent c) {
 		Dimension d = getPreferredSize();// new Dimension();
 		// Document doc = editor.getDocument();
@@ -852,6 +820,7 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 	 *          the editor component
 	 * @return the size
 	 */
+	@Override
 	public Dimension getMaximumSize(JComponent c) {
 		// SwingJS TODO
 		return getMinimumSize(c);
@@ -1986,10 +1955,12 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 		 * @param e
 		 *          the action event
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			action.actionPerformed(e);
 		}
 
+		@Override
 		public boolean isEnabled() {
 			return (editor == null || editor.isEditable()) ? action.isEnabled()
 					: false;
@@ -2003,10 +1974,12 @@ public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
 	 */
 	class FocusAction extends AbstractAction {
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			editor.requestFocus();
 		}
 
+		@Override
 		public boolean isEnabled() {
 			return editor.isEditable();
 		}

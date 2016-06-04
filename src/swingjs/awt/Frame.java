@@ -12,6 +12,7 @@ public class Frame extends JFrame {
 		super();
 	}
 
+	@Override
 	public void remove(int i) {
 		/**
 		 * SwingJ has a somewhat reduced method set; we just use

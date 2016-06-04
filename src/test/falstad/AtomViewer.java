@@ -93,7 +93,9 @@ class AtomViewerCanvas extends Canvas {
 		pg.updateAtomViewer(g);
 	}
 
+	private int paintCount;
 	public void paint(Graphics g) {
+		System.out.println("paint " + (++paintCount));
 		pg.updateAtomViewer(g);
 	}
 }
@@ -151,7 +153,7 @@ class AtomViewerLayout implements LayoutManager {
 				m.setSize(d.width, d.height);
 				h += d.height;
 			} else {
-				m.setVisible(true);
+				//m.setVisible(true);
 			}
 		}
 	}
@@ -375,6 +377,8 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	}
 
 	boolean useBufferedImage = false;
+	
+	boolean useFrame = false;
 
 	public void initA() {
 		gray2 = new Color(127, 127, 127);
@@ -572,6 +576,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		setLocation((screen.width - x.width) / 2,
 				(screen.height - x.height) / 2);
 		setVisible(true);
+		setupMenus();
 		finished = true;
 	}
 
@@ -1218,7 +1223,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		}
 		setSubViews();
 	}
-
+	
 	void setSubViews() {
 		int i;
 		pixels = null;
@@ -3130,6 +3135,97 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		State state;
 	}
 
+	class Complex {
+		public double re, im, mag, phase;
+
+		Complex() {
+			re = im = mag = phase = 0;
+		}
+
+		Complex(double r, double i) {
+			set(r, i);
+		}
+
+		double magSquared() {
+			return mag * mag;
+		}
+
+		void set(double aa, double bb) {
+			re = aa;
+			im = bb;
+			setMagPhase();
+		}
+
+		void set(double aa) {
+			re = aa;
+			im = 0;
+			setMagPhase();
+		}
+
+		void set(Complex c) {
+			re = c.re;
+			im = c.im;
+			mag = c.mag;
+			phase = c.phase;
+		}
+
+		void add(double r) {
+			re += r;
+			setMagPhase();
+		}
+
+		void add(double r, double i) {
+			re += r;
+			im += i;
+			setMagPhase();
+		}
+
+		void add(Complex c) {
+			re += c.re;
+			im += c.im;
+			setMagPhase();
+		}
+
+		void square() {
+			set(re * re - im * im, 2 * re * im);
+		}
+
+		void mult(double c, double d) {
+			set(re * c - im * d, re * d + im * c);
+		}
+
+		void mult(double c) {
+			re *= c;
+			im *= c;
+			mag *= c;
+		}
+
+		void mult(Complex c) {
+			mult(c.re, c.im);
+		}
+
+		void setMagPhase() {
+			mag = Math.sqrt(re * re + im * im);
+			phase = Math.atan2(im, re);
+		}
+
+		void setMagPhase(double m, double ph) {
+			mag = m;
+			phase = ph;
+			re = m * Math.cos(ph);
+			im = m * Math.sin(ph);
+		}
+
+		void rotate(double a) {
+			setMagPhase(mag, (phase + a) % (2 * pi));
+		}
+
+		void conjugate() {
+			im = -im;
+			phase = -phase;
+		}
+	}
+
 	class State extends Complex {
 		double elevel;
 
@@ -3252,97 +3348,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				for (i = 0; i != altStateCount; i++)
 					altStates[i].mult(mult);
 			}
-		}
-	}
-
-	class Complex {
-		public double re, im, mag, phase;
-
-		Complex() {
-			re = im = mag = phase = 0;
-		}
-
-		Complex(double r, double i) {
-			set(r, i);
-		}
-
-		double magSquared() {
-			return mag * mag;
-		}
-
-		void set(double aa, double bb) {
-			re = aa;
-			im = bb;
-			setMagPhase();
-		}
-
-		void set(double aa) {
-			re = aa;
-			im = 0;
-			setMagPhase();
-		}
-
-		void set(Complex c) {
-			re = c.re;
-			im = c.im;
-			mag = c.mag;
-			phase = c.phase;
-		}
-
-		void add(double r) {
-			re += r;
-			setMagPhase();
-		}
-
-		void add(double r, double i) {
-			re += r;
-			im += i;
-			setMagPhase();
-		}
-
-		void add(Complex c) {
-			re += c.re;
-			im += c.im;
-			setMagPhase();
-		}
-
-		void square() {
-			set(re * re - im * im, 2 * re * im);
-		}
-
-		void mult(double c, double d) {
-			set(re * c - im * d, re * d + im * c);
-		}
-
-		void mult(double c) {
-			re *= c;
-			im *= c;
-			mag *= c;
-		}
-
-		void mult(Complex c) {
-			mult(c.re, c.im);
-		}
-
-		void setMagPhase() {
-			mag = Math.sqrt(re * re + im * im);
-			phase = Math.atan2(im, re);
-		}
-
-		void setMagPhase(double m, double ph) {
-			mag = m;
-			phase = ph;
-			re = m * Math.cos(ph);
-			im = m * Math.sin(ph);
-		}
-
-		void rotate(double a) {
-			setMagPhase(mag, (phase + a) % (2 * pi));
-		}
-
-		void conjugate() {
-			im = -im;
-			phase = -phase;
 		}
 	}
 

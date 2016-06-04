@@ -7,13 +7,14 @@ public abstract class JSToggleButtonUI extends JSButtonUI {
 
 	private boolean isDomChecked;
 
+	@Override
 	boolean verifyButtonClick(boolean isRelease) {
 		// state should change upon mouse release
 
 		// Yes, we could do this with an HTML5 click event, but I want to try this...
 
 		// cannot use node.getAttribute here because that returns "null" in FF
-		boolean checked = ((Boolean) DOMNode.getAttr(domBtn, "checked") == true);
+		boolean checked = (((Boolean) DOMNode.getAttr(domBtn, "checked")).booleanValue());
 		//   System.out.println(c.getName() + this.id + " JSTogglebutton verify checked=" + checked + " isReleased=" + isRelease + " isDomChecked=" + isDomChecked);
 		if (isRelease && isDomChecked == checked)
 			return false;

@@ -38,7 +38,7 @@ public class JSSliderUI extends JSComponentUI implements PropertyChangeListener,
 		boolean isNew = (domNode == null);
 		if (isNew) {
 			domNode = wrap("div", id + "_wrap", jqSlider = DOMNode.createElement("div", id));
-			DOMNode.setAttr(domNode, "className", "swingjs");
+			$(domNode).addClass("swingjs");
 			orientation = (js.getOrientation() == SwingConstants.VERTICAL ? "vertical" : "horizontal");
 			min = js.getMinimum();
 			max = js.getMaximum();
@@ -121,6 +121,7 @@ public class JSSliderUI extends JSComponentUI implements PropertyChangeListener,
 		jSlider.setValue(val = value);
 	}
 	
+	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		return (orientation == "horizontal" ? new Dimension(100, 20) : new Dimension(20, 100));
 	}

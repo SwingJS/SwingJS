@@ -24,5 +24,9 @@ public interface JQueryObject {
 
 	public abstract JQueryObject addClass(String name);
 
+	public abstract void empty();
+
+	public abstract void on(String eventName, Object f);
+
 	
 }

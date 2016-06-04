@@ -31,18 +31,22 @@ public class Scrollbar extends JScrollBar {
 		removeAdjustmentListener((AdjustmentListener) l);
 	}
 	
+	@Override
 	public void setValue(int n) {
 		super.setValue(n);
 	}
 	
+	@Override
 	public int getMinimum() {
 		return super.getMinimum();
 	}
 
+	@Override
 	public int getMaximum() {
 		return super.getMaximum();
 	}
 
+	@Override
 	public int getValue() {
 		return super.getValue();
 	}

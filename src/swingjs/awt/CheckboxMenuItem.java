@@ -15,11 +15,13 @@ public class CheckboxMenuItem extends JCheckBoxMenuItem {
 		super(string, b);
 	}
 
+	@Override
 	public boolean getState() {
 		return isSelected();
 	}
 	
 	
+	@Override
 	public void setState(boolean tf) {
 		setSelected(tf);
 	}

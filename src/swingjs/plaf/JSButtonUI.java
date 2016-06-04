@@ -3,6 +3,7 @@ package swingjs.plaf;
 //import jsjava.awt.FontMetrics;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.ButtonModel;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIManager;
 import swingjs.api.DOMNode;
@@ -22,6 +23,7 @@ public class JSButtonUI extends JSComponentUI {
 	 * 
 	 */
 	protected DOMNode domBtn;
+	protected boolean isRadio;
 
 	@Override
 	public DOMNode getDOMObject() {
@@ -34,26 +36,38 @@ public class JSButtonUI extends JSComponentUI {
 	}
 
 	/**
-	 * validate a button press -- with a simple button, this is just TRUE.
-	 * This is needed because sometimes the area near the button is pressed
-	 * but not the actual button.
-	 * @param isRelease TODO
+	 * Just ensure the button is in sync. Because of the surrounding label tag, 
+	 * it may not have actually indicate having been pressed.
 	 * 
-	 * @return true if the HTML5 button was actually pressed
+	 * @param m
+	 * 
+	 * @return true
 	 */
-  boolean verifyButtonClick(boolean isRelease) {
+	boolean verifyButtonClick(ButtonModel m) {
+			 DOMNode btn = this.domBtn;
+			 boolean state = m.isSelected() && !isRadio;
+			 /**
+			  * @j2sNative
+			  * 
+			  * 			 setTimeout(function(){btn.checked = !state}, 0);
+			  */
+			 {
+				 System.out.println("" + btn + state);
+			 }
 		return true;
 	}
 
 
 	// from BasicButtonUI
 	
+	@Override
 	protected void installJSUI() {
 		installDefaults((AbstractButton) c);
 		installListeners((AbstractButton) c);
 		installKeyboardActions((AbstractButton) c);
 	}
   
+	@Override
 	protected void uninstallJSUI() {
 		uninstallKeyboardActions((AbstractButton) c);
 		uninstallListeners((AbstractButton) c);

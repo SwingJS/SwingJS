@@ -36,9 +36,7 @@ public class JSScrollPaneUI extends JSComponentUI {
 			if (sc != null && sc != scrolledComponent) {
 				scrolledComponent = sc;
 				scrolledUI = JSToolkit.getUI(sc, false);
-				scrollNode = scrolledUI.outerNode;
-				if (scrollNode == null)
-					scrollNode = scrolledUI.setHTMLElement();
+				scrollNode = scrolledUI.getOuterNode();
 				DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 				scrolledUI.scrollerNode = this;
 				components = new Component[] { scrolledComponent };

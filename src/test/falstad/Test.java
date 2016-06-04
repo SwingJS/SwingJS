@@ -38,57 +38,35 @@ package test.falstad;
 // deprecated method .handleEvent --> .processEvent
 
 import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
-
-import java.awt.AWTEvent;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.MemoryImageSource;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.Random;
 
 
 public class Test extends Applet {
 
+	@Override
 	public void init() {
     new AtomFrame(this);
 	}
 
 }
 
+
 class AtomFrame {
 
+// note: the following does not work, because "test" holds the applet object, but
+//       it is also the root directory of this package, 
+//       and "BasisState" is test.falstad.BasisState.
+//       But then we will be looking for "test.falstad" where "test" is the local variable, not the package.
+//
+//  thus, it is important to not use a variable name that is a root directory -- swingjs, org, java, etc.
+//  at least, not in a the same method that also refers to that root directory.	
+//	
+//	AtomFrame(Test test) {
+//		BasisState x = new BasisState();
+//		x.set(3);
+//		System.out.println("testing " + x.getText());
+//	}
+//
+	
 	AtomFrame(Test test) {
 		BasisState x = new BasisState();
 		x.set(3);
@@ -213,3 +191,4 @@ class AtomFrame {
 
 
 }
+

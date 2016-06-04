@@ -197,7 +197,9 @@ public abstract class LookAndFeel
             c.setFont(UIManager.getFont(defaultFontName));
         }
 
-        installColors(c, defaultBgName, defaultFgName);
+        // BH: allow for font only
+        if (defaultBgName != null)
+        	installColors(c, defaultBgName, defaultFgName);
     }
 
 

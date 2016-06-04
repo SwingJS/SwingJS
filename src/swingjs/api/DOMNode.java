@@ -132,4 +132,20 @@ public abstract class DOMNode {
 		return setStyles(obj, "width", width + "px", "height", height + "px");
 	}
 
+	public static DOMNode setPositionAbsolute(DOMNode domBtn) {
+		return DOMNode.setStyles(domBtn, "position", "absolute");
+	}
+
+	public static DOMNode firstChild(DOMNode domNode) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return domNode.firstChild;
+		 * 
+		 */
+		{
+			return null;
+		}
+	}
+
 }

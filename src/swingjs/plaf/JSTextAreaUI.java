@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
 
 /**
@@ -23,8 +24,10 @@ public class JSTextAreaUI extends JSTextUI {
 			updateHandler.checkDocument();
 			domBtn = focusNode = enableNode = textNode = domNode = createDOMObject("textarea", id);
 			bindMouse(domNode);
-			bindKeys(domNode);
-			setFocusable();
+			if (((JTextComponent) c).isEditable()) {
+				bindKeys(domNode);
+				setFocusable();
+			}
 		}
 		setCssFont(
 				DOMNode.setAttr(domNode, "innerHTML", getComponentText()),

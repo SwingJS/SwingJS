@@ -90,6 +90,7 @@ public class JSSAXContentHandler extends DefaultHandler {
 		System.out.println("End element: " + JSSAXAttributes.getFullName(uri, localName, nodeName));
 	}
 
+	@Override
 	public void endDocument() {
 		System.out.println("End document");
 	}

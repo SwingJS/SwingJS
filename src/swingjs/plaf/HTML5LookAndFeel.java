@@ -151,6 +151,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 	 * @see #initSystemColorDefaults
 	 * @see #initComponentDefaults
 	 */
+	@Override
 	public UIDefaults getDefaults() {
 		UIDefaults table = new UIDefaults(610, 0.75f);
 
@@ -164,6 +165,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void initialize() {
 		// if (needsEventHelper) {
 		// installAWTEventListener();
@@ -192,6 +194,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void uninitialize() {
 		// AppContext context = AppContext.getAppContext();
 		// synchronized (popupMenuUI.MOUSE_GRABBER_KEY) {
@@ -637,6 +640,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		// // *** List value objects
 		//
 		Object listCellRendererActiveValue = new UIDefaults.ActiveValue() {
+			@Override
 			public Object createValue(UIDefaults table) {
 				return new DefaultListCellRenderer.UIResource();
 			}
@@ -1027,7 +1031,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// }),
 
 				// *** Label
-				// "Label.font", dialogPlain12,
+				"Label.font", dialogPlain12,
 				// "Label.background", control,
 				// "Label.foreground", controlText,
 				// "Label.disabledForeground", white,

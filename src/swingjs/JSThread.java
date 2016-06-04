@@ -30,6 +30,7 @@ public abstract class JSThread extends Thread implements JSFunction {
 		{}
 	}
 
+	@Override
 	public void run() {
 		run1(INIT);
 	}

@@ -29,7 +29,8 @@ public class JSFontMetrics extends FontMetrics {
    * @see   #getAscent()
    * @see   #getDescent()
    */
-  public int getLeading() {
+  @Override
+	public int getLeading() {
       return font.getSize() / 20 + 1;
   }
 
@@ -42,7 +43,8 @@ public class JSFontMetrics extends FontMetrics {
    * @return     the font ascent of the <code>Font</code>.
    * @see        #getMaxAscent()
    */
-  public int getAscent() {
+  @Override
+	public int getAscent() {
       return font.getSize();
   }
 
@@ -57,7 +59,8 @@ public class JSFontMetrics extends FontMetrics {
    * @return     the font descent of the <code>Font</code>.
    * @see        #getMaxDescent()
    */
-  public int getDescent() {
+  @Override
+	public int getDescent() {
       return font.getSize() / 4 + 1;
   }
   
@@ -65,11 +68,13 @@ public class JSFontMetrics extends FontMetrics {
    * @j2sIgnore
    * 
    */
-  public int charWidth(char pt) {
+  @Override
+	public int charWidth(char pt) {
   	return (pt < 256 ? (int) getWidthsFloat()[pt] : stringWidth("" + pt));
   }
   
-  public int charWidth(int pt) {
+  @Override
+	public int charWidth(int pt) {
   	/**
   	 * could be a character 
   	 * 
@@ -85,10 +90,12 @@ public class JSFontMetrics extends FontMetrics {
   	}
   }
   
+	@Override
 	public int stringWidth(String s) {
   	return (int) JSToolkit.getStringWidth(null, font, s);
   }
 
+	@Override
 	public int[] getWidths() {
 		if (iwidths != null)
 			return iwidths;

@@ -7,6 +7,18 @@
 
   	<property name="project.path" value="." />
 
+  	<!-- set this "false" to do code minimization -->
+  	
+  	<property name="debugging" value="true" />
+
+    <!-- <if> construct needs ant-contrib.jar -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <pathelement location="tools/ant-contrib.jar" />
+      </classpath>
+    </taskdef>
+
+
   	<!-- create a NON svn local directory only containing JS files  -->
   	
   	<echo>deleting the site directory</echo>
@@ -385,10 +397,6 @@
             JU/T3.js
             javax/swing/JRootPane.js
    	
-            javax/swing/JToggleButton.js
-            javax/swing/ButtonModel.js
-            javax/swing/JRadioButton.js
-
             javax/swing/JApplet.js
 
             java/awt/EventQueue.js
@@ -456,6 +464,10 @@
             javax/swing/event/CaretListener.js
             javax/swing/DefaultBoundedRangeModel.js
             javax/swing/BoundedRangeModel.js
+            javax/swing/ButtonModel.js
+            javax/swing/JToggleButton.js
+            javax/swing/JRadioButton.js
+
             javax/swing/KeyStroke.js
             java/awt/AWTKeyStroke.js
             java/util/StringTokenizer.js
@@ -558,7 +570,6 @@
             swingjs/plaf/JSRootPaneUI.js
             swingjs/plaf/JSButtonListener.js
             swingjs/plaf/JSButtonUI.js
-            swingjs/plaf/JSToggleButtonUI.js
             swingjs/plaf/LazyActionMap.js
     
 
@@ -589,7 +600,7 @@
   	  We will have to do this on a case-by-case basis. 
   	   
   	<replaceregexp file="site/swingjs/js/core2.js" match="(Clazz.defineStatics ?\(((?![\[\(]).)*?\);)" flags="gs" replace="/*\1*/" /> 
-  	<copy file="site/swingjs/js/core2.js" tofile="site/swingjs/js/core${call-core.name}3.js" />
+  	<copy file="site/swingjs/js/core2.js" tofile="site/swingjs/js/core${call-core.name}.js" />
   	
   	
   	        java/io/InputStreamReader.js
@@ -646,10 +657,15 @@
    		core/corebottom2.js
    		" />
    	</concat>
+  	  	
    	<echo>......Generating core${call-core.name}.z.js</echo> 	
-   	<java jar="jars/closure_compiler.jar" fork="true" dir="site/swingjs/j2s/core" failonerror="false">
-   		<arg line="--js core${call-core.name}.js --js_output_file core${call-core.name}.z.js" />
-    </java>
+  	<if><equals arg1="${debugging}" arg2="true" /><then>
+  	    <copy file="site/swingjs/j2s/core/core${call-core.name}.js" tofile="site/swingjs/j2s/core/core${call-core.name}.z.js" />
+    </then><else>
+	   	<java jar="jars/closure_compiler.jar" fork="true" dir="site/swingjs/j2s/core" failonerror="false">
+	   		<arg line="--js core${call-core.name}.js --js_output_file core${call-core.name}.z.js" />
+	    </java>
+    </else></if>
  	<delete quiet="true" file="site/swingjs/js/core/tmp.js" />
   </target>
 
@@ -658,9 +674,13 @@
    	<concat destfile="site/swingjs/js/SwingJS.${call-min.fullname}.js">
    		<filelist dir="jsmoljs" files="${call-min.list}" />
    	</concat>   
-   	<java jar="jars/closure_compiler.jar" fork="true" dir="" failonerror="false">
-   		<arg line="--js site/swingjs/js/SwingJS.${call-min.fullname}.js --js_output_file site/swingjs/SwingJS.${call-min.minname}.js" />
-    </java>
+  	<if><equals arg1="${debugging}" arg2="true" /><then>
+  	    <copy file="site/swingjs/js/SwingJS.${call-min.fullname}.js" tofile="site/swingjs/SwingJS.${call-min.minname}.js" />
+    </then><else>
+	   	<java jar="jars/closure_compiler.jar" fork="true" dir="" failonerror="false">
+	   		<arg line="--js site/swingjs/js/SwingJS.${call-min.fullname}.js --js_output_file site/swingjs/SwingJS.${call-min.minname}.js" />
+	    </java>
+    </else></if>
   </target>
 	
 </project>

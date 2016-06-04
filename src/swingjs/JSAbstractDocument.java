@@ -396,19 +396,23 @@ public abstract class JSAbstractDocument implements JSMinimalAbstractDocument {
 	}
 
 	private class DefaultFilterBypass extends DocumentFilter.FilterBypass {
+		@Override
 		public Document getDocument() {
 			return me;
 		}
 
+		@Override
 		public void remove(int offset, int length) throws BadLocationException {
 			handleRemove(offset, length);
 		}
 
+		@Override
 		public void insertString(int offset, String string, AttributeSet attr)
 				throws BadLocationException {
 			handleInsertString(offset, string, attr);
 		}
 
+		@Override
 		public void replace(int offset, int length, String text, AttributeSet attrs)
 				throws BadLocationException {
 			handleRemove(offset, length);

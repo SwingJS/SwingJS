@@ -660,6 +660,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 			add("Center", applet);
       applet.setDispatcher();
 			applet.addNotify(); // we need this here because there is no frame
+			applet.setVisible(true);
 			showAppletStatus("loaded");
 			validate();
 		}

@@ -33,18 +33,6 @@ public class JSMenuItemUI extends JSButtonUI {
 		return domNode;
 	}
 
-	/**
-	 * validate a button press -- with a simple button, this is just TRUE.
-	 * This is needed because sometimes the area near the button is pressed
-	 * but not the actual button.
-	 * @param isRelease TODO
-	 * 
-	 * @return true if the HTML5 button was actually pressed
-	 */
-  boolean verifyButtonClick(boolean isRelease) {
-		return true;
-	}
-
 
 	// from BasicButtonUI
 	

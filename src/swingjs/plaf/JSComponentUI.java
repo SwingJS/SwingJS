@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import javajs.util.PT;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -20,7 +21,6 @@ import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.peer.ContainerPeer;
-import jsjava.awt.peer.LightweightPeer;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JRootPane;
@@ -29,6 +29,7 @@ import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JQueryObject;
+import swingjs.api.JSFunction;
 
 /**
  * The JSComponentUI subclasses are where all the detailed HTML5 implementation is 
@@ -65,11 +66,10 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 */
 	protected JComponent c;
 
-
 	/**
 	 * the outermost div holding a component -- left, top, and for a container width and height
 	 */
-	protected DOMNode outerNode; 
+	private DOMNode outerNode; 
 
 	/**
 	 * the main object for the component, possibly containing others, such as radio button with its label
@@ -115,7 +115,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	protected int num;
 	
 	/**
-	 * not implemented/needed currently. Java handles this nicely 
+	 * indicates that we need a new outerNode 
 	 * 
 	 */
 	protected boolean isTainted = true;
@@ -159,12 +159,12 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 */
 	protected String classID;
 	
-
 	private DOMNode document, body;
-
-
+	
 	protected boolean needPreferred;
-
+	
+	protected int width;
+	protected int height;
 
 	
 	public JSComponentUI() {
@@ -184,10 +184,12 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	protected abstract void installJSUI();
 	protected abstract void uninstallJSUI();
 	
+	@Override
 	public void installUI(JComponent c) {
 		// already done installJSUI();
 	}
 
+	@Override
 	public void uninstallUI(JComponent c) {
 		uninstallJSUI();
 	}
@@ -247,23 +249,6 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		if (!c.isEnabled())
 			setEnabled(false);
 		return obj;
-	}
-
-	/**
-	 * JSmolCore.js will look for  data-UI attribute  and, if found, reroute directly here 
-	 * @param node 
-	 */
-	protected void bindMouse(DOMNode node) {
-		DOMNode.setAttr(node, "data-UI", this);		
-	}
-	
-	/**
-	 * called by JmolCore.js
-	 * @return true if handled
-	 */
-	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
-		//System.out.println(id + " handling event " + eventType + jQueryEvent);
-		return false;
 	}
 
 	protected DOMNode wrap(String type, String id, DOMNode... elements) {
@@ -342,7 +327,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 				div = node;
 			else
 				div = wrap("div", id + "_temp", node);
-			DOMNode.setStyles(div, "position", "absolute");
+			DOMNode.setPositionAbsolute(div);
 
 			// process of discovering width and height is facilitated using jQuery
 			// and appending to document.body.
@@ -355,9 +340,9 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 			body.removeChild(div);
 		}
 
-		Dimension size = getCSSDimension(w, h);
+		Dimension size = getCSSDimension(width = w, height = h);
 		if (addCSS) {
-			DOMNode.setStyles(node, "position", "absolute");
+			DOMNode.setPositionAbsolute(node);
 			DOMNode.setSize(node, size.width, size.height);
 		} else {
 			DOMNode.setStyles(node, "position", null);
@@ -390,6 +375,10 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 * 
 	 */
 	protected DOMNode setHTMLElement() {
+		return setHTMLElementCUI();
+	}
+	
+	protected DOMNode setHTMLElementCUI() {
 		if (!isTainted)
 			return outerNode;
 
@@ -417,7 +406,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 		// set position
 
-		DOMNode.setStyles(outerNode, "position", "absolute", "left", (x = c.getX())
+		DOMNode.setPositionAbsolute(outerNode);
+		DOMNode.setStyles(outerNode, "left", (x = c.getX())
 				+ "px", "top", (y = c.getY()) + "px");
 
 		if (isContainer) {
@@ -425,7 +415,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 			// set width from component
 
 			System.out.println("JSComponentUI container " + id + " " + c.getBounds());
-			DOMNode.setSize(outerNode, c.getWidth(), c.getHeight());
+			DOMNode.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
 
 			// add all children
 			Component[] children = (components == null ? c.getComponents()
@@ -436,9 +426,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 					// Box.Filler has no ui.
 					continue;
 				}
-				if (ui.outerNode == null)
-					ui.setHTMLElement();
-				if (ui.outerNode == null) {
+				if (ui.getOuterNode() == null) {
 					System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 							+ c.getName());
 				} else {
@@ -457,6 +445,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	/**
 	 * c ignored because JSComponentUI is one per component
 	 */
+	@Override
 	public Dimension getPreferredSize(JComponent c) {
 		//System.out.println("getPreferredSize for " + id + " " + c.getName());
 		Dimension d = setHTMLSize(getDOMObject(), false);
@@ -464,6 +453,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
   	return d;
   }
 
+	@Override
 	public void paint(Graphics g, JComponent c) {
     // Note that for now, button graphics 
 		// are BEHIND the button. We will need to paint onto the
@@ -475,6 +465,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		}
 	}
 
+	@Override
 	public void update(Graphics g, JComponent c) {
 		// called from JComponent.paintComponent
 		boolean testing = false;//true;
@@ -487,10 +478,12 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		paint(g, c);
 	}
 
+	@Override
 	public Dimension getMinimumSize(JComponent c) {
 		return getPreferredSize(c);
 	}
 
+	@Override
 	public Dimension getMaximumSize(JComponent c) {
 		return null;// getPreferredSize(c);
 	}
@@ -514,7 +507,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
    * @see jsjavax.swing.JComponent#contains
    * @see jsjava.awt.Component#contains
    */
-  public boolean contains(JComponent c, int x, int y) {
+  @Override
+	public boolean contains(JComponent c, int x, int y) {
       return c.inside(x, y);
   }
 
@@ -565,7 +559,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
    * @see jsjavax.swing.JComponent#getBaseline(int,int)
    * @since 1.6
    */
-  public int getBaseline(JComponent c, int width, int height) {
+  @Override
+	public int getBaseline(JComponent c, int width, int height) {
       if (c == null) {
           throw new NullPointerException("Component must be non-null");
       }
@@ -591,7 +586,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
    * @see jsjavax.swing.JComponent#getBaseline(int, int)
    * @since 1.6
    */
-  public Component.BaselineResizeBehavior getBaselineResizeBehavior(
+  @Override
+	public Component.BaselineResizeBehavior getBaselineResizeBehavior(
           JComponent c) {
       if (c == null) {
           throw new NullPointerException("Component must be non-null");
@@ -608,8 +604,18 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
   }
   
 	public void notifyPropertyChanged(String prop) {
+		notifyPropChangeCUI(prop);
+	}
+	
+	protected void notifyPropChangeCUI(String prop) {
 		DOMNode obj = null;
 		String val = null;
+		boolean isStyle = false;
+		if (prop == "preferredSize") {
+			preferredSize = c.getPreferredSize(); // may be null
+			getPreferredSize();
+			return;
+		}
 		if (prop == "text") {
 			val = ((AbstractButton) c).getText();
 			if (val.equals(currentText)) // we set it here, then fired the property change
@@ -622,17 +628,20 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 				prop = "value";
 				obj = valueNode;
 			}
-		} else if (prop == "preferredSize") {
-			preferredSize = c.getPreferredSize(); // may be null
-			getPreferredSize();
-			return;
 		}
 		if (obj == null) {
 			System.out.println("JSComponentUI: unrecognized prop: " + prop);
 		} else {
 			System.out.println("JSComponentUI: setting " + id + " " + prop);// + " " + val);
-			setProp(obj, prop, val);
+			if (isStyle)
+				DOMNode.setStyles(obj, prop, val);
+			else
+				setProp(obj, prop, val);
 		}
+	}
+
+	DOMNode getOuterNode() {
+		return (outerNode == null ? setHTMLElement() : outerNode);
 	}
 
 	protected DOMNode setProp(DOMNode obj, String prop, String val) {
@@ -653,9 +662,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	@Override
 	public void setVisible(boolean b) {
-		if (outerNode == null)
-			setHTMLElement();
-		DOMNode.setStyles(outerNode, "display", b ? "block" : "none");
+		DOMNode.setStyles(getOuterNode(), "display", b ? "block" : "none");
 	}
 
 	@Override
@@ -689,6 +696,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 				width = Math.min(width, scrollerNode.c.getWidth());
 				height = Math.min(height, scrollerNode.c.getHeight());			
 			}
+			this.width = width;
+			this.height = height;
 			System.out.println(id + " setBounds " + x + " " + y + " " + width + " " + height + " op=" + op);
 			if (domNode != null)
 				DOMNode.setSize(domNode, width, height);
@@ -879,4 +888,54 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	public void notifyFocus(boolean focusGained) {
 		Toolkit.getEventQueue().postEvent(new FocusEvent(c, focusGained ? FocusEvent.FOCUS_GAINED : FocusEvent.FOCUS_LOST));
 	}
+	
+	@SuppressWarnings("unused")
+	protected void setFocusable() {
+		JQueryObject node = $(focusNode);
+		Object me = this;
+
+		/**
+		 * @j2sNative
+		 * 
+		 * node.focus(function() {me.notifyFocus(true)});
+		 * node.blur(function() {me.notifyFocus(false)});
+		 */
+		{}
+	}
+
+	protected void bindKeys(DOMNode domNode) {
+		JSFunction f = null;
+		JSEventHandler me = this;
+		/**
+		 * @j2sNative
+		 * 
+		 *            f = function(event) { me.handleJSEvent(me.domNode, 401, event)
+		 *            }
+		 */
+		{
+			System.out.println(me);
+		}
+		$(domNode).bind("keydown keypress keyup", f);
+	}
+
+	/**
+	 * JSmolCore.js will look for  data-UI attribute  and, if found, reroute directly here 
+	 * @param node 
+	 */
+	protected void bindMouse(DOMNode node) {
+		DOMNode.setAttr(node, "data-UI", this);		
+	}
+	
+	/**
+	 * called by JmolCore.js
+	 * @return false to prevent the default process
+	 */
+	@Override
+	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
+		//System.out.println(id + " handling event " + eventType + jQueryEvent);
+		return true;
+	}
+
+
+
 }

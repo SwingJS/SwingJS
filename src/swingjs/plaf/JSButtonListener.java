@@ -51,6 +51,11 @@ import jssun.swing.UIAction;
  *
  * @author Jeff Dinkins
  * @author Arnaud Weber (keyboard UI support)
+ * 
+ * 
+ * Note that in Swingjs a JavaScript button press is routed through the underlying panel. 
+ * The change in the button's clicking 
+ * 
  */
 
 public class JSButtonListener implements MouseListener, MouseMotionListener,
@@ -58,7 +63,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 {
     private long lastPressedTimestamp = -1;
     private boolean shouldDiscardRelease = false;
-		private AbstractButton btn;
+    AbstractButton btn;
 
     /**
      * Populates Buttons actions.
@@ -73,15 +78,24 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
     	btn = b;
     }
 
+  static String labelprops = ";" + AbstractButton.TEXT_CHANGED_PROPERTY
+  		  +  ";" + AbstractButton.MARGIN_CHANGED_PROPERTY 
+  		  +  ";" + AbstractButton.VERTICAL_ALIGNMENT_CHANGED_PROPERTY
+  		  +  ";" + AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY
+  		  +  ";" + AbstractButton.VERTICAL_TEXT_POSITION_CHANGED_PROPERTY
+  		  +  ";" + AbstractButton.HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY;
+
+	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
-		//System.out.println("JSButtonListener property change: " + prop + " " + e.getSource());
+		// System.out.println("JSButtonListener property change: " + prop + " " +
+		// e.getSource());
 		if (prop == AbstractButton.MNEMONIC_CHANGED_PROPERTY) {
 			updateMnemonicBinding((AbstractButton) e.getSource());
 		} else if (prop == AbstractButton.CONTENT_AREA_FILLED_CHANGED_PROPERTY) {
 			checkOpacity((AbstractButton) e.getSource());
-		} else if (prop == AbstractButton.TEXT_CHANGED_PROPERTY || "font" == prop
-				|| "foreground" == prop) {
+		} else if ("font" == prop || "foreground" == prop
+				|| labelprops.indexOf(prop) >= 0) {
 			AbstractButton b = (AbstractButton) e.getSource();
 			((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged(prop);
 		}
@@ -165,12 +179,14 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
         }
     }
 
-    public void stateChanged(ChangeEvent e) {
+    @Override
+		public void stateChanged(ChangeEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         b.repaint();
     }
 
-    public void focusGained(FocusEvent e) {
+    @Override
+		public void focusGained(FocusEvent e) {
 //        AbstractButton b = (AbstractButton) e.getSource();
 //        if (b instanceof JButton && ((JButton)b).isDefaultCapable()) {
 //            JRootPane root = b.getRootPane();
@@ -189,7 +205,8 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 //        b.repaint();
     }
 
-    public void focusLost(FocusEvent e) {
+    @Override
+		public void focusLost(FocusEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
 //        JRootPane root = b.getRootPane();
 //        if (root != null) {
@@ -212,16 +229,20 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 //        b.repaint();
     }
 
-    public void mouseMoved(MouseEvent e) {
+    @Override
+		public void mouseMoved(MouseEvent e) {
     }
 
 
-    public void mouseDragged(MouseEvent e) {
+    @Override
+		public void mouseDragged(MouseEvent e) {
     }
 
-    public void mouseClicked(MouseEvent e) {
+    @Override
+		public void mouseClicked(MouseEvent e) {
     }
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			AbstractButton b = (AbstractButton) e.getSource();
@@ -231,7 +252,6 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 			// for radio and checkboxes to make sure the DOM button actually got hit.
 			// mousePress is an "arm"; mouseRelease is a "click"
 			
-			((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(false);
 			long multiClickThreshhold = b.getMultiClickThreshhold();
 			long lastTime = lastPressedTimestamp;
 			long currentTime = lastPressedTimestamp = e.getWhen();
@@ -256,9 +276,10 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 				b.requestFocus();
 			}
 		}
-	};
+	}
 
-    public void mouseReleased(MouseEvent e) {
+    @Override
+		public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
             // Support for multiClickThreshhold
             if (shouldDiscardRelease) {
@@ -266,18 +287,18 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
                 return;
             }
             AbstractButton b = (AbstractButton) e.getSource();
-      			if (!((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(true))
-      				return;
+            ButtonModel model = b.getModel();
+      			((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(model);
       			
       			//System.out.println("JSButtonListener released " + b.getName() + " " + e);
 
-            ButtonModel model = b.getModel();
             model.setPressed(false);
             model.setArmed(false);
         }
-    };
+    }
 
-    public void mouseEntered(MouseEvent e) {
+    @Override
+		public void mouseEntered(MouseEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         ButtonModel model = b.getModel();
         if (b.isRolloverEnabled() && !SwingUtilities.isLeftMouseButton(e)) {
@@ -285,16 +306,17 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
         }
         if (model.isPressed())
                 model.setArmed(true);
-    };
+    }
 
-    public void mouseExited(MouseEvent e) {
+    @Override
+		public void mouseExited(MouseEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         ButtonModel model = b.getModel();
         if(b.isRolloverEnabled()) {
             model.setRollover(false);
         }
         model.setArmed(false);
-    };
+    }
 
 
     /**
@@ -310,7 +332,8 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
             super(name);
         }
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             AbstractButton b = (AbstractButton)e.getSource();
             String key = getName();
             if (key == PRESS) {
@@ -328,7 +351,8 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
             }
         }
 
-        public boolean isEnabled(Object sender) {
+        @Override
+				public boolean isEnabled(Object sender) {
             if(sender != null && (sender instanceof AbstractButton) &&
                       !((AbstractButton)sender).getModel().isEnabled()) {
                 return false;

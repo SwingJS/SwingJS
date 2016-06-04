@@ -191,6 +191,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		return a * Math.PI / 180;
 	}
 
+	@Override
 	public void drawPolygon(int[] ayPoints, int[] axPoints, int nPoints) {
 		doPoly(ayPoints, axPoints, nPoints, false);
 	}
@@ -213,6 +214,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.stroke();
 	}
 
+	@Override
 	public void drawRect(int x, int y, int width, int height) {
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
@@ -244,10 +246,12 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		ctx.fill();
 	}
 
+	@Override
 	public void fillPolygon(int[] ayPoints, int[] axPoints, int nPoints) {
 		doPoly(ayPoints, axPoints, nPoints, true);
 	}
 
+	@Override
 	public void fillRect(int x, int y, int width, int height) {
 		ctx.fillRect(x, y, width, height);
 	}
@@ -263,6 +267,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		}
 	}
 
+	@Override
 	public void setFont(Font font) {
 		this.font = font;
 		if (ctx == null) // some graphics do not include ctx. 

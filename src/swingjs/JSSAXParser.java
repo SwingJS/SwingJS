@@ -12,7 +12,6 @@ import java.util.Map;
 import javajs.util.AU;
 import javajs.util.PT;
 import javajs.util.Rdr;
-import javajs.util.SB;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
