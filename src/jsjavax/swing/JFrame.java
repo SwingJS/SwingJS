@@ -24,6 +24,8 @@
  */
 package jsjavax.swing;
 
+import java.awt.HeadlessException;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -176,10 +178,10 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see Component#setSize
      * @see Component#setVisible
      * @see JComponent#getDefaultLocale
+     * 
      */
     public JFrame()  {
-        super();
-        frameInit();
+        frameInit(null, null);
     }
 
     /**
@@ -200,10 +202,10 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see jsjava.awt.GraphicsEnvironment#isHeadless
      * @see JComponent#getDefaultLocale
      * @since     1.3
+     * 
      */
     public JFrame(GraphicsConfiguration gc) {
-        super(gc);
-        frameInit();
+        frameInit(null, gc);
     }
 
     /**
@@ -220,13 +222,15 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see Component#setSize
      * @see Component#setVisible
      * @see JComponent#getDefaultLocale
+     * 
      */
     public JFrame(String title) {
-        super(title);
-        frameInit();
+       frameInit(title, null);
     }
 
     /**
+     * The only one we use in SwingJS
+     * 
      * Creates a <code>JFrame</code> with the specified title and the
      * specified <code>GraphicsConfiguration</code> of a screen device.
      * <p>
@@ -246,14 +250,15 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see jsjava.awt.GraphicsEnvironment#isHeadless
      * @see JComponent#getDefaultLocale
      * @since     1.3
+     * 
      */
     public JFrame(String title, GraphicsConfiguration gc) {
-        super(title, gc);
-        frameInit();
+        frameInit(title, gc);
     }
 
     /** Called by the constructors to init the <code>JFrame</code> properly. */
-    protected void frameInit() {
+    protected void frameInit(String title, GraphicsConfiguration gc) {
+    		initTitleGC(title, gc);
         enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
         setLocale( JComponent.getDefaultLocale() );
         setRootPane(createRootPane());
@@ -269,13 +274,15 @@ public class JFrame  extends Frame implements WindowConstants,
         }
         // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
     }
+    
+    private static int frameCount;
 
     /**
      * Called by the constructor methods to create the default
      * <code>rootPane</code>.
      */
     protected JRootPane createRootPane() {
-        JRootPane rp = new JRootPane();
+        JRootPane rp = new JRootPane("_Frame" + (++frameCount), false);
         // NOTE: this uses setOpaque vs LookAndFeel.installProperty as there
         // is NO reason for the RootPane not to be opaque. For painting to
         // work the contentPane must be opaque, therefor the RootPane can
@@ -293,7 +300,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see    #setDefaultCloseOperation
      * @see    jsjava.awt.Window#processWindowEvent
      */
-    protected void processWindowEvent(WindowEvent e) {
+    @Override
+		protected void processWindowEvent(WindowEvent e) {
         super.processWindowEvent(e);
 
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -472,7 +480,8 @@ public class JFrame  extends Frame implements WindowConstants,
      *
      * @param g the Graphics context in which to paint
      */
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
         paint(g);
     }
 
@@ -560,6 +569,7 @@ public class JFrame  extends Frame implements WindowConstants,
 	 * @see #setRootPaneCheckingEnabled
 	 * @see jsjavax.swing.RootPaneContainer
 	 */
+	@Override
 	protected Component addImpl(Component comp, Object constraints, int index) {
 		if (isRootPaneCheckingEnabled()) {
 			return getContentPane().add(comp, constraints, index);
@@ -579,7 +589,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see #add
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void remove(Component comp) {
+    @Override
+		public void remove(Component comp) {
         if (comp == rootPane) {
             removeChild(comp);
         } else {
@@ -599,7 +610,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see #setRootPaneCheckingEnabled
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void setLayout(LayoutManager manager) {
+    @Override
+		public void setLayout(LayoutManager manager) {
         if(isRootPaneCheckingEnabled()) {
             getContentPane().setLayout(manager);
         }
@@ -616,7 +628,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see #setRootPane
      * @see RootPaneContainer#getRootPane
      */
-    public JRootPane getRootPane() {
+    @Override
+		public JRootPane getRootPane() {
         return rootPane;
     }
 
@@ -653,7 +666,8 @@ public class JFrame  extends Frame implements WindowConstants,
     /**
      * {@inheritDoc}
      */
-    public void setIconImage(Image image) {
+    @Override
+		public void setIconImage(Image image) {
         super.setIconImage(image);
     }
 
@@ -664,7 +678,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see #setContentPane
      * @see RootPaneContainer#getContentPane
      */
-    public Container getContentPane() {
+    @Override
+		public Container getContentPane() {
         return getRootPane().getContentPane();
     }
 
@@ -690,7 +705,8 @@ public class JFrame  extends Frame implements WindowConstants,
      *     description: The client area of the frame where child
      *                  components are normally inserted.
      */
-    public void setContentPane(Container contentPane) {
+    @Override
+		public void setContentPane(Container contentPane) {
         getRootPane().setContentPane(contentPane);
     }
 
@@ -701,7 +717,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see #setLayeredPane
      * @see RootPaneContainer#getLayeredPane
      */
-    public JLayeredPane getLayeredPane() {
+    @Override
+		public JLayeredPane getLayeredPane() {
         return getRootPane().getLayeredPane();
     }
 
@@ -719,7 +736,8 @@ public class JFrame  extends Frame implements WindowConstants,
      *     hidden: true
      *     description: The pane that holds the various frame layers.
      */
-    public void setLayeredPane(JLayeredPane layeredPane) {
+    @Override
+		public void setLayeredPane(JLayeredPane layeredPane) {
         getRootPane().setLayeredPane(layeredPane);
     }
 
@@ -730,7 +748,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see #setGlassPane
      * @see RootPaneContainer#getGlassPane
      */
-    public Component getGlassPane() {
+    @Override
+		public Component getGlassPane() {
         return getRootPane().getGlassPane();
     }
 
@@ -746,7 +765,8 @@ public class JFrame  extends Frame implements WindowConstants,
      *     hidden: true
      *     description: A transparent pane used for menu rendering.
      */
-    public void setGlassPane(Component glassPane) {
+    @Override
+		public void setGlassPane(Component glassPane) {
         getRootPane().setGlassPane(glassPane);
     }
 
@@ -755,7 +775,8 @@ public class JFrame  extends Frame implements WindowConstants,
      *
      * @since 1.6
      */
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         JComponent.getGraphicsInvoked(this);
         return super.getGraphics();
     }
@@ -773,7 +794,8 @@ public class JFrame  extends Frame implements WindowConstants,
      * @see       RepaintManager
      * @since     1.6
      */
-    public void repaint(long time, int x, int y, int width, int height) {
+    @Override
+		public void repaint(long time, int x, int y, int width, int height) {
         if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
             RepaintManager.currentManager(this).addDirtyRegion(
                               this, x, y, width, height);
@@ -843,7 +865,8 @@ public class JFrame  extends Frame implements WindowConstants,
      *
      * @return  a string representation of this <code>JFrame</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String defaultCloseOperationString;
         if (defaultCloseOperation == HIDE_ON_CLOSE) {
             defaultCloseOperationString = "HIDE_ON_CLOSE";

@@ -735,7 +735,7 @@ protected  transient ComponentPeer peer;
     // where currently there is no chance to interpose on the creation
     // of the peer and therefore the call to XSetBackground.
     transient boolean backgroundEraseDisabled;
-		protected String htmlName;
+		public String htmlName;
 		private int num;
 		private static int incr;
 
@@ -809,6 +809,8 @@ protected  transient ComponentPeer peer;
 //    }
 
     /**
+     * The only constructor
+     * 
      * Constructs a new component. Class <code>Component</code> can be
      * extended directly to create a lightweight component that does not
      * utilize an opaque native window. A lightweight component must be
@@ -1461,11 +1463,10 @@ protected  transient ComponentPeer peer;
      * @since JDK1.1
      */
     public void setVisible(boolean b) {
-    	// unfortunately, this does not work. 
       if (b) {
         show();
-//    } else {
-  //      hide();
+      } else {
+        hide();
       }
     }
     

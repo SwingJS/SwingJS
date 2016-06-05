@@ -2,6 +2,8 @@ package swingjs.plaf;
 
 
 import javajs.util.PT;
+
+
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComboBox;
@@ -101,6 +103,27 @@ public class JSComboBoxUI extends JSComponentUI implements PropertyChangeListene
 		}
 		return true;
 	}
+
+  /**
+   * Set the visiblity of the popup
+   */
+  public void setPopupVisible( JComboBox c, boolean v ) {
+  	// TODO
+  }
+
+  /**
+   * Determine the visibility of the popup
+   */
+  public boolean isPopupVisible( JComboBox c ) {
+  	return false;
+  }
+
+  /**
+   * Determine whether or not the combo box itself is traversable
+   */
+  public boolean isFocusTraversable( JComboBox c ) {
+  	return true;
+  }
 
 
 }

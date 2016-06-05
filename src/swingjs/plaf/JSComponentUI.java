@@ -1,6 +1,5 @@
 package swingjs.plaf;
 
-import javajs.util.PT;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -399,16 +398,23 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 		if (outerNode == null) {
 			outerNode = wrap("div", id, domNode);
-			if (root != null && root.getContentPane() == c)
-				swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
-						.appendChild(outerNode);
+			if (root != null && root.getContentPane() == c) {
+				if (root.isAppletRoot) {
+					// this is the main content pane for the embedded applet.
+					swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
+							.appendChild(outerNode);
+				} else {
+					
+					// this is a non-embedded frame or dialog.
+				}
+			}
 		}
 
 		// set position
 
 		DOMNode.setPositionAbsolute(outerNode);
-		DOMNode.setStyles(outerNode, "left", (x = c.getX())
-				+ "px", "top", (y = c.getY()) + "px");
+		DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
+				(y = c.getY()) + "px");
 
 		if (isContainer) {
 

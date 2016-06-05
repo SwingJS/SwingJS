@@ -34,6 +34,7 @@ import jsjava.awt.LayoutManager;
 import jsjava.awt.Window;
 import jsjava.awt.event.WindowListener;
 
+
 // 
 
 /**
@@ -270,15 +271,16 @@ public class JWindow extends Window implements /* Accessible */
         // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
     }
 
+    static int windowCount;
     /**
      * Called by the constructor methods to create the default
      * <code>rootPane</code>.
      */
     protected JRootPane createRootPane() {
-        JRootPane rp = new JRootPane();
+        JRootPane rp = new JRootPane("_Window" + (++windowCount), false);
         // NOTE: this uses setOpaque vs LookAndFeel.installProperty as there
         // is NO reason for the RootPane not to be opaque. For painting to
-        // work the contentPane must be opaque, therefor the RootPane can
+        // work the contentPane must be opaque, therefore the RootPane can
         // also be opaque.
         rp.setOpaque(true);
         return rp;
@@ -359,7 +361,8 @@ public class JWindow extends Window implements /* Accessible */
      *
      * @param g  the <code>Graphics</code> context in which to paint
      */
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
         paint(g);
     }
 
@@ -406,6 +409,7 @@ public class JWindow extends Window implements /* Accessible */
 	 * @see #setRootPaneCheckingEnabled
 	 * @see jsjavax.swing.RootPaneContainer
 	 */
+	@Override
 	protected Component addImpl(Component comp, Object constraints, int index) {
 		if (isRootPaneCheckingEnabled()) {
 			return getContentPane().add(comp, constraints, index);
@@ -425,7 +429,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see #add
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void remove(Component comp) {
+    @Override
+		public void remove(Component comp) {
         if (comp == rootPane) {
            removeChild(comp);
         } else {
@@ -445,7 +450,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see #setRootPaneCheckingEnabled
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void setLayout(LayoutManager manager) {
+    @Override
+		public void setLayout(LayoutManager manager) {
         if(isRootPaneCheckingEnabled()) {
             getContentPane().setLayout(manager);
         }
@@ -462,7 +468,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see #setRootPane
      * @see RootPaneContainer#getRootPane
      */
-    public JRootPane getRootPane() {
+    @Override
+		public JRootPane getRootPane() {
         return rootPane;
     }
 
@@ -504,7 +511,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see #setContentPane
      * @see RootPaneContainer#getContentPane
      */
-    public Container getContentPane() {
+    @Override
+		public Container getContentPane() {
         return getRootPane().getContentPane();
     }
 
@@ -524,7 +532,8 @@ public class JWindow extends Window implements /* Accessible */
      *     description: The client area of the window where child
      *                  components are normally inserted.
      */
-    public void setContentPane(Container contentPane) {
+    @Override
+		public void setContentPane(Container contentPane) {
         getRootPane().setContentPane(contentPane);
     }
 
@@ -535,7 +544,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see #setLayeredPane
      * @see RootPaneContainer#getLayeredPane
      */
-    public JLayeredPane getLayeredPane() {
+    @Override
+		public JLayeredPane getLayeredPane() {
         return getRootPane().getLayeredPane();
     }
 
@@ -554,7 +564,8 @@ public class JWindow extends Window implements /* Accessible */
      *     hidden: true
      *     description: The pane which holds the various window layers.
      */
-    public void setLayeredPane(JLayeredPane layeredPane) {
+    @Override
+		public void setLayeredPane(JLayeredPane layeredPane) {
         getRootPane().setLayeredPane(layeredPane);
     }
 
@@ -565,7 +576,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see #setGlassPane
      * @see RootPaneContainer#getGlassPane
      */
-    public Component getGlassPane() {
+    @Override
+		public Component getGlassPane() {
         return getRootPane().getGlassPane();
     }
 
@@ -581,7 +593,8 @@ public class JWindow extends Window implements /* Accessible */
      *     hidden: true
      *     description: A transparent pane used for menu rendering.
      */
-    public void setGlassPane(Component glassPane) {
+    @Override
+		public void setGlassPane(Component glassPane) {
         getRootPane().setGlassPane(glassPane);
     }
 
@@ -590,7 +603,8 @@ public class JWindow extends Window implements /* Accessible */
      *
      * @since 1.6
      */
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         JComponent.getGraphicsInvoked(this);
         return super.getGraphics();
     }
@@ -608,7 +622,8 @@ public class JWindow extends Window implements /* Accessible */
      * @see       RepaintManager
      * @since     1.6
      */
-    public void repaint(long time, int x, int y, int width, int height) {
+    @Override
+		public void repaint(long time, int x, int y, int width, int height) {
         if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
             RepaintManager.currentManager(this).addDirtyRegion(
                               this, x, y, width, height);
@@ -628,7 +643,8 @@ public class JWindow extends Window implements /* Accessible */
      *
      * @return  a string representation of this <code>JWindow</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String rootPaneCheckingEnabledString = (rootPaneCheckingEnabled ?
                                                 "true" : "false");
 

@@ -32,6 +32,7 @@ import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjava.awt.LayoutManager;
+import jssun.awt.AppContext;
 
 /**
  * An extended version of <code>jsjava.applet.Applet</code> that adds support for
@@ -162,7 +163,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
 
 		/** Called by the constructor methods to create the default rootPane. */
     protected JRootPane createRootPane() {
-        JRootPane rp = new JRootPane();
+        JRootPane rp = new JRootPane("", true);
         // NOTE: this uses setOpaque vs LookAndFeel.installProperty as there
         // is NO reason for the RootPane not to be opaque. For painting to
         // work the contentPane must be opaque, therefor the RootPane can
@@ -228,7 +229,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
     /**
      * SwingJS -- needed to allow JApplet.paint() override
      */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
     	// SwingJS adding this so that it can be overridden
     	// by a call to appletPanel to paint the applet
     	getContentPane().paint(g);
@@ -238,7 +240,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * Just calls <code>paint(g)</code>.  This method was overridden to
      * prevent an unnecessary call to clear the background.
      */
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
         paint(g);
     }
 
@@ -326,6 +329,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
 	 * @see #setRootPaneCheckingEnabled
 	 * @see jsjavax.swing.RootPaneContainer
 	 */
+	@Override
 	protected Component addImpl(Component comp, Object constraints, int index) {
 		if (isRootPaneCheckingEnabled()) {
 			return getContentPane().add(comp, constraints, index);
@@ -345,7 +349,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see #add
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void remove(Component comp) {
+    @Override
+		public void remove(Component comp) {
         if (comp == rootPane) {
             removeChild(comp);
         } else {
@@ -365,7 +370,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see #setRootPaneCheckingEnabled
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void setLayout(LayoutManager manager) {
+    @Override
+		public void setLayout(LayoutManager manager) {
         if(isRootPaneCheckingEnabled()) {
             getContentPane().setLayout(manager);
         }
@@ -381,7 +387,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see #setRootPane
      * @see RootPaneContainer#getRootPane
      */
-    public JRootPane getRootPane() {
+    @Override
+		public JRootPane getRootPane() {
         return rootPane;
     }
 
@@ -420,7 +427,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see #setContentPane
      * @see RootPaneContainer#getContentPane
      */
-    public Container getContentPane() {
+    @Override
+		public Container getContentPane() {
         return getRootPane().getContentPane();
     }
 
@@ -438,7 +446,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      *     description: The client area of the applet where child
      *                  components are normally inserted.
      */
-    public void setContentPane(Container contentPane) {
+    @Override
+		public void setContentPane(Container contentPane) {
         getRootPane().setContentPane(contentPane);
     }
 
@@ -450,7 +459,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see #setLayeredPane
      * @see RootPaneContainer#getLayeredPane
      */
-    public JLayeredPane getLayeredPane() {
+    @Override
+		public JLayeredPane getLayeredPane() {
         return getRootPane().getLayeredPane();
     }
 
@@ -465,7 +475,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      *     hidden: true
      *     description: The pane which holds the various applet layers.
      */
-    public void setLayeredPane(JLayeredPane layeredPane) {
+    @Override
+		public void setLayeredPane(JLayeredPane layeredPane) {
         getRootPane().setLayeredPane(layeredPane);
     }
 
@@ -475,7 +486,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see #setGlassPane
      * @see RootPaneContainer#getGlassPane
      */
-    public Component getGlassPane() {
+    @Override
+		public Component getGlassPane() {
         return getRootPane().getGlassPane();
     }
 
@@ -491,7 +503,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      *     hidden: true
      *     description: A transparent pane used for menu rendering.
      */
-    public void setGlassPane(Component glassPane) {
+    @Override
+		public void setGlassPane(Component glassPane) {
         getRootPane().setGlassPane(glassPane);
     }
 
@@ -500,7 +513,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      *
      * @since 1.6
      */
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         JComponent.getGraphicsInvoked(this);
         return super.getGraphics();
     }
@@ -518,7 +532,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see       RepaintManager
      * @since     1.6
      */
-    public void repaint(long time, int x, int y, int width, int height) {
+    @Override
+		public void repaint(long time, int x, int y, int width, int height) {
       if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
       	System.out.println("repaintNow " + this);
           RepaintManager.currentManager(this).addDirtyRegion(
@@ -544,7 +559,8 @@ public class JApplet extends Applet implements /* Accessible ,*/
      *
      * @return  a string representation of this JApplet.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String rootPaneString = (rootPane != null ?
                                  rootPane.toString() : "");
         String rootPaneCheckingEnabledString = (rootPaneCheckingEnabled ?

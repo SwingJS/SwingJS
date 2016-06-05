@@ -41,6 +41,7 @@ import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
 import jssun.awt.AppContext;
+import jssun.awt.SunGraphicsCallback;
 
 
 /**
@@ -79,7 +80,7 @@ public class Container extends Component {
      * @see #add
      * @see #getComponents
      */
-    private java.util.List<Component> component;
+    private java.util.List<Component> component =  new java.util.ArrayList<Component>();
 
     /**
      * Layout manager for this container.
@@ -240,18 +241,18 @@ public class Container extends Component {
 //    //private static native void initIDs();
 //
     /**
+     * The only constructor for container
      * Constructs a new Container. Containers can be extended directly,
      * but are lightweight in this case and must be contained by a parent
      * somewhere higher up in the component tree that is native.
      * (such as Frame for example).
-     * 
+     *
      */
     public Container() {
-    	component = new java.util.ArrayList<Component>();
-//    	setAppContext();
+    	super();
     }
 
-    void initializeFocusTraversalKeys() {
+		void initializeFocusTraversalKeys() {
         //focusTraversalKeys = new Set[4];
     }
 
@@ -1294,7 +1295,8 @@ public class Container extends Component {
     }
 
     // Should only be called while holding tree lock
-    int numListening(long mask) {
+    @Override
+		int numListening(long mask) {
         int superListening = numListeningMask(mask);
 
         if (mask == AWTEvent.HIERARCHY_EVENT_MASK) {
@@ -1372,7 +1374,8 @@ public class Container extends Component {
     }
 
     // Should only be called while holding tree lock
-    int countHierarchyMembers() {
+    @Override
+		int countHierarchyMembers() {
 //        if (log.isLoggable(Level.FINE)) {
 //            // Verify descendantsCount is correct
 //            int sum = 0;
@@ -1402,7 +1405,8 @@ public class Container extends Component {
         }
     }
 
-    final int createHierarchyEvents(int id, Component changed,
+    @Override
+		final int createHierarchyEvents(int id, Component changed,
         Container changedParent, long changeFlags, boolean enabledOnToolkit)
     {
         //assert Thread.holdsLock(getTreeLock());
@@ -1461,7 +1465,8 @@ public class Container extends Component {
      * @see #validate
      * @since JDK1.1
      */
-    public void doLayout() {
+    @Override
+		public void doLayout() {
     	// only called by JTable
         layout();
     }
@@ -1470,7 +1475,8 @@ public class Container extends Component {
      * @deprecated As of JDK version 1.1,
      * replaced by <code>doLayout()</code>.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void layout() {
     	// called by Component and Container
         LayoutManager layoutMgr = this.layoutMgr;
@@ -1494,7 +1500,8 @@ public class Container extends Component {
      * @see LayoutManager
      * @see LayoutManager2#invalidateLayout(Container)
      */
-    public void invalidate() {
+    @Override
+		public void invalidate() {
         LayoutManager layoutMgr = this.layoutMgr;
         if (layoutMgr instanceof LayoutManager2) {
             LayoutManager2 lm = (LayoutManager2) layoutMgr;
@@ -1524,11 +1531,21 @@ public class Container extends Component {
      * @j2sOverride
      * 
      */
-    public void validate() {
+    @Override
+		public void validate() {
         /* Avoid grabbing lock unless really necessary. */
         if (!isValid()) {
             boolean updateCur = false;
             synchronized (getTreeLock()) {
+            	
+            	// for SwingJS ALL components must have peers. might as well do that now.
+            	// I think  there was a notification threading issue that the root pane was not
+              // getting its peer in time for validation.
+            	if (peer == null)
+            		peer = getToolkit().createComponent(this); 
+
+            	
+            	
                 if (!isValid() && peer != null) {
                     ContainerPeer p = null;
                     if (peer instanceof ContainerPeer) {
@@ -1609,6 +1626,7 @@ public class Container extends Component {
 	 * @see Component#getFont
 	 * @since JDK1.0
 	 */
+	@Override
 	public void setFont(Font f) {
 		Font oldfont = getFont();
 		setFontComp(f);
@@ -1639,7 +1657,8 @@ public class Container extends Component {
      * @see       LayoutManager#preferredLayoutSize(Container)
      * @see       Component#getPreferredSize
      */
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
         return preferredSize();
     }
 
@@ -1647,7 +1666,8 @@ public class Container extends Component {
      * @deprecated As of JDK version 1.1,
      * replaced by <code>getPreferredSize()</code>.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public Dimension preferredSize() {
         /* Avoid grabbing the lock if a reasonable cached size value
          * is available.
@@ -1686,7 +1706,8 @@ public class Container extends Component {
      * @see       Component#getMinimumSize
      * @since     JDK1.1
      */
-    public Dimension getMinimumSize() {
+    @Override
+		public Dimension getMinimumSize() {
         /* Avoid grabbing the lock if a reasonable cached size value
          * is available.
          */
@@ -1729,7 +1750,8 @@ public class Container extends Component {
      * @see       LayoutManager2#maximumLayoutSize(Container)
      * @see       Component#getMaximumSize
      */
-    public Dimension getMaximumSize() {
+    @Override
+		public Dimension getMaximumSize() {
         /* Avoid grabbing the lock if a reasonable cached size value
          * is available.
          */
@@ -1760,7 +1782,8 @@ public class Container extends Component {
      * where 0 represents alignment along the origin, 1 is aligned
      * the furthest away from the origin, 0.5 is centered, etc.
      */
-    public float getAlignmentX() {
+    @Override
+		public float getAlignmentX() {
         float xAlign;
         if (layoutMgr instanceof LayoutManager2) {
             synchronized (getTreeLock()) {
@@ -1780,7 +1803,8 @@ public class Container extends Component {
      * where 0 represents alignment along the origin, 1 is aligned
      * the furthest away from the origin, 0.5 is centered, etc.
      */
-    public float getAlignmentY() {
+    @Override
+		public float getAlignmentY() {
         float yAlign;
         if (layoutMgr instanceof LayoutManager2) {
             synchronized (getTreeLock()) {
@@ -1807,7 +1831,8 @@ public class Container extends Component {
      * @j2sOverride
      * 
      */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
     	// SwingJS : The developer should override paint() to draw;
     	//this method will take care of all buttons, in case the
     	//paintComponent() method for them has been overridden.
@@ -1828,7 +1853,7 @@ public class Container extends Component {
 //            // super.paint(); -- Don't bother, since it's a NOP.
 //
             GraphicsCallback.PaintCallback.getInstance().
-                runComponents(component.toArray(EMPTY_ARRAY), g, GraphicsCallback.LIGHTWEIGHTS);
+                runComponents(component.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.LIGHTWEIGHTS);
 //        }
     }
 
@@ -1843,7 +1868,8 @@ public class Container extends Component {
      * @param g the specified Graphics window
      * @see   Component#update(Graphics)
      */
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
         if (isShowing()) {
 //            if (! (peer instanceof LightweightPeer)) {
                 g.clearRect(0, 0, width, height);
@@ -1896,7 +1922,7 @@ public class Container extends Component {
     public void paintComponents(Graphics g) {
         if (isShowing()) {
             GraphicsCallback.PaintAllCallback.getInstance().
-                runComponents(component.toArray(EMPTY_ARRAY), g, GraphicsCallback.TWO_PASSES);
+                runComponents(component.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.TWO_PASSES);
         }
     }
 
@@ -1907,7 +1933,8 @@ public class Container extends Component {
      * @see       Component#printAll
      * @see       #printComponents
      */
-    void lightweightPaint(Graphics g) {
+    @Override
+		void lightweightPaint(Graphics g) {
         lwPaintComp(g);
         paintHeavyweightComponents(g);
     }
@@ -1915,11 +1942,12 @@ public class Container extends Component {
     /**
      * Prints all the heavyweight subcomponents.
      */
-    void paintHeavyweightComponents(Graphics g) {
+    @Override
+		void paintHeavyweightComponents(Graphics g) {
         if (isShowing()) {
             GraphicsCallback.PaintHeavyweightComponentsCallback.getInstance().
-                runComponents(component.toArray(EMPTY_ARRAY), g, GraphicsCallback.LIGHTWEIGHTS |
-                                            GraphicsCallback.HEAVYWEIGHTS);
+                runComponents(component.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.LIGHTWEIGHTS |
+                                            SunGraphicsCallback.HEAVYWEIGHTS);
         }
     }
 
@@ -2047,7 +2075,8 @@ public class Container extends Component {
      *
      * @since 1.3
      */
-    public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
+    @Override
+		public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
         EventListener l = null;
         if  (listenerType == ContainerListener.class) {
             l = containerListener;
@@ -2058,7 +2087,8 @@ public class Container extends Component {
     }
 
     // REMIND: remove when filtering is done at lower level
-    boolean eventEnabled(AWTEvent e) {
+    @Override
+		boolean eventEnabled(AWTEvent e) {
         int id = e.getID();
 
         if (id == ContainerEvent.COMPONENT_ADDED ||
@@ -2083,7 +2113,8 @@ public class Container extends Component {
      *
      * @param e the event
      */
-    protected void processEvent(AWTEvent e) {
+    @Override
+		protected void processEvent(AWTEvent e) {
       // SwingJS SAEM
     	processEventCont(e);
     }
@@ -2137,7 +2168,8 @@ public class Container extends Component {
      * may not be enabled for this Container.
      * @param e the event
      */
-    void dispatchEventImpl(AWTEvent e) {
+    @Override
+		void dispatchEventImpl(AWTEvent e) {
         if ((dispatcher != null) && dispatcher.dispatchEvent(e)) {
             // event was sent to a lightweight component.  The
             // native-produced event sent to the native container
@@ -2331,7 +2363,8 @@ public class Container extends Component {
 
         private MouseEventTargetFilter() {}
 
-        public boolean accept(final Component comp) {
+        @Override
+				public boolean accept(final Component comp) {
             return (comp.eventMask & AWTEvent.MOUSE_MOTION_EVENT_MASK) != 0
                 || (comp.eventMask & AWTEvent.MOUSE_EVENT_MASK) != 0
                 || (comp.eventMask & AWTEvent.MOUSE_WHEEL_EVENT_MASK) != 0
@@ -2382,7 +2415,8 @@ public class Container extends Component {
      * @deprecated As of JDK version 1.1,
      * replaced by <code>dispatchEvent(AWTEvent e)</code>
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void deliverEvent(Event e) {
         Component comp = getComponentAt(e.x, e.y);
         if ((comp != null) && (comp != this)) {
@@ -2411,7 +2445,8 @@ public class Container extends Component {
      * @see Component#contains
      * @since JDK1.1
      */
-    public Component getComponentAt(int x, int y) {
+    @Override
+		public Component getComponentAt(int x, int y) {
         return locate(x, y);
     }
 
@@ -2419,7 +2454,8 @@ public class Container extends Component {
      * @deprecated As of JDK version 1.1,
      * replaced by <code>getComponentAt(int, int)</code>.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public Component locate(int x, int y) {
 //        if (!contains(x, y)) {
 //            return null;
@@ -2457,7 +2493,8 @@ public class Container extends Component {
      * @see        Component#contains
      * @since      JDK1.1
      */
-    public Component getComponentAt(Point p) {
+    @Override
+		public Component getComponentAt(Point p) {
         return getComponentAt(p.x, p.y);
     }
 
@@ -2493,7 +2530,8 @@ public class Container extends Component {
         return null;
     }
 
-    boolean isSameOrAncestorOf(Component comp, boolean allowChildren) {
+    @Override
+		boolean isSameOrAncestorOf(Component comp, boolean allowChildren) {
         return this == comp || (allowChildren && isParentOf(comp));
     }
 
@@ -2626,7 +2664,8 @@ public class Container extends Component {
      * @see Component#isDisplayable
      * @see #removeNotify
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
         synchronized (getTreeLock()) {
             // addNotify() on the children may cause proxy event enabling
             // on this instance, so we first call addNotifyComp() and
@@ -2670,7 +2709,8 @@ public class Container extends Component {
      * @see Component#isDisplayable
      * @see #addNotify
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
 //        synchronized (getTreeLock()) {
             // We shouldn't use iterator because of the Swing menu
             // implementation specifics:
@@ -2866,7 +2906,8 @@ public class Container extends Component {
      *
      * @return    the parameter string of this container
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String str = paramStringComp();
         LayoutManager layoutMgr = this.layoutMgr;
         if (layoutMgr != null) {
@@ -3102,7 +3143,8 @@ public class Container extends Component {
      * @see #isFocusCycleRoot()
      * @since 1.4
      */
-    public boolean isFocusCycleRoot(Container container) {
+    @Override
+		public boolean isFocusCycleRoot(Container container) {
         if (isFocusCycleRoot() && container == this) {
             return true;
         } else {
@@ -3138,7 +3180,8 @@ public class Container extends Component {
 //        return root;
 //    }
 
-    final boolean containsFocus() {
+    @Override
+		final boolean containsFocus() {
 //        final Component focusOwner = KeyboardFocusManager.
 //            getCurrentKeyboardFocusManager().getFocusOwner();
 //        return isParentOf(focusOwner);
@@ -3185,7 +3228,8 @@ public class Container extends Component {
 //        }
     }
 
-    void clearCurrentFocusCycleRootOnHide() {
+    @Override
+		void clearCurrentFocusCycleRootOnHide() {
 //        KeyboardFocusManager kfm =
 //            KeyboardFocusManager.getCurrentKeyboardFocusManager();
 //        Container cont = kfm.getCurrentFocusCycleRoot();
@@ -3419,7 +3463,8 @@ public class Container extends Component {
         }
     }
 
-    boolean postsOldMouseEvents() {
+    @Override
+		boolean postsOldMouseEvents() {
         return true;
     }
 
@@ -3434,7 +3479,8 @@ public class Container extends Component {
      * @see Component#getComponentOrientation
      * @since 1.4
      */
-    public void applyComponentOrientation(ComponentOrientation o) {
+    @Override
+		public void applyComponentOrientation(ComponentOrientation o) {
         applyCompOrientComp(o);
         synchronized (getTreeLock()) {
             for (int i = 0; i < component.size(); i++) {
@@ -3478,7 +3524,8 @@ public class Container extends Component {
      * @see #addPropertyChangeListener(java.lang.String,java.beans.PropertyChangeListener)
      * 
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
         addPropChangeListenerComp(listener);
     }
 
@@ -3518,7 +3565,8 @@ public class Container extends Component {
      * @see #addPropertyChangeListener(java.beans.PropertyChangeListener)
      * @see Component#removePropertyChangeListener
      */
-    public void addPropertyChangeListener(String propertyName,
+    @Override
+		public void addPropertyChangeListener(String propertyName,
                                           PropertyChangeListener listener) {
         addPropChangeListComp(propertyName, listener);
     }
@@ -4541,7 +4589,8 @@ class LightweightDispatcher implements AWTEventListener {
      * Listen for drag events posted in other hw components so we can
      * track enter/exit regardless of where a drag originated
      */
-    public void eventDispatched(AWTEvent e) {
+    @Override
+		public void eventDispatched(AWTEvent e) {
         boolean isForeignDrag = (e instanceof MouseEvent) &&
 //                                !(e instanceof SunDropTargetEvent) &&
                                 (e.id == MouseEvent.MOUSE_DRAGGED) &&

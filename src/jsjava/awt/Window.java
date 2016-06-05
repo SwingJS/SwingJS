@@ -69,6 +69,7 @@ import swingjs.JSToolkit;
  * with {@link #Window(Window, GraphicsConfiguration)}.  The
  * <code>GraphicsConfiguration</code> object is one of the
  * <code>GraphicsConfiguration</code> objects of the target screen device.
+ * 
  * <p>
  * In a virtual device multi-screen environment in which the desktop
  * area could span multiple physical screen devices, the bounds of all
@@ -401,93 +402,6 @@ public class Window extends Container {
 //    //private static native void initIDs();
 //
     /**
-     * Constructs a new, initially invisible window in default size with the
-     * specified <code>GraphicsConfiguration</code>.
-     * <p>
-     * If there is a security manager, this method first calls
-     * the security manager's <code>checkTopLevelWindow</code>
-     * method with <code>this</code>
-     * as its argument to determine whether or not the window
-     * must be displayed with a warning banner.
-     *
-     * @param gc the <code>GraphicsConfiguration</code> of the target screen
-     *     device. If <code>gc</code> is <code>null</code>, the system default
-     *     <code>GraphicsConfiguration</code> is assumed
-     * @exception IllegalArgumentException if <code>gc</code>
-     *    is not from a screen device
-     * @exception HeadlessException when
-     *     <code>GraphicsEnvironment.isHeadless()</code> returns <code>true</code>
-     *
-     * @see java.awt.GraphicsEnvironment#isHeadless
-     * @see java.lang.SecurityManager#checkTopLevelWindow
-     */
-    Window(GraphicsConfiguration gc) {
-        init(gc);
-    }
-    
-
-//    transient Object anchor = new Object();
-//    static class WindowDisposerRecord implements jssun.java2d.DisposerRecord {
-//        final WeakReference<Window> owner;
-//        final WeakReference weakThis;
-//        final AppContext context;
-//        WindowDisposerRecord(AppContext context, Window victim) {
-//            owner = new WeakReference<Window>(victim.getOwner());
-//            weakThis = victim.weakThis;
-//            this.context = context;
-//        }
-//        public void dispose() {
-//            Window parent = owner.get();
-//            if (parent != null) {
-//                parent.removeOwnedWindow(weakThis);
-//            }
-//            Window.removeFromWindowList(context, weakThis);
-//        }
-//    }
-//
-  private void init(GraphicsConfiguration gc) {
-  //      GraphicsEnvironment.checkHeadless();
-
-        syncLWRequests = systemSyncLWRequests;
-
-        addToWindowList();
-
-        //setWarningString();
-        this.cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-        this.visible = false;
-        
-//        if (gc == null) {
-//            this.graphicsConfig =
-//                GraphicsEnvironment.getLocalGraphicsEnvironment().
-//             getDefaultScreenDevice().getDefaultConfiguration();
-//        } else {
-//            this.graphicsConfig = gc;
-//        }
-//        if (graphicsConfig.getDevice().getType() !=
-//            GraphicsDevice.TYPE_RASTER_SCREEN) {
-//            throw new IllegalArgumentException("not a screen device");
-//        }
-        setLayout(new BorderLayout());
-
-        /* offset the initial location with the original of the screen */
-        /* and any insets                                              */
-// SwingJS  TODO ?? 
-//        Rectangle screenBounds = graphicsConfig.getBounds();
-//        Insets screenInsets = getToolkit().getScreenInsets(graphicsConfig);
-//        int x = getX() + screenBounds.x + screenInsets.left;
-//        int y = getY() + screenBounds.y + screenInsets.top;
-//        if (x != this.x || y != this.y) {
-//            setLocation(x, y);
-//            /* reset after setLocation */
-////            setLocationByPlatform(locationByPlatformProp);
-//        }
-
-        modalExclusionType = Dialog.ModalExclusionType.NO_EXCLUDE;
-
-//        sun.java2d.Disposer.addRecord(anchor, new WindowDisposerRecord(appContext, this));
-    }
-
-    /**
      * Constructs a new, initially invisible window in the default size.
      *
      * <p>First, if there is a security manager, its
@@ -508,40 +422,70 @@ public class Window extends Container {
      *
      * @see java.awt.GraphicsEnvironment#isHeadless
      * @see java.lang.SecurityManager#checkTopLevelWindow
+     * 
      */
     Window() {
         //GraphicsEnvironment.checkHeadless();
-        init(null);
+      	initWinGC(null, null);
     }
 
-	/**
-	 * Constructs a new, initially invisible window with the specified
-	 * <code>Frame</code> as its owner. The window will not be focusable unless
-	 * its owner is showing on the screen.
-	 * <p>
-	 * If there is a security manager, this method first calls the security
-	 * manager's <code>checkTopLevelWindow</code> method with <code>this</code> as
-	 * its argument to determine whether or not the window must be displayed with
-	 * a warning banner.
-	 * 
-	 * @param owner
-	 *          the <code>Frame</code> to act as owner or <code>null</code> if
-	 *          this window has no owner
-	 * @exception IllegalArgumentException
-	 *              if the <code>owner</code>'s <code>GraphicsConfiguration</code>
-	 *              is not from a screen device
-	 * @exception HeadlessException
-	 *              when <code>GraphicsEnvironment.isHeadless</code> returns
-	 *              <code>true</code>
-	 * 
-	 * @see java.awt.GraphicsEnvironment#isHeadless
-	 * @see java.lang.SecurityManager#checkTopLevelWindow
-	 * @see #isShowing
-	 */
-	public Window(Frame owner) {
-		init(owner == null ? null : owner.getGraphicsConfiguration());
-		ownedInit(owner);
-	}
+    /**
+     * Constructs a new, initially invisible window in default size with the
+     * specified <code>GraphicsConfiguration</code>.
+     * <p>
+     * If there is a security manager, this method first calls
+     * the security manager's <code>checkTopLevelWindow</code>
+     * method with <code>this</code>
+     * as its argument to determine whether or not the window
+     * must be displayed with a warning banner.
+     *
+     * @param gc the <code>GraphicsConfiguration</code> of the target screen
+     *     device. If <code>gc</code> is <code>null</code>, the system default
+     *     <code>GraphicsConfiguration</code> is assumed
+     * @exception IllegalArgumentException if <code>gc</code>
+     *    is not from a screen device
+     * @exception HeadlessException when
+     *     <code>GraphicsEnvironment.isHeadless()</code> returns <code>true</code>
+     *
+     * @see java.awt.GraphicsEnvironment#isHeadless
+     * @see java.lang.SecurityManager#checkTopLevelWindow
+     * 
+     */
+    Window(GraphicsConfiguration gc) {
+    	initWinGC(null, gc);
+    }
+    
+
+//	/**
+//	 * This was never ever any use, since Frame subclasses Window
+//	 * 
+//	 * Constructs a new, initially invisible window with the specified
+//	 * <code>Frame</code> as its owner. The window will not be focusable unless
+//	 * its owner is showing on the screen.
+//	 * <p>
+//	 * If there is a security manager, this method first calls the security
+//	 * manager's <code>checkTopLevelWindow</code> method with <code>this</code> as
+//	 * its argument to determine whether or not the window must be displayed with
+//	 * a warning banner.
+//	 * 
+//	 * @param owner
+//	 *          the <code>Frame</code> to act as owner or <code>null</code> if
+//	 *          this window has no owner
+//	 * @exception IllegalArgumentException
+//	 *              if the <code>owner</code>'s <code>GraphicsConfiguration</code>
+//	 *              is not from a screen device
+//	 * @exception HeadlessException
+//	 *              when <code>GraphicsEnvironment.isHeadless</code> returns
+//	 *              <code>true</code>
+//	 * 
+//	 * @see java.awt.GraphicsEnvironment#isHeadless
+//	 * @see java.lang.SecurityManager#checkTopLevelWindow
+//	 * @see #isShowing
+//	 * 
+//	 */
+//	public Window(Frame owner) {
+//		this(owner, null);
+//	}
 
 	/**
 	 * Constructs a new, initially invisible window with the specified
@@ -569,10 +513,10 @@ public class Window extends Container {
 	 * @see #isShowing
 	 * 
 	 * @since 1.2
+	 * 
 	 */
 	public Window(Window owner) {
-		init(owner == null ? null : owner.getGraphicsConfiguration());
-		ownedInit(owner);
+  	initWinGC(owner, null);
 	}
 
     /**
@@ -604,24 +548,102 @@ public class Window extends Container {
      * @see       GraphicsConfiguration#getBounds
      * @see       #isShowing
      * @since     1.3
+     * 
      */
     public Window(Window owner, GraphicsConfiguration gc) {
-        this(gc);
-        ownedInit(owner);
+    	// everything will pass through here, even Window(gc);
+    	// We just adjust for the 1-parameter issue here
+    	initWinGC(owner, gc);
     }
 
-    private void ownedInit(Window owner) {
-        this.parent = owner;
-        if (owner != null) {
-            owner.addOwnedWindow(this);
-        }
-    }
+	/**
+	 * The trick here is that with only one constructor, J2S will not check
+	 * parameter types. Only the 1-parameter case is ambiguous.
+	 * 
+	 * @param owner
+	 * @param gc
+	 */
+	protected void initWinGC(Window owner, GraphicsConfiguration gc) {
+   	setAppContext();
+  	if (owner != null && !(owner instanceof Window)) {
+  		gc = (GraphicsConfiguration) (Object) owner;
+  		owner = null;
+  	}
+  	if (gc == null && owner != null)
+  		gc = owner.getGraphicsConfiguration();
+  	
+		parent = owner;
+		if (owner != null) {
+			owner.addOwnedWindow(this);
+		}
+		// GraphicsEnvironment.checkHeadless();
+
+		syncLWRequests = systemSyncLWRequests;
+
+		addToWindowList();
+
+		// setWarningString();
+		cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+		visible = false;
+
+		// if (gc == null) {
+		// this.graphicsConfig =
+		// GraphicsEnvironment.getLocalGraphicsEnvironment().
+		// getDefaultScreenDevice().getDefaultConfiguration();
+		// } else {
+		// this.graphicsConfig = gc;
+		// }
+		// if (graphicsConfig.getDevice().getType() !=
+		// GraphicsDevice.TYPE_RASTER_SCREEN) {
+		// throw new IllegalArgumentException("not a screen device");
+		// }
+		setLayout(new BorderLayout());
+
+		/* offset the initial location with the original of the screen */
+		/* and any insets */
+		// SwingJS TODO ??
+		// Rectangle screenBounds = graphicsConfig.getBounds();
+		// Insets screenInsets = getToolkit().getScreenInsets(graphicsConfig);
+		// int x = getX() + screenBounds.x + screenInsets.left;
+		// int y = getY() + screenBounds.y + screenInsets.top;
+		// if (x != this.x || y != this.y) {
+		// setLocation(x, y);
+		// /* reset after setLocation */
+		// // setLocationByPlatform(locationByPlatformProp);
+		// }
+
+		modalExclusionType = Dialog.ModalExclusionType.NO_EXCLUDE;
+
+		// sun.java2d.Disposer.addRecord(anchor, new
+		// WindowDisposerRecord(appContext, this));
+	}
+
+	// transient Object anchor = new Object();
+	// static class WindowDisposerRecord implements jssun.java2d.DisposerRecord {
+	// final WeakReference<Window> owner;
+	// final WeakReference weakThis;
+	// final AppContext context;
+	// WindowDisposerRecord(AppContext context, Window victim) {
+	// owner = new WeakReference<Window>(victim.getOwner());
+	// weakThis = victim.weakThis;
+	// this.context = context;
+	// }
+	// public void dispose() {
+	// Window parent = owner.get();
+	// if (parent != null) {
+	// parent.removeOwnedWindow(weakThis);
+	// }
+	// Window.removeFromWindowList(context, weakThis);
+	// }
+	// }
+	//
 
     /**
      * Construct a name for this component.  Called by getName() when the
      * name is null.
      */
-    String constructComponentName() {
+    @Override
+		String constructComponentName() {
         synchronized (Window.class) {
             return base + nameCounter++;
         }
@@ -730,7 +752,8 @@ public class Window extends Container {
      * @see Container#removeNotify
      * @since JDK1.0
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
 //        synchronized (getTreeLock()) {
             Container parent = this.parent;
             if (parent != null && parent.getPeer() == null) {
@@ -749,7 +772,8 @@ public class Window extends Container {
     /**
      * {@inheritDoc}
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
 //        synchronized (getTreeLock()) {
             synchronized (allWindows) {
                 allWindows.remove(this);
@@ -810,7 +834,8 @@ public class Window extends Container {
      * @see #setSize(Dimension)
      * @since 1.6
      */
-    public void setMinimumSize(Dimension minimumSize) {
+    @Override
+		public void setMinimumSize(Dimension minimumSize) {
         synchronized (getTreeLock()) {
             super.setMinimumSize(minimumSize);
             Dimension size = getSize();
@@ -840,7 +865,8 @@ public class Window extends Container {
      * @see #setMinimumSize
      * @since 1.6
      */
-    public void setSize(Dimension d) {
+    @Override
+		public void setSize(Dimension d) {
         super.setSize(d);
     }
 
@@ -857,7 +883,8 @@ public class Window extends Container {
      * @see #setMinimumSize
      * @since 1.6
      */
-    public void setSize(int width, int height) {
+    @Override
+		public void setSize(int width, int height) {
         super.setSize(width, height);
     }
 
@@ -865,7 +892,8 @@ public class Window extends Container {
      * @deprecated As of JDK version 1.1,
      * replaced by <code>setBounds(int, int, int, int)</code>.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void reshape(int x, int y, int width, int height) {
         if (isMinimumSizeSet()) {
             Dimension minSize = getMinimumSize();
@@ -914,7 +942,8 @@ public class Window extends Container {
      * @see java.awt.Window#toFront
      * @see java.awt.Window#dispose
      */
-    public void setVisible(boolean b) {
+    @Override
+		public void setVisible(boolean b) {
         super.setVisible(b);
     }
 
@@ -929,7 +958,8 @@ public class Window extends Container {
      * @deprecated As of JDK version 1.5, replaced by
      * {@link #setVisible(boolean)}.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void show() {
 //        if (peer == null) {
 //            addNotify();
@@ -1003,7 +1033,8 @@ public class Window extends Container {
      * @deprecated As of JDK version 1.5, replaced by
      * {@link #setVisible(boolean)}.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void hide() {
         synchronized(ownedWindowList) {
             for (int i = 0; i < ownedWindowList.size(); i++) {
@@ -1020,7 +1051,8 @@ public class Window extends Container {
         super.hide();
     }
 
-    final void clearMostRecentFocusOwnerOnHide() {
+    @Override
+		final void clearMostRecentFocusOwnerOnHide() {
         /* do nothing */
     }
 
@@ -1066,7 +1098,8 @@ public class Window extends Container {
 
     void doDispose() {
     class DisposeAction implements Runnable {
-        public void run() {
+        @Override
+				public void run() {
             // Check if this window is the fullscreen window for the
             // device. Exit the fullscreen mode prior to disposing
             // of the window if that's the case.
@@ -1127,11 +1160,13 @@ public class Window extends Container {
      * It's overridden here because parent == owner in Window,
      * and we shouldn't adjust counter on owner
      */
-    void adjustListeningChildrenOnParent(long mask, int num) {
+    @Override
+		void adjustListeningChildrenOnParent(long mask, int num) {
     }
 
     // Should only be called while holding tree lock
-    void adjustDecendantsOnParent(int num) {
+    @Override
+		void adjustDecendantsOnParent(int num) {
         // do nothing since parent == owner and we shouldn't
         // ajust counter on owner
     }
@@ -1242,7 +1277,8 @@ public class Window extends Container {
      * @see       Toolkit#getDefaultToolkit
      * @see       Component#getToolkit
      */
-    public Toolkit getToolkit() {
+    @Override
+		public Toolkit getToolkit() {
         return Toolkit.getDefaultToolkit();
     }
 
@@ -1291,7 +1327,8 @@ public class Window extends Container {
      * @see       java.util.Locale
      * @since     JDK1.1
      */
-    public Locale getLocale() {
+    @Override
+		public Locale getLocale() {
       if (this.locale == null) {
         return Locale.getDefault();
       }
@@ -1327,7 +1364,8 @@ public class Window extends Container {
      * @see       Cursor
      * @since     JDK1.1
      */
-    public void setCursor(Cursor cursor) {
+    @Override
+		public void setCursor(Cursor cursor) {
         if (cursor == null) {
             cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         }
@@ -1827,7 +1865,8 @@ public class Window extends Container {
      * @see #getWindowListeners
      * @since 1.3
      */
-    public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
+    @Override
+		public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
         EventListener l = null;
         if (listenerType == WindowFocusListener.class) {
             l = windowFocusListener;
@@ -1842,7 +1881,8 @@ public class Window extends Container {
     }
 
     // REMIND: remove when filtering is handled at lower level
-    boolean eventEnabled(AWTEvent e) {
+    @Override
+		boolean eventEnabled(AWTEvent e) {
         switch(e.id) {
           case WindowEvent.WINDOW_OPENED:
           case WindowEvent.WINDOW_CLOSING:
@@ -1886,7 +1926,8 @@ public class Window extends Container {
      *
      * @param e the event
      */
-    protected void processEvent(AWTEvent e) {
+    @Override
+		protected void processEvent(AWTEvent e) {
         if (e instanceof WindowEvent) {
             switch (e.getID()) {
                 case WindowEvent.WINDOW_OPENED:
@@ -2036,10 +2077,12 @@ public class Window extends Container {
      * the list of child windows is dumped to <code>System.out</code>.
      * @param e  the keyboard event
      */
-    void preProcessKeyEvent(KeyEvent e) {
+    @Override
+		void preProcessKeyEvent(KeyEvent e) {
     }
 
-    void postProcessKeyEvent(KeyEvent e) {
+    @Override
+		void postProcessKeyEvent(KeyEvent e) {
         // Do nothing
     }
 
@@ -2269,7 +2312,8 @@ public class Window extends Container {
      *         KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS
      * @since 1.4
      */
-    public Set<AWTKeyStroke> getFocusTraversalKeys(int id) {
+    @Override
+		public Set<AWTKeyStroke> getFocusTraversalKeys(int id) {
     	return null;
 //        if (id < 0 || id >= KeyboardFocusManager.TRAVERSAL_KEY_LENGTH) {
 //            throw new IllegalArgumentException("invalid focus traversal key identifier");
@@ -2311,7 +2355,8 @@ public class Window extends Container {
      * @see Container#getFocusTraversalPolicy
      * @since 1.4
      */
-    public final boolean isFocusCycleRoot() {
+    @Override
+		public final boolean isFocusCycleRoot() {
         return true;
     }
 
@@ -2323,7 +2368,8 @@ public class Window extends Container {
      * @see Container#isFocusCycleRoot()
      * @since 1.4
      */
-    public final Container getFocusCycleRootAncestor() {
+    @Override
+		public final Container getFocusCycleRootAncestor() {
         return null;
     }
 
@@ -2495,7 +2541,8 @@ public class Window extends Container {
      * @see Component#removePropertyChangeListener
      * @see #addPropertyChangeListener(java.lang.String,java.beans.PropertyChangeListener)
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
         super.addPropertyChangeListener(listener);
     }
 
@@ -2535,7 +2582,8 @@ public class Window extends Container {
      * @see #addPropertyChangeListener(java.beans.PropertyChangeListener)
      * @see Component#removePropertyChangeListener
      */
-    public void addPropertyChangeListener(String propertyName,
+    @Override
+		public void addPropertyChangeListener(String propertyName,
                                           PropertyChangeListener listener) {
         super.addPropertyChangeListener(propertyName, listener);
     }
@@ -2544,7 +2592,8 @@ public class Window extends Container {
      * Dispatches an event to this window or one of its sub components.
      * @param e the event
      */
-    void dispatchEventImpl(AWTEvent e) {
+    @Override
+		void dispatchEventImpl(AWTEvent e) {
         if (e.getID() == ComponentEvent.COMPONENT_RESIZED) {
             invalidate();
             validate();
@@ -2556,7 +2605,8 @@ public class Window extends Container {
      * @deprecated As of JDK version 1.1
      * replaced by <code>dispatchEvent(AWTEvent)</code>.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public boolean postEvent(Event e) {
         if (handleEvent(e)) {
             e.consume();
@@ -2569,7 +2619,8 @@ public class Window extends Container {
      * Checks if this Window is showing on screen.
      * @see Component#setVisible
     */
-    public boolean isShowing() {
+    @Override
+		public boolean isShowing() {
         return visible;
     }
 
@@ -2922,6 +2973,7 @@ public class Window extends Container {
 	 * 
 	 * @since 1.3
 	 */
+	@Override
 	public GraphicsConfiguration getGraphicsConfiguration() {
 		// //NOTE: for multiscreen, this will need to take into account
 		// //which screen the window is on/mostly on instead of returning the
@@ -2942,7 +2994,8 @@ public class Window extends Container {
     /**
      * Reset this Window's GraphicsConfiguration to match its peer.
      */
-    void resetGC() {
+    @Override
+		void resetGC() {
 //        if (!GraphicsEnvironment.isHeadless()) {
 //            // use the peer's GC
 //            setGCFromPeer();
@@ -3044,7 +3097,8 @@ public class Window extends Container {
     /**
      * Overridden from Component.  Top-level Windows don't dispatch to ancestors
      */
-    boolean dispatchMouseWheelToAncestor(MouseWheelEvent e) {return false;}
+    @Override
+		boolean dispatchMouseWheelToAncestor(MouseWheelEvent e) {return false;}
 
 //    /**
 //     * Creates a new strategy for multi-buffering on this component.
@@ -3127,7 +3181,8 @@ public class Window extends Container {
      * Verifies that it is focusable and as container it can container focus owner.
      * @since 1.5
      */
-    boolean canContainFocusOwner(Component focusOwnerCandidate) {
+    @Override
+		boolean canContainFocusOwner(Component focusOwnerCandidate) {
         return super.canContainFocusOwner(focusOwnerCandidate) && isFocusableWindow();
     }
 
@@ -3225,7 +3280,8 @@ public class Window extends Container {
      * @see #isLocationByPlatform
      * @since 1.6
      */
-    public void setBounds(int x, int y, int width, int height) {
+    @Override
+		public void setBounds(int x, int y, int width, int height) {
 //        synchronized (getTreeLock()) {
 //            if (getBoundsOp() == ComponentPeer.SET_LOCATION ||
 //                getBoundsOp() == ComponentPeer.SET_BOUNDS)
@@ -3255,7 +3311,8 @@ public class Window extends Container {
      * @since 1.6
      * 
      */
-    public void setBounds(Rectangle r) {
+    @Override
+		public void setBounds(Rectangle r) {
         setBounds(r.x, r.y, r.width, r.height);
     }
 
@@ -3264,7 +3321,8 @@ public class Window extends Container {
      * @return <code>true</code> if the component and all of its ancestors
      *          until a toplevel window are visible, <code>false</code> otherwise
      */
-    boolean isRecursivelyVisible() {
+    @Override
+		boolean isRecursivelyVisible() {
         // 5079694 fix: for a toplevel to be displayed, its parent doesn't have to be visible.
         // We're overriding isRecursivelyVisible to implement this policy.
         return visible;

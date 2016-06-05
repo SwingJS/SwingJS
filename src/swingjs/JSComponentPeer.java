@@ -24,11 +24,11 @@ import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 
 /**
- * A class to provide a JavaScript peer interface for Swing AWT components
- * that have not been developed yet?
+ * A class to provide a JavaScript peer interface for Swing AWT components that
+ * have not been developed yet?
  * 
  * @author Bob Hanson
- *
+ * 
  */
 public class JSComponentPeer implements LightweightPeer {
 

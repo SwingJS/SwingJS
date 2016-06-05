@@ -1,4 +1,4 @@
-package swingjs;
+package swingjs.plaf;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
@@ -28,10 +28,14 @@ import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
 import jssun.awt.CausedFocusEvent.Cause;
+import swingjs.JSGraphicsEnvironment;
+import swingjs.JSThreadGroup;
 import swingjs.api.HTML5Applet;
 
-public class JSWindowPeer implements FramePeer {
+public class JSWindowUI extends JSPanelUI implements FramePeer /* and thus WindowPeer*/ {
 
+	// adds window closing controls to a panel in making a frame or dialog
+	
 	Window window;
 	boolean isFrame;
 	HTML5Applet applet;

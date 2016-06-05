@@ -78,6 +78,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
 
+import javax.swing.JFrame;
+
 class AtomViewerCanvas extends Canvas {
 	AtomViewerFrame pg;
 
@@ -85,15 +87,18 @@ class AtomViewerCanvas extends Canvas {
 		pg = p;
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(300, 400);
 	}
 
+	@Override
 	public void update(Graphics g) {
 		pg.updateAtomViewer(g);
 	}
 
 	private int paintCount;
+	@Override
 	public void paint(Graphics g) {
 		System.out.println("paint " + (++paintCount));
 		pg.updateAtomViewer(g);
@@ -104,20 +109,25 @@ class AtomViewerLayout implements LayoutManager {
 	public AtomViewerLayout() {
 	}
 
+	@Override
 	public void addLayoutComponent(String name, Component c) {
 	}
 
+	@Override
 	public void removeLayoutComponent(Component c) {
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		return new Dimension(500, 500);
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		return new Dimension(100, 100);
 	}
 
+	@Override
 	public void layoutContainer(Container target) {
 		int barwidth = 0;
 		int i;
@@ -171,6 +181,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 
 	boolean started = false;
 
+	@Override
 	public void init() {
 		// addComponentListener(this);
 		showFrame();
@@ -204,19 +215,24 @@ public class AtomViewer extends Applet implements ComponentListener {
 		//super.paint(g);
 	}*/
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		showFrame();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 	}
 
+	@Override
 	public void destroy() {
 		if (ogf != null)
 			ogf.dispose();
@@ -225,7 +241,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 	}
 }
 
-class AtomViewerFrame extends Frame implements ComponentListener,
+class AtomViewerFrame extends JFrame implements ComponentListener,
 		ActionListener, AdjustmentListener, MouseMotionListener, MouseListener,
 		ItemListener {
 
@@ -426,7 +442,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		autoZoomItem.setState(true);
 		m.add(animatedZoomItem = getCheckItem("Animated Scaling"));
 		animatedZoomItem.setState(true);
-		setMenuBar(mb);
+		setJMenuBar(mb);
 
 		m = new Menu("Samples");
 		mb.add(m);
@@ -2274,21 +2290,26 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		x3[2] = mz + mvz * t;
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		cv.repaint();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 		handleResize();
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == exitItem) {
 			applet.destroyFrame();
@@ -2307,6 +2328,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	private boolean finished;
 
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		if (!finished)
 			return;
@@ -2328,6 +2350,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		dragging = true;
 		changingDerivedStates = false;
@@ -2379,6 +2402,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		}
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (dragging)
 			return;
@@ -2425,6 +2449,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		}
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (selection == SEL_STATES)
 			editMagClick();
@@ -2444,9 +2469,11 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 		if (!dragging && selection != 0) {
 			selectedPaneHandle = -1;
@@ -2457,6 +2484,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseDown = true;
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
@@ -2468,6 +2496,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		edit(e);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		mouseDown = false;
 		if (dragging)
@@ -2475,6 +2504,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		dragging = changingDerivedStates = false;
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (!finished) {
 			return;
@@ -2521,6 +2551,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void processEvent(AWTEvent ev) {
 		if (ev.getID() == Event.WINDOW_DESTROY) {
 			// destroyFrame();
@@ -3060,6 +3091,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			super(bs);
 		}
 
+		@Override
 		void computePoint(int r, int costh) {
 			try {
 				float v = dataR[r];
@@ -3077,6 +3109,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			super(bs);
 		}
 
+		@Override
 		void computePoint(int r, int costh) {
 			try {
 				float v = dataR[r] * dataTh[costh];
@@ -3099,6 +3132,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 		float f1, f2, f3, f4;
 
+		@Override
 		void setupFrame(double mult) {
 			double a = state.re * mult;
 			double b = state.im * mult;
@@ -3113,6 +3147,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			f4 = (float) (a - c);
 		}
 
+		@Override
 		void computePoint(int r, int costh) {
 			try {
 				float q = dataR[r] * dataTh[costh];
@@ -3249,6 +3284,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 		BasisState(){}
 		
+		@Override
 		String getText() {
 			return "n = " + n + ", l = " + l + ", m = " + m;
 		}
@@ -3262,18 +3298,22 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		BasisState bstates[];
 		Complex coefs[];
 
+		@Override
 		void convertDerivedToBasis() {
 			basis.convertDerivedToBasis();
 		}
 
+		@Override
 		void convertBasisToDerived() {
 			basis.convertBasisToDerived();
 		}
 
+		@Override
 		void setBasisActive() {
 			basis.active = true;
 		}
 
+		@Override
 		String getText() {
 			return text;
 		}

@@ -10,6 +10,7 @@ import swingjs.api.DOMNode;
 
 public class JSPanelUI extends JSComponentUI {
 
+	int frameZ = 10000;
 	public JSPanelUI() {
 		isContainer = true;
 		setDoc();

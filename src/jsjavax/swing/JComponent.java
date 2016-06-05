@@ -952,7 +952,8 @@ public abstract class JComponent extends Container
      * @see #paintComponent
      * @see jsjavax.swing.plaf.ComponentUI
      */
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
         paint(g);
     }
 
@@ -982,7 +983,8 @@ public abstract class JComponent extends Container
      * @see #getComponentGraphics
      * @see #repaint
      */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
         boolean shouldClearPaintFlags = false;
 
         if ((getWidth() <= 0) || (getHeight() <= 0)) {
@@ -1138,7 +1140,8 @@ public abstract class JComponent extends Container
      * @see #printBorder
      * @see #printChildren
      */
-    public void printAll(Graphics g) {
+    @Override
+		public void printAll(Graphics g) {
         setFlag(IS_PRINTING_ALL, true);
         try {
             print(g);
@@ -1191,7 +1194,8 @@ public abstract class JComponent extends Container
      * @see #printChildren
      * @see #isPaintingForPrint
      */
-    public void print(Graphics g) {
+    @Override
+		public void print(Graphics g) {
         setFlag(IS_PRINTING, true);
         firePropertyChangeBool("paintingForPrint", false, true);
         try {
@@ -1470,7 +1474,8 @@ public abstract class JComponent extends Container
      * @see jsjava.awt.Component#requestFocusInWindow(boolean)
      * @since 1.4
      */
-    public void requestFocus() {
+    @Override
+		public void requestFocus() {
         super.requestFocus();
     }
 
@@ -1496,7 +1501,8 @@ public abstract class JComponent extends Container
      * @see jsjava.awt.Component#requestFocusInWindow(boolean)
      * @since 1.4
      */
-    public boolean requestFocus(boolean temporary) {
+    @Override
+		public boolean requestFocus(boolean temporary) {
         super.requestFocus();
         return true;
     }
@@ -1518,7 +1524,8 @@ public abstract class JComponent extends Container
      * @see jsjava.awt.Component#requestFocusInWindow(boolean)
      * @since 1.4
      */
-    public boolean requestFocusInWindow() {
+    @Override
+		public boolean requestFocusInWindow() {
         return super.requestFocusInWindow();
     }
 
@@ -1540,7 +1547,8 @@ public abstract class JComponent extends Container
      * @see jsjava.awt.Component#requestFocusInWindow(boolean)
      * @since 1.4
      */
-    protected boolean requestFocusInWindow(boolean temporary) {
+    @Override
+		protected boolean requestFocusInWindow(boolean temporary) {
         return super.requestFocusInWindow();
     }
 
@@ -1619,7 +1627,8 @@ public abstract class JComponent extends Container
      * @throws NullPointerException if <code>font</code> is null
      * @since 1.5
      */
-    public FontMetrics getFontMetrics(Font font) {
+    @Override
+		public FontMetrics getFontMetrics(Font font) {
     	return FontDesignMetrics.getMetrics(font);
 //        return SwingUtilities2.getFontMetrics(this, font);
     }
@@ -1636,7 +1645,8 @@ public abstract class JComponent extends Container
      * 
      * 
      */
-    public void setPreferredSize(Dimension preferredSize) {
+    @Override
+		public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(preferredSize);
     }
 
@@ -1651,6 +1661,7 @@ public abstract class JComponent extends Container
 	 * @see #setPreferredSize
 	 * @see ComponentUI
 	 */
+	@Override
 	public Dimension getPreferredSize() {
 		return getPrefSizeJComp();
 	}
@@ -1676,7 +1687,8 @@ public abstract class JComponent extends Container
      *       bound: true
      * description: The maximum size of the component.
      */
-    public void setMaximumSize(Dimension maximumSize) {
+    @Override
+		public void setMaximumSize(Dimension maximumSize) {
         super.setMaximumSize(maximumSize);
     }
 
@@ -1691,7 +1703,8 @@ public abstract class JComponent extends Container
      * @see #setMaximumSize
      * @see ComponentUI
      */
-    public Dimension getMaximumSize() {
+    @Override
+		public Dimension getMaximumSize() {
         if (isMaximumSizeSet()) {
             return super.getMaximumSize();
         }
@@ -1716,7 +1729,8 @@ public abstract class JComponent extends Container
      *       bound: true
      * description: The minimum size of the component.
      */
-    public void setMinimumSize(Dimension minimumSize) {
+    @Override
+		public void setMinimumSize(Dimension minimumSize) {
         super.setMinimumSize(minimumSize);
     }
 
@@ -1730,7 +1744,8 @@ public abstract class JComponent extends Container
      * @see #setMinimumSize
      * @see ComponentUI
      */
-    public Dimension getMinimumSize() {
+    @Override
+		public Dimension getMinimumSize() {
         if (isMinimumSizeSet()) {
             return super.getMinimumSize();
         }
@@ -1751,7 +1766,8 @@ public abstract class JComponent extends Container
      * 
      * @j2sOverride
      */
-    public boolean contains(int x, int y) {
+    @Override
+		public boolean contains(int x, int y) {
         return (ui != null) ? ui.contains(this, x, y) : inside(x, y);
     }
 
@@ -1818,7 +1834,8 @@ public abstract class JComponent extends Container
      * @return the value of the insets property
      * @see #setBorder
      */
-    public Insets getInsets() {
+    @Override
+		public Insets getInsets() {
         if (border != null) {
             return border.getBorderInsets(this);
         }
@@ -1867,7 +1884,8 @@ public abstract class JComponent extends Container
      * @see #setAlignmentY
      * @see jsjava.awt.Component#getAlignmentY
      */
-    public float getAlignmentY() {
+    @Override
+		public float getAlignmentY() {
         if (isAlignmentYSet) {
             return alignmentY;
         }
@@ -1896,7 +1914,8 @@ public abstract class JComponent extends Container
      * @see #setAlignmentX
      * @see jsjava.awt.Component#getAlignmentX
      */
-    public float getAlignmentX() {
+    @Override
+		public float getAlignmentX() {
         if (isAlignmentXSet) {
             return alignmentX;
         }
@@ -1950,7 +1969,8 @@ public abstract class JComponent extends Container
      * then invoke operations on that object to draw on the component.
      * @return this components graphics context
      */
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
 //        if (DEBUG_GRAPHICS_LOADED && shouldDebugGraphics() != 0) {
 //            DebugGraphics graphics = new DebugGraphics(super.getGraphics(),
 //                                                       this);
@@ -2561,7 +2581,8 @@ public abstract class JComponent extends Container
      * @see jsjava.awt.FontMetrics
      * @since 1.6
      */
-    public int getBaseline(int width, int height) {
+    @Override
+		public int getBaseline(int width, int height) {
         // check size.
         super.getBaseline(width, height);
         if (ui != null) {
@@ -2591,7 +2612,8 @@ public abstract class JComponent extends Container
      * @see #getBaseline(int, int)
      * @since 1.6
      */
-    public BaselineResizeBehavior getBaselineResizeBehavior() {
+    @Override
+		public BaselineResizeBehavior getBaselineResizeBehavior() {
         if (ui != null) {
             return ui.getBaselineResizeBehavior(this);
         }
@@ -2643,7 +2665,8 @@ public abstract class JComponent extends Container
      * @beaninfo
      *    attribute: visualUpdate true
      */
-    public void setVisible(boolean aFlag) {
+    @Override
+		public void setVisible(boolean aFlag) {
         if(aFlag != isVisible()) {
             super.setVisible(aFlag);
             Container parent = getParent();
@@ -2680,7 +2703,8 @@ public abstract class JComponent extends Container
      *    attribute: visualUpdate true
      *  description: The enabled state of the component.
      */
-    public void setEnabled(boolean enabled) {
+    @Override
+		public void setEnabled(boolean enabled) {
         boolean oldEnabled = isEnabled();
         super.setEnabled(enabled);
         firePropertyChangeBool("enabled", oldEnabled, enabled);
@@ -2703,7 +2727,8 @@ public abstract class JComponent extends Container
      *    attribute: visualUpdate true
      *  description: The foreground color of the component.
      */
-    public void setForeground(Color fg) {
+    @Override
+		public void setForeground(Color fg) {
         Color oldFg = getForeground();
         super.setForeground(fg);
         if ((oldFg != null) ? !oldFg.equals(fg) : ((fg != null) && !fg.equals(oldFg))) {
@@ -2733,7 +2758,8 @@ public abstract class JComponent extends Container
      *    attribute: visualUpdate true
      *  description: The background color of the component.
      */
-    public void setBackground(Color bg) {
+    @Override
+		public void setBackground(Color bg) {
         Color oldBg = getBackground();
         super.setBackground(bg);
         if ((oldBg != null) ? !oldBg.equals(bg) : ((bg != null) && !bg.equals(oldBg))) {
@@ -2754,7 +2780,8 @@ public abstract class JComponent extends Container
      *    attribute: visualUpdate true
      *  description: The font for the component.
      */
-    public void setFont(Font font) {
+    @Override
+		public void setFont(Font font) {
         Font oldFont = getFont();
         super.setFont(font);
         // font already bound in AWT1.2
@@ -2829,7 +2856,8 @@ public abstract class JComponent extends Container
     }
 
     /** Overrides <code>processKeyEvent</code> to process events. **/
-    protected void processKeyEvent(KeyEvent e) {
+    @Override
+		protected void processKeyEvent(KeyEvent e) {
 //      boolean result;
       boolean shouldProcessKey;
 
@@ -3297,7 +3325,8 @@ public abstract class JComponent extends Container
      * @see         jsjava.awt.Component#processMouseEvent
      * @since       1.5
      */
-    protected void processMouseEvent(MouseEvent e) {
+    @Override
+		protected void processMouseEvent(MouseEvent e) {
 //        if (autoscrolls && e.getID() == MouseEvent.MOUSE_RELEASED) {
 //            Autoscroller.stop(this);
 //        }
@@ -3310,7 +3339,8 @@ public abstract class JComponent extends Container
      * @param e the <code>MouseEvent</code>
      * @see MouseEvent
      */
-    protected void processMouseMotionEvent(MouseEvent e) {
+    @Override
+		protected void processMouseMotionEvent(MouseEvent e) {
 //        boolean dispatch = true;
 //        if (autoscrolls && e.getID() == MouseEvent.MOUSE_DRAGGED) {
 //            // We don't want to do the drags when the mouse moves if we're
@@ -3370,7 +3400,8 @@ public abstract class JComponent extends Container
             this.command = command;
         }
 
-        public Object getValue(String key) {
+        @Override
+				public Object getValue(String key) {
             if (key != null) {
                 if (key.equals(Action.ACTION_COMMAND_KEY)) {
                     return command;
@@ -3385,7 +3416,8 @@ public abstract class JComponent extends Container
             return null;
         }
 
-        public boolean isEnabled() {
+        @Override
+				public boolean isEnabled() {
             if (actionListener == null) {
                 // This keeps the old semantics where
                 // registerKeyboardAction(null) would essentialy remove
@@ -3400,22 +3432,27 @@ public abstract class JComponent extends Container
             return action.isEnabled();
         }
 
-        public void actionPerformed(ActionEvent ae) {
+        @Override
+				public void actionPerformed(ActionEvent ae) {
             if (actionListener != null) {
                 actionListener.actionPerformed(ae);
             }
         }
 
         // We don't allow any values to be added.
-        public void putValue(String key, Object value) {}
+        @Override
+				public void putValue(String key, Object value) {}
 
         // Does nothing, our enabledness is determiend from our asociated
         // action.
-        public void setEnabled(boolean b) { }
+        @Override
+				public void setEnabled(boolean b) { }
 
-        public void addPropertyChangeListener
+        @Override
+				public void addPropertyChangeListener
                     (PropertyChangeListener listener) {}
-        public void removePropertyChangeListener
+        @Override
+				public void removePropertyChangeListener
                           (PropertyChangeListener listener) {}
     }
 
@@ -3536,7 +3573,8 @@ public abstract class JComponent extends Container
 
     static final jssun.awt.RequestFocusController focusController =
         new jssun.awt.RequestFocusController() {
-            public boolean acceptRequestFocus(Component from, Component to,
+            @Override
+						public boolean acceptRequestFocus(Component from, Component to,
                                               boolean temporary, boolean focusedWindowChangeAllowed,
                                               jssun.awt.CausedFocusEvent.Cause cause)
             {
@@ -4150,7 +4188,8 @@ public abstract class JComponent extends Container
      * @beaninfo
      *       bound: true
      */
-    public void
+    @Override
+		public void
         setFocusTraversalKeys(int id, Set<? extends AWTKeyStroke> keystrokes)
     {
 //        if (id == KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS) {
@@ -4326,7 +4365,8 @@ public abstract class JComponent extends Container
      * @return true if this component is completely opaque
      * @see #setOpaque
      */
-    public boolean isOpaque() {
+    @Override
+		public boolean isOpaque() {
         return getFlag(IS_OPAQUE);
     }
 
@@ -4692,7 +4732,8 @@ public abstract class JComponent extends Container
      * @see #getVetoableChangeListeners
      * @see #getAncestorListeners
      */
-    public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
+    @Override
+		public <T extends EventListener> T[] getListeners(Class<T> listenerType) {
         T[] result;
         if (listenerType == AncestorListener.class) {
             // AncestorListeners are handled by the AncestorNotifier
@@ -4723,7 +4764,8 @@ public abstract class JComponent extends Container
      *
      * @see #registerKeyboardAction
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
         super.addNotify();
         firePropertyChangeObject("ancestor", null, getParent());
 
@@ -4739,7 +4781,8 @@ public abstract class JComponent extends Container
      *
      * @see #registerKeyboardAction
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
         super.removeNotify();
         // This isn't strictly correct.  The event shouldn't be
         // fired until *after* the parent is set to null.  But
@@ -4772,7 +4815,8 @@ public abstract class JComponent extends Container
      * @see jsjava.awt.Component#isShowing
      * @see RepaintManager#addDirtyRegion
      */
-    public void repaint(long tm, int x, int y, int width, int height) {
+    @Override
+		public void repaint(long tm, int x, int y, int width, int height) {
         RepaintManager.currentManager(this).addDirtyRegion(this, x, y, width, height);
     }
 
@@ -4847,7 +4891,8 @@ public abstract class JComponent extends Container
             //System.out.println("JC revalidate invoking later " + this);
 //            final Object me = this;
             Runnable callRevalidate = new Runnable() {
-                public void run() {
+                @Override
+								public void run() {
                     synchronized(JComponent.this) {
                         setFlag(REVALIDATE_RUNNABLE_SCHEDULED, false);
                     }
@@ -5321,7 +5366,8 @@ public abstract class JComponent extends Container
      *
      * @return true if this component is double buffered, otherwise false
      */
-    public boolean isDoubleBuffered() {
+    @Override
+		public boolean isDoubleBuffered() {
         return getFlag(IS_DOUBLE_BUFFERED);
     }
 
@@ -5526,7 +5572,8 @@ public abstract class JComponent extends Container
      *
      * @return  a string representation of this <code>JComponent</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String preferredSizeString = (isPreferredSizeSet() ?
                                       getPreferredSize().toString() : "");
         String minimumSizeString = (isMinimumSizeSet() ?

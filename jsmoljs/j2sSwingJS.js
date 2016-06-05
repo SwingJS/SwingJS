@@ -1503,29 +1503,23 @@ Clazz.unloadedClasses = [];
 
 /* public */
 Clazz.declarePackage = function (pkgName) {
-	if (Clazz.lastPackageName == pkgName)
+	if (Clazz.lastPackageName == pkgName || !pkgName || pkgName.length == 0)
 		return Clazz.lastPackage;
-	if (pkgName && pkgName.length) {
-		var pkgFrags = pkgName.split (/\./);
-		var pkg = Clazz.allPackage;
-		for (var i = 0; i < pkgFrags.length; i++) {
-			if (!pkg[pkgFrags[i]]) {
-				pkg[pkgFrags[i]] = { 
-					__PKG_NAME__ : (pkg.__PKG_NAME__ ? 
-						pkg.__PKG_NAME__ + "." + pkgFrags[i] : pkgFrags[i])
-				}; 
-				// pkg[pkgFrags[i]] = {};
-				if (i == 0) {
-					// eval ...
-					Clazz.setGlobal(pkgFrags[i], pkg[pkgFrags[i]]);
-				}
+	var pkgFrags = pkgName.split (/\./);
+	var pkg = Clazz.allPackage;
+	for (var i = 0; i < pkgFrags.length; i++) {
+    var a = pkgFrags[i];
+		if (!pkg[a]) {
+			pkg[a] = {	__PKG_NAME__ : (pkg.__PKG_NAME__ ? pkg.__PKG_NAME__ + "." + a : a) }
+			if (i == 0) {
+				// window[a] = ...
+				Clazz.setGlobal(a, pkg[a]);
 			}
-			pkg = pkg[pkgFrags[i]]
 		}
-		Clazz.lastPackageName = pkgName;
-		Clazz.lastPackage = pkg;
-		return pkg;
+		pkg = pkg[a]
 	}
+	Clazz.lastPackageName = pkgName;
+	return Clazz.lastPackage = pkg;
 };
 
 /* protected */

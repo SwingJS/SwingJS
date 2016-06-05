@@ -372,12 +372,15 @@ public class Frame extends Window {
      * @see java.awt.GraphicsEnvironment#isHeadless()
      * @see Component#setSize
      * @see Component#setVisible(boolean)
+     * 
+     * 
      */
     public Frame() {
-        this("");
+    	initTitleGC(null, null);
     }
 
     /**
+     * 
      * Constructs a new, initially invisible {@code Frame} with the
      * specified {@code GraphicsConfiguration}.
      *
@@ -391,9 +394,10 @@ public class Frame extends Window {
      *     <code>GraphicsEnvironment.isHeadless()</code> returns <code>true</code>
      * @see java.awt.GraphicsEnvironment#isHeadless()
      * @since     1.3
+     * 
      */
     public Frame(GraphicsConfiguration gc) {
-        this("", gc);
+    	initTitleGC(null, gc);
     }
 
     /**
@@ -406,12 +410,15 @@ public class Frame extends Window {
      * @see java.awt.Component#setSize
      * @see java.awt.Component#setVisible(boolean)
      * @see java.awt.GraphicsConfiguration#getBounds
+     * 
      */
     public Frame(String title) {
-        initFrame(title, null);
+    	initTitleGC(title, null);
     }
 
     /**
+     * the only one we use in SwingJS
+     * 
      * Constructs a new, initially invisible <code>Frame</code> object
      * with the specified title and a
      * <code>GraphicsConfiguration</code>.
@@ -431,22 +438,34 @@ public class Frame extends Window {
      * @see java.awt.Component#setVisible(boolean)
      * @see java.awt.GraphicsConfiguration#getBounds
      * @since 1.3
+     * 
+     * 
      */
     public Frame(String title, GraphicsConfiguration gc) {
-        super(gc);
-        initFrame(title, gc);
+    	initTitleGC(title, gc);
     }
 
-    private void initFrame(String title, GraphicsConfiguration gc) {
-        this.title = title;
-        //SunToolkit.checkAndSetPolicy(this, false);
-    }
+    protected void initTitleGC(String title, GraphicsConfiguration gc) {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (!gc && title && title.getBounds) {
+    	 *   gc = title;
+    	 *   title = null;
+    	 * }
+    	 */
+    	{}
+      this.title = (title == null  ? "" : title);
+  	  initWinGC(null, gc);   // Window
+      //SunToolkit.checkAndSetPolicy(this, false);
+		}
 
-    /**
+		/**
      * Construct a name for this component.  Called by getName() when the
      * name is null.
      */
-    String constructComponentName() {
+    @Override
+		String constructComponentName() {
         synchronized (Frame.class) {
             return base + nameCounter++;
         }
@@ -461,7 +480,8 @@ public class Frame extends Window {
      * @see Component#isDisplayable
      * @see #removeNotify
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
 //        synchronized (getTreeLock()) {
             if (peer == null) {
                 peer = getToolkit().createFrame(this);
@@ -541,7 +561,8 @@ public class Frame extends Window {
     /**
      * {@inheritDoc}
      */
-    public void setIconImage(Image image) {
+    @Override
+		public void setIconImage(Image image) {
         super.setIconImage(image);
     }
 
@@ -867,7 +888,8 @@ public class Frame extends Window {
      * @see Component#isDisplayable
      * @see #addNotify
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
 //        synchronized (getTreeLock()) {
 //            FramePeer peer = (FramePeer)this.peer;
 //            if (peer != null) {
@@ -884,7 +906,8 @@ public class Frame extends Window {
 //        }
     }
 
-    void postProcessKeyEvent(KeyEvent e) {
+    @Override
+		void postProcessKeyEvent(KeyEvent e) {
 //        if (menuBar != null && menuBar.handleShortcut(e)) {
 //            e.consume();
 //            return;
@@ -901,7 +924,8 @@ public class Frame extends Window {
      *
      * @return the parameter string of this frame
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String str = super.paramString();
         if (title != null) {
             str += ",title=" + title;

@@ -67,7 +67,7 @@ class AtomFrame {
 //	}
 //
 	
-	AtomFrame(Test test) {
+	AtomFrame(Test applet) {
 		BasisState x = new BasisState();
 		x.set(3);
 		System.out.println("testing " + x.getText());

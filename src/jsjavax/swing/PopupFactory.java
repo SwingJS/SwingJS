@@ -68,7 +68,12 @@ import jsjava.awt.event.WindowEvent;
  * @since 1.4
  */
 public class PopupFactory {
-    /**
+
+	
+  protected static int popupCount;
+
+
+  	/**
      * The shared instanceof <code>PopupFactory</code> is per
      * <code>AppContext</code>. This is the key used in the
      * <code>AppContext</code> to locate the <code>PopupFactory</code>.
@@ -432,7 +437,8 @@ public class PopupFactory {
                     final Window w = (Window)window;
 
                     w.addWindowListener(new WindowAdapter() {
-                        public void windowClosed(WindowEvent e) {
+                        @Override
+												public void windowClosed(WindowEvent e) {
                             List popups;
 
                             synchronized(HeavyWeightPopup.class) {
@@ -463,7 +469,8 @@ public class PopupFactory {
         //
         // Popup methods
         //
-        public void hide() {
+        @Override
+				public void hide() {
             super.hide();
             recycleHeavyWeightPopup(this);
         }
@@ -473,7 +480,8 @@ public class PopupFactory {
          * thus this method does nothing, instead use <code>_dipose</code>
          * which will handle the disposing.
          */
-        void dispose() {
+        @Override
+				void dispose() {
         }
 
         void _dispose() {
@@ -495,7 +503,8 @@ public class PopupFactory {
         /** Desired y location. */
         int y;
 
-        public void hide() {
+        @Override
+				public void hide() {
             Component component = getComponent();
 
             if (component != null) {
@@ -511,7 +520,8 @@ public class PopupFactory {
             }
             owner = null;
         }
-        public void pack() {
+        @Override
+				public void pack() {
             Component component = getComponent();
 
             if (component != null) {
@@ -519,7 +529,8 @@ public class PopupFactory {
             }
         }
 
-        void reset(Component owner, Component contents, int ownerX,
+        @Override
+				void reset(Component owner, Component contents, int ownerX,
                    int ownerY) {
             if ((owner instanceof JFrame) || (owner instanceof JDialog) ||
                                                  (owner instanceof JWindow)) {
@@ -675,7 +686,7 @@ public class PopupFactory {
         }
 
         /**
-         * Returns the cache to use for heavy weight popups.
+         * Returns the cache to use for light weight popups.
          */
         private static List getLightWeightPopupCache() {
             List cache = (List)SwingUtilities.appContextGet(
@@ -722,7 +733,8 @@ public class PopupFactory {
         //
         // Popup methods
         //
-        public void hide() {
+        @Override
+				public void hide() {
             super.hide();
 
             Container component = (Container)getComponent();
@@ -730,7 +742,8 @@ public class PopupFactory {
             component.removeAll();
             //recycleLightWeightPopup(this);
         }
-        public void show() {
+        @Override
+				public void show() {
             Container parent = null;
 
             if (owner != null) {
@@ -772,7 +785,8 @@ public class PopupFactory {
             }
         }
 
-        Component createComponent(Component owner) {
+        @Override
+				Component createComponent(Component owner) {
             JComponent component = new JPanel(new BorderLayout(), true);
 
             component.setOpaque(true);
@@ -786,7 +800,8 @@ public class PopupFactory {
         /**
          * Resets the <code>Popup</code> to an initial state.
          */
-        void reset(Component owner, Component contents, int ownerX,
+        @Override
+				void reset(Component owner, Component contents, int ownerX,
                    int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
@@ -809,7 +824,7 @@ public class PopupFactory {
 
         /** Child of the panel. The contents are added to this. */
         private JRootPane rootPane;
-
+				
 
         /**
          * Returns a medium weight <code>Popup</code> implementation. If
@@ -882,12 +897,14 @@ public class PopupFactory {
         // Popup
         //
 
-        public void hide() {
+        @Override
+				public void hide() {
             super.hide();
             rootPane.getContentPane().removeAll();
             recycleMediumWeightPopup(this);
         }
-        public void show() {
+        @Override
+				public void show() {
             Component component = getComponent();
             Container parent = null;
 
@@ -926,10 +943,11 @@ public class PopupFactory {
             component.setVisible(true);
         }
 
-        Component createComponent(Component owner) {
+        @Override
+				Component createComponent(Component owner) {
             Panel component = new MediumWeightComponent();
 
-            rootPane = new JRootPane();
+            rootPane = new JRootPane("_Popup" + (++popupCount), false);
             // NOTE: this uses setOpaque vs LookAndFeel.installProperty as
             // there is NO reason for the RootPane not to be opaque. For
             // painting to work the contentPane must be opaque, therefor the
@@ -942,7 +960,8 @@ public class PopupFactory {
         /**
          * Resets the <code>Popup</code> to an initial state.
          */
-        void reset(Component owner, Component contents, int ownerX,
+        @Override
+				void reset(Component owner, Component contents, int ownerX,
                    int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 

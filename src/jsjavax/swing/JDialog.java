@@ -24,6 +24,8 @@
  */
 package jsjavax.swing;
 
+import java.awt.HeadlessException;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -629,15 +631,16 @@ public class JDialog extends Dialog implements WindowConstants,
         // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
     }
 
+    private static int dialogCount;
     /**
      * Called by the constructor methods to create the default
      * <code>rootPane</code>.
      */
     protected JRootPane createRootPane() {
-        JRootPane rp = new JRootPane();
+        JRootPane rp = new JRootPane("_Dialog" + (++dialogCount), false);
         // NOTE: this uses setOpaque vs LookAndFeel.installProperty as there
         // is NO reason for the RootPane not to be opaque. For painting to
-        // work the contentPane must be opaque, therefor the RootPane can
+        // work the contentPane must be opaque, therefore the RootPane can
         // also be opaque.
         rp.setOpaque(true);
         return rp;
@@ -649,7 +652,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *
      * @see #setDefaultCloseOperation
      */
-    protected void processWindowEvent(WindowEvent e) {
+    @Override
+		protected void processWindowEvent(WindowEvent e) {
         super.processWindowEvent(e);
 
         if (e.getID() == WindowEvent.WINDOW_CLOSING) {
@@ -800,7 +804,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *
      * @param g  the <code>Graphics</code> context in which to paint
      */
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
         paint(g);
     }
 
@@ -888,6 +893,7 @@ public class JDialog extends Dialog implements WindowConstants,
 	 * @see #setRootPaneCheckingEnabled
 	 * @see jsjavax.swing.RootPaneContainer
 	 */
+	@Override
 	protected Component addImpl(Component comp, Object constraints, int index) {
 		if (isRootPaneCheckingEnabled()) {
 			return getContentPane().add(comp, constraints, index);
@@ -907,7 +913,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see #add
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void remove(Component comp) {
+    @Override
+		public void remove(Component comp) {
         if (comp == rootPane) {
             removeChild(comp);
         } else {
@@ -927,7 +934,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see #setRootPaneCheckingEnabled
      * @see jsjavax.swing.RootPaneContainer
      */
-    public void setLayout(LayoutManager manager) {
+    @Override
+		public void setLayout(LayoutManager manager) {
         if(isRootPaneCheckingEnabled()) {
             getContentPane().setLayout(manager);
         }
@@ -943,7 +951,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see #setRootPane
      * @see RootPaneContainer#getRootPane
      */
-    public JRootPane getRootPane() {
+    @Override
+		public JRootPane getRootPane() {
         return rootPane;
     }
 
@@ -986,7 +995,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see #setContentPane
      * @see RootPaneContainer#getContentPane
      */
-    public Container getContentPane() {
+    @Override
+		public Container getContentPane() {
         return getRootPane().getContentPane();
     }
 
@@ -1013,7 +1023,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *     description: The client area of the dialog where child
      *                  components are normally inserted.
      */
-    public void setContentPane(Container contentPane) {
+    @Override
+		public void setContentPane(Container contentPane) {
         getRootPane().setContentPane(contentPane);
     }
 
@@ -1025,7 +1036,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see #setLayeredPane
      * @see RootPaneContainer#getLayeredPane
      */
-    public JLayeredPane getLayeredPane() {
+    @Override
+		public JLayeredPane getLayeredPane() {
         return getRootPane().getLayeredPane();
     }
 
@@ -1044,7 +1056,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *     hidden: true
      *     description: The pane which holds the various dialog layers.
      */
-    public void setLayeredPane(JLayeredPane layeredPane) {
+    @Override
+		public void setLayeredPane(JLayeredPane layeredPane) {
         getRootPane().setLayeredPane(layeredPane);
     }
 
@@ -1056,7 +1069,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see #setGlassPane
      * @see RootPaneContainer#getGlassPane
      */
-    public Component getGlassPane() {
+    @Override
+		public Component getGlassPane() {
         return getRootPane().getGlassPane();
     }
 
@@ -1072,7 +1086,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *     hidden: true
      *     description: A transparent pane used for menu rendering.
      */
-    public void setGlassPane(Component glassPane) {
+    @Override
+		public void setGlassPane(Component glassPane) {
         getRootPane().setGlassPane(glassPane);
     }
 
@@ -1081,7 +1096,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *
      * @since 1.6
      */
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         JComponent.getGraphicsInvoked(this);
         return super.getGraphics();
     }
@@ -1099,7 +1115,8 @@ public class JDialog extends Dialog implements WindowConstants,
      * @see       RepaintManager
      * @since     1.6
      */
-    public void repaint(long time, int x, int y, int width, int height) {
+    @Override
+		public void repaint(long time, int x, int y, int width, int height) {
         if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
             RepaintManager.currentManager(this).addDirtyRegion(
                               this, x, y, width, height);
@@ -1168,7 +1185,8 @@ public class JDialog extends Dialog implements WindowConstants,
      *
      * @return  a string representation of this <code>JDialog</code>.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String defaultCloseOperationString;
         if (defaultCloseOperation == HIDE_ON_CLOSE) {
             defaultCloseOperationString = "HIDE_ON_CLOSE";

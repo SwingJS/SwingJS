@@ -74,14 +74,17 @@ class RippleCanvas extends Canvas {
 		pg = p;
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(300, 400);
 	}
 
+	@Override
 	public void update(Graphics g) {
 		pg.updateRipple(g);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		pg.updateRipple(g);
 	}
@@ -91,20 +94,25 @@ class RippleLayout implements LayoutManager {
 	public RippleLayout() {
 	}
 
+	@Override
 	public void addLayoutComponent(String name, Component c) {
 	}
 
+	@Override
 	public void removeLayoutComponent(Component c) {
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		return new Dimension(500, 500);
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		return new Dimension(100, 100);
 	}
 
+	@Override
 	public void layoutContainer(Container target) {
 		Insets insets = target.getInsets();
 		int targetw = target.getSize().width - insets.left - insets.right;
@@ -150,6 +158,7 @@ public class Ripple extends Applet implements ComponentListener {
 
 	boolean started = false;
 
+	@Override
 	public void init() {
 		showFrame();
 		// addComponentListener(this);
@@ -169,6 +178,7 @@ public class Ripple extends Applet implements ComponentListener {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (!started)
@@ -181,19 +191,24 @@ public class Ripple extends Applet implements ComponentListener {
 		super.paint(g);
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		showFrame();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 	}
 
+	@Override
 	public void destroy() {
 		if (ogf != null)
 			ogf.dispose();
@@ -667,6 +682,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	@Override
 	public boolean handleEvent(Event ev) {
 		if (ev.id == Event.WINDOW_DESTROY) {
 			destroyFrame();
@@ -1592,21 +1608,26 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		dampcoef = 1;
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		cv.repaint();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 		handleResize();
 		cv.repaint(100);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == blankButton) {
 			doBlank();
@@ -1624,6 +1645,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			doImport();
 	}
 
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 		if (e.getSource() == resBar) {
@@ -1672,6 +1694,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		reinit();
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (view3dCheck.getState()) {
 			view3dDrag(e);
@@ -1684,6 +1707,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		cv.repaint(0);
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (dragging)
 			return;
@@ -1717,16 +1741,20 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		cv.repaint();
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 		dragStartX = -1;
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		adjustResolution = false;
 		mouseMoved(e);
@@ -1736,6 +1764,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		edit(e);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
@@ -1744,6 +1773,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		cv.repaint();
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItemSelectable() == stoppedCheck) {
 			cv.repaint();
@@ -2103,20 +2133,25 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		public ImportDialogLayout() {
 		}
 
+		@Override
 		public void addLayoutComponent(String name, Component c) {
 		}
 
+		@Override
 		public void removeLayoutComponent(Component c) {
 		}
 
+		@Override
 		public Dimension preferredLayoutSize(Container target) {
 			return new Dimension(500, 500);
 		}
 
+		@Override
 		public Dimension minimumLayoutSize(Container target) {
 			return new Dimension(100, 100);
 		}
 
+		@Override
 		public void layoutContainer(Container target) {
 			Insets insets = target.getInsets();
 			int targetw = target.getSize().width - insets.left - insets.right;
@@ -2172,6 +2207,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 				text.selectAll();
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			int i;
 			Object src = e.getSource();
@@ -2185,6 +2221,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 				text.setText("");
 		}
 
+		@Override
 		public boolean handleEvent(Event ev) {
 			if (ev.id == Event.WINDOW_DESTROY) {
 				rframe.requestFocus();
@@ -2222,30 +2259,36 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	};
 
 	class SingleSourceSetup extends Setup {
+		@Override
 		String getName() {
 			return "Single Source";
 		}
 
+		@Override
 		void select() {
 			setFreqBar(15);
 			setBrightness(27);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DoubleSourceSetup();
 		}
 	}
 
 	class DoubleSourceSetup extends Setup {
+		@Override
 		String getName() {
 			return "Two Sources";
 		}
 
+		@Override
 		void select() {
 			setFreqBar(15);
 			setBrightness(19);
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_2S1F);
 			setSources();
@@ -2254,31 +2297,37 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			sources[0].x = sources[1].x = gridSizeX / 2;
 		}
 
+		@Override
 		Setup createNext() {
 			return new QuadrupleSourceSetup();
 		}
 	}
 
 	class QuadrupleSourceSetup extends Setup {
+		@Override
 		String getName() {
 			return "Four Sources";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_4S1F);
 			setFreqBar(15);
 		}
 
+		@Override
 		Setup createNext() {
 			return new SingleSlitSetup();
 		}
 	}
 
 	class SingleSlitSetup extends Setup {
+		@Override
 		String getName() {
 			return "Single Slit";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i;
@@ -2293,16 +2342,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(25);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DoubleSlitSetup();
 		}
 	}
 
 	class DoubleSlitSetup extends Setup {
+		@Override
 		String getName() {
 			return "Double Slit";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i;
@@ -2318,16 +2370,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(22);
 		}
 
+		@Override
 		Setup createNext() {
 			return new TripleSlitSetup();
 		}
 	}
 
 	class TripleSlitSetup extends Setup {
+		@Override
 		String getName() {
 			return "Triple Slit";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i;
@@ -2344,16 +2399,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(22);
 		}
 
+		@Override
 		Setup createNext() {
 			return new ObstacleSetup();
 		}
 	}
 
 	class ObstacleSetup extends Setup {
+		@Override
 		String getName() {
 			return "Obstacle";
 		}
 
+		@Override
 		void select() {
 			int i;
 			int x = gridSizeX / 2;
@@ -2365,16 +2423,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(20);
 		}
 
+		@Override
 		Setup createNext() {
 			return new HalfPlaneSetup();
 		}
 	}
 
 	class HalfPlaneSetup extends Setup {
+		@Override
 		String getName() {
 			return "Half Plane";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int x = windowOffsetX + windowWidth / 2;
@@ -2385,16 +2446,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(25);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DipoleSourceSetup();
 		}
 	}
 
 	class DipoleSourceSetup extends Setup {
+		@Override
 		String getName() {
 			return "Dipole Source";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_2S1F);
 			setSources();
@@ -2405,20 +2469,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(13);
 		}
 
+		@Override
 		void select() {
 			setBrightness(33);
 		}
 
+		@Override
 		Setup createNext() {
 			return new LateralQuadrupoleSetup();
 		}
 	}
 
 	class LateralQuadrupoleSetup extends Setup {
+		@Override
 		String getName() {
 			return "Lateral Quadrupole";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_4S1F);
 			setSources();
@@ -2432,20 +2500,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			auxBar.setValue(29);
 		}
 
+		@Override
 		void select() {
 			setBrightness(33);
 		}
 
+		@Override
 		Setup createNext() {
 			return new LinearQuadrupoleSetup();
 		}
 	}
 
 	class LinearQuadrupoleSetup extends Setup {
+		@Override
 		String getName() {
 			return "Linear Quadrupole";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_4S1F);
 			setSources();
@@ -2458,20 +2530,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(13);
 		}
 
+		@Override
 		void select() {
 			setBrightness(33);
 		}
 
+		@Override
 		Setup createNext() {
 			return new HexapoleSetup();
 		}
 	}
 
 	class HexapoleSetup extends Setup {
+		@Override
 		String getName() {
 			return "Hexapole";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_6S1F);
 			setSources();
@@ -2490,20 +2566,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		void select() {
 			brightnessBar.setValue(648);
 		}
 
+		@Override
 		Setup createNext() {
 			return new OctupoleSetup();
 		}
 	}
 
 	class OctupoleSetup extends HexapoleSetup {
+		@Override
 		String getName() {
 			return "Octupole";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_8S1F);
 			setSources();
@@ -2512,6 +2592,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			auxBar.setValue(29);
 		}
 
+		@Override
 		Setup createNext() {
 			return new Multi12Setup();
 		}
@@ -2524,10 +2605,12 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	 * Setup createNext() { return new Multi12Setup(); } }
 	 */
 	class Multi12Setup extends HexapoleSetup {
+		@Override
 		String getName() {
 			return "12-Pole";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_12S1F);
 			setSources();
@@ -2536,6 +2619,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			auxBar.setValue(29);
 		}
 
+		@Override
 		Setup createNext() {
 			return new PlaneWaveSetup();
 		}
@@ -2552,31 +2636,37 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	 * createNext() { return new PlaneWaveSetup(); } }
 	 */
 	class PlaneWaveSetup extends Setup {
+		@Override
 		String getName() {
 			return "Plane Wave";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			// setBrightness(7);
 			setFreqBar(15);
 		}
 
+		@Override
 		Setup createNext() {
 			return new IntersectingPlaneWavesSetup();
 		}
 	}
 
 	class IntersectingPlaneWavesSetup extends Setup {
+		@Override
 		String getName() {
 			return "Intersecting Planes";
 		}
 
+		@Override
 		void select() {
 			setBrightness(4);
 			setFreqBar(17);
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_2S1F_PLANE);
 			setSources();
@@ -2587,21 +2677,25 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			sources[3].y = windowOffsetY + windowHeight - 1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new PhasedArray1Setup();
 		}
 	}
 
 	class PhasedArray1Setup extends Setup {
+		@Override
 		String getName() {
 			return "Phased Array 1";
 		}
 
+		@Override
 		void select() {
 			setBrightness(5);
 			setFreqBar(17);
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_1S1F_PLANE_PHASE);
 			setSources();
@@ -2611,21 +2705,25 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			auxBar.setValue(5);
 		}
 
+		@Override
 		float calcSourcePhase(double ph, float v, double w) {
 			ph *= (auxBar.getValue() - 15) * 3.8 * freqBar.getValue() * freqMult;
 			return (float) Math.sin(w + ph);
 		}
 
+		@Override
 		Setup createNext() {
 			return new PhasedArray2Setup();
 		}
 	}
 
 	class PhasedArray2Setup extends PhasedArray1Setup {
+		@Override
 		String getName() {
 			return "Phased Array 2";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_1S1F_PLANE_PHASE);
 			setSources();
@@ -2635,6 +2733,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			auxBar.setValue(5);
 		}
 
+		@Override
 		float calcSourcePhase(double ph, float v, double w) {
 			double d = auxBar.getValue() * 2.5 / 30.;
 			ph -= .5;
@@ -2643,16 +2742,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			return (float) Math.sin(w + ph);
 		}
 
+		@Override
 		Setup createNext() {
 			return new PhasedArray3Setup();
 		}
 	}
 
 	class PhasedArray3Setup extends PhasedArray2Setup {
+		@Override
 		String getName() {
 			return "Phased Array 3";
 		}
 
+		@Override
 		float calcSourcePhase(double ph, float v, double w) {
 			double d = auxBar.getValue() * 2.5 / 30.;
 			ph -= .5;
@@ -2661,16 +2763,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			return (float) Math.sin(w - ph);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DopplerSetup();
 		}
 	}
 
 	class DopplerSetup extends Setup {
+		@Override
 		String getName() {
 			return "Doppler Effect 1";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_MOVING);
 			setFreqBar(13);
@@ -2678,12 +2783,14 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			fixedEndsCheck.setState(false);
 		}
 
+		@Override
 		Setup createNext() {
 			return new Doppler2Setup();
 		}
 	}
 
 	class Doppler2Setup extends Setup {
+		@Override
 		String getName() {
 			return "Doppler Effect 2";
 		}
@@ -2692,6 +2799,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		int dir;
 		int waiting;
 
+		@Override
 		void select() {
 			wall = gridSizeY / 2.;
 			dir = 1;
@@ -2700,6 +2808,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(220);
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_1S1F);
 			setSources();
@@ -2707,6 +2816,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			sources[0].y = windowOffsetY + 1;
 		}
 
+		@Override
 		void eachFrame() {
 			if (waiting > 0) {
 				waiting--;
@@ -2741,16 +2851,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		Setup createNext() {
 			return new SonicBoomSetup();
 		}
 	}
 
 	class SonicBoomSetup extends Setup {
+		@Override
 		String getName() {
 			return "Sonic Boom";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_MOVING);
 			setFreqBar(13);
@@ -2758,11 +2871,13 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			fixedEndsCheck.setState(false);
 		}
 
+		@Override
 		void doSetupSources() {
 			setSources();
 			auxBar.setValue(30);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BigModeSetup();
 		}
@@ -2793,10 +2908,12 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class BigModeSetup extends Setup {
+		@Override
 		String getName() {
 			return "Big 1x1 Mode";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_NONE);
 			int i;
@@ -2813,16 +2930,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new OneByOneModesSetup();
 		}
 	}
 
 	class OneByOneModesSetup extends Setup {
+		@Override
 		String getName() {
 			return "1x1 Modes";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_NONE);
 			int i, j;
@@ -2846,16 +2966,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new OneByNModesSetup();
 		}
 	}
 
 	class OneByNModesSetup extends Setup {
+		@Override
 		String getName() {
 			return "1xN Modes";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_NONE);
 			int i, j;
@@ -2881,16 +3004,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new NByNModesSetup();
 		}
 	}
 
 	class NByNModesSetup extends Setup {
+		@Override
 		String getName() {
 			return "NxN Modes";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_NONE);
 			int i, j;
@@ -2920,16 +3046,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new OneByNModeCombosSetup();
 		}
 	}
 
 	class OneByNModeCombosSetup extends Setup {
+		@Override
 		String getName() {
 			return "1xN Mode Combos";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_NONE);
 			int i, j;
@@ -2966,16 +3095,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new NByNModeCombosSetup();
 		}
 	}
 
 	class NByNModeCombosSetup extends Setup {
+		@Override
 		String getName() {
 			return "NxN Mode Combos";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_NONE);
 			int i, j;
@@ -3020,16 +3152,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new ZeroByOneModesSetup();
 		}
 	}
 
 	class ZeroByOneModesSetup extends Setup {
+		@Override
 		String getName() {
 			return "0x1 Acoustic Modes";
 		}
 
+		@Override
 		void select() {
 			fixedEndsCheck.setState(false);
 			sourceChooser.select(SRC_NONE);
@@ -3054,16 +3189,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new ZeroByNModesSetup();
 		}
 	}
 
 	class ZeroByNModesSetup extends Setup {
+		@Override
 		String getName() {
 			return "0xN Acoustic Modes";
 		}
 
+		@Override
 		void select() {
 			fixedEndsCheck.setState(false);
 			sourceChooser.select(SRC_NONE);
@@ -3090,16 +3228,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new NByNAcoModesSetup();
 		}
 	}
 
 	class NByNAcoModesSetup extends Setup {
+		@Override
 		String getName() {
 			return "NxN Acoustic Modes";
 		}
 
+		@Override
 		void select() {
 			fixedEndsCheck.setState(false);
 			sourceChooser.select(SRC_NONE);
@@ -3129,16 +3270,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new CoupledCavitiesSetup();
 		}
 	}
 
 	class CoupledCavitiesSetup extends Setup {
+		@Override
 		String getName() {
 			return "Coupled Cavities";
 		}
 
+		@Override
 		void select() {
 			fixedEndsCheck.setState(false);
 			sourceChooser.select(SRC_NONE);
@@ -3167,16 +3311,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			dampingBar.setValue(1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BeatsSetup();
 		}
 	}
 
 	class BeatsSetup extends Setup {
+		@Override
 		String getName() {
 			return "Beats";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_2S2F);
 			setSources();
@@ -3186,37 +3333,44 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			sources[1].x = gridSizeX / 2 + 2;
 		}
 
+		@Override
 		void select() {
 			setBrightness(25);
 			setFreqBar(18);
 		}
 
+		@Override
 		Setup createNext() {
 			return new SlowMediumSetup();
 		}
 	}
 
 	class SlowMediumSetup extends Setup {
+		@Override
 		String getName() {
 			return "Slow Medium";
 		}
 
+		@Override
 		void select() {
 			addMedium();
 			setFreqBar(10);
 			setBrightness(33);
 		}
 
+		@Override
 		Setup createNext() {
 			return new RefractionSetup();
 		}
 	}
 
 	class RefractionSetup extends Setup {
+		@Override
 		String getName() {
 			return "Refraction";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_1S1F_PLANE_PULSE);
 			setSources();
@@ -3229,19 +3383,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(33);
 		}
 
+		@Override
 		void select() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new InternalReflectionSetup();
 		}
 	}
 
 	class InternalReflectionSetup extends Setup {
+		@Override
 		String getName() {
 			return "Internal Reflection";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_1S1F_PLANE_PULSE);
 			setSources();
@@ -3254,19 +3412,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(33);
 		}
 
+		@Override
 		void select() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new CoatingSetup();
 		}
 	}
 
 	class CoatingSetup extends Setup {
+		@Override
 		String getName() {
 			return "Anti-Reflective Coating";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F);
 			addMedium();
@@ -3283,6 +3445,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(28);
 		}
 
+		@Override
 		Setup createNext() {
 			return new ZonePlateEvenSetup();
 		}
@@ -3295,13 +3458,16 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			zoneq = 1;
 		}
 
+		@Override
 		String getName() {
 			return "Zone Plate (Even)";
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			setSources();
@@ -3329,6 +3495,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(zoneq == 1 ? 4 : 7);
 		}
 
+		@Override
 		Setup createNext() {
 			return new ZonePlateOddSetup();
 		}
@@ -3339,10 +3506,12 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			zoneq = 0;
 		}
 
+		@Override
 		String getName() {
 			return "Zone Plate (Odd)";
 		}
 
+		@Override
 		Setup createNext() {
 			return new CircleSetup();
 		}
@@ -3355,13 +3524,16 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 
 		boolean circle;
 
+		@Override
 		String getName() {
 			return "Circle";
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		void select() {
 			int i;
 			int dx = windowWidth / 2 - 2;
@@ -3400,6 +3572,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(16);
 		}
 
+		@Override
 		Setup createNext() {
 			return new EllipseSetup();
 		}
@@ -3410,20 +3583,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			circle = false;
 		}
 
+		@Override
 		String getName() {
 			return "Ellipse";
 		}
 
+		@Override
 		Setup createNext() {
 			return new ResonantCavitiesSetup();
 		}
 	}
 
 	class ResonantCavitiesSetup extends Setup {
+		@Override
 		String getName() {
 			return "Resonant Cavities 1";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i, j;
@@ -3450,20 +3627,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(15);
 		}
 
+		@Override
 		double sourceStrength() {
 			return .1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new ResonantCavities2Setup();
 		}
 	}
 
 	class ResonantCavities2Setup extends Setup {
+		@Override
 		String getName() {
 			return "Resonant Cavities 2";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i, j;
@@ -3488,20 +3669,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(16);
 		}
 
+		@Override
 		double sourceStrength() {
 			return .03;
 		}
 
+		@Override
 		Setup createNext() {
 			return new RoomResonanceSetup();
 		}
 	}
 
 	class RoomResonanceSetup extends Setup {
+		@Override
 		String getName() {
 			return "Room Resonance";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_4S1F);
 			setSources();
@@ -3531,19 +3716,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(3);
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new Waveguides1Setup();
 		}
 	}
 
 	class Waveguides1Setup extends Setup {
+		@Override
 		String getName() {
 			return "Waveguides 1";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i, j;
@@ -3566,31 +3755,37 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(14);
 		}
 
+		@Override
 		Setup createNext() {
 			return new Waveguides2Setup();
 		}
 	}
 
 	class Waveguides2Setup extends Waveguides1Setup {
+		@Override
 		String getName() {
 			return "Waveguides 2";
 		}
 
+		@Override
 		void select() {
 			super.select();
 			setFreqBar(8);
 		}
 
+		@Override
 		Setup createNext() {
 			return new Waveguides3Setup();
 		}
 	}
 
 	class Waveguides3Setup extends Setup {
+		@Override
 		String getName() {
 			return "Waveguides 3";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i, j;
@@ -3615,16 +3810,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(16);
 		}
 
+		@Override
 		Setup createNext() {
 			return new Waveguides4Setup();
 		}
 	}
 
 	class Waveguides4Setup extends Waveguides3Setup {
+		@Override
 		String getName() {
 			return "Waveguides 4";
 		}
 
+		@Override
 		void select() {
 			super.select();
 			setBrightness(29);
@@ -3632,16 +3830,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			fixedEndsCheck.setState(false);
 		}
 
+		@Override
 		Setup createNext() {
 			return new Waveguides5Setup();
 		}
 	}
 
 	class Waveguides5Setup extends Waveguides3Setup {
+		@Override
 		String getName() {
 			return "Waveguides 5";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i;
@@ -3662,6 +3863,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(22);
 		}
 
+		@Override
 		void eachFrame() {
 			int y = windowOffsetY + 1;
 			int nx = 8;
@@ -3706,6 +3908,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		Setup createNext() {
 			return new ParabolicMirror1Setup();
 		}
@@ -3724,10 +3927,12 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	 * new ParabolicMirror1Setup(); } }
 	 */
 	class ParabolicMirror1Setup extends Setup {
+		@Override
 		String getName() {
 			return "Parabolic Mirror 1";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 50)
 				setResolution(50);
@@ -3755,19 +3960,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(18);
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new ParabolicMirror2Setup();
 		}
 	}
 
 	class ParabolicMirror2Setup extends ParabolicMirror1Setup {
+		@Override
 		String getName() {
 			return "Parabolic Mirror 2";
 		}
 
+		@Override
 		void doSetupSources() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			brightnessBar.setValue(370);
@@ -3775,16 +3984,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setSources();
 		}
 
+		@Override
 		Setup createNext() {
 			return new SoundDuctSetup();
 		}
 	}
 
 	class SoundDuctSetup extends Setup {
+		@Override
 		String getName() {
 			return "Sound Duct";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PULSE);
 			fixedEndsCheck.setState(false);
@@ -3798,16 +4010,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(60);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BaffledPistonSetup();
 		}
 	}
 
 	class BaffledPistonSetup extends Setup {
+		@Override
 		String getName() {
 			return "Baffled Piston";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			fixedEndsCheck.setState(false);
@@ -3829,19 +4044,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(18);
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new LowPassFilter1Setup();
 		}
 	}
 
 	class LowPassFilter1Setup extends Setup {
+		@Override
 		String getName() {
 			return "Low-Pass Filter 1";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 43)
 				setResolution(43);
@@ -3863,31 +4082,37 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(38);
 		}
 
+		@Override
 		Setup createNext() {
 			return new LowPassFilter2Setup();
 		}
 	}
 
 	class LowPassFilter2Setup extends LowPassFilter1Setup {
+		@Override
 		String getName() {
 			return "Low-Pass Filter 2";
 		}
 
+		@Override
 		void select() {
 			super.select();
 			setFreqBar(17);
 		}
 
+		@Override
 		Setup createNext() {
 			return new HighPassFilter1Setup();
 		}
 	}
 
 	class HighPassFilter1Setup extends Setup {
+		@Override
 		String getName() {
 			return "High-Pass Filter 1";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 43)
 				setResolution(43);
@@ -3905,31 +4130,37 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(17);
 		}
 
+		@Override
 		Setup createNext() {
 			return new HighPassFilter2Setup();
 		}
 	}
 
 	class HighPassFilter2Setup extends HighPassFilter1Setup {
+		@Override
 		String getName() {
 			return "High-Pass Filter 2";
 		}
 
+		@Override
 		void select() {
 			super.select();
 			setFreqBar(7);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BandStopFilter1Setup();
 		}
 	}
 
 	class BandStopFilter1Setup extends Setup {
+		@Override
 		String getName() {
 			return "Band-Stop Filter 1";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 43)
 				setResolution(43);
@@ -3963,47 +4194,56 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(2);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BandStopFilter2Setup();
 		}
 	}
 
 	class BandStopFilter2Setup extends BandStopFilter1Setup {
+		@Override
 		String getName() {
 			return "Band-Stop Filter 2";
 		}
 
+		@Override
 		void select() {
 			super.select();
 			setFreqBar(10);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BandStopFilter3Setup();
 		}
 	}
 
 	class BandStopFilter3Setup extends BandStopFilter1Setup {
+		@Override
 		String getName() {
 			return "Band-Stop Filter 3";
 		}
 
+		@Override
 		void select() {
 			super.select();
 			// at this frequency it doesn't pass
 			setFreqBar(4);
 		}
 
+		@Override
 		Setup createNext() {
 			return new PlanarConvexLensSetup();
 		}
 	}
 
 	class PlanarConvexLensSetup extends Setup {
+		@Override
 		String getName() {
 			return "Planar Convex Lens";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 42)
 				setResolution(42);
@@ -4030,16 +4270,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(6);
 		}
 
+		@Override
 		Setup createNext() {
 			return new BiconvexLensSetup();
 		}
 	}
 
 	class BiconvexLensSetup extends Setup {
+		@Override
 		String getName() {
 			return "Biconvex Lens";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 50)
 				setResolution(50);
@@ -4068,19 +4311,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			sources[0].y = cy - (2 + 2 * (int) r);
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new PlanarConcaveSetup();
 		}
 	}
 
 	class PlanarConcaveSetup extends Setup {
+		@Override
 		String getName() {
 			return "Planar Concave Lens";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i, j;
@@ -4106,16 +4353,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(19);
 		}
 
+		@Override
 		Setup createNext() {
 			return new CircularPrismSetup();
 		}
 	}
 
 	class CircularPrismSetup extends Setup {
+		@Override
 		String getName() {
 			return "Circular Prism";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE);
 			int i, j;
@@ -4141,16 +4391,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(9);
 		}
 
+		@Override
 		Setup createNext() {
 			return new RightAnglePrismSetup();
 		}
 	}
 
 	class RightAnglePrismSetup extends Setup {
+		@Override
 		String getName() {
 			return "Right-Angle Prism";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 42)
 				setResolution(42);
@@ -4169,16 +4422,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(11);
 		}
 
+		@Override
 		Setup createNext() {
 			return new PorroPrismSetup();
 		}
 	}
 
 	class PorroPrismSetup extends Setup {
+		@Override
 		String getName() {
 			return "Porro Prism";
 		}
 
+		@Override
 		void select() {
 			if (resBar.getValue() < 42)
 				setResolution(42);
@@ -4201,19 +4457,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setFreqBar(11);
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new ScatteringSetup();
 		}
 	}
 
 	class ScatteringSetup extends Setup {
+		@Override
 		String getName() {
 			return "Scattering";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_1S1F_PLANE_PULSE);
 			int cx = gridSizeX / 2;
@@ -4224,16 +4484,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(52);
 		}
 
+		@Override
 		Setup createNext() {
 			return new LloydsMirrorSetup();
 		}
 	}
 
 	class LloydsMirrorSetup extends Setup {
+		@Override
 		String getName() {
 			return "Lloyd's Mirror";
 		}
 
+		@Override
 		void select() {
 			setSources();
 			sources[0].x = windowOffsetX;
@@ -4245,19 +4508,23 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 				setWall(i + windowOffsetX, windowOffsetY + windowHeight - 1);
 		}
 
+		@Override
 		void doSetupSources() {
 		}
 
+		@Override
 		Setup createNext() {
 			return new TempGradient1();
 		}
 	}
 
 	class TempGradient1 extends Setup {
+		@Override
 		String getName() {
 			return "Temperature Gradient 1";
 		}
 
+		@Override
 		void select() {
 			int i, j;
 			int j1 = windowOffsetY + windowHeight / 2;
@@ -4279,22 +4546,26 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(33);
 		}
 
+		@Override
 		void doSetupSources() {
 			setSources();
 			sources[0].x = windowOffsetX + 2;
 			sources[0].y = windowOffsetY + windowHeight - 2;
 		}
 
+		@Override
 		Setup createNext() {
 			return new TempGradient2();
 		}
 	}
 
 	class TempGradient2 extends Setup {
+		@Override
 		String getName() {
 			return "Temperature Gradient 2";
 		}
 
+		@Override
 		void select() {
 			int i, j;
 			int j1 = windowOffsetY + windowHeight / 2 - windowHeight / 8;
@@ -4313,22 +4584,26 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(31);
 		}
 
+		@Override
 		void doSetupSources() {
 			setSources();
 			sources[0].x = windowOffsetX + 2;
 			sources[0].y = windowOffsetY + windowHeight / 4;
 		}
 
+		@Override
 		Setup createNext() {
 			return new TempGradient3();
 		}
 	}
 
 	class TempGradient3 extends Setup {
+		@Override
 		String getName() {
 			return "Temperature Gradient 3";
 		}
 
+		@Override
 		void select() {
 			int i, j;
 			int j1 = windowOffsetY + windowHeight / 2 - windowHeight / 5;
@@ -4348,22 +4623,26 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(31);
 		}
 
+		@Override
 		void doSetupSources() {
 			setSources();
 			sources[0].x = windowOffsetX + 2;
 			sources[0].y = windowOffsetY + windowHeight / 4;
 		}
 
+		@Override
 		Setup createNext() {
 			return new TempGradient4();
 		}
 	}
 
 	class TempGradient4 extends TempGradient3 {
+		@Override
 		String getName() {
 			return "Temperature Gradient 4";
 		}
 
+		@Override
 		void select() {
 			int i, j;
 			int j1 = windowOffsetY + windowHeight / 2 - windowHeight / 5;
@@ -4383,16 +4662,19 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(31);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DispersionSetup();
 		}
 	}
 
 	class DispersionSetup extends Setup {
+		@Override
 		String getName() {
 			return "Dispersion";
 		}
 
+		@Override
 		void select() {
 			sourceChooser.select(SRC_2S2F);
 			int i, j;
@@ -4405,6 +4687,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setBrightness(16);
 		}
 
+		@Override
 		void doSetupSources() {
 			setSources();
 			sources[0].x = gridSizeX / 2 - 2;
@@ -4414,6 +4697,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			auxBar.setValue(30);
 		}
 
+		@Override
 		Setup createNext() {
 			return null;
 		}

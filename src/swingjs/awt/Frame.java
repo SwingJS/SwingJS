@@ -1,16 +1,29 @@
 package swingjs.awt;
 
+import java.awt.GraphicsConfiguration;
+
 import javax.swing.JFrame;
 
 public class Frame extends JFrame {
+
+		
+	public Frame() {
+		super();
+	}
 
 	public Frame(String title) {
 		super(title);
 	}
 
-	public Frame() {
-		super();
+	
+	public Frame(GraphicsConfiguration gc) {
+		super(gc);
 	}
+
+	public Frame(String title, GraphicsConfiguration gc) {
+		super(title, gc);
+	}
+
 
 	@Override
 	public void remove(int i) {

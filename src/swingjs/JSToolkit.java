@@ -27,7 +27,6 @@ import jsjava.awt.Window;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.ColorModel;
-import jsjava.awt.image.ImageConsumer;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.Raster;
@@ -144,20 +143,21 @@ public class JSToolkit extends SunToolkit {
 
 	// ////// jsjava.awt.Toolkit /////////
 
-	@SuppressWarnings("unused")
 	@Override
 	public Dimension getScreenSize() {
-		Dimension d = new Dimension(0, 0);
+		@SuppressWarnings("unused")
 		JQuery jq = getJQuery();
-
+		int w = 0, h = 0;
 		/**
 		 * @j2sNative
 		 * 
-		 *  d.setSize(jq.$(window).width(), jq.$(window).height()); return d;
+		 * w = jq.$(window).width(); 
+		 * h = jq.$(window).height();
+		 * 
 		 */
 		{
-			return null;
 		}
+		return new Dimension(w, h);
 	}
 
 	@Override
@@ -547,7 +547,7 @@ public class JSToolkit extends SunToolkit {
 		 *            else
 		 *             f();
 		 *             } catch (e) {
-		 *             var s = "JSToolkit.setTimeout(" + id +"): " + e;
+		 *             var s = "JSToolkit.setTimeout(" + id +"): " + e + (e.getStackTrace ? e.getStackTrace() : e.stack ? "\n" + e.stack : "");
 		 *             System.out.println(s);
 		 *             alert(s)}
 		 *            SwingJS.eventID = id0; 
@@ -680,10 +680,12 @@ public class JSToolkit extends SunToolkit {
 	 */
 	@Override
   protected LightweightPeer createComponent(Component target) {
-  	System.out.println("JSToolkit creating LightweightPeer for " +  target);
   	LightweightPeer peer = getUI(target, true);
+  	if (peer == null)
+  		peer = new JSComponentPeer(target);
+  	System.out.println("JSToolkit creating LightweightPeer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
   	// JLayeredPane will need JSComponentPeer ?
-  	return (peer == null ? new JSComponentPeer(target) : peer);
+  	return peer;
   }
 
 	public static Document getPlainDocument(JComponent c) {
@@ -906,7 +908,7 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	private WindowPeer createWindowPeer(Window target, boolean isFrame) {
-		return ((WindowPeer) getInstance("swingjs.JSWindowPeer")).setFrame(target, true);
+		return ((WindowPeer) getInstance("swingjs.plaf.JSWindowUI")).setFrame(target, true);
 	}
 
 }

@@ -561,10 +561,12 @@
             swingjs/JSAppletThread.js
             swingjs/JSMouse.js
             swingjs/JSComponentPeer.js
-            swingjs/JSWindowPeer.js
             swingjs/JSGraphicsEnvironment.js
 			swingjs/plaf/HTML5LookAndFeel.js
             swingjs/plaf/JSComponentUI.js
+            swingjs/plaf/JSWindowUI.js
+            swingjs/plaf/JSDialogUI.js
+            swingjs/plaf/JSFrameUI.js
             swingjs/plaf/JSPanelUI.js
             swingjs/plaf/JSRadioButtonUI.js
             swingjs/plaf/JSRootPaneUI.js

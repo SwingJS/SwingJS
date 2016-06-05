@@ -238,9 +238,12 @@ implements ItemSelectable,ListDataListener,ActionListener {
 
     protected void installAncestorListener() {
         addAncestorListener(new AncestorListener(){
-                                public void ancestorAdded(AncestorEvent event){ hidePopup();}
-                                public void ancestorRemoved(AncestorEvent event){ hidePopup();}
-                                public void ancestorMoved(AncestorEvent event){
+                                @Override
+																public void ancestorAdded(AncestorEvent event){ hidePopup();}
+                                @Override
+																public void ancestorRemoved(AncestorEvent event){ hidePopup();}
+                                @Override
+																public void ancestorMoved(AncestorEvent event){
                                     if (event.getSource() != JComboBox.this)
                                         hidePopup();
                                 }});
@@ -267,7 +270,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ComboBoxUI)UIManager.getUI(this));
 
         ListCellRenderer renderer = getRenderer();
@@ -284,7 +288,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -294,7 +299,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      *
      * @return the ComboBoxUI object that renders this component
      */
-    public ComboBoxUI getUI() {
+    @Override
+		public ComboBoxUI getUI() {
         return(ComboBoxUI)ui;
     }
 
@@ -842,7 +848,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * @param aListener the <code>ItemListener</code> that is to be notified
      * @see #setSelectedItem
      */
-    public void addItemListener(ItemListener aListener) {
+    @Override
+		public void addItemListener(ItemListener aListener) {
         listenerList.add(ItemListener.class,aListener);
     }
 
@@ -850,7 +857,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      *
      * @param aListener  the <code>ItemListener</code> to remove
      */
-    public void removeItemListener(ItemListener aListener) {
+    @Override
+		public void removeItemListener(ItemListener aListener) {
         listenerList.remove(ItemListener.class,aListener);
     }
 
@@ -1200,7 +1208,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
         ComboBoxActionPropertyChangeListener(JComboBox b, Action a) {
             super(b, a);
         }
-        protected void actionPropertyChanged(JComboBox cb,
+        @Override
+				protected void actionPropertyChanged(JComboBox cb,
                                              Action action,
                                              PropertyChangeEvent e) {
             if (AbstractAction.shouldReconfigure(e)) {
@@ -1299,7 +1308,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * @return an array of <code>Objects</code> containing one
      *          element -- the selected item
      */
-    public Object[] getSelectedObjects() {
+    @Override
+		public Object[] getSelectedObjects() {
         Object selectedObject = getSelectedItem();
         if ( selectedObject == null )
             return new Object[0];
@@ -1314,7 +1324,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * This method is public as an implementation side effect.
      * do not call or override.
      */
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
         Object newItem = getEditor().getItem();
         setPopupVisible(false);
         getModel().setSelectedItem(newItem);
@@ -1328,7 +1339,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * This method is public as an implementation side effect.
      * do not call or override.
      */
-    public void contentsChanged(ListDataEvent e) {
+    @Override
+		public void contentsChanged(ListDataEvent e) {
         Object oldSelection = selectedItemReminder;
         Object newSelection = dataModel.getSelectedItem();
         if (oldSelection == null || !oldSelection.equals(newSelection)) {
@@ -1343,7 +1355,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * This method is public as an implementation side effect.
      * do not call or override.
      */
-    public void intervalAdded(ListDataEvent e) {
+    @Override
+		public void intervalAdded(ListDataEvent e) {
         if (selectedItemReminder != dataModel.getSelectedItem()) {
             selectedItemChanged();
         }
@@ -1353,7 +1366,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * This method is public as an implementation side effect.
      * do not call or override.
      */
-    public void intervalRemoved(ListDataEvent e) {
+    @Override
+		public void intervalRemoved(ListDataEvent e) {
         contentsChanged(e);
     }
 
@@ -1392,7 +1406,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      *    preferred: true
      *  description: Whether the combo box is enabled.
      */
-    public void setEnabled(boolean b) {
+    @Override
+		public void setEnabled(boolean b) {
         super.setEnabled(b);
         firePropertyChangeBool( "enabled", !isEnabled(), isEnabled() );
     }
@@ -1416,7 +1431,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * @param e  the <code>KeyEvent</code> containing the keyboard
      *          key that was pressed
      */
-    public void processKeyEvent(KeyEvent e) {
+    @Override
+		public void processKeyEvent(KeyEvent e) {
         if ( e.getKeyCode() == KeyEvent.VK_TAB ) {
             hidePopup();
         }
@@ -1503,7 +1519,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
     }
 
     class DefaultKeySelectionManager implements KeySelectionManager {
-        public int selectionForKey(char aKey,ComboBoxModel aModel) {
+        @Override
+				public int selectionForKey(char aKey,ComboBoxModel aModel) {
             int i,c;
             int currentSelection = -1;
             Object selectedItem = aModel.getSelectedItem();
@@ -1570,7 +1587,8 @@ implements ItemSelectable,ListDataListener,ActionListener {
      *
      * @return  a string representation of this <code>JComboBox</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String selectedItemReminderString = (selectedItemReminder != null ?
                                              selectedItemReminder.toString() :
                                              "");
