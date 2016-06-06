@@ -404,8 +404,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 					swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
 							.appendChild(outerNode);
 				} else {
-					
-					// this is a non-embedded frame or dialog.
+					 $(body).append(outerNode);
 				}
 			}
 		}

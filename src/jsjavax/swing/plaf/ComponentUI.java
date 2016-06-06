@@ -29,7 +29,7 @@ import jsjavax.swing.JComponent;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
-import jsjava.awt.peer.LightweightPeer;
+import jsjava.awt.peer.ComponentPeer;
 
 
 /**
@@ -47,7 +47,7 @@ import jsjava.awt.peer.LightweightPeer;
  * @see jsjavax.swing.UIManager
  *
  */
-public abstract class ComponentUI implements LightweightPeer {
+public abstract class ComponentUI implements ComponentPeer {
 	
 	
     /**

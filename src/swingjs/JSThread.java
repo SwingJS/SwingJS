@@ -41,7 +41,7 @@ public abstract class JSThread extends Thread implements JSFunction {
 		/**
 		 * @j2sNative
 		 * 
-		 *            swingjs.JSToolkit.setTimeout(this, 1, 0);
+		 *            swingjs.JSToolkit.dispatch(this, 1, 0);
 		 * 
 		 */
 		{

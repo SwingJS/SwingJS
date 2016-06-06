@@ -137,7 +137,7 @@
 -->
 
    	 		
-   	<echo>Fixing "jsjava" references</echo>
+   	<echo>Changing "jsjava" to "java" and "jsjavax" to "javax"</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
   	<replace dir="site/swingjs/" includes="**/*.js" token="javajs.util" value="JU" />
   		
@@ -541,10 +541,12 @@
             javax/swing/plaf/InputMapUIResource.js
             javax/swing/plaf/ActionMapUIResource.js
             javax/swing/plaf/ComponentUI.js
+            javax/swing/plaf/LightweightUI.js
             javax/swing/plaf/FontUIResource.js
             javax/swing/plaf/ColorUIResource.js
             javax/swing/plaf/ComponentInputMapUIResource.js
 
+        	swingjs/api/JSComponent.js
         	swingjs/api/JSFunction.js
             swingjs/api/JSInterface.js
             swingjs/api/Interface.js
@@ -564,14 +566,12 @@
             swingjs/JSGraphicsEnvironment.js
 			swingjs/plaf/HTML5LookAndFeel.js
             swingjs/plaf/JSComponentUI.js
-            swingjs/plaf/JSWindowUI.js
-            swingjs/plaf/JSDialogUI.js
-            swingjs/plaf/JSFrameUI.js
+            swingjs/plaf/JSLightweightUI.js
             swingjs/plaf/JSPanelUI.js
+            swingjs/plaf/JSButtonUI.js
+            swingjs/plaf/JSButtonListener.js
             swingjs/plaf/JSRadioButtonUI.js
             swingjs/plaf/JSRootPaneUI.js
-            swingjs/plaf/JSButtonListener.js
-            swingjs/plaf/JSButtonUI.js
             swingjs/plaf/LazyActionMap.js
     
 

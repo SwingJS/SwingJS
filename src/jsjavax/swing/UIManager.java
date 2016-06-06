@@ -328,7 +328,8 @@ public class UIManager
          *
          * @return a <code>String</code> representation of this object
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return getClass().getName() + "[" + getName() + " " + getClassName() + "]";
         }
     }
@@ -969,36 +970,33 @@ public class UIManager
         return getDefaults().put(key, value);
     }
 
-    /**
-     * Returns the appropriate {@code ComponentUI} implementation for
-     * {@code target}. Typically, this is a cover for
-     * {@code getDefaults().getUI(target)}. However, if an auxiliary
-     * look and feel has been installed, this first invokes
-     * {@code getUI(target)} on the multiplexing look and feel's
-     * defaults, and returns that value if it is {@code non-null}.
-     *
-     * @param target the <code>JComponent</code> to return the
-     *        {@code ComponentUI} for
-     * @return the <code>ComponentUI</code> object for {@code target}
-     * @throws NullPointerException if {@code target} is {@code null}
-     * @see UIDefaults#getUI
-     */
-    public static ComponentUI getUI(JComponent target) {
-        maybeInitialize();
-        ComponentUI ui = null;
-//        LookAndFeel multiLAF = getLAFState().multiLookAndFeel;
-//        if (multiLAF != null) {
-//            // This can return null if the multiplexing look and feel
-//            // doesn't support a particular UI.
-//            ui = multiLAF.getDefaults().getUI(target);
-//        }
-//        if (ui == null) {
-            ui = getDefaults().getUI(target);
- //       }
-        if (ui == null)
-        	System.out.println(target.getUIClassID() + " has not been implemented");
-        return ui;
-    }
+	/**
+	 * Returns the appropriate {@code ComponentUI} implementation for
+	 * {@code target}. Typically, this is a cover for
+	 * {@code getDefaults().getUI(target)}. However, if an auxiliary look and feel
+	 * has been installed, this first invokes {@code getUI(target)} on the
+	 * multiplexing look and feel's defaults, and returns that value if it is
+	 * {@code non-null}.
+	 * 
+	 * @param target
+	 *          the <code>JComponent</code> to return the {@code ComponentUI} for
+	 * @return the <code>ComponentUI</code> object for {@code target}
+	 * @throws NullPointerException
+	 *           if {@code target} is {@code null}
+	 * @see UIDefaults#getUI
+	 */
+	public static ComponentUI getUI(Component target) {
+		maybeInitialize();
+		// note that we use Component here instead of JComponent, because JWindow, JFrame,
+		// and JDialog UI are all returned in JavaScript with this method despite the fact 
+		// that the method would not work in Java.
+		
+		ComponentUI ui = getDefaults().getUI((JComponent) target);
+		if (ui == null)
+			System.out.println("SwingJS interface has not been implemented for "
+					+ target.getClass().getName());
+		return ui;
+	}
 
 
 //    /**

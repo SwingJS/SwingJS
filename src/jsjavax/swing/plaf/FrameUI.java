@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 1997, 2006, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,29 +23,21 @@
  * questions.
  */
 
-package swingjs.plaf;
+package jsjavax.swing.plaf;
 
-import swingjs.api.DOMNode;
+import jsjavax.swing.JList;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
+import jsjava.awt.peer.FramePeer;
 
-public class JSViewportUI extends JSLightweightUI {
 
-	@Override
-	public DOMNode getDOMObject() {
-		if (domNode == null)
-			domNode = createDOMObject("div", id);
-		return domNode;
-	}
+/**
+ * The {@code JList} pluggable look and feel delegate.
+ *
+ * @author Hans Muller
+ */
 
-	@Override
-	protected void installJSUI() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void uninstallJSUI() {
-		// TODO Auto-generated method stub
-		
-	}
+public abstract class FrameUI extends ComponentUI implements FramePeer
+{
 
 }

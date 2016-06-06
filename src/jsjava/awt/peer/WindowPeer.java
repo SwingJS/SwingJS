@@ -36,6 +36,9 @@ import jsjava.awt.image.BufferedImage;
  * developers, and developers should not implement peers
  * nor invoke any of the peer methods directly on the peer
  * instances.
+ * 
+ * Not a LightWeightPeer
+ * 
  */
 public interface WindowPeer extends ContainerPeer {
     void toFront();

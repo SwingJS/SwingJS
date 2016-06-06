@@ -8,7 +8,7 @@ import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSMenuUI extends JSComponentUI {
+public class JSMenuUI extends JSLightweightUI {
 
 	public JSMenuUI() {
 		isContainer = true;

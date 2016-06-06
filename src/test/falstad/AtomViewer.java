@@ -37,6 +37,8 @@ package test.falstad;
 // deprecated method .inside --> .contains
 // deprecated method .handleEvent --> .processEvent
 
+// paint  --> paintComponent
+
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -99,7 +101,7 @@ class AtomViewerCanvas extends Canvas {
 
 	private int paintCount;
 	@Override
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		System.out.println("paint " + (++paintCount));
 		pg.updateAtomViewer(g);
 	}
@@ -130,8 +132,7 @@ class AtomViewerLayout implements LayoutManager {
 	@Override
 	public void layoutContainer(Container target) {
 		int barwidth = 0;
-		int i;
-		for (i = 1; i < target.getComponentCount(); i++) {
+		for (int i = target.getComponentCount(); --i >= 0;) {  // BH
 			Component m = target.getComponent(i);
 			if (m.isVisible()) {
 				Dimension d = m.getPreferredSize();
@@ -147,7 +148,7 @@ class AtomViewerLayout implements LayoutManager {
 		target.getComponent(0).setSize(cw, targeth);
 		cw += insets.left;
 		int h = insets.top;
-		for (i = 1; i < target.getComponentCount(); i++) {
+		for (int i = target.getComponentCount(); --i >= 0;) {  // BH
 			Component m = target.getComponent(i);
 			if (m.isVisible()) {
 				Dimension d = m.getPreferredSize();
@@ -203,7 +204,9 @@ public class AtomViewer extends Applet implements ComponentListener {
 		}
 	}
 
-/*	public void paint(Graphics g) {
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -212,8 +215,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 		else
 			ogf.setVisible(true);
 		g.drawString(s, 10, 30);
-		//super.paint(g);
-	}*/
+	}
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
@@ -397,6 +399,9 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 	boolean useFrame = false;
 
 	public void initA() {
+		
+		System.out.println("initA...");
+		
 		gray2 = new Color(127, 127, 127);
 
 		int res = 100;
@@ -547,10 +552,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 		 * sampleBar.addAdjustmentListener(this);
 		 */
 
-		Label XXX;
-		add(XXX = new Label("http://www.falstad.com", Label.CENTER));
-		//XXX.setVisible(true);
-		//XXX.setBackground(Color.black);
+		add(new Label("http://www.falstad.com", Label.CENTER));
 		
 		try {
 			String param = applet.getParameter("PAUSE");
@@ -592,8 +594,9 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 		setLocation((screen.width - x.width) / 2,
 				(screen.height - x.height) / 2);
 		setVisible(true);
-		setupMenus();
+		//setupMenus();
 		finished = true;
+		System.out.println("...done, skipped menus; visible = true");
 	}
 
 	void setupStates() {
@@ -883,8 +886,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 	void setupSimpson() {
 		sampleCount = 15;
 		// sampleCount = sampleBar.getValue()*2+1;
-		int i;
-		for (i = 0; i != samplesNums.length; i++) {
+		for (int i = 0, n = samplesNums.length; i < n; i++) {
 			if (samplesItems[i].getState())
 				sampleCount = samplesNums[i];
 		}
@@ -892,7 +894,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 
 		// generate table of sample multipliers for efficient Simpson's rule
 		sampleMult = new int[sampleCount];
-		for (i = 1; i < sampleCount; i += 2) {
+		for (int i = 1, n = sampleCount; i < n; i += 2) {
 			sampleMult[i] = 4;
 			sampleMult[i + 1] = 2;
 		}
@@ -906,7 +908,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 	void reinit() {
 		setResolution();
 		Dimension d = winSize = cv.getSize();
-		if (winSize.width == 0)
+		if (winSize.width <= 0)
 			return;
 		dbimage = createImage(d.width, d.height);
 		setupDisplay();
@@ -1159,8 +1161,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 	}
 
 	int createBasisPhasors(int x, int y, int sz, int i, int n, int l) {
-		int j;
-		for (j = 0; j != l * 2 + 1; j++) {
+		for (int j = 0, max = l * 2 + 1; j != max; j++) {
 			Phasor ph = phasors[i] = new Phasor(x, y, sz, sz);
 			ph.state = getState(n, l, j - l);
 			x += sz;
@@ -1171,8 +1172,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 
 	int createAltPhasors(int x, int y, int sz, int i, AlternateBasis basis,
 			int ct, int offset) {
-		int j;
-		for (j = 0; j != ct; j++) {
+		for (int j = 0; j != ct; j++) {
 			Phasor ph = phasors[i] = new Phasor(x, y, sz, sz);
 			ph.state = basis.altStates[j + offset];
 			x += sz;
@@ -1272,8 +1272,9 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 			}
 		}
 		if (pixels == null) {
-			pixels = new int[viewX.width * viewX.height];
-			for (i = 0; i != viewX.width * viewX.height; i++)
+			int npix = viewX.width * viewX.height;
+			pixels = new int[npix];
+			for (i = 0; i != npix; i++)
 				pixels[i] = 0xFF000000;
 			imageSource = new MemoryImageSource(viewX.width, viewX.height,
 					pixels, 0, viewX.width);
@@ -1565,11 +1566,10 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 		cr *= colorMult;
 		cg *= colorMult;
 		cb *= colorMult;
-		int k, l;
 		if (cr == 0 && cg == 0 && cb == 0) {
 			int y2l = y2 * viewX.width;
-			for (k = x; k < x2; k++)
-				for (l = y * viewX.width; l < y2l; l += viewX.width)
+			for (int k = x; k < x2; k++)
+				for (int d = viewX.width, l = y * d; l < y2l; l += d)
 					pixels[k + l] = 0xFF000000;
 			return;
 		}
@@ -1583,8 +1583,8 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 		int colval = 0xFF000000 + (((int) cr) << 16) | (((int) cg) << 8)
 				| (((int) cb));
 		int y2l = y2 * viewX.width;
-		for (k = x; k < x2; k++)
-			for (l = y * viewX.width; l < y2l; l += viewX.width)
+		for (int k = x; k < x2; k++)
+			for (int l = y * viewX.width; l < y2l; l += viewX.width)
 				pixels[k + l] = colval;
 	}
 
@@ -1742,6 +1742,10 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 	int frameLen;
 
 	public void updateAtomViewer(Graphics realg) {
+		
+		System.out.println("...updating..." + !stoppedCheck.getState());
+		
+
 		Graphics g = null;
 		if (winSize == null || winSize.width == 0)
 			return;
@@ -1827,10 +1831,9 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 
 			g.setColor(Color.white);
 			int ox = -1, oy = -1;
-			int x;
 			int floory = viewPotential.y + viewPotential.height - 1;
-			for (x = 0; x != winSize.width; x++) {
-				double xx = (x - winSize.width / 2) * xp;
+			for (int x = 0, w = winSize.width; x != w; x++) {
+				double xx = (x - w / 2) * xp;
 				if (xx < 0)
 					xx = -xx;
 				if (xx < 1e-3)
@@ -1938,6 +1941,8 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 		if (imageSource != null)
 			imageSource.newPixels();
 		g.drawImage(memimage, viewX.x, viewX.y, null);
+		System.out.println("...image drawn");
+		
 		g.setColor(Color.white);
 		if (sliced)
 			drawCube(g, false);
@@ -1970,6 +1975,9 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 			drawPhasors(g, viewStates);
 
 		realg.drawImage(dbimage, 0, 0, this);
+
+		System.out.println("...image drawn");
+
 		if (!allQuiet)
 			cv.repaint(pause);
 	}
@@ -2517,13 +2525,14 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 			return;
 		}
 		if (e.getItemSelectable() instanceof CheckboxMenuItem) {
+			int nsam = samplesNums.length;
 			int i;
-			for (i = 0; i != samplesNums.length; i++)
+			for (i = 0; i != nsam; i++)
 				if (samplesItems[i] == e.getItemSelectable())
 					break;
-			if (i != samplesNums.length) {
+			if (i != nsam) {
 				int j;
-				for (j = 0; j != samplesNums.length; j++)
+				for (j = 0; j != nsam; j++)
 					samplesItems[j].setState(i == j);
 				setupSimpson();
 			}
@@ -2705,8 +2714,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 			// convert to the basis
 			ab.convertBasisToDerived();
 
-			int j;
-			for (j = 0; j != ab.altStateCount; j++) {
+			for (int j = 0, n = ab.altStateCount; j != n; j++) {
 				DerivedState ds = ab.altStates[j];
 				if (square)
 					data[mid + ds.m * ds.m * pad] += ds.magSquared();
@@ -2756,8 +2764,7 @@ class AtomViewerFrame extends JFrame implements ComponentListener,
 			ab.convertBasisToDerived();
 
 			// rotate all the states in the basis around the axis
-			int j;
-			for (j = 0; j != ab.altStateCount; j++) {
+			for (int j = 0, a = ab.altStateCount; j != a; j++) {
 				DerivedState ds = ab.altStates[j];
 				ds.rotate(ang * ds.m);
 			}

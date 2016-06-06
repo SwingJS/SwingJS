@@ -112,7 +112,7 @@ import swingjs.api.DOMNode;
  * @author Timothy Prinzing
  * @author Shannon Hickey (drag and drop)
  */
-public abstract class JSTextUI extends JSComponentUI {// implements {ViewFactory
+public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFactory
 																											// {
 
 	protected String getComponentText() {

@@ -597,6 +597,7 @@ public abstract class SunToolkit extends Toolkit implements
 	public static void postPriorityEvent(final AWTEvent e) {
 		// SwingJS -- no priorities here -- could be a problem?
 		PeerEvent pe = new PeerEvent(Toolkit.getDefaultToolkit(), new Runnable() {
+			@Override
 			public void run() {
 				AWTAccessor.getAWTEventAccessor().setPosted(e);
 				((Component) e.getSource()).dispatchEvent(e);
@@ -644,6 +645,7 @@ public abstract class SunToolkit extends Toolkit implements
 			Runnable runnable, final long when) {
 		executeOnEventHandlerThread(new PeerEvent(target, runnable,
 				PeerEvent.PRIORITY_EVENT) {
+			@Override
 			public long getWhen() {
 				return when;
 			}
@@ -722,6 +724,7 @@ public abstract class SunToolkit extends Toolkit implements
 				.getDispatchThread(eq));
 	}
 
+	@Override
 	public Dimension getScreenSize() {
 		return new Dimension(getScreenWidth(), getScreenHeight());
 	}
@@ -730,10 +733,12 @@ public abstract class SunToolkit extends Toolkit implements
 
 	protected abstract int getScreenHeight();
 
+	@Override
 	public FontMetrics getFontMetrics(Font font) {
 		return FontDesignMetrics.getMetrics(font);
 	}
 
+	@Override
 	public String[] getFontList() {
 		String[] hardwiredFontList = { Font.DIALOG, Font.SANS_SERIF, Font.SERIF,
 				Font.MONOSPACED, Font.DIALOG_INPUT
@@ -745,6 +750,7 @@ public abstract class SunToolkit extends Toolkit implements
 		return hardwiredFontList;
 	}
 
+	@Override
 	public PanelPeer createPanel(Panel target) {
 		return (PanelPeer) createComponent(target);
 	}
@@ -864,14 +870,17 @@ public abstract class SunToolkit extends Toolkit implements
 		return img;
 	}
 
+	@Override
 	public Image getImage(String filename) {
 		return getImageFromHash(this, filename);
 	}
 
+	@Override
 	public Image getImage(URL url) {
 		return getImageFromHash(this, url);
 	}
 
+	@Override
 	public abstract Image createImage(String filename);
 //	{
 //		SecurityManager security = System.getSecurityManager();
@@ -882,6 +891,7 @@ public abstract class SunToolkit extends Toolkit implements
 //		// SwingJS ?? return createImage(new FileImageSource(filename));
 //	}
 
+	@Override
 	public abstract Image createImage(URL url);// {
 //		SecurityManager sm = System.getSecurityManager();
 //		if (sm != null) {
@@ -922,6 +932,7 @@ public abstract class SunToolkit extends Toolkit implements
 //		// SwingJS ?? return new ToolkitImage(producer);
 //	}
 //
+	@Override
 	public int checkImage(Image img, int w, int h, ImageObserver o) {
 		// SwingJS ??
 		// if (!(img instanceof ToolkitImage)) {
@@ -939,6 +950,7 @@ public abstract class SunToolkit extends Toolkit implements
 		return 0;
 	}
 
+	@Override
 	public boolean prepareImage(Image img, int w, int h, ImageObserver o) {
 		if (w == 0 || h == 0) {
 			return true;
@@ -1085,6 +1097,7 @@ public abstract class SunToolkit extends Toolkit implements
 	// return (DataBufferInt)buffer;
 	// }
 
+	@Override
 	protected EventQueue getSystemEventQueueImpl() {
 		return getSystemEventQueueImplPP();
 	}
@@ -1196,6 +1209,7 @@ public abstract class SunToolkit extends Toolkit implements
 	/**
 	 * @see jssun.awt.WindowClosingSupport#getWindowClosingListener
 	 */
+	@Override
 	public WindowClosingListener getWindowClosingListener() {
 		return windowClosingListener;
 	}
@@ -1203,6 +1217,7 @@ public abstract class SunToolkit extends Toolkit implements
 	/**
 	 * @see jssun.awt.WindowClosingSupport#setWindowClosingListener
 	 */
+	@Override
 	public void setWindowClosingListener(WindowClosingListener wcl) {
 		windowClosingListener = wcl;
 	}
@@ -1210,6 +1225,7 @@ public abstract class SunToolkit extends Toolkit implements
 	/**
 	 * @see jssun.awt.WindowClosingListener#windowClosingNotify
 	 */
+	@Override
 	public RuntimeException windowClosingNotify(WindowEvent event) {
 		if (windowClosingListener != null) {
 			return windowClosingListener.windowClosingNotify(event);
@@ -1221,6 +1237,7 @@ public abstract class SunToolkit extends Toolkit implements
 	/**
 	 * @see jssun.awt.WindowClosingListener#windowClosingDelivered
 	 */
+	@Override
 	public RuntimeException windowClosingDelivered(WindowEvent event) {
 		if (windowClosingListener != null) {
 			return windowClosingListener.windowClosingDelivered(event);

@@ -2,10 +2,9 @@ package swingjs.plaf;
 
 import swingjs.api.DOMNode;
 
-public class JSDialogUI extends JSWindowUI {
+public class JSDialogUI extends JSFrameUI {
 
-	// really the same as Frame -- just no max/min buttons, which an applet would 
-	// not use anyway. 
+	// a frame without min/max buttons; typically modal 
 	
 	public JSDialogUI() {
 		frameZ = 40000;

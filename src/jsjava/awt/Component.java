@@ -1464,9 +1464,9 @@ protected  transient ComponentPeer peer;
      */
     public void setVisible(boolean b) {
       if (b) {
-        show();
+        showSAEM();
       } else {
-        hide();
+        hideSAEM();
       }
     }
     
@@ -1482,6 +1482,10 @@ protected  transient ComponentPeer peer;
     }
 
 	public void show() {
+		showSAEM();
+	}
+	
+	private void showSAEM() {
 		/**
 		 * @j2sNative
 		 * 
@@ -1537,6 +1541,10 @@ protected  transient ComponentPeer peer;
      * replaced by <code>setVisible(boolean)</code>.
      */
     public void hide() {
+    	hideSAEM();
+    }
+    
+    private void hideSAEM() {
         isPacked = false;
         if (visible) {
             clearCurrentFocusCycleRootOnHide();
@@ -2759,6 +2767,8 @@ protected  transient ComponentPeer peer;
     }
 
 	/**
+	 * 
+	 * For SwingJS, we have the graphics without needing to get it from a peer.
 	 * Creates a graphics context for this component. This method will return
 	 * <code>null</code> if this component is currently not displayable.
 	 * 
@@ -2769,27 +2779,10 @@ protected  transient ComponentPeer peer;
 	 */
 	public Graphics getGraphics() {
 		// only executed for JRootPane and JApplet
-		if (peer instanceof LightweightPeer) {
-			// This is for a lightweight component, need to
-			// translate coordinate spaces and clip relative
-			// to the parent.
-			if (parent == null)
-				return null;
-			Graphics g = parent.getGraphics();
-			if (g == null)
-				return null;
-//			if (g instanceof ConstrainableGraphics) {
-//				((ConstrainableGraphics) g).constrain(x, y, width, height);
-//			} else {
-				//g.translate(x, y);
-				//g.setClip(0, 0, width, height);
-//			}
-			g.setFont(getFont());
-			return g;
-		} else {
-			ComponentPeer peer = this.peer;
-			return (peer != null) ? peer.getGraphics() : null;
-		}
+		Graphics g;
+		if ((g = (parent == null ? null : parent.getGraphics())) != null)
+			g.setFont(this.getFont());
+		return g;
 	}
 
     public Object getTreeLock() {

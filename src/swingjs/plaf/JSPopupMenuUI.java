@@ -8,7 +8,10 @@ import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSPopupMenuUI extends JSMenuUI {
+public class JSPopupMenuUI extends JSWindowUI {
+	
+	// a frameless independent window
+	
 
 	public JSPopupMenuUI() {
 		isContainer = true;

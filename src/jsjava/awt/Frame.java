@@ -24,10 +24,12 @@
  */
 package jsjava.awt;
 
-import jsjava.awt.peer.FramePeer;
+import java.awt.HeadlessException;
 import java.util.Vector;
 
 import jsjava.awt.event.KeyEvent;
+import jsjava.awt.event.WindowEvent;
+import jsjava.awt.peer.FramePeer;
 
 /**
  * A <code>Frame</code> is a top-level window with a title and a border.

@@ -27,6 +27,8 @@ package jsjavax.swing;
 
 import java.util.Vector;
 
+import swingjs.api.JSComponent;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
@@ -81,7 +83,7 @@ import jsjavax.swing.plaf.PopupMenuUI;
  * @author David Karlton
  * @author Arnaud Weber
  */
-public class JPopupMenu extends JComponent implements /* Accessible */MenuElement {
+public class JPopupMenu extends JComponent implements JSComponent, MenuElement {
 
     /**
      * @see #getUIClassID
@@ -196,7 +198,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *
      * @return the <code>PopupMenuUI</code> object that renders this component
      */
-    public PopupMenuUI getUI() {
+    @Override
+		public PopupMenuUI getUI() {
         return (PopupMenuUI)ui;
     }
 
@@ -220,7 +223,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((PopupMenuUI)UIManager.getUI(this));
     }
 
@@ -232,11 +236,13 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
-    protected void processFocusEvent(FocusEvent evt) {
+    @Override
+		protected void processFocusEvent(FocusEvent evt) {
         super.processFocusEvent(evt);
     }
 
@@ -245,7 +251,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *
      * @param evt  the key event to be processed
      */
-    protected void processKeyEvent(KeyEvent evt) {
+    @Override
+		protected void processKeyEvent(KeyEvent evt) {
         MenuSelectionManager.defaultManager().processKeyEvent(evt);
         if (evt.isConsumed()) {
             return;
@@ -397,7 +404,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      */
     protected JMenuItem createActionComponent(Action a) {
         JMenuItem mi = new JMenuItem() {
-            protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
+            @Override
+						protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
                 PropertyChangeListener pcl = createActionChangeListener(this);
                 if (pcl == null) {
                     pcl = super.createActionPropertyChangeListener(a);
@@ -427,7 +435,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *                          <code>pos</code> is greater than the
      *                          number of items
      */
-    public void remove(int pos) {
+    @Override
+		public void remove(int pos) {
         if (pos < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
@@ -685,7 +694,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * be on top of all other windows.
      * @return true
      */
-    // package private
+    @Override
+		// package private
     boolean alwaysOnTop() {
         return true;
     }
@@ -716,7 +726,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *           bound: true
      *     description: Makes the popup visible
      */
-    public void setVisible(boolean b) {
+    @Override
+		public void setVisible(boolean b) {
 //        if (DEBUG) {
 //            System.out.println("JPopupMenu.setVisible " + b);
 //        }
@@ -810,7 +821,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * Returns true if the popup menu is visible (currently
      * being displayed).
      */
-    public boolean isVisible() {
+    @Override
+		public boolean isVisible() {
         if(popup != null)
             return true;
         else
@@ -828,7 +840,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @beaninfo
      * description: The location of the popup menu.
      */
-    public void setLocation(int x, int y) {
+    @Override
+		public void setLocation(int x, int y) {
         int oldX = desiredLocationX;
         int oldY = desiredLocationY;
 
@@ -1058,7 +1071,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @see JComponent#paint
      * @see JComponent#setBorder
      */
-    protected void paintBorder(Graphics g) {
+    @Override
+		protected void paintBorder(Graphics g) {
         if (isBorderPainted()) {
             super.paintBorder(g);
         }
@@ -1124,7 +1138,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *
      * @return  a string representation of this <code>JPopupMenu</code>.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String labelString = (label != null ?
                               label : "");
         String paintBorderString = (paintBorder ?
@@ -1325,7 +1340,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * <code>MenuElement</code> interface, but it not implemented.
      * @see MenuElement#processMouseEvent(MouseEvent, MenuElement[], MenuSelectionManager)
      */
-    public void processMouseEvent(MouseEvent event,MenuElement path[],MenuSelectionManager manager) {}
+    @Override
+		public void processMouseEvent(MouseEvent event,MenuElement path[],MenuSelectionManager manager) {}
 
     /**
      * Processes a key event forwarded from the
@@ -1339,7 +1355,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @param path the <code>MenuElement</code> path array
      * @param manager   the <code>MenuSelectionManager</code>
      */
-    public void processKeyEvent(KeyEvent e, MenuElement path[],
+    @Override
+		public void processKeyEvent(KeyEvent e, MenuElement path[],
                                 MenuSelectionManager manager) {
         MenuKeyEvent mke = new MenuKeyEvent(e.getComponent(), e.getID(),
                                              e.getWhen(), e.getModifiers(),
@@ -1429,7 +1446,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      *        it is not
      * @see MenuElement#menuSelectionChanged(boolean)
      */
-    public void menuSelectionChanged(boolean isIncluded) {
+    @Override
+		public void menuSelectionChanged(boolean isIncluded) {
 //        if (DEBUG) {
 //            System.out.println("In JPopupMenu.menuSelectionChanged " + isIncluded);
 //        }
@@ -1455,7 +1473,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @return an array of <code>MenuElement</code> objects
      * @see MenuElement#getSubElements
      */
-    public MenuElement[] getSubElements() {
+    @Override
+		public MenuElement[] getSubElements() {
         MenuElement result[];
         Vector tmp = new Vector();
         int c = getComponentCount();
@@ -1479,7 +1498,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
      * @return this <code>JPopupMenu</code> object
      * @see MenuElement#getComponent
      */
-    public Component getComponent() {
+    @Override
+		public Component getComponent() {
         return this;
     }
 
@@ -1501,7 +1521,8 @@ public class JPopupMenu extends JComponent implements /* Accessible */MenuElemen
          * @see JComponent#getUIClassID
          * @see UIDefaults#getUI
          */
-        public String getUIClassID()
+        @Override
+				public String getUIClassID()
         {
             return "PopupMenuSeparatorUI";
 

@@ -8,7 +8,7 @@ import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSPanelUI extends JSComponentUI {
+public class JSPanelUI extends JSLightweightUI {
 
 	int frameZ = 10000;
 	public JSPanelUI() {
@@ -31,8 +31,10 @@ public class JSPanelUI extends JSComponentUI {
 	
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
-		// SwingJS must defer to Panel or JPanel to set its own dimensions
-		return null;
+		Dimension d = new Dimension(c.getWidth(), c.getHeight());
+		if (d.width <= 0 || d.height <= 0)
+			d = c.getPreferredSize();
+		return d;
 	}
 
 	@Override

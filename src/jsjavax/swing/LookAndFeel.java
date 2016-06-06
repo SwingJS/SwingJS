@@ -25,17 +25,14 @@
 
 package jsjavax.swing;
 
-import swingjs.JSToolkit;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Font;
-import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
-import jsjavax.swing.plaf.InputMapUIResource;
 import jsjavax.swing.plaf.UIResource;
 import jsjavax.swing.text.JTextComponent;
 import jssun.swing.DefaultLayoutStyle;
-import jssun.swing.SwingUtilities2;
+import swingjs.JSToolkit;
 
 
 /**

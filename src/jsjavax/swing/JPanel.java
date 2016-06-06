@@ -116,7 +116,8 @@ public class JPanel extends JComponent
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((PanelUI)UIManager.getUI(this));
     }
 
@@ -126,7 +127,8 @@ public class JPanel extends JComponent
      * @return the PanelUI object that renders this component
      * @since 1.4
      */
-    public PanelUI getUI() {
+    @Override
+		public PanelUI getUI() {
         return (PanelUI)ui;
     }
 
@@ -158,7 +160,8 @@ public class JPanel extends JComponent
      *        expert: true
      *   description: A string that specifies the name of the L&F class.
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -188,7 +191,8 @@ public class JPanel extends JComponent
      *
      * @return  a string representation of this JPanel.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 

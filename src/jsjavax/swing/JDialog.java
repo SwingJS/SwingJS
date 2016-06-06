@@ -26,6 +26,8 @@ package jsjavax.swing;
 
 import java.awt.HeadlessException;
 
+import swingjs.api.JSComponent;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -39,6 +41,8 @@ import jsjava.awt.Window;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.WindowListener;
 // 
+import jsjavax.swing.plaf.ComponentUI;
+import jsjavax.swing.plaf.DialogUI;
 
 /**
  * The main class for creating a dialog window. You can use this class
@@ -106,9 +110,8 @@ import jsjava.awt.event.WindowListener;
  * @author James Gosling
  * @author Scott Violet
  */
-public class JDialog extends Dialog implements WindowConstants,
-                                               /*Accessible,*/
-                                               RootPaneContainer//,                               TransferHandler.HasGetTransferHandler
+public class JDialog extends Dialog implements JSComponent, WindowConstants,
+                                               RootPaneContainer
 {
     /**
      * Key into the AppContext, used to check if should provide decorations
@@ -628,7 +631,7 @@ public class JDialog extends Dialog implements WindowConstants,
                 getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
             }
         }
-        // SwingJS  ?? sun.awt.SunToolkit.checkAndSetPolicy(this, true);
+        updateUI();
     }
 
     private static int dialogCount;
@@ -645,6 +648,38 @@ public class JDialog extends Dialog implements WindowConstants,
         rp.setOpaque(true);
         return rp;
     }
+
+  	/**
+  	 * For SwingJS
+  	 * 
+  	 */
+  	private static final String uiClassID = "DialogUI";
+
+  	@Override
+  	public String getUIClassID() {
+  		return uiClassID;
+  	}
+  	
+  	DialogUI ui;
+
+		@Override
+		public ComponentUI getUI() {
+			return ui;
+		}
+
+  	@Override
+  	public void setUI(ComponentUI newUI) {
+  		ui = (DialogUI) newUI;
+  	}
+
+  	/**
+  	 * Resets the UI property with a value from the current look and feel.
+  	 * 
+  	 */
+  	@Override
+  	public void updateUI() {
+  		setUI((DialogUI) UIManager.getUI(this));
+  	}
 
     /**
      * Handles window events depending on the state of the
@@ -1206,78 +1241,4 @@ public class JDialog extends Dialog implements WindowConstants,
         ",rootPaneCheckingEnabled=" + rootPaneCheckingEnabledString;
     }
 
-
-/////////////////
-// Accessibility support
-////////////////
-//
-//    protected AccessibleContext accessibleContext = null;
-//
-//    /**
-//     * Gets the AccessibleContext associated with this JDialog.
-//     * For JDialogs, the AccessibleContext takes the form of an
-//     * AccessibleJDialog.
-//     * A new AccessibleJDialog instance is created if necessary.
-//     *
-//     * @return an AccessibleJDialog that serves as the
-//     *         AccessibleContext of this JDialog
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJDialog();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JDialog</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to dialog user-interface
-//     * elements.
-//     */
-//    protected class AccessibleJDialog extends AccessibleAWTDialog {
-//
-//        // AccessibleContext methods
-//        //
-//        /**
-//         * Get the accessible name of this object.
-//         *
-//         * @return the localized name of the object -- can be null if this
-//         * object does not have a name
-//         */
-//        public String getAccessibleName() {
-//            if (accessibleName != null) {
-//                return accessibleName;
-//            } else {
-//                if (getTitle() == null) {
-//                    return super.getAccessibleName();
-//                } else {
-//                    return getTitle();
-//                }
-//            }
-//        }
-//
-//        /**
-//         * Get the state of this object.
-//         *
-//         * @return an instance of AccessibleStateSet containing the current
-//         * state set of the object
-//         * @see AccessibleState
-//         */
-//        public AccessibleStateSet getAccessibleStateSet() {
-//            AccessibleStateSet states = super.getAccessibleStateSet();
-//
-//            if (isResizable()) {
-//                states.add(AccessibleState.RESIZABLE);
-//            }
-//            if (getFocusOwner() != null) {
-//                states.add(AccessibleState.ACTIVE);
-//            }
-//            if (isModal()) {
-//                states.add(AccessibleState.MODAL);
-//            }
-//            return states;
-//        }
-//
-//    } // inner class AccessibleJDialog
 }

@@ -15,7 +15,7 @@ import jsjavax.swing.plaf.UIResource;
  * @author Bob Hanson
  *
  */
-public class JSButtonUI extends JSComponentUI {
+public class JSButtonUI extends JSLightweightUI {
 
 	
 	/**

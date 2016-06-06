@@ -24,29 +24,30 @@ import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.peer.ContainerPeer;
-import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
 import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSGraphicsEnvironment;
 import swingjs.JSThreadGroup;
+import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 
-public class JSWindowUI extends JSPanelUI implements FramePeer /* and thus WindowPeer*/ {
+public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
-	// adds window closing controls to a panel in making a frame or dialog
 	
-	Window window;
-	boolean isFrame;
-	HTML5Applet applet;
-	Graphics2D graphics;
-	private Font font;
+	protected int frameZ;
+	protected boolean isFrame;
+	protected Window window;
+	protected HTML5Applet applet;
+	protected Graphics2D graphics;
+	protected Font font;
 
-	/**
-	 * The window peer handles creating an off-line graphics for a JFrame,
-	 * JDialog, JWindow, or JApplet when JComponent.getGraphics() is invoked. This
-	 * will need to be sized, perhaps. The graphics is intended to provide
-	 * information about fonts, if nothing else.
+	/*
+	 * Not Lightweight; an independent space with RootPane, LayeredPane,
+	 * ContentPane, (optional) MenuBar, and GlassPane
+	 * 
+	 * 
+	 * Used by JWindow, JFrame, JDialog, and JPopupMenu
 	 * 
 	 * 
 	 * Lots to do here
@@ -55,6 +56,7 @@ public class JSWindowUI extends JSPanelUI implements FramePeer /* and thus Windo
 	 */
 	@Override
 	public WindowPeer setFrame(Window target, boolean isFrame) {
+		frameZ = 19000;
 		this.isFrame = isFrame;
 		window = target;
 		JComponent jc = (JComponent) (Object) this;
@@ -393,53 +395,48 @@ public class JSWindowUI extends JSPanelUI implements FramePeer /* and thus Windo
 		// TODO Auto-generated method stub
 
 	}
+//
+//	@Override
+//	public void setTitle(String title) {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	@Override
+//	public void setMenuBar(Object mb) {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	@Override
+//	public void setResizable(boolean resizeable) {
+//		// TODO Auto-generated method stub
+//
+//	}
+//
+//	@Override
+//	public void setState(int state) {
+//		// TODO Auto-generated method stub
+//
+//	}
 
 	@Override
-	public void setTitle(String title) {
+	protected void installJSUI() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void setMenuBar(Object mb) {
+	protected void uninstallJSUI() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void setResizable(boolean resizeable) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setState(int state) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getState() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setMaximizedBounds(Rectangle bounds) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setBoundsPrivate(int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Rectangle getBoundsPrivate() {
+	public DOMNode getDOMObject() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

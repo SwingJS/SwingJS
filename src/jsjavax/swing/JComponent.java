@@ -66,6 +66,7 @@ import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.font.FontDesignMetrics;
 import swingjs.JSToolkit;
+import swingjs.api.JSComponent;
 
 /**
  * The base class for all Swing components except top-level containers.
@@ -181,7 +182,7 @@ import swingjs.JSToolkit;
  * @author Hans Muller
  * @author Arnaud Weber
  */
-public abstract class JComponent extends Container
+public abstract class JComponent extends Container implements JSComponent
 {
     /**
      * @see #getUIClassID
@@ -624,7 +625,8 @@ public abstract class JComponent extends Container
      * @see UIManager#getLookAndFeel
      * @see UIManager#getUI
      */
-    public void updateUI() {}
+    @Override
+		public void updateUI() {}
 
 
     /**
@@ -655,7 +657,8 @@ public abstract class JComponent extends Container
      *    attribute: visualUpdate true
      *  description: The component's look and feel delegate.
      */
-    protected void setUI(ComponentUI newUI) {
+    @Override
+		public void setUI(ComponentUI newUI) {
         /* We do not check that the UI instance is different
          * before allowing the switch in order to enable the
          * same UI instance *with different default settings*
@@ -678,7 +681,8 @@ public abstract class JComponent extends Container
         repaint();
     }
 
-    public ComponentUI getUI() {
+    @Override
+		public ComponentUI getUI() {
     	return ui;
     }
     /**
@@ -723,7 +727,8 @@ public abstract class JComponent extends Container
      *      expert: true
      * description: UIClassID
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 

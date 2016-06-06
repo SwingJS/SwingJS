@@ -231,7 +231,7 @@ class EventDispatchThread extends JSThread {
 		 */
 		{
 		}
-		JSToolkit.setTimeout(f, 0, 0);
+		JSToolkit.dispatch(f, 0, 0);
 	}
 
 	private void finish() {

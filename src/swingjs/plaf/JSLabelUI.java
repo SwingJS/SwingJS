@@ -11,8 +11,7 @@ import swingjs.api.DOMNode;
  * @author Bob Hanson
  *
  */
-public class JSLabelUI extends JSComponentUI {
-
+public class JSLabelUI extends JSLightweightUI {
 	private JLabel label;
 
 	@Override

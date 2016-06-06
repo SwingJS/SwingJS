@@ -28,22 +28,21 @@ package jsjavax.swing;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-import jsjava.util.Locale;
 import java.util.Map;
 import java.util.Vector;
-
-import swingjs.JSToolkit;
 
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.Insets;
 import jsjava.beans.PropertyChangeListener;
-//import jsjava.security.AccessControlContext;
-//import jsjava.security.AccessController;
+import jsjava.util.Locale;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.event.SwingPropertyChangeSupport;
 import jsjavax.swing.plaf.ComponentUI;
+import swingjs.JSToolkit;
+//import jsjava.security.AccessControlContext;
+//import jsjava.security.AccessController;
 
 /**
  * A table of defaults for Swing components.  Applications can set/get
@@ -148,7 +147,8 @@ public class UIDefaults extends Hashtable<Object,Object>
      * @see #addResourceBundle
      * @since 1.4
      */
-    public Object get(Object key) {
+    @Override
+		public Object get(Object key) {
         Object value = getFromHashtable( key );
         return (value != null) ? value : getFromResourceBundle(key, null);
     }
@@ -338,7 +338,8 @@ public class UIDefaults extends Hashtable<Object,Object>
      * @see #putDefaults
      * @see java.util.Hashtable#put
      */
-    public Object put(Object key, Object value) {
+    @Override
+		public Object put(Object key, Object value) {
         Object oldValue = (value == null) ? super.remove(key) : super.put(key, value);
         if (key instanceof String) {
             firePropertyChange((String)key, oldValue, value);

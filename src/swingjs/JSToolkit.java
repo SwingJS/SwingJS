@@ -46,6 +46,7 @@ import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
+import swingjs.api.JSComponent;
 import swingjs.api.JSFunction;
 import swingjs.plaf.JSComponentUI;
 
@@ -430,8 +431,9 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static JSComponentUI getComponentUI(JComponent target) {
+		JSComponent s;
 		JSComponentUI c = (JSComponentUI) Interface.getInstance("swingjs.plaf.JS"
-				+ target.getUIClassID(), true);
+				+ ((JSComponent) target).getUIClassID(), true);
 		if (c != null)
 			c.set(target);
 		return c;
@@ -487,7 +489,7 @@ public class JSToolkit extends SunToolkit {
 		 */
 		{
 		}
-		setTimeout(f, 0, 0);
+		dispatch(f, 0, 0);
 	}
 
 	/**
@@ -519,7 +521,7 @@ public class JSToolkit extends SunToolkit {
 		if (andWait)
 			invokeAndWait(f, id);
 		else
-			setTimeout(f, 0, id);
+			dispatch(f, 0, id);
 	}
 
 	/**
@@ -530,7 +532,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param msDelay a time to wait for, in milliseconds
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	public static void setTimeout(Object f, int msDelay, int id) {
+	public static void dispatch(Object f, int msDelay, int id) {
 			
 		/**
 		 * @j2sNative
@@ -547,7 +549,7 @@ public class JSToolkit extends SunToolkit {
 		 *            else
 		 *             f();
 		 *             } catch (e) {
-		 *             var s = "JSToolkit.setTimeout(" + id +"): " + e + (e.getStackTrace ? e.getStackTrace() : e.stack ? "\n" + e.stack : "");
+		 *             var s = "JSToolkit.dispatch(" + id +"): " + e + (e.getStackTrace ? e.getStackTrace() : e.stack ? "\n" + e.stack : "");
 		 *             System.out.println(s);
 		 *             alert(s)}
 		 *            SwingJS.eventID = id0; 
@@ -674,17 +676,21 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	/**
-	 * Provide a LightweightPeer for all Components. The JSComponentUI itself
-	 * serves as a peer for all JComponents; others will need the generic jSComponentPeer
+	 * Provides a Peer for all Components. The JSComponentUI itself
+	 * serves as a peer for all JComponents, including heavy-weight peers 
+	 * JFrame, JWindow, and JPopupMenu and JDialog. Although those are not
+	 * lightweight, we return them as such. JavaScript will not care if
+	 * do this, and they will still be discernable as not lightweight using instanceof
+	 * 
+	 * @author Bob Hanson
 	 *  
 	 */
 	@Override
   protected LightweightPeer createComponent(Component target) {
-  	LightweightPeer peer = getUI(target, true);
+  	LightweightPeer peer = (LightweightPeer) getUI(target, true);
   	if (peer == null)
   		peer = new JSComponentPeer(target);
-  	System.out.println("JSToolkit creating LightweightPeer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
-  	// JLayeredPane will need JSComponentPeer ?
+  	System.out.println("JSToolkit creating Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
   	return peer;
   }
 
@@ -849,7 +855,7 @@ public class JSToolkit extends SunToolkit {
 			}
 			
 		};
-		setTimeout(r, 50, 0);
+		dispatch(r, 50, 0);
 		return true;
 	}
 

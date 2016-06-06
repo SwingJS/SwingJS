@@ -25,6 +25,8 @@ package test.falstad;
 // deprecated method .move --> .setLocation
 // deprecated method .show --> .setVisible(true)
 // deprecated method .hide --> .setVisible(false)
+//
+// changed some FOR statements to be more efficient
 
 import java.awt.Color;
 import java.awt.Component;
@@ -188,7 +190,6 @@ public class Ripple extends Applet implements ComponentListener {
 		else if (ogf.useFrame)
 			ogf.triggerShow();
 		g.drawString(s, 10, 30);
-		super.paint(g);
 	}
 
 	@Override
@@ -598,6 +599,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			setVisible(false);
 			handleResize();
 			applet.validate();
+			cv.repaint();
 		}
 		main.requestFocus();
 	}
@@ -668,9 +670,10 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 		if (pixels == null) {
-			pixels = new int[d.width * d.height];
+			int npix = d.width * d.height;
+			pixels = new int[npix];
 			int i;
-			for (i = 0; i != d.width * d.height; i++)
+			for (i = npix; --i >= 0;)
 				pixels[i] = 0xFF000000;
 			
 			// so imageSource holds the pixels along with width, height, offset and scan width
@@ -1281,7 +1284,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 		boolean xFirst = (viewAngleSin * xdir < viewAngleCos * ydir);
 
-		for (x = 0; x != winSize.width * winSize.height; x++)
+		for (x = winSize.width * winSize.height; --x >= 0;)
 			pixels[x] = 0xFF000000;
 		/*
 		 * double zval = 2.0/sampleCount; System.out.println(zval); if (sampleCount

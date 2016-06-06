@@ -24,11 +24,13 @@
  */
 package jsjavax.swing.plaf;
 
+import jsjava.awt.peer.LightweightPeer;
+
 
 /**
  * Pluggable look and feel interface for JButton.
  *
  * @author Jeff Dinkins
  */
-public abstract class ButtonUI extends ComponentUI {
+public abstract class ButtonUI extends ComponentUI implements LightweightPeer {
 }

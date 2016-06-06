@@ -1,8 +1,12 @@
 package swingjs.plaf;
 
+import jsjava.awt.Rectangle;
+import jsjava.awt.peer.FramePeer;
 import swingjs.api.DOMNode;
 
-public class JSFrameUI extends JSWindowUI {
+public class JSFrameUI extends JSWindowUI implements FramePeer {
+	
+	// a window with a border and optional menubar and (though not here) min and max buttons
 
 	// Adds a root pane to the JPanel content pane to connect the menubar with the content plane
 	// manages the menu bar; would provide min/max buttons to a dialog.
@@ -42,6 +46,54 @@ public class JSFrameUI extends JSWindowUI {
 
 	@Override
 	protected void uninstallJSUI() {
+	}
+
+	@Override
+	public void setTitle(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setMenuBar(Object mb) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setResizable(boolean resizeable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setState(int state) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getState() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setMaximizedBounds(Rectangle bounds) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setBoundsPrivate(int x, int y, int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Rectangle getBoundsPrivate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
