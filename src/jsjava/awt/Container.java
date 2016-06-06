@@ -250,6 +250,7 @@ public class Container extends Component {
      */
     public Container() {
     	component = new java.util.ArrayList<Component>();
+    	component = new java.util.ArrayList<Component>();
     }
 
 		void initializeFocusTraversalKeys() {
