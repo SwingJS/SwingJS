@@ -8,6 +8,6 @@ import jsjava.awt.peer.LightweightPeer;
  * @author Bob Hanson
  *
  */
-public abstract class JSLightweightUI extends JSComponentUI implements LightweightPeer {
+public abstract class LightweightUI extends JSComponentUI implements LightweightPeer {
 
 }

@@ -27,7 +27,7 @@ package swingjs.plaf;
 
 import swingjs.api.DOMNode;
 
-public class JSViewportUI extends JSLightweightUI {
+public class JSViewportUI extends LightweightUI {
 
 	@Override
 	public DOMNode getDOMObject() {

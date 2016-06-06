@@ -8,7 +8,7 @@ import jsjavax.swing.JViewport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
-public class JSScrollPaneUI extends JSLightweightUI {
+public class JSScrollPaneUI extends LightweightUI {
 
 	private JComponent scrolledComponent;
 	private JScrollPane scrollpane;

@@ -80,7 +80,7 @@ public class Container extends Component {
      * @see #add
      * @see #getComponents
      */
-    private java.util.List<Component> component;
+    private java.util.List<Component> children;
 
     /**
      * Layout manager for this container.
@@ -249,7 +249,7 @@ public class Container extends Component {
      *
      */
     public Container() {
-    	component = new java.util.ArrayList<Component>();
+    	children = new java.util.ArrayList<Component>();
     }
 
 		void initializeFocusTraversalKeys() {
@@ -273,7 +273,7 @@ public class Container extends Component {
     @Deprecated
     public int countComponents() {
         //synchronized (getTreeLock()) {
-            return component.size();
+            return children.size();
         //}
     }
 
@@ -286,10 +286,10 @@ public class Container extends Component {
      */
     public Component getComponent(int n) {
         //synchronized (getTreeLock()) {
-            if ((n < 0) || (n >= component.size())) {
+            if ((n < 0) || (n >= children.size())) {
                 throw new ArrayIndexOutOfBoundsException("No such child: " + n);
             }
-            return component.get(n);
+            return children.get(n);
         //}
     }
 
@@ -306,7 +306,7 @@ public class Container extends Component {
     //       DO NOT INVOKE CLIENT CODE ON THIS THREAD!
     final Component[] getComponents_NoClientCode() {
       //  synchronized (getTreeLock()) {
-            return component.toArray(EMPTY_ARRAY);
+            return children.toArray(EMPTY_ARRAY);
      //   }
     } // getComponents_NoClientCode()
 
@@ -491,7 +491,7 @@ public class Container extends Component {
             adjustDescendants(-(comp.countHierarchyMembers()));
 
             comp.parent = null;
-            component.remove(index);
+            children.remove(index);
 
             invalidateIfValid();
         } else {
@@ -500,8 +500,8 @@ public class Container extends Component {
             // after remove. Consult the rules below:
             // 2->4: 012345 -> 013425, 2->5: 012345 -> 013452
             // 4->2: 012345 -> 014235
-            component.remove(index);
-            component.add(newIndex, comp);
+            children.remove(index);
+            children.add(newIndex, comp);
         }
         if (comp.parent == null) { // was actually removed
             if (containerListener != null ||
@@ -766,9 +766,9 @@ public class Container extends Component {
         if (curParent != this) {
             //index == -1 means add to the end.
             if (index == -1) {
-                component.add(comp);
+                children.add(comp);
             } else {
-                component.add(index, comp);
+                children.add(index, comp);
             }
             comp.parent = this;
 
@@ -778,8 +778,8 @@ public class Container extends Component {
                                     comp.numListening(AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK));
             adjustDescendants(comp.countHierarchyMembers());
         } else {
-            if (index < component.size()) {
-                component.set(index, comp);
+            if (index < children.size()) {
+                children.set(index, comp);
             }
         }
 
@@ -884,7 +884,7 @@ public class Container extends Component {
             if (comp.parent != this) {
                 return -1;
             }
-            return component.indexOf(comp);
+            return children.indexOf(comp);
         }
     }
 
@@ -1059,7 +1059,7 @@ public class Container extends Component {
            */
 //          GraphicsConfiguration thisGC = this.getGraphicsConfiguration();
 
-          if (index > component.size() || (index < 0 && index != -1)) {
+          if (index > children.size() || (index < 0 && index != -1)) {
               throw new IllegalArgumentException(
                         "illegal component position");
           }
@@ -1072,16 +1072,16 @@ public class Container extends Component {
           /* Reparent the component and tidy up the tree's state. */
           if (comp.parent != null) {
               comp.parent.remove(comp);
-                  if (index > component.size()) {
+                  if (index > children.size()) {
                       throw new IllegalArgumentException("illegal component position");
                   }
           }
 
           //index == -1 means add to the end.
           if (index == -1) {
-              component.add(comp);
+              children.add(comp);
           } else {
-              component.add(index, comp);
+              children.add(index, comp);
           }
           comp.parent = this;
 
@@ -1167,10 +1167,10 @@ public class Container extends Component {
 	public void removeInt(int index) {
   	// SwingJS SAEM
 		synchronized (getTreeLock()) {
-			if (index < 0 || index >= component.size()) {
+			if (index < 0 || index >= children.size()) {
 				throw new ArrayIndexOutOfBoundsException(index);
 			}
-			Component comp = component.get(index);
+			Component comp = children.get(index);
 			if (peer != null) {
 				comp.removeNotify();
 			}
@@ -1185,7 +1185,7 @@ public class Container extends Component {
 			adjustDescendants(-(comp.countHierarchyMembers()));
 
 			comp.parent = null;
-			component.remove(index);
+			children.remove(index);
 
 			invalidateIfValid();
 			if (containerListener != null
@@ -1239,7 +1239,7 @@ public class Container extends Component {
   	//SwingJS SAEM
 		synchronized (getTreeLock()) {
 			if (comp.parent == this) {
-				int index = component.indexOf(comp);
+				int index = children.indexOf(comp);
 				if (index >= 0) {
 					remove(index);
 				}
@@ -1263,8 +1263,8 @@ public class Container extends Component {
                                     -listeningBoundsChildren);
             adjustDescendants(-descendantsCount);
 
-            while (!component.isEmpty()) {
-                Component comp = component.remove(component.size()-1);
+            while (!children.isEmpty()) {
+                Component comp = children.remove(children.size()-1);
 
                 if (peer != null) {
                     comp.removeNotify();
@@ -1413,7 +1413,7 @@ public class Container extends Component {
         int listeners = getListenersCount(id, enabledOnToolkit);
 
         for (int count = listeners, i = 0; count > 0; i++) {
-            count -= component.get(i).createHierarchyEvents(id, changed,
+            count -= children.get(i).createHierarchyEvents(id, changed,
                 changedParent, changeFlags, enabledOnToolkit);
         }
         return listeners +
@@ -1425,13 +1425,13 @@ public class Container extends Component {
         boolean enabledOnToolkit)
     {
         //assert Thread.holdsLock(getTreeLock());
-        if (component.isEmpty()) {
+        if (children.isEmpty()) {
             return;
         }
         int listeners = getListenersCount(id, enabledOnToolkit);
 
         for (int count = listeners, i = 0; count > 0; i++) {
-            count -= component.get(i).createHierarchyEvents(id, this, parent,
+            count -= children.get(i).createHierarchyEvents(id, this, parent,
                 changeFlags, enabledOnToolkit);
         }
     }
@@ -1582,8 +1582,8 @@ public class Container extends Component {
                 ((ContainerPeer)peer).beginLayout();
             }
             doLayout();
-            for (int i = 0; i < component.size(); i++) {
-                Component comp = component.get(i);
+            for (int i = 0; i < children.size(); i++) {
+                Component comp = children.get(i);
                 if (   (comp instanceof Container)
                        && !(comp instanceof Window)
                        && !comp.isValid()) {
@@ -1605,8 +1605,8 @@ public class Container extends Component {
      */
     void invalidateTree() {
         synchronized (getTreeLock()) {
-            for (int i = 0; i < component.size(); i++) {
-                Component comp = component.get(i);
+            for (int i = 0; i < children.size(); i++) {
+                Component comp = children.get(i);
                 if (comp instanceof Container) {
                     ((Container)comp).invalidateTree();
                 }
@@ -1853,7 +1853,7 @@ public class Container extends Component {
 //            // super.paint(); -- Don't bother, since it's a NOP.
 //
             GraphicsCallback.PaintCallback.getInstance().
-                runComponents(component.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.LIGHTWEIGHTS);
+                runComponents(children.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.LIGHTWEIGHTS);
 //        }
     }
 
@@ -1922,7 +1922,7 @@ public class Container extends Component {
     public void paintComponents(Graphics g) {
         if (isShowing()) {
             GraphicsCallback.PaintAllCallback.getInstance().
-                runComponents(component.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.TWO_PASSES);
+                runComponents(children.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.TWO_PASSES);
         }
     }
 
@@ -1946,7 +1946,7 @@ public class Container extends Component {
 		void paintHeavyweightComponents(Graphics g) {
         if (isShowing()) {
             GraphicsCallback.PaintHeavyweightComponentsCallback.getInstance().
-                runComponents(component.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.LIGHTWEIGHTS |
+                runComponents(children.toArray(EMPTY_ARRAY), g, SunGraphicsCallback.LIGHTWEIGHTS |
                                             SunGraphicsCallback.HEAVYWEIGHTS);
         }
     }
@@ -2302,8 +2302,8 @@ public class Container extends Component {
                                          boolean searchHeavyweightDescendants) {
         synchronized (getTreeLock()) {
 
-            for (int i = 0; i < component.size(); i++) {
-                Component comp = component.get(i);
+            for (int i = 0; i < children.size(); i++) {
+                Component comp = children.get(i);
                 if (comp != null && comp.visible &&
                     ((!searchHeavyweightChildren &&
                       comp.peer instanceof LightweightPeer) ||
@@ -2681,8 +2681,8 @@ public class Container extends Component {
             // the menu is being assigned as a child to JLayeredPane
             // instead of particular component so always affect
             // collection of component if menu is becoming shown or hidden.
-            for (int i = 0; i < component.size(); i++) {
-                component.get(i).addNotify();
+            for (int i = 0; i < children.size(); i++) {
+                children.get(i).addNotify();
             }
 // SwingJS             // Update stacking order if native platform allows
 //            ContainerPeer cpeer = (ContainerPeer)peer;
@@ -2717,8 +2717,8 @@ public class Container extends Component {
             // the menu is being assigned as a child to JLayeredPane
             // instead of particular component so always affect
             // collection of component if menu is becoming shown or hidden.
-            for (int i = component.size()-1 ; i >= 0 ; i--) {
-                Component comp = component.get(i);
+            for (int i = children.size()-1 ; i >= 0 ; i--) {
+                Component comp = children.get(i);
                 if (comp != null) {
                     // Fix for 6607170.
                     // We want to suppress focus change on disposal
@@ -3483,8 +3483,8 @@ public class Container extends Component {
 		public void applyComponentOrientation(ComponentOrientation o) {
         applyCompOrientComp(o);
         synchronized (getTreeLock()) {
-            for (int i = 0; i < component.size(); i++) {
-                Component comp = component.get(i);
+            for (int i = 0; i < children.size(); i++) {
+                Component comp = children.get(i);
                 comp.applyComponentOrientation(o);
             }
         }

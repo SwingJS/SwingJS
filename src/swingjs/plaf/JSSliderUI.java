@@ -14,7 +14,7 @@ import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
 @J2SRequireImport(swingjs.jquery.JQueryUI.class)
-public class JSSliderUI extends JSLightweightUI implements PropertyChangeListener, ChangeListener {
+public class JSSliderUI extends LightweightUI implements PropertyChangeListener, ChangeListener {
 
 	private JSlider jSlider;
 	private int min, max, val;

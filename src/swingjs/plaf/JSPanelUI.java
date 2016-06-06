@@ -8,7 +8,7 @@ import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSPanelUI extends JSLightweightUI {
+public class JSPanelUI extends LightweightUI {
 
 	int frameZ = 10000;
 	public JSPanelUI() {

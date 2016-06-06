@@ -2,13 +2,7 @@ package swingjs.plaf;
 
 import swingjs.api.DOMNode;
 
-/**
- * Pluggable look and feel interface for JRootPane.
- * 
- * @author Scott Violet
- * @since 1.3
- */
-public class JSRootPaneUI extends JSComponentUI {
+public class JSRootPaneUI extends LightweightUI {
 
 	public JSRootPaneUI() {
 		isContainer = true;
