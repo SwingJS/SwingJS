@@ -80,7 +80,7 @@ public class Container extends Component {
      * @see #add
      * @see #getComponents
      */
-    private java.util.List<Component> component =  new java.util.ArrayList<Component>();
+    private java.util.List<Component> component;
 
     /**
      * Layout manager for this container.
@@ -249,7 +249,7 @@ public class Container extends Component {
      *
      */
     public Container() {
-    	super();
+    	component = new java.util.ArrayList<Component>();
     }
 
 		void initializeFocusTraversalKeys() {
@@ -4393,8 +4393,17 @@ class LightweightDispatcher implements AWTEventListener {
      */
     private boolean processMouseEvent(MouseEvent e) {
         int id = e.getID();
-        Component mouseOver =   // sensitive to mouse events
-            nativeContainer.getMouseEventTarget(e.getX(), e.getY(),
+        Component mouseOver = null;   // sensitive to mouse events
+        /**
+         * @j2sNative
+         * 
+         * mouseOver = e.mouseOver;
+         * 
+         */
+        {}
+        
+        if (mouseOver == null)  // sensitive to mouse events
+            mouseOver = nativeContainer.getMouseEventTarget(e.getX(), e.getY(),
                                                 Container.INCLUDE_SELF);
 
         trackMouseEnterExit(mouseOver, e);
