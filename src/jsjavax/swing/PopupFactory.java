@@ -294,7 +294,7 @@ public class PopupFactory {
             Container parent;
             for(parent = i.getParent() ; parent != null ; parent =
                     parent.getParent()) {
-                if (parent instanceof Popup.HeavyWeightWindow) {
+                if (Popup.isHeavyWeight(parent)) {
                     return true;
                 }
             }
@@ -419,7 +419,7 @@ public class PopupFactory {
                                      popup.getComponent());
                 Map heavyPopupCache = getHeavyWeightPopupCache();
 
-                if (window instanceof Popup.DefaultFrame ||
+                if (Popup.isDefaultFrame(window) ||
                                       !((Window)window).isVisible()) {
                     // If the Window isn't visible, we don't cache it as we
                     // likely won't ever get a windowClosed event to clean up.

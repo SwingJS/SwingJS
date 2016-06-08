@@ -27,6 +27,7 @@ package jsjavax.swing;
 
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
+import jsjava.awt.Container;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
 //import jsjava.awt.GraphicsEnvironment;
@@ -272,4 +273,12 @@ public class Popup {
      */
     static class DefaultFrame extends Frame {
     }
+
+		public static boolean isDefaultFrame(Object window) {
+			 return window instanceof DefaultFrame;
+		}
+
+		public static boolean isHeavyWeight(Container window) {
+			return window instanceof Popup.HeavyWeightWindow;
+		}
 }

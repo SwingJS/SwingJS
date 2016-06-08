@@ -2,7 +2,7 @@ package swingjs.plaf;
 
 import swingjs.api.DOMNode;
 
-public class JSRootPaneUI extends LightweightUI {
+public class JSRootPaneUI extends JSLightweightUI {
 
 	public JSRootPaneUI() {
 		isContainer = true;

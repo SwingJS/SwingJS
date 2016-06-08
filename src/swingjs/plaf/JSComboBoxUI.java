@@ -21,7 +21,7 @@ import swingjs.api.DOMNode;
  * 
  */
 
-public class JSComboBoxUI extends JSComponentUI implements PropertyChangeListener {
+public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListener {
 
 	public JSComboBoxUI() {
 		isContainer = true;

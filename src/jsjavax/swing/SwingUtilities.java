@@ -24,16 +24,13 @@
  */
 package jsjavax.swing;
 
+import java.awt.HeadlessException;
 import java.lang.reflect.InvocationTargetException;
-
-import swingjs.J2SIgnoreImport;
-import swingjs.api.Interface;
 
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.EventQueue;
-import jsjava.awt.FontMetrics;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
 import jsjava.awt.IllegalComponentStateException;
@@ -52,8 +49,9 @@ import jsjava.awt.event.WindowListener;
 import jsjavax.swing.event.MenuDragMouseEvent;
 import jsjavax.swing.plaf.UIResource;
 import jssun.awt.AppContext;
-import jssun.swing.SwingUtilities2;
 import jssun.swing.UIAction;
+import swingjs.J2SIgnoreImport;
+import swingjs.api.Interface;
 
 /**
  * A collection of utility methods for Swing.
@@ -1637,7 +1635,7 @@ public class SwingUtilities implements SwingConstants
 
         // Get the command object.
         commandO = action.getValue(Action.ACTION_COMMAND_KEY);
-        if (commandO == null && (action instanceof JComponent.ActionStandin)) {
+        if (commandO == null && JComponent.isActionStandin(action)) {
             // ActionStandin is used for historical reasons to support
             // registerKeyboardAction with a null value.
             stayNull = true;
@@ -1755,7 +1753,8 @@ public class SwingUtilities implements SwingConstants
     private static final Object sharedOwnerFrameKey = new Object(); // SwingUtilities.sharedOwnerFrame
 
     static class SharedOwnerFrame extends Frame implements WindowListener {
-        public void addNotify() {
+        @Override
+				public void addNotify() {
             super.addNotify();
             installListeners();
         }
@@ -1778,7 +1777,8 @@ public class SwingUtilities implements SwingConstants
          * Watches for displayability changes and disposes shared instance if there are no
          * displayable children left.
          */
-        public void windowClosed(WindowEvent e) {
+        @Override
+				public void windowClosed(WindowEvent e) {
 //            synchronized(getTreeLock()) {
                 Window[] windows = getOwnedWindows();
                 for (int ind = 0; ind < windows.length; ind++) {
@@ -1793,23 +1793,31 @@ public class SwingUtilities implements SwingConstants
                 dispose();
             }
         }
-        public void windowOpened(WindowEvent e) {
+        @Override
+				public void windowOpened(WindowEvent e) {
         }
-        public void windowClosing(WindowEvent e) {
+        @Override
+				public void windowClosing(WindowEvent e) {
         }
-        public void windowIconified(WindowEvent e) {
+        @Override
+				public void windowIconified(WindowEvent e) {
         }
-        public void windowDeiconified(WindowEvent e) {
+        @Override
+				public void windowDeiconified(WindowEvent e) {
         }
-        public void windowActivated(WindowEvent e) {
+        @Override
+				public void windowActivated(WindowEvent e) {
         }
-        public void windowDeactivated(WindowEvent e) {
+        @Override
+				public void windowDeactivated(WindowEvent e) {
         }
 
-        public void show() {
+        @Override
+				public void show() {
             // This frame can never be shown
         }
-        public void dispose() {
+        @Override
+				public void dispose() {
 //            try {
 //                getToolkit().getSystemEventQueue();
 //                super.dispose();

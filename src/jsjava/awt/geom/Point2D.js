@@ -1,6 +1,6 @@
 Clazz.declarePackage ("jsjava.awt.geom");
 // fixed by BH - need inner classes to be indicated here in array
-Clazz.load (null, ["jsjava.awt.geom.Point2D","jsjava.awt.geom.Point2D.Double", "jsjava.awt.geom.Point2D.FLoat"] , ["java.lang.Double", "$.InternalError"], function () {
+Clazz.load (null, ["jsjava.awt.geom.Point2D","jsjava.awt.geom.Point2D.Double", "jsjava.awt.geom.Point2D.Float"] , ["java.lang.Double", "$.InternalError"], function () {
 
 c$ = Clazz.declareType (jsjava.awt.geom, "Point2D", null, Cloneable);
 
@@ -118,14 +118,8 @@ function () {
 return "Point2D.Float[" + this.x + ", " + this.y + "]";
 });
 
-
-
 c$ = Clazz.p0p ();
 Clazz.pu$h ();
-
-alert("Double" + c$)
-
-
 
 c$ = Clazz.decorateAsClass (function () {
 this.x = 0;

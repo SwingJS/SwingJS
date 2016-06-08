@@ -2998,7 +2998,7 @@ public abstract class JComponent extends Container implements JSComponent
                                 e, pressed, container)) {
                 return true;
             }
-            if (container instanceof Popup.HeavyWeightWindow) {
+            if (Popup.isHeavyWeight(container)) {
                 container = ((Window)container).getOwner();
             }
             else {
@@ -5597,4 +5597,8 @@ public abstract class JComponent extends Container implements JSComponent
         ",minimumSize=" + minimumSizeString +
         ",preferredSize=" + preferredSizeString;
     }
+
+		public static boolean isActionStandin(Action action) {
+			return action instanceof ActionStandin;
+		}
 }

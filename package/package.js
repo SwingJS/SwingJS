@@ -35,6 +35,12 @@ ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/text/Abst
   "jsjavax.swing.text.AbstractDocument.UndoRedoDocumentEvent" 
 	]);
 
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/UIDefaults.js", [
+  "jsjavax.swing.UIDefaults",
+  "jsjavax.swing.UIDefaults.ActiveValue",
+  "jsjavax.swing.UIDefaults.LazyValue"
+	]);
+
 ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jsjavax/swing/Popup.js", [
   "jsjavax.swing.Popup", 
   "jsjavax.swing.Popup.DefaultFrame",

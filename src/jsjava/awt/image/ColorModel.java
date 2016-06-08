@@ -29,6 +29,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.IndexColorModel;
 import java.util.Map;
 
+import javajs.J2SRequireImport;
 import javajs.util.AU;
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
@@ -150,6 +151,7 @@ import jsjava.awt.color.ColorSpace;
  * @see Raster
  * @see DataBuffer
  */
+//no! don't do this! @J2SRequireImport(DirectColorModel.class)
 public abstract class ColorModel implements Transparency{
 //    private long pData;         // Placeholder for data for native functions
 

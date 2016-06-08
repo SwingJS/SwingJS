@@ -8,7 +8,7 @@ import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSPanelUI extends LightweightUI {
+public class JSPanelUI extends JSLightweightUI {
 
 	int frameZ = 10000;
 	public JSPanelUI() {
@@ -31,10 +31,15 @@ public class JSPanelUI extends LightweightUI {
 	
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
-		Dimension d = new Dimension(c.getWidth(), c.getHeight());
-		if (d.width <= 0 || d.height <= 0)
-			d = c.getPreferredSize();
-		return d;
+		// called by JComponent when it doesn't have width or height info
+		// and is looking for that from the UI. 
+		return null;
+//		int w = c.getWidth();
+//		int h = c.getHeight();
+//		Dimension d = new Dimension(w, h);
+//		if (d.width <= 0 || d.height <= 0)
+//			d = c.getPreferredSize();
+//		return d;
 	}
 
 	@Override

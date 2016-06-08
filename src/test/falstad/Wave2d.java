@@ -514,10 +514,11 @@ class Wave2dFrame extends Frame
 	    }
 	}
 	if (pixels == null) {
-	    pixels = new int[d.width*d.height];
+		int n = d.width*d.height;
+	    pixels = new int[n];
 	    int i;
-	    for (i = 0; i != d.width*d.height; i++)
-		pixels[i] = 0xFF000000;
+	    for (i = 0; i != n; i++)
+	    	pixels[i] = 0xFF000000;
 	    imageSource = new MemoryImageSource(d.width, d.height, pixels, 0,
 						d.width);
 	    imageSource.setAnimated(true);

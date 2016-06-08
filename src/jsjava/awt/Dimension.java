@@ -114,7 +114,8 @@ public class Dimension extends Dimension2D {
      * {@inheritDoc}
      * @since 1.2
      */
-    public double getWidth() {
+    @Override
+		public double getWidth() {
         return width;
     }
 
@@ -122,24 +123,9 @@ public class Dimension extends Dimension2D {
      * {@inheritDoc}
      * @since 1.2
      */
-    public double getHeight() {
+    @Override
+		public double getHeight() {
         return height;
-    }
-
-    /**
-     * Sets the size of this <code>Dimension</code> object to
-     * the specified width and height in double precision.
-     * Note that if <code>width</code> or <code>height</code>
-     * are larger than <code>Integer.MAX_VALUE</code>, they will
-     * be reset to <code>Integer.MAX_VALUE</code>.
-     *
-     * @param width  the new width for the <code>Dimension</code> object
-     * @param height the new height for the <code>Dimension</code> object
-     * @since 1.2
-     */
-    public void setSize(double width, double height) {
-        this.width = (int) Math.ceil(width);
-        this.height = (int) Math.ceil(height);
     }
 
     /**
@@ -167,10 +153,13 @@ public class Dimension extends Dimension2D {
      * @since    1.1
      */
     public void setSize(Dimension d) {
-        setSize(d.width, d.height);
+      width = d.width;
+      height = d.height;
     }
 
     /**
+     * @j2sIgnore
+     * 
      * Sets the size of this <code>Dimension</code> object
      * to the specified width and height.
      * This method is included for completeness, to parallel the
@@ -188,9 +177,27 @@ public class Dimension extends Dimension2D {
     }
 
     /**
+     * Sets the size of this <code>Dimension</code> object to
+     * the specified width and height in double precision.
+     * Note that if <code>width</code> or <code>height</code>
+     * are larger than <code>Integer.MAX_VALUE</code>, they will
+     * be reset to <code>Integer.MAX_VALUE</code>.
+     *
+     * @param width  the new width for the <code>Dimension</code> object
+     * @param height the new height for the <code>Dimension</code> object
+     * @since 1.2
+     */
+    @Override
+		public void setSize(double width, double height) {
+        this.width = (int) Math.ceil(width);
+        this.height = (int) Math.ceil(height);
+    }
+
+    /**
      * Checks whether two dimension objects have equal values.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (obj instanceof Dimension) {
             Dimension d = (Dimension)obj;
             return (width == d.width) && (height == d.height);
@@ -203,7 +210,8 @@ public class Dimension extends Dimension2D {
      *
      * @return    a hash code for this <code>Dimension</code>
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         int sum = width + height;
         return sum * (sum + 1)/2 + width;
     }
@@ -219,7 +227,8 @@ public class Dimension extends Dimension2D {
      * @return  a string representation of this <code>Dimension</code>
      *          object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[width=" + width + ",height=" + height + "]";
     }
 }

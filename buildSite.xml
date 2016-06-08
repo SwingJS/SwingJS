@@ -224,7 +224,295 @@
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
        		../js/SwingJSJavaExt.js
-            JU/DebugJS.js
+        	JU/DebugJS.js
+            java/awt/ActiveEvent.js
+            java/awt/AWTEvent.js
+            java/awt/AWTEventMulticaster.js
+            java/awt/event/ActionEvent.js
+            java/awt/event/ActionListener.js
+            java/awt/event/AdjustmentListener.js
+            java/awt/event/AWTEventListener.js
+            java/awt/event/AWTEventListenerProxy.js
+            java/awt/event/ComponentEvent.js
+            java/awt/event/ComponentListener.js
+            java/awt/event/ContainerEvent.js
+            java/awt/event/ContainerListener.js
+            java/awt/event/FocusEvent.js
+            java/awt/event/FocusListener.js
+            java/awt/event/HierarchyBoundsListener.js
+            java/awt/event/HierarchyEvent.js
+            java/awt/event/HierarchyListener.js
+            java/awt/event/InputEvent.js
+            java/awt/event/InputMethodEvent.js
+            java/awt/event/InputMethodListener.js
+            java/awt/event/InvocationEvent.js
+            java/awt/event/ItemEvent.js
+            java/awt/event/ItemListener.js
+            java/awt/event/KeyEvent.js
+            java/awt/event/KeyListener.js
+            java/awt/event/MouseEvent.js
+            java/awt/event/MouseListener.js
+            java/awt/event/MouseMotionListener.js
+            java/awt/event/MouseWheelEvent.js
+            java/awt/event/MouseWheelListener.js
+            java/awt/event/PaintEvent.js
+            java/awt/event/TextListener.js
+            java/awt/event/WindowAdapter.js
+            java/awt/event/WindowEvent.js
+            java/awt/event/WindowFocusListener.js
+            java/awt/event/WindowListener.js
+            java/awt/event/WindowStateListener.js
+            java/awt/EventDispatchThread.js
+            java/awt/EventFilter.js
+            java/awt/EventQueue.js
+            java/awt/ModalEventFilter.js
+            java/awt/SentEvent.js
+            java/awt/SequencedEvent.js
+            java/beans/IndexedPropertyChangeEvent.js
+            java/beans/PropertyChangeEvent.js
+            javax/swing/event/AncestorEvent.js
+            javax/swing/event/AncestorListener.js
+            javax/swing/event/ChangeEvent.js
+            javax/swing/event/ChangeListener.js
+            javax/swing/event/EventListenerList.js
+            javax/swing/event/MenuDragMouseEvent.js
+            javax/swing/event/MenuDragMouseListener.js
+            javax/swing/event/MenuEvent.js
+            javax/swing/event/MenuKeyEvent.js
+            javax/swing/event/MenuKeyListener.js
+            javax/swing/event/MenuListener.js
+            javax/swing/event/PopupMenuEvent.js
+            javax/swing/event/PopupMenuListener.js
+            javax/swing/event/SwingPropertyChangeSupport.js
+            javax/swing/SwingPaintEventDispatcher.js
+            jssun/applet/AppletEvent.js
+            jssun/applet/AppletEventMulticaster.js
+            jssun/awt/EventQueueItem.js
+            jssun/awt/PaintEventDispatcher.js
+            jssun/awt/PeerEvent.js
+            jssun/awt/PostEventQueue.js
+            java/applet/Applet.js
+            java/applet/AppletContext.js
+            java/applet/AppletStub.js
+            java/awt/AWTError.js
+            java/awt/AWTKeyStroke.js
+            java/awt/BasicStroke.js
+            java/awt/BorderLayout.js
+            java/awt/Color.js
+            java/awt/color/ColorSpace.js
+            java/awt/ColorPaintContext.js
+            java/awt/Component.js
+            java/awt/ComponentOrientation.js
+            java/awt/Conditional.js
+            java/awt/Container.js
+            java/awt/Cursor.js
+            java/awt/Dialog.js
+            java/awt/Dimension.js
+            java/awt/FlowLayout.js
+            java/awt/Font.js
+            java/awt/font/FontRenderContext.js
+            java/awt/font/TextAttribute.js
+            java/awt/FontMetrics.js
+            java/awt/Frame.js
+            java/awt/geom/AffineTransform.js
+            java/awt/geom/CubicCurve2D.js
+            java/awt/geom/Dimension2D.js
+            java/awt/geom/FlatteningPathIterator.js
+            java/awt/geom/IllegalPathStateException.js
+            java/awt/geom/Line2D.js
+            java/awt/geom/LineIterator.js
+            java/awt/geom/NoninvertibleTransformException.js
+            java/awt/geom/Path2D.js
+            java/awt/geom/PathIterator.js
+            java/awt/geom/Point2D.js
+            java/awt/geom/QuadCurve2D.js
+            java/awt/geom/QuadIterator.js
+            java/awt/geom/Rectangle2D.js
+            java/awt/geom/RectangularShape.js
+            java/awt/geom/RectIterator.js
+            java/awt/Graphics.js
+            java/awt/Graphics2D.js
+            java/awt/GraphicsCallback.js
+            java/awt/GraphicsEnvironment.js
+            java/awt/IllegalComponentStateException.js
+            java/awt/image/ColorModel.js
+            java/awt/image/DataBuffer.js
+            java/awt/image/DataBufferByte.js
+            java/awt/image/DataBufferInt.js
+            java/awt/image/DirectColorModel.js
+            java/awt/image/ImageObserver.js
+            java/awt/image/MultiPixelPackedSampleModel.js
+            java/awt/image/PackedColorModel.js
+            java/awt/image/Raster.js
+            java/awt/image/RasterFormatException.js
+            java/awt/image/SampleModel.js
+            java/awt/image/SinglePixelPackedSampleModel.js
+            java/awt/Insets.js
+            java/awt/ItemSelectable.js
+            java/awt/LayoutManager.js
+            java/awt/LayoutManager2.js
+            java/awt/Paint.js
+            java/awt/PaintContext.js
+            java/awt/Panel.js
+            java/awt/peer/CanvasPeer.js
+            java/awt/peer/ComponentPeer.js
+            java/awt/peer/ContainerPeer.js
+            java/awt/peer/LightweightPeer.js
+            java/awt/peer/PanelPeer.js
+            java/awt/Point.js
+            java/awt/Rectangle.js
+            java/awt/RenderingHints.js
+            java/awt/Shape.js
+            java/awt/Stroke.js
+            java/awt/Toolkit.js
+            java/awt/Transparency.js
+            java/awt/Window.js
+            java/beans/ChangeListenerMap.js
+            java/beans/PropertyChangeListener.js
+            java/beans/PropertyChangeListenerProxy.js
+            java/beans/PropertyChangeSupport.js
+            java/io/BufferedInputStream.js
+            java/io/BufferedReader.js
+            java/io/ByteArrayInputStream.js
+            java/io/FilterInputStream.js
+            java/io/InputStream.js
+            java/io/InputStreamReader.js
+            java/io/Reader.js
+            java/io/StringReader.js
+            java/lang/AbstractStringBuilder.js
+            java/lang/Enum.js
+            java/lang/StringBuffer.js
+            java/lang/StringBuilder.js
+            java/lang/Thread.js
+            java/lang/ThreadGroup.js
+            java/net/MalformedURLException.js
+            java/net/URL.js
+            java/text/AttributedCharacterIterator.js
+            java/text/CharacterIterator.js
+            java/util/AbstractCollection.js
+            java/util/AbstractList.js
+            java/util/AbstractMap.js
+            java/util/AbstractSequentialList.js
+            java/util/AbstractSet.js
+            java/util/ArrayList.js
+            java/util/Arrays.js
+            java/util/Collections.js
+            java/util/Dictionary.js
+            java/util/HashMap.js
+            java/util/HashSet.js
+            java/util/Hashtable.js
+            java/util/IdentityHashMap.js
+            java/util/LinkedList.js
+            java/util/Locale.js
+            java/util/MapEntry.js
+            java/util/Random.js
+            java/util/ResourceBundle.js
+            java/util/SortedMap.js
+            java/util/SortedSet.js
+            java/util/StringTokenizer.js
+            java/util/Vector.js
+            javajs/api/GenericLineReader.js
+            javajs/api/JSONEncodable.js
+            javax/swing/AbstractAction.js
+            javax/swing/AbstractButton.js
+            javax/swing/Action.js
+            javax/swing/ActionMap.js
+            javax/swing/ActionPropertyChangeListener.js
+            javax/swing/AncestorNotifier.js
+            javax/swing/ArrayTable.js
+            javax/swing/border/AbstractBorder.js
+            javax/swing/border/Border.js
+            javax/swing/ButtonModel.js
+            javax/swing/CellRendererPane.js
+            javax/swing/ClientPropertyKey.js
+            javax/swing/ComponentInputMap.js
+            javax/swing/DefaultButtonModel.js
+            javax/swing/DefaultSingleSelectionModel.js
+            javax/swing/InputMap.js
+            javax/swing/JApplet.js
+            javax/swing/JComponent.js
+            javax/swing/JDialog.js
+            javax/swing/JFrame.js
+            javax/swing/JLayeredPane.js
+            javax/swing/JMenu.js
+            javax/swing/JMenuBar.js
+            javax/swing/JMenuItem.js
+            javax/swing/JPanel.js
+            javax/swing/JPopupMenu.js
+            javax/swing/JRootPane.js
+            javax/swing/JSeparator.js
+            javax/swing/JToolTip.js
+            javax/swing/JWindow.js
+            javax/swing/KeyboardManager.js
+            javax/swing/KeyStroke.js
+            javax/swing/MenuElement.js
+            javax/swing/MenuSelectionManager.js
+            javax/swing/OverlayLayout.js
+            javax/swing/plaf/UIResource.js
+            javax/swing/Popup.js
+            javax/swing/PopupFactory.js
+            javax/swing/RepaintManager.js
+            javax/swing/RootPaneContainer.js
+            javax/swing/SingleSelectionModel.js
+            javax/swing/SizeRequirements.js
+            javax/swing/SwingConstants.js
+            javax/swing/SwingHeavyWeight.js
+            javax/swing/SwingUtilities.js
+            javax/swing/UIManager.js
+            javax/swing/WindowConstants.js
+            jssun/applet/AppletListener.js
+            jssun/awt/AppContext.js
+            jssun/awt/AWTAccessor.js
+            jssun/awt/AWTAutoShutdown.js
+            jssun/awt/ComponentFactory.js
+            jssun/awt/ConstrainableGraphics.js
+            jssun/awt/geom/Curve.js
+            jssun/awt/Graphics2Delegate.js
+            jssun/awt/ModalExclude.js
+            jssun/awt/NullComponentPeer.js
+            jssun/awt/RequestFocusController.js
+            jssun/awt/SunGraphicsCallback.js
+            jssun/awt/SunToolkit.js
+            jssun/awt/WindowClosingListener.js
+            jssun/awt/WindowClosingSupport.js
+            jssun/font/FontDesignMetrics.js
+            jssun/java2d/StateTrackable.js
+            jssun/java2d/StateTrackableDelegate.js
+            jssun/java2d/StateTracker.js
+            jssun/java2d/SunGraphics2D.js
+            jssun/swing/UIAction.js
+            JU/AU.js
+            JU/Base64.js
+            JU/Encoding.js
+            JU/Lst.js
+            JU/Rdr.js
+            JU/SB.js
+            JU/T3.js
+            JU/V3.js
+            swingjs/api/HTML5CanvasContext2D.js
+            swingjs/api/Interface.js
+            swingjs/api/JSComponent.js
+            swingjs/api/JSFunction.js
+            swingjs/api/JSInterface.js
+            swingjs/JSAppletPanel.js
+            swingjs/JSAppletThread.js
+            swingjs/JSComponentPeer.js
+            swingjs/JSGraphics2D.js
+            swingjs/JSMouse.js
+            swingjs/JSThread.js
+            swingjs/JSThreadGroup.js
+            swingjs/JSToolkit.js
+            swingjs/JSUtil.js
+        	"/>
+    </antcall>
+
+   	<!-- 
+
+    move classes in here temporarily to exclude them from the 
+   	core load and make them easier to debug
+   	
+
+        	
             java/awt/BasicStroke.js
             java/awt/Stroke.js
             java/util/Locale.js
@@ -328,7 +616,6 @@
             java/awt/event/WindowEvent.js
             javax/swing/JComponent.js
             javax/swing/Action.js
-            javax/swing/SwingUtilities.js
             java/awt/Frame.js
             java/awt/IllegalComponentStateException.js
             javax/swing/SwingConstants.js
@@ -541,7 +828,6 @@
             javax/swing/plaf/InputMapUIResource.js
             javax/swing/plaf/ActionMapUIResource.js
             javax/swing/plaf/ComponentUI.js
-            javax/swing/plaf/LightweightUI.js
             javax/swing/plaf/FontUIResource.js
             javax/swing/plaf/ColorUIResource.js
             javax/swing/plaf/ComponentInputMapUIResource.js
@@ -564,25 +850,18 @@
             swingjs/JSMouse.js
             swingjs/JSComponentPeer.js
             swingjs/JSGraphicsEnvironment.js
-			swingjs/plaf/HTML5LookAndFeel.js
+			swingjs/plaf/HTML5LookAndFeel.js       	
+        	swingjs/plaf/JSLightweightUI.js
             swingjs/plaf/JSComponentUI.js
-            swingjs/plaf/JSLightweightUI.js
             swingjs/plaf/JSPanelUI.js
             swingjs/plaf/JSButtonUI.js
             swingjs/plaf/JSButtonListener.js
             swingjs/plaf/JSRadioButtonUI.js
             swingjs/plaf/JSRootPaneUI.js
             swingjs/plaf/LazyActionMap.js
+            javax/swing/SwingUtilities.js
     
 
-        	"/>
-    </antcall>
-
-   	<!-- 
-
-    move classes in here temporarily to exclude them from the 
-   	core load and make them easier to debug
-   	
         	
    	minimize additional JSmol JavaScript -->
 
