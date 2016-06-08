@@ -58,7 +58,6 @@ public class Panel extends Container {
 
     protected void setPanel() {
     	// SwingJS called directly by JSAppletPanel
-    	setAppContext();
     	setLayout(new FlowLayout());
 		}
 

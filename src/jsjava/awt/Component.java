@@ -818,6 +818,7 @@ protected  transient ComponentPeer peer;
      * tree (for example, by a <code>Frame</code> object).
      */
     protected Component() {
+      num = ++incr;
     	setAppContext();
     }
 
@@ -827,7 +828,6 @@ protected  transient ComponentPeer peer;
 
     protected void setAppContext() {
       appContext = AppContext.getAppContext();
-      num = ++incr;
 		}
     
     public String getHTMLName(String uid) {

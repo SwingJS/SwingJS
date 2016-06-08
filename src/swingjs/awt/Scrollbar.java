@@ -23,14 +23,6 @@ public class Scrollbar extends JScrollBar {
 		super(orientation, value, extent, min, max);
 	}
 	
-	public void addChangeListener(ChangeListener l) {
-		addAdjustmentListener((AdjustmentListener) l);
-	}
-
-	public void removeChangeListener(ChangeListener l) {
-		removeAdjustmentListener((AdjustmentListener) l);
-	}
-	
 	@Override
 	public void setValue(int n) {
 		super.setValue(n);

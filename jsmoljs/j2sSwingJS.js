@@ -43,6 +43,9 @@
  // NOTES by Bob Hanson: 
   // J2S class changes:
 
+ // BH 6/8/2016 4:19:55 PM "con$truct" renamed "$prepare$" and placed ahead of constructor (two places)
+ // BH 6/7/2016 9:29:59 PM adds updateNode check for over 100 iterations, 
+ //                        which is probably an error and is easily spotted
  // BH 12/21/2015 6:14:59 PM adding typeArray.buffer.slice to be compatible with Safari
  // BH 12/20/2015 6:13:52 AM adding Int8Array; streamlining array checking
  // BH 12/18/2015 5:02:52 PM adding .slice and also better array copy
@@ -655,24 +658,24 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 				fx = clazzFun;
         
 			}
-		} else if (!clazzFun.stacks && !(clazzFun.lastClaxxRef
+		} else if (!clazzFun.stack && !(clazzFun.lastClaxxRef
 					&& clazzFun.lastClaxxRef.prototype[funName]
-					&& clazzFun.lastClaxxRef.prototype[funName].stacks)) { // super.toString
+					&& clazzFun.lastClaxxRef.prototype[funName].stack)) { // super.toString
 			fx = clazzFun;
 		} else { // normal wrapped method
-			var stacks = clazzFun.stacks;
-			if (!stacks)
-				stacks = clazzFun.lastClaxxRef.prototype[funName].stacks;
-			for (i = stacks.length; --i >= 0;) {
+			var stack = clazzFun.stack;
+			if (!stack)
+				stack = clazzFun.lastClaxxRef.prototype[funName].stack;
+			for (i = stack.length; --i >= 0;) {
 				/*
 				 * Once super call is computed precisely, there are no need 
 				 * to calculate the inherited level but just an equals
 				 * comparision
 				 */
-				//var level = Clazz.getInheritedLevel (clazzThis, stacks[i]);
-				if (clazzThis === stacks[i]) { // level == 0
+				//var level = Clazz.getInheritedLevel (clazzThis, stack[i]);
+				if (clazzThis === stack[i]) { // level == 0
 					if (i > 0) {
-						fx = stacks[--i].prototype[funName];
+						fx = stack[--i].prototype[funName];
 					} else {
 						/*
 						 * Will this case be reachable?
@@ -680,11 +683,11 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 						 * Should never reach here if all things are converted
 						 * by Java2Script
 						 */
-						fx = stacks[0].prototype[funName]["\\unknown"];
+						fx = stack[0].prototype[funName]["\\unknown"];
 					}
 					break;
-				} else if (Clazz.getInheritedLevel (clazzThis, stacks[i]) > 0) {
-					fx = stacks[i].prototype[funName];
+				} else if (Clazz.getInheritedLevel (clazzThis, stack[i]) > 0) {
+					fx = stack[i].prototype[funName];
 					break;
 				}
 			} // end of for loop
@@ -702,9 +705,9 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 	}
 	/* there are members which are initialized out of the constructor */
 	if (i == 0 && funName == "construct") {
-		var ss = clazzFun.stacks;
-		if (ss && !ss[0].superClazz && ss[0].con$truct)
-			ss[0].con$truct.apply (objThis, []);
+		var ss = clazzFun.stack;
+		if (ss && !ss[0].superClazz && ss[0].$prepare$)
+			ss[0].$prepare$.apply (objThis, []);
 	}
 	/*# {$no.debug.support} >>x #*/
 	/* not used in Jmol
@@ -730,11 +733,11 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
  */
 /* public */
 Clazz.superConstructor = function (objThis, clazzThis, funParams) {
-	Clazz.superCall (objThis, clazzThis, "construct", funParams);
 	/* If there are members which are initialized out of the constructor */
-	if (clazzThis.con$truct) {
-		clazzThis.con$truct.apply (objThis, []);
+	if (clazzThis.$prepare$) {
+		clazzThis.$prepare$.apply (objThis, []);
 	}
+	Clazz.superCall (objThis, clazzThis, "construct", funParams);
 };
 
 /**
@@ -933,10 +936,9 @@ Clazz.getStackTrace = function(n) {
 /* public */
 Clazz.makeConstructor = function (clazzThis, funBody, funParams) {
 	Clazz.defineMethod (clazzThis, "construct", funBody, funParams);
-	if (clazzThis.con$truct) {
-		clazzThis.con$truct.index = clazzThis.con$truct.stacks.length;
-	}
-	//clazzThis.con$truct = clazzThis.prototype.con$truct = null;
+	//if (clazzThis.$prepare$) {
+		//clazzThis.$prepare$.index = clazzThis.$prepare$.preps.length;
+	//}
 };
 
 /**
@@ -950,10 +952,9 @@ Clazz.makeConstructor = function (clazzThis, funBody, funParams) {
 /* public */
 Clazz.overrideConstructor = function (clazzThis, funBody, funParams) {
 	Clazz.overrideMethod (clazzThis, "construct", funBody, funParams);
-	if (clazzThis.con$truct) {
-		clazzThis.con$truct.index = clazzThis.con$truct.stacks.length;
-	}
-	//clazzThis.con$truct = clazzThis.prototype.con$truct = null;
+	//if (clazzThis.$prepare$) {
+		//clazzThis.$prepare$.index = clazzThis.$prepare$.preps.length;
+	//}
 };
 
 
@@ -987,7 +988,7 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 	}
   // we have found a duplicate
 	var oldFun = null;
-	var oldStacks = f$.stacks;
+	var oldStacks = f$.stack;
 		if (!oldStacks) {
 			/* method is not defined by Clazz.defineMethod () */
       oldStacks = [];
@@ -1003,9 +1004,9 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 	 * method. 
 	 * When method are being called, methods defined in the new proxy 
 	 * method will be searched through first. And if no method fitted,
-	 * it will then try to search method in the super class stacks.
+	 * it will then try to search method in the super class stack.
 	 */
-	if (!f$.stacks || f$.claxxReference !== clazzThis) {
+	if (!f$.stack || f$.claxxReference !== clazzThis) {
 		//Generate a new delegating method for the class                
     var id = ++SAEMid;
   	var delegate = function () {
@@ -1014,13 +1015,13 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
   	delegate.methodName = funName;
   	delegate.claxxReference = clazzThis;
 		f$ = addProto(proto, funName, delegate);				
-		// Keep the class inheritance stacks
+		// Keep the class inheritance stack
 		var arr = [];
 		for (var i = 0; i < oldStacks.length; i++)
 			arr[i] = oldStacks[i];
-		f$.stacks = arr;
+		f$.stack = arr;
 	}
-	var ss = f$.stacks;
+	var ss = f$.stack;
 	if (findArrayItem(ss, clazzThis) < 0) ss.push(clazzThis);
 
 	if (oldFun) {
@@ -1310,22 +1311,22 @@ var searchAndExecuteMethod = function (id, objThis, claxxRef, fxName, args, _sae
 	fx.lastParams = params.typeString;
 	fx.lastClaxxRef = claxxRef;
 
-	var stacks = fx.stacks;
-	if (!stacks)
-		stacks = claxxRef.prototype[fxName].stacks;
-	var length = stacks.length;
+	var stack = fx.stack;
+	if (!stack)
+		stack = claxxRef.prototype[fxName].stack;
+	var length = stack.length;
 
 	/*
-	 * Search the inheritance stacks to get the given class' function
+	 * Search the inheritance stack to get the given class' function
 	 */
 	var began = false; // began to search its super classes
 	for (var i = length; --i >= 0;) {
-		if (began || stacks[i] === claxxRef) {
+		if (began || stack[i] === claxxRef) {
 			/*
 			 * First try to search method within the same class scope
-			 * with stacks[i] === claxxRef
+			 * with stack[i] === claxxRef
 			 */
-			var clazzFun = stacks[i].prototype[fxName];
+			var clazzFun = stack[i].prototype[fxName];
 			var ret = tryToSearchAndExecute(id, fxName, objThis, clazzFun, params,
 					args, fx);
 			if (!(ret instanceof MethodException)) {
@@ -1333,9 +1334,9 @@ var searchAndExecuteMethod = function (id, objThis, claxxRef, fxName, args, _sae
 			}
 			/*
 			 * As there are no such methods in current class, Clazz will try 
-			 * to search its super class stacks. Here variable began indicates
+			 * to search its super class stack. Here variable began indicates
 			 * that super searchi is began, and there is no need checking
-			 * <code>stacks[i] === claxxRef</code>
+			 * <code>stack[i] === claxxRef</code>
 			 */
 			began = true; 
 		} // end of if
@@ -1633,34 +1634,36 @@ Clazz.instantialize = function (objThis, args) {
 
 	var c = objThis.construct;
 	if (c) {
-		if (!objThis.con$truct) { // no need to init fields
+		if (!objThis.$prepare$) { // no need to init fields
 			c.apply (objThis, args);
 		} else if (!objThis.getClass ().superClazz) { // the base class
-			objThis.con$truct.apply (objThis, []);
+			objThis.$prepare$.apply (objThis, []);
 			c.apply (objThis, args);
 		} else if ((c.claxxOwner 
 				&& c.claxxOwner === objThis.getClass ())
-				|| (c.stacks 
-				&& c.stacks[c.stacks.length - 1] == objThis.getClass ())) {
+				|| (c.stack 
+				&& c.stack[c.stack.length - 1] == objThis.getClass ())) {
 			/*
 			 * This #construct is defined by this class itself.
 			 * #construct will call Clazz.superConstructor, which will
-			 * call #con$truct back
+			 * call #$prepare$ back
 			 */
 			c.apply (objThis, args);
 		} else { // constructor is a super constructor
+      
 			if (c.claxxOwner && !c.claxxOwner.superClazz 
-						&& c.claxxOwner.con$truct) {
-				c.claxxOwner.con$truct.apply (objThis, []);
-			} else if (c.stacks && c.stacks.length == 1
-					&& !c.stacks[0].superClazz) {
-				c.stacks[0].con$truct.apply (objThis, []);
+						&& c.claxxOwner.$prepare$) {
+				c.claxxOwner.$prepare$.apply (objThis, []);
+			} else if (c.stack && c.stack.length == 1
+					&& !c.stack[0].superClazz) {
+				c.stack[0].$prepare$.apply (objThis, []);
 			}
+      // BH order reversed -- field preparation must come before constructor call
+			objThis.$prepare$.apply (objThis, []);
 			c.apply (objThis, args);
-			objThis.con$truct.apply (objThis, []);
 		}
-	} else if (objThis.con$truct) {
-		objThis.con$truct.apply (objThis, []);
+	} else if (objThis.$prepare$) {
+		objThis.$prepare$.apply (objThis, []);
 	}
 };
 
@@ -1897,6 +1900,7 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
     }
   if (Clazz._Loader && Clazz._Loader._checkLoad) {
     System.out.println("decorating class " + prefixName + "." + name);
+    Clazz._lastDecorated = prefixName + "." + name
   }
 	var cf = Clazz.unloadedClasses[qName];
 	if (cf) {
@@ -2531,25 +2535,24 @@ Clazz.defineStatics = function (clazz) {
 
 /* public */
 Clazz.prepareFields = function (clazz, fieldsFun) {
-	var stacks = [];
-	if (clazz.con$truct) {
-		var ss = clazz.con$truct.stacks;
-		var idx = 0;//clazz.con$truct.index;
-		for (var i = idx; i < ss.length; i++) {
-			stacks[i] = ss[i];
+	var preps = [];
+	if (clazz.$prepare$) {
+		var ss = clazz.$prepare$.preps;
+		for (var i = 0; i < ss.length; i++) {
+			preps[i] = ss[i];
 		}
 	}
-	addProto(clazz.prototype, "con$truct", clazz.con$truct = function () {
-		var stacks = arguments.callee.stacks;
-		if (stacks) {
-			for (var i = 0; i < stacks.length; i++) {
-				stacks[i].apply (this, []);
+	addProto(clazz.prototype, "$prepare$", clazz.$prepare$ = function () {
+		var preps = arguments.callee.preps;
+		if (preps) {
+			for (var i = 0; i < preps.length; i++) {
+				preps[i].apply (this, []);
 			}
 		}
 	});
-	stacks.push(fieldsFun);
-	clazz.con$truct.stacks = stacks;
-	clazz.con$truct.index = 0;
+	preps.push(fieldsFun);
+	clazz.$prepare$.preps = preps;
+	//clazz.$prepare$.index = 0;
 };
 
 /*
@@ -2650,7 +2653,7 @@ Clazz.checkPrivateMethod = function () {
   // get both this one and the one calling it
   me = arguments.callee.caller;
   caller = arguments.callee.caller.caller;
-  var stack = me.stacks;
+  var stack = me.stack;
   // if their classes are the same, no issue
   var mySig = "\\" + Clazz.getParamsType(arguments[0]).join("\\")
   if (!me.privateNote) {
@@ -2671,7 +2674,7 @@ Clazz.checkPrivateMethod = function () {
   // I am being called by a different class...
   
   for (var i = stack.length; --i >= 0;) {
-    if (stacks[i] != caller.claxxRef)
+    if (stack[i] != caller.claxxRef)
       continue;
     // and it is on MY class stack
 //    if (
@@ -2687,15 +2690,15 @@ Clazz.checkPrivateMethod = function () {
 	if (callerFx.claxxOwner ) {
 		ppFun = callerFx.claxxOwner.prototype[m.fxName];
 	} else {
-		var stacks = callerFx.stacks;
-		for (var i = stacks.length - 1; i >= 0; i--) {
-			var fx = stacks[i].prototype[m.caller.exName];
+		var stack = callerFx.stack;
+		for (var i = stack.length - 1; i >= 0; i--) {
+			var fx = stack[i].prototype[m.caller.exName];
 			if (fx === m.caller) {
-				ppFun = stacks[i].prototype[m.fxName];
+				ppFun = stack[i].prototype[m.fxName];
 			} else if (fx ) {
 				for (var fn in fx) {
 					if (fn.indexOf ('\\') == 0 && fx[fn] === m.caller) {
-						ppFun = stacks[i].prototype[m.fxName];
+						ppFun = stack[i].prototype[m.fxName];
 						break;
 					}
 				}
@@ -3367,6 +3370,7 @@ var Node = function () {
 _Loader._checkLoad = Jmol._checkLoad;
  
 _Loader.updateNodeForFunctionDecoration = function(qName) {
+
 	var node = findNode(qName);
 	if (node && node.status == Node.STATUS_KNOWN) {
 		window.setTimeout((function(nnn) {
@@ -3657,7 +3661,7 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 		queueBe4KeyClazz.push([name, onLoaded]);
     
     
-  System.out.println("loadclass-queuing" + name+ runtimeKeyClass + " "+ isClassDefined(runtimeKeyClass))
+  System.out.println("loadclass-queuing " + name+ " " + runtimeKeyClass + " "+ isClassDefined(runtimeKeyClass))
 
 		return;    
 	}
@@ -3702,6 +3706,8 @@ _Loader.loadClass = function (name, onLoaded, forced, async, mode) {
 	n.name = name;
 	n.path = path;
 	n.isPackage = (path.lastIndexOf("package.js") == path.length - 10);
+  if (n.isPackage)
+    Clazz._nodeDepth = 0;   
 	mappingPathNameNode(path, name, n);
 	n.onLoaded = onLoaded;
 	n.status = Node.STATUS_KNOWN;
@@ -3950,12 +3956,14 @@ var evaluate = function(file, file0, js) {
  		try {
 			eval(js + ";//# sourceURL="+file);
 		} catch (e) {      
+    
       if (Clazz._isQuiet) 
         return;
-			var s = "[Java2Script] The required class file \n\n" + file + (js.indexOf("[Exception") == 0 && js.indexOf("data: no") ? 
+    xxjs = js
+			var s = "[Java2Script] The required class file \n\n" + file + (js.indexOf("data: no") ? 
          "\nwas not found.\n"
-        : "\ncould not be loaded. Script error: " + e.message + " \n\ndata:\n\n" + js) + "\n\n" + Clazz.getStackTrace();
-  		alert(s)
+        : "\ncould not be loaded. Script error: " + e.message + " \n\ndata:\n\n" + js) + "\n\n" 
+        + (e.stack ? e.stack : Clazz.getStackTrace());
 			Clazz.alert(s);
 			throw e;
 		}
@@ -4049,9 +4057,11 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
     try{
 		  evaluate(file, file0, data);
     }catch(e) {
-      alert(e + " loading file " + file + " " + node.name + " " + Clazz.getStackTrace());
+    
+      alert(e + " loading file " + file + ": " + node.name + " - " + Clazz._lastDecorated + (e.stack ? "\n\n" + e.stack : Clazz.getStackTrace()));
     }
     if (fSuccess) {
+    alert("ok" + file)
 //      System.out.println("firing in loadScript " + file + " " + (fSuccess && fSuccess.toString()))
       fSuccess(); 
     }
@@ -4139,8 +4149,14 @@ var tryToLoadNext = function (file, fSuccess) {
 				n.path = pp;
 				mappingPathNameNode (n.path, name, n);
 				n.status = Node.STATUS_CONTENT_LOADED;
+        
+        
+        
 				addChildClassNode(clazzTreeRoot, n, false);
+        
+        
 				updateNode(n);
+        
 			}
 		}
 	}
@@ -4272,12 +4288,8 @@ var tryToLoadNext = function (file, fSuccess) {
 				done[i].onLoaded = null, f();
 	}
   
-  
-  
-  
-  
-  
-  
+  System.out.println("classes loaded: " + Clazz._Loader._classCountOK + "; maximum dependency depth: " + Clazz._nodeDepth);
+
 	//System.out.println(node.name + " loaded completely" + _Loader.onGlobalLoaded + "\n\n")
   if (fSuccess) {
     //System.out.println("tryToLoadNext firing " + _Loader._classCountOK + "/" + _Loader._classCountPending + " "   + fSuccess.toString() + " " + Clazz.getStackTrace())
@@ -4401,11 +4413,20 @@ var showNode = function(s, names, node, inset, level) {
   return s;    
 }     
 
+Clazz.nodeDepth = 0;
 /**
  * Update the dependency tree nodes recursively.
  */
 /* private */
-updateNode = function(node, _updateNode) {
+updateNode = function(node, ulev, chain, _updateNode) {
+  ulev || (ulev = 0);
+  chain || (chain = "");
+  ulev++;
+  if (ulev > 250) // something is wrong -- we want to see why
+    chain += (node == null ? "" : node.name + "\t")
+  if (ulev > Clazz._nodeDepth)
+    Clazz._nodeDepth = ulev;
+  if (ulev % 300 == 0)alert(ulev + " " + chain)
 	if (!node.name || node.status >= Node.STATUS_LOAD_COMPLETE) {
 		destroyClassNode(node);
 		return;
@@ -4445,7 +4466,7 @@ updateNode = function(node, _updateNode) {
 					}
 				}
 			} else {
-				(n.status == Node.STATUS_CONTENT_LOADED) && updateNode(n); // musts may be changed
+				(n.status == Node.STATUS_CONTENT_LOADED) && updateNode(n, ulev, chain); // musts may be changed
 				if (n.status < Node.STATUS_DECLARED)
 					ready = false;
 			}
@@ -4513,7 +4534,7 @@ updateNode = function(node, _updateNode) {
   	for (var i = 0; i < node.parents.length; i++) {
   		var p = node.parents[i];
   		if (p.status < level) 
-  			updateNode(p, p.name);
+  			updateNode(p, ulev, chain, p.name);
   	}
   	if (level == Node.STATUS_LOAD_COMPLETE)
   		node.parents = [];
@@ -5410,3 +5431,5 @@ Sys.err.write = function (buf, offset, len) {
 })(Clazz, Jmol); // requires JSmolCore.js
 
 }; // called by external application 
+
+//Jmol._debugCode = false;
