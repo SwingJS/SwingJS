@@ -43,6 +43,7 @@
  // NOTES by Bob Hanson: 
   // J2S class changes:
 
+ // BH 6/9/2016 9:40:31 AM refactoring SAEM for efficiencies
  // BH 6/8/2016 4:19:55 PM "con$truct" renamed "$prepare$" and placed ahead of constructor (two places)
  // BH 6/7/2016 9:29:59 PM adds updateNode check for over 100 iterations, 
  //                        which is probably an error and is easily spotted
@@ -683,7 +684,7 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 						 * Should never reach here if all things are converted
 						 * by Java2Script
 						 */
-						fx = stack[0].prototype[funName]["\\unknown"];
+						fx = stack[0].prototype[funName].sigs["\\unknown"];
 					}
 					break;
 				} else if (Clazz.getInheritedLevel (clazzThis, stack[i]) > 0) {
@@ -695,9 +696,9 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 	} // end of clazzFun
 	if (!fx) {
 		if (funName != "construct") {
-			Clazz.alert (["j2slib","no class found",(funParams).typeString])
-			newMethodNotFoundException(objThis, clazzThis, funName, 
-					Clazz.getParamsType(funParams).typeString);	
+      var types = Clazz.getParamsType(funParams).typeString;
+			Clazz.alert (["j2slib","no class found",types])
+			newMethodNotFoundException(objThis, clazzThis, funName, types);	
 		}
 		/* there are members which are initialized out of the constructor */
 		/* No super constructor! */
@@ -724,20 +725,6 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 	*/
 	/*# x<< #*/
 	return fx.apply (objThis, funParams || []);
-};
-
-/**
- * Call super constructor of the class. 
- * The same effect as Java's expression: 
- * <code> super () </code>
- */
-/* public */
-Clazz.superConstructor = function (objThis, clazzThis, funParams) {
-	/* If there are members which are initialized out of the constructor */
-	if (clazzThis.$prepare$) {
-		clazzThis.$prepare$.apply (objThis, []);
-	}
-	Clazz.superCall (objThis, clazzThis, "construct", funParams);
 };
 
 /**
@@ -925,6 +912,73 @@ Clazz.getStackTrace = function(n) {
 
 ///////////////////// method creation ////////////////////////////////
 
+// sequence in Clazz.load function parameter:
+
+// decorateAsClass
+// prepareFields
+// makeConstructor
+// defineMethod, overrideMethod
+
+/* protected */
+Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent, 
+		interfacez, parentClazzInstance, _decorateAsClass) {
+    
+	var prefixName = null;
+	if (prefix) {
+		prefixName = prefix.__PKG_NAME__;
+		if (!prefixName)
+			prefixName = prefix.__CLASS_NAME__;      
+	}
+	var qName = (prefixName ? prefixName + "." : "") + name;
+  
+    if (Clazz._Loader._classPending[qName]) {
+      delete Clazz._Loader._classPending[qName];
+      Clazz._Loader._classCountOK++;
+      Clazz._Loader._classCountPending--;
+    }
+  if (Clazz._Loader && Clazz._Loader._checkLoad) {
+    System.out.println("decorating class " + prefixName + "." + name);
+    Clazz._lastDecorated = prefixName + "." + name
+  }
+	var cf = Clazz.unloadedClasses[qName];
+	if (cf) {
+		clazzFun = cf;
+	}
+	var qName = null;
+	decorateFunction(clazzFun, prefix, name);
+	if (parentClazzInstance) {
+		Clazz.inheritClass (clazzFun, clazzParent, parentClazzInstance);
+	} else if (clazzParent) {
+		Clazz.inheritClass (clazzFun, clazzParent);
+	}
+	if (interfacez) {
+		Clazz.implementOf (clazzFun, interfacez);
+	}
+	return clazzFun;
+};
+
+/* public */
+Clazz.prepareFields = function (clazz, fieldsFun) {
+	var preps = [];
+	if (clazz.$prepare$) {
+		var ss = clazz.$prepare$.preps;
+		for (var i = 0; i < ss.length; i++) {
+			preps[i] = ss[i];
+		}
+	}
+	addProto(clazz.prototype, "$prepare$", clazz.$prepare$ = function () {
+		var preps = arguments.callee.preps;
+		if (preps) {
+			for (var i = 0; i < preps.length; i++) {
+				preps[i].apply (this, []);
+			}
+		}
+	});
+	preps.push(fieldsFun);
+	clazz.$prepare$.preps = preps;
+	//clazz.$prepare$.index = 0;
+};
+
 /**
  * Make constructor for the class with the given function body and parameters
  * signature.
@@ -957,6 +1011,20 @@ Clazz.overrideConstructor = function (clazzThis, funBody, funParams) {
 	//}
 };
 
+/**
+ * Call super constructor of the class. 
+ * The same effect as Java's expression: 
+ * <code> super () </code>
+ */
+/* public */
+Clazz.superConstructor = function (objThis, clazzThis, funParams) {
+	/* If there are members which are initialized out of the constructor */
+	if (clazzThis.$prepare$) {
+		clazzThis.$prepare$.apply (objThis, []);
+	}
+	Clazz.superCall (objThis, clazzThis, "construct", funParams);
+};
+
 
 /*
  * Define method for the class with the given method name and method
@@ -970,31 +1038,36 @@ Clazz.overrideConstructor = function (clazzThis, funBody, funParams) {
  * of the given funBody.
  */
 /* public */
+
+Clazz.saemCount1 = 0
+Clazz.saemCount2 = 0
+
 Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 	if (Clazz.assureInnerClass) 
     Clazz.assureInnerClass(clazzThis, funBody);
 	funBody.exName = funName;
-	var fpName = formatParameters(funParams);
+  funBody.sigs = {};
+	var sig = formatParameters(funParams);
 	var proto = clazzThis.prototype;
 	var f$ = proto[funName];
   if (Clazz._Loader._checkLoad)
-    checkDuplicate(clazzThis, funName, fpName);
-	if (!f$ || (f$.claxxOwner === clazzThis && f$.funParams == fpName)) {
+    checkDuplicate(clazzThis, funName, sig);
+	if (!f$ || (f$.claxxOwner === clazzThis && f$.sigs.funParams == sig)) {
 		// property "funParams" will be used as a mark of only-one method
-		funBody.funParams = fpName; 
+		funBody.sigs.funParams = sig; 
 		funBody.claxxOwner = clazzThis;
 		funBody.exClazz = clazzThis; // make it traceable
 		return addProto(proto, funName, funBody);
 	}
   // we have found a duplicate
 	var oldFun = null;
-	var oldStacks = f$.stack;
-		if (!oldStacks) {
+	var oldStack = f$.stack;
+		if (!oldStack) {
 			/* method is not defined by Clazz.defineMethod () */
-      oldStacks = [];
+      oldStack = [];
 			oldFun = f$;
 			if (f$.claxxOwner) {
-				oldStacks[0] = oldFun.claxxOwner;
+				oldStack[0] = oldFun.claxxOwner;
 			}
 		}
 		/*
@@ -1007,18 +1080,25 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 	 * it will then try to search method in the super class stack.
 	 */
 	if (!f$.stack || f$.claxxReference !== clazzThis) {
-		//Generate a new delegating method for the class                
-    var id = ++SAEMid;
+		//Generate a new delegating method for the class
+    Clazz.saemCount1++;
   	var delegate = function () {
-  		return searchAndExecuteMethod(id, this, arguments.callee.claxxReference, arguments.callee.methodName, arguments);
+      Clazz.saemCount2++;
+      var a = []
+      var fxName = arguments.callee.methodName;
+      var fx = this[fxName];
+      var claxxRef = arguments.callee.claxxReference;
+  		var f = searchAndExecuteMethod(claxxRef, fx, fxName, arguments, a);
+      return (f == null ? null : f.apply(this, a[0])); 
   	};
   	delegate.methodName = funName;
   	delegate.claxxReference = clazzThis;
+    delegate.sigs = {};
 		f$ = addProto(proto, funName, delegate);				
 		// Keep the class inheritance stack
 		var arr = [];
-		for (var i = 0; i < oldStacks.length; i++)
-			arr[i] = oldStacks[i];
+		for (var i = 0; i < oldStack.length; i++)
+			arr[i] = oldStack[i];
 		f$.stack = arr;
 	}
 	var ss = f$.stack;
@@ -1026,10 +1106,10 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 
 	if (oldFun) {
 		if (oldFun.claxxOwner === clazzThis) {
-			f$[oldFun.funParams] = oldFun;
+			f$.sigs[oldFun.sigs.funParams] = oldFun;
 			oldFun.claxxOwner = null;
 			// property "funParams" will be used as a mark of only-one method
-			oldFun.funParams = null; // null ? safe ? // safe for != null
+			oldFun.sigs.funParams = null; // null ? safe ? // safe for != null
 		} else if (!oldFun.claxxOwner) {
 			/*
 			 * The function is not defined Clazz.defineMethod ().
@@ -1037,90 +1117,13 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 			 * As a matter of lost method information, I just suppose
 			 * the method to be fixed is with void parameter!
 			 */
-			f$["\\unknown"] = oldFun;
+			f$.sigs["\\unknown"] = oldFun;
 		}
 	}
 	funBody.exClazz = clazzThis; // make it traceable
-	f$[fpName] = funBody;
+	f$.sigs[sig] = funBody;
 	return f$;
 };                                                
-
-duplicatedMethods = {};
-
-var checkDuplicate = function(clazzThis, funName, fpName) {
-	var proto = clazzThis.prototype;
-	var f$ = proto[funName];
-  if (f$ && (f$.claxxOwner || f$.claxxReference) === clazzThis) {
-    key = clazzThis.__CLASS_NAME__ + "." + funName + fpName;
-    var m = duplicatedMethods[key];
-    if (m) {
-      var s = "Warning! Duplicate method found for " + key;
-      System.out.println(s);
-      Clazz.alert(s);
-      duplicatedMethods[key] = m + 1; 
-    } else {
-      duplicatedMethods[key] = 1;
-    }
-  }
-}
-
-Clazz.showDuplicates = function(quiet) {
-  var s = "";
-  var a = duplicatedMethods;
-  var n = 0;
-  for (var key in a)
-    if (a[key] > 1) {
-      s += a[key] + "\t" + key + "\n";
-      n++;
-    }
-  s = "Duplicates: " + n + "\n\n" + s;
-  System.out.println(s);
-  if (!quiet)
-    alert(s);
-}
-
-var findArrayItem = function(arr, item) {
-	if (arr && item)
-		for (var i = arr.length; --i >= 0;)
-			if (arr[i] === item)
-				return i;
-	return -1;
-}
-
-var removeArrayItem = function(arr, item) {
-	var i = findArrayItem(arr, item);
-	if (i >= 0) {
-		var n = arr.length - 1;
-		for (; i < n; i++)
-			arr[i] = arr[i + 1];
-		arr.length--;
-		return true;
-	}
-}
-
-/*
- * Other developers may need to extend this formatParameters method
- * to deal complicated situation.
- */
-/* protected */
-var formatParameters = function (funParams) {
-	return (funParams ? funParams.replace (/~([NABSO])/g, 
-      function ($0, $1) {
-      	switch ($1) {
-      	case 'N':
-      		return "n";
-      	case 'B':
-      		return "b";
-      	case 'S':
-      		return "String";
-      	case 'O':
-      		return "Object";
-      	case 'A':
-      		return "Array";
-      	}
-      	return "Unknown";
-      }).replace (/\s+/g, "").replace (/^|,/g, "\\").replace (/\$/g, "org.eclipse.s") : "\\void");
-};
 
 /*
  * Override the existed methods which are in the same name.
@@ -1145,48 +1148,117 @@ Clazz.overrideMethod = function(clazzThis, funName, funBody, funParams) {
 	/*
 	 * Replace old methods with new method. No super methods are kept.
 	 */
-	funBody.funParams = fpName; 
+  funBody.sigs = {};
+	funBody.sigs.funParams = fpName; 
 	funBody.claxxOwner = clazzThis;
 	return addProto(clazzThis.prototype, funName, funBody);
 };
 
-//////////////  Overridden and Overloaded Java Method Handling //////////////////
-//                       SAEM (SearchAndExecuteMethod)
-// adapted by BH
-//
-
-/*
- * BH Clazz.getProfile monitors exactly what is being delegated with SAEM,
- * which could be a bottle-neck for function calling.
- * This is critical for performance optimization.
- */ 
-
-  var __signatures = ""; 
-
-Clazz.getProfile = function() {
-  	var s = "";
-	if (_profile) {
-		var l = [];
-		for (var i in _profile) {
-			var n = "" + _profile[i];
-			l.push("        ".substring(n.length) + n + "\t" + i);
-		}
-		s = l.sort().reverse().join("\r\n");
-		_profile = {};
+/* protected */
+Clazz.defineStatics = function (clazz) {
+	for (var j = arguments.length, i = (j - 1) / 2; --i >= 0;) {
+		var val = arguments[--j]
+		var name = arguments[--j];
+		clazz[name] = clazz.prototype[name] = val;
 	}
-	return s; //+ __signatures;
-}
+};
 
-var addProfile = function(c, f, p, id) {
-	var s = c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
-  if (__signatures.indexOf(s) < 0)
-    __signatures += s + "\n";    
-	_profile[s] || (_profile[s] = 0);
-	_profile[s]++;
-}
+///////////////////////// supporting method creation //////////////////////
+
+ var SAEMid = 0;
 
 /**
- * Called also by Throwable
+ * Search the given class prototype, find the method with the same
+ * method name and the same parameter signatures by the given 
+ * parameters, and then run the method with the given parameters.
+ *  
+ * The only real way to avoid SAEM is: 
+ * 
+ * 1) to never call super() -- always call a differently named function in a superclass.
+ * 2) don't overload functions 
+ *
+ * @param objThis the current host object
+ * @param claxxRef the current host object's class
+ * @param fxName the method name
+ * @param funParams the given arguments
+ * @return the function to apply and the params to use (in params),
+ * the return maybe void.
+ * @throws MethodNotFoundException if no matched method is found
+ */
+/* protected */
+var searchAndExecuteMethod = function (claxxRef, fx, fxName, args, a, _saem) {
+	var params = Clazz.getParamsType(args);
+  var nparams = params.length; // never 0; (void) counts as 1
+
+//  System.out.println("SAEM " + (++SAEMid) + ":" + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params.join(",") + ")");
+ 
+// if (SAEMid==146)debugger;
+
+	_profile && addProfile(claxxRef, fxName, params);
+  
+  var f = null;
+
+	// Cache last matched method
+	if (fx.lastParams == params.typeString && fx.lastClaxxRef === claxxRef) {
+    f = fx.lastMethod;
+	} else {
+  	fx.lastParams = params.typeString;
+  	fx.lastClaxxRef = claxxRef;
+  	var stack = fx.stack;
+  	if (!stack)
+  		stack = claxxRef.prototype[fxName].stack;
+
+  	/*
+  	 * Search the inheritance stack, starting with the class containing this method
+  	 */
+  	for (var i = stack.length; --i >= 0;) {
+  		if (claxxRef == null || stack[i] === claxxRef) {
+  			var clazzFun = stack[i].prototype[fxName];
+        var sigs = clazzFun.sigs;
+        var found = [];
+        var generic = true;
+        for (var sig in sigs) {
+        	if (sig.charCodeAt(0) == 92) { // backslash
+            generic = false;
+        	} else if (generic && sig == "funParams" && sigs.funParams) {
+        		sig = sigs.funParams;
+        	} else {
+            continue;
+          }
+          var ps = sig.substring(1).split("\\");
+        	(ps.length == nparams) && found.push(ps);
+          if (generic)
+            break;
+        }
+        
+        if (found.length > 0 && (f = searchMethod(found, params))) {
+          fx.lastMethod = f = (generic ? clazzFun : sigs["\\" + f]);
+          break;
+        }  			
+      	// As there are no such methods in current class, Clazz will try 
+        // to search its super class stack. Stop checking for the class.
+  			claxxRef = null; 
+  		} // end if
+  	} // end for  
+  } //end if
+  if (f) {
+		if (params.nullBits) {
+  		a[0] = params = Array(args.length);
+  		// For Clazz.CastedNull instances, the type name is
+  		// already used to indentified the method in searchMethod.
+  		for (var k = args.length, bits = params.nullBits; --k >= 0;)
+  			params[k] = (bits & (1 << k) ? null : args[k]);
+  	} else {
+      a[0] = args;
+  	}
+  } else {
+  if (fxName != "construct")debugger;
+  }
+  return f;
+};
+
+/**
+ * Called also by Throwable; uses BitSet to indicate type-casting of null
  *  
 /* public */
 Clazz.getParamsType = function (funParams) {
@@ -1201,229 +1273,27 @@ Clazz.getParamsType = function (funParams) {
 	  // BH just so common
     switch (typeof obj) {
     case "number":
-			var params = ["n"];
+  		var params = ["n"];
 			params.typeString = "\\n";
 			return params;
     case "boolean":
-			var params = ["b"];
+  		var params = ["b"];
 			params.typeString = "\\b";
 			return params;
 		}
 	}
 
-	var params = [];
-	params.hasCastedNull = false;
-	if (funParams) {
-		for (var i = 0; i < n; i++) {
-			params[i] = Clazz.getClassName (funParams[i]);
-			if (funParams[i] instanceof Clazz.CastedNull) {
-				params.hasCastedNull = true;
-			}
-		}
+  var params = new Array(n);
+	var bits = params.nullBits = 0;
+	for (var i = 0; i < n; i++) {
+		params[i] = Clazz.getClassName(funParams[i]);
+		if (funParams[i] instanceof Clazz.CastedNull)
+      bits |= (1 << i);
 	}
 	params.typeString = "\\" + params.join ('\\');
 	return params;
 };
 
-var SAEMid = 0;
-//xxxSAEMlist = "";
-
-//var SAEMarray = [];
-/**
- * BH: OK, this was an idea that doesn't work. The idea was to tag SAEM calls
- * and then refer back to an array. But the id number cannot be put in the right place.
- * 
- * Say we have this:
- * 
- * StringBuffer sb = new StringBuffer(); 
- * sb.append("").append(1);
- * 
- * Here we have two different append methods to call. They are saved under two
- * names:  StringBuffer.prototype.append["\\String"] 
- *     and StringBuffer.prototype.append["\\Number"]
- * 
- * The job of generateDelegatingMethod is to discriminate between those two. We can do
- * that, but the real issue is that we have to do that EVERY time a call is made.
- * This is a problem that must be handled at compile time. There is no way to 
- * make .append("") to go one way the first time and another way the second time. 
- * What we need at run time is something like this:
- * 
- * Clazz.delegate(sb.append,1,[""]) and Clazz.delegate(sb.append,2,[1])
- * The we would be able to log those numbers at run time and refer to them.
- *                     
- * The only real way to avoid SAEM is: 
- * 
- * 1) to never call super() -- always call a differently named function in a superclass.
- * 2) don't overload functions 
- *  
- */   
-
-
-/**
- * Search the given class prototype, find the method with the same
- * method name and the same parameter signatures by the given 
- * parameters, and then run the method with the given parameters.
- *
- * @param objThis the current host object
- * @param claxxRef the current host object's class
- * @param fxName the method name
- * @param funParams the given arguments
- * @return the result of the specified method of the host object,
- * the return maybe void.
- * @throws MethodNotFoundException if no matched method is found
- */
-/* protected */
-var searchAndExecuteMethod = function (id, objThis, claxxRef, fxName, args, _saem) {
-
-//  var fx = SAEMarray[id];
-//  if (fx) {
-//    return fx.apply(objThis, args);
-//  }
-
-
-	fx = objThis[fxName];
-	var params = Clazz.getParamsType(args);
-
-
-//var s = "SAEM " + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params+ ")\n";
-//if (xxxSAEMlist.length > 300)xxxSAEMlist = "";
-//xxxSAEMlist += s;
- 
-
-  if (!fx)    
-    try {System.out.println(Clazz.getStackTrace(5))} catch (e){}
-	_profile && addProfile(claxxRef, fxName, params, id);
-	// Cache last matched method
-	if (fx.lastParams == params.typeString && fx.lastClaxxRef === claxxRef) {
-		var methodParams;
-		if (params.hasCastedNull) {
-			methodParams = [];
-			// For Clazz.CastedNull instances, the type name is
-			// already used to indentified the method in searchMethod.
-			for (var k = 0; k < args.length; k++)
-				methodParams[k] = (args[k] instanceof Clazz.CastedNull ? null : args[k]);
-		} else {
-//      if (fx.lastMethod) SAEMarray[id] = fx.lastMethod;
-			methodParams = args;
-		}
-		return (fx.lastMethod ? fx.lastMethod.apply(objThis, methodParams) : null);
-	}
-	fx.lastParams = params.typeString;
-	fx.lastClaxxRef = claxxRef;
-
-	var stack = fx.stack;
-	if (!stack)
-		stack = claxxRef.prototype[fxName].stack;
-	var length = stack.length;
-
-	/*
-	 * Search the inheritance stack to get the given class' function
-	 */
-	var began = false; // began to search its super classes
-	for (var i = length; --i >= 0;) {
-		if (began || stack[i] === claxxRef) {
-			/*
-			 * First try to search method within the same class scope
-			 * with stack[i] === claxxRef
-			 */
-			var clazzFun = stack[i].prototype[fxName];
-			var ret = tryToSearchAndExecute(id, fxName, objThis, clazzFun, params,
-					args, fx);
-			if (!(ret instanceof MethodException)) {
-				return ret;
-			}
-			/*
-			 * As there are no such methods in current class, Clazz will try 
-			 * to search its super class stack. Here variable began indicates
-			 * that super searchi is began, and there is no need checking
-			 * <code>stack[i] === claxxRef</code>
-			 */
-			began = true; 
-		} // end of if
-	} // end of for
-	if ("construct" == fxName) {
-		/*
-		 * For non existed constructors, just return without throwing
-		 * exceptions. In Java codes, extending Object can call super
-		 * default Object#constructor, which is not defined in JS.
-		 */
-		return;
-	}
-	newMethodNotFoundException(objThis, claxxRef, 
-			fxName, params.typeString);
-};
-
-
-/* private */
-var tryToSearchAndExecute = function(id, fxName, objThis, clazzFun, params, args, fx, _ttsaem) {
-	var method = [];
-	var generic = true;
-	for (var fn in clazzFun) {
-		if (fn.charCodeAt(0) == 92) { // 92 == '\\'.charCodeAt (0)
-			var ps = fn.substring(1).split("\\");
-			(ps.length == params.length) && method.push(ps);
-  		generic = false;
-			continue;
-		}
-		/*
-		 * When there is only one method in the class, use the args
-		 * to identify the parameter type.
-		 *
-		 * AbstractCollection.remove (Object)
-		 * AbstractList.remove (int)
-		 * ArrayList.remove (int)
-		 *
-		 * Then calling #remove (Object) method on ArrayList instance will 
-		 * need to search up to the AbstractCollection.remove (Object),
-		 * which contains only one method.
-		 */
-		/*
-		 * See Clazz#defineMethod --Mar 10, 2006, josson
-		 */
-		if (generic && fn == "funParams" && clazzFun.funParams) {
-			fn = clazzFun.funParams;
-			var ps = fn.substring(1).split ("\\");
-			(ps.length == params.length) && (method[0] = ps);
-			break;
-		}
-	}
-  var debug = false;//(method.length > 1 && method.join().indexOf("Listen")< 0 && params.join().indexOf("Null") >= 0)
-  if (debug)alert(fxName + " -- " + method.join("|") + " -- searching for method with " + params)
-  if (method.length == 0 || !(method = searchMethod(method, params, debug)))
-	  return new MethodException();
-  if (debug) alert("OK: \\" + method)
-	var f = (generic ? clazzFun : clazzFun["\\" + method]);
-	//if (generic) 
-  //{ /* Use the generic method */
-		/*
-		 * Will this case be reachable?
-		 * March 4, 2006 josson
-		 * 
-		 * Reachable for calling #remove (Object) method on 
-		 * ArrayList instance
-		 * May 5, 2006 josson
-		 */
-	var methodParams = null;
-	if (params.hasCastedNull) {
-		methodParams = [];
-		for (var k = 0; k < args.length; k++) {
-			if (args[k] instanceof Clazz.CastedNull) {
-				/*
-				 * For Clazz.CastedNull instances, the type name is
-				 * already used to indentify the method in searchMethod.
-				 */
-				methodParams[k] = null;
-			} else {
-				methodParams[k] = args[k];
-			}
-		}
-	} else {
-		methodParams = args;
-	}
-	fx.lastMethod = f;
-  //if (!params.hasCastedNull) SAEMarray[id] = f;
-	return f.apply(objThis, methodParams);
-};
 
 /**
  * Search the existed polymorphic methods to get the matched method with
@@ -1481,6 +1351,118 @@ var searchMethod = function(roundOne, paramTypes, debug) {
 	 */
 	return roundOne[index].join ('\\');
 };
+
+Clazz.duplicatedMethods = {};
+
+var checkDuplicate = function(clazzThis, funName, fpName) {
+	var proto = clazzThis.prototype;
+	var f$ = proto[funName];
+  if (f$ && (f$.claxxOwner || f$.claxxReference) === clazzThis) {
+    key = clazzThis.__CLASS_NAME__ + "." + funName + fpName;
+    var m = Clazz.duplicatedMethods[key];
+    if (m) {
+      var s = "Warning! Duplicate method found for " + key;
+      System.out.println(s);
+      Clazz.alert(s);
+      Clazz.duplicatedMethods[key] = m + 1; 
+    } else {
+      Clazz.duplicatedMethods[key] = 1;
+    }
+  }
+}
+
+Clazz.showDuplicates = function(quiet) {
+  var s = "";
+  var a = Clazz.duplicatedMethods;
+  var n = 0;
+  for (var key in a)
+    if (a[key] > 1) {
+      s += a[key] + "\t" + key + "\n";
+      n++;
+    }
+  s = "Duplicates: " + n + "\n\n" + s;
+  System.out.println(s);
+  if (!quiet)
+    alert(s);
+}
+
+var findArrayItem = function(arr, item) {
+	if (arr && item)
+		for (var i = arr.length; --i >= 0;)
+			if (arr[i] === item)
+				return i;
+	return -1;
+}
+
+var removeArrayItem = function(arr, item) {
+	var i = findArrayItem(arr, item);
+	if (i >= 0) {
+		var n = arr.length - 1;
+		for (; i < n; i++)
+			arr[i] = arr[i + 1];
+		arr.length--;
+		return true;
+	}
+}
+
+/*
+ * Other developers may need to extend this formatParameters method
+ * to deal complicated situation.
+ */
+/* protected */
+var formatParameters = function (funParams) {
+	return (funParams ? funParams.replace (/~([NABSO])/g, 
+      function ($0, $1) {
+      	switch ($1) {
+      	case 'N':
+      		return "n";
+      	case 'B':
+      		return "b";
+      	case 'S':
+      		return "String";
+      	case 'O':
+      		return "Object";
+      	case 'A':
+      		return "Array";
+      	}
+      	return "Unknown";
+      }).replace (/\s+/g, "").replace (/^|,/g, "\\").replace (/\$/g, "org.eclipse.s") : "\\void");
+};
+
+//////////////  Overridden and Overloaded Java Method Handling //////////////////
+//                       SAEM (SearchAndExecuteMethod)
+// adapted by BH
+//
+
+/*
+ * BH Clazz.getProfile monitors exactly what is being delegated with SAEM,
+ * which could be a bottle-neck for function calling.
+ * This is critical for performance optimization.
+ */ 
+
+  var __signatures = ""; 
+
+Clazz.getProfile = function() {
+  	var s = "";
+	if (_profile) {
+		var l = [];
+		for (var i in _profile) {
+			var n = "" + _profile[i];
+			l.push("        ".substring(n.length) + n + "\t" + i);
+		}
+		s = l.sort().reverse().join("\r\n");
+		_profile = {};
+	}
+	return s; //+ __signatures;
+}
+
+var addProfile = function(c, f, p, id) {
+	var s = c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
+  if (__signatures.indexOf(s) < 0)
+    __signatures += s + "\n";    
+	_profile[s] || (_profile[s] = 0);
+	_profile[s]++;
+}
 
 ////////////////////////////////// package loading ///////////////////////
 
@@ -1839,30 +1821,34 @@ Clazz._innerFunctions = {
     var is = new java.io.BufferedInputStream ( new java.io.ByteArrayInputStream (bytes)); 
     is.url = url;
 		return is;
-	}/*# {$no.javascript.support} >>x #*/,
-
-	/*
-	 * For JavaScript programmers
-	 */
-	defineMethod : function (methodName, funBody, paramTypes) {
-		Clazz.defineMethod (this, methodName, funBody, paramTypes);
-	},
-
-	/*
-	 * For JavaScript programmers
-	 */
-	defineStaticMethod : function (methodName, funBody, paramTypes) {
-		Clazz.defineMethod (this, methodName, funBody, paramTypes);
-		this[methodName] = this.prototype[methodName];
-	},
-
-	/*
-	 * For JavaScript programmers
-	 */
-	makeConstructor : function (funBody, paramTypes) {
-		Clazz.makeConstructor (this, funBody, paramTypes);
 	}
-	/*# x<< #*/
+
+//    /*# {$no.javascript.support} >>x #*/,
+//
+//  	/*
+//  	 * For JavaScript programmers
+//  	 */
+//  	defineMethod : function (methodName, funBody, paramTypes) {
+//  		Clazz.defineMethod (this, methodName, funBody, paramTypes);
+//  	},
+//
+//  	/*
+//  	 * For JavaScript programmers
+//  	 */
+//  	defineStaticMethod : function (methodName, funBody, paramTypes) {
+//  		Clazz.defineMethod (this, methodName, funBody, paramTypes);
+//  		this[methodName] = this.prototype[methodName];
+//  	},
+//
+//  	/*
+//  	 * For JavaScript programmers
+//  	 */
+//  	makeConstructor : function (funBody, paramTypes) {
+//  		Clazz.makeConstructor (this, funBody, paramTypes);
+//  	}
+//  	/*# x<< #*/
+//
+  
 };
 
 
@@ -1879,44 +1865,6 @@ Clazz.pu$h = function (c) {
 
 Clazz.p0p = function () {
 	return cStack.pop();
-};
-
-/* protected */
-Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent, 
-		interfacez, parentClazzInstance, _decorateAsClass) {
-    
-	var prefixName = null;
-	if (prefix) {
-		prefixName = prefix.__PKG_NAME__;
-		if (!prefixName)
-			prefixName = prefix.__CLASS_NAME__;      
-	}
-	var qName = (prefixName ? prefixName + "." : "") + name;
-  
-    if (Clazz._Loader._classPending[qName]) {
-      delete Clazz._Loader._classPending[qName];
-      Clazz._Loader._classCountOK++;
-      Clazz._Loader._classCountPending--;
-    }
-  if (Clazz._Loader && Clazz._Loader._checkLoad) {
-    System.out.println("decorating class " + prefixName + "." + name);
-    Clazz._lastDecorated = prefixName + "." + name
-  }
-	var cf = Clazz.unloadedClasses[qName];
-	if (cf) {
-		clazzFun = cf;
-	}
-	var qName = null;
-	decorateFunction(clazzFun, prefix, name);
-	if (parentClazzInstance) {
-		Clazz.inheritClass (clazzFun, clazzParent, parentClazzInstance);
-	} else if (clazzParent) {
-		Clazz.inheritClass (clazzFun, clazzParent);
-	}
-	if (interfacez) {
-		Clazz.implementOf (clazzFun, interfacez);
-	}
-	return clazzFun;
 };
 
 /* private */
@@ -2076,14 +2024,10 @@ var newMethodNotFoundException = function (obj, clazz, method, params) {
 	if (params) {
 		paramStr = params.substring (1).replace (/\\/g, ",");
 	}
-	var leadingStr = "";
-	if (method && method != "construct") {
-		leadingStr = "Method";
-	} else {
-		leadingStr = "Constructor";
-	}
+	var leadingStr = (!method || method == "construct" ? "Constructor": "Method");
 	var message = leadingStr + " " + Clazz.getClassName (clazz, true) + "." 
 					+ method + "(" + paramStr + ") is not found!";
+  debugger;
   throw new java.lang.NoSuchMethodException(message);        
 };
 
@@ -2523,37 +2467,6 @@ Clazz.makeFunction = function (jsr) {
 	};
 };
 */
-
-/* protected */
-Clazz.defineStatics = function (clazz) {
-	for (var j = arguments.length, i = (j - 1) / 2; --i >= 0;) {
-		var val = arguments[--j]
-		var name = arguments[--j];
-		clazz[name] = clazz.prototype[name] = val;
-	}
-};
-
-/* public */
-Clazz.prepareFields = function (clazz, fieldsFun) {
-	var preps = [];
-	if (clazz.$prepare$) {
-		var ss = clazz.$prepare$.preps;
-		for (var i = 0; i < ss.length; i++) {
-			preps[i] = ss[i];
-		}
-	}
-	addProto(clazz.prototype, "$prepare$", clazz.$prepare$ = function () {
-		var preps = arguments.callee.preps;
-		if (preps) {
-			for (var i = 0; i < preps.length; i++) {
-				preps[i].apply (this, []);
-			}
-		}
-	});
-	preps.push(fieldsFun);
-	clazz.$prepare$.preps = preps;
-	//clazz.$prepare$.index = 0;
-};
 
 /*
  * Serialize those public or protected fields in class 
