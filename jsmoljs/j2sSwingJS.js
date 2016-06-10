@@ -468,7 +468,7 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
       Clazz._Loader._classCountPending--;
     }
   if (Clazz._Loader && Clazz._Loader._checkLoad) {
-    System.out.println("decorating class " + prefixName + "." + name);
+    //System.out.println("decorating class " + prefixName + "." + name);
     Clazz._lastDecorated = prefixName + "." + name
   }
 	var cf = Clazz.unloadedClasses[qName];
@@ -606,38 +606,48 @@ Clazz.superConstructor = function (objThis, clazzThis, funParams) {
  */
 /* public */
 
+Clazz.saemCount0 = 0
 Clazz.saemCount1 = 0
 Clazz.saemCount2 = 0
 
 Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
+    Clazz.saemCount0++;
 	if (Clazz.assureInnerClass) 
     Clazz.assureInnerClass(clazzThis, funBody);
+  funParams || (funParams = "");
 	funBody.exName = funName;
   funBody.sigs = {};
 	var sig = formatParameters(funParams);
 	var proto = clazzThis.prototype;
 	var f$ = proto[funName];
+
+  //System.out.println(document.title="sc " + Clazz.saemCount0 + "/" + Clazz.saemCount1 + "/" + Clazz.saemCount2 + " " + clazzThis.__CLASS_NAME__ + " " + funName + sig);
+
   if (Clazz._Loader._checkLoad)
     checkDuplicate(clazzThis, funName, sig);
-	if (!f$ || (f$.claxxOwner === clazzThis && f$.sigs.funParams == sig)) {
-		// property "funParams" will be used as a mark of only-one method
-		funBody.sigs.funParams = sig; 
+	if (!f$ || (f$.claxxOwner === clazzThis && f$.sigs.sig == sig)) {
+		// property "sig" will be used as a mark of only-one method
+		funBody.sigs.sig = sig;
 		funBody.claxxOwner = clazzThis;
 		funBody.exClazz = clazzThis; // make it traceable
 		return addProto(proto, funName, funBody);
 	}
+
+	funBody.exClazz = clazzThis; // make it traceable
   // we have found a duplicate
+  //debugger;
 	var oldFun = null;
 	var oldStack = f$.stack;
-		if (!oldStack) {
-			/* method is not defined by Clazz.defineMethod () */
-      oldStack = [];
-			oldFun = f$;
-			if (f$.claxxOwner) {
-				oldStack[0] = oldFun.claxxOwner;
-			}
-		}
-		/*
+  var hadStack = (!!oldStack);
+	if (!hadStack) {
+		/* method is not defined by Clazz.defineMethod () */
+		oldFun = f$;
+    oldStack = [];
+		if (oldFun.claxxOwner) {
+			oldStack[0] = oldFun.claxxOwner;
+    }
+	}
+	/*
 	 * Method that is already defined in super class will be overridden
 	 * with a new proxy method with class hierarchy stored in a stack.
 	 * That is to say, the super methods are lost in this class' proxy
@@ -646,52 +656,63 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, funParams) {
 	 * method will be searched through first. And if no method fitted,
 	 * it will then try to search method in the super class stack.
 	 */
-	if (!f$.stack || f$.claxxReference !== clazzThis) {
+  var doDelegate = (!hadStack || f$.claxxReference !== clazzThis);
+  if (doDelegate) {
 		//Generate a new delegating method for the class
     Clazz.saemCount1++;
   	var delegate = function () {
       Clazz.saemCount2++;
-      var a = []
+      var claxxRef = arguments.callee.claxxReference;
       var fxName = arguments.callee.methodName;
       var fx = this[fxName];
-      var claxxRef = arguments.callee.claxxReference;
-  		var f = searchAndExecuteMethod(claxxRef, fx, fxName, arguments, a);
-      return (f == null ? null : f.apply(this, a[0])); 
+      var retParams = []
+  		var f = searchAndExecuteMethod(claxxRef, fx, fxName, arguments, retParams);
+      return (f == null ? null : f.apply(this, retParams[0])); 
   	};
-  	delegate.methodName = funName;
   	delegate.claxxReference = clazzThis;
+  	delegate.methodName = funName;
     delegate.sigs = {};
 		f$ = addProto(proto, funName, delegate);				
 		// Keep the class inheritance stack
-		var arr = [];
+		var a = f$.stack = [];
 		for (var i = 0; i < oldStack.length; i++)
-			arr[i] = oldStack[i];
-		f$.stack = arr;
+			a[i] = oldStack[i];
 	}
-	var ss = f$.stack;
-	if (findArrayItem(ss, clazzThis) < 0) ss.push(clazzThis);
-
-	if (oldFun) {
-		if (oldFun.claxxOwner === clazzThis) {
-			f$.sigs[oldFun.sigs.funParams] = oldFun;
-			oldFun.claxxOwner = null;
-			// property "funParams" will be used as a mark of only-one method
-			oldFun.sigs.funParams = null; // null ? safe ? // safe for != null
+	if (findArrayItem(f$.stack, clazzThis) < 0) 
+      f$.stack.push(clazzThis);
+	if (!hadStack) {
+  	if (oldFun.claxxOwner === clazzThis) {
+      setSignature(f$, oldFun, oldFun.sigs.sig);
+      delete oldFun.sigs;
+			delete oldFun.claxxOwner;
 		} else if (!oldFun.claxxOwner) {
-			/*
-			 * The function is not defined Clazz.defineMethod ().
-			 * Try to fixup the method ...
-			 * As a matter of lost method information, I just suppose
-			 * the method to be fixed is with void parameter!
-			 */
-			f$.sigs["\\unknown"] = oldFun;
-		}
+      // The function is not defined Clazz.defineMethod ()
+      // For example, .equals(obj)
+      // In this case, we assign a "one-parameter; unknown" model, resulting in an automatic fail. 
+      // TODO: check the way this works.
+      setSignature(f$, oldFun, "\\void");
+      //debugger;
+      f$.sigs.fparams[0] = oldFun;
+    }   
 	}
-	funBody.exClazz = clazzThis; // make it traceable
-	f$.sigs[sig] = funBody;
+  setSignature(f$, funBody, sig);
 	return f$;
-};                                                
+};                     
 
+var setSignature = function(f$, funBody, sig) {
+if (sig == null)debugger;
+  var params = sig.substring(1).split("\\");
+  var nparams = params.length;
+  if (!f$.sigs)
+    f$.sigs = {};
+  if (!f$.sigs.fparams)
+    f$.sigs.fparams = [];
+  if (!f$.sigs.fparams[nparams])
+    f$.sigs.fparams[nparams] = [];
+  delete f$.sigs.sig;
+  f$.sigs.fparams[nparams].push([funBody, params]);
+  //System.out.println("** " + f$.name + " " + sig);
+}
 /*
  * Override the existed methods which are in the same name.
  * Overriding methods is provided for the purpose that the JavaScript
@@ -716,7 +737,7 @@ Clazz.overrideMethod = function(clazzThis, funName, funBody, funParams) {
 	 * Replace old methods with new method. No super methods are kept.
 	 */
   funBody.sigs = {};
-	funBody.sigs.funParams = fpName; 
+	funBody.sigs.sig = fpName; 
 	funBody.claxxOwner = clazzThis;
 	return addProto(clazzThis.prototype, funName, funBody);
 };
@@ -844,9 +865,9 @@ var searchAndExecuteMethod = function (claxxRef, fx, fxName, args, a, _saem) {
 	var params = Clazz.getParamsType(args);
   var nparams = params.length; // never 0; (void) counts as 1
 
-//  System.out.println("SAEM " + (++SAEMid) + ":" + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params.join(",") + ")");
+ //System.out.println("SAEM " + Clazz.saemCount1+ "/" + Clazz.saemCount2 + ":" + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params.join(",") + ")");
  
-// if (SAEMid==146)debugger;
+ //if (Clazz.saemCount2 == 2325) debugger;
 
 	_profile && addProfile(claxxRef, fxName, params);
   
@@ -865,36 +886,25 @@ var searchAndExecuteMethod = function (claxxRef, fx, fxName, args, a, _saem) {
   	/*
   	 * Search the inheritance stack, starting with the class containing this method
   	 */
-  	for (var i = stack.length; --i >= 0;) {
+  	for (var pt= -1, i = stack.length; --i >= 0;) {
+      // skip stack references higher than this class
   		if (claxxRef == null || stack[i] === claxxRef) {
   			var clazzFun = stack[i].prototype[fxName];
         var sigs = clazzFun.sigs;
-        var found = [];
-        var generic = true;
-        for (var sig in sigs) {
-        	if (sig.charCodeAt(0) == 92) { // backslash
-            generic = false;
-        	} else if (generic && sig == "funParams" && sigs.funParams) {
-        		sig = sigs.funParams;
-        	} else {
-            continue;
-          }
-          var ps = sig.substring(1).split("\\");
-        	(ps.length == nparams) && found.push(ps);
-          if (generic)
-            break;
+        if (sigs.sig) {
+          setSignature(clazzFun, clazzFun, sigs.sig);
         }
-        
-        if (found.length > 0 && (f = searchMethod(found, params))) {
-          fx.lastMethod = f = (generic ? clazzFun : sigs["\\" + f]);
+        var found = sigs.fparams[nparams];  // [[$f, ["string","int","int"]]]
+        if (found && (pt = searchMethod(found, params)) >= 0) {
+          fx.lastMethod = f = found[pt][0];
           break;
         }  			
-      	// As there are no such methods in current class, Clazz will try 
-        // to search its super class stack. Stop checking for the class.
+      	// As there are no such methods in current class,  
+        // search its super class stack -- stop checking for the class
   			claxxRef = null; 
-  		} // end if
-  	} // end for  
-  } //end if
+  		}
+  	}  
+  }
   if (f) {
 		if (params.nullBits) {
   		a[0] = params = Array(args.length);
@@ -908,6 +918,7 @@ var searchAndExecuteMethod = function (claxxRef, fx, fxName, args, a, _saem) {
   } else {
   if (fxName != "construct")debugger;
   }
+  xxf = f
   return f;
 };
 
@@ -1018,17 +1029,18 @@ Clazz.getClassName = function (obj) {
  */
 /* private */
 var searchMethod = function(roundOne, paramTypes, debug) {
-
+// roundOne -  [[f$,["string","int","int"...]...]
 // Filter out all the fitted methods for the given parameters
 	var roundTwo = [];
 	var len = roundOne.length;
 	for (var i = 0; i < len; i++) {
 		var fittedLevel = [];
 		var isFitted = true;
-		var len2 = roundOne[i].length;
+    var params = roundOne[i][1];
+		var len2 = params.length;
 		for (var j = 0; j < len2; j++) {
 			fittedLevel[j] = Clazz.getInheritedLevel(paramTypes[j], 
-					roundOne[i][j]);
+					params[j]);
       //if (debug)alert([paramTypes[j],fittedLevel[j],roundOne[i][j]])    
 			if (fittedLevel[j] < 0) {
 				isFitted = false;
@@ -1041,7 +1053,7 @@ var searchMethod = function(roundOne, paramTypes, debug) {
 		}
 	}
 	if (roundTwo.length == 0)
-		return null;
+		return -1;
 	// Find out the best method according to the inheritance.
 	var resultTwo = roundTwo;
 	var min = resultTwo[0];
@@ -1061,7 +1073,7 @@ var searchMethod = function(roundOne, paramTypes, debug) {
 	 * Return the method parameters' type string as indentifier of the
 	 * choosen method.
 	 */
-	return roundOne[index].join ('\\');
+	return index;
 };
 
 Clazz.duplicatedMethods = {};
@@ -1407,13 +1419,12 @@ Clazz.superCall = function (objThis, clazzThis, funName, funParams) {
 					if (i > 0) {
 						fx = stack[--i].prototype[funName];
 					} else {
-						/*
-						 * Will this case be reachable?
-						 * March 4, 2006
-						 * Should never reach here if all things are converted
-						 * by Java2Script
-						 */
-						fx = stack[0].prototype[funName].sigs["\\unknown"];
+            // called by a class that has a Clazz.superConstructor call but actually
+            // no superConstructor. -- jssun.SunToolkit, javax.swing.border.EmptyBorder
+            // TODO: test with ... extends Integer
+            // debugger;
+						fx = stack[0].prototype[funName];
+            fx = (fx.sigs.fparams ? fx.sigs.fparams[0] : null); // unknown or null
 					}
 					break;
 				} else if (Clazz.getInheritedLevel (clazzThis, stack[i]) > 0) {
