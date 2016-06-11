@@ -387,7 +387,11 @@
             java/lang/ThreadGroup.js
             java/net/MalformedURLException.js
             java/net/URL.js
-            java/text/AttributedCharacterIterator.js
+        	java/net/URLStreamHandlerFactory.js
+        	java/net/URLStreamHandler.js
+        	java/net/URLConnection.js
+        	java/net/UnknownServiceException.js
+        	java/text/AttributedCharacterIterator.js
             java/text/CharacterIterator.js
             java/util/AbstractCollection.js
             java/util/AbstractList.js
@@ -481,6 +485,9 @@
             jssun/java2d/StateTracker.js
             jssun/java2d/SunGraphics2D.js
             jssun/swing/UIAction.js
+        	JU/AjaxURLStreamHandlerFactory.js
+        	JU/AjaxURLStreamHandler.js
+        	JU/AjaxURLConnection.js
             JU/AU.js
             JU/Base64.js
             JU/Encoding.js

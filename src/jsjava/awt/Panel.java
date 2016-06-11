@@ -52,14 +52,8 @@ public class Panel extends Container {
      * 
      */
     public Panel() {
-    	// SwingJS SAEM
-    	setPanel();
-    }
-
-    protected void setPanel() {
-    	// SwingJS called directly by JSAppletPanel
     	setLayout(new FlowLayout());
-		}
+    }
 
 		/**
      * Creates a new panel with the specified layout manager.

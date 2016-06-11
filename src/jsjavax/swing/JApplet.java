@@ -133,7 +133,6 @@ public class JApplet extends Applet implements /* Accessible ,*/
 
 
     private void setJApplet() {
-    	setPanel();
 //    // Check the timerQ and restart if necessary.
 //    TimerQueue q = TimerQueue.sharedInstance();
 //    if(q != null) {

@@ -131,7 +131,6 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	 * @param params
 	 */
 	public JSAppletPanel(Hashtable params) {
-		setPanel();
 		set(params);
 	}
 

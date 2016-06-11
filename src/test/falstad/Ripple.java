@@ -6,9 +6,9 @@ package test.falstad;
 //
 // Changes include:
 //
-// import javax.swing.applet.Applet --> swingjs.awt
+// import javax.swing.applet.Applet --> swingjs.awt.Applet
 // 
-// import java.awt.[Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar, TextArea] --> swingjs.awt
+// import java.awt.[Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar, TextArea, Dialog] --> swingjs.awt.*
 //
 // RippleFrame.paint --> RippleFrame.paintComponent
 //
@@ -31,7 +31,6 @@ package test.falstad;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FontMetrics;
@@ -68,6 +67,7 @@ import swingjs.awt.Frame;
 import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
 import swingjs.awt.TextArea;
+import swingjs.awt.Dialog;
 
 class RippleCanvas extends Canvas {
 	RippleFrame pg;
@@ -190,6 +190,7 @@ public class Ripple extends Applet implements ComponentListener {
 		else if (ogf.useFrame)
 			ogf.triggerShow();
 		g.drawString(s, 10, 30);
+		super.paint(g); // required to avoid hover-mouse repaint
 	}
 
 	@Override
@@ -445,7 +446,6 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		sourceChooser.add("12 Src, 1 Freq");
 		sourceChooser.add("16 Src, 1 Freq");
 		sourceChooser.add("20 Src, 1 Freq");
-		sourceChooser.select(SRC_1S1F);
 		sourceChooser.addItemListener(this);
 		if (showControls)
 			main.add(sourceChooser);
@@ -459,8 +459,6 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		modeChooser.addItemListener(this);
 		if (showControls)
 			main.add(modeChooser);
-		else
-			modeChooser.select(1);
 
 		colorChooser = new Choice();
 		colorChooser.addItemListener(this);
@@ -498,7 +496,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(view3dCheck);
 
 		Label l = new Label("Simulation Speed", Label.CENTER);
-		speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 8, 1, 1, 100);
+		speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1, 10);
 		if (showControls) {
 			main.add(l);
 			main.add(speedBar);
@@ -513,8 +511,6 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(resBar);
 		}
 		resBar.addAdjustmentListener(this);
-		setResolution();
-
 		l = new Label("Damping", Label.CENTER);
 		dampingBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 2, 100);
 		dampingBar.addAdjustmentListener(this);
@@ -551,6 +547,11 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(new Label("http://www.falstad.com"));
 
 		schemeColors = new Color[20][8];
+
+		// moved here, after creation of dependent values
+		modeChooser.select(1);
+		sourceChooser.select(SRC_1S1F);
+		setResolution();
 
 		try {
 			String param;
@@ -2200,8 +2201,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			clearButton.addActionListener(this);
 			add(closeButton = new Button("Close"));
 			closeButton.addActionListener(this);
-			Point x = rframe.getLocationOnScreen();
 			setSize(400, 300);
+			Point x = (main == rframe ? rframe.getLocationOnScreen() : new Point(0,0)); //BH
 			Dimension d = getSize();
 			setLocation(x.x + (winSize.width - d.width) / 2, x.y
 					+ (winSize.height - d.height) / 2);
