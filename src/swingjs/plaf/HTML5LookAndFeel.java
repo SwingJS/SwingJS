@@ -115,6 +115,11 @@ import jssun.swing.SwingLazyValue;
  * @author unattributed
  */
 public class HTML5LookAndFeel extends LookAndFeel {
+	
+	public HTML5LookAndFeel() {
+		// for reflection
+	}
+	
 	// /**
 	// * Whether or not the developer has created a JPopupMenu.
 	// */

@@ -55,6 +55,7 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
+import jsjava.awt.peer.DialogPeer;
 import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.PanelPeer;
@@ -307,21 +308,21 @@ public abstract class Toolkit {
      * @see       jsjava.awt.peer.WindowPeer
      */
     protected abstract WindowPeer createWindow(Window target);
-//
-//    /**
-//     * Creates this toolkit's implementation of <code>Dialog</code> using
-//     * the specified peer interface.
-//     * @param     target the dialog to be implemented.
-//     * @return    this toolkit's implementation of <code>Dialog</code>.
-//     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-//     * returns true
-//     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
-//     * @see       jsjava.awt.Dialog
-//     * @see       jsjava.awt.peer.DialogPeer
-//     */
-//    protected abstract DialogPeer createDialog(Dialog target)
-//        ;
-//
+
+    /**
+     * Creates this toolkit's implementation of <code>Dialog</code> using
+     * the specified peer interface.
+     * @param     target the dialog to be implemented.
+     * @return    this toolkit's implementation of <code>Dialog</code>.
+     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
+     * returns true
+     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
+     * @see       jsjava.awt.Dialog
+     * @see       jsjava.awt.peer.DialogPeer
+     */
+    protected abstract jsjava.awt.peer.DialogPeer createDialog(Dialog target)
+        ;
+
 //    /**
 //     * Creates this toolkit's implementation of <code>MenuBar</code> using
 //     * the specified peer interface.
@@ -349,7 +350,7 @@ public abstract class Toolkit {
 //     */
 //    protected abstract MenuPeer createMenu(Menu target)
 //        ;
-//
+
 //    /**
 //     * Creates this toolkit's implementation of <code>PopupMenu</code> using
 //     * the specified peer interface.

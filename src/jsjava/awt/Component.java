@@ -1485,13 +1485,7 @@ protected  transient ComponentPeer peer;
 		showSAEM();
 	}
 	
-	private void showSAEM() {
-		/**
-		 * @j2sNative
-		 * 
-		 *            if (arguments.length == 1 && !arguments[0]) { this.hide();
-		 *            return; }
-		 */
+	protected void showSAEM() {
 		// System.out.println("Component " + name + " setVisible TRUE");
 		if (!visible) {
 			// synchronized (getTreeLock()) {

@@ -14,6 +14,7 @@ import javajs.util.SB;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
+import jsjava.awt.Dialog;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
 import jsjava.awt.Dimension;
@@ -32,6 +33,7 @@ import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.Raster;
 import jsjava.awt.image.RasterOp;
 import jsjava.awt.image.WritableRaster;
+import jsjava.awt.peer.DialogPeer;
 import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.WindowPeer;
@@ -48,6 +50,7 @@ import swingjs.api.Interface;
 import swingjs.api.JQuery;
 import swingjs.api.JSComponent;
 import swingjs.api.JSFunction;
+import swingjs.awt.MenuBar;
 import swingjs.plaf.JSComponentUI;
 
 @J2SIgnoreImport(URL.class)
@@ -917,4 +920,33 @@ public class JSToolkit extends SunToolkit {
 		return ((WindowPeer) getInstance("swingjs.plaf.JSWindowUI")).setFrame(target, true);
 	}
 
+	@Override
+	protected DialogPeer createDialog(Dialog target) {
+		return (DialogPeer) ((WindowPeer) getInstance("swingjs.plaf.JSDialogUI")).setFrame(target, true);
+	}
+
+//	@Override
+//	protected MenuBarPeer createMenuBar(MenuBar target) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	protected MenuPeer createMenu(Menu target) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	protected PopupMenuPeer createPopupMenu(PopupMenu target) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	protected MenuItemPeer createMenuItem(MenuItem target) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
 }

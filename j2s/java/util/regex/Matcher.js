@@ -1,3 +1,5 @@
+//Udo Borkowski 6/13/2016 12:39:12 AM "matches"
+
 Clazz.declarePackage("java.util.regex");
 Clazz.load(["java.util.regex.MatchResult"],"java.util.regex.Matcher",["java.lang.IllegalArgumentException","$.IndexOutOfBoundsException","$.NullPointerException","$.StringBuffer"],function(){
 c$=Clazz.decorateAsClass(function(){
@@ -182,8 +184,18 @@ return this.pat.regexp.lastIndex;
 },"~N");
 Clazz.defineMethod(c$,"matches",
 function(){
-return this.find();
+// UB: the find must match the complete input and not modify the RE object
+var old_lastIndex = this.pat.regexp.lastIndex;
+try {
+this.find();
+var r = this.results;
+return r && r.length > 0 && r[0].length === r.input.length;
+} finally {
+// Restore the old state of the RE object
+this.pat.regexp.lastIndex = old_lastIndex;
+}
 });
+
 c$.quoteReplacement=Clazz.defineMethod(c$,"quoteReplacement",
 function(string){
 if(string.indexOf('\\') < 0 && string.indexOf ('$')<0)return string;

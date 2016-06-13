@@ -1,6 +1,8 @@
-// Ripple.java (c) 2001 by Paul Falstad, www.falstad.com
-
 package test.falstad;
+
+//Ripple.java (c) 2001 by Paul Falstad, www.falstad.com
+
+// see http://www.falstad.com/ripple/
 
 // Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
@@ -26,7 +28,12 @@ package test.falstad;
 // deprecated method .show --> .setVisible(true)
 // deprecated method .hide --> .setVisible(false)
 //
-// changed some FOR statements to be more efficient
+// optimizations for JavaScript:
+//
+// 1. changed some FOR statements to be more efficient
+// 2. added JavaScript-specific options for setting default resolution and speed
+// 3. changed logic in code to stop adjusting if resolutions is sufficient.
+
 
 import java.awt.Color;
 import java.awt.Component;
@@ -68,6 +75,7 @@ import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
 import swingjs.awt.TextArea;
 import swingjs.awt.Dialog;
+
 
 class RippleCanvas extends Canvas {
 	RippleFrame pg;
@@ -222,6 +230,9 @@ public class Ripple extends Applet implements ComponentListener {
 class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
 
+	// original values:
+	int defaultSpeed = 1, defaultResolution = 110, startupTime = 1000, resolutionCutoff = 55;
+	
 	Thread engine = null;
 
 	Dimension winSize;
@@ -348,6 +359,22 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 
 	RippleFrame(Ripple a) {
 		super("Ripple Tank Applet v1.7f");
+
+		/**
+		 * @j2sNative
+		 * 
+		 *            this.defaultSpeed = 15; this.defaultResolution = 160;
+		 *            this.startupTime = 2000; this.resolutionCutoff = 200;
+		 * 
+		 * 
+		 */
+		{
+			defaultSpeed = 1;
+			defaultResolution = 160;
+			startupTime  = 1000;
+			resolutionCutoff = 55;
+		}
+
 		applet = a;
 		useFrame = true;
 		showControls = true;
@@ -381,7 +408,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			s = s.createNext();
 		}
 		String os = System.getProperty("os.name");
-		int res = 110;
+		int res = defaultResolution;
 		String jv = System.getProperty("java.class.version");
 		double jvf = new Double(jv).doubleValue();
 		// note: jvf will be 0 for JavaScript
@@ -496,24 +523,27 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(view3dCheck);
 
 		Label l = new Label("Simulation Speed", Label.CENTER);
-		speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1, 10);
+		speedBar = new Scrollbar(Scrollbar.HORIZONTAL, defaultSpeed, 1, 1, 20);
 		if (showControls) {
 			main.add(l);
 			main.add(speedBar);
 		}
-
+		speedBar.setName(l.getText());
 		speedBar.addAdjustmentListener(this);
 
 		l = new Label("Resolution", Label.CENTER);
 		resBar = new Scrollbar(Scrollbar.HORIZONTAL, res, 5, 5, 400);
+		resBar.setName(l.getText());
 		if (showControls) {
 			main.add(l);
 			main.add(resBar);
 		}
 		resBar.addAdjustmentListener(this);
+		
 		l = new Label("Damping", Label.CENTER);
 		dampingBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 2, 100);
 		dampingBar.addAdjustmentListener(this);
+		dampingBar.setName(l.getText());
 		if (showControls) {
 			main.add(l);
 			main.add(dampingBar);
@@ -526,7 +556,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(l);
 			main.add(freqBar);
 		}
-
+		freqBar.setName(l.getText());
+		
 		l = new Label("Brightness", Label.CENTER);
 		brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 27, 1, 1, 1200);
 		brightnessBar.addAdjustmentListener(this);
@@ -534,7 +565,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(l);
 			main.add(brightnessBar);
 		}
-
+		brightnessBar.setName(l.getText());
+		
 		auxLabel = new Label("", Label.CENTER);
 		auxBar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1, 30);
 		auxBar.addAdjustmentListener(this);
@@ -542,13 +574,14 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(auxLabel);
 			main.add(auxBar);
 		}
-
+    auxBar.setName("aux");
+    
 		if (showControls)
 			main.add(new Label("http://www.falstad.com"));
 
 		schemeColors = new Color[20][8];
 
-		// moved here, after creation of dependent values
+		// BH moved here, after creation of dependent values
 		modeChooser.select(1);
 		sourceChooser.select(SRC_1S1F);
 		setResolution();
@@ -826,8 +859,11 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 		if (increaseResolution) {
 			increaseResolution = false;
-			if (resBar.getValue() < 495)
-				setResolution(resBar.getValue() + 10);
+			if (resBar.getValue() < 495) {
+				int res = resBar.getValue() + 10;
+				System.out.println("increasing resolution to " + res);
+				setResolution(res);
+			}
 		}
 		long sysTime = getTimeMillis();
 		double tadd = 0;
@@ -1054,15 +1090,18 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		 * framerate, 10, 10); realg.drawString("Steprate: " + steprate, 10, 30);
 		 * lastFrameTime = lastTime;
 		 */
-
+		
 		if (!stoppedCheck.getState()) {
 			long diff = getTimeMillis() - sysTime;
 			// we want the time it takes for a wave to travel across the screen
 			// to be more-or-less constant, but don't do anything after 5 seconds
-			if (adjustResolution && diff > 0 && sysTime < startTime + 1000
-					&& windowOffsetX * diff / iterCount < 55) {
+			//System.out.println("checkres " + diff + " "+ this.windowOffsetX + " " + iterCount + " " +  (windowOffsetX * diff / iterCount) + " " + resBar.getValue());
+			if (adjustResolution && diff > 0 && sysTime < startTime + startupTime
+					&& windowOffsetX * diff / iterCount < resolutionCutoff) {
 				increaseResolution = true;
 				startTime = sysTime;
+			} else {
+				adjustResolution = false;
 			}
 			if (dragging && selectedSource == -1
 					&& modeChooser.getSelectedIndex() == MODE_FUNCHOLD)
@@ -1651,16 +1690,17 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
-		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
-		if (e.getSource() == resBar) {
+		Scrollbar src = (Scrollbar) e.getSource();
+		System.out.print(src.getName() + "=" + src.getValue() + "\n");
+		if (src == resBar) {
 			setResolution();
 			reinit();
 		}
-		if (e.getSource() == dampingBar)
+		if (src == dampingBar)
 			setDamping();
-		if (e.getSource() == brightnessBar)
+		if (src == brightnessBar)
 			cv.repaint(0);
-		if (e.getSource() == freqBar)
+		if (src == freqBar)
 			setFreq();
 	}
 

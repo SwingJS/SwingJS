@@ -26,8 +26,11 @@ package jsjava.awt;
 
 //import jsjava.awt.event.ComponentEvent;
 //import jsjava.awt.event.HierarchyEvent;
+import jsjava.awt.event.ComponentEvent;
+import jsjava.awt.event.HierarchyEvent;
 import jsjava.awt.event.WindowEvent;
 //import jssun.awt.AppContext;
+import jsjava.awt.peer.DialogPeer;
 
 /**
  * A Dialog is a top-level window with a title and a border
@@ -110,7 +113,7 @@ public class Dialog extends Window {
      */
     boolean undecorated = false;
 
-//    private transient boolean initialized = false;
+    private transient boolean initialized = false;
 
     /**
      * Modal dialogs block all input to some top-level windows.
@@ -658,7 +661,7 @@ public class Dialog extends Window {
         this.title = title;
         setModalityType(modalityType);
         //SunToolkit.checkAndSetPolicy(this, false);
-        //initialized = true;
+        initialized = true;
     }
 
     /**
@@ -710,17 +713,18 @@ public class Dialog extends Window {
         this.title = title;
         setModalityType(modalityType);
         //SunToolkit.checkAndSetPolicy(this, false);
-        //initialized = true;
+        initialized = true;
     }
 
     /**
      * Construct a name for this component.  Called by getName() when the
      * name is null.
      */
-    String constructComponentName() {
-        synchronized (Dialog.class) {
+    @Override
+		String constructComponentName() {
+        //synchronized (Dialog.class) {
             return base + nameCounter++;
-        }
+        //}
     }
 
     /**
@@ -732,15 +736,15 @@ public class Dialog extends Window {
      * @see Component#isDisplayable
      * @see #removeNotify
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
         synchronized (getTreeLock()) {
             if (parent != null) {
                 parent.addNotify();
             }
-
-//            if (peer == null) {
-//                peer = getToolkit().createDialog(this);
-//            }
+            if (peer == null) {
+                peer = getToolkit().createDialog(this);
+            }
             super.addNotify();
         }
     }
@@ -834,9 +838,9 @@ public class Dialog extends Window {
         if (type == null) {
             type = Dialog.ModalityType.MODELESS;
         }
-//        if (!Toolkit.getDefaultToolkit().isModalityTypeSupported(type)) {
-//            type = Dialog.ModalityType.MODELESS;
-//        }
+        if (!Toolkit.getDefaultToolkit().isModalityTypeSupported(type)) {
+            type = Dialog.ModalityType.MODELESS;
+        }
         if (modalityType == type) {
             return;
         }
@@ -869,92 +873,94 @@ public class Dialog extends Window {
 
         synchronized(this) {
             this.title = title;
-//            DialogPeer peer = (DialogPeer)this.peer;
-//            if (peer != null) {
-//                peer.setTitle(title);
-//            }
+            DialogPeer peer = (DialogPeer)this.peer;
+            if (peer != null) {
+                peer.setTitle(title);
+            }
         }
         firePropertyChangeObject("title", oldTitle, title);
     }
 
-//    /**
-//     * @return true if we actually showed, false if we just called toFront()
-//     */
-//    private boolean conditionalShow(Component toFocus, Long time) {
-//        boolean retval;
+	/**
+	 * @return true if we actually showed, false if we just called toFront()
+	 */
+	private boolean conditionalShow(Component toFocus, Long time) {
+		boolean retval;
+
+		closeSplashScreen();
+
+		// synchronized (getTreeLock()) {
+		// if (peer == null) {
+		// addNotify();
+		// }
+		validate();
+		if (visible) {
+			toFront();
+			retval = false;
+		} else {
+			//visible = 
+		  retval = true;
+			showSAEM();
+
+			// check if this dialog should be modal blocked BEFORE calling
+			// peer.show(),
+			// otherwise, a pair of FOCUS_GAINED and FOCUS_LOST may be mistakenly
+			// generated for the dialog
+//			if (!isModal()) {
+//				// checkShouldBeBlocked(this);
+//			} else {
+//				// modalDialogs.add(this);
+//				modalShow();
+//			}
 //
-//        closeSplashScreen();
+//			if (toFocus != null && time != null && isFocusable() && isEnabled()
+//					&& !isModalBlocked()) {
+//				// // keep the KeyEvents from being dispatched
+//				// // until the focus has been transfered
+//				// time.set(Toolkit.getEventQueue().getMostRecentEventTimeEx());
+//				// KeyboardFocusManager.getCurrentKeyboardFocusManager().
+//				// enqueueKeyEvents(time.get(), toFocus);
+//			}
 //
-//        synchronized (getTreeLock()) {
-////            if (peer == null) {
-////                addNotify();
-////            }
-//            validate();
-//            if (visible) {
-//                toFront();
-//                retval = false;
-//            } else {
-//                visible = retval = true;
+//			// This call is required as the show() method of the Dialog class
+//			// does not invoke the super.show(). So wried... :(
+//			mixOnShowing();
 //
-//                // check if this dialog should be modal blocked BEFORE calling peer.show(),
-//                // otherwise, a pair of FOCUS_GAINED and FOCUS_LOST may be mistakenly
-//                // generated for the dialog
-//                if (!isModal()) {
-////                    checkShouldBeBlocked(this);
-//                } else {
-//  //                  modalDialogs.add(this);
-//                    modalShow();
-//                }
-//
-//                if (toFocus != null && time != null && isFocusable() &&
-//                    isEnabled() && !isModalBlocked()) {
-////                    // keep the KeyEvents from being dispatched
-////                    // until the focus has been transfered
-////                    time.set(Toolkit.getEventQueue().getMostRecentEventTimeEx());
-////                    KeyboardFocusManager.getCurrentKeyboardFocusManager().
-////                        enqueueKeyEvents(time.get(), toFocus);
-//                }
-//
-//                // This call is required as the show() method of the Dialog class
-//                // does not invoke the super.show(). So wried... :(
-//                mixOnShowing();
-//
-////                peer.show(); // now guaranteed never to block
-//                if (isModalBlocked()) {
-//                    modalBlocker.toFront();
-//                }
-//
-//                //setLocationByPlatform(false);
-//                for (int i = 0; i < ownedWindowList.size(); i++) {
-//                    Window child = ownedWindowList.elementAt(i);
-//                    if ((child != null) && child.showWithParent) {
-//                        child.show();
-//                        child.showWithParent = false;
-//                    }       // endif
-//                }   // endfor
-//                Window.updateChildFocusableWindowState(this);
-//
-//                createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
-//                                      this, parent,
-//                                      HierarchyEvent.SHOWING_CHANGED,
-//                                      Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-//                if (componentListener != null ||
-//                        (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0 ||
-//                        Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {
-//                    ComponentEvent e =
-//                        new ComponentEvent(this, ComponentEvent.COMPONENT_SHOWN);
-//                    Toolkit.getEventQueue().postEvent(e);
-//                }
-//            }
-//        }
-//
-//        if (retval && (state & OPENED) == 0) {
-//            postWindowEvent(WindowEvent.WINDOW_OPENED);
-//            state |= OPENED;
-//        }
-//
-//        return retval;
-//    }
+//			// peer.show(); // now guaranteed never to block
+//			if (isModalBlocked()) {
+//				modalBlocker.toFront();
+//			}
+
+			// setLocationByPlatform(false);
+			for (int i = 0; i < ownedWindowList.size(); i++) {
+				Window child = ownedWindowList.elementAt(i);
+				if ((child != null) && child.showWithParent) {
+					child.show();
+					child.showWithParent = false;
+				} // endif
+			} // endfor
+			Window.updateChildFocusableWindowState(this);
+
+			createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
+					HierarchyEvent.SHOWING_CHANGED,
+					Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+			if (componentListener != null
+					|| (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
+					|| Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {
+				ComponentEvent e = new ComponentEvent(this,
+						ComponentEvent.COMPONENT_SHOWN);
+				Toolkit.getEventQueue().postEvent(e);
+			}
+		}
+		// }
+
+		if (retval && (state & OPENED) == 0) {
+			postWindowEvent(WindowEvent.WINDOW_OPENED);
+			state |= OPENED;
+		}
+
+		return retval;
+	}
 
     /**
      * Shows or hides this {@code Dialog} depending on the value of parameter
@@ -985,7 +991,8 @@ public class Dialog extends Window {
      * @see java.awt.Component#validate
      * @see java.awt.Dialog#isModal
      */
-    public void setVisible(boolean b) {
+    @Override
+		public void setVisible(boolean b) {
         super.setVisible(b);
     }
 
@@ -1015,17 +1022,18 @@ public class Dialog extends Window {
      * @deprecated As of JDK version 1.5, replaced by
      * {@link #setVisible(boolean) setVisible(boolean)}.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void show() {
     	// TODO
-//        if (!initialized) {
-//            throw new IllegalStateException("The dialog component " +
-//                "has not been initialized properly");
-//        }
-//
-//        beforeFirstShow = false;
+        if (!initialized) {
+            throw new IllegalStateException("The dialog component " +
+                "has not been initialized properly");
+        }
+
+        beforeFirstShow = false;
 //        if (!isModal()) {
-//            conditionalShow(null, null);
+            conditionalShow(null, null);
 //        } else {
 //            // Set this variable before calling conditionalShow(). That
 //            // way, if the Dialog is hidden right after being shown, we
@@ -1050,11 +1058,13 @@ public class Dialog extends Window {
 //                    modalFilter = ModalEventFilter.createFilterForDialog(this);
 //
 //                    final Runnable pumpEventsForFilter = new Runnable() {
-//                        public void run() {
+//                        @Override
+//												public void run() {
 //                            EventDispatchThread dispatchThread =
 //                                (EventDispatchThread)Thread.currentThread();
 //                            dispatchThread.pumpEventsForFilter(new Conditional() {
-//                                public boolean evaluate() {
+//                                @Override
+//																public boolean evaluate() {
 //                                    synchronized (getTreeLock()) {
 //                                        return keepBlockingEDT && windowClosingException == null;
 //                                    }
@@ -1076,7 +1086,8 @@ public class Dialog extends Window {
 //                            // it may occur that EDT for appContext hasn't been started yet, so
 //                            // we post an empty invocation event to trigger EDT initialization
 //                            Runnable createEDT = new Runnable() {
-//                                public void run() {};
+//                                @Override
+//																public void run() {};
 //                            };
 //                            eventQueue.postEvent(new InvocationEvent(this, createEDT));
 //                            EventDispatchThread edt = eventQueue.getDispatchThread();
@@ -1234,7 +1245,8 @@ public class Dialog extends Window {
      * @deprecated As of JDK version 1.5, replaced by
      * {@link #setVisible(boolean) setVisible(boolean)}.
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public void hide() {
         hideAndDisposePreHandler();
         super.hide();
@@ -1250,7 +1262,8 @@ public class Dialog extends Window {
      * Disposes the Dialog and then causes show() to return if it is currently
      * blocked.
      */
-    void doDispose() {
+    @Override
+		void doDispose() {
         // fix for 5048370: set isInDispose flag to true to prevent calling
         // to hideAndDisposeHandler() from hide()
         isInDispose = true;
@@ -1267,7 +1280,8 @@ public class Dialog extends Window {
      *
      * @see java.awt.Window#toBack
      */
-    public void toBack() {
+    @Override
+		public void toBack() {
         super.toBack();
 //        if (visible) {
 //            synchronized (getTreeLock()) {
@@ -1300,11 +1314,11 @@ public class Dialog extends Window {
 
         synchronized (this) {
             this.resizable = resizable;
-//            DialogPeer peer = (DialogPeer)this.peer;
-//            if (peer != null) {
-//                peer.setResizable(resizable);
-//                testvalid = true;
-//            }
+            DialogPeer peer = (DialogPeer)this.peer;
+            if (peer != null) {
+                peer.setResizable(resizable);
+                testvalid = true;
+            }
         }
 
         // On some platforms, changing the resizable state affects
@@ -1360,7 +1374,8 @@ public class Dialog extends Window {
      *
      * @return    the parameter string of this dialog window.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String str = super.paramString() + "," + modalityType;
         if (title != null) {
             str += ",title=" + title;
