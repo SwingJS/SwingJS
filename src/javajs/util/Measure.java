@@ -206,7 +206,7 @@ final public class Measure {
    * @param vAB
    */
   public static void calcNormalizedNormal(T3 pointA, T3 pointB,
-         T3 pointC, V3 vNormNorm, V3 vAB) {
+         T3 pointC, T3 vNormNorm, T3 vAB) {
     vAB.sub2(pointB, pointA);
     vNormNorm.sub2(pointC, pointA);
     vNormNorm.cross(vAB, vNormNorm);
@@ -241,7 +241,7 @@ final public class Measure {
    * @return w
    */
   public static float getNormalThroughPoints(T3 pointA, T3 pointB,
-                                   T3 pointC, V3 vNorm, V3 vTemp) {
+                                   T3 pointC, T3 vNorm, T3 vTemp) {
     // for Polyhedra
     calcNormalizedNormal(pointA, pointB, pointC, vNorm, vTemp);
     // ax + by + cz + d = 0

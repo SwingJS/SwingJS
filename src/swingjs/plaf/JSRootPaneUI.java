@@ -1,6 +1,8 @@
 package swingjs.plaf;
 
 import jsjavax.swing.JRootPane;
+import jsjavax.swing.JWindow;
+import jsjavax.swing.plaf.WindowUI;
 import swingjs.api.DOMNode;
 
 public class JSRootPaneUI extends JSLightweightUI {
@@ -22,6 +24,10 @@ public class JSRootPaneUI extends JSLightweightUI {
 				// this is the main content pane for the embedded applet.
 				swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
 						.appendChild(outerNode);
+			} else {
+				JWindow parent = (JWindow) c.getParent();
+				JSComponentUI parentUI = (JSComponentUI) (Object) parent.getUI();
+				DOMNode.add(parentUI.domNode, outerNode);
 			}
 		}
 		return domNode;

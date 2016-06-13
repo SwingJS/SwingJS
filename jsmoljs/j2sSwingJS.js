@@ -7,6 +7,7 @@
  // NOTES by Bob Hanson: 
   // J2S class changes:
 
+ // BH 6/12/2016 10:19:41 PM ensuring Class.forName("....").newInstance() requires a default constructor
  // BH 6/12/2016 5:07:22 PM complete rewrite of inheritance field preparation and constructors
  // BH 6/12/2016 11:17:43 AM removing Clazz.dateToString
  // BH 6/9/2016 9:40:31 AM refactoring SAEM for efficiencies
@@ -1148,7 +1149,7 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
     for (var i = preps.length; --i >= 0;)
       preps[i].apply(objThis, []);
 	} else if (!fx) {
-    debugger;
+    //debugger;
     allowImplicit = true;
     var pTypes = getParamTypes(args).typeString;
 		Clazz.alert (["j2sSwingJS","no class found",pTypes])
@@ -1459,8 +1460,8 @@ Clazz.instantialize = function (objThis, args) {
 	var c = objThis.construct;
   if (!allowImplicit) {
     allowImplicit = true;
-    if (!c) { 
-      debugger;
+    if (!c) {
+      //debugger;
       newMethodNotFoundException(objThis, myclass, null, getParamTypes(args).typeString);
     }
   }
@@ -1842,7 +1843,9 @@ var newMethodNotFoundException = function (obj, clazz, method, params) {
 		paramStr = params.substring (1).replace(/\\/g, ",");
 	var leadingStr = (!method || method == "construct" ? "Constructor": "Method");
 	var message = leadingStr + " " + Clazz.getClassName (clazz, true) + (method ? "." 
-					+ method : "") + "(" + paramStr + ") is not found!";
+					+ method : "") + "(" + paramStr + ") was not found";
+  System.out.println(message);
+  console.log(message);
   //debugger;
   throw new java.lang.NoSuchMethodException(message);        
 };
@@ -4918,15 +4921,23 @@ c160 += c160+c160+c160;
 /* protected */
 Con.consoleOutput = function (s, color) {
 	var o = window["j2s.lib"];
-	var console = (o && o.console);
-	if (console && typeof console == "string")
-		console = document.getElementById(console)
-	if (!console)
+	var con = (o && o.console);
+  if (!con) {
 		return false; // BH this just means we have turned off all console action
+  }
+  if (con == window.console) {
+    if (color == "red")
+      con.err(s);
+    else
+      con.log(s);
+    return;
+  }
+	if (con && typeof con == "string")
+		con = document.getElementById(con)
 	if (Con.linesCount > Con.maxTotalLines) {
 		for (var i = 0; i < Con.linesCount - Con.maxTotalLines; i++) {
-			if (console && console.childNodes.length > 0) {
-				console.removeChild (console.childNodes[0]);
+			if (con && con.childNodes.length > 0) {
+				con.removeChild (con.childNodes[0]);
 			}
 		}
 		Con.linesCount = Con.maxTotalLines;
@@ -4950,17 +4961,17 @@ Con.consoleOutput = function (s, color) {
 	for (var i = 0, last = lines.length - 1; i <= last; i++) {
 		var lastLineEl = null;
 		if (Con.metLineBreak || Con.linesCount == 0 
-				|| console.childNodes.length < 1) {
+				|| con.childNodes.length < 1) {
 			lastLineEl = document.createElement ("DIV");
-			console.appendChild (lastLineEl);
+			con.appendChild (lastLineEl);
 			lastLineEl.style.whiteSpace = "nowrap";
 			Con.linesCount++;
 		} else {
 			try {
-				lastLineEl = console.childNodes[console.childNodes.length - 1];
+				lastLineEl = con.childNodes[con.childNodes.length - 1];
 			} catch (e) {
 				lastLineEl = document.createElement ("DIV");
-				console.appendChild (lastLineEl);
+				con.appendChild (lastLineEl);
 				lastLineEl.style.whiteSpace = "nowrap";
 				Con.linesCount++;
 			}
@@ -4975,14 +4986,14 @@ Con.consoleOutput = function (s, color) {
 			l = c160;
 		el.appendChild(document.createTextNode(l));
 		if (!Con.pinning)
-			console.scrollTop += 100;
+			con.scrollTop += 100;
 		Con.metLineBreak = (i != last || willMeetLineBreak);
 	}
 
-	var cssClazzName = console.parentNode.className;
+	var cssClazzName = con.parentNode.className;
 	if (!Con.pinning && cssClazzName
 			&& cssClazzName.indexOf ("composite") != -1) {
-		console.parentNode.scrollTop = console.parentNode.scrollHeight;
+		con.parentNode.scrollTop = con.parentNode.scrollHeight;
 	}
 	Con.lastOutputTime = new Date ().getTime ();
 };

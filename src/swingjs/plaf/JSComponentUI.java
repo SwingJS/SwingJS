@@ -22,7 +22,6 @@ import jsjava.awt.image.VolatileImage;
 import jsjava.awt.peer.ContainerPeer;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
-import jsjavax.swing.JRootPane;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSToolkit;

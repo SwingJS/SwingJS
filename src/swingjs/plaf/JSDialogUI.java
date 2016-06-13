@@ -16,8 +16,8 @@ public class JSDialogUI extends JSFrameUI {
 	public DOMNode getDOMObject() {
 		if (domNode == null)
 			domNode = createDOMObject("div", id);
-		DOMNode.setStyles(domNode,  "z-index", "" + frameZ++);
 		outerNode = wrap("div", id, domNode);
+		DOMNode.setStyles(outerNode,  "z-index", "" + frameZ++);
 		$(body).append(outerNode);
 		return domNode;
 	}
