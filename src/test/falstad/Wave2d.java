@@ -3,7 +3,7 @@
 
 package test.falstad;
 
-//Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
+//Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //Changes:
 //
@@ -29,6 +29,9 @@ package test.falstad;
 // deprecated method .disable() --> .setEnabled(false)
 // deprecated method .enable() --> .setEnabled(true)
 // deprecated method .insets() --> .getInsets()
+//
+// Changes to use the boolean variable useFrame and get the app show up in the
+// same window
 
 
 import java.awt.AWTEvent;
@@ -73,9 +76,6 @@ import swingjs.awt.Choice;
 import swingjs.awt.Frame;
 import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
-
-
-
 
 
 class Wave2dCanvas extends Canvas {

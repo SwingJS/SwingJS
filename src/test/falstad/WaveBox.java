@@ -7,7 +7,7 @@ package test.falstad;
 // integrating over them using Simpson's rule.
 
 
-//Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
+//Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //Changes:
 //
@@ -48,6 +48,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
+
+
 
 import swingjs.awt.Applet;
 import swingjs.awt.Canvas;
@@ -104,19 +106,22 @@ class WaveBoxLayout implements LayoutManager {
 	cw += insets.left;
 	int h = insets.top;
 	for (i = 1; i < target.getComponentCount(); i++) {
+		
 	    Component m = target.getComponent(i);
 	    if (m.isVisible()) {
 		Dimension d = m.getPreferredSize();
-		if (m instanceof Scrollbar)
-		    d.width = barwidth;
-		if (m instanceof Label) {
-		    h += d.height/5;
-		    d.width = barwidth;
+		if (d.width >= 0 && d.height >=0){
+			if (m instanceof Scrollbar)
+				d.width = barwidth;
+			if (m instanceof Label) {
+				h += d.height/5;
+				d.width = barwidth;
 		}
 		m.setLocation(cw, h);
 		m.setSize(d.width, d.height);
 		h += d.height;
 	    }
+		}
 	}
     }
 };
@@ -136,28 +141,36 @@ public class WaveBox extends Applet implements ComponentListener {
     }
     
     public static void main(String args[]) {
+    	/**
+		 * @.j2sNative
+		 * 
+		 * debugger;
+		 *
+		 */
+		{}
         ogf = new WaveBoxFrame(null);
-        ogf.init();
+        ogf.initFrame();
     }
 
     void showFrame() {
 	if (ogf == null) {
 	    started = true;
 	    ogf = new WaveBoxFrame(this);
-	    ogf.init();
+	    ogf.initFrame();
 	    repaint();
 	}
     }
     
     public void paint(Graphics g) {
-	String s = "Applet is open in a separate window.";
-	if (!started)
-	    s = "Applet is starting.";
-	else if (ogf == null)
-	    s = "Applet is finished.";
-	else
-	    ogf.setVisible(true);
-	g.drawString(s, 10, 30);
+    	String s = "Applet is open in a separate window.";
+    	if (!started)
+    	    s = "Applet is starting.";
+    	else if (ogf == null)
+    	    s = "Applet is finished.";
+    	else if (ogf.useFrame)
+    	    ogf.triggerShow();
+    	g.drawString(s, 10, 30);
+    	super.paint(g);
     }
     
     public void componentHidden(ComponentEvent e){}
@@ -191,6 +204,10 @@ class WaveBoxFrame extends Frame
 	return "WaveBox by Paul Falstad";
     }
 
+    Boolean finished;
+    public boolean useFrame;
+    boolean showControls;
+    boolean adjustResolution = true;
     Checkbox stoppedCheck;
     Checkbox intensityCheck;
     Checkbox sidesCheck;
@@ -239,7 +256,6 @@ class WaveBoxFrame extends Frame
     static int maxDispCoefs = 8;
     static int viewDistance = 12;
     int pause;
-    WaveBox applet;
     int selection = -1;
     static final int SEL_NONE = 0;
     static final int SEL_3D = 1;
@@ -270,15 +286,34 @@ class WaveBoxFrame extends Frame
 	return q % x;
     }
     WaveBoxCanvas cv;
+    WaveBox applet;
 
     WaveBoxFrame(WaveBox a) {
 	super("3D Wave Applet v1.5a");
 	applet = a;
-    }
+	useFrame = true;
+	showControls = true;    }
 
     boolean useBufferedImage = false;
     
-    public void init() {
+    Container main;
+    
+    public void initFrame() {
+    	try {
+    	    if (applet != null) {
+    		String param = applet.getParameter("useFrame");
+    		if (param != null && param.equalsIgnoreCase("false"))
+    		    useFrame = false;
+    		param = applet.getParameter("showControls");
+    		if (param != null && param.equalsIgnoreCase("false"))
+    		    showControls = false;
+    	    }
+    	} catch (Exception e) { e.printStackTrace(); }
+    	if (useFrame){
+    	    main = this;
+    	}
+    	else
+    	    main = applet;
 	setupList = new Vector();
 	Setup s = new SingleSourceSetup();
 	while (s != null) {
@@ -291,40 +326,48 @@ class WaveBoxFrame extends Frame
         if (jvf >= 48)
 	    useBufferedImage = true;
 
-	setLayout(new WaveBoxLayout());
+	main.setLayout(new WaveBoxLayout());
 	cv = new WaveBoxCanvas(this);
 	cv.addComponentListener(this);
 	cv.addMouseMotionListener(this);
 	cv.addMouseListener(this);
-	add(cv);
+	if (showControls)
+		main.add(cv);
 
-	add(new Label("Setup:", Label.CENTER));
+	
+	if (showControls)
+		main.add(new Label("Setup:", Label.CENTER));
 	setupChooser = new Choice();
 	int i;
 	for (i = 0; i != setupList.size(); i++)
 	    setupChooser.add(((Setup) setupList.elementAt(i)).getName());
-	add(setupChooser);
+	if (showControls)
+		main.add(setupChooser);
 	setupChooser.addItemListener(this);
 	setup = (Setup) setupList.elementAt(2);
 	setupChooser.select(2);
 	
 	stoppedCheck = new Checkbox("Stopped");
 	stoppedCheck.addItemListener(this);
-	add(stoppedCheck);
+	if (showControls)
+		main.add(stoppedCheck);
 
 	intensityCheck = new Checkbox("Show Intensity");
 	intensityCheck.addItemListener(this);
-	add(intensityCheck);
+	if (showControls)
+		main.add(intensityCheck);
 
 	sidesCheck = new Checkbox("Show Sides");
 	sidesCheck.addItemListener(this);
-	add(sidesCheck);
+	if (showControls)
+		main.add(sidesCheck);
 
 	modeChooser = new Choice();
 	modeChooser.add("Mouse = Adjust Angle");
 	modeChooser.add("Mouse = Adjust Zoom");
 	modeChooser.addItemListener(this);
-	add(modeChooser);
+	if (showControls)
+		main.add(modeChooser);
 	
 	sliceChooser = new Choice();
 	sliceChooser.add("No Slicing");
@@ -332,40 +375,58 @@ class WaveBoxFrame extends Frame
 	sliceChooser.add("Show Y Slice");
 	sliceChooser.add("Show Z Slice");
 	sliceChooser.addItemListener(this);
-	add(sliceChooser);
+	if (showControls)
+		main.add(sliceChooser);
 	
-	add(new Label("Simulation Speed", Label.CENTER));
-	add(speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 15, 1, 1, 200));
+	if (showControls){
+		main.add(new Label("Simulation Speed", Label.CENTER));
+		main.add(speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 15, 1, 1, 200));
+	}
 	speedBar.addAdjustmentListener(this);
 
-	add(new Label("Brightness", Label.CENTER));
-	add(brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 240,
+	if (showControls){
+		main.add(new Label("Brightness", Label.CENTER));
+		main.add(brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 240,
 					  1, 1, 2000));
+	}
 	brightnessBar.addAdjustmentListener(this);
 
-	add(new Label("Image Resolution", Label.CENTER));
-	add(resolutionBar =
+	if (showControls){
+		main.add(new Label("Image Resolution", Label.CENTER));
+		main.add(resolutionBar =
 	    new Scrollbar(Scrollbar.HORIZONTAL, 100, 2, 20, 240));
+	}
 	resolutionBar.addAdjustmentListener(this);
 
-	add(new Label("Frequency", Label.CENTER));
-	add(freqBar = new Scrollbar(Scrollbar.HORIZONTAL, 24, 1, 5, 60));
+	if (showControls){
+		main.add(new Label("Frequency", Label.CENTER));
+		main.add(freqBar = new Scrollbar(Scrollbar.HORIZONTAL, 24, 1, 5, 60));
+	}
 	freqBar.addAdjustmentListener(this);
 
 	Label lb;
 	auxBars = new AuxBar[3];
-	add(lb = new Label("Aux 1", Label.CENTER));
-	add(aux1Bar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 0, 100));
+	lb = new Label("Aux 1", Label.CENTER);
+	if (showControls){
+		main.add(lb);
+		main.add(aux1Bar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 0, 100));
+	}
 	aux1Bar.addAdjustmentListener(this);
 	auxBars[0] = new AuxBar(lb, aux1Bar);
+	
+	lb = new Label("Aux 2", Label.CENTER);
 
-	add(lb = new Label("Aux 2", Label.CENTER));
-	add(aux2Bar = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 100));
+	if (showControls){
+		main.add(lb);
+		main.add(aux2Bar = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 100));
+	}
 	aux2Bar.addAdjustmentListener(this);
 	auxBars[1] = new AuxBar(lb, aux2Bar);
 
-	add(lb = new Label("Aux 3", Label.CENTER));
-	add(aux3Bar = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 100));
+	if (showControls){
+		main.add(lb = new Label("Aux 3", Label.CENTER));
+		main.add(aux3Bar = new Scrollbar(Scrollbar.HORIZONTAL, 0, 1, 0, 100));
+	}
 	aux3Bar.addAdjustmentListener(this);
 	auxBars[2] = new AuxBar(lb, aux3Bar);
 
@@ -375,13 +436,33 @@ class WaveBoxFrame extends Frame
 	add(sampleBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 0, 20));
 	sampleBar.addAdjustmentListener(this);*/
 
-	add(new Label("http://www.falstad.com", Label.CENTER));
+	main.add(new Label("http://www.falstad.com", Label.CENTER));
 
-	try {
+	/*try {
 	    String param = applet.getParameter("PAUSE");
 	    if (param != null)
 		pause = Integer.parseInt(param);
-	} catch (Exception e) { }
+	} catch (Exception e) { }*/
+	
+	try {
+		String param;
+		param = applet.getParameter("setup");
+		if (param != null)
+			setupChooser.select(Integer.parseInt(param));
+		param = applet.getParameter("setupClass");
+		if (param != null) {
+			for (i = 0; i != setupList.size(); i++) {
+				if (setupList.elementAt(i).getClass().getName()
+						.equalsIgnoreCase("RippleFrame$" + param))
+					break;
+			}
+			if (i != setupList.size())
+				setupChooser.select(i);
+		}
+	} catch (Exception e) {
+		if (applet != null)
+			e.printStackTrace();
+	}
 	
 	slicerPoints = new int[2][5*2];
 	sliceFaces = new double[4][3];
@@ -398,13 +479,21 @@ class WaveBoxFrame extends Frame
 	reinit();
 	cv.setBackground(Color.black);
 	cv.setForeground(Color.white);
-	setSize(650,550);
-	handleResize();
-	Dimension x = getSize();
-	Dimension screen = getToolkit().getScreenSize();
-	setLocation((screen.width  - x.width)/2,
-		    (screen.height - x.height)/2);
-	setVisible(true);
+
+    if (useFrame) {
+	    setSize(800, 640);
+	    handleResize();
+	    Dimension x = getSize();
+	    Dimension screen = getToolkit().getScreenSize();
+	    setLocation((screen.width  - x.width)/2,
+			(screen.height - x.height)/2);
+	    setVisible(true);
+	} else {
+	    setVisible(false);
+	    handleResize();
+	    applet.validate();
+	}
+	main.requestFocus();
     }
 
     void setupSimpson() {
@@ -422,6 +511,14 @@ class WaveBoxFrame extends Frame
 	sampleMult[0] = sampleMult[sampleCount-1] = 1;
     }
 
+ boolean shown = false;
+    
+    public void triggerShow() {
+    	if (!shown)
+    	    setVisible(true);
+    	shown = true;
+        }
+    
     void handleResize() {
 	reinit();
     }
@@ -483,10 +580,10 @@ class WaveBoxFrame extends Frame
 
     // multiply rotation matrix by rotations through angle1 and angle2
     void rotate(double angle1, double angle2) {
-	double r1cos = java.lang.Math.cos(angle1);
-	double r1sin = java.lang.Math.sin(angle1);
-	double r2cos = java.lang.Math.cos(angle2);
-	double r2sin = java.lang.Math.sin(angle2);
+	double r1cos = Math.cos(angle1);
+	double r1sin = Math.sin(angle1);
+	double r2cos = Math.cos(angle2);
+	double r2sin = Math.sin(angle2);
 	double rotm2[] = new double[9];
 
 	// angle1 is angle about y axis, angle2 is angle about x axis
@@ -544,12 +641,12 @@ class WaveBoxFrame extends Frame
     void computeFunction() {
 	int i, j;
 	double q = 3.14159265/maxTerms;
-	cost1 = java.lang.Math.cos(t);
-	sint1 = java.lang.Math.sin(t);
-	cost2 = java.lang.Math.cos(t+setup.getPhaseShift());
-	sint2 = java.lang.Math.sin(t+setup.getPhaseShift());
-	double shiftcos = java.lang.Math.cos(setup.getPhaseShift());
-	double shiftsin = java.lang.Math.sin(setup.getPhaseShift());
+	cost1 = Math.cos(t);
+	sint1 = Math.sin(t);
+	cost2 = Math.cos(t+setup.getPhaseShift());
+	sint2 = Math.sin(t+setup.getPhaseShift());
+	double shiftcos = Math.cos(setup.getPhaseShift());
+	double shiftsin = Math.sin(setup.getPhaseShift());
 	double izoom = 1/zoom;
 	double rotm[] = rotmatrix;
 	double boxhalfwidth = boxwidth/2;
@@ -582,7 +679,7 @@ class WaveBoxFrame extends Frame
 		double camvy = rotm[3]*camvx0+rotm[4]*camvy0-rotm[5];
 		double camvz = rotm[6]*camvx0+rotm[7]*camvy0-rotm[8];
 		double camnorm =
-		    java.lang.Math.sqrt(camvx0*camvx0+camvy0*camvy0+1);
+		    Math.sqrt(camvx0*camvx0+camvy0*camvy0+1);
 		int n;
 		double simpr = 0;
 		double simpg = 0;
@@ -900,8 +997,8 @@ class WaveBoxFrame extends Frame
 	if (x < ep2)
 	    return 0;
 	if (logep2 == 0)
-	    logep2 = -java.lang.Math.log(2*ep2);
-	return (int) (255 * sign * (java.lang.Math.log(x+ep2)+logep2)/logep2);
+	    logep2 = -Math.log(2*ep2);
+	return (int) (255 * sign * (Math.log(x+ep2)+logep2)/logep2);
     }
 
     int getColorValue(int i, int j, int k) {
@@ -971,7 +1068,7 @@ class WaveBoxFrame extends Frame
 
 	    double d;
 	    if (xa == xb)
-		d = java.lang.Math.abs(x-xa);
+		d = Math.abs(x-xa);
 	    else {
 		// write line as y=a+bx
 		double b = (yb-ya)/(double) (xb-xa);
@@ -981,7 +1078,7 @@ class WaveBoxFrame extends Frame
 		double d1 = y-(a+b*x);
 		if (d1 < 0)
 		    d1 = -d1;
-		d = d1/java.lang.Math.sqrt(1+b*b);
+		d = d1/Math.sqrt(1+b*b);
 	    }
 	    if (d < 6) {
 		selectedSlice = true;
@@ -1022,6 +1119,7 @@ class WaveBoxFrame extends Frame
     }
     public void itemStateChanged(ItemEvent e) {
 	if (e.getItemSelectable() == setupChooser) {
+		if (sliceChooser == null) return;
 	    sliceChooser.select(0);
 	    setup.deselect();
 	    setup = (Setup)
@@ -1120,7 +1218,7 @@ class WaveBoxFrame extends Frame
 		    double xi = x-mxhalf;
 		    int yi = y-mxhalf;
 		    dataxy[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi*xi+yi*yi)+.5);
+			(distmult*Math.sqrt(xi*xi+yi*yi)+.5);
 		    if (dataxy[x][y] > maxdist)
 			maxdist = dataxy[x][y];
 		}
@@ -1129,10 +1227,10 @@ class WaveBoxFrame extends Frame
 	    for (x = 0; x != maxTerms; x++)
 		for (y = 0; y <= maxdist; y++) {
 		    int xi = x-mxhalf;
-		    double r = java.lang.Math.sqrt(y*y/(distmult*distmult)+
+		    double r = Math.sqrt(y*y/(distmult*distmult)+
 						   xi*xi)*resadj+.00000001;
-		    datadzr[y][x] = java.lang.Math.cos(r*mult)/r;
-		    datadzi[y][x] = -java.lang.Math.sin(r*mult)/r;
+		    datadzr[y][x] = Math.cos(r*mult)/r;
+		    datadzi[y][x] = -Math.sin(r*mult)/r;
 		}
 	}
 	void deselect() {
@@ -1165,7 +1263,7 @@ class WaveBoxFrame extends Frame
 		    double xi = x-mxhalf;
 		    int yi = y-mxhalf;
 		    dataxy[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi*xi+yi*yi)+.5);
+			(distmult*Math.sqrt(xi*xi+yi*yi)+.5);
 		    if (dataxy[x][y] > maxdist)
 			maxdist = dataxy[x][y];
 		}
@@ -1173,10 +1271,10 @@ class WaveBoxFrame extends Frame
 	    datadzi = new double[maxdist+1][maxTerms];
 	    for (x = 0; x != maxTerms; x++)
 		for (y = 0; y <= maxdist; y++) {
-		    double r = java.lang.Math.sqrt(y*y/(distmult*distmult)+
+		    double r = Math.sqrt(y*y/(distmult*distmult)+
 						   x*x)*resadj+.00000001;
-		    datadzr[y][x] = java.lang.Math.cos(r*mult)/r;
-		    datadzi[y][x] = -java.lang.Math.sin(r*mult)/r;
+		    datadzr[y][x] = Math.cos(r*mult)/r;
+		    datadzi[y][x] = -Math.sin(r*mult)/r;
 		}
 	}
 	void deselect() {
@@ -1216,7 +1314,7 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y != maxTerms; y++) {
 		    double yi = y-mxhalf+.001;
 		    dataxy[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi*xi+yi*yi)+.5);
+			(distmult*Math.sqrt(xi*xi+yi*yi)+.5);
 		    if (dataxy[x][y] > maxdist)
 			maxdist = dataxy[x][y];
 		}
@@ -1227,10 +1325,10 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y <= maxdist; y++) {
 		    int zi = z-mxhalf;
 		    double r =
-		      java.lang.Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
+		      Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
 			+ .0000001;
-		    datadzr[y][z] = java.lang.Math.cos(r*mult)/r;
-		    datadzi[y][z] = -java.lang.Math.sin(r*mult)/r;
+		    datadzr[y][z] = Math.cos(r*mult)/r;
+		    datadzi[y][z] = -Math.sin(r*mult)/r;
 		}
 	    w1mult = (dipole) ? .5 : aux3Bar.getValue() / 100.;
 	    w2mult = 1-w1mult;
@@ -1282,7 +1380,7 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y != maxTerms; y++) {
 		    double yi = y-mxhalf+.001;
 		    dataxy[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi*xi+yi*yi)+.5);
+			(distmult*Math.sqrt(xi*xi+yi*yi)+.5);
 		    if (dataxy[x][y] > maxdist)
 			maxdist = dataxy[x][y];
 		}
@@ -1293,10 +1391,10 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y <= maxdist; y++) {
 		    int zi = z-mxhalf;
 		    double r =
-		      java.lang.Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
+		      Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
 			+ .0000001;
-		    datadzr[y][z] = .25*java.lang.Math.cos(r*mult)/r;
-		    datadzi[y][z] = -.25*java.lang.Math.sin(r*mult)/r;
+		    datadzr[y][z] = .25*Math.cos(r*mult)/r;
+		    datadzi[y][z] = -.25*Math.sin(r*mult)/r;
 		}
 	}
 	void deselect() {
@@ -1340,9 +1438,9 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y != maxTerms; y++) {
 		    double yi = y-mxhalf+.001;
 		    dataxy1[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi1*xi1+yi*yi)+.5);
+			(distmult*Math.sqrt(xi1*xi1+yi*yi)+.5);
 		    dataxy2[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi2*xi2+yi*yi)+.5);
+			(distmult*Math.sqrt(xi2*xi2+yi*yi)+.5);
 		    if (dataxy1[x][y] > maxdist)
 			maxdist = dataxy1[x][y];
 		    if (dataxy2[x][y] > maxdist)
@@ -1355,10 +1453,10 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y <= maxdist; y++) {
 		    int zi = z-mxhalf;
 		    double r =
-		      java.lang.Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
+		      Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
 			+ .0000001;
-		    datadzr[y][z] = .25*java.lang.Math.cos(r*mult)/r;
-		    datadzi[y][z] = -.25*java.lang.Math.sin(r*mult)/r;
+		    datadzr[y][z] = .25*Math.cos(r*mult)/r;
+		    datadzi[y][z] = -.25*Math.sin(r*mult)/r;
 		}
 	}
 	void deselect() {
@@ -1401,7 +1499,7 @@ class WaveBoxFrame extends Frame
 		double xi = x-mxhalf+sep+.001;
 		for (y = 0; y != maxTerms; y++) {
 		    dataxy[x][y] = (int)
-			(distmult*java.lang.Math.sqrt(xi*xi+y*y)+.5);
+			(distmult*Math.sqrt(xi*xi+y*y)+.5);
 		    if (dataxy[x][y] > maxdist)
 			maxdist = dataxy[x][y];
 		}
@@ -1412,10 +1510,10 @@ class WaveBoxFrame extends Frame
 		for (y = 0; y <= maxdist; y++) {
 		    int zi = z-mxhalf;
 		    double r =
-		      java.lang.Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
+		      Math.sqrt(y*y/(distmult*distmult)+zi*zi)*resadj
 			+ .0000001;
-		    datadzr[y][z] = java.lang.Math.cos(r*mult)/r;
-		    datadzi[y][z] = -java.lang.Math.sin(r*mult)/r;
+		    datadzr[y][z] = Math.cos(r*mult)/r;
+		    datadzi[y][z] = -Math.sin(r*mult)/r;
 		}
 	    w1mult = aux3Bar.getValue() / 100.;
 	    w2mult = 1-w1mult;
@@ -1450,7 +1548,7 @@ class WaveBoxFrame extends Frame
 		double xi = x-mxhalf+.001;
 		for (y = 0; y != maxTerms; y++) {
 		    double yi = y-mxhalf+.001;
-		    double r = java.lang.Math.sqrt(xi*xi+yi*yi)*resadj;
+		    double r = Math.sqrt(xi*xi+yi*yi)*resadj;
 		    datar[x][y] =  .25*bessj0(r*mult);
 		    datai[x][y] = -.25*bessy0(r*mult);
 		}
@@ -1480,7 +1578,7 @@ class WaveBoxFrame extends Frame
 	    for (x = 0; x != maxTerms; x++) {
 		double xi = x-mxhalf+.001;
 		for (y = 0; y != maxTerms; y++) {
-		    double r = java.lang.Math.sqrt(xi*xi+y*y)*resadj;
+		    double r = Math.sqrt(xi*xi+y*y)*resadj;
 		    datar[x][y] =  .25*bessj0(r*mult);
 		    datai[x][y] = -.25*bessy0(r*mult);
 		}
@@ -1523,7 +1621,7 @@ class WaveBoxFrame extends Frame
 		double xi = x-mxhalf-sep+.001;
 		for (y = 0; y != maxTerms; y++) {
 		    double yi = y-mxhalf+.001;
-		    double r = java.lang.Math.sqrt(xi*xi+yi*yi)*resadj;
+		    double r = Math.sqrt(xi*xi+yi*yi)*resadj;
 		    datar[x][y] =  bessj0(r*mult);
 		    datai[x][y] = -bessy0(r*mult);
 		}
@@ -1568,7 +1666,7 @@ class WaveBoxFrame extends Frame
 	    for (x = 0; x != maxTerms; x++) {
 		double xi = x-mxhalf-sep+.001;
 		for (y = 0; y != maxTerms; y++) {
-		    double r = java.lang.Math.sqrt(xi*xi+y*y)*resadj;
+		    double r = Math.sqrt(xi*xi+y*y)*resadj;
 		    datar[x][y] =  bessj0(r*mult);
 		    datai[x][y] = -bessy0(r*mult);
 		}
@@ -1607,9 +1705,9 @@ class WaveBoxFrame extends Frame
 		double xi2 = x-mxhalf+sep+.001;
 		double xi3 = x-mxhalf    +.001;
 		for (y = 0; y != maxTerms; y++) {
-		    double r1 = java.lang.Math.sqrt(xi1*xi1+y*y)*resadj;
-		    double r2 = java.lang.Math.sqrt(xi2*xi2+y*y)*resadj;
-		    double r3 = java.lang.Math.sqrt(xi3*xi3+y*y)*resadj;
+		    double r1 = Math.sqrt(xi1*xi1+y*y)*resadj;
+		    double r2 = Math.sqrt(xi2*xi2+y*y)*resadj;
+		    double r3 = Math.sqrt(xi3*xi3+y*y)*resadj;
 		    datar[x][y] = m*(bessj0(r1*mult)+bessj0(r2*mult)+
 				     bessj0(r3*mult));
 		    datai[x][y] = -m*(bessy0(r1*mult)+bessy0(r2*mult)+
@@ -1636,8 +1734,8 @@ class WaveBoxFrame extends Frame
 	}
 	void deselect() { }
 	double computePoint(int x, int y, int z) {
-	    return .05*(java.lang.Math.cos(x*mult)*cost1 +
-			java.lang.Math.sin(x*mult)*sint1);
+	    return .05*(Math.cos(x*mult)*cost1 +
+			Math.sin(x*mult)*sint1);
 	}
 	Setup createNext() { return new TwoPlaneWavesSetup(); }
     };
@@ -1661,10 +1759,10 @@ class WaveBoxFrame extends Frame
 	    w2mult = 1-w1mult;
 	    w1mult *= .05;
 	    w2mult *= .05;
-	    double ang1cos = java.lang.Math.cos(ang1);
-	    double ang1sin = java.lang.Math.sin(ang1);
-	    double ang2cos = java.lang.Math.cos(ang2);
-	    double ang2sin = java.lang.Math.sin(ang2);
+	    double ang1cos = Math.cos(ang1);
+	    double ang1sin = Math.sin(ang1);
+	    double ang2cos = Math.cos(ang2);
+	    double ang2sin = Math.sin(ang2);
 	    k2x =  ang2cos * ang1cos * mult;
 	    k2y = -ang2cos * ang1sin * mult;
 	    k2z = -ang2sin * mult;
@@ -1672,10 +1770,10 @@ class WaveBoxFrame extends Frame
 	double computePoint(int x, int y, int z) {
 	    double k1 = x*mult;
 	    double k2 = x*k2x + y*k2y + z*k2z;
-	    return w1mult*(java.lang.Math.cos(k1)*cost1 +
-			   java.lang.Math.sin(k1)*sint1) +
-		   w2mult*(java.lang.Math.cos(k2)*cost2 +
-			   java.lang.Math.sin(k2)*sint2);
+	    return w1mult*(Math.cos(k1)*cost1 +
+			   Math.sin(k1)*sint1) +
+		   w2mult*(Math.cos(k2)*cost2 +
+			   Math.sin(k2)*sint2);
 	}
 	Setup createNext() { return null; }
     };
@@ -1700,9 +1798,9 @@ class WaveBoxFrame extends Frame
 	    ans2 = -0.1562499995e-1+y*(0.1430488765e-3
 				       +y*(-0.6911147651e-5+y*(0.7621095161e-6
 							       -y*0.934935152e-7)));
-	    ans=java.lang.Math.sqrt(0.636619772/ax)*
-		(java.lang.Math.cos(xx)*
-		 ans1-z*java.lang.Math.sin(xx)*ans2);
+	    ans=Math.sqrt(0.636619772/ax)*
+		(Math.cos(xx)*
+		 ans1-z*Math.sin(xx)*ans2);
 	}
 	return ans;
     }
@@ -1717,7 +1815,7 @@ class WaveBoxFrame extends Frame
 						    +y*(10879881.29+y*(-86327.92757+y*228.4622733))));
 	    ans2=40076544269.0+y*(745249964.8+y*(7189466.438
 						 +y*(47447.26470+y*(226.1030244+y*1.0))));
-	    ans=(ans1/ans2)+0.636619772*bessj0(x)*java.lang.Math.log(x);
+	    ans=(ans1/ans2)+0.636619772*bessj0(x)*Math.log(x);
 	} else {
 	    z=8.0/x;
 	    y=z*z;
@@ -1727,7 +1825,7 @@ class WaveBoxFrame extends Frame
 	    ans2 = -0.1562499995e-1+y*(0.1430488765e-3
 				       +y*(-0.6911147651e-5+y*(0.7621095161e-6
 							       +y*(-0.934945152e-7))));
-	    ans=java.lang.Math.sqrt(0.636619772/x)*(java.lang.Math.sin(xx)*ans1+z*java.lang.Math.cos(xx)*ans2);
+	    ans=Math.sqrt(0.636619772/x)*(Math.sin(xx)*ans1+z*Math.cos(xx)*ans2);
 	}
 	return ans;
     }
