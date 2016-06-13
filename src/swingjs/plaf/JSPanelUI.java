@@ -24,6 +24,12 @@ public class JSPanelUI extends JSLightweightUI {
 			JRootPane root = c.getRootPane();
 			isContentPane = (root != null && root.getContentPane() == c);
 			domNode = createDOMObject("label", id);
+			if (root != null && root.getGlassPane() == c) {
+				if (outerNode == null)
+					outerNode = wrap("div", id, domNode);
+				DOMNode.add(outerNode, domNode);	
+				DOMNode.setStyles(outerNode,  "display", "none");
+			}
 		}
     return domNode;
 	}
