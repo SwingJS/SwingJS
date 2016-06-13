@@ -384,10 +384,13 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		// check for root pane -- not included in DOM
 		JRootPane root = (isContainer ? c.getRootPane() : null);
 		if (c == root) {
-			isTainted = false;
-			return outerNode;
+			if (outerNode == null) {
+         // root for dialog
+			} else {
+				isTainted = false;
+				return outerNode;
+			}
 		}
-
 		domNode = getDOMObject();
 
 		// divObj will need recreating if a propertyChange event has occurred
@@ -404,7 +407,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 					swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
 							.appendChild(outerNode);
 				} else {
-					 $(body).append(outerNode);
+					$(body).append(outerNode);
 				}
 			}
 		}

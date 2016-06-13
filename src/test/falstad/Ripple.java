@@ -363,8 +363,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		/**
 		 * @j2sNative
 		 * 
-		 *            this.defaultSpeed = 15; this.defaultResolution = 160;
-		 *            this.startupTime = 2000; this.resolutionCutoff = 200;
+		 *            this.defaultSpeed = 15; this.defaultResolution = 300;
+		 *            this.startupTime = 1500; this.resolutionCutoff = 200;
 		 * 
 		 * 
 		 */

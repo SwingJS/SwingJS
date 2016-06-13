@@ -11,7 +11,9 @@ public class JSRootPaneUI extends JSLightweightUI {
 
 	@Override
 	public DOMNode getDOMObject() {
-		return null;
+		if (domNode == null)
+			domNode = createDOMObject("div", id);
+		return domNode;
 	}
 
 	@Override
