@@ -68,7 +68,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	/**
 	 * the outermost div holding a component -- left, top, and for a container width and height
 	 */
-	private DOMNode outerNode; 
+	protected DOMNode outerNode; 
 
 	/**
 	 * the main object for the component, possibly containing others, such as radio button with its label
@@ -158,7 +158,10 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 */
 	protected String classID;
 	
-	private DOMNode document, body;
+	private DOMNode document;
+
+
+	protected DOMNode body;
 	
 	protected boolean needPreferred;
 	
@@ -381,36 +384,10 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		if (!isTainted)
 			return outerNode;
 
-		// check for root pane -- not included in DOM
-		JRootPane root = (isContainer ? c.getRootPane() : null);
-		if (c == root) {
-			if (outerNode == null) {
-         // root for dialog
-			} else {
-				isTainted = false;
-				return outerNode;
-			}
-		}
 		domNode = getDOMObject();
 
-		// divObj will need recreating if a propertyChange event has occurred
-		// check for content pane -- needs to be added to the HTML5 content layer
-		// div
-
-		// needs some work for changes after applet creation
-
-		if (outerNode == null) {
+		if (outerNode == null)
 			outerNode = wrap("div", id, domNode);
-			if (root != null && root.getContentPane() == c) {
-				if (root.isAppletRoot) {
-					// this is the main content pane for the embedded applet.
-					swingjs.JSToolkit.getHTML5Applet(c)._getContentLayer()
-							.appendChild(outerNode);
-				} else {
-					$(body).append(outerNode);
-				}
-			}
-		}
 
 		// set position
 

@@ -232,7 +232,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
 		public void paint(Graphics g) {
     	// SwingJS adding this so that it can be overridden
     	// by a call to appletPanel to paint the applet
-    	getContentPane().paint(g);
+    	getRootPane().paint(g);
     }
     
     /**

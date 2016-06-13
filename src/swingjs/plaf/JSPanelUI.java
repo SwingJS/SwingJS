@@ -4,6 +4,7 @@ package swingjs.plaf;
 import jsjava.awt.Dimension;
 
 import jsjavax.swing.JComponent;
+import jsjavax.swing.JRootPane;
 import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
@@ -11,6 +12,7 @@ import swingjs.api.DOMNode;
 public class JSPanelUI extends JSLightweightUI {
 
 	int frameZ = 10000;
+	private boolean isContentPane;
 	public JSPanelUI() {
 		isContainer = true;
 		setDoc();
@@ -18,8 +20,11 @@ public class JSPanelUI extends JSLightweightUI {
 	
 	@Override
 	public DOMNode getDOMObject() {
-		if (domNode == null)
+		if (domNode == null) {
+			JRootPane root = c.getRootPane();
+			isContentPane = (root != null && root.getContentPane() == c);
 			domNode = createDOMObject("label", id);
+		}
     return domNode;
 	}
 

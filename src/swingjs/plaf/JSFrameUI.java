@@ -34,6 +34,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		if (domNode == null)
 			domNode = createDOMObject("div", id);
 		DOMNode.setStyles(domNode,  "z-index", "" + frameZ++);
+		outerNode = wrap("div", id, domNode);
+		$(body).append(outerNode);
 		return domNode;
 	}
 

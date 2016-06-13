@@ -161,7 +161,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
     /**
      * {@inheritDoc}
      */
-    public void setModel(ButtonModel newModel) {
+    @Override
+		public void setModel(ButtonModel newModel) {
         super.setModel(newModel);
         if(newModel instanceof DefaultButtonModel) {
             ((DefaultButtonModel)newModel).setMenuItem(true);
@@ -193,7 +194,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param text the text of the <code>JMenuItem</code>
      * @param icon the icon of the <code>JMenuItem</code>
      */
-    protected void init(String text, Icon icon) {
+    @Override
+		protected void init(String text, Icon icon) {
       updateUI();
         if(text != null)
             setText(text);
@@ -210,8 +212,10 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
 
     private static class MenuItemFocusListener implements FocusListener
          {
-        public void focusGained(FocusEvent event) {}
-        public void focusLost(FocusEvent event) {
+        @Override
+				public void focusGained(FocusEvent event) {}
+        @Override
+				public void focusLost(FocusEvent event) {
             // When focus is lost, repaint if
             // the focus information is painted
             JMenuItem mi = (JMenuItem)event.getSource();
@@ -242,7 +246,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((MenuItemUI)UIManager.getUI(this));
     }
 
@@ -255,7 +260,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -300,7 +306,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *          bound: true
      *      preferred: true
      */
-    public void setEnabled(boolean b) {
+    @Override
+		public void setEnabled(boolean b) {
         // Make sure we aren't armed!
         if (!b && !UIManager.getBoolean("MenuItem.disabledAreNavigable")) {
             setArmed(false);
@@ -315,7 +322,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * in an internal frame false is returned due to the rollover effect
      * for windows laf where the menu is not always on top.
      */
-    // package private
+    @Override
+		// package private
     boolean alwaysOnTop() {
         // Fix for bug #4482165
 //        if (SwingUtilities.getAncestorOfClass(JInternalFrame.class, this) !=
@@ -369,12 +377,14 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *
      * @since 1.3
      */
-    protected void configurePropertiesFromAction(Action a) {
+    @Override
+		protected void configurePropertiesFromAction(Action a) {
         super.configurePropertiesFromAction(a);
         configureAcceleratorFromAction(a);
     }
 
-    void setIconFromAction(Action a) {
+    @Override
+		void setIconFromAction(Action a) {
         Icon icon = null;
         if (a != null) {
             icon = (Icon)a.getValue(Action.SMALL_ICON);
@@ -382,10 +392,12 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
         setIcon(icon);
     }
 
-    void largeIconChanged(Action a) {
+    @Override
+		void largeIconChanged(Action a) {
     }
 
-    void smallIconChanged(Action a) {
+    @Override
+		void smallIconChanged(Action a) {
         setIconFromAction(a);
     }
 
@@ -399,7 +411,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * {@inheritDoc}
      * @since 1.6
      */
-    protected void actionPropertyChanged(Action action, String propertyName) {
+    @Override
+		protected void actionPropertyChanged(Action action, String propertyName) {
         if (propertyName == Action.ACCELERATOR_KEY) {
             configureAcceleratorFromAction(action);
         }
@@ -421,7 +434,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param path  the <code>MenuElement</code> path array
      * @param manager   the <code>MenuSelectionManager</code>
      */
-    public void processMouseEvent(MouseEvent e,MenuElement path[],MenuSelectionManager manager) {
+    @Override
+		public void processMouseEvent(MouseEvent e,MenuElement path[],MenuSelectionManager manager) {
         processMenuDragMouseEvent(
                  new MenuDragMouseEvent(e.getComponent(), e.getID(),
                                         e.getWhen(),
@@ -444,7 +458,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param path the <code>MenuElement</code> path array
      * @param manager   the <code>MenuSelectionManager</code>
      */
-    public void processKeyEvent(KeyEvent e,MenuElement path[],MenuSelectionManager manager) {
+    @Override
+		public void processKeyEvent(KeyEvent e,MenuElement path[],MenuSelectionManager manager) {
 //        if (DEBUG) {
 //            System.out.println("in JMenuItem.processKeyEvent/3 for " + getText() +
 //                                   "  " + KeyStroke.getKeyStrokeForEvent(e));
@@ -666,7 +681,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *                    that path is still the same
      * @see MenuSelectionManager#setSelectedPath(MenuElement[])
      */
-    public void menuSelectionChanged(boolean isIncluded) {
+    @Override
+		public void menuSelectionChanged(boolean isIncluded) {
         setArmed(isIncluded);
     }
 
@@ -676,7 +692,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *
      * @return an array of <code>MenuElement</code>s
      */
-    public MenuElement[] getSubElements() {
+    @Override
+		public MenuElement[] getSubElements() {
         return new MenuElement[0];
     }
 
@@ -687,7 +704,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *
      * @return the <code>Component</code> that paints this menu item
      */
-    public Component getComponent() {
+    @Override
+		public Component getComponent() {
         return this;
     }
 
@@ -787,7 +805,8 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      *
      * @return  a string representation of this <code>JMenuItem</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 

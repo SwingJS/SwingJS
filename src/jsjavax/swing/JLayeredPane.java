@@ -24,12 +24,14 @@
  */
 package jsjavax.swing;
 
-import jsjava.awt.Component;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
 import jsjava.awt.Color;
+import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Rectangle;
+import jsjavax.swing.plaf.LayeredPaneUI;
 
 // 
 
@@ -175,6 +177,34 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
 
     /** Bound property */
     public final static String LAYER_PROPERTY = "layeredContainerLayer";
+    
+    private static final String uiClassID = "LayeredPaneUI";
+
+    /**
+     * Resets the UI property with a value from the current look and feel.
+     *
+     * @see JComponent#updateUI
+     */
+    @Override
+		public void updateUI() {
+        setUI((LayeredPaneUI)UIManager.getUI(this));
+    }
+
+
+    /**
+     * Returns the name of the L&F class that renders this component.
+     *
+     * @return the string "MenuUI"
+     * @see JComponent#getUIClassID
+     * @see UIDefaults#getUI
+     */
+    @Override
+		public String getUIClassID() {
+        return uiClassID;
+    }
+
+
+    
     // Hashtable to store layer values for non-JComponent components
     private Hashtable<Component,Integer> componentToLayer;
     private boolean optimizedDrawingPossible = true;
@@ -186,6 +216,7 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
     /** Create a new JLayeredPane */
     public JLayeredPane() {
         setLayout(null);
+        updateUI();
     }
 
     private void validateOptimizedDrawing() {
@@ -214,7 +245,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
             optimizedDrawingPossible = true;
     }
 
-    protected Component addImpl(Component comp, Object constraints, int index) {
+    @Override
+		protected Component addImpl(Component comp, Object constraints, int index) {
         int layer = DEFAULT_LAYER.intValue();
         int pos;
 
@@ -239,7 +271,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
      * @param index  an int specifying the component to remove
      * @see #getIndexOf
      */
-    public void remove(int index) {
+    @Override
+		public void remove(int index) {
         Component c = getComponent(index);
         super.remove(index);
         if (c != null && !(c instanceof JComponent)) {
@@ -253,7 +286,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
      *
      * @since 1.5
      */
-    public void removeAll() {
+    @Override
+		public void removeAll() {
         Component[] children = getComponents();
         Hashtable cToL = getComponentToLayer();
         for (int counter = children.length - 1; counter >= 0; counter--) {
@@ -272,7 +306,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
      * @return false if components can overlap, else true
      * @see JComponent#isOptimizedDrawingEnabled
      */
-    public boolean isOptimizedDrawingEnabled() {
+    @Override
+		public boolean isOptimizedDrawingEnabled() {
         return optimizedDrawingPossible;
     }
 
@@ -568,7 +603,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
      *
      * @param g  the Graphics context within which to paint
      */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
         if(isOpaque()) {
             Rectangle r = g.getClipBounds();
             Color c = getBackground();
@@ -725,7 +761,8 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
      *
      * @return  a string representation of this JLayeredPane.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String optimizedDrawingPossibleString = (optimizedDrawingPossible ?
                                                  "true" : "false");
 

@@ -170,21 +170,8 @@ public class UIManager
 //     * an applet can alter its look and feel, see <code>setLookAndFeel</code>.
 //     * Doing so has no affect on other applets (or the browser).
 //     */
-//    private static class LAFState
-//    {
-////        Properties swingProps;
-//        private UIDefaults[] tables = new UIDefaults[2];
-//
-//        boolean initialized = false;
-//        MultiUIDefaults multiUIDefaults = new MultiUIDefaults(tables);
-//        LookAndFeel lookAndFeel;
-////        LookAndFeel multiLookAndFeel = null;
-////        Vector auxLookAndFeels = null;
-//        SwingPropertyChangeSupport changeSupport;
-//
-//        LookAndFeelInfo[] installedLAFs;
-//
-       public static UIDefaults getLookAndFeelDefaults() { return uid; }//tables[0]; }
+
+	public static UIDefaults getLookAndFeelDefaults() { return uid; }//tables[0]; }
 ////        void setLookAndFeelDefaults(UIDefaults x) { tables[0] = x; }
 ////
 ////        UIDefaults getSystemDefaults() { return tables[1]; }

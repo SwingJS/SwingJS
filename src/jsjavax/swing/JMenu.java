@@ -43,9 +43,10 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.MenuEvent;
 import jsjavax.swing.event.MenuListener;
-import jsjavax.swing.plaf.MenuItemUI;
+import jsjavax.swing.plaf.MenuUI;
 import jsjavax.swing.plaf.PopupMenuUI;
 
 /**
@@ -102,10 +103,6 @@ import jsjavax.swing.plaf.PopupMenuUI;
  */
 public class JMenu extends JMenuItem implements MenuElement
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
     private static final String uiClassID = "MenuUI";
 
     /*
@@ -202,7 +199,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * and is speced as such, but internally we don't want to use it like
      * this else we change the keyboard traversability.
      */
-    void initFocusability() {
+    @Override
+		void initFocusability() {
     }
 
     /**
@@ -210,8 +208,9 @@ public class JMenu extends JMenuItem implements MenuElement
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
-        setUI((MenuItemUI)UIManager.getUI(this));
+    @Override
+		public void updateUI() {
+        setUI((MenuUI)UIManager.getUI(this));
 
         if ( popupMenu != null )
           {
@@ -228,7 +227,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -249,7 +249,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *      expert: true
      *      hidden: true
      */
-    public void setModel(ButtonModel newModel) {
+    @Override
+		public void setModel(ButtonModel newModel) {
         ButtonModel oldModel = getModel();
 
         super.setModel(newModel);
@@ -272,7 +273,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *
      * @return true if the menu is selected, else false
      */
-    public boolean isSelected() {
+    @Override
+		public boolean isSelected() {
         return getModel().isSelected();
     }
 
@@ -286,7 +288,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *           expert: true
      *           hidden: true
      */
-    public void setSelected(boolean b) {
+    @Override
+		public void setSelected(boolean b) {
         ButtonModel model = getModel();
 //        boolean oldValue = model.isSelected();
 
@@ -577,7 +580,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param c the <code>Component</code> to add
      * @return the <code>Component</code> added
      */
-    public Component add(Component c) {
+    @Override
+		public Component add(Component c) {
         ensurePopupMenuCreated();
         popupMenu.add(c);
         return c;
@@ -593,7 +597,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * @see       #remove
      * @see jsjava.awt.Container#add(Component, int)
      */
-    public Component add(Component c, int index) {
+    @Override
+		public Component add(Component c, int index) {
         ensurePopupMenuCreated();
         popupMenu.add(c, index);
         return c;
@@ -635,7 +640,8 @@ public class JMenu extends JMenuItem implements MenuElement
      */
     protected JMenuItem createActionComponent(Action a) {
         JMenuItem mi = new JMenuItem() {
-            protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
+            @Override
+						protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
                 PropertyChangeListener pcl = createActionChangeListener(this);
                 if (pcl == null) {
                     pcl = super.createActionPropertyChangeListener(a);
@@ -813,7 +819,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *                       <code>pos</code> < 0, or if <code>pos</code>
      *                       is greater than the number of menu items
      */
-    public void remove(int pos) {
+    @Override
+		public void remove(int pos) {
         if (pos < 0) {
             throw new IllegalArgumentException("index less than zero.");
         }
@@ -829,7 +836,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *
      * @param       c the component to be removed
      */
-    public void remove(Component c) {
+    @Override
+		public void remove(Component c) {
     	if (c instanceof JMenuItem)
         if (popupMenu != null)
             popupMenu.remove(c);
@@ -840,7 +848,8 @@ public class JMenu extends JMenuItem implements MenuElement
     /**
      * Removes all menu items from this menu.
      */
-    public void removeAll() {
+    @Override
+		public void removeAll() {
         if (popupMenu != null)
             popupMenu.removeAll();
     }
@@ -1106,12 +1115,14 @@ public class JMenu extends JMenuItem implements MenuElement
     }
 
     // Overriden to do nothing, JMenu doesn't support an accelerator
-    void configureAcceleratorFromAction(Action a) {
+    @Override
+		void configureAcceleratorFromAction(Action a) {
     }
 
     class MenuChangeListener implements ChangeListener {
         boolean isSelected = false;
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             ButtonModel model = (ButtonModel) e.getSource();
             boolean modelSelected = model.isSelected();
 
@@ -1168,7 +1179,8 @@ public class JMenu extends JMenuItem implements MenuElement
         /**
          * Deselect the menu when the popup is closed from outside.
          */
-        public void windowClosing(WindowEvent e) {
+        @Override
+				public void windowClosing(WindowEvent e) {
             setSelected(false);
         }
     }
@@ -1181,7 +1193,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param isIncluded  true if this menu is active, false if
      *        it is not
      */
-    public void menuSelectionChanged(boolean isIncluded) {
+    @Override
+		public void menuSelectionChanged(boolean isIncluded) {
 //        if (DEBUG) {
 //            System.out.println("In JMenu.menuSelectionChanged to " + isIncluded);
 //        }
@@ -1198,7 +1211,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *
      * @return an array of <code>MenuElement</code> objects
      */
-    public MenuElement[] getSubElements() {
+    @Override
+		public MenuElement[] getSubElements() {
         if(popupMenu == null)
             return new MenuElement[0];
         else {
@@ -1216,7 +1230,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * The returned component is used to convert events and detect if
      * an event is inside a menu component.
      */
-    public Component getComponent() {
+    @Override
+		public Component getComponent() {
         return this;
     }
 
@@ -1233,7 +1248,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * @see jsjava.awt.Component#getComponentOrientation
      * @since 1.4
      */
-    public void applyComponentOrientation(ComponentOrientation o) {
+    @Override
+		public void applyComponentOrientation(ComponentOrientation o) {
         super.applyComponentOrientation(o);
 
         if ( popupMenu != null ) {
@@ -1245,7 +1261,8 @@ public class JMenu extends JMenuItem implements MenuElement
         }
     }
 
-    public void setComponentOrientation(ComponentOrientation o) {
+    @Override
+		public void setComponentOrientation(ComponentOrientation o) {
         super.setComponentOrientation(o);
         if ( popupMenu != null ) {
             popupMenu.setComponentOrientation(o);
@@ -1266,7 +1283,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *                  actionlisteners without navigating the menu hierarchy
      *          hidden: true
      */
-    public void setAccelerator(KeyStroke keyStroke) {
+    @Override
+		public void setAccelerator(KeyStroke keyStroke) {
         throw new Error("setAccelerator() is not defined for JMenu.  Use setMnemonic() instead.");
     }
 
@@ -1275,7 +1293,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *
      * @param evt  the key event to be processed
      */
-    protected void processKeyEvent(KeyEvent evt) {
+    @Override
+		protected void processKeyEvent(KeyEvent evt) {
         MenuSelectionManager.defaultManager().processKeyEvent(evt);
         if (evt.isConsumed())
             return;
@@ -1289,7 +1308,8 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param pressTime  indicates the number of milliseconds the
      *          button was pressed for
      */
-    public void doClick(int pressTime) {
+    @Override
+		public void doClick(int pressTime) {
         MenuElement me[] = buildMenuElementArray(this);
         MenuSelectionManager.defaultManager().setSelectedPath(me);
     }
@@ -1353,7 +1373,8 @@ public class JMenu extends JMenuItem implements MenuElement
      *
      * @return  a string representation of this JMenu.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 

@@ -26,6 +26,8 @@
 package jsjavax.swing.plaf;
 
 import jsjavax.swing.JComponent;
+import jsjavax.swing.UIDefaults;
+import jsjavax.swing.UIManager;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
@@ -42,6 +44,33 @@ import jsjava.awt.peer.ComponentPeer;
  * (painting, layout calculations, etc.) that may vary depending on the
  * look and feel installed.  <b>Client programs should not invoke methods
  * on this class directly.</b>
+ * 
+ * To create a new UI in SwingJS:
+ * 
+ * 1) Add to the JXxxx.java constructor a call to updateUI();
+ * 
+ * 2) Add to Jxxxx.java the static uiClassID field
+ * 
+ *      private static final String uiClassID = "XxxxUI";
+ *
+ * 3) Add the following three classes:
+ * 
+ *   public void setUI(MenuItemUI ui) {
+ *       super.setUI(ui);
+ *   }
+ *
+ *	public void updateUI() {
+ *       setUI((XxxxUI)UIManager.getUI(this));
+ *   }
+ *   
+ *	public String getUIClassID() {
+ *       return uiClassID;
+ *   }
+ *  
+ * 4) In jsjavax.swing.plaf, create the interface XxxxUI.java
+ *    
+ * 5) In swingjs.plaf, create JSXxxxUI.java modeled after similar classes
+ * 
  *
  * @see jsjavax.swing.JComponent
  * @see jsjavax.swing.UIManager
