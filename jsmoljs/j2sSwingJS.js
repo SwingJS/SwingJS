@@ -4893,7 +4893,28 @@ Sys.err.write = function (buf, offset, len) {
 
 Math.rint = Math.round;
 
-Math.log10||(Math.log10=function(a){return Math.log(a)/2.302585092994046});
+Math.log10||(Math.log10=function(a){return Math.log(a)/Math.E});
+
+Math.hypot||(Math.hypot=function(x,y){return Math.sqrt(Math.pow(x,2)+Math.pow(y,2))});
+
+Math.toDegrees||(Math.toDegrees=function(angrad){return angrad*180.0/Math.PI;});
+
+Math.toRadians||(Math.toRadians=function(angdeg){return angdeg/180.0*Math.PI});
+
+Math.copySign||(Math.copySign=function(mag,sign){return((sign>0?1:-1)*Math.abs(mag))});
+
+//could use Math.sign(), but this was used to preserve cross-brower compatability
+Math.signum||(Math.signum=function(d){return(d==0.0||d.isNaN)?d:Math.copySign(1.0,d)});
+
+Math.scalb||(Math.scalb=function(d,scaleFactor){return d*Math.pow(2,scaleFactor)});
+
+//the following Math functions rely on datatypes nonexistant in javascript
+Math.nextAfter||(Math.nextAfter=function(start,direction){return 0});
+Math.nextUp||(Math.nextUp=function(d){return 0});
+Math.ulp||(Math.ulp=function(d){return 0});
+Math.getExponent||(Math.getExponent=function(d){return 0});
+Math.getIEEEremainder||(Math.getIEEEremainder=function(f1,f2){return 0});
+//end datatype reliant math declarations
 
 if(supportsNativeObject){
 	// Number and Array are special -- do not override prototype.toString -- "length - 2" here
