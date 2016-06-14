@@ -389,8 +389,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 *            s = arguments.callee.caller; s = s.__CLASS_NAME__ ||
-		 *            s.claxxOwner.__CLASS_NAME__; s += "." +
+		 *            s = arguments.callee.caller; Clazz.getClassName(s) +  "." +
 		 *            arguments.callee.caller.exName;
 		 */
 		{
