@@ -33,7 +33,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.js", true);
 	}
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		JSlider js  = jSlider = (JSlider) c;
 		boolean isNew = (domNode == null);
 		if (isNew) {

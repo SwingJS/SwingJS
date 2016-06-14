@@ -197,16 +197,9 @@ Clazz.declareInterface = function (prefix, name, interfacez, _declareInterface) 
 };
 
 Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent, 
-		interfacez, parentClazzInstance, _decorateAsClass) {
-    
-	var prefixName = null;
-	if (prefix) {
-		prefixName = prefix.__PKG_NAME__;
-		if (!prefixName)
-			prefixName = prefix.__CLASS_NAME__;      
-	}
+		interfacez, parentClazzInstance, _decorateAsClass) {    
+	var prefixName = (prefix ? prefix.__PKG_NAME__ || prefix.__CLASS_NAME__ : null);
 	var qName = (prefixName ? prefixName + "." : "") + name;
-  
     if (Clazz._Loader._classPending[qName]) {
       delete Clazz._Loader._classPending[qName];
       Clazz._Loader._classCountOK++;
@@ -216,10 +209,8 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
     //System.out.println("decorating class " + prefixName + "." + name);
     Clazz._lastDecorated = prefixName + "." + name
   }
-	var cf = unloadedClasses[qName];
-	if (cf) {
-		clazzFun = cf;
-	}
+	if (unloadedClasses[qName])
+		clazzFun = unloadedClasses[qName];
 	decorateFunction(clazzFun, prefix, name);
   if (clazzParent)
 		inheritClass(clazzFun, clazzParent);
@@ -231,11 +222,8 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
 /* public */
 Clazz.declareType = function (prefix, name, clazzParent, interfacez, 
 		parentClazzInstance, _declareType) {
-	var f = function () {
-		Clazz.instantialize (this, arguments);
-	};
-	return Clazz.decorateAsClass (f, prefix, name, clazzParent, interfacez, 
-			parentClazzInstance);
+	return Clazz.decorateAsClass (function () { Clazz.instantialize (this, arguments);}, 
+    prefix, name, clazzParent, interfacez, parentClazzInstance);
 };
 
 Clazz._preps = {};
@@ -302,8 +290,8 @@ Clazz.saemCount2 = 0 // delegates bound         397
 
 Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig) {
     Clazz.saemCount0++;
-	if (Clazz.assureInnerClass) 
-    Clazz.assureInnerClass(clazzThis, funBody);
+	if (Clazz.unloadClass) 
+    assureInnerClass(clazzThis, funBody);
   rawSig || (rawSig = "");
 	funBody.exName = funName;
   funBody.sigs = {};
@@ -383,23 +371,6 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig) {
 	return f$;
 };                     
 
-var executeMethod = function(clazzThis, args) {
-  var pTypes = getParamTypes(args);
-	var dsig = clazzThis.__CLASS_NAME__ + pTypes.typeString;
-  var dsigs = arguments.callee.caller.dsigs; // delegate.dsigs
-  var f = dsigs[dsig]; 
-  if (!f) {
-    Clazz.saemCount2++;
-    var claxxRef = arguments.callee.caller.claxxRef;
-    var fxName = arguments.callee.caller.methodName;
-    var fx = this[fxName];
-	  var f = bindMethod(claxxRef, fx, fxName, args, pTypes);
-    dsigs[dsig] = (f == null ? -1 : f);
-  } else if (f == -1) {
-    f = null;
-  } 
-  return (f == null ? null : f.apply(this, fixNullParams(args))); 
-}
 /*
  * Override the existed methods which are in the same name.
  * Overriding methods is provided for the purpose that the JavaScript
@@ -415,7 +386,8 @@ var executeMethod = function(clazzThis, args) {
  */
 /* public */
 Clazz.overrideMethod = function(clazzThis, funName, funBody, rawSig) {
-	if (Clazz.assureInnerClass) Clazz.assureInnerClass(clazzThis, funBody);
+	if (Clazz.unloadClass) 
+    assureInnerClass(clazzThis, funBody);
 	funBody.exName = funName;
 	var sig = formatSignature(rawSig);
   if (Clazz._Loader._checkLoad)
@@ -433,8 +405,158 @@ Clazz.defineStatics = function(clazz) {
 	}
 };
 
+/**
+ * Define the enum constant.
+ * @param classEnum enum type
+ * @param enumName enum constant
+ * @param enumOrdinal enum ordinal
+ * @param initialParams enum constant constructor parameters
+ */
+Clazz.defineEnumConstant = function (clazzEnum, enumName, enumOrdinal, initialParams, clazzEnumExt) {
+	var o = (clazzEnumExt ? new clazzEnumExt() : new clazzEnum());
+	// BH avoids unnecessary calls to SAEM
+	o.$name = enumName;
+	o.$ordinal = enumOrdinal;
+	//Clazz.superConstructor (o, clazzEnum, [enumName, enumOrdinal]);
+	if (initialParams && initialParams.length)
+		o.construct.apply(o, initialParams);
+	clazzEnum[enumName] = clazzEnum.prototype[enumName] = o;
+	if (!clazzEnum["$ values"]) {
+		clazzEnum["$ values"] = [] 
+		clazzEnum.values = function() { return this["$ values"]; };
+	}
+	clazzEnum["$ values"].push(o);
+};
+
 ///////////////////////// public supporting method creation //////////////////////
 
+/**
+ * Prepare "callback" for instance of anonymous Class.
+ * For example for the callback:
+ *     this.callbacks.MyEditor.sayHello();
+ *     
+ * This is specifically for inner classes that are referring to 
+ * outer class methods and fields.   
+ *
+ * @param objThis the host object for callback
+ * @param args arguments object. args[0] will be classThisObj -- the "this"
+ * object to be hooked
+ * 
+ * Attention: parameters should not be null!
+ */
+Clazz.prepareCallback = function (innerObj, args) {
+	var outerObj = args[0];
+	//var cbName = "b$"; // "callbacks";
+	if (innerObj && outerObj && outerObj !== window) {
+		var className = Clazz.getClassName(outerObj, true);	
+    var obs = innerObj.b$ = appendMap({}, innerObj.b$);
+  	// all references to outer class and its superclass objects must be here as well
+    // but these are all to the outer object? why? - BH
+		obs[className] = outerObj;
+		var clazz = Clazz.getClass(outerObj);
+		while (clazz.superClazz)
+      obs[Clazz.getClassName(clazz = clazz.superClazz, true)] = outerObj;
+    appendMap(obs, outerObj.b$);
+	}
+	// note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
+	for (var i = 0, n = args.length - 1; i < n; i++)
+		args[i] = args[i + 1];
+	args.length--;
+};
+
+/**
+ * Construct instance of the given inner class.
+ *
+ * @param classInner given inner class, alway with name like "*$*"
+ * @param innerObj this instance which can be used to call back.
+ * @param finalVars final variables which the inner class may use
+ * @return the constructed object
+ *
+ * @see Clazz#cloneFinals
+ */
+Clazz.innerTypeInstance = function (clazzInner, outerObj, finalVars) {
+	if (!clazzInner)
+		clazzInner = arguments.callee.caller;
+	var obj;
+	if (finalVars || outerObj.$finals) {
+			obj = new clazzInner(outerObj, Clazz.inheritArgs);
+		// f$ is short for the once choosen "$finals"
+    var of$ = outerObj.f$;
+    obj.f$ = (finalVars ? 
+      (of$ ? appendMap(appendMap({}, of$), finalVars) : finalVars)
+      : of$ ? of$ : null);
+	} else {
+		switch (arguments.length) {
+		case 3:
+			return new clazzInner(outerObj);
+		case 4:
+      if (arguments[3] === Clazz.inheritArgs) {
+      // we should only be doing a field prep? this next check is never true??
+      System.out.println([outerObj.__CLASS_NAME__ , clazzInner.__CLASS_NAME__])
+      //debugger;
+      }      
+			return (
+      outerObj.__CLASS_NAME__ == clazzInner.__CLASS_NAME__ && 
+      arguments[3] === Clazz.inheritArgs ? outerObj : new clazzInner(outerObj, arguments[3]));
+		case 5:
+			return new clazzInner(outerObj, arguments[3], arguments[4]);
+		case 6:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5]);
+		case 7:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6]);
+		case 8:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6], arguments[7]);
+		case 9:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6], arguments[7], arguments[8]);
+		case 10:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6], arguments[7], arguments[8],
+					arguments[9]);
+		default:
+			//Should construct instance manually.
+			obj = new clazzInner(outerObj, Clazz.inheritArgs);
+			break;
+		}
+	}
+	var n = arguments.length - 3;
+	var args = new Array(n);
+	for (var i = n; --i >= 0;)
+		args[i] = arguments[i + 3];
+	Clazz.instantialize(obj, args);
+	return obj;
+};
+
+/**
+ * Clone variables whose modifier is "final".
+ * Usage: var o = Clazz.cloneFinals ("name", name, "age", age);
+ *
+ * @return Object with all final variables
+ */
+Clazz.cloneFinals = function () {
+	var o = {};
+	var len = arguments.length / 2;
+	for (var i = len; --i >= 0;)
+		o[arguments[i + i]] = arguments[i + i + 1];
+	return o;
+};
+
+Clazz.isClassDefined = function(clazzName) {
+	if (!clazzName) 
+		return false;		/* consider null or empty name as non-defined class */
+	if (Clazz.allClasses[clazzName])
+		return true;
+	var pkgFrags = clazzName.split (/\./);
+	var pkg = null;
+	for (var i = 0; i < pkgFrags.length; i++)
+		if (!(pkg = (pkg ? pkg[pkgFrags[i]] : Clazz.allPackage[pkgFrags[0]]))) {
+			return false;
+    }
+  return (pkg && (Clazz.allClasses[clazzName] = true));
+};
 
 /**
  * Return the class name of the given class or object.
@@ -498,6 +620,13 @@ Clazz.getClassName = function(obj, fAsClassName) {
 
 ///////////////////////// private supporting method creation //////////////////////
 
+var appendMap = function(a, b) {
+	if (b)
+		for (var s in b)
+			a[s] = b[s];
+  return a;
+}
+
 var hashCode = 0;
 
 var NullObject = function () {};
@@ -543,13 +672,8 @@ var addProto = function(proto, name, func) {
 
 	addProto(proto, "clone", function () { return Clazz.clone(this); });
 
-	Clazz.clone = function(me) {
-		// BH allows @j2sNative access without super constructor
-		var o = new me.constructor();
-		for (var i in me)
-			o[i] = me[i];
-		return o;
-	}
+	// BH allows @j2sNative access without super constructor
+	Clazz.clone = function(me) { return appendMap(new me.constructor(), me); }
 /*
  * Methods for thread in Object
  */
@@ -578,14 +702,11 @@ var extendJO = function(c, name) {
 var decorateAsType = function (clazzFun, qClazzName, clazzParent, 
 		interfacez, parentClazzInstance, inheritClazzFuns, _decorateAsType) {
 	extendJO(clazzFun, qClazzName);
-	clazzFun.equals = innerFunctions.equals;
-	clazzFun.getName = innerFunctions.getName;
-	if (inheritClazzFuns) {
-		for (var i = 0; i < innerFunctionNames.length; i++) {
-			var methodName = innerFunctionNames[i];
-			clazzFun[methodName] = innerFunctions[methodName];
-		}
-	}
+	clazzFun.equals = inF.equals;
+	clazzFun.getName = inF.getName;
+	if (inheritClazzFuns)
+		for (var i = innerNames.length, name; --i >= 0;)
+			clazzFun[name = innerNames[i]] = inF[name];
   if (clazzParent)
 		inheritClass(clazzFun, clazzParent);
 	if (interfacez)
@@ -660,6 +781,24 @@ var extractClassName = function(clazzStr) {
 	return (clazzName.indexOf("Array") >= 0 ? "Array" // BH -- for Float64Array and Int32Array
 		: clazzName.indexOf ("object ") >= 0 ? clazzName.substring (7) // IE
 		: clazzName);
+}
+
+var executeMethod = function(clazzThis, args) {
+  var pTypes = getParamTypes(args);
+	var dsig = clazzThis.__CLASS_NAME__ + pTypes.typeString;
+  var dsigs = arguments.callee.caller.dsigs; // delegate.dsigs
+  var f = dsigs[dsig]; 
+  if (!f) {
+    Clazz.saemCount2++;
+    var claxxRef = arguments.callee.caller.claxxRef;
+    var fxName = arguments.callee.caller.methodName;
+    var fx = this[fxName];
+	  var f = bindMethod(claxxRef, fx, fxName, args, pTypes);
+    dsigs[dsig] = (f == null ? -1 : f);
+  } else if (f == -1) {
+    f = null;
+  } 
+  return (f == null ? null : f.apply(this, fixNullParams(args))); 
 }
 
 /**
@@ -975,6 +1114,281 @@ var addProfile = function(c, f, p, id) {
 	_profile[s]++;
 }
 
+/////////////////////// inner function support /////////////////////////////////
+
+/**
+ * Once there are other methods registered to the Function.prototype, 
+ * those method names should be add to the following Array.
+ */
+/*
+ * static final member of interface may be a class, which may
+ * be function.
+ */
+
+var innerNames = [
+	"isInstance", "equals", "hashCode", /*"toString",*/ 
+  "getName", "getCanonicalName", "getClassLoader", "getResource", 
+  "getResourceAsStream", "defineMethod", "defineStaticMethod",
+	"makeConstructor",  
+    "getSuperclass", "isAssignableFrom", 
+    "getConstructor", 
+    "getDeclaredMethod", "getDeclaredMethods",
+    "getMethod", "getMethods",   
+		"getModifiers", /*"isArray",*/ "newInstance"
+];
+    
+/*
+ * Static methods
+ */
+var inF = {
+	/*
+	 * Similar to Object#equals
+	 */
+   
+  isInstance: function(c) {
+    return Clazz.instanceOf(c, this);
+  },
+  
+	equals : function (aFun) {
+		return this === aFun;
+	},
+
+	hashCode : function () {
+		return this.getName ().hashCode ();
+	},
+
+	toString : function () {
+		return "class " + this.getName ();
+	},
+
+	/*
+	 * Similar to Class#getName
+	 */
+	getName : function () {
+		return Clazz.getClassName (this, true);
+	},
+	getCanonicalName : function () {
+		return this.__CLASS_NAME__;
+	},
+	getClassLoader : function () {
+		var clazzName = this.__CLASS_NAME__;
+		var baseFolder = Clazz._Loader.getClasspathFor(clazzName);
+		var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
+		if (x != -1) {
+			baseFolder = baseFolder.substring (0, x);
+		} else {
+			baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
+		}
+		var loader = Clazz._Loader.requireLoaderByBase(baseFolder);
+		loader.getResourceAsStream = inF.getResourceAsStream;
+		loader.getResource = inF.getResource; // BH
+		return loader;
+	},
+
+	getResource : function(name) {
+		var stream = this.getResourceAsStream(name);
+    return (stream ? stream.url : null);
+	},
+
+	getResourceAsStream : function(name) {
+		if (!name)
+			return null;
+		name = name.replace (/\\/g, '/');
+		var baseFolder = null;
+    var fname = name;
+		var clazzName = this.__CLASS_NAME__;
+		if (arguments.length == 2 && name.indexOf ('/') != 0) { // additional argument
+			name = "/" + name;
+		}
+		if (name.indexOf ('/') == 0) {
+			//is.url = name.substring (1);
+			if (arguments.length == 2) { // additional argument
+				baseFolder = arguments[1];
+				if (!baseFolder)
+					baseFolder = Clazz.binaryFolders[0];
+			} else if (Clazz._Loader) {
+				baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
+			}
+			if (!baseFolder) {
+				fname = name.substring (1);
+			} else {
+				baseFolder = baseFolder.replace (/\\/g, '/');
+				var length = baseFolder.length;
+				var lastChar = baseFolder.charAt (length - 1);
+				if (lastChar != '/') {
+					baseFolder += "/";
+				}
+				fname = baseFolder + name.substring (1);
+			}
+		} else {
+			if (this.base) {
+				baseFolder = this.base;
+			} else if (Clazz._Loader) {
+				baseFolder = Clazz._Loader.getClasspathFor(clazzName);
+				var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
+				if (x != -1) {
+					baseFolder = baseFolder.substring (0, x);
+				} else {
+					//baseFolder = null;
+					var y = -1;
+					if (baseFolder.indexOf (".z.js") == baseFolder.length - 5
+							&& (y = baseFolder.lastIndexOf ("/")) != -1) {
+						baseFolder = baseFolder.substring (0, y + 1);
+						var pkgs = clazzName.split (/\./);
+						for (var k = 1; k < pkgs.length; k++) {
+							var pkgURL = "/";
+							for (var j = 0; j < k; j++) {
+								pkgURL += pkgs[j] + "/";
+							}
+							if (pkgURL.length > baseFolder.length) {
+								break;
+							}
+							if (baseFolder.indexOf (pkgURL) == baseFolder.length - pkgURL.length) {
+								baseFolder = baseFolder.substring (0, baseFolder.length - pkgURL.length + 1);
+								break;
+							}
+						}
+					} else {
+						baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
+					}
+				}
+			} else {
+				var bins = Clazz.binaryFolders;
+				if (bins && bins.length) {
+					baseFolder = bins[0];
+				}
+			}
+			if (!baseFolder)
+				baseFolder = "j2s/";
+			baseFolder = baseFolder.replace (/\\/g, '/');
+			var length = baseFolder.length;
+			var lastChar = baseFolder.charAt (length - 1);
+			if (lastChar != '/') {
+				baseFolder += "/";
+			}
+			if (this.base) {
+				fname = baseFolder + name;
+			} else {
+				var idx = clazzName.lastIndexOf ('.');
+				if (idx == -1 || this.base) {
+					fname = baseFolder + name;
+				} else {
+					fname = baseFolder + clazzName.substring (0, idx)
+							.replace (/\./g, '/') +  "/" + name;
+				}
+			}            
+		}
+    var url = null;
+    try {
+      if (fname.indexOf(":/") < 0) {
+        var d = document.location.href.split("?")[0].split("/");
+        d[d.length - 1] = fname;
+        fname = d.join("/");
+      }
+      url = new java.net.URL(fname);
+    } catch (e) {
+    }
+		var data = (url == null ? null : Jmol._getFileData(fname.toString()));
+    if (!data || data == "error" || data.indexOf("[Exception") == 0)
+      return null;
+    var bytes = new java.lang.String(data).getBytes();      
+    var is = new java.io.BufferedInputStream ( new java.io.ByteArrayInputStream (bytes)); 
+    is.url = url;
+		return is;
+	},
+  
+  getSuperclass : function() { return this.superClazz; },
+
+  isAssignableFrom : function(clazz) {	return getInheritedLevel (clazz, this) >= 0;	},
+
+  getConstructor : function() { return new java.lang.reflect.Constructor (this, [], [], java.lang.reflect.Modifier.PUBLIC);},
+/**
+ * TODO: fix bug for polymorphic methods!
+ */
+  getMethods : function() {
+  	var ms = [];
+  	var p = this.prototype;
+  	for (var attr in p) {
+  		if (typeof p[attr] == "function" && !p[attr].__CLASS_NAME__) {
+  			/* there are polynormical methods. */
+  			ms.push(new java.lang.reflect.Method (this, attr,
+  					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC));
+  		}
+  	}
+  	p = this;
+  	for (var attr in p) {
+  		if (typeof p[attr] == "function" && !p[attr].__CLASS_NAME__) {
+  			ms.push(new java.lang.reflect.Method (this, attr,
+  					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC
+  					| java.lang.reflect.Modifier.STATIC));
+  		}
+  	}
+  	return ms;
+  },
+
+  getMethod : function(name, clazzes) {
+  	var p = this.prototype;
+  	for (var attr in p) {
+  		if (name == attr && typeof p[attr] == "function" 
+  				&& !p[attr].__CLASS_NAME__) {
+  			/* there are polynormical methods. */
+  			return new java.lang.reflect.Method (this, attr,
+  					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC);
+  		}
+  	}
+  	p = this;
+  	for (var attr in p) {
+  		if (name == attr && typeof p[attr] == "function" 
+  				&& !p[attr].__CLASS_NAME__) {
+  			return new java.lang.reflect.Method (this, attr,
+  					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC
+  					| java.lang.reflect.Modifier.STATIC);
+  		}
+  	}
+  	return null;
+  },
+
+  getModifiers : function() { return java.lang.reflect.Modifier.PUBLIC; },
+
+  newInstance : function(a) {
+  	var clz = this;
+    //debugger;
+    allowImplicit = false;
+    var c = null;
+    switch(a == null ? 0 : a.length) {
+    case 0:
+      c = new clz();
+      break;
+    case 1:
+    	c = new clz(a[0]);
+      break;
+    case 2:
+    	c = new clz(a[0], a[1]);
+      break;
+    case 3:
+      c = new clz(a[0], a[1], a[2]);
+      break;
+    case 4:
+      c = new clz(a[0], a[1], a[2], a[3]);
+      break;
+    default:
+      var x = "new " + clz.__CLASS_NAME__ + "(";
+      for (var i = 0; i < a.length; i++)
+       x += (i == 0 ? "" : ",") + "a[" + i + "]";
+      x += ")";
+      c = eval(x);
+    }
+    allowImplicit = true;
+    return c;
+  }
+};
+
+inF.getDeclaredMethods = inF.getMethods;
+inF.getDeclaredMethod = inF.getMethod;
+ 
+for (var i = innerNames.length, name; --i >= 0;)
+	Clazz._O[name = innerNames[i]] = Array[name] = inF[name];
+
 /*
  * Copy members of interface
  */
@@ -990,9 +1404,9 @@ var copyProperties = function(clazzThis, clazzSuper) {
 
 /* private */
 var checkInnerFunction = function (hostSuper, funName) {
-	for (var k = 0; k < innerFunctionNames.length; k++)
-		if (funName == innerFunctionNames[k] && 
-				innerFunctions[funName] === hostSuper[funName])
+	for (var k = 0; k < innerNames.length; k++)
+		if (funName == innerNames[k] && 
+				inF[funName] === hostSuper[funName])
 			return true;
 	return false;
 };
@@ -1384,14 +1798,12 @@ Clazz.declarePackage = function (pkgName) {
  */
 /* public */
 Clazz.defineType = function (qClazzName, clazzFun, clazzParent, interfacez) {
-	var cf = unloadedClasses[qClazzName];
-	if (cf) {
-		clazzFun = cf;
-	}
+	if (unloadedClasses[qClazzName])
+		clazzFun = unloadedClasses[qClazzName];
 	var idx = qClazzName.lastIndexOf (".");
 	if (idx != -1) {
 		var pkgName = qClazzName.substring (0, idx);
-		var pkg = Clazz.declarePackage (pkgName);
+		var pkg = Clazz.declarePackage(pkgName);
 		var clazzName = qClazzName.substring (idx + 1);
 		if (pkg[clazzName]) {
 			// already defined! Should throw exception!
@@ -1407,10 +1819,9 @@ Clazz.defineType = function (qClazzName, clazzFun, clazzParent, interfacez) {
 	}
 	decorateAsType(clazzFun, qClazzName, clazzParent, interfacez);
 	/*# {$no.javascript.support} >>x #*/
-	var iFun = innerFunctions;
-	clazzFun.defineMethod = iFun.defineMethod;
-	clazzFun.defineStaticMethod = iFun.defineStaticMethod;
-	clazzFun.makeConstructor = iFun.makeConstructor;
+	clazzFun.defineMethod = inF.defineMethod;
+	clazzFun.defineStaticMethod = inF.defineStaticMethod;
+	clazzFun.makeConstructor = inF.makeConstructor;
 	/*# x<< #*/
 	return clazzFun;
 };
@@ -1508,182 +1919,6 @@ Clazz.instantialize = function (objThis, args) {
   }
 };
 
-/**
- * Once there are other methods registered to the Function.prototype, 
- * those method names should be add to the following Array.
- */
-/*
- * static final member of interface may be a class, which may
- * be function.
- */
-
-var innerFunctionNames = [
-	"isInstance", "equals", "hashCode", /*"toString",*/ "getName", "getCanonicalName", "getClassLoader", "getResource", "getResourceAsStream" /*# {$no.javascript.support} >>x #*/, "defineMethod", "defineStaticMethod",
-	"makeConstructor" /*# x<< #*/
-];
-
-/*
- * Static methods
- */
-var innerFunctions = {
-	/*
-	 * Similar to Object#equals
-	 */
-   
-  isInstance: function(c) {
-    return Clazz.instanceOf(c, this);
-  },
-  
-	equals : function (aFun) {
-		return this === aFun;
-	},
-
-	hashCode : function () {
-		return this.getName ().hashCode ();
-	},
-
-	toString : function () {
-		return "class " + this.getName ();
-	},
-
-	/*
-	 * Similar to Class#getName
-	 */
-	getName : function () {
-		return Clazz.getClassName (this, true);
-	},
-	getCanonicalName : function () {
-		return this.__CLASS_NAME__;
-	},
-	getClassLoader : function () {
-		var clazzName = this.__CLASS_NAME__;
-		var baseFolder = Clazz._Loader.getClasspathFor(clazzName);
-		var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
-		if (x != -1) {
-			baseFolder = baseFolder.substring (0, x);
-		} else {
-			baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
-		}
-		var loader = Clazz._Loader.requireLoaderByBase(baseFolder);
-		loader.getResourceAsStream = innerFunctions.getResourceAsStream;
-		loader.getResource = innerFunctions.getResource; // BH
-		return loader;
-	},
-
-	getResource : function(name) {
-		var stream = this.getResourceAsStream(name);
-    return (stream ? stream.url : null);
-	},
-
-	getResourceAsStream : function (name) {
-		if (!name)
-			return null;
-		name = name.replace (/\\/g, '/');
-		var baseFolder = null;
-    var fname = name;
-		var clazzName = this.__CLASS_NAME__;
-		if (arguments.length == 2 && name.indexOf ('/') != 0) { // additional argument
-			name = "/" + name;
-		}
-		if (name.indexOf ('/') == 0) {
-			//is.url = name.substring (1);
-			if (arguments.length == 2) { // additional argument
-				baseFolder = arguments[1];
-				if (!baseFolder)
-					baseFolder = Clazz.binaryFolders[0];
-			} else if (Clazz._Loader) {
-				baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
-			}
-			if (!baseFolder) {
-				fname = name.substring (1);
-			} else {
-				baseFolder = baseFolder.replace (/\\/g, '/');
-				var length = baseFolder.length;
-				var lastChar = baseFolder.charAt (length - 1);
-				if (lastChar != '/') {
-					baseFolder += "/";
-				}
-				fname = baseFolder + name.substring (1);
-			}
-		} else {
-			if (this.base) {
-				baseFolder = this.base;
-			} else if (Clazz._Loader) {
-				baseFolder = Clazz._Loader.getClasspathFor(clazzName);
-				var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
-				if (x != -1) {
-					baseFolder = baseFolder.substring (0, x);
-				} else {
-					//baseFolder = null;
-					var y = -1;
-					if (baseFolder.indexOf (".z.js") == baseFolder.length - 5
-							&& (y = baseFolder.lastIndexOf ("/")) != -1) {
-						baseFolder = baseFolder.substring (0, y + 1);
-						var pkgs = clazzName.split (/\./);
-						for (var k = 1; k < pkgs.length; k++) {
-							var pkgURL = "/";
-							for (var j = 0; j < k; j++) {
-								pkgURL += pkgs[j] + "/";
-							}
-							if (pkgURL.length > baseFolder.length) {
-								break;
-							}
-							if (baseFolder.indexOf (pkgURL) == baseFolder.length - pkgURL.length) {
-								baseFolder = baseFolder.substring (0, baseFolder.length - pkgURL.length + 1);
-								break;
-							}
-						}
-					} else {
-						baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
-					}
-				}
-			} else {
-				var bins = Clazz.binaryFolders;
-				if (bins && bins.length) {
-					baseFolder = bins[0];
-				}
-			}
-			if (!baseFolder)
-				baseFolder = "j2s/";
-			baseFolder = baseFolder.replace (/\\/g, '/');
-			var length = baseFolder.length;
-			var lastChar = baseFolder.charAt (length - 1);
-			if (lastChar != '/') {
-				baseFolder += "/";
-			}
-			if (this.base) {
-				fname = baseFolder + name;
-			} else {
-				var idx = clazzName.lastIndexOf ('.');
-				if (idx == -1 || this.base) {
-					fname = baseFolder + name;
-				} else {
-					fname = baseFolder + clazzName.substring (0, idx)
-							.replace (/\./g, '/') +  "/" + name;
-				}
-			}            
-		}
-    var url = null;
-    try {
-      if (fname.indexOf(":/") < 0) {
-        var d = document.location.href.split("?")[0].split("/");
-        d[d.length - 1] = fname;
-        fname = d.join("/");
-      }
-      url = new java.net.URL(fname);
-    } catch (e) {
-    }
-		var data = (url == null ? null : Jmol._getFileData(fname.toString()));
-    if (!data || data == "error" || data.indexOf("[Exception") == 0)
-      return null;
-    var bytes = new java.lang.String(data).getBytes();      
-    var is = new java.io.BufferedInputStream ( new java.io.ByteArrayInputStream (bytes)); 
-    is.url = url;
-		return is;
-	}
-  
-};
-
 
 var cStack = [];
 
@@ -1719,9 +1954,8 @@ var decorateFunction = function (clazzFun, prefix, name, _decorateFunction) {
 		prefix[name] = clazzFun;
 	}
 	extendJO(clazzFun, qName);
-	var inF = innerFunctionNames;
-	for (var i = 0; i < inF.length; i++) {
-		clazzFun[inF[i]] = innerFunctions[inF[i]];
+	for (var i = 0; i < innerNames.length; i++) {
+		clazzFun[innerNames[i]] = inF[innerNames[i]];
 	}
 
 	if (Clazz._Loader) 
@@ -1849,190 +2083,6 @@ var newMethodNotFoundException = function (obj, clazz, method, params) {
   console.log(message);
   //debugger;
   throw new java.lang.NoSuchMethodException(message);        
-};
-
-/**
- * Prepare "callback" for instance of anonymous Class.
- * For example for the callback:
- *     this.callbacks.MyEditor.sayHello();
- *     
- * This is specifically for inner classes that are referring to 
- * outer class methods and fields.   
- *
- * @param objThis the host object for callback
- * @param args arguments object. args[0] will be classThisObj -- the "this"
- * object to be hooked
- * 
- * Attention: parameters should not be null!
- */
-/* protected */
-Clazz.prepareCallback = function (innerObj, args) {
-	var outerObj = args[0];
-	var cbName = "b$"; // "callbacks";
-	if (innerObj && outerObj && outerObj !== window) {
-		var className = Clazz.getClassName(outerObj, true);		
-		var obs = {};
-		if (innerObj[cbName]) // must make a copy!
-			for (var s in innerObj[cbName])
-				obs[s] = innerObj[cbName][s];
-		innerObj[cbName] = obs;
-		
-		/*
-		 * TODO: the following line is SWT-specific! Try to move it out!
-		 */
-		//			obs[className.replace (/org\.eclipse\.swt\./, "$wt.")] = outerObj;
-
-  	// all references to outer class and its superclass objects must be here as well
-		obs[className] = outerObj;
-		var clazz = Clazz.getClass(outerObj);
-		while (clazz.superClazz) {
-			clazz = clazz.superClazz;
-			/*
-			 * TODO: the following line is SWT-specific! Try to move it out!
-			 */
-			//				obs[Clazz.getClassName (clazz, true)
-			//						.replace (/org\.eclipse\.swt\./, "$wt.")] = outerObj;
-			obs[Clazz.getClassName(clazz, true)] = outerObj;
-		}
-		var cbs = outerObj[cbName];
-		if (cbs)
-			for (var s in cbs)
-				obs[s] = cbs[s];
-	}
-	// remove "this" argument
-	// note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
-	for (var i = 0; i < args.length - 1; i++)
-		args[i] = args[i + 1];
-	args.length--;
-};
-
-/**
- * Construct instance of the given inner class.
- *
- * @param classInner given inner class, alway with name like "*$*"
- * @param innerObj this instance which can be used to call back.
- * @param finalVars final variables which the inner class may use
- * @return the constructed object
- *
- * @see Clazz#cloneFinals
- */
-/* public */
-Clazz.innerTypeInstance = function (clazzInner, innerObj, finalVars) {
-	if (!clazzInner)
-		clazzInner = arguments.callee.caller;
-	var obj;
-	if (finalVars || innerObj.$finals) {
-			obj = new clazzInner(innerObj, Clazz.inheritArgs);
-		// f$ is short for the once choosen "$finals"
-		if (finalVars) {
-			if (innerObj.f$) {
-				var o = {};
-				for (var attr in innerObj.f$)
-					o[attr] = innerObj.f$[attr];
-				for (var attr in finalVars)
-					o[attr] = finalVars[attr];
-				obj.f$ = o;
-			} else {
-				obj.f$ = finalVars;
-			}
-		} else if (innerObj.f$) {
-			obj.f$ = innerObj.f$;
-		}
-	} else {
-		switch (arguments.length) {
-		case 3:
-			return new clazzInner(innerObj);
-		case 4:
-			return (innerObj.__CLASS_NAME__ == clazzInner.__CLASS_NAME__
-					&& arguments[3] === Clazz.inheritArgs ? innerObj : new clazzInner(innerObj, arguments[3]));
-		case 5:
-			return new clazzInner(innerObj, arguments[3], arguments[4]);
-		case 6:
-			return new clazzInner(innerObj, arguments[3], arguments[4], 
-					arguments[5]);
-		case 7:
-			return new clazzInner(innerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6]);
-		case 8:
-			return new clazzInner(innerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6], arguments[7]);
-		case 9:
-			return new clazzInner(innerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6], arguments[7], arguments[8]);
-		case 10:
-			return new clazzInner(innerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6], arguments[7], arguments[8],
-					arguments[9]);
-		default:
-			//Should construct instance manually.
-			obj = new clazzInner(innerObj, Clazz.inheritArgs);
-			break;
-		}
-	}
-	var n = arguments.length - 3;
-	var args = new Array(n);
-	for (var i = n; --i >= 0;)
-		args[i] = arguments[i + 3];
-	Clazz.instantialize(obj, args);
-	return obj;
-};
-
-/**
- * Clone variables whose modifier is "final".
- * Usage: var o = Clazz.cloneFinals ("name", name, "age", age);
- *
- * @return Object with all final variables
- */
-/* public */
-Clazz.cloneFinals = function () {
-	var o = {};
-	var len = arguments.length / 2;
-	for (var i = len; --i >= 0;)
-		o[arguments[i + i]] = arguments[i + i + 1];
-	return o;
-};
-
-/* public */
-Clazz.isClassDefined = Clazz.isDefinedClass = function(clazzName) {
-	if (!clazzName) 
-		return false;		/* consider null or empty name as non-defined class */
-	if (Clazz.allClasses[clazzName])
-		return true;
-	var pkgFrags = clazzName.split (/\./);
-	var pkg = null;
-	for (var i = 0; i < pkgFrags.length; i++)
-		if (!(pkg = (pkg ? pkg[pkgFrags[i]] : Clazz.allPackage[pkgFrags[0]]))) {
-			return false;
-    }
-  return (pkg && (Clazz.allClasses[clazzName] = true));
-};
-/**
- * Define the enum constant.
- * @param classEnum enum type
- * @param enumName enum constant
- * @param enumOrdinal enum ordinal
- * @param initialParams enum constant constructor parameters
- * @return return defined enum constant
- */
-/* public */
-Clazz.defineEnumConstant = function (clazzEnum, enumName, enumOrdinal, initialParams, clazzEnumExt) {
-	var o = (clazzEnumExt ? new clazzEnumExt() : new clazzEnum());
-	// BH avoids unnecessary calls to SAEM
-	o.$name = enumName;
-	o.$ordinal = enumOrdinal;
-	//Clazz.superConstructor (o, clazzEnum, [enumName, enumOrdinal]);
-	if (initialParams && initialParams.length)
-		o.construct.apply (o, initialParams);
-	clazzEnum[enumName] = o;
-	clazzEnum.prototype[enumName] = o;
-	if (!clazzEnum["$ values"]) {         // BH added
-		clazzEnum["$ values"] = []          // BH added
-		clazzEnum.values = function() {     // BH added
-			return this["$ values"];          // BH added
-		};                                  // BH added
-	}
-	clazzEnum["$ values"].push(o);
-	return o;
 };
 
 //////// (int) conversions //////////
@@ -2549,7 +2599,7 @@ Clazz.load = function (musts, clazz, optionals, declaration) {
  */
 java.lang.Object = Clazz._O;
 
-Clazz._O.getName = innerFunctions.getName;
+Clazz._O.getName = inF.getName;
 
 java.lang.System = System = {
 	props : null, //new java.util.Properties (),
@@ -2653,261 +2703,12 @@ Thread.currentThread = Thread.prototype.currentThread = function () {
 	return this.J2S_THREAD;
 };
 
-/* not used in Jmol
-Clazz.intCast = function (n) { // 32bit
-	var b1 = (n & 0xff000000) >> 24;
-	var b2 = (n & 0xff0000) >> 16;
-	var b3 = (n & 0xff00) >> 8;
-	var b4 = n & 0xff;
-	if ((b1 & 0x80) != 0) {
-		return -(((b1 & 0x7f) << 24) + (b2 << 16) + (b3 << 8) + b4 + 1);
-	} else {
-		return (b1 << 24) + (b2 << 16) + (b3 << 8) + b4;
-	}
-};
-Clazz.shortCast = function (s) { // 16bit
-	var b1 = (n & 0xff00) >> 8;
-	var b2 = n & 0xff;
-	if ((b1 & 0x80) != 0) {
-		return -(((b1 & 0x7f) << 8) + b2 + 1);
-	} else {
-		return (b1 << 8) + b4;
-	}
-};
 
-Clazz.byteCast = function (b) { // 8bit
-	if ((b & 0x80) != 0) {
-		return -((b & 0x7f) + 1);
-	} else {
-		return b & 0xff;
-	}
-};
+//////////////////////////// hotspot and unloading ////////////////////
 
-Clazz.charCast = function (c) { // 8bit
-	return String.fromCharCode (c & 0xff).charAt (0);
-};
+// not implemented in SwingJS
 
-Clazz.floatCast = function (f) { // 32bit
-	return f;
-};
-
-*/
-
-
-/*
- * Try to fix JavaScript's shift operator defects on long type numbers.
- */
-
-/* not used in Jmol
-
-Clazz.longMasks = [];
-
-Clazz.longReverseMasks = [];
-
-Clazz.longBits = [];
-
-;(function () {
-	var arr = [1];
-	for (var i = 1; i < 53; i++) {
-		arr[i] = arr[i - 1] + arr[i - 1]; // * 2 or << 1
-	}
-	Clazz.longBits = arr;
-	Clazz.longMasks[52] = arr[52];
-	for (var i = 51; i >= 0; i--) {
-		Clazz.longMasks[i] = Clazz.longMasks[i + 1] + arr[i];
-	}
-	Clazz.longReverseMasks[0] = arr[0];
-	for (var i = 1; i < 52; i++) {
-		Clazz.longReverseMasks[i] = Clazz.longReverseMasks[i - 1] + arr[i];
-	}
-}) ();
-
-
-Clazz.longLeftShift = function (l, o) { // 64bit
-	if (o == 0) return l;
-	if (o >= 64) return 0;
-	if (o > 52) {
-		error ("[Java2Script] Error : JavaScript does not support long shift!");
-		return l;
-	}
-	if ((l & Clazz.longMasks[o - 1]) != 0) {
-		error ("[Java2Script] Error : Such shift operator results in wrong calculation!");
-		return l;
-	}
-	var high = l & Clazz.longMasks[52 - 32 + o];
-	if (high != 0) {
-		return high * Clazz.longBits[o] + (l & Clazz.longReverseMasks[32 - o]) << 0;
-	} else {
-		return l << o;
-	}
-};
-
-Clazz.intLeftShift = function (n, o) { // 32bit
-	return (n << o) & 0xffffffff;
-};
-
-Clazz.longRightShift = function (l, o) { // 64bit
-	if ((l & Clazz.longMasks[52 - 32]) != 0) {
-		return Math.round((l & Clazz.longMasks[52 - 32]) / Clazz.longBits[32 - o]) + (l & Clazz.longReverseMasks[o]) >> o;
-	} else {
-		return l >> o;
-	}
-};
-
-Clazz.intRightShift = function (n, o) { // 32bit
-	return n >> o; // no needs for this shifting wrapper
-};
-
-Clazz.long0RightShift = function (l, o) { // 64bit
-	return l >>> o;
-};
-
-Clazz.int0RightShift = function (n, o) { // 64bit
-	return n >>> o; // no needs for this shifting wrapper
-};
-
-*/
-// Compress the common public API method in shorter name
-//$_L=Clazz.load;
-//$_W=Clazz.declareAnonymous;$_T=Clazz.declareType;
-//$_J=Clazz.declarePackage;$_C=Clazz.decorateAsClass;
-//$_Z=Clazz.instantialize;$_I=Clazz.declareInterface;$_D=Clazz.isClassDefined;
-//$_H=Clazz.pu$h;$_P=Clazz.p0p;$_B=Clazz.prepareCallback;
-//$_N=Clazz.innerTypeInstance;$_K=Clazz.makeConstructor;$_U=Clazz.superCall;$_R=Clazz.superConstructor;
-//$_M=Clazz.defineMethod;$_V=Clazz.overrideMethod;$_S=Clazz.defineStatics;
-//$_E=Clazz.defineEnumConstant;
-//$_F=Clazz.cloneFinals;
-//$_Y=Clazz.prepareFields;$_A=Clazz.newArray;$_O=Clazz.instanceOf;
-//$_G=Clazz.inheritArgs;$_X=Clazz.checkPrivateMethod;$_Q=Clazz.makeFunction;
-//$_s=Clazz.registerSerializableFields;
-//$_k=Clazz.overrideConstructor;
-
-
-/////////////////////// inner function support /////////////////////////////////
-
-/* public */
-innerFunctionNames = innerFunctionNames.concat ([
-    "getSuperclass", "isAssignableFrom", 
-    "getConstructor", 
-    "getDeclaredMethod", "getDeclaredMethods",
-    "getMethod", "getMethods",   
-		"getModifiers", /*"isArray",*/ "newInstance"]);
-
-/* public */
-innerFunctions.getSuperclass = function () {
-	return this.superClazz;	
-};
-
-/* public */
-innerFunctions.isAssignableFrom = function (clazz) {
-	return getInheritedLevel (clazz, this) >= 0;	
-};
-
-/* public */
-innerFunctions.getConstructor = function () {
-	return new java.lang.reflect.Constructor (this, [], [], 
-			java.lang.reflect.Modifier.PUBLIC);
-};
-/**
- * TODO: fix bug for polymorphic methods!
- */
-/* public */
-innerFunctions.getDeclaredMethods = innerFunctions.getMethods = function () {
-	var ms = [];
-	var p = this.prototype;
-	for (var attr in p) {
-		if (typeof p[attr] == "function" && !p[attr].__CLASS_NAME__) {
-			/* there are polynormical methods. */
-			ms.push(new java.lang.reflect.Method (this, attr,
-					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC));
-		}
-	}
-	p = this;
-	for (var attr in p) {
-		if (typeof p[attr] == "function" && !p[attr].__CLASS_NAME__) {
-			ms.push(new java.lang.reflect.Method (this, attr,
-					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC
-					| java.lang.reflect.Modifier.STATIC));
-		}
-	}
-	return ms;
-};
-/* public */
-innerFunctions.getDeclaredMethod = innerFunctions.getMethod = function (name, clazzes) {
-	var p = this.prototype;
-	for (var attr in p) {
-		if (name == attr && typeof p[attr] == "function" 
-				&& !p[attr].__CLASS_NAME__) {
-			/* there are polynormical methods. */
-			return new java.lang.reflect.Method (this, attr,
-					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC);
-		}
-	}
-	p = this;
-	for (var attr in p) {
-		if (name == attr && typeof p[attr] == "function" 
-				&& !p[attr].__CLASS_NAME__) {
-			return new java.lang.reflect.Method (this, attr,
-					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC
-					| java.lang.reflect.Modifier.STATIC);
-		}
-	}
-	return null;
-};
-/* public */
-innerFunctions.getModifiers = function () {
-	return java.lang.reflect.Modifier.PUBLIC;
-};
-
-innerFunctions.newInstance = function (a) {
-	var clz = this;
-  //debugger;
-  allowImplicit = false;
-  var c = null;
-  switch(a == null ? 0 : a.length) {
-  case 0:
-    c = new clz();
-    break;
-  case 1:
-  	c = new clz(a[0]);
-    break;
-  case 2:
-  	c = new clz(a[0], a[1]);
-    break;
-  case 3:
-    c = new clz(a[0], a[1], a[2]);
-    break;
-  case 4:
-    c = new clz(a[0], a[1], a[2], a[3]);
-    break;
-  default:
-    var x = "new " + clz.__CLASS_NAME__ + "(";
-    for (var i = 0; i < a.length; i++)
-     x += (i == 0 ? "" : ",") + "a[" + i + "]";
-    x += ")";
-    c = eval(x);
-  }
-  allowImplicit = true;
-  return c;
-};
-
-//Object.newInstance = innerFunctions.newInstance;
-;(function(){  // BH added wrapper here
-	var inF = innerFunctionNames;
-	for (var i = 0; i < inF.length; i++) {
-		Clazz._O[inF[i]] = innerFunctions[inF[i]];
-		Array[inF[i]] = innerFunctions[inF[i]];
-	}
-	//Array["isArray"] = function () {
-	//	return true;
-	//};
-})();
-
-//////////////////////////// hotspot and unloading /////////////////////////////
-
-// removed 6/11/2016 1:42:03 PM
-
-//} // if (window["Clazz"] && !window["Clazz"].unloadClass)
+//////////////////////////// class loader /////////////////////////////
 
 /******************************************************************************
  * Copyright (c) 2007 java2script.org and others.
@@ -5106,8 +4907,8 @@ if(supportsNativeObject){
 java.lang.Number=Number;
 Number.__CLASS_NAME__="Number";
 implementOf(Number,java.io.Serializable);
-Number.equals=innerFunctions.equals;
-Number.getName=innerFunctions.getName;
+Number.equals=inF.equals;
+Number.getName=inF.getName;
 Number.prototype.compareTo = function(x) { var a = this.value, b = x.value; return (a < b ? -1 : a == b ? 0 : 1) };
 
 Clazz.defineMethod(Number,"shortValue",
@@ -5654,8 +5455,8 @@ if (supportsNativeObject) {
 }
 Boolean.__CLASS_NAME__="Boolean";
 implementOf(Boolean,[java.io.Serializable,java.lang.Comparable]);
-Boolean.equals=innerFunctions.equals;
-Boolean.getName=innerFunctions.getName;
+Boolean.equals=inF.equals;
+Boolean.getName=inF.getName;
 Boolean.serialVersionUID=Boolean.prototype.serialVersionUID=-3665804199014368530;
 
 Clazz.overrideConstructor(Boolean,
@@ -5883,7 +5684,7 @@ String.prototype[p]=Clazz._O.prototype[p];
 
 implementOf(String,[java.io.Serializable,CharSequence,Comparable]);
 
-String.getName=innerFunctions.getName;
+String.getName=inF.getName;
 
 String.serialVersionUID=String.prototype.serialVersionUID=-6849794470754667710;
 

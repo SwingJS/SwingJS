@@ -26,7 +26,7 @@ public class JSButtonUI extends JSLightweightUI {
 	protected boolean isRadio;
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "button");

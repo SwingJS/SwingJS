@@ -183,12 +183,12 @@ public class BugTest extends HashMap {
 	public static class Qux {
 
 		void f(INTERFACE arg) {
-			System.out.println("f(INTERFACE) called");
+			System.out.println("f(INTERFACE) called -- CORRECT");
 		}
 
 		void f(CLASS arg) {
 			
-			System.out.println("f(CLASS) called");
+			System.out.println("f(CLASS) called -- ERROR");
 		}
 
 	}
@@ -210,7 +210,10 @@ public class BugTest extends HashMap {
 	}
 
 	// ///////// https://groups.google.com/forum/#!topic/java2script/9FMWuEiH9Ik
-
+		
+	public class SubBaseClass {
+	  
+	}
 	public class BaseClass {
 
 		public BaseClass() {
@@ -233,6 +236,12 @@ public class BugTest extends HashMap {
 	}
 
 	public void main3(String[] args) {
+		/**
+		 * @j2sNative
+		 * 
+		 * debugger;
+		 */
+		{}
 		SubClass obj = new SubClass("Hello from SubClass");
 		System.out.println("Done.");
 	}

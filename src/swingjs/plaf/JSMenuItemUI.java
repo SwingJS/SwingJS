@@ -24,7 +24,7 @@ public class JSMenuItemUI extends JSButtonUI {
 	protected DOMNode domBtn;
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "button");

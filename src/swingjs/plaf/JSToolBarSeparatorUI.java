@@ -31,7 +31,7 @@ import jsjavax.swing.JLabel;
 public class JSToolBarSeparatorUI extends JSSeparatorUI {
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			textNode = domNode = createDOMObject("label", id);
 		vCenter(domNode, 10);

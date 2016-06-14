@@ -10,7 +10,7 @@ public class JSLayeredPaneUI extends JSLightweightUI {
 	}
 	
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			domNode = createDOMObject("div", id);
 		}

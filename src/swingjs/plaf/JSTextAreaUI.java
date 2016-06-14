@@ -19,7 +19,7 @@ public class JSTextAreaUI extends JSTextUI {
 	protected DOMNode domBtn;
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
 			domBtn = focusNode = enableNode = textNode = domNode = createDOMObject("textarea", id);

@@ -69,7 +69,7 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	}
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		// TODO Auto-generated method stub
 		return null;
 	}

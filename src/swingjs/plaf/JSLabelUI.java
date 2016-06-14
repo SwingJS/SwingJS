@@ -15,7 +15,7 @@ public class JSLabelUI extends JSLightweightUI {
 	private JLabel label;
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		label = (JLabel) c;
 		if (domNode == null)
 			textNode = domNode = createDOMObject("label", id);

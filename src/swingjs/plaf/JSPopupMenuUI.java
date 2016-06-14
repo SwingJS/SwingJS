@@ -19,7 +19,7 @@ public class JSPopupMenuUI extends JSWindowUI {
 	}
 	
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domNode = createDOMObject("select", id);
     return domNode;

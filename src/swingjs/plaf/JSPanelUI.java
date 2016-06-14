@@ -19,7 +19,7 @@ public class JSPanelUI extends JSLightweightUI {
 	}
 	
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			JRootPane root = c.getRootPane();
 			isContentPane = (root != null && root.getContentPane() == c);

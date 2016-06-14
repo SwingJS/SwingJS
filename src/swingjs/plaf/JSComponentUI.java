@@ -207,7 +207,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
   	isTainted = true;
   }
   
-  public abstract DOMNode getDOMObject();
+  public abstract DOMNode createDOMNode();
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
@@ -383,7 +383,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		if (!isTainted)
 			return outerNode;
 
-		domNode = getDOMObject();
+		domNode = createDOMNode();
 
 		if (outerNode == null)
 			outerNode = wrap("div", id, domNode);
@@ -432,7 +432,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	@Override
 	public Dimension getPreferredSize(JComponent c) {
 		//System.out.println("getPreferredSize for " + id + " " + c.getName());
-		Dimension d = setHTMLSize(getDOMObject(), false);
+		Dimension d = setHTMLSize(createDOMNode(), false);
 		//System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
   	return d;
   }
@@ -683,8 +683,10 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 			this.width = width;
 			this.height = height;
 			System.out.println(id + " setBounds " + x + " " + y + " " + width + " " + height + " op=" + op);
-			if (domNode != null)
-				DOMNode.setSize(domNode, width, height);
+				if (domNode == null && createDOMNode() == null)
+					System.out.println("JSCUI no DOM node created for " + id);
+				else
+					DOMNode.setSize(domNode, width, height);
 			break;
 		}
 	}

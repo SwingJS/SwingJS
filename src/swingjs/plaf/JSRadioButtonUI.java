@@ -17,7 +17,7 @@ public class JSRadioButtonUI extends JSButtonUI {
 	
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		isRadio = true;
 		return getButtonObject("radio");
 	}
@@ -96,7 +96,7 @@ public class JSRadioButtonUI extends JSButtonUI {
 		DOMNode.setPositionAbsolute(wrapper);
 		if (doAll) {
 			// now wrap these in a div
-			obj = wrap("div", id + "_0", wrapper);
+			domNode = obj = wrap("div", id + "_0", wrapper);
 			DOMNode.setPositionAbsolute(obj);
 		} else {
 			obj = domNode;

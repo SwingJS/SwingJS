@@ -13,7 +13,7 @@ public class JSDialogUI extends JSFrameUI {
 	}
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domNode = createDOMObject("div", id);
 		outerNode = wrap("div", id, domNode);

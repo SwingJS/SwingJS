@@ -41,7 +41,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	}
 	
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domNode = createDOMObject("div", id);
     return domNode;

@@ -21,7 +21,7 @@ public class JSTextFieldUI extends JSTextUI {
 	protected String inputType = "text";
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
 			focusNode = enableNode = valueNode = domNode = DOMNode

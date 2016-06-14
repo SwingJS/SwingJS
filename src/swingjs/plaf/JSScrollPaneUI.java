@@ -16,7 +16,7 @@ public class JSScrollPaneUI extends JSLightweightUI {
 	private JSComponentUI scrolledUI;
 	
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		isContainer = true;
 		scrollpane = (JScrollPane) c;
 		if (domNode == null) {

@@ -30,7 +30,7 @@ import swingjs.api.DOMNode;
 public class JSViewportUI extends JSLightweightUI {
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domNode = createDOMObject("div", id);
 		return domNode;

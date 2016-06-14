@@ -30,7 +30,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	
 	@SuppressWarnings("unused")
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			domNode = focusNode = createDOMObject("select", id);
 		populateList();

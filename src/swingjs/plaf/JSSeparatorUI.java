@@ -31,7 +31,7 @@ import jsjavax.swing.JLabel;
 public class JSSeparatorUI extends JSLabelUI {
 
 	@Override
-	public DOMNode getDOMObject() {
+	public DOMNode createDOMNode() {
 		if (domNode == null)
 			textNode = domNode = createDOMObject("label", id);
 		vCenter(domNode, 10);
