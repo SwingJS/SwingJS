@@ -1,52 +1,56 @@
 package test;
 
-//import jsjava.awt.Font;
-//import jsjava.awt.FontMetrics;
-//import jsjava.awt.Graphics;
-
-//import jsjavax.swing.JFrame;
-//import jsjavax.swing.JLabel;
-//import jsjavax.swing.JPanel;
-//import jsjavax.swing.JWindow;
-
-/**
- * run in JavaScript from a developer console with
- * 
- * Clazz.loadClass("test.BugTest", function() { new test.BugTest().main([])})
- */
-import java.lang.reflect.Constructor;
 import java.util.AbstractMap;
 import java.util.HashMap;
 
-import swingjs.JSGraphics2D;
-import swingjs.JSToolkit;
+class A {
+	private void init() {
+		System.out.println("class A init");
+	}
 
-import jsjava.awt.Graphics2D;
-import jsjava.awt.Toolkit;
+	protected void init(String a) {
+		System.out.println("class A init String a");
+	}
+
+	protected void init2() {
+		System.out.println("class A init2");
+		init();
+	}
+}
+
+class B extends A {
+	protected void init() {
+		System.out.println("class B init");
+		super.init2();
+	}
+
+	protected void init(String b) {
+		System.out.println("class B init String b");
+	}
+
+}
 
 public class BugTest extends HashMap {
 
 	private String me = "me";
-	
+
 	public BugTest() {
-	  System.out.println("this is BugTest()" + me);	
+		System.out.println("this is BugTest()" + me);
+		
 	}
-	
-	
+
 	public BugTest(String s) {
-	  System.out.println("this is BugTest(String):" + s + me);	
+		System.out.println("this is BugTest(String):" + s + me);
 	}
-	
+
 	public BugTest(Object[] o) {
-	  System.out.println("this is BugTest(Object[]):" + o + me);	
+		System.out.println("this is BugTest(Object[]):" + o + me);
 	}
-	
+
 	public BugTest(String s, String t) {
-	  System.out.println("this is BugTest(String,String):" + s + t + me);	
+		System.out.println("this is BugTest(String,String):" + s + t + me);
 	}
-	
-	
-	
+
 	private void test(AbstractMap a) {
 		System.out.println(a + " is an AbstractMap");
 	}
@@ -66,46 +70,48 @@ public class BugTest extends HashMap {
 	private String name;
 
 	private static String getFont(String f) {
-		return  f;
+		return f;
 	}
-	
+
 	private static String getFont(String f, String y) {
-		return  f + y;
+		return f + y;
 	}
-	
+
 	public static void main(String[] args) {
 
 		new B().init();
-		
-// report should be:
-//	
-//	class B init
-//	class A init2
-//	class A init
-	
+
+		// report should be:
+		//
+		// class B init
+		// class A init2
+		// class A init
+
 		try {
 			Class<?> cl;
 			cl = Class.forName("test.BugTest");
-		  cl.getConstructor(String.class, String.class).newInstance(new Object[] {"test1","test2"});
-		  cl.getConstructor(Object[].class).newInstance(new Object[] {new Object[]{"test1","test2"}});
-		  cl.getConstructor(String.class, String.class).newInstance("test1","test2");
-		  cl.getConstructor().newInstance();
-		  cl.newInstance();
+			cl.getConstructor(String.class, String.class).newInstance(
+					new Object[] { "test1", "test2" });
+			cl.getConstructor(Object[].class).newInstance(
+					new Object[] { new Object[] { "test1", "test2" } });
+			cl.getConstructor(String.class, String.class).newInstance("test1",
+					"test2");
+			cl.getConstructor().newInstance();
+			cl.newInstance();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	  System.out.println(getFont("f"));
-	  System.out.println(getFont("f","y"));
-	  
-	  
+
+		System.out.println(getFont("f"));
+		System.out.println(getFont("f", "y"));
+
 		BugTest t = new BugTest();
 		t.name = "test";
 
 		t.test1(Integer.valueOf(33));
 		t.test1(33);
-		
+
 		t.test(t);
 		t.test((Object) t);
 
@@ -114,9 +120,9 @@ public class BugTest extends HashMap {
 		int[][] a23 = new int[2][3];
 
 		printit(2, 3, 4, 5);
-		//Toolkit tk = Toolkit.getDefaultToolkit();
+		// Toolkit tk = Toolkit.getDefaultToolkit();
 
-		//System.out.println(tk.toString());
+		// System.out.println(tk.toString());
 
 		// JPanel ca = new JPanel();
 		// JWindow jp = new JWindow();
@@ -139,45 +145,97 @@ public class BugTest extends HashMap {
 		// String[]{"a","b","c","d"}};
 		// String[][] sc = new String[3][4];
 		// String[][] sd = new String[][] {new String[]{"a","b","c","d"},new
-		// String[]{"a","b","c","d"}};
+		// String[]{"a","b","c","d"}};	
 		System.out.println(args);
-		
-		char[] test = new char[] {'1', '2','3','4','5'};
+
+		char[] test = new char[] { '1', '2', '3', '4', '5' };
 		String s = new String(test, 2, 3);
-		
+
 		System.out.println("char test: 345 = " + s);
+		
+		/**
+		 * @j2sNative
+		 * 
+		 * ;//debugger;
+		 * 
+		 */
+		{}
+		main2(null);
+		
 	}
 
 	static void printit(int... t) {
 		for (int i = 0; i < t.length; i++)
 			System.out.println(t[i]);
 	}
+
+	// ///////// https://groups.google.com/forum/#!topic/java2script/mjrUxnp1VS8
+
+	public interface INTERFACE {
+	};
+
+	public static class CLASS {
+	};
+
+	public static class Baz extends CLASS implements INTERFACE {
+	};
+
+	public static class Qux {
+
+		void f(INTERFACE arg) {
+			System.out.println("f(INTERFACE) called");
+		}
+
+		void f(CLASS arg) {
+			
+			System.out.println("f(CLASS) called");
+		}
+
+	}
+
+	public static void g(INTERFACE foo) {
+
+		Qux q = new Qux();
+
+		q.f(foo);
+
+	}
+
+	public static void main2(String[] args) {
+
+		Baz b = new Baz();
+
+		g(b);
+
+	}
+
+	// ///////// https://groups.google.com/forum/#!topic/java2script/9FMWuEiH9Ik
+
+	public class BaseClass {
+
+		public BaseClass() {
+			this("");
+		}
+
+		public BaseClass(String prefix) {
+			System.out.println(prefix + "Hello from BaseClass");
+		}
+
+	}
+
+	public class SubClass extends BaseClass {
+
+		SubClass(String message) {
+			super();
+			System.out.println(message);
+		}
+
+	}
+
+	public void main3(String[] args) {
+		SubClass obj = new SubClass("Hello from SubClass");
+		System.out.println("Done.");
+	}
+
 }
-
-class A {
-	private void init() {
-		System.out.println("class A init");
-	}
-	
-	protected void init(String a) {
-		System.out.println("class A init String a");
-	}
-
-	protected void init2() {
-		System.out.println("class A init2");
-		init();
-	}
-}
-
-class B extends A {
-	protected void init() {
-		System.out.println("class B init");
-		super.init2();
-	}
-	
-	protected void init(String b) {
-		System.out.println("class B init String b");
-	}
-}
-
 

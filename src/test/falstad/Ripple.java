@@ -384,6 +384,9 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	boolean useBufferedImage = false;
 
 	public void initFrame() {
+		
+		
+		
 		try {
 			if (applet != null) {
 				String param = applet.getParameter("useFrame");
@@ -4746,4 +4749,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			return null;
 		}
 	}
+
 }
+
+
+

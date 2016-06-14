@@ -7,6 +7,7 @@
  // NOTES by Bob Hanson: 
   // J2S class changes:
 
+ // BH 6/13/2016 11:53:30 PM https://groups.google.com/forum/#!topic/java2script/mjrUxnp1VS8 interface beats class fixed
  // BH 6/12/2016 10:19:41 PM ensuring Class.forName("....").newInstance() requires a default constructor
  // BH 6/12/2016 5:07:22 PM complete rewrite of inheritance field preparation and constructors
  // BH 6/12/2016 11:17:43 AM removing Clazz.dateToString
@@ -191,6 +192,7 @@ Clazz.declareInterface = function (prefix, name, interfacez, _declareInterface) 
 	decorateFunction(clazzFun, prefix, name);
 	if (interfacez)
 		implementOf(clazzFun, interfacez);
+  clazzFun.$$INT$$ = true;
 	return clazzFun;
 };
 
@@ -704,10 +706,8 @@ var bindMethod = function (claxxRef, fx, fxName, args, pTypes) {
       if (sigs.sig)
         setSignature(clazzFun, clazzFun, sigs.sig);
       var found = sigs.fparams[nparams];  // [[$f, ["string","int","int"]]]
-      if (found && (pt = searchMethod(found, pTypes)) >= 0) {
-        fx.lastMethod = f = found[pt][0];
-        break;
-      }  			
+      if (found && (pt = searchMethod(found, pTypes)) >= 0)
+        return found[pt][0];
     	// As there are no such methods in current class,  
       // search its super class stack -- stop checking for the class
 			claxxRef = null; 
@@ -815,7 +815,7 @@ var getInheritedLevel = function (clazzTarget, clazzBase, isTgtStr, isBaseStr) {
 			for (var i = 0; i < impls.length; i++) {
 				var implsLevel = equalsOrExtendsLevel (impls[i], clazzBase);
 				if (implsLevel >= 0)
-					return level + implsLevel + 1;
+					return level + implsLevel + 1 + (clazzBase.$$INT$$ ? -0.2 : 0);
 			}
 		}
 		zzalc = zzalc.superClazz;
@@ -872,8 +872,9 @@ var equalsOrExtendsLevel = function (clazzThis, clazzAncestor) {
 		var impls = clazzThis.implementz;
 		for (var i = 0; i < impls.length; i++) {
 			var level = equalsOrExtendsLevel (impls[i], clazzAncestor);
-			if (level >= 0)
+			if (level >= 0) {
 				return level + 1;
+        }
 		}
 	}
 	return -1;
