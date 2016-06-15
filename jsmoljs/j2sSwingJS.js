@@ -4889,6 +4889,7 @@ Sys.err.write = function (buf, offset, len) {
 		sJU + ".concurrent.Executors"
 	])
 
+java.lang.Math = Math;
 Math.rint || (Math.rint = function(a) {
  var b;
  return Math.round(a) + ((b = a % 1) != 0.5 && b != -0.5 ? 0 : (b = Math.round(a % 2)) > 0 ? b - 2 : b);
