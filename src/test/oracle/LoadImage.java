@@ -53,12 +53,13 @@ public class LoadImage extends JApplet {
 	private BufferedImage img;
 
 	public void init() {
+		URL url = null;
 		try {
-			URL url = pathTo("examples/strawberry.jpg");			
+			url = pathTo("strawberry.jpg");			
 			System.out.println("image loading from " + url);
 			img = ImageIO.read(url);
 		} catch (IOException e) {
-			System.out.println(e);
+			System.out.println(e + " : " + url);
 		}
 	}
 

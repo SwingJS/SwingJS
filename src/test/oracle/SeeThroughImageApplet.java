@@ -100,7 +100,7 @@ class SeeThroughComponent extends JPanel {
 
 public class SeeThroughImageApplet extends JApplet {
 
-	static String imageFileName = "examples/duke_skateboard.jpg";
+	static String imageFileName = "duke_skateboard.jpg";
 	private URL imageSrc;
 
 	public SeeThroughImageApplet() {
