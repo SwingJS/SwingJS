@@ -13,6 +13,12 @@ package test.falstad;
 // Added Container main
 //
 // Changed add() to main.add()
+// 
+// resize and show --> useFrame options
+//
+// added triggerShow()
+//
+// added paint() to applet class
 
 import java.awt.Color;
 import java.awt.Component;
