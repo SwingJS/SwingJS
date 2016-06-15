@@ -6,6 +6,10 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 6/15/2016 5:16:01 PM adds java.lang.Math = Math
+ // BH 6/15/2016 5:16:19 PM removing alert in relation to overridden private method. 
+ //                         more importantly would be a private xxx() between 
+ //                         super and sub, sub missing the function, and super having it.
  // AR 6/14/2016 10:47:04 AM added java-specific Math.xxx; Math.rint fixed
  // BH 6/13/2016 11:53:30 PM https://groups.google.com/forum/#!topic/java2script/mjrUxnp1VS8 interface beats class fixed
  // BH 6/12/2016 10:19:41 PM ensuring Class.forName("....").newInstance() requires a default constructor
@@ -2445,7 +2449,7 @@ Clazz.checkPrivateMethod = function () {
     + " therefore might be called improperly from this class. If your "
     + " code does not run properly, or you want to make it run faster, change the name of this method to something else."
     System.out.println(me.privateNote);
-    alert(me.privateNote);
+    //alert(me.privateNote);
   }
   /*
   alert([me.exClazz.__CLASS_NAME__, me.exName,
