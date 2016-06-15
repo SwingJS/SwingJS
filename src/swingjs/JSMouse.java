@@ -53,7 +53,7 @@ public class JSMouse {
 	}
 
 	public boolean processEvent(int id, int x, int y, int modifiers, long time) {
-		if (id != -1)
+		if (id != -1 && id != Event.MOUSE_MOVE)
 			modifiers = applyLeftMouse(modifiers);
 		switch (id) {
 		case -1: // JavaScript

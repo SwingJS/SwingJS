@@ -50,7 +50,6 @@ import swingjs.api.Interface;
 import swingjs.api.JQuery;
 import swingjs.api.JSComponent;
 import swingjs.api.JSFunction;
-import swingjs.awt.MenuBar;
 import swingjs.plaf.JSComponentUI;
 
 @J2SIgnoreImport(URL.class)
@@ -433,7 +432,6 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static JSComponentUI getComponentUI(JComponent target) {
-		JSComponent s;
 		JSComponentUI c = (JSComponentUI) Interface.getInstance("swingjs.plaf.JS"
 				+ ((JSComponent) target).getUIClassID(), true);
 		if (c != null)
@@ -783,7 +781,7 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	public Image createImage(ImageProducer producer) {
-		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", false);
+		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", true);
 		producer.startProduction(kit); // JSImageKit is the ImageConsumer here
 		return kit.getCreatedImage();
 	}

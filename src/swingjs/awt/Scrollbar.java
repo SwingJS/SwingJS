@@ -1,13 +1,6 @@
 package swingjs.awt;
 
-import java.awt.Component;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-
 import javax.swing.JScrollBar;
-
-import javax.swing.event.ChangeListener;
 
 public class Scrollbar extends JScrollBar {
 

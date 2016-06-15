@@ -15,10 +15,9 @@ import jsjava.awt.Font;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
-import jsjava.awt.event.PaintEvent;
 import jsjavax.swing.JApplet;
+import jsjavax.swing.JPanel;
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
 import jssun.applet.AppletListener;
@@ -27,7 +26,6 @@ import swingjs.api.HTML5Canvas;
 import swingjs.api.Interface;
 import swingjs.api.JSInterface;
 import swingjs.plaf.JSComponentUI;
-import jsjavax.swing.JPanel;
 
 /**
  * JSAppletPanel 

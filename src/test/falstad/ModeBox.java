@@ -49,18 +49,19 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.MemoryImageSource;
 import java.util.Random;
-import java.util.Vector;
 
-import swingjs.awt.Button;
 import swingjs.awt.Applet;
+import swingjs.awt.Button;
 import swingjs.awt.Canvas;
 import swingjs.awt.Checkbox;
 import swingjs.awt.Choice;
 import swingjs.awt.Frame;
 import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
-import test.falstad.Wave2dFrame.Setup;
-import test.falstad.Wave2dFrame.SingleSlitSetup;
+
+// needs annotation defining all changes implemented for JavaScript
+
+// "dbimage == null" issue solved with added if(dbimage == null) return in updateModeBox
 
 class ModeBoxCanvas extends Canvas {
 	ModeBoxFrame pg;
@@ -69,15 +70,18 @@ class ModeBoxCanvas extends Canvas {
 		pg = p;
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(300, 400);
 	}
 
+	@Override
 	public void update(Graphics g) {
 		pg.updateModeBox(g);
 	}
 
-	public void paint(Graphics g) {
+	@Override
+	public void paintComponent(Graphics g) {
 		pg.updateModeBox(g);
 	}
 };
@@ -86,20 +90,25 @@ class ModeBoxLayout implements LayoutManager {
 	public ModeBoxLayout() {
 	}
 
+	@Override
 	public void addLayoutComponent(String name, Component c) {
 	}
 
+	@Override
 	public void removeLayoutComponent(Component c) {
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		return new Dimension(500, 500);
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		return new Dimension(100, 100);
 	}
 
+	@Override
 	public void layoutContainer(Container target) {
 		int barwidth = 0;
 		int i;
@@ -149,6 +158,7 @@ public class ModeBox extends Applet {
 
 	boolean started = false;
 
+	@Override
 	public void init() {
 		showFrame();
 		// addComponentListener(this);
@@ -168,12 +178,14 @@ public class ModeBox extends Applet {
 		}
 	}
 
+	@Override
 	public void destroy() {
 		if (oc != null)
 			oc.dispose();
 		oc = null;
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (!started)
@@ -642,7 +654,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	public void updateModeBox(Graphics realg) {
 		Graphics g = null;
-		if (winSize == null || winSize.width == 0)
+		if (winSize == null || winSize.width == 0 || dbimage == null)
 			return;
 		boolean mis = memoryImageSourceCheck.getState();
 		g = dbimage.getGraphics();
@@ -889,21 +901,26 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		return val;
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		cv.repaint();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 		handleResize();
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == clearButton) {
 			while (modeCount > 0)
@@ -912,6 +929,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		if (e.getSource() == widthBar || e.getSource() == heightBar)
 			setWidthHeight();
@@ -948,6 +966,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 				}
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		dragging = true;
 		oldDragX = dragX;
@@ -957,6 +976,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		edit(e);
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
 			if (selection != -1) {
@@ -1006,14 +1026,17 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 			cv.repaint(pause);
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (selection == SEL_MAG)
 			editMagClick();
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 		if (!dragging && selection != -1) {
 			selectedCoefX = selectedCoefY = selectedCoefZ = -1;
@@ -1021,6 +1044,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
@@ -1035,18 +1059,21 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		edit(e);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (dragging)
 			cv.repaint();
 		dragging = false;
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItemSelectable() == spectrumCheck)
 			setupDisplay();
 		cv.repaint(pause);
 	}
 
+	@Override
 	public boolean handleEvent(Event ev) {
 		if (ev.id == Event.WINDOW_DESTROY) {
 			if (applet == null)

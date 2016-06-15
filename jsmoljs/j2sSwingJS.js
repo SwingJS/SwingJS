@@ -4,9 +4,9 @@
 // latest author: Bob Hanson, St. Olaf College, hansonr@stolaf.edu
 
 
- // NOTES by Bob Hanson: 
-  // J2S class changes:
+ // NOTES by Bob Hanson and Andreas Raduege 
 
+ // AR 6/14/2016 10:47:04 AM added java-specific Math.xxx; Math.rint fixed
  // BH 6/13/2016 11:53:30 PM https://groups.google.com/forum/#!topic/java2script/mjrUxnp1VS8 interface beats class fixed
  // BH 6/12/2016 10:19:41 PM ensuring Class.forName("....").newInstance() requires a default constructor
  // BH 6/12/2016 5:07:22 PM complete rewrite of inheritance field preparation and constructors
@@ -18,13 +18,11 @@
 
 // see earlier notes at swingjs/doc/j2snotes.txt
  
-
-
 LoadClazz = function() {
 
-// BH This is the ONLY global used in J2S now. I do not think it is necessary,
-// but it is created by the compiler, and I have not found a work-around.
-// it is used as a local variable in class definitions to point to the 
+// BH c$ is the ONLY global used in J2S now. I do not think it is necessary,
+// but it is created by the compiler, and I have not found a post-compile work-around.
+// It is used as a local variable in class definitions to point to the 
 // current method. See Clazz.p0p and Clazz.pu$h
 
 c$ = null;
@@ -4891,7 +4889,10 @@ Sys.err.write = function (buf, offset, len) {
 		sJU + ".concurrent.Executors"
 	])
 
-Math.rint = Math.round;
+Math.rint || (Math.rint = function(a) {
+ var b;
+ return Math.round(a) + ((b = a % 1) != 0.5 && b != -0.5 ? 0 : (b = Math.round(a % 2)) > 0 ? b - 2 : b);
+});
 
 Math.log10||(Math.log10=function(a){return Math.log(a)/Math.E});
 

@@ -632,7 +632,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public Font getFont() {
+		if (font == null)
+			font = new Font("Arial", Font.PLAIN, 12);
 		return font;
+	}
+
+	public FontMetrics getFontMetrics() {
+		return Toolkit.getDefaultToolkit().getFontMetrics(getFont());
 	}
 
 	@Override
