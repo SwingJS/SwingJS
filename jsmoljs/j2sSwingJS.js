@@ -6,6 +6,7 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 6/15/2016 6:04:13 PM subclass of B, where B is an abstract subclass of C fails
  // BH 6/15/2016 5:16:01 PM adds java.lang.Math = Math
  // BH 6/15/2016 5:16:19 PM removing alert in relation to overridden private method. 
  //                         more importantly would be a private xxx() between 
@@ -1843,7 +1844,7 @@ if (isSafari) {
 /**
  * used specifically for declaring prototypes using 
  *  subclass.prototype = new superclass(Clazz.inheritArgs) 
- * without running a constructor or doing field preparation.    
+ * without  running a constructor or doing field preparation.    
  *  
  */ 
 Clazz.inheritArgs = new (function(){return {"$J2SNOCREATE$":true}})();
@@ -1852,7 +1853,9 @@ Clazz.inheritArgs = new (function(){return {"$J2SNOCREATE$":true}})();
 /* public */
 Clazz.instantialize = function (objThis, args) {
 
-	if (args && args.length == 1 && args[0] && args[0].$J2SNOCREATE$) {
+	if (args && 
+  (args.length == 1 && args[0] && args[0].$J2SNOCREATE$
+  || args.length == 2 && args[1] && args[1].$J2SNOCREATE$)) {
     // just declaring a class, not creating an instance.
 		return;
   }
