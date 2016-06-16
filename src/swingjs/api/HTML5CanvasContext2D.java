@@ -24,6 +24,8 @@ public abstract class HTML5CanvasContext2D {
 	public abstract void restore();
 
 	public abstract void translate(double x, double y);
+	
+	public abstract void rotate(double radians);
 
 	public abstract void fill();
 

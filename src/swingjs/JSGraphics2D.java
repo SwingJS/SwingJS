@@ -590,6 +590,18 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public void translate(int x, int y) {
 		ctx.translate(x, y);
 	}
+	
+	@Override
+	public void rotate(double radians) {
+		ctx.rotate(radians);
+	}
+
+	@Override
+	public void rotate(double theta, double x, double y) {
+		ctx.translate(x, y);
+        ctx.rotate(theta);
+        ctx.translate(-x, -y);
+	}
 
 	@Override
 	public void scale(double sx, double sy) {
@@ -789,16 +801,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void translateTrans(double tx, double ty) {
-		JSToolkit.notImplemented(null);
-	}
-
-	@Override
-	public void rotate(double theta) {
-		JSToolkit.notImplemented(null);
-	}
-
-	@Override
-	public void rotate(double theta, double x, double y) {
 		JSToolkit.notImplemented(null);
 	}
 
