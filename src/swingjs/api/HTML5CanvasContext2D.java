@@ -53,6 +53,48 @@ public abstract class HTML5CanvasContext2D {
 
 	public abstract void drawImage(DOMNode img, int x, int y, int width, int height);
 
+	public static int[] getBuf8(Object imageData) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   return imageData.data
+		 */
+		{
+			return null;
+		}
+	}
+
+	public static void putImageData(HTML5CanvasContext2D ctx, Object imageData, int x, int y) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   ctx.putImageData(imageData, x, y);
+		 */
+		{
+		}
+	}
+
+	public static void saveStroke(HTML5CanvasContext2D ctx, Stroke s) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   ctx.currentStroke = s;
+		 */
+		{
+		}
+	}
+
+	public static Stroke getSavedStroke(HTML5CanvasContext2D ctx) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   return ctx.currentStroke;
+		 */
+		{
+			return null;
+		}
+	}
+
 	/**
 	 * Static because there is no "stretchImage" function for Context2d.
 	 * @param ctx
@@ -88,47 +130,5 @@ public abstract class HTML5CanvasContext2D {
 		}
 	}
 	
-
-	public static int[] getBuf8(Object imageData) {
-		/**
-		 * @j2sNative
-		 * 
-		 *   return imageData.data
-		 */
-		{
-			return null;
-		}
-	}
-
-	public static void putImageData(HTML5CanvasContext2D ctx, Object imageData, int x, int y) {
-		/**
-		 * @j2sNative
-		 * 
-		 *   ctx.putImageData(imageData, x, y);
-		 */
-		{
-		}
-	}
-
-	public void saveStroke(Stroke s) {
-		/**
-		 * @j2sNative
-		 * 
-		 *   ctx.currentStroke = s;
-		 */
-		{
-		}
-	}
-
-	public Stroke getSavedStroke() {
-		/**
-		 * @j2sNative
-		 * 
-		 *   return ctx.currentStroke;
-		 */
-		{
-			return null;
-		}
-	}
 
 }

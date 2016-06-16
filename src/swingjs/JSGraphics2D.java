@@ -161,15 +161,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private void save() {
-		ctx.saveStroke(currentStroke);
+		HTML5CanvasContext2D.saveStroke(ctx, currentStroke);
 		ctx.save();
-		//System.out.println("JSGraphics " + System.identityHashCode(this) + " saveLevel to " + (saveLevel++));
 	}
 
 	private void restore() {
 		ctx.restore();
-		setStroke(ctx.getSavedStroke());
-		//System.out.println("JSGraphics " + System.identityHashCode(this) + " restLevel to " + (--saveLevel));
+		setStroke(HTML5CanvasContext2D.getSavedStroke(ctx));
 	}
 
 	private void doArc(int x, int y, int width, int height, int startAngle,
