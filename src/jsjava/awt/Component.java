@@ -1935,6 +1935,18 @@ protected  transient ComponentPeer peer;
 //        }
     }
 
+
+    /**
+     * @deprecated
+     * 
+     * @param x
+     * @param y
+     */
+    public void move(int x, int y) {
+    	 setLocation(x, y);
+    }
+    
+    
     /**
      * Moves this component to a new location. The top-left corner of
      * the new location is specified by point <code>p</code>. Point

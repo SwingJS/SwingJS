@@ -313,9 +313,8 @@ public abstract class SunGraphics2D
     /**
      * Create a new SunGraphics2D based on this one.
      */
-    public Graphics create() {
-        return (Graphics) clone0();
-    }
+    abstract public Graphics create();
+    
 //
 //    public void setDevClip(int x, int y, int w, int h) {
 //        Region c = constrainClip;

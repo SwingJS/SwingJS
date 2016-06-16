@@ -601,7 +601,14 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public Graphics createSwingJS() {
-		return (Graphics) clone();
+		save();
+		return (JSGraphics2D) clone0();
+	}
+
+	@Override
+	public Graphics create() {
+		save();
+		return (JSGraphics2D) clone0();
 	}
 
 	@Override

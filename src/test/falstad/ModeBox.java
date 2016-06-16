@@ -14,14 +14,9 @@ package test.falstad;
 //
 //	import java.awt.[Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar, TextArea] --> swingjs.awt
 //
-//	deprecated method .resize --> .setSize
 //	deprecated method .move --> .setLocation
-//	deprecated method .show --> .setVisible(true)
-//	deprecated method .inside --> .contains
-//  depreacted method .insets --> .getInsets
-//  deprecated method .size --> .getSize()
 //
-//	ModeBoxFrame.paint --> ModeBoxFrame.paintComponent
+//	ModeCanvas.paint and ModeBoxFrame.paint --> ModeBoxFrame.paintComponent
 //
 //	
 
@@ -81,7 +76,7 @@ class ModeBoxCanvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g)  {
 		pg.updateModeBox(g);
 	}
 };
@@ -120,12 +115,12 @@ class ModeBoxLayout implements LayoutManager {
 					barwidth = d.width;
 			}
 		}
-		Insets insets = target.getInsets();
-		int targetw = target.getSize().width - insets.left - insets.right;
+		Insets insets = target.insets();
+		int targetw = target.size().width - insets.left - insets.right;
 		int cw = targetw - barwidth;
-		int targeth = target.getSize().height - (insets.top + insets.bottom);
+		int targeth = target.size().height - (insets.top + insets.bottom);
 		target.getComponent(0).setLocation(insets.left, insets.top);
-		target.getComponent(0).setSize(cw, targeth);
+		target.getComponent(0).resize(cw, targeth);
 		cw += insets.left;
 		int h = insets.top;
 		for (i = 1; i < target.getComponentCount(); i++) {
@@ -139,7 +134,7 @@ class ModeBoxLayout implements LayoutManager {
 					d.width = barwidth;
 				}
 				m.setLocation(cw, h);
-				m.setSize(d.width, d.height);
+				m.resize(d.width, d.height);
 				h += d.height;
 			}
 		}
@@ -153,29 +148,18 @@ public class ModeBox extends Applet {
 		if (oc != null)
 			oc.dispose();
 		oc = null;
-		repaint();
-	}
-
-	boolean started = false;
-
-	@Override
-	public void init() {
-		showFrame();
-		// addComponentListener(this);
 	}
 
 	public static void main(String args[]) {
 		oc = new ModeBoxFrame(null);
-		oc.initFrame();
+		oc.init();
 	}
 
-	void showFrame() {
-		if (oc == null) {
-			started = true;
-			oc = new ModeBoxFrame(this);
-			oc.initFrame();
-			repaint();
-		}
+	@Override
+	public void init() {
+		oc = new ModeBoxFrame(this);
+		oc.init();
+		repaint();
 	}
 
 	@Override
@@ -185,6 +169,8 @@ public class ModeBox extends Applet {
 		oc = null;
 	}
 
+	boolean started;
+	
 	@Override
 	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
@@ -194,9 +180,11 @@ public class ModeBox extends Applet {
 			s = "Applet is finished.";
 		else if (oc.useFrame)
 			oc.triggerShow();
+		started = true;
 		g.drawString(s, 10, 30);
 		super.paint(g);
 	}
+
 };
 
 class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
@@ -215,8 +203,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		return "ModeBox by Paul Falstad";
 	}
 
-	public boolean useFrame;
-	boolean showControls;
+	boolean useFrame = true;
 	Button clearButton;
 	Checkbox memoryImageSourceCheck;
 	Checkbox stoppedCheck;
@@ -287,24 +274,17 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 	ModeBoxFrame(ModeBox a) {
 		super("Box Modes Applet");
 		applet = a;
-		useFrame = true;
-		showControls = true;
 	}
 
-	boolean useBufferedImage = false;
-
 	Container main;
-
-	public void initFrame() {
-
+	
+	public void init() {
+		
 		try {
 			if (applet != null) {
 				String param = applet.getParameter("useFrame");
 				if (param != null && param.equalsIgnoreCase("false"))
 					useFrame = false;
-				param = applet.getParameter("showControls");
-				if (param != null && param.equalsIgnoreCase("false"))
-					showControls = false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -313,6 +293,8 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 			main = this;
 		else
 			main = applet;
+
+		
 		String os = System.getProperty("os.name");
 		String jv = System.getProperty("java.version");
 		boolean altRender = true;
@@ -324,79 +306,56 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 				altRender = true;
 		}
 		res = 120;
-		useBufferedImage = true;
 
 		main.setLayout(new ModeBoxLayout());
 		cv = new ModeBoxCanvas(this);
 		cv.addComponentListener(this);
 		cv.addMouseMotionListener(this);
 		cv.addMouseListener(this);
-		if (showControls)
-			main.add(cv);
+		main.add(cv);
 
-		if (showControls)
-			main.add(clearButton = new Button("Clear"));
+		main.add(clearButton = new Button("Clear"));
 		clearButton.addActionListener(this);
 
 		stoppedCheck = new Checkbox("Stopped");
 		stoppedCheck.addItemListener(this);
-		if (showControls)
-			main.add(stoppedCheck);
+		main.add(stoppedCheck);
 
 		spectrumCheck = new Checkbox("Show Spectrum");
 		spectrumCheck.addItemListener(this);
-		if (showControls)
-			main.add(spectrumCheck);
+		main.add(spectrumCheck);
 
 		memoryImageSourceCheck = new Checkbox("Alternate Rendering", altRender);
 		memoryImageSourceCheck.addItemListener(this);
-		if (showControls)
-			main.add(memoryImageSourceCheck);
+		main.add(memoryImageSourceCheck);
 
 		modeChooser = new Choice();
 		modeChooser.add("Mouse = Adjust Angle");
 		modeChooser.add("Mouse = Adjust Zoom");
 		modeChooser.addItemListener(this);
-		if (showControls)
-			main.add(modeChooser);
+		main.add(modeChooser);
 
-		if (showControls) {
-			main.add(new Label("Simulation Speed", Label.CENTER));
-			main.add(speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 40, 1, 1,
-					200));
-		}
+		main.add(new Label("Simulation Speed", Label.CENTER));
+		main.add(speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 40, 1, 1, 200));
 		speedBar.addAdjustmentListener(this);
 
-		if (showControls) {
-			main.add(new Label("Brightness", Label.CENTER));
-			main.add(brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 28, 1,
-					1, 200));
-		}
+		main.add(new Label("Brightness", Label.CENTER));
+		main.add(brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 28, 1, 1, 200));
 		brightnessBar.addAdjustmentListener(this);
 
-		if (showControls) {
-			main.add(new Label("Image Resolution", Label.CENTER));
-			main.add(resolutionBar = new Scrollbar(Scrollbar.HORIZONTAL, res,
-					2, 20, 300));
-		}
+		main.add(new Label("Image Resolution", Label.CENTER));
+		main.add(resolutionBar = new Scrollbar(Scrollbar.HORIZONTAL, res, 2, 20, 300));
 		resolutionBar.addAdjustmentListener(this);
 
-		if (showControls) {
-			main.add(new Label("Width", Label.CENTER));
-			main.add(widthBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 5,
-					31));
-		}
+		main.add(new Label("Width", Label.CENTER));
+		main.add(widthBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 5, 31));
 		widthBar.addAdjustmentListener(this);
 
-		if (showControls) {
-			main.add(new Label("Height", Label.CENTER));
-			main.add(heightBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 5,
-					31));
-		}
+		main.add(new Label("Height", Label.CENTER));
+		main.add(heightBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 5, 31));
 		heightBar.addAdjustmentListener(this);
 
-		if (showControls)
-			main.add(new Label("http://www.falstad.com", Label.CENTER));
+		main.add(new Label("http://www.falstad.com", Label.CENTER));
 
 		try {
 			String param = applet.getParameter("PAUSE");
@@ -426,20 +385,20 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		reinit();
 		cv.setBackground(Color.black);
 		cv.setForeground(Color.white);
-		// setSize(800,700);
-		// handleResize();
-		// setVisible(true);
-
+		//resize(800, 700);
+		//handleResize();
+		//show();
+		
 		if (useFrame) {
-			setSize(800, 640);
+			resize(800, 640);
 			handleResize();
 			Dimension x = getSize();
 			Dimension screen = getToolkit().getScreenSize();
 			setLocation((screen.width - x.width) / 2,
 					(screen.height - x.height) / 2);
-			setVisible(true);
+			show();
 		} else {
-			setVisible(false);
+			hide();
 			handleResize();
 			applet.validate();
 		}
@@ -451,22 +410,6 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		// XXX
 	}
 
-	void reinit() {
-		setMaxTerms();
-		Dimension d = winSize = cv.getSize();
-		if (winSize.width == 0)
-			return;
-		calcSpectrum();
-		dbimage = createImage(d.width, d.height);
-		setupDisplay();
-		pixels = new int[view3d.width * view3d.height];
-		int i;
-		for (i = 0; i != view3d.width * view3d.height; i++)
-			pixels[i] = 0xFF000000;
-		imageSource = new MemoryImageSource(view3d.width, view3d.height,
-				pixels, 0, view3d.width);
-	}
-
 	boolean shown = false;
 
 	public void triggerShow() {
@@ -475,16 +418,32 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		shown = true;
 	}
 
+	void reinit() {
+		setMaxTerms();
+		Dimension d = winSize = cv.getSize();
+		if (winSize.width == 0)
+			return;
+		calcSpectrum();
+		dbimage = cv.createImage(d.width, d.height);
+		setupDisplay();
+		pixels = new int[view3d.width * view3d.height];
+		int i;
+		for (i = 0; i != view3d.width * view3d.height; i++)
+			pixels[i] = 0xFF000000;
+		imageSource = new MemoryImageSource(view3d.width, view3d.height, pixels, 0,
+				view3d.width);
+	}
+
 	int getTermWidth() {
 		return 8;
 	}
 
 	// multiply rotation matrix by rotations through angle1 and angle2
 	void rotate(double angle1, double angle2) {
-		double r1cos = Math.cos(angle1);
-		double r1sin = Math.sin(angle1);
-		double r2cos = Math.cos(angle2);
-		double r2sin = Math.sin(angle2);
+		double r1cos = java.lang.Math.cos(angle1);
+		double r1sin = java.lang.Math.sin(angle1);
+		double r2cos = java.lang.Math.cos(angle2);
+		double r2sin = java.lang.Math.sin(angle2);
 		double rotm2[] = new double[9];
 
 		// angle1 is angle about y axis, angle2 is angle about x axis
@@ -535,8 +494,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int perColumn = 2;
 		int perRow = 4;
 		int freqHeight = getTermWidth() * (maxDispCoefs + 1) * perColumn;
-		int spectrumHeight = (spectrumCheck.getState()) ? getTermWidth() * 6
-				: 0;
+		int spectrumHeight = (spectrumCheck.getState()) ? getTermWidth() * 6 : 0;
 		view3d = new Rectangle(0, 0, winSize.width, winSize.height - freqHeight
 				- spectrumHeight);
 		if (spectrumCheck.getState())
@@ -552,8 +510,8 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int x = (winSize.width - (winw * 4 + pad * 3)) / 2;
 		for (i = 0; i != maxDispCoefs; i++)
 			viewFreq[i] = new Rectangle(x + (i % perRow) * (winw + pad),
-					view3d.height + spectrumHeight + (i / perRow)
-							* (winh + pad), winw, winh);
+					view3d.height + spectrumHeight + (i / perRow) * (winh + pad), winw,
+					winh);
 	}
 
 	// compute func[][][] array (2-d view) by raytracing through a
@@ -562,7 +520,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int i, j;
 		genData(false);
 		double q = 3.14159265 / maxTerms;
-		double cost = Math.cos(t);
+		double cost = java.lang.Math.cos(t);
 		double izoom = 1 / zoom;
 		double rotm[] = rotmatrix;
 		double boxhalfwidth = boxwidth / 2;
@@ -585,13 +543,10 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 				double camx = rotm[0] * camx0 + rotm[2] * camz0;
 				double camy = rotm[5] * camz0;
 				double camz = rotm[6] * camx0 + rotm[8] * camz0;
-				double camvx = rotm[0] * camvx0 + rotm[1] * camvy0 + rotm[2]
-						* camvz0;
-				double camvy = rotm[3] * camvx0 + rotm[4] * camvy0 + rotm[5]
-						* camvz0;
-				double camvz = rotm[6] * camvx0 + rotm[7] * camvy0 + rotm[8]
-						* camvz0;
-				double camnorm = Math.sqrt(camvx * camvx + camvy * camvy
+				double camvx = rotm[0] * camvx0 + rotm[1] * camvy0 + rotm[2] * camvz0;
+				double camvy = rotm[3] * camvx0 + rotm[4] * camvy0 + rotm[5] * camvz0;
+				double camvz = rotm[6] * camvx0 + rotm[7] * camvy0 + rotm[8] * camvz0;
+				double camnorm = java.lang.Math.sqrt(camvx * camvx + camvy * camvy
 						+ camvz * camvz);
 				int n;
 				double simpr = 0;
@@ -606,10 +561,8 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 				double tz1 = (-1 - camz) / camvz;
 				double tz2 = (1 - camz) / camvz;
 				// calculate portion of line that intersects box
-				double mint = max(min(tx1, tx2),
-						max(min(ty1, ty2), min(tz1, tz2))) + .001;
-				double maxt = min(max(tx1, tx2),
-						min(max(ty1, ty2), max(tz1, tz2))) - .001;
+				double mint = max(min(tx1, tx2), max(min(ty1, ty2), min(tz1, tz2))) + .001;
+				double maxt = min(max(tx1, tx2), min(max(ty1, ty2), max(tz1, tz2))) - .001;
 				if (maxt < mint) {
 					// doesn't hit box
 					func[i][j][0] = func[i][j][1] = 0;
@@ -632,7 +585,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 					int zzi = (int) ((zz + 1) * zmult);
 					double f = data[xxi][yyi][zzi];
 					if (f < 0) {
-						f = Math.abs(f);
+						f = java.lang.Math.abs(f);
 						simpr += sampleMult[n] * f;
 					} else
 						simpg += sampleMult[n] * f;
@@ -654,7 +607,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	public void updateModeBox(Graphics realg) {
 		Graphics g = null;
-		if (winSize == null || winSize.width == 0 || dbimage == null)
+		if (winSize == null || winSize.width == 0)
 			return;
 		boolean mis = memoryImageSourceCheck.getState();
 		g = dbimage.getGraphics();
@@ -676,7 +629,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		for (i = 0; i != modeCount; i++) {
 			Mode m = modes[i];
 			m.phasecoef = (m.omega * t + m.phasecoefadj) % (2 * pi);
-			m.phasecoefcos = Math.cos(m.phasecoef);
+			m.phasecoefcos = java.lang.Math.cos(m.phasecoef);
 			m.phasemult = m.phasecoefcos * m.magcoef;
 		}
 		if (modeCount != 0)
@@ -720,32 +673,28 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 			int sign1 = ((i & 1) == 0) ? -1 : 1;
 			int sign2 = ((i & 2) == 0) ? -1 : 1;
 			int sign3 = ((i & 4) == 0) ? -1 : 1;
-			if (sign1 == -1
-					&& (visibleFace(0, sign2, 0) || visibleFace(0, 0, sign3))) {
+			if (sign1 == -1 && (visibleFace(0, sign2, 0) || visibleFace(0, 0, sign3))) {
 				// draw a line from (-1, sign2, sign3) to (1, sign2, sign3)
 				// if one of the adjacent faces is visible
 				map3d(-1, sign2, sign3, xpoints, ypoints, 0);
 				map3d(1, sign2, sign3, xpoints, ypoints, 1);
 				g.drawLine(xpoints[0], ypoints[0], xpoints[1], ypoints[1]);
 			}
-			if (sign2 == -1
-					&& (visibleFace(sign1, 0, 0) || visibleFace(0, 0, sign3))) {
+			if (sign2 == -1 && (visibleFace(sign1, 0, 0) || visibleFace(0, 0, sign3))) {
 				// draw a line from (sign1, -1, sign3) to (sign1, 1, sign3)
 				// etc.
 				map3d(sign1, -1, sign3, xpoints, ypoints, 0);
 				map3d(sign1, 1, sign3, xpoints, ypoints, 1);
 				g.drawLine(xpoints[0], ypoints[0], xpoints[1], ypoints[1]);
 			}
-			if (sign3 == -1
-					&& (visibleFace(sign1, 0, 0) || visibleFace(0, sign2, 0))) {
+			if (sign3 == -1 && (visibleFace(sign1, 0, 0) || visibleFace(0, sign2, 0))) {
 				map3d(sign1, sign2, -1, xpoints, ypoints, 0);
 				map3d(sign1, sign2, 1, xpoints, ypoints, 1);
 				g.drawLine(xpoints[0], ypoints[0], xpoints[1], ypoints[1]);
 			}
 		}
 		g.setColor(Color.black);
-		g.fillRect(0, view3d.height, winSize.width, winSize.height
-				- view3d.height);
+		g.fillRect(0, view3d.height, winSize.width, winSize.height - view3d.height);
 		for (i = 0; i != maxDispCoefs; i++)
 			drawFrequencies(g, i);
 
@@ -763,7 +712,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 			for (i = 1; i != winSize.width; i++) {
 				if (spectrum[i] == 0)
 					continue;
-				int h = (int) (ym * (.2 + Math.log(spectrum[i]) / 4));
+				int h = (int) (ym * (.2 + java.lang.Math.log(spectrum[i]) / 4));
 				if (h > ym)
 					h = ym;
 				g.setColor((i == selx || (i >= selmin && i < selmax)) ? Color.yellow
@@ -773,8 +722,8 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 
 		if (selectedCoefX != -1) {
-			String s = "Selected mode = (" + selectedCoefX + ","
-					+ selectedCoefY + "," + selectedCoefZ + ")";
+			String s = "Selected mode = (" + selectedCoefX + "," + selectedCoefY
+					+ "," + selectedCoefZ + ")";
 			FontMetrics fm = g.getFontMetrics();
 			g.setColor(Color.yellow);
 			int y = view3d.y + view3d.height - fm.getDescent() - 2;
@@ -795,8 +744,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	// map 3-d point (x,y,z) to screen, storing coordinates
 	// in xpoints[pt],ypoints[pt]
-	void map3d(double x, double y, double z, int xpoints[], int ypoints[],
-			int pt) {
+	void map3d(double x, double y, double z, int xpoints[], int ypoints[], int pt) {
 		x *= boxwidth / 2;
 		y *= boxheight / 2;
 		double rotm[] = rotmatrix;
@@ -824,10 +772,10 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int i, j, x, y;
 		for (i = starti; i <= maxDispCoefs; i++) {
 			x = i * termWidth;
-			g.drawLine(view.x + starti * termWidth, x + view.y, view.x
-					+ termWidth * maxDispCoefs, x + view.y);
-			g.drawLine(view.x + x, view.y + starti * termWidth, view.x + x,
-					view.y + termWidth * maxDispCoefs);
+			g.drawLine(view.x + starti * termWidth, x + view.y, view.x + termWidth
+					* maxDispCoefs, x + view.y);
+			g.drawLine(view.x + x, view.y + starti * termWidth, view.x + x, view.y
+					+ termWidth * maxDispCoefs);
 		}
 		int rcol = 0x00010000;
 		int gcol = 0x00000100;
@@ -856,8 +804,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 		if (selectedCoefX != -1) {
 			// draw yellow square around degenerate modes
-			double selOmega = getOmega(selectedCoefX, selectedCoefY,
-					selectedCoefZ);
+			double selOmega = getOmega(selectedCoefX, selectedCoefY, selectedCoefZ);
 			g.setColor(Color.yellow);
 			for (i = starti; i != maxDispCoefs; i++)
 				for (j = starti; j != maxDispCoefs; j++) {
@@ -890,8 +837,8 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		if (x < ep2)
 			return 0;
 		if (logep2 == 0)
-			logep2 = -Math.log(2 * ep2);
-		return (int) (255 * sign * (Math.log(x + ep2) + logep2) / logep2);
+			logep2 = -java.lang.Math.log(2 * ep2);
+		return (int) (255 * sign * (java.lang.Math.log(x + ep2) + logep2) / logep2);
 	}
 
 	int getColorValue(int i, int j, int k) {
@@ -999,16 +946,16 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		selection = 0;
 		selectedMinOmega = selectedMaxOmega = 0;
 		int i;
-		if (view3d.contains(x, y))
+		if (view3d.inside(x, y))
 			selection = SEL_3D;
-		if (viewSpectrum != null && viewSpectrum.contains(x, y)) {
+		if (viewSpectrum != null && viewSpectrum.inside(x, y)) {
 			selection = SEL_SPECTRUM;
 			selectedMinOmega = (x - 2) / (double) spectrumSpacing;
 			selectedMaxOmega = (x + 2) / (double) spectrumSpacing;
 		}
 		for (i = 0; i != maxDispCoefs; i++) {
 			Rectangle vf = viewFreq[i];
-			if (vf.contains(x, y)) {
+			if (vf.inside(x, y)) {
 				int termWidth = getTermWidth();
 				selectedCoefX = (x - vf.x) / termWidth;
 				selectedCoefY = (y - vf.y) / termWidth;
@@ -1164,22 +1111,20 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 			// precompute cosine tables for speed
 			for (x = 0; x != maxTerms; x++) {
-				m.xtable[x] = Math.cos(x * m.x * q) * m.phasemult;
-				m.ytable[x] = Math.cos(x * m.y * q);
-				m.ztable[x] = Math.cos(x * m.z * q);
+				m.xtable[x] = java.lang.Math.cos(x * m.x * q) * m.phasemult;
+				m.ytable[x] = java.lang.Math.cos(x * m.y * q);
+				m.ztable[x] = java.lang.Math.cos(x * m.z * q);
 			}
 			if (mi == 0)
 				for (x = 0; x != maxTerms; x++)
 					for (y = 0; y != maxTerms; y++)
 						for (z = 0; z != maxTerms; z++)
-							data[x][y][z] = m.xtable[x] * m.ytable[y]
-									* m.ztable[z];
+							data[x][y][z] = m.xtable[x] * m.ytable[y] * m.ztable[z];
 			else
 				for (x = 0; x != maxTerms; x++)
 					for (y = 0; y != maxTerms; y++)
 						for (z = 0; z != maxTerms; z++)
-							data[x][y][z] += m.xtable[x] * m.ytable[y]
-									* m.ztable[z];
+							data[x][y][z] += m.xtable[x] * m.ytable[y] * m.ztable[z];
 		}
 	}
 
@@ -1229,7 +1174,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	// get angular frequency of a particular mode
 	double getOmega(int x, int y, int z) {
-		return Math.sqrt(x * x / (boxwidth * boxwidth) + y * y
+		return java.lang.Math.sqrt(x * x / (boxwidth * boxwidth) + y * y
 				/ (boxheight * boxheight) + z * z / 4.);
 	}
 
@@ -1237,8 +1182,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int i;
 		for (i = 0; i != modeCount; i++) {
 			Mode m = modes[i];
-			if (selectedCoefX == m.x && selectedCoefY == m.y
-					&& selectedCoefZ == m.z)
+			if (selectedCoefX == m.x && selectedCoefY == m.y && selectedCoefZ == m.z)
 				return m;
 		}
 		return addMode(selectedCoefX, selectedCoefY, selectedCoefZ);
@@ -1246,8 +1190,8 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	class Mode {
 		public int x, y, z;
-		public double magcoef, phasecoef, phasecoefcos, phasemult,
-				phasecoefadj, omega;
+		public double magcoef, phasecoef, phasecoefcos, phasemult, phasecoefadj,
+				omega;
 		int tableSize;
 		public double xtable[], ytable[], ztable[];
 	};

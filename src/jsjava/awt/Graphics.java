@@ -125,9 +125,7 @@ public abstract class Graphics {
 	 * @return a new graphics context that is a copy of this graphics context.
 	 * @deprecated
 	 */
-    public Graphics create() {
-    	return  createSwingJS();
-    }
+    public abstract Graphics create();
 
     /**
      * 
@@ -179,7 +177,7 @@ public abstract class Graphics {
 
     public Graphics create4(int x, int y, int width, int height) {
     	// cell renderer pane and JComponent
-      Graphics g = createSwingJS();
+      Graphics g = create();
       if (g == null) return null;
       g.translate(x, y);
       g.clipRect(0, 0, width, height);
