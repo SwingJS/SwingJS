@@ -6,9 +6,8 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 6/16/2016 3:27:50 PM adds System property java.code.version == "50" (Java 1.6)
  // BH 6/16/2016 1:47:41 PM fixing java.lang.reflect.Constructor and java.lang.reflect.Method
- //                         note that xxx(Number) will be turned into (number)
- //                         as those two are not currently distinguishable by j2s
  // BH 6/15/2016 6:04:13 PM subclass of B, where B is an abstract subclass of C fails
  // BH 6/15/2016 5:16:01 PM adds java.lang.Math = Math
  // BH 6/15/2016 5:16:19 PM removing alert in relation to overridden private method. 
@@ -2639,8 +2638,12 @@ java.lang.System = System = {
     if (key.indexOf(".") > 0) {
       v = null;    
       switch (key) {
+      case "java.class.version":
+        v = "50";
+        break;
       case "java.version":
         v = "1.6";
+        break;
       case "file.separator":
       case "path.separator":
         v = "/";
