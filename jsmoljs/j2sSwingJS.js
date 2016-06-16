@@ -1995,7 +1995,7 @@ var inheritClass = function (clazzThis, clazzSuper, objSuper) {
 		// March 13, 2006
 		clazzThis.prototype = objSuper; 
 	} else if (clazzSuper !== Number) {
-		clazzThis.prototype = new clazzSuper (Clazz.inheritArgs);
+		clazzThis.prototype = new clazzSuper (null, Clazz.inheritArgs);
 	} else { // Number
 		clazzThis.prototype = new Number ();
 	}
@@ -7257,7 +7257,7 @@ return this.getDeclaringClass().getName().hashCode();
 });
 Clazz.defineMethod(c$,"newInstance",
 function(args){
-var instance=new this.clazz(Clazz.inheritArgs);
+var instance=new this.clazz(null, Clazz.inheritArgs);
 Clazz.instantialize(instance,args);
 return instance;
 },"~A");

@@ -129,7 +129,7 @@ public abstract class Graphics {
 
     /**
      * 
-     * SwingJS name change from "create" to avoid SAEM colision with Graphics.create(clipx,...)
+     * SwingJS name change from "create" to avoid SAEM collision with Graphics.create(clipx,...)
      * Creates a new <code>Graphics</code> object that is
      * a copy of this <code>Graphics</code> object.
      * @return     a new graphics context that is a copy of

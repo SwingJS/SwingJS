@@ -185,7 +185,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
     public JComboBox(ComboBoxModel aModel) {
         super();
         setModel(aModel);
-        init();
+        initComboBox();
     }
 
     /**
@@ -199,7 +199,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
     public JComboBox(final Object items[]) {
         super();
         setModel(new DefaultComboBoxModel(items));
-        init();
+        initComboBox();
     }
 
     /**
@@ -213,7 +213,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
     public JComboBox(Vector<?> items) {
         super();
         setModel(new DefaultComboBoxModel(items));
-        init();
+        initComboBox();
     }
 
     /**
@@ -227,10 +227,10 @@ implements ItemSelectable,ListDataListener,ActionListener {
     public JComboBox() {
         super();
         setModel(new DefaultComboBoxModel());
-        init();
+        initComboBox();
     }
 
-    private void init() {
+    private void initComboBox() {
         installAncestorListener();
         setUIProperty("opaque",true);
         updateUI();

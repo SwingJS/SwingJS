@@ -25,6 +25,9 @@ package test.falstad;
 //resize and show --> useFrame options
 //
 //added triggerShow()
+//
+// *** BH *** moved subclass BlockAperture up before referencing subclasses ***
+
 
 import java.awt.Color;
 import java.awt.Component;
@@ -76,7 +79,15 @@ class DiffractionCanvas extends Canvas {
  public void update(Graphics g) {
 	pg.updateDiffraction(g);
  }
- public void paint(Graphics g) {
+ public void paintComponent(Graphics g) {
+		/**
+		 * @j2sNative
+		 * 
+		 *  //debugger;
+		 * 
+		 */
+		{}
+
 	pg.updateDiffraction(g);
  }
 };
@@ -243,7 +254,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    apertureList.addElement(a);
 	    a = a.createNext();
 	}
-	setLayout(new DiffractionLayout());
+	main.setLayout(new DiffractionLayout());
 	cv = new DiffractionCanvas(this);
 	cv.addComponentListener(this);
 	cv.addMouseMotionListener(this);
@@ -571,11 +582,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	return x < 0 ? -1 : 1;
  }
 
- public void paint(Graphics g) {
+ public void paintComponent(Graphics g) {
 	cv.repaint();
  }
-
- public void updateDiffraction(Graphics realg) {
+ void updateDiffraction(Graphics realg) {
 	boolean hideFunction = dragging && aperture.hideWhileDragging();
 	if (functionChanged) {
 	    realg.setColor(cv.getBackground());
@@ -757,15 +767,25 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (e.getSource() != sizeCheck)
 	    functionChanged = true;
 	if (e.getSource() == apertureChooser) {
+		/**
+		 * @j2sNative
+		 * 
+		 * //debugger;
+		 * 
+		 */
+		{}
+
 	    aperture = (Aperture)
 		apertureList.elementAt(apertureChooser.getSelectedIndex());
 	    brightnessBar.setValue(aperture.defaultBrightness());
 	    zoomBar.setValue(oldZoom = 200);
 	}
+	System.out.println("requestion repaint for " + aperture.getClass().getName());
 	cv.repaint(100);
  }
 
  public boolean handleEvent(Event ev) {
+	 
      if (ev.id == Event.WINDOW_DESTROY) {
          if (applet == null) dispose(); else applet.destroyFrame();
          return true;
@@ -1041,6 +1061,213 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	String getName() { return "triple slit"; }
 	Aperture createNext() { return new SquareAperture(); }
 	boolean hasXSymmetry() { return true; }
+ }
+
+ // general class used to describe apertures that consist of
+ // rectangles, some of which may extend to infinity.  Each
+ // rectangle may or may not be opaque.
+ abstract class BlockAperture extends Aperture {
+	int blockCountX, blockCountY;
+
+	// All these arrays use a very strange system of indices.
+	// Even numbers are blocks (areas between lines), and odd
+	// numbers are lines.  The blocks at index n are bounded by
+	// lines n-1 and n+1.  The blocks at index 0 are bounded by
+	// -infinity and line 1.
+
+	// true if a block is transparent.  Because we are talking
+	// about blocks, only even indices are used.
+	boolean blocks[][];
+
+	// Lines.  Only odd indices used.
+	double lineXLocations[];
+	double lineYLocations[];
+
+	int rectCount;
+	double rects[][];
+	abstract void setupRects();
+
+	void compute() {
+	    setupRects();
+	    int i, j;
+	    double result1[] = new double[2];
+	    double result2[] = new double[2];
+	    double result3[] = new double[2];
+	    double result4[] = new double[2];
+	    // by default we use only green light.
+	    int mink = 1, maxk = 1;
+	    if (color) {
+		mink = 0;
+		maxk = 2;
+	    }
+	    int k;
+	    double astart = (reversedCheck.getState()) ? -1 : 0;
+	    int xlim = (hasXSymmetry()) ? gridSizeX/2 : gridSizeX;
+	    int ylim = (hasYSymmetry()) ? gridSizeY/2 : gridSizeY;
+	    for (i = 0; i != xlim; i++) {
+		if (hasDiagonalSymmetry())
+		    ylim = i+1;
+		double x0 = (i/(double) gridSizeX)-.5;
+		for (j = 0; j != ylim; j++) {
+		    double y0 = (j/(double) gridSizeY)-.5;
+		    for (k = mink; k <= maxk; k++) {
+			double mult = colorLenMults[k];
+			double ar = 0, ai = astart;
+			int l;
+			// add up contributions from all rectangles
+			for (l = 0; l != rectCount; l++) {
+			    fresnl((rects[l][0]-x0)*mult, result1);
+			    fresnl((rects[l][2]-x0)*mult, result2);
+			    fresnl((rects[l][1]-y0)*mult, result3);
+			    fresnl((rects[l][3]-y0)*mult, result4);
+			    double ar1 = result1[0]-result2[0];
+			    double ai1 = result1[1]-result2[1];
+			    double ar2 = result3[0]-result4[0];
+			    double ai2 = result3[1]-result4[1];
+			    ar += rects[l][4]*(ar1*ar2 - ai1*ai2);
+			    ai += rects[l][4]*(ar1*ai2 + ai1*ar2);
+			}
+			func[i][j][k] = ar*ar + ai*ai;
+		    }
+		}
+	    }
+	}
+
+	void drawGeometricShadow(Graphics g) {
+	    int i, j;
+	    // go through each line and determine if the blocks on either
+	    // side of it have different opacity, if so then draw a
+	    // line there.
+	    for (i = 1; i < blockCountX; i += 2)
+		for (j = 0; j < blockCountY; j += 2) {
+		    if (blocks[i-1][j] == blocks[i+1][j])
+			continue;
+		    int x  = (int) ((lineXLocations[i]+.5)*winSize.width);
+		    int y1 = 0;
+		    int y2 = winSize.height;
+		    try {
+			y1 = (int) ((lineYLocations[j-1]+.5)*winSize.height);
+		    } catch (Exception e) { }
+		    try {
+			y2 = (int) ((lineYLocations[j+1]+.5)*winSize.height);
+		    } catch (Exception e) { }
+		    g.setColor(isSelected(i, -1) ? Color.yellow : Color.red);
+		    g.drawLine(x, y1, x, y2);
+		}
+	    for (i = 0; i < blockCountX; i += 2)
+		for (j = 1; j < blockCountY; j += 2) {
+		    if (blocks[i][j-1] == blocks[i][j+1])
+			continue;
+		    int y  = (int) ((lineYLocations[j]+.5)*winSize.height);
+		    int x1 = 0;
+		    int x2 = winSize.width;
+		    try {
+			x1 = (int) ((lineXLocations[i-1]+.5)*winSize.width);
+		    } catch (Exception e) { }
+		    try {
+			x2 = (int) ((lineXLocations[i+1]+.5)*winSize.width);
+		    } catch (Exception e) { }
+		    g.setColor(isSelected(-1, j) ? Color.yellow : Color.red);
+		    g.drawLine(x1, y, x2, y);
+		}
+	}
+
+	boolean isSelected(int x, int y) {
+	    return isSelected(x, y, 0);
+	}
+
+	boolean isSelected(int x, int y, int iter) {
+	    // determine if a line is selected, accounting for
+	    // symmetry.
+	    if (selection == -1)
+		return false;
+	    if (selection == x+100 || selection == y+200)
+		return true;
+	    if (hasXSymmetry() && iter < 1 && blockCountX > 3 &&
+		isSelected(blockCountX-1-x, y, 1))
+		return true;
+	    if (hasYSymmetry() && iter < 2 && blockCountY > 3 &&
+		isSelected(x, blockCountY-1-y, 2))
+		return true;
+	    if (hasDiagonalSymmetry() && iter < 3 &&
+		isSelected(y, x, 3))
+		return true;
+	    return false;
+	}
+
+	int getSelection(int x, int y) {
+	    double xf = ((double) x)/winSize.width - .5;
+	    double yf = ((double) y)/winSize.width - .5;
+	    double thresh = 3./winSize.width;
+	    int sel = -1;
+	    int i;
+	    for (i = 1; i < blockCountX; i += 2) {
+		double dist = java.lang.Math.abs(lineXLocations[i]-xf);
+		if (dist < thresh) {
+		    sel = 100+i;
+		    thresh = dist;
+		}
+	    }
+	    for (i = 1; i < blockCountY; i += 2) {
+		double dist = java.lang.Math.abs(lineYLocations[i]-yf);
+		if (dist < thresh) {
+		    sel = 200+i;
+		    thresh = dist;
+		}
+	    }
+	    return sel;
+	}
+
+	boolean drag(int x, int y) {
+	    double xf = ((double) x)/winSize.width - .5;
+	    double yf = ((double) y)/winSize.width - .5;
+	    if (selection >= 200)
+		return dragLine(-1, selection-200, yf, 0);
+	    else
+		return dragLine(selection-100, -1, xf, 0);
+	}
+
+	void rezoom(double z) {
+	    int i;
+	    for (i = 1; i < blockCountX; i += 2)
+		lineXLocations[i] *= z;
+	    for (i = 1; i < blockCountY; i += 2)
+		lineYLocations[i] *= z;
+	}
+
+	boolean dragLine(int x, int y, double loc, int iter) {
+	    // drag a line and all lines it is related to by symmetry.
+	    if (x != -1) {
+		if (hasXSymmetry() && sign(lineXLocations[x]) != sign(loc))
+		    return false;
+		if (x > 1 && loc <= lineXLocations[x-2])
+		    return false;
+		if (x < blockCountX-2 && loc >= lineXLocations[x+2])
+		    return false;
+	    }
+	    if (y != -1) {
+		if (hasYSymmetry() && sign(lineYLocations[y]) != sign(loc))
+		    return false;
+		if (y > 1 && loc <= lineYLocations[y-2])
+		    return false;
+		if (y < blockCountY-2 && loc >= lineYLocations[y+2])
+		    return false;
+	    }
+	    if (x != -1 && hasXSymmetry() && iter < 1)
+		dragLine(blockCountX-1-x, y, -loc, 1);
+	    if (y != -1 && hasYSymmetry() && iter < 2)
+		dragLine(x, blockCountY-1-y, -loc, 2);
+	    if (hasDiagonalSymmetry() && iter < 3)
+		dragLine(y, x, loc, 3);
+	    if (x != -1)
+		lineXLocations[x] = loc;
+	    if (y != -1)
+		lineYLocations[y] = loc;
+	    return true;
+	}
+
+	double getDimension() { return lineXLocations[blockCountX-2]-
+				    lineXLocations[1]; }
  }
 
  class SquareAperture extends BlockAperture {
@@ -1344,213 +1571,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    rects[2][4] = -.5;
 
 	}
- }
-
- // general class used to describe apertures that consist of
- // rectangles, some of which may extend to infinity.  Each
- // rectangle may or may not be opaque.
- abstract class BlockAperture extends Aperture {
-	int blockCountX, blockCountY;
-
-	// All these arrays use a very strange system of indices.
-	// Even numbers are blocks (areas between lines), and odd
-	// numbers are lines.  The blocks at index n are bounded by
-	// lines n-1 and n+1.  The blocks at index 0 are bounded by
-	// -infinity and line 1.
-
-	// true if a block is transparent.  Because we are talking
-	// about blocks, only even indices are used.
-	boolean blocks[][];
-
-	// Lines.  Only odd indices used.
-	double lineXLocations[];
-	double lineYLocations[];
-
-	int rectCount;
-	double rects[][];
-	abstract void setupRects();
-
-	void compute() {
-	    setupRects();
-	    int i, j;
-	    double result1[] = new double[2];
-	    double result2[] = new double[2];
-	    double result3[] = new double[2];
-	    double result4[] = new double[2];
-	    // by default we use only green light.
-	    int mink = 1, maxk = 1;
-	    if (color) {
-		mink = 0;
-		maxk = 2;
-	    }
-	    int k;
-	    double astart = (reversedCheck.getState()) ? -1 : 0;
-	    int xlim = (hasXSymmetry()) ? gridSizeX/2 : gridSizeX;
-	    int ylim = (hasYSymmetry()) ? gridSizeY/2 : gridSizeY;
-	    for (i = 0; i != xlim; i++) {
-		if (hasDiagonalSymmetry())
-		    ylim = i+1;
-		double x0 = (i/(double) gridSizeX)-.5;
-		for (j = 0; j != ylim; j++) {
-		    double y0 = (j/(double) gridSizeY)-.5;
-		    for (k = mink; k <= maxk; k++) {
-			double mult = colorLenMults[k];
-			double ar = 0, ai = astart;
-			int l;
-			// add up contributions from all rectangles
-			for (l = 0; l != rectCount; l++) {
-			    fresnl((rects[l][0]-x0)*mult, result1);
-			    fresnl((rects[l][2]-x0)*mult, result2);
-			    fresnl((rects[l][1]-y0)*mult, result3);
-			    fresnl((rects[l][3]-y0)*mult, result4);
-			    double ar1 = result1[0]-result2[0];
-			    double ai1 = result1[1]-result2[1];
-			    double ar2 = result3[0]-result4[0];
-			    double ai2 = result3[1]-result4[1];
-			    ar += rects[l][4]*(ar1*ar2 - ai1*ai2);
-			    ai += rects[l][4]*(ar1*ai2 + ai1*ar2);
-			}
-			func[i][j][k] = ar*ar + ai*ai;
-		    }
-		}
-	    }
-	}
-
-	void drawGeometricShadow(Graphics g) {
-	    int i, j;
-	    // go through each line and determine if the blocks on either
-	    // side of it have different opacity, if so then draw a
-	    // line there.
-	    for (i = 1; i < blockCountX; i += 2)
-		for (j = 0; j < blockCountY; j += 2) {
-		    if (blocks[i-1][j] == blocks[i+1][j])
-			continue;
-		    int x  = (int) ((lineXLocations[i]+.5)*winSize.width);
-		    int y1 = 0;
-		    int y2 = winSize.height;
-		    try {
-			y1 = (int) ((lineYLocations[j-1]+.5)*winSize.height);
-		    } catch (Exception e) { }
-		    try {
-			y2 = (int) ((lineYLocations[j+1]+.5)*winSize.height);
-		    } catch (Exception e) { }
-		    g.setColor(isSelected(i, -1) ? Color.yellow : Color.red);
-		    g.drawLine(x, y1, x, y2);
-		}
-	    for (i = 0; i < blockCountX; i += 2)
-		for (j = 1; j < blockCountY; j += 2) {
-		    if (blocks[i][j-1] == blocks[i][j+1])
-			continue;
-		    int y  = (int) ((lineYLocations[j]+.5)*winSize.height);
-		    int x1 = 0;
-		    int x2 = winSize.width;
-		    try {
-			x1 = (int) ((lineXLocations[i-1]+.5)*winSize.width);
-		    } catch (Exception e) { }
-		    try {
-			x2 = (int) ((lineXLocations[i+1]+.5)*winSize.width);
-		    } catch (Exception e) { }
-		    g.setColor(isSelected(-1, j) ? Color.yellow : Color.red);
-		    g.drawLine(x1, y, x2, y);
-		}
-	}
-
-	boolean isSelected(int x, int y) {
-	    return isSelected(x, y, 0);
-	}
-
-	boolean isSelected(int x, int y, int iter) {
-	    // determine if a line is selected, accounting for
-	    // symmetry.
-	    if (selection == -1)
-		return false;
-	    if (selection == x+100 || selection == y+200)
-		return true;
-	    if (hasXSymmetry() && iter < 1 && blockCountX > 3 &&
-		isSelected(blockCountX-1-x, y, 1))
-		return true;
-	    if (hasYSymmetry() && iter < 2 && blockCountY > 3 &&
-		isSelected(x, blockCountY-1-y, 2))
-		return true;
-	    if (hasDiagonalSymmetry() && iter < 3 &&
-		isSelected(y, x, 3))
-		return true;
-	    return false;
-	}
-
-	int getSelection(int x, int y) {
-	    double xf = ((double) x)/winSize.width - .5;
-	    double yf = ((double) y)/winSize.width - .5;
-	    double thresh = 3./winSize.width;
-	    int sel = -1;
-	    int i;
-	    for (i = 1; i < blockCountX; i += 2) {
-		double dist = java.lang.Math.abs(lineXLocations[i]-xf);
-		if (dist < thresh) {
-		    sel = 100+i;
-		    thresh = dist;
-		}
-	    }
-	    for (i = 1; i < blockCountY; i += 2) {
-		double dist = java.lang.Math.abs(lineYLocations[i]-yf);
-		if (dist < thresh) {
-		    sel = 200+i;
-		    thresh = dist;
-		}
-	    }
-	    return sel;
-	}
-
-	boolean drag(int x, int y) {
-	    double xf = ((double) x)/winSize.width - .5;
-	    double yf = ((double) y)/winSize.width - .5;
-	    if (selection >= 200)
-		return dragLine(-1, selection-200, yf, 0);
-	    else
-		return dragLine(selection-100, -1, xf, 0);
-	}
-
-	void rezoom(double z) {
-	    int i;
-	    for (i = 1; i < blockCountX; i += 2)
-		lineXLocations[i] *= z;
-	    for (i = 1; i < blockCountY; i += 2)
-		lineYLocations[i] *= z;
-	}
-
-	boolean dragLine(int x, int y, double loc, int iter) {
-	    // drag a line and all lines it is related to by symmetry.
-	    if (x != -1) {
-		if (hasXSymmetry() && sign(lineXLocations[x]) != sign(loc))
-		    return false;
-		if (x > 1 && loc <= lineXLocations[x-2])
-		    return false;
-		if (x < blockCountX-2 && loc >= lineXLocations[x+2])
-		    return false;
-	    }
-	    if (y != -1) {
-		if (hasYSymmetry() && sign(lineYLocations[y]) != sign(loc))
-		    return false;
-		if (y > 1 && loc <= lineYLocations[y-2])
-		    return false;
-		if (y < blockCountY-2 && loc >= lineYLocations[y+2])
-		    return false;
-	    }
-	    if (x != -1 && hasXSymmetry() && iter < 1)
-		dragLine(blockCountX-1-x, y, -loc, 1);
-	    if (y != -1 && hasYSymmetry() && iter < 2)
-		dragLine(x, blockCountY-1-y, -loc, 2);
-	    if (hasDiagonalSymmetry() && iter < 3)
-		dragLine(y, x, loc, 3);
-	    if (x != -1)
-		lineXLocations[x] = loc;
-	    if (y != -1)
-		lineYLocations[y] = loc;
-	    return true;
-	}
-
-	double getDimension() { return lineXLocations[blockCountX-2]-
-				    lineXLocations[1]; }
  }
 
  class DoubleCircleAperture extends Aperture {
