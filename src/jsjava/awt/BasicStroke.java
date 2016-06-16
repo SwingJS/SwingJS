@@ -107,7 +107,7 @@ package jsjava.awt;
  * @see Graphics2D
  * @author Jim Graham
  */
-public class BasicStroke implements Stroke {
+public class BasicStroke implements Stroke, Cloneable {
 
     /**
      * Joins path segments by extending their outside edges until
@@ -183,6 +183,7 @@ public class BasicStroke implements Stroke {
      *         <code>dash</code> is zero
      * @throws IllegalArgumentException if dash lengths are all zero.
      */
+
     public BasicStroke(float width, int cap, int join, float miterlimit,
                        float dash[], float dash_phase) {
         if (width < 0.0f) {
@@ -290,7 +291,8 @@ public class BasicStroke implements Stroke {
      * @param s the <code>Shape</code> boundary be stroked
      * @return the <code>Shape</code> of the stroked outline.
      */
-    public Shape createStrokedShape(Shape s) {
+    @Override
+		public Shape createStrokedShape(Shape s) {
         //sun.java2d.pipe.RenderingEngine re =
           //  sun.java2d.pipe.RenderingEngine.getInstance();
         //return re.createStrokedShape(s, width, cap, join, miterlimit,
@@ -374,7 +376,8 @@ public class BasicStroke implements Stroke {
      * Returns the hashcode for this stroke.
      * @return      a hash code for this stroke.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         int hash = Float.floatToIntBits(width);
         hash = hash * 31 + join;
         hash = hash * 31 + cap;
@@ -403,7 +406,8 @@ public class BasicStroke implements Stroke {
     *            dash phase are the same for both objects;
     *            <code>false</code> otherwise.
     */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (!(obj instanceof BasicStroke)) {
             return false;
         }
@@ -440,4 +444,11 @@ public class BasicStroke implements Stroke {
 
         return true;
     }
+    
+  	@Override
+		public Object clone() {
+  		return new BasicStroke(width, cap, join, miterlimit, dash, dash_phase);
+  	}
+
+
 }

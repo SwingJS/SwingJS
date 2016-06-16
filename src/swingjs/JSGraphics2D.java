@@ -37,14 +37,9 @@
 
 package swingjs;
 
-import jsjava.awt.Toolkit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import swingjs.api.DOMNode;
-import swingjs.api.HTML5Canvas;
-import swingjs.api.HTML5CanvasContext2D;
 
 import jsjava.awt.AlphaComposite;
 import jsjava.awt.BasicStroke;
@@ -61,6 +56,7 @@ import jsjava.awt.RenderingHints;
 import jsjava.awt.RenderingHints.Key;
 import jsjava.awt.Shape;
 import jsjava.awt.Stroke;
+import jsjava.awt.Toolkit;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.geom.Path2D;
@@ -72,6 +68,9 @@ import jsjava.awt.image.RenderedImage;
 import jsjava.awt.image.renderable.RenderableImage;
 import jsjava.text.AttributedCharacterIterator;
 import jssun.java2d.SunGraphics2D;
+import swingjs.api.DOMNode;
+import swingjs.api.HTML5Canvas;
+import swingjs.api.HTML5CanvasContext2D;
 
 /**
  * generic 2D drawing methods -- JavaScript version
@@ -97,7 +96,9 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	private HTML5CanvasContext2D ctx;
 	private GraphicsConfiguration gc;
 
-  public int paintState;
+	private BasicStroke currentStroke;
+
+	public int paintState;
   public int compositeState = Integer.MIN_VALUE;
   public int strokeState;
   public int transformState;
@@ -113,6 +114,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		this.canvas = (HTML5Canvas) canvas;
 		ctx = this.canvas.getContext("2d");
 		transform = new AffineTransform();
+		setStroke(new BasicStroke());
 		/**
 		 * @j2sNative
 		 * 
@@ -158,14 +160,15 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		doArc(x, y, width, height, startAngle, arcAngle, false);
 	}
 
-	private static int saveLevel;
 	private void save() {
+		ctx.saveStroke(currentStroke);
 		ctx.save();
 		//System.out.println("JSGraphics " + System.identityHashCode(this) + " saveLevel to " + (saveLevel++));
 	}
 
 	private void restore() {
 		ctx.restore();
+		setStroke(ctx.getSavedStroke());
 		//System.out.println("JSGraphics " + System.identityHashCode(this) + " restLevel to " + (--saveLevel));
 	}
 
@@ -291,7 +294,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		/**
 		 * @j2sNative
 		 * 
-		 *            this.ctx.lineWidth = d;
+		 *    this.ctx.lineWidth = d;
+		 *            
 		 */
 		{
 			ctx._setLineWidth(d);
@@ -506,12 +510,17 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		JSToolkit.notImplemented(null);
 	}
 
+	@Override
+	public Stroke getStroke() {
+		return currentStroke;
+	}
+
 	@SuppressWarnings("unused")
 	@Override
 	public void setStroke(Stroke s) {
 		if (!(s instanceof BasicStroke))
 			return;
-		BasicStroke b = (BasicStroke) s;
+		BasicStroke b = currentStroke = (BasicStroke) s;
 		float[] dash = b.getDashArray();
 		int[] idash = new int[dash == null ? 0 : dash.length];
 		for (int i = idash.length; --i >= 0;)
@@ -608,14 +617,22 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public Graphics create() {
 		save();
-		return (JSGraphics2D) clone0();
+		return cloneMe();
 	}
 
 	@Override
 	public Object clone() {
 		//System.out.println("new graphics");
 		save();
-		return (JSGraphics2D) clone0();
+		return cloneMe();
+	}
+	
+	
+
+	private JSGraphics2D cloneMe() {
+		JSGraphics2D g = (JSGraphics2D) clone0();
+		g.setStroke((BasicStroke) currentStroke.clone());
+		return g;
 	}
 
 	@Override
@@ -819,12 +836,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public Paint getPaint() {
-		JSToolkit.notImplemented(null);
-		return null;
-	}
-
-	@Override
-	public Stroke getStroke() {
 		JSToolkit.notImplemented(null);
 		return null;
 	}

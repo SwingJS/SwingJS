@@ -6,6 +6,9 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 6/16/2016 1:47:41 PM fixing java.lang.reflect.Constructor and java.lang.reflect.Method
+ //                         note that xxx(Number) will be turned into (number)
+ //                         as those two are not currently distinguishable by j2s
  // BH 6/15/2016 6:04:13 PM subclass of B, where B is an abstract subclass of C fails
  // BH 6/15/2016 5:16:01 PM adds java.lang.Math = Math
  // BH 6/15/2016 5:16:19 PM removing alert in relation to overridden private method. 
@@ -1304,7 +1307,7 @@ var inF = {
 
   isAssignableFrom : function(clazz) {	return getInheritedLevel (clazz, this) >= 0;	},
 
-  getConstructor : function() { return new java.lang.reflect.Constructor (this, [], [], java.lang.reflect.Modifier.PUBLIC);},
+  getConstructor : function(paramTypes) { return new java.lang.reflect.Constructor (this, paramTypes || [], [], java.lang.reflect.Modifier.PUBLIC);},
 /**
  * TODO: fix bug for polymorphic methods!
  */
@@ -1329,14 +1332,14 @@ var inF = {
   	return ms;
   },
 
-  getMethod : function(name, clazzes) {
+  getMethod : function(name, paramTypes) {
   	var p = this.prototype;
   	for (var attr in p) {
   		if (name == attr && typeof p[attr] == "function" 
   				&& !p[attr].__CLASS_NAME__) {
   			/* there are polynormical methods. */
   			return new java.lang.reflect.Method (this, attr,
-  					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC);
+  					paramTypes, java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC);
   		}
   	}
   	p = this;
@@ -1344,7 +1347,7 @@ var inF = {
   		if (name == attr && typeof p[attr] == "function" 
   				&& !p[attr].__CLASS_NAME__) {
   			return new java.lang.reflect.Method (this, attr,
-  					[], java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC
+  					paramTypes, java.lang.Void, [], java.lang.reflect.Modifier.PUBLIC
   					| java.lang.reflect.Modifier.STATIC);
   		}
   	}
@@ -1571,7 +1574,7 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
     allowImplicit = true;
     var pTypes = getParamTypes(args).typeString;
 		Clazz.alert (["j2sSwingJS","no class found",pTypes])
-		newMethodNotFoundException(objThis, clazzThis, funName, pTypes);	
+		newMethodNotFoundException(clazzThis, funName, pTypes);	
   }
 	return (fx ? fx.apply(objThis, args || []) : null);
 };
@@ -1879,7 +1882,7 @@ Clazz.instantialize = function (objThis, args) {
     allowImplicit = true;
     if (!c) {
       //debugger;
-      newMethodNotFoundException(objThis, myclass, null, getParamTypes(args).typeString);
+      newMethodNotFoundException(myclass, null, getParamTypes(args).typeString);
     }
   }
   var p = Clazz._preps[myclass.__CLASS_NAME__];
@@ -2077,7 +2080,7 @@ java.lang.ClassLoader = {
  */
 
 // Override the Clazz.MethodNotFoundException in Class.js to give details
-var newMethodNotFoundException = function (obj, clazz, method, params) {
+var newMethodNotFoundException = function (clazz, method, params) {
 	var paramStr = "";
 	if (params)
 		paramStr = params.substring (1).replace(/\\/g, ",");
@@ -7257,8 +7260,17 @@ return this.getDeclaringClass().getName().hashCode();
 });
 Clazz.defineMethod(c$,"newInstance",
 function(args){
+// must fix [Number,Number...]
+var a = (args ? new Array(args.length) : null);
+if (args) {
+  for (var i = args.length; --i >= 0;) {
+    a[i] = (this.parameterTypes[i] == Number ? args[i].valueOf() : args[i]);
+  }
+}
 var instance=new this.clazz(null, Clazz.inheritArgs);
-Clazz.instantialize(instance,args);
+if (instance == null)
+	newMethodNotFoundException(this.clazz, "construct", getParamTypes(a).typeString);	
+Clazz.instantialize(instance,a);
 return instance;
 },"~A");
 Clazz.overrideMethod(c$,"toString",
@@ -7411,15 +7423,19 @@ return this.getDeclaringClass().getName().hashCode()^this.getName().hashCode();
 });
 Clazz.defineMethod(c$,"invoke",
 function(receiver,args){
-var m=this.clazz.prototype[this.getName()];
-if(m==null){
-m=this.clazz[this.getName()];
-}
-if(m!=null){
-m.apply(receiver,args);
-}else{
-
-}
+var name = this.getName();
+var m=this.clazz.prototype[name] || this.clazz[name];
+// note we are not checking for method signature here, only name.
+if (m == null)
+	newMethodNotFoundException(this.clazz, name, getParamTypes(args).typeString);
+  // must fix [Number,Number...]
+var a = (args ? new Array(args.length) : null);
+if (args) {
+  for (var i = args.length; --i >= 0;) {
+    a[i] = (this.parameterTypes[i] == Number ? args[i].valueOf() : args[i]);
+  }
+}	
+return m.apply(receiver,a);
 },"~O,~A");
 Clazz.overrideMethod(c$,"toString",
 function(){

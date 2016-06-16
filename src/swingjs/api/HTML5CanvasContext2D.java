@@ -1,5 +1,7 @@
 package swingjs.api;
 
+import jsjava.awt.Stroke;
+
 
 public abstract class HTML5CanvasContext2D {
 
@@ -107,4 +109,26 @@ public abstract class HTML5CanvasContext2D {
 		{
 		}
 	}
+
+	public void saveStroke(Stroke s) {
+		/**
+		 * @j2sNative
+		 * 
+		 *   ctx.currentStroke = s;
+		 */
+		{
+		}
+	}
+
+	public Stroke getSavedStroke() {
+		/**
+		 * @j2sNative
+		 * 
+		 *   return ctx.currentStroke;
+		 */
+		{
+			return null;
+		}
+	}
+
 }

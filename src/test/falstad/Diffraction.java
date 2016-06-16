@@ -370,8 +370,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 				Class biclass = Class.forName("java.awt.image.BufferedImage");
 				Class dbiclass = Class.forName("java.awt.image.DataBufferInt");
 				Class rasclass = Class.forName("java.awt.image.Raster");
-				Constructor cstr = biclass.getConstructor(new Class[] { int.class,
-						int.class, int.class });
+				Constructor cstr = biclass.getConstructor(new Class[] { Number.class,
+						Integer.class, int.class });
 				dbimage = (Image) cstr.newInstance(new Object[] { new Integer(d.width),
 						new Integer(d.height), new Integer(BufferedImage.TYPE_INT_RGB) });
 				Method m = biclass.getMethod("getRaster", null);
