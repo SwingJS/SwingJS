@@ -279,8 +279,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	String os = System.getProperty("os.name");
      String jv = System.getProperty("java.class.version");
      double jvf = new Double(jv).doubleValue();
-     if (jvf >= 48)
-	    useBufferedImage = true;
+     //if (jvf >= 48)
+	    //useBufferedImage = true;
 
 	apertureChooser = new Choice();
 	int i;
@@ -349,58 +349,123 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		shown = true;
 	}
 
- void handleResize() {
-     winSize = cv.getSize();
-	if (winSize.width == 0)
-	    return;
-	Dimension d = fullWinSize = cv.getSize();
-     int w = (winSize.width > winSize.height) ? winSize.height : winSize.width;
-     winSize.width = winSize.height = w;
-	pixels = null;
-	d = winSize;
-	if (useBufferedImage) {
-	    try {
-		/* simulate the following code using reflection:
-		   dbimage = new BufferedImage(d.width, d.height,
-		   BufferedImage.TYPE_INT_RGB);
-		   DataBuffer db = (DataBuffer)(((BufferedImage)dbimage).
-		   getRaster().getDataBuffer());
-		   DataBufferInt dbi = (DataBufferInt) db;
-		   pixels = dbi.getData();
-		*/
-		Class biclass = Class.forName("java.awt.image.BufferedImage");
-		Class dbiclass = Class.forName("java.awt.image.DataBufferInt");
-		Class rasclass = Class.forName("java.awt.image.Raster");
-		Constructor cstr = biclass.getConstructor(
-		    new Class[] { int.class, int.class, int.class });
-		dbimage = (Image) cstr.newInstance(new Object[] {
-		    new Integer(d.width), new Integer(d.height),
-		    new Integer(BufferedImage.TYPE_INT_RGB)});
-		Method m = biclass.getMethod("getRaster", null);
-		Object ras = m.invoke(dbimage, null);
-		Object db = rasclass.getMethod("getDataBuffer", null).
-		    invoke(ras, null);
-		pixels = (int[])
-		    dbiclass.getMethod("getData", null).invoke(db, null);
-	    } catch (Exception ee) {
-		// ee.printStackTrace();
-		System.out.println("BufferedImage failed");
-	    }
+	void handleResize() {
+		winSize = cv.getSize();
+		if (winSize.width == 0)
+			return;
+		Dimension d = fullWinSize = cv.getSize();
+		int w = (winSize.width > winSize.height) ? winSize.height : winSize.width;
+		winSize.width = winSize.height = w;
+		pixels = null;
+		d = winSize;
+		if (useBufferedImage) {
+			try {
+				/*
+				 * simulate the following code using reflection: dbimage = new
+				 * BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
+				 * DataBuffer db = (DataBuffer)(((BufferedImage)dbimage).
+				 * getRaster().getDataBuffer()); DataBufferInt dbi = (DataBufferInt) db;
+				 * pixels = dbi.getData();
+				 */
+				Class biclass = Class.forName("java.awt.image.BufferedImage");
+				Class dbiclass = Class.forName("java.awt.image.DataBufferInt");
+				Class rasclass = Class.forName("java.awt.image.Raster");
+				Constructor cstr = biclass.getConstructor(new Class[] { int.class,
+						int.class, int.class });
+				dbimage = (Image) cstr.newInstance(new Object[] { new Integer(d.width),
+						new Integer(d.height), new Integer(BufferedImage.TYPE_INT_RGB) });
+				Method m = biclass.getMethod("getRaster", null);
+				Object ras = m.invoke(dbimage, null);
+				Object db = rasclass.getMethod("getDataBuffer", null).invoke(ras, null);
+				pixels = (int[]) dbiclass.getMethod("getData", null).invoke(db, null);
+			} catch (Exception ee) {
+				// ee.printStackTrace();
+				System.out.println("BufferedImage failed");
+			}
+		}
+		if (pixels == null) {
+			/*
+			 * BH speed test:
+			 * 
+			 * arguably array filling is extremely fast in JavaScript, but still,
+			 * there is a difference between
+			 * 
+			 * var i; for (i = 0; i != d.width * d.height; i++) this.pixels[i] =
+			 * 0xFF000000;
+			 * 
+			 * and
+			 * 
+			 * 
+			 * for (var i = this.pixels.length, p = this.pixels; --i >= 0;) p[i] =
+			 * 0xFF000000;
+			 * 
+			 * and
+			 * 
+			 * this.pixels.fill(0xFF000000);
+			 * 
+			 * The second runs about 25% faster. The third (not available on all
+			 * browsers) runs nearly twice as fast
+			 */
+
+			// test.falstad.DiffractionFrame.prototype.test1 = function(){
+			// var d = {width:500,height:500}
+			// this.pixels = Clazz.newIntArray (d.width * d.height, 0);
+			// var t = +new Date
+			// for (var j = 1; j < 1000; j++) {
+			// var i;
+			// for (i = 0; i != d.width * d.height; i++) this.pixels[i] = 0xFF000000;
+			// }
+			// console.log((+new Date) - t)
+			// var t = +new Date
+			// n = d.width * d.height
+			// for (var j = 1; j < 1000; j++) {
+			// for (var i = n, p = this.pixels; --i >= 0;) p[i] = 0xFF000000;
+			// }
+			// console.log((+new Date) - t)
+			//
+			// var t = +new Date
+			// n = d.width * d.height
+			// for (var j = 1; j < 1000; j++) {
+			// this.pixels.fill(0xFF000000);
+			// }
+			// console.log((+new Date) - t)
+			// }
+			//
+
+			//
+			// function test.falstad.DiffractionFrame.prototype.test1()
+			// this.test1()
+			// 194
+			// 146
+			// 113
+			// undefined
+			// this.test1()
+			// 191
+			// 150
+			// 112
+			// undefined
+			// this.test1()
+			// 191
+			// 145
+			// 108
+			// undefined
+			// this.test1()
+			// 188
+			// 147
+			// 109
+			// undefined
+
+			pixels = new int[d.width * d.height];
+			int i;
+			for (i = 0; i != d.width * d.height; i++)
+				pixels[i] = 0xFF000000;
+			imageSource = new MemoryImageSource(d.width, d.height, pixels, 0, d.width);
+			imageSource.setAnimated(true);
+			imageSource.setFullBufferUpdates(true);
+			dbimage = cv.createImage(imageSource);
+		}
+		imageSource = new MemoryImageSource(d.width, d.height, pixels, 0, d.width);
 	}
-	if (pixels == null) {
-	    pixels = new int[d.width*d.height];
-	    int i;
-	    for (i = 0; i != d.width*d.height; i++)
-		pixels[i] = 0xFF000000;
-	    imageSource = new MemoryImageSource(d.width, d.height, pixels, 0,
-						d.width);
-	    imageSource.setAnimated(true);
-	    imageSource.setFullBufferUpdates(true);
-	    dbimage = cv.createImage(imageSource);
-	}
-	imageSource = new MemoryImageSource(d.width, d.height, pixels, 0,
-                                         d.width);
- }
  
  int angleSteps;
  int angleStepsMask;
@@ -634,8 +699,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
 	if (imageSource != null)
 	    imageSource.newPixels();
-	if (!hideFunction)
-	    g.drawImage(dbimage, 0, 0, null);
+	
+//	if (!hideFunction)
+	//   g.drawImage(dbimage, 0, 0, null);
 	    
 	g.setColor(Color.red);
 	aperture.drawGeometricShadow(g);

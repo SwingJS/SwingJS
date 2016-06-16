@@ -455,6 +455,16 @@ public class MemoryImageSource implements ImageProducer {
      */
     public synchronized void newPixels(int x, int y, int w, int h,
                                        boolean framenotify) {
+    	/**
+    	 * @j2sNative
+    	 *
+    	 * if (pixels.img && pixels.img._g) {
+    	 *  pixels.img.pix = pixels;
+    	 *  pixels.img._g.drawImage(pixels.img, 0, 0, null);
+    	 *  pixels.img.pix = null;
+    	 * }
+    	 */
+    	{}
         if (animating) {
             if (fullbuffers) {
                 x = y = 0;

@@ -29,6 +29,7 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 		return createGraphicsSized(img, img.getWidth(), img.getHeight());
 	}
 	
+	@SuppressWarnings("unused")
 	public Graphics2D createGraphicsSized(Object img, int width, int height) {
 		// get a canvas for an image
 		JSGraphics2D g = null;
@@ -42,19 +43,30 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 		}
 		if (g == null) {
 			HTML5Canvas canvas = (HTML5Canvas) DOMNode.createElement("canvas", "img" + System.currentTimeMillis());
+			Object pix = null;
 			/**
 			 * @j2sNative
 			 * 
 			 * canvas.width = width;
 			 * canvas.height = height;
 			 * img._canvas = canvas;
+			 * pix = img.pix;
 			 * 	
 			 */
 			{}
 			g = new JSGraphics2D(canvas);
+			// we need to draw the image now, because it might
+			// have pixels. Note that Java actually does not
+			// allow creating a Graphics from MemoryImageSource
+			// so pixels would never be there. 
+			if (pix != null)
+				g.drawImage((BufferedImage) img, 0, 0, null);
 			/**
 			 * @j2sNative
 			 * img._g = g;
+			 * if (pix)
+			 *   pix.img = img;
+			 * img.pix = null;
 			 * 
 			 */
 			{

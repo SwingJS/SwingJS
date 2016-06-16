@@ -783,6 +783,10 @@ public class JSToolkit extends SunToolkit {
 	public Image createImage(ImageProducer producer) {
 		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", true);
 		producer.startProduction(kit); // JSImageKit is the ImageConsumer here
+		// we may create an image, but then later generate its pixels
+		// and then also draw to it using img._g
+		// If we are drawing to it and it has pixels, then we need to 
+		// "fix" those pixels to the image. 
 		return kit.getCreatedImage();
 	}
 
