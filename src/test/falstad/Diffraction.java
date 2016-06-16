@@ -279,8 +279,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	String os = System.getProperty("os.name");
      String jv = System.getProperty("java.class.version");
      double jvf = new Double(jv).doubleValue();
-     //if (jvf >= 48)
-	    //useBufferedImage = true;
+     if (jvf >= 48)
+	    useBufferedImage = true;
 
 	apertureChooser = new Choice();
 	int i;
