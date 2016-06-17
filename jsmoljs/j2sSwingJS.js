@@ -812,10 +812,11 @@ var executeMethod = function(clazzThis, args) {
     var fx = this[fxName];
 	  var f = bindMethod(claxxRef, fx, fxName, args, pTypes);
     dsigs[dsig] = (f == null ? -1 : f);
-  } else if (f == -1) {
-    f = null;
-  } 
-  return (f == null ? null : f.apply(this, fixNullParams(args))); 
+  }
+  if (f == -1 || f == null)
+    return null;
+  args = fixNullParams(args);
+  return f.apply(this, args); 
 }
 
 /**

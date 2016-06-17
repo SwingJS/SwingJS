@@ -71,7 +71,7 @@ public class BufferedImage extends Image implements Transparency // ,
 
 	boolean isAlphaPremultiplied;// If true, alpha has been premultiplied in
 	// color channels
-	private int[] pix;
+	protected int[] _pix;
 
 	/**
 	 * Image Type Constants
@@ -307,14 +307,14 @@ public class BufferedImage extends Image implements Transparency // ,
 					0x0 // Alpha
 			);
 			raster = colorModel.createCompatibleWritableRaster(width, height);
-			pix = ((DataBufferInt) raster.getDataBuffer()).data;
+			_pix = ((DataBufferInt) raster.getDataBuffer()).data;
 		}
 			break;
 
 		case TYPE_INT_ARGB: {
 			colorModel = ColorModel.getRGBdefault();
 			raster = colorModel.createCompatibleWritableRaster(width, height);
-			pix = ((DataBufferInt) raster.getDataBuffer()).data;
+			_pix = ((DataBufferInt) raster.getDataBuffer()).data;
 		}
 			break;
 

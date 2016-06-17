@@ -50,7 +50,7 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 			 * canvas.width = width;
 			 * canvas.height = height;
 			 * img._canvas = canvas;
-			 * pix = img.pix;
+			 * pix = img._pix;
 			 * 	
 			 */
 			{}
@@ -66,7 +66,7 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 			 * img._g = g;
 			 * if (pix)
 			 *   pix.img = img;
-			 * img.pix = null;
+			 * img._pix = null;
 			 * 
 			 */
 			{

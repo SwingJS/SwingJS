@@ -67,8 +67,12 @@ public class JSImagekit implements ImageConsumer {
 	
 	@Override
 	public void imageComplete(int status) {
+		// from MemoryImageSource.newPixels()
+		// 
 		// meaning: "The pixels are ready, so make the image now"
+		//
 		//TODO: not considering pixelbytes
+		//
 		jsimage = new JSImage(pixels, width, height);
   }
 

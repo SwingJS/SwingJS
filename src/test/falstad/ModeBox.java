@@ -421,7 +421,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 	void reinit() {
 		setMaxTerms();
 		Dimension d = winSize = cv.getSize();
-		if (winSize.width == 0)
+		if (d.width == 0 || d.height == 0)
 			return;
 		calcSpectrum();
 		dbimage = cv.createImage(d.width, d.height);
@@ -607,7 +607,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	public void updateModeBox(Graphics realg) {
 		Graphics g = null;
-		if (winSize == null || winSize.width == 0)
+		if (winSize == null || winSize.width == 0 || winSize.height == 0)
 			return;
 		boolean mis = memoryImageSourceCheck.getState();
 		g = dbimage.getGraphics();

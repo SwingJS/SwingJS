@@ -8,7 +8,6 @@ import jsjava.awt.image.ImageObserver;
 public class JSImage extends BufferedImage {
 	// a BufferedImage in name only, actually;
 	int typeRequested;
-	int[] pix;
 	public DOMNode _imgNode; // used by JSGraphics2D directly
 	private int width, height;
 	
@@ -16,7 +15,7 @@ public class JSImage extends BufferedImage {
 		super(width, height, TYPE_INT_ARGB);
 		this.width = width;
 		this.height = height;
-		pix = argb;
+		_pix = argb;
 	}
 	
 	/**

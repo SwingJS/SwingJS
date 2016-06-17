@@ -389,7 +389,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			/**
 			 * @j2sNative
 			 * 
-			 * pixels = img.pix;
+			 * pixels = img._pix;
 			 */
 			{
 				

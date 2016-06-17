@@ -461,15 +461,15 @@ public class MemoryImageSource implements ImageProducer {
     	 * on a memory image source. Java does not allow this, and 
     	 * perhaps SwingJS should not as well, but for now we allow it.
     	 * 
-    	 * Standard buffered images will have .pix, and they will
+    	 * Standard buffered images will have ._pix, and they will
     	 * have ._g after image.getGraphics()
     	 * 
     	 * @j2sNative
     	 *
     	 * if (this.pixels.img && this.pixels.img._g) {
-    	 *  this.pixels.img.pix = this.pixels;
+    	 *  this.pixels.img._pix = this.pixels;
     	 *  this.pixels.img._g.drawImage(this.pixels.img, 0, 0, null);
-    	 *  this.pixels.img.pix = null;
+    	 *  this.pixels.img._pix = null;
     	 * }
     	 */
     	{}
