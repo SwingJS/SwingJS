@@ -2,6 +2,7 @@
 // author: Bob Hanson, hansonr@stolaf.edu	4/16/2012
 // author: Takanori Nakane biochem_fan 6/12/2012
 
+// BH 6/17/2016 11:37:18 AM adds ev parameter to AppletPanel.processMouseEvent call
 // BH 12/17/2015 4:43:05 PM adding Jmol._requestRepaint to allow for MSIE9 not having requestAnimationFrame
 // BH 12/13/2015 11:44:39 AM using requestAnimationFrame instead of setTimeout (fixes Chrome slowness)
 // BH 10/12/2015 1:15:39 PM fix for set echo image in JavaScript
@@ -393,8 +394,8 @@
 			return this._appletPanel.processTwoPointGesture(touches);
 		}
 
-		proto._processEvent = function(type, xym) {
-			this._appletPanel.processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis());
+		proto._processEvent = function(type, xym, ev) {
+			this._appletPanel.processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis(), ev);
 		}
 
 		proto._resize = function() {

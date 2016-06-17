@@ -34,9 +34,9 @@ public class JSRadioButtonUI extends JSButtonUI {
 		DOMNode.setStyles(textNode, "position", null);
 		DOMNode.setStyles(wrapper, "position", null);
 		Dimension d = setHTMLSize1(obj, addCSS, false);
-		DOMNode.setPositionAbsolute(domBtn);
-		DOMNode.setPositionAbsolute(textNode);
-		DOMNode.setPositionAbsolute(wrapper);
+		DOMNode.setPositionAbsolute(domBtn, -1, -1);
+		DOMNode.setPositionAbsolute(textNode, -1, -1);
+		DOMNode.setPositionAbsolute(wrapper, -1, -1);
 		return d;
 	}
 
@@ -91,13 +91,13 @@ public class JSRadioButtonUI extends JSButtonUI {
 		vCenter(textNode, -50);
 		
 		// make everything absolute to pass sizing info to all
-		DOMNode.setPositionAbsolute(domBtn);
-		DOMNode.setPositionAbsolute(textNode);
-		DOMNode.setPositionAbsolute(wrapper);
+		DOMNode.setPositionAbsolute(domBtn, -1, -1);
+		DOMNode.setPositionAbsolute(textNode, -1, -1);
+		DOMNode.setPositionAbsolute(wrapper, -1, -1);
 		if (doAll) {
 			// now wrap these in a div
 			domNode = obj = wrap("div", id + "_0", wrapper);
-			DOMNode.setPositionAbsolute(obj);
+			DOMNode.setPositionAbsolute(obj, -1, -1);
 		} else {
 			obj = domNode;
 		}

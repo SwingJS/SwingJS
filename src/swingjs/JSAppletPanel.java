@@ -403,8 +403,8 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 
 	@Override
 	public boolean processMouseEvent(int id, int x, int y, int modifiers,
-			long time) {
-		getMouse().processEvent(id, x, y, modifiers, time);
+			long time, Object jqevent) {
+		getMouse().processEvent(id, x, y, modifiers, time, jqevent);
 		return false;
 	}
 

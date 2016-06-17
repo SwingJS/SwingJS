@@ -1,32 +1,18 @@
 package swingjs.plaf;
 
-import jsjava.awt.AWTEvent;
-import jsjava.awt.Color;
-import jsjava.awt.Component;
 import jsjava.awt.Dialog;
-import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
-import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.GraphicsEnvironment;
-import jsjava.awt.Image;
 import jsjava.awt.Insets;
-import jsjava.awt.Point;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
-import jsjava.awt.event.PaintEvent;
 import jsjava.awt.image.BufferedImage;
-import jsjava.awt.image.ColorModel;
-import jsjava.awt.image.ImageObserver;
-import jsjava.awt.image.ImageProducer;
-import jsjava.awt.image.VolatileImage;
-import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
-import jssun.awt.CausedFocusEvent.Cause;
+import jsjavax.swing.JWindow;
 import swingjs.JSGraphicsEnvironment;
 import swingjs.JSThreadGroup;
 import swingjs.api.DOMNode;
@@ -34,9 +20,22 @@ import swingjs.api.HTML5Applet;
 
 public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
+	protected DOMNode  
+	/**************/ frameNode, /*********************/
+  /************/ titleBarNode, /********************/
+  /**/ titleNode,                      closerNode, //
+  /***************/ layerNode, /********************/
+  /*************/ menuBarNode, /********************/
+  /*************/ contentNode; /********************/
+  
+	protected JWindow w;
+
+  protected int defaultWidth = 400;
+  protected int defaultHeight = 400;
 	
-	protected int frameZ;
-	protected boolean isFrame;
+
+  protected int frameZ;
+	protected boolean isFrame, isDialog;
 	protected Window window;
 	protected HTML5Applet applet;
 	protected Graphics2D graphics;
@@ -70,8 +69,16 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
 	@Override
 	public DOMNode createDOMNode() {
-		// TODO Auto-generated method stub
-		return null;
+		if (domNode == null) {
+			outerNode = domNode = createDOMObject("div", id);
+			setWindowNode();
+		}
+		return domNode;
+	}
+	
+	protected void setWindowNode() {
+		w = (JWindow) (Object) c;
+		$(body).append(outerNode);
 	}
 
 	@Override

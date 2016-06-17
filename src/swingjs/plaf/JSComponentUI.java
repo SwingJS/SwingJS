@@ -158,17 +158,19 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 */
 	protected String classID;
 	
-	private DOMNode document;
 
 
 	protected DOMNode body;
+	private DOMNode document;
+	private HTML5Applet applet;
+
 	
 	protected boolean needPreferred;
 	
 	protected int width;
 	protected int height;
 
-	
+
 	public JSComponentUI() {
 		setDoc();
 	}
@@ -212,6 +214,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
+		applet = JSToolkit.getHTML5Applet(c);
 		newID();
 		if (needPreferred)
 			getPreferredSize(c);
@@ -329,7 +332,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 				div = node;
 			else
 				div = wrap("div", id + "_temp", node);
-			DOMNode.setPositionAbsolute(div);
+			DOMNode.setPositionAbsolute(div, -1, -1);
 
 			// process of discovering width and height is facilitated using jQuery
 			// and appending to document.body.
@@ -344,7 +347,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 		Dimension size = getCSSDimension(width = w, height = h);
 		if (addCSS) {
-			DOMNode.setPositionAbsolute(node);
+			DOMNode.setPositionAbsolute(node, -1, -1);
 			DOMNode.setSize(node, size.width, size.height);
 		} else {
 			DOMNode.setStyles(node, "position", null);
@@ -391,7 +394,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 		// set position
 
-		DOMNode.setPositionAbsolute(outerNode);
+		DOMNode.setPositionAbsolute(outerNode, -1, -1);
 		DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
 				(y = c.getY()) + "px");
 
@@ -925,7 +928,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	public int getZIndex(String what) {
 		DOMNode node = domNode;
-		HTML5Applet applet = JSToolkit.getHTML5Applet(c);
+		JComponent c = this.c;
 		int z = 0;		
 		/**
 		 * looking for high-level content pane

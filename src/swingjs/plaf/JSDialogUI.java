@@ -1,6 +1,5 @@
 package swingjs.plaf;
 
-import swingjs.api.DOMNode;
 
 public class JSDialogUI extends JSFrameUI {
 
@@ -8,18 +7,12 @@ public class JSDialogUI extends JSFrameUI {
 	
 	public JSDialogUI() {
 		frameZ = 40000;
+		isFrame = true;
+		isDialog = true;
 		isContainer = true;
+		defaultWidth = 500;
+		defaultHeight = 300;
 		setDoc();
-	}
-
-	@Override
-	public DOMNode createDOMNode() {
-		if (domNode == null)
-			domNode = createDOMObject("div", id);
-		outerNode = wrap("div", id, domNode);
-		DOMNode.setStyles(outerNode,  "z-index", "" + frameZ++);
-		$(body).append(outerNode);
-		return domNode;
 	}
 
 	@Override

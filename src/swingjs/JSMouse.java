@@ -41,6 +41,7 @@ import jsjava.awt.event.MouseWheelEvent;
 public class JSMouse {
 
 	private JSAppletPanel ap;
+	private Object jqevent;
 
 	/**
 	 * @param privateKey
@@ -52,7 +53,8 @@ public class JSMouse {
 		this.ap = ap;
 	}
 
-	public boolean processEvent(int id, int x, int y, int modifiers, long time) {
+	public boolean processEvent(int id, int x, int y, int modifiers, long time, Object jqevent) {
+		this.jqevent = jqevent;
 		if (id != -1 && id != Event.MOUSE_MOVE)
 			modifiers = applyLeftMouse(modifiers);
 		switch (id) {
@@ -424,6 +426,13 @@ public class JSMouse {
 		int button = getButton(modifiers);
 		Component source = ap.applet;
 		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);
+		byte[] bdata = new byte[0];
+		/**
+		 * @j2sNative
+		 *  bdata.jqevent = this.jqevent; 
+		 */
+		{}
+		e.setBData(e, bdata);
 //		if (id != Event.MOUSE_MOVE)
 //			System.out.println(e.paramString());
 		Toolkit.getEventQueue().postEvent(e);

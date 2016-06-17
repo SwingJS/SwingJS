@@ -5,6 +5,7 @@
 
 // see JSmolApi.js for public user-interface. All these are private functions
 
+// BH 6/17/2016 11:37:18 AM adds ev parameter to AppletPanel.processMouseEvent call
 // BH 12/17/2015 4:43:05 PM adding Jmol._requestRepaint to allow for MSIE9 not having requestAnimationFrame
 // BH 12/16/2015 3:01:06 PM adding $.ajaxSetup({ mimeType: "text/plain" });
 // BH 12/14/2015 6:42:03 PM adding check for MS Edge browser, which does not support dataURI
@@ -1584,7 +1585,7 @@ Jmol = (function(document) {
 			if(xym) {
 		  	if (ev.button != 2)
           Jmol.Swing.hideMenus(canvas.applet);
-        canvas.applet._processEvent(501, xym); //java.awt.Event.MOUSE_DOWN
+        canvas.applet._processEvent(501, xym, ev); //java.awt.Event.MOUSE_DOWN
       }
 			return !!ui;
 		});
@@ -1602,7 +1603,7 @@ Jmol = (function(document) {
 				return !!ui;
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if(xym)
-  			canvas.applet._processEvent(502, xym);//java.awt.Event.MOUSE_UP
+  			canvas.applet._processEvent(502, xym, ev);//java.awt.Event.MOUSE_UP
 			return !!ui;
 		});
     
@@ -1635,7 +1636,7 @@ Jmol = (function(document) {
 
       var ui = ev.target["data-UI"];
       if (canvas.isdragging && (!ui || !ui.handleJSEvent(canvas, 506, ev))) {}
-			canvas.applet._processEvent((canvas.isDragging ? 506 : 503), xym); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
+			canvas.applet._processEvent((canvas.isDragging ? 506 : 503), xym, ev); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
 			return !!ui;
 		}
 		
@@ -1649,7 +1650,7 @@ Jmol = (function(document) {
 			var oe = ev.originalEvent;
 			var scroll = (oe.detail ? oe.detail : (Jmol.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
 			var modifiers = Jmol._jsGetMouseModifiers(ev);
-			canvas.applet._processEvent(-1,[scroll < 0 ? -1 : 1,0,modifiers]);
+			canvas.applet._processEvent(-1,[scroll < 0 ? -1 : 1,0,modifiers], ev);
 			return false;
 		});
 
@@ -1668,8 +1669,8 @@ Jmol = (function(document) {
 			var xym = Jmol._jsGetXY(canvas, ev);
 			if (!xym)
 				return false;
-			//canvas.applet._processEvent(502, xym);//J.api.Event.MOUSE_UP
-			//canvas.applet._processEvent(505, xym);//J.api.Event.MOUSE_EXITED
+			//canvas.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
+			//canvas.applet._processEvent(505, xym, ev);//J.api.Event.MOUSE_EXITED
 			return false;
 		});
 
@@ -1683,8 +1684,8 @@ Jmol = (function(document) {
 				var xym = Jmol._jsGetXY(canvas, ev);
 				if (!xym)
 					return false;
-				canvas.applet._processEvent(504, xym);//J.api.Event.MOUSE_ENTERED	
-				canvas.applet._processEvent(502, xym);//J.api.Event.MOUSE_UP
+				canvas.applet._processEvent(504, xym, ev);//J.api.Event.MOUSE_ENTERED	
+				canvas.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
 				return false;
 			}
 		});

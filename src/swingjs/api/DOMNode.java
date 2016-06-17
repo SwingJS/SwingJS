@@ -1,5 +1,8 @@
 package swingjs.api;
 
+import swingjs.JSToolkit;
+import swingjs.plaf.JSComponentUI;
+
 public abstract class DOMNode {
 
 	public abstract void appendChild(DOMNode object);
@@ -132,7 +135,11 @@ public abstract class DOMNode {
 		return setStyles(obj, "width", width + "px", "height", height + "px");
 	}
 
-	public static DOMNode setPositionAbsolute(DOMNode domBtn) {
+	public static DOMNode setPositionAbsolute(DOMNode domBtn, int top, int left) {
+		if (top >= 0)
+			DOMNode.setStyles(domBtn, "top", top + "px");
+		if (top >= 0)
+			DOMNode.setStyles(domBtn, "left", left + "px");
 		return DOMNode.setStyles(domBtn, "position", "absolute");
 	}
 
@@ -146,6 +153,17 @@ public abstract class DOMNode {
 		{
 			return null;
 		}
+	}
+
+	public static void addJqueryHandledEvent(JSComponentUI me, DOMNode node, String event) {
+		Object f = null;
+	  /**
+		 * @j2sNative
+		 * 
+		 *            f = function(ev) {me.handleJSEvent(node, -1, ev)};
+		 */
+		{}
+		JSToolkit.getJQuery().$(node).on(event, f);
 	}
 
 }

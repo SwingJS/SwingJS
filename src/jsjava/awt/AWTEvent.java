@@ -251,46 +251,47 @@ public abstract class AWTEvent extends EventObject {
      */
     public final static int RESERVED_ID_MAX = 1999;
 
-    // security stuff
-//    private static Field inputEvent_CanAccessSystemClipboard_Field = null;
+	// security stuff
+	// private static Field inputEvent_CanAccessSystemClipboard_Field = null;
 
-    /*
-     * JDK 1.1 serialVersionUID
-     */
-    //private static final long serialVersionUID = -1825314779160409405L;
+	/*
+	 * JDK 1.1 serialVersionUID
+	 */
+	// private static final long serialVersionUID = -1825314779160409405L;
 
-//    static {
-//        /* ensure that the necessary native libraries are loaded */
-//        //Toolkit.loadLibraries();
-//        if (!GraphicsEnvironment.isHeadless()) {
-//            initIDs();
-//        }
-//        AWTAccessor.setAWTEventAccessor(new AWTAccessor.AWTEventAccessor() {
-//                public void setSystemGenerated(AWTEvent ev) {
-//                    ev.isSystemGenerated = true;
-//                }
-//
-//                public boolean isSystemGenerated(AWTEvent ev) {
-//                    return ev.isSystemGenerated;
-//                }
-//
-//                public void setPosted(AWTEvent ev) {
-//                    ev.isPosted = true;
-//                }
-//
-//                public AccessControlContext getAccessControlContext(AWTEvent ev) {
-//                    return ev.getAccessControlContext();
-//                }
-//
-//                public byte[] getBData(AWTEvent ev) {
-//                    return ev.bdata;
-//                }
-//
-//                public void setBData(AWTEvent ev, byte[] bdata) {
-//                    ev.bdata = bdata;
-//                }
-//        });
-//    }
+	// static {
+	// /* ensure that the necessary native libraries are loaded */
+	// //Toolkit.loadLibraries();
+	// if (!GraphicsEnvironment.isHeadless()) {
+	// initIDs();
+	// }
+	// AWTAccessor.setAWTEventAccessor(new AWTAccessor.AWTEventAccessor() {
+	// public void setSystemGenerated(AWTEvent ev) {
+	// ev.isSystemGenerated = true;
+	// }
+	//
+	// public boolean isSystemGenerated(AWTEvent ev) {
+	// return ev.isSystemGenerated;
+	// }
+	//
+	// public void setPosted(AWTEvent ev) {
+	// ev.isPosted = true;
+	// }
+	//
+	// public AccessControlContext getAccessControlContext(AWTEvent ev) {
+	// return ev.getAccessControlContext();
+	// }
+	//
+	// });
+	// }
+
+	public byte[] getBData(AWTEvent ev) {
+		return ev.bdata;
+	}
+
+	public void setBData(AWTEvent ev, byte[] bdata) {
+		ev.bdata = bdata;
+	}
 
 //    private static synchronized Field get_InputEvent_CanAccessSystemClipboard() {
 //    	return null;

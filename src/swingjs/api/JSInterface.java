@@ -13,7 +13,7 @@ public interface JSInterface {
   void destroy();
   String getFullName();
   void openFileAsyncSpecial(String fileName, int flags);
-  boolean processMouseEvent(int id, int x, int y, int modifiers, long time);
+  boolean processMouseEvent(int id, int x, int y, int modifiers, long time, Object jqevent);
   void processTwoPointGesture(float[][][] touches);
   void setDisplay(HTML5Canvas canvas);
   void setScreenDimension(int width, int height);

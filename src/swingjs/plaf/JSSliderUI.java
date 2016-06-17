@@ -55,11 +55,11 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
       min: me.min,
       max: me.max,
       value: me.val,
-      change: function( event, handle ) {
-      	me.jqueryCallback(event, handle);
+      change: function( jqevent, handle ) {
+      	me.jqueryCallback(jqevent, handle);
       },
-      slide: function( event, handle ) {
-      	me.jqueryCallback(event, handle);
+      slide: function( jqevent, handle ) {
+      	me.jqueryCallback(jqevent, handle);
       }
     });
     
@@ -114,6 +114,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 * @j2sNative
 		 * 
 		 * value = ui.value;
+		 * 
+		 * debugger;
 		 * 
 		 */
 		{}

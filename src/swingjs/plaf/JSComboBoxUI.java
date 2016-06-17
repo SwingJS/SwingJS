@@ -36,20 +36,22 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		JComboBox b = (JComboBox) c;
 		b.addPropertyChangeListener(this);
 		bindMouse(domNode);
-		//DOMNode.setAttr(domNode, "className", "swingjs-ui");
 		//bindKeys(domNode); // ? perhaps?
-		Object f = null;
-		final JSComponentUI me = this;
-	  /**
-		 * @j2sNative
-		 * 
-		 *            f = function(ev) {me.handleJSEvent(this.domNode, -1, ev)};
-		 */
-		{}
-		$(domNode).on("change", f);
+		DOMNode.addJqueryHandledEvent(this, domNode, "change");
 		DOMNode.setStyles(domNode, "z-index", "" + (getZIndex(null) + 5));
 		setFocusable();
     return domNode;
+	}
+
+	@Override
+	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
+		switch (eventType) {
+		case -1:
+      int index = PT.parseInt("" + DOMNode.getAttr(domNode, "selectedIndex"));
+      ((JComboBox) c).setSelectedIndex(index);
+			break;
+		}
+		return true;
 	}
 
 	
@@ -91,17 +93,6 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
   public boolean contains(JComponent c, int x, int y) {
     return false; // do not accept responsibility for this one?
 }
-
-	@Override
-	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
-		switch (eventType) {
-		case -1:
-      int index = PT.parseInt("" + DOMNode.getAttr(domNode, "selectedIndex"));
-      ((JComboBox) c).setSelectedIndex(index);
-			break;
-		}
-		return true;
-	}
 
   /**
    * Set the visiblity of the popup

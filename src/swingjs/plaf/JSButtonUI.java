@@ -30,6 +30,7 @@ public class JSButtonUI extends JSLightweightUI {
 		if (domNode == null)
 			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
 					"type", "button");
+		DOMNode.setAttr(domBtn, "data-component", c);
 		setCssFont(DOMNode.setAttr(domNode, "value", ((AbstractButton) c).getText()),
 				c.getFont());
 		return domNode;
