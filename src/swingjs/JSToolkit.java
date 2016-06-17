@@ -889,24 +889,6 @@ public class JSToolkit extends SunToolkit {
 		return getCompositor().filterImage(src, dst, op);
 	}
 
-	public static int getZIndex(JSComponentUI ui, String what) {
-		/**
-		 * looking for high-level content pane
-		 * 
-		 * @j2sNative
-		 * 
-		 * if (what) return getHTML5Applet(ui.c)._z[what];
-		 * var c = ui.domNode; var z;
-		 * while (c && !(z = c.style["z-index"])) {
-		 *  c = c.parentNode;
-		 * }
-		 * return z || 100000;
-		 */
-		{
-			return 0;
-		}
-	}
-
 	@Override
 	protected FramePeer createFrame(Frame target) {
 		return (FramePeer) createWindowPeer(target, true);

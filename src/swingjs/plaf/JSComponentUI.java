@@ -26,6 +26,7 @@ import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
+import swingjs.api.HTML5Applet;
 import swingjs.api.JQueryObject;
 import swingjs.api.JSFunction;
 
@@ -920,6 +921,26 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		//System.out.println(id + " handling event " + eventType + jQueryEvent);
 		return true;
+	}
+
+	public int getZIndex(String what) {
+		DOMNode node = domNode;
+		HTML5Applet applet = JSToolkit.getHTML5Applet(c);
+		int z = 0;		
+		/**
+		 * looking for high-level content pane
+		 * 
+		 * @j2sNative
+		 * 
+		 * if (what) return applet._z[what];
+		 * 
+		 * while (c && c.style && !(z = c.style["z-index"]))
+		 *  c = c.parentNode;
+		 * 
+		 */
+		{
+			return (z == 0 ? 100000 : z);
+		}
 	}
 
 

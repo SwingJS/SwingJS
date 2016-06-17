@@ -76,7 +76,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	 * @param isNew
 	 */
 	private void setZ(boolean isNew) {
-		int z = JSToolkit.getZIndex(this, null);
+		int z = getZIndex(null);
 		if (z == z0)
 			return;
 		z0 = z;

@@ -9,7 +9,6 @@ import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComboBox;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.LookAndFeel;
-import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
 /**
@@ -48,7 +47,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		 */
 		{}
 		$(domNode).on("change", f);
-		DOMNode.setStyles(domNode, "z-index", "" + (JSToolkit.getZIndex(this, null) + 5));
+		DOMNode.setStyles(domNode, "z-index", "" + (getZIndex(null) + 5));
 		setFocusable();
     return domNode;
 	}

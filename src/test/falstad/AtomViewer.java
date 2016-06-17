@@ -99,10 +99,8 @@ class AtomViewerCanvas extends Canvas {
 		pg.updateAtomViewer(g);
 	}
 
-	private int paintCount;
 	@Override
 	public void paintComponent(Graphics g) {
-		System.out.println("paint " + (++paintCount));
 		pg.updateAtomViewer(g);
 	}
 }
@@ -171,6 +169,7 @@ class AtomViewerLayout implements LayoutManager {
 }
 
 public class AtomViewer extends Applet implements ComponentListener {
+	
 	static AtomViewerFrame ogf;
 
 	void destroyFrame() {
