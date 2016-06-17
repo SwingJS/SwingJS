@@ -3,7 +3,10 @@ Notes
 
 PROGRESS
 ========
-TODO: next: JComboBox
+6/01/2015 BH -- development has shifted for the summer to the "near" branch.
+                working applet development can be followed at
+                http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples
+                
 
 12/20/2015 BH -- j2s bug #21 (byte) ignored so that 0xFF remains 0xFF 
 
@@ -21,10 +24,10 @@ JTextField ENTER action enabled
 JPasswordField working using simple HTML5 type="password"
 JFormattedTextField working; proper validation enabled for number formatters with FocusLost action
 
-see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/formattedfield.htm
+see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm
     and swingjs/test/FormattedTextFieldDemo.java
 
-see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/converter.htm
+see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm
    (this app still needs selection boxes
 
 SwingJS J2S bug #16 NumberFormat.js includes the inner public class NumberFormat.Field, which is called here by instanceOf 

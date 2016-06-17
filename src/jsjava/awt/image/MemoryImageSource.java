@@ -456,12 +456,20 @@ public class MemoryImageSource implements ImageProducer {
     public synchronized void newPixels(int x, int y, int w, int h,
                                        boolean framenotify) {
     	/**
+    	 * 
+    	 * We allow here for the possibility of using g.getGraphics()
+    	 * on a memory image source. Java does not allow this, and 
+    	 * perhaps SwingJS should not as well, but for now we allow it.
+    	 * 
+    	 * Standard buffered images will have .pix, and they will
+    	 * have ._g after image.getGraphics()
+    	 * 
     	 * @j2sNative
     	 *
-    	 * if (pixels.img && pixels.img._g) {
-    	 *  pixels.img.pix = pixels;
-    	 *  pixels.img._g.drawImage(pixels.img, 0, 0, null);
-    	 *  pixels.img.pix = null;
+    	 * if (this.pixels.img && this.pixels.img._g) {
+    	 *  this.pixels.img.pix = this.pixels;
+    	 *  this.pixels.img._g.drawImage(this.pixels.img, 0, 0, null);
+    	 *  this.pixels.img.pix = null;
     	 * }
     	 */
     	{}

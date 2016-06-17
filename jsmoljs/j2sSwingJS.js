@@ -6,6 +6,7 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 6/16/2016 5:55:33 PM adds Class.isInstance(obj)
  // BH 6/16/2016 3:27:50 PM adds System property java.code.version == "50" (Java 1.6)
  // BH 6/16/2016 1:47:41 PM fixing java.lang.reflect.Constructor and java.lang.reflect.Method
  // BH 6/15/2016 6:04:13 PM subclass of B, where B is an abstract subclass of C fails
@@ -92,7 +93,6 @@ Clazz.setConsoleDiv = function(d) {
 };
 
 var supportsNativeObject = window["j2s.object.native"];
-
 
 Clazz.Console = {};
 
@@ -648,9 +648,16 @@ var addProto = function(proto, name, func) {
 	return proto[name] = func;
 };
 
+var extendedObjectMethods = [ "isInstance", "equals", "hashCode", "getClass", 
+  "clone", "finalize", "notify", "notifyAll", "wait", "to$tring", "toString" ];
+
 
 {
   var proto = Clazz._O.prototype;
+
+  addProto(proto, "isInstance", function(c) {
+    return Clazz.instanceOf(this, c);
+  }),
 
 	addProto(proto, "equals", function (obj) {
 		return this == obj;
@@ -691,12 +698,17 @@ var addProto = function(proto, name, func) {
 
 }
 
-var extendedObjectMethods = [ "equals", "hashCode", "getClass", "clone", "finalize", "notify", "notifyAll", "wait", "to$tring", "toString" ];
 
-var extendJO = function(c, name) {  
+    
+var extendJO = function(c, name) {
 	if (name)
 		c.__CLASS_NAME__ = c.prototype.__CLASS_NAME__ = name;
+    
 	if (supportsNativeObject) {
+
+    c.isInstance = function(o) { return Clazz.instanceOf(o, c) };
+
+    
 		for (var i = 0; i < extendedObjectMethods.length; i++) {
 			var p = extendedObjectMethods[i];
 			addProto(c.prototype, p, Clazz._O.prototype[p]);
@@ -706,7 +718,7 @@ var extendJO = function(c, name) {
 
 var decorateAsType = function (clazzFun, qClazzName, clazzParent, 
 		interfacez, parentClazzInstance, inheritClazzFuns, _decorateAsType) {
-	extendJO(clazzFun, qClazzName);
+ 	extendJO(clazzFun, qClazzName);
 	clazzFun.equals = inF.equals;
 	clazzFun.getName = inF.getName;
 	if (inheritClazzFuns)
@@ -1131,7 +1143,7 @@ var addProfile = function(c, f, p, id) {
  */
 
 var innerNames = [
-	"isInstance", "equals", "hashCode", /*"toString",*/ 
+	"equals", "hashCode", /*"toString",*/ 
   "getName", "getCanonicalName", "getClassLoader", "getResource", 
   "getResourceAsStream", "defineMethod", "defineStaticMethod",
 	"makeConstructor",  
@@ -1150,10 +1162,6 @@ var inF = {
 	 * Similar to Object#equals
 	 */
    
-  isInstance: function(c) {
-    return Clazz.instanceOf(c, this);
-  },
-  
 	equals : function (aFun) {
 		return this === aFun;
 	},
@@ -1409,7 +1417,7 @@ var copyProperties = function(clazzThis, clazzSuper) {
 
 /* private */
 var checkInnerFunction = function (hostSuper, funName) {
-	for (var k = 0; k < innerNames.length; k++)
+	for (var k = innerNames.length; --k >= 0;)
 		if (funName == innerNames[k] && 
 				inF[funName] === hostSuper[funName])
 			return true;
@@ -1961,7 +1969,7 @@ var decorateFunction = function (clazzFun, prefix, name, _decorateFunction) {
 		prefix[name] = clazzFun;
 	}
 	extendJO(clazzFun, qName);
-	for (var i = 0; i < innerNames.length; i++) {
+	for (var i = innerNames.length; --i >= 0;) {
 		clazzFun[innerNames[i]] = inF[innerNames[i]];
 	}
 
@@ -5415,6 +5423,7 @@ Clazz.instantialize(this,arguments);
 };
 
 decorateAsType(Double,"Double",Number,Comparable,true);
+
 Double.prototype.valueOf=function(){return 0;};
 Double.toString=Double.prototype.toString=function(){
 if(arguments.length!=0){
