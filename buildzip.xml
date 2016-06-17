@@ -1,0 +1,10 @@
+<project name="JSmol" default="zip" basedir=".">
+	
+   <target name="zip" id="zip">
+   	
+		
+   	<echo>creating zip file</echo>
+    <zip zipfile="zip/swingjs.zip" basedir="site" includes="**" />
+  </target>
+
+</project>
