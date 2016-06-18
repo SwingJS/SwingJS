@@ -72,7 +72,8 @@ public class Panel extends Container {
      * Construct a name for this component.  Called by getName() when the
      * name is null.
      */
-    String constructComponentName() {
+    @Override
+		String constructComponentName() {
         synchronized (Panel.class) {
             return base + nameCounter++;
         }
@@ -83,7 +84,8 @@ public class Panel extends Container {
      * appearance of the panel without changing its functionality.
      */
 
-    public void addNotify() {
+    @Override
+		public void addNotify() {
 //        synchronized (getTreeLock()) {
             if (peer == null)
                 peer = getToolkit().createPanel(this);

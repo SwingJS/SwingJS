@@ -49,7 +49,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.EntityResolver#resolveEntity
     */
-  public InputSource resolveEntity (String publicId, String systemId)
+  @Override
+	public InputSource resolveEntity (String publicId, String systemId)
   {
     System.out.print("Resolve entity:");
     if (publicId != null) {
@@ -72,7 +73,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DTDHandler#notationDecl
     */
-  public void notationDecl (String name, String publicId, String systemId)
+  @Override
+	public void notationDecl (String name, String publicId, String systemId)
   {
     System.out.print("Notation declaration: " + name);
     if (publicId != null) {
@@ -90,7 +92,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DTDHandler#unparsedEntityDecl
     */
-  public void unparsedEntityDecl (String name,
+  @Override
+	public void unparsedEntityDecl (String name,
 				  String publicId,
 				  String systemId,
 				  String notationName)
@@ -119,7 +122,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#setDocumentLocator
     */
-  public void setDocumentLocator (Locator locator)
+  @Override
+	public void setDocumentLocator (Locator locator)
   {
     System.out.println("Document locator supplied.");
   }
@@ -130,7 +134,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#startDocument
     */
-  public void startDocument ()
+  @Override
+	public void startDocument ()
   {
     System.out.println("Start document");
   }
@@ -141,7 +146,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#endDocument
     */
-  public void endDocument ()
+  @Override
+	public void endDocument ()
   {
     System.out.println("End document");
   }
@@ -154,7 +160,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#startElement
     */
-  public void startElement (String name, AttributeList attributes)
+  @Override
+	public void startElement (String name, AttributeList attributes)
   {
     System.out.println("Start element: " + name);
     for (int i = 0; i < attributes.getLength(); i++) {
@@ -174,7 +181,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#endElement
     */
-  public void endElement (String name)
+  @Override
+	public void endElement (String name)
   {
     System.out.println("End element: " + name);
   }
@@ -185,7 +193,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#characters
     */
-  public void characters (char ch[], int start, int length)
+  @Override
+	public void characters (char ch[], int start, int length)
   {
     System.out.print("Characters: ");
     display(ch, start, length);
@@ -197,7 +206,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#ignorableWhitespace
     */
-  public void ignorableWhitespace (char ch[], int start, int length)
+  @Override
+	public void ignorableWhitespace (char ch[], int start, int length)
   {
     System.out.print("Ignorable Whitespace: ");
     display(ch, start, length);
@@ -209,7 +219,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.DocumentHandler#processingInstruction
     */
-  public void processingInstruction (String target, String data)
+  @Override
+	public void processingInstruction (String target, String data)
   {
     System.out.println("Processing instruction: " + target + ' ' + data);
   }
@@ -226,7 +237,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.ErrorHandler#warning
     */
-  public void warning (SAXParseException exception)
+  @Override
+	public void warning (SAXParseException exception)
   {
     System.out.println("Warning: " +
 		       exception.getMessage() +
@@ -245,7 +257,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.ErrorHandler#error
     */
-  public void error (SAXParseException exception)
+  @Override
+	public void error (SAXParseException exception)
   {
     System.out.println("Recoverable Error: " +
 		       exception.getMessage() +
@@ -267,7 +280,8 @@ public class DemoHandler
     *
     * @see org.xml.sax.ErrorHandler#fatalError
     */
-  public void fatalError (SAXParseException exception)
+  @Override
+	public void fatalError (SAXParseException exception)
   {
     System.out.println("Fatal Error: " +
 		       exception.getMessage() +

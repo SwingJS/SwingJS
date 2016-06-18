@@ -209,7 +209,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      *         image-processing operation, or any other unsupported
      *         operation.
      */
-    public final BufferedImage filter(BufferedImage src, BufferedImage dst) {
+    @Override
+		public final BufferedImage filter(BufferedImage src, BufferedImage dst) {
 
         if (src == null) {
             throw new NullPointerException("src image is null");
@@ -339,7 +340,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      *         image-processing operation, or any other unsupported
      *         operation.
      */
-    public final WritableRaster filter(Raster src, WritableRaster dst) {
+    @Override
+		public final WritableRaster filter(Raster src, WritableRaster dst) {
         if (src == null) {
             throw new NullPointerException("src image is null");
         }
@@ -375,7 +377,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      * @return The <CODE>Rectangle2D</CODE> representing the destination's
      * bounding box.
      */
-    public final Rectangle2D getBounds2D (BufferedImage src) {
+    @Override
+		public final Rectangle2D getBounds2D (BufferedImage src) {
         return getBounds2D(src.getRaster());
     }
 
@@ -390,7 +393,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      * @return The <CODE>Rectangle2D</CODE> representing the destination's
      * bounding box.
      */
-    public final Rectangle2D getBounds2D (Raster src) {
+    @Override
+		public final Rectangle2D getBounds2D (Raster src) {
         int w = src.getWidth();
         int h = src.getHeight();
 
@@ -438,6 +442,7 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
 	 * 
 	 * @return The zeroed destination image.
 	 */
+	@Override
 	public BufferedImage createCompatibleDestImage(BufferedImage src,
 			ColorModel destCM) {
 		BufferedImage image;
@@ -486,7 +491,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      *
      * @return The zeroed destination <CODE>Raster</CODE>.
      */
-    public WritableRaster createCompatibleDestRaster (Raster src) {
+    @Override
+		public WritableRaster createCompatibleDestRaster (Raster src) {
         Rectangle2D r = getBounds2D(src);
 
         return src.createCompatibleWritableRaster((int)r.getX(),
@@ -507,7 +513,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      * @return The <CODE>Point2D</CODE> in the destination that corresponds to
      * the specified point in the source.
      */
-    public final Point2D getPoint2D (Point2D srcPt, Point2D dstPt) {
+    @Override
+		public final Point2D getPoint2D (Point2D srcPt, Point2D dstPt) {
         return xform.transform (srcPt, dstPt);
     }
 
@@ -525,7 +532,8 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
      *
      * @return The <CODE>RenderingHints</CODE> object associated with this op.
      */
-    public final RenderingHints getRenderingHints() {
+    @Override
+		public final RenderingHints getRenderingHints() {
         if (hints == null) {
             Object val;
             switch(interpolationType) {

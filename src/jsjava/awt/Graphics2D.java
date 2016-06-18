@@ -441,7 +441,8 @@ public abstract class Graphics2D extends Graphics {
      *                      or sunk into the surface.
      * @see         java.awt.Graphics#fill3DRect
      */
-    public void draw3DRect(int x, int y, int width, int height,
+    @Override
+		public void draw3DRect(int x, int y, int width, int height,
                            boolean raised) {
         Paint p = getPaint();
         Color c = getColor();
@@ -478,7 +479,8 @@ public abstract class Graphics2D extends Graphics {
      *                      or etched into the surface.
      * @see         java.awt.Graphics#draw3DRect
      */
-    public void fill3DRect(int x, int y, int width, int height,
+    @Override
+		public void fill3DRect(int x, int y, int width, int height,
                            boolean raised) {
         Paint p = getPaint();
         Color c = getColor();
@@ -663,7 +665,8 @@ public abstract class Graphics2D extends Graphics {
      * @see         java.awt.Graphics#drawChars
      * @since       JDK1.0
      */
-    public abstract void drawString(String str, int x, int y);
+    @Override
+		public abstract void drawString(String str, int x, int y);
 
     /**
      * Renders the text specified by the specified <code>String</code>,
@@ -722,7 +725,8 @@ public abstract class Graphics2D extends Graphics {
      * @see #setComposite
      * @see #setClip
      */
-    public abstract void drawString(AttributedCharacterIterator iterator,
+    @Override
+		public abstract void drawString(AttributedCharacterIterator iterator,
                                     int x, int y);
 
     /**
@@ -986,7 +990,8 @@ public abstract class Graphics2D extends Graphics {
      * @param  y the specified y coordinate
      * @since   JDK1.0
      */
-    public abstract void translate(int x, int y);
+    @Override
+		public abstract void translate(int x, int y);
 
     /**
      * Concatenates the current

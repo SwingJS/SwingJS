@@ -1027,7 +1027,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      *
      * @since 1.6
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
         super.removeNotify();
         if(isRolloverEnabled()) {
             getModel().setRollover(false);
@@ -1170,7 +1171,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         setDisplayedMnemonicIndexFromAction(a, false);
     }
 
-    void clientPropertyChanged(Object key, Object oldValue,
+    @Override
+		void clientPropertyChanged(Object key, Object oldValue,
                                Object newValue) {
         if (key == "hideActionText") {
             boolean current = (newValue instanceof Boolean) ?
@@ -1354,7 +1356,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         ButtonActionPropertyChangeListener(AbstractButton b, Action a) {
             super(b, a);
         }
-        protected void actionPropertyChanged(AbstractButton button,
+        @Override
+				protected void actionPropertyChanged(AbstractButton button,
                                              Action action,
                                              PropertyChangeEvent e) {
             if (AbstractAction.shouldReconfigure(e)) {
@@ -1408,7 +1411,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @see #paint
      * @see #setBorder
      */
-    protected void paintBorder(Graphics g) {
+    @Override
+		protected void paintBorder(Graphics g) {
   		if (isBorderPainted()) {
             super.paintBorder(g);
         }
@@ -1783,7 +1787,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @return the ButtonUI object
      * @see #setUI
      */
-    public ButtonUI getUI() {
+    @Override
+		public ButtonUI getUI() {
         return (ButtonUI) ui;
     }
 
@@ -1820,7 +1825,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      *          "ButtonUI", "jsjavax.swing.plaf.basic.BasicButtonUI", this));
      * </pre>
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
     }
 
     /**
@@ -1841,7 +1847,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @exception IllegalArgumentException if adding a window to a container
      * @since 1.5
      */
-    protected Component addImpl(Component comp, Object constraints, int index) {
+    @Override
+		protected Component addImpl(Component comp, Object constraints, int index) {
         if (!setLayout) {
             setLayout(new OverlayLayout(this));
         }
@@ -1856,7 +1863,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @param mgr the specified layout manager
      * @since 1.5
      */
-    public void setLayout(LayoutManager mgr) {
+    @Override
+		public void setLayout(LayoutManager mgr) {
         setLayout = true;
         super.setLayout(mgr);
     }
@@ -1977,7 +1985,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         ButtonChangeListener() {
         }
 
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             getHandler().stateChanged(e);
         }
     }
@@ -2077,7 +2086,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * Enables (or disables) the button.
      * @param b  true to enable the button, otherwise false
      */
-    public void setEnabled(boolean b) {
+    @Override
+		public void setEnabled(boolean b) {
         if (!b && model.isRollover()) {
             model.setRollover(false);
         }
@@ -2116,7 +2126,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * Adds an <code>ItemListener</code> to the <code>checkbox</code>.
      * @param l  the <code>ItemListener</code> to be added
      */
-    public void addItemListener(ItemListener l) {
+    @Override
+		public void addItemListener(ItemListener l) {
         listenerList.add(ItemListener.class, l);
     }
 
@@ -2124,7 +2135,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * Removes an <code>ItemListener</code> from the button.
      * @param l the <code>ItemListener</code> to be removed
      */
-    public void removeItemListener(ItemListener l) {
+    @Override
+		public void removeItemListener(ItemListener l) {
         listenerList.remove(ItemListener.class, l);
     }
 
@@ -2147,7 +2159,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @return an array containing 1 Object: the text of the button,
      *         if the item is selected; otherwise <code>null</code>
      */
-    public Object[] getSelectedObjects() {
+    @Override
+		public Object[] getSelectedObjects() {
         if (isSelected() == false) {
             return null;
         }
@@ -2188,7 +2201,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      * @see     jsjava.awt.image.ImageObserver
      * @see     jsjava.awt.Component#imageUpdate(jsjava.awt.Image, int, int, int, int, int)
      */
-    public boolean imageUpdate(Image img, int infoflags,
+    @Override
+		public boolean imageUpdate(Image img, int infoflags,
                                int x, int y, int w, int h) {
         Icon iconDisplayed = getIcon();
         if (iconDisplayed == null) {
@@ -2221,7 +2235,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         return super.imageUpdate(img, infoflags, x, y, w, h);
     }
 
-    void setUIProperty(String propertyName, Object value) {
+    @Override
+		void setUIProperty(String propertyName, Object value) {
         if (propertyName == "borderPainted") {
             if (!borderPaintedSet) {
                 setBorderPainted(((Boolean)value).booleanValue());
@@ -2260,7 +2275,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      *
      * @return  a string representation of this <code>AbstractButton</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String defaultIconString = ((defaultIcon != null)
                                     && (defaultIcon != this) ?
                                     defaultIcon.toString() : "");
@@ -2320,7 +2336,8 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         //
         // ChangeListener
         //
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             //Object source = e.getSource();
 
             updateMnemonicProperties();
@@ -2334,14 +2351,16 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         //
         // ActionListener
         //
-        public void actionPerformed(ActionEvent event) {
+        @Override
+				public void actionPerformed(ActionEvent event) {
             fireActionPerformed(event);
         }
 
         //
         // ItemListener
         //
-        public void itemStateChanged(ItemEvent event) {
+        @Override
+				public void itemStateChanged(ItemEvent event) {
             fireItemStateChanged(event);
             if (shouldUpdateSelectedStateFromAction()) {
                 Action action = getAction();

@@ -107,7 +107,8 @@ public class JSeparator extends JComponent implements SwingConstants
      *
      * @return the SeparatorUI object that renders this component
      */
-    public SeparatorUI getUI() {
+    @Override
+		public SeparatorUI getUI() {
         return (SeparatorUI)ui;
     }
 
@@ -131,7 +132,8 @@ public class JSeparator extends JComponent implements SwingConstants
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((SeparatorUI)UIManager.getUI(this));
     }
 
@@ -143,7 +145,8 @@ public class JSeparator extends JComponent implements SwingConstants
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -233,7 +236,8 @@ public class JSeparator extends JComponent implements SwingConstants
      *
      * @return  a string representation of this <code>JSeparator</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String orientationString = (orientation == HORIZONTAL ?
                                     "HORIZONTAL" : "VERTICAL");
 

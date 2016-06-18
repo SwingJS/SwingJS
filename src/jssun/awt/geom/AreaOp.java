@@ -36,13 +36,15 @@ public abstract class AreaOp {
         boolean inRight;
         boolean inResult;
 
-        public void newRow() {
+        @Override
+				public void newRow() {
             inLeft = false;
             inRight = false;
             inResult = false;
         }
 
-        public int classify(Edge e) {
+        @Override
+				public int classify(Edge e) {
             if (e.getCurveTag() == CTAG_LEFT) {
                 inLeft = !inLeft;
             } else {
@@ -56,7 +58,8 @@ public abstract class AreaOp {
             return (newClass ? ETAG_ENTER : ETAG_EXIT);
         }
 
-        public int getState() {
+        @Override
+				public int getState() {
             return (inResult ? RSTAG_INSIDE : RSTAG_OUTSIDE);
         }
 
@@ -65,25 +68,29 @@ public abstract class AreaOp {
     }
 
     public static class AddOp extends CAGOp {
-        public boolean newClassification(boolean inLeft, boolean inRight) {
+        @Override
+				public boolean newClassification(boolean inLeft, boolean inRight) {
             return (inLeft || inRight);
         }
     }
 
     public static class SubOp extends CAGOp {
-        public boolean newClassification(boolean inLeft, boolean inRight) {
+        @Override
+				public boolean newClassification(boolean inLeft, boolean inRight) {
             return (inLeft && !inRight);
         }
     }
 
     public static class IntOp extends CAGOp {
-        public boolean newClassification(boolean inLeft, boolean inRight) {
+        @Override
+				public boolean newClassification(boolean inLeft, boolean inRight) {
             return (inLeft && inRight);
         }
     }
 
     public static class XorOp extends CAGOp {
-        public boolean newClassification(boolean inLeft, boolean inRight) {
+        @Override
+				public boolean newClassification(boolean inLeft, boolean inRight) {
             return (inLeft != inRight);
         }
     }
@@ -91,11 +98,13 @@ public abstract class AreaOp {
     public static class NZWindOp extends AreaOp {
         private int count;
 
-        public void newRow() {
+        @Override
+				public void newRow() {
             count = 0;
         }
 
-        public int classify(Edge e) {
+        @Override
+				public int classify(Edge e) {
             // Note: the right curves should be an empty set with this op...
             // assert(e.getCurveTag() == CTAG_LEFT);
             int newCount = count;
@@ -105,7 +114,8 @@ public abstract class AreaOp {
             return (newCount == 0 ? ETAG_EXIT : type);
         }
 
-        public int getState() {
+        @Override
+				public int getState() {
             return ((count == 0) ? RSTAG_OUTSIDE : RSTAG_INSIDE);
         }
     }
@@ -113,11 +123,13 @@ public abstract class AreaOp {
     public static class EOWindOp extends AreaOp {
         private boolean inside;
 
-        public void newRow() {
+        @Override
+				public void newRow() {
             inside = false;
         }
 
-        public int classify(Edge e) {
+        @Override
+				public int classify(Edge e) {
             // Note: the right curves should be an empty set with this op...
             // assert(e.getCurveTag() == CTAG_LEFT);
             boolean newInside = !inside;
@@ -125,7 +137,8 @@ public abstract class AreaOp {
             return (newInside ? ETAG_ENTER : ETAG_EXIT);
         }
 
-        public int getState() {
+        @Override
+				public int getState() {
             return (inside ? RSTAG_INSIDE : RSTAG_OUTSIDE);
         }
     }
@@ -180,7 +193,8 @@ public abstract class AreaOp {
     }
 
     private static Comparator YXTopComparator = new Comparator() {
-        public int compare(Object o1, Object o2) {
+        @Override
+				public int compare(Object o1, Object o2) {
             Curve c1 = ((Edge) o1).getCurve();
             Curve c2 = ((Edge) o2).getCurve();
             double v1, v2;

@@ -86,14 +86,16 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * Allocate an array to store items of the type
      * appropriate (which is determined by the subclass).
      */
-    protected Object allocateArray(int len) {
+    @Override
+		protected Object allocateArray(int len) {
         return new char[len];
     }
 
     /**
      * Get the length of the allocated array.
      */
-    protected int getArrayLength() {
+    @Override
+		protected int getArrayLength() {
         char[] carray = (char[]) getArray();
         return carray.length;
     }
@@ -106,7 +108,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @return the length >= 1
      * @see AbstractDocument.Content#length
      */
-    public int length() {
+    @Override
+		public int length() {
         int len = getArrayLength() - (getGapEnd() - getGapStart());
         return len;
     }
@@ -120,7 +123,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @exception BadLocationException if the specified position is invalid
      * @see AbstractDocument.Content#insertString
      */
-    public UndoableEdit insertString(int where, String str) throws BadLocationException {
+    @Override
+		public UndoableEdit insertString(int where, String str) throws BadLocationException {
         if (where > length() || where < 0) {
             throw new BadLocationException("Invalid insert", length());
         }
@@ -138,7 +142,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @exception BadLocationException if the specified position is invalid
      * @see AbstractDocument.Content#remove
      */
-    public UndoableEdit remove(int where, int nitems) throws BadLocationException {
+    @Override
+		public UndoableEdit remove(int where, int nitems) throws BadLocationException {
         if (where + nitems >= length()) {
             throw new BadLocationException("Invalid remove", length() + 1);
         }
@@ -158,7 +163,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @exception BadLocationException if the specified position is invalid
      * @see AbstractDocument.Content#getString
      */
-    public String getString(int where, int len) throws BadLocationException {
+    @Override
+		public String getString(int where, int len) throws BadLocationException {
         Segment s = new Segment();
         getChars(where, len, s);
         return new String(s.array, s.offset, s.count);
@@ -176,7 +182,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @exception BadLocationException if the specified position is invalid
      * @see AbstractDocument.Content#getChars
      */
-    public void getChars(int where, int len, Segment chars) throws BadLocationException {
+    @Override
+		public void getChars(int where, int len, Segment chars) throws BadLocationException {
         int end = where + len;
         if (where < 0 || end < 0) {
             throw new BadLocationException("Invalid location", -1);
@@ -222,7 +229,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * @return the position
      * @exception BadLocationException if the specified position is invalid
      */
-    public Position createPosition(int offset) throws BadLocationException {
+    @Override
+		public Position createPosition(int offset) throws BadLocationException {
 //        while ( queue.poll() != null ) {
 //            unusedMarks++;
 //        }
@@ -299,11 +307,13 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
             this.mark = mark;
         }
 
-        public final int getOffset() {
+        @Override
+				public final int getOffset() {
             return mark.getOffset();
         }
 
-        public String toString() {
+        @Override
+				public String toString() {
             return Integer.toString(getOffset());
         }
 
@@ -337,7 +347,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * Make the gap bigger, moving any necessary data and updating
      * the appropriate marks
      */
-    protected void shiftEnd(int newSize) {
+    @Override
+		protected void shiftEnd(int newSize) {
         int oldGapEnd = getGapEnd();
 
         super.shiftEnd(newSize);
@@ -356,7 +367,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * Overridden to make growth policy less agressive for large
      * text amount.
      */
-    int getNewArraySize(int reqSize) {
+    @Override
+		int getNewArraySize(int reqSize) {
         if (reqSize < GROWTH_SIZE) {
             return super.getNewArraySize(reqSize);
         } else {
@@ -370,7 +382,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * moves the data in the array and updates the
      * marks accordingly.
      */
-    protected void shiftGap(int newGapStart) {
+    @Override
+		protected void shiftGap(int newGapStart) {
         int oldGapStart = getGapStart();
         int dg = newGapStart - oldGapStart;
         int oldGapEnd = getGapEnd();
@@ -435,7 +448,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * to the end of the gap (their location has been
      * removed).
      */
-    protected void shiftGapStartDown(int newGapStart) {
+    @Override
+		protected void shiftGapStartDown(int newGapStart) {
         // Push aside all marks from oldGapStart down to newGapStart.
         int adjustIndex = findMarkAdjustIndex(newGapStart);
         int n = marks.size();
@@ -464,7 +478,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
      * to the end of the gap (their location has been
      * removed).
      */
-    protected void shiftGapEndUp(int newGapEnd) {
+    @Override
+		protected void shiftGapEndUp(int newGapEnd) {
         int adjustIndex = findMarkAdjustIndex(getGapEnd());
         int n = marks.size();
         for (int i = adjustIndex; i < n; i++) {
@@ -590,14 +605,16 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
          * Allocate an array to store items of the type
          * appropriate (which is determined by the subclass).
          */
-        protected Object allocateArray(int len) {
+        @Override
+				protected Object allocateArray(int len) {
             return new MarkData[len];
         }
 
         /**
          * Get the length of the allocated array
          */
-        protected int getArrayLength() {
+        @Override
+				protected int getArrayLength() {
             MarkData[] marks = (MarkData[]) getArray();
             return marks.length;
         }
@@ -860,7 +877,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
             this.length = length;
         }
 
-        public void undo() throws CannotUndoException {
+        @Override
+				public void undo() throws CannotUndoException {
             super.undo();
             try {
                 // Get the Positions in the range being removed.
@@ -872,7 +890,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
             }
         }
 
-        public void redo() throws CannotRedoException {
+        @Override
+				public void redo() throws CannotRedoException {
             super.redo();
             try {
                 insertString(offset, string);
@@ -912,7 +931,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
             posRefs = getPositionsInRange(null, offset, length);
         }
 
-        public void undo() throws CannotUndoException {
+        @Override
+				public void undo() throws CannotUndoException {
             super.undo();
             try {
                 insertString(offset, string);
@@ -927,7 +947,8 @@ public class GapContent extends GapVector implements AbstractDocument.Content {
             }
         }
 
-        public void redo() throws CannotRedoException {
+        @Override
+				public void redo() throws CannotRedoException {
             super.redo();
             try {
                 string = getString(offset, length);

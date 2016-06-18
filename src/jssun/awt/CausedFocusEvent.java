@@ -51,7 +51,7 @@ public class CausedFocusEvent extends FocusEvent {
         ACTIVATION,
         CLEAR_GLOBAL_FOCUS_OWNER,
         RETARGETED
-    };
+    }
 
     private final Cause cause;
 
@@ -59,7 +59,8 @@ public class CausedFocusEvent extends FocusEvent {
         return cause;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return "jsjava.awt.FocusEvent[" + super.paramString() + ",cause=" + cause + "] on " + getSource();
     }
 

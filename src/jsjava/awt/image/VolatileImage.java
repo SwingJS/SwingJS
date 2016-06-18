@@ -200,7 +200,8 @@ public abstract class VolatileImage extends Image implements Transparency
      * @see ImageProducer
      * @see #getSnapshot()
      */
-    public ImageProducer getSource() {
+    @Override
+		public ImageProducer getSource() {
         // REMIND: Make sure this functionality is in line with the
         // spec.  In particular, we are returning the Source for a
         // static image (the snapshot), not a changing image (the
@@ -226,7 +227,8 @@ public abstract class VolatileImage extends Image implements Transparency
      * @return a <code>Graphics2D</code>, which can be used to draw into
      *          this image.
      */
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         return createGraphics();
     }
 
@@ -333,7 +335,8 @@ public abstract class VolatileImage extends Image implements Transparency
      * @see Transparency#TRANSLUCENT
      * @since 1.5
      */
-    public int getTransparency() {
+    @Override
+		public int getTransparency() {
         return transparency;
     }
 }

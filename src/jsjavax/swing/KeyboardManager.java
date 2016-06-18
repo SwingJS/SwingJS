@@ -356,7 +356,8 @@ class KeyboardManager {
             keyStroke = key;
         }
 
-        public boolean equals(Object o) {
+        @Override
+				public boolean equals(Object o) {
             if ( !(o instanceof ComponentKeyStrokePair)) {
                 return false;
             }
@@ -364,7 +365,8 @@ class KeyboardManager {
             return ((component.equals(ckp.component)) && (keyStroke.equals(ckp.keyStroke)));
         }
 
-        public int hashCode() {
+        @Override
+				public int hashCode() {
             return component.hashCode() * keyStroke.hashCode();
         }
 

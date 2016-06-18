@@ -57,7 +57,8 @@ public abstract class AbstractBorder implements Border
      * @param width the width of the painted border
      * @param height the height of the painted border
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     }
 
     /**
@@ -68,7 +69,8 @@ public abstract class AbstractBorder implements Border
      * @param c the component for which this border insets value applies
      * @return the new <code>Insets</code> object initialized to 0
      */
-    public Insets getBorderInsets(Component c)       {
+    @Override
+		public Insets getBorderInsets(Component c)       {
         return new Insets(0, 0, 0, 0);
     }
 
@@ -87,7 +89,8 @@ public abstract class AbstractBorder implements Border
      * This default implementation returns false.
      * @return false
      */
-    public boolean isBorderOpaque() { return false; }
+    @Override
+		public boolean isBorderOpaque() { return false; }
 
     /**
      * This convenience method calls the static method.

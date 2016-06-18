@@ -433,8 +433,10 @@ public class JList extends JComponent implements Scrollable//, Accessible
     {
         this (
             new AbstractListModel() {
-                public int getSize() { return listData.length; }
-                public Object getElementAt(int i) { return listData[i]; }
+                @Override
+								public int getSize() { return listData.length; }
+                @Override
+								public Object getElementAt(int i) { return listData[i]; }
             }
         );
     }
@@ -457,8 +459,10 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public JList(final Vector<?> listData) {
         this (
             new AbstractListModel() {
-                public int getSize() { return listData.size(); }
-                public Object getElementAt(int i) { return listData.elementAt(i); }
+                @Override
+								public int getSize() { return listData.size(); }
+                @Override
+								public Object getElementAt(int i) { return listData.elementAt(i); }
             }
         );
     }
@@ -470,8 +474,10 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public JList() {
         this (
             new AbstractListModel() {
-              public int getSize() { return 0; }
-              public Object getElementAt(int i) { return "No Data Model"; }
+              @Override
+							public int getSize() { return 0; }
+              @Override
+							public Object getElementAt(int i) { return "No Data Model"; }
             }
         );
     }
@@ -483,7 +489,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      *
      * @return the <code>ListUI</code> object that renders this component
      */
-    public ListUI getUI() {
+    @Override
+		public ListUI getUI() {
         return (ListUI)ui;
     }
 
@@ -515,7 +522,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @see UIManager#getUI
      * @see SwingUtilities#updateComponentTreeUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ListUI)UIManager.getUI(this));
 
         ListCellRenderer renderer = getCellRenderer();
@@ -534,7 +542,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -1500,7 +1509,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @see JComponent#setToolTipText
      * @see JComponent#getToolTipText
      */
-    public String getToolTipText(MouseEvent event) {
+    @Override
+		public String getToolTipText(MouseEvent event) {
         if(event != null) {
             Point p = event.getPoint();
             int index = locationToIndex(p);
@@ -1671,8 +1681,10 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setListData(final Object[] listData) {
         setModel (
             new AbstractListModel() {
-                public int getSize() { return listData.length; }
-                public Object getElementAt(int i) { return listData[i]; }
+                @Override
+								public int getSize() { return listData.length; }
+                @Override
+								public Object getElementAt(int i) { return listData[i]; }
             }
         );
     }
@@ -1694,8 +1706,10 @@ public class JList extends JComponent implements Scrollable//, Accessible
     public void setListData(final Vector<?> listData) {
         setModel (
             new AbstractListModel() {
-                public int getSize() { return listData.size(); }
-                public Object getElementAt(int i) { return listData.elementAt(i); }
+                @Override
+								public int getSize() { return listData.size(); }
+                @Override
+								public Object getElementAt(int i) { return listData.elementAt(i); }
             }
         );
     }
@@ -1783,7 +1797,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      */
     private class ListSelectionHandler implements ListSelectionListener
     {
-        public void valueChanged(ListSelectionEvent e) {
+        @Override
+				public void valueChanged(ListSelectionEvent e) {
             fireSelectionValueChanged(e.getFirstIndex(),
                                       e.getLastIndex(),
                                       e.getValueIsAdjusting());
@@ -2368,7 +2383,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @see #getPreferredScrollableViewportSize
      * @see #setPrototypeCellValue
      */
-    public Dimension getPreferredScrollableViewportSize()
+    @Override
+		public Dimension getPreferredScrollableViewportSize()
     {
         if (getLayoutOrientation() != VERTICAL) {
             return getPreferredSize();
@@ -2428,7 +2444,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      *         {@code orientation} isn't one of {@code SwingConstants.VERTICAL} or
      *         {@code SwingConstants.HORIZONTAL}
      */
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
+    @Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
     {
         checkScrollableParameters(visibleRect, orientation);
 
@@ -2574,7 +2591,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      *         {@code orientation} isn't one of {@code SwingConstants.VERTICAL} or
      *         {@code SwingConstants.HORIZONTAL}
      */
-    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+    @Override
+		public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         checkScrollableParameters(visibleRect, orientation);
         if (orientation == SwingConstants.VERTICAL) {
             int inc = visibleRect.height;
@@ -2705,7 +2723,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      *         width to match its own
      * @see Scrollable#getScrollableTracksViewportWidth
      */
-    public boolean getScrollableTracksViewportWidth() {
+    @Override
+		public boolean getScrollableTracksViewportWidth() {
         if (getLayoutOrientation() == HORIZONTAL_WRAP &&
                                       getVisibleRowCount() <= 0) {
             return true;
@@ -2730,7 +2749,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      *         height to match its own
      * @see Scrollable#getScrollableTracksViewportHeight
      */
-    public boolean getScrollableTracksViewportHeight() {
+    @Override
+		public boolean getScrollableTracksViewportHeight() {
         if (getLayoutOrientation() == VERTICAL_WRAP &&
                      getVisibleRowCount() <= 0) {
             return true;
@@ -2767,7 +2787,8 @@ public class JList extends JComponent implements Scrollable//, Accessible
      *
      * @return  a {@code String} representation of this {@code JList}.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String selectionForegroundString = (selectionForeground != null ?
                                             selectionForeground.toString() :
                                             "");

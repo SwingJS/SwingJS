@@ -799,7 +799,8 @@ public class TableColumn extends Object  {
      */
     protected TableCellRenderer createDefaultHeaderRenderer() {
         DefaultTableCellRenderer label = new DefaultTableCellRenderer() {
-            public Component getTableCellRendererComponent(JTable table, Object value,
+            @Override
+						public Component getTableCellRendererComponent(JTable table, Object value,
                          boolean isSelected, boolean hasFocus, int row, int column) {
                 if (table != null) {
                     JTableHeader header = table.getTableHeader();

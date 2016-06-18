@@ -41,6 +41,7 @@ public class TanSugd3S extends JApplet {
 		setName("TanSugd3S");
 	}
 
+	@Override
 	public void init() {
 		setLayout(new BorderLayout());
 		canvas = new TSd3Canvas();
@@ -52,25 +53,30 @@ public class TanSugd3S extends JApplet {
 		System.out.println("Hello, world!");
 	}
 
+	@Override
 	public void setSize(int width, int height) {
 		super.setSize(width, height);
 		validate();
 	}
 
+	@Override
 	public void destroy() {
 		remove(controls);
 		remove(canvas);
 	}
 
+	@Override
 	public void start() {
 		controls.setEnabled(true);
 		//testing controls.bg0.setFont(new Font("Arial", Font.PLAIN, 20));
 	}
 
+	@Override
 	public void stop() {
 		controls.setEnabled(false);
 	}
 
+	@Override
 	public void processEvent(AWTEvent e) {
 		if (e.getID() == Event.WINDOW_DESTROY) {
 			System.exit(0);
@@ -88,6 +94,7 @@ public class TanSugd3S extends JApplet {
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
+	@Override
 	public String getAppletInfo() {
 		return "A d3 octahedral Tanabe-Sugano Diagram";
 	}
@@ -372,6 +379,7 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		mouseOn = false;
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		//System.out.println("TanSugd3S painting ");
 		//g.setPaintMode();
@@ -650,6 +658,7 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		screen_y[0] = end_y1;
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseOn = true;
 		DebugJS._("mousePressed");
@@ -678,15 +687,19 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 		}
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
@@ -739,6 +752,7 @@ class TSd3Controls extends JPanel implements ItemListener {
 		return c;
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getSource() instanceof JRadioButton && e.getStateChange() == ItemEvent.SELECTED) {
 			String b = ((JRadioButton) e.getItemSelectable()).getText();

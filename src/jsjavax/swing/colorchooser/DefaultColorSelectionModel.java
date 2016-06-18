@@ -78,7 +78,8 @@ public class DefaultColorSelectionModel implements ColorSelectionModel {
      *
      * @return the selected <code>Color</code>
      */
-    public Color getSelectedColor() {
+    @Override
+		public Color getSelectedColor() {
         return selectedColor;
     }
 
@@ -93,7 +94,8 @@ public class DefaultColorSelectionModel implements ColorSelectionModel {
      *
      * @param color the new <code>Color</code>
      */
-    public void setSelectedColor(Color color) {
+    @Override
+		public void setSelectedColor(Color color) {
         if (color != null && !selectedColor.equals(color)) {
             selectedColor = color;
             fireStateChanged();
@@ -106,7 +108,8 @@ public class DefaultColorSelectionModel implements ColorSelectionModel {
      *
      * @param l the <code>ChangeListener</code> to be added
      */
-    public void addChangeListener(ChangeListener l) {
+    @Override
+		public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
@@ -114,7 +117,8 @@ public class DefaultColorSelectionModel implements ColorSelectionModel {
      * Removes a <code>ChangeListener</code> from the model.
      * @param l the <code>ChangeListener</code> to be removed
      */
-    public void removeChangeListener(ChangeListener l) {
+    @Override
+		public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }
 

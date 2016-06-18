@@ -99,7 +99,8 @@ public class RowSorterEvent extends jsjava.util.EventObject {
      *
      * @return the source of the event as a <code>RowSorter</code>
      */
-    public RowSorter getSource() {
+    @Override
+		public RowSorter getSource() {
         return (RowSorter)super.getSource();
     }
 

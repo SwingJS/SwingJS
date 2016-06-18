@@ -76,7 +76,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * Returns the current value of the attribute's "declared" flag.
      */
     // javadoc mostly from interface
-    public boolean isDeclared (int index)
+    @Override
+		public boolean isDeclared (int index)
     {
 	if (index < 0 || index >= getLength ())
 	    throw new ArrayIndexOutOfBoundsException (
@@ -89,7 +90,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * Returns the current value of the attribute's "declared" flag.
      */
     // javadoc mostly from interface
-    public boolean isDeclared (String uri, String localName)
+    @Override
+		public boolean isDeclared (String uri, String localName)
     {
 	int index = getIndex (uri, localName);
 
@@ -105,7 +107,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * Returns the current value of the attribute's "declared" flag.
      */
     // javadoc mostly from interface
-    public boolean isDeclared (String qName)
+    @Override
+		public boolean isDeclared (String qName)
     {
 	int index = getIndex (qName);
 
@@ -124,7 +127,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * @exception java.lang.ArrayIndexOutOfBoundsException When the
      *            supplied index does not identify an attribute.
      */
-    public boolean isSpecified (int index)
+    @Override
+		public boolean isSpecified (int index)
     {
 	if (index < 0 || index >= getLength ())
 	    throw new ArrayIndexOutOfBoundsException (
@@ -143,7 +147,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * @exception java.lang.IllegalArgumentException When the
      *            supplied names do not identify an attribute.
      */
-    public boolean isSpecified (String uri, String localName)
+    @Override
+		public boolean isSpecified (String uri, String localName)
     {
 	int index = getIndex (uri, localName);
 
@@ -163,7 +168,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * @exception java.lang.IllegalArgumentException When the
      *            supplied name does not identify an attribute.
      */
-    public boolean isSpecified (String qName)
+    @Override
+		public boolean isSpecified (String qName)
     {
 	int index = getIndex (qName);
 
@@ -188,7 +194,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      *
      * @see AttributesImpl#setAttributes
      */
-    public void setAttributes (Attributes atts)
+    @Override
+		public void setAttributes (Attributes atts)
     {
 	int length = atts.getLength ();
 
@@ -222,7 +229,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      *
      * @see AttributesImpl#addAttribute
      */
-    public void addAttribute (String uri, String localName, String qName,
+    @Override
+		public void addAttribute (String uri, String localName, String qName,
 			      String type, String value)
     {
 	super.addAttribute (uri, localName, qName, type, value);
@@ -247,7 +255,8 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
 
 
     // javadoc entirely from superclass
-    public void removeAttribute (int index)
+    @Override
+		public void removeAttribute (int index)
     {
 	int origMax = getLength () - 1;
 

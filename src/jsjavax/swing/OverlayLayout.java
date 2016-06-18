@@ -84,7 +84,8 @@ public class OverlayLayout implements LayoutManager2 {
      *
      * @param target the container
      */
-    public void invalidateLayout(Container target) {
+    @Override
+		public void invalidateLayout(Container target) {
         checkContainer(target);
         xChildren = null;
         yChildren = null;
@@ -99,7 +100,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @param name the name of the component
      * @param comp the the component to be added
      */
-    public void addLayoutComponent(String name, Component comp) {
+    @Override
+		public void addLayoutComponent(String name, Component comp) {
         invalidateLayout(comp.getParent());
     }
 
@@ -109,7 +111,8 @@ public class OverlayLayout implements LayoutManager2 {
      *
      * @param comp the component to remove
      */
-    public void removeLayoutComponent(Component comp) {
+    @Override
+		public void removeLayoutComponent(Component comp) {
         invalidateLayout(comp.getParent());
     }
 
@@ -121,7 +124,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @param comp the component to be added
      * @param constraints  where/how the component is added to the layout.
      */
-    public void addLayoutComponent(Component comp, Object constraints) {
+    @Override
+		public void addLayoutComponent(Component comp, Object constraints) {
         invalidateLayout(comp.getParent());
     }
 
@@ -135,7 +139,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @return a Dimension object containing the preferred dimensions
      * @see #minimumLayoutSize
      */
-    public Dimension preferredLayoutSize(Container target) {
+    @Override
+		public Dimension preferredLayoutSize(Container target) {
         checkContainer(target);
         checkRequests();
 
@@ -155,7 +160,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @return a Dimension object containing the minimum dimensions
      * @see #preferredLayoutSize
      */
-    public Dimension minimumLayoutSize(Container target) {
+    @Override
+		public Dimension minimumLayoutSize(Container target) {
         checkContainer(target);
         checkRequests();
 
@@ -177,7 +183,8 @@ public class OverlayLayout implements LayoutManager2 {
      *         dimensions
      * @see #preferredLayoutSize
      */
-    public Dimension maximumLayoutSize(Container target) {
+    @Override
+		public Dimension maximumLayoutSize(Container target) {
         checkContainer(target);
         checkRequests();
 
@@ -194,7 +201,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @param target the container
      * @return the alignment >= 0.0f && <= 1.0f
      */
-    public float getLayoutAlignmentX(Container target) {
+    @Override
+		public float getLayoutAlignmentX(Container target) {
         checkContainer(target);
         checkRequests();
         return xTotal.alignment;
@@ -206,7 +214,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @param target the container
      * @return the alignment >= 0.0f && <= 1.0f
      */
-    public float getLayoutAlignmentY(Container target) {
+    @Override
+		public float getLayoutAlignmentY(Container target) {
         checkContainer(target);
         checkRequests();
         return yTotal.alignment;
@@ -220,7 +229,8 @@ public class OverlayLayout implements LayoutManager2 {
      * @exception AWTError  if the target isn't the container specified to the
      *                      constructor
      */
-    public void layoutContainer(Container target) {
+    @Override
+		public void layoutContainer(Container target) {
         checkContainer(target);
         checkRequests();
 

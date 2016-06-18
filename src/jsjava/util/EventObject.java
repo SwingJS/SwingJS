@@ -74,7 +74,8 @@ public class EventObject {
      *
      * @return  A a String representation of this EventObject.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[source=" + source + "]";
     }
 }

@@ -57,7 +57,7 @@ public class Proxy {
          * Represents a SOCKS (V4 or V5) proxy.
          */
         SOCKS
-    };
+    }
 
     private Type type;
     private SocketAddress sa;
@@ -127,7 +127,8 @@ public class Proxy {
      *
      * @return  a string representation of this object.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         if (type() == Type.DIRECT)
             return "DIRECT";
         return type() + " @ " + address();
@@ -147,7 +148,8 @@ public class Proxy {
      *          <code>false</code> otherwise.
      * @see java.net.InetSocketAddress#equals(java.lang.Object)
      */
-    public final boolean equals(Object obj) {
+    @Override
+		public final boolean equals(Object obj) {
         if (obj == null || !(obj instanceof Proxy))
             return false;
         Proxy p = (Proxy) obj;
@@ -165,7 +167,8 @@ public class Proxy {
      *
      * @return  a hash code value for this Proxy.
      */
-    public final int hashCode() {
+    @Override
+		public final int hashCode() {
         if (address() == null)
             return type().hashCode();
         return type().hashCode() + address().hashCode();

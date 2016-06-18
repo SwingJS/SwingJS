@@ -45,7 +45,8 @@ public class Unit {
         this.multiplier = multiplier;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         String s = "Meters/" + description + " = " + multiplier;
         return s;
     }

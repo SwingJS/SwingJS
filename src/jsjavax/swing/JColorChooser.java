@@ -233,7 +233,8 @@ public class JColorChooser extends JComponent {
      * @return the <code>ColorChooserUI</code> object that renders
      *          this component
      */
-    public ColorChooserUI getUI() {
+    @Override
+		public ColorChooserUI getUI() {
         return (ColorChooserUI)ui;
     }
 
@@ -259,7 +260,8 @@ public class JColorChooser extends JComponent {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ColorChooserUI)UIManager.getUI(this));
     }
 
@@ -270,7 +272,8 @@ public class JColorChooser extends JComponent {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -549,7 +552,8 @@ public class JColorChooser extends JComponent {
      *
      * @return  a string representation of this <code>JColorChooser</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         StringBuffer chooserPanelsString = new StringBuffer("");
         for (int i=0; i<chooserPanels.length; i++) {
             chooserPanelsString.append("[" + chooserPanels[i].toString()
@@ -658,7 +662,8 @@ class ColorChooserDialog extends JDialog {
         getRootPane().setDefaultButton(okButton);
         okButton.setActionCommand("OK");
         okButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+						public void actionPerformed(ActionEvent e) {
                 hide();
             }
         });
@@ -671,7 +676,8 @@ class ColorChooserDialog extends JDialog {
 
         // The following few lines are used to register esc to close the dialog
         Action cancelKeyAction = new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+						public void actionPerformed(ActionEvent e) {
                 ((AbstractButton)e.getSource()).fireActionPerformed(e);
             }
         };
@@ -687,7 +693,8 @@ class ColorChooserDialog extends JDialog {
 
         cancelButton.setActionCommand("cancel");
         cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+						public void actionPerformed(ActionEvent e) {
                 hide();
             }
         });
@@ -698,7 +705,8 @@ class ColorChooserDialog extends JDialog {
 
         JButton resetButton = new JButton(resetString);
         resetButton.addActionListener(new ActionListener() {
-           public void actionPerformed(ActionEvent e) {
+           @Override
+					public void actionPerformed(ActionEvent e) {
                reset();
            }
         });
@@ -724,7 +732,8 @@ class ColorChooserDialog extends JDialog {
         this.addWindowListener(new Closer());
     }
 
-    public void show() {
+    @Override
+		public void show() {
         initialColor = chooserPane.getColor();
         super.show();
     }
@@ -734,7 +743,8 @@ class ColorChooserDialog extends JDialog {
     }
 
     class Closer extends WindowAdapter {
-        public void windowClosing(WindowEvent e) {
+        @Override
+				public void windowClosing(WindowEvent e) {
             cancelButton.doClick(0);
             Window w = e.getWindow();
             w.hide();
@@ -742,7 +752,8 @@ class ColorChooserDialog extends JDialog {
     }
 
     static class DisposeOnClose extends ComponentAdapter {
-        public void componentHidden(ComponentEvent e) {
+        @Override
+				public void componentHidden(ComponentEvent e) {
             Window w = (Window)e.getComponent();
             w.dispose();
         }
@@ -758,7 +769,8 @@ class ColorTracker implements ActionListener {
         chooser = c;
     }
 
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
         color = chooser.getColor();
     }
 

@@ -89,7 +89,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      * another edit's <code>addEdit</code> or <code>replaceEdit</code>
      * method, or when it is dequeued from an <code>UndoManager</code>.
      */
-    public void die() {
+    @Override
+		public void die() {
         alive = false;
     }
 
@@ -104,7 +105,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *    returns <code>false</code>
      * @see     #canUndo
      */
-    public void undo() throws CannotUndoException {
+    @Override
+		public void undo() throws CannotUndoException {
         if (!canUndo()) {
             throw new CannotUndoException();
         }
@@ -122,7 +124,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      * @see     #undo
      * @see     #redo
      */
-    public boolean canUndo() {
+    @Override
+		public boolean canUndo() {
         return alive && hasBeenDone;
     }
 
@@ -136,7 +139,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *     returns <code>false</code>
      * @see     #canRedo
      */
-    public void redo() throws CannotRedoException {
+    @Override
+		public void redo() throws CannotRedoException {
         if (!canRedo()) {
             throw new CannotRedoException();
         }
@@ -153,7 +157,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      * @see     #undo
      * @see     #redo
      */
-    public boolean canRedo() {
+    @Override
+		public boolean canRedo() {
         return alive && !hasBeenDone;
     }
 
@@ -165,7 +170,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *
      * @see UndoableEdit#addEdit
      */
-    public boolean addEdit(UndoableEdit anEdit) {
+    @Override
+		public boolean addEdit(UndoableEdit anEdit) {
         return false;
     }
 
@@ -177,7 +183,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *
      * @see UndoableEdit#replaceEdit
      */
-    public boolean replaceEdit(UndoableEdit anEdit) {
+    @Override
+		public boolean replaceEdit(UndoableEdit anEdit) {
         return false;
     }
 
@@ -187,7 +194,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      * @return true
      * @see UndoableEdit#isSignificant
      */
-    public boolean isSignificant() {
+    @Override
+		public boolean isSignificant() {
         return true;
     }
 
@@ -204,7 +212,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      * @see     #getUndoPresentationName
      * @see     #getRedoPresentationName
      */
-    public String getPresentationName() {
+    @Override
+		public String getPresentationName() {
         return "";
     }
 
@@ -223,7 +232,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *    case, the defaults value is returned alone.
      * @see #getPresentationName
      */
-    public String getUndoPresentationName() {
+    @Override
+		public String getUndoPresentationName() {
         String name = getPresentationName();
         if (!"".equals(name)) {
             name = UIManager.getString("AbstractUndoableEdit.undoText") +
@@ -250,7 +260,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *    case, the defaults value is returned alone.
      * @see #getPresentationName
      */
-    public String getRedoPresentationName() {
+    @Override
+		public String getRedoPresentationName() {
         String name = getPresentationName();
         if (!"".equals(name)) {
             name = UIManager.getString("AbstractUndoableEdit.redoText") +
@@ -268,7 +279,8 @@ public class AbstractUndoableEdit implements UndoableEdit {
      *
      * @return a String representation of this object
      */
-    public String toString()
+    @Override
+		public String toString()
     {
         return super.toString()
             + " hasBeenDone: " + hasBeenDone

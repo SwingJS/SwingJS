@@ -736,7 +736,8 @@ public class MouseEvent extends InputEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         StringBuilder str = new StringBuilder(80);
         str.append(getIdString(id));
         // (x,y) coordinates

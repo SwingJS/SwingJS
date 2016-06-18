@@ -571,7 +571,8 @@ public class JProgressBar extends JComponent implements SwingConstants
      * @see #isBorderPainted
      * @see #setBorderPainted
      */
-    protected void paintBorder(Graphics g) {
+    @Override
+		protected void paintBorder(Graphics g) {
         if (isBorderPainted()) {
             super.paintBorder(g);
         }
@@ -583,7 +584,8 @@ public class JProgressBar extends JComponent implements SwingConstants
      *
      * @return the <code>ProgressBarUI</code> object that renders this component
      */
-    public ProgressBarUI getUI() {
+    @Override
+		public ProgressBarUI getUI() {
         return (ProgressBarUI)ui;
     }
 
@@ -608,7 +610,8 @@ public class JProgressBar extends JComponent implements SwingConstants
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ProgressBarUI)UIManager.getUI(this));
     }
 
@@ -623,7 +626,8 @@ public class JProgressBar extends JComponent implements SwingConstants
      *        expert: true
      *   description: A string that specifies the name of the look-and-feel class.
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -641,7 +645,8 @@ public class JProgressBar extends JComponent implements SwingConstants
      * Please see {@link jsjava.beans.XMLEncoder}.
      */
     private class ModelListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             fireStateChanged();
         }
     }
@@ -970,7 +975,8 @@ public class JProgressBar extends JComponent implements SwingConstants
      *
      * @return  a string representation of this <code>JProgressBar</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String orientationString = (orientation == HORIZONTAL ?
                                     "HORIZONTAL" : "VERTICAL");
         String paintBorderString = (paintBorder ?

@@ -64,11 +64,13 @@ public class OffScreenImage extends BufferedImage {
 ////        initSurface(raster.getWidth(), raster.getHeight());
 //    }
 
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         return createGraphics();
     }
 
-    public Graphics2D createGraphics() {
+    @Override
+		public Graphics2D createGraphics() {
         if (c == null) {
             GraphicsEnvironment env =
                 GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -107,7 +109,8 @@ public class OffScreenImage extends BufferedImage {
         }
     }
 
-    public ImageProducer getSource() {
+    @Override
+		public ImageProducer getSource() {
 //        if (osis == null) {
 //            osis = new OffScreenImageSource(this);
 //        }

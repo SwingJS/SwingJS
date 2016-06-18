@@ -52,6 +52,7 @@ public class LoadImage extends JApplet {
 
 	private BufferedImage img;
 
+	@Override
 	public void init() {
 		URL url = null;
 		try {
@@ -85,6 +86,7 @@ public class LoadImage extends JApplet {
 		return new URL(path);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		g.drawImage(img, 50, 50, null);
 	}

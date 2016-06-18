@@ -442,11 +442,13 @@ public final class AttributeValues implements Cloneable {
 //    }
 
     // boilerplate
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return defined << 8 ^ nondefault;
     }
 
-    public boolean equals(Object rhs) {
+    @Override
+		public boolean equals(Object rhs) {
         try {
             return equals((AttributeValues)rhs);
         }
@@ -490,7 +492,8 @@ public final class AttributeValues implements Cloneable {
             && equals(imHighlight, rhs.imHighlight);
     }
 
-    public AttributeValues clone() {
+    @Override
+		public AttributeValues clone() {
         try {
             AttributeValues result = (AttributeValues)super.clone();
             if (transform != null) { // AffineTransform is mutable
@@ -507,7 +510,8 @@ public final class AttributeValues implements Cloneable {
         }
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         StringBuilder b = new StringBuilder();
         b.append('{');
         for (int m = defined, i = 0; m != 0; ++i) {

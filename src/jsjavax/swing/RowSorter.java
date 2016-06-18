@@ -397,7 +397,8 @@ public abstract class RowSorter<M> {
          *
          * @return hash code
          */
-        public int hashCode() {
+        @Override
+				public int hashCode() {
             int result = 17;
             result = 37 * result + column;
             result = 37 * result + sortOrder.hashCode();
@@ -413,7 +414,8 @@ public abstract class RowSorter<M> {
          * @param o the object to compare to
          * @return true if <code>o</code> is equal to this <code>SortKey</code>
          */
-        public boolean equals(Object o) {
+        @Override
+				public boolean equals(Object o) {
             if (o == this) {
                 return true;
             }

@@ -114,7 +114,8 @@ public class PlainDocument extends AbstractDocument {
      *   position within the document
      * @see Document#insertString
      */
-    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+    @Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         // fields don't want to have multiple lines.  We may provide a field-specific
         // model in the future in which case the filtering logic here will no longer
         // be needed.
@@ -140,7 +141,8 @@ public class PlainDocument extends AbstractDocument {
      * @return the root
      * @see Document#getDefaultRootElement
      */
-    public Element getDefaultRootElement() {
+    @Override
+		public Element getDefaultRootElement() {
         return defaultRoot;
     }
 
@@ -163,7 +165,8 @@ public class PlainDocument extends AbstractDocument {
      * Get the paragraph element containing the given position.  Since this
      * document only models lines, it returns the line instead.
      */
-    public Element getParagraphElement(int pos){
+    @Override
+		public Element getParagraphElement(int pos){
         Element lineMap = getDefaultRootElement();
         return lineMap.getElement( lineMap.getElementIndex( pos ) );
     }
@@ -176,7 +179,8 @@ public class PlainDocument extends AbstractDocument {
      * @param chng the change event describing the dit
      * @param attr the set of attributes for the inserted text
      */
-    protected void insertUpdate(DefaultDocumentEvent chng, AttributeSet attr) {
+    @Override
+		protected void insertUpdate(DefaultDocumentEvent chng, AttributeSet attr) {
         removed.removeAllElements();
         added.removeAllElements();
         BranchElement lineMap = (BranchElement) getDefaultRootElement();
@@ -246,7 +250,8 @@ public class PlainDocument extends AbstractDocument {
      *
      * @param chng the change event describing the edit
      */
-    protected void removeUpdate(DefaultDocumentEvent chng) {
+    @Override
+		protected void removeUpdate(DefaultDocumentEvent chng) {
         removed.removeAllElements();
         BranchElement map = (BranchElement) getDefaultRootElement();
         int offset = chng.getOffset();

@@ -64,7 +64,7 @@ public class JSLabelUI extends JSLightweightUI {
 	
 	@Override
 	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(c, null, null,
+    LookAndFeel.installColorsAndFont(jc, null, null,
         "Label.font");
 	}
 

@@ -110,7 +110,8 @@ public class ListSelectionEvent extends EventObject
      *
      * @return a String representation of this object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         String properties =
             " source=" + getSource() +
             " firstIndex= " + firstIndex +

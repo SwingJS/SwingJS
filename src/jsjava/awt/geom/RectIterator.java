@@ -55,7 +55,8 @@ class RectIterator implements PathIterator {
      * @see #WIND_EVEN_ODD
      * @see #WIND_NON_ZERO
      */
-    public int getWindingRule() {
+    @Override
+		public int getWindingRule() {
         return WIND_NON_ZERO;
     }
 
@@ -63,7 +64,8 @@ class RectIterator implements PathIterator {
      * Tests if there are more points to read.
      * @return true if there are more points to read
      */
-    public boolean isDone() {
+    @Override
+		public boolean isDone() {
         return index > 5;
     }
 
@@ -72,7 +74,8 @@ class RectIterator implements PathIterator {
      * along the primary direction of traversal as long as there are
      * more points in that direction.
      */
-    public void next() {
+    @Override
+		public void next() {
         index++;
     }
 
@@ -94,7 +97,8 @@ class RectIterator implements PathIterator {
      * @see #SEG_CUBICTO
      * @see #SEG_CLOSE
      */
-    public int currentSegment(float[] coords) {
+    @Override
+		public int currentSegment(float[] coords) {
         if (isDone()) {
             throw new NoSuchElementException("rect iterator out of bounds");
         }
@@ -133,7 +137,8 @@ class RectIterator implements PathIterator {
      * @see #SEG_CUBICTO
      * @see #SEG_CLOSE
      */
-    public int currentSegment(double[] coords) {
+    @Override
+		public int currentSegment(double[] coords) {
         if (isDone()) {
             throw new NoSuchElementException("rect iterator out of bounds");
         }

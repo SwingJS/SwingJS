@@ -287,7 +287,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * @param ftf JFormattedTextField to format for, may be null indicating
      *            uninstall from current JFormattedTextField.
      */
-    public void install(JFormattedTextField ftf) {
+    @Override
+		public void install(JFormattedTextField ftf) {
         super.install(ftf);
         updateMaskIfNecessary();
         // invoked again as the mask should now be valid.
@@ -302,7 +303,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * @param value Value to convert
      * @return String representation of value
      */
-    public String valueToString(Object value) throws ParseException {
+    @Override
+		public String valueToString(Object value) throws ParseException {
         if (value == null) {
             return "";
         }
@@ -322,7 +324,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * @return <code>Object</code> representation of text
      * @throws ParseException if there is an error in the conversion
      */
-    public Object stringToValue(String text) throws ParseException {
+    @Override
+		public Object stringToValue(String text) throws ParseException {
         Object value = stringToValueParse(text, getFormat());
 
         // Convert to the value class if the Value returned from the
@@ -374,7 +377,8 @@ public class InternationalFormatter extends DefaultFormatter {
      *
      * @return copy of the DefaultFormatter
      */
-    public Object clone() throws CloneNotSupportedException {
+    @Override
+		public Object clone() throws CloneNotSupportedException {
         InternationalFormatter formatter = (InternationalFormatter)super.
                                            clone();
 
@@ -389,7 +393,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * If <code>getSupportsIncrement</code> returns true, this returns
      * two Actions suitable for incrementing/decrementing the value.
      */
-    protected Action[] getActions() {
+    @Override
+		protected Action[] getActions() {
         if (getSupportsIncrement()) {
             return new Action[] { new IncrementAction("increment", 1),
                                   new IncrementAction("decrement", -1) };
@@ -579,14 +584,16 @@ public class InternationalFormatter extends DefaultFormatter {
      * is implemented in terms of <code>isLiteral</code>, subclasses
      * may wish to provide different behavior.
      */
-    boolean isNavigatable(int offset) {
+    @Override
+		boolean isNavigatable(int offset) {
         return !isLiteral(offset);
     }
 
     /**
      * Overriden to update the mask after invoking supers implementation.
      */
-    void updateValue(Object value) {
+    @Override
+		void updateValue(Object value) {
         super.updateValue(value);
         updateMaskIfNecessary();
     }
@@ -595,7 +602,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * Overriden to unconditionally allow the replace if
      * ignoreDocumentMutate is true.
      */
-    void replace(DocumentFilter.FilterBypass fb, int offset,
+    @Override
+		void replace(DocumentFilter.FilterBypass fb, int offset,
                      int length, String text,
                      AttributeSet attrs) throws BadLocationException {
         if (ignoreDocumentMutate) {
@@ -644,7 +652,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * is only text to remove, it is removed from the next non literal
      * index going backward.
      */
-    boolean canReplace(ReplaceHolder rh) {
+    @Override
+		boolean canReplace(ReplaceHolder rh) {
         if (!getAllowsInvalid()) {
             String text = rh.text;
             int tl = (text != null) ? text.length() : 0;
@@ -735,7 +744,8 @@ public class InternationalFormatter extends DefaultFormatter {
      * As such, this invokes supers implementation and then invokes
      * <code>repositionCursor</code> to correctly reset the cursor.
      */
-    boolean replace(ReplaceHolder rh) throws BadLocationException {
+    @Override
+		boolean replace(ReplaceHolder rh) throws BadLocationException {
         int start = -1;
         int direction = 1;
         int literalCount = -1;
@@ -999,7 +1009,8 @@ public class InternationalFormatter extends DefaultFormatter {
     /**
      * Overriden to return an instance of <code>ExtendedReplaceHolder</code>.
      */
-    ReplaceHolder getReplaceHolder(DocumentFilter.FilterBypass fb, int offset,
+    @Override
+		ReplaceHolder getReplaceHolder(DocumentFilter.FilterBypass fb, int offset,
                                    int length, String text,
                                    AttributeSet attrs) {
         if (replaceHolder == null) {
@@ -1055,7 +1066,8 @@ public class InternationalFormatter extends DefaultFormatter {
             this.direction = direction;
         }
 
-        public void actionPerformed(ActionEvent ae) {
+        @Override
+				public void actionPerformed(ActionEvent ae) {
 
             if (getFormattedTextField().isEditable()) {
                 if (getAllowsInvalid()) {

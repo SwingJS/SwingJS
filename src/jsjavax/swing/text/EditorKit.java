@@ -65,7 +65,8 @@ public abstract class EditorKit implements Cloneable {
      *
      * @return the copy
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         Object o;
         try {
             o = super.clone();

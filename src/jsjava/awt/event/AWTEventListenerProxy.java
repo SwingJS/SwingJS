@@ -64,7 +64,8 @@ public class AWTEventListenerProxy extends java.util.EventListenerProxy
      *
      * @param evt the property change event
      */
-    public void eventDispatched(AWTEvent evt) {
+    @Override
+		public void eventDispatched(AWTEvent evt) {
         ((AWTEventListener)getListener()).eventDispatched(evt);
     }
 

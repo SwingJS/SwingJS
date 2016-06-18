@@ -129,7 +129,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getX1() {
+        @Override
+				public double getX1() {
             return (double) x1;
         }
 
@@ -137,7 +138,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getY1() {
+        @Override
+				public double getY1() {
             return (double) y1;
         }
 
@@ -145,7 +147,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Point2D getP1() {
+        @Override
+				public Point2D getP1() {
             return new Point2D.Float(x1, y1);
         }
 
@@ -153,7 +156,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getCtrlX() {
+        @Override
+				public double getCtrlX() {
             return (double) ctrlx;
         }
 
@@ -161,7 +165,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getCtrlY() {
+        @Override
+				public double getCtrlY() {
             return (double) ctrly;
         }
 
@@ -169,7 +174,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Point2D getCtrlPt() {
+        @Override
+				public Point2D getCtrlPt() {
             return new Point2D.Float(ctrlx, ctrly);
         }
 
@@ -177,7 +183,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getX2() {
+        @Override
+				public double getX2() {
             return (double) x2;
         }
 
@@ -185,7 +192,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getY2() {
+        @Override
+				public double getY2() {
             return (double) y2;
         }
 
@@ -193,7 +201,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Point2D getP2() {
+        @Override
+				public Point2D getP2() {
             return new Point2D.Float(x2, y2);
         }
 
@@ -201,7 +210,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public void setCurve(double x1, double y1,
+        @Override
+				public void setCurve(double x1, double y1,
                              double ctrlx, double ctrly,
                              double x2, double y2)
         {
@@ -241,7 +251,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Rectangle2D getBounds2D() {
+        @Override
+				public Rectangle2D getBounds2D() {
             float left   = Math.min(Math.min(x1, x2), ctrlx);
             float top    = Math.min(Math.min(y1, y2), ctrly);
             float right  = Math.max(Math.max(x1, x2), ctrlx);
@@ -342,7 +353,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getX1() {
+        @Override
+				public double getX1() {
             return x1;
         }
 
@@ -350,7 +362,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getY1() {
+        @Override
+				public double getY1() {
             return y1;
         }
 
@@ -358,7 +371,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Point2D getP1() {
+        @Override
+				public Point2D getP1() {
             return new Point2D.Double(x1, y1);
         }
 
@@ -366,7 +380,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getCtrlX() {
+        @Override
+				public double getCtrlX() {
             return ctrlx;
         }
 
@@ -374,7 +389,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getCtrlY() {
+        @Override
+				public double getCtrlY() {
             return ctrly;
         }
 
@@ -382,7 +398,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Point2D getCtrlPt() {
+        @Override
+				public Point2D getCtrlPt() {
             return new Point2D.Double(ctrlx, ctrly);
         }
 
@@ -390,7 +407,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getX2() {
+        @Override
+				public double getX2() {
             return x2;
         }
 
@@ -398,7 +416,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public double getY2() {
+        @Override
+				public double getY2() {
             return y2;
         }
 
@@ -406,7 +425,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Point2D getP2() {
+        @Override
+				public Point2D getP2() {
             return new Point2D.Double(x2, y2);
         }
 
@@ -414,7 +434,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public void setCurve(double x1, double y1,
+        @Override
+				public void setCurve(double x1, double y1,
                              double ctrlx, double ctrly,
                              double x2, double y2)
         {
@@ -430,7 +451,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
          * {@inheritDoc}
          * @since 1.2
          */
-        public Rectangle2D getBounds2D() {
+        @Override
+				public Rectangle2D getBounds2D() {
             double left   = Math.min(Math.min(x1, x2), ctrlx);
             double top    = Math.min(Math.min(y1, y2), ctrly);
             double right  = Math.max(Math.max(x1, x2), ctrlx);
@@ -916,7 +938,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(double x, double y) {
+    @Override
+		public boolean contains(double x, double y) {
 
         double x1 = getX1();
         double y1 = getY1();
@@ -1018,7 +1041,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Point2D p) {
+    @Override
+		public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 
@@ -1120,7 +1144,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(double x, double y, double w, double h) {
+    @Override
+		public boolean intersects(double x, double y, double w, double h) {
         // Trivially reject non-existant rectangles
         if (w <= 0 || h <= 0) {
             return false;
@@ -1304,7 +1329,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(Rectangle2D r) {
+    @Override
+		public boolean intersects(Rectangle2D r) {
         return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -1312,7 +1338,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(double x, double y, double w, double h) {
+    @Override
+		public boolean contains(double x, double y, double w, double h) {
         if (w <= 0 || h <= 0) {
             return false;
         }
@@ -1328,7 +1355,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Rectangle2D r) {
+    @Override
+		public boolean contains(Rectangle2D r) {
         return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -1336,7 +1364,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public Rectangle getBounds() {
+    @Override
+		public Rectangle getBounds() {
         return getBounds2D().getBounds();
     }
 
@@ -1354,7 +1383,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      *          of the shape.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at) {
         return new QuadIterator(this, at);
     }
 
@@ -1376,7 +1406,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      *          flattened boundary of the shape.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at, double flatness) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return new FlatteningPathIterator(getPathIterator(at), flatness);
     }
 
@@ -1389,7 +1420,8 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
      * @see        java.lang.Cloneable
      * @since      1.2
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {

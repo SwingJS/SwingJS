@@ -768,7 +768,8 @@ public class AttributedString {
 
         // Object methods. See documentation in that class.
 
-        public boolean equals(Object obj) {
+        @Override
+				public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
             }
@@ -785,11 +786,13 @@ public class AttributedString {
             return true;
         }
 
-        public int hashCode() {
+        @Override
+				public int hashCode() {
             return text.hashCode() ^ currentIndex ^ beginIndex ^ endIndex;
         }
 
-        public Object clone() {
+        @Override
+				public Object clone() {
             try {
                 AttributedStringIterator other = (AttributedStringIterator) super.clone();
                 return other;
@@ -801,11 +804,13 @@ public class AttributedString {
 
         // CharacterIterator methods. See documentation in that interface.
 
-        public char first() {
+        @Override
+				public char first() {
             return internalSetIndex(beginIndex);
         }
 
-        public char last() {
+        @Override
+				public char last() {
             if (endIndex == beginIndex) {
                 return internalSetIndex(endIndex);
             } else {
@@ -813,7 +818,8 @@ public class AttributedString {
             }
         }
 
-        public char current() {
+        @Override
+				public char current() {
             if (currentIndex == endIndex) {
                 return DONE;
             } else {
@@ -821,7 +827,8 @@ public class AttributedString {
             }
         }
 
-        public char next() {
+        @Override
+				public char next() {
             if (currentIndex < endIndex) {
                 return internalSetIndex(currentIndex + 1);
             }
@@ -830,7 +837,8 @@ public class AttributedString {
             }
         }
 
-        public char previous() {
+        @Override
+				public char previous() {
             if (currentIndex > beginIndex) {
                 return internalSetIndex(currentIndex - 1);
             }
@@ -839,31 +847,37 @@ public class AttributedString {
             }
         }
 
-        public char setIndex(int position) {
+        @Override
+				public char setIndex(int position) {
             if (position < beginIndex || position > endIndex)
                 throw new IllegalArgumentException("Invalid index");
             return internalSetIndex(position);
         }
 
-        public int getBeginIndex() {
+        @Override
+				public int getBeginIndex() {
             return beginIndex;
         }
 
-        public int getEndIndex() {
+        @Override
+				public int getEndIndex() {
             return endIndex;
         }
 
-        public int getIndex() {
+        @Override
+				public int getIndex() {
             return currentIndex;
         }
 
         // AttributedCharacterIterator methods. See documentation in that interface.
 
-        public int getRunStart() {
+        @Override
+				public int getRunStart() {
             return currentRunStart;
         }
 
-        public int getRunStart(Attribute attribute) {
+        @Override
+				public int getRunStart(Attribute attribute) {
             if (currentRunStart == beginIndex || currentRunIndex == -1) {
                 return currentRunStart;
             } else {
@@ -882,7 +896,8 @@ public class AttributedString {
             }
         }
 
-        public int getRunStart(Set<? extends Attribute> attributes) {
+        @Override
+				public int getRunStart(Set<? extends Attribute> attributes) {
             if (currentRunStart == beginIndex || currentRunIndex == -1) {
                 return currentRunStart;
             } else {
@@ -900,11 +915,13 @@ public class AttributedString {
             }
         }
 
-        public int getRunLimit() {
+        @Override
+				public int getRunLimit() {
             return currentRunLimit;
         }
 
-        public int getRunLimit(Attribute attribute) {
+        @Override
+				public int getRunLimit(Attribute attribute) {
             if (currentRunLimit == endIndex || currentRunIndex == -1) {
                 return currentRunLimit;
             } else {
@@ -923,7 +940,8 @@ public class AttributedString {
             }
         }
 
-        public int getRunLimit(Set<? extends Attribute> attributes) {
+        @Override
+				public int getRunLimit(Set<? extends Attribute> attributes) {
             if (currentRunLimit == endIndex || currentRunIndex == -1) {
                 return currentRunLimit;
             } else {
@@ -941,7 +959,8 @@ public class AttributedString {
             }
         }
 
-        public Map<Attribute,Object> getAttributes() {
+        @Override
+				public Map<Attribute,Object> getAttributes() {
             if (runAttributes == null || currentRunIndex == -1 || runAttributes[currentRunIndex] == null) {
                 // ??? would be nice to return null, but current spec doesn't allow it
                 // returning Hashtable saves AttributeMap from dealing with emptiness
@@ -950,7 +969,8 @@ public class AttributedString {
             return new AttributeMap(currentRunIndex, beginIndex, endIndex);
         }
 
-        public Set<Attribute> getAllAttributeKeys() {
+        @Override
+				public Set<Attribute> getAllAttributeKeys() {
             // ??? This should screen out attribute keys that aren't relevant to the client
             if (runAttributes == null) {
                 // ??? would be nice to return null, but current spec doesn't allow it
@@ -978,7 +998,8 @@ public class AttributedString {
             }
         }
 
-        public Object getAttribute(Attribute attribute) {
+        @Override
+				public Object getAttribute(Attribute attribute) {
             int runIndex = currentRunIndex;
             if (runIndex < 0) {
                 return null;
@@ -1053,7 +1074,8 @@ public class AttributedString {
             this.endIndex = endIndex;
         }
 
-        public Set entrySet() {
+        @Override
+				public Set entrySet() {
             HashSet set = new HashSet();
             synchronized (AttributedString.this) {
                 int size = runAttributes[runIndex].size();
@@ -1074,7 +1096,8 @@ public class AttributedString {
             return set;
         }
 
-        public Object get(Object key) {
+        @Override
+				public Object get(Object key) {
             return AttributedString.this.getAttributeCheckRange((Attribute) key, runIndex, beginIndex, endIndex);
         }
     }
@@ -1090,7 +1113,8 @@ class AttributeEntry implements Map.Entry {
         this.value = value;
     }
 
-    public boolean equals(Object o) {
+    @Override
+		public boolean equals(Object o) {
         if (!(o instanceof AttributeEntry)) {
             return false;
         }
@@ -1099,23 +1123,28 @@ class AttributeEntry implements Map.Entry {
             (value == null ? other.value == null : other.value.equals(value));
     }
 
-    public Object getKey() {
+    @Override
+		public Object getKey() {
         return key;
     }
 
-    public Object getValue() {
+    @Override
+		public Object getValue() {
         return value;
     }
 
-    public Object setValue(Object newValue) {
+    @Override
+		public Object setValue(Object newValue) {
         throw new UnsupportedOperationException();
     }
 
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return key.hashCode() ^ (value==null ? 0 : value.hashCode());
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return key.toString()+"="+value.toString();
     }
 }

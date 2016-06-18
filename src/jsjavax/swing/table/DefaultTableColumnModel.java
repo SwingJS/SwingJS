@@ -116,7 +116,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *                          <code>null</code>
      * @see     #removeColumn
      */
-    public void addColumn(TableColumn aColumn) {
+    @Override
+		public void addColumn(TableColumn aColumn) {
         if (aColumn == null) {
             throw new IllegalArgumentException("Object is null");
         }
@@ -142,7 +143,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * @param   column          the <code>TableColumn</code> to be removed
      * @see     #addColumn
      */
-    public void removeColumn(TableColumn column) {
+    @Override
+		public void removeColumn(TableColumn column) {
         int columnIndex = tableColumns.indexOf(column);
 
         if (columnIndex != -1) {
@@ -177,7 +179,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *                                          <code>newIndex</code>
      *                                          are not in the valid range
      */
-    public void moveColumn(int columnIndex, int newIndex) {
+    @Override
+		public void moveColumn(int columnIndex, int newIndex) {
         if ((columnIndex < 0) || (columnIndex >= getColumnCount()) ||
             (newIndex < 0) || (newIndex >= getColumnCount()))
             throw new IllegalArgumentException("moveColumn() - Index out of range");
@@ -222,7 +225,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * @see     #getColumnMargin
      * @see     #getTotalColumnWidth
      */
-    public void setColumnMargin(int newMargin) {
+    @Override
+		public void setColumnMargin(int newMargin) {
         if (newMargin != columnMargin) {
             columnMargin = newMargin;
             // Post columnMarginChanged event notification.
@@ -240,7 +244,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * @return  the number of columns in the <code>tableColumns</code> array
      * @see     #getColumns
      */
-    public int getColumnCount() {
+    @Override
+		public int getColumnCount() {
         return tableColumns.size();
     }
 
@@ -248,7 +253,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * Returns an <code>Enumeration</code> of all the columns in the model.
      * @return an <code>Enumeration</code> of the columns in the model
      */
-    public Enumeration<TableColumn> getColumns() {
+    @Override
+		public Enumeration<TableColumn> getColumns() {
         return tableColumns.elements();
     }
 
@@ -267,7 +273,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *                          <code>identifier</code>
      * @see             #getColumn
      */
-    public int getColumnIndex(Object identifier) {
+    @Override
+		public int getColumnIndex(Object identifier) {
         if (identifier == null) {
             throw new IllegalArgumentException("Identifier is null");
         }
@@ -294,7 +301,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * @return  the <code>TableColumn</code> object for the column
      *                          at <code>columnIndex</code>
      */
-    public TableColumn getColumn(int columnIndex) {
+    @Override
+		public TableColumn getColumn(int columnIndex) {
         return (TableColumn)tableColumns.elementAt(columnIndex);
     }
 
@@ -305,7 +313,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * @return  the maximum width for the <code>TableColumn</code>
      * @see     #setColumnMargin
      */
-    public int getColumnMargin() {
+    @Override
+		public int getColumnMargin() {
         return columnMargin;
     }
 
@@ -331,7 +340,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * @return  the index of the column or -1 if no column is found
      * @see jsjavax.swing.JTable#columnAtPoint
      */
-    public int getColumnIndexAtX(int x) {
+    @Override
+		public int getColumnIndexAtX(int x) {
         if (x < 0) {
             return -1;
         }
@@ -349,7 +359,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * Returns the total combined width of all columns.
      * @return the <code>totalColumnWidth</code> property
      */
-    public int getTotalColumnWidth() {
+    @Override
+		public int getTotalColumnWidth() {
         if (totalColumnWidth == -1) {
             recalcWidthCache();
         }
@@ -372,7 +383,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *                                          is <code>null</code>
      * @see     #getSelectionModel
      */
-    public void setSelectionModel(ListSelectionModel newModel) {
+    @Override
+		public void setSelectionModel(ListSelectionModel newModel) {
         if (newModel == null) {
             throw new IllegalArgumentException("Cannot set a null SelectionModel");
         }
@@ -397,7 +409,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *          <code>null</code> if row selection is not allowed.
      * @see     #setSelectionModel
      */
-    public ListSelectionModel getSelectionModel() {
+    @Override
+		public ListSelectionModel getSelectionModel() {
         return selectionModel;
     }
 
@@ -406,7 +419,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * Sets whether column selection is allowed.  The default is false.
      * @param  flag true if column selection will be allowed, false otherwise
      */
-    public void setColumnSelectionAllowed(boolean flag) {
+    @Override
+		public void setColumnSelectionAllowed(boolean flag) {
         columnSelectionAllowed = flag;
     }
 
@@ -416,7 +430,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * The default is false.
      * @return the <code>columnSelectionAllowed</code> property
      */
-    public boolean getColumnSelectionAllowed() {
+    @Override
+		public boolean getColumnSelectionAllowed() {
         return columnSelectionAllowed;
     }
 
@@ -428,7 +443,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *                  is selected or the <code>selectionModel</code> is
      *                  <code>null</code>
      */
-    public int[] getSelectedColumns() {
+    @Override
+		public int[] getSelectedColumns() {
         if (selectionModel != null) {
             int iMin = selectionModel.getMinSelectionIndex();
             int iMax = selectionModel.getMaxSelectionIndex();
@@ -456,7 +472,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * Returns the number of columns selected.
      * @return the number of columns selected
      */
-    public int getSelectedColumnCount() {
+    @Override
+		public int getSelectedColumnCount() {
         if (selectionModel != null) {
             int iMin = selectionModel.getMinSelectionIndex();
             int iMax = selectionModel.getMaxSelectionIndex();
@@ -481,7 +498,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * Adds a listener for table column model events.
      * @param x  a <code>TableColumnModelListener</code> object
      */
-    public void addColumnModelListener(TableColumnModelListener x) {
+    @Override
+		public void addColumnModelListener(TableColumnModelListener x) {
         listenerList.add(TableColumnModelListener.class, x);
     }
 
@@ -490,7 +508,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      * Removes a listener for table column model events.
      * @param x  a <code>TableColumnModelListener</code> object
      */
-    public void removeColumnModelListener(TableColumnModelListener x) {
+    @Override
+		public void removeColumnModelListener(TableColumnModelListener x) {
         listenerList.remove(TableColumnModelListener.class, x);
     }
 
@@ -686,7 +705,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *
      * @param  evt  <code>PropertyChangeEvent</code>
      */
-    public void propertyChange(PropertyChangeEvent evt) {
+    @Override
+		public void propertyChange(PropertyChangeEvent evt) {
         String name = evt.getPropertyName();
 
         if (name == "width" || name == "preferredWidth") {
@@ -710,7 +730,8 @@ public class DefaultTableColumnModel implements TableColumnModel,
      *
      * @param e  the change event
      */
-    public void valueChanged(ListSelectionEvent e) {
+    @Override
+		public void valueChanged(ListSelectionEvent e) {
         fireColumnSelectionChanged(e);
     }
 

@@ -261,6 +261,7 @@ public final class DataBufferInt extends DataBuffer {
 	 * @see #setElem(int, int)
 	 * @see #setElem(int, int, int)
 	 */
+	@Override
 	public int getElem(int i) {
 		return data[i + offset];
 	}
@@ -276,6 +277,7 @@ public final class DataBufferInt extends DataBuffer {
 	 * @see #setElem(int, int)
 	 * @see #setElem(int, int, int)
 	 */
+	@Override
 	public int getElem(int bank, int i) {
 		return bankdata[bank][i + offsets[bank]];
 	}
@@ -291,6 +293,7 @@ public final class DataBufferInt extends DataBuffer {
 	 * @see #getElem(int)
 	 * @see #getElem(int, int)
 	 */
+	@Override
 	public void setElem(int i, int val) {
 		data[i + offset] = val;
 		theTrackable.markDirty();
@@ -310,6 +313,7 @@ public final class DataBufferInt extends DataBuffer {
 	 * @see #getElem(int)
 	 * @see #getElem(int, int)
 	 */
+	@Override
 	public void setElem(int bank, int i, int val) {
 		bankdata[bank][i + offsets[bank]] = (int) val;
 		theTrackable.markDirty();

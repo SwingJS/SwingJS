@@ -103,7 +103,8 @@ public abstract class Dimension2D implements Cloneable {
      * @see        java.lang.Cloneable
      * @since      1.2
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {

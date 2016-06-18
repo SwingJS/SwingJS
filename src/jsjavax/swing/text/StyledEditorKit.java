@@ -64,7 +64,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @return the attribute set
      */
-    public MutableAttributeSet getInputAttributes() {
+    @Override
+		public MutableAttributeSet getInputAttributes() {
         return inputAttributes;
     }
 
@@ -88,7 +89,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @return the command list
      */
-    public Action[] getActions() {
+    @Override
+		public Action[] getActions() {
         return TextAction.augmentList(super.getActions(), defaultActions);
     }
 
@@ -98,7 +100,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @return the model
      */
-    public Document createDefaultDocument() {
+    @Override
+		public Document createDefaultDocument() {
         return null;//new DefaultStyledDocument();
     }
 
@@ -108,7 +111,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @param c the JEditorPane
      */
-    public void install(JEditorPane c) {
+    @Override
+		public void install(JEditorPane c) {
         c.addCaretListener(inputAttributeUpdater);
         c.addPropertyChangeListener(inputAttributeUpdater);
         Caret caret = c.getCaret();
@@ -125,7 +129,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @param c the JEditorPane
      */
-    public void deinstall(JEditorPane c) {
+    @Override
+		public void deinstall(JEditorPane c) {
         c.removeCaretListener(inputAttributeUpdater);
         c.removePropertyChangeListener(inputAttributeUpdater);
 
@@ -149,7 +154,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @return the factory
      */
-    public ViewFactory getViewFactory() {
+    @Override
+		public ViewFactory getViewFactory() {
         return defaultFactory;
     }
 
@@ -158,7 +164,8 @@ public class StyledEditorKit extends DefaultEditorKit {
      *
      * @return the copy
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         StyledEditorKit o = (StyledEditorKit)super.clone();
         o.currentRun = o.currentParagraph = null;
         o.createInputAttributeUpdated();
@@ -171,12 +178,14 @@ public class StyledEditorKit extends DefaultEditorKit {
      */
     private void createInputAttributes() {
         inputAttributes = new SimpleAttributeSet() {
-            public AttributeSet getResolveParent() {
+            @Override
+						public AttributeSet getResolveParent() {
                 return (currentParagraph != null) ?
                            currentParagraph.getAttributes() : null;
             }
 
-            public Object clone() {
+            @Override
+						public Object clone() {
                 return new SimpleAttributeSet(this);
             }
         };
@@ -259,7 +268,8 @@ public class StyledEditorKit extends DefaultEditorKit {
             }
         }
 
-        public void propertyChange(PropertyChangeEvent evt) {
+        @Override
+				public void propertyChange(PropertyChangeEvent evt) {
             Object newValue = evt.getNewValue();
             Object source = evt.getSource();
 
@@ -270,7 +280,8 @@ public class StyledEditorKit extends DefaultEditorKit {
             }
         }
 
-        public void caretUpdate(CaretEvent e) {
+        @Override
+				public void caretUpdate(CaretEvent e) {
             updateInputAttributes(e.getDot(), e.getMark(),
                                   (JTextComponent)e.getSource());
         }
@@ -303,7 +314,8 @@ public class StyledEditorKit extends DefaultEditorKit {
 
     static class StyledViewFactory implements ViewFactory {
 
-        public View create(Element elem) {
+        @Override
+				public View create(Element elem) {
             String kind = elem.getName();
             if (kind != null) {
                 if (kind.equals(AbstractDocument.ContentElementName)) {
@@ -511,7 +523,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 String family = this.family;
@@ -567,7 +580,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the action event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 int size = this.size;
@@ -634,7 +648,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the action event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 Color fg = this.fg;
@@ -700,7 +715,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the action event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 int a = this.a;
@@ -746,7 +762,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the action event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 StyledEditorKit kit = getStyledEditorKit(editor);
@@ -785,7 +802,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the action event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 StyledEditorKit kit = getStyledEditorKit(editor);
@@ -824,7 +842,8 @@ public class StyledEditorKit extends DefaultEditorKit {
          *
          * @param e the action event
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane editor = getEditor(e);
             if (editor != null) {
                 StyledEditorKit kit = getStyledEditorKit(editor);
@@ -852,7 +871,8 @@ public class StyledEditorKit extends DefaultEditorKit {
             super(insertBreakAction);
         }
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JEditorPane target = getEditor(e);
 
             if (target != null) {

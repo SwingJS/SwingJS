@@ -82,8 +82,8 @@ public class TableColumnModelEvent extends jsjava.util.EventObject
 //
 
     /** Returns the fromIndex.  Valid for removed or moved events */
-    public int getFromIndex() { return fromIndex; };
+    public int getFromIndex() { return fromIndex; }
 
     /** Returns the toIndex.  Valid for add and moved events */
-    public int getToIndex() { return toIndex; };
+    public int getToIndex() { return toIndex; }
 }

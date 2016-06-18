@@ -57,12 +57,14 @@ public class DefaultSingleSelectionModel implements SingleSelectionModel {
     private int index = -1;
 
     // implements jsjavax.swing.SingleSelectionModel
-    public int getSelectedIndex() {
+    @Override
+		public int getSelectedIndex() {
         return index;
     }
 
     // implements jsjavax.swing.SingleSelectionModel
-    public void setSelectedIndex(int index) {
+    @Override
+		public void setSelectedIndex(int index) {
         if (this.index != index) {
             this.index = index;
             fireStateChanged();
@@ -70,12 +72,14 @@ public class DefaultSingleSelectionModel implements SingleSelectionModel {
     }
 
     // implements jsjavax.swing.SingleSelectionModel
-    public void clearSelection() {
+    @Override
+		public void clearSelection() {
         setSelectedIndex(-1);
     }
 
     // implements jsjavax.swing.SingleSelectionModel
-    public boolean isSelected() {
+    @Override
+		public boolean isSelected() {
         boolean ret = false;
         if (getSelectedIndex() != -1) {
             ret = true;
@@ -86,14 +90,16 @@ public class DefaultSingleSelectionModel implements SingleSelectionModel {
     /**
      * Adds a <code>ChangeListener</code> to the button.
      */
-    public void addChangeListener(ChangeListener l) {
+    @Override
+		public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
     /**
      * Removes a <code>ChangeListener</code> from the button.
      */
-    public void removeChangeListener(ChangeListener l) {
+    @Override
+		public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }
 

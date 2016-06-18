@@ -80,7 +80,8 @@ abstract class ActionPropertyChangeListener<T extends JComponent>
      * will remove the <code>PropertyChangeListener</code> from the Action,
      * otherwise this will invoke actionPropertyChanged.
      */
-    public final void propertyChange(PropertyChangeEvent e) {
+    @Override
+		public final void propertyChange(PropertyChangeEvent e) {
         T target = getTarget();
         if (target == null) {
             getAction().removePropertyChangeListener(this);

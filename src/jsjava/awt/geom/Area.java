@@ -454,7 +454,8 @@ public class Area implements Shape, Cloneable {
      * <code>Area</code>.
      * @since 1.2
      */
-    public Rectangle2D getBounds2D() {
+    @Override
+		public Rectangle2D getBounds2D() {
         return getCachedBounds().getBounds2D();
     }
 
@@ -474,7 +475,8 @@ public class Area implements Shape, Cloneable {
      * <code>Area</code>.
      * @since 1.2
      */
-    public Rectangle getBounds() {
+    @Override
+		public Rectangle getBounds() {
         return getCachedBounds().getBounds();
     }
 
@@ -483,7 +485,8 @@ public class Area implements Shape, Cloneable {
      * @return    Created clone object
      * @since 1.2
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         return new Area(this);
     }
 
@@ -551,7 +554,8 @@ public class Area implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(double x, double y) {
+    @Override
+		public boolean contains(double x, double y) {
         if (!getCachedBounds().contains(x, y)) {
             return false;
         }
@@ -568,7 +572,8 @@ public class Area implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Point2D p) {
+    @Override
+		public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 
@@ -576,7 +581,8 @@ public class Area implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(double x, double y, double w, double h) {
+    @Override
+		public boolean contains(double x, double y, double w, double h) {
         if (w < 0 || h < 0) {
             return false;
         }
@@ -591,7 +597,8 @@ public class Area implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Rectangle2D r) {
+    @Override
+		public boolean contains(Rectangle2D r) {
         return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -599,7 +606,8 @@ public class Area implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(double x, double y, double w, double h) {
+    @Override
+		public boolean intersects(double x, double y, double w, double h) {
         if (w < 0 || h < 0) {
             return false;
         }
@@ -614,7 +622,8 @@ public class Area implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(Rectangle2D r) {
+    @Override
+		public boolean intersects(Rectangle2D r) {
         return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -629,7 +638,8 @@ public class Area implements Shape, Cloneable {
      *          segment at a time.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at) {
         return new AreaIterator(curves, at);
     }
 
@@ -651,7 +661,8 @@ public class Area implements Shape, Cloneable {
      * at a time.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at, double flatness) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return new FlatteningPathIterator(getPathIterator(at), flatness);
     }
 }
@@ -671,18 +682,21 @@ class AreaIterator implements PathIterator {
         }
     }
 
-    public int getWindingRule() {
+    @Override
+		public int getWindingRule() {
         // REMIND: Which is better, EVEN_ODD or NON_ZERO?
         //         The paths calculated could be classified either way.
         //return WIND_EVEN_ODD;
         return WIND_NON_ZERO;
     }
 
-    public boolean isDone() {
+    @Override
+		public boolean isDone() {
         return (prevcurve == null && thiscurve == null);
     }
 
-    public void next() {
+    @Override
+		public void next() {
         if (prevcurve != null) {
             prevcurve = null;
         } else {
@@ -702,7 +716,8 @@ class AreaIterator implements PathIterator {
         }
     }
 
-    public int currentSegment(float coords[]) {
+    @Override
+		public int currentSegment(float coords[]) {
         double dcoords[] = new double[6];
         int segtype = currentSegment(dcoords);
         int numpoints = (segtype == SEG_CLOSE ? 0
@@ -715,7 +730,8 @@ class AreaIterator implements PathIterator {
         return segtype;
     }
 
-    public int currentSegment(double coords[]) {
+    @Override
+		public int currentSegment(double coords[]) {
         int segtype;
         int numpoints;
         if (prevcurve != null) {

@@ -272,7 +272,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      * @return         An object reference to an array of type defined by
      *                 getTransferType() with the request pixel data.
      */
-    public Object getDataElements(int x, int y, Object obj) {
+    @Override
+		public Object getDataElements(int x, int y, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -320,7 +321,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      * @return         An object reference to an array of type defined by
      *                 getTransferType() with the request pixel data.
      */
-    public Object getDataElements(int x, int y, int w, int h, Object obj) {
+    @Override
+		public Object getDataElements(int x, int y, int w, int h, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -474,7 +476,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      *                 getTransferType() and length getNumDataElements()
      *                 containing the pixel data to place at x,y.
      */
-    public void setDataElements(int x, int y, Object obj) {
+    @Override
+		public void setDataElements(int x, int y, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -594,7 +597,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      *                 containing the pixel data to place between x,y and
      *                 x+h, y+h.
      */
-    public void setDataElements(int x, int y, int w, int h, Object obj) {
+    @Override
+		public void setDataElements(int x, int y, int w, int h, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -778,7 +782,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      * @exception RasterFormatException
      *            if the specified bounding box is outside of the parent raster.
      */
-    public Raster createChild(int x, int y,
+    @Override
+		public Raster createChild(int x, int y,
                               int width, int height,
                               int x0, int y0, int[] bandList) {
         WritableRaster newRaster = createWritableChild(x, y,
@@ -807,7 +812,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      * @exception RasterFormatException
      *            if the specified bounding box is outside of the parent Raster.
      */
-    public WritableRaster createWritableChild(int x, int y,
+    @Override
+		public WritableRaster createWritableChild(int x, int y,
                                               int width, int height,
                                               int x0, int y0,
                                               int[] bandList) {
@@ -846,7 +852,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      * Creates a Raster with the same layout but using a different
      * width and height, and with new zeroed data arrays.
      */
-    public WritableRaster createCompatibleWritableRaster(int w, int h) {
+    @Override
+		public WritableRaster createCompatibleWritableRaster(int w, int h) {
         if (w <= 0 || h <=0) {
             throw new RasterFormatException("negative "+
                                           ((w <= 0) ? "width" : "height"));
@@ -864,7 +871,8 @@ public class ByteComponentRaster extends SunWritableRaster {
      * the Raster is a subRaster, this will call
      * createCompatibleRaster(width, height).
      */
-    public WritableRaster createCompatibleWritableRaster() {
+    @Override
+		public WritableRaster createCompatibleWritableRaster() {
         return createCompatibleWritableRaster(width,height);
     }
 
@@ -961,7 +969,8 @@ public class ByteComponentRaster extends SunWritableRaster {
         }
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return new String ("ByteComponentRaster: width = "+width+" height = "
                            + height
                            +" #numDataElements "+numDataElements

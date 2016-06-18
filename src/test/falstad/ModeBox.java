@@ -79,7 +79,7 @@ class ModeBoxCanvas extends Canvas {
 	public void paintComponent(Graphics g)  {
 		pg.updateModeBox(g);
 	}
-};
+}
 
 class ModeBoxLayout implements LayoutManager {
 	public ModeBoxLayout() {
@@ -139,7 +139,7 @@ class ModeBoxLayout implements LayoutManager {
 			}
 		}
 	}
-};
+}
 
 public class ModeBox extends Applet {
 	static ModeBoxFrame oc;
@@ -185,7 +185,7 @@ public class ModeBox extends Applet {
 		super.paint(g);
 	}
 
-};
+}
 
 class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
@@ -1194,5 +1194,5 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 				omega;
 		int tableSize;
 		public double xtable[], ytable[], ztable[];
-	};
+	}
 }

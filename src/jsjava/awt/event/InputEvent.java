@@ -339,7 +339,8 @@ public abstract class InputEvent extends ComponentEvent {
      * Consumes this event so that it will not be processed
      * in the default manner by the source which originated it.
      */
-    public void consume() {
+    @Override
+		public void consume() {
         consumed = true;
     }
 
@@ -347,7 +348,8 @@ public abstract class InputEvent extends ComponentEvent {
      * Returns whether or not this event has been consumed.
      * @see #consume
      */
-    public boolean isConsumed() {
+    @Override
+		public boolean isConsumed() {
         return consumed;
     }
 

@@ -215,7 +215,8 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
      * Executes the Runnable's <code>run()</code> method and notifies the
      * notifier (if any) when <code>run()</code> returns.
      */
-    public void dispatch() {
+    @Override
+		public void dispatch() {
         if (catchExceptions) {
             try {
                 runnable.run();
@@ -279,7 +280,8 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
      *
      * @return  A string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
             case INVOCATION_DEFAULT:

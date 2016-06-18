@@ -225,6 +225,7 @@ public final class CompositeType {
 		return next;
 	}
 
+	@Override
 	public int hashCode() {
 		return desc.hashCode();
 	}
@@ -240,6 +241,7 @@ public final class CompositeType {
 		return false;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof CompositeType) {
 			return (((CompositeType) o).uniqueID == this.uniqueID);
@@ -247,6 +249,7 @@ public final class CompositeType {
 		return false;
 	}
 
+	@Override
 	public String toString() {
 		return desc;
 	}

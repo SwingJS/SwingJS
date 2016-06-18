@@ -387,7 +387,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      *                          renderer and, therefore, the proper tip
      * @return the tool tip for this component
      */
-    public String getToolTipText(MouseEvent event) {
+    @Override
+		public String getToolTipText(MouseEvent event) {
         String tip = null;
         Point p = event.getPoint();
         int column;
@@ -437,7 +438,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      *
      * @return the <code>TableHeaderUI</code> object that renders this component
      */
-    public TableHeaderUI getUI() {
+    @Override
+		public TableHeaderUI getUI() {
         return (TableHeaderUI)ui;
     }
 
@@ -462,7 +464,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      *
      * @see JComponent#updateUI
      */
-    public void updateUI(){
+    @Override
+		public void updateUI(){
         setUI((TableHeaderUI)UIManager.getUI(this));
 
         TableCellRenderer renderer = getDefaultRenderer();
@@ -481,7 +484,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -544,7 +548,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      * @param e  the event received
      * @see TableColumnModelListener
      */
-    public void columnAdded(TableColumnModelEvent e) { resizeAndRepaint(); }
+    @Override
+		public void columnAdded(TableColumnModelEvent e) { resizeAndRepaint(); }
 
 
     /**
@@ -556,7 +561,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      * @param e  the event received
      * @see TableColumnModelListener
      */
-    public void columnRemoved(TableColumnModelEvent e) { resizeAndRepaint(); }
+    @Override
+		public void columnRemoved(TableColumnModelEvent e) { resizeAndRepaint(); }
 
 
     /**
@@ -568,7 +574,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      * @param e the event received
      * @see TableColumnModelListener
      */
-    public void columnMoved(TableColumnModelEvent e) { repaint(); }
+    @Override
+		public void columnMoved(TableColumnModelEvent e) { repaint(); }
 
 
     /**
@@ -580,7 +587,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      * @param e the event received
      * @see TableColumnModelListener
      */
-    public void columnMarginChanged(ChangeEvent e) { resizeAndRepaint(); }
+    @Override
+		public void columnMarginChanged(ChangeEvent e) { resizeAndRepaint(); }
 
 
     // --Redrawing the header is slow in cell selection mode.
@@ -597,7 +605,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      * @param e the event received
      * @see TableColumnModelListener
      */
-    public void columnSelectionChanged(ListSelectionEvent e) { } // repaint(); }
+    @Override
+		public void columnSelectionChanged(ListSelectionEvent e) { } // repaint(); }
 
 //
 //  Package Methods
@@ -722,7 +731,8 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
      *
      * @return  a string representation of this <code>JTableHeader</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String reorderingAllowedString = (reorderingAllowed ?
                                           "true" : "false");
         String resizingAllowedString = (resizingAllowed ?

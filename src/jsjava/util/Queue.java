@@ -161,7 +161,8 @@ public interface Queue<E> extends Collection<E> {
      * @throws IllegalArgumentException if some property of this element
      *         prevents it from being added to this queue
      */
-    boolean add(E e);
+    @Override
+		boolean add(E e);
 
     /**
      * Inserts the specified element into this queue if it is possible to do

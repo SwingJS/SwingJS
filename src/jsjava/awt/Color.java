@@ -743,7 +743,8 @@ public class Color implements Paint /*, java.io.Serializable*/ {
      * @return     a hash code value for this object.
      * @since      JDK1.0
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return value;
     }
 
@@ -760,7 +761,8 @@ public class Color implements Paint /*, java.io.Serializable*/ {
      *                             <code>false</code> otherwise.
      * @since   JDK1.0
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         return obj instanceof Color && ((Color)obj).getRGB() == this.getRGB();
     }
 
@@ -773,7 +775,8 @@ public class Color implements Paint /*, java.io.Serializable*/ {
      *
      * @return  a string representation of this <code>Color</code>.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[r=" + getRed() + ",g=" + getGreen() + ",b=" + getBlue() + "]";
     }
 
@@ -1287,7 +1290,8 @@ public class Color implements Paint /*, java.io.Serializable*/ {
      * @see AffineTransform
      * @see RenderingHints
      */
-    public synchronized PaintContext createContext(ColorModel cm, Rectangle r,
+    @Override
+		public synchronized PaintContext createContext(ColorModel cm, Rectangle r,
                                                    Rectangle2D r2d,
                                                    AffineTransform xform,
                                                    RenderingHints hints) {
@@ -1307,7 +1311,8 @@ public class Color implements Paint /*, java.io.Serializable*/ {
      * @see Transparency
      * @see #createContext
      */
-    public int getTransparency() {
+    @Override
+		public int getTransparency() {
         int alpha = getAlpha();
         if (alpha == 0xff) {
             return Transparency.OPAQUE;

@@ -130,7 +130,8 @@ public abstract class CompositeView extends View {
      *
      * @param parent the parent of the view, <code>null</code> if none
      */
-    public void setParent(View parent) {
+    @Override
+		public void setParent(View parent) {
         super.setParent(parent);
         if ((parent != null) && (nchildren == 0)) {
             ViewFactory f = getViewFactory();
@@ -144,7 +145,8 @@ public abstract class CompositeView extends View {
      * @return the number of views >= 0
      * @see #getView
      */
-    public int getViewCount() {
+    @Override
+		public int getViewCount() {
         return nchildren;
     }
 
@@ -154,7 +156,8 @@ public abstract class CompositeView extends View {
      * @param n the number of the desired view, >= 0 && < getViewCount()
      * @return the view at index <code>n</code>
      */
-    public View getView(int n) {
+    @Override
+		public View getView(int n) {
         return children[n];
     }
 
@@ -174,7 +177,8 @@ public abstract class CompositeView extends View {
      *  <code>null</code>
      *   to indicate no children are being added (useful to remove)
      */
-    public void replace(int offset, int length, View[] views) {
+    @Override
+		public void replace(int offset, int length, View[] views) {
         // make sure an array exists
         if (views == null) {
             views = ZERO;
@@ -225,7 +229,8 @@ public abstract class CompositeView extends View {
      * @param a  the allocation to this view
      * @return the allocation to the child
      */
-    public Shape getChildAllocation(int index, Shape a) {
+    @Override
+		public Shape getChildAllocation(int index, Shape a) {
         Rectangle alloc = getInsideAllocation(a);
         childAllocation(index, alloc);
         return alloc;
@@ -244,7 +249,8 @@ public abstract class CompositeView extends View {
      *   not represent a valid location in the associated document
      * @see View#modelToView
      */
-    public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
+    @Override
+		public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
         boolean isBackward = (b == Position.Bias.Backward);
         int testPos = (isBackward) ? Math.max(0, pos - 1) : pos;
         if(isBackward && testPos < getStartOffset()) {
@@ -295,7 +301,8 @@ public abstract class CompositeView extends View {
      * @exception IllegalArgumentException for an invalid bias argument
      * @see View#viewToModel
      */
-    public Shape modelToView(int p0, Position.Bias b0, int p1, Position.Bias b1, Shape a) throws BadLocationException {
+    @Override
+		public Shape modelToView(int p0, Position.Bias b0, int p1, Position.Bias b1, Shape a) throws BadLocationException {
         if (p0 == getStartOffset() && p1 == getEndOffset()) {
             return a;
         }
@@ -385,7 +392,8 @@ public abstract class CompositeView extends View {
      *  given point in the view >= 0
      * @see View#viewToModel
      */
-    public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
+    @Override
+		public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
         Rectangle alloc = getInsideAllocation(a);
         if (isBefore((int) x, (int) y, alloc)) {
             // point is before the range represented
@@ -453,7 +461,8 @@ public abstract class CompositeView extends View {
      * @exception BadLocationException
      * @exception IllegalArgumentException if <code>direction</code> is invalid
      */
-    public int getNextVisualPositionFrom(int pos, Position.Bias b, Shape a,
+    @Override
+		public int getNextVisualPositionFrom(int pos, Position.Bias b, Shape a,
                                          int direction, Position.Bias[] biasRet)
       throws BadLocationException {
         //Rectangle alloc = getInsideAllocation(a);
@@ -487,7 +496,8 @@ public abstract class CompositeView extends View {
      *   -1 if no view represents that position
      * @since 1.3
      */
-    public int getViewIndex(int pos, Position.Bias b) {
+    @Override
+		public int getViewIndex(int pos, Position.Bias b) {
         if(b == Position.Bias.Backward) {
             pos -= 1;
         }

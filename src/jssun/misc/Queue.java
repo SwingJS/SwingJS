@@ -160,11 +160,13 @@ final class FIFOQueueEnumerator implements Enumeration {
         cursor = q.tail;
     }
 
-    public boolean hasMoreElements() {
+    @Override
+		public boolean hasMoreElements() {
         return (cursor != null);
     }
 
-    public Object nextElement() {
+    @Override
+		public Object nextElement() {
         synchronized (queue) {
             if (cursor != null) {
                 QueueElement result = cursor;
@@ -185,11 +187,13 @@ final class LIFOQueueEnumerator implements Enumeration {
         cursor = q.head;
     }
 
-    public boolean hasMoreElements() {
+    @Override
+		public boolean hasMoreElements() {
         return (cursor != null);
     }
 
-    public Object nextElement() {
+    @Override
+		public Object nextElement() {
         synchronized (queue) {
             if (cursor != null) {
                 QueueElement result = cursor;
@@ -211,7 +215,8 @@ class QueueElement {
         this.obj = obj;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return "QueueElement[obj="+obj+(prev == null ? " null" : " prev")+
             (next == null ? " null" : " next")+"]";
     }

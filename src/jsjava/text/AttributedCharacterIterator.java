@@ -108,7 +108,8 @@ public interface AttributedCharacterIterator extends CharacterIterator {
          * for <code>x.equals(y)</code> if <code>x</code> and <code>y</code> refer
          * to the same object, and guarantees this for all subclasses.
          */
-        public final boolean equals(Object obj) {
+        @Override
+				public final boolean equals(Object obj) {
             return super.equals(obj);
         }
 
@@ -116,7 +117,8 @@ public interface AttributedCharacterIterator extends CharacterIterator {
          * Returns a hash code value for the object. This version is identical to
          * the one in Object, but is also final.
          */
-        public final int hashCode() {
+        @Override
+				public final int hashCode() {
             return super.hashCode();
         }
 
@@ -124,7 +126,8 @@ public interface AttributedCharacterIterator extends CharacterIterator {
          * Returns a string representation of the object. This version returns the
          * concatenation of class name, "(", a name identifying the attribute and ")".
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return getClass().getName() + "(" + name + ")";
         }
 
@@ -180,7 +183,7 @@ public interface AttributedCharacterIterator extends CharacterIterator {
         // make sure the serial version doesn't change between compiler versions
         private static final long serialVersionUID = -9142742483513960612L;
 
-    };
+    }
 
     /**
      * Returns the index of the first character of the run
@@ -237,4 +240,4 @@ public interface AttributedCharacterIterator extends CharacterIterator {
      * attributes are defined.
      */
     public Set<Attribute> getAllAttributeKeys();
-};
+}

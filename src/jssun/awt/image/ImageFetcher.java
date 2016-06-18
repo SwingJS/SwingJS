@@ -147,7 +147,8 @@ class ImageFetcher extends Thread {
       * The main run() method of an ImageFetcher Thread.  Calls fetchloop()
       * to do the work, then removes itself from the array of ImageFetchers.
       */
-    public void run() {
+    @Override
+		public void run() {
         final FetcherInfo info = FetcherInfo.getFetcherInfo();
         try {
             fetchloop();

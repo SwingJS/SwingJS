@@ -334,7 +334,8 @@ public class Cursor {
      * @return    a string representation of this cursor.
      * @since     1.2
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[" + getName() + "]";
     }
 

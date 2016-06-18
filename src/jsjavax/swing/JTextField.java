@@ -258,7 +258,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -276,7 +277,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      *        bound: true
      *       expert: true
      */
-    public void setDocument(Document doc) {
+    @Override
+		public void setDocument(Document doc) {
         if (doc != null) {
             doc.putProperty("filterNewlines", Boolean.TRUE);
         }
@@ -296,7 +298,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      * @see JComponent#revalidate
      * @see JComponent#isValidateRoot
      */
-    public boolean isValidateRoot() {
+    @Override
+		public boolean isValidateRoot() {
         Component parent = getParent();
         if (parent instanceof JViewport) {
             return false;
@@ -431,7 +434,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      *
      * @return the dimension of this textfield
      */
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
     	return getPrefSizeJTF();
     }
 
@@ -452,7 +456,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      *
      * @param f the new font
      */
-    public void setFont(Font f) {
+    @Override
+		public void setFont(Font f) {
         super.setFont(f);
         columnWidth = 0;
     }
@@ -703,7 +708,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
             super(tf, a);
         }
 
-        protected void actionPropertyChanged(JTextField textField,
+        @Override
+				protected void actionPropertyChanged(JTextField textField,
                                              Action action,
                                              PropertyChangeEvent e) {
             if (AbstractAction.shouldReconfigure(e)) {
@@ -723,7 +729,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      *
      * @return the command list
      */
-    public Action[] getActions() {
+    @Override
+		public Action[] getActions() {
         return TextAction.augmentList(super.getActions(), defaultActions);
     }
 
@@ -845,7 +852,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
             super(notifyAction);
         }
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JTextComponent target = getFocusedComponent();
             if (target instanceof JTextField) {
                 JTextField field = (JTextField) target;
@@ -853,7 +861,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
             }
         }
 
-        public boolean isEnabled() {
+        @Override
+				public boolean isEnabled() {
             JTextComponent target = getFocusedComponent();
             if (target instanceof JTextField) {
                 return ((JTextField)target).hasActionListener();
@@ -864,7 +873,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
 
     class ScrollRepainter implements ChangeListener {
 
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             repaint();
         }
 
@@ -897,7 +907,8 @@ public class JTextField extends JTextComponent implements SwingConstants {
      *
      * @return  a string representation of this <code>JTextField</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String horizontalAlignmentString;
         if (horizontalAlignment == LEFT) {
             horizontalAlignmentString = "LEFT";

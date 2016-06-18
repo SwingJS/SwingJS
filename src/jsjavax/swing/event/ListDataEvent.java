@@ -111,7 +111,8 @@ public class ListDataEvent extends EventObject
      * @since 1.4
      * @return  a string representation of this ListDataEvent.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() +
         "[type=" + type +
         ",index0=" + index0 +

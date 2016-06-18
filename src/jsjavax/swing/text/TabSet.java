@@ -149,7 +149,8 @@ public class TabSet
      *
      * @since 1.5
      */
-    public boolean equals(Object o) {
+    @Override
+		public boolean equals(Object o) {
         if (o == this) {
             return true;
         }
@@ -178,7 +179,8 @@ public class TabSet
      *
      * @since 1.5
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         if (hashCode == Integer.MAX_VALUE) {
             hashCode = 0;
             int len = getTabCount();
@@ -196,7 +198,8 @@ public class TabSet
     /**
      * Returns the string representation of the set of tabs.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         int            tabCount = getTabCount();
         StringBuffer   buffer = new StringBuffer("[ ");
 

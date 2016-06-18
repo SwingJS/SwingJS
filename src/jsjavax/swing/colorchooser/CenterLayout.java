@@ -38,10 +38,13 @@ import jsjava.awt.LayoutManager;
   * @author Steve Wilson
   */
 class CenterLayout implements LayoutManager {
-    public void addLayoutComponent(String name, Component comp) { }
-    public void removeLayoutComponent(Component comp) { }
+    @Override
+		public void addLayoutComponent(String name, Component comp) { }
+    @Override
+		public void removeLayoutComponent(Component comp) { }
 
-    public Dimension preferredLayoutSize( Container container ) {
+    @Override
+		public Dimension preferredLayoutSize( Container container ) {
         Component c = container.getComponent( 0 );
         if ( c != null ) {
             Dimension size = c.getPreferredSize();
@@ -55,11 +58,13 @@ class CenterLayout implements LayoutManager {
         }
     }
 
-    public Dimension minimumLayoutSize(Container cont) {
+    @Override
+		public Dimension minimumLayoutSize(Container cont) {
         return preferredLayoutSize(cont);
     }
 
-    public void layoutContainer(Container container) {
+    @Override
+		public void layoutContainer(Container container) {
         try {
            Component c = container.getComponent( 0 );
 

@@ -968,10 +968,12 @@ public class JOptionPane extends JComponent
         dialog.setLocationRelativeTo(parentComponent);
         WindowAdapter adapter = new WindowAdapter() {
             private boolean gotFocus = false;
-            public void windowClosing(WindowEvent we) {
+            @Override
+						public void windowClosing(WindowEvent we) {
                 setValue(null);
             }
-            public void windowGainedFocus(WindowEvent we) {
+            @Override
+						public void windowGainedFocus(WindowEvent we) {
                 // Once window gets focus, set initial focus
                 if (!gotFocus) {
                     selectInitialValue();
@@ -982,13 +984,15 @@ public class JOptionPane extends JComponent
         dialog.addWindowListener(adapter);
         dialog.addWindowFocusListener(adapter);
         dialog.addComponentListener(new ComponentAdapter() {
-            public void componentShown(ComponentEvent ce) {
+            @Override
+						public void componentShown(ComponentEvent ce) {
                 // reset value to ensure closing works properly
                 setValue(JOptionPane.UNINITIALIZED_VALUE);
             }
         });
         addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent event) {
+            @Override
+						public void propertyChange(PropertyChangeEvent event) {
                 // Let the defaultCloseOperation handle the closing
                 // if the user closed the window without selecting a button
                 // (newValue = null in that case).  Otherwise, close the dialog.
@@ -1842,7 +1846,8 @@ public class JOptionPane extends JComponent
      *
      * @return the <code>OptionPaneUI</code> object
      */
-    public OptionPaneUI getUI() {
+    @Override
+		public OptionPaneUI getUI() {
         return (OptionPaneUI)ui;
     }
 
@@ -1853,7 +1858,8 @@ public class JOptionPane extends JComponent
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((OptionPaneUI)UIManager.getUI(this));
     }
 
@@ -1866,7 +1872,8 @@ public class JOptionPane extends JComponent
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -2445,7 +2452,8 @@ public class JOptionPane extends JComponent
      *
      * @return  a string representation of this <code>JOptionPane</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String iconString = (icon != null ?
                              icon.toString() : "");
         String initialValueString = (initialValue != null ?

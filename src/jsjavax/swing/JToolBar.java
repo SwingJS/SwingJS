@@ -152,7 +152,8 @@ public class JToolBar extends JComponent implements SwingConstants
      * Returns the tool bar's current UI.
      * @see #setUI
      */
-    public ToolBarUI getUI() {
+    @Override
+		public ToolBarUI getUI() {
         return (ToolBarUI)ui;
     }
 
@@ -178,7 +179,8 @@ public class JToolBar extends JComponent implements SwingConstants
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ToolBarUI)UIManager.getUI(this));
         // GTKLookAndFeel installs a different LayoutManager, and sets it
         // to null after changing the look and feel, so, install the default
@@ -198,7 +200,8 @@ public class JToolBar extends JComponent implements SwingConstants
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -329,7 +332,8 @@ public class JToolBar extends JComponent implements SwingConstants
       * @see JComponent#paint
       * @see JComponent#setBorder
       */
-     protected void paintBorder(Graphics g)
+     @Override
+		protected void paintBorder(Graphics g)
      {
          if (isBorderPainted())
          {
@@ -521,7 +525,8 @@ public class JToolBar extends JComponent implements SwingConstants
      */
     protected JButton createActionComponent(Action a) {
         JButton b = new JButton() {
-            protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
+            @Override
+						protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
                 PropertyChangeListener pcl = createActionChangeListener(this);
                 if (pcl==null) {
                     pcl = super.createActionPropertyChangeListener(a);
@@ -559,7 +564,8 @@ public class JToolBar extends JComponent implements SwingConstants
      * @param index the index of the component
      *
      */
-    protected Component addImpl(Component comp, Object constraints, int index) {
+    @Override
+		protected Component addImpl(Component comp, Object constraints, int index) {
         if (comp instanceof Separator) {
             if (getOrientation() == VERTICAL) {
                 ( (Separator)comp ).setOrientation(JSeparator.HORIZONTAL);
@@ -610,7 +616,8 @@ public class JToolBar extends JComponent implements SwingConstants
          * @see JComponent#getUIClassID
          * @see UIDefaults#getUI
          */
-        public String getUIClassID()
+        @Override
+				public String getUIClassID()
         {
             return "ToolBarSeparatorUI";
         }
@@ -647,7 +654,8 @@ public class JToolBar extends JComponent implements SwingConstants
          * @return the <code>Dimension</code> object containing the separator's
          *         minimum size
          */
-        public Dimension getMinimumSize()
+        @Override
+				public Dimension getMinimumSize()
         {
             if (separatorSize != null) {
                 return separatorSize.getSize();
@@ -662,7 +670,8 @@ public class JToolBar extends JComponent implements SwingConstants
          * @return the <code>Dimension</code> object containing the separator's
          *         maximum size
          */
-        public Dimension getMaximumSize()
+        @Override
+				public Dimension getMaximumSize()
         {
             if (separatorSize != null) {
                 return separatorSize.getSize();
@@ -677,7 +686,8 @@ public class JToolBar extends JComponent implements SwingConstants
          * @return the <code>Dimension</code> object containing the separator's
          *         preferred size
          */
-        public Dimension getPreferredSize()
+        @Override
+				public Dimension getPreferredSize()
         {
             if (separatorSize != null) {
                 return separatorSize.getSize();
@@ -715,7 +725,8 @@ public class JToolBar extends JComponent implements SwingConstants
      *
      * @return  a string representation of this <code>JToolBar</code>.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String paintBorderString = (paintBorder ?
                                     "true" : "false");
         String marginString = (margin != null ?
@@ -746,47 +757,58 @@ public class JToolBar extends JComponent implements SwingConstants
             }
         }
 
-        public void addLayoutComponent(String name, Component comp) {
+        @Override
+				public void addLayoutComponent(String name, Component comp) {
             lm.addLayoutComponent(name, comp);
         }
 
-        public void addLayoutComponent(Component comp, Object constraints) {
+        @Override
+				public void addLayoutComponent(Component comp, Object constraints) {
             lm.addLayoutComponent(comp, constraints);
         }
 
-        public void removeLayoutComponent(Component comp) {
+        @Override
+				public void removeLayoutComponent(Component comp) {
             lm.removeLayoutComponent(comp);
         }
 
-        public Dimension preferredLayoutSize(Container target) {
+        @Override
+				public Dimension preferredLayoutSize(Container target) {
             return lm.preferredLayoutSize(target);
         }
 
-        public Dimension minimumLayoutSize(Container target) {
+        @Override
+				public Dimension minimumLayoutSize(Container target) {
             return lm.minimumLayoutSize(target);
         }
 
-        public Dimension maximumLayoutSize(Container target) {
+        @Override
+				public Dimension maximumLayoutSize(Container target) {
             return lm.maximumLayoutSize(target);
         }
 
-        public void layoutContainer(Container target) {
+        @Override
+				public void layoutContainer(Container target) {
             lm.layoutContainer(target);
         }
 
-        public float getLayoutAlignmentX(Container target) {
+        @Override
+				public float getLayoutAlignmentX(Container target) {
             return lm.getLayoutAlignmentX(target);
         }
 
-        public float getLayoutAlignmentY(Container target) {
+        @Override
+				public float getLayoutAlignmentY(Container target) {
             return lm.getLayoutAlignmentY(target);
         }
 
-        public void invalidateLayout(Container target) {
+        @Override
+				public void invalidateLayout(Container target) {
             lm.invalidateLayout(target);
         }
 
-        public void propertyChange(PropertyChangeEvent e) {
+        @Override
+				public void propertyChange(PropertyChangeEvent e) {
             String name = e.getPropertyName();
             if( name.equals("orientation") ) {
                 int o = ((Integer)e.getNewValue()).intValue();
@@ -801,7 +823,8 @@ public class JToolBar extends JComponent implements SwingConstants
     }
 
 
-    public void setLayout(LayoutManager mgr) {
+    @Override
+		public void setLayout(LayoutManager mgr) {
         LayoutManager oldMgr = getLayout();
         if (oldMgr instanceof PropertyChangeListener) {
             removePropertyChangeListener((PropertyChangeListener)oldMgr);

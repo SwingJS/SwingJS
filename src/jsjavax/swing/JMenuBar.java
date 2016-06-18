@@ -106,7 +106,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * Returns the menubar's current UI.
      * @see #setUI
      */
-    public MenuBarUI getUI() {
+    @Override
+		public MenuBarUI getUI() {
         return (MenuBarUI)ui;
     }
 
@@ -130,7 +131,8 @@ public class JMenuBar extends JComponent implements MenuElement
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((MenuBarUI)UIManager.getUI(this));
     }
 
@@ -142,7 +144,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -323,7 +326,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * @see JComponent#paint
      * @see JComponent#setBorder
      */
-    protected void paintBorder(Graphics g) {
+    @Override
+		protected void paintBorder(Graphics g) {
         if (isBorderPainted()) {
             super.paintBorder(g);
         }
@@ -373,7 +377,8 @@ public class JMenuBar extends JComponent implements MenuElement
      *
      * @see #getSubElements
      */
-    public void processMouseEvent(MouseEvent event,MenuElement path[],MenuSelectionManager manager) {
+    @Override
+		public void processMouseEvent(MouseEvent event,MenuElement path[],MenuSelectionManager manager) {
     }
 
     /**
@@ -381,7 +386,8 @@ public class JMenuBar extends JComponent implements MenuElement
      *
      * @see #getSubElements
      */
-    public void processKeyEvent(KeyEvent e,MenuElement path[],MenuSelectionManager manager) {
+    @Override
+		public void processKeyEvent(KeyEvent e,MenuElement path[],MenuSelectionManager manager) {
     }
 
     /**
@@ -389,7 +395,8 @@ public class JMenuBar extends JComponent implements MenuElement
      *
      * @see #getSubElements
      */
-    public void menuSelectionChanged(boolean isIncluded) {
+    @Override
+		public void menuSelectionChanged(boolean isIncluded) {
     }
 
     /**
@@ -400,7 +407,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * other menu elements.
      * @return an array of menu items in the menu bar.
      */
-    public MenuElement[] getSubElements() {
+    @Override
+		public MenuElement[] getSubElements() {
         MenuElement result[];
         Vector tmp = new Vector();
         int c = getComponentCount();
@@ -425,7 +433,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * @return the current <code>Component</code> (this)
      * @see #getSubElements
      */
-    public Component getComponent() {
+    @Override
+		public Component getComponent() {
         return this;
     }
 
@@ -440,7 +449,8 @@ public class JMenuBar extends JComponent implements MenuElement
      *
      * @return  a string representation of this <code>JMenuBar</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String paintBorderString = (paintBorder ?
                                     "true" : "false");
         String marginString = (margin != null ?
@@ -646,7 +656,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * Subclassed to check all the child menus.
      * @since 1.3
      */
-    protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
+    @Override
+		protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
                                         int condition, boolean pressed) {
         // See if we have a local binding.
         boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
@@ -695,7 +706,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * Overrides <code>JComponent.addNotify</code> to register this
      * menu bar with the current keyboard manager.
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
         super.addNotify();
         KeyboardManager.getCurrentManager().registerMenuBar(this);
     }
@@ -704,7 +716,8 @@ public class JMenuBar extends JComponent implements MenuElement
      * Overrides <code>JComponent.removeNotify</code> to unregister this
      * menu bar with the current keyboard manager.
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
         super.removeNotify();
         KeyboardManager.getCurrentManager().unregisterMenuBar(this);
     }

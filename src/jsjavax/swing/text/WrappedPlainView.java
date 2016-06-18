@@ -270,7 +270,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      *
      * @param f the view factory
      */
-    protected void loadChildren(ViewFactory f) {
+    @Override
+		protected void loadChildren(ViewFactory f) {
         Element e = getElement();
         int n = e.getElementCount();
         if (n > 0) {
@@ -391,7 +392,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      *   that the tab occurred at >= 0.
      * @return the tab stop, measured in points >= 0
      */
-    public float nextTabStop(float x, int tabOffset) {
+    @Override
+		public float nextTabStop(float x, int tabOffset) {
         if (tabSize == 0)
             return x;
         int ntabs = ((int) x - tabBase) / tabSize;
@@ -412,7 +414,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      *
      * @see View#paint
      */
-    public void paint(Graphics g, Shape a) {
+    @Override
+		public void paint(Graphics g, Shape a) {
         Rectangle alloc = (Rectangle) a;
         tabBase = alloc.x;
         JTextComponent host = (JTextComponent) getContainer();
@@ -437,7 +440,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      * @param width the width >= 0
      * @param height the height >= 0
      */
-    public void setSize(float width, float height) {
+    @Override
+		public void setSize(float width, float height) {
         updateMetrics();
         if ((int) width != getWidth()) {
             // invalidate the view itself since the childrens
@@ -464,7 +468,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      *           The parent may choose to resize or break the view.
      * @see View#getPreferredSpan
      */
-    public float getPreferredSpan(int axis) {
+    @Override
+		public float getPreferredSpan(int axis) {
         updateMetrics();
         return super.getPreferredSpan(axis);
     }
@@ -484,7 +489,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      *           The parent may choose to resize or break the view.
      * @see View#getMinimumSpan
      */
-    public float getMinimumSpan(int axis) {
+    @Override
+		public float getMinimumSpan(int axis) {
         updateMetrics();
         return super.getMinimumSpan(axis);
     }
@@ -504,7 +510,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      *           The parent may choose to resize or break the view.
      * @see View#getMaximumSpan
      */
-    public float getMaximumSpan(int axis) {
+    @Override
+		public float getMaximumSpan(int axis) {
         updateMetrics();
         return super.getMaximumSpan(axis);
     }
@@ -519,7 +526,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      * @param f the factory to use to rebuild if the view has children
      * @see View#insertUpdate
      */
-    public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+    @Override
+		public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f) {
         updateChildren(e, a);
 
         Rectangle alloc = ((a != null) && isAllocationValid()) ?
@@ -541,7 +549,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      * @param f the factory to use to rebuild if the view has children
      * @see View#removeUpdate
      */
-    public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+    @Override
+		public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
         updateChildren(e, a);
 
         Rectangle alloc = ((a != null) && isAllocationValid()) ?
@@ -562,7 +571,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
      * @param f the factory to use to rebuild if the view has children
      * @see View#changedUpdate
      */
-    public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+    @Override
+		public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f) {
         updateChildren(e, a);
     }
 
@@ -606,7 +616,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          *           The parent may choose to resize or break the view.
          * @see View#getPreferredSpan
          */
-        public float getPreferredSpan(int axis) {
+        @Override
+				public float getPreferredSpan(int axis) {
             switch (axis) {
             case View.X_AXIS:
                 float width = getWidth();
@@ -639,7 +650,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          * @param a the allocated region to render into
          * @see View#paint
          */
-        public void paint(Graphics g, Shape a) {
+        @Override
+				public void paint(Graphics g, Shape a) {
             Rectangle alloc = (Rectangle) a;
             int y = alloc.y + metrics.getAscent();
             int x = alloc.x;
@@ -680,7 +692,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          *   valid location in the associated document
          * @see View#modelToView
          */
-        public Shape modelToView(int pos, Shape a, Position.Bias b)
+        @Override
+				public Shape modelToView(int pos, Shape a, Position.Bias b)
                 throws BadLocationException {
             Rectangle alloc = a.getBounds();
             alloc.height = metrics.getHeight();
@@ -724,7 +737,8 @@ public class WrappedPlainView extends BoxView implements TabExpander {
          *  given point in the view
          * @see View#viewToModel
          */
-        public int viewToModel(float fx, float fy, Shape a, Position.Bias[] bias) {
+        @Override
+				public int viewToModel(float fx, float fy, Shape a, Position.Bias[] bias) {
             // PENDING(prinz) implement bias properly
             bias[0] = Position.Bias.Forward;
 
@@ -783,11 +797,13 @@ public class WrappedPlainView extends BoxView implements TabExpander {
             }
         }
 
-        public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+        @Override
+				public void insertUpdate(DocumentEvent e, Shape a, ViewFactory f) {
             update(e, a);
         }
 
-        public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+        @Override
+				public void removeUpdate(DocumentEvent e, Shape a, ViewFactory f) {
             update(e, a);
         }
 

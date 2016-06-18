@@ -365,7 +365,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
      * @see #getPreviousValue
      * @see #setStepSize
      */
-    public Object getNextValue() {
+    @Override
+		public Object getNextValue() {
         return incrValue(+1);
     }
 
@@ -381,7 +382,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
      * @see #getNextValue
      * @see #setStepSize
      */
-    public Object getPreviousValue() {
+    @Override
+		public Object getPreviousValue() {
         return incrValue(-1);
     }
 
@@ -404,7 +406,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
      * @see #setValue
      * @see #getNumber
      */
-    public Object getValue() {
+    @Override
+		public Object getValue() {
         return value;
     }
 
@@ -435,7 +438,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
      * @see #getValue
      * @see SpinnerModel#addChangeListener
      */
-    public void setValue(Object value) {
+    @Override
+		public void setValue(Object value) {
         if ((value == null) || !(value instanceof Number)) {
             throw new IllegalArgumentException("illegal value");
         }

@@ -214,7 +214,8 @@ public class FocusEvent extends ComponentEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case FOCUS_GAINED:

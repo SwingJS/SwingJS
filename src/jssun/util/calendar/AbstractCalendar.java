@@ -60,7 +60,8 @@ public abstract class AbstractCalendar extends CalendarSystem {
     protected AbstractCalendar() {
     }
 
-    public Era getEra(String eraName) {
+    @Override
+		public Era getEra(String eraName) {
         if (eras != null) {
             for (int i = 0; i < eras.length; i++) {
                 if (eras[i].equals(eraName)) {
@@ -71,7 +72,8 @@ public abstract class AbstractCalendar extends CalendarSystem {
         return null;
     }
 
-    public Era[] getEras() {
+    @Override
+		public Era[] getEras() {
         Era[] e = null;
         if (eras != null) {
             e = new Era[eras.length];
@@ -80,7 +82,8 @@ public abstract class AbstractCalendar extends CalendarSystem {
         return e;
     }
 
-    public void setEra(CalendarDate date, String eraName) {
+    @Override
+		public void setEra(CalendarDate date, String eraName) {
         if (eras == null) {
             return; // should report an error???
         }
@@ -98,20 +101,24 @@ public abstract class AbstractCalendar extends CalendarSystem {
         this.eras = eras;
     }
 
-    public CalendarDate getCalendarDate() {
+    @Override
+		public CalendarDate getCalendarDate() {
         return getCalendarDate(System.currentTimeMillis(), newCalendarDate());
     }
 
-    public CalendarDate getCalendarDate(long millis) {
+    @Override
+		public CalendarDate getCalendarDate(long millis) {
         return getCalendarDate(millis, newCalendarDate());
     }
 
-    public CalendarDate getCalendarDate(long millis, TimeZone zone) {
+    @Override
+		public CalendarDate getCalendarDate(long millis, TimeZone zone) {
         CalendarDate date = newCalendarDate(zone);
         return getCalendarDate(millis, date);
     }
 
-    public CalendarDate getCalendarDate(long millis, CalendarDate date) {
+    @Override
+		public CalendarDate getCalendarDate(long millis, CalendarDate date) {
         int ms = 0;             // time of day
         int zoneOffset = 0;
         int saving = 0;
@@ -170,7 +177,8 @@ public abstract class AbstractCalendar extends CalendarSystem {
         return date;
     }
 
-    public long getTime(CalendarDate date) {
+    @Override
+		public long getTime(CalendarDate date) {
         long gd = getFixedDate(date);
         long ms = (gd - EPOCH_OFFSET) * DAY_IN_MILLIS + getTimeOfDay(date);
         int zoneOffset = 0;
@@ -232,7 +240,8 @@ public abstract class AbstractCalendar extends CalendarSystem {
         return fraction;
     }
 
-    public CalendarDate setTimeOfDay(CalendarDate cdate, int fraction) {
+    @Override
+		public CalendarDate setTimeOfDay(CalendarDate cdate, int fraction) {
         if (fraction < 0) {
             throw new IllegalArgumentException();
         }
@@ -262,13 +271,15 @@ public abstract class AbstractCalendar extends CalendarSystem {
      *
      * @return 7
      */
-    public int getWeekLength() {
+    @Override
+		public int getWeekLength() {
         return 7;
     }
 
     protected abstract boolean isLeapYear(CalendarDate date);
 
-    public CalendarDate getNthDayOfWeek(int nth, int dayOfWeek, CalendarDate date) {
+    @Override
+		public CalendarDate getNthDayOfWeek(int nth, int dayOfWeek, CalendarDate date) {
         CalendarDate ndate = (CalendarDate) date.clone();
         normalize(ndate);
         long fd = getFixedDate(ndate);

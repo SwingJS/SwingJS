@@ -49,7 +49,8 @@ class DefaultShellFolder extends ShellFolder {
      *
      * @returns a <code>java.io.File</code> replacement object.
      */
-    protected Object writeReplace() throws java.io.ObjectStreamException {
+    @Override
+		protected Object writeReplace() throws java.io.ObjectStreamException {
         return new File(getPath());
     }
 
@@ -57,7 +58,8 @@ class DefaultShellFolder extends ShellFolder {
      * @return An array of shell folders that are children of this shell folder
      * object, null if this shell folder is empty.
      */
-    public File[] listFiles() {
+    @Override
+		public File[] listFiles() {
         File[] files = super.listFiles();
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
@@ -70,14 +72,16 @@ class DefaultShellFolder extends ShellFolder {
     /**
      * @return Whether this shell folder is a link
      */
-    public boolean isLink() {
+    @Override
+		public boolean isLink() {
         return false; // Not supported by default
     }
 
     /**
      * @return Whether this shell folder is marked as hidden
      */
-    public boolean isHidden() {
+    @Override
+		public boolean isHidden() {
         String fileName = getName();
         if (fileName.length() > 0) {
             return (fileName.charAt(0) == '.');
@@ -89,21 +93,24 @@ class DefaultShellFolder extends ShellFolder {
      * @return The shell folder linked to by this shell folder, or null
      * if this shell folder is not a link
      */
-    public ShellFolder getLinkLocation() {
+    @Override
+		public ShellFolder getLinkLocation() {
         return null; // Not supported by default
     }
 
     /**
      * @return The name used to display this shell folder
      */
-    public String getDisplayName() {
+    @Override
+		public String getDisplayName() {
         return getName();
     }
 
     /**
      * @return The type of shell folder as a string
      */
-    public String getFolderType() {
+    @Override
+		public String getFolderType() {
         if (isDirectory()) {
             return "File Folder"; // TODO : LOCALIZE THIS STRING!!!
         } else {
@@ -114,7 +121,8 @@ class DefaultShellFolder extends ShellFolder {
     /**
      * @return The executable type as a string
      */
-    public String getExecutableType() {
+    @Override
+		public String getExecutableType() {
         return null; // Not supported by default
     }
 }

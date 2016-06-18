@@ -334,7 +334,8 @@ public class MouseWheelEvent extends MouseEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String scrollTypeStr = null;
 
         if (getScrollType() == WHEEL_UNIT_SCROLL) {

@@ -25,13 +25,11 @@
 
 package jsjavax.swing.plaf;
 
-import jsjavax.swing.JComponent;
-import jsjavax.swing.UIDefaults;
-import jsjavax.swing.UIManager;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
 import jsjava.awt.peer.ComponentPeer;
+import jsjavax.swing.JComponent;
 
 
 /**
@@ -197,15 +195,10 @@ public abstract class ComponentUI implements ComponentPeer {
      * layout manager installed).  The default implementation of this
      * method returns <code>null</code>.
      *
-     * @param c the component whose preferred size is being queried;
-     *          this argument is often ignored,
-     *          but might be used if the UI object is stateless
-     *          and shared by multiple components
-     *
      * @see jsjavax.swing.JComponent#getPreferredSize
      * @see jsjava.awt.LayoutManager#preferredLayoutSize
      */
-    public Dimension getPreferredSize(JComponent c) {
+    public Dimension getPreferredSize() {
         return null;
     }
 
@@ -217,19 +210,14 @@ public abstract class ComponentUI implements ComponentPeer {
      * layout manager installed).  The default implementation of this
      * method invokes <code>getPreferredSize</code> and returns that value.
      *
-     * @param c the component whose minimum size is being queried;
-     *          this argument is often ignored,
-     *          but might be used if the UI object is stateless
-     *          and shared by multiple components
-     *
      * @return a <code>Dimension</code> object or <code>null</code>
      *
      * @see jsjavax.swing.JComponent#getMinimumSize
      * @see jsjava.awt.LayoutManager#minimumLayoutSize
      * @see #getPreferredSize
      */
-    public Dimension getMinimumSize(JComponent c) {
-        return getPreferredSize(c);
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
     }
 
     /**
@@ -240,16 +228,12 @@ public abstract class ComponentUI implements ComponentPeer {
      * layout manager installed).  The default implementation of this
      * method invokes <code>getPreferredSize</code> and returns that value.
      *
-     * @param c the component whose maximum size is being queried;
-     *          this argument is often ignored,
-     *          but might be used if the UI object is stateless
-     *          and shared by multiple components
      * @return a <code>Dimension</code> object or <code>null</code>
      *
      * @see jsjavax.swing.JComponent#getMaximumSize
      * @see jsjava.awt.LayoutManager2#maximumLayoutSize
      */
-    public Dimension getMaximumSize(JComponent c) {
+    public Dimension getMaximumSize() {
         return null;//getPreferredSize(c);
     }
 

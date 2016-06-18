@@ -74,7 +74,8 @@ public abstract class AbstractSpinnerModel implements SpinnerModel
      * @see #removeChangeListener
      * @see SpinnerModel#addChangeListener
      */
-    public void addChangeListener(ChangeListener l) {
+    @Override
+		public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
@@ -86,7 +87,8 @@ public abstract class AbstractSpinnerModel implements SpinnerModel
      * @see #addChangeListener
      * @see SpinnerModel#removeChangeListener
      */
-    public void removeChangeListener(ChangeListener l) {
+    @Override
+		public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }
 

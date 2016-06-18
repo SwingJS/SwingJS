@@ -37,7 +37,8 @@ class ColorPaintContext implements PaintContext {
         this.color = color;
     }
 
-    public void dispose() {
+    @Override
+		public void dispose() {
     }
 
     /*
@@ -56,7 +57,8 @@ class ColorPaintContext implements PaintContext {
         return color;
     }
 
-    public ColorModel getColorModel() {
+    @Override
+		public ColorModel getColorModel() {
         return ColorModel.getRGBdefault();
     }
 

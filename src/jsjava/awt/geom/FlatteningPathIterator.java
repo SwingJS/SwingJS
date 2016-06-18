@@ -154,7 +154,8 @@ public class FlatteningPathIterator implements PathIterator {
      * @see PathIterator#WIND_EVEN_ODD
      * @see PathIterator#WIND_NON_ZERO
      */
-    public int getWindingRule() {
+    @Override
+		public int getWindingRule() {
         return src.getWindingRule();
     }
 
@@ -163,7 +164,8 @@ public class FlatteningPathIterator implements PathIterator {
      * @return <code>true</code> if all the segments have
      * been read; <code>false</code> otherwise.
      */
-    public boolean isDone() {
+    @Override
+		public boolean isDone() {
         return done;
     }
 
@@ -190,7 +192,8 @@ public class FlatteningPathIterator implements PathIterator {
      * along the primary direction of traversal as long as there are
      * more points in that direction.
      */
-    public void next() {
+    @Override
+		public void next() {
         next(true);
     }
 
@@ -343,7 +346,8 @@ public class FlatteningPathIterator implements PathIterator {
      * @see PathIterator#SEG_LINETO
      * @see PathIterator#SEG_CLOSE
      */
-    public int currentSegment(float[] coords) {
+    @Override
+		public int currentSegment(float[] coords) {
         if (isDone()) {
             throw new NoSuchElementException("flattening iterator out of bounds");
         }
@@ -378,7 +382,8 @@ public class FlatteningPathIterator implements PathIterator {
      * @see PathIterator#SEG_LINETO
      * @see PathIterator#SEG_CLOSE
      */
-    public int currentSegment(double[] coords) {
+    @Override
+		public int currentSegment(double[] coords) {
         if (isDone()) {
             throw new NoSuchElementException("flattening iterator out of bounds");
         }

@@ -110,7 +110,8 @@ public class XMLFilterImpl
      * @param parent The parent XML reader.
      * @see #getParent
      */
-    public void setParent (XMLReader parent)
+    @Override
+		public void setParent (XMLReader parent)
     {
 	this.parent = parent;
     }
@@ -122,7 +123,8 @@ public class XMLFilterImpl
      * @return The parent XML reader, or null if none is set.
      * @see #setParent
      */
-    public XMLReader getParent ()
+    @Override
+		public XMLReader getParent ()
     {
 	return parent;
     }
@@ -147,7 +149,8 @@ public class XMLFilterImpl
      *            parent recognizes the feature name but 
      *            cannot set the requested value.
      */
-    public void setFeature (String name, boolean value)
+    @Override
+		public void setFeature (String name, boolean value)
 	throws SAXNotRecognizedException, SAXNotSupportedException
     {
 	if (parent != null) {
@@ -171,7 +174,8 @@ public class XMLFilterImpl
      *            parent recognizes the feature name but 
      *            cannot determine its value at this time.
      */
-    public boolean getFeature (String name)
+    @Override
+		public boolean getFeature (String name)
 	throws SAXNotRecognizedException, SAXNotSupportedException
     {
 	if (parent != null) {
@@ -195,7 +199,8 @@ public class XMLFilterImpl
      *            parent recognizes the property name but 
      *            cannot set the requested value.
      */
-    public void setProperty (String name, Object value)
+    @Override
+		public void setProperty (String name, Object value)
 	throws SAXNotRecognizedException, SAXNotSupportedException
     {
 	if (parent != null) {
@@ -217,7 +222,8 @@ public class XMLFilterImpl
      *            parent recognizes the property name but 
      *            cannot determine its value at this time.
      */
-    public Object getProperty (String name)
+    @Override
+		public Object getProperty (String name)
 	throws SAXNotRecognizedException, SAXNotSupportedException
     {
 	if (parent != null) {
@@ -233,7 +239,8 @@ public class XMLFilterImpl
      *
      * @param resolver The new entity resolver.
      */
-    public void setEntityResolver (EntityResolver resolver)
+    @Override
+		public void setEntityResolver (EntityResolver resolver)
     {
 	entityResolver = resolver;
     }
@@ -244,7 +251,8 @@ public class XMLFilterImpl
      *
      * @return The current entity resolver, or null if none was set.
      */
-    public EntityResolver getEntityResolver ()
+    @Override
+		public EntityResolver getEntityResolver ()
     {
 	return entityResolver;
     }
@@ -255,7 +263,8 @@ public class XMLFilterImpl
      *
      * @param handler the new DTD handler
      */
-    public void setDTDHandler (DTDHandler handler)
+    @Override
+		public void setDTDHandler (DTDHandler handler)
     {
 	dtdHandler = handler;
     }
@@ -266,7 +275,8 @@ public class XMLFilterImpl
      *
      * @return The current DTD handler, or null if none was set.
      */
-    public DTDHandler getDTDHandler ()
+    @Override
+		public DTDHandler getDTDHandler ()
     {
 	return dtdHandler;
     }
@@ -277,7 +287,8 @@ public class XMLFilterImpl
      *
      * @param handler the new content handler
      */
-    public void setContentHandler (ContentHandler handler)
+    @Override
+		public void setContentHandler (ContentHandler handler)
     {
 	contentHandler = handler;
     }
@@ -288,7 +299,8 @@ public class XMLFilterImpl
      *
      * @return The current content handler, or null if none was set.
      */
-    public ContentHandler getContentHandler ()
+    @Override
+		public ContentHandler getContentHandler ()
     {
 	return contentHandler;
     }
@@ -299,7 +311,8 @@ public class XMLFilterImpl
      *
      * @param handler the new error handler
      */
-    public void setErrorHandler (ErrorHandler handler)
+    @Override
+		public void setErrorHandler (ErrorHandler handler)
     {
 	errorHandler = handler;
     }
@@ -310,7 +323,8 @@ public class XMLFilterImpl
      *
      * @return The current error handler, or null if none was set.
      */
-    public ErrorHandler getErrorHandler ()
+    @Override
+		public ErrorHandler getErrorHandler ()
     {
 	return errorHandler;
     }
@@ -326,7 +340,8 @@ public class XMLFilterImpl
      *            possibly from a byte stream or character stream
      *            supplied by the application.
      */
-    public void parse (InputSource input)
+    @Override
+		public void parse (InputSource input)
 	throws SAXException, IOException
     {
 	setupParse();
@@ -344,7 +359,8 @@ public class XMLFilterImpl
      *            possibly from a byte stream or character stream
      *            supplied by the application.
      */
-    public void parse (String systemId)
+    @Override
+		public void parse (String systemId)
 	throws SAXException, IOException
     {
 	parse(new InputSource(systemId));
@@ -369,7 +385,8 @@ public class XMLFilterImpl
      *            I/O-related exception while obtaining the
      *            new InputSource.
      */
-    public InputSource resolveEntity (String publicId, String systemId)
+    @Override
+		public InputSource resolveEntity (String publicId, String systemId)
 	throws SAXException, IOException
     {
 	if (entityResolver != null) {
@@ -395,7 +412,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void notationDecl (String name, String publicId, String systemId)
+    @Override
+		public void notationDecl (String name, String publicId, String systemId)
 	throws SAXException
     {
 	if (dtdHandler != null) {
@@ -414,7 +432,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void unparsedEntityDecl (String name, String publicId,
+    @Override
+		public void unparsedEntityDecl (String name, String publicId,
 				    String systemId, String notationName)
 	throws SAXException
     {
@@ -436,7 +455,8 @@ public class XMLFilterImpl
      *
      * @param locator The document locator.
      */
-    public void setDocumentLocator (Locator locator)
+    @Override
+		public void setDocumentLocator (Locator locator)
     {
 	this.locator = locator;
 	if (contentHandler != null) {
@@ -451,7 +471,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void startDocument ()
+    @Override
+		public void startDocument ()
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -466,7 +487,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void endDocument ()
+    @Override
+		public void endDocument ()
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -483,7 +505,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void startPrefixMapping (String prefix, String uri)
+    @Override
+		public void startPrefixMapping (String prefix, String uri)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -499,7 +522,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void endPrefixMapping (String prefix)
+    @Override
+		public void endPrefixMapping (String prefix)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -519,7 +543,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void startElement (String uri, String localName, String qName,
+    @Override
+		public void startElement (String uri, String localName, String qName,
 			      Attributes atts)
 	throws SAXException
     {
@@ -539,7 +564,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void endElement (String uri, String localName, String qName)
+    @Override
+		public void endElement (String uri, String localName, String qName)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -557,7 +583,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void characters (char ch[], int start, int length)
+    @Override
+		public void characters (char ch[], int start, int length)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -575,7 +602,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void ignorableWhitespace (char ch[], int start, int length)
+    @Override
+		public void ignorableWhitespace (char ch[], int start, int length)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -592,7 +620,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void processingInstruction (String target, String data)
+    @Override
+		public void processingInstruction (String target, String data)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -608,7 +637,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void skippedEntity (String name)
+    @Override
+		public void skippedEntity (String name)
 	throws SAXException
     {
 	if (contentHandler != null) {
@@ -630,7 +660,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void warning (SAXParseException e)
+    @Override
+		public void warning (SAXParseException e)
 	throws SAXException
     {
 	if (errorHandler != null) {
@@ -646,7 +677,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void error (SAXParseException e)
+    @Override
+		public void error (SAXParseException e)
 	throws SAXException
     {
 	if (errorHandler != null) {
@@ -662,7 +694,8 @@ public class XMLFilterImpl
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      */
-    public void fatalError (SAXParseException e)
+    @Override
+		public void fatalError (SAXParseException e)
 	throws SAXException
     {
 	if (errorHandler != null) {

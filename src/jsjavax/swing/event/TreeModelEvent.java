@@ -290,7 +290,8 @@ public class TreeModelEvent extends EventObject {
      *
      * @return a String representation of this object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         StringBuffer   retBuffer = new StringBuffer();
 
         retBuffer.append(getClass().getName() + " " +

@@ -75,19 +75,22 @@ public class CellRendererPane extends Container
      * Overridden to avoid propagating a invalidate up the tree when the
      * cell renderer child is configured.
      */
-    public void invalidate() { }
+    @Override
+		public void invalidate() { }
 
 
     /**
      * Shouldn't be called.
      */
-    public void paint(Graphics g) { }
+    @Override
+		public void paint(Graphics g) { }
 
 
     /**
      * Shouldn't be called.
      */
-    public void update(Graphics g) { }
+    @Override
+		public void update(Graphics g) { }
 
 
     /**
@@ -95,7 +98,8 @@ public class CellRendererPane extends Container
      * bother doing anything - stacking order doesn't matter for cell
      * renderer components (CellRendererPane doesn't paint anyway).<
      */
-    protected Component addImpl(Component x, Object constraints, int index) {
+    @Override
+		protected Component addImpl(Component x, Object constraints, int index) {
         if (x.getParent() == this) {
             return null;
         }

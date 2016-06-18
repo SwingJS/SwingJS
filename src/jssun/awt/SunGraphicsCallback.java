@@ -130,7 +130,8 @@ public abstract class SunGraphicsCallback {
             new PaintHeavyweightComponentsCallback();
 
         private PaintHeavyweightComponentsCallback() {}
-        public void run(Component comp, Graphics cg) {
+        @Override
+				public void run(Component comp, Graphics cg) {
             if (!comp.isLightweight()) {
                 comp.paintAll(cg);
             } else if (comp instanceof Container) {

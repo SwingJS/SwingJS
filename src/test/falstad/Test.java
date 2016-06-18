@@ -183,6 +183,7 @@ class AtomFrame {
 	class BasisState extends State {
 		int n, l, m;
 
+		@Override
 		String getText() {
 			return "n = " + n + ", l = " + l + ", m = " + m;
 		}

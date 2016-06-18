@@ -178,7 +178,8 @@ public class HyperlinkEvent extends EventObject {
          *
          * @return the string
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return typeString;
         }
 

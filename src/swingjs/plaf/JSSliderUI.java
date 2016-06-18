@@ -81,17 +81,10 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			return;
 		z0 = z;
 		System.out.println("JSSliderUI setting z to " + z);
-		DOMNode sliderTrack = null;
-		DOMNode sliderHandle = null;
-		/**
-		 * @j2sNative
-		 * 
-		 * sliderTrack = this.domNode.firstChild;
-		 * sliderHandle = sliderTrack.firstChild;
-		 * sliderTrack.style["z-index"] = z++;
-		 * sliderHandle.style["z-index"] = z++;
-		 */
-		{}
+		DOMNode sliderTrack = DOMNode.firstChild(domNode);
+		DOMNode sliderHandle = DOMNode.firstChild(sliderTrack);
+		DOMNode.setZ(sliderTrack, z++);
+		DOMNode.setZ(sliderHandle, z++);
 		// mark the handle and track with the "swingjs-ui" class
 		// so as to ignore all mouse/touch events from Jmol._jsSetMouse();
 		if (isNew) {
@@ -114,8 +107,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 * @j2sNative
 		 * 
 		 * value = ui.value;
-		 * 
-		 * debugger;
 		 * 
 		 */
 		{}

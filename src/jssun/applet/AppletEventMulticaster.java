@@ -40,7 +40,8 @@ public class AppletEventMulticaster implements AppletListener {
         this.a = a; this.b = b;
     }
 
-    public void appletStateChanged(AppletEvent e) {
+    @Override
+		public void appletStateChanged(AppletEvent e) {
         a.appletStateChanged(e);
         b.appletStateChanged(e);
     }

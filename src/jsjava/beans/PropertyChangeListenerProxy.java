@@ -65,7 +65,8 @@ public class PropertyChangeListenerProxy extends java.util.EventListenerProxy
      *
      * @param evt the property change event
      */
-    public void propertyChange(PropertyChangeEvent evt) {
+    @Override
+		public void propertyChange(PropertyChangeEvent evt) {
         ((PropertyChangeListener)getListener()).propertyChange(evt);
     }
 

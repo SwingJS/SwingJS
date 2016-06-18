@@ -378,7 +378,8 @@ public class JSplitPane extends JComponent
      *       expert: true
      *  description: The L&F object that renders this component.
      */
-    public SplitPaneUI getUI() {
+    @Override
+		public SplitPaneUI getUI() {
         return (SplitPaneUI)ui;
     }
 
@@ -390,7 +391,8 @@ public class JSplitPane extends JComponent
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((SplitPaneUI)UIManager.getUI(this));
         revalidate();
     }
@@ -406,7 +408,8 @@ public class JSplitPane extends JComponent
      *       expert: true
      *  description: A string that specifies the name of the L&F class.
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -874,7 +877,8 @@ public class JSplitPane extends JComponent
      *
      * @param component the <code>Component</code> to remove
      */
-    public void remove(Component component) {
+    @Override
+		public void remove(Component component) {
         if (component == leftComponent) {
             leftComponent = null;
         } else if (component == rightComponent) {
@@ -897,7 +901,8 @@ public class JSplitPane extends JComponent
      *        1 specifies the left/top component and 2 specifies the
      *        bottom/right component
      */
-    public void remove(int index) {
+    @Override
+		public void remove(int index) {
         Component    comp = getComponent(index);
 
         if (comp == leftComponent) {
@@ -918,7 +923,8 @@ public class JSplitPane extends JComponent
      * <code>leftComonent</code> and <code>rightComponent</code>
      * instance variables.
      */
-    public void removeAll() {
+    @Override
+		public void removeAll() {
         leftComponent = rightComponent = null;
         super.removeAll();
 
@@ -940,7 +946,8 @@ public class JSplitPane extends JComponent
      * @beaninfo
      *    hidden: true
      */
-    public boolean isValidateRoot() {
+    @Override
+		public boolean isValidateRoot() {
         return true;
     }
 
@@ -976,6 +983,7 @@ public class JSplitPane extends JComponent
 	 *              existing component
 	 * @see jsjava.awt.Container#addImpl(Component, Object, int)
 	 */
+	@Override
 	protected Component addImpl(Component comp, Object constraints, int index) {
 		Component toRemove;
 
@@ -1035,7 +1043,8 @@ public class JSplitPane extends JComponent
      *
      * @param g the <code>Graphics</code> context within which to paint
      */
-    protected void paintChildren(Graphics g) {
+    @Override
+		protected void paintChildren(Graphics g) {
         super.paintChildren(g);
 
         SplitPaneUI        ui = getUI();
@@ -1064,7 +1073,8 @@ public class JSplitPane extends JComponent
 //        }
 //    }
 //
-    void setUIProperty(String propertyName, Object value) {
+    @Override
+		void setUIProperty(String propertyName, Object value) {
         if (propertyName == "dividerSize") {
             if (!dividerSizeSet) {
                 setDividerSize(((Number)value).intValue());
@@ -1091,7 +1101,8 @@ public class JSplitPane extends JComponent
      *
      * @return  a string representation of this <code>JSplitPane</code>.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String orientationString = (orientation == HORIZONTAL_SPLIT ?
                                     "HORIZONTAL_SPLIT" : "VERTICAL_SPLIT");
         String continuousLayoutString = (continuousLayout ?

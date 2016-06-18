@@ -12,6 +12,7 @@ public class AccessController implements AccessControlContext {
 		return new AccessController();
 	}
 
+	@Override
 	public boolean checkPermission(Object perm) {
 		// no access checking in JavaScript
 		return true;

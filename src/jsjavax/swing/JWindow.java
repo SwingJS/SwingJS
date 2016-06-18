@@ -268,6 +268,8 @@ public class JWindow extends Window implements JSComponent, RootPaneContainer {
 		setRootPane(createRootPane());
 		setRootPaneCheckingEnabled(true);
     updateUI();
+    addNotify(); // BH added; applet will not do this automatically
+		rootPane.addNotify(); // builds a peer for the root pane
 	}
 
 	static int windowCount;

@@ -407,7 +407,8 @@ public abstract class AWTEvent extends EventObject {
     /**
      * Returns a String representation of this object.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         String srcName = null;
         if (source instanceof Component) {
             srcName = ((Component)source).getName();

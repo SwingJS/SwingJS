@@ -72,11 +72,13 @@ public class BakedArrayList extends ArrayList {
         }
     }
 
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return _hashCode;
     }
 
-    public boolean equals(Object o) {
+    @Override
+		public boolean equals(Object o) {
         BakedArrayList list = (BakedArrayList)o;
         int size = size();
 

@@ -108,7 +108,8 @@ public enum EAttribute {
         return null;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return name().substring(1).toLowerCase();
     }
 }

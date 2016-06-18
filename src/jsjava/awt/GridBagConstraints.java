@@ -651,7 +651,8 @@ public class GridBagConstraints implements Cloneable {
      * Creates a copy of this grid bag constraint.
      * @return     a copy of this grid bag constraint
      */
-    public Object clone () {
+    @Override
+		public Object clone () {
         try {
             GridBagConstraints c = (GridBagConstraints)super.clone();
             c.insets = (Insets)insets.clone();

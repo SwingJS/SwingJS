@@ -335,7 +335,7 @@ public class SpringLayout implements LayoutManager2 {
         private List<String> verticalHistory = new ArrayList<String>(2);
 
         // Used for baseline calculations
-        private Component c;
+        protected Component c;
 
        /**
         * Creates an empty <code>Constraints</code> object.
@@ -478,11 +478,13 @@ public class SpringLayout implements LayoutManager2 {
 
          private Spring heightToRelativeBaseline(Spring s) {
             return new Spring.SpringMap(s) {
-                 protected int map(int i) {
+                 @Override
+								protected int map(int i) {
                     return getBaselineFromHeight(i);
                  }
 
-                 protected int inv(int i) {
+                 @Override
+								protected int inv(int i) {
                      return getHeightFromBaseLine(i);
                  }
             };
@@ -490,11 +492,13 @@ public class SpringLayout implements LayoutManager2 {
 
         private Spring relativeBaselineToHeight(Spring s) {
             return new Spring.SpringMap(s) {
-                protected int map(int i) {
+                @Override
+								protected int map(int i) {
                     return getHeightFromBaseLine(i);
                  }
 
-                 protected int inv(int i) {
+                 @Override
+								protected int inv(int i) {
                     return getBaselineFromHeight(i);
                  }
             };
@@ -851,31 +855,38 @@ public class SpringLayout implements LayoutManager2 {
            return l.getConstraints(c).getConstraint(edgeName);
        }
 
-       public int getMinimumValue() {
+       @Override
+			public int getMinimumValue() {
            return getConstraint().getMinimumValue();
        }
 
-       public int getPreferredValue() {
+       @Override
+			public int getPreferredValue() {
            return getConstraint().getPreferredValue();
        }
 
-       public int getMaximumValue() {
+       @Override
+			public int getMaximumValue() {
            return getConstraint().getMaximumValue();
        }
 
-       public int getValue() {
+       @Override
+			public int getValue() {
            return getConstraint().getValue();
        }
 
-       public void setValue(int size) {
+       @Override
+			public void setValue(int size) {
            getConstraint().setValue(size);
        }
 
-       /*pp*/ boolean isCyclic(SpringLayout l) {
+       /*pp*/ @Override
+			boolean isCyclic(SpringLayout l) {
            return l.isCyclic(getConstraint());
        }
 
-       public String toString() {
+       @Override
+			public String toString() {
            return "SpringProxy for " + edgeName + " edge of " + c.getName() + ".";
        }
     }
@@ -948,14 +959,16 @@ public class SpringLayout implements LayoutManager2 {
      * since this layout manager does not
      * use a per-component string.
      */
-    public void addLayoutComponent(String name, Component c) {}
+    @Override
+		public void addLayoutComponent(String name, Component c) {}
 
     /**
      * Removes the constraints associated with the specified component.
      *
      * @param c the component being removed from the container
      */
-    public void removeLayoutComponent(Component c) {
+    @Override
+		public void removeLayoutComponent(Component c) {
         componentConstraints.remove(c);
     }
 
@@ -964,7 +977,8 @@ public class SpringLayout implements LayoutManager2 {
         return new Dimension(width + i.left + i.right, height + i.top + i.bottom);
     }
 
-    public Dimension minimumLayoutSize(Container parent) {
+    @Override
+		public Dimension minimumLayoutSize(Container parent) {
         setParent(parent);
         Constraints pc = getConstraints(parent);
         return addInsets(abandonCycles(pc.getWidth()).getMinimumValue(),
@@ -972,7 +986,8 @@ public class SpringLayout implements LayoutManager2 {
                          parent);
     }
 
-    public Dimension preferredLayoutSize(Container parent) {
+    @Override
+		public Dimension preferredLayoutSize(Container parent) {
         setParent(parent);
         Constraints pc = getConstraints(parent);
         return addInsets(abandonCycles(pc.getWidth()).getPreferredValue(),
@@ -982,7 +997,8 @@ public class SpringLayout implements LayoutManager2 {
 
     // LayoutManager2 methods.
 
-    public Dimension maximumLayoutSize(Container parent) {
+    @Override
+		public Dimension maximumLayoutSize(Container parent) {
         setParent(parent);
         Constraints pc = getConstraints(parent);
         return addInsets(abandonCycles(pc.getWidth()).getMaximumValue(),
@@ -1000,7 +1016,8 @@ public class SpringLayout implements LayoutManager2 {
      *
      * @see SpringLayout.Constraints
      */
-    public void addLayoutComponent(Component component, Object constraints) {
+    @Override
+		public void addLayoutComponent(Component component, Object constraints) {
         if (constraints instanceof Constraints) {
             putConstraints(component, (Constraints)constraints);
         }
@@ -1009,18 +1026,21 @@ public class SpringLayout implements LayoutManager2 {
     /**
      * Returns 0.5f (centered).
      */
-    public float getLayoutAlignmentX(Container p) {
+    @Override
+		public float getLayoutAlignmentX(Container p) {
         return 0.5f;
     }
 
     /**
      * Returns 0.5f (centered).
      */
-    public float getLayoutAlignmentY(Container p) {
+    @Override
+		public float getLayoutAlignmentY(Container p) {
         return 0.5f;
     }
 
-    public void invalidateLayout(Container p) {}
+    @Override
+		public void invalidateLayout(Container p) {}
 
     // End of LayoutManger2 methods
 
@@ -1206,7 +1226,8 @@ public class SpringLayout implements LayoutManager2 {
         return new SpringProxy(edgeName, c, this);
     }
 
-    public void layoutContainer(Container parent) {
+    @Override
+		public void layoutContainer(Container parent) {
         setParent(parent);
 
         int n = parent.getComponentCount();

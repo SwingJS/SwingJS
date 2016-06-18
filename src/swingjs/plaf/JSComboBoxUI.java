@@ -27,7 +27,6 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		setDoc();
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null)
@@ -72,7 +71,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	@Override
 	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(c,
+    LookAndFeel.installColorsAndFont(jc,
         "ComboBox.background",
         "ComboBox.foreground",
         "ComboBox.font");

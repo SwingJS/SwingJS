@@ -81,7 +81,8 @@ public class URLImageSource extends InputStreamImageSource {
         this(uc.getURL(), uc);
     }
 
-    final boolean checkSecurity(Object context, boolean quiet) {
+    @Override
+		final boolean checkSecurity(Object context, boolean quiet) {
         // If actualHost is not null, then the host/port parameters that
         // the image was actually fetched from were different than the
         // host/port parameters the original URL specified for at least

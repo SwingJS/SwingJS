@@ -97,7 +97,8 @@ public class LocatorImpl implements Locator
      * @see org.xml.sax.Locator#getPublicId
      * @see #setPublicId
      */
-    public String getPublicId ()
+    @Override
+		public String getPublicId ()
     {
 	return publicId;
     }
@@ -111,7 +112,8 @@ public class LocatorImpl implements Locator
      * @see org.xml.sax.Locator#getSystemId
      * @see #setSystemId
      */
-    public String getSystemId ()
+    @Override
+		public String getSystemId ()
     {
 	return systemId;
     }
@@ -124,7 +126,8 @@ public class LocatorImpl implements Locator
      * @see org.xml.sax.Locator#getLineNumber
      * @see #setLineNumber
      */
-    public int getLineNumber ()
+    @Override
+		public int getLineNumber ()
     {
 	return lineNumber;
     }
@@ -137,7 +140,8 @@ public class LocatorImpl implements Locator
      * @see org.xml.sax.Locator#getColumnNumber
      * @see #setColumnNumber
      */
-    public int getColumnNumber ()
+    @Override
+		public int getColumnNumber ()
     {
 	return columnNumber;
     }

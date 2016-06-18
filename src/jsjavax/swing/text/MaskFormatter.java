@@ -367,7 +367,8 @@ public class MaskFormatter extends DefaultFormatter {
      * @see #setValueContainsLiteralCharacters
      * @return Object representation of text
      */
-    public Object stringToValue(String value) throws ParseException {
+    @Override
+		public Object stringToValue(String value) throws ParseException {
         return stringToValue(value, true);
     }
 
@@ -382,7 +383,8 @@ public class MaskFormatter extends DefaultFormatter {
      * @see #setValueContainsLiteralCharacters
      * @return String representation of value
      */
-    public String valueToString(Object value) throws ParseException {
+    @Override
+		public String valueToString(Object value) throws ParseException {
         String sValue = (value == null) ? "" : value.toString();
         StringBuffer result = new StringBuffer();
         String placeholder = getPlaceholder();
@@ -422,7 +424,8 @@ public class MaskFormatter extends DefaultFormatter {
      * @param ftf JFormattedTextField to format for, may be null indicating
      *            uninstall from current JFormattedTextField.
      */
-    public void install(JFormattedTextField ftf) {
+    @Override
+		public void install(JFormattedTextField ftf) {
         super.install(ftf);
         // valueToString doesn't throw, but stringToValue does, need to
         // update the editValid state appropriately
@@ -662,7 +665,8 @@ public class MaskFormatter extends DefaultFormatter {
      * the offset is less than the max length and the character at
      * <code>offset</code> is a literal.
      */
-    boolean isNavigatable(int offset) {
+    @Override
+		boolean isNavigatable(int offset) {
         if (!getAllowsInvalid()) {
             return (offset < getMaxLength() && !isLiteral(offset));
         }
@@ -676,7 +680,8 @@ public class MaskFormatter extends DefaultFormatter {
      * <p>
      * This is overriden to return true for a partial match.
      */
-    boolean isValidEdit(ReplaceHolder rh) {
+    @Override
+		boolean isValidEdit(ReplaceHolder rh) {
         if (!getAllowsInvalid()) {
             String newString = getReplaceString(rh.offset, rh.length, rh.text);
 
@@ -713,7 +718,8 @@ public class MaskFormatter extends DefaultFormatter {
      * <li>Otherwise the insert is bogus and false is returned.
      * </ol>
      */
-    boolean canReplace(ReplaceHolder rh) {
+    @Override
+		boolean canReplace(ReplaceHolder rh) {
         // This method is rather long, but much of the burden is in
         // maintaining a String and swapping to a StringBuffer only if
         // absolutely necessary.
@@ -910,11 +916,13 @@ public class MaskFormatter extends DefaultFormatter {
             this.fixedChar = fixedChar;
         }
 
-        public boolean isLiteral() {
+        @Override
+				public boolean isLiteral() {
             return true;
         }
 
-        public char getChar(char aChar) {
+        @Override
+				public char getChar(char aChar) {
             return fixedChar;
         }
     }
@@ -924,7 +932,8 @@ public class MaskFormatter extends DefaultFormatter {
      * Represents a number, uses <code>Character.isDigit</code>.
      */
     private class DigitMaskCharacter extends MaskCharacter {
-        public boolean isValidCharacter(char aChar) {
+        @Override
+				public boolean isValidCharacter(char aChar) {
             return (Character.isDigit(aChar) &&
                     super.isValidCharacter(aChar));
         }
@@ -936,12 +945,14 @@ public class MaskFormatter extends DefaultFormatter {
      * using <code>Character.toUpperCase</code>.
      */
     private class UpperCaseCharacter extends MaskCharacter {
-        public boolean isValidCharacter(char aChar) {
+        @Override
+				public boolean isValidCharacter(char aChar) {
             return (Character.isLetter(aChar) &&
                      super.isValidCharacter(aChar));
         }
 
-        public char getChar(char aChar) {
+        @Override
+				public char getChar(char aChar) {
             return Character.toUpperCase(aChar);
         }
     }
@@ -952,12 +963,14 @@ public class MaskFormatter extends DefaultFormatter {
      * using <code>Character.toLowerCase</code>.
      */
     private class LowerCaseCharacter extends MaskCharacter {
-        public boolean isValidCharacter(char aChar) {
+        @Override
+				public boolean isValidCharacter(char aChar) {
             return (Character.isLetter(aChar) &&
                      super.isValidCharacter(aChar));
         }
 
-        public char getChar(char aChar) {
+        @Override
+				public char getChar(char aChar) {
             return Character.toLowerCase(aChar);
         }
     }
@@ -968,7 +981,8 @@ public class MaskFormatter extends DefaultFormatter {
      * <code>Character.isLetterOrDigit</code>.
      */
     private class AlphaNumericCharacter extends MaskCharacter {
-        public boolean isValidCharacter(char aChar) {
+        @Override
+				public boolean isValidCharacter(char aChar) {
             return (Character.isLetterOrDigit(aChar) &&
                      super.isValidCharacter(aChar));
         }
@@ -979,7 +993,8 @@ public class MaskFormatter extends DefaultFormatter {
      * Represents a letter, uses <code>Character.isLetter</code>.
      */
     private class CharCharacter extends MaskCharacter {
-        public boolean isValidCharacter(char aChar) {
+        @Override
+				public boolean isValidCharacter(char aChar) {
             return (Character.isLetter(aChar) &&
                      super.isValidCharacter(aChar));
         }
@@ -990,7 +1005,8 @@ public class MaskFormatter extends DefaultFormatter {
      * Represents a hex character, 0-9a-fA-F. a-f is mapped to A-F
      */
     private class HexCharacter extends MaskCharacter {
-        public boolean isValidCharacter(char aChar) {
+        @Override
+				public boolean isValidCharacter(char aChar) {
             return ((aChar == '0' || aChar == '1' ||
                      aChar == '2' || aChar == '3' ||
                      aChar == '4' || aChar == '5' ||
@@ -1005,7 +1021,8 @@ public class MaskFormatter extends DefaultFormatter {
                     super.isValidCharacter(aChar));
         }
 
-        public char getChar(char aChar) {
+        @Override
+				public char getChar(char aChar) {
             if (Character.isDigit(aChar)) {
                 return aChar;
             }

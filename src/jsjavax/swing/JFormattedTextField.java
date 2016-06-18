@@ -605,7 +605,8 @@ public class JFormattedTextField extends JTextField {
      * @param e the <code>InputMethodEvent</code>
      * @see InputMethodEvent
      */
-    protected void processInputMethodEvent(InputMethodEvent e) {
+    @Override
+		protected void processInputMethodEvent(InputMethodEvent e) {
 //        AttributedCharacterIterator text = e.getText();
 //        int commitCount = e.getCommittedCharacterCount();
 //        // Keep track of the composed text
@@ -628,7 +629,8 @@ public class JFormattedTextField extends JTextField {
      * @param e the <code>FocusEvent</code>
      * @see FocusEvent
      */
-    protected void processFocusEvent(FocusEvent e) {
+    @Override
+		protected void processFocusEvent(FocusEvent e) {
         super.processFocusEvent(e);
 
         // ignore temporary focus event
@@ -660,7 +662,8 @@ public class JFormattedTextField extends JTextField {
      * FOCUS_LOST behavior implementation
      */
     private class FocusLostHandler implements Runnable {
-        public void run() {
+        @Override
+				public void run() {
             int fb = JFormattedTextField.this.getFocusLostBehavior();
             if (fb == JFormattedTextField.COMMIT ||
                 fb == JFormattedTextField.COMMIT_OR_REVERT) {
@@ -692,7 +695,8 @@ public class JFormattedTextField extends JTextField {
      *
      * @return the command list
      */
-    public Action[] getActions() {
+    @Override
+		public Action[] getActions() {
         return TextAction.augmentList(super.getActions(), defaultActions);
     }
 
@@ -702,7 +706,8 @@ public class JFormattedTextField extends JTextField {
      * @return the string "FormattedTextFieldUI"
      * @see JComponent#getUIClassID
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -719,7 +724,8 @@ public class JFormattedTextField extends JTextField {
      *        bound: true
      *       expert: true
      */
-    public void setDocument(Document doc) {
+    @Override
+		public void setDocument(Document doc) {
         if (documentListener != null && getDocument() != null) {
             getDocument().removeDocumentListener(documentListener);
         }
@@ -1093,7 +1099,8 @@ public class JFormattedTextField extends JTextField {
          *
          * @return Copy of the AbstractFormatter
          */
-        protected Object clone() throws CloneNotSupportedException {
+        @Override
+				protected Object clone() throws CloneNotSupportedException {
             AbstractFormatter formatter = (AbstractFormatter)super.clone();
 
             formatter.ftf = null;
@@ -1128,7 +1135,8 @@ public class JFormattedTextField extends JTextField {
      * commitEdit.
      */
     static class CommitAction extends JTextField.NotifyAction {
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JTextComponent target = getFocusedComponent();
 
             if (target instanceof JFormattedTextField) {
@@ -1145,7 +1153,8 @@ public class JFormattedTextField extends JTextField {
             super.actionPerformed(e);
         }
 
-        public boolean isEnabled() {
+        @Override
+				public boolean isEnabled() {
             JTextComponent target = getFocusedComponent();
             if (target instanceof JFormattedTextField) {
                 JFormattedTextField ftf = (JFormattedTextField)target;
@@ -1170,7 +1179,8 @@ public class JFormattedTextField extends JTextField {
             super("reset-field-edit");
         }
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             JTextComponent target = getFocusedComponent();
 
             if (target instanceof JFormattedTextField) {
@@ -1179,7 +1189,8 @@ public class JFormattedTextField extends JTextField {
             }
         }
 
-        public boolean isEnabled() {
+        @Override
+				public boolean isEnabled() {
             JTextComponent target = getFocusedComponent();
             if (target instanceof JFormattedTextField) {
                 JFormattedTextField ftf = (JFormattedTextField)target;
@@ -1197,12 +1208,15 @@ public class JFormattedTextField extends JTextField {
      * Sets the dirty state as the document changes.
      */
     private class DocumentHandler implements DocumentListener {
-        public void insertUpdate(DocumentEvent e) {
+        @Override
+				public void insertUpdate(DocumentEvent e) {
             setEdited(true);
         }
-        public void removeUpdate(DocumentEvent e) {
+        @Override
+				public void removeUpdate(DocumentEvent e) {
             setEdited(true);
         }
-        public void changedUpdate(DocumentEvent e) {}
+        @Override
+				public void changedUpdate(DocumentEvent e) {}
     }
 }

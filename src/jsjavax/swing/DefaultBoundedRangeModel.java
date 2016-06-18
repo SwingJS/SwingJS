@@ -112,7 +112,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setValue
      * @see BoundedRangeModel#getValue
      */
-    public int getValue() {
+    @Override
+		public int getValue() {
       return value;
     }
 
@@ -123,7 +124,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setExtent
      * @see BoundedRangeModel#getExtent
      */
-    public int getExtent() {
+    @Override
+		public int getExtent() {
       return extent;
     }
 
@@ -134,7 +136,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setMinimum
      * @see BoundedRangeModel#getMinimum
      */
-    public int getMinimum() {
+    @Override
+		public int getMinimum() {
       return min;
     }
 
@@ -145,7 +148,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setMaximum
      * @see BoundedRangeModel#getMaximum
      */
-    public int getMaximum() {
+    @Override
+		public int getMaximum() {
         return max;
     }
 
@@ -160,7 +164,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      *
      * @see BoundedRangeModel#setValue
      */
-    public void setValue(int n) {
+    @Override
+		public void setValue(int n) {
         n = Math.min(n, Integer.MAX_VALUE - extent);
 
         int newValue = Math.max(n, min);
@@ -180,7 +185,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * </pre>
      * @see BoundedRangeModel#setExtent
      */
-    public void setExtent(int n) {
+    @Override
+		public void setExtent(int n) {
         int newExtent = Math.max(0, n);
         if(value + newExtent > max) {
             newExtent = max - value;
@@ -198,7 +204,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #getMinimum
      * @see BoundedRangeModel#setMinimum
      */
-    public void setMinimum(int n) {
+    @Override
+		public void setMinimum(int n) {
         int newMax = Math.max(n, max);
         int newValue = Math.max(n, value);
         int newExtent = Math.min(newMax - newValue, extent);
@@ -214,7 +221,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * </pre>
      * @see BoundedRangeModel#setMaximum
      */
-    public void setMaximum(int n) {
+    @Override
+		public void setMaximum(int n) {
         int newMin = Math.min(n, min);
         int newExtent = Math.min(n - newMin, extent);
         int newValue = Math.min(n - newExtent, value);
@@ -229,7 +237,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setValue
      * @see BoundedRangeModel#setValueIsAdjusting
      */
-    public void setValueIsAdjusting(boolean b) {
+    @Override
+		public void setValueIsAdjusting(boolean b) {
         setRangeProperties(value, extent, min, max, b);
     }
 
@@ -242,7 +251,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setValue
      * @see BoundedRangeModel#getValueIsAdjusting
      */
-    public boolean getValueIsAdjusting() {
+    @Override
+		public boolean getValueIsAdjusting() {
         return isAdjusting;
     }
 
@@ -263,7 +273,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #setMaximum
      * @see #setValueIsAdjusting
      */
-    public void setRangeProperties(int newValue, int newExtent, int newMin, int newMax, boolean adjusting)
+    @Override
+		public void setRangeProperties(int newValue, int newExtent, int newMin, int newMax, boolean adjusting)
     {
         if (newMin > newMax) {
             newMin = newMax;
@@ -314,7 +325,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #removeChangeListener
      * @see BoundedRangeModel#addChangeListener
      */
-    public void addChangeListener(ChangeListener l) {
+    @Override
+		public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
@@ -326,7 +338,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * @see #addChangeListener
      * @see BoundedRangeModel#removeChangeListener
      */
-    public void removeChangeListener(ChangeListener l) {
+    @Override
+		public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }
 
@@ -374,7 +387,8 @@ public class DefaultBoundedRangeModel implements BoundedRangeModel
      * Returns a string that displays all of the
      * <code>BoundedRangeModel</code> properties.
      */
-    public String toString()  {
+    @Override
+		public String toString()  {
         String modelString =
             "value=" + getValue() + ", " +
             "extent=" + getExtent() + ", " +

@@ -217,14 +217,16 @@ public interface ButtonModel extends ItemSelectable {
      *
      * @param l the listener to add
      */
-    void addItemListener(ItemListener l);
+    @Override
+		void addItemListener(ItemListener l);
 
     /**
      * Removes an <code>ItemListener</code> from the model.
      *
      * @param l the listener to remove
      */
-    void removeItemListener(ItemListener l);
+    @Override
+		void removeItemListener(ItemListener l);
 
     /**
      * Adds a <code>ChangeListener</code> to the model.

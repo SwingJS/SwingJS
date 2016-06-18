@@ -142,7 +142,8 @@ public class DefaultTreeModel implements  TreeModel {
      *
      * @return  the root of the tree
      */
-    public Object getRoot() {
+    @Override
+		public Object getRoot() {
         return root;
     }
 
@@ -154,7 +155,8 @@ public class DefaultTreeModel implements  TreeModel {
      * @return the index of the child in the parent, or -1
      *    if either the parent or the child is <code>null</code>
      */
-    public int getIndexOfChild(Object parent, Object child) {
+    @Override
+		public int getIndexOfChild(Object parent, Object child) {
         if(parent == null || child == null)
             return -1;
         return ((TreeNode)parent).getIndex((TreeNode)child);
@@ -170,7 +172,8 @@ public class DefaultTreeModel implements  TreeModel {
      * @param   parent  a node in the tree, obtained from this data source
      * @return  the child of <I>parent</I> at index <I>index</I>
      */
-    public Object getChild(Object parent, int index) {
+    @Override
+		public Object getChild(Object parent, int index) {
         return ((TreeNode)parent).getChildAt(index);
     }
 
@@ -182,7 +185,8 @@ public class DefaultTreeModel implements  TreeModel {
      * @param   parent  a node in the tree, obtained from this data source
      * @return  the number of children of the node <I>parent</I>
      */
-    public int getChildCount(Object parent) {
+    @Override
+		public int getChildCount(Object parent) {
         return ((TreeNode)parent).getChildCount();
     }
 
@@ -197,7 +201,8 @@ public class DefaultTreeModel implements  TreeModel {
      * @see #asksAllowsChildren
      * @see TreeModel#isLeaf
      */
-    public boolean isLeaf(Object node) {
+    @Override
+		public boolean isLeaf(Object node) {
         if(asksAllowsChildren)
             return !((TreeNode)node).getAllowsChildren();
         return ((TreeNode)node).isLeaf();
@@ -218,7 +223,8 @@ public class DefaultTreeModel implements  TreeModel {
       * the TreeModel you're going to need to subclass this and
       * set the user object of the changed node to something meaningful.
       */
-    public void valueForPathChanged(TreePath path, Object newValue) {
+    @Override
+		public void valueForPathChanged(TreePath path, Object newValue) {
         MutableTreeNode   aNode = (MutableTreeNode)path.getLastPathComponent();
 
         aNode.setUserObject(newValue);
@@ -425,7 +431,8 @@ public class DefaultTreeModel implements  TreeModel {
      * @see     #removeTreeModelListener
      * @param   l       the listener to add
      */
-    public void addTreeModelListener(TreeModelListener l) {
+    @Override
+		public void addTreeModelListener(TreeModelListener l) {
         listenerList.add(TreeModelListener.class, l);
     }
 
@@ -435,7 +442,8 @@ public class DefaultTreeModel implements  TreeModel {
      * @see     #addTreeModelListener
      * @param   l       the listener to remove
      */
-    public void removeTreeModelListener(TreeModelListener l) {
+    @Override
+		public void removeTreeModelListener(TreeModelListener l) {
         listenerList.remove(TreeModelListener.class, l);
     }
 

@@ -71,8 +71,16 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			
       titleNode = createDOMObject("label", id + "_title");
 			DOMNode.setPositionAbsolute(titleNode, 0, 0);
+			DOMNode.setStyles(titleNode, 
+					"width", w + "px",
+					"height", "20px"
+					);
 			setTitle(f.getTitle());
 			
+			DOMNode closerWrap = createDOMObject("div", id + "_closerwrap");
+			DOMNode.setPositionAbsolute(closerWrap, 0, 0);
+			DOMNode.setStyles(closerWrap, "text-align", "right", "width", w + "px"); 
+
 			closerNode = createDOMObject("label", id + "_closer", "innerHTML", "X");
 			DOMNode.setStyles(closerNode, 
 					"background-color", "white",
@@ -83,16 +91,11 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 					"right", "0px"
 			);
 			DOMNode.addJqueryHandledEvent(this, closerNode, "click mouseenter mouseout");
-
-			DOMNode closerWrap = createDOMObject("div", id + "_closerwrap");
-			DOMNode.setPositionAbsolute(closerWrap, 0, 0);
-			DOMNode.setStyles(closerWrap, "text-align", "right", "width", w + "px"); 
-			DOMNode.add(closerWrap, closerNode);
-
-			DOMNode.add(titleBarNode, titleNode);
-			DOMNode.add(titleBarNode, closerWrap);
 			
 			DOMNode.add(frameNode, titleBarNode);
+			DOMNode.add(titleBarNode, titleNode);
+			DOMNode.add(titleBarNode, closerWrap);
+			DOMNode.add(closerWrap, closerNode);
 
 			menuBarNode = createDOMObject("div", id + "_menubar");
 			

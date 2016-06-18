@@ -400,7 +400,8 @@ public class ImageIcon implements Icon {
      * @param x the X coordinate of the icon's top-left corner
      * @param y the Y coordinate of the icon's top-left corner
      */
-    public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+    @Override
+		public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
         if(imageObserver == null) {
            g.drawImage(image, x, y, c);
         } else {
@@ -413,7 +414,8 @@ public class ImageIcon implements Icon {
      *
      * @return the width in pixels of this icon
      */
-    public int getIconWidth() {
+    @Override
+		public int getIconWidth() {
         return width;
     }
 
@@ -422,7 +424,8 @@ public class ImageIcon implements Icon {
      *
      * @return the height in pixels of this icon
      */
-    public int getIconHeight() {
+    @Override
+		public int getIconHeight() {
         return height;
     }
 
@@ -457,7 +460,8 @@ public class ImageIcon implements Icon {
      *
      * @return a string representing this image
      */
-    public String toString() {
+    @Override
+		public String toString() {
         if (description != null) {
             return description;
         }

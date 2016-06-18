@@ -471,7 +471,8 @@ public class DecimalFormatSymbols implements Cloneable {
     /**
      * Standard override.
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         try {
             return (DecimalFormatSymbols)super.clone();
             // other fields are bit-copied
@@ -483,7 +484,8 @@ public class DecimalFormatSymbols implements Cloneable {
     /**
      * Override equals.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (obj == null) return false;
         if (this == obj) return true;
         if (getClass() != obj.getClass()) return false;
@@ -509,7 +511,8 @@ public class DecimalFormatSymbols implements Cloneable {
     /**
      * Override hashCode.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
             int result = zeroDigit;
             result = result * 37 + groupingSeparator;
             result = result * 37 + decimalSeparator;

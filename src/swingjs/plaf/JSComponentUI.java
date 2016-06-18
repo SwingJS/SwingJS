@@ -60,10 +60,16 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	protected String id;
 	
 	/**
+	 * the associated Component; for which this is c.ui
+	 * 
+	 */
+	protected Component c;
+
+	/**
 	 * the associated JComponent; for which this is c.ui
 	 * 
 	 */
-	protected JComponent c;
+	protected JComponent jc;
 
 	/**
 	 * the outermost div holding a component -- left, top, and for a container width and height
@@ -106,7 +112,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 * DOM components pre-defined (JScrollPane)
 	 * 
 	 */
-	protected Component[] components;
+	protected Component[] children;
 
 	/**
 	 * a numerical reference for an ID
@@ -214,10 +220,11 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	public JSComponentUI set(JComponent target) {
 		c = target;
+		jc = (JComponent) c; // in JavaScript, in certain cases this will not be a JComponent
 		applet = JSToolkit.getHTML5Applet(c);
 		newID();
 		if (needPreferred)
-			getPreferredSize(c);
+	  	setHTMLSize(createDOMNode(), false);
 		installJSUI(); // need to do this immediately, not later
 		return this;
 	}
@@ -340,8 +347,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 			body.appendChild(div);
 			
 			//System.out.println(DOMNode.getAttr(node, "outerHTML"));
-			w = (int) Math.ceil($(div).width() + 0.5);
-			h = (int) Math.ceil($(div).height() + 0.5);
+			w = (int) Math.max(0, Math.ceil($(div).width() + 0.5));
+			h = (int) Math.max(0, Math.ceil($(div).height() + 0.5));
 			body.removeChild(div);
 		}
 
@@ -398,16 +405,15 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
 				(y = c.getY()) + "px");
 
-		if (isContainer) {
-
+		Component[] children = (this.children == null ? jc.getComponents()
+				: this.children);
+		if (isContainer || children.length > 0) {
 			// set width from component
-
-			System.out.println("JSComponentUI container " + id + " " + c.getBounds());
-			DOMNode.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
-
+			if (isContainer) {
+				System.out.println("JSComponentUI container " + id + " " + c.getBounds());
+				DOMNode.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
+			}
 			// add all children
-			Component[] children = (components == null ? c.getComponents()
-					: components);
 			for (int i = children.length; --i >= 0;) {
 				JSComponentUI ui = JSToolkit.getUI(children[i], false);
 				if (ui == null) {
@@ -434,11 +440,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 * c ignored because JSComponentUI is one per component
 	 */
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
-		//System.out.println("getPreferredSize for " + id + " " + c.getName());
-		Dimension d = setHTMLSize(createDOMNode(), false);
-		//System.out.println("JSComponentUI " + id + " getting preferred size as " + d);
-  	return d;
+	public Dimension getPreferredSize() {
+  	return setHTMLSize(createDOMNode(), false);
   }
 
 	@Override
@@ -467,12 +470,12 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	}
 
 	@Override
-	public Dimension getMinimumSize(JComponent c) {
-		return getPreferredSize(c);
+	public Dimension getMinimumSize() {
+		return getPreferredSize();
 	}
 
 	@Override
-	public Dimension getMaximumSize(JComponent c) {
+	public Dimension getMaximumSize() {
 		return null;// getPreferredSize(c);
 	}
 
@@ -718,17 +721,6 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	}
 
 	@Override
-	public Dimension getPreferredSize() {
-		return getPreferredSize(c);
-	}
-
-	@Override
-	public Dimension getMinimumSize() {
-		JSToolkit.notImplemented("");
-		return getPreferredSize(c);
-	}
-
-	@Override
 	public ColorModel getColorModel() {
 		return Toolkit.getDefaultToolkit().getColorModel();
 	}
@@ -927,8 +919,8 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	}
 
 	public int getZIndex(String what) {
-		DOMNode node = domNode;
-		JComponent c = this.c;
+		@SuppressWarnings("unused")
+		Component c = this.c;
 		int z = 0;		
 		/**
 		 * looking for high-level content pane
@@ -937,8 +929,10 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		 * 
 		 * if (what) return applet._z[what];
 		 * 
-		 * while (c && c.style && !(z = c.style["z-index"]))
-		 *  c = c.parentNode;
+		 * while (c && c.style && c.style["z-index"]) {
+		 *   z = c.style["z-index"];
+		 *   c = c.parentNode;
+		 * }
 		 * 
 		 */
 		{

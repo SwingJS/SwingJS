@@ -190,7 +190,8 @@ public abstract class TableView extends BoxView {
         gridValid = false;
     }
 
-    protected void forwardUpdate(DocumentEvent.ElementChange ec,
+    @Override
+		protected void forwardUpdate(DocumentEvent.ElementChange ec,
                                      DocumentEvent e, Shape a, ViewFactory f) {
         super.forwardUpdate(ec, e, a, f);
         // A change in any of the table cells usually effects the whole table,
@@ -210,7 +211,8 @@ public abstract class TableView extends BoxView {
      * provide the superclass behavior and invalidate the
      * grid so that rows and columns will be recalculated.
      */
-    public void replace(int offset, int length, View[] views) {
+    @Override
+		public void replace(int offset, int length, View[] views) {
         super.replace(offset, length, views);
         invalidateGrid();
     }
@@ -330,7 +332,8 @@ public abstract class TableView extends BoxView {
      * @param spans the span of each child view.  This is a return
      *  value and is filled in by the implementation of this method.
      */
-    protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
+    @Override
+		protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
         // make grid is properly represented
         updateGrid();
 
@@ -356,7 +359,8 @@ public abstract class TableView extends BoxView {
      * This is implemented to calculate the requirements as the sum of the
      * requirements of the columns.
      */
-    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
+    @Override
+		protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
         updateGrid();
 
         // calculate column requirements for each column
@@ -551,7 +555,8 @@ public abstract class TableView extends BoxView {
      * @return  the view representing the given position, or
      *   <code>null</code> if there isn't one
      */
-    protected View getViewAtPosition(int pos, Rectangle a) {
+    @Override
+		protected View getViewAtPosition(int pos, Rectangle a) {
         int n = getViewCount();
         for (int i = 0; i < n; i++) {
             View v = getView(i);
@@ -644,7 +649,8 @@ public abstract class TableView extends BoxView {
          * provide the superclass behavior and invalidate the
          * grid so that rows and columns will be recalculated.
          */
-        public void replace(int offset, int length, View[] views) {
+        @Override
+				public void replace(int offset, int length, View[] views) {
             super.replace(offset, length, views);
             invalidateGrid();
         }
@@ -668,7 +674,8 @@ public abstract class TableView extends BoxView {
          * @param spans the span of each child view.  This is a return
          *  value and is filled in by the implementation of this method.
          */
-        protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
+        @Override
+				protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
             int col = 0;
             int ncells = getViewCount();
             for (int cell = 0; cell < ncells; cell++, col++) {
@@ -712,7 +719,8 @@ public abstract class TableView extends BoxView {
          * @param spans the span of each child view.  This is a return
          *  value and is filled in by the implementation of this method.
          */
-        protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
+        @Override
+				protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets, int[] spans) {
             super.layoutMinorAxis(targetSpan, axis, offsets, spans);
             int col = 0;
             int ncells = getViewCount();
@@ -747,7 +755,8 @@ public abstract class TableView extends BoxView {
          * @return the resize weight
          * @exception IllegalArgumentException for an invalid axis
          */
-        public int getResizeWeight(int axis) {
+        @Override
+				public int getResizeWeight(int axis) {
             return 1;
         }
 
@@ -764,7 +773,8 @@ public abstract class TableView extends BoxView {
          * @return  the view representing the given position, or
          *   <code>null</code> if there isn't one
          */
-        protected View getViewAtPosition(int pos, Rectangle a) {
+        @Override
+				protected View getViewAtPosition(int pos, Rectangle a) {
             int n = getViewCount();
             for (int i = 0; i < n; i++) {
                 View v = getView(i);
@@ -818,7 +828,8 @@ public abstract class TableView extends BoxView {
          *
          * @return the number of columns
          */
-        public int getColumnCount() {
+        @Override
+				public int getColumnCount() {
             return 1;
         }
 
@@ -828,7 +839,8 @@ public abstract class TableView extends BoxView {
          *
          * @return the number of rows
          */
-        public int getRowCount() {
+        @Override
+				public int getRowCount() {
             return 1;
         }
 
@@ -839,7 +851,8 @@ public abstract class TableView extends BoxView {
          * @param row the row >= 0
          * @param col the column >= 0
          */
-        public void setGridLocation(int row, int col) {
+        @Override
+				public void setGridLocation(int row, int col) {
             this.row = row;
             this.col = col;
         }
@@ -847,14 +860,16 @@ public abstract class TableView extends BoxView {
         /**
          * Gets the row of the grid location
          */
-        public int getGridRow() {
+        @Override
+				public int getGridRow() {
             return row;
         }
 
         /**
          * Gets the column of the grid location
          */
-        public int getGridColumn() {
+        @Override
+				public int getGridColumn() {
             return col;
         }
 

@@ -69,7 +69,8 @@ public abstract class UIAction implements Action {
         return name;
     }
 
-    public Object getValue(String key) {
+    @Override
+		public Object getValue(String key) {
         if (key == NAME) {
             return name;
         }
@@ -77,17 +78,20 @@ public abstract class UIAction implements Action {
     }
 
     // UIAction is not mutable, this does nothing.
-    public void putValue(String key, Object value) {
+    @Override
+		public void putValue(String key, Object value) {
     }
 
     // UIAction is not mutable, this does nothing.
-    public void setEnabled(boolean b) {
+    @Override
+		public void setEnabled(boolean b) {
     }
 
     /**
      * Cover method for <code>isEnabled(null)</code>.
      */
-    public final boolean isEnabled() {
+    @Override
+		public final boolean isEnabled() {
         return isEnabled(null);
     }
 
@@ -102,10 +106,12 @@ public abstract class UIAction implements Action {
     }
 
     // UIAction is not mutable, this does nothing.
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
     }
 
     // UIAction is not mutable, this does nothing.
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+		public void removePropertyChangeListener(PropertyChangeListener listener) {
     }
 }

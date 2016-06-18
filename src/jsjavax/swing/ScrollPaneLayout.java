@@ -222,7 +222,8 @@ public class ScrollPaneLayout
      * @param c the the component to be added
      * @exception IllegalArgumentException if <code>s</code> is an invalid key
      */
-    public void addLayoutComponent(String s, Component c)
+    @Override
+		public void addLayoutComponent(String s, Component c)
     {
         if (s.equals(VIEWPORT)) {
             viewport = (JViewport)addSingletonComponent(viewport, c);
@@ -262,7 +263,8 @@ public class ScrollPaneLayout
      *
      * @param c the component to remove
      */
-    public void removeLayoutComponent(Component c)
+    @Override
+		public void removeLayoutComponent(Component c)
     {
         if (c == viewport) {
             viewport = null;
@@ -464,7 +466,8 @@ public class ScrollPaneLayout
      * @see ViewportLayout
      * @see LayoutManager
      */
-    public Dimension preferredLayoutSize(Container parent)
+    @Override
+		public Dimension preferredLayoutSize(Container parent)
     {
         /* Sync the (now obsolete) policy fields with the
          * JScrollPane.
@@ -587,7 +590,8 @@ public class ScrollPaneLayout
      * @param parent the <code>Container</code> that will be laid out
      * @return a <code>Dimension</code> object specifying the minimum size
      */
-    public Dimension minimumLayoutSize(Container parent)
+    @Override
+		public Dimension minimumLayoutSize(Container parent)
     {
         /* Sync the (now obsolete) policy fields with the
          * JScrollPane.
@@ -688,7 +692,8 @@ public class ScrollPaneLayout
      *
      * @param parent the <code>Container</code> to lay out
      */
-    public void layoutContainer(Container parent)
+    @Override
+		public void layoutContainer(Container parent)
     {
         /* Sync the (now obsolete) policy fields with the
          * JScrollPane.

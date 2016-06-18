@@ -52,10 +52,12 @@ public abstract class HierarchyBoundsAdapter implements HierarchyBoundsListener
     /**
      * Called when an ancestor of the source is moved.
      */
-    public void ancestorMoved(HierarchyEvent e) {}
+    @Override
+		public void ancestorMoved(HierarchyEvent e) {}
 
     /**
      * Called when an ancestor of the source is resized.
      */
-    public void ancestorResized(HierarchyEvent e) {}
+    @Override
+		public void ancestorResized(HierarchyEvent e) {}
 }

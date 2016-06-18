@@ -76,7 +76,7 @@ class EventDispatchThread extends JSThread {
 	private EventFilter filter;
 	private Conditional cond;
 	private int id;
-	private boolean doDispatch = true;
+	protected boolean doDispatch = true;
 
 	EventDispatchThread(ThreadGroup group, String name, EventQueue queue) {
 		super(group, name);
@@ -136,15 +136,18 @@ class EventDispatchThread extends JSThread {
 			super(EventDispatchThread.this, 0);
 		}
 
+		@Override
 		public void dispatch() {
 			doDispatch = false;
 		}
 	}
 
+	@Override
 	public void start() {
 		super.start();
 	}
 	
+	@Override
 	public void run() {
 		pumpEvents(ANY_EVENT, null);
 	}
@@ -180,7 +183,6 @@ class EventDispatchThread extends JSThread {
 	 * has a function callback to restart this method at the "LOOP" mode.
 	 * 
 	 */
-	@SuppressWarnings("unused")
 	@Override
 	protected void run1(int mode) {
 		try {
@@ -197,6 +199,7 @@ class EventDispatchThread extends JSThread {
 				}
 				final int myid = id;
 				Runnable r = new Runnable() {
+					@Override
 					public void run() {
 						pumpOneEventForFilters(myid);
 					}
@@ -477,6 +480,7 @@ class EventDispatchThread extends JSThread {
 			this.modalComponent = modalComponent;
 		}
 
+		@Override
 		public FilterAction acceptEvent(AWTEvent event) {
 			if (modalComponent != null) {
 				int eventID = event.getID();

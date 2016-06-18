@@ -666,10 +666,10 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		// painted = false;
 		uninstallDefaults();
 		// rootView.setView(null);
-		c.removeAll();
-		LayoutManager lm = c.getLayout();
+		jc.removeAll();
+		LayoutManager lm = jc.getLayout();
 		if (lm instanceof UIResource) {
-			c.setLayout(null);
+			jc.setLayout(null);
 		}
 
 		// controller part
@@ -786,15 +786,13 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	/**
 	 * Gets the minimum size for the editor component.
 	 * 
-	 * @param c
-	 *          the editor component
 	 * @return the size
 	 */
 	@Override
-	public Dimension getMinimumSize(JComponent c) {
+	public Dimension getMinimumSize() {
 		Dimension d = getPreferredSize();// new Dimension();
 		// Document doc = editor.getDocument();
-		Insets i = c.getInsets();
+		Insets i = jc.getInsets();
 		// if (doc instanceof AbstractDocument) {
 		// ((AbstractDocument)doc).readLock();
 		// }
@@ -816,14 +814,12 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	/**
 	 * Gets the maximum size for the editor component.
 	 * 
-	 * @param c
-	 *          the editor component
 	 * @return the size
 	 */
 	@Override
-	public Dimension getMaximumSize(JComponent c) {
+	public Dimension getMaximumSize() {
 		// SwingJS TODO
-		return getMinimumSize(c);
+		return getMinimumSize();
 
 		// Document doc = editor.getDocument();
 		// Insets i = c.getInsets();

@@ -1437,7 +1437,8 @@ public class KeyEvent extends InputEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         StringBuilder str = new StringBuilder(100);
 
         switch (id) {

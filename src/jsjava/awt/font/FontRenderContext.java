@@ -300,7 +300,8 @@ public class FontRenderContext {
      *         this <code>FontRenderContext</code>; <code>false</code>
      *         otherwise.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         try {
             return equals((FontRenderContext)obj);
         }
@@ -345,7 +346,8 @@ public class FontRenderContext {
     /**
      * Return a hashcode for this FontRenderContext.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         int hash = tx == null ? 0 : tx.hashCode();
         /* SunHints value objects have identity hashcode, so we can rely on
          * this to ensure that two equal FRC's have the same hashcode.

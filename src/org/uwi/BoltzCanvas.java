@@ -20,6 +20,7 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 	this.boltzmann = boltzmann;
   }
 
+	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(getForeground());
 		g.setPaintMode();

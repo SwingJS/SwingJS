@@ -281,7 +281,8 @@ public final class AWTAutoShutdown implements Runnable {
      *
      * @see     AWTAutoShutdown#isReadyToShutdown
      */
-    public void run() {
+    @Override
+		public void run() {
 // SwingJS  Browser will take care of all of this
 //        Thread currentThread = Thread.currentThread();
 //        boolean interrupted = false;

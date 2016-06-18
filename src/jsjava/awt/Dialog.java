@@ -166,7 +166,7 @@ public class Dialog extends Window {
          * be left unchanged.
          */
         TOOLKIT_MODAL
-    };
+    }
 
     /**
      * Default modality type for modal dialogs. The default modality type is
@@ -247,7 +247,7 @@ public class Dialog extends Window {
          * property will be left unchanged.
          */
         TOOLKIT_EXCLUDE
-    };
+    }
 
 //    /**
 //     * @since 1.6

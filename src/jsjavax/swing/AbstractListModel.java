@@ -57,7 +57,8 @@ public abstract class AbstractListModel implements ListModel
      *
      * @param l the <code>ListDataListener</code> to be added
      */
-    public void addListDataListener(ListDataListener l) {
+    @Override
+		public void addListDataListener(ListDataListener l) {
         listenerList.add(ListDataListener.class, l);
     }
 
@@ -68,7 +69,8 @@ public abstract class AbstractListModel implements ListModel
      *
      * @param l the <code>ListDataListener</code> to be removed
      */
-    public void removeListDataListener(ListDataListener l) {
+    @Override
+		public void removeListDataListener(ListDataListener l) {
         listenerList.remove(ListDataListener.class, l);
     }
 

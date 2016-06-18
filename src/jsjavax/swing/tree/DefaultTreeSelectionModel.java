@@ -123,7 +123,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * Sets the RowMapper instance. This instance is used to determine
      * the row for a particular TreePath.
      */
-    public void setRowMapper(RowMapper newMapper) {
+    @Override
+		public void setRowMapper(RowMapper newMapper) {
         rowMapper = newMapper;
         resetRowSelection();
     }
@@ -132,7 +133,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * Returns the RowMapper instance that is able to map a TreePath to a
      * row.
      */
-    public RowMapper getRowMapper() {
+    @Override
+		public RowMapper getRowMapper() {
         return rowMapper;
     }
 
@@ -150,7 +152,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * Setting the mode to something other than the defined types will
      * result in the mode becoming <code>DISCONTIGUOUS_TREE_SELECTION</code>.
      */
-    public void setSelectionMode(int mode) {
+    @Override
+		public void setSelectionMode(int mode) {
         int            oldMode = selectionMode;
 
         selectionMode = mode;
@@ -169,7 +172,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * <code>DISCONTIGUOUS_TREE_SELECTION</code> or
      * <code>CONTIGUOUS_TREE_SELECTION</code>.
      */
-    public int getSelectionMode() {
+    @Override
+		public int getSelectionMode() {
         return selectionMode;
     }
 
@@ -180,7 +184,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param path new path to select
       */
-    public void setSelectionPath(TreePath path) {
+    @Override
+		public void setSelectionPath(TreePath path) {
         if(path == null)
             setSelectionPaths(null);
         else {
@@ -205,7 +210,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param pPaths new selection
       */
-    public void setSelectionPaths(TreePath[] pPaths) {
+    @Override
+		public void setSelectionPaths(TreePath[] pPaths) {
         int            newCount, newCounter, oldCount, oldCounter;
         TreePath[]     paths = pPaths;
 
@@ -315,7 +321,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param path the new path to add to the current selection
       */
-    public void addSelectionPath(TreePath path) {
+    @Override
+		public void addSelectionPath(TreePath path) {
         if(path != null) {
             TreePath[]            toAdd = new TreePath[1];
 
@@ -339,7 +346,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param paths the new path to add to the current selection
       */
-    public void addSelectionPaths(TreePath[] paths) {
+    @Override
+		public void addSelectionPaths(TreePath[] paths) {
         int       newPathLength = ((paths == null) ? 0 : paths.length);
 
         if(newPathLength > 0) {
@@ -439,7 +447,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param path the path to remove from the selection
       */
-    public void removeSelectionPath(TreePath path) {
+    @Override
+		public void removeSelectionPath(TreePath path) {
         if(path != null) {
             TreePath[]             rPath = new TreePath[1];
 
@@ -455,7 +464,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param paths the paths to remove from the selection
       */
-    public void removeSelectionPaths(TreePath[] paths) {
+    @Override
+		public void removeSelectionPaths(TreePath[] paths) {
         if (paths != null && selection != null && paths.length > 0) {
             if(!canPathsBeRemoved(paths)) {
                 /* Could probably do something more interesting here! */
@@ -524,7 +534,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       * Returns the first path in the selection. This is useful if there
       * if only one item currently selected.
       */
-    public TreePath getSelectionPath() {
+    @Override
+		public TreePath getSelectionPath() {
         if(selection != null)
             return selection[0];
         return null;
@@ -534,7 +545,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       * Returns the paths in the selection. This will return null (or an
       * empty array) if nothing is currently selected.
       */
-    public TreePath[] getSelectionPaths() {
+    @Override
+		public TreePath[] getSelectionPaths() {
         if(selection != null) {
             int                 pathSize = selection.length;
             TreePath[]          result = new TreePath[pathSize];
@@ -548,7 +560,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
     /**
      * Returns the number of paths that are selected.
      */
-    public int getSelectionCount() {
+    @Override
+		public int getSelectionCount() {
         return (selection == null) ? 0 : selection.length;
     }
 
@@ -556,14 +569,16 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       * Returns true if the path, <code>path</code>,
       * is in the current selection.
       */
-    public boolean isPathSelected(TreePath path) {
+    @Override
+		public boolean isPathSelected(TreePath path) {
         return (path != null) ? (uniquePaths.get(path) != null) : false;
     }
 
     /**
       * Returns true if the selection is currently empty.
       */
-    public boolean isSelectionEmpty() {
+    @Override
+		public boolean isSelectionEmpty() {
         return (selection == null);
     }
 
@@ -571,7 +586,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       * Empties the current selection.  If this represents a change in the
       * current selection, the selection listeners are notified.
       */
-    public void clearSelection() {
+    @Override
+		public void clearSelection() {
         if(selection != null) {
             int                    selSize = selection.length;
             boolean[]              newness = new boolean[selSize];
@@ -597,7 +613,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param x the new listener to be added
       */
-    public void addTreeSelectionListener(TreeSelectionListener x) {
+    @Override
+		public void addTreeSelectionListener(TreeSelectionListener x) {
         listenerList.add(TreeSelectionListener.class, x);
     }
 
@@ -607,7 +624,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       *
       * @param x the listener to remove
       */
-    public void removeTreeSelectionListener(TreeSelectionListener x) {
+    @Override
+		public void removeTreeSelectionListener(TreeSelectionListener x) {
         listenerList.remove(TreeSelectionListener.class, x);
     }
 
@@ -700,7 +718,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
       * TreePaths if some of the rows are not visible (that is the
       * RowMapper returned -1 for the row corresponding to the TreePath).
       */
-    public int[] getSelectionRows() {
+    @Override
+		public int[] getSelectionRows() {
         // This is currently rather expensive.  Needs
         // to be better support from ListSelectionModel to speed this up.
         if(rowMapper != null && selection != null) {
@@ -741,7 +760,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * current set of selected TreePaths. If nothing is selected,
      * or there is no RowMapper, this will return -1.
       */
-    public int getMinSelectionRow() {
+    @Override
+		public int getMinSelectionRow() {
         return listSelectionModel.getMinSelectionIndex();
     }
 
@@ -750,14 +770,16 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * current set of selected TreePaths. If nothing is selected,
      * or there is no RowMapper, this will return -1.
       */
-    public int getMaxSelectionRow() {
+    @Override
+		public int getMaxSelectionRow() {
         return listSelectionModel.getMaxSelectionIndex();
     }
 
     /**
       * Returns true if the row identified by <code>row</code> is selected.
       */
-    public boolean isRowSelected(int row) {
+    @Override
+		public boolean isRowSelected(int row) {
         return listSelectionModel.isSelectedIndex(row);
     }
 
@@ -772,7 +794,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * the currently selected TreePaths are still valid based on the
      * selection mode.
      */
-    public void resetRowSelection() {
+    @Override
+		public void resetRowSelection() {
         listSelectionModel.clearSelection();
         if(selection != null && rowMapper != null) {
             int               aRow;
@@ -809,7 +832,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * Returns the lead selection index. That is the last index that was
      * added.
      */
-    public int getLeadSelectionRow() {
+    @Override
+		public int getLeadSelectionRow() {
         return leadRow;
     }
 
@@ -817,7 +841,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * Returns the last path that was added. This may differ from the
      * leadSelectionPath property maintained by the JTree.
      */
-    public TreePath getLeadSelectionPath() {
+    @Override
+		public TreePath getLeadSelectionPath() {
         return leadPath;
     }
 
@@ -830,7 +855,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      *
      * @param listener  the PropertyChangeListener to be added
      */
-    public synchronized void addPropertyChangeListener(
+    @Override
+		public synchronized void addPropertyChangeListener(
                                 PropertyChangeListener listener) {
         if (changeSupport == null) {
             changeSupport = new SwingPropertyChangeSupport(this);
@@ -846,7 +872,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * @param listener  the PropertyChangeListener to be removed
      */
 
-    public synchronized void removePropertyChangeListener(
+    @Override
+		public synchronized void removePropertyChangeListener(
                                 PropertyChangeListener listener) {
         if (changeSupport == null) {
             return;
@@ -1140,7 +1167,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      *
      * @return a String representation of this object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         int                selCount = getSelectionCount();
         StringBuffer       retBuffer = new StringBuffer();
         int[]              rows;
@@ -1169,7 +1197,8 @@ public class DefaultTreeSelectionModel extends Object implements Cloneable, Tree
      * @exception CloneNotSupportedException never thrown by instances of
      *                                       this class
      */
-    public Object clone() throws CloneNotSupportedException {
+    @Override
+		public Object clone() throws CloneNotSupportedException {
         DefaultTreeSelectionModel        clone = (DefaultTreeSelectionModel)
                             super.clone();
 

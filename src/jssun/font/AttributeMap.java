@@ -52,11 +52,13 @@ public final class AttributeMap extends AbstractMap<TextAttribute, Object> {
         this.values = values;
     }
 
-    public Set<Entry<TextAttribute, Object>> entrySet() {
+    @Override
+		public Set<Entry<TextAttribute, Object>> entrySet() {
         return delegate().entrySet();
     }
 
-    public Object put(TextAttribute key, Object value) {
+    @Override
+		public Object put(TextAttribute key, Object value) {
         return delegate().put(key, value);
     }
 
@@ -82,7 +84,8 @@ public final class AttributeMap extends AbstractMap<TextAttribute, Object> {
         return delegateMap;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         if (values != null) {
             return "map of " + values.toString();
         }

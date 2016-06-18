@@ -185,7 +185,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * via the getDataElements and setDataElements methods.
      * For a SinglePixelPackedSampleModel, this is one.
      */
-    public int getNumDataElements() {
+    @Override
+		public int getNumDataElements() {
         return 1;
     }
 
@@ -211,7 +212,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @throws IllegalArgumentException if <code>w</code> or
      *         <code>h</code> is not greater than 0
      */
-    public SampleModel createCompatibleSampleModel(int w, int h) {
+    @Override
+		public SampleModel createCompatibleSampleModel(int w, int h) {
       SampleModel sampleModel = new SinglePixelPackedSampleModel(dataType, w, h,
                                                               bitMasks);
       return sampleModel;
@@ -223,7 +225,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * will be consistent with this SinglePixelPackedSampleModel.  The
      * DataBuffer will have a single bank.
      */
-    public DataBuffer createDataBuffer() {
+    @Override
+		public DataBuffer createDataBuffer() {
         DataBuffer dataBuffer = null;
 
         int size = (int)getBufferSize();
@@ -242,7 +245,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
     }
 
     /** Returns the number of bits per sample for all bands. */
-    public int[] getSampleSize() {
+    @Override
+		public int[] getSampleSize() {
         int mask;
         int sampleSize[] = new int [numBands];
         for (int i=0; i<numBands; i++) {
@@ -258,7 +262,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
     }
 
     /** Returns the number of bits per sample for the specified band. */
-    public int getSampleSize(int band) {
+    @Override
+		public int getSampleSize(int band) {
         int sampleSize = 0;
         int mask = bitMasks[band] >>> bitOffsets[band];
         while ((mask & 1) != 0) {
@@ -320,7 +325,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      *                                  greater than the number of bands in
      *                                  the sample model.
      */
-    public SampleModel createSubsetSampleModel(int bands[]) {
+    @Override
+		public SampleModel createSubsetSampleModel(int bands[]) {
         if (bands.length > numBands)
             throw new RasterFormatException("There are only " +
                                             numBands +
@@ -372,7 +378,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @return the data for the specified pixel.
      * @see #setDataElements(int, int, Object, DataBuffer)
      */
-    public Object getDataElements(int x, int y, Object obj, DataBuffer data) {
+    @Override
+		public Object getDataElements(int x, int y, Object obj, DataBuffer data) {
         // Bounds check for 'b' will be performed automatically
         if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
             throw new ArrayIndexOutOfBoundsException
@@ -440,7 +447,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @return all samples for the specified pixel.
      * @see #setPixel(int, int, int[], DataBuffer)
      */
-    public int [] getPixel(int x, int y, int iArray[], DataBuffer data) {
+    @Override
+		public int [] getPixel(int x, int y, int iArray[], DataBuffer data) {
         if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
@@ -473,7 +481,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @return all samples for the specified region of pixels.
      * @see #setPixels(int, int, int, int, int[], DataBuffer)
      */
-    public int[] getPixels(int x, int y, int w, int h,
+    @Override
+		public int[] getPixels(int x, int y, int w, int h,
                            int iArray[], DataBuffer data) {
         if ((x < 0) || (y < 0) || (x + w > width) || (y + h > height)) {
             throw new ArrayIndexOutOfBoundsException
@@ -514,7 +523,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      *         pixel.
      * @see #setSample(int, int, int, int, DataBuffer)
      */
-    public int getSample(int x, int y, int b, DataBuffer data) {
+    @Override
+		public int getSample(int x, int y, int b, DataBuffer data) {
         // Bounds check for 'b' will be performed automatically
         if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
             throw new ArrayIndexOutOfBoundsException
@@ -540,7 +550,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      *         region of pixels.
      * @see #setSamples(int, int, int, int, int, int[], DataBuffer)
      */
-    public int[] getSamples(int x, int y, int w, int h, int b,
+    @Override
+		public int[] getSamples(int x, int y, int w, int h, int b,
                            int iArray[], DataBuffer data) {
         // Bounds check for 'b' will be performed automatically
         if ((x < 0) || (y < 0) || (x + w > width) || (y + h > height)) {
@@ -602,7 +613,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @param data      The DataBuffer containing the image data.
      * @see #getDataElements(int, int, Object, DataBuffer)
      */
-    public void setDataElements(int x, int y, Object obj, DataBuffer data) {
+    @Override
+		public void setDataElements(int x, int y, Object obj, DataBuffer data) {
         if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
             throw new ArrayIndexOutOfBoundsException
                 ("Coordinate out of bounds!");
@@ -642,7 +654,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @param data      The DataBuffer containing the image data.
      * @see #getPixel(int, int, int[], DataBuffer)
      */
-    public void setPixel(int x, int y,
+    @Override
+		public void setPixel(int x, int y,
                          int iArray[],
                          DataBuffer data) {
         if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
@@ -671,7 +684,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @param data      The DataBuffer containing the image data.
      * @see #getPixels(int, int, int, int, int[], DataBuffer)
      */
-    public void setPixels(int x, int y, int w, int h,
+    @Override
+		public void setPixels(int x, int y, int w, int h,
                           int iArray[], DataBuffer data) {
         if ((x < 0) || (y < 0) || (x + w > width) || (y + h > height)) {
             throw new ArrayIndexOutOfBoundsException
@@ -708,7 +722,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @param data      The DataBuffer containing the image data.
      * @see #getSample(int, int, int, DataBuffer)
      */
-    public void setSample(int x, int y, int b, int s,
+    @Override
+		public void setSample(int x, int y, int b, int s,
                           DataBuffer data) {
         // Bounds check for 'b' will be performed automatically
         if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
@@ -735,7 +750,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
      * @param data      The DataBuffer containing the image data.
      * @see #getSamples(int, int, int, int, int, int[], DataBuffer)
      */
-    public void setSamples(int x, int y, int w, int h, int b,
+    @Override
+		public void setSamples(int x, int y, int w, int h, int b,
                           int iArray[], DataBuffer data) {
         // Bounds check for 'b' will be performed automatically
         if ((x < 0) || (y < 0) || (x + w > width) || (y + h > height)) {
@@ -757,7 +773,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
         }
     }
 
-    public boolean equals(Object o) {
+    @Override
+		public boolean equals(Object o) {
         if ((o == null) || !(o instanceof SinglePixelPackedSampleModel)) {
             return false;
         }
@@ -775,7 +792,8 @@ public class SinglePixelPackedSampleModel extends SampleModel
     }
 
     // If we implement equals() we must also implement hashCode
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         int hash = 0;
         hash = width;
         hash <<= 8;

@@ -12,11 +12,13 @@ public class SimThread extends JSThread {
 	}
 
 
+	@Override
 	public void run() {
 		run1(JSThread.INIT);
 	}
 
 	// @Override
+	@Override
 	protected void run1(int state) {
 		while (!interrupted()) {
 			try {

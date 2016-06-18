@@ -58,44 +58,52 @@ public abstract class WindowAdapter
     /**
      * Invoked when a window has been opened.
      */
-    public void windowOpened(WindowEvent e) {}
+    @Override
+		public void windowOpened(WindowEvent e) {}
 
     /**
      * Invoked when a window is in the process of being closed.
      * The close operation can be overridden at this point.
      */
-    public void windowClosing(WindowEvent e) {}
+    @Override
+		public void windowClosing(WindowEvent e) {}
 
     /**
      * Invoked when a window has been closed.
      */
-    public void windowClosed(WindowEvent e) {}
+    @Override
+		public void windowClosed(WindowEvent e) {}
 
     /**
      * Invoked when a window is iconified.
      */
-    public void windowIconified(WindowEvent e) {}
+    @Override
+		public void windowIconified(WindowEvent e) {}
 
     /**
      * Invoked when a window is de-iconified.
      */
-    public void windowDeiconified(WindowEvent e) {}
+    @Override
+		public void windowDeiconified(WindowEvent e) {}
 
     /**
      * Invoked when a window is activated.
      */
-    public void windowActivated(WindowEvent e) {}
+    @Override
+		public void windowActivated(WindowEvent e) {}
 
     /**
      * Invoked when a window is de-activated.
      */
-    public void windowDeactivated(WindowEvent e) {}
+    @Override
+		public void windowDeactivated(WindowEvent e) {}
 
     /**
      * Invoked when a window state is changed.
      * @since 1.4
      */
-    public void windowStateChanged(WindowEvent e) {}
+    @Override
+		public void windowStateChanged(WindowEvent e) {}
 
     /**
      * Invoked when the Window is set to be the focused Window, which means
@@ -104,7 +112,8 @@ public abstract class WindowAdapter
      *
      * @since 1.4
      */
-    public void windowGainedFocus(WindowEvent e) {}
+    @Override
+		public void windowGainedFocus(WindowEvent e) {}
 
     /**
      * Invoked when the Window is no longer the focused Window, which means
@@ -113,5 +122,6 @@ public abstract class WindowAdapter
      *
      * @since 1.4
      */
-    public void windowLostFocus(WindowEvent e) {}
+    @Override
+		public void windowLostFocus(WindowEvent e) {}
 }

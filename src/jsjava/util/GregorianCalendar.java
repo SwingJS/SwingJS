@@ -810,7 +810,8 @@ public class GregorianCalendar extends Calendar {
      * <code>false</code> otherwise.
      * @see Calendar#compareTo(Calendar)
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         return obj instanceof GregorianCalendar &&
             super.equals(obj) &&
             gregorianCutover == ((GregorianCalendar)obj).gregorianCutover;
@@ -819,7 +820,8 @@ public class GregorianCalendar extends Calendar {
     /**
      * Generates the hash code for this <code>GregorianCalendar</code> object.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return super.hashCode() ^ (int)gregorianCutoverDate;
     }
 
@@ -851,7 +853,8 @@ public class GregorianCalendar extends Calendar {
      * or if any calendar fields have out-of-range values in
      * non-lenient mode.
      */
-    public void add(int field, int amount) {
+    @Override
+		public void add(int field, int amount) {
         // If amount == 0, do nothing even the given field is out of
         // range. This is tested by JCK.
         if (amount == 0) {
@@ -1049,7 +1052,8 @@ public class GregorianCalendar extends Calendar {
      * @see #add(int,int)
      * @see #set(int,int)
      */
-    public void roll(int field, boolean up) {
+    @Override
+		public void roll(int field, boolean up) {
         roll(field, up ? +1 : -1);
     }
 
@@ -1097,7 +1101,8 @@ public class GregorianCalendar extends Calendar {
      * @see #set(int,int)
      * @since 1.2
      */
-    public void roll(int field, int amount) {
+    @Override
+		public void roll(int field, int amount) {
         // If amount == 0, do nothing even the given field is out of
         // range. This is tested by JCK.
         if (amount == 0) {
@@ -1453,7 +1458,8 @@ public class GregorianCalendar extends Calendar {
      * @see #getActualMinimum(int)
      * @see #getActualMaximum(int)
      */
-    public int getMinimum(int field) {
+    @Override
+		public int getMinimum(int field) {
         return MIN_VALUES[field];
     }
 
@@ -1476,7 +1482,8 @@ public class GregorianCalendar extends Calendar {
      * @see #getActualMinimum(int)
      * @see #getActualMaximum(int)
      */
-    public int getMaximum(int field) {
+    @Override
+		public int getMaximum(int field) {
         switch (field) {
         case MONTH:
         case DAY_OF_MONTH:
@@ -1524,7 +1531,8 @@ public class GregorianCalendar extends Calendar {
      * @see #getActualMinimum(int)
      * @see #getActualMaximum(int)
      */
-    public int getGreatestMinimum(int field) {
+    @Override
+		public int getGreatestMinimum(int field) {
 //        if (field == DAY_OF_MONTH) {
 //            BaseCalendar.Date d = getGregorianCutoverDate();
 //            long mon1 = getFixedDateMonth1(d, gregorianCutoverDate);
@@ -1553,7 +1561,8 @@ public class GregorianCalendar extends Calendar {
      * @see #getActualMinimum(int)
      * @see #getActualMaximum(int)
      */
-    public int getLeastMaximum(int field) {
+    @Override
+		public int getLeastMaximum(int field) {
         switch (field) {
         case MONTH:
         case DAY_OF_MONTH:
@@ -1602,7 +1611,8 @@ public class GregorianCalendar extends Calendar {
      * @see #getActualMaximum(int)
      * @since 1.2
      */
-    public int getActualMinimum(int field) {
+    @Override
+		public int getActualMinimum(int field) {
         if (field == DAY_OF_MONTH) {
 //            GregorianCalendar gc = getNormalizedCalendar();
 //            int year = gc.cdate.getNormalizedYear();
@@ -1638,7 +1648,8 @@ public class GregorianCalendar extends Calendar {
      * @see #getActualMinimum(int)
      * @since 1.2
      */
-    public int getActualMaximum(int field) {
+    @Override
+		public int getActualMaximum(int field) {
         final int fieldsForFixedMax = ERA_MASK|DAY_OF_WEEK_MASK|HOUR_MASK|AM_PM_MASK|
             HOUR_OF_DAY_MASK|MINUTE_MASK|SECOND_MASK|MILLISECOND_MASK|
             ZONE_OFFSET_MASK|DST_OFFSET_MASK;
@@ -1904,7 +1915,8 @@ public class GregorianCalendar extends Calendar {
             (internalGet(ZONE_OFFSET) + internalGet(DST_OFFSET));
     }
 
-    public Object clone()
+    @Override
+		public Object clone()
     {
         GregorianCalendar other = (GregorianCalendar) super.clone();
 
@@ -1921,7 +1933,8 @@ public class GregorianCalendar extends Calendar {
         return other;
     }
 
-    public TimeZone getTimeZone() {
+    @Override
+		public TimeZone getTimeZone() {
         TimeZone zone = super.getTimeZone();
         // To share the zone by CalendarDates
         gdate.setZone(zone);
@@ -1931,7 +1944,8 @@ public class GregorianCalendar extends Calendar {
         return zone;
     }
 
-    public void setTimeZone(TimeZone zone) {
+    @Override
+		public void setTimeZone(TimeZone zone) {
         super.setTimeZone(zone);
         // To share the zone by CalendarDates
         gdate.setZone(zone);
@@ -2001,7 +2015,8 @@ public class GregorianCalendar extends Calendar {
      *
      * @see Calendar#complete
      */
-    protected void computeFields() {
+    @Override
+		protected void computeFields() {
         int mask = 0;
         if (isPartiallyNormalized()) {
             // Determine which calendar fields need to be computed.
@@ -2322,7 +2337,8 @@ public class GregorianCalendar extends Calendar {
      *
      * @exception IllegalArgumentException if any calendar fields are invalid.
      */
-    protected void computeTime() {
+    @Override
+		protected void computeTime() {
         // In non-lenient mode, perform brief checking of calendar
         // fields which have been set externally. Through this
         // checking, the field values are stored in originalFields[]

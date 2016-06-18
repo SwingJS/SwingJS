@@ -3,7 +3,6 @@ package swingjs.plaf;
 
 import jsjava.awt.Dimension;
 
-import jsjavax.swing.JComponent;
 import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
@@ -29,14 +28,14 @@ public class JSMenuUI extends JSLightweightUI {
 	}
 	
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize() {
 		// SwingJS should defer to containing panel
 		return null;
 	}
 
 	@Override
 	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(c,
+    LookAndFeel.installColorsAndFont(jc,
         "Menu.background",
         "Menu.foreground",
         "Menu.font");

@@ -66,7 +66,7 @@ public abstract class AbstractColorChooserPanel extends JPanel {
     /**
      *
      */
-    private boolean dirty  = true;
+    protected boolean dirty  = true;
 
 
     /**
@@ -195,7 +195,8 @@ public abstract class AbstractColorChooserPanel extends JPanel {
      * Draws the panel.
      * @param g  the <code>Graphics</code> object
      */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
         if (dirty) {
             updateChooser();
             dirty = false;
@@ -231,7 +232,8 @@ public abstract class AbstractColorChooserPanel extends JPanel {
      *
      */
     class ModelListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
           if (isShowing()) {  // isVisible
                 updateChooser();
                 dirty = false;

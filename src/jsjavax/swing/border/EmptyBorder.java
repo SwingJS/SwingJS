@@ -75,7 +75,8 @@ public class EmptyBorder extends AbstractBorder
     /**
      * Does no drawing by default.
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
     }
 
     /**
@@ -83,7 +84,8 @@ public class EmptyBorder extends AbstractBorder
      * @param c the component for which this border insets value applies
      * @since 1.3
      */
-    public Insets getBorderInsets(Component c)       {
+    @Override
+		public Insets getBorderInsets(Component c)       {
         return getBorderInsets();
     }
 
@@ -92,7 +94,8 @@ public class EmptyBorder extends AbstractBorder
      * @param c the component for which this border insets value applies
      * @param insets the object to be reinitialized
      */
-    public Insets getBorderInsets(Component c, Insets insets) {
+    @Override
+		public Insets getBorderInsets(Component c, Insets insets) {
         insets.left = left;
         insets.top = top;
         insets.right = right;
@@ -112,6 +115,7 @@ public class EmptyBorder extends AbstractBorder
      * Returns whether or not the border is opaque.
      * Returns false by default.
      */
-    public boolean isBorderOpaque() { return false; }
+    @Override
+		public boolean isBorderOpaque() { return false; }
 
 }

@@ -402,7 +402,8 @@ public abstract class RowFilter<M,I> {
             this.columns = columns;
         }
 
-        public boolean include(Entry<? extends Object,? extends Object> value){
+        @Override
+				public boolean include(Entry<? extends Object,? extends Object> value){
             int count = value.getValueCount();
             if (columns.length > 0) {
                 for (int i = columns.length - 1; i >= 0; i--) {
@@ -440,7 +441,8 @@ public abstract class RowFilter<M,I> {
             matcher = regex.matcher("");
         }
 
-        protected boolean include(
+        @Override
+				protected boolean include(
                 Entry<? extends Object,? extends Object> value, int index) {
             matcher.reset(value.getStringValue(index));
             return matcher.find();
@@ -461,7 +463,8 @@ public abstract class RowFilter<M,I> {
             this.date = date;
         }
 
-        protected boolean include(
+        @Override
+				protected boolean include(
                 Entry<? extends Object,? extends Object> value, int index) {
             Object v = value.getValue(index);
 
@@ -503,7 +506,8 @@ public abstract class RowFilter<M,I> {
             isComparable = (number instanceof Comparable);
         }
 
-        @SuppressWarnings("unchecked")
+        @Override
+				@SuppressWarnings("unchecked")
         protected boolean include(
                 Entry<? extends Object,? extends Object> value, int index) {
             Object v = value.getValue(index);
@@ -562,7 +566,8 @@ public abstract class RowFilter<M,I> {
             }
         }
 
-        public boolean include(Entry<? extends M, ? extends I> value) {
+        @Override
+				public boolean include(Entry<? extends M, ? extends I> value) {
             for (RowFilter<? super M,? super I> filter : filters) {
                 if (filter.include(value)) {
                     return true;
@@ -578,7 +583,8 @@ public abstract class RowFilter<M,I> {
             super(filters);
         }
 
-        public boolean include(Entry<? extends M, ? extends I> value) {
+        @Override
+				public boolean include(Entry<? extends M, ? extends I> value) {
             for (RowFilter<? super M,? super I> filter : filters) {
                 if (!filter.include(value)) {
                     return false;
@@ -600,7 +606,8 @@ public abstract class RowFilter<M,I> {
             this.filter = filter;
         }
 
-        public boolean include(Entry<? extends M, ? extends I> value) {
+        @Override
+				public boolean include(Entry<? extends M, ? extends I> value) {
             return !filter.include(value);
         }
     }

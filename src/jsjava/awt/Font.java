@@ -1561,7 +1561,8 @@ public class Font
      * @return     a hashcode value for this <code>Font</code>.
      * @since      JDK1.0
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         if (hash == 0) {
             hash = name.hashCode() ^ style ^ size;
             /* It is possible many fonts differ only in transform.
@@ -1588,7 +1589,8 @@ public class Font
      *          <code>false</code> otherwise.
      * @since JDK1.0
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (obj == this) {
             return true;
         }
@@ -1636,7 +1638,8 @@ public class Font
      */
     // NOTE: This method may be called by privileged threads.
     //       DO NOT INVOKE CLIENT CODE ON THIS THREAD!
-    public String toString() {
+    @Override
+		public String toString() {
       String  strStyle;
       if (isBold()) {
           strStyle = isItalic() ? "bolditalic" : "bold";
@@ -2623,7 +2626,8 @@ public class Font
     /*
      * Disposes the native <code>Font</code> object.
      */
-     protected void finalize() throws Throwable {
+     @Override
+		protected void finalize() throws Throwable {
         /* Yes, its empty, yes, that's OK :-)
          * The 2D disposer thread now releases font resources,
          * and because this method is empty it does not in fact

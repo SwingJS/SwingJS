@@ -65,7 +65,8 @@ public class Locator2Impl extends LocatorImpl implements Locator2
      *
      * @see #setXMLVersion
      */
-    public String getXMLVersion ()
+    @Override
+		public String getXMLVersion ()
 	{ return version; }
 
     /**
@@ -73,7 +74,8 @@ public class Locator2Impl extends LocatorImpl implements Locator2
      *
      * @see #setEncoding
      */
-    public String getEncoding ()
+    @Override
+		public String getEncoding ()
 	{ return encoding; }
 
 

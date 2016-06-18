@@ -87,11 +87,13 @@ public class DefaultCellEditor extends AbstractCellEditor
         editorComponent = textField;
         this.clickCountToStart = 2;
         delegate = new EditorDelegate() {
-            public void setValue(Object value) {
+            @Override
+						public void setValue(Object value) {
                 textField.setText((value != null) ? value.toString() : "");
             }
 
-            public Object getCellEditorValue() {
+            @Override
+						public Object getCellEditorValue() {
                 return textField.getText();
             }
         };
@@ -106,7 +108,8 @@ public class DefaultCellEditor extends AbstractCellEditor
     public DefaultCellEditor(final JCheckBox checkBox) {
         editorComponent = checkBox;
         delegate = new EditorDelegate() {
-            public void setValue(Object value) {
+            @Override
+						public void setValue(Object value) {
                 boolean selected = false;
                 if (value instanceof Boolean) {
                     selected = ((Boolean)value).booleanValue();
@@ -117,7 +120,8 @@ public class DefaultCellEditor extends AbstractCellEditor
                 checkBox.setSelected(selected);
             }
 
-            public Object getCellEditorValue() {
+            @Override
+						public Object getCellEditorValue() {
                 return Boolean.valueOf(checkBox.isSelected());
             }
         };
@@ -135,22 +139,26 @@ public class DefaultCellEditor extends AbstractCellEditor
         editorComponent = comboBox;
         comboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
         delegate = new EditorDelegate() {
-            public void setValue(Object value) {
+            @Override
+						public void setValue(Object value) {
                 comboBox.setSelectedItem(value);
             }
 
-            public Object getCellEditorValue() {
+            @Override
+						public Object getCellEditorValue() {
                 return comboBox.getSelectedItem();
             }
 
-            public boolean shouldSelectCell(EventObject anEvent) {
+            @Override
+						public boolean shouldSelectCell(EventObject anEvent) {
                 if (anEvent instanceof MouseEvent) {
                     MouseEvent e = (MouseEvent)anEvent;
                     return e.getID() != MouseEvent.MOUSE_DRAGGED;
                 }
                 return true;
             }
-            public boolean stopCellEditing() {
+            @Override
+						public boolean stopCellEditing() {
                 if (comboBox.isEditable()) {
                     // Commit edited value.
                     comboBox.actionPerformed(new ActionEvent(
@@ -203,7 +211,8 @@ public class DefaultCellEditor extends AbstractCellEditor
      * the <code>delegate</code>.
      * @see EditorDelegate#getCellEditorValue
      */
-    public Object getCellEditorValue() {
+    @Override
+		public Object getCellEditorValue() {
         return delegate.getCellEditorValue();
     }
 
@@ -212,7 +221,8 @@ public class DefaultCellEditor extends AbstractCellEditor
      * the <code>delegate</code>.
      * @see EditorDelegate#isCellEditable(EventObject)
      */
-    public boolean isCellEditable(EventObject anEvent) {
+    @Override
+		public boolean isCellEditable(EventObject anEvent) {
         return delegate.isCellEditable(anEvent);
     }
 
@@ -221,7 +231,8 @@ public class DefaultCellEditor extends AbstractCellEditor
      * the <code>delegate</code>.
      * @see EditorDelegate#shouldSelectCell(EventObject)
      */
-    public boolean shouldSelectCell(EventObject anEvent) {
+    @Override
+		public boolean shouldSelectCell(EventObject anEvent) {
         return delegate.shouldSelectCell(anEvent);
     }
 
@@ -230,7 +241,8 @@ public class DefaultCellEditor extends AbstractCellEditor
      * the <code>delegate</code>.
      * @see EditorDelegate#stopCellEditing
      */
-    public boolean stopCellEditing() {
+    @Override
+		public boolean stopCellEditing() {
         return delegate.stopCellEditing();
     }
 
@@ -239,7 +251,8 @@ public class DefaultCellEditor extends AbstractCellEditor
      * the <code>delegate</code>.
      * @see EditorDelegate#cancelCellEditing
      */
-    public void cancelCellEditing() {
+    @Override
+		public void cancelCellEditing() {
         delegate.cancelCellEditing();
     }
 
@@ -248,7 +261,8 @@ public class DefaultCellEditor extends AbstractCellEditor
 //
 
     /** Implements the <code>TreeCellEditor</code> interface. */
-    public Component getTreeCellEditorComponent(JTree tree, Object value,
+    @Override
+		public Component getTreeCellEditorComponent(JTree tree, Object value,
                                                 boolean isSelected,
                                                 boolean expanded,
                                                 boolean leaf, int row) {
@@ -263,7 +277,8 @@ public class DefaultCellEditor extends AbstractCellEditor
 //  Implementing the CellEditor Interface
 //
     /** Implements the <code>TableCellEditor</code> interface. */
-    public Component getTableCellEditorComponent(JTable table, Object value,
+    @Override
+		public Component getTableCellEditorComponent(JTable table, Object value,
                                                  boolean isSelected,
                                                  int row, int column) {
         delegate.setValue(value);
@@ -382,7 +397,8 @@ public class DefaultCellEditor extends AbstractCellEditor
         * @param e the action event
         * @see #stopCellEditing
         */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             DefaultCellEditor.this.stopCellEditing();
         }
 
@@ -391,7 +407,8 @@ public class DefaultCellEditor extends AbstractCellEditor
         * @param e the action event
         * @see #stopCellEditing
         */
-        public void itemStateChanged(ItemEvent e) {
+        @Override
+				public void itemStateChanged(ItemEvent e) {
             DefaultCellEditor.this.stopCellEditing();
         }
     }

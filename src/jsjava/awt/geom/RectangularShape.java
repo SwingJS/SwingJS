@@ -306,7 +306,8 @@ public abstract class RectangularShape implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Point2D p) {
+    @Override
+		public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 
@@ -314,7 +315,8 @@ public abstract class RectangularShape implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(Rectangle2D r) {
+    @Override
+		public boolean intersects(Rectangle2D r) {
         return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -322,7 +324,8 @@ public abstract class RectangularShape implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Rectangle2D r) {
+    @Override
+		public boolean contains(Rectangle2D r) {
         return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -330,7 +333,8 @@ public abstract class RectangularShape implements Shape, Cloneable {
      * {@inheritDoc}
      * @since 1.2
      */
-    public Rectangle getBounds() {
+    @Override
+		public Rectangle getBounds() {
         double width = getWidth();
         double height = getHeight();
         if (width < 0 || height < 0) {
@@ -372,7 +376,8 @@ public abstract class RectangularShape implements Shape, Cloneable {
      *          the <code>Shape</code> object's flattened geometry.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at, double flatness) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return new FlatteningPathIterator(getPathIterator(at), flatness);
     }
 
@@ -384,7 +389,8 @@ public abstract class RectangularShape implements Shape, Cloneable {
      * @see        java.lang.Cloneable
      * @since      1.2
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {

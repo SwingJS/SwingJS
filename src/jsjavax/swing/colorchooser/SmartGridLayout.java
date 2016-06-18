@@ -55,7 +55,8 @@ class SmartGridLayout implements LayoutManager {
   }
 
 
-  public void layoutContainer(Container c) {
+  @Override
+	public void layoutContainer(Container c) {
 
     buildLayoutGrid(c);
 
@@ -108,7 +109,8 @@ class SmartGridLayout implements LayoutManager {
 
   }
 
-  public Dimension minimumLayoutSize(Container c) {
+  @Override
+	public Dimension minimumLayoutSize(Container c) {
 
     buildLayoutGrid(c);
     Insets insets = c.getInsets();
@@ -134,14 +136,17 @@ class SmartGridLayout implements LayoutManager {
 
   }
 
-  public Dimension preferredLayoutSize(Container c) {
+  @Override
+	public Dimension preferredLayoutSize(Container c) {
       return minimumLayoutSize(c);
   }
 
 
-  public void addLayoutComponent(String s, Component c) {}
+  @Override
+	public void addLayoutComponent(String s, Component c) {}
 
-  public void removeLayoutComponent(Component c) {}
+  @Override
+	public void removeLayoutComponent(Component c) {}
 
 
   private void buildLayoutGrid(Container c) {

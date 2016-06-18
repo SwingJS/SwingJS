@@ -590,7 +590,8 @@ public class DefaultTableModel extends AbstractTableModel  {
      * Returns the number of rows in this data table.
      * @return the number of rows in the model
      */
-    public int getRowCount() {
+    @Override
+		public int getRowCount() {
         return dataVector.size();
     }
 
@@ -598,7 +599,8 @@ public class DefaultTableModel extends AbstractTableModel  {
      * Returns the number of columns in this data table.
      * @return the number of columns in the model
      */
-    public int getColumnCount() {
+    @Override
+		public int getColumnCount() {
         return columnIdentifiers.size();
     }
 
@@ -611,7 +613,8 @@ public class DefaultTableModel extends AbstractTableModel  {
      * for this index, returns the default
      * name provided by the superclass.
      */
-    public String getColumnName(int column) {
+    @Override
+		public String getColumnName(int column) {
         Object id = null;
         // This test is to cover the case when
         // getColumnCount has been subclassed by mistake ...
@@ -630,7 +633,8 @@ public class DefaultTableModel extends AbstractTableModel  {
      * @return                  true
      * @see #setValueAt
      */
-    public boolean isCellEditable(int row, int column) {
+    @Override
+		public boolean isCellEditable(int row, int column) {
         return true;
     }
 
@@ -644,7 +648,8 @@ public class DefaultTableModel extends AbstractTableModel  {
      * @exception  ArrayIndexOutOfBoundsException  if an invalid row or
      *               column was given
      */
-    public Object getValueAt(int row, int column) {
+    @Override
+		public Object getValueAt(int row, int column) {
         Vector rowVector = (Vector)dataVector.elementAt(row);
         return rowVector.elementAt(column);
     }
@@ -660,7 +665,8 @@ public class DefaultTableModel extends AbstractTableModel  {
      * @exception  ArrayIndexOutOfBoundsException  if an invalid row or
      *               column was given
      */
-    public void setValueAt(Object aValue, int row, int column) {
+    @Override
+		public void setValueAt(Object aValue, int row, int column) {
         Vector rowVector = (Vector)dataVector.elementAt(row);
         rowVector.setElementAt(aValue, column);
         fireTableCellUpdated(row, column);

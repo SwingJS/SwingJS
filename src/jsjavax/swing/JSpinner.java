@@ -179,7 +179,8 @@ public class JSpinner extends JComponent
      *
      * @return the <code>SpinnerUI</code> object that renders this component
      */
-    public SpinnerUI getUI() {
+    @Override
+		public SpinnerUI getUI() {
         return (SpinnerUI)ui;
     }
 
@@ -203,7 +204,8 @@ public class JSpinner extends JComponent
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -214,7 +216,8 @@ public class JSpinner extends JComponent
      *
      * @see UIManager#getUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((SpinnerUI)UIManager.getUI(this));
         invalidate();
     }
@@ -389,7 +392,8 @@ public class JSpinner extends JComponent
      * the slider (instead of the model itself) as the event source.
      */
     private class ModelListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             fireStateChanged();
         }
     }
@@ -737,7 +741,8 @@ public class JSpinner extends JComponent
          * @see #getTextField
          * @see JSpinner#getValue
          */
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             JSpinner spinner = (JSpinner)(e.getSource());
             getTextField().setValue(spinner.getValue());
         }
@@ -758,7 +763,8 @@ public class JSpinner extends JComponent
          *    the <code>JFormattedTextField</code> created by this class.
          * @see #getTextField
          */
-        public void propertyChange(PropertyChangeEvent e)
+        @Override
+				public void propertyChange(PropertyChangeEvent e)
         {
             JSpinner spinner = getSpinner();
 
@@ -797,7 +803,8 @@ public class JSpinner extends JComponent
          * @param name ignored
          * @param child ignored
          */
-        public void addLayoutComponent(String name, Component child) {
+        @Override
+				public void addLayoutComponent(String name, Component child) {
         }
 
 
@@ -807,7 +814,8 @@ public class JSpinner extends JComponent
          *
          * @param child ignored
          */
-        public void removeLayoutComponent(Component child) {
+        @Override
+				public void removeLayoutComponent(Component child) {
         }
 
 
@@ -830,7 +838,8 @@ public class JSpinner extends JComponent
          * @return the preferred dimensions to lay out the subcomponents
          *          of the specified container.
          */
-        public Dimension preferredLayoutSize(Container parent) {
+        @Override
+				public Dimension preferredLayoutSize(Container parent) {
             Dimension preferredSize = insetSize(parent);
             if (parent.getComponentCount() > 0) {
                 Dimension childSize = getComponent(0).getPreferredSize();
@@ -849,7 +858,8 @@ public class JSpinner extends JComponent
          * @return  the minimum dimensions needed to lay out the subcomponents
          *          of the specified container.
          */
-        public Dimension minimumLayoutSize(Container parent) {
+        @Override
+				public Dimension minimumLayoutSize(Container parent) {
             Dimension minimumSize = insetSize(parent);
             if (parent.getComponentCount() > 0) {
                 Dimension childSize = getComponent(0).getMinimumSize();
@@ -864,7 +874,8 @@ public class JSpinner extends JComponent
          * Resize the one (and only) child to completely fill the area
          * within the parents insets.
          */
-        public void layoutContainer(Container parent) {
+        @Override
+				public void layoutContainer(Container parent) {
             if (parent.getComponentCount() > 0) {
                 Insets insets = parent.getInsets();
                 int w = parent.getWidth() - (insets.left + insets.right);
@@ -898,7 +909,8 @@ public class JSpinner extends JComponent
          * @see jsjavax.swing.JComponent#getBaselineResizeBehavior()
          * @since 1.6
          */
-        public int getBaseline(int width, int height) {
+        @Override
+				public int getBaseline(int width, int height) {
             // check size.
             super.getBaseline(width, height);
             Insets insets = getInsets();
@@ -919,7 +931,8 @@ public class JSpinner extends JComponent
          * @see jsjavax.swing.JComponent#getBaseline(int, int)
          * @since 1.6
          */
-        public BaselineResizeBehavior getBaselineResizeBehavior() {
+        @Override
+				public BaselineResizeBehavior getBaselineResizeBehavior() {
             return getComponent(0).getBaselineResizeBehavior();
         }
     }
@@ -1120,19 +1133,23 @@ public class JSpinner extends JComponent
             setValueClass(model.getValue().getClass());
         }
 
-        public void setMinimum(Comparable min) {
+        @Override
+				public void setMinimum(Comparable min) {
             model.setMinimum(min);
         }
 
-        public Comparable getMinimum() {
+        @Override
+				public Comparable getMinimum() {
             return  model.getMinimum();
         }
 
-        public void setMaximum(Comparable max) {
+        @Override
+				public void setMaximum(Comparable max) {
             model.setMaximum(max);
         }
 
-        public Comparable getMaximum() {
+        @Override
+				public Comparable getMaximum() {
             return model.getMaximum();
         }
     }
@@ -1344,18 +1361,21 @@ public class JSpinner extends JComponent
                           JFormattedTextField.AbstractFormatter {
             private DocumentFilter filter;
 
-            public String valueToString(Object value) throws ParseException {
+            @Override
+						public String valueToString(Object value) throws ParseException {
                 if (value == null) {
                     return "";
                 }
                 return value.toString();
             }
 
-            public Object stringToValue(String string) throws ParseException {
+            @Override
+						public Object stringToValue(String string) throws ParseException {
                 return string;
             }
 
-            protected DocumentFilter getDocumentFilter() {
+            @Override
+						protected DocumentFilter getDocumentFilter() {
                 if (filter == null) {
                     filter = new Filter();
                 }
@@ -1364,7 +1384,8 @@ public class JSpinner extends JComponent
 
 
             private class Filter extends DocumentFilter {
-                public void replace(FilterBypass fb, int offset, int length,
+                @Override
+								public void replace(FilterBypass fb, int offset, int length,
                                     String string, AttributeSet attrs) throws
                                            BadLocationException {
                     if (string != null && (offset + length) ==
@@ -1386,7 +1407,8 @@ public class JSpinner extends JComponent
                     super.replace(fb, offset, length, string, attrs);
                 }
 
-                public void insertString(FilterBypass fb, int offset,
+                @Override
+								public void insertString(FilterBypass fb, int offset,
                                      String string, AttributeSet attr)
                        throws BadLocationException {
                     replace(fb, offset, 0, string, attr);
@@ -1400,21 +1422,28 @@ public class JSpinner extends JComponent
      * An Action implementation that is always disabled.
      */
     private static class DisabledAction implements Action {
-        public Object getValue(String key) {
+        @Override
+				public Object getValue(String key) {
             return null;
         }
-        public void putValue(String key, Object value) {
+        @Override
+				public void putValue(String key, Object value) {
         }
-        public void setEnabled(boolean b) {
+        @Override
+				public void setEnabled(boolean b) {
         }
-        public boolean isEnabled() {
+        @Override
+				public boolean isEnabled() {
             return false;
         }
-        public void addPropertyChangeListener(PropertyChangeListener l) {
+        @Override
+				public void addPropertyChangeListener(PropertyChangeListener l) {
         }
-        public void removePropertyChangeListener(PropertyChangeListener l) {
+        @Override
+				public void removePropertyChangeListener(PropertyChangeListener l) {
         }
-        public void actionPerformed(ActionEvent ae) {
+        @Override
+				public void actionPerformed(ActionEvent ae) {
         }
     }
 

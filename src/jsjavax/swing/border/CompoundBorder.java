@@ -81,7 +81,8 @@ public class CompoundBorder extends AbstractBorder {
      * Returns true if both the inside and outside borders are
      * non-null and opaque; returns false otherwise.
      */
-    public boolean isBorderOpaque() {
+    @Override
+		public boolean isBorderOpaque() {
         return (outsideBorder == null || outsideBorder.isBorderOpaque()) &&
                (insideBorder == null || insideBorder.isBorderOpaque());
     }
@@ -98,7 +99,8 @@ public class CompoundBorder extends AbstractBorder {
      * @param width the width of the painted border
      * @param height the height of the painted border
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Insets  nextInsets;
         int px, py, pw, ph;
 
@@ -126,7 +128,8 @@ public class CompoundBorder extends AbstractBorder {
      * @param c the component for which this border insets value applies
      * @param insets the object to be reinitialized
      */
-    public Insets getBorderInsets(Component c, Insets insets) {
+    @Override
+		public Insets getBorderInsets(Component c, Insets insets) {
         Insets  nextInsets;
 
         insets.top = insets.left = insets.right = insets.bottom = 0;
@@ -153,7 +156,8 @@ public class CompoundBorder extends AbstractBorder {
      * inside border.
      * @param c the component for which this border insets value applies
      */
-    public Insets getBorderInsets(Component c) {
+    @Override
+		public Insets getBorderInsets(Component c) {
         return getBorderInsets(c, new Insets(0,0,0,0));
     }
 

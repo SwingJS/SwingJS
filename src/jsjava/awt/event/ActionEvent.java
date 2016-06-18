@@ -246,7 +246,8 @@ public class ActionEvent extends AWTEvent {
      *
      * @return a string identifying the event and its associated command
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case ACTION_PERFORMED:

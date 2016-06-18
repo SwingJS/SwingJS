@@ -262,7 +262,8 @@ public class HierarchyEvent extends AWTEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case ANCESTOR_MOVED:

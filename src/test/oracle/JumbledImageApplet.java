@@ -32,7 +32,6 @@ package test.oracle;
  */ 
 
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -83,7 +82,7 @@ import javax.swing.JPanel;
         Random rand = new Random();
         int ri;
         for (int i=0; i<numcells; i++) {
-            while ((ri = rand.nextInt(numlocs)) == i);
+            while ((ri = rand.nextInt(numlocs)) == i){}
 
             int tmp = cells[i];
             cells[i] = cells[ri];
@@ -91,11 +90,13 @@ import javax.swing.JPanel;
         }
     }
 
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
         return new Dimension(w, h);
     }
 
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
 
         int dx, dy;
         for (int x=0; x<numlocs; x++) {
@@ -118,7 +119,6 @@ public class JumbledImageApplet extends JApplet {
 
     static String imageFileName = "duke_skateboard.jpg";
     private URL imageSrc;
-    private JumbledImage jumbledImage;
 
     public JumbledImageApplet () {
     }
@@ -127,7 +127,8 @@ public class JumbledImageApplet extends JApplet {
         this.imageSrc = imageSrc;
     }
 
-    public void init() {
+    @Override
+		public void init() {
         try {
             imageSrc = pathTo(imageFileName);//new URL(getDocumentBase(), imageFileName);
         } catch (MalformedURLException e) {
@@ -140,11 +141,12 @@ public class JumbledImageApplet extends JApplet {
         add("Center", ji);
         JButton jumbleButton = new JButton("Jumble");
         jumbleButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    JButton b = (JButton)e.getSource();
+                @Override
+								public void actionPerformed(ActionEvent e) {
+                    //JButton b = (JButton)e.getSource();
                     ji.jumble();
                     ji.repaint();
-                };
+                }
             });
         Dimension jumbleSize = ji.getPreferredSize();
         resize(jumbleSize.width, jumbleSize.height+40);
@@ -154,7 +156,8 @@ public class JumbledImageApplet extends JApplet {
     public static void main(String s[]) {
         JFrame f = new JFrame("Jumbled Image");
         f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {System.exit(0);}
+            @Override
+						public void windowClosing(WindowEvent e) {System.exit(0);}
         });
         URL imageSrc = null;
         try {

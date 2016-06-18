@@ -130,7 +130,8 @@ public class JButton extends AbstractButton {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ButtonUI)UIManager.getUI(this));
     }
 
@@ -146,7 +147,8 @@ public class JButton extends AbstractButton {
      *        expert: true
      *   description: A string that specifies the name of the L&F class.
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -215,7 +217,8 @@ public class JButton extends AbstractButton {
      * default button to <code>null</code> to ensure the
      * <code>RootPane</code> doesn't hold onto an invalid button reference.
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
         JRootPane root = SwingUtilities.getRootPane(this);
         if (root != null && root.getDefaultButton() == this) {
             root.setDefaultButton(null);
@@ -248,7 +251,8 @@ public class JButton extends AbstractButton {
      *
      * @return  a string representation of this <code>JButton</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String defaultCapableString = (defaultCapable ? "true" : "false");
 
         return super.paramString() +

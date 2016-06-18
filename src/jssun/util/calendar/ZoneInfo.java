@@ -233,7 +233,8 @@ public class ZoneInfo extends TimeZone {
      * @param date the milliseconds in UTC
      * @return the milliseconds to add to UTC to get local wall time
      */
-    public int getOffset(long date) {
+    @Override
+		public int getOffset(long date) {
         return getOffsets(date, null, UTC_TIME);
     }	
 
@@ -366,7 +367,8 @@ public class ZoneInfo extends TimeZone {
      * @param millis    The milliseconds in day in <em>standard</em> local time.
      * @return The milliseconds to add to UTC to get local time.
      */
-    public int getOffset(int era, int year, int month, int day,
+    @Override
+		public int getOffset(int era, int year, int month, int day,
                          int dayOfWeek, int milliseconds) {
         if (milliseconds < 0 || milliseconds >= AbstractCalendar.DAY_IN_MILLIS) {
             throw new IllegalArgumentException();
@@ -407,7 +409,8 @@ public class ZoneInfo extends TimeZone {
      * @param offsetMillis the base time zone offset to GMT.
      * @see getRawOffset
      */
-    public synchronized void setRawOffset(int offsetMillis) {
+    @Override
+		public synchronized void setRawOffset(int offsetMillis) {
         if (offsetMillis == rawOffset + rawOffsetDiff) {
             return;
         }
@@ -425,7 +428,8 @@ public class ZoneInfo extends TimeZone {
      * @return the GMT offset value in milliseconds to add to UTC time
      * to get local standard time
      */
-    public int getRawOffset() {
+    @Override
+		public int getRawOffset() {
         if (!willGMTOffsetChange) {
             return rawOffset + rawOffsetDiff;
         }
@@ -446,14 +450,16 @@ public class ZoneInfo extends TimeZone {
     /**
      * Queries if this time zone uses Daylight Saving Time in the last known rule.
      */
-    public boolean useDaylightTime() {
+    @Override
+		public boolean useDaylightTime() {
         return (simpleTimeZoneParams != null);
     }
 
     /**
      * Queries if the specified date is in Daylight Saving Time.
      */
-    public boolean inDaylightTime(Date date) {
+    @Override
+		public boolean inDaylightTime(Date date) {
         if (date == null) {
             throw new NullPointerException();
         }
@@ -490,7 +496,8 @@ public class ZoneInfo extends TimeZone {
      * @return the number of milliseconds the time is advanced with respect to
      * standard time when daylight saving time is in effect.
      */
-    public int getDSTSavings() {
+    @Override
+		public int getDSTSavings() {
         return dstSavings;
     }
 
@@ -513,7 +520,8 @@ public class ZoneInfo extends TimeZone {
      * Returns a string representation of this time zone.
      * @return the string
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() +
             "[id=\"" + getID() + "\"" +
             ",offset=" + getLastRawOffset() +
@@ -700,7 +708,8 @@ public class ZoneInfo extends TimeZone {
     /**
      * Returns a copy of this <code>ZoneInfo</code>.
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         ZoneInfo zi = (ZoneInfo) super.clone();
         zi.lastRule = null;
         return zi;
@@ -711,7 +720,8 @@ public class ZoneInfo extends TimeZone {
      * transitions.
      * @return a hash code of this time zone
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return getLastRawOffset() ^ checksum;
     }
 
@@ -722,7 +732,8 @@ public class ZoneInfo extends TimeZone {
      * @return true if given object is same as this ZoneInfo object,
      * false otherwise.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -746,7 +757,8 @@ public class ZoneInfo extends TimeZone {
      * @return true if the given <code>TimeZone</code> has the same
      * GMT offset and transition information; false, otherwise.
      */
-    public boolean hasSameRules(TimeZone other) {
+    @Override
+		public boolean hasSameRules(TimeZone other) {
         if (this == other) {
             return true;
         }

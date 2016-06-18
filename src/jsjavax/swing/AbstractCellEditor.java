@@ -66,7 +66,8 @@ public abstract class AbstractCellEditor implements CellEditor {
      * @param e  an event object
      * @return true
      */
-    public boolean isCellEditable(EventObject e) {
+    @Override
+		public boolean isCellEditable(EventObject e) {
         return true;
     }
 
@@ -75,7 +76,8 @@ public abstract class AbstractCellEditor implements CellEditor {
      * @param anEvent  an event object
      * @return true
      */
-    public boolean shouldSelectCell(EventObject anEvent) {
+    @Override
+		public boolean shouldSelectCell(EventObject anEvent) {
         return true;
     }
 
@@ -83,7 +85,8 @@ public abstract class AbstractCellEditor implements CellEditor {
      * Calls <code>fireEditingStopped</code> and returns true.
      * @return true
      */
-    public boolean stopCellEditing() {
+    @Override
+		public boolean stopCellEditing() {
         fireEditingStopped();
         return true;
     }
@@ -91,7 +94,8 @@ public abstract class AbstractCellEditor implements CellEditor {
     /**
      * Calls <code>fireEditingCanceled</code>.
      */
-    public void  cancelCellEditing() {
+    @Override
+		public void  cancelCellEditing() {
         fireEditingCanceled();
     }
 
@@ -99,7 +103,8 @@ public abstract class AbstractCellEditor implements CellEditor {
      * Adds a <code>CellEditorListener</code> to the listener list.
      * @param l  the new listener to be added
      */
-    public void addCellEditorListener(CellEditorListener l) {
+    @Override
+		public void addCellEditorListener(CellEditorListener l) {
         listenerList.add(CellEditorListener.class, l);
     }
 
@@ -107,7 +112,8 @@ public abstract class AbstractCellEditor implements CellEditor {
      * Removes a <code>CellEditorListener</code> from the listener list.
      * @param l  the listener to be removed
      */
-    public void removeCellEditorListener(CellEditorListener l) {
+    @Override
+		public void removeCellEditorListener(CellEditorListener l) {
         listenerList.remove(CellEditorListener.class, l);
     }
 

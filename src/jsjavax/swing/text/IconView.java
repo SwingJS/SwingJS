@@ -68,7 +68,8 @@ public class IconView extends View  {
      * @param a the allocated region to render into
      * @see View#paint
      */
-    public void paint(Graphics g, Shape a) {
+    @Override
+		public void paint(Graphics g, Shape a) {
         Rectangle alloc = a.getBounds();
         c.paintIcon(getContainer(), g, alloc.x, alloc.y);
     }
@@ -84,7 +85,8 @@ public class IconView extends View  {
      *           The parent may choose to resize or break the view.
      * @exception IllegalArgumentException for an invalid axis
      */
-    public float getPreferredSpan(int axis) {
+    @Override
+		public float getPreferredSpan(int axis) {
         switch (axis) {
         case View.X_AXIS:
             return c.getIconWidth();
@@ -108,7 +110,8 @@ public class IconView extends View  {
      *   away from the origin.  An alignment of 0.5 would be the
      *   center of the view.
      */
-    public float getAlignment(int axis) {
+    @Override
+		public float getAlignment(int axis) {
         switch (axis) {
         case View.Y_AXIS:
             return 1;
@@ -128,7 +131,8 @@ public class IconView extends View  {
      *   represent a valid location in the associated document
      * @see View#modelToView
      */
-    public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
+    @Override
+		public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
         int p0 = getStartOffset();
         int p1 = getEndOffset();
         if ((pos >= p0) && (pos <= p1)) {
@@ -153,7 +157,8 @@ public class IconView extends View  {
      *  given point of view >= 0
      * @see View#viewToModel
      */
-    public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
+    @Override
+		public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
         Rectangle alloc = (Rectangle) a;
         if (x < alloc.x + (alloc.width / 2)) {
             bias[0] = Position.Bias.Forward;

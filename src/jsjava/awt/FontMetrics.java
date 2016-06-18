@@ -627,7 +627,8 @@ public abstract class FontMetrics {
      * <code>FontMetrics</code> object.
      * @since     JDK1.0.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() +
             "[font=" + getFont() +
             "ascent=" + getAscent() +

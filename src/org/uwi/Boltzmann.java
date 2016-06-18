@@ -75,6 +75,7 @@ public class Boltzmann extends JApplet {
 		setName("Boltzmann");
 	}
 
+	@Override
 	public void init() {
 
 		// Take out this line if you don't use symantec.itools.net.RelativeURL or
@@ -196,6 +197,7 @@ public class Boltzmann extends JApplet {
 	// }}
 
 	class SymAction implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent event) {
 			Object object = event.getSource();
 			if (object == bStartSim)
@@ -292,6 +294,7 @@ public class Boltzmann extends JApplet {
 
 	// class to handle mouseclick
 	class SymMouse extends MouseAdapter {
+		@Override
 		public void mouseReleased(MouseEvent event) {
 			Object object = event.getSource();
 			if (object == ShowText)

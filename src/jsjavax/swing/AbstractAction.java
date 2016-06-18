@@ -146,7 +146,8 @@ public abstract class AbstractAction implements Action, Cloneable
      *          are no keys, it will return <code>null</code>
      * @see Action#getValue
      */
-    public Object getValue(String key) {
+    @Override
+		public Object getValue(String key) {
         if (key == "enabled") {
             return enabled;
         }
@@ -163,7 +164,8 @@ public abstract class AbstractAction implements Action, Cloneable
      * @param newValue the <code>Object</code> to store using this key
      * @see Action#putValue
      */
-    public void putValue(String key, Object newValue) {
+    @Override
+		public void putValue(String key, Object newValue) {
         Object oldValue = null;
         if (key == "enabled") {
             // Treat putValue("enabled") the same way as a call to setEnabled.
@@ -203,7 +205,8 @@ public abstract class AbstractAction implements Action, Cloneable
      * @return true if the action is enabled, false otherwise
      * @see Action#isEnabled
      */
-    public boolean isEnabled() {
+    @Override
+		public boolean isEnabled() {
         return enabled;
     }
 
@@ -214,7 +217,8 @@ public abstract class AbstractAction implements Action, Cloneable
      *                  disable it
      * @see Action#setEnabled
      */
-    public void setEnabled(boolean newValue) {
+    @Override
+		public void setEnabled(boolean newValue) {
         boolean oldValue = this.enabled;
 
         if (oldValue != newValue) {
@@ -278,7 +282,8 @@ public abstract class AbstractAction implements Action, Cloneable
      *
      * @see Action#addPropertyChangeListener
      */
-    public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+		public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
         if (changeSupport == null) {
             changeSupport = new SwingPropertyChangeSupport(this);
         }
@@ -295,7 +300,8 @@ public abstract class AbstractAction implements Action, Cloneable
      *
      * @see Action#removePropertyChangeListener
      */
-    public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+		public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
         if (changeSupport == null) {
             return;
         }
@@ -325,7 +331,8 @@ public abstract class AbstractAction implements Action, Cloneable
      * which is not handled for you by <code>Object.clone()</code>.
      **/
 
-    protected Object clone() throws CloneNotSupportedException {
+    @Override
+		protected Object clone() throws CloneNotSupportedException {
         AbstractAction newAction = (AbstractAction)super.clone();
         synchronized(this) {
             if (arrayTable != null) {

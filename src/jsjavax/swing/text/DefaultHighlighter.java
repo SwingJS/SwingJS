@@ -57,7 +57,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      *
      * @param g the graphics context
      */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
         // PENDING(prinz) - should cull ranges not visible
         int len = highlights.size();
         for (int i = 0; i < len; i++) {
@@ -90,7 +91,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      * @param c the editor component
      * @see Highlighter#install
      */
-    public void install(JTextComponent c) {
+    @Override
+		public void install(JTextComponent c) {
         component = c;
         removeAllHighlights();
     }
@@ -102,7 +104,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      * @param c the component
      * @see Highlighter#deinstall
      */
-    public void deinstall(JTextComponent c) {
+    @Override
+		public void deinstall(JTextComponent c) {
         component = null;
     }
 
@@ -117,7 +120,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      *   to refer to the highlight
      * @exception BadLocationException if the specified location is invalid
      */
-    public Object addHighlight(int p0, int p1, Highlighter.HighlightPainter p) throws BadLocationException {
+    @Override
+		public Object addHighlight(int p0, int p1, Highlighter.HighlightPainter p) throws BadLocationException {
         Document doc = component.getDocument();
         HighlightInfo i = (getDrawsLayeredHighlights() &&
                            (p instanceof LayeredHighlighter.LayerPainter)) ?
@@ -135,7 +139,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      *
      * @param tag the reference to the highlight
      */
-    public void removeHighlight(Object tag) {
+    @Override
+		public void removeHighlight(Object tag) {
         if (tag instanceof LayeredHighlightInfo) {
             LayeredHighlightInfo lhi = (LayeredHighlightInfo)tag;
             if (lhi.width > 0 && lhi.height > 0) {
@@ -152,7 +157,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
     /**
      * Removes all highlights.
      */
-    public void removeAllHighlights() {
+    @Override
+		public void removeAllHighlights() {
         TextUI mapper = component.getUI();
         if (getDrawsLayeredHighlights()) {
             int len = highlights.size();
@@ -221,7 +227,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      * @param p1 the end of the range >= p0
      * @exception BadLocationException if the specified location is invalid
      */
-    public void changeHighlight(Object tag, int p0, int p1) throws BadLocationException {
+    @Override
+		public void changeHighlight(Object tag, int p0, int p1) throws BadLocationException {
         Document doc = component.getDocument();
         if (tag instanceof LayeredHighlightInfo) {
             LayeredHighlightInfo lhi = (LayeredHighlightInfo)tag;
@@ -261,7 +268,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      * @return the copy
      * @see Highlighter#getHighlights
      */
-    public Highlighter.Highlight[] getHighlights() {
+    @Override
+		public Highlighter.Highlight[] getHighlights() {
         int size = highlights.size();
         if (size == 0) {
             return noHighlights;
@@ -283,7 +291,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
      * @param editor JTextComponent
      * @param view View instance being rendered
      */
-    public void paintLayeredHighlights(Graphics g, int p0, int p1,
+    @Override
+		public void paintLayeredHighlights(Graphics g, int p0, int p1,
                                        Shape viewBounds,
                                        JTextComponent editor, View view) {
         for (int counter = highlights.size() - 1; counter >= 0; counter--) {
@@ -389,7 +398,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
          * @param bounds the bounding box for the highlight
          * @param c the editor
          */
-        public void paint(Graphics g, int offs0, int offs1, Shape bounds, JTextComponent c) {
+        @Override
+				public void paint(Graphics g, int offs0, int offs1, Shape bounds, JTextComponent c) {
             Rectangle alloc = bounds.getBounds();
             try {
                 // --- determine locations ---
@@ -438,7 +448,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
          * @param view View painting for
          * @return region drawing occured in
          */
-        public Shape paintLayer(Graphics g, int offs0, int offs1,
+        @Override
+				public Shape paintLayer(Graphics g, int offs0, int offs1,
                                 Shape bounds, JTextComponent c, View view) {
             Color color = getColor();
 
@@ -494,15 +505,18 @@ public class DefaultHighlighter extends LayeredHighlighter {
 
     class HighlightInfo implements Highlighter.Highlight {
 
-        public int getStartOffset() {
+        @Override
+				public int getStartOffset() {
             return p0.getOffset();
         }
 
-        public int getEndOffset() {
+        @Override
+				public int getEndOffset() {
             return p1.getOffset();
         }
 
-        public Highlighter.HighlightPainter getPainter() {
+        @Override
+				public Highlighter.HighlightPainter getPainter() {
             return painter;
         }
 
@@ -585,7 +599,8 @@ public class DefaultHighlighter extends LayeredHighlighter {
         /**
          * Executes range(s) damage and cleans range queue.
          */
-        public synchronized void run() {
+        @Override
+				public synchronized void run() {
             if (component != null) {
                 TextUI mapper = component.getUI();
                 if (mapper != null && lastDoc == component.getDocument()) {

@@ -868,7 +868,8 @@ public class SimpleDateFormat extends DateFormat {
      * @return the formatted date-time string.
      * @exception NullPointerException if the given date is null
      */
-    public StringBuffer format(Date date, StringBuffer toAppendTo,
+    @Override
+		public StringBuffer format(Date date, StringBuffer toAppendTo,
                                FieldPosition pos)
     {
         pos.beginIndex = pos.endIndex = 0;
@@ -926,7 +927,8 @@ public class SimpleDateFormat extends DateFormat {
      * @return AttributedCharacterIterator describing the formatted value.
      * @since 1.4
      */
-    public AttributedCharacterIterator formatToCharacterIterator(Object obj) {
+    @Override
+		public AttributedCharacterIterator formatToCharacterIterator(Object obj) {
         StringBuffer sb = new StringBuffer();
         CharacterIteratorFieldDelegate delegate = new
                          CharacterIteratorFieldDelegate();
@@ -1247,6 +1249,7 @@ public class SimpleDateFormat extends DateFormat {
 	 * @exception NullPointerException
 	 *              if <code>text</code> or <code>pos</code> is null.
 	 */
+	@Override
 	public Date parse(String text, ParsePosition pos) {
 		// SwingJS  brute force
 		
@@ -2123,7 +2126,8 @@ public class SimpleDateFormat extends DateFormat {
      *
      * @return a clone of this <code>SimpleDateFormat</code>
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         SimpleDateFormat other = (SimpleDateFormat) super.clone();
         other.formatData = (DateFormatSymbols) formatData.clone();
         return other;
@@ -2134,7 +2138,8 @@ public class SimpleDateFormat extends DateFormat {
      *
      * @return the hash code value for this <code>SimpleDateFormat</code> object.
      */
-    public int hashCode()
+    @Override
+		public int hashCode()
     {
         return pattern.hashCode();
         // just enough fields for a reasonable distribution
@@ -2147,7 +2152,8 @@ public class SimpleDateFormat extends DateFormat {
      * @return true if the given object is equal to this
      * <code>SimpleDateFormat</code>
      */
-    public boolean equals(Object obj)
+    @Override
+		public boolean equals(Object obj)
     {
         if (!super.equals(obj)) return false; // super does class check
         SimpleDateFormat that = (SimpleDateFormat) obj;

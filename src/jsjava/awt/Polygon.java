@@ -313,7 +313,8 @@ public class Polygon implements Shape {
      * <code>Polygon</code>.
      * @since 1.1
      */
-    public Rectangle getBounds() {
+    @Override
+		public Rectangle getBounds() {
         return getBoundingBox();
     }
 
@@ -386,7 +387,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public Rectangle2D getBounds2D() {
+    @Override
+		public Rectangle2D getBounds2D() {
         return getBounds();
     }
 
@@ -394,7 +396,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(double x, double y) {
+    @Override
+		public boolean contains(double x, double y) {
         if (npoints <= 2 || !getBoundingBox().contains(x, y)) {
             return false;
         }
@@ -483,7 +486,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Point2D p) {
+    @Override
+		public boolean contains(Point2D p) {
         return contains(p.getX(), p.getY());
     }
 
@@ -491,7 +495,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(double x, double y, double w, double h) {
+    @Override
+		public boolean intersects(double x, double y, double w, double h) {
         if (npoints <= 0 || !getBoundingBox().intersects(x, y, w, h)) {
             return false;
         }
@@ -504,7 +509,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean intersects(Rectangle2D r) {
+    @Override
+		public boolean intersects(Rectangle2D r) {
         return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -512,7 +518,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(double x, double y, double w, double h) {
+    @Override
+		public boolean contains(double x, double y, double w, double h) {
         if (npoints <= 0 || !getBoundingBox().intersects(x, y, w, h)) {
             return false;
         }
@@ -525,7 +532,8 @@ public class Polygon implements Shape {
      * {@inheritDoc}
      * @since 1.2
      */
-    public boolean contains(Rectangle2D r) {
+    @Override
+		public boolean contains(Rectangle2D r) {
         return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
     }
 
@@ -542,7 +550,8 @@ public class Polygon implements Shape {
      *          geometry of this <code>Polygon</code>.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at) {
         return new PolygonPathIterator(this, at);
     }
 
@@ -567,7 +576,8 @@ public class Polygon implements Shape {
      *          <code>Shape</code> object's geometry.
      * @since 1.2
      */
-    public PathIterator getPathIterator(AffineTransform at, double flatness) {
+    @Override
+		public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return getPathIterator(at);
     }
 
@@ -591,7 +601,8 @@ public class Polygon implements Shape {
          * @return an integer representing the current winding rule.
          * @see PathIterator#WIND_NON_ZERO
          */
-        public int getWindingRule() {
+        @Override
+				public int getWindingRule() {
             return WIND_EVEN_ODD;
         }
 
@@ -600,7 +611,8 @@ public class Polygon implements Shape {
          * @return <code>true</code> if there are more points to read;
          *          <code>false</code> otherwise.
          */
-        public boolean isDone() {
+        @Override
+				public boolean isDone() {
             return index > poly.npoints;
         }
 
@@ -609,7 +621,8 @@ public class Polygon implements Shape {
          * traversal, to the next segment of the path when there are
          * more points in that direction.
          */
-        public void next() {
+        @Override
+				public void next() {
             index++;
         }
 
@@ -635,7 +648,8 @@ public class Polygon implements Shape {
          * @j2sIgnore
          * 
          */
-        public int currentSegment(float[] coords) {
+        @Override
+				public int currentSegment(float[] coords) {
             if (index >= poly.npoints) {
                 return SEG_CLOSE;
             }
@@ -666,7 +680,8 @@ public class Polygon implements Shape {
          * @see PathIterator#SEG_LINETO
          * @see PathIterator#SEG_CLOSE
          */
-        public int currentSegment(double[] coords) {
+        @Override
+				public int currentSegment(double[] coords) {
             if (index >= poly.npoints) {
                 return SEG_CLOSE;
             }

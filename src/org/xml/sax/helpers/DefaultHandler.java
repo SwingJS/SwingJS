@@ -86,7 +86,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.EntityResolver#resolveEntity
      */
-    public InputSource resolveEntity (String publicId, String systemId)
+    @Override
+		public InputSource resolveEntity (String publicId, String systemId)
 	throws IOException, SAXException
     {
 	return null;
@@ -114,7 +115,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.DTDHandler#notationDecl
      */
-    public void notationDecl (String name, String publicId, String systemId)
+    @Override
+		public void notationDecl (String name, String publicId, String systemId)
 	throws SAXException
     {
 	// no op
@@ -137,7 +139,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void unparsedEntityDecl (String name, String publicId,
+    @Override
+		public void unparsedEntityDecl (String name, String publicId,
 				    String systemId, String notationName)
 	throws SAXException
     {
@@ -162,7 +165,8 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#setDocumentLocator
      * @see org.xml.sax.Locator
      */
-    public void setDocumentLocator (Locator locator)
+    @Override
+		public void setDocumentLocator (Locator locator)
     {
 	// no op
     }
@@ -180,7 +184,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#startDocument
      */
-    public void startDocument ()
+    @Override
+		public void startDocument ()
 	throws SAXException
     {
 	// no op
@@ -199,7 +204,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#endDocument
      */
-    public void endDocument ()
+    @Override
+		public void endDocument ()
 	throws SAXException
     {
 	// no op
@@ -219,7 +225,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#startPrefixMapping
      */
-    public void startPrefixMapping (String prefix, String uri)
+    @Override
+		public void startPrefixMapping (String prefix, String uri)
 	throws SAXException
     {
 	// no op
@@ -238,7 +245,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#endPrefixMapping
      */
-    public void endPrefixMapping (String prefix)
+    @Override
+		public void endPrefixMapping (String prefix)
 	throws SAXException
     {
 	// no op
@@ -268,7 +276,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#startElement
      */
-    public void startElement (String uri, String localName,
+    @Override
+		public void startElement (String uri, String localName,
 			      String qName, Attributes attributes)
 	throws SAXException
     {
@@ -296,7 +305,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#endElement
      */
-    public void endElement (String uri, String localName, String qName)
+    @Override
+		public void endElement (String uri, String localName, String qName)
 	throws SAXException
     {
 	// no op
@@ -319,7 +329,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#characters
      */
-    public void characters (char ch[], int start, int length)
+    @Override
+		public void characters (char ch[], int start, int length)
 	throws SAXException
     {
 	// no op
@@ -342,7 +353,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#ignorableWhitespace
      */
-    public void ignorableWhitespace (char ch[], int start, int length)
+    @Override
+		public void ignorableWhitespace (char ch[], int start, int length)
 	throws SAXException
     {
 	// no op
@@ -364,7 +376,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#processingInstruction
      */
-    public void processingInstruction (String target, String data)
+    @Override
+		public void processingInstruction (String target, String data)
 	throws SAXException
     {
 	// no op
@@ -384,7 +397,8 @@ public class DefaultHandler
      *            wrapping another exception.
      * @see org.xml.sax.ContentHandler#processingInstruction
      */
-    public void skippedEntity (String name)
+    @Override
+		public void skippedEntity (String name)
 	throws SAXException
     {
 	// no op
@@ -411,7 +425,8 @@ public class DefaultHandler
      * @see org.xml.sax.ErrorHandler#warning
      * @see org.xml.sax.SAXParseException
      */
-    public void warning (SAXParseException e)
+    @Override
+		public void warning (SAXParseException e)
 	throws SAXException
     {
 	// no op
@@ -432,7 +447,8 @@ public class DefaultHandler
      * @see org.xml.sax.ErrorHandler#warning
      * @see org.xml.sax.SAXParseException
      */
-    public void error (SAXParseException e)
+    @Override
+		public void error (SAXParseException e)
 	throws SAXException
     {
 	// no op
@@ -456,7 +472,8 @@ public class DefaultHandler
      * @see org.xml.sax.ErrorHandler#fatalError
      * @see org.xml.sax.SAXParseException
      */
-    public void fatalError (SAXParseException e)
+    @Override
+		public void fatalError (SAXParseException e)
 	throws SAXException
     {
 	throw e;

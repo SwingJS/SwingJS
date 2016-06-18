@@ -236,7 +236,8 @@ public class JTextArea extends JTextComponent {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -635,7 +636,8 @@ public class JTextArea extends JTextComponent {
      *
      * @return the size
      */
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
         Dimension d = getPrefSizeJComp();
         d = (d == null) ? new Dimension(400,400) : d;
         Insets insets = getInsets();
@@ -657,7 +659,8 @@ public class JTextArea extends JTextComponent {
      *
      * @param f the font to use as the current font
      */
-    public void setFont(Font f) {
+    @Override
+		public void setFont(Font f) {
         super.setFont(f);
         rowHeight = 0;
         columnWidth = 0;
@@ -673,7 +676,8 @@ public class JTextArea extends JTextComponent {
      *
      * @return  a string representation of this JTextArea.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String wrapString = (wrap ?
                              "true" : "false");
         String wordString = (word ?
@@ -699,7 +703,8 @@ public class JTextArea extends JTextComponent {
      * @return true if a viewport should force the Scrollables width
      * to match its own.
      */
-    public boolean getScrollableTracksViewportWidth() {
+    @Override
+		public boolean getScrollableTracksViewportWidth() {
         return (wrap) ? true : super.getScrollableTracksViewportWidth();
     }
 
@@ -712,7 +717,8 @@ public class JTextArea extends JTextComponent {
      * @return The preferredSize of a JViewport whose view is this Scrollable.
      * @see JViewport#getPreferredSize
      */
-    public Dimension getPreferredScrollableViewportSize() {
+    @Override
+		public Dimension getPreferredScrollableViewportSize() {
         Dimension size = super.getPreferredScrollableViewportSize();
         size = (size == null) ? new Dimension(400,400) : size;
         Insets insets = getInsets();
@@ -745,7 +751,8 @@ public class JTextArea extends JTextComponent {
      * @see #getRowHeight
      * @see #getColumnWidth
      */
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+    @Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         switch (orientation) {
         case SwingConstants.VERTICAL:
             return getRowHeight();

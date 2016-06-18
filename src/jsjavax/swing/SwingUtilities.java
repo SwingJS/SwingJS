@@ -1696,7 +1696,7 @@ public class SwingUtilities implements SwingConstants
      */
     public static void replaceUIActionMap(JComponent component,
                                           ActionMap uiActionMap) {
-        ActionMap map = component.getActionMap((uiActionMap != null));;
+        ActionMap map = component.getActionMap((uiActionMap != null));
 
         while (map != null) {
             ActionMap parent = map.getParent();

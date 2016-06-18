@@ -122,7 +122,8 @@ public class JTextPane extends JEditorPane {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -135,7 +136,8 @@ public class JTextPane extends JEditorPane {
      *   be narrowed to a <code>StyledDocument</code> which is the
      *   required type of model for this text component
      */
-    public void setDocument(Document doc) {
+    @Override
+		public void setDocument(Document doc) {
         if (doc instanceof StyledDocument) {
             super.setDocument(doc);
         } else {
@@ -179,7 +181,8 @@ public class JTextPane extends JEditorPane {
      *
      * @param content  the content to replace the selection with
      */
-    public void replaceSelection(String content) {
+    @Override
+		public void replaceSelection(String content) {
         replaceSelection(content, true);
     }
 
@@ -484,7 +487,8 @@ public class JTextPane extends JEditorPane {
      *
      * @return the editor kit
      */
-    protected EditorKit createDefaultEditorKit() {
+    @Override
+		protected EditorKit createDefaultEditorKit() {
         return new StyledEditorKit();
     }
 
@@ -497,7 +501,8 @@ public class JTextPane extends JEditorPane {
      * @exception IllegalArgumentException if kit is not a
      *          <code>StyledEditorKit</code>
      */
-    public final void setEditorKit(EditorKit kit) {
+    @Override
+		public final void setEditorKit(EditorKit kit) {
         if (kit instanceof StyledEditorKit) {
             super.setEditorKit(kit);
         } else {
@@ -515,7 +520,8 @@ public class JTextPane extends JEditorPane {
      *
      * @return  a string representation of this <code>JTextPane</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 

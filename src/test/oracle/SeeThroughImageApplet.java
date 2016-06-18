@@ -78,6 +78,7 @@ class SeeThroughComponent extends JPanel {
 		setOpacity(0.5f);
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(bi.getWidth(null), bi.getHeight(null));
 	}
@@ -87,6 +88,7 @@ class SeeThroughComponent extends JPanel {
 		rop = new RescaleOp(scales, offsets, null);
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.white);
@@ -110,6 +112,7 @@ public class SeeThroughImageApplet extends JApplet {
 		this.imageSrc = imageSrc;
 	}
 
+	@Override
 	public void init() {
 		try {
 			imageSrc = pathTo(imageFileName);// new URL(getCodeBase(), imageFileName);
@@ -124,11 +127,12 @@ public class SeeThroughImageApplet extends JApplet {
 		try {
 			JSlider opacitySlider = new JSlider(0, 100);
 			opacitySlider.addChangeListener(new ChangeListener() {
+				@Override
 				public void stateChanged(ChangeEvent e) {
 					JSlider slider = (JSlider) e.getSource();
 					st.setOpacity(slider.getValue() / 100f);
 					st.repaint();
-				};
+				}
 			});
 			Dimension size = st.getPreferredSize();
 			Dimension sliderSize = opacitySlider.getPreferredSize();
@@ -142,6 +146,7 @@ public class SeeThroughImageApplet extends JApplet {
 	public static void main(String s[]) {
 		JFrame f = new JFrame("See Through Image");
 		f.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}

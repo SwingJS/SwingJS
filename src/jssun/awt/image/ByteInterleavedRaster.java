@@ -117,7 +117,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
     	// for reflection
     }
 
-  	public void setParams(SampleModel sampleModel, DataBuffer dataBuffer, Point origin) {
+  	@Override
+		public void setParams(SampleModel sampleModel, DataBuffer dataBuffer, Point origin) {
   		setByteInterRaster(sampleModel,
           dataBuffer,
           new Rectangle(origin.x,
@@ -272,7 +273,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * is the index into the band's data array, of the first sample of the
      * band.
      */
-    public int[] getDataOffsets() {
+    @Override
+		public int[] getDataOffsets() {
         return (int[]) dataOffsets.clone();
     }
 
@@ -282,7 +284,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * in which the first sample of the first scanline is stored.
      * @param band  The band whose offset is returned.
      */
-    public int getDataOffset(int band) {
+    @Override
+		public int getDataOffset(int band) {
         return dataOffsets[band];
     }
 
@@ -291,7 +294,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * a given sample and the sample in the same column of the next row in the
      * same band.
      */
-    public int getScanlineStride() {
+    @Override
+		public int getScanlineStride() {
         return scanlineStride;
     }
 
@@ -299,14 +303,16 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * Returns pixel stride -- the number of data array elements between two
      * samples for the same band on the same scanline.
      */
-    public int getPixelStride() {
+    @Override
+		public int getPixelStride() {
         return pixelStride;
     }
 
     /**
      * Returns a reference to the data array.
      */
-    public byte[] getDataStorage() {
+    @Override
+		public byte[] getDataStorage() {
         return data;
     }
 
@@ -326,7 +332,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @return         An object reference to an array of type defined by
      *                 getTransferType() with the request pixel data.
      */
-    public Object getDataElements(int x, int y, Object obj) {
+    @Override
+		public Object getDataElements(int x, int y, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -374,7 +381,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @return         An object reference to an array of type defined by
      *                 getTransferType() with the request pixel data.
      */
-    public Object getDataElements(int x, int y, int w, int h, Object obj) {
+    @Override
+		public Object getDataElements(int x, int y, int w, int h, Object obj) {
         return getByteData(x, y, w, h, (byte[])obj);
     }
 
@@ -397,7 +405,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      *                 at the specified location are returned in this array.
      * @return         Data array with data elements for all bands.
      */
-    public byte[] getByteData(int x, int y, int w, int h,
+    @Override
+		public byte[] getByteData(int x, int y, int w, int h,
                               int band, byte[] outData) {
         // Bounds check for 'band' will be performed automatically
         if ((x < this.minX) || (y < this.minY) ||
@@ -457,7 +466,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      *                 at the specified location are returned in this array.
      * @return         Data array with data elements for all bands.
      */
-    public byte[] getByteData(int x, int y, int w, int h, byte[] outData) {
+    @Override
+		public byte[] getByteData(int x, int y, int w, int h, byte[] outData) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -554,7 +564,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      *                 getTransferType() and length getNumDataElements()
      *                 containing the pixel data to place at x,y.
      */
-    public void setDataElements(int x, int y, Object obj) {
+    @Override
+		public void setDataElements(int x, int y, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -579,7 +590,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @param y          The Y coordinate of the pixel location.
      * @param inRaster   Raster of data to place at x,y location.
      */
-    public void setDataElements(int x, int y, Raster inRaster) {
+    @Override
+		public void setDataElements(int x, int y, Raster inRaster) {
         int srcOffX = inRaster.getMinX();
         int srcOffY = inRaster.getMinY();
         int dstOffX = x + srcOffX;
@@ -685,7 +697,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      *                 containing the pixel data to place between x,y and
      *                 x+h, y+h.
      */
-    public void setDataElements(int x, int y, int w, int h, Object obj) {
+    @Override
+		public void setDataElements(int x, int y, int w, int h, Object obj) {
         putByteData(x, y, w, h, (byte[])obj);
     }
 
@@ -707,7 +720,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @param band     The band to set.
      * @param inData   The data elements to be stored.
      */
-    public void putByteData(int x, int y, int w, int h,
+    @Override
+		public void putByteData(int x, int y, int w, int h,
                             int band, byte[] inData) {
         // Bounds check for 'band' will be performed automatically
         if ((x < this.minX) || (y < this.minY) ||
@@ -762,7 +776,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @param h        Height of the pixel rectangle.
      * @param inData   The data elements to be stored.
      */
-    public void putByteData(int x, int y, int w, int h, byte[] inData) {
+    @Override
+		public void putByteData(int x, int y, int w, int h, byte[] inData) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -845,7 +860,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         markDirty();
     }
 
-    public int getSample(int x, int y, int b) {
+    @Override
+		public int getSample(int x, int y, int b) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -861,7 +877,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         }
     }
 
-    public void setSample(int x, int y, int b, int s) {
+    @Override
+		public void setSample(int x, int y, int b, int s) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -883,7 +900,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         markDirty();
     }
 
-    public int[] getSamples(int x, int y, int w, int h, int b,
+    @Override
+		public int[] getSamples(int x, int y, int w, int h, int b,
                             int[] iArray) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
@@ -928,7 +946,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         return samples;
     }
 
-    public void setSamples(int x, int y, int w, int h, int b, int iArray[]) {
+    @Override
+		public void setSamples(int x, int y, int w, int h, int b, int iArray[]) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -967,7 +986,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         markDirty();
     }
 
-    public int[] getPixels(int x, int y, int w, int h, int[] iArray) {
+    @Override
+		public int[] getPixels(int x, int y, int w, int h, int[] iArray) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -1065,7 +1085,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         return pixels;
     }
 
-    public void setPixels(int x, int y, int w, int h, int[] iArray) {
+    @Override
+		public void setPixels(int x, int y, int w, int h, int[] iArray) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -1158,7 +1179,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
         markDirty();
     }
 
-    public void setRect(int dx, int dy, Raster srcRaster) {
+    @Override
+		public void setRect(int dx, int dy, Raster srcRaster) {
         if (!(srcRaster instanceof ByteInterleavedRaster)) {
             super.setRect(dx, dy, srcRaster);
             return;
@@ -1216,7 +1238,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @exception RasterFormatException
      *            if the specified bounding box is outside of the parent raster.
      */
-    public Raster createChild(int x, int y,
+    @Override
+		public Raster createChild(int x, int y,
                               int width, int height,
                               int x0, int y0, int[] bandList) {
         WritableRaster newRaster = createWritableChild(x, y,
@@ -1245,7 +1268,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * @exception RasterFormatException
      *            if the specified bounding box is outside of the parent Raster.
      */
-    public WritableRaster createWritableChild(int x, int y,
+    @Override
+		public WritableRaster createWritableChild(int x, int y,
                                               int width, int height,
                                               int x0, int y0,
                                               int[] bandList) {
@@ -1284,7 +1308,8 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * Creates a Raster with the same layout but using a different
      * width and height, and with new zeroed data arrays.
      */
-    public WritableRaster createCompatibleWritableRaster(int w, int h) {
+    @Override
+		public WritableRaster createCompatibleWritableRaster(int w, int h) {
         if (w <= 0 || h <=0) {
             throw new RasterFormatException("negative "+
                                           ((w <= 0) ? "width" : "height"));
@@ -1302,11 +1327,13 @@ public class ByteInterleavedRaster extends ByteComponentRaster {
      * the Raster is a subRaster, this will call
      * createCompatibleRaster(width, height).
      */
-    public WritableRaster createCompatibleWritableRaster() {
+    @Override
+		public WritableRaster createCompatibleWritableRaster() {
         return createCompatibleWritableRaster(width,height);
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return new String ("ByteInterleavedRaster: width = "+width+" height = "
                            + height
                            +" #numDataElements "+numDataElements

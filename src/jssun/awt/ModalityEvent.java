@@ -43,7 +43,8 @@ public class ModalityEvent extends AWTEvent implements ActiveEvent {
         this.listener = listener;
     }
 
-    public void dispatch() {
+    @Override
+		public void dispatch() {
         switch(getID()) {
             case MODALITY_PUSHED:
                 listener.modalityPushed(this);

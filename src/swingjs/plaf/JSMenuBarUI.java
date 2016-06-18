@@ -26,9 +26,9 @@
 package swingjs.plaf;
 
 
+import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 
-import jsjavax.swing.JComponent;
 import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
@@ -54,14 +54,14 @@ public class JSMenuBarUI extends JSPanelUI {
 	}
 	
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize() {
 		// SwingJS should defer to containing panel
 		return null;
 	}
 
 	@Override
 	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(c,
+    LookAndFeel.installColorsAndFont(jc,
         "MenuBar.background",
         "MenuBar.foreground",
         "MenuBar.font");

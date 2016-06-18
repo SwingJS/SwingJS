@@ -697,7 +697,8 @@ public final class AlphaComposite implements Composite {
      * @return the <code>CompositeContext</code> object to be used to perform
      * compositing operations.
      */
-    public CompositeContext createContext(ColorModel srcColorModel,
+    @Override
+		public CompositeContext createContext(ColorModel srcColorModel,
                                           ColorModel dstColorModel,
                                           RenderingHints hints) {
         return new SunCompositeContext(this, srcColorModel, dstColorModel);
@@ -766,7 +767,8 @@ public final class AlphaComposite implements Composite {
      * Returns the hashcode for this composite.
      * @return      a hash code for this composite.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return (Float.floatToIntBits(extraAlpha) * 31 + rule);
     }
 
@@ -783,7 +785,8 @@ public final class AlphaComposite implements Composite {
      * @return <code>true</code> if <code>obj</code> equals this
      * <code>AlphaComposite</code>; <code>false</code> otherwise.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (!(obj instanceof AlphaComposite)) {
             return false;
         }

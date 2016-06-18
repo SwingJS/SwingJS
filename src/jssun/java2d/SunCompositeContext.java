@@ -76,7 +76,8 @@ public class SunCompositeContext implements CompositeContext {
     /**
      * Release resources allocated for context.
      */
-    public void dispose() {
+    @Override
+		public void dispose() {
     }
 
     /**
@@ -88,7 +89,8 @@ public class SunCompositeContext implements CompositeContext {
      * @param src2 The second source tile for the compositing operation.
      * @param dst The tile where the result of the operation is stored.
      */
-    public void compose(Raster srcArg, Raster dstIn, WritableRaster dstOut) {
+    @Override
+		public void compose(Raster srcArg, Raster dstIn, WritableRaster dstOut) {
         WritableRaster src;
         int w;
         int h;

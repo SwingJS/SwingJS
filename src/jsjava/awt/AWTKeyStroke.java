@@ -680,7 +680,8 @@ public class AWTKeyStroke {
      *
      * @return an int that represents this object
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return (((int)keyChar) + 1) * (2 * (keyCode + 1)) * (modifiers + 1) +
             (onKeyRelease ? 1 : 2);
     }
@@ -691,7 +692,8 @@ public class AWTKeyStroke {
      * @param anObject the Object to compare this object to
      * @return true if the objects are identical
      */
-    public final boolean equals(Object anObject) {
+    @Override
+		public final boolean equals(Object anObject) {
         if (anObject instanceof AWTKeyStroke) {
             AWTKeyStroke ks = (AWTKeyStroke)anObject;
             return (ks.keyChar == keyChar && ks.keyCode == keyCode &&
@@ -710,7 +712,8 @@ public class AWTKeyStroke {
      * @return a String representation of this object
      * @see #getAWTKeyStroke(String)
      */
-    public String toString() {
+    @Override
+		public String toString() {
         if (keyCode == KeyEvent.VK_UNDEFINED) {
             return getModifiersText(modifiers) + "typed " + keyChar;
         } else {

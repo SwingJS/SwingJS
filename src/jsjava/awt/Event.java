@@ -873,7 +873,8 @@ public class Event {
      * @see       java.awt.Event#paramString
      * @since     JDK1.1
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[" + paramString() + "]";
     }
 }

@@ -99,7 +99,8 @@ implements ActionListener, PropertyChangeListener, FocusListener {
 
     // SwingJS was: public FormattedTextFieldDemo() {...}
     
-    public void init() {
+    @Override
+		public void init() {
     	// Swingjs[2] super(...) to setLayout(...)
         setLayout(new BorderLayout());
         setUpFormats();
@@ -171,7 +172,8 @@ implements ActionListener, PropertyChangeListener, FocusListener {
     }
 
     /** Called when a field's "value" property changes. */
-    public void propertyChange(PropertyChangeEvent e) {
+    @Override
+		public void propertyChange(PropertyChangeEvent e) {
         Object source = e.getSource();
         System.out.println("propertyChange " + e);
         if (source == amountField) {
@@ -208,7 +210,8 @@ implements ActionListener, PropertyChangeListener, FocusListener {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+						public void run() {
                 //Turn off metal's use of bold fonts
 	        UIManager.put("swing.boldMetal", Boolean.FALSE);
                 createAndShowGUI();

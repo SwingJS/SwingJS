@@ -81,7 +81,8 @@ public abstract class ShellFolder extends File {
      * @see java.io.File#getParent()
      * @since 1.4
      */
-    public String getParent() {
+    @Override
+		public String getParent() {
         if (parent == null && isFileSystem()) {
             return super.getParent();
         }
@@ -104,7 +105,8 @@ public abstract class ShellFolder extends File {
      * @see java.io.File#getParentFile()
      * @since 1.4
      */
-    public File getParentFile() {
+    @Override
+		public File getParentFile() {
         if (parent != null) {
             return parent;
         } else if (isFileSystem()) {
@@ -114,7 +116,8 @@ public abstract class ShellFolder extends File {
         }
     }
 
-    public File[] listFiles() {
+    @Override
+		public File[] listFiles() {
         return listFiles(true);
     }
 
@@ -167,7 +170,8 @@ public abstract class ShellFolder extends File {
      *
      * @see #compareTo(Object)
      */
-    public int compareTo(File file2) {
+    @Override
+		public int compareTo(File file2) {
         if (file2 == null || !(file2 instanceof ShellFolder)
             || ((file2 instanceof ShellFolder) && ((ShellFolder)file2).isFileSystem())) {
 
@@ -275,15 +279,18 @@ public abstract class ShellFolder extends File {
         shellFolderManager.sortFiles(files);
     }
 
-    public boolean isAbsolute() {
+    @Override
+		public boolean isAbsolute() {
         return (!isFileSystem() || super.isAbsolute());
     }
 
-    public File getAbsoluteFile() {
+    @Override
+		public File getAbsoluteFile() {
         return (isFileSystem() ? super.getAbsoluteFile() : this);
     }
 
-    public boolean canRead() {
+    @Override
+		public boolean canRead() {
         return (isFileSystem() ? super.canRead() : true);       // ((Fix?))
     }
 
@@ -292,41 +299,50 @@ public abstract class ShellFolder extends File {
      * True for the "Desktop" folder, but false for the "My Computer"
      * folder.
      */
-    public boolean canWrite() {
+    @Override
+		public boolean canWrite() {
         return (isFileSystem() ? super.canWrite() : false);     // ((Fix?))
     }
 
-    public boolean exists() {
+    @Override
+		public boolean exists() {
         // Assume top-level drives exist, because state is uncertain for
         // removable drives.
         return (!isFileSystem() || isFileSystemRoot(this) || super.exists()) ;
     }
 
-    public boolean isDirectory() {
+    @Override
+		public boolean isDirectory() {
         return (isFileSystem() ? super.isDirectory() : true);   // ((Fix?))
     }
 
-    public boolean isFile() {
+    @Override
+		public boolean isFile() {
         return (isFileSystem() ? super.isFile() : !isDirectory());      // ((Fix?))
     }
 
-    public long lastModified() {
+    @Override
+		public long lastModified() {
         return (isFileSystem() ? super.lastModified() : 0L);    // ((Fix?))
     }
 
-    public long length() {
+    @Override
+		public long length() {
         return (isFileSystem() ? super.length() : 0L);  // ((Fix?))
     }
 
-    public boolean createNewFile() throws IOException {
+    @Override
+		public boolean createNewFile() throws IOException {
         return (isFileSystem() ? super.createNewFile() : false);
     }
 
-    public boolean delete() {
+    @Override
+		public boolean delete() {
         return (isFileSystem() ? super.delete() : false);       // ((Fix?))
     }
 
-    public void deleteOnExit() {
+    @Override
+		public void deleteOnExit() {
         if (isFileSystem()) {
             super.deleteOnExit();
         } else {
@@ -334,27 +350,33 @@ public abstract class ShellFolder extends File {
         }
     }
 
-    public boolean mkdir() {
+    @Override
+		public boolean mkdir() {
         return (isFileSystem() ? super.mkdir() : false);
     }
 
-    public boolean mkdirs() {
+    @Override
+		public boolean mkdirs() {
         return (isFileSystem() ? super.mkdirs() : false);
     }
 
-    public boolean renameTo(File dest) {
+    @Override
+		public boolean renameTo(File dest) {
         return (isFileSystem() ? super.renameTo(dest) : false); // ((Fix?))
     }
 
-    public boolean setLastModified(long time) {
+    @Override
+		public boolean setLastModified(long time) {
         return (isFileSystem() ? super.setLastModified(time) : false); // ((Fix?))
     }
 
-    public boolean setReadOnly() {
+    @Override
+		public boolean setReadOnly() {
         return (isFileSystem() ? super.setReadOnly() : false); // ((Fix?))
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return (isFileSystem() ? super.toString() : getDisplayName());
     }
 

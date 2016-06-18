@@ -230,7 +230,8 @@ public class PlainView extends View implements TabExpander {
      *           The parent may choose to resize or break the view.
      * @exception IllegalArgumentException for an invalid axis
      */
-    public float getPreferredSpan(int axis) {
+    @Override
+		public float getPreferredSpan(int axis) {
         updateMetrics();
         switch (axis) {
         case View.X_AXIS:
@@ -252,7 +253,8 @@ public class PlainView extends View implements TabExpander {
      *
      * @see View#paint
      */
-    public void paint(Graphics g, Shape a) {
+    @Override
+		public void paint(Graphics g, Shape a) {
 //        Shape originalA = a;
 //        a = adjustPaintRegion(a);
 //        Rectangle alloc = (Rectangle) a;
@@ -345,7 +347,8 @@ public class PlainView extends View implements TabExpander {
      *   represent a valid location in the associated document
      * @see View#modelToView
      */
-    public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
+    @Override
+		public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
         // line coordinates
         Document doc = getDocument();
         Element map = getElement();
@@ -382,7 +385,8 @@ public class PlainView extends View implements TabExpander {
      *  given point in the view >= 0
      * @see View#viewToModel
      */
-    public int viewToModel(float fx, float fy, Shape a, Position.Bias[] bias) {
+    @Override
+		public int viewToModel(float fx, float fy, Shape a, Position.Bias[] bias) {
         // PENDING(prinz) properly calculate bias
         bias[0] = Position.Bias.Forward;
 
@@ -453,7 +457,8 @@ public class PlainView extends View implements TabExpander {
      * @param f the factory to use to rebuild if the view has children
      * @see View#insertUpdate
      */
-    public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
+    @Override
+		public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
         updateDamage(changes, a, f);
     }
 
@@ -466,7 +471,8 @@ public class PlainView extends View implements TabExpander {
      * @param f the factory to use to rebuild if the view has children
      * @see View#removeUpdate
      */
-    public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
+    @Override
+		public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
         updateDamage(changes, a, f);
     }
 
@@ -479,7 +485,8 @@ public class PlainView extends View implements TabExpander {
      * @param f the factory to use to rebuild if the view has children
      * @see View#changedUpdate
      */
-    public void changedUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
+    @Override
+		public void changedUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
         updateDamage(changes, a, f);
     }
 
@@ -491,7 +498,8 @@ public class PlainView extends View implements TabExpander {
      * @param width the width >= 0
      * @param height the height >= 0
      */
-    public void setSize(float width, float height) {
+    @Override
+		public void setSize(float width, float height) {
         super.setSize(width, height);
         updateMetrics();
     }
@@ -508,7 +516,8 @@ public class PlainView extends View implements TabExpander {
      *   that the tab occurred at >= 0.
      * @return the tab stop, measured in points >= 0
      */
-    public float nextTabStop(float x, int tabOffset) {
+    @Override
+		public float nextTabStop(float x, int tabOffset) {
         if (tabSize == 0) {
             return x;
         }

@@ -42,7 +42,8 @@ package jssun.util.resources;
 
 public final class TimeZoneNames extends TimeZoneNamesBundle {
 
-    protected final Object[][] getContents() {
+    @Override
+		protected final Object[][] getContents() {
         String ACT[] = new String[] {"Acre Time", "ACT",
                                      "Acre Summer Time", "ACST"};
         String ADELAIDE[] = new String[] {"Australian Central Standard Time (South Australia)", "ACST",

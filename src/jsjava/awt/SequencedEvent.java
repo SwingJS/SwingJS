@@ -83,7 +83,8 @@ class SequencedEvent extends AWTEvent implements ActiveEvent {
      * as EventQueue lock is held during dispatching.  The locks should be acquired
      * in the same order.
      */
-    public final void dispatch() {
+    @Override
+		public final void dispatch() {
         try {
             appContext = AppContext.getAppContext();
 
@@ -92,7 +93,8 @@ class SequencedEvent extends AWTEvent implements ActiveEvent {
                     EventDispatchThread edt = (EventDispatchThread)
                         Thread.currentThread();
                     edt.pumpEvents(SentEvent.ID, new Conditional() {
-                        public boolean evaluate() {
+                        @Override
+												public boolean evaluate() {
                             return !SequencedEvent.this.isFirstOrDisposed();
                         }
                     });

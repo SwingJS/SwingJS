@@ -56,7 +56,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * <code>UndoableEdits</code> in the reverse of
      * the order in which they were added.
      */
-    public void undo() throws CannotUndoException {
+    @Override
+		public void undo() throws CannotUndoException {
         super.undo();
         int i = edits.size();
         while (i-- > 0) {
@@ -70,7 +71,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * <code>UndoableEdit</code>s in the order in
      * which they were added.
      */
-    public void redo() throws CannotRedoException {
+    @Override
+		public void redo() throws CannotRedoException {
         super.redo();
         Enumeration cursor = edits.elements();
         while (cursor.hasMoreElements()) {
@@ -95,7 +97,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * Sends <code>die</code> to each subedit,
      * in the reverse of the order that they were added.
      */
-    public void die() {
+    @Override
+		public void die() {
         int size = edits.size();
         for (int i = size-1; i >= 0; i--)
         {
@@ -122,7 +125,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * @return true if the edit is <code>inProgress</code>;
      *  otherwise returns false
      */
-    public boolean addEdit(UndoableEdit anEdit) {
+    @Override
+		public boolean addEdit(UndoableEdit anEdit) {
         if (!inProgress) {
             return false;
         } else {
@@ -163,7 +167,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      *
      * @see     #isInProgress
      */
-    public boolean canUndo() {
+    @Override
+		public boolean canUndo() {
         return !isInProgress() && super.canUndo();
     }
 
@@ -173,7 +178,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      *
      * @see     #isInProgress
      */
-    public boolean canRedo() {
+    @Override
+		public boolean canRedo() {
         return !isInProgress() && super.canRedo();
     }
 
@@ -193,7 +199,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * in <code>edits</code> do.
      * Returns false if they all return false.
      */
-    public boolean  isSignificant() {
+    @Override
+		public boolean  isSignificant() {
         Enumeration cursor = edits.elements();
         while (cursor.hasMoreElements()) {
             if (((UndoableEdit)cursor.nextElement()).isSignificant()) {
@@ -209,7 +216,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * <code>edits</code>. If <code>edits</code> is empty,
      * calls super.
      */
-    public String getPresentationName() {
+    @Override
+		public String getPresentationName() {
         UndoableEdit last = lastEdit();
         if (last != null) {
             return last.getPresentationName();
@@ -224,7 +232,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * added to <code>edits</code>.
      * If <code>edits</code> is empty, calls super.
      */
-    public String getUndoPresentationName() {
+    @Override
+		public String getUndoPresentationName() {
         UndoableEdit last = lastEdit();
         if (last != null) {
             return last.getUndoPresentationName();
@@ -239,7 +248,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      * added to <code>edits</code>.
      * If <code>edits</code> is empty, calls super.
      */
-    public String getRedoPresentationName() {
+    @Override
+		public String getRedoPresentationName() {
         UndoableEdit last = lastEdit();
         if (last != null) {
             return last.getRedoPresentationName();
@@ -254,7 +264,8 @@ public class CompoundEdit extends AbstractUndoableEdit {
      *
      * @return a String representation of this object
      */
-    public String toString()
+    @Override
+		public String toString()
     {
         return super.toString()
             + " inProgress: " + inProgress

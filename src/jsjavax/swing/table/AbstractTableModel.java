@@ -79,7 +79,8 @@ public abstract class AbstractTableModel implements TableModel
      * @param column  the column being queried
      * @return a string containing the default name of <code>column</code>
      */
-    public String getColumnName(int column) {
+    @Override
+		public String getColumnName(int column) {
         String result = "";
         for (; column >= 0; column = column / 26 - 1) {
             result = (char)((char)(column%26)+'A') + result;
@@ -112,7 +113,8 @@ public abstract class AbstractTableModel implements TableModel
      *  @param columnIndex  the column being queried
      *  @return the Object.class
      */
-    public Class<?> getColumnClass(int columnIndex) {
+    @Override
+		public Class<?> getColumnClass(int columnIndex) {
         return Object.class;
     }
 
@@ -123,7 +125,8 @@ public abstract class AbstractTableModel implements TableModel
      *  @param  columnIndex the column being queried
      *  @return false
      */
-    public boolean isCellEditable(int rowIndex, int columnIndex) {
+    @Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
 
@@ -135,7 +138,8 @@ public abstract class AbstractTableModel implements TableModel
      *  @param  rowIndex   row of cell
      *  @param  columnIndex  column of cell
      */
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    @Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     }
 
 
@@ -149,7 +153,8 @@ public abstract class AbstractTableModel implements TableModel
      *
      * @param   l               the TableModelListener
      */
-    public void addTableModelListener(TableModelListener l) {
+    @Override
+		public void addTableModelListener(TableModelListener l) {
         listenerList.add(TableModelListener.class, l);
     }
 
@@ -159,7 +164,8 @@ public abstract class AbstractTableModel implements TableModel
      *
      * @param   l               the TableModelListener
      */
-    public void removeTableModelListener(TableModelListener l) {
+    @Override
+		public void removeTableModelListener(TableModelListener l) {
         listenerList.remove(TableModelListener.class, l);
     }
 

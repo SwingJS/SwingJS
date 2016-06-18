@@ -95,7 +95,8 @@ public class SoftBevelBorder extends BevelBorder
      * @param width the width of the painted border
      * @param height the height of the painted border
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Color oldColor = g.getColor();
         g.translate(x, y);
 
@@ -148,7 +149,8 @@ public class SoftBevelBorder extends BevelBorder
      * Returns the insets of the border.
      * @param c the component for which this border insets value applies
      */
-    public Insets getBorderInsets(Component c)       {
+    @Override
+		public Insets getBorderInsets(Component c)       {
         return getBorderInsets(c, new Insets(0,0,0,0));
     }
 
@@ -157,7 +159,8 @@ public class SoftBevelBorder extends BevelBorder
      * @param c the component for which this border insets value applies
      * @param insets the object to be reinitialized
      */
-    public Insets getBorderInsets(Component c, Insets insets)       {
+    @Override
+		public Insets getBorderInsets(Component c, Insets insets)       {
         insets.top = insets.left = insets.bottom = insets.right = 3;
         return insets;
     }
@@ -165,6 +168,7 @@ public class SoftBevelBorder extends BevelBorder
     /**
      * Returns whether or not the border is opaque.
      */
-    public boolean isBorderOpaque() { return false; }
+    @Override
+		public boolean isBorderOpaque() { return false; }
 
 }

@@ -175,16 +175,19 @@ class AncestorNotifier implements ComponentListener, PropertyChangeListener
         }
     }
 
-    public void componentResized(ComponentEvent e) {}
+    @Override
+		public void componentResized(ComponentEvent e) {}
 
-    public void componentMoved(ComponentEvent e) {
+    @Override
+		public void componentMoved(ComponentEvent e) {
         Component source = e.getComponent();
 
         fireAncestorMoved(root, AncestorEvent.ANCESTOR_MOVED,
                           (Container)source, source.getParent());
     }
 
-    public void componentShown(ComponentEvent e) {
+    @Override
+		public void componentShown(ComponentEvent e) {
         Component ancestor = e.getComponent();
 
         if (ancestor == firstInvisibleAncestor) {
@@ -196,7 +199,8 @@ class AncestorNotifier implements ComponentListener, PropertyChangeListener
         }
     }
 
-    public void componentHidden(ComponentEvent e) {
+    @Override
+		public void componentHidden(ComponentEvent e) {
         Component ancestor = e.getComponent();
         boolean needsNotify = firstInvisibleAncestor == null;
 
@@ -210,7 +214,8 @@ class AncestorNotifier implements ComponentListener, PropertyChangeListener
         }
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {
+    @Override
+		public void propertyChange(PropertyChangeEvent evt) {
         String s = evt.getPropertyName();
 
         if (s!=null && (s.equals("parent") || s.equals("ancestor"))) {

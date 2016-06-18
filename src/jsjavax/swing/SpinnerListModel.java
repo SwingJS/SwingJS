@@ -156,7 +156,8 @@ public class SpinnerListModel extends AbstractSpinnerModel
      * @see SpinnerModel#getValue
      * @see #setValue
      */
-    public Object getValue() {
+    @Override
+		public Object getValue() {
         return list.get(index);
     }
 
@@ -179,7 +180,8 @@ public class SpinnerListModel extends AbstractSpinnerModel
      * @see SpinnerModel#setValue
      * @see #getValue
      */
-    public void setValue(Object elt) {
+    @Override
+		public void setValue(Object elt) {
         int index = list.indexOf(elt);
         if (index == -1) {
             throw new IllegalArgumentException("invalid sequence element");
@@ -200,7 +202,8 @@ public class SpinnerListModel extends AbstractSpinnerModel
      * @see SpinnerModel#getNextValue
      * @see #getPreviousValue
      */
-    public Object getNextValue() {
+    @Override
+		public Object getNextValue() {
         return (index >= (list.size() - 1)) ? null : list.get(index + 1);
     }
 
@@ -214,7 +217,8 @@ public class SpinnerListModel extends AbstractSpinnerModel
      * @see SpinnerModel#getPreviousValue
      * @see #getNextValue
      */
-    public Object getPreviousValue() {
+    @Override
+		public Object getPreviousValue() {
         return (index <= 0) ? null : list.get(index - 1);
     }
 

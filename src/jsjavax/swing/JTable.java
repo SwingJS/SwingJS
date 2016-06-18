@@ -392,7 +392,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 
     // WARNING: If you directly access this field you should also change the
     // SortManager.modelRowSizes field as well.
-    private SizeSequence rowModel;
+    protected SizeSequence rowModel;
     private boolean dragEnabled;
     private boolean surrendersFocusOnKeystroke;
     private PropertyChangeListener editorRemover = null;
@@ -696,12 +696,18 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      */
     public JTable(final Object[][] rowData, final Object[] columnNames) {
         this(new AbstractTableModel() {
-            public String getColumnName(int column) { return columnNames[column].toString(); }
-            public int getRowCount() { return rowData.length; }
-            public int getColumnCount() { return columnNames.length; }
-            public Object getValueAt(int row, int col) { return rowData[row][col]; }
-            public boolean isCellEditable(int row, int column) { return true; }
-            public void setValueAt(Object value, int row, int col) {
+            @Override
+						public String getColumnName(int column) { return columnNames[column].toString(); }
+            @Override
+						public int getRowCount() { return rowData.length; }
+            @Override
+						public int getColumnCount() { return columnNames.length; }
+            @Override
+						public Object getValueAt(int row, int col) { return rowData[row][col]; }
+            @Override
+						public boolean isCellEditable(int row, int column) { return true; }
+            @Override
+						public void setValueAt(Object value, int row, int col) {
                 rowData[row][col] = value;
                 fireTableCellUpdated(row, col);
             }
@@ -713,7 +719,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @see #configureEnclosingScrollPane
      */
-    public void addNotify() {
+    @Override
+		public void addNotify() {
         super.addNotify();
         configureEnclosingScrollPane();
     }
@@ -808,7 +815,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @see #unconfigureEnclosingScrollPane
      */
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
 //        KeyboardFocusManager.getCurrentKeyboardFocusManager().
 //            removePropertyChangeListener("permanentFocusOwner", editorRemover);
 //        editorRemover = null;
@@ -853,7 +861,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         }
     }
 
-    void setUIProperty(String propertyName, Object value) {
+    @Override
+		void setUIProperty(String propertyName, Object value) {
         if (propertyName == "rowHeight") {
             if (!isRowHeightSet) {
                 setRowHeight(((Number)value).intValue());
@@ -3134,7 +3143,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * (maximum or minimum).
      *
      */
-    public void doLayout() {
+    @Override
+		public void doLayout() {
         TableColumn resizingColumn = getResizingColumn();
         if (resizingColumn == null) {
             setWidthsFromPreferredWidths(false);
@@ -3228,10 +3238,14 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 
         final TableColumnModel cm = columnModel;
         Resizable3 r = new Resizable3() {
-            public int  getElementCount()      { return cm.getColumnCount(); }
-            public int  getLowerBoundAt(int i) { return cm.getColumn(i).getMinWidth(); }
-            public int  getUpperBoundAt(int i) { return cm.getColumn(i).getMaxWidth(); }
-            public int  getMidPointAt(int i)  {
+            @Override
+						public int  getElementCount()      { return cm.getColumnCount(); }
+            @Override
+						public int  getLowerBoundAt(int i) { return cm.getColumn(i).getMinWidth(); }
+            @Override
+						public int  getUpperBoundAt(int i) { return cm.getColumn(i).getMaxWidth(); }
+            @Override
+						public int  getMidPointAt(int i)  {
                 if (!inverse) {
                     return cm.getColumn(i).getPreferredWidth();
                 }
@@ -3239,7 +3253,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
                     return cm.getColumn(i).getWidth();
                 }
             }
-            public void setSizeAt(int s, int i) {
+            @Override
+						public void setSizeAt(int s, int i) {
                 if (!inverse) {
                     cm.getColumn(i).setWidth(s);
                 }
@@ -3281,11 +3296,16 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         final int end = to;
         final TableColumnModel cm = columnModel;
         Resizable3 r = new Resizable3() {
-            public int  getElementCount()       { return end-start; }
-            public int  getLowerBoundAt(int i)  { return cm.getColumn(i+start).getMinWidth(); }
-            public int  getUpperBoundAt(int i)  { return cm.getColumn(i+start).getMaxWidth(); }
-            public int  getMidPointAt(int i)    { return cm.getColumn(i+start).getWidth(); }
-            public void setSizeAt(int s, int i) {        cm.getColumn(i+start).setWidth(s); }
+            @Override
+						public int  getElementCount()       { return end-start; }
+            @Override
+						public int  getLowerBoundAt(int i)  { return cm.getColumn(i+start).getMinWidth(); }
+            @Override
+						public int  getUpperBoundAt(int i)  { return cm.getColumn(i+start).getMaxWidth(); }
+            @Override
+						public int  getMidPointAt(int i)    { return cm.getColumn(i+start).getWidth(); }
+            @Override
+						public void setSizeAt(int s, int i) {        cm.getColumn(i+start).setWidth(s); }
         };
 
         int totalWidth = 0;
@@ -3321,19 +3341,27 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         Resizable2 s;
         if ((target < totalPreferred) == !inverse) {
             s = new Resizable2() {
-                public int  getElementCount()      { return r.getElementCount(); }
-                public int  getLowerBoundAt(int i) { return r.getLowerBoundAt(i); }
-                public int  getUpperBoundAt(int i) { return r.getMidPointAt(i); }
-                public void setSizeAt(int newSize, int i) { r.setSizeAt(newSize, i); }
+                @Override
+								public int  getElementCount()      { return r.getElementCount(); }
+                @Override
+								public int  getLowerBoundAt(int i) { return r.getLowerBoundAt(i); }
+                @Override
+								public int  getUpperBoundAt(int i) { return r.getMidPointAt(i); }
+                @Override
+								public void setSizeAt(int newSize, int i) { r.setSizeAt(newSize, i); }
 
             };
         }
         else {
             s = new Resizable2() {
-                public int  getElementCount()      { return r.getElementCount(); }
-                public int  getLowerBoundAt(int i) { return r.getMidPointAt(i); }
-                public int  getUpperBoundAt(int i) { return r.getUpperBoundAt(i); }
-                public void setSizeAt(int newSize, int i) { r.setSizeAt(newSize, i); }
+                @Override
+								public int  getElementCount()      { return r.getElementCount(); }
+                @Override
+								public int  getLowerBoundAt(int i) { return r.getMidPointAt(i); }
+                @Override
+								public int  getUpperBoundAt(int i) { return r.getUpperBoundAt(i); }
+                @Override
+								public void setSizeAt(int newSize, int i) { r.setSizeAt(newSize, i); }
 
             };
         }
@@ -3392,7 +3420,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @see JComponent#getToolTipText
      */
-    public String getToolTipText(MouseEvent event) {
+    @Override
+		public String getToolTipText(MouseEvent event) {
         String tip = null;
         Point p = event.getPoint();
 
@@ -3597,7 +3626,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @return the <code>TableUI</code> object that renders this component
      */
-    public TableUI getUI() {
+    @Override
+		public TableUI getUI() {
         return (TableUI)ui;
     }
 
@@ -3626,7 +3656,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         // Update the UIs of the cell renderers, cell editors and header renderers.
         TableColumnModel cm = getColumnModel();
         for(int column = 0; column < cm.getColumnCount(); column++) {
@@ -3667,7 +3698,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -3820,7 +3852,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @throws NullPointerException if <code>e</code> is <code>null</code>
      * @since 1.6
      */
-    public void sorterChanged(RowSorterEvent e) {
+    @Override
+		public void sorterChanged(RowSorterEvent e) {
         if (e.getType() == RowSorterEvent.Type.SORT_ORDER_CHANGED) {
             JTableHeader header = getTableHeader();
             if (header != null) {
@@ -3856,7 +3889,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         private int[] lastModelSelection;
 
         // Heights of the rows in terms of the model.
-        private SizeSequence modelRowSizes;
+        protected SizeSequence modelRowSizes;
 
 
         SortManager(RowSorter<? extends TableModel> sorter) {
@@ -4378,7 +4411,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * <p>
      * Note that as of 1.3, this method clears the selection, if any.
      */
-    public void tableChanged(TableModelEvent e) {
+    @Override
+		public void tableChanged(TableModelEvent e) {
         if (e == null || e.getFirstRow() == TableModelEvent.HEADER_ROW) {
             // The whole thing changed
             clearSelectionAndLeadAnchor();
@@ -4550,7 +4584,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @see TableColumnModelListener
      */
-    public void columnAdded(TableColumnModelEvent e) {
+    @Override
+		public void columnAdded(TableColumnModelEvent e) {
         // If I'm currently editing, then I should stop editing
         if (isEditing()) {
             removeEditor();
@@ -4566,7 +4601,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *
      * @see TableColumnModelListener
      */
-    public void columnRemoved(TableColumnModelEvent e) {
+    @Override
+		public void columnRemoved(TableColumnModelEvent e) {
         // If I'm currently editing, then I should stop editing
         if (isEditing()) {
             removeEditor();
@@ -4584,7 +4620,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @param e   the event received
      * @see TableColumnModelListener
      */
-    public void columnMoved(TableColumnModelEvent e) {
+    @Override
+		public void columnMoved(TableColumnModelEvent e) {
         // If I'm currently editing, then I should stop editing
         if (isEditing()) {
             removeEditor();
@@ -4603,7 +4640,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @param  e    the event received
      * @see TableColumnModelListener
      */
-    public void columnMarginChanged(ChangeEvent e) {
+    @Override
+		public void columnMarginChanged(ChangeEvent e) {
         if (isEditing()) {
             removeEditor();
         }
@@ -4630,7 +4668,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @param  e  the event received
      * @see TableColumnModelListener
      */
-    public void columnSelectionChanged(ListSelectionEvent e) {
+    @Override
+		public void columnSelectionChanged(ListSelectionEvent e) {
         boolean isAdjusting = e.getValueIsAdjusting();
         if (columnSelectionAdjusting && !isAdjusting) {
             // The assumption is that when the model is no longer adjusting
@@ -4691,7 +4730,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @param e   the event received
      * @see ListSelectionListener
      */
-    public void valueChanged(ListSelectionEvent e) {
+    @Override
+		public void valueChanged(ListSelectionEvent e) {
         if (sortManager != null) {
             sortManager.viewSelectionChanged(e);
         }
@@ -4730,7 +4770,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @param  e  the event received
      * @see CellEditorListener
      */
-    public void editingStopped(ChangeEvent e) {
+    @Override
+		public void editingStopped(ChangeEvent e) {
         // Take in the new value
         TableCellEditor editor = getCellEditor();
         if (editor != null) {
@@ -4750,7 +4791,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @param  e  the event received
      * @see CellEditorListener
      */
-    public void editingCanceled(ChangeEvent e) {
+    @Override
+		public void editingCanceled(ChangeEvent e) {
         removeEditor();
     }
 
@@ -4778,7 +4820,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *         which displays this table
      * @see Scrollable#getPreferredScrollableViewportSize
      */
-    public Dimension getPreferredScrollableViewportSize() {
+    @Override
+		public Dimension getPreferredScrollableViewportSize() {
         return preferredViewportSize;
     }
 
@@ -4796,7 +4839,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @return the "unit" increment for scrolling in the specified direction
      * @see Scrollable#getScrollableUnitIncrement
      */
-    public int getScrollableUnitIncrement(Rectangle visibleRect,
+    @Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect,
                                           int orientation,
                                           int direction) {
         int leadingRow;
@@ -4897,7 +4941,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *                                  per the orientation
      * @see Scrollable#getScrollableBlockIncrement
      */
-    public int getScrollableBlockIncrement(Rectangle visibleRect,
+    @Override
+		public int getScrollableBlockIncrement(Rectangle visibleRect,
             int orientation, int direction) {
 
         if (getRowCount() == 0) {
@@ -5202,7 +5247,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      *   to <code>AUTO_RESIZE_OFF</code>, otherwise returns true
      * @see Scrollable#getScrollableTracksViewportWidth
      */
-    public boolean getScrollableTracksViewportWidth() {
+    @Override
+		public boolean getScrollableTracksViewportWidth() {
         return !(autoResizeMode == AUTO_RESIZE_OFF);
     }
 
@@ -5219,7 +5265,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * @see #setFillsViewportHeight
      * @see #getFillsViewportHeight
      */
-    public boolean getScrollableTracksViewportHeight() {
+    @Override
+		public boolean getScrollableTracksViewportHeight() {
         return getFillsViewportHeight()
                && getParent() instanceof JViewport
                && (((JViewport)getParent()).getHeight() > getPreferredSize().height);
@@ -5268,7 +5315,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 // Protected Methods
 //
 
-    protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
+    @Override
+		protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
                                         int condition, boolean pressed) {
         boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
 
@@ -5371,7 +5419,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         NumberFormat formatter;
         public DoubleRenderer() { super(); }
 
-        public void setValue(Object value) {
+        @Override
+				public void setValue(Object value) {
             if (formatter == null) {
                 formatter = NumberFormat.getInstance();
             }
@@ -5396,7 +5445,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             super();
             setHorizontalAlignment(JLabel.CENTER);
         }
-        public void setValue(Object value) { setIcon((value instanceof Icon) ? (Icon)value : null); }
+        @Override
+				public void setValue(Object value) { setIcon((value instanceof Icon) ? (Icon)value : null); }
     }
 
 
@@ -5410,7 +5460,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             setBorderPainted(true);
         }
 
-        public Component getTableCellRendererComponent(JTable table, Object value,
+        @Override
+				public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus, int row, int column) {
             if (isSelected) {
                 setForeground(table.getSelectionForeground());
@@ -5467,7 +5518,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             getComponent().setName("Table.editor");
         }
 
-        public boolean stopCellEditing() {
+        @Override
+				public boolean stopCellEditing() {
             String s = (String)super.getCellEditorValue();
             // Here we are dealing with the case where a user
             // has deleted the string value in a cell, possibly
@@ -5492,7 +5544,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             return super.stopCellEditing();
         }
 
-        public Component getTableCellEditorComponent(JTable table, Object value,
+        @Override
+				public Component getTableCellEditorComponent(JTable table, Object value,
                                                  boolean isSelected,
                                                  int row, int column) {
             this.value = null;
@@ -5516,7 +5569,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             return super.getTableCellEditorComponent(table, value, isSelected, row, column);
         }
 
-        public Object getCellEditorValue() {
+        @Override
+				public Object getCellEditorValue() {
             return value;
         }
     }

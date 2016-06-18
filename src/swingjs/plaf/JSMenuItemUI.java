@@ -36,18 +36,21 @@ public class JSMenuItemUI extends JSButtonUI {
 
 	// from BasicButtonUI
 	
+	@Override
 	protected void installJSUI() {
 		installDefaults((AbstractButton) c);
 		installListeners((AbstractButton) c);
 		installKeyboardActions((AbstractButton) c);
 	}
   
+	@Override
 	protected void uninstallJSUI() {
 		uninstallKeyboardActions((AbstractButton) c);
 		uninstallListeners((AbstractButton) c);
 		//uninstallDefaults((AbstractButton) c);
 	}
 	
+	@Override
 	protected void installListeners(AbstractButton b) {
 		JSButtonListener listener = new JSButtonListener(b);
 		if (listener != null) {
@@ -59,6 +62,7 @@ public class JSMenuItemUI extends JSButtonUI {
 		}
 	}
 
+	@Override
 	protected void uninstallListeners(AbstractButton b) {
 		JSButtonListener listener = getButtonListener(b);
 		if (listener != null) {
@@ -70,6 +74,7 @@ public class JSMenuItemUI extends JSButtonUI {
 		}
 	}
 
+	@Override
 	protected void installKeyboardActions(AbstractButton b) {
 		JSButtonListener listener = getButtonListener(b);
 		if (listener != null) {
@@ -77,7 +82,8 @@ public class JSMenuItemUI extends JSButtonUI {
 		}
 	}
 	
-  protected void uninstallKeyboardActions(AbstractButton b) {
+  @Override
+	protected void uninstallKeyboardActions(AbstractButton b) {
       JSButtonListener listener = getButtonListener(b);
       if(listener != null) {
           listener.uninstallKeyboardActions(b);
@@ -140,7 +146,8 @@ public class JSMenuItemUI extends JSButtonUI {
 //      return buttonUI;
 //  }
 //
-  protected String getPropertyPrefix() {
+  @Override
+	protected String getPropertyPrefix() {
       return "Button.";
   }
 //
@@ -155,7 +162,8 @@ public class JSMenuItemUI extends JSButtonUI {
 //      BasicHTML.updateRenderer(c, ((AbstractButton) c).getText());
 //  }
 //
-  protected void installDefaults(AbstractButton b) {
+  @Override
+	protected void installDefaults(AbstractButton b) {
       // load shared instance defaults
       String pp = getPropertyPrefix();
 

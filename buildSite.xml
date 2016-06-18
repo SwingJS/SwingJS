@@ -497,12 +497,14 @@
             JU/SB.js
             JU/T3.js
             JU/V3.js
+            swingjs/api/JSTop.js
             swingjs/api/HTML5CanvasContext2D.js
             swingjs/api/Interface.js
             swingjs/api/JSComponent.js
             swingjs/api/JSFunction.js
             swingjs/api/JSInterface.js
             swingjs/JSAppletPanel.js
+            swingjs/JSJavaViewer.js
             swingjs/JSAppletThread.js
             swingjs/JSComponentPeer.js
             swingjs/JSGraphics2D.js

@@ -388,7 +388,8 @@ public abstract class PackedColorModel extends ColorModel {
      * is an instance of <code>PackedColorModel</code> and equals this
      * <code>PackedColorModel</code>; <code>false</code> otherwise.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (!(obj instanceof PackedColorModel)) {
             return false;
         }

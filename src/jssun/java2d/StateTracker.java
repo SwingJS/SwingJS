@@ -70,7 +70,8 @@ public interface StateTracker {
      * @since 1.7
      */
     public StateTracker ALWAYS_CURRENT = new StateTracker() {
-        public boolean isCurrent() {
+        @Override
+				public boolean isCurrent() {
             return true;
         }
     };
@@ -87,7 +88,8 @@ public interface StateTracker {
      * @since 1.7
      */
     public StateTracker NEVER_CURRENT = new StateTracker() {
-        public boolean isCurrent() {
+        @Override
+				public boolean isCurrent() {
             return false;
         }
     };

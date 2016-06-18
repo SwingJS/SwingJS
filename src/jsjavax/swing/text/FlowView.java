@@ -136,7 +136,8 @@ public abstract class FlowView extends BoxView {
      *
      * @param f the view factory
      */
-    protected void loadChildren(ViewFactory f) {
+    @Override
+		protected void loadChildren(ViewFactory f) {
         if (layoutPool == null) {
             layoutPool = new LogicalView(getElement());
         }
@@ -155,7 +156,8 @@ public abstract class FlowView extends BoxView {
      * @return  index of the view representing the given position, or
      *   -1 if no view represents that position
      */
-    protected int getViewIndexAtPosition(int pos) {
+    @Override
+		protected int getViewIndexAtPosition(int pos) {
         if (pos >= getStartOffset() && (pos < getEndOffset())) {
             for (int counter = 0; counter < getViewCount(); counter++) {
                 View v = getView(counter);
@@ -184,7 +186,8 @@ public abstract class FlowView extends BoxView {
      * @param height the height to lay out against >= 0 This
      *   is the height inside of the inset area.
      */
-    protected void layout(int width, int height) {
+    @Override
+		protected void layout(int width, int height) {
         final int faxis = getFlowAxis();
         int newSpan;
         if (faxis == X_AXIS) {
@@ -230,7 +233,8 @@ public abstract class FlowView extends BoxView {
      * view by calling getMinimumSpan, getPreferredSpan, and
      * getMaximumSpan on it.
      */
-    protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
+    @Override
+		protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
         if (r == null) {
             r = new SizeRequirements();
         }
@@ -255,7 +259,8 @@ public abstract class FlowView extends BoxView {
      * @param f the factory to use to rebuild if the view has children
      * @see View#insertUpdate
      */
-    public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
+    @Override
+		public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
         layoutPool.insertUpdate(changes, a, f);
         strategy.insertUpdate(this, changes, getInsideAllocation(a));
     }
@@ -269,7 +274,8 @@ public abstract class FlowView extends BoxView {
      * @param f the factory to use to rebuild if the view has children
      * @see View#removeUpdate
      */
-    public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
+    @Override
+		public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
         layoutPool.removeUpdate(changes, a, f);
         strategy.removeUpdate(this, changes, getInsideAllocation(a));
     }
@@ -283,13 +289,15 @@ public abstract class FlowView extends BoxView {
      * @param f the factory to use to rebuild if the view has children
      * @see View#changedUpdate
      */
-    public void changedUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
+    @Override
+		public void changedUpdate(DocumentEvent changes, Shape a, ViewFactory f) {
         layoutPool.changedUpdate(changes, a, f);
         strategy.changedUpdate(this, changes, getInsideAllocation(a));
     }
 
     /** {@inheritDoc} */
-    public void setParent(View parent) {
+    @Override
+		public void setParent(View parent) {
         super.setParent(parent);
         if (parent == null
                 && layoutPool != null ) {
@@ -680,7 +688,8 @@ public abstract class FlowView extends BoxView {
             super(elem);
         }
 
-        protected int getViewIndexAtPosition(int pos) {
+        @Override
+				protected int getViewIndexAtPosition(int pos) {
             Element elem = getElement();
             if (elem.isLeaf()) {
                 return 0;
@@ -688,7 +697,8 @@ public abstract class FlowView extends BoxView {
             return super.getViewIndexAtPosition(pos);
         }
 
-        protected void loadChildren(ViewFactory f) {
+        @Override
+				protected void loadChildren(ViewFactory f) {
             Element elem = getElement();
             if (elem.isLeaf()) {
                 View v = new LabelView(elem);
@@ -703,7 +713,8 @@ public abstract class FlowView extends BoxView {
          * isn't directly responsible for an element so it returns
          * the outer classes attributes.
          */
-        public AttributeSet getAttributes() {
+        @Override
+				public AttributeSet getAttributes() {
             View p = getParent();
             return (p != null) ? p.getAttributes() : null;
         }
@@ -719,7 +730,8 @@ public abstract class FlowView extends BoxView {
          *           The parent may choose to resize or break the view.
          * @see View#getPreferredSpan
          */
-        public float getPreferredSpan(int axis) {
+        @Override
+				public float getPreferredSpan(int axis) {
             float maxpref = 0;
             float pref = 0;
             int n = getViewCount();
@@ -747,7 +759,8 @@ public abstract class FlowView extends BoxView {
          *           The parent may choose to resize or break the view.
          * @see View#getPreferredSpan
          */
-        public float getMinimumSpan(int axis) {
+        @Override
+				public float getMinimumSpan(int axis) {
             float maxmin = 0;
             float min = 0;
             boolean nowrap = false;
@@ -784,7 +797,8 @@ public abstract class FlowView extends BoxView {
          * @see #forwardUpdate
          * @since 1.3
          */
-        protected void forwardUpdateToView(View v, DocumentEvent e,
+        @Override
+				protected void forwardUpdateToView(View v, DocumentEvent e,
                                            Shape a, ViewFactory f) {
             View parent = v.getParent();
             v.setParent(this);
@@ -804,7 +818,8 @@ public abstract class FlowView extends BoxView {
          * @param allocation the allocated region to render into
          * @see View#paint
          */
-        public void paint(Graphics g, Shape allocation) {
+        @Override
+				public void paint(Graphics g, Shape allocation) {
         }
 
         /**
@@ -817,7 +832,8 @@ public abstract class FlowView extends BoxView {
          * @param alloc the rectangle
          * @return true if the point is before the specified range
          */
-        protected boolean isBefore(int x, int y, Rectangle alloc) {
+        @Override
+				protected boolean isBefore(int x, int y, Rectangle alloc) {
             return false;
         }
 
@@ -831,7 +847,8 @@ public abstract class FlowView extends BoxView {
          * @param alloc the rectangle
          * @return true if the point is after the specified range
          */
-        protected boolean isAfter(int x, int y, Rectangle alloc) {
+        @Override
+				protected boolean isAfter(int x, int y, Rectangle alloc) {
             return false;
         }
 
@@ -846,7 +863,8 @@ public abstract class FlowView extends BoxView {
          *   be changed to the child's allocation on exit
          * @return the child view
          */
-        protected View getViewAtPoint(int x, int y, Rectangle alloc) {
+        @Override
+				protected View getViewAtPoint(int x, int y, Rectangle alloc) {
             return null;
         }
 
@@ -859,7 +877,8 @@ public abstract class FlowView extends BoxView {
          * @param a  the allocation to the interior of the box on entry,
          *   and the allocation of the child view at the index on exit.
          */
-        protected void childAllocation(int index, Rectangle a) {
+        @Override
+				protected void childAllocation(int index, Rectangle a) {
         }
     }
 

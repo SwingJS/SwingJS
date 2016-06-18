@@ -123,7 +123,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.Parser#setLocale
      * @exception org.xml.sax.SAXException Thrown unless overridden.
      */
-    public void setLocale (Locale locale)
+    @Override
+		public void setLocale (Locale locale)
 	throws SAXException
     {
 	throw new SAXNotSupportedException("setLocale not supported");
@@ -136,7 +137,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param resolver The new resolver.
      * @see org.xml.sax.Parser#setEntityResolver
      */
-    public void setEntityResolver (EntityResolver resolver)
+    @Override
+		public void setEntityResolver (EntityResolver resolver)
     {
 	xmlReader.setEntityResolver(resolver);
     }
@@ -148,7 +150,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param handler The new DTD event handler.
      * @see org.xml.sax.Parser#setDTDHandler
      */
-    public void setDTDHandler (DTDHandler handler)
+    @Override
+		public void setDTDHandler (DTDHandler handler)
     {
 	xmlReader.setDTDHandler(handler);
     }
@@ -163,7 +166,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param handler The new SAX1 document event handler.
      * @see org.xml.sax.Parser#setDocumentHandler
      */
-    public void setDocumentHandler (DocumentHandler handler)
+    @Override
+		public void setDocumentHandler (DocumentHandler handler)
     {
 	documentHandler = handler;
     }
@@ -175,7 +179,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param handler The new error event handler.
      * @see org.xml.sax.Parser#setErrorHandler
      */
-    public void setErrorHandler (ErrorHandler handler)
+    @Override
+		public void setErrorHandler (ErrorHandler handler)
     {
 	xmlReader.setErrorHandler(handler);
     }
@@ -196,7 +201,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see #parse(org.xml.sax.InputSource)
      * @see org.xml.sax.Parser#parse(java.lang.String)
      */
-    public void parse (String systemId)
+    @Override
+		public void parse (String systemId)
 	throws IOException, SAXException
     {
 	parse(new InputSource(systemId));
@@ -218,7 +224,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see #parse(java.lang.String)
      * @see org.xml.sax.Parser#parse(org.xml.sax.InputSource)
      */
-    public void parse (InputSource input)
+    @Override
+		public void parse (InputSource input)
 	throws IOException, SAXException
     {
 	setupXMLReader();
@@ -255,7 +262,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param locator The document locator.
      * @see org.xml.sax.ContentHandler#setDocumentLocator
      */
-    public void setDocumentLocator (Locator locator)
+    @Override
+		public void setDocumentLocator (Locator locator)
     {
 	if (documentHandler != null)
 	    documentHandler.setDocumentLocator(locator);
@@ -269,7 +277,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#startDocument
      */
-    public void startDocument ()
+    @Override
+		public void startDocument ()
 	throws SAXException
     {
 	if (documentHandler != null)
@@ -284,7 +293,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#endDocument
      */
-    public void endDocument ()
+    @Override
+		public void endDocument ()
 	throws SAXException
     {
 	if (documentHandler != null)
@@ -299,7 +309,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param uri The Namespace URI being mapped to.
      * @see org.xml.sax.ContentHandler#startPrefixMapping
      */
-    public void startPrefixMapping (String prefix, String uri)
+    @Override
+		public void startPrefixMapping (String prefix, String uri)
     {
     }
 
@@ -310,7 +321,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @param prefix The prefix being mapped.
      * @see org.xml.sax.ContentHandler#endPrefixMapping
      */
-    public void endPrefixMapping (String prefix)
+    @Override
+		public void endPrefixMapping (String prefix)
     {
     }
 
@@ -326,7 +338,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#endDocument
      */
-    public void startElement (String uri, String localName,
+    @Override
+		public void startElement (String uri, String localName,
 			      String qName, Attributes atts)
 	throws SAXException
     {
@@ -347,7 +360,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#endElement
      */
-    public void endElement (String uri, String localName,
+    @Override
+		public void endElement (String uri, String localName,
 			    String qName)
 	throws SAXException
     {
@@ -366,7 +380,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#characters
      */
-    public void characters (char ch[], int start, int length)
+    @Override
+		public void characters (char ch[], int start, int length)
 	throws SAXException
     {
 	if (documentHandler != null)
@@ -384,7 +399,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#ignorableWhitespace
      */
-    public void ignorableWhitespace (char ch[], int start, int length)
+    @Override
+		public void ignorableWhitespace (char ch[], int start, int length)
 	throws SAXException
     {
 	if (documentHandler != null)
@@ -401,7 +417,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      *            processing exception.
      * @see org.xml.sax.ContentHandler#processingInstruction
      */
-    public void processingInstruction (String target, String data)
+    @Override
+		public void processingInstruction (String target, String data)
 	throws SAXException
     {
 	if (documentHandler != null)
@@ -416,7 +433,8 @@ public class XMLReaderAdapter implements Parser, ContentHandler
      * @see org.xml.sax.ContentHandler#skippedEntity
      * @exception org.xml.sax.SAXException Throwable by subclasses.
      */
-    public void skippedEntity (String name)
+    @Override
+		public void skippedEntity (String name)
 	throws SAXException
     {
     }
@@ -465,6 +483,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
 	 * @return The length of the attribute list.
 	 * @see org.xml.sax.AttributeList#getLength
 	 */
+	@Override
 	public int getLength ()
 	{
 	    return attributes.getLength();
@@ -477,6 +496,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
 	 * @return The qualified name.
 	 * @see org.xml.sax.AttributeList#getName
 	 */
+	@Override
 	public String getName (int i)
 	{
 	    return attributes.getQName(i);
@@ -489,6 +509,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
 	 * @return The type.
 	 * @see org.xml.sax.AttributeList#getType(int)
 	 */
+	@Override
 	public String getType (int i)
 	{
 	    return attributes.getType(i);
@@ -501,6 +522,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
 	 * @return The value.
 	 * @see org.xml.sax.AttributeList#getValue(int)
 	 */
+	@Override
 	public String getValue (int i)
 	{
 	    return attributes.getValue(i);
@@ -513,6 +535,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
 	 * @return The type.
 	 * @see org.xml.sax.AttributeList#getType(java.lang.String)
 	 */
+	@Override
 	public String getType (String qName)
 	{
 	    return attributes.getType(qName);
@@ -525,6 +548,7 @@ public class XMLReaderAdapter implements Parser, ContentHandler
 	 * @return The value.
 	 * @see org.xml.sax.AttributeList#getValue(java.lang.String)
 	 */
+	@Override
 	public String getValue (String qName)
 	{
 	    return attributes.getValue(qName);

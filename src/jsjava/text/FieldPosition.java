@@ -206,7 +206,8 @@ public class FieldPosition {
     /**
      * Overrides equals
      */
-    public boolean equals(Object obj)
+    @Override
+		public boolean equals(Object obj)
     {
         if (obj == null) return false;
         if (!(obj instanceof FieldPosition))
@@ -229,7 +230,8 @@ public class FieldPosition {
      * Returns a hash code for this FieldPosition.
      * @return a hash code value for this object
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return (field << 24) | (beginIndex << 16) | endIndex;
     }
 
@@ -237,7 +239,8 @@ public class FieldPosition {
      * Return a string representation of this FieldPosition.
      * @return  a string representation of this object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() +
             "[field=" + field + ",attribute=" + attribute +
             ",beginIndex=" + beginIndex +
@@ -282,7 +285,8 @@ public class FieldPosition {
          */
         private boolean encounteredField;
 
-        public void formatted(Format.Field attr, Object value, int start,
+        @Override
+				public void formatted(Format.Field attr, Object value, int start,
                               int end, StringBuffer buffer) {
             if (!encounteredField && matchesField(attr)) {
                 setBeginIndex(start);
@@ -291,7 +295,8 @@ public class FieldPosition {
             }
         }
 
-        public void formatted(int fieldID, Format.Field attr, Object value,
+        @Override
+				public void formatted(int fieldID, Format.Field attr, Object value,
                               int start, int end, StringBuffer buffer) {
             if (!encounteredField && matchesField(attr, fieldID)) {
                 setBeginIndex(start);

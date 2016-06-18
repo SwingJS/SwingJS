@@ -401,7 +401,8 @@ public interface Deque<E> extends Queue<E> {
      * @throws IllegalArgumentException if some property of the specified
      *         element prevents it from being added to this deque
      */
-    boolean add(E e);
+    @Override
+		boolean add(E e);
 
     /**
      * Inserts the specified element into the queue represented by this deque
@@ -424,7 +425,8 @@ public interface Deque<E> extends Queue<E> {
      * @throws IllegalArgumentException if some property of the specified
      *         element prevents it from being added to this deque
      */
-    boolean offer(E e);
+    @Override
+		boolean offer(E e);
 
     /**
      * Retrieves and removes the head of the queue represented by this deque
@@ -437,7 +439,8 @@ public interface Deque<E> extends Queue<E> {
      * @return the head of the queue represented by this deque
      * @throws NoSuchElementException if this deque is empty
      */
-    E remove();
+    @Override
+		E remove();
 
     /**
      * Retrieves and removes the head of the queue represented by this deque
@@ -449,7 +452,8 @@ public interface Deque<E> extends Queue<E> {
      * @return the first element of this deque, or <tt>null</tt> if
      *         this deque is empty
      */
-    E poll();
+    @Override
+		E poll();
 
     /**
      * Retrieves, but does not remove, the head of the queue represented by
@@ -462,7 +466,8 @@ public interface Deque<E> extends Queue<E> {
      * @return the head of the queue represented by this deque
      * @throws NoSuchElementException if this deque is empty
      */
-    E element();
+    @Override
+		E element();
 
     /**
      * Retrieves, but does not remove, the head of the queue represented by
@@ -474,7 +479,8 @@ public interface Deque<E> extends Queue<E> {
      * @return the head of the queue represented by this deque, or
      *         <tt>null</tt> if this deque is empty
      */
-    E peek();
+    @Override
+		E peek();
 
 
     // *** Stack methods ***
@@ -533,7 +539,8 @@ public interface Deque<E> extends Queue<E> {
      * @throws NullPointerException if the specified element is null and this
      *         deque does not permit null elements (optional)
      */
-    boolean remove(Object o);
+    @Override
+		boolean remove(Object o);
 
     /**
      * Returns <tt>true</tt> if this deque contains the specified element.
@@ -548,14 +555,16 @@ public interface Deque<E> extends Queue<E> {
      * @throws NullPointerException if the specified element is null and this
      *         deque does not permit null elements (optional)
      */
-    boolean contains(Object o);
+    @Override
+		boolean contains(Object o);
 
     /**
      * Returns the number of elements in this deque.
      *
      * @return the number of elements in this deque
      */
-    public int size();
+    @Override
+		public int size();
 
     /**
      * Returns an iterator over the elements in this deque in proper sequence.
@@ -563,7 +572,8 @@ public interface Deque<E> extends Queue<E> {
      *
      * @return an iterator over the elements in this deque in proper sequence
      */
-    Iterator<E> iterator();
+    @Override
+		Iterator<E> iterator();
 
     /**
      * Returns an iterator over the elements in this deque in reverse

@@ -174,7 +174,8 @@ public class JRadioButtonMenuItem extends JMenuItem {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -206,7 +207,8 @@ public class JRadioButtonMenuItem extends JMenuItem {
      * @return  a string representation of this
      *          <code>JRadioButtonMenuItem</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 
@@ -214,7 +216,8 @@ public class JRadioButtonMenuItem extends JMenuItem {
      * Overriden to return true, JRadioButtonMenuItem supports
      * the selected state.
      */
-    boolean shouldUpdateSelectedStateFromAction() {
+    @Override
+		boolean shouldUpdateSelectedStateFromAction() {
         return true;
     }
 

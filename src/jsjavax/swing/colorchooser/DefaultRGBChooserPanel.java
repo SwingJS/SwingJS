@@ -100,7 +100,8 @@ class DefaultRGBChooserPanel extends AbstractColorChooserPanel implements Change
             blueField.setValue(new Integer(blue));
     }
 
-    public String getDisplayName() {
+    @Override
+		public String getDisplayName() {
         return UIManager.getString("ColorChooser.rgbNameText");
     }
 
@@ -123,7 +124,8 @@ class DefaultRGBChooserPanel extends AbstractColorChooserPanel implements Change
      * @see #getDisplayedMnemonicIndex
      * @since 1.4
      */
-    public int getMnemonic() {
+    @Override
+		public int getMnemonic() {
         return getInt("ColorChooser.rgbMnemonic", -1);
     }
 
@@ -151,15 +153,18 @@ class DefaultRGBChooserPanel extends AbstractColorChooserPanel implements Change
      * @see #getMnemonic
      * @since 1.4
      */
-    public int getDisplayedMnemonicIndex() {
+    @Override
+		public int getDisplayedMnemonicIndex() {
         return getInt("ColorChooser.rgbDisplayedMnemonicIndex", -1);
     }
 
-    public Icon getSmallDisplayIcon() {
+    @Override
+		public Icon getSmallDisplayIcon() {
         return null;
     }
 
-    public Icon getLargeDisplayIcon() {
+    @Override
+		public Icon getLargeDisplayIcon() {
         return null;
     }
 
@@ -167,11 +172,13 @@ class DefaultRGBChooserPanel extends AbstractColorChooserPanel implements Change
      * The background color, foreground color, and font are already set to the
      * defaults from the defaults table before this method is called.
      */
-    public void installChooserPanel(JColorChooser enclosingChooser) {
+    @Override
+		public void installChooserPanel(JColorChooser enclosingChooser) {
         super.installChooserPanel(enclosingChooser);
     }
 
-    protected void buildChooser() {
+    @Override
+		protected void buildChooser() {
 
         String redString = UIManager.getString("ColorChooser.rgbRedText");
         String greenString = UIManager.getString("ColorChooser.rgbGreenText");
@@ -263,12 +270,14 @@ class DefaultRGBChooserPanel extends AbstractColorChooserPanel implements Change
         blueSlider.putClientProperty("JSlider.isFilled", Boolean.TRUE);
     }
 
-    public void uninstallChooserPanel(JColorChooser enclosingChooser) {
+    @Override
+		public void uninstallChooserPanel(JColorChooser enclosingChooser) {
         super.uninstallChooserPanel(enclosingChooser);
         removeAll();
     }
 
-    public void updateChooser() {
+    @Override
+		public void updateChooser() {
         if (!isAdjusting) {
             isAdjusting = true;
 
@@ -278,7 +287,8 @@ class DefaultRGBChooserPanel extends AbstractColorChooserPanel implements Change
         }
     }
 
-    public void stateChanged( ChangeEvent e ) {
+    @Override
+		public void stateChanged( ChangeEvent e ) {
         if ( e.getSource() instanceof JSlider && !isAdjusting) {
 
             int red = redSlider.getValue();

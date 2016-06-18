@@ -678,7 +678,8 @@ abstract public class TimeZone implements Cloneable {
      *
      * @return a clone of this <code>TimeZone</code>
      */
-    public Object clone()
+    @Override
+		public Object clone()
     {
         try {
             TimeZone other = (TimeZone) super.clone();

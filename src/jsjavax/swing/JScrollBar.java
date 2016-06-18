@@ -220,7 +220,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *
      * @see JComponent#setUI
      */
-    public ScrollBarUI getUI() {
+    @Override
+		public ScrollBarUI getUI() {
         return (ScrollBarUI)ui;
     }
 
@@ -229,7 +230,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * Overrides <code>JComponent.updateUI</code>.
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ScrollBarUI)UIManager.getUI(this));
     }
 
@@ -241,7 +243,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -254,7 +257,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @see #setOrientation
      * @see jsjava.awt.Adjustable#getOrientation
      */
-    public int getOrientation() {
+    @Override
+		public int getOrientation() {
         return orientation;
     }
 
@@ -373,7 +377,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *       bound: true
      * description: The scrollbar's unit increment.
      */
-    public void setUnitIncrement(int unitIncrement) {
+    @Override
+		public void setUnitIncrement(int unitIncrement) {
         int oldValue = this.unitIncrement;
         this.unitIncrement = unitIncrement;
         firePropertyChangeInt("unitIncrement", oldValue, unitIncrement);
@@ -416,7 +421,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *       bound: true
      * description: The scrollbar's block increment.
      */
-    public void setBlockIncrement(int blockIncrement) {
+    @Override
+		public void setBlockIncrement(int blockIncrement) {
         int oldValue = this.blockIncrement;
         this.blockIncrement = blockIncrement;
         firePropertyChangeInt("blockIncrement", oldValue, blockIncrement);
@@ -428,7 +434,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @see Adjustable#getUnitIncrement
      * @see #getUnitIncrement(int)
      */
-    public int getUnitIncrement() {
+    @Override
+		public int getUnitIncrement() {
         return unitIncrement;
     }
 
@@ -438,7 +445,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @see Adjustable#getBlockIncrement
      * @see #getBlockIncrement(int)
      */
-    public int getBlockIncrement() {
+    @Override
+		public int getBlockIncrement() {
         return blockIncrement;
     }
 
@@ -448,7 +456,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @return the model's value property
      * @see #setValue
      */
-    public int getValue() {
+    @Override
+		public int getValue() {
         return getModel().getValue();
     }
 
@@ -463,7 +472,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *   preferred: true
      * description: The scrollbar's current value.
      */
-    public void setValue(int value) {
+    @Override
+		public void setValue(int value) {
         BoundedRangeModel m = getModel();
         //int oldValue = m.getValue();
         m.setValue(value);
@@ -485,7 +495,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @return the value of the model's extent property
      * @see #setVisibleAmount
      */
-    public int getVisibleAmount() {
+    @Override
+		public int getVisibleAmount() {
         return getModel().getExtent();
     }
 
@@ -499,7 +510,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *   preferred: true
      * description: The amount of the view that is currently visible.
      */
-    public void setVisibleAmount(int extent) {
+    @Override
+		public void setVisibleAmount(int extent) {
         getModel().setExtent(extent);
     }
 
@@ -511,7 +523,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @return the value of the model's minimum property
      * @see #setMinimum
      */
-    public int getMinimum() {
+    @Override
+		public int getMinimum() {
         return getModel().getMinimum();
     }
 
@@ -525,7 +538,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *   preferred: true
      * description: The scrollbar's minimum value.
      */
-    public void setMinimum(int minimum) {
+    @Override
+		public void setMinimum(int minimum) {
         getModel().setMinimum(minimum);
     }
 
@@ -536,7 +550,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @return the value of the model's maximum property
      * @see #setMaximum
      */
-    public int getMaximum() {
+    @Override
+		public int getMaximum() {
         return getModel().getMaximum();
     }
 
@@ -551,7 +566,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *   preferred: true
      * description: The scrollbar's maximum value.
      */
-    public void setMaximum(int maximum) {
+    @Override
+		public void setMaximum(int maximum) {
         getModel().setMaximum(maximum);
     }
 
@@ -640,7 +656,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @see #removeAdjustmentListener
      * @see BoundedRangeModel#addChangeListener
      */
-    public void addAdjustmentListener(AdjustmentListener l)   {
+    @Override
+		public void addAdjustmentListener(AdjustmentListener l)   {
         listenerList.add(AdjustmentListener.class, l);
     }
 
@@ -651,7 +668,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @param l the AdjustmentLister to remove
      * @see #addAdjustmentListener
      */
-    public void removeAdjustmentListener(AdjustmentListener l)  {
+    @Override
+		public void removeAdjustmentListener(AdjustmentListener l)  {
         listenerList.remove(AdjustmentListener.class, l);
     }
 
@@ -709,7 +727,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * value are considered equivalent.
      */
     private class ModelListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e)   {
+        @Override
+				public void stateChanged(ChangeEvent e)   {
             Object obj = e.getSource();
             if (obj instanceof BoundedRangeModel) {
                 int id = AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED;
@@ -728,7 +747,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * The scrollbar is flexible along it's scrolling axis and
      * rigid along the other axis.
      */
-    public Dimension getMinimumSize() {
+    @Override
+		public Dimension getMinimumSize() {
         Dimension pref = getPreferredSize();
         if (orientation == VERTICAL) {
             return new Dimension(pref.width, 5);
@@ -741,7 +761,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * The scrollbar is flexible along it's scrolling axis and
      * rigid along the other axis.
      */
-    public Dimension getMaximumSize() {
+    @Override
+		public Dimension getMaximumSize() {
         Dimension pref = getPreferredSize();
         if (getOrientation() == VERTICAL) {
             return new Dimension(pref.width, Short.MAX_VALUE);
@@ -757,7 +778,8 @@ public class JScrollBar extends JComponent implements Adjustable
      * @param x a boolean value, where true enables the component and
      *          false disables it
      */
-    public void setEnabled(boolean x)  {
+    @Override
+		public void setEnabled(boolean x)  {
         super.setEnabled(x);
         Component[] children = getComponents();
         for(int i = 0; i < children.length; i++) {
@@ -790,7 +812,8 @@ public class JScrollBar extends JComponent implements Adjustable
      *
      * @return  a string representation of this JScrollBar.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String orientationString = (orientation == HORIZONTAL ?
                                     "HORIZONTAL" : "VERTICAL");
 

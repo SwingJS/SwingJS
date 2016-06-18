@@ -61,11 +61,13 @@ public abstract class MouseMotionAdapter implements MouseMotionListener {
      * released (regardless of whether the mouse position is within the
      * bounds of the component).
      */
-    public void mouseDragged(MouseEvent e) {}
+    @Override
+		public void mouseDragged(MouseEvent e) {}
 
     /**
      * Invoked when the mouse button has been moved on a component
      * (with no buttons no down).
      */
-    public void mouseMoved(MouseEvent e) {}
+    @Override
+		public void mouseMoved(MouseEvent e) {}
 }

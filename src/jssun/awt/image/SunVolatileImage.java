@@ -126,11 +126,13 @@ public class SunVolatileImage extends VolatileImage
     this.caps = caps;
     }
 
-    public int getWidth() {
+    @Override
+		public int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    @Override
+		public int getHeight() {
         return height;
     }
 

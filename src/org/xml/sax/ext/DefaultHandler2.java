@@ -43,52 +43,63 @@ public class DefaultHandler2 extends DefaultHandler
 
     // SAX2 ext-1.0 LexicalHandler
 
-    public void startCDATA ()
+    @Override
+		public void startCDATA ()
     throws SAXException
 	{}
 
-    public void endCDATA ()
+    @Override
+		public void endCDATA ()
     throws SAXException
 	{}
 
-    public void startDTD (String name, String publicId, String systemId)
+    @Override
+		public void startDTD (String name, String publicId, String systemId)
     throws SAXException
 	{}
 
-    public void endDTD ()
+    @Override
+		public void endDTD ()
     throws SAXException
 	{}
 
-    public void startEntity (String name)
+    @Override
+		public void startEntity (String name)
     throws SAXException
 	{}
 
-    public void endEntity (String name)
+    @Override
+		public void endEntity (String name)
     throws SAXException
 	{}
 
-    public void comment (char ch [], int start, int length)
+    @Override
+		public void comment (char ch [], int start, int length)
     throws SAXException
 	{ }
 
 
     // SAX2 ext-1.0 DeclHandler
 
-    public void attributeDecl (String eName, String aName,
+    @Override
+		public void attributeDecl (String eName, String aName,
 	    String type, String mode, String value)
     throws SAXException
 	{}
 
-    public void elementDecl (String name, String model)
+    @Override
+		public void elementDecl (String name, String model)
     throws SAXException
 	{}
 
-    public void externalEntityDecl (String name,
+    @Override
+		public void externalEntityDecl (String name,
     	String publicId, String systemId)
     throws SAXException
 	{}
 
-    public void internalEntityDecl (String name, String value)
+    @Override
+		public void internalEntityDecl (String name, String value)
     throws SAXException
 	{}
 
@@ -98,7 +109,8 @@ public class DefaultHandler2 extends DefaultHandler
      * Tells the parser that if no external subset has been declared
      * in the document text, none should be used.
      */
-    public InputSource getExternalSubset (String name, String baseURI)
+    @Override
+		public InputSource getExternalSubset (String name, String baseURI)
     throws SAXException, IOException
 	{ return null; }
 
@@ -111,7 +123,8 @@ public class DefaultHandler2 extends DefaultHandler
      * be invoked with null <em>name</em> and <em>baseURI</em>, and
      * with the <em>systemId</em> already absolutized.
      */
-    public InputSource resolveEntity (String name, String publicId,
+    @Override
+		public InputSource resolveEntity (String name, String publicId,
 	    String baseURI, String systemId)
     throws SAXException, IOException
 	{ return null; }
@@ -124,7 +137,8 @@ public class DefaultHandler2 extends DefaultHandler
      * with null entity name and base URI.
      * You only need to override that method to use this class.
      */
-    public InputSource resolveEntity (String publicId, String systemId)
+    @Override
+		public InputSource resolveEntity (String publicId, String systemId)
     throws SAXException, IOException
 	{ return resolveEntity (null, publicId, null, systemId); }
 }

@@ -405,7 +405,8 @@ private float leading;
 //        return frc;
 //    }
 //
-    public int charWidth(char ch) {
+    @Override
+		public int charWidth(char ch) {
         // default metrics for compatibility with legacy code
     	String s = "";
     	/**
@@ -435,7 +436,8 @@ private float leading;
 //        return (int)(0.5 + w);
 //    }
 
-    public int stringWidth(String str) {
+    @Override
+		public int stringWidth(String str) {
       return (int) (0.5 + getWidth(str));
     }
     
@@ -470,7 +472,8 @@ private float leading;
 //        return (int) (0.5 + width);
     }
 
-    public int charsWidth(char data[], int off, int len) {
+    @Override
+		public int charsWidth(char data[], int off, int len) {
 
         float width = 0;
 //        String s = "";
@@ -528,7 +531,8 @@ private float leading;
      *                 described by this <code>FontMetrics</code> object.
      */
     // More efficient than base class implementation - reuses existing cache
-    public int[] getWidths() {
+    @Override
+		public int[] getWidths() {
         int[] widths = new int[256];
 //        for (char ch = 0 ; ch < 256 ; ch++) {
 //            float w = advCache[ch];
@@ -545,7 +549,8 @@ private float leading;
    * glyphs in this font extend above the base line (measured in typographic
    * units).
    */
-    public int getAscent() {
+    @Override
+		public int getAscent() {
     	if (ascent == 0)
     		ascent = Toolkit.getDefaultToolkit().getFontMetrics(font).getAscent();
         return (int)(roundingUpValue + ascent);
@@ -555,13 +560,15 @@ private float leading;
    * Returns the typographic descent of the font. This is the maximum distance
    * glyphs in this font extend below the base line.
    */
-    public int getDescent() {
+    @Override
+		public int getDescent() {
     	if (descent == 0)
     		descent = Toolkit.getDefaultToolkit().getFontMetrics(font).getDescent();
         return (int)(roundingUpValue + descent);
     }
 
-    public int getLeading() {
+    @Override
+		public int getLeading() {
         // nb this ensures the sum of the results of the public methods
         // for leading, ascent & descent sum to height.
         // if the calculations in any other methods change this needs
@@ -578,7 +585,8 @@ private float leading;
     // because typically clients use ascent to determine the y location to
     // pass to drawString etc and we need to ensure that the height has enough
     // space below the baseline to fully contain any descender.
-    public int getHeight() {
+    @Override
+		public int getHeight() {
         if (height < 0) {
             height = getAscent() + (int)(roundingUpValue + descent + leading);
         }

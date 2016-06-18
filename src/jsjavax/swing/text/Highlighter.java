@@ -148,4 +148,4 @@ public interface Highlighter {
 
     }
 
-};
+}

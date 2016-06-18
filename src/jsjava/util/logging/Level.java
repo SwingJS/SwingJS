@@ -316,7 +316,8 @@ public class Level implements java.io.Serializable {
     /**
      * @return the non-localized name of the Level, for example "INFO".
      */
-    public final String toString() {
+    @Override
+		public final String toString() {
         return name;
     }
 
@@ -417,7 +418,8 @@ public class Level implements java.io.Serializable {
      * Compare two objects for value equality.
      * @return true if and only if the two objects have the same level value.
      */
-    public boolean equals(Object ox) {
+    @Override
+		public boolean equals(Object ox) {
         try {
             Level lx = (Level)ox;
             return (lx.value == this.value);
@@ -430,7 +432,8 @@ public class Level implements java.io.Serializable {
      * Generate a hashcode.
      * @return a hashcode based on the level value
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return this.value;
     }
 

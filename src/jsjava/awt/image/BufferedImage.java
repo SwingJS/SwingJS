@@ -1056,6 +1056,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 *          ignored
 	 * @return the width of this <code>BufferedImage</code>
 	 */
+	@Override
 	public int getWidth(ImageObserver observer) {
 		return raster.getWidth();
 	}
@@ -1067,6 +1068,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 *          ignored
 	 * @return the height of this <code>BufferedImage</code>
 	 */
+	@Override
 	public int getHeight(ImageObserver observer) {
 		return raster.getHeight();
 	}
@@ -1078,6 +1080,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 *         this image.
 	 * @see ImageProducer
 	 */
+	@Override
 	public ImageProducer getSource() {
 		if (osis == null) {
 			if (properties == null) {
@@ -1110,6 +1113,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * @see ImageObserver
 	 * @see java.awt.Image#UndefinedProperty
 	 */
+	@Override
 	public Object getProperty(String name, ImageObserver observer) {
 		return getProperty(name);
 	}
@@ -1145,6 +1149,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * @return a <code>Graphics2D</code>, which can be used to draw into this
 	 *         image.
 	 */
+	@Override
 	public Graphics getGraphics() {
 		return createGraphics();
 	}
@@ -1220,6 +1225,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return a <code>String</code> representing this <code>BufferedImage</code>.
 	 */
+	@Override
 	public String toString() {
 		return new String("BufferedImage@" + Integer.toHexString(hashCode())
 				+ ": type = " + imageType + " " + colorModel + " " + raster);
@@ -1618,6 +1624,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * @see Transparency#TRANSLUCENT
 	 * @since 1.5
 	 */
+	@Override
 	public int getTransparency() {
 		return colorModel.getTransparency();
 	}

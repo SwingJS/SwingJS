@@ -54,7 +54,8 @@ public class ResourceBundleEnumeration implements Enumeration<String> {
 
     String next = null;
 
-    public boolean hasMoreElements() {
+    @Override
+		public boolean hasMoreElements() {
         if (next == null) {
             if (iterator.hasNext()) {
                 next = iterator.next();
@@ -70,7 +71,8 @@ public class ResourceBundleEnumeration implements Enumeration<String> {
         return next != null;
     }
 
-    public String nextElement() {
+    @Override
+		public String nextElement() {
         if (hasMoreElements()) {
             String result = next;
             next = null;

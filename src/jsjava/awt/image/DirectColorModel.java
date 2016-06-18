@@ -365,7 +365,8 @@ public class DirectColorModel extends PackedColorModel {
      * @return the red color component for the specified pixel, from
      *         0 to 255 in the sRGB <code>ColorSpace</code>.
      */
-    final public int getRed(int pixel) {
+    @Override
+		final public int getRed(int pixel) {
         if (is_sRGB) {
             return getsRGBComponentFromsRGB(pixel, 0);
         } else if (is_LinearRGB) {
@@ -388,7 +389,8 @@ public class DirectColorModel extends PackedColorModel {
      * @return the green color component for the specified pixel, from
      *         0 to 255 in the sRGB <code>ColorSpace</code>.
      */
-    final public int getGreen(int pixel) {
+    @Override
+		final public int getGreen(int pixel) {
         if (is_sRGB) {
             return getsRGBComponentFromsRGB(pixel, 1);
         } else if (is_LinearRGB) {
@@ -411,7 +413,8 @@ public class DirectColorModel extends PackedColorModel {
      * @return the blue color component for the specified pixel, from
      *         0 to 255 in the sRGB <code>ColorSpace</code>.
      */
-    final public int getBlue(int pixel) {
+    @Override
+		final public int getBlue(int pixel) {
         if (is_sRGB) {
             return getsRGBComponentFromsRGB(pixel, 2);
         } else if (is_LinearRGB) {
@@ -428,7 +431,8 @@ public class DirectColorModel extends PackedColorModel {
      * @return the value of the alpha component of <code>pixel</code>
      *         from 0 to 255.
      */
-    final public int getAlpha(int pixel) {
+    @Override
+		final public int getAlpha(int pixel) {
         if (!supportsAlpha) return 255;
         int a = ((pixel & maskArray[3]) >>> maskOffsets[3]);
         if (scaleFactors[3] != 1.0f) {
@@ -450,7 +454,8 @@ public class DirectColorModel extends PackedColorModel {
      *         pixel.
      * @see ColorModel#getRGBdefault
      */
-    final public int getRGB(int pixel) {
+    @Override
+		final public int getRGB(int pixel) {
         if (is_sRGB || is_LinearRGB) {
             return (getAlpha(pixel) << 24)
                 | (getRed(pixel) << 16)
@@ -495,7 +500,8 @@ public class DirectColorModel extends PackedColorModel {
      * @throws UnsupportedOperationException if this <code>transferType</code>
      *         is not supported by this color model
      */
-    public int getRed(Object inData) {
+    @Override
+		public int getRed(Object inData) {
         int pixel=0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
@@ -548,7 +554,8 @@ public class DirectColorModel extends PackedColorModel {
      * @throws UnsupportedOperationException if this <code>transferType</code>
      *         is not supported by this color model
      */
-    public int getGreen(Object inData) {
+    @Override
+		public int getGreen(Object inData) {
         int pixel=0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
@@ -601,7 +608,8 @@ public class DirectColorModel extends PackedColorModel {
      * @throws UnsupportedOperationException if this <code>transferType</code>
      *         is not supported by this color model
      */
-    public int getBlue(Object inData) {
+    @Override
+		public int getBlue(Object inData) {
         int pixel=0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
@@ -651,7 +659,8 @@ public class DirectColorModel extends PackedColorModel {
      *  <code>tranferType</code> is not supported by this
      *  <code>ColorModel</code>
      */
-    public int getAlpha(Object inData) {
+    @Override
+		public int getAlpha(Object inData) {
         int pixel=0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
@@ -699,7 +708,8 @@ public class DirectColorModel extends PackedColorModel {
      *            <code>ColorModel</code>
      * @see ColorModel#getRGBdefault
      */
-    public int getRGB(Object inData) {
+    @Override
+		public int getRGB(Object inData) {
         int pixel=0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
@@ -755,7 +765,8 @@ public class DirectColorModel extends PackedColorModel {
      * @see WritableRaster#setDataElements
      * @see SampleModel#setDataElements
      */
-    public Object getDataElements(int rgb, Object pixel) {
+    @Override
+		public Object getDataElements(int rgb, Object pixel) {
         //REMIND: maybe more efficient not to use int array for
         //DataBuffer.TYPE_USHORT and DataBuffer.TYPE_INT
         int intpixel[] = null;
@@ -923,7 +934,8 @@ public class DirectColorModel extends PackedColorModel {
      * @return an array containing the color and alpha components of the
      * specified pixel starting at the specified offset.
      */
-    final public int[] getComponents(int pixel, int[] components, int offset) {
+    @Override
+		final public int[] getComponents(int pixel, int[] components, int offset) {
         if (components == null) {
             components = new int[offset+numComponents];
         }
@@ -974,7 +986,8 @@ public class DirectColorModel extends PackedColorModel {
      *            <code>transferType</code> is not supported by this
      *            color model
      */
-    final public int[] getComponents(Object pixel, int[] components,
+    @Override
+		final public int[] getComponents(Object pixel, int[] components,
                                      int offset) {
         int intpixel=0;
         switch (transferType) {
@@ -1010,7 +1023,8 @@ public class DirectColorModel extends PackedColorModel {
      * @see WritableRaster
      * @see SampleModel
      */
-    final public WritableRaster createCompatibleWritableRaster (int w,
+    @Override
+		final public WritableRaster createCompatibleWritableRaster (int w,
                                                                 int h) {
         if ((w <= 0) || (h <= 0)) {
             throw new IllegalArgumentException("Width (" + w + ") and height (" + h +
@@ -1060,7 +1074,8 @@ public class DirectColorModel extends PackedColorModel {
      *  hold all of the color and alpha components starting at
      *  <code>offset</code>
      */
-    public int getDataElement(int[] components, int offset) {
+    @Override
+		public int getDataElement(int[] components, int offset) {
         int pixel = 0;
         for (int i=0; i < numComponents; i++) {
             pixel |= ((components[offset+i]<<maskOffsets[i])&maskArray[i]);
@@ -1110,7 +1125,8 @@ public class DirectColorModel extends PackedColorModel {
      * @see WritableRaster#setDataElements
      * @see SampleModel#setDataElements
      */
-    public Object getDataElements(int[] components, int offset, Object obj) {
+    @Override
+		public Object getDataElements(int[] components, int offset, Object obj) {
         int pixel = 0;
         for (int i=0; i < numComponents; i++) {
             pixel |= ((components[offset+i]<<maskOffsets[i])&maskArray[i]);
@@ -1406,7 +1422,8 @@ public class DirectColorModel extends PackedColorModel {
      * @return a <code>String</code> representing this
      * <code>DirectColorModel</code>.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return new String("DirectColorModel: rmask="
                           +Integer.toHexString(red_mask)+" gmask="
                           +Integer.toHexString(green_mask)+" bmask="

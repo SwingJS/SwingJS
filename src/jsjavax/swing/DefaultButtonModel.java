@@ -124,56 +124,64 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void setActionCommand(String actionCommand) {
+    @Override
+		public void setActionCommand(String actionCommand) {
         this.actionCommand = actionCommand;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getActionCommand() {
+    @Override
+		public String getActionCommand() {
         return actionCommand;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean isArmed() {
+    @Override
+		public boolean isArmed() {
         return (stateMask & ARMED) != 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean isSelected() {
+    @Override
+		public boolean isSelected() {
         return (stateMask & SELECTED) != 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean isEnabled() {
+    @Override
+		public boolean isEnabled() {
         return (stateMask & ENABLED) != 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean isPressed() {
+    @Override
+		public boolean isPressed() {
         return (stateMask & PRESSED) != 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean isRollover() {
+    @Override
+		public boolean isRollover() {
         return (stateMask & ROLLOVER) != 0;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setArmed(boolean b) {
+    @Override
+		public void setArmed(boolean b) {
         if(isMenuItem() &&
                 UIManager.getBoolean("MenuItem.disabledAreNavigable")) {
             if ((isArmed() == b)) {
@@ -197,7 +205,8 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void setEnabled(boolean b) {
+    @Override
+		public void setEnabled(boolean b) {
         if(isEnabled() == b) {
             return;
         }
@@ -218,7 +227,8 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void setSelected(boolean b) {
+    @Override
+		public void setSelected(boolean b) {
         if (this.isSelected() == b) {
             return;
         }
@@ -243,7 +253,8 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void setPressed(boolean b) {
+    @Override
+		public void setPressed(boolean b) {
         if((isPressed() == b) || !isEnabled()) {
             return;
         }
@@ -275,7 +286,8 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void setRollover(boolean b) {
+    @Override
+		public void setRollover(boolean b) {
         if((isRollover() == b) || !isEnabled()) {
             return;
         }
@@ -292,7 +304,8 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void setMnemonic(int key) {
+    @Override
+		public void setMnemonic(int key) {
         mnemonic = key;
         fireStateChanged();
     }
@@ -300,21 +313,24 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public int getMnemonic() {
+    @Override
+		public int getMnemonic() {
         return mnemonic;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void addChangeListener(ChangeListener l) {
+    @Override
+		public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void removeChangeListener(ChangeListener l) {
+    @Override
+		public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
     }
 
@@ -361,14 +377,16 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void addActionListener(ActionListener l) {
+    @Override
+		public void addActionListener(ActionListener l) {
         listenerList.add(ActionListener.class, l);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void removeActionListener(ActionListener l) {
+    @Override
+		public void removeActionListener(ActionListener l) {
         listenerList.remove(ActionListener.class, l);
     }
 
@@ -415,14 +433,16 @@ public class DefaultButtonModel implements ButtonModel {
     /**
      * {@inheritDoc}
      */
-    public void addItemListener(ItemListener l) {
+    @Override
+		public void addItemListener(ItemListener l) {
         listenerList.add(ItemListener.class, l);
     }
 
     /**
      * {@inheritDoc}
      */
-    public void removeItemListener(ItemListener l) {
+    @Override
+		public void removeItemListener(ItemListener l) {
         listenerList.remove(ItemListener.class, l);
     }
 
@@ -507,14 +527,16 @@ public class DefaultButtonModel implements ButtonModel {
     }
 
     /** Overridden to return <code>null</code>. */
-    public Object[] getSelectedObjects() {
+    @Override
+		public Object[] getSelectedObjects() {
         return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setGroup(ButtonGroup group) {
+    @Override
+		public void setGroup(ButtonGroup group) {
         this.group = group;
     }
 

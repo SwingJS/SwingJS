@@ -99,7 +99,8 @@ public class SAXException extends Exception {
      *
      * @return The error or warning message.
      */
-    public String getMessage ()
+    @Override
+		public String getMessage ()
     {
 	String message = super.getMessage();
 	
@@ -127,7 +128,8 @@ public class SAXException extends Exception {
      *
      * @return A string representation of this exception.
      */
-    public String toString ()
+    @Override
+		public String toString ()
     {
 	if (exception != null) {
 	    return exception.toString();

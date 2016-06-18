@@ -42,6 +42,8 @@ import jsjavax.swing.plaf.ComponentUI;
 //
 import jsjavax.swing.plaf.FrameUI;
 
+//BH: Added rootPane.addNotify(); // builds a peer for the root pane
+
 /**
  * An extended version of <code>jsjava.awt.Frame</code> that adds support for
  * the JFC/Swing component architecture. You can find task-oriented
@@ -270,6 +272,8 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 			}
 		}
     updateUI();
+    addNotify(); // BH added; applet will not do this automatically
+		rootPane.addNotify(); // builds a peer for the root pane
 	}
 
 	private static int frameCount;

@@ -681,7 +681,8 @@ java.io.Serializable {
     /**
      * Has no effect, since this layout manager does not use a per-component string.
      */
-    public void addLayoutComponent(String name, Component comp) {
+    @Override
+		public void addLayoutComponent(String name, Component comp) {
     }
 
     /**
@@ -695,7 +696,8 @@ java.io.Serializable {
      * @exception IllegalArgumentException if <code>constraints</code>
      *            is not a <code>GridBagConstraint</code>
      */
-    public void addLayoutComponent(Component comp, Object constraints) {
+    @Override
+		public void addLayoutComponent(Component comp, Object constraints) {
         if (constraints instanceof GridBagConstraints) {
             setConstraints(comp, (GridBagConstraints)constraints);
         } else if (constraints != null) {
@@ -711,7 +713,8 @@ java.io.Serializable {
      * @see      java.awt.Container#remove(java.awt.Component)
      * @see      java.awt.Container#removeAll()
      */
-    public void removeLayoutComponent(Component comp) {
+    @Override
+		public void removeLayoutComponent(Component comp) {
         removeConstraints(comp);
     }
 
@@ -726,7 +729,8 @@ java.io.Serializable {
      * @return the preferred size of the <code>parent</code>
      *  container
      */
-    public Dimension preferredLayoutSize(Container parent) {
+    @Override
+		public Dimension preferredLayoutSize(Container parent) {
         GridBagLayoutInfo info = getLayoutInfo(parent, PREFERREDSIZE);
         return getMinSize(parent, info);
     }
@@ -740,7 +744,8 @@ java.io.Serializable {
      * @see       java.awt.Container#doLayout
      * @return the minimum size of the <code>parent</code> container
      */
-    public Dimension minimumLayoutSize(Container parent) {
+    @Override
+		public Dimension minimumLayoutSize(Container parent) {
         GridBagLayoutInfo info = getLayoutInfo(parent, MINSIZE);
         return getMinSize(parent, info);
     }
@@ -754,7 +759,8 @@ java.io.Serializable {
      * @see #preferredLayoutSize(Container)
      * @return the maximum dimensions for this layout
      */
-    public Dimension maximumLayoutSize(Container target) {
+    @Override
+		public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
 
@@ -767,7 +773,8 @@ java.io.Serializable {
      * <p>
      * @return the value <code>0.5f</code> to indicate centered
      */
-    public float getLayoutAlignmentX(Container parent) {
+    @Override
+		public float getLayoutAlignmentX(Container parent) {
         return 0.5f;
     }
 
@@ -780,7 +787,8 @@ java.io.Serializable {
      * <p>
      * @return the value <code>0.5f</code> to indicate centered
      */
-    public float getLayoutAlignmentY(Container parent) {
+    @Override
+		public float getLayoutAlignmentY(Container parent) {
         return 0.5f;
     }
 
@@ -788,7 +796,8 @@ java.io.Serializable {
      * Invalidates the layout, indicating that if the layout manager
      * has cached information it should be discarded.
      */
-    public void invalidateLayout(Container target) {
+    @Override
+		public void invalidateLayout(Container target) {
     }
 
     /**
@@ -802,7 +811,8 @@ java.io.Serializable {
      * @see java.awt.Container
      * @see java.awt.Container#doLayout
      */
-    public void layoutContainer(Container parent) {
+    @Override
+		public void layoutContainer(Container parent) {
     	System.out.println("GridBagLayout laying out " + parent);
         arrangeGrid(parent);
     }
@@ -811,7 +821,8 @@ java.io.Serializable {
      * Returns a string representation of this grid bag layout's values.
      * @return     a string representation of this grid bag layout.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName();
     }
 

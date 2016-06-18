@@ -210,7 +210,8 @@ public class JTabbedPane extends JComponent
      * @return a <code>TabbedPaneUI</code> object
      * @see #setUI
      */
-    public TabbedPaneUI getUI() {
+    @Override
+		public TabbedPaneUI getUI() {
         return (TabbedPaneUI)ui;
     }
 
@@ -241,7 +242,8 @@ public class JTabbedPane extends JComponent
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((TabbedPaneUI)UIManager.getUI(this));
     }
 
@@ -254,7 +256,8 @@ public class JTabbedPane extends JComponent
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -264,7 +267,8 @@ public class JTabbedPane extends JComponent
      * the tabbedpane (instead of the model itself) as the event source.
      */
     protected class ModelListener implements ChangeListener {
-        public void stateChanged(ChangeEvent e) {
+        @Override
+				public void stateChanged(ChangeEvent e) {
             fireStateChanged();
         }
     }
@@ -813,7 +817,8 @@ public class JTabbedPane extends JComponent
      * @see #insertTab
      * @see #removeTabAt
      */
-    public Component add(Component component) {
+    @Override
+		public Component add(Component component) {
         if (!(component instanceof UIResource)) {
             addTab(component.getName(), component);
         } else {
@@ -833,7 +838,8 @@ public class JTabbedPane extends JComponent
      * @see #insertTab
      * @see #removeTabAt
      */
-    public Component add(String title, Component component) {
+    @Override
+		public Component add(String title, Component component) {
         if (!(component instanceof UIResource)) {
             addTab(title, component);
         } else {
@@ -854,7 +860,8 @@ public class JTabbedPane extends JComponent
      * @see #insertTab
      * @see #removeTabAt
      */
-    public Component add(Component component, int index) {
+    @Override
+		public Component add(Component component, int index) {
         if (!(component instanceof UIResource)) {
             // Container.add() interprets -1 as "append", so convert
             // the index appropriately to be handled by the vector
@@ -879,7 +886,8 @@ public class JTabbedPane extends JComponent
      * @see #insertTab
      * @see #removeTabAt
      */
-    public void add(Component component, Object constraints) {
+    @Override
+		public void add(Component component, Object constraints) {
         if (!(component instanceof UIResource)) {
             if (constraints instanceof String) {
                 addTab((String)constraints, component);
@@ -907,7 +915,8 @@ public class JTabbedPane extends JComponent
      * @see #insertTab
      * @see #removeTabAt
      */
-    public Component add(Component component, Object constraints, int index) {
+    @Override
+		public Component add(Component component, Object constraints, int index) {
         if (!(component instanceof UIResource)) {
 
             Icon icon = constraints instanceof Icon? (Icon)constraints : null;
@@ -1031,7 +1040,8 @@ public class JTabbedPane extends JComponent
      * @see #addTab
      * @see #removeTabAt
      */
-    public void remove(Component component) {
+    @Override
+		public void remove(Component component) {
         int index = indexOfComponent(component);
         if (index != -1) {
             removeTabAt(index);
@@ -1058,7 +1068,8 @@ public class JTabbedPane extends JComponent
      * @see #addTab
      * @see #removeTabAt
      */
-    public void remove(int index) {
+    @Override
+		public void remove(int index) {
         removeTabAt(index);
     }
 
@@ -1069,7 +1080,8 @@ public class JTabbedPane extends JComponent
      * @see #addTab
      * @see #removeTabAt
      */
-    public void removeAll() {
+    @Override
+		public void removeAll() {
         setSelectedIndexImpl(-1, true);
 
         int tabCount = getTabCount();
@@ -1757,7 +1769,8 @@ public class JTabbedPane extends JComponent
      *          cursor is lingering
      * @return the <code>String</code> containing the tooltip text
      */
-    public String getToolTipText(MouseEvent event) {
+    @Override
+		public String getToolTipText(MouseEvent event) {
         if (ui != null) {
             int index = ((TabbedPaneUI)ui).tabForCoordinate(this, event.getX(), event.getY());
 
@@ -1834,7 +1847,8 @@ public class JTabbedPane extends JComponent
      *
      * @return  a string representation of this JTabbedPane.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String tabPlacementString;
         if (tabPlacement == TOP) {
             tabPlacementString = "TOP";

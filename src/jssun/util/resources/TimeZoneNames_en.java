@@ -49,7 +49,8 @@ public final class TimeZoneNames_en extends TimeZoneNamesBundle {
     // bundle lookup from falling back to the default
     // locale.
 
-    protected final Object[][] getContents() {
+    @Override
+		protected final Object[][] getContents() {
         return new Object[][] {
         };
     }

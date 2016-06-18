@@ -114,7 +114,8 @@ public class PaintEvent extends ComponentEvent {
         this.updateRect = updateRect;
     }
 
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case PAINT:

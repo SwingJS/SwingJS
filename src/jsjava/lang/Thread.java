@@ -719,7 +719,8 @@ class Thread implements Runnable {
      * @see     #stop()
      * @see     #Thread(ThreadGroup, Runnable, String)
      */
-    public void run() {
+    @Override
+		public void run() {
         if (target != null) {
             target.run();
         }
@@ -1391,7 +1392,8 @@ class Thread implements Runnable {
      *
      * @return  a string representation of this thread.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         ThreadGroup group = getThreadGroup();
         if (group != null) {
             return "Thread[" + getName() + "," + getPriority() + "," +

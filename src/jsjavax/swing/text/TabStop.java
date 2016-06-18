@@ -123,7 +123,8 @@ public class TabStop  {
      * Returns true if the tabs are equal.
      * @return true if the tabs are equal, otherwise false
      */
-    public boolean equals(Object other)
+    @Override
+		public boolean equals(Object other)
     {
         if (other == this) {
             return true;
@@ -143,12 +144,14 @@ public class TabStop  {
      *
      * @return the hashCode for the object
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return alignment ^ leader ^ Math.round(position);
     }
 
     /* This is for debugging; perhaps it should be removed before release */
-    public String toString() {
+    @Override
+		public String toString() {
         String buf;
         switch(alignment) {
           default:

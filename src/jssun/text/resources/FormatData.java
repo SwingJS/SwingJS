@@ -48,7 +48,8 @@ public class FormatData extends ListResourceBundle {
     /**
      * Overrides ListResourceBundle
      */
-    protected final Object[][] getContents() {
+    @Override
+		protected final Object[][] getContents() {
         return new Object[][] {
             { "MonthNames",
                 new String[] {

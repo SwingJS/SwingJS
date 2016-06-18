@@ -80,19 +80,23 @@ import jsjava.awt.Rectangle;
 public class NullComponentPeer implements LightweightPeer,
     CanvasPeer, PanelPeer {
 
-    public boolean isObscured() {
+    @Override
+		public boolean isObscured() {
         return false;
     }
 
-    public boolean canDetermineObscurity() {
+    @Override
+		public boolean canDetermineObscurity() {
         return false;
     }
 
-    public boolean isFocusable() {
+    @Override
+		public boolean isFocusable() {
         return false;
     }
 
-    public void setVisible(boolean b) {
+    @Override
+		public void setVisible(boolean b) {
     }
 
     public void show() {
@@ -101,7 +105,8 @@ public class NullComponentPeer implements LightweightPeer,
     public void hide() {
     }
 
-    public void setEnabled(boolean b) {
+    @Override
+		public void setEnabled(boolean b) {
     }
 
     public void enable() {
@@ -110,97 +115,120 @@ public class NullComponentPeer implements LightweightPeer,
     public void disable() {
     }
 
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
     }
 
-    public void repaint(long tm, int x, int y, int width, int height) {
+    @Override
+		public void repaint(long tm, int x, int y, int width, int height) {
     }
 
-    public void print(Graphics g) {
+    @Override
+		public void print(Graphics g) {
     }
 
-    public void setBounds(int x, int y, int width, int height, int op) {
+    @Override
+		public void setBounds(int x, int y, int width, int height, int op) {
     }
 
     public void reshape(int x, int y, int width, int height) {
     }
 
-    public void coalescePaintEvent(PaintEvent e) {
+    @Override
+		public void coalescePaintEvent(PaintEvent e) {
     }
 
     public boolean handleEvent(Event e) {
         return false;
     }
 
-    public void handleEvent(jsjava.awt.AWTEvent arg0) {
+    @Override
+		public void handleEvent(jsjava.awt.AWTEvent arg0) {
     }
 
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
         return new Dimension(1,1);
     }
 
-    public Dimension getMinimumSize() {
+    @Override
+		public Dimension getMinimumSize() {
         return new Dimension(1,1);
     }
 
-    public jsjava.awt.Toolkit getToolkit() {
+    @Override
+		public jsjava.awt.Toolkit getToolkit() {
         return null;
     }
 
-    public ColorModel getColorModel() {
+    @Override
+		public ColorModel getColorModel() {
         return null;
     }
 
-    public Graphics getGraphics() {
+    @Override
+		public Graphics getGraphics() {
         return null;
     }
 
-    public GraphicsConfiguration getGraphicsConfiguration() {
+    @Override
+		public GraphicsConfiguration getGraphicsConfiguration() {
         return null;
     }
 
-    public FontMetrics  getFontMetrics(Font font) {
+    @Override
+		public FontMetrics  getFontMetrics(Font font) {
         return null;
     }
 
-    public void dispose() {
+    @Override
+		public void dispose() {
     // no native code
     }
 
-    public void setForeground(Color c) {
+    @Override
+		public void setForeground(Color c) {
     }
 
-    public void setBackground(Color c) {
+    @Override
+		public void setBackground(Color c) {
     }
 
-    public void setFont(Font f) {
+    @Override
+		public void setFont(Font f) {
     }
 
-    public void updateCursorImmediately() {
+    @Override
+		public void updateCursorImmediately() {
     }
 
     public void setCursor(Cursor cursor) {
     }
 
-    public boolean requestFocus
+    @Override
+		public boolean requestFocus
         (Component lightweightChild, boolean temporary,
          boolean focusedWindowChangeAllowed, long time, CausedFocusEvent.Cause cause) {
         return false;
     }
 
-    public Image createImage(ImageProducer producer) {
+    @Override
+		public Image createImage(ImageProducer producer) {
         return null;
     }
 
-    public Image createImage(int width, int height) {
+    @Override
+		public Image createImage(int width, int height) {
         return null;
     }
 
-    public boolean prepareImage(Image img, int w, int h, ImageObserver o) {
+    @Override
+		public boolean prepareImage(Image img, int w, int h, ImageObserver o) {
         return false;
     }
 
-    public int  checkImage(Image img, int w, int h, ImageObserver o) {
+    @Override
+		public int  checkImage(Image img, int w, int h, ImageObserver o) {
         return 0;
     }
 
@@ -212,18 +240,22 @@ public class NullComponentPeer implements LightweightPeer,
         return getMinimumSize();
     }
 
-    public Point getLocationOnScreen() {
+    @Override
+		public Point getLocationOnScreen() {
         return new Point(0,0);
     }
 
-    public Insets getInsets() {
+    @Override
+		public Insets getInsets() {
         return insets();
     }
 
-    public void beginValidate() {
+    @Override
+		public void beginValidate() {
     }
 
-    public void endValidate() {
+    @Override
+		public void endValidate() {
     }
 
     public Insets insets() {
@@ -234,18 +266,22 @@ public class NullComponentPeer implements LightweightPeer,
         return false;
     }
 
-    public boolean handlesWheelScrolling() {
+    @Override
+		public boolean handlesWheelScrolling() {
         return false;
     }
 
-    public VolatileImage createVolatileImage(int width, int height) {
+    @Override
+		public VolatileImage createVolatileImage(int width, int height) {
         return null;
     }
 
-    public void beginLayout() {
+    @Override
+		public void beginLayout() {
     }
 
-    public void endLayout() {
+    @Override
+		public void endLayout() {
     }
 
 //    public void createBuffers(int numBuffers, BufferCapabilities caps)
@@ -253,7 +289,8 @@ public class NullComponentPeer implements LightweightPeer,
 //        throw new AWTException(
 //            "Page-flipping is not allowed on a lightweight component");
 //    }
-    public Image getBackBuffer() {
+    @Override
+		public Image getBackBuffer() {
         throw new IllegalStateException(
             "Page-flipping is not allowed on a lightweight component");
     }
@@ -263,20 +300,23 @@ public class NullComponentPeer implements LightweightPeer,
 //        throw new IllegalStateException(
 //            "Page-flipping is not allowed on a lightweight component");
 //    }
-    public void destroyBuffers() {
+    @Override
+		public void destroyBuffers() {
     }
 
     /**
      * @see jsjava.awt.peer.ComponentPeer#isReparentSupported
      */
-    public boolean isReparentSupported() {
+    @Override
+		public boolean isReparentSupported() {
         return false;
     }
 
     /**
      * @see jsjava.awt.peer.ComponentPeer#reparent
      */
-    public void reparent(ContainerPeer newNativeParent) {
+    @Override
+		public void reparent(ContainerPeer newNativeParent) {
         throw new UnsupportedOperationException();
     }
 
@@ -293,10 +333,12 @@ public class NullComponentPeer implements LightweightPeer,
     public boolean isRestackSupported() {
         return false;
     }
-    public void layout() {
+    @Override
+		public void layout() {
     }
 
-    public Rectangle getBounds() {
+    @Override
+		public Rectangle getBounds() {
         return new Rectangle(0, 0, 0, 0);
     }
 

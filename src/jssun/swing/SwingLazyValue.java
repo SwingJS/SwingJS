@@ -61,7 +61,8 @@ public class SwingLazyValue implements UIDefaults.LazyValue {
         }
     }
 
-    public Object createValue(final UIDefaults table) {
+    @Override
+		public Object createValue(final UIDefaults table) {
         try {
 //            Object cl;
             Class c = Class.forName(className, true, null);

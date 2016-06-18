@@ -263,7 +263,8 @@ public class MemoryImageSource implements ImageProducer {
      *           <code>ImageConsumer</code> is null
      * @see ImageConsumer
      */
-    public synchronized void addConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized void addConsumer(ImageConsumer ic) {
         if (theConsumers.contains(ic)) {
             return;
         }
@@ -295,7 +296,8 @@ public class MemoryImageSource implements ImageProducer {
      * is on the list; <code>false</code> otherwise.
      * @see ImageConsumer
      */
-    public synchronized boolean isConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized boolean isConsumer(ImageConsumer ic) {
         return theConsumers.contains(ic);
     }
 
@@ -305,7 +307,8 @@ public class MemoryImageSource implements ImageProducer {
      * @param ic the specified <code>ImageConsumer</code>
      * @see ImageConsumer
      */
-    public synchronized void removeConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized void removeConsumer(ImageConsumer ic) {
         theConsumers.removeElement(ic);
     }
 
@@ -317,7 +320,8 @@ public class MemoryImageSource implements ImageProducer {
      * image data through the ImageConsumer interface.
      * @see ImageConsumer
      */
-    public void startProduction(ImageConsumer ic) {
+    @Override
+		public void startProduction(ImageConsumer ic) {
         addConsumer(ic);
     }
 
@@ -327,7 +331,8 @@ public class MemoryImageSource implements ImageProducer {
      * @param ic the specified <code>ImageConsumer</code>
      * @see ImageConsumer
      */
-    public void requestTopDownLeftRightResend(ImageConsumer ic) {
+    @Override
+		public void requestTopDownLeftRightResend(ImageConsumer ic) {
         // Ignored.  The data is either single frame and already in TDLR
         // format or it is multi-frame and TDLR resends aren't critical.
     }

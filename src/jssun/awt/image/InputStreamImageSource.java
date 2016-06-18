@@ -62,7 +62,8 @@ public abstract class InputStreamImageSource implements ImageProducer,
         return i;
     }
 
-    public void addConsumer(ImageConsumer ic) {
+    @Override
+		public void addConsumer(ImageConsumer ic) {
         addConsumer(ic, false);
     }
 
@@ -125,7 +126,8 @@ public abstract class InputStreamImageSource implements ImageProducer,
         }
     }
 
-    public synchronized boolean isConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized boolean isConsumer(ImageConsumer ic) {
         for (ImageDecoder id = decoders; id != null; id = id.next) {
             if (id.isConsumer(ic)) {
                 return true;
@@ -151,14 +153,16 @@ public abstract class InputStreamImageSource implements ImageProducer,
         removeConsumer(cq.consumer);
     }
 
-    public synchronized void removeConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized void removeConsumer(ImageConsumer ic) {
         for (ImageDecoder id = decoders; id != null; id = id.next) {
             id.removeConsumer(ic);
         }
         consumers = ImageConsumerQueue.removeConsumer(consumers, ic, false);
     }
 
-    public void startProduction(ImageConsumer ic) {
+    @Override
+		public void startProduction(ImageConsumer ic) {
         addConsumer(ic, true);
     }
 
@@ -176,7 +180,8 @@ public abstract class InputStreamImageSource implements ImageProducer,
 //        }
 //    }
 
-    public void requestTopDownLeftRightResend(ImageConsumer ic) {
+    @Override
+		public void requestTopDownLeftRightResend(ImageConsumer ic) {
     }
 
     protected abstract ImageDecoder getDecoder();
@@ -249,7 +254,8 @@ public abstract class InputStreamImageSource implements ImageProducer,
         return null;
     }
 
-    public void doFetch() {
+    @Override
+		public void doFetch() {
         synchronized (this) {
             if (consumers == null) {
                 awaitingFetch = false;

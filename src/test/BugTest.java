@@ -24,6 +24,7 @@ class B extends A {
 		super.init2();
 	}
 
+	@Override
 	protected void init(String b) {
 		System.out.println("class B init String b");
 	}
@@ -172,13 +173,13 @@ public class BugTest extends HashMap {
 	// ///////// https://groups.google.com/forum/#!topic/java2script/mjrUxnp1VS8
 
 	public interface INTERFACE {
-	};
+	}
 
 	public static class CLASS {
-	};
+	}
 
 	public static class Baz extends CLASS implements INTERFACE {
-	};
+	}
 
 	public static class Qux {
 

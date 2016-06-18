@@ -46,7 +46,8 @@ public class FormatData_en extends ListResourceBundle {
     /**
      * Overrides ListResourceBundle
      */
-    protected final Object[][] getContents() {
+    @Override
+		protected final Object[][] getContents() {
         // This locale inherits almost everything from the root default locale.  However,
         // even if it inherited everything, we would still need this locale to exist
         // to make the resource-bundle lookup mechanism work right.  In that case, we'd

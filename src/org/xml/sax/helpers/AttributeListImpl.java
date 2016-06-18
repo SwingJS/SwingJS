@@ -200,7 +200,8 @@ public class AttributeListImpl implements AttributeList
      * @return The number of attributes in the list.
      * @see org.xml.sax.AttributeList#getLength
      */
-    public int getLength ()
+    @Override
+		public int getLength ()
     {
 	return names.size();
     }
@@ -214,7 +215,8 @@ public class AttributeListImpl implements AttributeList
      *         is no attribute at that position.
      * @see org.xml.sax.AttributeList#getName(int)
      */
-    public String getName (int i)
+    @Override
+		public String getName (int i)
     {
 	if (i < 0) {
 	    return null;
@@ -237,7 +239,8 @@ public class AttributeListImpl implements AttributeList
      *         that position.
      * @see org.xml.sax.AttributeList#getType(int)
      */
-    public String getType (int i)
+    @Override
+		public String getType (int i)
     {
 	if (i < 0) {
 	    return null;
@@ -258,7 +261,8 @@ public class AttributeListImpl implements AttributeList
      *         there is no attribute at that position.
      * @see org.xml.sax.AttributeList#getValue(int)
      */
-    public String getValue (int i)
+    @Override
+		public String getValue (int i)
     {
 	if (i < 0) {
 	    return null;
@@ -280,7 +284,8 @@ public class AttributeListImpl implements AttributeList
      *         read).
      * @see org.xml.sax.AttributeList#getType(java.lang.String)
      */
-    public String getType (String name)
+    @Override
+		public String getType (String name)
     {
 	return getType(names.indexOf(name));
     }
@@ -292,7 +297,8 @@ public class AttributeListImpl implements AttributeList
      * @param name The attribute name.
      * @see org.xml.sax.AttributeList#getValue(java.lang.String)
      */
-    public String getValue (String name)
+    @Override
+		public String getValue (String name)
     {
 	return getValue(names.indexOf(name));
     }

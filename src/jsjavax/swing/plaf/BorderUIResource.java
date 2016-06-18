@@ -111,16 +111,19 @@ public class BorderUIResource implements Border, UIResource
         this.delegate = delegate;
     }
 
-    public void paintBorder(Component c, Graphics g, int x, int y,
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y,
                             int width, int height) {
         delegate.paintBorder(c, g, x, y, width, height);
     }
 
-    public Insets getBorderInsets(Component c)       {
+    @Override
+		public Insets getBorderInsets(Component c)       {
         return delegate.getBorderInsets(c);
     }
 
-    public boolean isBorderOpaque() {
+    @Override
+		public boolean isBorderOpaque() {
         return delegate.isBorderOpaque();
     }
 

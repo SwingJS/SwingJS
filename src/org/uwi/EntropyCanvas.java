@@ -19,6 +19,7 @@ class EntropyCanvas extends JPanel {
   }
 
   private static float eMax = 65000;
+	@Override
 	public void paintComponent(Graphics g) {
 		// BH: adjusted so that the graph plots in real time, not just at the end
 		g.setColor(Color.blue);

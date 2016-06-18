@@ -45,7 +45,8 @@ abstract class ModalEventFilter implements EventFilter {
         return modalDialog;
     }
 
-    public FilterAction acceptEvent(AWTEvent event) {
+    @Override
+		public FilterAction acceptEvent(AWTEvent event) {
         if (disabled || !modalDialog.isVisible()) {
             return FilterAction.ACCEPT;
         }
@@ -139,7 +140,8 @@ abstract class ModalEventFilter implements EventFilter {
             appContext = modalDialog.appContext;
         }
 
-        protected FilterAction acceptWindow(Window w) {
+        @Override
+				protected FilterAction acceptWindow(Window w) {
             if (w.isModalExcluded(Dialog.ModalExclusionType.TOOLKIT_EXCLUDE)) {
                 return FilterAction.ACCEPT;
             }
@@ -165,7 +167,8 @@ abstract class ModalEventFilter implements EventFilter {
             appContext = modalDialog.appContext;
         }
 
-        protected FilterAction acceptWindow(Window w) {
+        @Override
+				protected FilterAction acceptWindow(Window w) {
             if (w.isModalExcluded(Dialog.ModalExclusionType.APPLICATION_EXCLUDE)) {
                 return FilterAction.ACCEPT;
             }
@@ -191,7 +194,8 @@ abstract class ModalEventFilter implements EventFilter {
             documentRoot = modalDialog.getDocumentRoot();
         }
 
-        protected FilterAction acceptWindow(Window w) {
+        @Override
+				protected FilterAction acceptWindow(Window w) {
             // application- and toolkit-excluded windows are blocked by
             // document-modal dialogs from their child hierarchy
             if (w.isModalExcluded(Dialog.ModalExclusionType.APPLICATION_EXCLUDE)) {

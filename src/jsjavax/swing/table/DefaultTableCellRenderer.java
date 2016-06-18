@@ -131,7 +131,8 @@ public class DefaultTableCellRenderer extends JLabel
      *
      * @param c set the foreground color to this value
      */
-    public void setForeground(Color c) {
+    @Override
+		public void setForeground(Color c) {
         super.setForeground(c);
         unselectedForeground = c;
     }
@@ -142,7 +143,8 @@ public class DefaultTableCellRenderer extends JLabel
      *
      * @param c set the background color to this value
      */
-    public void setBackground(Color c) {
+    @Override
+		public void setBackground(Color c) {
         super.setBackground(c);
         unselectedBackground = c;
     }
@@ -155,7 +157,8 @@ public class DefaultTableCellRenderer extends JLabel
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         super.updateUI();
         setForeground(null);
         setBackground(null);
@@ -183,7 +186,8 @@ public class DefaultTableCellRenderer extends JLabel
      * @return the default table cell renderer
      * @see jsjavax.swing.JComponent#isPaintingForPrint()
      */
-    public Component getTableCellRendererComponent(JTable table, Object value,
+    @Override
+		public Component getTableCellRendererComponent(JTable table, Object value,
                           boolean isSelected, boolean hasFocus, int row, int column) {
 
         Color fg = null;
@@ -268,7 +272,8 @@ public class DefaultTableCellRenderer extends JLabel
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public boolean isOpaque() {
+    @Override
+		public boolean isOpaque() {
         Color back = getBackground();
         Component p = getParent();
         if (p != null) {
@@ -289,35 +294,40 @@ public class DefaultTableCellRenderer extends JLabel
      *
      * @since 1.5
      */
-    public void invalidate() {}
+    @Override
+		public void invalidate() {}
 
     /**
      * Overridden for performance reasons.
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void validate() {}
+    @Override
+		public void validate() {}
 
     /**
      * Overridden for performance reasons.
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void revalidate() {}
+    @Override
+		public void revalidate() {}
 
     /**
      * Overridden for performance reasons.
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void repaint(long tm, int x, int y, int width, int height) {}
+    @Override
+		public void repaint(long tm, int x, int y, int width, int height) {}
 
     /**
      * Overridden for performance reasons.
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void repaint(Rectangle r) { }
+    @Override
+		public void repaint(Rectangle r) { }
 
     /**
      * Overridden for performance reasons.
@@ -326,7 +336,8 @@ public class DefaultTableCellRenderer extends JLabel
      *
      * @since 1.5
      */
-    public void repaint() {
+    @Override
+		public void repaint() {
     }
 
     /**
@@ -334,7 +345,8 @@ public class DefaultTableCellRenderer extends JLabel
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+    @Override
+		public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
 //        // Strings get interned...
 //        if (propertyName=="text"
 //                || propertyName == "labelFor"
@@ -354,7 +366,8 @@ public class DefaultTableCellRenderer extends JLabel
      * See the <a href="#override">Implementation Note</a>
      * for more information.
      */
-    public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) { }
+    @Override
+		public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) { }
 
 
     /**

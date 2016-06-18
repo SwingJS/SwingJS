@@ -12,9 +12,7 @@ import jsjava.applet.AppletStub;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
-import jsjava.awt.Graphics;
 import jsjava.awt.Image;
-import jsjava.awt.Panel;
 import jsjava.awt.Toolkit;
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JPanel;
@@ -25,13 +23,14 @@ import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.Interface;
 import swingjs.api.JSInterface;
+import swingjs.api.JSTop;
 import swingjs.plaf.JSComponentUI;
 
 /**
  * JSAppletPanel 
  * 
  * SwingJS class to start an applet. Note that this must be a JApplet,
- * not just java.awt.Applet. The implementation (for now) does not allow
+ * not just java.awt.Applet. The SwingJS implementation does not allow
  * "mixed" contents -- That is, no non-Swing Applet components are allowed.
  * 
  * The basic start up in JavaScript involves:
@@ -46,31 +45,12 @@ import swingjs.plaf.JSComponentUI;
  * @author Bob Hanson
  * 
  */
-public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
+public class JSAppletPanel extends JSJavaViewer implements AppletStub, AppletContext,
 		JSInterface {
 
 	private Hashtable params;
-	/*
-	 * the JavaScript SwingJS._Applet object
-	 */
-	public HTML5Applet html5Applet;
-
-	public String fullName;
-	public String appletCodeBase;
-	public String appletIdiomaBase;
-	public String appletDocumentBase;
 
 	public int maximumSize = Integer.MAX_VALUE;
-	public String appletName;
-	public String syncId;
-	public boolean testAsync;
-	public boolean async;
-	public String strJavaVersion;
-	public Object strJavaVendor;
-	public Object display;
-	private HTML5Canvas canvas;
-	private JSGraphics2D jsgraphics;
-	JApplet applet;
 
 	// /// AppletPanel fields //////
 
@@ -115,7 +95,6 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	private int status = APPLET_UNINITIALIZED;
 
 	private AppletListener listeners;
-	private JSMouse mouse;
 
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
@@ -135,6 +114,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 	/**
 	 * @param params
 	 */
+	@SuppressWarnings("static-access")
 	private void set(Hashtable<String, Object> params) {
 		System.out.println("JSAppletPanel initializing");
 		this.params = params;
@@ -231,7 +211,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		return getParameter("code");
 	}
 
-	private HTML5Canvas getCanvas() {
+	protected HTML5Canvas getCanvas() {
 		return (canvas == null ? (canvas = html5Applet._getHtml5Canvas()) : canvas);
 	}
 
@@ -300,6 +280,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		return this.html5Applet._getWidth();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void setBounds(int x, int y, int width, int height) {
 		reshape(x, y, width, height); // straight to component
@@ -369,122 +350,6 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 		}
 	}
 
-	// ///////// javajs.api.JSInterface ///////////
-	//
-	// methods called by page JavaScript
-	//
-	//
-
-	@Override
-	public int cacheFileByName(String fileName, boolean isAdd) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void cachePut(String key, Object data) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public String getFullName() {
-		return fullName;
-	}
-
-	@Override
-	public void openFileAsyncSpecial(String fileName, int flags) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public boolean processMouseEvent(int id, int x, int y, int modifiers,
-			long time, Object jqevent) {
-		getMouse().processEvent(id, x, y, modifiers, time, jqevent);
-		return false;
-	}
-
-	private JSMouse getMouse() {
-		return (mouse == null ? mouse = new JSMouse(this) : mouse);
-	}
-
-	@Override
-	public void processTwoPointGesture(float[][][] touches) {
-		getMouse().processTwoPointGesture(touches);
-	}
-
-	@Override
-	public void setDisplay(HTML5Canvas canvas) {
-		this.canvas = canvas;
-	}
-
-	@Override
-	public void setScreenDimension(int width, int height) {
-		setGraphics(jsgraphics = null);
-		//resize(width, height);
-		if (applet != null)
-			applet.resize(width, height);
-	}
-
-	@Override
-	public boolean setStatusDragDropped(int mode, int x, int y, String fileName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void startHoverWatcher(boolean enable) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @j2sOverride
-	 */
-	@Override
-	public void paint(Graphics g) {
-		// Note that this "Panel" is never painted.
-		// This class simply maintains valuable information for applet loading.
-		// Here we go straight to the contentPane and paint that.
-		applet.paint(setGraphics(g));
-	}
-
-	/**
-	 * SwingJS will deliver a null graphics here.
-	 * 
-	 * @param g
-	 * @return
-	 */
-	private Graphics setGraphics(Graphics g) {
-		return (g == null ? getGraphics() : g);
-	}
-	
-	/**
-	 * Specifically for JSAppletPanel, we get new graphics when necessary
-	 */
-	@Override
-	public Graphics getGraphics() {
-		if (jsgraphics == null) {
-			jsgraphics = new JSGraphics2D(getCanvas());
-			// set methods for HTMLCanvasContext2D that are just direct assignments
-			// did not work /**
-			// * @j2sNative
-			// *
-			// * g.ctx._setLineWidth = function(d) {this.lineWidth = d};
-			// * g.ctx._setFont = function(f) {this.font = f};
-			// * g.ctx._setFillStyle = function(s) {this.fillStyle = s};
-			// * g.ctx._setStrokeStyle = function(s) {this.strokeStyle = s};
-			// */
-			// {}
-			jsgraphics.setWindowParameters(getWidth(), getHeight());
-		}
-		return jsgraphics;
-	}
-
 	private void showAppletStatus(String status) {
 		getAppletContext().showStatus(htmlName + " " + status);
 	}
@@ -541,7 +406,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				System.out.println("JSAppletPanel init");
 			  setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
 				applet.resize(defaultAppletSize);
-				applet.init();
+				((JApplet) applet).init();
 				// Need the default(fallback) font to be created in this AppContext
 				validate(); // SwingJS
 				status = APPLET_INIT;
@@ -559,7 +424,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				// force peer creation now
 				System.out.println("JSAppletPanel start" + currentAppletSize);
 				applet.resize(currentAppletSize);
-				applet.start();
+				((JApplet) applet).start();
 				status = APPLET_START;
 				showAppletStatus("started");
 				nextStatus = APPLET_READY;
@@ -572,7 +437,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				if (status == APPLET_START) {
 					status = APPLET_STOP;
 					applet.setVisible(false);
-					applet.stop();
+					((JApplet) applet).stop();
 					showAppletStatus("stopped");
 				} else {
 					showAppletStatus("notstopped");
@@ -582,7 +447,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 			case APPLET_DESTROY:
 				if (status == APPLET_STOP || status == APPLET_INIT) {
 					status = APPLET_DESTROY;
-					applet.destroy();
+					((JApplet) applet).destroy();
 					showAppletStatus("destroyed");
 				} else {
 					showAppletStatus("notdestroyed");
@@ -595,7 +460,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 					status = APPLET_ERROR;
 				} else {
 					status = APPLET_UNINITIALIZED;
-					removeChild(applet);
+					removeChild(((JApplet) applet));
 					applet = null;
 					showAppletStatus("disposed");
 				}
@@ -623,7 +488,7 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 				System.err.println("runloader.err-- \"code\" must be specified.");
 				throw new InstantiationException("\"code\" must be specified.");
 			}
-			applet = (JApplet) JSToolkit.getInstance(code);
+			applet = (JSTop) JSToolkit.getInstance(code);
 			if (applet == null) {
 				System.out.println(code + " could not be launched");
 				status = APPLET_ERROR;
@@ -652,11 +517,11 @@ public class JSAppletPanel extends Panel implements AppletStub, AppletContext,
 			dispatchAppletEvent(APPLET_LOADING_COMPLETED, null);
 		}
 		if (applet != null) {
-			applet.setStub(this);
+			((JApplet) applet).setStub(this);
 			applet.setVisible(false);
-			add("Center", applet);
-      applet.setDispatcher();
-			applet.addNotify(); // we need this here because there is no frame
+			add("Center", ((JApplet) applet));
+			((JApplet) applet).setDispatcher();
+			((JApplet) applet).addNotify(); // we need this here because there is no frame
 			applet.setVisible(true);
 			showAppletStatus("loaded");
 			validate();

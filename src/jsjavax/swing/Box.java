@@ -261,7 +261,8 @@ public class Box extends JComponent {
      *
      * @param l the layout manager to use
      */
-    public void setLayout(LayoutManager l) {
+    @Override
+		public void setLayout(LayoutManager l) {
         throw new AWTError("Illegal request");
     }
 
@@ -275,7 +276,8 @@ public class Box extends JComponent {
      * @throws NullPointerException if <code>g</code> is null
      * @since 1.6
      */
-    protected void paintComponent(Graphics g) {
+    @Override
+		protected void paintComponent(Graphics g) {
         if (ui != null) {
             // On the off chance some one created a UI, honor it
             super.paintComponent(g);
@@ -343,7 +345,8 @@ public class Box extends JComponent {
          * @throws NullPointerException if <code>g</code> is null
          * @since 1.6
          */
-        protected void paintComponent(Graphics g) {
+        @Override
+				protected void paintComponent(Graphics g) {
             if (ui != null) {
                 // On the off chance some one created a UI, honor it
                 super.paintComponent(g);

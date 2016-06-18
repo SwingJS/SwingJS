@@ -39,7 +39,7 @@ public class JSScrollPaneUI extends JSLightweightUI {
 				scrollNode = scrolledUI.getOuterNode();
 				DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 				scrolledUI.scrollerNode = this;
-				components = new Component[] { scrolledComponent };
+				children = new Component[] { scrolledComponent };
 			}
 		}
 		return domNode;

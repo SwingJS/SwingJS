@@ -161,7 +161,8 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -199,7 +200,8 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
      * @return an array containing one Object -- the text of the menu item
      *         -- if the item is selected; otherwise null
      */
-    public Object[] getSelectedObjects() {
+    @Override
+		public Object[] getSelectedObjects() {
         if (isSelected() == false)
             return null;
         Object[] selectedObjects = new Object[1];
@@ -232,7 +234,8 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
      *
      * @return  a string representation of this JCheckBoxMenuItem.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 
@@ -240,7 +243,8 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
      * Overriden to return true, JCheckBoxMenuItem supports
      * the selected state.
      */
-    boolean shouldUpdateSelectedStateFromAction() {
+    @Override
+		boolean shouldUpdateSelectedStateFromAction() {
         return true;
     }
 

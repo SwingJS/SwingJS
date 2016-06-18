@@ -142,7 +142,8 @@ public class NumberFormatter extends InternationalFormatter {
      *
      * @param format NumberFormat instance used to dictate legal values
      */
-    public void setFormat(Format format) {
+    @Override
+		public void setFormat(Format format) {
         super.setFormat(format);
 
         DecimalFormatSymbols dfs = getDecimalFormatSymbols();
@@ -171,7 +172,8 @@ public class NumberFormatter extends InternationalFormatter {
      * Invokes <code>parseObject</code> on <code>f</code>, returning
      * its value.
      */
-    Object stringToValueParse(String text, Format f) throws ParseException {
+    @Override
+		Object stringToValueParse(String text, Format f) throws ParseException {
         if (f == null) {
             return text;
         }
@@ -267,7 +269,8 @@ public class NumberFormatter extends InternationalFormatter {
      * (<code>Character.isDigit()</code>) and
      * not one of the characters defined by the DecimalFormatSymbols.
      */
-    boolean isLegalInsertText(String text) {
+    @Override
+		boolean isLegalInsertText(String text) {
         if (getAllowsInvalid()) {
             return true;
         }
@@ -286,7 +289,8 @@ public class NumberFormatter extends InternationalFormatter {
      * Subclassed to treat the decimal separator, grouping separator,
      * exponent symbol, percent, permille, currency and sign as literals.
      */
-    boolean isLiteral(Map attrs) {
+    @Override
+		boolean isLiteral(Map attrs) {
         if (!super.isLiteral(attrs)) {
             if (attrs == null) {
                 return false;
@@ -327,7 +331,8 @@ public class NumberFormatter extends InternationalFormatter {
      * as making the character between the integer field and the next
      * field navigatable.
      */
-    boolean isNavigatable(int index) {
+    @Override
+		boolean isNavigatable(int index) {
         if (!super.isNavigatable(index)) {
             // Don't skip the decimal, it causes wierd behavior
             if (getBufferedChar(index) == getDecimalSeparator()) {
@@ -376,7 +381,8 @@ public class NumberFormatter extends InternationalFormatter {
      * Overriden to toggle the value if the positive/minus sign
      * is inserted.
      */
-    void replace(DocumentFilter.FilterBypass fb, int offset, int length,
+    @Override
+		void replace(DocumentFilter.FilterBypass fb, int offset, int length,
                 String string, AttributeSet attr) throws BadLocationException {
         if (!getAllowsInvalid() && length == 0 && string != null &&
             string.length() == 1 &&

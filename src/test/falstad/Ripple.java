@@ -35,6 +35,7 @@ package test.falstad;
 // 3. changed logic in code to stop adjusting if resolutions is sufficient.
 
 
+import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -52,6 +53,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -64,6 +66,8 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import javax.swing.SwingConstants;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -98,7 +102,7 @@ class RippleCanvas extends Canvas {
 	public void paint(Graphics g) {
 		pg.updateRipple(g);
 	}
-};
+}
 
 class RippleLayout implements LayoutManager {
 	public RippleLayout() {
@@ -154,7 +158,7 @@ class RippleLayout implements LayoutManager {
 			}
 		}
 	}
-};
+}
 
 public class Ripple extends Applet implements ComponentListener {
 	static RippleFrame ogf;
@@ -225,7 +229,7 @@ public class Ripple extends Applet implements ComponentListener {
 		ogf = null;
 		repaint();
 	}
-};
+}
 
 class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
@@ -525,8 +529,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		if (showControls)
 			main.add(view3dCheck);
 
-		Label l = new Label("Simulation Speed", Label.CENTER);
-		speedBar = new Scrollbar(Scrollbar.HORIZONTAL, defaultSpeed, 1, 1, 20);
+		Label l = new Label("Simulation Speed", SwingConstants.CENTER);
+		speedBar = new Scrollbar(Adjustable.HORIZONTAL, defaultSpeed, 1, 1, 20);
 		if (showControls) {
 			main.add(l);
 			main.add(speedBar);
@@ -534,8 +538,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		speedBar.setName(l.getText());
 		speedBar.addAdjustmentListener(this);
 
-		l = new Label("Resolution", Label.CENTER);
-		resBar = new Scrollbar(Scrollbar.HORIZONTAL, res, 5, 5, 400);
+		l = new Label("Resolution", SwingConstants.CENTER);
+		resBar = new Scrollbar(Adjustable.HORIZONTAL, res, 5, 5, 400);
 		resBar.setName(l.getText());
 		if (showControls) {
 			main.add(l);
@@ -543,8 +547,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 		resBar.addAdjustmentListener(this);
 		
-		l = new Label("Damping", Label.CENTER);
-		dampingBar = new Scrollbar(Scrollbar.HORIZONTAL, 10, 1, 2, 100);
+		l = new Label("Damping", SwingConstants.CENTER);
+		dampingBar = new Scrollbar(Adjustable.HORIZONTAL, 10, 1, 2, 100);
 		dampingBar.addAdjustmentListener(this);
 		dampingBar.setName(l.getText());
 		if (showControls) {
@@ -552,8 +556,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			main.add(dampingBar);
 		}
 
-		l = new Label("Source Frequency", Label.CENTER);
-		freqBar = new Scrollbar(Scrollbar.HORIZONTAL, freqBarValue = 15, 1, 1, 30);
+		l = new Label("Source Frequency", SwingConstants.CENTER);
+		freqBar = new Scrollbar(Adjustable.HORIZONTAL, freqBarValue = 15, 1, 1, 30);
 		freqBar.addAdjustmentListener(this);
 		if (showControls) {
 			main.add(l);
@@ -561,8 +565,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 		freqBar.setName(l.getText());
 		
-		l = new Label("Brightness", Label.CENTER);
-		brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 27, 1, 1, 1200);
+		l = new Label("Brightness", SwingConstants.CENTER);
+		brightnessBar = new Scrollbar(Adjustable.HORIZONTAL, 27, 1, 1, 1200);
 		brightnessBar.addAdjustmentListener(this);
 		if (showControls) {
 			main.add(l);
@@ -570,8 +574,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 		brightnessBar.setName(l.getText());
 		
-		auxLabel = new Label("", Label.CENTER);
-		auxBar = new Scrollbar(Scrollbar.HORIZONTAL, 1, 1, 1, 30);
+		auxLabel = new Label("", SwingConstants.CENTER);
+		auxBar = new Scrollbar(Adjustable.HORIZONTAL, 1, 1, 1, 30);
 		auxBar.addAdjustmentListener(this);
 		if (showControls) {
 			main.add(auxLabel);
@@ -678,7 +682,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 
 	void handleResize() {
 		Dimension d = winSize = cv.getSize();
-		if (winSize.width == 0)
+		if (winSize.width <= 0 || winSize.height <= 0) // should never be < 0 TODO
 			return;
 		pixels = null;
 		if (useBufferedImage) {
@@ -854,7 +858,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	boolean moveDown = true;
 
 	public void updateRipple(Graphics realg) {
-		if (winSize == null || winSize.width == 0) {
+		if (winSize == null || winSize.width <= 0 || winSize.height <= 0) {
 			// this works around some weird bug in IE which causes the
 			// applet to not show up properly sometimes.
 			handleResize();
@@ -1805,7 +1809,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	public void mousePressed(MouseEvent e) {
 		adjustResolution = false;
 		mouseMoved(e);
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
 			return;
 		dragging = true;
 		edit(e);
@@ -1813,7 +1817,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) == 0)
 			return;
 		dragging = false;
 		dragSet = dragClear = false;
@@ -2049,7 +2053,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			return ((y - windowOffsetY) * winSize.height + winSize.height / 2)
 					/ windowHeight;
 		}
-	};
+	}
 
 	void doImport() {
 		if (impDialog != null) {
@@ -2225,7 +2229,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 				}
 			}
 		}
-	};
+	}
 
 	class ImportDialog extends Dialog implements ActionListener {
 		RippleFrame rframe;
@@ -2303,7 +2307,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		float calcSourcePhase(double ph, float v, double w) {
 			return v;
 		}
-	};
+	}
 
 	class SingleSourceSetup extends Setup {
 		@Override

@@ -178,7 +178,8 @@ public class JRadioButton extends JToggleButton {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ButtonUI)UIManager.getUI(this));
     }
 
@@ -194,7 +195,8 @@ public class JRadioButton extends JToggleButton {
      *        expert: true
      *   description: A string that specifies the name of the L&F class.
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -203,7 +205,8 @@ public class JRadioButton extends JToggleButton {
      * The icon for radio buttons comes from the look and feel,
      * not the Action.
      */
-    void setIconFromAction(Action a) {
+    @Override
+		void setIconFromAction(Action a) {
     }
 
 //    /**
@@ -231,7 +234,8 @@ public class JRadioButton extends JToggleButton {
      *
      * @return  a string representation of this JRadioButton.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString();
     }
 

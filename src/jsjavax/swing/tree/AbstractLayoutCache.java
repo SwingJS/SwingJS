@@ -448,7 +448,8 @@ public abstract class AbstractLayoutCache implements RowMapper {
      *          <code>TreePath</code> is displayed; if <code>paths</code>
      *          is <code>null</code>, <code>null</code> is returned
      */
-    public int[] getRowsForPaths(TreePath[] paths) {
+    @Override
+		public int[] getRowsForPaths(TreePath[] paths) {
         if(paths == null)
             return null;
 

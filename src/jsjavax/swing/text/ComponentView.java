@@ -113,7 +113,8 @@ public class ComponentView extends View  {
      * @param a the shape
      * @see View#paint
      */
-    public void paint(Graphics g, Shape a) {
+    @Override
+		public void paint(Graphics g, Shape a) {
         if (c != null) {
             Rectangle alloc = (a instanceof Rectangle) ?
                 (Rectangle) a : a.getBounds();
@@ -134,7 +135,8 @@ public class ComponentView extends View  {
      *           The parent may choose to resize or break the view.
      * @exception IllegalArgumentException for an invalid axis
      */
-    public float getPreferredSpan(int axis) {
+    @Override
+		public float getPreferredSpan(int axis) {
         if ((axis != X_AXIS) && (axis != Y_AXIS)) {
             throw new IllegalArgumentException("Invalid axis: " + axis);
         }
@@ -162,7 +164,8 @@ public class ComponentView extends View  {
      *           The parent may choose to resize or break the view.
      * @exception IllegalArgumentException for an invalid axis
      */
-    public float getMinimumSpan(int axis) {
+    @Override
+		public float getMinimumSpan(int axis) {
         if ((axis != X_AXIS) && (axis != Y_AXIS)) {
             throw new IllegalArgumentException("Invalid axis: " + axis);
         }
@@ -190,7 +193,8 @@ public class ComponentView extends View  {
      *           The parent may choose to resize or break the view.
      * @exception IllegalArgumentException for an invalid axis
      */
-    public float getMaximumSpan(int axis) {
+    @Override
+		public float getMaximumSpan(int axis) {
         if ((axis != X_AXIS) && (axis != Y_AXIS)) {
             throw new IllegalArgumentException("Invalid axis: " + axis);
         }
@@ -217,7 +221,8 @@ public class ComponentView extends View  {
      *   away from the origin.  An alignment of 0.5 would be the
      *   center of the view.
      */
-    public float getAlignment(int axis) {
+    @Override
+		public float getAlignment(int axis) {
         if (c != null) {
             switch (axis) {
             case View.X_AXIS:
@@ -251,13 +256,15 @@ public class ComponentView extends View  {
      *
      * @param p the parent
      */
-    public void setParent(View p) {
+    @Override
+		public void setParent(View p) {
         super.setParent(p);
         if (SwingUtilities.isEventDispatchThread()) {
             setComponentParent();
         } else {
             Runnable callSetComponentParent = new Runnable() {
-                public void run() {
+                @Override
+								public void run() {
                     Document doc = getDocument();
                     try {
                         if (doc instanceof AbstractDocument) {
@@ -329,7 +336,8 @@ public class ComponentView extends View  {
      *   represent a valid location in the associated document
      * @see View#modelToView
      */
-    public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
+    @Override
+		public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
         int p0 = getStartOffset();
         int p1 = getEndOffset();
         if ((pos >= p0) && (pos <= p1)) {
@@ -354,7 +362,8 @@ public class ComponentView extends View  {
      *    the given point in the view
      * @see View#viewToModel
      */
-    public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
+    @Override
+		public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
         Rectangle alloc = (Rectangle) a;
         if (x < alloc.x + (alloc.width / 2)) {
             bias[0] = Position.Bias.Forward;
@@ -397,18 +406,21 @@ public class ComponentView extends View  {
          * so the views (which position the component)
          * can have their layout recomputed.
          */
-        public void invalidate() {
+        @Override
+				public void invalidate() {
             super.invalidate();
             if (getParent() != null) {
                 preferenceChanged(null, true, true);
             }
         }
 
-        public void doLayout() {
+        @Override
+				public void doLayout() {
             cacheChildSizes();
         }
 
-        public void setBounds(int x, int y, int w, int h) {
+        @Override
+				public void setBounds(int x, int y, int w, int h) {
             super.setBounds(x, y, w, h);
             if (getComponentCount() > 0) {
                 getComponent(0).setSize(w, h);
@@ -443,7 +455,8 @@ public class ComponentView extends View  {
          * @see #isVisible
          * @since JDK1.1
          */
-        public void setVisible(boolean b) {
+        @Override
+				public void setVisible(boolean b) {
             super.setVisible(b);
             if (getComponentCount() > 0) {
                 getComponent(0).setVisible(b);
@@ -455,31 +468,37 @@ public class ComponentView extends View  {
          * is painted when inside a CellRendererPane which is normally
          * invisible.
          */
-        public boolean isShowing() {
+        @Override
+				public boolean isShowing() {
             return true;
         }
 
-        public Dimension getMinimumSize() {
+        @Override
+				public Dimension getMinimumSize() {
             validateIfNecessary();
             return min;
         }
 
-        public Dimension getPreferredSize() {
+        @Override
+				public Dimension getPreferredSize() {
             validateIfNecessary();
             return pref;
         }
 
-        public Dimension getMaximumSize() {
+        @Override
+				public Dimension getMaximumSize() {
             validateIfNecessary();
             return max;
         }
 
-        public float getAlignmentX() {
+        @Override
+				public float getAlignmentX() {
             validateIfNecessary();
             return xalign;
         }
 
-        public float getAlignmentY() {
+        @Override
+				public float getAlignmentY() {
             validateIfNecessary();
             return yalign;
         }
@@ -489,7 +508,8 @@ public class ComponentView extends View  {
 //                    getDefaultFocusTraversalKeys(id);
 //        }
 //
-        public void propertyChange(PropertyChangeEvent ev) {
+        @Override
+				public void propertyChange(PropertyChangeEvent ev) {
             Boolean enable = (Boolean) ev.getNewValue();
             if (getComponentCount() > 0) {
                 getComponent(0).setEnabled(enable);

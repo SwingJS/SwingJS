@@ -91,7 +91,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *     the PropertyEditor should create a new object to hold any
      *     modified value.
      */
-    public void setValue(Object value) {
+    @Override
+		public void setValue(Object value) {
         this.value = value;
         firePropertyChange();
     }
@@ -101,7 +102,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *
      * @return The value of the property.
      */
-    public Object getValue() {
+    @Override
+		public Object getValue() {
         return value;
     }
 
@@ -113,7 +115,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      * @return  True if the class will honor the paintValue method.
      */
 
-    public boolean isPaintable() {
+    @Override
+		public boolean isPaintable() {
         return false;
     }
 
@@ -128,7 +131,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      * @param gfx  Graphics object to paint into.
      * @param box  Rectangle within graphics object into which we should paint.
      */
-    public void paintValue(java.awt.Graphics gfx, java.awt.Rectangle box) {
+    @Override
+		public void paintValue(java.awt.Graphics gfx, java.awt.Rectangle box) {
     }
 
     //----------------------------------------------------------------------
@@ -144,7 +148,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      * @return A fragment of Java code representing an initializer for the
      *          current value.
      */
-    public String getJavaInitializationString() {
+    @Override
+		public String getJavaInitializationString() {
         return "???";
     }
 
@@ -160,7 +165,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      * <p>   If a non-null value is returned, then the PropertyEditor should
      *       be prepared to parse that string back in setAsText().
      */
-    public String getAsText() {
+    @Override
+		public String getAsText() {
         return (this.value != null)
                 ? this.value.toString()
                 : "null";
@@ -174,7 +180,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *
      * @param text  The string to be parsed.
      */
-    public void setAsText(String text) throws java.lang.IllegalArgumentException {
+    @Override
+		public void setAsText(String text) throws java.lang.IllegalArgumentException {
         if (value instanceof String) {
             setValue(text);
             return;
@@ -195,7 +202,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *   property cannot be represented as a tagged value.
      *
      */
-    public String[] getTags() {
+    @Override
+		public String[] getTags() {
         return null;
     }
 
@@ -216,7 +224,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *      not supported.
      */
 
-    public java.awt.Component getCustomEditor() {
+    @Override
+		public java.awt.Component getCustomEditor() {
         return null;
     }
 
@@ -225,7 +234,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *
      * @return  True if the propertyEditor can provide a custom editor.
      */
-    public boolean supportsCustomEditor() {
+    @Override
+		public boolean supportsCustomEditor() {
         return false;
     }
 
@@ -238,7 +248,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      * @param listener  An object to be invoked when a PropertyChange
      *          event is fired.
      */
-    public synchronized void addPropertyChangeListener(
+    @Override
+		public synchronized void addPropertyChangeListener(
                                 PropertyChangeListener listener) {
         if (listeners == null) {
             listeners = new java.util.Vector();
@@ -251,7 +262,8 @@ public class PropertyEditorSupport implements PropertyEditor {
      *
      * @param listener  The PropertyChange listener to be removed.
      */
-    public synchronized void removePropertyChangeListener(
+    @Override
+		public synchronized void removePropertyChangeListener(
                                 PropertyChangeListener listener) {
         if (listeners == null) {
             return;

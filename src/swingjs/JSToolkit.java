@@ -432,11 +432,11 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static JSComponentUI getComponentUI(JComponent target) {
-		JSComponentUI c = (JSComponentUI) Interface.getInstance("swingjs.plaf.JS"
+		JSComponentUI ui = (JSComponentUI) Interface.getInstance("swingjs.plaf.JS"
 				+ ((JSComponent) target).getUIClassID(), true);
-		if (c != null)
-			c.set(target);
-		return c;
+		if (ui != null)
+			ui.set(target);
+		return ui;
 	}
 
 	public static String getSwingDivId() {
@@ -658,7 +658,7 @@ public class JSToolkit extends SunToolkit {
 //		}
 	}
 	
-	public static HTML5Applet getHTML5Applet(JComponent c) {
+	public static HTML5Applet getHTML5Applet(Component c) {
 		return ((JSThreadGroup) c.getAppContext().getThreadGroup()).getHtmlApplet();
 	}
 
@@ -890,23 +890,20 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	@Override
+	protected DialogPeer createDialog(Dialog target) {
+		return (DialogPeer) ((WindowPeer) getInstance("swingjs.plaf.JSDialogUI")).setFrame(target, true);
+	}
+
+	@Override
 	protected FramePeer createFrame(Frame target) {
-		return (FramePeer) createWindowPeer(target, true);
+		return (FramePeer) ((WindowPeer) getInstance("swingjs.plaf.JSFrameUI")).setFrame(target, true);
 	}
 
 	@Override
 	protected WindowPeer createWindow(Window target) {
-		return createWindowPeer(target, false);
+		return ((WindowPeer) getInstance("swingjs.plaf.JSWindowUI")).setFrame(target, false);
 	}
 
-	private WindowPeer createWindowPeer(Window target, boolean isFrame) {
-		return ((WindowPeer) getInstance("swingjs.plaf.JSWindowUI")).setFrame(target, true);
-	}
-
-	@Override
-	protected DialogPeer createDialog(Dialog target) {
-		return (DialogPeer) ((WindowPeer) getInstance("swingjs.plaf.JSDialogUI")).setFrame(target, true);
-	}
 
 //	@Override
 //	protected MenuBarPeer createMenuBar(MenuBar target) {

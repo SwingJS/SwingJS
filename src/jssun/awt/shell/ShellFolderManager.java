@@ -117,7 +117,8 @@ class ShellFolderManager {
     }
 
     private Comparator fileComparator = new Comparator() {
-        public int compare(Object a, Object b) {
+        @Override
+				public int compare(Object a, Object b) {
             return compare((File)a, (File)b);
         }
 
@@ -230,7 +231,8 @@ class ShellFolderManager {
             return instance;
         }
 
-        public int compare(Object o1, Object o2) {
+        @Override
+				public int compare(Object o1, Object o2) {
             int gt;
 
             if (o1 == null && o2 == null) {

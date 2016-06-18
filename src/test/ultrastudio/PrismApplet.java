@@ -22,6 +22,7 @@ public class PrismApplet extends JApplet {
 	
 	Prism prism;
 	
+	@Override
 	public void init() {
 		setLayout(new BorderLayout());
 		angle = new JSlider();

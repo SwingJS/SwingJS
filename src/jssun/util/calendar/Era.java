@@ -121,7 +121,8 @@ public final class Era {
         return localTime;
     }
 
-    public boolean equals(Object o) {
+    @Override
+		public boolean equals(Object o) {
         if (!(o instanceof Era)) {
             return false;
         }
@@ -134,7 +135,8 @@ public final class Era {
 
     private int hash = 0;
 
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         if (hash == 0) {
             hash = name.hashCode() ^ abbr.hashCode() ^ (int)since ^ (int)(since >> 32)
                 ^ (localTime ? 1 : 0);
@@ -142,7 +144,8 @@ public final class Era {
         return hash;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append('[');
         sb.append(getName()).append(" (");

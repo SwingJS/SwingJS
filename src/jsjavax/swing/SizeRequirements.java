@@ -156,7 +156,8 @@ public class SizeRequirements  {
      *
      * @return the string
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return "[" + minimum + "," + preferred + "," + maximum + "]@" + alignment;
     }
 

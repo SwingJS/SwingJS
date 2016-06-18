@@ -185,7 +185,8 @@ public class LabelView extends GlyphView implements TabableView {
      * @return the cached background color
      * @since 1.3
      */
-    public Color getBackground() {
+    @Override
+		public Color getBackground() {
         sync();
         return bg;
     }
@@ -198,7 +199,8 @@ public class LabelView extends GlyphView implements TabableView {
      * @return the cached foreground color
      * @since 1.3
      */
-    public Color getForeground() {
+    @Override
+		public Color getForeground() {
         sync();
         return fg;
     }
@@ -209,7 +211,8 @@ public class LabelView extends GlyphView implements TabableView {
      *
      * @return the cached font
      */
-     public Font getFont() {
+     @Override
+		public Font getFont() {
         sync();
         return font;
     }
@@ -229,7 +232,8 @@ public class LabelView extends GlyphView implements TabableView {
      *     <code>underline</code> property
      * @since 1.3
      */
-    public boolean isUnderline() {
+    @Override
+		public boolean isUnderline() {
         sync();
         return underline;
     }
@@ -250,7 +254,8 @@ public class LabelView extends GlyphView implements TabableView {
      *     <code>strikeThrough</code> property
      * @since 1.3
      */
-    public boolean isStrikeThrough() {
+    @Override
+		public boolean isStrikeThrough() {
         sync();
         return strike;
     }
@@ -269,7 +274,8 @@ public class LabelView extends GlyphView implements TabableView {
      *     <code>subscript</code> property
      * @since 1.3
      */
-    public boolean isSubscript() {
+    @Override
+		public boolean isSubscript() {
         sync();
         return subscript;
     }
@@ -287,7 +293,8 @@ public class LabelView extends GlyphView implements TabableView {
      *     <code>superscript</code> property
      * @since 1.3
      */
-    public boolean isSuperscript() {
+    @Override
+		public boolean isSuperscript() {
         sync();
         return superscript;
     }
@@ -303,7 +310,8 @@ public class LabelView extends GlyphView implements TabableView {
      * @param f the factory to use to rebuild if the view has children
      * @see View#changedUpdate
      */
-    public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f) {
+    @Override
+		public void changedUpdate(DocumentEvent e, Shape a, ViewFactory f) {
         font = null;
         super.changedUpdate(e, a, f);
     }

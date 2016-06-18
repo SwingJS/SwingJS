@@ -183,7 +183,8 @@ public class Applet extends Panel {
      * @param   width    the new requested width for the applet.
      * @param   height   the new requested height for the applet.
      */
-    public void resize(int width, int height) {
+    @Override
+		public void resize(int width, int height) {
         Dimension d = size();
         if ((d.width != width) || (d.height != height)) {
             super.resize(width, height);
@@ -332,7 +333,8 @@ public class Applet extends Panel {
      *          been set, the default locale is returned.
      * @since   JDK1.1
      */
-    public Locale getLocale() {
+    @Override
+		public Locale getLocale() {
       Locale locale = super.getLocale();
       if (locale == null) {
         return Locale.getDefault();

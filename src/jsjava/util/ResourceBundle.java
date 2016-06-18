@@ -291,9 +291,12 @@ public abstract class ResourceBundle {
 
     /** constant indicating that no resource bundle exists */
     private static final ResourceBundle NONEXISTENT_BUNDLE = new ResourceBundle() {
-            public Enumeration<String> getKeys() { return null; }
-            protected Object handleGetObject(String key) { return null; }
-            public String toString() { return "NONEXISTENT_BUNDLE"; }
+            @Override
+						public Enumeration<String> getKeys() { return null; }
+            @Override
+						protected Object handleGetObject(String key) { return null; }
+            @Override
+						public String toString() { return "NONEXISTENT_BUNDLE"; }
         };
 
 
@@ -583,7 +586,8 @@ public abstract class ResourceBundle {
 //            return (loaderRef != null) ? loaderRef.get() : null;
 //        }
 //
-        public boolean equals(Object other) {
+        @Override
+				public boolean equals(Object other) {
             if (this == other) {
                 return true;
             }
@@ -620,7 +624,8 @@ public abstract class ResourceBundle {
             return false;
         }
 
-        public int hashCode() {
+        @Override
+				public int hashCode() {
             return hashCodeCache;
         }
 
@@ -674,7 +679,8 @@ public abstract class ResourceBundle {
             return cause;
         }
 
-        public String toString() {
+        @Override
+				public String toString() {
             String l = locale.toString();
             if (l.length() == 0) {
                 if (locale.getVariant().length() != 0) {
@@ -2804,7 +2810,8 @@ public abstract class ResourceBundle {
             this.formats = formats;
         }
 
-        public List<String> getFormats(String baseName) {
+        @Override
+				public List<String> getFormats(String baseName) {
             if (baseName == null) {
                 throw new NullPointerException();
             }
@@ -2826,7 +2833,8 @@ public abstract class ResourceBundle {
             super(formats);
         }
 
-        public Locale getFallbackLocale(String baseName, Locale locale) {
+        @Override
+				public Locale getFallbackLocale(String baseName, Locale locale) {
             if (baseName == null || locale == null) {
                 throw new NullPointerException();
             }

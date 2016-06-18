@@ -250,7 +250,8 @@ class ArrayTable implements Cloneable {
     /*
      * Returns a clone of the <code>ArrayTable</code>.
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         ArrayTable newArrayTable = new ArrayTable();
         if (isArray()) {
             Object[] array = (Object[])table;

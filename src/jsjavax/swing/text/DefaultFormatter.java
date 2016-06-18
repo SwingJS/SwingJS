@@ -119,7 +119,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * @param ftf JFormattedTextField to format for, may be null indicating
      *            uninstall from current JFormattedTextField.
      */
-    public void install(JFormattedTextField ftf) {
+    @Override
+		public void install(JFormattedTextField ftf) {
         super.install(ftf);
         positionCursorAtInitialLocation();
     }
@@ -231,7 +232,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * @param string String to convert
      * @return Object representation of text
      */
-    public Object stringToValue(String string) throws ParseException {
+    @Override
+		public Object stringToValue(String string) throws ParseException {
         Class vc = getValueClass();
         JFormattedTextField ftf = getFormattedTextField();
 
@@ -276,7 +278,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * @param value Value to convert
      * @return String representation of value
      */
-    public String valueToString(Object value) throws ParseException {
+    @Override
+		public String valueToString(Object value) throws ParseException {
         if (value == null) {
             return "";
         }
@@ -289,7 +292,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      *
      * @return DocumentFilter to restrict edits
      */
-    protected DocumentFilter getDocumentFilter() {
+    @Override
+		protected DocumentFilter getDocumentFilter() {
         if (documentFilter == null) {
             documentFilter = new DefaultDocumentFilter();
         }
@@ -302,7 +306,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      *
      * @return NavigationFilter to restrict navigation
      */
-    protected NavigationFilter getNavigationFilter() {
+    @Override
+		protected NavigationFilter getNavigationFilter() {
         if (navigationFilter == null) {
             navigationFilter = new DefaultNavigationFilter();
         }
@@ -314,7 +319,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      *
      * @return copy of the DefaultFormatter
      */
-    public Object clone() throws CloneNotSupportedException {
+    @Override
+		public Object clone() throws CloneNotSupportedException {
         DefaultFormatter formatter = (DefaultFormatter)super.clone();
 
         formatter.navigationFilter = null;
@@ -681,7 +687,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      */
     private class DefaultNavigationFilter extends NavigationFilter
                               {
-        public void setDot(FilterBypass fb, int dot, Position.Bias bias) {
+        @Override
+				public void setDot(FilterBypass fb, int dot, Position.Bias bias) {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();
             if (tc.composedTextExists()) {
                 // bypass the filter
@@ -691,7 +698,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
             }
         }
 
-        public void moveDot(FilterBypass fb, int dot, Position.Bias bias) {
+        @Override
+				public void moveDot(FilterBypass fb, int dot, Position.Bias bias) {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();
             if (tc.composedTextExists()) {
                 // bypass the filter
@@ -701,7 +709,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
             }
         }
 
-        public int getNextVisualPositionFrom(JTextComponent text, int pos,
+        @Override
+				public int getNextVisualPositionFrom(JTextComponent text, int pos,
                                              Position.Bias bias,
                                              int direction,
                                              Position.Bias[] biasRet)
@@ -723,7 +732,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
      * method of DefaultFormatter.
      */
     private class DefaultDocumentFilter extends DocumentFilter {
-        public void remove(FilterBypass fb, int offset, int length) throws
+        @Override
+				public void remove(FilterBypass fb, int offset, int length) throws
                               BadLocationException {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();
             if (tc.composedTextExists()) {
@@ -734,7 +744,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
             }
         }
 
-        public void insertString(FilterBypass fb, int offset,
+        @Override
+				public void insertString(FilterBypass fb, int offset,
                                  String string, AttributeSet attr) throws
                               BadLocationException {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();
@@ -747,7 +758,8 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
             }
         }
 
-        public void replace(FilterBypass fb, int offset, int length,
+        @Override
+				public void replace(FilterBypass fb, int offset, int length,
                                  String text, AttributeSet attr) throws
                               BadLocationException {
             JTextComponent tc = DefaultFormatter.this.getFormattedTextField();

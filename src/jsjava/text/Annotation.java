@@ -75,10 +75,11 @@ public class Annotation {
     /**
      * Returns the String representation of this Annotation.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[value=" + value + "]";
     }
 
     private Object value;
 
-};
+}

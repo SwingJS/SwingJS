@@ -227,7 +227,8 @@ public abstract class NumberFormat extends Format  {
      *                   mode being set to RoundingMode.UNNECESSARY
      * @see              java.text.FieldPosition
      */
-    public StringBuffer format(Object number,
+    @Override
+		public StringBuffer format(Object number,
                                StringBuffer toAppendTo,
                                FieldPosition pos) {
         if (number instanceof Long || number instanceof Integer ||
@@ -269,7 +270,8 @@ public abstract class NumberFormat extends Format  {
      *         error, returns null.
      * @exception NullPointerException if <code>pos</code> is null.
      */
-    public final Object parseObject(String source, ParsePosition pos) {
+    @Override
+		public final Object parseObject(String source, ParsePosition pos) {
         return parse(source, pos);
     }
 
@@ -505,7 +507,8 @@ public abstract class NumberFormat extends Format  {
     /**
      * Overrides hashCode
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return maximumIntegerDigits * 37 + maxFractionDigits;
         // just enough fields for a reasonable distribution
     }
@@ -513,7 +516,8 @@ public abstract class NumberFormat extends Format  {
     /**
      * Overrides equals
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -535,7 +539,8 @@ public abstract class NumberFormat extends Format  {
     /**
      * Overrides Cloneable
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         NumberFormat other = (NumberFormat) super.clone();
         return other;
     }

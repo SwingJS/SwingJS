@@ -449,7 +449,8 @@ public abstract class ColorModel implements Transparency{
      * @see Transparency#BITMASK
      * @see Transparency#TRANSLUCENT
      */
-    public int getTransparency() {
+    @Override
+		public int getTransparency() {
         return transparency;
     }
 
@@ -1418,7 +1419,8 @@ public abstract class ColorModel implements Transparency{
      * is an instance of <code>ColorModel</code> and equals this
      * <code>ColorModel</code>; <code>false</code> otherwise.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (!(obj instanceof ColorModel)) {
             return false;
         }
@@ -1456,7 +1458,8 @@ public abstract class ColorModel implements Transparency{
      *
      * @return    a hash code for this ColorModel.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
 
         int result = 0;
 
@@ -1599,7 +1602,8 @@ public abstract class ColorModel implements Transparency{
      * <code>ColorModel</code> once this <code>ColorModel</code> is no
      * longer referenced.
      */
-    public void finalize() {
+    @Override
+		public void finalize() {
     }
 
 
@@ -1638,7 +1642,8 @@ public abstract class ColorModel implements Transparency{
      * @return a <code>String</code> representing the contents of this
      * <code>ColorModel</code> object.
      */
-    public String toString() {
+    @Override
+		public String toString() {
        return new String("ColorModel: #pixelBits = "+pixel_bits
                          + " numComponents = "+numComponents
                          + " color space = "+colorSpace

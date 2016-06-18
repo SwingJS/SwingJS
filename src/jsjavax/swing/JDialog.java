@@ -44,6 +44,8 @@ import jsjava.awt.event.WindowListener;
 import jsjavax.swing.plaf.ComponentUI;
 import jsjavax.swing.plaf.DialogUI;
 
+// BH: Added rootPane.addNotify(); // builds a peer for the root pane
+
 /**
  * The main class for creating a dialog window. You can use this class
  * to create a custom dialog, or invoke the many class methods
@@ -632,6 +634,9 @@ public class JDialog extends Dialog implements JSComponent, WindowConstants,
             }
         }
         updateUI();
+        addNotify(); // BH added; applet will not do this automatically
+    		rootPane.addNotify(); // builds a peer for the root pane
+				rootPane.addNotify(); // builds a peer for the root pane
     }
 
     private static int dialogCount;

@@ -114,7 +114,8 @@ public class MatteBorder extends EmptyBorder
     /**
      * Paints the matte border.
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Insets insets = getBorderInsets(c);
         Color oldColor = g.getColor();
         g.translate(x, y);
@@ -194,7 +195,8 @@ public class MatteBorder extends EmptyBorder
      * @param c the component for which this border insets value applies
      * @since 1.3
      */
-    public Insets getBorderInsets(Component c) {
+    @Override
+		public Insets getBorderInsets(Component c) {
         return getBorderInsets();
     }
 
@@ -204,7 +206,8 @@ public class MatteBorder extends EmptyBorder
      * @param insets the object to be reinitialized
      * @since 1.3
      */
-    public Insets getBorderInsets(Component c, Insets insets) {
+    @Override
+		public Insets getBorderInsets(Component c, Insets insets) {
         return computeInsets(insets);
     }
 
@@ -212,7 +215,8 @@ public class MatteBorder extends EmptyBorder
      * Returns the insets of the border.
      * @since 1.3
      */
-    public Insets getBorderInsets() {
+    @Override
+		public Insets getBorderInsets() {
         return computeInsets(new Insets(0,0,0,0));
     }
 
@@ -256,7 +260,8 @@ public class MatteBorder extends EmptyBorder
     /**
      * Returns whether or not the border is opaque.
      */
-    public boolean isBorderOpaque() {
+    @Override
+		public boolean isBorderOpaque() {
         // If a tileIcon is set, then it may contain transparent bits
         return color != null;
     }

@@ -85,7 +85,8 @@ class ImageConsumerQueue {
 //        }
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return ("[" + consumer +
                 ", " + (interested ? "" : "not ") + "interested" +
                 (securityContext != null ? ", " + securityContext : "") +

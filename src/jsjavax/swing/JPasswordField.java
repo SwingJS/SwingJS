@@ -143,7 +143,8 @@ public class JPasswordField extends JTextField {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -152,7 +153,8 @@ public class JPasswordField extends JTextField {
      * {@inheritDoc}
      * @since 1.6
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         if(!echoCharSet) {
             echoChar = '*';
         }
@@ -217,7 +219,8 @@ public class JPasswordField extends JTextField {
      * to the system clipboard, and removing the contents from
      * the model, is not acceptable for a password field.
      */
-    public void cut() {
+    @Override
+		public void cut() {
 //        if (getClientProperty("JPasswordField.cutCopyAllowed") != Boolean.TRUE) {
 //            UIManager.getLookAndFeel().provideErrorFeedback(this);
 //        } else {
@@ -233,7 +236,8 @@ public class JPasswordField extends JTextField {
      * to the system clipboard, and leaving the contents from
      * the model, is not acceptable for a password field.
      */
-    public void copy() {
+    @Override
+		public void copy() {
 //        if (getClientProperty("JPasswordField.cutCopyAllowed") != Boolean.TRUE) {
 //            UIManager.getLookAndFeel().provideErrorFeedback(this);
 //        } else {
@@ -252,7 +256,8 @@ public class JPasswordField extends JTextField {
      * replaced by <code>getPassword</code>.
      * @return the text
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public String getText() {
         return super.getText();
     }
@@ -270,7 +275,8 @@ public class JPasswordField extends JTextField {
      * @return the text
      * @exception BadLocationException if the offset or length are invalid
      */
-    @Deprecated
+    @Override
+		@Deprecated
     public String getText(int offs, int len) throws BadLocationException {
         return super.getText(offs, len);
     }
@@ -334,7 +340,8 @@ public class JPasswordField extends JTextField {
      *
      * @return  a string representation of this <code>JPasswordField</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         return super.paramString() +
         ",echoChar=" + echoChar;
     }

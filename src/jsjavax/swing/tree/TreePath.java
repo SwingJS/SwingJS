@@ -198,7 +198,8 @@ public class TreePath extends Object  {
      *
      * @param o the Object to compare
      */
-    public boolean equals(Object o) {
+    @Override
+		public boolean equals(Object o) {
         if(o == this)
             return true;
         if(o instanceof TreePath) {
@@ -224,7 +225,8 @@ public class TreePath extends Object  {
      *
      * @return the hashCode for the object
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return lastPathComponent.hashCode();
     }
 
@@ -290,7 +292,8 @@ public class TreePath extends Object  {
      *
      * @return a String representation of this object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         StringBuffer tempSpot = new StringBuffer("[");
 
         for(int counter = 0, maxCounter = getPathCount();counter < maxCounter;

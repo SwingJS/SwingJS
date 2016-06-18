@@ -216,7 +216,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
     /**
      * Configures the editor.  Passed onto the <code>realEditor</code>.
      */
-    public Component getTreeCellEditorComponent(JTree tree, Object value,
+    @Override
+		public Component getTreeCellEditorComponent(JTree tree, Object value,
                                                 boolean isSelected,
                                                 boolean expanded,
                                                 boolean leaf, int row) {
@@ -255,7 +256,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * Returns the value currently being edited.
      * @return the value currently being edited
      */
-    public Object getCellEditorValue() {
+    @Override
+		public Object getCellEditorValue() {
         return realEditor.getCellEditorValue();
     }
 
@@ -264,7 +266,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * message, <code>prepareForEditing</code>
      * is messaged and true is returned.
      */
-    public boolean isCellEditable(EventObject event) {
+    @Override
+		public boolean isCellEditable(EventObject event) {
         boolean            retValue = false;
         boolean            editable = false;
 
@@ -307,7 +310,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
     /**
      * Messages the <code>realEditor</code> for the return value.
      */
-    public boolean shouldSelectCell(EventObject event) {
+    @Override
+		public boolean shouldSelectCell(EventObject event) {
         return realEditor.shouldSelectCell(event);
     }
 
@@ -316,7 +320,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * the <code>realEditor</code> is removed and true is returned,
      * otherwise false is returned.
      */
-    public boolean stopCellEditing() {
+    @Override
+		public boolean stopCellEditing() {
         if(realEditor.stopCellEditing()) {
             cleanupAfterEditing();
             return true;
@@ -328,7 +333,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * Messages <code>cancelCellEditing</code> to the
      * <code>realEditor</code> and removes it from this instance.
      */
-    public void cancelCellEditing() {
+    @Override
+		public void cancelCellEditing() {
         realEditor.cancelCellEditing();
         cleanupAfterEditing();
     }
@@ -337,7 +343,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * Adds the <code>CellEditorListener</code>.
      * @param l the listener to be added
      */
-    public void addCellEditorListener(CellEditorListener l) {
+    @Override
+		public void addCellEditorListener(CellEditorListener l) {
         realEditor.addCellEditorListener(l);
     }
 
@@ -345,7 +352,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
       * Removes the previously added <code>CellEditorListener</code>.
       * @param l the listener to be removed
       */
-    public void removeCellEditorListener(CellEditorListener l) {
+    @Override
+		public void removeCellEditorListener(CellEditorListener l) {
         realEditor.removeCellEditorListener(l);
     }
 
@@ -368,7 +376,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
     /**
      * Resets <code>lastPath</code>.
      */
-    public void valueChanged(TreeSelectionEvent e) {
+    @Override
+		public void valueChanged(TreeSelectionEvent e) {
         if(tree != null) {
             if(tree.getSelectionCount() == 1)
                 lastPath = tree.getSelectionPath();
@@ -388,7 +397,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
      * Messaged when the timer fires, this will start the editing
      * session.
      */
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
         if(tree != null && lastPath != null) {
             tree.startEditingAtPath(lastPath);
         }
@@ -542,7 +552,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
         Border              aBorder = UIManager.getBorder("Tree.editorBorder");
         DefaultCellEditor   editor = new DefaultCellEditor
             (new DefaultTextField(aBorder)) {
-            public boolean shouldSelectCell(EventObject event) {
+            @Override
+						public boolean shouldSelectCell(EventObject event) {
                 boolean retValue = super.shouldSelectCell(event);
                 return retValue;
             }
@@ -628,7 +639,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          *    attribute: visualUpdate true
          *  description: The component's border.
          */
-        public void setBorder(Border border) {
+        @Override
+				public void setBorder(Border border) {
             super.setBorder(border);
             this.border = border;
         }
@@ -637,12 +649,14 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          * Overrides <code>JComponent.getBorder</code> to
          * returns the current border.
          */
-        public Border getBorder() {
+        @Override
+				public Border getBorder() {
             return border;
         }
 
         // implements jsjava.awt.MenuContainer
-        public Font getFont() {
+        @Override
+				public Font getFont() {
             Font     font = super.getFont();
 
             // Prefer the parent containers font if our font is a
@@ -663,7 +677,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          * @return a <code>Dimension</code> object containing
          *   the preferred size
          */
-        public Dimension getPreferredSize() {
+        @Override
+				public Dimension getPreferredSize() {
             Dimension      size = getPrefSizeJTF();
 
             // If not font has been set, prefer the renderers height.
@@ -699,7 +714,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          * Overrides <code>Container.paint</code> to paint the node's
          * icon and use the selection color for the background.
          */
-        public void paint(Graphics g) {
+        @Override
+				public void paint(Graphics g) {
             int width = getWidth();
             int height = getHeight();
 
@@ -730,7 +746,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          * the editor will be placed at
          * <code>offset</code> in the x direction and 0 for y.
          */
-        public void doLayout() {
+        @Override
+				public void doLayout() {
             if(editingComponent != null) {
                 int width = getWidth();
                 int height = getHeight();
@@ -770,7 +787,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          *   <code>editingComponent</code> is <code>null</code> the
          *   <code>Dimension</code> returned is 0, 0
          */
-        public Dimension getPreferredSize() {
+        @Override
+				public Dimension getPreferredSize() {
             if(editingComponent != null) {
                 Dimension         pSize = editingComponent.getPreferredSize();
 

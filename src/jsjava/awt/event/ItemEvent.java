@@ -158,7 +158,8 @@ public class ItemEvent extends AWTEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case ITEM_STATE_CHANGED:

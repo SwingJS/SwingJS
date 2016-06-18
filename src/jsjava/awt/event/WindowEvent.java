@@ -357,7 +357,8 @@ public class WindowEvent extends ComponentEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case WINDOW_OPENED:

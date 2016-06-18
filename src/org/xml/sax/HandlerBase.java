@@ -70,7 +70,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.EntityResolver#resolveEntity
      */
-    public InputSource resolveEntity (String publicId, String systemId)
+    @Override
+		public InputSource resolveEntity (String publicId, String systemId)
 	throws SAXException
     {
 	return null;
@@ -96,7 +97,8 @@ public class HandlerBase
      * @param systemId The notation system identifier.
      * @see org.xml.sax.DTDHandler#notationDecl
      */
-    public void notationDecl (String name, String publicId, String systemId)
+    @Override
+		public void notationDecl (String name, String publicId, String systemId)
     {
 	// no op
     }
@@ -116,7 +118,8 @@ public class HandlerBase
      * @param notationName The name of the associated notation.
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void unparsedEntityDecl (String name, String publicId,
+    @Override
+		public void unparsedEntityDecl (String name, String publicId,
 				    String systemId, String notationName)
     {
 	// no op
@@ -140,7 +143,8 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#setDocumentLocator
      * @see org.xml.sax.Locator
      */
-    public void setDocumentLocator (Locator locator)
+    @Override
+		public void setDocumentLocator (Locator locator)
     {
 	// no op
     }
@@ -158,7 +162,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#startDocument
      */
-    public void startDocument ()
+    @Override
+		public void startDocument ()
 	throws SAXException
     {
 	// no op
@@ -177,7 +182,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#endDocument
      */
-    public void endDocument ()
+    @Override
+		public void endDocument ()
 	throws SAXException
     {
 	// no op
@@ -198,7 +204,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#startElement
      */
-    public void startElement (String name, AttributeList attributes)
+    @Override
+		public void startElement (String name, AttributeList attributes)
 	throws SAXException
     {
 	// no op
@@ -218,7 +225,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#endElement
      */
-    public void endElement (String name)
+    @Override
+		public void endElement (String name)
 	throws SAXException
     {
 	// no op
@@ -241,7 +249,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#characters
      */
-    public void characters (char ch[], int start, int length)
+    @Override
+		public void characters (char ch[], int start, int length)
 	throws SAXException
     {
 	// no op
@@ -264,7 +273,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#ignorableWhitespace
      */
-    public void ignorableWhitespace (char ch[], int start, int length)
+    @Override
+		public void ignorableWhitespace (char ch[], int start, int length)
 	throws SAXException
     {
 	// no op
@@ -286,7 +296,8 @@ public class HandlerBase
      *            wrapping another exception.
      * @see org.xml.sax.DocumentHandler#processingInstruction
      */
-    public void processingInstruction (String target, String data)
+    @Override
+		public void processingInstruction (String target, String data)
 	throws SAXException
     {
 	// no op
@@ -313,7 +324,8 @@ public class HandlerBase
      * @see org.xml.sax.ErrorHandler#warning
      * @see org.xml.sax.SAXParseException
      */
-    public void warning (SAXParseException e)
+    @Override
+		public void warning (SAXParseException e)
 	throws SAXException
     {
 	// no op
@@ -334,7 +346,8 @@ public class HandlerBase
      * @see org.xml.sax.ErrorHandler#warning
      * @see org.xml.sax.SAXParseException
      */
-    public void error (SAXParseException e)
+    @Override
+		public void error (SAXParseException e)
 	throws SAXException
     {
 	// no op
@@ -358,7 +371,8 @@ public class HandlerBase
      * @see org.xml.sax.ErrorHandler#fatalError
      * @see org.xml.sax.SAXParseException
      */
-    public void fatalError (SAXParseException e)
+    @Override
+		public void fatalError (SAXParseException e)
 	throws SAXException
     {
 	throw e;

@@ -681,7 +681,8 @@ public final class AppContext {
      * Returns a string representation of this AppContext.
      * @since   1.2
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[threadGroup=" + threadGroup.getName() + "]";
     }
 

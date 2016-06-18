@@ -93,7 +93,8 @@ public class EntityDemo extends DemoHandler {
     *
     * @see org.xml.sax.EntityResolver#resolveEntity
     */
-  public InputSource resolveEntity (String publicId, String systemId)
+  @Override
+	public InputSource resolveEntity (String publicId, String systemId)
   {
     if (publicId != null &&
 	publicId.equals("-//megginson//TEXT Sample Entity//EN")) {

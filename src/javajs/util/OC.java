@@ -251,7 +251,6 @@ public class OC extends OutputStream {
     closeChannel();
   }
 
-  @SuppressWarnings({ "null", "unused" })
   public String closeChannel() {
     if (closed)
       return null;

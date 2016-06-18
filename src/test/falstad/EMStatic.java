@@ -59,28 +59,36 @@ class EMStaticCanvas extends Canvas {
     EMStaticCanvas(EMStaticFrame p) {
 	pg = p;
     }
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
 	return new Dimension(300,400);
     }
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
 	pg.updateEMStatic(g);
     }
-    public void paintComponent(Graphics g) {
+    @Override
+		public void paintComponent(Graphics g) {
 	pg.updateEMStatic(g);
     }
-};
+}
 
 class EMStaticLayout implements LayoutManager {
     public EMStaticLayout() {}
-    public void addLayoutComponent(String name, Component c) {}
-    public void removeLayoutComponent(Component c) {}
-    public Dimension preferredLayoutSize(Container target) {
+    @Override
+		public void addLayoutComponent(String name, Component c) {}
+    @Override
+		public void removeLayoutComponent(Component c) {}
+    @Override
+		public Dimension preferredLayoutSize(Container target) {
 	return new Dimension(500, 500);
     }
-    public Dimension minimumLayoutSize(Container target) {
+    @Override
+		public Dimension minimumLayoutSize(Container target) {
 	return new Dimension(100,100);
     }
-    public void layoutContainer(Container target) {
+    @Override
+		public void layoutContainer(Container target) {
 	Insets insets = target.insets();
 	int targetw = target.size().width - insets.left - insets.right;
 	int cw = targetw* 2/3;
@@ -107,7 +115,7 @@ class EMStaticLayout implements LayoutManager {
 	    }
 	}
     }
-};
+}
 
 public class EMStatic extends Applet {
     static EMStaticFrame ogf;
@@ -122,11 +130,13 @@ public class EMStatic extends Applet {
         ogf.init();
     }
 
-    public void init() {
+    @Override
+		public void init() {
 	ogf = new EMStaticFrame(this);
 	ogf.init();
     }
-    public void destroy() {
+    @Override
+		public void destroy() {
 	if (ogf != null)
 	    ogf.dispose();
 	ogf = null;
@@ -146,7 +156,7 @@ public class EMStatic extends Applet {
 		g.drawString(s, 10, 30);
 		super.paint(g);
 	}
-};
+}
 
 class EMStaticFrame extends Frame
   implements ComponentListener, ActionListener, AdjustmentListener,
@@ -468,7 +478,8 @@ class EMStaticFrame extends Frame
 	dbimage = createImage(d.width, d.height);
     }
 
-    public boolean handleEvent(Event ev) {
+    @Override
+		public boolean handleEvent(Event ev) {
         if (ev.id == Event.WINDOW_DESTROY) {
             applet.destroyFrame();
             return true;
@@ -2155,24 +2166,30 @@ class EMStaticFrame extends Frame
 	cv.repaint(pause);
     }
 
-    public void componentHidden(ComponentEvent e){}
-    public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) {
+    @Override
+		public void componentHidden(ComponentEvent e){}
+    @Override
+		public void componentMoved(ComponentEvent e){}
+    @Override
+		public void componentShown(ComponentEvent e) {
 	cv.repaint();
     }
 
-    public void componentResized(ComponentEvent e) {
+    @Override
+		public void componentResized(ComponentEvent e) {
 	handleResize();
 	cv.repaint(100);
     }
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == blankButton) {
 	    doBlank();
 	    cv.repaint(pause);
 	}
     }
 
-    public void adjustmentValueChanged(AdjustmentEvent e) {
+    @Override
+		public void adjustmentValueChanged(AdjustmentEvent e) {
 	System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	cv.repaint(pause);
 	if (e.getSource() == resBar) {
@@ -2274,14 +2291,16 @@ class EMStaticFrame extends Frame
 	}
     }
 
-    public void mouseDragged(MouseEvent e) {
+    @Override
+		public void mouseDragged(MouseEvent e) {
 	dragging = true;
 	if (objDragMap != null && modeChooser.getSelectedIndex() == MODE_MOVE)
 	    dragObject(e.getX(), e.getY());
 	else
 	    edit(e);
     }
-    public void mouseMoved(MouseEvent e) {
+    @Override
+		public void mouseMoved(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	    return;
 	int x = e.getX();
@@ -2294,13 +2313,17 @@ class EMStaticFrame extends Frame
 	      selectedCharge == -1)
 	    selectObject(x, y);
     }
-    public void mouseClicked(MouseEvent e) {
+    @Override
+		public void mouseClicked(MouseEvent e) {
     }
-    public void mouseEntered(MouseEvent e) {
+    @Override
+		public void mouseEntered(MouseEvent e) {
     }
-    public void mouseExited(MouseEvent e) {
+    @Override
+		public void mouseExited(MouseEvent e) {
     }
-    public void mousePressed(MouseEvent e) {
+    @Override
+		public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	adjustSelectX1 = -1;
@@ -2347,7 +2370,8 @@ class EMStaticFrame extends Frame
 	    break;
 	}
     }
-    public void mouseReleased(MouseEvent e) {
+    @Override
+		public void mouseReleased(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	dragging = dragSet = dragClear = stopCalc = false;
@@ -2357,7 +2381,8 @@ class EMStaticFrame extends Frame
 	}
 	cv.repaint();
     }
-    public void itemStateChanged(ItemEvent e) {
+    @Override
+		public void itemStateChanged(ItemEvent e) {
 	cv.repaint(pause);
 	if (e.getItemSelectable() == setupChooser)
 	    doSetup();
@@ -2416,7 +2441,7 @@ class EMStaticFrame extends Frame
 	    return ((y-windowOffsetY) * winSize.height+winSize.height/2)
 		/windowHeight;
 	}
-    };
+    }
 
     class GridElement {
 	// potential
@@ -2473,7 +2498,7 @@ class EMStaticFrame extends Frame
 	    charge = ge.charge;
 	    floater = ge.floater;
 	}
-    };
+    }
 
     // element in one of the solver grids
     class SolverElement {
@@ -2483,11 +2508,11 @@ class EMStaticFrame extends Frame
 	// true if we should skip this square (used for non-conducting
 	// squares when calculating current)
 	boolean ignore;
-    };
+    }
 
     class SolverGrid {
 	SolverElement grid[][];
-    };
+    }
 
     abstract class Setup {
 	abstract String getName();
@@ -2497,39 +2522,50 @@ class EMStaticFrame extends Frame
 	void doStep() {}
 	abstract Setup createNext();
 	Setup() { }
-    };
+    }
 
     class SingleChargeSetup extends Setup {
+	@Override
 	String getName() { return "Single Charge"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
 	    addCharge(x, y, chargeAmt);
 	}
+	@Override
 	Setup createNext() { return new DoubleChargeSetup(); }
     }
     class DoubleChargeSetup extends Setup {
+	@Override
 	String getName() { return "Double Charge"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
 	    addCharge(x, y-6, chargeAmt);
 	    addCharge(x, y+6, chargeAmt);
 	}
+	@Override
 	Setup createNext() { return new DipoleChargeSetup(); }
     }
     class DipoleChargeSetup extends Setup {
+	@Override
 	String getName() { return "Dipole Charge"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
 	    addCharge(x, y-5, chargeAmt);
 	    addCharge(x, y+5, -chargeAmt);
 	}
+	@Override
 	Setup createNext() { return new ChargePlaneSetup(); }
     }
     class ChargePlaneSetup extends Setup {
+	@Override
 	String getName() { return "Charge + Plane"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
@@ -2537,10 +2573,13 @@ class EMStaticFrame extends Frame
 	    conductFillRect(windowOffsetX+1, y,
 			    windowOffsetX+windowWidth-2, y+2, 0, 1);
 	}
+	@Override
 	Setup createNext() { return new DipoleUniformSetup(); }
     }
     class DipoleUniformSetup extends Setup {
+	@Override
 	String getName() { return "Dipole + Uniform"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
@@ -2548,10 +2587,13 @@ class EMStaticFrame extends Frame
 	    addCharge(x, y+4, -chargeAmt);
 	    addUniformField();
 	}
+	@Override
 	Setup createNext() { return new QuadChargeSetup(); }
     }
     class QuadChargeSetup extends Setup {
+	@Override
 	String getName() { return "Quadrupole Charge"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
@@ -2560,10 +2602,13 @@ class EMStaticFrame extends Frame
 	    addCharge(x-4, y-4, -chargeAmt);
 	    addCharge(x-4, y+4,  chargeAmt);
 	}
+	@Override
 	Setup createNext() { return new ConductingPlanesSetup(); }
     }
     class ConductingPlanesSetup extends Setup {
+	@Override
 	String getName() { return "Conducting Planes"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
@@ -2573,10 +2618,13 @@ class EMStaticFrame extends Frame
 	    conductFillRect(x-w, y+sep,   x+w, y+sep+2, -1, 1);
 	    brightnessBar.setValue(35);
 	}
+	@Override
 	Setup createNext() { return new ChargedPlanesSetup(); }
     }
     class ChargedPlanesSetup extends Setup {
+	@Override
 	String getName() { return "Charged Planes"; }
+	@Override
 	void select() {
 	    int x = gridSizeX/2;
 	    int y = gridSizeY/2;
@@ -2591,6 +2639,7 @@ class EMStaticFrame extends Frame
 		}
 	    brightnessBar.setValue(35);
 	}
+	@Override
 	Setup createNext() { return new ConductingCylinderSetup(); }
     }
 
@@ -2622,14 +2671,19 @@ class EMStaticFrame extends Frame
     }
 
     class ConductingCylinderSetup extends Setup {
+	@Override
 	String getName() { return "Conducting Cylinder"; }
+	@Override
 	void select() {
 	    doCylinder(1, 0);
 	}
+	@Override
 	Setup createNext() { return new GroundedCylinderSetup(); }
     }
     class GroundedCylinderSetup extends Setup {
+	@Override
 	String getName() { return "Grounded Cyl + Charge"; }
+	@Override
 	void select() {
 	    doCylinder(0, 0);
 	    int x = gridSizeX/2;
@@ -2637,17 +2691,22 @@ class EMStaticFrame extends Frame
 	    int r = 7;
 	    addCharge(x, y+r*2, chargeAmt);
 	}
+	@Override
 	Setup createNext() { return new GroundedCylinderUniformSetup(); }
     }
     class GroundedCylinderUniformSetup extends Setup {
+	@Override
 	String getName() { return "Grounded Cyl + Field"; }
+	@Override
 	void select() {
 	    doCylinder(0, 0);
 	    addUniformField();
 	}
+	@Override
 	Setup createNext() { return new ChargedCylinderSetup(); }
     }
     class ChargedCylinderSetup extends Setup {
+	@Override
 	String getName() { return "Charged Cylinder"; }
 	void select() {
 	    doCylinderCharge(.005, 10, 0);

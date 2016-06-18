@@ -512,7 +512,8 @@ public class DateFormatSymbols implements Cloneable {
     /**
      * Overrides Cloneable
      */
-    public Object clone()
+    @Override
+		public Object clone()
     {
         try
         {
@@ -528,7 +529,8 @@ public class DateFormatSymbols implements Cloneable {
      * Override hashCode.
      * Generates a hash code for the DateFormatSymbols object.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         int hashcode = 0;
 //        String[][] zoneStrings = getZoneStringsWrapper();
 //        for (int index = 0; index < zoneStrings[0].length; ++index)
@@ -539,7 +541,8 @@ public class DateFormatSymbols implements Cloneable {
     /**
      * Override equals
      */
-    public boolean equals(Object obj)
+    @Override
+		public boolean equals(Object obj)
     {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;

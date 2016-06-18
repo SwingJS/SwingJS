@@ -3,7 +3,6 @@ package swingjs.plaf;
 
 import jsjava.awt.Dimension;
 
-import jsjavax.swing.JComponent;
 import jsjavax.swing.JRootPane;
 import jsjavax.swing.LookAndFeel;
 
@@ -21,7 +20,7 @@ public class JSPanelUI extends JSLightweightUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			JRootPane root = c.getRootPane();
+			JRootPane root = jc.getRootPane();
 			isContentPane = (root != null && root.getContentPane() == c);
 			domNode = createDOMObject("label", id);
 			if (root != null && root.getGlassPane() == c) {
@@ -41,7 +40,7 @@ public class JSPanelUI extends JSLightweightUI {
 	}
 	
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize() {
 		// called by JComponent when it doesn't have width or height info
 		// and is looking for that from the UI. 
 		return null;
@@ -55,7 +54,7 @@ public class JSPanelUI extends JSLightweightUI {
 
 	@Override
 	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(c,
+    LookAndFeel.installColorsAndFont(jc,
         "Panel.background",
         "Panel.foreground",
         "Panel.font");

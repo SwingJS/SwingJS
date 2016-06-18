@@ -83,7 +83,8 @@ public final class SwingPropertyChangeSupport extends PropertyChangeSupport {
      *         {@code null}
      * @since 1.6
      */
-    public void firePropertyChangeEvt(final PropertyChangeEvent evt) {
+    @Override
+		public void firePropertyChangeEvt(final PropertyChangeEvent evt) {
         if (evt == null) {
             throw new NullPointerException();
         }
@@ -93,7 +94,8 @@ public final class SwingPropertyChangeSupport extends PropertyChangeSupport {
         } else {
             SwingUtilities.invokeLater(
                 new Runnable() {
-                    public void run() {
+                    @Override
+										public void run() {
                         firePropertyChangeEvt(evt);
                     }
                 });

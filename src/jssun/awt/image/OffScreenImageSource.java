@@ -60,26 +60,31 @@ public class OffScreenImageSource implements ImageProducer {
     // We can only have one consumer since we immediately return the data...
     private ImageConsumer theConsumer;
 
-    public synchronized void addConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized void addConsumer(ImageConsumer ic) {
         theConsumer = ic;
         produce();
     }
 
-    public synchronized boolean isConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized boolean isConsumer(ImageConsumer ic) {
         return (ic == theConsumer);
     }
 
-    public synchronized void removeConsumer(ImageConsumer ic) {
+    @Override
+		public synchronized void removeConsumer(ImageConsumer ic) {
         if (theConsumer == ic) {
             theConsumer = null;
         }
     }
 
-    public void startProduction(ImageConsumer ic) {
+    @Override
+		public void startProduction(ImageConsumer ic) {
         addConsumer(ic);
     }
 
-    public void requestTopDownLeftRightResend(ImageConsumer ic) {
+    @Override
+		public void requestTopDownLeftRightResend(ImageConsumer ic) {
     }
 
     private void sendPixels() {

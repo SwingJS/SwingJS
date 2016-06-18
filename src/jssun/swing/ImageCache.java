@@ -123,7 +123,8 @@ public class ImageCache {
             return image;
         }
 
-        public String toString() {
+        @Override
+				public String toString() {
             String value = super.toString() +
                     "[ graphicsConfig=" + config +
                     ", image=" + image +

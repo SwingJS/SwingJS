@@ -282,6 +282,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 * 
 	 * @return the SliderUI object that implements the Slider L&F
 	 */
+	@Override
 	public SliderUI getUI() {
 		return (SliderUI) ui;
 	}
@@ -305,6 +306,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 * 
 	 * @see JComponent#updateUI
 	 */
+	@Override
 	public void updateUI() {
 		setUI((SliderUI) UIManager.getUI(this));
 		// The labels preferred size may be derived from the font
@@ -321,6 +323,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 * @see JComponent#getUIClassID
 	 * @see UIDefaults#getUI
 	 */
+	@Override
 	public String getUIClassID() {
 		return uiClassID;
 	}
@@ -330,6 +333,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 * of the model itself) as the event source.
 	 */
 	private class ModelListener implements ChangeListener {
+		@Override
 		public void stateChanged(ChangeEvent e) {
 			fireStateChanged();
 		}
@@ -707,6 +711,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 * 
 	 * @since 1.6
 	 */
+	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
 		updateLabelSizes();
@@ -1183,6 +1188,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 * 
 	 * @return a string representation of this JSlider.
 	 */
+	@Override
 	protected String paramString() {
 		String paintTicksString = (paintTicks ? "true" : "false");
 		String paintTrackString = (paintTrack ? "true" : "false");
@@ -1339,6 +1345,7 @@ public class JSlider extends JComponent implements SwingConstants {
 			createLabels();
 		}
 
+		@Override
 		public void propertyChange(PropertyChangeEvent e) {
 			if (e.getPropertyName().equals("minimum") && startAtMin) {
 				start = getMinimum();
@@ -1389,6 +1396,7 @@ public class JSlider extends JComponent implements SwingConstants {
 			setName("Slider.label");
 		}
 
+		@Override
 		public Font getFont() {
 			Font font = super.getFont();
 			if (font != null && !(font instanceof UIResource)) {
@@ -1397,6 +1405,7 @@ public class JSlider extends JComponent implements SwingConstants {
 			return JSlider.this.getFont();
 		}
 
+		@Override
 		public Color getForeground() {
 			Color fg = super.getForeground();
 			if (fg != null && !(fg instanceof UIResource)) {

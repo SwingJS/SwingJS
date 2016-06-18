@@ -100,6 +100,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 		// for reflection
 	}
 
+	@Override
 	public void setParams(SampleModel sampleModel, DataBuffer dataBuffer,
 			Point origin) {
 		setIntInterRaster(sampleModel, dataBuffer, new Rectangle(origin.x,
@@ -171,6 +172,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * Returns a copy of the data offsets array. For each band the data offset is
 	 * the index into the band's data array, of the first sample of the band.
 	 */
+	@Override
 	public int[] getDataOffsets() {
 		return (int[]) dataOffsets.clone();
 	}
@@ -180,6 +182,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * into the data array in which the first sample of the first scanline is
 	 * stored.
 	 */
+	@Override
 	public int getDataOffset(int band) {
 		return dataOffsets[band];
 	}
@@ -188,6 +191,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * Returns the scanline stride -- the number of data array elements between a
 	 * given sample and the sample in the same column of the next row.
 	 */
+	@Override
 	public int getScanlineStride() {
 		return scanlineStride;
 	}
@@ -196,6 +200,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * Returns pixel stride -- the number of data array elements between two
 	 * samples for the same band on the same scanline.
 	 */
+	@Override
 	public int getPixelStride() {
 		return pixelStride;
 	}
@@ -203,6 +208,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	/**
 	 * Returns a reference to the data array.
 	 */
+	@Override
 	public int[] getDataStorage() {
 		return data;
 	}
@@ -225,6 +231,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * @return An object reference to an array of type defined by
 	 *         getTransferType() with the request pixel data.
 	 */
+	@Override
 	public Object getDataElements(int x, int y, Object obj) {
 		if ((x < this.minX) || (y < this.minY) || (x >= this.maxX)
 				|| (y >= this.maxY)) {
@@ -273,6 +280,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * @return An object reference to an array of type defined by
 	 *         getTransferType() with the request pixel data.
 	 */
+	@Override
 	public Object getDataElements(int x, int y, int w, int h, Object obj) {
 		if ((x < this.minX) || (y < this.minY) || (x + w > this.maxX)
 				|| (y + h > this.maxY)) {
@@ -312,6 +320,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 *          getTransferType() and length getNumDataElements() containing the
 	 *          pixel data to place at x,y.
 	 */
+	@Override
 	public void setDataElements(int x, int y, Object obj) {
 		if ((x < this.minX) || (y < this.minY) || (x >= this.maxX)
 				|| (y >= this.maxY)) {
@@ -438,6 +447,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 *          getTransferType() and length w*h*getNumDataElements() containing
 	 *          the pixel data to place between x,y and x+h, y+h.
 	 */
+	@Override
 	public void setDataElements(int x, int y, int w, int h, Object obj) {
 		if ((x < this.minX) || (y < this.minY) || (x + w > this.maxX)
 				|| (y + h > this.maxY)) {
@@ -482,6 +492,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * @exception RasterFormatException
 	 *              if the specified bounding box is outside of the parent raster.
 	 */
+	@Override
 	public WritableRaster createWritableChild(int x, int y, int width,
 			int height, int x0, int y0, int bandList[]) {
 		if (x < this.minX) {
@@ -537,6 +548,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * @exception RasterFormatException
 	 *              if the specified bounding box is outside of the parent raster.
 	 */
+	@Override
 	public Raster createChild(int x, int y, int width, int height, int x0,
 			int y0, int bandList[]) {
 		return createWritableChild(x, y, width, height, x0, y0, bandList);
@@ -546,6 +558,7 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * Creates a raster with the same band layout but using a different width and
 	 * height, and with new zeroed data arrays.
 	 */
+	@Override
 	public WritableRaster createCompatibleWritableRaster(int w, int h) {
 		if (w <= 0 || h <= 0) {
 			throw new RasterFormatException("negative "
@@ -562,10 +575,12 @@ public class IntegerInterleavedRaster extends IntegerComponentRaster {
 	 * and with new zeroed data arrays. If the raster is a subraster, this will
 	 * call createCompatibleRaster(width, height).
 	 */
+	@Override
 	public WritableRaster createCompatibleWritableRaster() {
 		return createCompatibleWritableRaster(width, height);
 	}
 
+	@Override
 	public String toString() {
 		return new String("IntegerInterleavedRaster: width = " + width
 				+ " height = " + height + " #Bands = " + numBands + " xOff = "

@@ -252,11 +252,13 @@ public class Popup {
             }
         }
 
-        public void update(Graphics g) {
+        @Override
+				public void update(Graphics g) {
             paint(g);
         }
 
-        public void show() {
+        @Override
+				public void show() {
             this.pack();
             if (getWidth() > 0 && getHeight() > 0) {
                 super.show();

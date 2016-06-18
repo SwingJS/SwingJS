@@ -60,7 +60,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
      * Determine the span the glyphs given a start location
      * (for tab expansion).
      */
-    public float getSpan(GlyphView v, int p0, int p1,
+    @Override
+		public float getSpan(GlyphView v, int p0, int p1,
                          TabExpander e, float x) {
         sync(v);
         Segment text = v.getText(p0, p1);
@@ -71,7 +72,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
         return width;
     }
 
-    public float getHeight(GlyphView v) {
+    @Override
+		public float getHeight(GlyphView v) {
         sync(v);
         return metrics.getHeight();
     }
@@ -80,7 +82,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
      * Fetches the ascent above the baseline for the glyphs
      * corresponding to the given range in the model.
      */
-    public float getAscent(GlyphView v) {
+    @Override
+		public float getAscent(GlyphView v) {
         sync(v);
         return metrics.getAscent();
     }
@@ -89,7 +92,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
      * Fetches the descent below the baseline for the glyphs
      * corresponding to the given range in the model.
      */
-    public float getDescent(GlyphView v) {
+    @Override
+		public float getDescent(GlyphView v) {
         sync(v);
         return metrics.getDescent();
     }
@@ -97,7 +101,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
     /**
      * Paints the glyphs representing the given range.
      */
-    public void paint(GlyphView v, Graphics g, Shape a, int p0, int p1) {
+    @Override
+		public void paint(GlyphView v, Graphics g, Shape a, int p0, int p1) {
 //        sync(v);
 //        Segment text;
 //        TabExpander expander = v.getTabExpander();
@@ -127,7 +132,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
 //        SegmentCache.releaseSharedSegment(text);
     }
 
-    public Shape modelToView(GlyphView v, int pos, Position.Bias bias,
+    @Override
+		public Shape modelToView(GlyphView v, int pos, Position.Bias bias,
                              Shape a) throws BadLocationException {
 
         sync(v);
@@ -169,7 +175,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
      *  given point in the view
      * @see View#viewToModel
      */
-    public int viewToModel(GlyphView v, float x, float y, Shape a,
+    @Override
+		public int viewToModel(GlyphView v, float x, float y, Shape a,
                            Position.Bias[] biasReturn) {
 
         sync(v);
@@ -211,7 +218,8 @@ class GlyphPainter1 extends GlyphView.GlyphPainter {
      * @return the model location desired for a break
      * @see View#breakView
      */
-    public int getBoundedPosition(GlyphView v, int p0, float x, float len) {
+    @Override
+		public int getBoundedPosition(GlyphView v, int p0, float x, float len) {
         sync(v);
         TabExpander expander = v.getTabExpander();
         Segment s = v.getText(p0, v.getEndOffset());

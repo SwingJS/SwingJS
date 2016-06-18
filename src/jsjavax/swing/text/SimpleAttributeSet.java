@@ -87,7 +87,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @return the count
      */
-    public int getAttributeCount() {
+    @Override
+		public int getAttributeCount() {
         return table.size();
     }
 
@@ -97,7 +98,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @param attrName the attribute name
      * @return true if the attribute is defined
      */
-    public boolean isDefined(Object attrName) {
+    @Override
+		public boolean isDefined(Object attrName) {
         return table.containsKey(attrName);
     }
 
@@ -107,7 +109,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @param attr the second attribute set
      * @return true if the sets are equal, false otherwise
      */
-    public boolean isEqual(AttributeSet attr) {
+    @Override
+		public boolean isEqual(AttributeSet attr) {
         return ((getAttributeCount() == attr.getAttributeCount()) &&
                 containsAttributes(attr));
     }
@@ -117,7 +120,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @return the copy
      */
-    public AttributeSet copyAttributes() {
+    @Override
+		public AttributeSet copyAttributes() {
         return (AttributeSet) clone();
     }
 
@@ -126,7 +130,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @return the names as an <code>Enumeration</code>
      */
-    public Enumeration<?> getAttributeNames() {
+    @Override
+		public Enumeration<?> getAttributeNames() {
         return table.keys();
     }
 
@@ -136,7 +141,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @param name the attribute name
      * @return the value
      */
-    public Object getAttribute(Object name) {
+    @Override
+		public Object getAttribute(Object name) {
         Object value = table.get(name);
         if (value == null) {
             AttributeSet parent = getResolveParent();
@@ -155,7 +161,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @param value the value
      * @return true if the name/value pair is in the list
      */
-    public boolean containsAttribute(Object name, Object value) {
+    @Override
+		public boolean containsAttribute(Object name, Object value) {
         return value.equals(getAttribute(name));
     }
 
@@ -166,7 +173,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @param attributes the attribute list
      * @return true if the list contains all the name/value pairs
      */
-    public boolean containsAttributes(AttributeSet attributes) {
+    @Override
+		public boolean containsAttributes(AttributeSet attributes) {
         boolean result = true;
 
         Enumeration names = attributes.getAttributeNames();
@@ -184,7 +192,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @param name the attribute name
      * @param value the attribute value
      */
-    public void addAttribute(Object name, Object value) {
+    @Override
+		public void addAttribute(Object name, Object value) {
         table.put(name, value);
     }
 
@@ -193,7 +202,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @param attributes the set of attributes to add
      */
-    public void addAttributes(AttributeSet attributes) {
+    @Override
+		public void addAttributes(AttributeSet attributes) {
         Enumeration names = attributes.getAttributeNames();
         while (names.hasMoreElements()) {
             Object name = names.nextElement();
@@ -206,7 +216,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @param name the attribute name
      */
-    public void removeAttribute(Object name) {
+    @Override
+		public void removeAttribute(Object name) {
         table.remove(name);
     }
 
@@ -215,7 +226,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @param names the set of names to remove
      */
-    public void removeAttributes(Enumeration<?> names) {
+    @Override
+		public void removeAttributes(Enumeration<?> names) {
         while (names.hasMoreElements())
             removeAttribute(names.nextElement());
     }
@@ -225,7 +237,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @param attributes the set of attributes to remove
      */
-    public void removeAttributes(AttributeSet attributes) {
+    @Override
+		public void removeAttributes(AttributeSet attributes) {
         if (attributes == this) {
             table.clear();
         }
@@ -249,7 +262,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @return the parent
      */
-    public AttributeSet getResolveParent() {
+    @Override
+		public AttributeSet getResolveParent() {
         return (AttributeSet) table.get(StyleConstants.ResolveAttribute);
     }
 
@@ -258,7 +272,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @param parent the parent
      */
-    public void setResolveParent(AttributeSet parent) {
+    @Override
+		public void setResolveParent(AttributeSet parent) {
         addAttribute(StyleConstants.ResolveAttribute, parent);
     }
 
@@ -269,7 +284,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @return the new set of attributes
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         SimpleAttributeSet attr;
         try {
             attr = (SimpleAttributeSet) super.clone();
@@ -284,7 +300,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * Returns a hashcode for this set of attributes.
      * @return     a hashcode value for this set of attributes.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return table.hashCode();
     }
 
@@ -296,7 +313,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      * @return    <code>true</code> if the objects are equal;
      *            <code>false</code> otherwise
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -312,7 +330,8 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
      *
      * @return the string
      */
-    public String toString() {
+    @Override
+		public String toString() {
         String s = "";
         Enumeration names = getAttributeNames();
         while (names.hasMoreElements()) {
@@ -346,45 +365,58 @@ public class SimpleAttributeSet implements MutableAttributeSet, Cloneable
     static class EmptyAttributeSet implements AttributeSet {
         static final long serialVersionUID = -8714803568785904228L;
 
-        public int getAttributeCount() {
+        @Override
+				public int getAttributeCount() {
             return 0;
         }
-        public boolean isDefined(Object attrName) {
+        @Override
+				public boolean isDefined(Object attrName) {
             return false;
         }
-        public boolean isEqual(AttributeSet attr) {
+        @Override
+				public boolean isEqual(AttributeSet attr) {
             return (attr.getAttributeCount() == 0);
         }
-        public AttributeSet copyAttributes() {
+        @Override
+				public AttributeSet copyAttributes() {
             return this;
         }
-        public Object getAttribute(Object key) {
+        @Override
+				public Object getAttribute(Object key) {
             return null;
         }
-        public Enumeration getAttributeNames() {
+        @Override
+				public Enumeration getAttributeNames() {
             return new Enumeration() {
-                    public boolean hasMoreElements() { return false; }
-                    public Object nextElement() { throw new java.util.NoSuchElementException(); }
+                    @Override
+										public boolean hasMoreElements() { return false; }
+                    @Override
+										public Object nextElement() { throw new java.util.NoSuchElementException(); }
                 };
         }
 
-        public boolean containsAttribute(Object name, Object value) {
+        @Override
+				public boolean containsAttribute(Object name, Object value) {
             return false;
         }
-        public boolean containsAttributes(AttributeSet attributes) {
+        @Override
+				public boolean containsAttributes(AttributeSet attributes) {
             return (attributes.getAttributeCount() == 0);
         }
-        public AttributeSet getResolveParent() {
+        @Override
+				public AttributeSet getResolveParent() {
             return null;
         }
-        public boolean equals(Object obj) {
+        @Override
+				public boolean equals(Object obj) {
             if (this == obj) {
                 return true;
             }
             return ((obj instanceof AttributeSet) &&
                     (((AttributeSet)obj).getAttributeCount() == 0));
         }
-        public int hashCode() {
+        @Override
+				public int hashCode() {
             return 0;
         }
     }

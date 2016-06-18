@@ -178,7 +178,8 @@ public class BoxView extends CompositeView {
      *   <code>null</code>to indicate no children are being added
      *   (useful to remove)
      */
-    public void replace(int index, int length, View[] elems) {
+    @Override
+		public void replace(int index, int length, View[] elems) {
         super.replace(index, length, elems);
 
         // invalidate cache
@@ -235,7 +236,8 @@ public class BoxView extends CompositeView {
      * @see #changedUpdate
      * @since 1.3
      */
-    protected void forwardUpdate(DocumentEvent.ElementChange ec,
+    @Override
+		protected void forwardUpdate(DocumentEvent.ElementChange ec,
                                  DocumentEvent e, Shape a, ViewFactory f) {
         boolean wasValid = isLayoutValid(majorAxis);
         super.forwardUpdate(ec, e, a, f);
@@ -273,7 +275,8 @@ public class BoxView extends CompositeView {
      * @param width true if the width preference should change
      * @param height true if the height preference should change
      */
-    public void preferenceChanged(View child, boolean width, boolean height) {
+    @Override
+		public void preferenceChanged(View child, boolean width, boolean height) {
         boolean majorChanged = (majorAxis == X_AXIS) ? width : height;
         boolean minorChanged = (majorAxis == X_AXIS) ? height : width;
         if (majorChanged) {
@@ -295,7 +298,8 @@ public class BoxView extends CompositeView {
      * @return the weight
      * @exception IllegalArgumentException for an invalid axis
      */
-    public int getResizeWeight(int axis) {
+    @Override
+		public int getResizeWeight(int axis) {
         checkRequests(axis);
         if (axis == majorAxis) {
             if ((majorRequest.preferred != majorRequest.minimum) ||
@@ -394,7 +398,8 @@ public class BoxView extends CompositeView {
      * @param width the width >= 0
      * @param height the height >= 0
      */
-    public void setSize(float width, float height) {
+    @Override
+		public void setSize(float width, float height) {
         layout(Math.max(0, (int)(width - getLeftInset() - getRightInset())),
                Math.max(0, (int)(height - getTopInset() - getBottomInset())));
     }
@@ -410,7 +415,8 @@ public class BoxView extends CompositeView {
      * @param allocation the allocated region to render into
      * @see View#paint
      */
-    public void paint(Graphics g, Shape allocation) {
+    @Override
+		public void paint(Graphics g, Shape allocation) {
         Rectangle alloc = (allocation instanceof Rectangle) ?
                            (Rectangle)allocation : allocation.getBounds();
         int n = getViewCount();
@@ -449,7 +455,8 @@ public class BoxView extends CompositeView {
      *          if <code>a</code> is <code>null</code>;
      *          or <code>null</code> if the layout is invalid
      */
-    public Shape getChildAllocation(int index, Shape a) {
+    @Override
+		public Shape getChildAllocation(int index, Shape a) {
         if (a != null) {
             Shape ca = super.getChildAllocation(index, a);
             if ((ca != null) && (! isAllocationValid())) {
@@ -477,7 +484,8 @@ public class BoxView extends CompositeView {
      *  not represent a valid location in the associated document
      * @see View#modelToView
      */
-    public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
+    @Override
+		public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
         if (! isAllocationValid()) {
             Rectangle alloc = a.getBounds();
             setSize(alloc.width, alloc.height);
@@ -496,7 +504,8 @@ public class BoxView extends CompositeView {
      *  given point in the view >= 0
      * @see View#viewToModel
      */
-    public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
+    @Override
+		public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
         if (! isAllocationValid()) {
             Rectangle alloc = a.getBounds();
             setSize(alloc.width, alloc.height);
@@ -521,7 +530,8 @@ public class BoxView extends CompositeView {
      *   center of the view
      * @exception IllegalArgumentException for an invalid axis
      */
-    public float getAlignment(int axis) {
+    @Override
+		public float getAlignment(int axis) {
         checkRequests(axis);
         if (axis == majorAxis) {
             return majorRequest.alignment;
@@ -542,7 +552,8 @@ public class BoxView extends CompositeView {
      *           the parent may choose to resize or break the view
      * @exception IllegalArgumentException for an invalid axis type
      */
-    public float getPreferredSpan(int axis) {
+    @Override
+		public float getPreferredSpan(int axis) {
         checkRequests(axis);
         float marginSpan = (axis == X_AXIS) ? getLeftInset() + getRightInset() :
             getTopInset() + getBottomInset();
@@ -565,7 +576,8 @@ public class BoxView extends CompositeView {
      *           the parent may choose to resize or break the view
      * @exception IllegalArgumentException for an invalid axis type
      */
-    public float getMinimumSpan(int axis) {
+    @Override
+		public float getMinimumSpan(int axis) {
         checkRequests(axis);
         float marginSpan = (axis == X_AXIS) ? getLeftInset() + getRightInset() :
             getTopInset() + getBottomInset();
@@ -588,7 +600,8 @@ public class BoxView extends CompositeView {
      *           the parent may choose to resize or break the view
      * @exception IllegalArgumentException for an invalid axis type
      */
-    public float getMaximumSpan(int axis) {
+    @Override
+		public float getMaximumSpan(int axis) {
         checkRequests(axis);
         float marginSpan = (axis == X_AXIS) ? getLeftInset() + getRightInset() :
             getTopInset() + getBottomInset();
@@ -620,7 +633,8 @@ public class BoxView extends CompositeView {
      *   inside of the insets
      * @return true if the point lies before the region else false
      */
-    protected boolean isBefore(int x, int y, Rectangle innerAlloc) {
+    @Override
+		protected boolean isBefore(int x, int y, Rectangle innerAlloc) {
         if (majorAxis == View.X_AXIS) {
             return (x < innerAlloc.x);
         } else {
@@ -637,7 +651,8 @@ public class BoxView extends CompositeView {
      *   inside of the insets
      * @return true if the point lies after the region else false
      */
-    protected boolean isAfter(int x, int y, Rectangle innerAlloc) {
+    @Override
+		protected boolean isAfter(int x, int y, Rectangle innerAlloc) {
         if (majorAxis == View.X_AXIS) {
             return (x > (innerAlloc.width + innerAlloc.x));
         } else {
@@ -654,7 +669,8 @@ public class BoxView extends CompositeView {
      *   be changed to the childs allocation on exit
      * @return the view
      */
-    protected View getViewAtPoint(int x, int y, Rectangle alloc) {
+    @Override
+		protected View getViewAtPoint(int x, int y, Rectangle alloc) {
         int n = getViewCount();
         if (majorAxis == View.X_AXIS) {
             if (x < (alloc.x + majorOffsets[0])) {
@@ -692,7 +708,8 @@ public class BoxView extends CompositeView {
      *   allocate, >= 0 && < getViewCount()
      * @param alloc the allocated region
      */
-    protected void childAllocation(int index, Rectangle alloc) {
+    @Override
+		protected void childAllocation(int index, Rectangle alloc) {
         alloc.x += getOffset(X_AXIS, index);
         alloc.y += getOffset(Y_AXIS, index);
         alloc.width = getSpan(X_AXIS, index);
@@ -1142,7 +1159,8 @@ public class BoxView extends CompositeView {
      *          <code>position</code> and <code>bias</code>
      *          are layed out in descending order; otherwise false
      */
-    protected boolean flipEastAndWestAtEnds(int position,
+    @Override
+		protected boolean flipEastAndWestAtEnds(int position,
                                             Position.Bias bias) {
         if(majorAxis == Y_AXIS) {
             int testPos = (bias == Position.Bias.Backward) ?

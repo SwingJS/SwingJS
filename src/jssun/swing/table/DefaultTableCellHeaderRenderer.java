@@ -48,12 +48,14 @@ public class DefaultTableCellHeaderRenderer extends DefaultTableCellRenderer
         setHorizontalAlignment(JLabel.CENTER);
     }
 
-    public void setHorizontalTextPosition(int textPosition) {
+    @Override
+		public void setHorizontalTextPosition(int textPosition) {
         horizontalTextPositionSet = true;
         super.setHorizontalTextPosition(textPosition);
     }
 
-    public Component getTableCellRendererComponent(JTable table, Object value,
+    @Override
+		public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
         Icon sortIcon = null;
 

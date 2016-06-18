@@ -264,7 +264,8 @@ public abstract class SunGraphics2D
 //        invalidatePipe();
 //    }
 //
-    protected Object clone() {
+    @Override
+		protected Object clone() {
     	return clone0();
     }
     
@@ -313,7 +314,8 @@ public abstract class SunGraphics2D
     /**
      * Create a new SunGraphics2D based on this one.
      */
-    abstract public Graphics create();
+    @Override
+		abstract public Graphics create();
     
 //
 //    public void setDevClip(int x, int y, int w, int h) {

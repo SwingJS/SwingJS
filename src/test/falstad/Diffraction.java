@@ -73,13 +73,16 @@ class DiffractionCanvas extends Canvas {
  DiffractionCanvas(DiffractionFrame p) {
 	pg = p;
  }
- public Dimension getPreferredSize() {
+ @Override
+public Dimension getPreferredSize() {
 	return new Dimension(300,400);
  }
- public void update(Graphics g) {
+ @Override
+public void update(Graphics g) {
 	pg.updateDiffraction(g);
  }
- public void paintComponent(Graphics g) {
+ @Override
+public void paintComponent(Graphics g) {
 		/**
 		 * @j2sNative
 		 * 
@@ -90,19 +93,24 @@ class DiffractionCanvas extends Canvas {
 
 	pg.updateDiffraction(g);
  }
-};
+}
 
 class DiffractionLayout implements LayoutManager {
  public DiffractionLayout() {}
- public void addLayoutComponent(String name, Component c) {}
- public void removeLayoutComponent(Component c) {}
- public Dimension preferredLayoutSize(Container target) {
+ @Override
+public void addLayoutComponent(String name, Component c) {}
+ @Override
+public void removeLayoutComponent(Component c) {}
+ @Override
+public Dimension preferredLayoutSize(Container target) {
 	return new Dimension(550, 400);
  }
- public Dimension minimumLayoutSize(Container target) {
+ @Override
+public Dimension minimumLayoutSize(Container target) {
 	return new Dimension(100,100);
  }
- public void layoutContainer(Container target) {
+ @Override
+public void layoutContainer(Container target) {
 	Insets insets = target.insets();
 	int targetw = target.size().width - insets.left - insets.right;
 	int cw = targetw * 7/10;
@@ -131,7 +139,7 @@ class DiffractionLayout implements LayoutManager {
 	    }
 	}
  }
-};
+}
 
 public class Diffraction extends Applet {
  static DiffractionFrame mf;
@@ -140,7 +148,8 @@ public class Diffraction extends Applet {
 	    mf.dispose();
 	mf = null;
  }
- public void init() {
+ @Override
+public void init() {
 	mf = new DiffractionFrame(this);
 	mf.init();
  }
@@ -149,7 +158,8 @@ public class Diffraction extends Applet {
      mf.init();
  }
 
- public void destroy() {
+ @Override
+public void destroy() {
 	if (mf != null)
 	    mf.dispose();
 	mf = null;
@@ -157,7 +167,8 @@ public class Diffraction extends Applet {
  
  boolean started = false;
  
- public void paint(Graphics g) {
+ @Override
+public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -168,7 +179,7 @@ public class Diffraction extends Applet {
 		g.drawString(s, 10, 30);
 		super.paint(g);
 	}
-};
+}
 
 class DiffractionFrame extends Frame
 implements ComponentListener, ActionListener, AdjustmentListener,
@@ -749,17 +760,22 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	aperture.rezoom(zoomChange);
  }
 
- public void componentHidden(ComponentEvent e){}
- public void componentMoved(ComponentEvent e){}
- public void componentShown(ComponentEvent e) {
+ @Override
+public void componentHidden(ComponentEvent e){}
+ @Override
+public void componentMoved(ComponentEvent e){}
+ @Override
+public void componentShown(ComponentEvent e) {
 	cv.repaint();
  }
 
- public void componentResized(ComponentEvent e) {
+ @Override
+public void componentResized(ComponentEvent e) {
 	handleResize();
 	cv.repaint(100);
  }
- public void actionPerformed(ActionEvent e) {
+ @Override
+public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == defaultsButton) {
 	    colorCheck.setState(false);
 	    reversedCheck.setState(false);
@@ -773,7 +789,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	}
  }
 
- public void adjustmentValueChanged(AdjustmentEvent e) {
+ @Override
+public void adjustmentValueChanged(AdjustmentEvent e) {
 	System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	if (e.getSource() != brightnessBar)
 	    functionChanged = true;
@@ -782,14 +799,16 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	cv.repaint(100);
  }
 
- public void mouseDragged(MouseEvent e) {
+ @Override
+public void mouseDragged(MouseEvent e) {
 	if (selection != -1) {
 	    dragging = true;
 	    if (aperture.drag(e.getX(), e.getY()))
 		cv.repaint();
 	}
  }
- public void mouseMoved(MouseEvent e) {
+ @Override
+public void mouseMoved(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
 	    if (selection != -1) {
 		dragging = true;
@@ -803,17 +822,21 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (selection != sel)
 	    cv.repaint();
  }
- public void mouseClicked(MouseEvent e) {
+ @Override
+public void mouseClicked(MouseEvent e) {
  }
- public void mouseEntered(MouseEvent e) {
+ @Override
+public void mouseEntered(MouseEvent e) {
  }
- public void mouseExited(MouseEvent e) {
+ @Override
+public void mouseExited(MouseEvent e) {
 	if (!dragging && selection != -1) {
 	    selection = -1;
 	    cv.repaint();
 	}
  }
- public void mousePressed(MouseEvent e) {
+ @Override
+public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	if (selection != -1) {
@@ -822,14 +845,16 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		cv.repaint();
 	}
  }
- public void mouseReleased(MouseEvent e) {
+ @Override
+public void mouseReleased(MouseEvent e) {
 	if (dragging) {
 	    functionChanged = true;
 	    cv.repaint();
 	}
 	dragging = false;
  }
- public void itemStateChanged(ItemEvent e) {
+ @Override
+public void itemStateChanged(ItemEvent e) {
 	if (e.getSource() != sizeCheck)
 	    functionChanged = true;
 	if (e.getSource() == apertureChooser) {
@@ -850,7 +875,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	cv.repaint(100);
  }
 
- public boolean handleEvent(Event ev) {
+ @Override
+public boolean handleEvent(Event ev) {
 	 
      if (ev.id == Event.WINDOW_DESTROY) {
          if (applet == null) dispose(); else applet.destroyFrame();
@@ -876,17 +902,25 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	void rezoom(double x) {}
 	abstract double getDimension();
 	Aperture() { setToDefaults(); }
- };
+ }
 
  class CircularAperture extends Aperture {
 	double radius;
+	@Override
 	String getName() { return "circle"; }
+	@Override
 	Aperture createNext() { return new HalfPlaneAperture(); }
+	@Override
 	boolean hasXSymmetry() { return true; }
+	@Override
 	boolean hasYSymmetry() { return true; }
+	@Override
 	boolean hasDiagonalSymmetry() { return true; }
+	@Override
 	void setToDefaults() { radius = .25; }
+	@Override
 	void rezoom(double z) { radius *= z; }
+	@Override
 	void compute() {
 	    int i, j;
 	    for (i = 0; i != gridSizeX/2; i++) {
@@ -949,6 +983,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    }
 	}
 
+	@Override
 	void drawGeometricShadow(Graphics g) {
 	    if (selection == 1)
 		g.setColor(Color.yellow);
@@ -957,6 +992,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		       r*2, r*2);
 	}
 
+	@Override
 	int getSelection(int x, int y) {
 	    int rx = winSize.width/2-x;
 	    int ry = winSize.height/2-y;
@@ -964,6 +1000,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return (java.lang.Math.abs(r-radius) < 5./winSize.width) ? 1 : -1;
 	}
 
+	@Override
 	boolean drag(int x, int y) {
 	    int rx = winSize.width/2-x;
 	    int ry = winSize.height/2-y;
@@ -974,6 +1011,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return true;
 	}
 	
+	@Override
 	double getDimension() { return radius*2; }
  }
 
@@ -982,8 +1020,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  abstract class OneDimensionalAperture extends Aperture {
 	public double lineLocations[];
 	public int lineCount;
+	@Override
 	boolean oneDimensional() { return true; }
 
+	@Override
 	void compute() {
 	    int i, j;
 	    double result[] = new double[2];
@@ -1018,10 +1058,12 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    }
 	}
 
+	@Override
 	double getDimension() {
 	    return lineLocations[lineCount-1]-lineLocations[0];
 	}
 
+	@Override
 	void drawGeometricShadow(Graphics g) {
 	    int i;
 	    int symsel = -1;
@@ -1035,6 +1077,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    }
 	}
 
+	@Override
 	int getSelection(int x, int y) {
 	    double xf = ((double) x)/winSize.width - .5;
 	    double thresh = 3./winSize.width;
@@ -1050,6 +1093,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return sel;
 	}
 
+	@Override
 	boolean drag(int x, int y) {
 	    double xf = ((double) x)/winSize.width - .5;
 	    if (selection > 0 && xf <= lineLocations[selection-1])
@@ -1068,8 +1112,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return true;
 	}
 
+	@Override
 	boolean hideWhileDragging() { return false; }
 
+	@Override
 	void rezoom(double z) {
 	    int i;
 	    for (i = 0; i != lineCount; i++)
@@ -1078,28 +1124,38 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  }
 
  class HalfPlaneAperture extends OneDimensionalAperture {
+	@Override
 	void setToDefaults() {
 	    lineLocations = new double[lineCount = 1];
 	    lineLocations[0] = 0;
 	}
+	@Override
 	String getName() { return "half plane"; }
+	@Override
 	Aperture createNext() { return new SlitAperture(); }
+	@Override
 	double getDimension() { return .5-lineLocations[0]; }
  }
 
  class SlitAperture extends OneDimensionalAperture {
+	@Override
 	void setToDefaults() {
 	    lineLocations = new double[lineCount = 2];
 	    lineLocations[0] = -.06;
 	    lineLocations[1] =  .06;
 	}
+	@Override
 	int defaultBrightness() { return 200; }
+	@Override
 	String getName() { return "slit"; }
+	@Override
 	Aperture createNext() { return new DoubleSlitAperture(); }
+	@Override
 	boolean hasXSymmetry() { return true; }
  }
 
  class DoubleSlitAperture extends OneDimensionalAperture {
+	@Override
 	void setToDefaults() {
 	    lineLocations = new double[lineCount = 4];
 	    lineLocations[0] = -.17;
@@ -1107,13 +1163,18 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    lineLocations[2] =  1/8.0;
 	    lineLocations[3] =  .17;
 	}
+	@Override
 	int defaultBrightness() { return 140; }
+	@Override
 	String getName() { return "double slit"; }
+	@Override
 	Aperture createNext() { return new TripleSlitAperture(); }
+	@Override
 	boolean hasXSymmetry() { return true; }
  }
 
  class TripleSlitAperture extends OneDimensionalAperture {
+	@Override
 	void setToDefaults() {
 	    lineLocations = new double[lineCount = 6];
 	    lineLocations[0] = -.1533;
@@ -1123,9 +1184,13 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    lineLocations[4] =  .1133;
 	    lineLocations[5] =  .1533;
 	}
+	@Override
 	int defaultBrightness() { return 210; }
+	@Override
 	String getName() { return "triple slit"; }
+	@Override
 	Aperture createNext() { return new SquareAperture(); }
+	@Override
 	boolean hasXSymmetry() { return true; }
  }
 
@@ -1153,6 +1218,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	double rects[][];
 	abstract void setupRects();
 
+	@Override
 	void compute() {
 	    setupRects();
 	    int i, j;
@@ -1199,6 +1265,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    }
 	}
 
+	@Override
 	void drawGeometricShadow(Graphics g) {
 	    int i, j;
 	    // go through each line and determine if the blocks on either

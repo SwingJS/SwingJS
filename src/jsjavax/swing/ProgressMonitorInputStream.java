@@ -110,7 +110,8 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.read</code>
      * to update the progress monitor after the read.
      */
-    public int read() throws IOException {
+    @Override
+		public int read() throws IOException {
         int c = in.read();
         if (c >= 0) monitor.setProgress(++nread);
         if (monitor.isCanceled()) {
@@ -127,7 +128,8 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.read</code>
      * to update the progress monitor after the read.
      */
-    public int read(byte b[]) throws IOException {
+    @Override
+		public int read(byte b[]) throws IOException {
         int nr = in.read(b);
         if (nr > 0) monitor.setProgress(nread += nr);
         if (monitor.isCanceled()) {
@@ -144,7 +146,8 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.read</code>
      * to update the progress monitor after the read.
      */
-    public int read(byte b[],
+    @Override
+		public int read(byte b[],
                     int off,
                     int len) throws IOException {
         int nr = in.read(b, off, len);
@@ -163,7 +166,8 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.skip</code>
      * to update the progress monitor after the skip.
      */
-    public long skip(long n) throws IOException {
+    @Override
+		public long skip(long n) throws IOException {
         long nr = in.skip(n);
         if (nr > 0) monitor.setProgress(nread += nr);
         return nr;
@@ -174,7 +178,8 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.close</code>
      * to close the progress monitor as well as the stream.
      */
-    public void close() throws IOException {
+    @Override
+		public void close() throws IOException {
         in.close();
         monitor.close();
     }
@@ -184,7 +189,8 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.reset</code>
      * to reset the progress monitor as well as the stream.
      */
-    public synchronized void reset() throws IOException {
+    @Override
+		public synchronized void reset() throws IOException {
         in.reset();
         nread = size - in.available();
         monitor.setProgress(nread);

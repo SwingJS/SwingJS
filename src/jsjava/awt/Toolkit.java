@@ -2151,7 +2151,8 @@ public abstract class Toolkit {
         // ToolkitEventMulticaster instead of an AWTEventMulticaster.
         // Note: this method is called by AWTEventListener.removeInternal(),
         // so its method signature must match AWTEventListener.remove().
-        protected EventListener remove(EventListener oldl) {
+        @Override
+				protected EventListener remove(EventListener oldl) {
             if (oldl == a)  return b;
             if (oldl == b)  return a;
             AWTEventListener a2 = (AWTEventListener)removeInternal(a, oldl);
@@ -2162,7 +2163,8 @@ public abstract class Toolkit {
             return add(a2, b2);
         }
 
-        public void eventDispatched(AWTEvent event) {
+        @Override
+				public void eventDispatched(AWTEvent event) {
             ((AWTEventListener)a).eventDispatched(event);
             ((AWTEventListener)b).eventDispatched(event);
         }
@@ -2199,7 +2201,8 @@ public abstract class Toolkit {
             eventMask = mask;
         }
 
-        public void eventDispatched(AWTEvent event) {
+        @Override
+				public void eventDispatched(AWTEvent event) {
             long eventBit = 0; // Used to save the bit of the event type.
             if (((eventBit = eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0 &&
                  event.id >= ComponentEvent.COMPONENT_FIRST &&

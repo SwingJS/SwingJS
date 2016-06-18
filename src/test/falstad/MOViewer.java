@@ -54,28 +54,36 @@ class MOViewerCanvas extends Canvas {
     MOViewerCanvas(MOViewerFrame p) {
 	pg = p;
     }
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
 	return new Dimension(300,400);
     }
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
 	pg.updateMOViewer(g);
     }
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
 	pg.updateMOViewer(g);
     }
-};
+}
 
 class MOViewerLayout implements LayoutManager {
     public MOViewerLayout() {}
-    public void addLayoutComponent(String name, Component c) {}
-    public void removeLayoutComponent(Component c) {}
-    public Dimension preferredLayoutSize(Container target) {
+    @Override
+		public void addLayoutComponent(String name, Component c) {}
+    @Override
+		public void removeLayoutComponent(Component c) {}
+    @Override
+		public Dimension preferredLayoutSize(Container target) {
 	return new Dimension(500, 500);
     }
-    public Dimension minimumLayoutSize(Container target) {
+    @Override
+		public Dimension minimumLayoutSize(Container target) {
 	return new Dimension(100,100);
     }
-    public void layoutContainer(Container target) {
+    @Override
+		public void layoutContainer(Container target) {
 	int barwidth = 0;
 	int i;
 	for (i = 1; i < target.getComponentCount(); i++) {
@@ -110,7 +118,7 @@ class MOViewerLayout implements LayoutManager {
 	    }
 	}
     }
-};
+}
 
 public class MOViewer extends Applet implements ComponentListener {
     static MOViewerFrame ogf;
@@ -121,7 +129,8 @@ public class MOViewer extends Applet implements ComponentListener {
 	repaint();
     }
     boolean started = false;
-    public void init() {
+    @Override
+		public void init() {
 	addComponentListener(this);
     }
     
@@ -139,7 +148,8 @@ public class MOViewer extends Applet implements ComponentListener {
 	}
     }
     
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
 	String s = "Applet is open in a separate window.";
 	if (!started)
 	    s = "Applet is starting.";
@@ -150,18 +160,23 @@ public class MOViewer extends Applet implements ComponentListener {
 	g.drawString(s, 10, 30);
     }
     
-    public void componentHidden(ComponentEvent e){}
-    public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) { showFrame(); }
-    public void componentResized(ComponentEvent e) {}
+    @Override
+		public void componentHidden(ComponentEvent e){}
+    @Override
+		public void componentMoved(ComponentEvent e){}
+    @Override
+		public void componentShown(ComponentEvent e) { showFrame(); }
+    @Override
+		public void componentResized(ComponentEvent e) {}
     
-    public void destroy() {
+    @Override
+		public void destroy() {
 	if (ogf != null)
 	    ogf.dispose();
 	ogf = null;
 	repaint();
     }
-};
+}
 
 class MOViewerFrame extends Frame
   implements ComponentListener, ActionListener, AdjustmentListener,
@@ -1167,7 +1182,8 @@ class MOViewerFrame extends Frame
 	return x < 0 ? -1 : 1;
     }
 
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
 	cv.repaint();
     }
 
@@ -1514,17 +1530,22 @@ class MOViewerFrame extends Frame
 	x3[2] = mz+mvz*t;
     }
 
-    public void componentHidden(ComponentEvent e){}
-    public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) {
+    @Override
+		public void componentHidden(ComponentEvent e){}
+    @Override
+		public void componentMoved(ComponentEvent e){}
+    @Override
+		public void componentShown(ComponentEvent e) {
 	cv.repaint();
     }
 
-    public void componentResized(ComponentEvent e) {
+    @Override
+		public void componentResized(ComponentEvent e) {
 	handleResize();
 	cv.repaint(pause);
     }
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == exitItem) {
 	    applet.destroyFrame();
 	    return;
@@ -1535,7 +1556,8 @@ class MOViewerFrame extends Frame
     int scaleValue = -1;
     int sepValue = -1;
 
-    public void adjustmentValueChanged(AdjustmentEvent e) {
+    @Override
+		public void adjustmentValueChanged(AdjustmentEvent e) {
 	System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	if (e.getSource() == scaleBar) {
 	    if (scaleBar.getValue() == scaleValue)
@@ -1556,7 +1578,8 @@ class MOViewerFrame extends Frame
 	cv.repaint(pause);
     }
 
-    public void mouseDragged(MouseEvent e) {
+    @Override
+		public void mouseDragged(MouseEvent e) {
 	dragging = true;
 	changingDerivedStates = false;
 	edit(e);
@@ -1606,7 +1629,8 @@ class MOViewerFrame extends Frame
 	}
     }
 
-    public void mouseMoved(MouseEvent e) {
+    @Override
+		public void mouseMoved(MouseEvent e) {
 	if (dragging)
 	    return;
 	int x = e.getX();
@@ -1637,19 +1661,23 @@ class MOViewerFrame extends Frame
 	    cv.repaint(pause);
     }
 
-    public void mouseClicked(MouseEvent e) {
+    @Override
+		public void mouseClicked(MouseEvent e) {
     }
 
-    public void mouseEntered(MouseEvent e) {
+    @Override
+		public void mouseEntered(MouseEvent e) {
     }
-    public void mouseExited(MouseEvent e) {
+    @Override
+		public void mouseExited(MouseEvent e) {
 	if (!dragging && selection != 0) {
 	    selectedPaneHandle = -1;
 	    selection = 0;
 	    cv.repaint(pause);
 	}
     }
-    public void mousePressed(MouseEvent e) {
+    @Override
+		public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	dragX = dragStartX = e.getX();
@@ -1658,12 +1686,14 @@ class MOViewerFrame extends Frame
 	dragging = true;
 	edit(e);
     }
-    public void mouseReleased(MouseEvent e) {
+    @Override
+		public void mouseReleased(MouseEvent e) {
 	if (dragging)
 	    cv.repaint();
 	dragging = changingDerivedStates = false;
     }
-    public void itemStateChanged(ItemEvent e) {
+    @Override
+		public void itemStateChanged(ItemEvent e) {
 	if (e.getItemSelectable() instanceof CheckboxMenuItem) {
 	    int i;
 	    for (i = 0; i != samplesNums.length; i++)
@@ -1684,7 +1714,8 @@ class MOViewerFrame extends Frame
 	cv.repaint(pause);
     }
 
-    public boolean handleEvent(Event ev) {
+    @Override
+		public boolean handleEvent(Event ev) {
         if (ev.id == Event.WINDOW_DESTROY) {
             destroyFrame();
             return true;
@@ -1934,9 +1965,10 @@ class MOViewerFrame extends Frame
 	}
 
 	abstract float computePoint(int r, int costh);
-    };
+    }
 
     class SOrbital extends Orbital {
+	@Override
 	float computePoint(int r, int costh) {
 	    try {
 		float v = (r < dataSize) ? dataR[r] : 0;
@@ -1947,12 +1979,13 @@ class MOViewerFrame extends Frame
 		//funci = 100;
 	    }
 	}
-    };
+    }
 
     class MZeroOrbital extends Orbital {
 	MZeroOrbital(int ll) {
 	    l = ll;
 	}
+	@Override
 	float computePoint(int r, int costh) {
 	    try {
 		float v = (r < dataSize) ? dataR[r]*dataTh[costh] : 0;
@@ -1962,7 +1995,7 @@ class MOViewerFrame extends Frame
 		//System.out.println("bad " + r + " " + costh);
 	    }
 	}
-    };
+    }
 
     class ReImOrbital extends Orbital {
         ReImOrbital(int ll) {
@@ -1970,13 +2003,16 @@ class MOViewerFrame extends Frame
 	    m = 1;
         }
 	float dataPhi[];
+	@Override
 	void setReal() {
 	    dataPhi = dataPhiR;
 	}
+	@Override
 	void setIm() {
 	    dataPhi = dataPhiI;
 	}
-        float computePoint(int r, int costh) {
+        @Override
+				float computePoint(int r, int costh) {
             try {
 		float phiValR = dataPhi[phiIndex];
                 return (r < dataSize) ? dataR[r]*dataTh[costh]*phiValR*root2
@@ -1985,7 +2021,7 @@ class MOViewerFrame extends Frame
                 return 0;
             }
         }
-    };
+    }
 
     class Complex {
 	public double re, im, mag, phase;
@@ -2051,7 +2087,7 @@ class MOViewerFrame extends Frame
 	    im = -im;
 	    phase = -phase;
 	}
-    };
+    }
 
     class PhaseColor {
 	public double r, g, b;

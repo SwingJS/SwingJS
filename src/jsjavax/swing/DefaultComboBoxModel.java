@@ -83,7 +83,8 @@ public class DefaultComboBoxModel extends AbstractListModel implements MutableCo
      * <p>
      * @param anObject The combo box value or null for no selection.
      */
-    public void setSelectedItem(Object anObject) {
+    @Override
+		public void setSelectedItem(Object anObject) {
         if ((selectedObject != null && !selectedObject.equals( anObject )) ||
             selectedObject == null && anObject != null) {
             selectedObject = anObject;
@@ -92,17 +93,20 @@ public class DefaultComboBoxModel extends AbstractListModel implements MutableCo
     }
 
     // implements jsjavax.swing.ComboBoxModel
-    public Object getSelectedItem() {
+    @Override
+		public Object getSelectedItem() {
         return selectedObject;
     }
 
     // implements jsjavax.swing.ListModel
-    public int getSize() {
+    @Override
+		public int getSize() {
         return objects.size();
     }
 
     // implements jsjavax.swing.ListModel
-    public Object getElementAt(int index) {
+    @Override
+		public Object getElementAt(int index) {
         if ( index >= 0 && index < objects.size() )
             return objects.elementAt(index);
         else
@@ -121,7 +125,8 @@ public class DefaultComboBoxModel extends AbstractListModel implements MutableCo
     }
 
     // implements jsjavax.swing.MutableComboBoxModel
-    public void addElement(Object anObject) {
+    @Override
+		public void addElement(Object anObject) {
         objects.addElement(anObject);
         fireIntervalAdded(this,objects.size()-1, objects.size()-1);
         if ( objects.size() == 1 && selectedObject == null && anObject != null ) {
@@ -130,13 +135,15 @@ public class DefaultComboBoxModel extends AbstractListModel implements MutableCo
     }
 
     // implements jsjavax.swing.MutableComboBoxModel
-    public void insertElementAt(Object anObject,int index) {
+    @Override
+		public void insertElementAt(Object anObject,int index) {
         objects.insertElementAt(anObject,index);
         fireIntervalAdded(this, index, index);
     }
 
     // implements jsjavax.swing.MutableComboBoxModel
-    public void removeElementAt(int index) {
+    @Override
+		public void removeElementAt(int index) {
         if ( getElementAt( index ) == selectedObject ) {
             if ( index == 0 ) {
                 setSelectedItem( getSize() == 1 ? null : getElementAt( index + 1 ) );
@@ -152,7 +159,8 @@ public class DefaultComboBoxModel extends AbstractListModel implements MutableCo
     }
 
     // implements jsjavax.swing.MutableComboBoxModel
-    public void removeElement(Object anObject) {
+    @Override
+		public void removeElement(Object anObject) {
         int index = objects.indexOf(anObject);
         if ( index != -1 ) {
             removeElementAt(index);

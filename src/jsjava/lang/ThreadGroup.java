@@ -991,7 +991,8 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * @param   e   the uncaught exception.
      * @since   JDK1.0
      */
-    public void uncaughtException(Thread t, Throwable e) {
+    @Override
+		public void uncaughtException(Thread t, Throwable e) {
         if (parent != null) {
             parent.uncaughtException(t, e);
         } else {
@@ -1032,7 +1033,8 @@ class ThreadGroup implements Thread.UncaughtExceptionHandler {
      * @return  a string representation of this thread group.
      * @since   JDK1.0
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[name=" + getName() + ",maxpri=" + maxPriority + ",html5Applet=" + html5Applet + "]";
     }
 

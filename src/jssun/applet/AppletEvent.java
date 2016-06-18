@@ -54,7 +54,8 @@ public class AppletEvent extends EventObject {
         return arg;
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         String str = getClass().getName() + "[source=" + source + " + id="+ id;
         if (arg != null) {
             str += " + arg=" + arg;

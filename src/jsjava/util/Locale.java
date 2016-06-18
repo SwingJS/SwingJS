@@ -564,7 +564,8 @@ public final class Locale implements Cloneable, Serializable {
      * Examples: "en", "de_DE", "_GB", "en_US_WIN", "de__POSIX", "fr__MAC"
      * @see #getDisplayName
      */
-    public final String toString() {
+    @Override
+		public final String toString() {
         boolean l = language.length() != 0;
         boolean c = country.length() != 0;
         boolean v = variant.length() != 0;
@@ -903,7 +904,8 @@ public final class Locale implements Cloneable, Serializable {
     /**
      * Overrides Cloneable
      */
-    public Object clone()
+    @Override
+		public Object clone()
     {
         try {
             Locale that = (Locale)super.clone();
@@ -918,7 +920,8 @@ public final class Locale implements Cloneable, Serializable {
      * Since Locales are often used in hashtables, caches the value
      * for speed.
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         int hc = hashCodeValue;
         if (hc == 0) {
             hc = (language.hashCode() << 8) ^ country.hashCode() ^ (variant.hashCode() << 4);
@@ -937,7 +940,8 @@ public final class Locale implements Cloneable, Serializable {
      * @return true if this Locale is equal to the specified object.
      */
 
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (this == obj)                      // quick check
             return true;
         if (!(obj instanceof Locale))

@@ -110,7 +110,8 @@ public class ParsePosition {
     /**
      * Overrides equals
      */
-    public boolean equals(Object obj)
+    @Override
+		public boolean equals(Object obj)
     {
         if (obj == null) return false;
         if (!(obj instanceof ParsePosition))
@@ -123,7 +124,8 @@ public class ParsePosition {
      * Returns a hash code for this ParsePosition.
      * @return a hash code value for this object
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         return (errorIndex << 16) | index;
     }
 
@@ -131,7 +133,8 @@ public class ParsePosition {
      * Return a string representation of this ParsePosition.
      * @return  a string representation of this object
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() +
             "[index=" + index +
             ",errorIndex=" + errorIndex + ']';

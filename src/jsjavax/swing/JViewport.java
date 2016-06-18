@@ -291,7 +291,8 @@ public class JViewport extends JComponent
      * @return a <code>ViewportUI</code> object
      * @since 1.3
      */
-    public ViewportUI getUI() {
+    @Override
+		public ViewportUI getUI() {
         return (ViewportUI)ui;
     }
 
@@ -318,7 +319,8 @@ public class JViewport extends JComponent
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ViewportUI)UIManager.getUI(this));
     }
 
@@ -332,7 +334,8 @@ public class JViewport extends JComponent
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -349,7 +352,8 @@ public class JViewport extends JComponent
      * @param index       the index
      * @see #setView
      */
-    protected Component addImpl(Component child, Object constraints, int index) {
+    @Override
+		protected Component addImpl(Component child, Object constraints, int index) {
       setView(child);
       return child;
     }
@@ -360,7 +364,8 @@ public class JViewport extends JComponent
      *
      * @see #setView
      */
-    public void remove(Component child) {
+    @Override
+		public void remove(Component child) {
         child.removeComponentListener(viewListener);
         removeChild(child);
     }
@@ -387,7 +392,8 @@ public class JViewport extends JComponent
      * @see jsjava.awt.Component#isValid
      * @see jsjava.awt.Component#getPeer
      */
-    public void scrollRectToVisible(Rectangle contentRect) {
+    @Override
+		public void scrollRectToVisible(Rectangle contentRect) {
         Component view = getView();
 
         if (view == null) {
@@ -602,7 +608,8 @@ public class JViewport extends JComponent
      * @param border the <code>Border</code> to set
      * @exception IllegalArgumentException this method is not implemented
      */
-    public final void setBorder(Border border) {
+    @Override
+		public final void setBorder(Border border) {
         if (border != null) {
             throw new IllegalArgumentException("JViewport.setBorder() not supported");
         }
@@ -616,7 +623,8 @@ public class JViewport extends JComponent
      * @return a <code>Rectange</code> of zero dimension and zero origin
      * @see #setBorder
      */
-    public final Insets getInsets() {
+    @Override
+		public final Insets getInsets() {
         return new Insets(0, 0, 0, 0);
     }
 
@@ -632,7 +640,8 @@ public class JViewport extends JComponent
      * @beaninfo
      *   expert: true
      */
-    public final Insets getInsets(Insets insets) {
+    @Override
+		public final Insets getInsets(Insets insets) {
         insets.left = insets.top = insets.right = insets.bottom = 0;
         return insets;
     }
@@ -679,7 +688,8 @@ public class JViewport extends JComponent
      *
      * @return false
      */
-    public boolean isOptimizedDrawingEnabled() {
+    @Override
+		public boolean isOptimizedDrawingEnabled() {
         return false;
     }
 
@@ -691,7 +701,8 @@ public class JViewport extends JComponent
      * @return true if if scroll mode is a BACKINGSTORE_SCROLL_MODE.
      * @see JComponent#isPaintingOrigin()
      */
-    boolean isPaintingOrigin() {
+    @Override
+		boolean isPaintingOrigin() {
         if (scrollMode == BACKINGSTORE_SCROLL_MODE) {
             return true;
         }
@@ -725,7 +736,8 @@ public class JViewport extends JComponent
      *
      * @param g the <code>Graphics</code> context within which to paint
      */
-    public void paint(Graphics g)
+    @Override
+		public void paint(Graphics g)
     {
         int width = getWidth();
         int height = getHeight();
@@ -874,7 +886,8 @@ public class JViewport extends JComponent
      *
      * @see JComponent#reshape(int, int, int, int)
      */
-    public void reshape(int x, int y, int w, int h) {
+    @Override
+		public void reshape(int x, int y, int w, int h) {
         boolean sizeChanged = (getWidth() != w) || (getHeight() != h);
         if (sizeChanged) {
             backingStoreImage = null;
@@ -1326,7 +1339,8 @@ public class JViewport extends JComponent
      */
     protected class ViewListener extends ComponentAdapter 
     {
-        public void componentResized(ComponentEvent e) {
+        @Override
+				public void componentResized(ComponentEvent e) {
             fireStateChanged();
             revalidate();
         }
@@ -1425,7 +1439,8 @@ public class JViewport extends JComponent
      * @param     h   the height
      * @see       jsjava.awt.Component#update(jsjava.awt.Graphics)
      */
-    public void repaint(long tm, int x, int y, int w, int h) {
+    @Override
+		public void repaint(long tm, int x, int y, int w, int h) {
         Container parent = getParent();
         if(parent != null)
             parent.repaint(tm,x+getX(),y+getY(),w,h);
@@ -1444,7 +1459,8 @@ public class JViewport extends JComponent
      *
      * @return  a string representation of this <code>JViewport</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String isViewSizeSetString = (isViewSizeSet ?
                                       "true" : "false");
         String lastPaintPositionString = (lastPaintPosition != null ?
@@ -1471,7 +1487,8 @@ public class JViewport extends JComponent
      * @param oldValue the old value of the property
      * @param newValue  the new value of the property
      */
-    public void firePropertyChangeObject(String propertyName, Object oldValue,
+    @Override
+		public void firePropertyChangeObject(String propertyName, Object oldValue,
                                       Object newValue) {
         super.firePropertyChangeObject(propertyName, oldValue, newValue);
         if (propertyName.equals(EnableWindowBlit)) {

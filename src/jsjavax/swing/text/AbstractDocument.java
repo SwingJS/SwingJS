@@ -344,7 +344,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @return the asynchronous loading priority, or <code>-1</code>
      *   if the document should not be loaded asynchronously
      */
-    public int getAsynchronousLoadPriority() {
+    @Override
+		public int getAsynchronousLoadPriority() {
         Integer loadPriority = (Integer)
             getProperty(AbstractDocument.AsyncLoadPriority);
         if (loadPriority != null) {
@@ -374,7 +375,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @see #getDocumentFilter
      * @since 1.4
      */
-    public void setDocumentFilter(DocumentFilter filter) {
+    @Override
+		public void setDocumentFilter(DocumentFilter filter) {
         documentFilter = filter;
     }
 
@@ -439,7 +441,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @return the length >= 0
      * @see Document#getLength
      */
-    public int getLength() {
+    @Override
+		public int getLength() {
         return data.length() - 1;
     }
 
@@ -449,7 +452,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @param listener the <code>DocumentListener</code> to add
      * @see Document#addDocumentListener
      */
-    public void addDocumentListener(DocumentListener listener) {
+    @Override
+		public void addDocumentListener(DocumentListener listener) {
         listenerList.add(DocumentListener.class, listener);
     }
 
@@ -459,7 +463,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @param listener the <code>DocumentListener</code> to remove
      * @see Document#removeDocumentListener
      */
-    public void removeDocumentListener(DocumentListener listener) {
+    @Override
+		public void removeDocumentListener(DocumentListener listener) {
         listenerList.remove(DocumentListener.class, listener);
     }
 
@@ -489,7 +494,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @param listener the <code>UndoableEditListener</code> to add
      * @see Document#addUndoableEditListener
      */
-    public void addUndoableEditListener(UndoableEditListener listener) {
+    @Override
+		public void addUndoableEditListener(UndoableEditListener listener) {
         listenerList.add(UndoableEditListener.class, listener);
     }
 
@@ -499,7 +505,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @param listener the <code>UndoableEditListener</code> to remove
      * @see Document#removeDocumentListener
      */
-    public void removeUndoableEditListener(UndoableEditListener listener) {
+    @Override
+		public void removeUndoableEditListener(UndoableEditListener listener) {
         listenerList.remove(UndoableEditListener.class, listener);
     }
 
@@ -532,7 +539,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @return the value of this property or <code>null</code>
      * @see #getDocumentProperties
      */
-    public final Object getProperty(Object key) {
+    @Override
+		public final Object getProperty(Object key) {
         return getDocumentProperties().get(key);
     }
 
@@ -550,7 +558,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @param value the property value
      * @see #getDocumentProperties
      */
-    public final void putProperty(Object key, Object value) {
+    @Override
+		public final void putProperty(Object key, Object value) {
         if (value != null) {
             getDocumentProperties().put(key, value);
         } else {
@@ -590,7 +599,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *   position within the document
      * @see Document#remove
      */
-    public void remove(int offs, int len) throws BadLocationException {
+    @Override
+		public void remove(int offs, int len) throws BadLocationException {
         DocumentFilter filter = getDocumentFilter();
 
         writeLock();
@@ -660,7 +670,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *            position within the document
      * @since 1.4
      */
-    public void replace(int offset, int length, String text,
+    @Override
+		public void replace(int offset, int length, String text,
                         AttributeSet attrs) throws BadLocationException {
         if (length == 0 && (text == null || text.length() == 0)) {
             return;
@@ -704,7 +715,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *   position within the document
      * @see Document#insertString
      */
-    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+    @Override
+		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         if ((str == null) || (str.length() == 0)) {
             return;
         }
@@ -776,7 +788,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *   that is not a valid position within the document
      * @see Document#getText
      */
-    public String getText(int offset, int length) throws BadLocationException {
+    @Override
+		public String getText(int offset, int length) throws BadLocationException {
         if (length < 0) {
             throw new BadLocationException("Length must be positive", length);
         }
@@ -816,7 +829,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @exception BadLocationException  the range given includes a position
      *   that is not a valid position within the document
      */
-    public void getText(int offset, int length, Segment txt) throws BadLocationException {
+    @Override
+		public void getText(int offset, int length, Segment txt) throws BadLocationException {
         if (length < 0) {
             throw new BadLocationException("Length must be positive", length);
         }
@@ -838,7 +852,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *   represent a valid location in the associated document
      * @see Document#createPosition
      */
-    public synchronized Position createPosition(int offs) throws BadLocationException {
+    @Override
+		public synchronized Position createPosition(int offs) throws BadLocationException {
         return data.createPosition(offs);
     }
 
@@ -849,7 +864,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *
      * @return the position
      */
-    public final Position getStartPosition() {
+    @Override
+		public final Position getStartPosition() {
         Position p;
         try {
             p = createPosition(0);
@@ -866,7 +882,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *
      * @return the position
      */
-    public final Position getEndPosition() {
+    @Override
+		public final Position getEndPosition() {
         Position p;
         try {
             p = createPosition(data.length());
@@ -883,7 +900,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      *
      * @return the root element
      */
-    public Element[] getRootElements() {
+    @Override
+		public Element[] getRootElements() {
         Element[] elems = new Element[2];
         elems[0] = getDefaultRootElement();
         elems[1] = getBidiRootElement();
@@ -898,7 +916,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
      * @return the root element
      * @see Document#getDefaultRootElement
      */
-    public abstract Element getDefaultRootElement();
+    @Override
+		public abstract Element getDefaultRootElement();
 
     // ---- local methods -----------------------------------------
 
@@ -1861,7 +1880,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the number of attributes >= 0
          * @see AttributeSet#getAttributeCount
          */
-        public int getAttributeCount() {
+        @Override
+				public int getAttributeCount() {
             return attributes.getAttributeCount();
         }
 
@@ -1872,7 +1892,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return true if the attribute is defined
          * @see AttributeSet#isDefined
          */
-        public boolean isDefined(Object attrName) {
+        @Override
+				public boolean isDefined(Object attrName) {
             return attributes.isDefined(attrName);
         }
 
@@ -1883,7 +1904,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return true if the same
          * @see AttributeSet#isEqual
          */
-        public boolean isEqual(AttributeSet attr) {
+        @Override
+				public boolean isEqual(AttributeSet attr) {
             return attributes.isEqual(attr);
         }
 
@@ -1893,7 +1915,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the copy
          * @see AttributeSet#copyAttributes
          */
-        public AttributeSet copyAttributes() {
+        @Override
+				public AttributeSet copyAttributes() {
             return attributes.copyAttributes();
         }
 
@@ -1904,7 +1927,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the attribute value
          * @see AttributeSet#getAttribute
          */
-        public Object getAttribute(Object attrName) {
+        @Override
+				public Object getAttribute(Object attrName) {
             Object value = attributes.getAttribute(attrName);
             if (value == null) {
                 // The delegate nor it's resolvers had a match,
@@ -1924,7 +1948,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the attribute names as an enumeration
          * @see AttributeSet#getAttributeNames
          */
-        public Enumeration<?> getAttributeNames() {
+        @Override
+				public Enumeration<?> getAttributeNames() {
             return attributes.getAttributeNames();
         }
 
@@ -1936,7 +1961,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return true if the name/value is defined
          * @see AttributeSet#containsAttribute
          */
-        public boolean containsAttribute(Object name, Object value) {
+        @Override
+				public boolean containsAttribute(Object name, Object value) {
             return attributes.containsAttribute(name, value);
         }
 
@@ -1948,7 +1974,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return true if the element contains all the attributes
          * @see AttributeSet#containsAttributes
          */
-        public boolean containsAttributes(AttributeSet attrs) {
+        @Override
+				public boolean containsAttributes(AttributeSet attrs) {
             return attributes.containsAttributes(attrs);
         }
 
@@ -1960,7 +1987,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the attributes from the parent, <code>null</code> if none
          * @see AttributeSet#getResolveParent
          */
-        public AttributeSet getResolveParent() {
+        @Override
+				public AttributeSet getResolveParent() {
             AttributeSet a = attributes.getResolveParent();
             if ((a == null) && (parent != null)) {
                 a = parent.getAttributes();
@@ -1979,7 +2007,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param value the attribute value
          * @see MutableAttributeSet#addAttribute
          */
-        public void addAttribute(Object name, Object value) {
+        @Override
+				public void addAttribute(Object name, Object value) {
             checkForIllegalCast();
             AttributeContext context = getAttributeContext();
             attributes = context.addAttribute(attributes, name, value);
@@ -1991,7 +2020,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param attr the attributes to add
          * @see MutableAttributeSet#addAttribute
          */
-        public void addAttributes(AttributeSet attr) {
+        @Override
+				public void addAttributes(AttributeSet attr) {
             checkForIllegalCast();
             AttributeContext context = getAttributeContext();
             attributes = context.addAttributes(attributes, attr);
@@ -2003,7 +2033,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param name the non-null attribute name
          * @see MutableAttributeSet#removeAttribute
          */
-        public void removeAttribute(Object name) {
+        @Override
+				public void removeAttribute(Object name) {
             checkForIllegalCast();
             AttributeContext context = getAttributeContext();
             attributes = context.removeAttribute(attributes, name);
@@ -2015,7 +2046,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param names the attribute names
          * @see MutableAttributeSet#removeAttributes
          */
-        public void removeAttributes(Enumeration<?> names) {
+        @Override
+				public void removeAttributes(Enumeration<?> names) {
             checkForIllegalCast();
             AttributeContext context = getAttributeContext();
             attributes = context.removeAttributes(attributes, names);
@@ -2027,7 +2059,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param attrs the attributes
          * @see MutableAttributeSet#removeAttributes
          */
-        public void removeAttributes(AttributeSet attrs) {
+        @Override
+				public void removeAttributes(AttributeSet attrs) {
             checkForIllegalCast();
             AttributeContext context = getAttributeContext();
             if (attrs == this) {
@@ -2043,7 +2076,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param parent the parent, null if none
          * @see MutableAttributeSet#setResolveParent
          */
-        public void setResolveParent(AttributeSet parent) {
+        @Override
+				public void setResolveParent(AttributeSet parent) {
             checkForIllegalCast();
             AttributeContext context = getAttributeContext();
             if (parent != null) {
@@ -2070,7 +2104,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the model
          */
-        public Document getDocument() {
+        @Override
+				public Document getDocument() {
             return AbstractDocument.this;
         }
 
@@ -2079,7 +2114,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the parent
          */
-        public Element getParentElement() {
+        @Override
+				public Element getParentElement() {
             return parent;
         }
 
@@ -2088,7 +2124,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the attribute set
          */
-        public AttributeSet getAttributes() {
+        @Override
+				public AttributeSet getAttributes() {
             return this;
         }
 
@@ -2097,7 +2134,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the name, null if none
          */
-        public String getName() {
+        @Override
+				public String getName() {
             if (attributes.isDefined(ElementNameAttribute)) {
                 return (String) attributes.getAttribute(ElementNameAttribute);
             }
@@ -2109,14 +2147,16 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the offset >= 0
          */
-        public abstract int getStartOffset();
+        @Override
+				public abstract int getStartOffset();
 
         /**
          * Gets the ending offset in the model for the element.
          *
          * @return the offset >= 0
          */
-        public abstract int getEndOffset();
+        @Override
+				public abstract int getEndOffset();
 
         /**
          * Gets a child element.
@@ -2124,14 +2164,16 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param index the child index, >= 0 && < getElementCount()
          * @return the child element
          */
-        public abstract Element getElement(int index);
+        @Override
+				public abstract Element getElement(int index);
 
         /**
          * Gets the number of children for the element.
          *
          * @return the number of children >= 0
          */
-        public abstract int getElementCount();
+        @Override
+				public abstract int getElementCount();
 
         /**
          * Gets the child element index closest to the given model offset.
@@ -2139,14 +2181,16 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param offset the offset >= 0
          * @return the element index >= 0
          */
-        public abstract int getElementIndex(int offset);
+        @Override
+				public abstract int getElementIndex(int offset);
 
         /**
          * Checks whether the element is a leaf.
          *
          * @return true if a leaf
          */
-        public abstract boolean isLeaf();
+        @Override
+				public abstract boolean isLeaf();
 
         // --- TreeNode methods -------------------------------------
 
@@ -2154,7 +2198,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * Returns the child <code>TreeNode</code> at index
          * <code>childIndex</code>.
          */
-        public TreeNode getChildAt(int childIndex) {
+        @Override
+				public TreeNode getChildAt(int childIndex) {
             return (TreeNode)getElement(childIndex);
         }
 
@@ -2164,7 +2209,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the number of children <code>TreeNodews</code>'s
          * receiver contains
          */
-        public int getChildCount() {
+        @Override
+				public int getChildCount() {
             return getElementCount();
         }
 
@@ -2172,7 +2218,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * Returns the parent <code>TreeNode</code> of the receiver.
          * @return the parent <code>TreeNode</code> of the receiver
          */
-        public TreeNode getParent() {
+        @Override
+				public TreeNode getParent() {
             return (TreeNode)getParentElement();
         }
 
@@ -2184,7 +2231,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the index of <code>node</code> in the receiver's
          * children, or -1 if absent
          */
-        public int getIndex(TreeNode node) {
+        @Override
+				public int getIndex(TreeNode node) {
             for(int counter = getChildCount() - 1; counter >= 0; counter--)
                 if(getChildAt(counter) == node)
                     return counter;
@@ -2195,7 +2243,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * Returns true if the receiver allows children.
          * @return true if the receiver allows children, otherwise false
          */
-        public abstract boolean getAllowsChildren();
+        @Override
+				public abstract boolean getAllowsChildren();
 
 
         /**
@@ -2203,7 +2252,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * <code>Enumeration</code>.
          * @return the children of the receiver as an <code>Enumeration</code>
          */
-        public abstract Enumeration children();
+        @Override
+				public abstract Enumeration children();
 
 //
 //        // --- serialization ---------------------------------------------
@@ -2310,7 +2360,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the string
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return "BranchElement(" + getName() + ") " + getStartOffset() + "," +
                 getEndOffset() + "\n";
         }
@@ -2322,7 +2373,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the element name
          */
-        public String getName() {
+        @Override
+				public String getName() {
             String nm = super.getName();
             if (nm == null) {
                 nm = ParagraphElementName;
@@ -2335,7 +2387,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the offset >= 0
          */
-        public int getStartOffset() {
+        @Override
+				public int getStartOffset() {
             return children[0].getStartOffset();
         }
 
@@ -2345,7 +2398,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the offset >= 0
          */
-        public int getEndOffset() {
+        @Override
+				public int getEndOffset() {
             Element child =
                 (nchildren > 0) ? children[nchildren - 1] : children[0];
             return child.getEndOffset();
@@ -2357,7 +2411,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param index the child index, >= 0 && < getElementCount()
          * @return the child element, null if none
          */
-        public Element getElement(int index) {
+        @Override
+				public Element getElement(int index) {
             if (index < nchildren) {
                 return children[index];
             }
@@ -2369,7 +2424,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the number of children >= 0
          */
-        public int getElementCount()  {
+        @Override
+				public int getElementCount()  {
             return nchildren;
         }
 
@@ -2379,7 +2435,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param offset the offset >= 0
          * @return the element index >= 0
          */
-        public int getElementIndex(int offset) {
+        @Override
+				public int getElementIndex(int offset) {
             int index;
             int lower = 0;
             int upper = nchildren - 1;
@@ -2444,7 +2501,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return true if a leaf
          */
-        public boolean isLeaf() {
+        @Override
+				public boolean isLeaf() {
             return false;
         }
 
@@ -2455,7 +2513,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * Returns true if the receiver allows children.
          * @return true if the receiver allows children, otherwise false
          */
-        public boolean getAllowsChildren() {
+        @Override
+				public boolean getAllowsChildren() {
             return true;
         }
 
@@ -2465,7 +2524,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * <code>Enumeration</code>.
          * @return the children of the receiver
          */
-        public Enumeration children() {
+        @Override
+				public Enumeration children() {
             if(nchildren == 0)
                 return null;
 
@@ -2527,7 +2587,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the string
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return "LeafElement(" + getName() + ") " + p0 + "," + p1 + "\n";
         }
 
@@ -2538,7 +2599,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the offset >= 0
          */
-        public int getStartOffset() {
+        @Override
+				public int getStartOffset() {
             return p0.getOffset();
         }
 
@@ -2547,7 +2609,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the offset >= 0
          */
-        public int getEndOffset() {
+        @Override
+				public int getEndOffset() {
             return p1.getOffset();
         }
 
@@ -2556,7 +2619,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the name
          */
-        public String getName() {
+        @Override
+				public String getName() {
             String nm = super.getName();
             if (nm == null) {
                 nm = ContentElementName;
@@ -2570,7 +2634,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param pos the offset >= 0
          * @return the element index >= 0
          */
-        public int getElementIndex(int pos) {
+        @Override
+				public int getElementIndex(int pos) {
             return -1;
         }
 
@@ -2580,7 +2645,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param index the child index, >= 0 && < getElementCount()
          * @return the child element
          */
-        public Element getElement(int index) {
+        @Override
+				public Element getElement(int index) {
             return null;
         }
 
@@ -2589,7 +2655,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the number of children >= 0
          */
-        public int getElementCount()  {
+        @Override
+				public int getElementCount()  {
             return 0;
         }
 
@@ -2598,7 +2665,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return true if a leaf
          */
-        public boolean isLeaf() {
+        @Override
+				public boolean isLeaf() {
             return true;
         }
 
@@ -2608,7 +2676,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * Returns true if the receiver allows children.
          * @return true if the receiver allows children, otherwise false
          */
-        public boolean getAllowsChildren() {
+        @Override
+				public boolean getAllowsChildren() {
             return false;
         }
 
@@ -2618,7 +2687,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * <code>Enumeration</code>.
          * @return the children of the receiver
          */
-        public Enumeration children() {
+        @Override
+				public Enumeration children() {
             return null;
         }
 
@@ -2739,7 +2809,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return a string
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return edits.toString();
         }
 
@@ -2754,7 +2825,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param anEdit a document edit record
          * @return true if the edit was added
          */
-        public boolean addEdit(UndoableEdit anEdit) {
+        @Override
+				public boolean addEdit(UndoableEdit anEdit) {
             // if the number of changes gets too great, start using
             // a hashtable for to locate the change for a given element.
             if ((changeLookup == null) && (edits.size() > 10)) {
@@ -2783,7 +2855,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @exception CannotRedoException if the change cannot be redone
          */
-        public void redo() throws CannotRedoException {
+        @Override
+				public void redo() throws CannotRedoException {
             writeLock();
             try {
                 // change the state
@@ -2807,7 +2880,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @exception CannotUndoException if the change cannot be undone
          */
-        public void undo() throws CannotUndoException {
+        @Override
+				public void undo() throws CannotUndoException {
             writeLock();
             try {
                 // change the state
@@ -2833,7 +2907,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return whether the event is significant for edit undo purposes
          */
-        public boolean isSignificant() {
+        @Override
+				public boolean isSignificant() {
             return true;
         }
 
@@ -2844,7 +2919,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the description
          */
-        public String getPresentationName() {
+        @Override
+				public String getPresentationName() {
             DocumentEvent.EventType type = getType();
             if(type == DocumentEvent.EventType.INSERT)
                 return UIManager.getString("AbstractDocument.additionText");
@@ -2860,7 +2936,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the description
          */
-        public String getUndoPresentationName() {
+        @Override
+				public String getUndoPresentationName() {
             return UIManager.getString("AbstractDocument.undoText") + " " +
                 getPresentationName();
         }
@@ -2872,7 +2949,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the description
          */
-        public String getRedoPresentationName() {
+        @Override
+				public String getRedoPresentationName() {
             return UIManager.getString("AbstractDocument.redoText") + " " +
                 getPresentationName();
         }
@@ -2885,7 +2963,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the event type as a DocumentEvent.EventType
          * @see DocumentEvent#getType
          */
-        public DocumentEvent.EventType getType() {
+        @Override
+				public DocumentEvent.EventType getType() {
             return type;
         }
 
@@ -2895,7 +2974,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the offset >= 0
          * @see DocumentEvent#getOffset
          */
-        public int getOffset() {
+        @Override
+				public int getOffset() {
             return offset;
         }
 
@@ -2905,7 +2985,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the length >= 0
          * @see DocumentEvent#getLength
          */
-        public int getLength() {
+        @Override
+				public int getLength() {
             return length;
         }
 
@@ -2915,7 +2996,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @return the document
          * @see DocumentEvent#getDocument
          */
-        public Document getDocument() {
+        @Override
+				public Document getDocument() {
             return AbstractDocument.this;
         }
 
@@ -2925,7 +3007,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          * @param elem the element
          * @return the changes
          */
-        public DocumentEvent.ElementChange getChange(Element elem) {
+        @Override
+				public DocumentEvent.ElementChange getChange(Element elem) {
             if (changeLookup != null) {
                 return (DocumentEvent.ElementChange) changeLookup.get(elem);
             }
@@ -2984,23 +3067,28 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
 
         // DocumentEvent methods delegated to DefaultDocumentEvent source
         // except getType() which depends on operation (Undo or Redo).
-        public int getOffset() {
+        @Override
+				public int getOffset() {
             return src.getOffset();
         }
 
-        public int getLength() {
+        @Override
+				public int getLength() {
             return src.getLength();
         }
 
-        public Document getDocument() {
+        @Override
+				public Document getDocument() {
             return src.getDocument();
         }
 
-        public DocumentEvent.EventType getType() {
+        @Override
+				public DocumentEvent.EventType getType() {
             return type;
         }
 
-        public DocumentEvent.ElementChange getChange(Element elem) {
+        @Override
+				public DocumentEvent.ElementChange getChange(Element elem) {
             return src.getChange(elem);
         }
     }
@@ -3034,7 +3122,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the element
          */
-        public Element getElement() {
+        @Override
+				public Element getElement() {
             return e;
         }
 
@@ -3043,7 +3132,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the index >= 0
          */
-        public int getIndex() {
+        @Override
+				public int getIndex() {
             return index;
         }
 
@@ -3052,7 +3142,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the list
          */
-        public Element[] getChildrenRemoved() {
+        @Override
+				public Element[] getChildrenRemoved() {
             return removed;
         }
 
@@ -3061,7 +3152,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @return the list
          */
-        public Element[] getChildrenAdded() {
+        @Override
+				public Element[] getChildrenAdded() {
             return added;
         }
 
@@ -3070,7 +3162,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @exception CannotRedoException if the change cannot be redone
          */
-        public void redo() throws CannotRedoException {
+        @Override
+				public void redo() throws CannotRedoException {
             super.redo();
 
             // Since this event will be reused, switch around added/removed.
@@ -3087,7 +3180,8 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
          *
          * @exception CannotUndoException if the change cannot be undone
          */
-        public void undo() throws CannotUndoException {
+        @Override
+				public void undo() throws CannotUndoException {
             super.undo();
             // PENDING(prinz) need MutableElement interface, canUndo() should check
             ((AbstractDocument.BranchElement)e).replace(index, added.length, removed);
@@ -3106,16 +3200,19 @@ public abstract class AbstractDocument implements JSMinimalAbstractDocument {
 
 
     private class DefaultFilterBypass extends DocumentFilter.FilterBypass {
-        public Document getDocument() {
+        @Override
+				public Document getDocument() {
             return AbstractDocument.this;
         }
 
-        public void remove(int offset, int length) throws
+        @Override
+				public void remove(int offset, int length) throws
             BadLocationException {
             handleRemove(offset, length);
         }
 
-        public void insertString(int offset, String string,
+        @Override
+				public void insertString(int offset, String string,
                                  AttributeSet attr) throws
                                         BadLocationException {
             handleInsertString(offset, string, attr);

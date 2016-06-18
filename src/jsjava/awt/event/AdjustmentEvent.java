@@ -220,7 +220,8 @@ public class AdjustmentEvent extends AWTEvent {
         return isAdjusting;
     }
 
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case ADJUSTMENT_VALUE_CHANGED:

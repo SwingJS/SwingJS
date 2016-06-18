@@ -113,7 +113,8 @@ public class EtchedBorder extends AbstractBorder
      * @param width the width of the painted border
      * @param height the height of the painted border
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+    @Override
+		public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         int w = width;
         int h = height;
 
@@ -136,7 +137,8 @@ public class EtchedBorder extends AbstractBorder
      * Returns the insets of the border.
      * @param c the component for which this border insets value applies
      */
-    public Insets getBorderInsets(Component c)       {
+    @Override
+		public Insets getBorderInsets(Component c)       {
         return new Insets(2, 2, 2, 2);
     }
 
@@ -145,7 +147,8 @@ public class EtchedBorder extends AbstractBorder
      * @param c the component for which this border insets value applies
      * @param insets the object to be reinitialized
      */
-    public Insets getBorderInsets(Component c, Insets insets) {
+    @Override
+		public Insets getBorderInsets(Component c, Insets insets) {
         insets.left = insets.top = insets.right = insets.bottom = 2;
         return insets;
     }
@@ -153,7 +156,8 @@ public class EtchedBorder extends AbstractBorder
     /**
      * Returns whether or not the border is opaque.
      */
-    public boolean isBorderOpaque() { return true; }
+    @Override
+		public boolean isBorderOpaque() { return true; }
 
     /**
      * Returns which etch-type is set on the etched border.

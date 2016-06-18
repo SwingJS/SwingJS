@@ -312,11 +312,13 @@ public abstract class Crossings {
             super(xlo, ylo, xhi, yhi);
         }
 
-        public final boolean covers(double ystart, double yend) {
+        @Override
+				public final boolean covers(double ystart, double yend) {
             return (limit == 2 && yranges[0] <= ystart && yranges[1] >= yend);
         }
 
-        public void record(double ystart, double yend, int direction) {
+        @Override
+				public void record(double ystart, double yend, int direction) {
             if (ystart >= yend) {
                 return;
             }
@@ -398,7 +400,8 @@ public abstract class Crossings {
             crosscounts = new int[yranges.length / 2];
         }
 
-        public final boolean covers(double ystart, double yend) {
+        @Override
+				public final boolean covers(double ystart, double yend) {
             int i = 0;
             while (i < limit) {
                 double ylo = yranges[i++];
@@ -450,7 +453,8 @@ public abstract class Crossings {
             limit += 2;
         }
 
-        public void record(double ystart, double yend, int direction) {
+        @Override
+				public void record(double ystart, double yend, int direction) {
             if (ystart >= yend) {
                 return;
             }

@@ -63,14 +63,16 @@ public class ViewportLayout implements LayoutManager
      * @param name the name of the component
      * @param c the the component to be added
      */
-    public void addLayoutComponent(String name, Component c) { }
+    @Override
+		public void addLayoutComponent(String name, Component c) { }
 
     /**
      * Removes the specified component from the layout. Not used by
      * this class.
      * @param c the component to remove
      */
-    public void removeLayoutComponent(Component c) { }
+    @Override
+		public void removeLayoutComponent(Component c) { }
 
 
     /**
@@ -81,7 +83,8 @@ public class ViewportLayout implements LayoutManager
      *          preferred dimensions
      * @see #minimumLayoutSize
      */
-    public Dimension preferredLayoutSize(Container parent) {
+    @Override
+		public Dimension preferredLayoutSize(Container parent) {
         Component view = ((JViewport)parent).getView();
         if (view == null) {
             return new Dimension(0, 0);
@@ -104,7 +107,8 @@ public class ViewportLayout implements LayoutManager
      *          dimensions
      * @see #preferredLayoutSize
      */
-    public Dimension minimumLayoutSize(Container parent) {
+    @Override
+		public Dimension minimumLayoutSize(Container parent) {
         return new Dimension(4, 4);
     }
 
@@ -117,7 +121,8 @@ public class ViewportLayout implements LayoutManager
      * @exception AWTError  if the target isn't the container specified to the
      *                      <code>BoxLayout</code> constructor
      */
-    public void layoutContainer(Container parent)
+    @Override
+		public void layoutContainer(Container parent)
     {
         JViewport vp = (JViewport)parent;
         Component view = vp.getView();

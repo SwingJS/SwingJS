@@ -64,7 +64,8 @@ class SentEvent extends AWTEvent implements ActiveEvent {
         this.toNotify = toNotify;
     }
 
-    public void dispatch() {
+    @Override
+		public void dispatch() {
         try {
             if (nested != null) {
                 Toolkit.getEventQueue().dispatchEvent(nested);

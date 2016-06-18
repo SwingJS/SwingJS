@@ -158,17 +158,17 @@ public class TableModelEvent extends jsjava.util.EventObject
    /** Returns the first row that changed.  HEADER_ROW means the meta data,
      * ie. names, types and order of the columns.
      */
-    public int getFirstRow() { return firstRow; };
+    public int getFirstRow() { return firstRow; }
 
     /** Returns the last row that changed. */
-    public int getLastRow() { return lastRow; };
+    public int getLastRow() { return lastRow; }
 
     /**
      *  Returns the column for the event.  If the return
      *  value is ALL_COLUMNS; it means every column in the specified
      *  rows changed.
      */
-    public int getColumn() { return column; };
+    public int getColumn() { return column; }
 
     /**
      *  Returns the type of event - one of: INSERT, UPDATE and DELETE.

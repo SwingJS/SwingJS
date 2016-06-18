@@ -357,7 +357,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      *    attribute: visualUpdate true
      *  description: The UI object that implements the Component's LookAndFeel.
      */
-    public ScrollPaneUI getUI() {
+    @Override
+		public ScrollPaneUI getUI() {
         return (ScrollPaneUI)ui;
     }
 
@@ -382,7 +383,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      * @see JComponent#updateUI
      * @see UIManager#getUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ScrollPaneUI)UIManager.getUI(this));
     }
 
@@ -398,7 +400,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      * @beaninfo
      *    hidden: true
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -422,7 +425,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      * @beaninfo
      *    hidden: true
      */
-    public void setLayout(LayoutManager layout) {
+    @Override
+		public void setLayout(LayoutManager layout) {
         if (layout instanceof ScrollPaneLayout) {
             super.setLayout(layout);
             ((ScrollPaneLayout)layout).syncWithScrollPane(this);
@@ -450,7 +454,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      * @beaninfo
      *    hidden: true
      */
-    public boolean isValidateRoot() {
+    @Override
+		public boolean isValidateRoot() {
         return true;
     }
 
@@ -717,7 +722,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
          *
          * @param unitIncrement the new unit increment value, in pixels
          */
-        public void setUnitIncrement(int unitIncrement) {
+        @Override
+				public void setUnitIncrement(int unitIncrement) {
             unitIncrementSet = true;
             this.putClientProperty("JScrollBar.fastWheelScrolling", null);
             super.setUnitIncrement(unitIncrement);
@@ -733,7 +739,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
          * @return an integer, in pixels, containing the unit increment
          * @see Scrollable#getScrollableUnitIncrement
          */
-        public int getUnitIncrement(int direction) {
+        @Override
+				public int getUnitIncrement(int direction) {
             JViewport vp = getViewport();
             if (!unitIncrementSet && (vp != null) &&
                 (vp.getView() instanceof Scrollable)) {
@@ -752,7 +759,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
          *
          * @param blockIncrement the new block increment value, in pixels
          */
-        public void setBlockIncrement(int blockIncrement) {
+        @Override
+				public void setBlockIncrement(int blockIncrement) {
             blockIncrementSet = true;
             this.putClientProperty("JScrollBar.fastWheelScrolling", null);
             super.setBlockIncrement(blockIncrement);
@@ -770,7 +778,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
          * @return an integer, in pixels, containing the block increment
          * @see Scrollable#getScrollableBlockIncrement
          */
-        public int getBlockIncrement(int direction) {
+        @Override
+				public int getBlockIncrement(int direction) {
             JViewport vp = getViewport();
             if (blockIncrementSet || vp == null) {
                 return super.getBlockIncrement(direction);
@@ -1271,7 +1280,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      * </ul>
      * @see jsjava.awt.ComponentOrientation
      */
-    public void setComponentOrientation( ComponentOrientation co ) {
+    @Override
+		public void setComponentOrientation( ComponentOrientation co ) {
         super.setComponentOrientation( co );
         if( verticalScrollBar != null )
             verticalScrollBar.setComponentOrientation( co );
@@ -1339,7 +1349,8 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
      *
      * @return  a string representation of this <code>JScrollPane</code>.
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String viewportBorderString = (viewportBorder != null ?
                                        viewportBorder.toString() : "");
         String viewportString = (viewport != null ?

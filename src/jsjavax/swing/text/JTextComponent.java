@@ -328,7 +328,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      *
      * @return the factory
      */
-    public TextUI getUI() { return (TextUI)ui; }
+    @Override
+		public TextUI getUI() { return (TextUI)ui; }
 
     /**
      * Sets the user-interface factory for this text-oriented editor.
@@ -345,7 +346,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * the UI is <code>TextUI</code>.  <code>invalidate</code>
      * is called after setting the UI.
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((TextUI)UIManager.getUI(this));
         invalidate();
     }
@@ -483,7 +485,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     }
 
     // Override of Component.setComponentOrientation
-    public void setComponentOrientation( ComponentOrientation o ) {
+    @Override
+		public void setComponentOrientation( ComponentOrientation o ) {
         // Set the document's run direction property to match the
         // ComponentOrientation property.
 //        Document doc = getDocument();
@@ -1635,7 +1638,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         }
     }
 
-    public void removeNotify() {
+    @Override
+		public void removeNotify() {
         super.removeNotify();
         if (getFocusedComponent() == this) {
             AppContext.getAppContext().remove(FOCUSED_COMPONENT);
@@ -1948,7 +1952,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @see jsjavax.swing.plaf.TextUI#getToolTipText
      * @see jsjavax.swing.ToolTipManager#registerComponent
      */
-    public String getToolTipText(MouseEvent event) {
+    @Override
+		public String getToolTipText(MouseEvent event) {
         String retValue = super.getToolTipText(event);
 
         if (retValue == null) {
@@ -1971,7 +1976,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @return the <code>preferredSize</code> of a <code>JViewport</code>
      * whose view is this <code>Scrollable</code>
      */
-    public Dimension getPreferredScrollableViewportSize() {
+    @Override
+		public Dimension getPreferredScrollableViewportSize() {
         return getPreferredSize();
     }
 
@@ -1996,7 +2002,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @exception IllegalArgumentException for an invalid orientation
      * @see JScrollBar#setUnitIncrement
      */
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+    @Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         switch(orientation) {
         case SwingConstants.VERTICAL:
             return visibleRect.height / 10;
@@ -2026,7 +2033,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @exception IllegalArgumentException for an invalid orientation
      * @see JScrollBar#setBlockIncrement
      */
-    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+    @Override
+		public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         switch(orientation) {
         case SwingConstants.VERTICAL:
             return visibleRect.height;
@@ -2054,7 +2062,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @return true if a viewport should force the <code>Scrollable</code>s
      *   width to match its own
      */
-    public boolean getScrollableTracksViewportWidth() {
+    @Override
+		public boolean getScrollableTracksViewportWidth() {
         if (getParent() instanceof JViewport) {
             return (((JViewport)getParent()).getWidth() > getPreferredSize().width);
         }
@@ -2074,7 +2083,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @return true if a viewport should force the Scrollables height
      *   to match its own
      */
-    public boolean getScrollableTracksViewportHeight() {
+    @Override
+		public boolean getScrollableTracksViewportHeight() {
         if (getParent() instanceof JViewport) {
             return (((JViewport)getParent()).getHeight() > getPreferredSize().height);
         }
@@ -3920,7 +3930,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      *
      * @return  a string representation of this <code>JTextComponent</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String editableString = (editable ?
                                  "true" : "false");
         String caretColorString = (caretColor != null ?
@@ -4078,7 +4089,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
          * the keymap doesn't require an action for each
          * possible key.
          */
-        public Action getDefaultAction() {
+        @Override
+				public Action getDefaultAction() {
             if (defaultAction != null) {
                 return defaultAction;
             }
@@ -4088,15 +4100,18 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         /**
          * Set the default action to fire if a key is typed.
          */
-        public void setDefaultAction(Action a) {
+        @Override
+				public void setDefaultAction(Action a) {
             defaultAction = a;
         }
 
-        public String getName() {
+        @Override
+				public String getName() {
             return nm;
         }
 
-        public Action getAction(KeyStroke key) {
+        @Override
+				public Action getAction(KeyStroke key) {
             Action a = (Action) bindings.get(key);
             if ((a == null) && (parent != null)) {
                 a = parent.getAction(key);
@@ -4104,7 +4119,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return a;
         }
 
-        public KeyStroke[] getBoundKeyStrokes() {
+        @Override
+				public KeyStroke[] getBoundKeyStrokes() {
             KeyStroke[] keys = new KeyStroke[bindings.size()];
             int i = 0;
             for (Enumeration e = bindings.keys() ; e.hasMoreElements() ;) {
@@ -4113,7 +4129,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return keys;
         }
 
-        public Action[] getBoundActions() {
+        @Override
+				public Action[] getBoundActions() {
             Action[] actions = new Action[bindings.size()];
             int i = 0;
             for (Enumeration e = bindings.elements() ; e.hasMoreElements() ;) {
@@ -4122,7 +4139,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return actions;
         }
 
-        public KeyStroke[] getKeyStrokesForAction(Action a) {
+        @Override
+				public KeyStroke[] getKeyStrokesForAction(Action a) {
             if (a == null) {
                 return null;
             }
@@ -4186,27 +4204,33 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return retValue;
         }
 
-        public boolean isLocallyDefined(KeyStroke key) {
+        @Override
+				public boolean isLocallyDefined(KeyStroke key) {
             return bindings.containsKey(key);
         }
 
-        public void addActionForKeyStroke(KeyStroke key, Action a) {
+        @Override
+				public void addActionForKeyStroke(KeyStroke key, Action a) {
             bindings.put(key, a);
         }
 
-        public void removeKeyStrokeBinding(KeyStroke key) {
+        @Override
+				public void removeKeyStrokeBinding(KeyStroke key) {
             bindings.remove(key);
         }
 
-        public void removeBindings() {
+        @Override
+				public void removeBindings() {
             bindings.clear();
         }
 
-        public Keymap getResolveParent() {
+        @Override
+				public Keymap getResolveParent() {
             return parent;
         }
 
-        public void setResolveParent(Keymap parent) {
+        @Override
+				public void setResolveParent(Keymap parent) {
             this.parent = parent;
         }
 
@@ -4214,7 +4238,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
          * String representation of the keymap... potentially
          * a very long string.
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return "Keymap[" + nm + "]" + bindings;
         }
 
@@ -4249,7 +4274,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             this.keymap = keymap;
         }
 
-        public KeyStroke[] keys() {
+        @Override
+				public KeyStroke[] keys() {
             KeyStroke[] sKeys = super.keys();
             KeyStroke[] keymapKeys = keymap.getBoundKeyStrokes();
             int sCount = (sKeys == null) ? 0 : sKeys.length;
@@ -4267,7 +4293,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return retValue;
         }
 
-        public int size() {
+        @Override
+				public int size() {
             // There may be some duplication here...
             KeyStroke[] keymapStrokes = keymap.getBoundKeyStrokes();
             int keymapCount = (keymapStrokes == null) ? 0:
@@ -4275,7 +4302,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return super.size() + keymapCount;
         }
 
-        public Object get(KeyStroke keyStroke) {
+        @Override
+				public Object get(KeyStroke keyStroke) {
             Object retValue = keymap.getAction(keyStroke);
             if (retValue == null) {
                 retValue = super.get(keyStroke);
@@ -4305,7 +4333,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             this.keymap = keymap;
         }
 
-        public Object[] keys() {
+        @Override
+				public Object[] keys() {
             Object[] sKeys = super.keys();
             Object[] keymapKeys = keymap.getBoundActions();
             int sCount = (sKeys == null) ? 0 : sKeys.length;
@@ -4346,7 +4375,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return retValue;
         }
 
-        public int size() {
+        @Override
+				public int size() {
             // There may be some duplication here...
             Object[] actions = keymap.getBoundActions();
             int keymapCount = (actions == null) ? 0 : actions.length;
@@ -4356,7 +4386,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             return super.size() + keymapCount;
         }
 
-        public Action get(Object key) {
+        @Override
+				public Action get(Object key) {
             Action retValue = super.get(key);
             if (retValue == null) {
                 // Try the Keymap.
@@ -4407,35 +4438,41 @@ public abstract class JTextComponent extends JComponent implements Scrollable
             }
         }
 
-        public final String toString() {
+        @Override
+				public final String toString() {
             return "dot=" + dot + "," + "mark=" + mark;
         }
 
         // --- CaretEvent methods -----------------------
 
-        public final int getDot() {
+        @Override
+				public final int getDot() {
             return dot;
         }
 
-        public final int getMark() {
+        @Override
+				public final int getMark() {
             return mark;
         }
 
         // --- ChangeListener methods -------------------
 
-        public final void stateChanged(ChangeEvent e) {
+        @Override
+				public final void stateChanged(ChangeEvent e) {
             if (! dragActive) {
                 fire();
             }
         }
 
         // --- FocusListener methods -----------------------------------
-        public void focusGained(FocusEvent fe) {
+        @Override
+				public void focusGained(FocusEvent fe) {
             AppContext.getAppContext().put(FOCUSED_COMPONENT,
                                            fe.getSource());
         }
 
-        public void focusLost(FocusEvent fe) {
+        @Override
+				public void focusLost(FocusEvent fe) {
         }
 
         // --- MouseListener methods -----------------------------------
@@ -4447,7 +4484,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
          * @param e the mouse event
          * @see MouseListener#mousePressed
          */
-        public final void mousePressed(MouseEvent e) {
+        @Override
+				public final void mousePressed(MouseEvent e) {
             dragActive = true;
         }
 
@@ -4457,18 +4495,22 @@ public abstract class JTextComponent extends JComponent implements Scrollable
          * @param e the mouse event
          * @see MouseListener#mouseReleased
          */
-        public final void mouseReleased(MouseEvent e) {
+        @Override
+				public final void mouseReleased(MouseEvent e) {
             dragActive = false;
             fire();
         }
 
-        public final void mouseClicked(MouseEvent e) {
+        @Override
+				public final void mouseClicked(MouseEvent e) {
         }
 
-        public final void mouseEntered(MouseEvent e) {
+        @Override
+				public final void mouseEntered(MouseEvent e) {
         }
 
-        public final void mouseExited(MouseEvent e) {
+        @Override
+				public final void mouseExited(MouseEvent e) {
         }
 
         private boolean dragActive;
@@ -4525,7 +4567,8 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     //
     // Overrides this method to watch the listener installed.
     //
-    public void addInputMethodListener(InputMethodListener l) {
+    @Override
+		public void addInputMethodListener(InputMethodListener l) {
         super.addInputMethodListener(l);
         if (l != null) {
 //            needToSendKeyTypedEvent = false;

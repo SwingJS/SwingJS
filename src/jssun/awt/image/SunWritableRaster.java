@@ -53,6 +53,7 @@ public class SunWritableRaster extends WritableRaster {
 
 	private static DataStealer getStealer() {
 		return (stealer == null ? stealer = new DataStealer() {
+			@Override
 			public byte[] getData(DataBufferByte dbb, int bank) {
 				return dbb.bankdata[bank];
 			}
@@ -62,14 +63,17 @@ public class SunWritableRaster extends WritableRaster {
 			// return dbus.bankdata[bank];
 			// }
 			//
+			@Override
 			public int[] getData(DataBufferInt dbi, int bank) {
 				return dbi.bankdata[bank];
 			}
 
+			@Override
 			public StateTrackableDelegate getTrackable(DataBuffer db) {
 				return db.theTrackable;
 			}
 
+			@Override
 			public void setTrackable(DataBuffer db, StateTrackableDelegate trackable) {
 				db.theTrackable = trackable;
 			}

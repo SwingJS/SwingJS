@@ -310,7 +310,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
      * through. On the other hand, if <code>font</code> is non-null, and not
      * a <code>FontUIResource</code>, the font becomes <code>font</code>.
      */
-    public void setFont(Font font) {
+    @Override
+		public void setFont(Font font) {
         if(font instanceof FontUIResource)
             font = null;
         super.setFont(font);
@@ -321,7 +322,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
      * @return this component's font; if a font has not been set
      * for this component, the font of its parent is returned
      */
-    public Font getFont() {
+    @Override
+		public Font getFont() {
         Font font = super.getFont();
 
         if (font == null && tree != null) {
@@ -340,7 +342,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
      * a <code>ColorUIResource</code>, the background becomes
      * <code>color</code>.
      */
-    public void setBackground(Color color) {
+    @Override
+		public void setBackground(Color color) {
         if(color instanceof ColorUIResource)
             color = null;
         super.setBackground(color);
@@ -355,7 +358,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
       * is set based on the <code>leaf</code> and <code>expanded</code>
       * parameters.
       */
-    public Component getTreeCellRendererComponent(JTree tree, Object value,
+    @Override
+		public Component getTreeCellRendererComponent(JTree tree, Object value,
                                                   boolean sel,
                                                   boolean expanded,
                                                   boolean leaf, int row,
@@ -421,7 +425,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     /**
       * Paints the value.  The background is filled based on selected.
       */
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
         Color bColor;
 
         if (isDropCell) {
@@ -497,6 +502,7 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
 	 * Overrides <code>JComponent.getPreferredSize</code> to return slightly wider
 	 * preferred size value.
 	 */
+	@Override
 	public Dimension getPreferredSize() {
 		Dimension retDimension = getPrefSizeJComp();
 		return (retDimension == null ? null : new Dimension(retDimension.width + 3,
@@ -508,7 +514,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void validate() {}
+    @Override
+		public void validate() {}
 
    /**
     * Overridden for performance reasons.
@@ -517,28 +524,32 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     *
     * @since 1.5
     */
-    public void invalidate() {}
+    @Override
+		public void invalidate() {}
 
    /**
     * Overridden for performance reasons.
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void revalidate() {}
+    @Override
+		public void revalidate() {}
 
    /**
     * Overridden for performance reasons.
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void repaint(long tm, int x, int y, int width, int height) {}
+    @Override
+		public void repaint(long tm, int x, int y, int width, int height) {}
 
    /**
     * Overridden for performance reasons.
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void repaint(Rectangle r) {}
+    @Override
+		public void repaint(Rectangle r) {}
 
    /**
     * Overridden for performance reasons.
@@ -547,14 +558,16 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     *
     * @since 1.5
     */
-    public void repaint() {}
+    @Override
+		public void repaint() {}
 
    /**
     * Overridden for performance reasons.
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
+    @Override
+		public void firePropertyChangeObject(String propertyName, Object oldValue, Object newValue) {
 //        // Strings get interned...
 //        if (propertyName == "text"
 //                || ((propertyName == "font" || propertyName == "foreground")
@@ -578,7 +591,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void firePropertyChange(String propertyName, char oldValue, char newValue) {}
+    @Override
+		public void firePropertyChange(String propertyName, char oldValue, char newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -592,7 +606,8 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void firePropertyChangeInt(String propertyName, int oldValue, int newValue) {}
+    @Override
+		public void firePropertyChangeInt(String propertyName, int oldValue, int newValue) {}
 
    /**
     * Overridden for performance reasons.
@@ -620,6 +635,7 @@ public class DefaultTreeCellRenderer extends JLabel implements TreeCellRenderer
     * See the <a href="#override">Implementation Note</a>
     * for more information.
     */
-    public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) {}
+    @Override
+		public void firePropertyChangeBool(String propertyName, boolean oldValue, boolean newValue) {}
 
 }

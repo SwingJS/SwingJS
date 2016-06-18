@@ -66,37 +66,45 @@ class WaveBoxCanvas extends Canvas {
 		pg = p;
 	}
 
+	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(300, 400);
 	}
 
+	@Override
 	public void update(Graphics g) {
 		pg.updateWaveBox(g);
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		pg.updateWaveBox(g);
 	}
-};
+}
 
 class WaveBoxLayout implements LayoutManager {
 	public WaveBoxLayout() {
 	}
 
+	@Override
 	public void addLayoutComponent(String name, Component c) {
 	}
 
+	@Override
 	public void removeLayoutComponent(Component c) {
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		return new Dimension(500, 500);
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		return new Dimension(100, 100);
 	}
 
+	@Override
 	public void layoutContainer(Container target) {
 		int barwidth = 0;
 		int i;
@@ -135,7 +143,7 @@ class WaveBoxLayout implements LayoutManager {
 			}
 		}
 	}
-};
+}
 
 public class WaveBox extends Applet implements ComponentListener {
 	static WaveBoxFrame ogf;
@@ -149,6 +157,7 @@ public class WaveBox extends Applet implements ComponentListener {
 
 	boolean started = false;
 
+	@Override
 	public void init() {
 		// addComponentListener(this);
 		showFrame();
@@ -176,6 +185,7 @@ public class WaveBox extends Applet implements ComponentListener {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (!started)
@@ -188,26 +198,31 @@ public class WaveBox extends Applet implements ComponentListener {
 		super.paint(g);
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		showFrame();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 	}
 
+	@Override
 	public void destroy() {
 		if (ogf != null)
 			ogf.dispose();
 		ogf = null;
 		repaint();
 	}
-};
+}
 
 class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
@@ -256,7 +271,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			label = l;
 			bar = b;
 		}
-	};
+	}
 
 	AuxBar auxBars[];
 	Choice setupChooser;
@@ -1047,26 +1062,32 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		return val;
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		cv.repaint();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 		handleResize();
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 	}
 
 	int resBarValue;
 
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 		if (e.getSource() == freqBar || e.getSource() == aux1Bar
@@ -1081,6 +1102,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		dragging = true;
 		oldDragX = dragX;
@@ -1133,6 +1155,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		checkSlice(e.getX(), e.getY());
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
@@ -1143,15 +1166,19 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
@@ -1162,12 +1189,14 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		edit(e);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (dragging)
 			cv.repaint();
 		dragging = false;
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItemSelectable() == setupChooser) {
 			if (sliceChooser == null)
@@ -1191,6 +1220,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	@Override
 	public boolean handleEvent(Event ev) {
 		if (ev.id == Event.WINDOW_DESTROY) {
 			applet.destroyFrame();
@@ -1269,7 +1299,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 		Setup() {
 		}
-	};
+	}
 
 	class SingleSourceSetup extends Setup {
 		int dataxy[][];
@@ -1277,13 +1307,16 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxhalf;
 		int mxlast;
 
+		@Override
 		String getName() {
 			return "point source";
 		}
 
+		@Override
 		void select() {
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1311,20 +1344,23 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 				}
 		}
 
+		@Override
 		void deselect() {
 			dataxy = null;
 			datadzr = datadzi = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int d = dataxy[x][y];
 			return datadzr[d][z] * cost1 - datadzi[d][z] * sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new PinholeSetup();
 		}
-	};
+	}
 
 	class PinholeSetup extends Setup {
 		int dataxy[][];
@@ -1332,13 +1368,16 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxhalf;
 		int mxlast;
 
+		@Override
 		String getName() {
 			return "pinhole";
 		}
 
+		@Override
 		void select() {
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1365,20 +1404,23 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 				}
 		}
 
+		@Override
 		void deselect() {
 			dataxy = null;
 			datadzr = datadzi = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int d = dataxy[x][y];
 			return datadzr[d][z] * cost1 - datadzi[d][z] * sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new TwoSourcesSetup();
 		}
-	};
+	}
 
 	class TwoSourcesSetup extends Setup {
 		int dataxy[][];
@@ -1387,10 +1429,12 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxlast;
 		boolean dipole;
 
+		@Override
 		String getName() {
 			return "2 point sources";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source Separation", 30);
 			setupBar(1, "Phase Difference", 0);
@@ -1398,6 +1442,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			dipole = false;
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1429,15 +1474,18 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			w2mult = 1 - w1mult;
 		}
 
+		@Override
 		double getPhaseShift() {
 			return (dipole) ? pi : aux2Bar.getValue() * pi / 50.;
 		}
 
+		@Override
 		void deselect() {
 			dataxy = null;
 			datadzr = datadzi = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int d1 = dataxy[x][y];
 			int d2 = dataxy[maxTerms - 1 - x][y];
@@ -1445,25 +1493,29 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 					+ w2mult * (datadzr[d2][z] * cost2 - datadzi[d2][z] * sint2);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DipoleSourceSetup();
 		}
-	};
+	}
 
 	class DipoleSourceSetup extends TwoSourcesSetup {
+		@Override
 		String getName() {
 			return "dipole source";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source Separation", 8);
 			dipole = true;
 		}
 
+		@Override
 		Setup createNext() {
 			return new LateralQuadrupoleSetup();
 		}
-	};
+	}
 
 	class LateralQuadrupoleSetup extends Setup {
 		int dataxy[][];
@@ -1471,14 +1523,17 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxhalf;
 		int mxlast;
 
+		@Override
 		String getName() {
 			return "lateral quadrupole";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source Separation", 20);
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1508,11 +1563,13 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 				}
 		}
 
+		@Override
 		void deselect() {
 			dataxy = null;
 			datadzr = datadzi = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int d1 = dataxy[x][y];
 			int d2 = dataxy[maxTerms - 1 - x][y];
@@ -1524,10 +1581,11 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 					* sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new LinearQuadrupoleSetup();
 		}
-	};
+	}
 
 	class LinearQuadrupoleSetup extends Setup {
 		int dataxy1[][], dataxy2[][];
@@ -1535,14 +1593,17 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxhalf;
 		int mxlast;
 
+		@Override
 		String getName() {
 			return "linear quadrupole";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source Separation", 20);
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1577,11 +1638,13 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 				}
 		}
 
+		@Override
 		void deselect() {
 			dataxy1 = dataxy2 = null;
 			datadzr = datadzi = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int d1 = dataxy1[x][y];
 			int d2 = dataxy2[x][y];
@@ -1593,10 +1656,11 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 					* sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new TwoPinholesSetup();
 		}
-	};
+	}
 
 	class TwoPinholesSetup extends Setup {
 		int dataxy[][];
@@ -1604,16 +1668,19 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxhalf;
 		int mxlast;
 
+		@Override
 		String getName() {
 			return "2 pinholes";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source Separation", 30);
 			setupBar(1, "Phase Difference", 0);
 			setupBar(2, "Balance", 50);
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1644,15 +1711,18 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			w2mult = 1 - w1mult;
 		}
 
+		@Override
 		double getPhaseShift() {
 			return aux2Bar.getValue() * pi / 50.;
 		}
 
+		@Override
 		void deselect() {
 			dataxy = null;
 			datadzr = datadzi = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int d1 = dataxy[x][y];
 			int d2 = dataxy[maxTerms - 1 - x][y];
@@ -1660,23 +1730,27 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 					+ w2mult * (datadzr[d2][z] * cost2 - datadzi[d2][z] * sint2);
 		}
 
+		@Override
 		Setup createNext() {
 			return new SingleLineSetup();
 		}
-	};
+	}
 
 	class SingleLineSetup extends Setup {
 		double datar[][];
 		double datai[][];
 		int mxhalf;
 
+		@Override
 		String getName() {
 			return "single line source";
 		}
 
+		@Override
 		void select() {
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1694,31 +1768,37 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		void deselect() {
 			datar = datai = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			return datar[x][y] * cost1 - datai[x][y] * sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new SingleSlitSetup();
 		}
-	};
+	}
 
 	class SingleSlitSetup extends Setup {
 		double datar[][];
 		double datai[][];
 		int mxhalf;
 
+		@Override
 		String getName() {
 			return "single slit";
 		}
 
+		@Override
 		void select() {
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1735,18 +1815,21 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		void deselect() {
 			datar = datai = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			return datar[x][y] * cost1 - datai[x][y] * sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new DoubleLineSetup();
 		}
-	};
+	}
 
 	class DoubleLineSetup extends Setup {
 		double datar[][];
@@ -1755,16 +1838,19 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxlast;
 		double w1mult, w2mult;
 
+		@Override
 		String getName() {
 			return "2 line sources";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source Separation", 30);
 			setupBar(1, "Phase Difference", 0);
 			setupBar(2, "Balance", 50);
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1788,24 +1874,28 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		double getPhaseShift() {
 			return aux2Bar.getValue() * pi / 50.;
 		}
 
+		@Override
 		void deselect() {
 			datar = datai = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int nx = mxlast - x;
 			return w1mult * (datar[x][y] * cost1 - datai[x][y] * sint1) + w2mult
 					* (datar[nx][y] * cost2 - datai[nx][y] * sint2);
 		}
 
+		@Override
 		Setup createNext() {
 			return new DoubleSlitSetup();
 		}
-	};
+	}
 
 	class DoubleSlitSetup extends Setup {
 		double datar[][];
@@ -1814,16 +1904,19 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		int mxlast;
 		double w1mult, w2mult;
 
+		@Override
 		String getName() {
 			return "double slit";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Slit Separation", 30);
 			setupBar(1, "Phase Difference", 0);
 			setupBar(2, "Balance", 50);
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1846,38 +1939,45 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		double getPhaseShift() {
 			return aux2Bar.getValue() * pi / 50.;
 		}
 
+		@Override
 		void deselect() {
 			datar = datai = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			int nx = mxlast - x;
 			return w1mult * (datar[x][y] * cost1 - datai[x][y] * sint1) + w2mult
 					* (datar[nx][y] * cost2 - datai[nx][y] * sint2);
 		}
 
+		@Override
 		Setup createNext() {
 			return new TripleSlitSetup();
 		}
-	};
-
+	}
+	
 	class TripleSlitSetup extends Setup {
 		double datar[][];
 		double datai[][];
 		int mxhalf;
 
+		@Override
 		String getName() {
 			return "triple slit";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Slit Separation", 30);
 		}
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mxhalf = maxTerms / 2;
@@ -1902,55 +2002,66 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
+		@Override
 		void deselect() {
 			datar = datai = null;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			return datar[x][y] * cost1 - datai[x][y] * sint1;
 		}
 
+		@Override
 		Setup createNext() {
 			return new PlaneWaveSetup();
 		}
-	};
+	}
 
 	class PlaneWaveSetup extends Setup {
+		@Override
 		String getName() {
 			return "plane wave";
 		}
 
+		@Override
 		void select() {
 		}
 
 		double mult;
 
+		@Override
 		void precompute() {
 			int x, y, z;
 			mult = resadj * freqBar.getValue() / 50.;
 		}
 
+		@Override
 		void deselect() {
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			return .05 * (Math.cos(x * mult) * cost1 + Math.sin(x * mult) * sint1);
 		}
 
+		@Override
 		Setup createNext() {
 			return new TwoPlaneWavesSetup();
 		}
-	};
+	}
 
 	class TwoPlaneWavesSetup extends Setup {
 		double datar[][][];
 		double datai[][][];
 		boolean noz;
 
+		@Override
 		String getName() {
 			return "2 plane waves";
 		}
 
+		@Override
 		void select() {
 			setupBar(0, "Source 1 Theta", 25);
 			setupBar(1, "Source 1 Phi", 0);
@@ -1959,6 +2070,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 		double k2x, k2y, k2z, mult, w1mult, w2mult;
 
+		@Override
 		void precompute() {
 			mult = resadj * freqBar.getValue() / 50.;
 			double ang1 = aux1Bar.getValue() * pi / 50;
@@ -1976,6 +2088,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 			k2z = -ang2sin * mult;
 		}
 
+		@Override
 		double computePoint(int x, int y, int z) {
 			double k1 = x * mult;
 			double k2 = x * k2x + y * k2y + z * k2z;
@@ -1983,6 +2096,7 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 					* (Math.cos(k2) * cost2 + Math.sin(k2) * sint2);
 		}
 
+		@Override
 		Setup createNext() {
 			return null;
 		}

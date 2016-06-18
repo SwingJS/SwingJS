@@ -3,7 +3,6 @@ package swingjs.plaf;
 
 import jsjava.awt.Dimension;
 
-import jsjavax.swing.JComponent;
 import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
@@ -32,14 +31,14 @@ public class JSPopupMenuUI extends JSWindowUI {
 	}
 	
 	@Override
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize() {
 		// SwingJS should defer to containing panel
 		return null;
 	}
 
 	@Override
 	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(c,
+    LookAndFeel.installColorsAndFont(jc,
         "PopupMenu.background",
         "PopupMenu.foreground",
         "PopupMenu.font");

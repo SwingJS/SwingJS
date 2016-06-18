@@ -138,7 +138,7 @@ class MultiUIDefaults extends UIDefaults
 
     private static class MultiUIDefaultsEnumerator implements Enumeration
     {
-        public static enum Type { KEYS, ELEMENTS };
+        public static enum Type { KEYS, ELEMENTS }
         private Iterator<Entry<Object, Object>> iterator;
         private Type type;
 
@@ -147,11 +147,13 @@ class MultiUIDefaults extends UIDefaults
             this.iterator = entries.iterator();
         }
 
-        public boolean hasMoreElements() {
+        @Override
+				public boolean hasMoreElements() {
             return iterator.hasNext();
         }
 
-        public Object nextElement() {
+        @Override
+				public Object nextElement() {
             switch (type) {
                 case KEYS: return iterator.next().getKey();
                 case ELEMENTS: return iterator.next().getValue();

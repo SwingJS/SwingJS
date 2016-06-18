@@ -212,7 +212,8 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
-    public Comparator<?> getComparator(int column) {
+    @Override
+		public Comparator<?> getComparator(int column) {
         Comparator comparator = super.getComparator(column);
         if (comparator != null) {
             return comparator;
@@ -234,7 +235,8 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
-    protected boolean useToString(int column) {
+    @Override
+		protected boolean useToString(int column) {
         Comparator comparator = super.getComparator(column);
         if (comparator != null) {
             return false;
@@ -254,23 +256,28 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
      * TableModel.
      */
     private class TableRowSorterModelWrapper extends ModelWrapper<M,Integer> {
-        public M getModel() {
+        @Override
+				public M getModel() {
             return tableModel;
         }
 
-        public int getColumnCount() {
+        @Override
+				public int getColumnCount() {
             return (tableModel == null) ? 0 : tableModel.getColumnCount();
         }
 
-        public int getRowCount() {
+        @Override
+				public int getRowCount() {
             return (tableModel == null) ? 0 : tableModel.getRowCount();
         }
 
-        public Object getValueAt(int row, int column) {
+        @Override
+				public Object getValueAt(int row, int column) {
             return tableModel.getValueAt(row, column);
         }
 
-        public String getStringValueAt(int row, int column) {
+        @Override
+				public String getStringValueAt(int row, int column) {
             TableStringConverter converter = getStringConverter();
             if (converter != null) {
                 // Use the converter
@@ -294,14 +301,16 @@ public class TableRowSorter<M extends TableModel> extends DefaultRowSorter<M, In
             return string;
         }
 
-        public Integer getIdentifier(int index) {
+        @Override
+				public Integer getIdentifier(int index) {
             return index;
         }
     }
 
 
     private static class ComparableComparator implements Comparator {
-        @SuppressWarnings("unchecked")
+        @Override
+				@SuppressWarnings("unchecked")
         public int compare(Object o1, Object o2) {
             return ((Comparable)o1).compareTo(o2);
         }

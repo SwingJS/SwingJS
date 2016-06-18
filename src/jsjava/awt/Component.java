@@ -736,7 +736,7 @@ protected  transient ComponentPeer peer;
     // of the peer and therefore the call to XSetBackground.
     transient boolean backgroundEraseDisabled;
 		public String htmlName;
-		private int num;
+		protected int num;
 		private static int incr;
 
 //    static {
@@ -2088,6 +2088,9 @@ protected  transient ComponentPeer peer;
 	public void reshape(int x, int y, int width, int height) {
 		try {
 			setBoundsOp(ComponentPeer.SET_BOUNDS);
+			// width or height can be < 0 if layout involved borders larger than objects
+			width = Math.max(0, width); // BH added
+			height = Math.max(0, height); // BH added
 			boolean resized = (this.width != width) || (this.height != height);
 			boolean moved = (this.x != x) || (this.y != y);
 			if (!resized && !moved) {
@@ -2125,6 +2128,8 @@ protected  transient ComponentPeer peer;
 						needNotify = false;
 					}
 				//}
+					
+					
 				if (resized) {
 					invalidate();
 				}
@@ -3275,7 +3280,8 @@ protected  transient ComponentPeer peer;
      * @see     java.awt.image.ImageObserver#imageUpdate(java.awt.Image, int, int, int, int, int)
      * @since   JDK1.0
      */
-    public boolean imageUpdate(Image img, int infoflags,
+    @Override
+		public boolean imageUpdate(Image img, int infoflags,
                                int x, int y, int w, int h) {
     	return false;
 //        int rate = -1;
@@ -6211,7 +6217,7 @@ protected  transient ComponentPeer peer;
         }
         isFocusTraversableOverridden = FOCUS_TRAVERSABLE_SET;
 
-        firePropertyChangeObject("focusable", oldFocusable, focusable);
+        firePropertyChangeObject("focusable", Boolean.valueOf(oldFocusable), Boolean.valueOf(focusable));
 //        if (oldFocusable && !focusable) {
 //            if (isFocusOwner() && KeyboardFocusManager.isAutoFocusTransferEnabled()) {
 //                transferFocus(true);
@@ -7164,7 +7170,8 @@ protected  transient ComponentPeer peer;
      * @return    a string representation of this component
      * @since     JDK1.0
      */
-    public String toString() {
+    @Override
+		public String toString() {
         return getClass().getName() + "[" + paramString() + "]";
     }
 
@@ -8540,4 +8547,8 @@ protected  transient ComponentPeer peer;
 
         return doesClassImplement(obj.getClass(), interfaceName);
     }
+
+		public String getUIClassID() {
+			return null; // only JComponent, JFrame, JDialog, JWindow
+		}
 }

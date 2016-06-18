@@ -83,28 +83,36 @@ class Wave2dCanvas extends Canvas {
     Wave2dCanvas(Wave2dFrame p) {
 	pg = p;
     }
-    public Dimension getPreferredSize() {
+    @Override
+		public Dimension getPreferredSize() {
 	return new Dimension(300,400);
     }
-    public void update(Graphics g) {
+    @Override
+		public void update(Graphics g) {
 	pg.updateWave2d(g);
     }
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
 	pg.updateWave2d(g);
     }
-};
+}
 
 class Wave2dLayout implements LayoutManager {
     public Wave2dLayout() {}
-    public void addLayoutComponent(String name, Component c) {}
-    public void removeLayoutComponent(Component c) {}
-    public Dimension preferredLayoutSize(Container target) {
+    @Override
+		public void addLayoutComponent(String name, Component c) {}
+    @Override
+		public void removeLayoutComponent(Component c) {}
+    @Override
+		public Dimension preferredLayoutSize(Container target) {
 	return new Dimension(500, 500);
     }
-    public Dimension minimumLayoutSize(Container target) {
+    @Override
+		public Dimension minimumLayoutSize(Container target) {
 	return new Dimension(100,100);
     }
-    public void layoutContainer(Container target) {
+    @Override
+		public void layoutContainer(Container target) {
 	Insets insets = target.getInsets();
 	int targetw = target.getSize().width - insets.left - insets.right;
 	int cw = targetw* 7/10;
@@ -133,7 +141,7 @@ class Wave2dLayout implements LayoutManager {
 	    }
 	}
     }
-};
+}
 
 public class Wave2d extends Applet implements ComponentListener {
     static Wave2dFrame ogf;
@@ -144,7 +152,8 @@ public class Wave2d extends Applet implements ComponentListener {
 	repaint();
     }
     boolean started = false;
-    public void init() {
+    @Override
+		public void init() {
     	showFrame();
 	//addComponentListener(this);
     }
@@ -163,7 +172,8 @@ public class Wave2d extends Applet implements ComponentListener {
 	}
     }
     
-    public void paint(Graphics g) {
+    @Override
+		public void paint(Graphics g) {
 	String s = "Applet is open in a separate window.";
 	if (!started)
 	    s = "Applet is starting.";
@@ -175,18 +185,23 @@ public class Wave2d extends Applet implements ComponentListener {
 	super.paint(g);
     }
     
-    public void componentHidden(ComponentEvent e){}
-    public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) { showFrame(); }
-    public void componentResized(ComponentEvent e) {}
+    @Override
+		public void componentHidden(ComponentEvent e){}
+    @Override
+		public void componentMoved(ComponentEvent e){}
+    @Override
+		public void componentShown(ComponentEvent e) { showFrame(); }
+    @Override
+		public void componentResized(ComponentEvent e) {}
     
-    public void destroy() {
+    @Override
+		public void destroy() {
 	if (ogf != null)
 	    ogf.dispose();
 	ogf = null;
 	repaint();
     }
-};
+}
 
 class Wave2dFrame extends Frame
   implements ComponentListener, ActionListener, AdjustmentListener,
@@ -529,7 +544,8 @@ class Wave2dFrame extends Frame
 
     
   
-    public void processEvent(AWTEvent ev) {
+    @Override
+		public void processEvent(AWTEvent ev) {
         if (ev.getID() == Event.WINDOW_DESTROY) {
             //applet.destroyFrame();
             //return true;
@@ -977,17 +993,22 @@ class Wave2dFrame extends Frame
 	return (x < 0) ? -1 : (x == 0) ? 0 : 1;
     }
 
-    public void componentHidden(ComponentEvent e){}
-    public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) {
+    @Override
+		public void componentHidden(ComponentEvent e){}
+    @Override
+		public void componentMoved(ComponentEvent e){}
+    @Override
+		public void componentShown(ComponentEvent e) {
 	cv.repaint();
     }
 
-    public void componentResized(ComponentEvent e) {
+    @Override
+		public void componentResized(ComponentEvent e) {
 	handleResize();
 	cv.repaint(100);
     }
-    public void actionPerformed(ActionEvent e) {
+    @Override
+		public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == resetTimeButton) {
 	    t = 0;
 	    recompute = true;
@@ -995,7 +1016,8 @@ class Wave2dFrame extends Frame
 	}
     }
 
-    public void adjustmentValueChanged(AdjustmentEvent e) {
+    @Override
+		public void adjustmentValueChanged(AdjustmentEvent e) {
 	System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	if (e.getSource() == resBar && resBar.getValue() != resBarValue)
 	    setResolution();
@@ -1039,38 +1061,46 @@ class Wave2dFrame extends Frame
 	setResolution();
     }
 
-    public void mouseDragged(MouseEvent e) {
+    @Override
+		public void mouseDragged(MouseEvent e) {
 	dragging = true;
 	//edit(e);
 	cv.repaint(pause);
     }
-    public void mouseMoved(MouseEvent e) {
+    @Override
+		public void mouseMoved(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	    return;
 	int x = e.getX();
 	int y = e.getY();
 	dragX = x; dragY = y;
     }
-    public void mouseClicked(MouseEvent e) {
+    @Override
+		public void mouseClicked(MouseEvent e) {
     }
-    public void mouseEntered(MouseEvent e) {
+    @Override
+		public void mouseEntered(MouseEvent e) {
     }
-    public void mouseExited(MouseEvent e) {
+    @Override
+		public void mouseExited(MouseEvent e) {
     }
-    public void mousePressed(MouseEvent e) {
+    @Override
+		public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	dragging = true;
 	//edit(e);
     }
-    public void mouseReleased(MouseEvent e) {
+    @Override
+		public void mouseReleased(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	dragging = false;
 	dragSet = dragClear = false;
 	cv.repaint();
     }
-    public void itemStateChanged(ItemEvent e) {
+    @Override
+		public void itemStateChanged(ItemEvent e) {
 	cv.repaint();
 	if (e.getItemSelectable() == symmCheck) {
 	    recompute = true;
@@ -1133,15 +1163,18 @@ class Wave2dFrame extends Frame
 	abstract Setup createNext();
 	String getInfo(int x) { return null; }
 	int getAuxBarCount() { return 2; }
-    };
+    }
 
     class SingleSlitSetup extends Setup {
+	@Override
 	String getName() { return "Single Slit"; }
+	@Override
 	void select() {
 	    auxLabels[0].setText("Slit Width");
 	    brightnessBar.setValue(440);
 	}
 	int w;
+	@Override
 	void doAperture() {
 	    int x;
 	    w = auxBars[0].getValue();
@@ -1149,16 +1182,21 @@ class Wave2dFrame extends Frame
 	    for (x = 0; x != w; x++)
 		apertureR[wallWidth/2 - w/2 + x] = 1;
 	}
+	@Override
 	int getAuxBarCount() { return 1; }
+	@Override
 	String getInfo(int x) {
 	    if (x == 1)
 		return "Aperture width = " + getLength(w);
 	    return null;
 	}
+	@Override
 	Setup createNext() { return new DoubleSlitSetup(); }
     }
     class DoubleSlitSetup extends Setup {
+	@Override
 	String getName() { return "Double Slit"; }
+	@Override
 	void select() {
 	    auxLabels[0].setText("Slit Width");
 	    auxLabels[1].setText("Separation");
@@ -1168,6 +1206,7 @@ class Wave2dFrame extends Frame
 	    auxBars[3].setValue(1);
 	    brightnessBar.setValue(380);
 	}
+	@Override
 	void doAperture() {
 	    int x;
 	    int w = auxBars[0].getValue();
@@ -1190,24 +1229,31 @@ class Wave2dFrame extends Frame
 		apertureI[wallWidth/2 + s + x] = a2i;
 	    }
 	}
+	@Override
 	String getInfo(int x) {
 	    if (x == 0)
 		return "Slit width = " + getLength(auxBars[0].getValue());
 	    return "Separation = " + getLength(2*auxBars[1].getValue()-1);
 	}
+	@Override
 	int getAuxBarCount() { return 4; }
+	@Override
 	Setup createNext() { return new GratingSetup(); }
     }
     class GratingSetup extends Setup {
+	@Override
 	String getName() { return "Multiple Slits"; }
+	@Override
 	void select() {
 	    auxLabels[0].setText("Slit Count");
 	    auxLabels[1].setText("Slit Width");
 	    auxLabels[2].setText("Separation");
 	    brightnessBar.setValue(345);
 	}
+	@Override
 	int getAuxBarCount() { return 3; }
 	int w, s;
+	@Override
 	void doAperture() {
 	    int x;
 	    w = auxBars[1].getValue();
@@ -1227,15 +1273,19 @@ class Wave2dFrame extends Frame
 		for (i = 0; i != n; i++)
 		    apertureR[wallWidth/2-sub+s*i+x] = 1;
 	}
+	@Override
 	String getInfo(int x) {
 	    if (x == 0)
 		return "Slit width = " + getLength(w);
 	    return "Separation = " + getLength(s-w);
 	}
+	@Override
 	Setup createNext() { return new ObstacleSetup(); }
     }
     class ObstacleSetup extends Setup {
+	@Override
 	String getName() { return "Obstacle"; }
+	@Override
 	void select() {
 	    auxLabels[0].setText("Width");
 	    // waves with an incidence angle don't work for some reason
@@ -1246,26 +1296,32 @@ class Wave2dFrame extends Frame
 	    resetTimeButton.setVisible(false);
 	    brightnessBar.setValue(310);
 	}
+	@Override
 	int getAuxBarCount() { return 1; }
 	int w;
+	@Override
 	void doAperture() {
 	    int x;
 	    w = (int) (auxBars[0].getValue()*1.5);
 	    for (x = 0; x != w; x++)
 		apertureR[wallWidth/2-w/2+x] = 1;
 	}
+	@Override
 	String getInfo(int x) {
 	    if (x == 1)
 		return "Width = " + getLength(w);
 	    return null;
 	}
+	@Override
 	Setup createNext() { return new ZonePlateEvenSetup(); }
     }
     class ZonePlateEvenSetup extends Setup {
+	@Override
 	String getName() { return "Zone Plate (Even)"; }
 	int evenOdd = 0;
 	boolean phase = false;
 	boolean blazed = false;
+	@Override
 	void select() {
 	    auxLabels[0].setText("Intended Frequency");
 	    auxBars[0].setValue(freqBar.getValue() * 100 / 236);
@@ -1275,7 +1331,9 @@ class Wave2dFrame extends Frame
 	    auxBars[2].setValue(100);
 	    brightnessBar.setValue(111);
 	}
+	@Override
 	int getAuxBarCount() { return 3; }
+	@Override
 	void doAperture() {
 	    int i;
 	    // freqBar ranges from 0 to 4.72, so we match that here
@@ -1301,16 +1359,21 @@ class Wave2dFrame extends Frame
 		}
 	    }
 	}
+	@Override
 	Setup createNext() { return new ZonePlateOddSetup(); }
     }
     class ZonePlateOddSetup extends ZonePlateEvenSetup {
 	ZonePlateOddSetup() { evenOdd = 1; }
+	@Override
 	String getName() { return "Zone Plate (Odd)"; }
+	@Override
 	Setup createNext() { return new ZonePlatePhaseSetup(); }
     }
     class ZonePlatePhaseSetup extends ZonePlateOddSetup {
 	ZonePlatePhaseSetup() { phase = true; }
+	@Override
 	String getName() { return "Phase-Reversal Zone Plate"; }
+	@Override
 	Setup createNext() { return new ZonePlateBlazedSetup(); }
     }
     class ZonePlateBlazedSetup extends ZonePlateOddSetup {

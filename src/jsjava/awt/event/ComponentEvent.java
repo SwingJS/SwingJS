@@ -129,7 +129,8 @@ public class ComponentEvent extends AWTEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         Rectangle b = (source !=null
                        ? ((Component)source).getBounds()

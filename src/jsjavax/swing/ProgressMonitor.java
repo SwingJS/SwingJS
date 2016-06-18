@@ -156,7 +156,8 @@ public class ProgressMonitor
         }
 
 
-        public int getMaxCharactersPerLineCount() {
+        @Override
+				public int getMaxCharactersPerLineCount() {
             return 60;
         }
 
@@ -165,7 +166,8 @@ public class ProgressMonitor
         // but create a modeless dialog.
         // This is necessary because the Solaris implementation doesn't
         // support Dialog.setModal yet.
-        public JDialog createDialog(Component parentComponent, String title) {
+        @Override
+				public JDialog createDialog(Component parentComponent, String title) {
             final JDialog dialog;
 
             Window window = JOptionPane.getWindowForComponent(parentComponent);
@@ -188,11 +190,13 @@ public class ProgressMonitor
             dialog.addWindowListener(new WindowAdapter() {
                 boolean gotFocus = false;
 
-                public void windowClosing(WindowEvent we) {
+                @Override
+								public void windowClosing(WindowEvent we) {
                     setValue(cancelOption[0]);
                 }
 
-                public void windowActivated(WindowEvent we) {
+                @Override
+								public void windowActivated(WindowEvent we) {
                     // Once window gets focus, set initial focus
                     if (!gotFocus) {
                         selectInitialValue();
@@ -202,7 +206,8 @@ public class ProgressMonitor
             });
 
             addPropertyChangeListener(new PropertyChangeListener() {
-                public void propertyChange(PropertyChangeEvent event) {
+                @Override
+								public void propertyChange(PropertyChangeEvent event) {
                     if(dialog.isVisible() &&
                        event.getSource() == ProgressOptionPane.this &&
                        (event.getPropertyName().equals(VALUE_PROPERTY) ||

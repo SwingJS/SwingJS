@@ -493,7 +493,7 @@ public abstract class SunToolkit extends Toolkit implements
 
 	public static void setLWRequestStatus(Window changed, boolean status) {
 		AWTAccessor.getWindowAccessor().setLWRequestStatus(changed, status);
-	};
+	}
 
 	public static void checkAndSetPolicy(Container cont, boolean isSwingCont) {
 		// FocusTraversalPolicy defaultPolicy = KeyboardFocusManager

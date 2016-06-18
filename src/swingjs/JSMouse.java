@@ -23,7 +23,6 @@
  */
 package swingjs;
 
-import javajs.util.V3;
 import jsjava.awt.Component;
 import jsjava.awt.Event;
 import jsjava.awt.Toolkit;
@@ -40,16 +39,10 @@ import jsjava.awt.event.MouseWheelEvent;
 
 public class JSMouse {
 
-	private JSAppletPanel ap;
+	private JSJavaViewer ap;
 	private Object jqevent;
 
-	/**
-	 * @param privateKey
-	 *          -- not used in JavaScript
-	 * @param vwr
-	 * @param display
-	 */
-	public JSMouse(JSAppletPanel ap) {
+	public JSMouse(JSJavaViewer ap) {
 		this.ap = ap;
 	}
 
@@ -104,53 +97,12 @@ public class JSMouse {
 	 * 
 	 */
 	public void processTwoPointGesture(float[][][] touches) {
+		getMouse2().processTwoPointGesture(touches);
+	}
 
-		if (touches[0].length < 2)
-			return;
-		float[][] t1 = touches[0];
-		float[][] t2 = touches[1];
-		float[] t1first = t1[0];
-		float[] t1last = t1[t2.length - 1];
-		float x1first = t1first[0];
-		float x1last = t1last[0];
-		float dx1 = x1last - x1first;
-		float y1first = t1first[1];
-		float y1last = t1last[1];
-		float dy1 = y1last - y1first;
-		V3 v1 = V3.new3(dx1, dy1, 0);
-		float d1 = v1.length();
-		float[] t2first = t2[0];
-		float[] t2last = t2[t2.length - 1];
-		float x2first = t2first[0];
-		float x2last = t2last[0];
-		float dx2 = x2last - x2first;
-		float y2first = t2first[1];
-		float y2last = t2last[1];
-		float dy2 = y2last - y2first;
-		V3 v2 = V3.new3(dx2, dy2, 0);
-		float d2 = v2.length();
-		// rooted finger --> zoom (at this position, perhaps?)
-		if (d1 < 1 || d2 < 1)
-			return;
-		v1.normalize();
-		v2.normalize();
-		float cos12 = (v1.dot(v2));
-		// cos12 > 0.8 (same direction) will be required to indicate drag
-		// cos12 < -0.8 (opposite directions) will be required to indicate zoom or
-		// rotate
-		if (cos12 > 0.8) {
-			// two co-aligned motions -- translate
-			// just use finger 1, last move
-			int deltaX = (int) (x1last - t1[t1.length - 2][0]);
-			int deltaY = (int) (y1last - t1[t1.length - 2][1]);
-			translateXYBy(deltaX, deltaY);
-		} else if (cos12 < -0.8) {
-			// two classic zoom motions -- zoom
-			v1 = V3.new3(x2first - x1first, y2first - y1first, 0);
-			v2 = V3.new3(x2last - x1last, y2last - y1last, 0);
-			float dx = v2.length() - v1.length();
-			wheeled(System.currentTimeMillis(), dx < 0 ? -1 : 1, MOUSE_WHEEL);
-		}
+	private JSMouse2 mouse2;
+	private JSMouse2 getMouse2() {
+		return (mouse2 == null ? (mouse2 = (JSMouse2) JSToolkit.getInstance("swingjs.JSMouse2")).set(this) : mouse2);
 	}
 
 	public static final int MOUSE_LEFT = 16; // MouseEvent.BUTTON1_MASK
@@ -161,7 +113,7 @@ public class JSMouse {
 	public final static int MAC_COMMAND = MOUSE_LEFT | MOUSE_RIGHT;
 	public final static int BUTTON_MASK = MOUSE_LEFT | MOUSE_MIDDLE | MOUSE_RIGHT;
 
-	private void translateXYBy(int deltaX, int deltaY) {
+	void translateXYBy(int deltaX, int deltaY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -209,122 +161,6 @@ public class JSMouse {
 		wheeled(e.getWhen(), e.getWheelRotation(), e.getModifiers());
 	}
 
-	// public void keyTyped(KeyEvent ke) {
-	// ke.consume();
-	// if (!vwr.menuEnabled())
-	// return;
-	// char ch = ke.getKeyChar();
-	// int modifiers = ke.getModifiers();
-	// // for whatever reason, CTRL may also drop the 6- and 7-bits,
-	// // so we are in the ASCII non-printable region 1-31
-	// if (Logger.debuggingHigh)
-	// Logger.debug("MouseManager keyTyped: " + ch + " " + (0+ch) + " " +
-	// modifiers);
-	// if (modifiers != 0 && modifiers != Event.SHIFT_MASK) {
-	// switch (ch) {
-	// case (char) 11:
-	// case 'k': // keystrokes on/off
-	// boolean isON = !vwr.getBooleanProperty("allowKeyStrokes");
-	// switch (modifiers) {
-	// case Event.CTRL_MASK:
-	// vwr.setBooleanProperty("allowKeyStrokes", isON);
-	// vwr.setBooleanProperty("showKeyStrokes", true);
-	// break;
-	// case Event.CTRL_ALT:
-	// case Event.SHIFT_MASK:
-	// vwr.setBooleanProperty("allowKeyStrokes", isON);
-	// vwr.setBooleanProperty("showKeyStrokes", false);
-	// break;
-	// }
-	// clearKeyBuffer();
-	// vwr.refresh(3, "showkey");
-	// break;
-	// case 22:
-	// case 'v': // paste
-	// switch (modifiers) {
-	// case Event.CTRL_MASK:
-	// break;
-	// }
-	// break;
-	// case 26:
-	// case 'z': // undo
-	// switch (modifiers) {
-	// case Event.CTRL_MASK:
-	// vwr.undoMoveAction(T.undomove, 1);
-	// break;
-	// case Event.CTRL_SHIFT:
-	// vwr.undoMoveAction(T.redomove, 1);
-	// break;
-	// }
-	// break;
-	// case 25:
-	// case 'y': // redo
-	// switch (modifiers) {
-	// case Event.CTRL_MASK:
-	// vwr.undoMoveAction(T.redomove, 1);
-	// break;
-	// }
-	// break;
-	// }
-	// return;
-	// }
-	// if (!vwr.getBooleanProperty("allowKeyStrokes"))
-	// return;
-	// addKeyBuffer(ke.getModifiers() == Event.SHIFT_MASK ?
-	// Character.toUpperCase(ch) : ch);
-	// }
-
-	// public void keyPressed(KeyEvent ke) {
-	// if (vwr.isApplet)
-	// ke.consume();
-	// manager.keyPressed(ke.getKeyCode(), ke.getModifiers());
-	// }
-	//
-	// public void keyReleased(KeyEvent ke) {
-	// ke.consume();
-	// manager.keyReleased(ke.getKeyCode());
-	// }
-	//
-	// private String keyBuffer = "";
-	//
-	// private void clearKeyBuffer() {
-	// if (keyBuffer.length() == 0)
-	// return;
-	// keyBuffer = "";
-	// if (vwr.getBooleanProperty("showKeyStrokes"))
-	// vwr
-	// .evalStringQuietSync("!set echo _KEYSTROKES; set echo bottom left;echo \"\"",
-	// true, true);
-	// }
-	//
-	// private void addKeyBuffer(char ch) {
-	// if (ch == 10) {
-	// sendKeyBuffer();
-	// return;
-	// }
-	// if (ch == 8) {
-	// if (keyBuffer.length() > 0)
-	// keyBuffer = keyBuffer.substring(0, keyBuffer.length() - 1);
-	// } else {
-	// keyBuffer += ch;
-	// }
-	// if (vwr.getBooleanProperty("showKeyStrokes"))
-	// vwr
-	// .evalStringQuietSync("!set echo _KEYSTROKES; set echo bottom left;echo "
-	// + PT.esc("\1" + keyBuffer), true, true);
-	// }
-	//
-	// private void sendKeyBuffer() {
-	// String kb = keyBuffer;
-	// if (vwr.getBooleanProperty("showKeyStrokes"))
-	// vwr
-	// .evalStringQuietSync("!set echo _KEYSTROKES; set echo bottom left;echo "
-	// + PT.esc(keyBuffer), true, true);
-	// clearKeyBuffer();
-	// vwr.evalStringQuietSync(kb, false, true);
-	// }
-	//
-
 	private void entry(long time, int x, int y, boolean isExit) {
 		wheeling = false;
 		mouseEnterExit(time, x, y, isExit);
@@ -358,7 +194,7 @@ public class JSMouse {
 			mouseAction(MouseEvent.MOUSE_MOVED, time, x, y, 0, modifiers);
 	}
 
-	private void wheeled(long time, int rotation, int modifiers) {
+	void wheeled(long time, int rotation, int modifiers) {
 		// clearKeyBuffer();
 		wheeling = true;
 		mouseAction(MouseEvent.MOUSE_WHEEL, time, 0, rotation, 0, modifiers
@@ -424,17 +260,18 @@ public class JSMouse {
 			int count, int modifiers) {
 		boolean popupTrigger = false;
 		int button = getButton(modifiers);
-		Component source = ap.applet;
+		Component source = (Component) ap.applet; // may be a JFrame
 		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);
 		byte[] bdata = new byte[0];
+		Object jqevent = this.jqevent;
 		/**
 		 * @j2sNative
 		 *  bdata.jqevent = this.jqevent; 
 		 */
-		{}
+		{
+			System.out.println(jqevent);
+		}
 		e.setBData(e, bdata);
-//		if (id != Event.MOUSE_MOVE)
-//			System.out.println(e.paramString());
 		Toolkit.getEventQueue().postEvent(e);
 	}
 

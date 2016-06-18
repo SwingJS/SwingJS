@@ -381,7 +381,8 @@ public abstract class CalendarDate implements Cloneable {
             && getEra() == date.getEra();
     }
 
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (!(obj instanceof CalendarDate)) {
             return false;
         }
@@ -408,7 +409,8 @@ public abstract class CalendarDate implements Cloneable {
                 && zoneOffset == that.zoneOffset);
     }
 
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         // a pseudo (local standard) time stamp value in milliseconds
         // from the Epoch, assuming Gregorian calendar fields.
         long hash = ((((((long)year - 1970) * 12) + (month - 1)) * 30) + dayOfMonth) * 24;
@@ -430,7 +432,8 @@ public abstract class CalendarDate implements Cloneable {
      *
      * @return a copy of this <code>CalendarDate</code>
      */
-    public Object clone() {
+    @Override
+		public Object clone() {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
@@ -448,7 +451,8 @@ public abstract class CalendarDate implements Cloneable {
      *
      * @see java.text.SimpleDateFormat
      */
-    public String toString() {
+    @Override
+		public String toString() {
         StringBuilder sb = new StringBuilder();
         CalendarUtils.sprintf0d(sb, year, 4).append('-');
         CalendarUtils.sprintf0d(sb, month, 2).append('-');

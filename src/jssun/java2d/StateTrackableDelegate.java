@@ -93,6 +93,7 @@ public final class StateTrackableDelegate implements StateTrackable {
 	 * @inheritDoc
 	 * @since 1.7
 	 */
+	@Override
 	public State getState() {
 		return theState;
 	}
@@ -101,6 +102,7 @@ public final class StateTrackableDelegate implements StateTrackable {
 	 * @inheritDoc
 	 * @since 1.7
 	 */
+	@Override
 	public synchronized StateTracker getStateTracker() {
 		StateTracker st = theTracker;
 		if (st == null) {
@@ -110,6 +112,7 @@ public final class StateTrackableDelegate implements StateTrackable {
 				break;
 			case STABLE:
 				st = new StateTracker() {
+					@Override
 					public boolean isCurrent() {
 						return (theTracker == this);
 					}

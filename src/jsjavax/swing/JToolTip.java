@@ -82,7 +82,8 @@ public class JToolTip extends JComponent {
      *
      * @return the <code>ToolTipUI</code> object that renders this component
      */
-    public ToolTipUI getUI() {
+    @Override
+		public ToolTipUI getUI() {
         return (ToolTipUI)ui;
     }
 
@@ -91,7 +92,8 @@ public class JToolTip extends JComponent {
      *
      * @see JComponent#updateUI
      */
-    public void updateUI() {
+    @Override
+		public void updateUI() {
         setUI((ToolTipUI)UIManager.getUI(this));
     }
 
@@ -103,7 +105,8 @@ public class JToolTip extends JComponent {
      * @see JComponent#getUIClassID
      * @see UIDefaults#getUI
      */
-    public String getUIClassID() {
+    @Override
+		public String getUIClassID() {
         return uiClassID;
     }
 
@@ -170,7 +173,8 @@ public class JToolTip extends JComponent {
      * Always returns true since tooltips, by definition,
      * should always be on top of all other windows.
      */
-    // package private
+    @Override
+		// package private
     boolean alwaysOnTop() {
         return true;
     }
@@ -203,7 +207,8 @@ public class JToolTip extends JComponent {
      *
      * @return  a string representation of this <code>JToolTip</code>
      */
-    protected String paramString() {
+    @Override
+		protected String paramString() {
         String tipTextString = (tipText != null ?
                                 tipText : "");
 

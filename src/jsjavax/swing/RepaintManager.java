@@ -987,6 +987,7 @@ public class RepaintManager {
 	 * 
 	 * @return a String representation of this object
 	 */
+	@Override
 	public synchronized String toString() {
 		StringBuffer sb = new StringBuffer();
 		if (dirtyComponents != null)
@@ -1644,6 +1645,7 @@ public class RepaintManager {
 			return false;
 		}
 
+		@Override
 		public void run() {
 			synchronized (this) {
 				pending = false;

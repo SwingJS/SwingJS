@@ -134,7 +134,8 @@ public class ContainerEvent extends ComponentEvent {
      *
      * @return a string identifying the event and its attributes
      */
-    public String paramString() {
+    @Override
+		public String paramString() {
         String typeStr;
         switch(id) {
           case COMPONENT_ADDED:

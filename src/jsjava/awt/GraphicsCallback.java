@@ -34,7 +34,8 @@ abstract class GraphicsCallback extends SunGraphicsCallback {
         private static PaintCallback instance = new PaintCallback();
 
         private PaintCallback() {}
-        public void run(Component comp, Graphics cg) {
+        @Override
+				public void run(Component comp, Graphics cg) {
             comp.paint(cg);
         }
         static PaintCallback getInstance() {
@@ -56,7 +57,8 @@ abstract class GraphicsCallback extends SunGraphicsCallback {
         private static PaintAllCallback instance = new PaintAllCallback();
 
         private PaintAllCallback() {}
-        public void run(Component comp, Graphics cg) {
+        @Override
+				public void run(Component comp, Graphics cg) {
             comp.paintAll(cg);
         }
         static PaintAllCallback getInstance() {
@@ -113,7 +115,8 @@ abstract class GraphicsCallback extends SunGraphicsCallback {
             new PaintHeavyweightComponentsCallback();
 
         private PaintHeavyweightComponentsCallback() {}
-        public void run(Component comp, Graphics cg) {
+        @Override
+				public void run(Component comp, Graphics cg) {
         	if (comp.isLightweight()) {
 //            if (comp.peer instanceof LightweightPeer) {
                 comp.paintHeavyweightComponents(cg);

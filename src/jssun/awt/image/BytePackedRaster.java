@@ -241,7 +241,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * @return         An object reference to an array of type defined by
      *                 getTransferType() with the request pixel data.
      */
-    public Object getDataElements(int x, int y, Object obj) {
+    @Override
+		public Object getDataElements(int x, int y, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -285,7 +286,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * @return         An object reference to an array of type defined by
      *                 getTransferType() with the requested pixel data.
      */
-    public Object getDataElements(int x, int y, int w, int h,
+    @Override
+		public Object getDataElements(int x, int y, int w, int h,
                                   Object outData) {
         return getByteData(x, y, w, h, (byte[])outData);
     }
@@ -503,7 +505,8 @@ public class BytePackedRaster extends SunWritableRaster {
      *                 getTransferType() and length getNumDataElements()
      *                 containing the pixel data to place at x,y.
      */
-    public void setDataElements(int x, int y, Object obj) {
+    @Override
+		public void setDataElements(int x, int y, Object obj) {
         if ((x < this.minX) || (y < this.minY) ||
             (x >= this.maxX) || (y >= this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -799,7 +802,8 @@ public class BytePackedRaster extends SunWritableRaster {
      *                  of the copy.
      * @param srcRaster The Raster from which to copy pixels.
      */
-    public void setRect(int dx, int dy, Raster srcRaster) {
+    @Override
+		public void setRect(int dx, int dy, Raster srcRaster) {
         // Check if we can use fast code
         if (!(srcRaster instanceof BytePackedRaster) ||
             ((BytePackedRaster)srcRaster).pixelBitStride != pixelBitStride) {
@@ -862,7 +866,8 @@ public class BytePackedRaster extends SunWritableRaster {
      *                 containing the pixel data to place between x,y and
      *                 x+h, y+h.
      */
-    public void setDataElements(int x, int y, int w, int h, Object obj) {
+    @Override
+		public void setDataElements(int x, int y, int w, int h, Object obj) {
         putByteData(x, y, w, h, (byte[])obj);
     }
 
@@ -1028,7 +1033,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * @param iArray An optionally pre-allocated int array
      * @return the samples for the specified rectangle of pixels.
      */
-    public int[] getPixels(int x, int y, int w, int h, int iArray[]) {
+    @Override
+		public int[] getPixels(int x, int y, int w, int h, int iArray[]) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -1141,7 +1147,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * @param h        Height of the pixel rectangle.
      * @param iArray   The input int pixel array.
      */
-    public void setPixels(int x, int y, int w, int h, int iArray[]) {
+    @Override
+		public void setPixels(int x, int y, int w, int h, int iArray[]) {
         if ((x < this.minX) || (y < this.minY) ||
             (x + w > this.maxX) || (y + h > this.maxY)) {
             throw new ArrayIndexOutOfBoundsException
@@ -1264,7 +1271,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * @exception RasterFormatException
      *            if the specified bounding box is outside of the parent raster.
      */
-    public Raster createChild(int x, int y,
+    @Override
+		public Raster createChild(int x, int y,
                               int width, int height,
                               int x0, int y0, int[] bandList) {
         WritableRaster newRaster = createWritableChild(x, y,
@@ -1292,7 +1300,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * @exception RasterFormatException
      *            if the specified bounding box is outside of the parent Raster.
      */
-    public WritableRaster createWritableChild(int x, int y,
+    @Override
+		public WritableRaster createWritableChild(int x, int y,
                                               int width, int height,
                                               int x0, int y0,
                                               int[] bandList) {
@@ -1333,7 +1342,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * Creates a raster with the same layout but using a different
      * width and height, and with new zeroed data arrays.
      */
-    public WritableRaster createCompatibleWritableRaster(int w, int h) {
+    @Override
+		public WritableRaster createCompatibleWritableRaster(int w, int h) {
         if (w <= 0 || h <=0) {
             throw new RasterFormatException("negative "+
                                           ((w <= 0) ? "width" : "height"));
@@ -1348,7 +1358,8 @@ public class BytePackedRaster extends SunWritableRaster {
      * Creates a raster with the same layout and the same
      * width and height, and with new zeroed data arrays.
      */
-    public WritableRaster createCompatibleWritableRaster () {
+    @Override
+		public WritableRaster createCompatibleWritableRaster () {
         return createCompatibleWritableRaster(width,height);
     }
 
@@ -1427,7 +1438,8 @@ public class BytePackedRaster extends SunWritableRaster {
         }
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return new String ("BytePackedRaster: width = "+width+" height = "+height
                            +" #channels "+numBands
                            +" xOff = "+sampleModelTranslateX

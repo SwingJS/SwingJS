@@ -26,7 +26,7 @@ public abstract class DOMNode {
 		{
 		}
 		return obj;
-	};
+	}
 
 	public static DOMNode getParent(DOMNode obj) {
 		/**
@@ -165,5 +165,10 @@ public abstract class DOMNode {
 		{}
 		JSToolkit.getJQuery().$(node).on(event, f);
 	}
+
+	public static DOMNode setZ(DOMNode node, int z) {
+		return setStyles(node, "z-index", "" + z);
+	}
+
 
 }

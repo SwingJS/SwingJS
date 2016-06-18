@@ -278,7 +278,8 @@ public class EventListenerList  {
     /**
      * Returns a string representation of the EventListenerList.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         Object[] lList = listenerList;
         String s = "EventListenerList: ";
         s += lList.length/2 + " listeners: ";

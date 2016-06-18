@@ -751,7 +751,8 @@ public abstract class Curve {
         return Double.longBitsToDouble(Double.doubleToLongBits(v)+1);
     }
 
-    public String toString() {
+    @Override
+		public String toString() {
         return ("Curve["+
                 getOrder()+", "+
                 ("("+round(getX0())+", "+round(getY0())+"), ")+

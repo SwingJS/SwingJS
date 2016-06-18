@@ -167,7 +167,8 @@ public class PropertyResourceBundle extends ResourceBundle {
 		}
 
 		// Implements java.util.ResourceBundle.handleGetObject; inherits javadoc specification.
-    public Object handleGetObject(String key) {
+    @Override
+		public Object handleGetObject(String key) {
         if (key == null) {
             throw new NullPointerException();
         }
@@ -182,7 +183,8 @@ public class PropertyResourceBundle extends ResourceBundle {
      *         this <code>ResourceBundle</code> and its parent bundles.
      * @see #keySet()
      */
-    public Enumeration<String> getKeys() {
+    @Override
+		public Enumeration<String> getKeys() {
         ResourceBundle parent = this.parent;
         return new ResourceBundleEnumeration(lookup.keySet(),
                 (parent != null) ? parent.getKeys() : null);
@@ -197,7 +199,8 @@ public class PropertyResourceBundle extends ResourceBundle {
      * @since 1.6
      * @see #keySet()
      */
-    protected Set<String> handleKeySet() {
+    @Override
+		protected Set<String> handleKeySet() {
         return lookup.keySet();
     }
 

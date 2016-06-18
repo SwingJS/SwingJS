@@ -1878,7 +1878,8 @@ public abstract class Calendar implements Cloneable, Comparable<Calendar> {
      * @return <code>true</code> if this object is equal to <code>obj</code>;
      * <code>false</code> otherwise.
      */
-    public boolean equals(Object obj) {
+    @Override
+		public boolean equals(Object obj) {
         if (this == obj)
             return true;
         try {
@@ -1902,7 +1903,8 @@ public abstract class Calendar implements Cloneable, Comparable<Calendar> {
      * @return a hash code value for this object.
      * @since 1.2
      */
-    public int hashCode() {
+    @Override
+		public int hashCode() {
         // 'otheritems' represents the hash code for the previous versions.
         int otheritems = (lenient ? 1 : 0)
             | (firstDayOfWeek << 1)
@@ -1973,7 +1975,8 @@ public abstract class Calendar implements Cloneable, Comparable<Calendar> {
      * any invalid calendar values.
      * @since   1.5
      */
-    public int compareTo(Calendar anotherCalendar) {
+    @Override
+		public int compareTo(Calendar anotherCalendar) {
         return compareTo(getMillisOf(anotherCalendar));
     }
 
@@ -2377,7 +2380,8 @@ public abstract class Calendar implements Cloneable, Comparable<Calendar> {
      *
      * @return a copy of this object.
      */
-    public Object clone()
+    @Override
+		public Object clone()
     {
         try {
             Calendar other = (Calendar) super.clone();
@@ -2426,7 +2430,8 @@ public abstract class Calendar implements Cloneable, Comparable<Calendar> {
      *
      * @return  a string representation of this calendar.
      */
-    public String toString() {
+    @Override
+		public String toString() {
         // NOTE: BuddhistCalendar.toString() interprets the string
         // produced by this method so that the Gregorian year number
         // is substituted by its B.E. year value. It relies on

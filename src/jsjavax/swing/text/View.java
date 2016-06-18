@@ -1345,4 +1345,4 @@ public abstract class View implements SwingConstants {
     private View parent;
     private Element elem;
 
-};
+}
