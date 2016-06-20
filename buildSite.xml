@@ -315,6 +315,7 @@
             java/awt/font/TextAttribute.js
             java/awt/FontMetrics.js
             java/awt/Frame.js
+            java/awt/JSComponent.js
             java/awt/geom/AffineTransform.js
             java/awt/geom/CubicCurve2D.js
             java/awt/geom/Dimension2D.js
@@ -355,7 +356,6 @@
             java/awt/Paint.js
             java/awt/PaintContext.js
             java/awt/Panel.js
-            java/awt/peer/CanvasPeer.js
             java/awt/peer/ComponentPeer.js
             java/awt/peer/ContainerPeer.js
             java/awt/peer/LightweightPeer.js
@@ -497,16 +497,14 @@
             JU/SB.js
             JU/T3.js
             JU/V3.js
-            swingjs/api/JSTop.js
             swingjs/api/HTML5CanvasContext2D.js
             swingjs/api/Interface.js
-            swingjs/api/JSComponent.js
             swingjs/api/JSFunction.js
             swingjs/api/JSInterface.js
-            swingjs/JSAppletPanel.js
-            swingjs/JSJavaViewer.js
+            swingjs/JSAppletViewer.js
+            swingjs/JSFrameViewer.js
             swingjs/JSAppletThread.js
-            swingjs/JSComponentPeer.js
+            swingjs/JSNullComponentPeer.js
             swingjs/JSGraphics2D.js
             swingjs/JSMouse.js
             swingjs/JSThread.js
@@ -725,7 +723,6 @@
             java/awt/EventDispatchThread.js
             java/awt/EventFilter.js
             java/awt/ModalEventFilter.js
-            java/awt/peer/CanvasPeer.js
             java/awt/peer/ComponentPeer.js
             java/awt/peer/ContainerPeer.js
             java/awt/peer/FramePeer.js
@@ -842,7 +839,6 @@
             javax/swing/plaf/ColorUIResource.js
             javax/swing/plaf/ComponentInputMapUIResource.js
 
-        	swingjs/api/JSComponent.js
         	swingjs/api/JSFunction.js
             swingjs/api/JSInterface.js
             swingjs/api/Interface.js
