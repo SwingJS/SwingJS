@@ -30,7 +30,6 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-//import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
@@ -42,21 +41,16 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import swingjs.J2SIgnoreImport;
-import swingjs.JSAbstractDocument;
-import swingjs.api.Interface;
-
-
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Shape;
 import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.HyperlinkEvent;
 import jsjavax.swing.event.HyperlinkListener;
 import jsjavax.swing.plaf.TextUI;
-import jsjavax.swing.text.AbstractDocument;
 import jsjavax.swing.text.BadLocationException;
 import jsjavax.swing.text.BoxView;
 import jsjavax.swing.text.Caret;
@@ -73,6 +67,10 @@ import jsjavax.swing.text.StyledEditorKit;
 import jsjavax.swing.text.View;
 import jsjavax.swing.text.ViewFactory;
 import jsjavax.swing.text.WrappedPlainView;
+import swingjs.J2SIgnoreImport;
+import swingjs.JSAbstractDocument;
+import swingjs.api.Interface;
+//import java.io.ObjectOutputStream;
 
 /**
  * A text component to edit various kinds of content.
@@ -231,7 +229,7 @@ public class JEditorPane extends JTextComponent {
      * The document model is set to <code>null</code>.
      */
     public JEditorPane() {
-        super();
+    	this(null, null, "EditorPaneUI");
 //        setFocusCycleRoot(true);
 //        setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
 //                public Component getComponentAfter(Container focusCycleRoot,
@@ -295,7 +293,7 @@ public class JEditorPane extends JTextComponent {
      *          or cannot be accessed
      */
     public JEditorPane(URL initialPage) throws IOException {
-        this();
+        this(null, null, "EditorPane");
         setPage(initialPage);
     }
 
@@ -308,7 +306,7 @@ public class JEditorPane extends JTextComponent {
      *          cannot be accessed
      */
     public JEditorPane(String url) throws IOException {
-        this();
+        this(null, null, "EditorPane");
         setPage(url);
     }
 
@@ -323,12 +321,17 @@ public class JEditorPane extends JTextComponent {
      *          is <code>null</code>
      */
     public JEditorPane(String type, String text) {
-        this();
-        setContentType(type);
-        setText(text);
+        this(type, text, "editorPane");
     }
 
-    /**
+    public JEditorPane(String type, String text, String uid) {
+    	if (type != null)
+    		setContentType(type);
+      if (text != null)
+      	setText(text);
+		}
+
+		/**
      * Adds a hyperlink listener for notification of any changes, for example
      * when a link is selected and entered.
      *
@@ -531,7 +534,7 @@ public class JEditorPane extends JTextComponent {
     /**
      * Create model and initialize document properties from page properties.
      */
-    private Document initializeModel(EditorKit kit, URL page) {
+    Document initializeModel(EditorKit kit, URL page) {
         Document doc = kit.createDefaultDocument();
         if (pageProperties != null) {
             // transfer properties discovered in stream to the
@@ -879,7 +882,7 @@ public class JEditorPane extends JTextComponent {
     /**
      * Handle URL connection properties (most notably, content type).
      */
-    private void handleConnectionProperties(URLConnection conn) {
+    void handleConnectionProperties(URLConnection conn) {
         if (pageProperties == null) {
             pageProperties = new Hashtable();
         }
@@ -986,18 +989,6 @@ public class JEditorPane extends JTextComponent {
         }
         URL page = new URL(url);
         setPage(page);
-    }
-
-    /**
-     * Gets the class ID for the UI.
-     *
-     * @return the string "EditorPaneUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
     /**
@@ -1443,7 +1434,7 @@ public class JEditorPane extends JTextComponent {
         Dimension d = getPrefSizeJComp();
         if (getParent() instanceof JViewport) {
             JViewport port = (JViewport)getParent();
-            TextUI ui = getUI();
+            TextUI ui = (TextUI) getUI();
             int prefWidth = d.width;
             int prefHeight = d.height;
             if (! getScrollableTracksViewportWidth()) {
@@ -1581,7 +1572,7 @@ public class JEditorPane extends JTextComponent {
 		public boolean getScrollableTracksViewportWidth() {
         if (getParent() instanceof JViewport) {
             JViewport port = (JViewport)getParent();
-            TextUI ui = getUI();
+            TextUI ui = (TextUI) getUI();
             int w = port.getWidth();
             Dimension min = ui.getMinimumSize();
             Dimension max = ui.getMaximumSize();
@@ -1604,7 +1595,7 @@ public class JEditorPane extends JTextComponent {
 		public boolean getScrollableTracksViewportHeight() {
         if (getParent() instanceof JViewport) {
             JViewport port = (JViewport)getParent();
-            TextUI ui = getUI();
+            TextUI ui = (TextUI) getUI();
             int h = port.getHeight();
             Dimension min = ui.getMinimumSize();
             if (h >= min.height) {
@@ -1646,7 +1637,7 @@ public class JEditorPane extends JTextComponent {
     /**
      * Current content binding of the editor.
      */
-    private EditorKit kit;
+    EditorKit kit;
     private boolean isUserSetEditorKit;
 
     private Hashtable pageProperties;
@@ -1665,12 +1656,6 @@ public class JEditorPane extends JTextComponent {
     private static final Object kitRegistryKey = new Object(); // JEditorPane.kitRegistry
     private static final Object kitTypeRegistryKey = new Object(); // JEditorPane.kitTypeRegistry
     private static final Object kitLoaderRegistryKey = new Object(); // JEditorPane.kitLoaderRegistry
-
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "EditorPaneUI";
 
 
     /**

@@ -103,8 +103,6 @@ import jsjavax.swing.plaf.PopupMenuUI;
  */
 public class JMenu extends JMenuItem implements MenuElement
 {
-    private static final String uiClassID = "MenuUI";
-
     /*
      * The popup menu portion of the menu.
      */
@@ -150,7 +148,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * Constructs a new <code>JMenu</code> with no text.
      */
     public JMenu() {
-    	init0("", null, Integer.MIN_VALUE);
+    	init0("", null, Integer.MIN_VALUE, "MenuUI");
     }
 
     /**
@@ -160,7 +158,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param s  the text for the menu label
      */
     public JMenu(String s) {
-    	init0(s, null, Integer.MIN_VALUE);
+    	init0(s, null, Integer.MIN_VALUE, "MenuUI");
     }
 
     /**
@@ -171,7 +169,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * @since 1.3
      */
     public JMenu(Action a) {
-    	init0("", null, Integer.MIN_VALUE);
+    	init0("", null, Integer.MIN_VALUE, "MenuUI");
         setAction(a);
     }
 
@@ -183,7 +181,7 @@ public class JMenu extends JMenuItem implements MenuElement
      * @param b can the menu be torn off (not yet implemented)
      */
     public JMenu(String s, boolean b) {
-    	init0(s, null, Integer.MIN_VALUE);
+    	init0(s, null, Integer.MIN_VALUE, "MenuUI");
     }
 
 
@@ -219,18 +217,6 @@ public class JMenu extends JMenuItem implements MenuElement
 
     }
 
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "MenuUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
 
     //    public void repaint(long tm, int x, int y, int width, int height) {
     //        Thread.currentThread().dumpStack();

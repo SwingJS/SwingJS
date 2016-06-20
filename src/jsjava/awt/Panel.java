@@ -55,6 +55,11 @@ public class Panel extends Container {
     	setLayout(new FlowLayout());
     }
 
+    protected boolean canPaint() {
+			return isContentPane;
+    }
+
+
 		/**
      * Creates a new panel with the specified layout manager.
      * @param layout the layout manager for this panel.

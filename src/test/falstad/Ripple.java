@@ -4,7 +4,7 @@ package test.falstad;
 
 // see http://www.falstad.com/ripple/
 
-// Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
+// Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 // Changes include:
 //
@@ -28,12 +28,17 @@ package test.falstad;
 // deprecated method .show --> .setVisible(true)
 // deprecated method .hide --> .setVisible(false)
 //
+// removal of setBackground() for canvas. 
+
 // optimizations for JavaScript:
 //
 // 1. changed some FOR statements to be more efficient
 // 2. added JavaScript-specific options for setting default resolution and speed
 // 3. changed logic in code to stop adjusting if resolutions is sufficient.
 
+
+
+// 
 
 import java.awt.Adjustable;
 import java.awt.Color;
@@ -99,7 +104,7 @@ class RippleCanvas extends Canvas {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		pg.updateRipple(g);
 	}
 }
@@ -362,6 +367,11 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	Ripple applet;
 
 	RippleFrame(Ripple a) {
+		// note -- this frame has no owner, and when the applet is embedded, 
+		// it will display only if useFrame="true" in the parameters
+		// and if that is not the case, then RippleFrame will never show, 
+		// and ImportDialog will never show, either, as its parent frame (RippleFrame)
+		// is hiding.
 		super("Ripple Tank Applet v1.7f");
 
 		/**
@@ -625,7 +635,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		setDamping();
 		setup = (Setup) setupList.elementAt(setupChooser.getSelectedIndex());
 		reinit();
-		cv.setBackground(Color.black);
+		//cv.setBackground(Color.black);
 		cv.setForeground(Color.lightGray);
 		startTime = getTimeMillis();
 

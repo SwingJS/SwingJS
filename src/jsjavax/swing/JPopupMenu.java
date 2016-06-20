@@ -27,8 +27,6 @@ package jsjavax.swing;
 
 import java.util.Vector;
 
-import swingjs.api.JSComponent;
-
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
@@ -41,6 +39,7 @@ import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.MenuKeyEvent;
 import jsjavax.swing.event.MenuKeyListener;
 import jsjavax.swing.event.PopupMenuEvent;
@@ -83,13 +82,7 @@ import jsjavax.swing.plaf.PopupMenuUI;
  * @author David Karlton
  * @author Arnaud Weber
  */
-public class JPopupMenu extends JComponent implements JSComponent, MenuElement {
-
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "PopupMenuUI";
+public class JPopupMenu extends JComponent implements MenuElement {
 
     /**
      * Key used in AppContext to determine if light way popups are the default.
@@ -188,58 +181,10 @@ public class JPopupMenu extends JComponent implements JSComponent, MenuElement {
         setSelectionModel(new DefaultSingleSelectionModel());
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
         //setFocusTraversalKeysEnabled(false);
+        uiClassID = "PopupMenuUI";
         updateUI();
     }
 
-
-
-    /**
-     * Returns the look and feel (L&F) object that renders this component.
-     *
-     * @return the <code>PopupMenuUI</code> object that renders this component
-     */
-    @Override
-		public PopupMenuUI getUI() {
-        return (PopupMenuUI)ui;
-    }
-
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui the new <code>PopupMenuUI</code> L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(PopupMenuUI ui) {
-        super.setUI(ui);
-    }
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((PopupMenuUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "PopupMenuUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
 
     @Override
 		protected void processFocusEvent(FocusEvent evt) {
@@ -809,7 +754,7 @@ public class JPopupMenu extends JComponent implements JSComponent, MenuElement {
         desiredLocationX = p.x;
         desiredLocationY = p.y;
 
-        Popup newPopup = getUI().getPopup(this, desiredLocationX,
+        Popup newPopup = ((PopupMenuUI)getUI()).getPopup(this, desiredLocationX,
                                           desiredLocationY);
 
         popupFactory.setPopupType(PopupFactory.LIGHT_WEIGHT_POPUP);
@@ -1537,6 +1482,6 @@ public class JPopupMenu extends JComponent implements JSComponent, MenuElement {
      * @since 1.3
      */
     public boolean isPopupTrigger(MouseEvent e) {
-        return getUI().isPopupTrigger(e);
+        return ((PopupMenuUI)getUI()).isPopupTrigger(e);
     }
 }

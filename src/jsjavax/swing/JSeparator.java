@@ -25,7 +25,6 @@
 
 package jsjavax.swing;
 
-import jsjavax.swing.plaf.SeparatorUI;
 //
 
 
@@ -69,12 +68,6 @@ import jsjavax.swing.plaf.SeparatorUI;
  */
 public class JSeparator extends JComponent implements SwingConstants
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "SeparatorUI";
-
     private int orientation = HORIZONTAL;
 
     /** Creates a new horizontal separator. */
@@ -99,73 +92,10 @@ public class JSeparator extends JComponent implements SwingConstants
         checkOrientation( orientation );
         this.orientation = orientation;
         setFocusable(false);
+        uiClassID = "SeparatorUI";
         updateUI();
     }
 
-    /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return the SeparatorUI object that renders this component
-     */
-    @Override
-		public SeparatorUI getUI() {
-        return (SeparatorUI)ui;
-    }
-
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui  the SeparatorUI L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(SeparatorUI ui) {
-        super.setUI(ui);
-    }
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((SeparatorUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "SeparatorUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
-//
-//    /**
-//     * See <code>readObject</code> and <code>writeObject</code> in
-//     * <code>JComponent</code> for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
 
     /**
      * Returns the orientation of this separator.
@@ -245,50 +175,4 @@ public class JSeparator extends JComponent implements SwingConstants
         ",orientation=" + orientationString;
     }
 
-/////////////////
-// Accessibility support
-////////////////
-//
-//    /**
-//     * Gets the AccessibleContext associated with this JSeparator.
-//     * For separators, the AccessibleContext takes the form of an
-//     * AccessibleJSeparator.
-//     * A new AccessibleJSeparator instance is created if necessary.
-//     *
-//     * @return an AccessibleJSeparator that serves as the
-//     *         AccessibleContext of this JSeparator
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJSeparator();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JSeparator</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to separator user-interface elements.
-//     * <p>
-//     * <strong>Warning:</strong>
-//     * Serialized objects of this class will not be compatible with
-//     * future Swing releases. The current serialization support is
-//     * appropriate for short term storage or RMI between applications running
-//     * the same version of Swing.  As of 1.4, support for long term storage
-//     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-//     * has been added to the <code>java.beans</code> package.
-//     * Please see {@link jsjava.beans.XMLEncoder}.
-//     */
-//    protected class AccessibleJSeparator extends AccessibleJComponent {
-//
-//        /**
-//         * Get the role of this object.
-//         *
-//         * @return an instance of AccessibleRole describing the role of the
-//         * object
-//         */
-//        public AccessibleRole getAccessibleRole() {
-//            return AccessibleRole.SEPARATOR;
-//        }
-//    }
 }

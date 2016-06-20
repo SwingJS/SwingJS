@@ -25,9 +25,11 @@
 
 package jsjavax.swing.plaf;
 
+import swingjs.api.HTML5Canvas;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
+import jsjava.awt.JSComponent;
 import jsjava.awt.peer.ComponentPeer;
 import jsjavax.swing.JComponent;
 
@@ -103,13 +105,13 @@ public abstract class ComponentUI implements ComponentPeer {
      * <li>Install keyboard UI (mnemonics, traversal, etc.) on the component.
      * <li>Initialize any appropriate instance data.
      * </ol>
-     * @param c the component where this UI delegate is being installed
+     * @param jsComponent the component where this UI delegate is being installed
      *
      * @see #uninstallUI
      * @see jsjavax.swing.JComponent#setUI
      * @see jsjavax.swing.JComponent#updateUI
      */
-    public void installUI(JComponent c) {
+    public void installUI(JSComponent jsComponent) {
     }
 
     /**
@@ -137,7 +139,7 @@ public abstract class ComponentUI implements ComponentPeer {
      * @see #installUI
      * @see jsjavax.swing.JComponent#updateUI
      */
-    public void uninstallUI(JComponent c) {
+    public void uninstallUI(JSComponent c) {
     }
 
     /**

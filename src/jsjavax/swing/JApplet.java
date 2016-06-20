@@ -24,6 +24,8 @@
  */
 package jsjavax.swing;
 
+import java.awt.HeadlessException;
+
 import jsjava.applet.Applet;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
@@ -32,7 +34,8 @@ import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjava.awt.LayoutManager;
-import jssun.awt.AppContext;
+import swingjs.JSAppletViewer;
+import swingjs.JSToolkit;
 
 /**
  * An extended version of <code>jsjava.applet.Applet</code> that adds support for
@@ -128,6 +131,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see JComponent#getDefaultLocale
      */
     public JApplet() {
+    	frameViewer = appletViewer;
     	setJApplet();
     }
 
@@ -151,6 +155,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
     setLocale( JComponent.getDefaultLocale() );
     setLayout(new BorderLayout());
     setRootPane(createRootPane());
+    rootPane.setFrameViewer(frameViewer);
     setRootPaneCheckingEnabled(true);
 
     setFocusTraversalPolicyProvider(true);
@@ -231,8 +236,13 @@ public class JApplet extends Applet implements /* Accessible ,*/
     @Override
 		public void paint(Graphics g) {
     	// SwingJS adding this so that it can be overridden
-    	// by a call to appletPanel to paint the applet
+    	// by a call to appletViewer to paint the applet
     	getRootPane().paint(g);
+    	
+    	JSAppletViewer p = JSToolkit.getAppletViewer();
+    	if (p.allWindows != null)
+    		for (int i = p.allWindows.size(); --i >= 0;) 
+    			p.allWindows.get(i).paint(g);    	
     }
     
     /**

@@ -178,31 +178,6 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
     /** Bound property */
     public final static String LAYER_PROPERTY = "layeredContainerLayer";
     
-    private static final String uiClassID = "LayeredPaneUI";
-
-    /**
-     * Resets the UI property with a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((LayeredPaneUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "MenuUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     
     // Hashtable to store layer values for non-JComponent components
@@ -216,6 +191,7 @@ public class JLayeredPane extends JComponent /* implements Accessible */ {
     /** Create a new JLayeredPane */
     public JLayeredPane() {
         setLayout(null);
+        uiClassID = "LayeredPaneUI";
         updateUI();
     }
 

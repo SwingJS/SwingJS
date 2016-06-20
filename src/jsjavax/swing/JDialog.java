@@ -26,8 +26,6 @@ package jsjavax.swing;
 
 import java.awt.HeadlessException;
 
-import swingjs.api.JSComponent;
-
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -40,9 +38,8 @@ import jsjava.awt.LayoutManager;
 import jsjava.awt.Window;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.WindowListener;
+import swingjs.JSFrameViewer;
 // 
-import jsjavax.swing.plaf.ComponentUI;
-import jsjavax.swing.plaf.DialogUI;
 
 // BH: Added rootPane.addNotify(); // builds a peer for the root pane
 
@@ -112,7 +109,7 @@ import jsjavax.swing.plaf.DialogUI;
  * @author James Gosling
  * @author Scott Violet
  */
-public class JDialog extends Dialog implements JSComponent, WindowConstants,
+public class JDialog extends Dialog implements WindowConstants,
                                                RootPaneContainer
 {
     /**
@@ -617,34 +614,37 @@ public class JDialog extends Dialog implements JSComponent, WindowConstants,
         dialogInit();
     }
 
-    /**
-     * Called by the constructors to init the <code>JDialog</code> properly.
-     */
-    protected void dialogInit() {
-        enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
-        setLocale( JComponent.getDefaultLocale() );
-        setRootPane(createRootPane());
-        setRootPaneCheckingEnabled(true);
-        if (JDialog.isDefaultLookAndFeelDecorated()) {
-            boolean supportsWindowDecorations =
-            UIManager.getLookAndFeel().getSupportsWindowDecorations();
-            if (supportsWindowDecorations) {
-                setUndecorated(true);
-                getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
-            }
-        }
-        updateUI();
-        addNotify(); // BH added; applet will not do this automatically
-    		rootPane.addNotify(); // builds a peer for the root pane
-				rootPane.addNotify(); // builds a peer for the root pane
-    }
+	/**
+	 * Called by the constructors to init the <code>JDialog</code> properly.
+	 */
+	protected void dialogInit() {
+		frameViewer = new JSFrameViewer().setForWindow(this);
+		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
+		setLocale(JComponent.getDefaultLocale());
+		setRootPane(createRootPane());
+		rootPane.setFrameViewer(frameViewer);
+ 	  setRootPaneCheckingEnabled(true);
+		if (JDialog.isDefaultLookAndFeelDecorated()) {
+			boolean supportsWindowDecorations = UIManager.getLookAndFeel()
+					.getSupportsWindowDecorations();
+			if (supportsWindowDecorations) {
+				setUndecorated(true);
+				getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
+			}
+		}
+		uiClassID = "DialogUI";
+		updateUI();
+		addNotify(); // BH added; applet will not do this automatically
+		rootPane.addNotify(); // builds a peer for the root pane
+		rootPane.addNotify(); // builds a peer for the root pane
+	}
 
     private static int dialogCount;
     /**
      * Called by the constructor methods to create the default
      * <code>rootPane</code>.
      */
-    protected JRootPane createRootPane() {
+	protected JRootPane createRootPane() {
         JRootPane rp = new JRootPane("_Dialog" + (++dialogCount), false);
         // NOTE: this uses setOpaque vs LookAndFeel.installProperty as there
         // is NO reason for the RootPane not to be opaque. For painting to
@@ -653,38 +653,6 @@ public class JDialog extends Dialog implements JSComponent, WindowConstants,
         rp.setOpaque(true);
         return rp;
     }
-
-  	/**
-  	 * For SwingJS
-  	 * 
-  	 */
-  	private static final String uiClassID = "DialogUI";
-
-  	@Override
-  	public String getUIClassID() {
-  		return uiClassID;
-  	}
-  	
-  	DialogUI ui;
-
-		@Override
-		public ComponentUI getUI() {
-			return ui;
-		}
-
-  	@Override
-  	public void setUI(ComponentUI newUI) {
-  		ui = (DialogUI) newUI;
-  	}
-
-  	/**
-  	 * Resets the UI property with a value from the current look and feel.
-  	 * 
-  	 */
-  	@Override
-  	public void updateUI() {
-  		setUI((DialogUI) UIManager.getUI(this));
-  	}
 
     /**
      * Handles window events depending on the state of the
@@ -1065,7 +1033,7 @@ public class JDialog extends Dialog implements JSComponent, WindowConstants,
      */
     @Override
 		public void setContentPane(Container contentPane) {
-        getRootPane().setContentPane(contentPane);
+        getRootPane().setContentPane(contentPane);        
     }
 
     /**

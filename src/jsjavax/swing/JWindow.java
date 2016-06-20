@@ -26,7 +26,7 @@ package jsjavax.swing;
 
 import java.awt.HeadlessException;
 
-import swingjs.api.JSComponent;
+import swingjs.JSFrameViewer;
 
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -38,8 +38,6 @@ import jsjava.awt.IllegalComponentStateException;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.Window;
 import jsjava.awt.event.WindowListener;
-import jsjavax.swing.plaf.ComponentUI;
-import jsjavax.swing.plaf.WindowUI;
 
 
 // 
@@ -94,7 +92,7 @@ import jsjavax.swing.plaf.WindowUI;
  * 
  * @author David Kloba
  */
-public class JWindow extends Window implements JSComponent, RootPaneContainer {
+public class JWindow extends Window implements RootPaneContainer {
 	/**
 	 * The <code>JRootPane</code> instance that manages the
 	 * <code>contentPane</code> and optional <code>menuBar</code> for this frame,
@@ -264,10 +262,13 @@ public class JWindow extends Window implements JSComponent, RootPaneContainer {
 	 * Called by the constructors to init the <code>JWindow</code> properly.
 	 */
 	protected void windowInit() {
+		frameViewer = new JSFrameViewer().setForWindow(this);
 		setLocale(JComponent.getDefaultLocale());
 		setRootPane(createRootPane());
+    rootPane.setFrameViewer(frameViewer);
 		setRootPaneCheckingEnabled(true);
-    updateUI();
+		uiClassID = "WindowUI";
+		updateUI();
     addNotify(); // BH added; applet will not do this automatically
 		rootPane.addNotify(); // builds a peer for the root pane
 	}
@@ -278,7 +279,7 @@ public class JWindow extends Window implements JSComponent, RootPaneContainer {
 	 * Called by the constructor methods to create the default
 	 * <code>rootPane</code>.
 	 */
-	protected JRootPane createRootPane() {
+	public JRootPane createRootPane() {
 		JRootPane rp = new JRootPane("_Window" + (++windowCount), false);
 		// NOTE: this uses setOpaque vs LookAndFeel.installProperty as there
 		// is NO reason for the RootPane not to be opaque. For painting to
@@ -286,46 +287,6 @@ public class JWindow extends Window implements JSComponent, RootPaneContainer {
 		// also be opaque.
 		rp.setOpaque(true);
 		return rp;
-	}
-
-	/**
-	 * For SwingJS
-	 * 
-	 * @see #getUIClassID
-	 */
-	private static final String uiClassID = "WindowUI";
-
-	private WindowUI ui;
-
-	@Override
-	public void setUI(ComponentUI newUI) {
-		ui = (WindowUI) newUI;
-	}
-
-	@Override
-	public String getUIClassID() {
-		return uiClassID;
-	}
-
-	/**
-	 * Resets the UI property with a value from the current look and feel.
-	 * 
-	 * @see JComponent#updateUI
-	 */
-	@Override
-	public void updateUI() {
-		setUI((WindowUI) UIManager.getUI(this));
-	}
-
-	/**
-	 * Returns the look and feel (L&F) object that renders this component.
-	 * 
-	 * @return the PanelUI object that renders this component
-	 * @since 1.4
-	 */
-	@Override
-	public WindowUI getUI() {
-		return ui;
 	}
 
 	/**

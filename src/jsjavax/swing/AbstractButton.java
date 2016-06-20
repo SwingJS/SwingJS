@@ -26,7 +26,6 @@ package jsjavax.swing;
 
 import javax.swing.event.EventListenerList;
 
-import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
@@ -2169,7 +2168,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
         return selectedObjects;
     }
 
-    protected void init(String text, Icon icon) {
+    protected void init(String text, Icon icon, String uid) {
         if(text != null) {
             setText(text);
         }
@@ -2178,6 +2177,7 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
             setIcon(icon);
         }
 
+        uiClassID = uid;
         // Set the UI
         updateUI();
 

@@ -10,6 +10,7 @@ import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Insets;
+import jsjava.awt.JSComponent;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
@@ -27,6 +28,7 @@ import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
+import swingjs.api.HTML5Canvas;
 import swingjs.api.JQueryObject;
 import swingjs.api.JSFunction;
 
@@ -46,7 +48,7 @@ import swingjs.api.JSFunction;
  * @author Bob Hanson
  *
  */
-public abstract class JSComponentUI extends ComponentUI implements JSEventHandler {
+public abstract class JSComponentUI extends ComponentUI implements ContainerPeer, JSEventHandler {
 
 	/**
 	 * provides a unique id for any component; set on instantiation
@@ -63,7 +65,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 * the associated Component; for which this is c.ui
 	 * 
 	 */
-	protected Component c;
+	protected JSComponent c;
 
 	/**
 	 * the associated JComponent; for which this is c.ui
@@ -73,6 +75,9 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	/**
 	 * the outermost div holding a component -- left, top, and for a container width and height
+	 * 
+	 * This must be set up here, nowhere else.
+	 * 
 	 */
 	protected DOMNode outerNode; 
 
@@ -141,7 +146,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	 * panels 
 	 * 
 	 */
-	protected boolean isContainer;
+	protected boolean isContainer, isWindow;
 	
 	/**
 	 * linked nodes of this class
@@ -168,13 +173,20 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 	protected DOMNode body;
 	private DOMNode document;
-	private HTML5Applet applet;
+	@SuppressWarnings("unused")
+	private HTML5Applet applet; // used in getting z value
 
 	
 	protected boolean needPreferred;
 	
 	protected int width;
 	protected int height;
+
+
+	protected DOMNode containerNode;
+
+
+	private boolean isNull;
 
 
 	public JSComponentUI() {
@@ -194,13 +206,15 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 	protected abstract void installJSUI();
 	protected abstract void uninstallJSUI();
 	
-	@Override
 	public void installUI(JComponent c) {
 		// already done installJSUI();
 	}
 
-	@Override
 	public void uninstallUI(JComponent c) {
+		if (outerNode != null) {
+			DOMNode.remove(outerNode);
+			outerNode = null;
+		}
 		uninstallJSUI();
 	}
 
@@ -237,6 +251,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		}
 	}
 
+	
 	protected DOMNode setCssFont(DOMNode obj, Font font) {
 		if (font != null) {
 			int istyle = font.getStyle();
@@ -345,7 +360,6 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 			// and appending to document.body.
 
 			body.appendChild(div);
-			
 			//System.out.println(DOMNode.getAttr(node, "outerHTML"));
 			w = (int) Math.max(0, Math.ceil($(div).width() + 0.5));
 			h = (int) Math.max(0, Math.ceil($(div).height() + 0.5));
@@ -407,16 +421,25 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 
 		Component[] children = (this.children == null ? jc.getComponents()
 				: this.children);
-		if (isContainer || children.length > 0) {
+		int n = children.length;
+		if (n > 0 && containerNode == null)
+			containerNode = outerNode;
+		if (isContainer || n > 0) {
 			// set width from component
 			if (isContainer) {
-				System.out.println("JSComponentUI container " + id + " " + c.getBounds());
-				DOMNode.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
+				System.out.println("JSComponentUI container " + id + " "
+						+ c.getBounds());
+				DOMNode
+						.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
+			}
+			if (jc.isHTML5AppletRoot) {
+				swingjs.JSToolkit.getHTML5Applet(jc)._getContentLayer()
+						.appendChild(outerNode);
 			}
 			// add all children
-			for (int i = children.length; --i >= 0;) {
+			for (int i = 0; i < n; i++) {
 				JSComponentUI ui = JSToolkit.getUI(children[i], false);
-				if (ui == null) {
+				if (ui == null || ui.isNull) {
 					// Box.Filler has no ui.
 					continue;
 				}
@@ -424,9 +447,15 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 					System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 							+ c.getName());
 				} else {
-					outerNode.appendChild(ui.outerNode);
+
+					containerNode.appendChild(ui.outerNode);
 				}
 				ui.parent = this;
+			}
+
+			if (isWindow) {
+				DOMNode.remove(outerNode);
+				$(body).append(outerNode);
 			}
 		}
 
@@ -927,7 +956,7 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 		 * 
 		 * @j2sNative
 		 * 
-		 * if (what) return applet._z[what];
+		 * if (what) return this.applet._z[what];
 		 * 
 		 * while (c && c.style && c.style["z-index"]) {
 		 *   z = c.style["z-index"];
@@ -939,7 +968,51 @@ public abstract class JSComponentUI extends ComponentUI implements JSEventHandle
 			return (z == 0 ? 100000 : z);
 		}
 	}
+	
+	///////////////////////////// ContainerPeer ///////////////////////////
+	
+	// all Swing components are containers
+	
+	@Override
+	public Insets getInsets() {
+		return null;
+	}
 
+	@Override
+	public void beginValidate() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void endValidate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void beginLayout() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endLayout() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getId() {
+		return  id;
+	}
+
+	public static HTML5Canvas createCanvas(String id, int width, int height) {
+		DOMNode node = DOMNode.createElement("canvas", id);
+		DOMNode.setPositionAbsolute(node, 0, 0);
+		DOMNode.setAttr(node, "width", "100%");
+		DOMNode.setAttr(node, "height", "100%");
+		return (HTML5Canvas) node;
+	}
+	
 
 }

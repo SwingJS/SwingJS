@@ -24,7 +24,6 @@
  */
 package jsjavax.swing;
 
-import jsjavax.swing.plaf.ButtonUI;
 
 
 
@@ -65,12 +64,6 @@ import jsjavax.swing.plaf.ButtonUI;
  * @author Jeff Dinkins
  */
 public class JButton extends AbstractButton {
-
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ButtonUI";
 
     /**
      * Creates a button with no set text or icon.
@@ -121,38 +114,10 @@ public class JButton extends AbstractButton {
         setModel(new DefaultButtonModel());
 
         // initialize
-        init(text, icon);
+        init(text, icon, "ButtonUI");
     }
 
-    /**
-     * Resets the UI property to a value from the current look and
-     * feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ButtonUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns a string that specifies the name of the L&F class
-     * that renders this component.
-     *
-     * @return the string "ButtonUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        expert: true
-     *   description: A string that specifies the name of the L&F class.
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
-
+    
     /**
      * Gets the value of the <code>defaultButton</code> property,
      * which if <code>true</code> means that this button is the current

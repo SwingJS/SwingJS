@@ -38,6 +38,7 @@ import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.event.ListSelectionEvent;
 import jsjavax.swing.event.ListSelectionListener;
 import jsjavax.swing.plaf.ListUI;
+import jsjavax.swing.plaf.TextUI;
 import jsjavax.swing.text.Position;
 
 
@@ -260,12 +261,6 @@ import jsjavax.swing.text.Position;
 public class JList extends JComponent implements Scrollable//, Accessible
 {
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ListUI";
-
-    /**
      * Indicates a vertical layout of cells, in a single column;
      * the default layout.
      * @see #setLayoutOrientation
@@ -411,6 +406,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
         selectionModel = createSelectionModel();
         setAutoscrolls(true);
         setOpaque(true);
+        uiClassID = "ListUI";
         updateUI();
     }
 
@@ -483,34 +479,6 @@ public class JList extends JComponent implements Scrollable//, Accessible
     }
 
 
-    /**
-     * Returns the {@code ListUI}, the look and feel object that
-     * renders this component.
-     *
-     * @return the <code>ListUI</code> object that renders this component
-     */
-    @Override
-		public ListUI getUI() {
-        return (ListUI)ui;
-    }
-
-
-    /**
-     * Sets the {@code ListUI}, the look and feel object that
-     * renders this component.
-     *
-     * @param ui  the <code>ListUI</code> object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(ListUI ui) {
-        super.setUI(ui);
-    }
-
 
     /**
      * Resets the {@code ListUI} property by setting it to the value provided
@@ -530,21 +498,6 @@ public class JList extends JComponent implements Scrollable//, Accessible
         if (renderer instanceof Component) {
             SwingUtilities.updateComponentTreeUI((Component)renderer);
         }
-    }
-
-
-    /**
-     * Returns {@code "ListUI"}, the <code>UIDefaults</code> key used to look
-     * up the name of the {@code jsjavax.swing.plaf.ListUI} class that defines
-     * the look and feel for this component.
-     *
-     * @return the string "ListUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
 
@@ -1573,7 +1526,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @return the cell index closest to the given location, or {@code -1}
      */
     public int locationToIndex(Point location) {
-        ListUI ui = getUI();
+        ListUI ui = (ListUI) getUI();
         return (ui != null) ? ui.locationToIndex(this, location) : -1;
     }
 
@@ -1590,7 +1543,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @return the origin of the cell, or {@code null}
      */
     public Point indexToLocation(int index) {
-        ListUI ui = getUI();
+        ListUI ui = (ListUI) getUI();
         return (ui != null) ? ui.indexToLocation(this, index) : null;
     }
 
@@ -1614,7 +1567,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
      * @return the bounding rectangle for the range of cells, or {@code null}
      */
     public Rectangle getCellBounds(int index0, int index1) {
-        ListUI ui = getUI();
+        ListUI ui = (ListUI) getUI();
         return (ui != null) ? ui.getCellBounds(this, index0, index1) : null;
     }
 

@@ -24,6 +24,8 @@
  */
 package jsjavax.swing.text;
 
+import jsjavax.swing.plaf.TextUI;
+
 /**
  * <code>NavigationFilter</code> can be used to restrict where the cursor can
  * be positioned. When the default cursor positioning actions attempt to
@@ -106,7 +108,7 @@ public class NavigationFilter {
                                          Position.Bias bias, int direction,
                                          Position.Bias[] biasRet)
                                            throws BadLocationException {
-        return text.getUI().getNextVisualPositionFrom(text, pos, bias,
+        return ((TextUI)text.getUI()).getNextVisualPositionFrom(text, pos, bias,
                                                       direction, biasRet);
     }
 

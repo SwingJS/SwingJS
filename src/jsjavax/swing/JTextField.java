@@ -235,7 +235,12 @@ public class JTextField extends JTextComponent implements SwingConstants {
      * @exception IllegalArgumentException if <code>columns</code> < 0
      */
     public JTextField(Document doc, String text, int columns) {
+    	this(doc, text, columns, "TextFieldUI");
+    	
+    }
+    JTextField(Document doc, String text, int columns, String sid) {
     	super();
+    	initTJA(sid);
         if (columns < 0) {
             throw new IllegalArgumentException("columns less than zero.");
         }
@@ -250,19 +255,6 @@ public class JTextField extends JTextComponent implements SwingConstants {
             setText(text);
         }
     }
-
-    /**
-     * Gets the class ID for a UI.
-     *
-     * @return the string "TextFieldUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     /**
      * Associates the editor with a text document.
@@ -837,12 +829,6 @@ public class JTextField extends JTextComponent implements SwingConstants {
         new NotifyAction()
     };
 
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "TextFieldUI";
-
     // --- Action implementations -----------------------------------
 
     // Note that JFormattedTextField.CommitAction extends this
@@ -881,23 +867,6 @@ public class JTextField extends JTextComponent implements SwingConstants {
     }
 
 
-//    /**
-//     * See <code>readObject</code> and <code>writeObject</code> in
-//     * <code>JComponent</code> for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-
     /**
      * Returns a string representation of this <code>JTextField</code>.
      * This method is intended to be used only for debugging purposes,
@@ -932,57 +901,4 @@ public class JTextField extends JTextComponent implements SwingConstants {
     }
 
 
-/////////////////
-// Accessibility support
-////////////////
-
-
-//    /**
-//     * Gets the <code>AccessibleContext</code> associated with this
-//     * <code>JTextField</code>. For <code>JTextFields</code>,
-//     * the <code>AccessibleContext</code> takes the form of an
-//     * <code>AccessibleJTextField</code>.
-//     * A new <code>AccessibleJTextField</code> instance is created
-//     * if necessary.
-//     *
-//     * @return an <code>AccessibleJTextField</code> that serves as the
-//     *         <code>AccessibleContext</code> of this <code>JTextField</code>
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJTextField();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JTextField</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to text field user-interface
-//     * elements.
-//     * <p>
-//     * <strong>Warning:</strong>
-//     * Serialized objects of this class will not be compatible with
-//     * future Swing releases. The current serialization support is
-//     * appropriate for short term storage or RMI between applications running
-//     * the same version of Swing.  As of 1.4, support for long term storage
-//     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-//     * has been added to the <code>java.beans</code> package.
-//     * Please see {@link jsjava.beans.XMLEncoder}.
-//     */
-//    protected class AccessibleJTextField extends AccessibleJTextComponent {
-//
-//        /**
-//         * Gets the state set of this object.
-//         *
-//         * @return an instance of AccessibleStateSet describing the states
-//         * of the object
-//         * @see AccessibleState
-//         */
-//        public AccessibleStateSet getAccessibleStateSet() {
-//            AccessibleStateSet states = super.getAccessibleStateSet();
-//            states.add(AccessibleState.SINGLE_LINE);
-//            return states;
-//        }
-//    }
 }

@@ -84,14 +84,16 @@ import jsjavax.swing.text.StyledEditorKit;
  * @see jsjavax.swing.text.StyledEditorKit
  */
 public class JTextPane extends JEditorPane {
-
+		
+		
     /**
      * Creates a new <code>JTextPane</code>.  A new instance of
      * <code>StyledEditorKit</code> is
      * created and set, and the document model set to <code>null</code>.
      */
     public JTextPane() {
-        super();
+        super(null, null,"Text PaneUI");
+        
         EditorKit editorKit = createDefaultEditorKit();
         String contentType = editorKit.getContentType();
         if (contentType != null
@@ -453,31 +455,6 @@ public class JTextPane extends JEditorPane {
         return (StyledEditorKit) getEditorKit();
     }
 
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "TextPaneUI";
-
-
-//    /**
-//     * See <code>readObject</code> and <code>writeObject</code> in
-//     * <code>JComponent</code> for more
-//     * information about serialization in Swing.
-//     *
-//     * @param s the output stream
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
 
     // --- JEditorPane ------------------------------------
 

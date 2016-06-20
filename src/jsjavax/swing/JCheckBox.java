@@ -74,13 +74,6 @@ public class JCheckBox extends JToggleButton {
     private boolean flat = false;
 
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "CheckBoxUI";
-
-
-    /**
      * Creates an initially unselected check box button with no text, no icon.
      */
     public JCheckBox () {
@@ -162,7 +155,7 @@ public class JCheckBox extends JToggleButton {
      *        state. If <code>true</code> the check box is selected
      */
     public JCheckBox (String text, Icon icon, boolean selected) {
-        super(text, icon, selected);
+        super(text, icon, selected, "CheckBoxUI");
         setUIProperty("borderPainted", Boolean.FALSE);
         setHorizontalAlignment(LEADING);
     }

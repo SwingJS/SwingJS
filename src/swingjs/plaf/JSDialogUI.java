@@ -9,7 +9,6 @@ public class JSDialogUI extends JSFrameUI {
 		frameZ = 40000;
 		isFrame = true;
 		isDialog = true;
-		isContainer = true;
 		defaultWidth = 500;
 		defaultHeight = 300;
 		setDoc();

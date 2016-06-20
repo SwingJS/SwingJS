@@ -33,6 +33,7 @@ import jsjava.awt.Shape;
 import jsjava.awt.font.TextAttribute;
 import jsjavax.swing.SizeRequirements;
 import jsjavax.swing.event.DocumentEvent;
+import jsjavax.swing.plaf.TextUI;
 
 /**
  * View of a simple line-wrapping paragraph that supports
@@ -246,7 +247,7 @@ public class ParagraphView extends FlowView implements TabExpander {
         if(magicPoint == null) {
             Shape posBounds;
             try {
-                posBounds = text.getUI().modelToView(text, pos, b);
+                posBounds = ((TextUI)text.getUI()).modelToView(text, pos, b);
             } catch (BadLocationException exc) {
                 posBounds = null;
             }

@@ -25,6 +25,8 @@
 
 package jsjavax.swing;
 
+import swingjs.JSFrameViewer;
+import swingjs.JSToolkit;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -61,6 +63,7 @@ import jssun.awt.SunToolkit;
  * @since 1.4
  */
 public class Popup {
+	
     /**
      * The Component representing the Popup.
      */

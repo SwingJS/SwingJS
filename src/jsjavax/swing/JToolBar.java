@@ -78,11 +78,7 @@ import jsjavax.swing.plaf.UIResource;
  */
 public class JToolBar extends JComponent implements SwingConstants
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ToolBarUI";
+
 
     private    boolean   paintBorder              = true;
     private    Insets    margin                   = null;
@@ -144,33 +140,10 @@ public class JToolBar extends JComponent implements SwingConstants
         setLayout( layout );
 
         addPropertyChangeListener( layout );
-
+        uiClassID = "ToolBarUI";
         updateUI();
     }
 
-    /**
-     * Returns the tool bar's current UI.
-     * @see #setUI
-     */
-    @Override
-		public ToolBarUI getUI() {
-        return (ToolBarUI)ui;
-    }
-
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui  the <code>ToolBarUI</code> L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(ToolBarUI ui) {
-        super.setUI(ui);
-    }
 
     /**
      * Notification from the <code>UIFactory</code> that the L&F has changed.

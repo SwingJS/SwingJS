@@ -297,12 +297,6 @@ import jsjavax.swing.plaf.OptionPaneUI;
 public class JOptionPane extends JComponent
 {
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "OptionPaneUI";
-
-    /**
      * Indicates that the user has not yet selected a value.
      */
     public static final Object      UNINITIALIZED_VALUE = "uninitializedValue";
@@ -934,7 +928,7 @@ public class JOptionPane extends JComponent
 
         final JDialog dialog;
 
-        Window window = JOptionPane.getWindowForComponent(parentComponent);
+        Window window = getWindowForComponent(parentComponent);
         if (window instanceof Frame) {
             dialog = new JDialog((Frame)window, title, true);
         } else {
@@ -987,7 +981,7 @@ public class JOptionPane extends JComponent
             @Override
 						public void componentShown(ComponentEvent ce) {
                 // reset value to ensure closing works properly
-                setValue(JOptionPane.UNINITIALIZED_VALUE);
+                setValue(UNINITIALIZED_VALUE);
             }
         });
         addPropertyChangeListener(new PropertyChangeListener() {
@@ -996,11 +990,11 @@ public class JOptionPane extends JComponent
                 // Let the defaultCloseOperation handle the closing
                 // if the user closed the window without selecting a button
                 // (newValue = null in that case).  Otherwise, close the dialog.
-                if (dialog.isVisible() && event.getSource() == JOptionPane.this &&
+                if (dialog.isVisible() && event.getSource() == this &&
                   (event.getPropertyName().equals(VALUE_PROPERTY) ||
                    event.getPropertyName().equals(INPUT_VALUE_PROPERTY)) &&
                   event.getNewValue() != null &&
-                  event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+                  event.getNewValue() != UNINITIALIZED_VALUE) {
                     dialog.setVisible(false);
                 }
             }
@@ -1591,7 +1585,7 @@ public class JOptionPane extends JComponent
             return getRootFrame();
         if (parentComponent instanceof Frame)
             return (Frame)parentComponent;
-        return JOptionPane.getFrameForComponent(parentComponent.getParent());
+        return getFrameForComponent(parentComponent.getParent());
     }
 
     /**
@@ -1616,7 +1610,7 @@ public class JOptionPane extends JComponent
             return getRootFrame();
         if (parentComponent instanceof Frame || parentComponent instanceof Dialog)
             return (Window)parentComponent;
-        return JOptionPane.getWindowForComponent(parentComponent.getParent());
+        return getWindowForComponent(parentComponent.getParent());
     }
 
 
@@ -1821,6 +1815,7 @@ public class JOptionPane extends JComponent
         setOptionType(optionType);
         value = UNINITIALIZED_VALUE;
         inputValue = UNINITIALIZED_VALUE;
+        uiClassID = "OptionPaneUI";
         updateUI();
     }
 

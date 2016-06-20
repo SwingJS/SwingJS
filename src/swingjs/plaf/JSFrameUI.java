@@ -1,12 +1,14 @@
 package swingjs.plaf;
 
 import javajs.util.PT;
+import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.FramePeer;
 import jsjavax.swing.JComboBox;
 import jsjavax.swing.JFrame;
 import swingjs.api.DOMNode;
+import swingjs.api.HTML5Canvas;
 
 public class JSFrameUI extends JSWindowUI implements FramePeer {
 	
@@ -43,18 +45,21 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			domNode = createDOMObject("div", id);
 
 			f = (JFrame) (Object) c;
 
-			frameNode = createDOMObject("div", id + "_frame");
-			DOMNode.setStyles(frameNode, "z-index", "" + frameZ++);
+			domNode = frameNode = createDOMObject("div", id + "_frame");
+			DOMNode.setStyles(frameNode, 
+					"z-index", "" + frameZ++,
+					"border-style", "solid", 
+					"border-width", "5px"
+					);
 			int w = c.getWidth();
 			int h = c.getHeight();
 			if (w == 0)
 				w = defaultWidth;
 			if (h == 0)
-				w = defaultHeight;
+				h = defaultHeight;
 			DOMNode.setStyles(frameNode, "background", "white");
 			DOMNode.setSize(frameNode, w, h);
 			DOMNode.setPositionAbsolute(frameNode, f.getX(), f.getY());
@@ -66,8 +71,10 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 					"height", "20px", 
 					"font-size", "14px", 
 					"font-family", "sans-serif", 
-					"font-weight", "bold"
-			);
+					"font-weight", "bold"//,
+//					"border-style", "solid",
+//					"border-width", "1px"
+					);
 			
       titleNode = createDOMObject("label", id + "_title");
 			DOMNode.setPositionAbsolute(titleNode, 0, 0);
@@ -96,12 +103,21 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.add(titleBarNode, titleNode);
 			DOMNode.add(titleBarNode, closerWrap);
 			DOMNode.add(closerWrap, closerNode);
+			contentNode = DOMNode.createElement("div", id+"_content");
+			DOMNode.setPositionAbsolute(contentNode, 0, 0);
+			DOMNode.setAttr(contentNode, "width",  "" + f.getWidth());
+			DOMNode.setAttr(contentNode, "height", "" + f.getHeight());
+			Insets s = getInsets();
+			DOMNode.setPositionAbsolute(frameNode,  f.getY() - s.top, f.getX() - s.left);
+			DOMNode.setAttr(frameNode, "width",  "" + f.getWidth() + s.left + s.right);
+			DOMNode.setAttr(frameNode, "height", "" + f.getHeight() + s.top + s.bottom);
+			
+			
+			DOMNode.add(frameNode, contentNode);
 
 			menuBarNode = createDOMObject("div", id + "_menubar");
 			
-			$(body).append(frameNode);
-			outerNode = frameNode;
-			setWindowNode();
+			containerNode = frameNode;
 		}
 		return domNode;
 	}
@@ -122,6 +138,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			if (eventType == -1) {
 		  	if (type == "click") {
 					f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+					$(outerNode).remove();
 					return true;		  		
 		  	} else if (type.equals("mouseout")) {
 			  	DOMNode.setStyles(closerNode, "background-color", "white");
@@ -140,10 +157,6 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		// LookAndFeel.installColors(c,
 		// "Frame.background",
 		// "Frame.foreground");
-	}
-
-	@Override
-	protected void uninstallJSUI() {
 	}
 
 	@Override
@@ -182,12 +195,25 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	private Rectangle bounds;
 	@Override
 	public void setBoundsPrivate(int x, int y, int width, int height) {
+		// includes frame insets or not?
+		// do we need to subract them? Add them?
+		// is the width and height of a frame a measure of the internal contents pane?
 		bounds = new Rectangle(x, y, width, height);
+		HTML5Canvas canvas = f.frameViewer.newCanvas();
+		if (contentNode != null)
+			DOMNode.remove(DOMNode.firstChild(contentNode));
+		DOMNode.add(contentNode, canvas);
 	}
 
 	@Override
 	public Rectangle getBoundsPrivate() {
 		return bounds;
 	}
+
+	@Override
+	public Insets getInsets() {
+		return new Insets(30, 10, 10, 15);
+	}
+
 
 }

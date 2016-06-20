@@ -86,6 +86,8 @@ import swingjs.api.HTML5CanvasContext2D;
 @J2SIgnoreImport(jsjava.awt.AlphaComposite.class)
 public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
+	private int count;
+	
   public int constrainX;
   public int constrainY;
 
@@ -223,6 +225,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	public void background(Color bgcolor) {
+		count++;
 		backgroundColor = bgcolor;
 		if (bgcolor == null) {
 			/*
@@ -254,6 +257,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
+		count++;
 		ctx.fillRect(x, y, width, height);
 	}
 
@@ -384,6 +388,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
+		count++;
 		if (img != null) {
 			int[] pixels = null;
 			/**
@@ -421,6 +426,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
+		count++;
 		if (img != null) {
 			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
@@ -434,6 +440,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
+		count++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, observer);
 	}
@@ -441,6 +448,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
+		count++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, width, height, observer);
 	}
@@ -449,6 +457,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+		count++;
 		if (img != null) {
 			byte[] bytes = null;
 		  DOMNode imgNode = getImageNode(img);
@@ -462,6 +471,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private DOMNode getImageNode(Image img) {
+		count++;
 		DOMNode imgNode = null;
 		/**
 		 * @j2sNative
@@ -477,23 +487,27 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
+		count++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
 	}
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
+		count++;
 		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
+		count++;
 		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
+		count++;
 		JSToolkit.notImplemented(null);
 	}
 
@@ -645,6 +659,12 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		return g;
 	}
 
+	public int getCount() {
+		int c = count;
+		count = 0;
+		return c;
+	}
+	
 	@Override
 	public void dispose() {
 		if (compositeState >= 0)
@@ -913,4 +933,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		{}		
 	}
 
+	public HTML5Canvas getCanvas() {
+		return canvas;
+	}
 }

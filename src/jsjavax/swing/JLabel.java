@@ -92,12 +92,6 @@ import jsjavax.swing.plaf.LabelUI;
  */
 public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "LabelUI";
-
     private int mnemonic = '\0';
     private int mnemonicIndex = -1;
 
@@ -146,6 +140,7 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
         setText(text);
         setIcon(icon);
         setHorizontalAlignment(horizontalAlignment);
+        uiClassID = "LabelUI";
         updateUI();
         setAlignmentX(LEFT_ALIGNMENT);
     }
@@ -222,17 +217,6 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
 
 
     /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return LabelUI object
-     */
-    @Override
-		public LabelUI getUI() {
-        return (LabelUI)ui;
-    }
-
-
-    /**
      * Sets the L&F object that renders this component.
      *
      * @param ui  the LabelUI L&F object
@@ -250,33 +234,6 @@ public class JLabel extends JComponent implements SwingConstants/*, Accessible*/
             setDisabledIcon(null);
         }
     }
-
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((LabelUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns a string that specifies the name of the l&f class
-     * that renders this component.
-     *
-     * @return String "LabelUI"
-     *
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     /**
      * Returns the text string that the label displays.

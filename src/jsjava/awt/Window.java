@@ -296,7 +296,6 @@ public class Window extends Container {
     private static final String base = "win";
     private static int nameCounter = 0;
 
-		private static ArrayList<Window>allWindows = new ArrayList<Window>();
 
 //    /*
 //     * JDK 1.1 serialVersionUID
@@ -309,98 +308,6 @@ public class Window extends Container {
 
     transient boolean isTrayIconWindow = false;
 
-//    /**
-//     * These fields are initialized in the native peer code
-//     * or via AWTAccessor's WindowAccessor.
-//     */
-//    private transient volatile int securityWarningWidth = 0;
-//    private transient volatile int securityWarningHeight = 0;
-
-//    /**
-//     * These fields represent the desired location for the security
-//     * warning if this window is untrusted.
-//     * See com.sun.awt.SecurityWarning for more details.
-//     */
-//
-//
-//        AWTAccessor.setWindowAccessor(new AWTAccessor.WindowAccessor() {
-//            public float getOpacity(Window window) {
-//                return window.opacity;
-//            }
-//            public void setOpacity(Window window, float opacity) {
-//                window.setOpacity(opacity);
-//            }
-//            public Shape getShape(Window window) {
-//                return window.getShape();
-//            }
-//            public void setShape(Window window, Shape shape) {
-//                window.setShape(shape);
-//            }
-//            public boolean isOpaque(Window window) {
-//                /*
-//                return window.getBackground().getAlpha() < 255;
-//                */
-//                synchronized (window.getTreeLock()) {
-//                    return window.opaque;
-//                }
-//            }
-//            public void setOpaque(Window window, boolean opaque) {
-//                /*
-//                Color bg = window.getBackground();
-//                window.setBackground(new Color(bg.getRed(), bg.getGreen(), bg.getBlue(),
-//                                               opaque ? 255 : 0));
-//                */
-//                window.setOpaque(opaque);
-//            }
-//            public void updateWindow(Window window, BufferedImage backBuffer) {
-//                window.updateWindow(backBuffer);
-//            }
-//
-//            public void setLWRequestStatus(Window changed, boolean status) {
-//                changed.syncLWRequests = status;
-//            }
-//
-//            public Dimension getSecurityWarningSize(Window window) {
-//                return new Dimension(window.securityWarningWidth,
-//                        window.securityWarningHeight);
-//            }
-//
-//            public void setSecurityWarningSize(Window window, int width, int height)
-//            {
-//                window.securityWarningWidth = width;
-//                window.securityWarningHeight = height;
-//            }
-//
-//            public void setSecurityWarningPosition(Window window,
-//                    Point2D point, float alignmentX, float alignmentY)
-//            {
-//                window.securityWarningPointX = point.getX();
-//                window.securityWarningPointY = point.getY();
-//                window.securityWarningAlignmentX = alignmentX;
-//                window.securityWarningAlignmentY = alignmentY;
-//
-//                synchronized (window.getTreeLock()) {
-//                    WindowPeer peer = (WindowPeer)window.getPeer();
-//                    if (peer != null) {
-//                        peer.repositionSecurityWarning();
-//                    }
-//                }
-//            }
-//
-//            public Point2D calculateSecurityWarningPosition(Window window,
-//                    double x, double y, double w, double h)
-//            {
-//                return window.calculateSecurityWarningPosition(x, y, w, h);
-//            }
-//        }); // WindowAccessor
-//    } // static
-//
-//    /**
-//     * Initialize JNI field and method IDs for fields that may be
-//       accessed from C.
-//     */
-//    //private static native void initIDs();
-//
     /**
      * Constructs a new, initially invisible window in the default size.
      *
@@ -565,17 +472,10 @@ public class Window extends Container {
 	 */
 	protected void initWinGC(Window owner, GraphicsConfiguration gc) {
    	setAppContext();
-  	if (owner != null && !(owner instanceof Window)) {
-  		gc = (GraphicsConfiguration) (Object) owner;
-  		owner = null;
-  	}
-  	if (gc == null && owner != null)
-  		gc = owner.getGraphicsConfiguration();
-  	
 		parent = owner;
-		if (owner != null) {
+		if (owner != null)
 			owner.addOwnedWindow(this);
-		}
+
 		// GraphicsEnvironment.checkHeadless();
 
 		syncLWRequests = systemSyncLWRequests;
@@ -628,6 +528,7 @@ public class Window extends Container {
 	// weakThis = victim.weakThis;
 	// this.context = context;
 	// }
+	
 	// public void dispose() {
 	// Window parent = owner.get();
 	// if (parent != null) {
@@ -762,9 +663,9 @@ public class Window extends Container {
             if (peer == null) {
                 peer = getToolkit().createWindow(this);
             }
-            synchronized (allWindows) {
-                allWindows.add(this);
-            }
+//            synchronized (allWindows) {
+                JSToolkit.getAppletViewer().allWindows.add(this);
+//            }
             super.addNotify();
 //        }
     }
@@ -775,9 +676,9 @@ public class Window extends Container {
     @Override
 		public void removeNotify() {
 //        synchronized (getTreeLock()) {
-            synchronized (allWindows) {
-                allWindows.remove(this);
-            }
+//            synchronized (allWindows) {
+                JSToolkit.getAppletViewer().allWindows.remove(this);
+//            }
             super.removeNotify();
  //       }
     }
@@ -1097,40 +998,43 @@ public class Window extends Container {
     }
 
     void doDispose() {
+    	final Component me = this;
+    	
     class DisposeAction implements Runnable {
-        @Override
-				public void run() {
-            // Check if this window is the fullscreen window for the
-            // device. Exit the fullscreen mode prior to disposing
-            // of the window if that's the case.
-//            GraphicsDevice gd = getGraphicsConfiguration().getDevice();
-//            if (gd.getFullScreenWindow() == Window.this) {
-//                gd.setFullScreenWindow(null);
-//            }
+			@Override
+			public void run() {
 
-            Object[] ownedWindowArray;
-            synchronized(ownedWindowList) {
-                ownedWindowArray = new Object[ownedWindowList.size()];
-                ownedWindowList.copyInto(ownedWindowArray);
-            }
-            for (int i = 0; i < ownedWindowArray.length; i++) {
-                Window child = (Window) ((
-                               (ownedWindowArray[i])));
-                if (child != null) {
-                    child.disposeImpl();
-                }
-            }
-            hide();
-            beforeFirstShow = true;
-            removeNotify();
-//            synchronized (inputContextLock) {
-//                if (inputContext != null) {
-//                    inputContext.dispose();
-//                    inputContext = null;
-//                }
-//            }
-            clearCurrentFocusCycleRootOnHide();
-        }
+				((JComponent) me).getUI().uninstallUI(null);
+
+				// Check if this window is the fullscreen window for the
+				// device. Exit the fullscreen mode prior to disposing
+				// of the window if that's the case.
+				// GraphicsDevice gd = getGraphicsConfiguration().getDevice();
+				// if (gd.getFullScreenWindow() == Window.this) {
+				// gd.setFullScreenWindow(null);
+				// }
+
+				Object[] ownedWindowArray;
+				synchronized (ownedWindowList) {
+					ownedWindowArray = new Object[ownedWindowList.size()];
+					ownedWindowList.copyInto(ownedWindowArray);
+				}
+				for (int i = 0; i < ownedWindowArray.length; i++) {
+					Window child = (Window) ownedWindowArray[i];
+					if (child != null)
+						child.disposeImpl();
+				}
+				hide();
+				beforeFirstShow = true;
+				removeNotify();
+				// synchronized (inputContextLock) {
+				// if (inputContext != null) {
+				// inputContext.dispose();
+				// inputContext = null;
+				// }
+				// }
+				clearCurrentFocusCycleRootOnHide();
+			}
     }
         DisposeAction action = new DisposeAction();
 //        if (EventQueue.isDispatchThread()) {
@@ -1448,25 +1352,26 @@ public class Window extends Container {
      * @see #removeNotify
      */
     static ArrayList<Window> getAllWindows() {
-        synchronized (allWindows) {
+//        synchronized (allWindows) {
             ArrayList<Window> v = new ArrayList<Window>();
-            v.addAll(allWindows);
+            v.addAll(JSToolkit.getAppletViewer().allWindows);
             return v;
-        }
+ //       }
     }
 
-    static ArrayList<Window> getAllUnblockedWindows() {
-        synchronized (allWindows) {
-            ArrayList<Window> unblocked = new ArrayList<Window>();
-            for (int i = 0; i < allWindows.size(); i++) {
-                Window w = allWindows.get(i);
-                if (!w.isModalBlocked()) {
-                    unblocked.add(w);
-                }
-            }
-            return unblocked;
-        }
-    }
+	static ArrayList<Window> getAllUnblockedWindows() {
+		// synchronized (allWindows) {
+		ArrayList<Window> allWindows = JSToolkit.getAppletViewer().allWindows;
+		ArrayList<Window> unblocked = new ArrayList<Window>();
+		for (int i = 0; i < allWindows.size(); i++) {
+			Window w = allWindows.get(i);
+			if (!w.isModalBlocked()) {
+				unblocked.add(w);
+			}
+		}
+		return unblocked;
+		// }
+	}
 
     private static Window[] getWindows(AppContext appContext) {
         synchronized (Window.class) {
@@ -2690,7 +2595,7 @@ public class Window extends Container {
 		}
 	}
 
-	private void removeFromWindowList() {
+	private void removeFromWindowList0() {
 		removeFromWindowList(appContext, this);
 	}
 

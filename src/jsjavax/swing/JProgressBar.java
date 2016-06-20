@@ -125,11 +125,6 @@ import jsjavax.swing.plaf.ProgressBarUI;
 public class JProgressBar extends JComponent implements SwingConstants
 {
     /**
-     * @see #getUIClassID
-     */
-    private static final String uiClassID = "ProgressBarUI";
-
-    /**
      * Whether the progress bar is horizontal or vertical.
      * The default is <code>HORIZONTAL</code>.
      *
@@ -324,6 +319,7 @@ public class JProgressBar extends JComponent implements SwingConstants
         //  I believe that it is the the most common usage of this
         //  component - it's what people will expect.
         setModel(new DefaultBoundedRangeModel(min, 0, min, max));
+        uiClassID = "ProgressBarUI";
         updateUI();
 
         setOrientation(orient);      // documented with set/getOrientation()
@@ -351,6 +347,7 @@ public class JProgressBar extends JComponent implements SwingConstants
     public JProgressBar(BoundedRangeModel newModel)
     {
         setModel(newModel);
+        uiClassID = "ProgressBarUI";
         updateUI();
 
         setOrientation(defaultOrientation);  // see setOrientation()
@@ -577,60 +574,6 @@ public class JProgressBar extends JComponent implements SwingConstants
             super.paintBorder(g);
         }
     }
-
-
-    /**
-     * Returns the look-and-feel object that renders this component.
-     *
-     * @return the <code>ProgressBarUI</code> object that renders this component
-     */
-    @Override
-		public ProgressBarUI getUI() {
-        return (ProgressBarUI)ui;
-    }
-
-    /**
-     * Sets the look-and-feel object that renders this component.
-     *
-     * @param ui  a <code>ProgressBarUI</code> object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(ProgressBarUI ui) {
-        super.setUI(ui);
-    }
-
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ProgressBarUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the look-and-feel class that renders this component.
-     *
-     * @return the string "ProgressBarUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        expert: true
-     *   description: A string that specifies the name of the look-and-feel class.
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     /* We pass each Change event to the listeners with the
      * the progress bar as the event source.
@@ -950,22 +893,6 @@ public class JProgressBar extends JComponent implements SwingConstants
     }
 
 
-//    /**
-//     * See readObject() and writeObject() in JComponent for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-//
     /**
      * Returns a string representation of this <code>JProgressBar</code>.
      * This method is intended to be used only for debugging purposes. The

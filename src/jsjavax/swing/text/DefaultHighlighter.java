@@ -159,7 +159,7 @@ public class DefaultHighlighter extends LayeredHighlighter {
      */
     @Override
 		public void removeAllHighlights() {
-        TextUI mapper = component.getUI();
+        TextUI mapper = (TextUI) component.getUI();
         if (getDrawsLayeredHighlights()) {
             int len = highlights.size();
             if (len != 0) {
@@ -403,7 +403,7 @@ public class DefaultHighlighter extends LayeredHighlighter {
             Rectangle alloc = bounds.getBounds();
             try {
                 // --- determine locations ---
-                TextUI mapper = c.getUI();
+                TextUI mapper = (TextUI) c.getUI();
                 Rectangle p0 = mapper.modelToView(c, offs0);
                 Rectangle p1 = mapper.modelToView(c, offs1);
 
@@ -602,7 +602,7 @@ public class DefaultHighlighter extends LayeredHighlighter {
         @Override
 				public synchronized void run() {
             if (component != null) {
-                TextUI mapper = component.getUI();
+                TextUI mapper = (TextUI) component.getUI();
                 if (mapper != null && lastDoc == component.getDocument()) {
                     // the Document should be the same to properly
                     // display highlights

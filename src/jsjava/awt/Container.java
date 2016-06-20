@@ -24,8 +24,12 @@
  */
 package jsjava.awt;
 
+import java.awt.ContainerOrderFocusTraversalPolicy;
+import java.awt.HeadlessException;
+import java.awt.KeyboardFocusManager;
 import java.util.EventListener;
 import java.util.Set;
+
 
 import jsjava.awt.event.AWTEventListener;
 import jsjava.awt.event.ComponentEvent;
@@ -36,7 +40,6 @@ import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseWheelEvent;
-import jsjava.awt.peer.ComponentPeer;
 import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
@@ -68,7 +71,7 @@ import jssun.awt.SunGraphicsCallback;
  * @see       LayoutManager
  * @since     JDK1.0
  */
-public class Container extends Component {
+public class Container extends JSComponent {
 
 //    private static final Logger log = Logger.getLogger("java.awt.Container");
 //    private static final Logger eventLog = Logger.getLogger("java.awt.event.Container");
@@ -185,6 +188,8 @@ public class Container extends Component {
      */
     private transient int numOfHWComponents = 0;
     private transient int numOfLWComponents = 0;
+
+		public final static Insets NULL_INSETS = new Insets(0, 0, 0, 0);
 
 //    private static final Logger mixingLog = Logger.getLogger("java.awt.mixing.Container");
 //
@@ -322,13 +327,10 @@ public class Container extends Component {
      * @since     JDK1.1
      */
     public Insets getInsets() {
-    	// needs to be overridden in JFrame and JDialog
-        ComponentPeer peer = this.peer;
-        if (peer instanceof ContainerPeer) {
-            ContainerPeer cpeer = (ContainerPeer)peer;
-            return (Insets)cpeer.getInsets().clone();
-        }
-        return new Insets(0, 0, 0, 0);
+    	// in SwingJS, we do not clone. Everything is a ContainerPeer.
+    	// it is inconsistent with other classes that this would need cloning.
+    	Insets i = (peer == null ? null : ((ContainerPeer) peer).getInsets());
+    	return  (i == null ? NULL_INSETS : i);
     }
 
     @Deprecated
@@ -1510,62 +1512,57 @@ public class Container extends Component {
         invalidateComp();
     }
 
-    /**
-     * Validates this container and all of its subcomponents.
-     * <p>
-     * The <code>validate</code> method is used to cause a container
-     * to lay out its subcomponents again. It should be invoked when
-     * this container's subcomponents are modified (added to or
-     * removed from the container, or layout-related information
-     * changed) after the container has been displayed.
-     *
-     * <p>If this {@code Container} is not valid, this method invokes
-     * the {@code validateTree} method and marks this {@code Container}
-     * as valid. Otherwise, no action is performed.
-     *
-     * @see #add(java.awt.Component)
-     * @see Component#invalidate
-     * @see javax.swing.JComponent#revalidate()
-     * @see #validateTree
-     * 
-     * @j2sOverride
-     * 
-     */
-    @Override
-		public void validate() {
-        /* Avoid grabbing lock unless really necessary. */
-        if (!isValid()) {
-            boolean updateCur = false;
-            synchronized (getTreeLock()) {
-            	
-            	// for SwingJS ALL components must have peers. might as well do that now.
-            	// I think  there was a notification threading issue that the root pane was not
-              // getting its peer in time for validation.
-            	if (peer == null)
-            		peer = getToolkit().createComponent(this); 
+	/**
+	 * Validates this container and all of its subcomponents.
+	 * <p>
+	 * The <code>validate</code> method is used to cause a container to lay out
+	 * its subcomponents again. It should be invoked when this container's
+	 * subcomponents are modified (added to or removed from the container, or
+	 * layout-related information changed) after the container has been displayed.
+	 * 
+	 * <p>
+	 * If this {@code Container} is not valid, this method invokes the
+	 * {@code validateTree} method and marks this {@code Container} as valid.
+	 * Otherwise, no action is performed.
+	 * 
+	 * @see #add(java.awt.Component)
+	 * @see Component#invalidate
+	 * @see javax.swing.JComponent#revalidate()
+	 * @see #validateTree
+	 * 
+	 * @j2sOverride
+	 * 
+	 */
+	@Override
+	public void validate() {
+		/* Avoid grabbing lock unless really necessary. */
+		if (!isValid()) {
+			synchronized (getTreeLock()) {
 
-            	
-            	
-                if (!isValid() && peer != null) {
-                    ContainerPeer p = null;
-                    if (peer instanceof ContainerPeer) {
-                        p = (ContainerPeer) peer;
-                    }
-                    if (p != null) {
-                        p.beginValidate();
-                    }
-                    validateTree();
-                    if (p != null) {
-                        p.endValidate();
-                        updateCur = isVisible();
-                    }
-                }
-            }
-            if (updateCur) {
-                updateCursorImmediately();
-            }
-        }
-    }
+				// for SwingJS ALL components must have peers. might as well do that
+				// now.
+				// I think there was a notification threading issue that the root pane
+				// was not
+				// getting its peer in time for validation.
+				if (peer == null)
+					peer = getToolkit().createComponent(this);
+				int n = children.size();
+				if (!isValid() && peer != null && n > 0) {
+					ContainerPeer p = null;
+					if (peer instanceof ContainerPeer)
+						p = (ContainerPeer) peer;
+					if (p != null)
+						p.beginValidate();
+					validateTree();
+					if (p != null) {
+						p.endValidate();
+						if (isVisible())
+							updateCursorImmediately();
+					}
+				}
+			}
+		}
+	}
 
     /**
      * Recursively descends the container tree and recomputes the
@@ -1585,7 +1582,8 @@ public class Container extends Component {
             for (int i = 0; i < children.size(); i++) {
                 Component comp = children.get(i);
                 if (   (comp instanceof Container)
-                       && !(comp instanceof Window)
+    // SwingJS needs to create all DIV elements
+    //               && !(comp instanceof Window)
                        && !comp.isValid()) {
                     ((Container)comp).validateTree();
                 } else {
@@ -2695,7 +2693,7 @@ public class Container extends Component {
     }
 
     /**
-     * SwingJS set by JSAppletPanel
+     * SwingJS set by JSAppletViewer
      */
     public void setDispatcher() {
       dispatcher = new LightweightDispatcher(this);    	

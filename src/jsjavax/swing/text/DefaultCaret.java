@@ -47,6 +47,7 @@ import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.event.EventListenerList;
+import jsjavax.swing.plaf.ListUI;
 import jsjavax.swing.plaf.TextUI;
 import jssun.swing.SwingUtilities2;
 
@@ -319,7 +320,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
     protected void positionCaret(MouseEvent e) {
         Point pt = new Point(e.getX(), e.getY());
         Position.Bias[] biasRet = new Position.Bias[1];
-        int pos = component.getUI().viewToModel(component, pt, biasRet);
+        int pos = ((TextUI) component.getUI()).viewToModel(component, pt, biasRet);
         if(biasRet[0] == null)
             biasRet[0] = Position.Bias.Forward;
         if (pos >= 0) {
@@ -338,7 +339,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
     protected void moveCaret(MouseEvent e) {
         Point pt = new Point(e.getX(), e.getY());
         Position.Bias[] biasRet = new Position.Bias[1];
-        int pos = component.getUI().viewToModel(component, pt, biasRet);
+        int pos = ((TextUI) component.getUI()).viewToModel(component, pt, biasRet);
         if(biasRet[0] == null)
             biasRet[0] = Position.Bias.Forward;
         if (pos >= 0) {
@@ -638,7 +639,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
 		public void paint(Graphics g) {
         if(isVisible()) {
             try {
-                TextUI mapper = component.getUI();
+                TextUI mapper = (TextUI) component.getUI();
                 Rectangle r = mapper.modelToView(component, dot, dotBias);
 
                 if ((r == null) || ((r.width == 0) && (r.height == 0))) {
@@ -994,7 +995,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
         // will be null.
         if (component != null) {
             active = e;
-            TextUI mapper = component.getUI();
+            TextUI mapper = (TextUI) component.getUI();
             if (visible != e) {
                 visible = e;
                 // repaint the caret
@@ -1339,7 +1340,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
      */
     void repaintNewCaret() {
         if (component != null) {
-            TextUI mapper = component.getUI();
+            TextUI mapper = (TextUI) component.getUI();
             Document doc = component.getDocument();
             if ((mapper != null) && (doc != null)) {
                 // determine the new location and scroll if
@@ -1425,7 +1426,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
      * changed where to position the dot, that resulted in the current location
      * being bogus.
      */
-    private void ensureValidPosition() {
+    void ensureValidPosition() {
         int length = component.getDocument().getLength();
         if (dot > length || mark > length) {
             // Current location is bogus and filter likely vetoed the
@@ -1683,7 +1684,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
                 // setVisible(true) will cause a scroll, only do this if the
                 // new location is really valid.
                 if (component != null) {
-                    TextUI mapper = component.getUI();
+                    TextUI mapper = (TextUI) component.getUI();
                     try {
                         Rectangle r = mapper.modelToView(component, dot,
                                                          dotBias);

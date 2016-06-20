@@ -1,11 +1,12 @@
 package swingjs;
 
+import jsjava.awt.Container;
 import jsjava.awt.Graphics;
-import jsjava.awt.Panel;
-import swingjs.api.HTML5Applet;
+import jsjavax.swing.JApplet;
+import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
-import swingjs.api.JSTop;
+import swingjs.plaf.JSComponentUI;
 
 /**
  * JSJavaViewer 
@@ -18,33 +19,44 @@ import swingjs.api.JSTop;
  * @author Bob Hanson
  * 
  */
-public class JSJavaViewer extends Panel implements 
-		JSInterface {
+public class JSFrameViewer implements JSInterface {
 
-	/*
-	 * the JavaScript SwingJS._Applet object
-	 */
-	public HTML5Applet html5Applet;
-
-
-	public String appletCodeBase;
-	public String appletIdiomaBase;
-	public String appletDocumentBase;
+	protected JSGraphics2D jsgraphics;
 
 	public String fullName = "Main";
-	public String appletName;
-	public String syncId;
-	public boolean testAsync;
-	public boolean async;
-	public String strJavaVersion;
-	public Object strJavaVendor;
-	public Object display;
-	protected HTML5Canvas canvas;
-	protected JSGraphics2D jsgraphics;
+
+	public Container top; // null for a standard applet
+
+	public JSAppletViewer appletViewer;
+	public boolean isApplet, isFrame;	
 	
-	JSTop applet;
+	public JSFrameViewer setForWindow(Container window) {
+		isFrame = true;
+		appletViewer = window.appletViewer;
+		this.top = window;
+		applet = window;
+		window.frameViewer = this;
+		this.fullName = appletViewer.fullName;
+		canvas = null;
+		jsgraphics = null;
+		getGraphics();
+		return this;
+	}
+	
+	
+	public Container getTop() {
+		return top;
+	}
+	
+	public Object display;
+	
+	public Container applet;  // really just for JSmolCore 
+	public JApplet japplet;
+	              // SwingJS core library uses.
 
 	protected JSMouse mouse;
+
+	protected HTML5Canvas canvas;
 
 
   // ///////// javajs.api.JSInterface ///////////
@@ -86,7 +98,7 @@ public class JSJavaViewer extends Panel implements
 		return false;
 	}
 
-	private JSMouse getMouse() {
+	private JSMouse getMouse() {	
 		return (mouse == null ? mouse = new JSMouse(this) : mouse);
 	}
 
@@ -95,18 +107,33 @@ public class JSJavaViewer extends Panel implements
 		getMouse().processTwoPointGesture(touches);
 	}
 
+	/** 
+	 * Page can define a canvas to use or to clear it with null
+	 */
 	@Override
 	public void setDisplay(HTML5Canvas canvas) {
 		this.canvas = canvas;
+		jsgraphics = null;
 	}
 
 	@Override
 	public void setScreenDimension(int width, int height) {
 		setGraphics(jsgraphics = null);
 		//resize(width, height);
-		if (applet != null)
-			applet.resize(width, height);
+		if (top != null)
+			top.resize(width, height);
 	}
+
+	/**
+	 * SwingJS will deliver a null graphics here.
+	 * 
+	 * @param g
+	 * @return
+	 */
+	protected Graphics setGraphics(Graphics g) {
+		return (g == null ? getGraphics() : g);
+	}
+		
 
 	@Override
 	public boolean setStatusDragDropped(int mode, int x, int y, String fileName) {
@@ -119,53 +146,39 @@ public class JSJavaViewer extends Panel implements
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	public String frameID;
 
-	/**
-	 * @j2sOverride
-	 */
-	@Override
-	public void paint(Graphics g) {
-		// Note that this "Panel" is never painted.
-		// This class simply maintains valuable information for applet loading.
-		// Here we go straight to the contentPane and paint that.
-		applet.paint(setGraphics(g));
-	}
+	private String canvasId;
 
-	/**
-	 * SwingJS will deliver a null graphics here.
-	 * 
-	 * @param g
-	 * @return
-	 */
-	private Graphics setGraphics(Graphics g) {
-		return (g == null ? getGraphics() : g);
-	}
-		
-	/**
-	 * Specifically for JSAppletPanel, we get new graphics when necessary
-	 */
-	@Override
+	private static int canvasCount;
+
 	public Graphics getGraphics() {
 		if (jsgraphics == null) {
-			jsgraphics = new JSGraphics2D(getCanvas());
-			// set methods for HTMLCanvasContext2D that are just direct assignments
-			// did not work /**
-			// * @j2sNative
-			// *
-			// * g.ctx._setLineWidth = function(d) {this.lineWidth = d};
-			// * g.ctx._setFont = function(f) {this.font = f};
-			// * g.ctx._setFillStyle = function(s) {this.fillStyle = s};
-			// * g.ctx._setStrokeStyle = function(s) {this.strokeStyle = s};
-			// */
-			// {}
-			jsgraphics.setWindowParameters(getWidth(), getHeight());
+			if (isFrame) {
+				if (canvas == null)
+					newCanvas();
+				jsgraphics = new JSGraphics2D(canvas);
+				jsgraphics.setWindowParameters(top.getWidth(), top.getHeight());
+			} else {
+				canvas = appletViewer.getCanvas();
+				jsgraphics = new JSGraphics2D(canvas);
+			}
 		}
 		return jsgraphics;
 	}
 
-	protected HTML5Canvas getCanvas() {
-		return (canvas == null ? (canvas = html5Applet._getHtml5Canvas()) : canvas);
-	}
 
+	public HTML5Canvas newCanvas() {
+		if (canvasId != null)
+			DOMNode.remove(canvas);
+		String id = appletViewer.appletName + "_canvas" + ++canvasCount;
+		canvasId = id;
+		display = id;
+		canvas = JSComponentUI
+				.createCanvas(id, top.getWidth(), top.getHeight());
+		return canvas;
+	}
 	
 }

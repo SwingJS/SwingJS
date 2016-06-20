@@ -30,6 +30,7 @@ import jsjava.text.ParseException;
 import jsjavax.swing.JFormattedTextField;
 import jsjavax.swing.SwingConstants;
 //import jssun.swing.SwingUtilities2;
+import jsjavax.swing.plaf.TextUI;
 
 /**
  * <code>DefaultFormatter</code> formats aribtrary objects. Formatting is done
@@ -512,7 +513,7 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
                                   Position.Bias bias, int direction,
                                   Position.Bias[] biasRet)
                                            throws BadLocationException {
-        int value = text.getUI().getNextVisualPositionFrom(text, pos, bias,
+        int value = ((TextUI) text.getUI()).getNextVisualPositionFrom(text, pos, bias,
                                                            direction, biasRet);
 
         if (value == -1) {
@@ -524,7 +525,7 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
 
             while (!isNavigatable(value) && value != last) {
                 last = value;
-                value = text.getUI().getNextVisualPositionFrom(
+                value = ((TextUI) text.getUI()).getNextVisualPositionFrom(
                               text, value, bias, direction,biasRet);
             }
             int max = getFormattedTextField().getDocument().getLength();
@@ -717,7 +718,7 @@ public class DefaultFormatter extends JFormattedTextField.AbstractFormatter
                                            throws BadLocationException {
             if (text.composedTextExists()) {
                 // forward the call to the UI directly
-                return text.getUI().getNextVisualPositionFrom(
+                return ((TextUI) text.getUI()).getNextVisualPositionFrom(
                         text, pos, bias, direction, biasRet);
             } else {
                 return DefaultFormatter.this.getNextVisualPositionFrom(

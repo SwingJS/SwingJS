@@ -31,5 +31,5 @@ package jsjava.awt.peer;
  * nor invoke any of the peer methods directly on the peer
  * instances.
  */
-public interface PanelPeer extends ContainerPeer {
+public interface PanelPeer extends LightweightPeer {
 }

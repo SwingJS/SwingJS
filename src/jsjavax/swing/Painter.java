@@ -32,6 +32,8 @@ import jsjava.awt.Graphics2D;
  * the painting routine of a component without having to resort to subclassing
  * the component. It is also generically useful when doing any form of painting
  * delegation.</p>
+ * 
+ * 
  *
  * <p><code>Painter</code>s are simply encapsulations of Java2D code and make
  * it fairly trivial to reuse existing <code>Painter</code>s or to combine

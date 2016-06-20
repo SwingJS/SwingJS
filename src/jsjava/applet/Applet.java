@@ -24,13 +24,14 @@
  */
 package jsjava.applet;
 
+import java.awt.HeadlessException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import jsjava.util.Locale;
 
 import jsjava.awt.Dimension;
 import jsjava.awt.Image;
 import jsjava.awt.Panel;
+import jsjava.util.Locale;
 
 /**
  * An applet is a small program that is intended not to be run on
@@ -490,7 +491,7 @@ public class Applet extends Panel {
      * @see     jsjava.applet.Applet#start()
      * @see     jsjava.applet.Applet#stop()
      */
-    public void destroy() {
+		public void destroy() {
     }
 
     //

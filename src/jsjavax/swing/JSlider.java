@@ -71,11 +71,6 @@ import jsjavax.swing.plaf.UIResource;
  * @author David Kloba
  */
 public class JSlider extends JComponent implements SwingConstants {
-	/**
-	 * @see #getUIClassID
-	 * @see #readObject
-	 */
-	private static final String uiClassID = "SliderUI";
 
 	private boolean paintTicks = false;
 	private boolean paintTrack = true;
@@ -264,6 +259,7 @@ public class JSlider extends JComponent implements SwingConstants {
 		this.orientation = orientation;
 		sliderModel = new DefaultBoundedRangeModel(value, 0, min, max);
 		sliderModel.addChangeListener(changeListener);
+		uiClassID = "SliderUI";
 		updateUI();
 	}
 
@@ -274,31 +270,8 @@ public class JSlider extends JComponent implements SwingConstants {
 		this.orientation = JSlider.HORIZONTAL;
 		setModel(brm);
 		sliderModel.addChangeListener(changeListener);
+		uiClassID = "SliderUI";
 		updateUI();
-	}
-
-	/**
-	 * Gets the UI object which implements the L&F for this component.
-	 * 
-	 * @return the SliderUI object that implements the Slider L&F
-	 */
-	@Override
-	public SliderUI getUI() {
-		return (SliderUI) ui;
-	}
-
-	/**
-	 * Sets the UI object which implements the L&F for this component.
-	 * 
-	 * @param ui
-	 *          the SliderUI L&F object
-	 * @see UIDefaults#getUI
-	 * @beaninfo bound: true hidden: true attribute: visualUpdate true
-	 *           description: The UI object that implements the slider's
-	 *           LookAndFeel.
-	 */
-	public void setUI(SliderUI ui) {
-		super.setUI(ui);
 	}
 
 	/**
@@ -314,18 +287,6 @@ public class JSlider extends JComponent implements SwingConstants {
 		// that of labels. This way when setSize is called the right
 		// font is used.
 		updateLabelUIs();
-	}
-
-	/**
-	 * Returns the name of the L&F class that renders this component.
-	 * 
-	 * @return "SliderUI"
-	 * @see JComponent#getUIClassID
-	 * @see UIDefaults#getUI
-	 */
-	@Override
-	public String getUIClassID() {
-		return uiClassID;
 	}
 
 	/**

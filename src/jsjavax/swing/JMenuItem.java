@@ -82,12 +82,6 @@ import jsjavax.swing.plaf.MenuItemUI;
  */
 public class JMenuItem extends AbstractButton implements MenuElement  {
 
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "MenuItemUI";
-
 //    /* diagnostic aids -- should be false for production builds. */
 //    private static final boolean TRACE =   false; // trace creates and disposes
 //    private static final boolean VERBOSE = false; // show reuse hits/misses
@@ -99,7 +93,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * Creates a <code>JMenuItem</code> with no set text or icon.
      */
     public JMenuItem() {
-    	init0(null, null, Integer.MIN_VALUE);
+    	init0(null, null, Integer.MIN_VALUE, "MenuItemUI");
     }
 
     /**
@@ -108,7 +102,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param icon the icon of the <code>JMenuItem</code>
      */
     public JMenuItem(Icon icon) {
-    	init0(null, icon, Integer.MIN_VALUE);
+    	init0(null, icon, Integer.MIN_VALUE, "MenuItemUI");
     }
 
     /**
@@ -117,7 +111,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param text the text of the <code>JMenuItem</code>
      */
     public JMenuItem(String text) {
-    	init0(text, null, Integer.MIN_VALUE);
+    	init0(text, null, Integer.MIN_VALUE, "MenuItemUI");
     }
 
     /**
@@ -128,7 +122,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @since 1.3
      */
     public JMenuItem(Action a) {
-    	init0(null, null, Integer.MIN_VALUE);
+    	init0(null, null, Integer.MIN_VALUE, null);
         setAction(a);
     }
 
@@ -142,7 +136,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param icon the icon of the <code>JMenuItem</code>
      */
     public JMenuItem(String text, Icon icon) {
-    	init0(text, icon, Integer.MIN_VALUE);
+    	init0(text, icon, Integer.MIN_VALUE, null);
     }
 
 	/**
@@ -155,10 +149,44 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
 	 *          the keyboard mnemonic for the <code>JMenuItem</code>
 	 */
 	public JMenuItem(String text, int mnemonic) {
-  	init0(text, null, mnemonic);
+  	init0(text, null, mnemonic, null);
 	}
 
+  public JMenuItem(String text, Icon icon, String uid) {
+  	init0(text, icon, 0, uid);
+	}
+
+    protected void init0(String text, Icon icon, int mnemonic, String uid) {
+  		setModel(new DefaultButtonModel());
+      init(text, icon, uid);
+    	if (mnemonic >= 0)    		
+    		setMnemonic(mnemonic);
+      initFocusability();
+    }
     /**
+     * Initializes the menu item with the specified text and icon.
+     *
+     * @param text the text of the <code>JMenuItem</code>
+     * @param icon the icon of the <code>JMenuItem</code>
+     */
+    @Override
+		protected void init(String text, Icon icon, String uid) {
+    	uiClassID = (uid == null ? "MenuBarUI" : uid);
+      updateUI();
+        if(text != null)
+            setText(text);
+        if(icon != null)
+            setIcon(icon);
+
+        // Listen for Focus events
+        addFocusListener(new MenuItemFocusListener());
+        setUIProperty("borderPainted", Boolean.FALSE);
+        setFocusPainted(false);
+        setHorizontalTextPosition(JButton.TRAILING);
+        setHorizontalAlignment(JButton.LEADING);
+    }
+
+		/**
      * {@inheritDoc}
      */
     @Override
@@ -179,35 +207,6 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      */
     void initFocusability() {
         setFocusable(false);
-    }
-
-    protected void init0(String text, Icon icon, int mnemonic) {
-  		setModel(new DefaultButtonModel());
-      init(text, icon);
-    	if (mnemonic >= 0)    		
-    		setMnemonic(mnemonic);
-      initFocusability();
-    }
-    /**
-     * Initializes the menu item with the specified text and icon.
-     *
-     * @param text the text of the <code>JMenuItem</code>
-     * @param icon the icon of the <code>JMenuItem</code>
-     */
-    @Override
-		protected void init(String text, Icon icon) {
-      updateUI();
-        if(text != null)
-            setText(text);
-        if(icon != null)
-            setIcon(icon);
-
-        // Listen for Focus events
-        addFocusListener(new MenuItemFocusListener());
-        setUIProperty("borderPainted", Boolean.FALSE);
-        setFocusPainted(false);
-        setHorizontalTextPosition(JButton.TRAILING);
-        setHorizontalAlignment(JButton.LEADING);
     }
 
     private static class MenuItemFocusListener implements FocusListener

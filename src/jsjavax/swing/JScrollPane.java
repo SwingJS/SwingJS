@@ -166,12 +166,6 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
     private Border viewportBorder;
 
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ScrollPaneUI";
-
-    /**
      * The display policy for the vertical scrollbar.
      * The default is
      * <code>ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED</code>.
@@ -295,6 +289,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
             setViewportView(view);
         }
         setUIProperty("opaque",true);
+        uiClassID = "ScrollPaneUI";
         updateUI();
 
         if (!this.getComponentOrientation().isLeftToRight()) {
@@ -343,68 +338,6 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
     public JScrollPane() {
         this(null, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
-
-
-    /**
-     * Returns the look and feel (L&F) object that renders this component.
-     *
-     * @return the <code>ScrollPaneUI</code> object that renders this
-     *                          component
-     * @see #setUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    @Override
-		public ScrollPaneUI getUI() {
-        return (ScrollPaneUI)ui;
-    }
-
-
-    /**
-     * Sets the <code>ScrollPaneUI</code> object that provides the
-     * look and feel (L&F) for this component.
-     *
-     * @param ui the <code>ScrollPaneUI</code> L&F object
-     * @see #getUI
-     */
-    public void setUI(ScrollPaneUI ui) {
-        super.setUI(ui);
-    }
-
-
-    /**
-     * Replaces the current <code>ScrollPaneUI</code> object with a version
-     * from the current default look and feel.
-     * To be called when the default look and feel changes.
-     *
-     * @see JComponent#updateUI
-     * @see UIManager#getUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ScrollPaneUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the suffix used to construct the name of the L&F class used to
-     * render this component.
-     *
-     * @return the string "ScrollPaneUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     *
-     * @beaninfo
-     *    hidden: true
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
 
     /**

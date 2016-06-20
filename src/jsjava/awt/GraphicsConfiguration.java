@@ -96,6 +96,7 @@ import jssun.awt.image.SunVolatileImage;
  * @see Frame
  * @see GraphicsEnvironment
  * @see GraphicsDevice
+ * @see swingjs.JSGraphicsConfiguration
  */
 /*
  * REMIND:  What to do about capabilities?

@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import jsjava.awt.Insets;
 import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
 
@@ -36,5 +37,11 @@ public class JSTextAreaUI extends JSTextUI {
 			DOMNode.setAttr(domNode, "readOnly", "true");
 		return domNode;
 	}
+
+	@Override
+	public Insets getInsets() {
+		return new Insets(5, 5, 5, 5);
+	}
+
 
 }

@@ -28,6 +28,8 @@ package jsjavax.swing;
 //import java.io.IOException;
 //import java.io.ObjectOutputStream;
 
+import java.awt.HeadlessException;
+
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -46,7 +48,6 @@ import jsjava.awt.event.WindowEvent;
 import jsjavax.swing.colorchooser.AbstractColorChooserPanel;
 import jsjavax.swing.colorchooser.ColorSelectionModel;
 import jsjavax.swing.colorchooser.DefaultColorSelectionModel;
-import jsjavax.swing.plaf.ColorChooserUI;
 import jssun.swing.SwingUtilities2;
 
 
@@ -97,12 +98,6 @@ import jssun.swing.SwingUtilities2;
  * @author Steve Wilson
  */
 public class JColorChooser extends JComponent {
-
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ColorChooserUI";
 
     private ColorSelectionModel selectionModel;
 
@@ -223,46 +218,9 @@ public class JColorChooser extends JComponent {
      */
     public JColorChooser(ColorSelectionModel model) {
         selectionModel = model;
+        uiClassID = "ColorChooserUI";
         updateUI();
         dragEnabled = false;
-    }
-
-    /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return the <code>ColorChooserUI</code> object that renders
-     *          this component
-     */
-    @Override
-		public ColorChooserUI getUI() {
-        return (ColorChooserUI)ui;
-    }
-
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui  the <code>ColorChooserUI</code> L&F object
-     * @see UIDefaults#getUI
-     *
-     * @beaninfo
-     *       bound: true
-     *      hidden: true
-     * description: The UI object that implements the color chooser's LookAndFeel.
-     */
-    public void setUI(ColorChooserUI ui) {
-        super.setUI(ui);
-    }
-
-    /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
-     * Replaces the current UI object with the latest version from the
-     * <code>UIManager</code>.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ColorChooserUI)UIManager.getUI(this));
     }
 
     /**

@@ -78,12 +78,6 @@ package jsjavax.swing;
 public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
 {
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "CheckBoxMenuItemUI";
-
-    /**
      * Creates an initially unselected check box menu item with no set text or icon.
      */
     public JCheckBoxMenuItem() {
@@ -147,7 +141,7 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
      * @param b the selected state of the check box menu item
      */
     public JCheckBoxMenuItem(String text, Icon icon, boolean b) {
-        super(text, icon);
+        super(text, icon, "CheckBoxMenuItemUI");
         setModel(new JToggleButton.ToggleButtonModel());
         setSelected(b);
         setFocusable(false);

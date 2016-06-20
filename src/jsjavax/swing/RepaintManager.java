@@ -176,7 +176,7 @@ public class RepaintManager {
 	 */
 	private final ProcessingRunnable processingRunnable;
 
-	private Component myComponent;
+	Component myComponent;
 
 	// private final static JavaSecurityAccess javaSecurityAccess = SharedSecrets
 	// .getJavaSecurityAccess();
@@ -1663,7 +1663,7 @@ public class RepaintManager {
 			// Do the actual validation and painting.
 			validateInvalidComponents();
 			prePaintDirtyRegions();
-			// SwingJS -- this is what does the mouse-action painting
+			// SwingJS -- this is what does the mouse-action painting; not necessary
 			swingjs.JSToolkit.forceRepaint(myComponent);
 
 //			System.out.println("RepaintManager run() done");

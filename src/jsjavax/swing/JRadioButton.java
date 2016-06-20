@@ -24,7 +24,6 @@
  */
 package jsjavax.swing;
 
-import jsjavax.swing.plaf.ButtonUI;
 
 
 /**
@@ -78,12 +77,6 @@ import jsjavax.swing.plaf.ButtonUI;
  * @author Jeff Dinkins
  */
 public class JRadioButton extends JToggleButton {
-
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "RadioButtonUI";
 
 
     /**
@@ -167,37 +160,9 @@ public class JRadioButton extends JToggleButton {
      * @param icon  the image that the button should display
      */
     public JRadioButton (String text, Icon icon, boolean selected) {
-        super(text, icon, selected);
+        super(text, icon, selected, "RadioButtonUI");
         setBorderPainted(false);
         setHorizontalAlignment(LEADING);
-    }
-
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ButtonUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the L&F class
-     * that renders this component.
-     *
-     * @return String "RadioButtonUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        expert: true
-     *   description: A string that specifies the name of the L&F class.
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
 
@@ -209,22 +174,6 @@ public class JRadioButton extends JToggleButton {
 		void setIconFromAction(Action a) {
     }
 
-//    /**
-//     * See readObject() and writeObject() in JComponent for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-//
     /**
      * Returns a string representation of this JRadioButton. This method
      * is intended to be used only for debugging purposes, and the
@@ -239,57 +188,4 @@ public class JRadioButton extends JToggleButton {
         return super.paramString();
     }
 
-
-/////////////////
-// Accessibility support
-////////////////
-//
-//
-//    /**
-//     * Gets the AccessibleContext associated with this JRadioButton.
-//     * For JRadioButtons, the AccessibleContext takes the form of an
-//     * AccessibleJRadioButton.
-//     * A new AccessibleJRadioButton instance is created if necessary.
-//     *
-//     * @return an AccessibleJRadioButton that serves as the
-//     *         AccessibleContext of this JRadioButton
-//     * @beaninfo
-//     *       expert: true
-//     *  description: The AccessibleContext associated with this Button
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJRadioButton();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JRadioButton</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to radio button
-//     * user-interface elements.
-//     * <p>
-//     * <strong>Warning:</strong>
-//     * Serialized objects of this class will not be compatible with
-//     * future Swing releases. The current serialization support is
-//     * appropriate for short term storage or RMI between applications running
-//     * the same version of Swing.  As of 1.4, support for long term storage
-//     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-//     * has been added to the <code>java.beans</code> package.
-//     * Please see {@link jsjava.beans.XMLEncoder}.
-//     */
-//    protected class AccessibleJRadioButton extends AccessibleJToggleButton {
-//
-//        /**
-//         * Get the role of this object.
-//         *
-//         * @return an instance of AccessibleRole describing the role of the object
-//         * @see AccessibleRole
-//         */
-//        public AccessibleRole getAccessibleRole() {
-//            return AccessibleRole.RADIO_BUTTON;
-//        }
-//
-//    } // inner class AccessibleJRadioButton
 }

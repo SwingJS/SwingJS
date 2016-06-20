@@ -39,11 +39,11 @@ import jsjava.awt.event.MouseWheelEvent;
 
 public class JSMouse {
 
-	private JSJavaViewer ap;
+	private JSFrameViewer viewer;
 	private Object jqevent;
 
-	public JSMouse(JSJavaViewer ap) {
-		this.ap = ap;
+	public JSMouse(JSFrameViewer v) {
+		viewer = v;
 	}
 
 	public boolean processEvent(int id, int x, int y, int modifiers, long time, Object jqevent) {
@@ -260,7 +260,7 @@ public class JSMouse {
 			int count, int modifiers) {
 		boolean popupTrigger = false;
 		int button = getButton(modifiers);
-		Component source = (Component) ap.applet; // may be a JFrame
+		Component source = (viewer.top == null  ? viewer.japplet : viewer.top); // may be a JFrame
 		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);
 		byte[] bdata = new byte[0];
 		Object jqevent = this.jqevent;

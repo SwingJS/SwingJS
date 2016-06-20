@@ -74,12 +74,6 @@ import jsjavax.swing.plaf.ScrollBarUI;
 public class JScrollBar extends JComponent implements Adjustable
 {
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ScrollBarUI";
-
-    /**
      * All changes from the model are treated as though the user moved
      * the scrollbar knob.
      */
@@ -151,23 +145,11 @@ public class JScrollBar extends JComponent implements Adjustable
         this.model = new DefaultBoundedRangeModel(value, extent, min, max);
         this.model.addChangeListener(fwdAdjustmentEvents);
         setRequestFocusEnabled(false);
+        uiClassID = "ScrollBarUI";
         updateUI();
     }
 
     
-    /// BH for JScrollBarUI extends JSliderUI
-    
-    public void addChangeListener(ChangeListener l) {
-    	model.addChangeListener(l);
-    }
-    
-    /// BH for JScrollBarUI extends JSliderUI
-    
-    public void removeChangeListener(ChangeListener l) {
-    	model.removeChangeListener(l);
-    }
-    
-
     /**
      * Creates a scrollbar with the specified orientation
      * and the following initial values:
@@ -197,57 +179,18 @@ public class JScrollBar extends JComponent implements Adjustable
     }
 
 
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui  the <code>ScrollBarUI</code> L&F object
-     * @see UIDefaults#getUI
-     * @since 1.4
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel
-     */
-    public void setUI(ScrollBarUI ui) {
-        super.setUI(ui);
+    /// BH for JScrollBarUI extends JSliderUI
+    
+    public void addChangeListener(ChangeListener l) {
+    	model.addChangeListener(l);
     }
-
-
-    /**
-     * Returns the delegate that implements the look and feel for
-     * this component.
-     *
-     * @see JComponent#setUI
-     */
-    @Override
-		public ScrollBarUI getUI() {
-        return (ScrollBarUI)ui;
+    
+    /// BH for JScrollBarUI extends JSliderUI
+    
+    public void removeChangeListener(ChangeListener l) {
+    	model.removeChangeListener(l);
     }
-
-
-    /**
-     * Overrides <code>JComponent.updateUI</code>.
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ScrollBarUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the LookAndFeel class for this component.
-     *
-     * @return "ScrollBarUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
+    
 
 
     /**

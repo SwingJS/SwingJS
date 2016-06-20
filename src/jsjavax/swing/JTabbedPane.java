@@ -123,12 +123,6 @@ public class JTabbedPane extends JComponent
 
 
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "TabbedPaneUI";
-
-    /**
      * Where the tabs are placed.
      * @see #setTabPlacement
      */
@@ -201,18 +195,8 @@ public class JTabbedPane extends JComponent
         setTabLayoutPolicy(tabLayoutPolicy);
         pages = new ArrayList<Page>(1);
         setModel(new DefaultSingleSelectionModel());
+        uiClassID = "TabbedPaneUI";
         updateUI();
-    }
-
-    /**
-     * Returns the UI object which implements the L&F for this component.
-     *
-     * @return a <code>TabbedPaneUI</code> object
-     * @see #setUI
-     */
-    @Override
-		public TabbedPaneUI getUI() {
-        return (TabbedPaneUI)ui;
     }
 
     /**
@@ -236,31 +220,6 @@ public class JTabbedPane extends JComponent
             }
         }
     }
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((TabbedPaneUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the UI class that implements the
-     * L&F for this component.
-     *
-     * @return the string "TabbedPaneUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     /**
      * We pass <code>ModelChanged</code> events along to the listeners with
@@ -2288,7 +2247,7 @@ public class JTabbedPane extends JComponent
 //        }
 //
         public Rectangle getBounds() {
-            return parent.getUI().getTabBounds(parent,
+            return ((TabbedPaneUI)parent.getUI()).getTabBounds(parent,
                                                parent.indexOfTab(title));
         }
 

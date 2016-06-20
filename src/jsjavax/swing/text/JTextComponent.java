@@ -303,44 +303,30 @@ import swingjs.JSToolkit;
  */
 public abstract class JTextComponent extends JComponent implements Scrollable
 {
-    /**
-     * Creates a new <code>JTextComponent</code>.
-     * Listeners for caret events are established, and the pluggable
-     * UI installed.  The component is marked as editable.  No layout manager
-     * is used, because layout is managed by the view subsystem of text.
-     * The document model is set to <code>null</code>.
-     */
-    public JTextComponent() {
-        super();
-        // enable InputMethodEvent for on-the-spot pre-editing
-        enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.INPUT_METHOD_EVENT_MASK);
-        caretEvent = new MutableCaretEvent(this);
-        addMouseListener(caretEvent);
-        addFocusListener(caretEvent);
-        setEditable(true);
-        setDragEnabled(false);
-        setLayout(null); // layout is managed by View hierarchy
-        updateUI();
-    }
+	/**
+	 * Creates a new <code>JTextComponent</code>. Listeners for caret events are
+	 * established, and the pluggable UI installed. The component is marked as
+	 * editable. No layout manager is used, because layout is managed by the view
+	 * subsystem of text. The document model is set to <code>null</code>.
+	 */
+	public JTextComponent() {
+		super();
+	}
 
-    /**
-     * Fetches the user-interface factory for this text-oriented editor.
-     *
-     * @return the factory
-     */
-    @Override
-		public TextUI getUI() { return (TextUI)ui; }
+  protected void initTJA(String uid) {
+  		// enable InputMethodEvent for on-the-spot pre-editing
+  		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.INPUT_METHOD_EVENT_MASK);
+  		caretEvent = new MutableCaretEvent(this);
+  		addMouseListener(caretEvent);
+  		addFocusListener(caretEvent);
+  		setEditable(true);
+  		setDragEnabled(false);
+  		setLayout(null); // layout is managed by View hierarchy
+  		uiClassID = uid;
+  		updateUI();
+	}
 
-    /**
-     * Sets the user-interface factory for this text-oriented editor.
-     *
-     * @param ui the factory
-     */
-    public void setUI(TextUI ui) {
-        super.setUI(ui);
-    }
-
-    /**
+		/**
      * Reloads the pluggable UI.  The key used to fetch the
      * new interface is <code>getUIClassID()</code>.  The type of
      * the UI is <code>TextUI</code>.  <code>invalidate</code>
@@ -510,7 +496,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 	public Action[] getActions() {
 		if (getUI() == null) // SwingJS adding null test
 			return null;
-		return getUI().getEditorKit(this).getActions();
+		return ((TextUI) getUI()).getEditorKit(this).getActions();
 	}
 
     /**
@@ -1416,7 +1402,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @see TextUI#modelToView
      */
     public Rectangle modelToView(int pos) throws BadLocationException {
-        return getUI().modelToView(this, pos);
+        return ((TextUI) getUI()).modelToView(this, pos);
     }
 
     /**
@@ -1434,7 +1420,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @see TextUI#viewToModel
      */
     public int viewToModel(Point pt) {
-        return getUI().viewToModel(this, pt);
+        return ((TextUI) getUI()).viewToModel(this, pt);
     }
 
     /**
@@ -1608,7 +1594,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      * @see JSPlainDocument
      */
     public void read(Reader in, Object desc) throws IOException {
-        EditorKit kit = getUI().getEditorKit(this);
+        EditorKit kit = ((TextUI) getUI()).getEditorKit(this);
         Document doc = kit.createDefaultDocument();
         if (desc != null) {
             doc.putProperty(Document.StreamDescriptionProperty, desc);
@@ -1632,7 +1618,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     public void write(Writer out) throws IOException {
         Document doc = getDocument();
         try {
-            getUI().getEditorKit(this).write(out, doc, 0, doc.getLength());
+        	((TextUI) getUI()).getEditorKit(this).write(out, doc, 0, doc.getLength());
         } catch (BadLocationException e) {
             throw new IOException(e.getMessage());
         }
@@ -1957,7 +1943,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         String retValue = super.getToolTipText(event);
 
         if (retValue == null) {
-            TextUI ui = getUI();
+            TextUI ui = ((TextUI) getUI());
             if (ui != null) {
                 retValue = ui.getToolTipText(this, new Point(event.getX(),
                                                              event.getY()));

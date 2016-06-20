@@ -51,6 +51,9 @@ import jsjavax.swing.plaf.UIResource;
 import jssun.awt.AppContext;
 import jssun.swing.UIAction;
 import swingjs.J2SIgnoreImport;
+import swingjs.JSAppletViewer;
+import swingjs.JSAppletThread;
+import swingjs.JSToolkit;
 import swingjs.api.Interface;
 
 /**
@@ -1750,7 +1753,7 @@ public class SwingUtilities implements SwingConstants
 
 
     // Don't use String, as it's not guaranteed to be unique in a Hashtable.
-    private static final Object sharedOwnerFrameKey = new Object(); // SwingUtilities.sharedOwnerFrame
+    //private static final Object sharedOwnerFrameKey = new Object(); // SwingUtilities.sharedOwnerFrame
 
     static class SharedOwnerFrame extends Frame implements WindowListener {
         @Override
@@ -1827,24 +1830,22 @@ public class SwingUtilities implements SwingConstants
         }
     }
 
-    /**
-     * Returns a toolkit-private, shared, invisible Frame
-     * to be the owner for JDialogs and JWindows created with
-     * {@code null} owners.
-     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-     * returns true.
-     * @see jsjava.awt.GraphicsEnvironment#isHeadless
-     */
-    static Frame getSharedOwnerFrame() {
-        Frame sharedOwnerFrame =
-            (Frame)SwingUtilities.appContextGet(sharedOwnerFrameKey);
-        if (sharedOwnerFrame == null) {
-            sharedOwnerFrame = new SharedOwnerFrame();
-            SwingUtilities.appContextPut(sharedOwnerFrameKey,
-                                         sharedOwnerFrame);
-        }
-        return sharedOwnerFrame;
-    }
+	/**
+	 * Returns a toolkit-private, shared, invisible Frame to be the owner for
+	 * JDialogs and JWindows created with {@code null} owners.
+	 * 
+	 * Note that in SwingJS this is not fully static -- it is associated with this
+	 * applet only
+	 * 
+	 * @exception HeadlessException
+	 *              if GraphicsEnvironment.isHeadless() returns true.
+	 * @see jsjava.awt.GraphicsEnvironment#isHeadless
+	 */
+	public static Frame getSharedOwnerFrame() {
+		JSAppletViewer p = JSToolkit.getAppletViewer();
+		Frame f = p.sharedOwnerFrame;
+		return (f == null ? (p.sharedOwnerFrame = new SharedOwnerFrame()) : f);
+	}
 
     /**
      * Returns a SharedOwnerFrame's shutdown listener to dispose the SharedOwnerFrame

@@ -23,10 +23,12 @@ public interface JQueryObject {
 	public abstract JQueryObject attr(String key, String value);
 
 	public abstract JQueryObject addClass(String name);
-
+	
 	public abstract void empty();
 
 	public abstract void on(String eventName, Object f);
+
+	public abstract void remove();
 
 	
 }

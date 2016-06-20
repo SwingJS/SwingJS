@@ -11,7 +11,6 @@ import swingjs.api.DOMNode;
 public class JSPanelUI extends JSLightweightUI {
 
 	int frameZ = 10000;
-	private boolean isContentPane;
 	public JSPanelUI() {
 		isContainer = true;
 		setDoc();
@@ -21,14 +20,9 @@ public class JSPanelUI extends JSLightweightUI {
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			JRootPane root = jc.getRootPane();
-			isContentPane = (root != null && root.getContentPane() == c);
-			domNode = createDOMObject("label", id);
-			if (root != null && root.getGlassPane() == c) {
-				if (outerNode == null)
-					outerNode = wrap("div", id, domNode);
-				DOMNode.add(outerNode, domNode);	
-				DOMNode.setStyles(outerNode,  "display", "none");
-			}
+			domNode = createDOMObject("div", id);
+			if (root != null && root.getGlassPane() == c)
+				DOMNode.setStyles(domNode, "display", "none");
 		}
     return domNode;
 	}

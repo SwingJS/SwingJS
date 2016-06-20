@@ -12,11 +12,23 @@ import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.WritableRaster;
 
 
+/**
+ * JSGraphicsConfiguration is a critical innovation for SwingJS. It
+ * maintains information about the associated HTML5 applet. It is 
+ * passed to new threads as they are created such that Thread.currentThread()
+ * always has the current appletViewer field, and appletViewer.getGraphicsConfiguration()
+ * (or actually any component involved) always returns this same configuration.
+ * 
+ * In this way, we can produce a graphics configuration for any JDialog or JFrame.
+ *  
+ * @author Bob Hanson
+ * 
+ *
+ */
 public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	/*
-	 * NOTE: This class is called from jsjava.awt.GraphicsEnvironment
-	 * within in j2sNative block.
+	 * NOTE: This class is called from JSToolkit using reflection.
 	 * 
 	 */
 	public JSGraphicsConfiguration(){

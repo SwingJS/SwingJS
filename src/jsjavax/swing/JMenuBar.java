@@ -73,12 +73,6 @@ import jsjavax.swing.plaf.MenuBarUI;
  */
 public class JMenuBar extends JComponent implements MenuElement
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "MenuBarUI";
-
     /*
      * Model for the selected subcontrol.
      */
@@ -99,6 +93,7 @@ public class JMenuBar extends JComponent implements MenuElement
         super();
         //setFocusTraversalKeysEnabled(false);
         setSelectionModel(new DefaultSingleSelectionModel());
+        uiClassID = "MenuBarUI";
         updateUI();
     }
 

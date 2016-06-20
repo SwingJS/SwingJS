@@ -197,7 +197,6 @@ import swingjs.JSToolkit;
  * @since 1.4
  */
 public class JFormattedTextField extends JTextField {
-    private static final String uiClassID = "FormattedTextFieldUI";
     private static final Action[] defaultActions =
             { new CommitAction(), new CancelAction() };
 
@@ -294,7 +293,7 @@ public class JFormattedTextField extends JTextField {
      * value.
      */
     public JFormattedTextField() {
-        super();
+        super(null, null, 0, "FormattedTextFieldUI");
         enableEvents(AWTEvent.FOCUS_EVENT_MASK);
         setFocusLostBehavior(COMMIT_OR_REVERT);
     }
@@ -698,17 +697,6 @@ public class JFormattedTextField extends JTextField {
     @Override
 		public Action[] getActions() {
         return TextAction.augmentList(super.getActions(), defaultActions);
-    }
-
-    /**
-     * Gets the class ID for a UI.
-     *
-     * @return the string "FormattedTextFieldUI"
-     * @see JComponent#getUIClassID
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
     /**

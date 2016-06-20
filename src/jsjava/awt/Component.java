@@ -158,12 +158,6 @@ public abstract class Component implements ImageObserver/*, MenuContainer,
                                            Serializable*/
 {
 
-	/**
-	 * used by SwingJS
-	 * 
-	 */
-	public ThreadGroup threadGroup;
-	public Thread myThread;
 
 
 //  /**
@@ -735,9 +729,6 @@ protected  transient ComponentPeer peer;
     // where currently there is no chance to interpose on the creation
     // of the peer and therefore the call to XSetBackground.
     transient boolean backgroundEraseDisabled;
-		public String htmlName;
-		protected int num;
-		private static int incr;
 
 //    static {
 //        AWTAccessor.setComponentAccessor(new AWTAccessor.ComponentAccessor() {
@@ -818,7 +809,6 @@ protected  transient ComponentPeer peer;
      * tree (for example, by a <code>Frame</code> object).
      */
     protected Component() {
-      num = ++incr;
     	setAppContext();
     }
 
@@ -829,11 +819,6 @@ protected  transient ComponentPeer peer;
     protected void setAppContext() {
       appContext = AppContext.getAppContext();
 		}
-    
-    public String getHTMLName(String uid) {
-    	return (htmlName == null ? htmlName = appContext.getThreadGroup().getName() 
-    			+ "_" + uid + "_" + num : htmlName);
-    }
 
 		/**
      * Constructs a name for this component.  Called by <code>getName</code>
@@ -969,7 +954,7 @@ protected  transient ComponentPeer peer;
 //    public synchronized DropTarget getDropTarget() { return dropTarget; }
 //
     
-    transient GraphicsConfiguration graphicsConfig = null;
+    public GraphicsConfiguration graphicsConfig;
 
     /**
      * Gets the <code>GraphicsConfiguration</code> associated with this
@@ -987,18 +972,12 @@ protected  transient ComponentPeer peer;
      * @since 1.3
      */
     public GraphicsConfiguration getGraphicsConfiguration() {
-    	// SwingJS 
+    	// looks like infinite recursion, but it is not.
     	return JSToolkit.getGraphicsConfiguration();
-//        synchronized(getTreeLock()) {
-//            if (graphicsConfig != null) {
-//                return graphicsConfig;
-//            } else if (getParent() != null) {
-//                return getParent().getGraphicsConfiguration();
-//            } else {
-//                return null;
-//            }
-//        }
     }
+    
+    
+    
 
 //    final GraphicsConfiguration getGraphicsConfiguration_NoClientCode() {
 //        GraphicsConfiguration graphicsConfig = this.graphicsConfig;
@@ -1691,6 +1670,7 @@ protected  transient ComponentPeer peer;
     public boolean isBackgroundSet() {
         return (background != null);
     }
+
 
     /**
      * Gets the font of this component.
@@ -2789,7 +2769,6 @@ protected  transient ComponentPeer peer;
 	 * @since JDK1.0
 	 */
 	public Graphics getGraphics() {
-		// only executed for JRootPane and JApplet
 		Graphics g;
 		if ((g = (parent == null ? null : parent.getGraphics())) != null)
 			g.setFont(this.getFont());
@@ -3142,33 +3121,37 @@ protected  transient ComponentPeer peer;
     public void repaint(long tm, int x, int y, int width, int height) {
     	repaintImpl(tm, x, y, width, height);
     }
-    public void repaintImpl(long tm, int x, int y, int width, int height) {
-    	//System.out.println("C repaint " + this.name);
-        if (peer instanceof LightweightPeer) {
-            // Needs to be translated to parent coordinates since
-            // a parent native container provides the actual repaint
-            // services.  Additionally, the request is restricted to
-            // the bounds of the component.
-            if (parent != null) {
-                int px = this.x + ((x < 0) ? 0 : x);
-                int py = this.y + ((y < 0) ? 0 : y);
-                int pwidth = (width > this.width) ? this.width : width;
-                int pheight = (height > this.height) ? this.height : height;
-              	//System.out.println("C repaint to " + parent.getName());
-                parent.repaint(tm, px, py, pwidth, pheight);
-            }
-        } else {
-        	//System.out.println("C firing Paint event on " + this.name);
-            if (isVisible() && (peer != null) &&
-                (width > 0) && (height > 0)) {
-                PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE,
-                                              new Rectangle(x, y, width, height));
-                Toolkit.getEventQueue().postEvent(e);
-            }
-        }
-    }
 
-    /**
+	public void repaintImpl(long tm, int x, int y, int width, int height) {
+		// System.out.println("C repaint " + this.name);
+		if (canPaint()) {
+			// System.out.println("C firing Paint event on " + this.name);
+			if (isVisible() && (peer != null) && (width > 0) && (height > 0)) {
+				PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE, new Rectangle(x,
+						y, width, height));
+				Toolkit.getEventQueue().postEvent(e);
+			}
+		} else if (parent != null) {
+			// Needs to be translated to parent coordinates since
+			// a parent native container provides the actual repaint
+			// services. Additionally, the request is restricted to
+			// the bounds of the component.
+			int px = this.x + ((x < 0) ? 0 : x);
+			int py = this.y + ((y < 0) ? 0 : y);
+			int pwidth = (width > this.width) ? this.width : width;
+			int pheight = (height > this.height) ? this.height : height;
+			System.out.println("C repaint to " + parent.getName());
+			parent.repaint(tm, px, py, pwidth, pheight);
+			System.out.println("OK");
+
+		}
+	}
+
+    protected boolean canPaint() {
+    	return !(peer instanceof LightweightPeer);
+		}
+    
+		/**
      * Prints this component. Applications should override this method
      * for components that must do special processing before being
      * printed or should be printed differently than they are painted.
@@ -5208,7 +5191,7 @@ protected  transient ComponentPeer peer;
 			// Check cache.
 			Boolean value = coalesceMap.get(clazz);
 			if (value != null) {
-				return value;
+				return value.booleanValue();
 			}
 
 			Boolean enabled = Boolean.valueOf(JSToolkit.checkClassMethod(this,
@@ -5223,7 +5206,7 @@ protected  transient ComponentPeer peer;
 			// }
 			// );
 			coalesceMap.put(clazz, enabled);
-			return enabled;
+			return enabled.booleanValue();
 		}
 	}
 
@@ -8548,7 +8531,4 @@ protected  transient ComponentPeer peer;
         return doesClassImplement(obj.getClass(), interfaceName);
     }
 
-		public String getUIClassID() {
-			return null; // only JComponent, JFrame, JDialog, JWindow
-		}
 }

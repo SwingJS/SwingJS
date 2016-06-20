@@ -1,19 +1,32 @@
 package swingjs;
 
+import jsjava.awt.Frame;
 import jsjavax.swing.SwingUtilities;
 
+/**
+ * 
+ * JSAppletThread maintains connection with the originating HTML5Applet, regardless of
+ * the class. So one can retrieve the graphics context, for example, using
+ * 
+ * Thread.getCurrentThread().viewer.getGraphics()
+ * 
+ * a JDialog or JFrame can retrieve the current graphics.  
+ * 
+ * @author Bob Hanson
+ *
+ */
 public class JSAppletThread extends JSThread {
 
-	private JSAppletPanel ap;
+	public JSAppletViewer appletViewer;
 
-	public JSAppletThread(JSAppletPanel ap, ThreadGroup group, String name) {
+	public JSAppletThread(JSAppletViewer ap, ThreadGroup group, String name) {
 		super(group, name);
-		this.ap = ap;
+		appletViewer = ap;
 	}
 
 	@Override
 	public void run1(int mode) {
-		mode = ap.run1(mode);
+		mode = appletViewer.run1(mode);
 		if (mode != DONE)
 			dispatchAndReturn(null, mode);
 	}

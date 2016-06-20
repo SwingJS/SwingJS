@@ -42,7 +42,7 @@ public class JSLabelUI extends JSLightweightUI {
 	 */
 	@Override
 	protected DOMNode setHTMLElement() {
-		DOMNode outerNode = setHTMLElementCUI();
+		domNode = setHTMLElementCUI();
 		String prop = null;
 		switch (label.getHorizontalAlignment()) {
 		case SwingConstants.RIGHT:
@@ -58,8 +58,8 @@ public class JSLabelUI extends JSLightweightUI {
 			break;
 		}
 		if (prop != null)
-			DOMNode.setStyles(outerNode, "width", c.getWidth() + "px", "text-align", prop);
-		return outerNode;
+			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align", prop);
+		return domNode;
 	}
 	
 	@Override

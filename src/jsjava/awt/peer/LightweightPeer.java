@@ -39,6 +39,6 @@ package jsjava.awt.peer;
  *
  * @author Timothy Prinzing
  */
-public interface LightweightPeer extends ComponentPeer {
+public interface LightweightPeer extends ContainerPeer {
 
 }

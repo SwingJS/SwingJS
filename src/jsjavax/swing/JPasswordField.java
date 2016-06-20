@@ -129,23 +129,11 @@ public class JPasswordField extends JTextField {
      *   the component implementation
      */
     public JPasswordField(Document doc, String txt, int columns) {
-        super(doc, txt, columns);
+        super(doc, txt, columns, "PasswordFieldUI");
         // We could either leave this on, which wouldn't be secure,
         // or obscure the composted text, which essentially makes displaying
         // it useless. Therefore, we turn off input methods.
         //enableInputMethods(false);
-    }
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "PasswordFieldUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
 
@@ -302,29 +290,6 @@ public class JPasswordField extends JTextField {
         System.arraycopy(txt.array, txt.offset, retValue, 0, txt.count);
         return retValue;
     }
-
-//    /**
-//     * See readObject() and writeObject() in JComponent for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-    // --- variables -----------------------------------------------
-
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "PasswordFieldUI";
 
     private char echoChar;
 

@@ -41,6 +41,7 @@ import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.Action;
 import jsjavax.swing.SwingConstants;
 import jsjavax.swing.UIManager;
+import jsjavax.swing.plaf.TextUI;
 
 /**
  * This is the set of things needed by a text component
@@ -1699,7 +1700,7 @@ public class DefaultEditorKit extends EditorKit {
                        (direction == SwingConstants.NORTH ||
                         direction == SwingConstants.SOUTH)) {
                         Rectangle r = (bidiCaret != null) ?
-                                target.getUI().modelToView(target, dot,
+                                ((TextUI) target.getUI()).modelToView(target, dot,
                                                       bidiCaret.getDotBias()) :
                                 target.modelToView(dot);
                         magicPosition = new Point(r.x, r.y);
@@ -1714,7 +1715,7 @@ public class DefaultEditorKit extends EditorKit {
                                       Position.Bias.Forward, direction, bias);
                     }
                     else {
-                        dot = target.getUI().getNextVisualPositionFrom
+                        dot = ((TextUI) target.getUI()).getNextVisualPositionFrom
                                      (target, dot, (bidiCaret != null) ?
                                       bidiCaret.getDotBias() :
                                       Position.Bias.Forward, direction, bias);

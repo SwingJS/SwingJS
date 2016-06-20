@@ -138,12 +138,6 @@ import jsjavax.swing.text.NumberFormatter;
  */
 public class JSpinner extends JComponent
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "SpinnerUI";
-
     private static final Action DISABLED_ACTION = new DisabledAction();
 
     private transient SpinnerModel model;
@@ -161,6 +155,7 @@ public class JSpinner extends JComponent
         this.model = model;
         this.editor = createEditor(model);
         setUIProperty("opaque",true);
+        uiClassID = "SpinnerUI";
         updateUI();
     }
 
@@ -172,56 +167,6 @@ public class JSpinner extends JComponent
     public JSpinner() {
         this(new SpinnerNumberModel());
     }
-
-
-    /**
-     * Returns the look and feel (L&F) object that renders this component.
-     *
-     * @return the <code>SpinnerUI</code> object that renders this component
-     */
-    @Override
-		public SpinnerUI getUI() {
-        return (SpinnerUI)ui;
-    }
-
-
-    /**
-     * Sets the look and feel (L&F) object that renders this component.
-     *
-     * @param ui  the <code>SpinnerUI</code> L&F object
-     * @see UIDefaults#getUI
-     */
-    public void setUI(SpinnerUI ui) {
-        super.setUI(ui);
-    }
-
-
-    /**
-     * Returns the suffix used to construct the name of the look and feel
-     * (L&F) class used to render this component.
-     *
-     * @return the string "SpinnerUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
-
-
-    /**
-     * Resets the UI property with the value from the current look and feel.
-     *
-     * @see UIManager#getUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((SpinnerUI)UIManager.getUI(this));
-        invalidate();
-    }
-
 
     /**
      * This method is called by the constructors to create the

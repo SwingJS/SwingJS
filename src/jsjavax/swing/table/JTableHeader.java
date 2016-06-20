@@ -59,11 +59,6 @@ import jssun.swing.table.DefaultTableCellHeaderRenderer;
  */
 public class JTableHeader extends JComponent implements TableColumnModelListener
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "TableHeaderUI";
 
 //
 // Instance Variables
@@ -153,6 +148,7 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
         initializeLocalVars();
 
         // Get UI going
+        uiClassID = "TableHeaderUI";
         updateUI();
     }
 
@@ -434,16 +430,6 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
 //
 
     /**
-     * Returns the look and feel (L&F) object that renders this component.
-     *
-     * @return the <code>TableHeaderUI</code> object that renders this component
-     */
-    @Override
-		public TableHeaderUI getUI() {
-        return (TableHeaderUI)ui;
-    }
-
-    /**
      * Sets the look and feel (L&F) object that renders this component.
      *
      * @param ui  the <code>TableHeaderUI</code> L&F object
@@ -474,20 +460,6 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
         }
     }
 
-
-    /**
-     * Returns the suffix used to construct the name of the look and feel
-     * (L&F) class used to render this component.
-     * @return the string "TableHeaderUI"
-     *
-     * @return "TableHeaderUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
 
 
 //

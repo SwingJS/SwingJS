@@ -24,6 +24,8 @@
  */
 package jsjavax.swing;
 
+import javax.swing.JInternalFrame;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -31,12 +33,13 @@ import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.IllegalComponentStateException;
 import jsjava.awt.Insets;
+import jsjava.awt.JSComponent;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.LayoutManager2;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
-import jsjavax.swing.plaf.RootPaneUI;
 import jssun.awt.AppContext;
+import swingjs.JSFrameViewer;
 
 /**
  * A lightweight container used behind the scenes by <code>JFrame</code>,
@@ -187,8 +190,6 @@ import jssun.awt.AppContext;
 // / PENDING(klobad) Who should be opaque in this component?
 public class JRootPane extends JComponent {
 
-	private static final String uiClassID = "RootPaneUI";
-
 	// /**
 	// * Whether or not we should dump the stack when true double buffering
 	// * is disabled. Default is false.
@@ -294,7 +295,7 @@ public class JRootPane extends JComponent {
 	 * The glass pane that overlays the menu bar and content pane, so it can
 	 * intercept mouse movements and such.
 	 */
-	protected Component glassPane;
+	protected JSComponent glassPane;
 	/**
 	 * The button that gets activated when the pane has the focus and a
 	 * UI-specific action like pressing the <b>Enter</b> key occurs.
@@ -330,6 +331,8 @@ public class JRootPane extends JComponent {
 	 */
 	boolean useTrueDoubleBuffering = true;
 
+	private int paneCount;
+
 	// static {
 	// LOG_DISABLE_TRUE_DOUBLE_BUFFERING = false;
 	//
@@ -340,15 +343,19 @@ public class JRootPane extends JComponent {
 	// // "swing.ignoreDoubleBufferingDisable"));
 	// }
 
+	
+	
 	/**
 	 * Creates a <code>JRootPane</code>, setting up its <code>glassPane</code>,
 	 * <code>layeredPane</code>, and <code>contentPane</code>.
+	 * @param c 
 	 */
-	public JRootPane(String name, boolean isApplet) {
+	public JRootPane(String prefix, boolean isApplet) {
 		// can come here from JApplet, JWindow, JDialog, or JFrame
 		// JApplet is special, because it means we are embedded.
-		isAppletRoot = isApplet;
-		setName(AppContext.getAppContext().getThreadGroup().getName() + name
+		isHTML5AppletRoot = isApplet;
+		uiClassID = "RootPaneUI";
+		setName(AppContext.getAppContext().getThreadGroup().getName() + prefix + (++paneCount)
 				+ ".JRootPane");
 
 		setGlassPane(createGlassPane());
@@ -358,8 +365,6 @@ public class JRootPane extends JComponent {
 		// setDoubleBuffered(true);
 		updateUI();
 	}
-
-	public boolean isAppletRoot;
 
 	/**
 	 * {@inheritDoc}
@@ -431,56 +436,6 @@ public class JRootPane extends JComponent {
 	}
 
 	/**
-	 * Returns the L&F object that renders this component.
-	 * 
-	 * @return <code>LabelUI</code> object
-	 * @since 1.3
-	 */
-	@Override
-	public RootPaneUI getUI() {
-		return (RootPaneUI) ui;
-	}
-
-	/**
-	 * Sets the L&F object that renders this component.
-	 * 
-	 * @param ui
-	 *          the <code>LabelUI</code> L&F object
-	 * @see UIDefaults#getUI
-	 * @beaninfo bound: true hidden: true expert: true attribute: visualUpdate
-	 *           true description: The UI object that implements the Component's
-	 *           LookAndFeel.
-	 * @since 1.3
-	 */
-	public void setUI(RootPaneUI ui) {
-		super.setUI(ui);
-	}
-
-	/**
-	 * Resets the UI property to a value from the current look and feel.
-	 * 
-	 * @see JComponent#updateUI
-	 */
-	@Override
-	public void updateUI() {
-		setUI((RootPaneUI) UIManager.getUI(this));
-	}
-
-	/**
-	 * Returns a string that specifies the name of the L&F class that renders this
-	 * component.
-	 * 
-	 * @return the string "RootPaneUI"
-	 * 
-	 * @see JComponent#getUIClassID
-	 * @see UIDefaults#getUI
-	 */
-	@Override
-	public String getUIClassID() {
-		return uiClassID;
-	}
-
-	/**
 	 * Called by the constructor methods to create the default
 	 * <code>layeredPane</code>. Bt default it creates a new
 	 * <code>JLayeredPane</code>.
@@ -490,6 +445,7 @@ public class JRootPane extends JComponent {
 	protected JLayeredPane createLayeredPane() {
 		JLayeredPane p = new JLayeredPane();
 		p.setName(this.getName() + ".layeredPane");
+		p.frameViewer = frameViewer;
 		return p;
 	}
 
@@ -518,6 +474,7 @@ public class JRootPane extends JComponent {
 				super.addLayoutComponent(comp, constraints);
 			}
 		});
+		c.frameViewer = frameViewer;
 		return c;
 	}
 
@@ -528,11 +485,12 @@ public class JRootPane extends JComponent {
 	 * 
 	 * @return the default <code>glassPane</code>
 	 */
-	protected Component createGlassPane() {
-		JComponent c = new JPanel();
+	protected JSComponent createGlassPane() {
+		JPanel c = new JPanel();
 		c.setName(this.getName() + ".glassPane");
 		c.setVisible(false);
-		((JPanel) c).setOpaque(false);
+		c.setOpaque(false);
+		c.frameViewer = frameViewer;
 		return c;
 	}
 
@@ -622,6 +580,7 @@ public class JRootPane extends JComponent {
 		if (contentPane != null && contentPane.getParent() == layeredPane)
 			layeredPane.remove(contentPane);
 		contentPane = content;
+		content.isContentPane = true;
 
 		layeredPane.add(contentPane, JLayeredPane.FRAME_CONTENT_LAYER);
 	}
@@ -712,7 +671,7 @@ public class JRootPane extends JComponent {
 		}
 
 		glass.setVisible(visible);
-		glassPane = glass;
+		glassPane = (JSComponent) glass;
 		this.add(glassPane, 0);
 		if (visible) {
 			repaint();
@@ -1067,6 +1026,17 @@ public class JRootPane extends JComponent {
 	@Override
 	protected String paramString() {
 		return super.paramString();
+	}
+
+	public void setFrameViewer(JSFrameViewer v) {
+	   frameViewer = 
+	   layeredPane.frameViewer =  
+	   contentPane.frameViewer = v;
+	   if (glassPane != null)
+	  	 glassPane.frameViewer = v;
+		
+		// TODO Auto-generated method stub
+		
 	}
 
 	// ///////////////

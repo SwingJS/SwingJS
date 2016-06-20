@@ -48,7 +48,6 @@ import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.JQuery;
-import swingjs.api.JSComponent;
 import swingjs.api.JSFunction;
 import swingjs.plaf.JSComponentUI;
 
@@ -265,13 +264,15 @@ public class JSToolkit extends SunToolkit {
 		return swingjs.api.Interface.getInstance(className, false);
 	}
 
-	private static GraphicsConfiguration gc;
-	private static HTML5CanvasContext2D defaultContext;
-
+	/**
+	 * There is one and only one graphics configuration for a given Applet. 
+	 * It is available through Thread.currentThread
+	 * @return
+	 */
 	public static GraphicsConfiguration getGraphicsConfiguration() {
-		// TODO Auto-generated method stub
-		return (gc == null ? gc = (GraphicsConfiguration) getInstance("swingjs.JSGraphicsConfiguration")
-				: gc);
+		JSAppletViewer ap = getAppletViewer();
+		GraphicsConfiguration gc = ap.graphicsConfig;
+		return (gc == null ? (gc = ap.graphicsConfig = (GraphicsConfiguration) getInstance("swingjs.JSGraphicsConfiguration")) : gc);
 	}
 
 	public static boolean isFocused(Window window) {
@@ -297,6 +298,8 @@ public class JSToolkit extends SunToolkit {
 		return css;
 	}
 
+	private static HTML5CanvasContext2D defaultContext;
+
 	public static float getStringWidth(HTML5CanvasContext2D context, Font font,
 			String text) {
 		@SuppressWarnings("unused")
@@ -314,7 +317,12 @@ public class JSToolkit extends SunToolkit {
 		return w;
 	}
 
-	public static HTML5CanvasContext2D getDefaultCanvasContext2d() {
+	/**
+	 * Used as a stratch pad for determining text string dimensions.
+	 *  
+	 * @return
+	 */
+	private static HTML5CanvasContext2D getDefaultCanvasContext2d() {
 		/**
 		 * @j2sNative
 		 * 
@@ -324,6 +332,7 @@ public class JSToolkit extends SunToolkit {
 		{}
 		return defaultContext;
 	}
+
 
 	/**
 	 * generates proper font name for JSGraphics2d Apparently Java sizes are
@@ -388,7 +397,9 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 *            s = arguments.callee.caller; Clazz.getClassName(s) +  "." +
+		 *            s = arguments.callee.caller;
+		 *            var cl = s.claxxOwner || s.exClazz;
+		 *            s = (cl ? cl.__CLASS_NAME__ + "." : "") +
 		 *            arguments.callee.caller.exName;
 		 */
 		{
@@ -433,7 +444,7 @@ public class JSToolkit extends SunToolkit {
 
 	public static JSComponentUI getComponentUI(JComponent target) {
 		JSComponentUI ui = (JSComponentUI) Interface.getInstance("swingjs.plaf.JS"
-				+ ((JSComponent) target).getUIClassID(), true);
+				+ ((jsjava.awt.JSComponent) target).getUIClassID(), true);
 		if (ui != null)
 			ui.set(target);
 		return ui;
@@ -650,12 +661,6 @@ public class JSToolkit extends SunToolkit {
 
 	public static void forceRepaint(Component c) {
 		// NO LONGER NECESSARY :)
-//		System.out.println("JSToolkit not forcing paint on component " + c.getName());
-//		try {
-//			getHTML5Applet((JComponent) c)._repaintNow();
-//		} catch (Throwable e) {
-//			alert("Repaint error:" + e);
-//		}
 	}
 	
 	public static HTML5Applet getHTML5Applet(Component c) {
@@ -688,11 +693,29 @@ public class JSToolkit extends SunToolkit {
 	@Override
   protected LightweightPeer createComponent(Component target) {
   	LightweightPeer peer = (LightweightPeer) getUI(target, true);
-  	if (peer == null)
-  		peer = new JSComponentPeer(target);
   	System.out.println("JSToolkit creating Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
   	return peer;
   }
+
+	public static JSComponentUI getUI(Component c, boolean isQuiet) {
+		JSComponentUI ui = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            ui = c.getUI && c.getUI();
+		 */
+		{
+			ui = (JSComponentUI) ((JComponent) c).getUI();
+		}
+		if (ui == null) {
+			String s = "[JSToolkit] Component " + c.getClass().getName()
+					+ " has no corresponding JSComponentUI.";
+			System.out.println(s);
+
+			ui = (JSComponentUI) (Object) new JSNullComponentPeer(c);
+		}
+		return ui;
+	}
 
 	public static Document getPlainDocument(JComponent c) {
 		return (Document) getInstance("swingjs.JSPlainDocument");
@@ -827,26 +850,6 @@ public class JSToolkit extends SunToolkit {
 		return (ui != null && ui.hasFocus());
 	}
 
-	public static JSComponentUI getUI(Component c, boolean isQuiet) {
-		JSComponentUI ui = null;
-		/**
-		 * @j2sNative
-		 * 
-		 *  ui = c.getUI && c.getUI();
-		 */
-		{
-			ui = (JSComponentUI) ((JComponent) c).getUI();
-		}
-	  if (ui == null) {
-	  	String s = "[JSToolkit] Component " + c.getClass().getName() + " has no cooresponding JSComponentUI.";
-//	  	if (isQuiet)
-	  		System.out.println(s);
-//	  	else
-//		  	alert(s + getStackTrace());
-	  }
-	  return ui;
-	}
-
 	public static boolean requestFocus(Component c) {
 		final JSComponentUI ui = getUI(c, false);
 		if (ui == null || !ui.isFocusable())
@@ -904,7 +907,10 @@ public class JSToolkit extends SunToolkit {
 		return ((WindowPeer) getInstance("swingjs.plaf.JSWindowUI")).setFrame(target, false);
 	}
 
-
+	public static JSAppletViewer getAppletViewer() {
+		return ((JSAppletThread) Thread.currentThread()).appletViewer;
+	}
+	
 //	@Override
 //	protected MenuBarPeer createMenuBar(MenuBar target) {
 //		// TODO Auto-generated method stub

@@ -3,18 +3,16 @@ package swingjs.plaf;
 import jsjava.awt.Dialog;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
-import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
-import jsjava.awt.GraphicsEnvironment;
-import jsjava.awt.Insets;
+import jsjava.awt.JSComponent;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JWindow;
-import swingjs.JSGraphicsEnvironment;
-import swingjs.JSThreadGroup;
+import swingjs.JSAppletViewer;
+import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 
@@ -34,12 +32,13 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
   protected int defaultHeight = 400;
 	
 
-  protected int frameZ;
+  protected int frameZ = 19000;
 	protected boolean isFrame, isDialog;
 	protected Window window;
 	protected HTML5Applet applet;
-	protected Graphics2D graphics;
 	protected Font font;
+
+	private Graphics2D graphics;
 
 	/*
 	 * Not Lightweight; an independent space with RootPane, LayeredPane,
@@ -56,38 +55,32 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	@Override
 	public WindowPeer setFrame(Window target, boolean isFrame) {
 		set((JComponent)(Object)target); // yes, I know it is not a JComponent. This is JavaScript!
-		frameZ = 19000;
-		this.isFrame = isFrame;
 		window = target;
-		JComponent jc = (JComponent) (Object) this;
-		jc.myThread = Thread.currentThread();
-		jc.threadGroup = jc.myThread.getThreadGroup();
-		applet = ((JSThreadGroup) jc.threadGroup).getHtmlApplet();
-		graphics = ((JSGraphicsEnvironment) GraphicsEnvironment
-				.getLocalGraphicsEnvironment()).createGraphicsSized(target, 500, 300);
+		w = (JWindow) window;
+		this.isFrame = isFrame;
+		isContainer = isWindow = true;
+		JSComponent jc = (JSComponent) (Object) this;
+		JSAppletViewer viewer = JSToolkit.getAppletViewer();
+		applet = viewer.html5Applet;
+		graphics = (Graphics2D) jc.getGraphics();
 		return this;
 	}
 
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			outerNode = domNode = createDOMObject("div", id);
-			setWindowNode();
+			containerNode = domNode = createDOMObject("div", id);
 		}
 		return domNode;
 	}
 	
-	protected void setWindowNode() {
-		w = (JWindow) (Object) c;
-		$(body).append(outerNode);
-	}
-
 	@Override
-	public Graphics getGraphics() {
-		// and also set the font for the component.
-		graphics.setFont(window.getFont());
-		return graphics;
+	protected DOMNode setHTMLElement() {
+		
+		DOMNode node = setHTMLElementCUI();
+		return node;		
 	}
+	
 
 	@Override
 	public Toolkit getToolkit() {
@@ -101,45 +94,17 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 		return graphics.getFontMetrics(font);
 	}
 
-	@Override
-	public Insets getInsets() {
-		return new Insets(30, 2, 2, 2);
-	}
-
-	@Override
-	public void beginValidate() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void endValidate() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void beginLayout() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void endLayout() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void toFront() {
-		System.out.println("window to front for " + c.htmlName);
+		System.out.println("window to front for " + jc.htmlName);
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void toBack() {
-		System.out.println("window to back for " + c.htmlName);
+		System.out.println("window to back for " + jc.htmlName);
 		// TODO Auto-generated method stub
 		
 	}
@@ -212,8 +177,6 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
 	@Override
 	protected void uninstallJSUI() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

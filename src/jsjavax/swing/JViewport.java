@@ -36,14 +36,13 @@ import jsjava.awt.LayoutManager;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Window;
-import jsjava.awt.event.ActionEvent;
-import jsjava.awt.event.ActionListener;
 import jsjava.awt.event.ComponentAdapter;
 import jsjava.awt.event.ComponentEvent;
 import jsjava.awt.event.ComponentListener;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.ViewportUI;
 
 
@@ -113,12 +112,6 @@ import jsjavax.swing.plaf.ViewportUI;
  */
 public class JViewport extends JComponent
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ViewportUI";
-
     /** Property used to indicate window blitting should not be done.
      */
     static final Object EnableWindowBlit = "EnableWindowBlit";
@@ -274,70 +267,15 @@ public class JViewport extends JComponent
      */
     private boolean hasHadValidView;
 
-    /** Creates a <code>JViewport</code>. */
-    public JViewport() {
-        super();
-        setLayout(createLayoutManager());
-        setOpaque(true);
-        updateUI();
-        setInheritsPopupMenu(true);
-    }
-
-
-
-    /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return a <code>ViewportUI</code> object
-     * @since 1.3
-     */
-    @Override
-		public ViewportUI getUI() {
-        return (ViewportUI)ui;
-    }
-
-
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui  the <code>ViewportUI</code> L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     * @since 1.3
-     */
-    public void setUI(ViewportUI ui) {
-        super.setUI(ui);
-    }
-
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ViewportUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns a string that specifies the name of the L&F class
-     * that renders this component.
-     *
-     * @return the string "ViewportUI"
-     *
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
+	/** Creates a <code>JViewport</code>. */
+	public JViewport() {
+		super();
+		setLayout(createLayoutManager());
+		setOpaque(true);
+		uiClassID = "ViewportUI";
+		updateUI();
+		setInheritsPopupMenu(true);
+	}
 
 
     /**
@@ -625,7 +563,7 @@ public class JViewport extends JComponent
      */
     @Override
 		public final Insets getInsets() {
-        return new Insets(0, 0, 0, 0);
+        return Container.NULL_INSETS;
     }
 
     /**

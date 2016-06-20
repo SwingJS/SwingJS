@@ -25,6 +25,7 @@
 
 package jsjavax.swing;
 
+import java.awt.HeadlessException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -36,8 +37,8 @@ import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
-import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.TreeExpansionEvent;
 import jsjavax.swing.event.TreeExpansionListener;
 import jsjavax.swing.event.TreeModelEvent;
@@ -163,11 +164,7 @@ import jsjavax.swing.tree.TreeSelectionModel;
  */
 public class JTree extends JComponent implements Scrollable
 {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "TreeUI";
+   
 
     /**
      * The model that defines the tree displayed by this object.
@@ -682,18 +679,9 @@ public class JTree extends JComponent implements Scrollable
         scrollsOnExpand = true;
         setOpaque(true);
         expandsSelectedPaths = true;
+        uiClassID = "TreeUI";
         updateUI();
         setModel(newModel);
-    }
-
-    /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return the <code>TreeUI</code> object that renders this component
-     */
-    @Override
-		public TreeUI getUI() {
-        return (TreeUI)ui;
     }
 
     /**
@@ -733,19 +721,6 @@ public class JTree extends JComponent implements Scrollable
 
         SwingUtilities.updateRendererOrEditorUI(getCellRenderer());
         SwingUtilities.updateRendererOrEditorUI(getCellEditor());
-    }
-
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "TreeUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
 
@@ -1604,7 +1579,7 @@ public class JTree extends JComponent implements Scrollable
      * @return the number of rows that are being displayed
      */
     public int getRowCount() {
-        TreeUI            tree = getUI();
+        TreeUI            tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.getRowCount(this);
@@ -1697,7 +1672,7 @@ public class JTree extends JComponent implements Scrollable
      *              where 0 indicates the first row in the display
      */
     public void setSelectionRows(int[] rows) {
-        TreeUI               ui = getUI();
+        TreeUI               ui = (TreeUI) getUI();
 
         if(ui != null && rows != null) {
             int                  numRows = rows.length;
@@ -1762,7 +1737,7 @@ public class JTree extends JComponent implements Scrollable
      *              where 0 indicates the first row in the display
      */
     public void addSelectionRows(int[] rows) {
-        TreeUI             ui = getUI();
+        TreeUI             ui = (TreeUI) getUI();
 
         if(ui != null && rows != null) {
             int                  numRows = rows.length;
@@ -1999,7 +1974,7 @@ public class JTree extends JComponent implements Scrollable
      * @return true if the node is currently expanded, otherwise false
      */
     public boolean isExpanded(int row) {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null) {
             TreePath         path = tree.getPathForRow(this, row);
@@ -2085,7 +2060,7 @@ public class JTree extends JComponent implements Scrollable
      *          or <code>null</code>
      */
     public Rectangle getPathBounds(TreePath path) {
-        TreeUI                   tree = getUI();
+        TreeUI                   tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.getPathBounds(this, path);
@@ -2151,7 +2126,7 @@ public class JTree extends JComponent implements Scrollable
      *          or <code>row > getRowCount()</code>
      */
     public TreePath getPathForRow(int row) {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.getPathForRow(this, row);
@@ -2168,7 +2143,7 @@ public class JTree extends JComponent implements Scrollable
      *         are hidden under a collapsed parent.
      */
     public int getRowForPath(TreePath path) {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.getRowForPath(this, path);
@@ -2285,7 +2260,7 @@ public class JTree extends JComponent implements Scrollable
      * @see #getPathBounds
      */
     public TreePath getClosestPathForLocation(int x, int y) {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.getClosestPathForLocation(this, x, y);
@@ -2321,7 +2296,7 @@ public class JTree extends JComponent implements Scrollable
      * @see #getSelectionPath
      */
     public boolean isEditing() {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.isEditing(this);
@@ -2344,7 +2319,7 @@ public class JTree extends JComponent implements Scrollable
      *              false if editing was not in progress
      */
     public boolean stopEditing() {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.stopEditing(this);
@@ -2356,7 +2331,7 @@ public class JTree extends JComponent implements Scrollable
      * tree isn't being edited.
      */
     public void  cancelEditing() {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             tree.cancelEditing(this);
@@ -2371,7 +2346,7 @@ public class JTree extends JComponent implements Scrollable
      * @param path  the <code>TreePath</code> identifying a node
      */
     public void startEditingAtPath(TreePath path) {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             tree.startEditingAtPath(this, path);
@@ -2383,7 +2358,7 @@ public class JTree extends JComponent implements Scrollable
      * @return  the <code>TreePath</code> for the node being edited
      */
     public TreePath getEditingPath() {
-        TreeUI                  tree = getUI();
+        TreeUI                  tree = (TreeUI) getUI();
 
         if(tree != null)
             return tree.getEditingPath(this);
@@ -2467,7 +2442,7 @@ public class JTree extends JComponent implements Scrollable
      */
     protected TreePath[] getPathBetweenRows(int index0, int index1) {
         int              newMinIndex, newMaxIndex;
-        TreeUI           tree = getUI();
+        TreeUI           tree = (TreeUI) getUI();
 
         newMinIndex = Math.min(index0, index1);
         newMaxIndex = Math.max(index0, index1);
@@ -2564,7 +2539,7 @@ public class JTree extends JComponent implements Scrollable
      *             the first row in the display
      */
     public void removeSelectionRows(int[] rows) {
-        TreeUI             ui = getUI();
+        TreeUI             ui = (TreeUI) getUI();
 
         if(ui != null && rows != null) {
             int                  numRows = rows.length;
@@ -3242,7 +3217,7 @@ public class JTree extends JComponent implements Scrollable
         if(isFixedRowHeight())
             height = visRows * getRowHeight();
         else {
-            TreeUI          ui = getUI();
+            TreeUI          ui = (TreeUI) getUI();
 
             if (ui != null && visRows > 0) {
                 int rc = ui.getRowCount(this);

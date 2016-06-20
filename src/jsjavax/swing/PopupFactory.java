@@ -39,6 +39,7 @@ import jsjava.awt.Container;
 import jsjava.awt.GraphicsConfiguration;
 //import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Insets;
+import jsjava.awt.JSComponent;
 import jsjava.awt.Panel;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
@@ -946,8 +947,9 @@ public class PopupFactory {
         @Override
 				Component createComponent(Component owner) {
             Panel component = new MediumWeightComponent();
-
+            
             rootPane = new JRootPane("_Popup" + (++popupCount), false);
+            rootPane.setFrameViewer(((JSComponent) owner).frameViewer);
             // NOTE: this uses setOpaque vs LookAndFeel.installProperty as
             // there is NO reason for the RootPane not to be opaque. For
             // painting to work the contentPane must be opaque, therefor the

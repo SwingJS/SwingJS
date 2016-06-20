@@ -62,11 +62,7 @@ import jsjavax.swing.plaf.ToolTipUI;
  * @author Rich Shiavi
  */
 public class JToolTip extends JComponent {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ToolTipUI";
+
 
     String tipText;
     JComponent component;
@@ -74,40 +70,8 @@ public class JToolTip extends JComponent {
     /** Creates a tool tip. */
     public JToolTip() {
         setOpaque(true);
+        uiClassID = "ToolTipUI";
         updateUI();
-    }
-
-    /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return the <code>ToolTipUI</code> object that renders this component
-     */
-    @Override
-		public ToolTipUI getUI() {
-        return (ToolTipUI)ui;
-    }
-
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ToolTipUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "ToolTipUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
 
@@ -179,24 +143,6 @@ public class JToolTip extends JComponent {
         return true;
     }
 
-
-//    /**
-//     * See <code>readObject</code> and <code>writeObject</code>
-//     * in <code>JComponent</code> for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-
     /**
      * Returns a string representation of this <code>JToolTip</code>.
      * This method
@@ -217,68 +163,4 @@ public class JToolTip extends JComponent {
     }
 
 
-/////////////////
-// Accessibility support
-////////////////
-//
-//    /**
-//     * Gets the AccessibleContext associated with this JToolTip.
-//     * For tool tips, the AccessibleContext takes the form of an
-//     * AccessibleJToolTip.
-//     * A new AccessibleJToolTip instance is created if necessary.
-//     *
-//     * @return an AccessibleJToolTip that serves as the
-//     *         AccessibleContext of this JToolTip
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJToolTip();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JToolTip</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to tool tip user-interface elements.
-//     * <p>
-//     * <strong>Warning:</strong>
-//     * Serialized objects of this class will not be compatible with
-//     * future Swing releases. The current serialization support is
-//     * appropriate for short term storage or RMI between applications running
-//     * the same version of Swing.  As of 1.4, support for long term storage
-//     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-//     * has been added to the <code>java.beans</code> package.
-//     * Please see {@link jsjava.beans.XMLEncoder}.
-//     */
-//    protected class AccessibleJToolTip extends AccessibleJComponent {
-//
-//        /**
-//         * Get the accessible description of this object.
-//         *
-//         * @return a localized String describing this object.
-//         */
-//        public String getAccessibleDescription() {
-//            String description = accessibleDescription;
-//
-//            // fallback to client property
-//            if (description == null) {
-//                description = (String)getClientProperty(AccessibleContext.ACCESSIBLE_DESCRIPTION_PROPERTY);
-//            }
-//            if (description == null) {
-//                description = getTipText();
-//            }
-//            return description;
-//        }
-//
-//        /**
-//         * Get the role of this object.
-//         *
-//         * @return an instance of AccessibleRole describing the role of the
-//         * object
-//         */
-//        public AccessibleRole getAccessibleRole() {
-//            return AccessibleRole.TOOL_TIP;
-//        }
-//    }
 }

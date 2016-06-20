@@ -127,11 +127,7 @@ import jsjavax.swing.text.PlainDocument;
  */
 public class JTextArea extends JTextComponent {
 
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "TextAreaUI";
+
 
     /**
      * Constructs a new TextArea.  A default model is set, the initial string
@@ -227,18 +223,6 @@ public class JTextArea extends JTextComponent {
                                     "focusTraversalKeysBackward",
                                     JComponent.
                                     getManagingFocusBackwardTraversalKeys());
-    }
-
-    /**
-     * Returns the class ID for the UI.
-     *
-     * @return the ID ("TextAreaUI")
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
     }
 
     /**
@@ -763,72 +747,6 @@ public class JTextArea extends JTextComponent {
         }
     }
 
-//    /**
-//     * See readObject() and writeObject() in JComponent for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-///////////////////
-//// Accessibility support
-//////////////////
-//
-//
-//    /**
-//     * Gets the AccessibleContext associated with this JTextArea.
-//     * For JTextAreas, the AccessibleContext takes the form of an
-//     * AccessibleJTextArea.
-//     * A new AccessibleJTextArea instance is created if necessary.
-//     *
-//     * @return an AccessibleJTextArea that serves as the
-//     *         AccessibleContext of this JTextArea
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJTextArea();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JTextArea</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to text area user-interface
-//     * elements.
-//     * <p>
-//     * <strong>Warning:</strong>
-//     * Serialized objects of this class will not be compatible with
-//     * future Swing releases. The current serialization support is
-//     * appropriate for short term storage or RMI between applications running
-//     * the same version of Swing.  As of 1.4, support for long term storage
-//     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-//     * has been added to the <code>java.beans</code> package.
-//     * Please see {@link jsjava.beans.XMLEncoder}.
-//     */
-//    protected class AccessibleJTextArea extends AccessibleJTextComponent {
-//
-//        /**
-//         * Gets the state set of this object.
-//         *
-//         * @return an instance of AccessibleStateSet describing the states
-//         * of the object
-//         * @see AccessibleStateSet
-//         */
-//        public AccessibleStateSet getAccessibleStateSet() {
-//            AccessibleStateSet states = super.getAccessibleStateSet();
-//            states.add(AccessibleState.MULTI_LINE);
-//            return states;
-//        }
-//    }
 
     // --- variables -------------------------------------------------
 

@@ -26,7 +26,8 @@ package jsjavax.swing;
 
 import java.awt.HeadlessException;
 
-import swingjs.api.JSComponent;
+import swingjs.JSFrameViewer;
+import swingjs.JSToolkit;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
@@ -38,9 +39,7 @@ import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.event.WindowEvent;
-import jsjavax.swing.plaf.ComponentUI;
 //
-import jsjavax.swing.plaf.FrameUI;
 
 //BH: Added rootPane.addNotify(); // builds a peer for the root pane
 
@@ -112,7 +111,7 @@ import jsjavax.swing.plaf.FrameUI;
  * @author Georges Saab
  * @author David Kloba
  */
-public class JFrame extends Frame implements JSComponent, WindowConstants,
+public class JFrame extends Frame implements WindowConstants,
 
 RootPaneContainer// TransferHandler.HasGetTransferHandler
 {
@@ -257,10 +256,13 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 
 	/** Called by the constructors to init the <code>JFrame</code> properly. */
 	protected void frameInit(String title, GraphicsConfiguration gc) {
+		frameViewer = new JSFrameViewer().setForWindow(this);
 		initTitleGC(title, gc);
 		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
 		setLocale(JComponent.getDefaultLocale());
+		uiClassID = "FrameUI";
 		setRootPane(createRootPane());
+    rootPane.setFrameViewer(frameViewer);
 		setBackground(UIManager.getColor("control"));
 		setRootPaneCheckingEnabled(true);
 		if (JFrame.isDefaultLookAndFeelDecorated()) {
@@ -290,44 +292,6 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 		// also be opaque.
 		rp.setOpaque(true);
 		return rp;
-	}
-
-	/**
-	 * For SwingJS
-	 * 
-	 */
-	private static final String uiClassID = "FrameUI";
-
-	@Override
-	public String getUIClassID() {
-		return uiClassID;
-	}
-	
-	FrameUI ui;
-
-	@Override
-	public void setUI(ComponentUI newUI) {
-		ui = (FrameUI) newUI;
-	}
-
-	/**
-	 * Resets the UI property with a value from the current look and feel.
-	 * 
-	 */
-	@Override
-	public void updateUI() {
-		setUI((FrameUI) UIManager.getUI(this));
-	}
-
-	/**
-	 * Returns the look and feel (L&F) object that renders this component.
-	 * 
-	 * @return the PanelUI object that renders this component
-	 * @since 1.4
-	 */
-	@Override
-	public FrameUI getUI() {
-		return ui;
 	}
 
 	/**
@@ -735,6 +699,7 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 	@Override
 	public void setContentPane(Container contentPane) {
 		getRootPane().setContentPane(contentPane);
+
 	}
 
 	/**
@@ -924,5 +889,6 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 				+ defaultCloseOperationString + ",rootPane=" + rootPaneString
 				+ ",rootPaneCheckingEnabled=" + rootPaneCheckingEnabledString;
 	}
+
 
 }

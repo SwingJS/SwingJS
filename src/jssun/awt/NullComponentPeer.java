@@ -25,35 +25,27 @@
 
 package jssun.awt;
 
-//import jsjava.awt.AWTException;
-//import jsjava.awt.BufferCapabilities;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Cursor;
 import jsjava.awt.Dimension;
+import jsjava.awt.Event;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Insets;
-//import jsjava.awt.MenuBar;
 import jsjava.awt.Point;
-import jsjava.awt.Event;
+import jsjava.awt.Rectangle;
 import jsjava.awt.event.PaintEvent;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
-//import jsjava.awt.peer.CanvasPeer;
-import jsjava.awt.peer.LightweightPeer;
-import jsjava.awt.peer.CanvasPeer;
-import jsjava.awt.peer.PanelPeer;
-//import jsjava.awt.peer.PanelPeer;
-//import jsjava.awt.peer.ComponentPeer;
 import jsjava.awt.peer.ContainerPeer;
-import jsjava.awt.Rectangle;
-//import sun.java2d.pipe.Region;
+import jsjava.awt.peer.LightweightPeer;
+import jsjava.awt.peer.PanelPeer;
 
 
 /**
@@ -78,7 +70,7 @@ import jsjava.awt.Rectangle;
  */
 
 public class NullComponentPeer implements LightweightPeer,
-    CanvasPeer, PanelPeer {
+    PanelPeer {
 
     @Override
 		public boolean isObscured() {

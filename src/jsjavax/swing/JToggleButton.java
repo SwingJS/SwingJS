@@ -74,12 +74,6 @@ import jsjavax.swing.plaf.ButtonUI;
 public class JToggleButton extends AbstractButton {
 
     /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ToggleButtonUI";
-
-    /**
      * Creates an initially unselected toggle button
      * without setting the text or image.
      */
@@ -162,13 +156,25 @@ public class JToggleButton extends AbstractButton {
      *                  otherwise, the button is initially unselected
      */
     public JToggleButton (String text, Icon icon, boolean selected) {
+    	this(text, icon, selected, "ToggleButtonUI");
+    }
+
+    /**
+     * Creates a toggle button with the specified text, image, and
+     * selection state.
+     *
+     * @param text the text of the toggle button
+     * @param icon  the image that the button should display
+     * @param selected  if true, the button is initially selected;
+     *                  otherwise, the button is initially unselected
+     */
+    public JToggleButton (String text, Icon icon, boolean selected, String uid) {
         // Create the model
         setModel(new ToggleButtonModel());
 
         model.setSelected(selected);
-
         // initialize
-        init(text, icon);
+        init(text, icon, uid);
     }
 
     /**

@@ -40,6 +40,7 @@ import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.AncestorEvent;
 import jsjavax.swing.event.AncestorListener;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.ListDataEvent;
 import jsjavax.swing.event.ListDataListener;
 import jsjavax.swing.event.PopupMenuEvent;
@@ -85,13 +86,7 @@ import jsjavax.swing.plaf.ComboBoxUI;
  */
 public class JComboBox extends JComponent
 implements ItemSelectable,ListDataListener,ActionListener {
-    /**
-     * @see #getUIClassID
-     * @see #readObject
-     */
-    private static final String uiClassID = "ComboBoxUI";
-
-    /**
+		/**
      * This protected field is implementation specific. Do not access directly
      * or override. Use the accessor methods instead.
      *
@@ -232,6 +227,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
 
     private void initComboBox() {
         installAncestorListener();
+        uiClassID = "ComboBoxUI";
         setUIProperty("opaque",true);
         updateUI();
     }
@@ -250,22 +246,6 @@ implements ItemSelectable,ListDataListener,ActionListener {
     }
 
     /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui  the <code>ComboBoxUI</code> L&F object
-     * @see UIDefaults#getUI
-     *
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(ComboBoxUI ui) {
-        super.setUI(ui);
-    }
-
-    /**
      * Resets the UI property to a value from the current look and feel.
      *
      * @see JComponent#updateUI
@@ -273,7 +253,6 @@ implements ItemSelectable,ListDataListener,ActionListener {
     @Override
 		public void updateUI() {
         setUI((ComboBoxUI)UIManager.getUI(this));
-
         ListCellRenderer renderer = getRenderer();
         if (renderer instanceof Component) {
             SwingUtilities.updateComponentTreeUI((Component)renderer);
@@ -281,28 +260,6 @@ implements ItemSelectable,ListDataListener,ActionListener {
     }
 
 
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "ComboBoxUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
-
-    /**
-     * Returns the L&F object that renders this component.
-     *
-     * @return the ComboBoxUI object that renders this component
-     */
-    @Override
-		public ComboBoxUI getUI() {
-        return(ComboBoxUI)ui;
-    }
 
     /**
      * Sets the data model that the <code>JComboBox</code> uses to obtain
@@ -825,7 +782,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * Sets the visibility of the popup.
      */
     public void setPopupVisible(boolean v) {
-        getUI().setPopupVisible(this, v);
+        ((ComboBoxUI)getUI()).setPopupVisible(this, v);
     }
 
     /**
@@ -834,7 +791,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
      * @return true if the popup is visible, otherwise returns false
      */
     public boolean isPopupVisible() {
-        return getUI().isPopupVisible(this);
+        return ((ComboBoxUI)getUI()).isPopupVisible(this);
     }
 
     /** Selection **/

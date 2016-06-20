@@ -9,6 +9,7 @@ import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
+import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
@@ -19,7 +20,6 @@ import jsjava.awt.image.ImageProducer;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.LightweightPeer;
-import jsjavax.swing.JComponent;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
 
@@ -30,14 +30,14 @@ import jssun.awt.CausedFocusEvent.Cause;
  * @author Bob Hanson
  * 
  */
-public class JSComponentPeer implements LightweightPeer {
+public class JSNullComponentPeer implements LightweightPeer {
 
 	private Component target;
-	private ComponentUI ui;
-
-	public JSComponentPeer(Component target) {
+	private boolean isNull = true;
+	
+	public JSNullComponentPeer(Component target) {
 		this.target = target;
-		this.ui = JSToolkit.getUI(target, false);
+		
 	}
 
 	@Override
@@ -261,6 +261,36 @@ public class JSComponentPeer implements LightweightPeer {
 	public Rectangle getBounds() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	
+	@Override
+	public Insets getInsets() {
+		return null;
+	}
+
+	@Override
+	public void beginValidate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endValidate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void beginLayout() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endLayout() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

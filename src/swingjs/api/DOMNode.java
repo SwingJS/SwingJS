@@ -52,7 +52,9 @@ public abstract class DOMNode {
 		 * try {
 		 *   var p = obj.parentNode;
 		 *   p.removeNode(obj);
-		 * } catch(e) {};
+		 *   $(body).remove(obj);
+		 * } catch(e) {
+		 * };
 		 * return p;
 		 */
 		{
