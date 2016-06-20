@@ -249,7 +249,7 @@ if (typeof(SwingJS) == "undefined") {
 	proto._newApplet = function(viewerOptions) {
 		this._viewerOptions = viewerOptions;
     // for now assigning this._applet here instead of in readyCallback
-		this._appletPanel = new swingjs.JSAppletPanel(viewerOptions);
+		this._appletPanel = new swingjs.JSAppletViewer(viewerOptions);
     this._appletPanel.start();
 	}
 	
@@ -257,7 +257,7 @@ if (typeof(SwingJS) == "undefined") {
 		Jmol._addCoreFile("swingjs", this._j2sPath, this.__Info.preloadCore);
 		if (Jmol._debugCode) {
 		// no min package for that
-			Jmol._addExec([this, null, "swingjs.JSAppletPanel", "load " + this.__Info.code]);
+			Jmol._addExec([this, null, "swingjs.JSAppletViewer", "load " + this.__Info.code]);
       
 		}
   }

@@ -21,7 +21,7 @@
 // BH 6/29/2015 10:14:47 AM adds Jmol.$getSize(obj)
 // BH 5/30/2015 9:33:12 AM adds class swingjs-ui to ignore 
 // BH 5/9/2015 3:38:52 PM adds data-ignoreMouse attribute for JTextField
-// BH 3/30/2015 9:46:53 PM adds JSAppletPanel for ready callback
+// BH 3/30/2015 9:46:53 PM adds JSAppletViewer for ready callback
 // BH 12/6/2014 3:32:54 PM Jmol.setAppletCss() broken
 // BH 9/13/2014 2:15:51 PM embedded JSME loads from SEARCH when Jmol should 
 // BH 8/14/2014 2:52:38 PM drag-drop cache should not be cleared if SPT file is dropped

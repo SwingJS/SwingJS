@@ -3474,7 +3474,7 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
       alert(e + " loading file " + file + ": " + node.name + " - " + Clazz._lastDecorated + (e.stack ? "\n\n" + e.stack : Clazz.getStackTrace()));
     }
     if (fSuccess) {
-    alert("ok" + file)
+   
 //      System.out.println("firing in loadScript " + file + " " + (fSuccess && fSuccess.toString()))
       fSuccess(); 
     }
