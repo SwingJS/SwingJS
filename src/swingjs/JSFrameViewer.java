@@ -13,7 +13,7 @@ import swingjs.plaf.JSComponentUI;
  * 
  * SwingJS class to support an independent Window, either from using Main() 
  * or one created from a JApplet. Each viewer has an independent mouse event processor. 
- * 
+ *
  * This "Panel" is never viewed.
  * 
  * @author Bob Hanson
@@ -155,22 +155,34 @@ public class JSFrameViewer implements JSInterface {
 	private static int canvasCount;
 
 	public Graphics getGraphics() {
+		int wNew = top.getWidth();
+		int hNew = top.getHeight();
+		int wOld = 0, hOld = 0;
+		/**
+		 * @j2sNative
+		 * 
+		 *            wOld = (canvas == null ? 0 : canvas.width); hOld = (canvas ==
+		 *            null ? 0 : canvas.height)
+		 * 
+		 */
+		{
+		}
+		if (wNew != 0 && hNew != 0 && wOld != wNew || hOld != wOld
+				|| canvas == null) {
+			newCanvas();
+			jsgraphics = new JSGraphics2D(canvas);
+			jsgraphics.setWindowParameters(top.getWidth(), top.getHeight());
+		}
 		if (jsgraphics == null) {
-			if (isFrame) {
-				if (canvas == null)
-					newCanvas();
-				jsgraphics = new JSGraphics2D(canvas);
-				jsgraphics.setWindowParameters(top.getWidth(), top.getHeight());
-			} else {
-				canvas = appletViewer.getCanvas();
-				jsgraphics = new JSGraphics2D(canvas);
-			}
+			canvas = appletViewer.getCanvas();
+			jsgraphics = new JSGraphics2D(canvas);
 		}
 		return jsgraphics;
 	}
 
 
 	public HTML5Canvas newCanvas() {
+		// tODO - actually, we need to run the code to in SJSApplet to create a new canvas 
 		if (canvasId != null)
 			DOMNode.remove(canvas);
 		String id = appletViewer.appletName + "_canvas" + ++canvasCount;
@@ -178,6 +190,8 @@ public class JSFrameViewer implements JSInterface {
 		display = id;
 		canvas = JSComponentUI
 				.createCanvas(id, top.getWidth(), top.getHeight());
+		System.out.println("JSFrameViewer creating new canvas " + top.getWidth() +"  "+ top.getHeight());
+		
 		return canvas;
 	}
 	
