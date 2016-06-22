@@ -326,17 +326,16 @@ public abstract class JTextComponent extends JComponent implements Scrollable
   		updateUI();
 	}
 
-		/**
-     * Reloads the pluggable UI.  The key used to fetch the
-     * new interface is <code>getUIClassID()</code>.  The type of
-     * the UI is <code>TextUI</code>.  <code>invalidate</code>
-     * is called after setting the UI.
-     */
-    @Override
-		public void updateUI() {
-        setUI((TextUI)UIManager.getUI(this));
-        invalidate();
-    }
+	/**
+	 * Reloads the pluggable UI. The key used to fetch the new interface is
+	 * <code>getUIClassID()</code>. The type of the UI is <code>TextUI</code>.
+	 * <code>invalidate</code> is called after setting the UI.
+	 */
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		invalidate();
+	}
 
     /**
      * Adds a caret listener for notification of any changes

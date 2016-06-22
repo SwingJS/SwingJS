@@ -1815,20 +1815,6 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
 
 
     /**
-     * Resets the UI property to a value from the current look
-     * and feel.  Subtypes of <code>AbstractButton</code>
-     * should override this to update the UI. For
-     * example, <code>JButton</code> might do the following:
-     * <pre>
-     *      setUI((ButtonUI)UIManager.getUI(
-     *          "ButtonUI", "jsjavax.swing.plaf.basic.BasicButtonUI", this));
-     * </pre>
-     */
-    @Override
-		public void updateUI() {
-    }
-
-    /**
      * Adds the specified component to this container at the specified
      * index, refer to
      * {@link jsjava.awt.Container#addImpl(Component, Object, int)}

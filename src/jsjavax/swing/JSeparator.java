@@ -76,28 +76,32 @@ public class JSeparator extends JComponent implements SwingConstants
         this( HORIZONTAL );
     }
 
-    /**
-     * Creates a new separator with the specified horizontal or
-     * vertical orientation.
-     *
-     * @param orientation an integer specifying
-     *          <code>SwingConstants.HORIZONTAL</code> or
-     *          <code>SwingConstants.VERTICAL</code>
-     * @exception IllegalArgumentException if <code>orientation</code>
-     *          is neither <code>SwingConstants.HORIZONTAL</code> nor
-     *          <code>SwingConstants.VERTICAL</code>
-     */
-    public JSeparator( int orientation )
-    {
-        checkOrientation( orientation );
-        this.orientation = orientation;
-        setFocusable(false);
-        uiClassID = "SeparatorUI";
-        updateUI();
-    }
+	/**
+	 * Creates a new separator with the specified horizontal or vertical
+	 * orientation.
+	 * 
+	 * @param orientation
+	 *          an integer specifying <code>SwingConstants.HORIZONTAL</code> or
+	 *          <code>SwingConstants.VERTICAL</code>
+	 * @exception IllegalArgumentException
+	 *              if <code>orientation</code> is neither
+	 *              <code>SwingConstants.HORIZONTAL</code> nor
+	 *              <code>SwingConstants.VERTICAL</code>
+	 */
+	public JSeparator(int orientation) {
+		this(orientation, "SeparatorUI");
+	}
+
+	public JSeparator(int orientation, String sid) {
+		checkOrientation(orientation);
+		this.orientation = orientation;
+		setFocusable(false);
+		uiClassID = sid;
+		updateUI();
+	}
 
 
-    /**
+		/**
      * Returns the orientation of this separator.
      *
      * @return   The value of the orientation property, one of the

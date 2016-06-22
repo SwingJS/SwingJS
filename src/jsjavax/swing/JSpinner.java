@@ -26,14 +26,6 @@
 package jsjavax.swing;
 
 //TODO import jsjava.text.DateFormat;
-import jsjava.text.DecimalFormat;
-import jsjava.text.NumberFormat;
-import jsjava.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.util.HashMap;
-import jsjava.util.Locale;
-//import java.util.Map;
-
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
@@ -42,15 +34,22 @@ import jsjava.awt.LayoutManager;
 import jsjava.awt.event.ActionEvent;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjava.text.DecimalFormat;
+import jsjava.text.NumberFormat;
+import jsjava.text.ParseException;
+import jsjava.util.Locale;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
-import jsjavax.swing.plaf.SpinnerUI;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.text.AttributeSet;
 import jsjavax.swing.text.BadLocationException;
-//TODO import jsjavax.swing.text.DateFormatter;
 import jsjavax.swing.text.DefaultFormatterFactory;
 import jsjavax.swing.text.DocumentFilter;
 import jsjavax.swing.text.NumberFormatter;
+//import java.text.SimpleDateFormat;
+//import java.util.HashMap;
+//import java.util.Map;
+//TODO import jsjavax.swing.text.DateFormatter;
 
 //
 
@@ -510,40 +509,6 @@ public class JSpinner extends JComponent
     }
 
 
-//    /*
-//     * See readObject and writeObject in JComponent for more
-//     * information about serialization in Swing.
-//     *
-//     * @param s Stream to write to
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        HashMap additionalValues = new HashMap(1);
-//        SpinnerModel model = getModel();
-//
-//        if (model instanceof Serializable) {
-//            additionalValues.put("model", model);
-//        }
-//        s.writeObject(additionalValues);
-//
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
-//    private void readObject(ObjectInputStream s)
-//        throws IOException, ClassNotFoundException {
-//        s.defaultReadObject();
-//
-//        Map additionalValues = (Map)s.readObject();
-//
-//        model = (SpinnerModel)additionalValues.get("model");
-//    }
-//
 
     /**
      * A simple base class for more specialized editors

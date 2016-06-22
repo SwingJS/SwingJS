@@ -708,20 +708,19 @@ public class JTree extends JComponent implements Scrollable
         }
     }
 
-    /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
-     * Replaces the current UI object with the latest version from the
-     * <code>UIManager</code>.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((TreeUI)UIManager.getUI(this));
-
-        SwingUtilities.updateRendererOrEditorUI(getCellRenderer());
-        SwingUtilities.updateRendererOrEditorUI(getCellEditor());
-    }
+	/**
+	 * Notification from the <code>UIManager</code> that the L&F has changed.
+	 * Replaces the current UI object with the latest version from the
+	 * <code>UIManager</code>.
+	 * 
+	 * @see JComponent#updateUI
+	 */
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		SwingUtilities.updateRendererOrEditorUI(getCellRenderer());
+		SwingUtilities.updateRendererOrEditorUI(getCellEditor());
+	}
 
 
     /**

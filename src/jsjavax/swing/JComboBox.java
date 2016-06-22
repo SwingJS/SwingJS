@@ -252,7 +252,7 @@ implements ItemSelectable,ListDataListener,ActionListener {
      */
     @Override
 		public void updateUI() {
-        setUI((ComboBoxUI)UIManager.getUI(this));
+    	super.updateUI();
         ListCellRenderer renderer = getRenderer();
         if (renderer instanceof Component) {
             SwingUtilities.updateComponentTreeUI((Component)renderer);

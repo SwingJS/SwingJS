@@ -97,53 +97,6 @@ public class JMenuBar extends JComponent implements MenuElement
         updateUI();
     }
 
-    /**
-     * Returns the menubar's current UI.
-     * @see #setUI
-     */
-    @Override
-		public MenuBarUI getUI() {
-        return (MenuBarUI)ui;
-    }
-
-    /**
-     * Sets the L&F object that renders this component.
-     *
-     * @param ui the new MenuBarUI L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(MenuBarUI ui) {
-        super.setUI(ui);
-    }
-
-    /**
-     * Resets the UI property with a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((MenuBarUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "MenuBarUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     /**
      * Returns the model object that handles single selections.

@@ -147,19 +147,6 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants
         setFocusable(false);
     }
 
-    /**
-     * Returns the name of the L&F class
-     * that renders this component.
-     *
-     * @return "CheckBoxMenuItemUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
      /**
       * Returns the selected-state of the item. This method
       * exists for AWT compatibility only.  New code should

@@ -190,22 +190,6 @@ public class JButton extends AbstractButton {
         }
         super.removeNotify();
     }
-//
-//    /**
-//     * See readObject() and writeObject() in JComponent for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if (getUIClassID().equals(uiClassID)) {
-//            byte count = JComponent.getWriteObjCounter(this);
-//            JComponent.setWriteObjCounter(this, --count);
-//            if (count == 0 && ui != null) {
-//                ui.installUI(this);
-//            }
-//        }
-//    }
-//
 
     /**
      * Returns a string representation of this <code>JButton</code>.
@@ -225,56 +209,4 @@ public class JButton extends AbstractButton {
     }
 
 
-/////////////////
-// Accessibility support
-////////////////
-//
-//    /**
-//     * Gets the <code>AccessibleContext</code> associated with this
-//     * <code>JButton</code>. For <code>JButton</code>s,
-//     * the <code>AccessibleContext</code> takes the form of an
-//     * <code>AccessibleJButton</code>.
-//     * A new <code>AccessibleJButton</code> instance is created if necessary.
-//     *
-//     * @return an <code>AccessibleJButton</code> that serves as the
-//     *         <code>AccessibleContext</code> of this <code>JButton</code>
-//     * @beaninfo
-//     *       expert: true
-//     *  description: The AccessibleContext associated with this Button.
-//     */
-//    public AccessibleContext getAccessibleContext() {
-//        if (accessibleContext == null) {
-//            accessibleContext = new AccessibleJButton();
-//        }
-//        return accessibleContext;
-//    }
-//
-//    /**
-//     * This class implements accessibility support for the
-//     * <code>JButton</code> class.  It provides an implementation of the
-//     * Java Accessibility API appropriate to button user-interface
-//     * elements.
-//     * <p>
-//     * <strong>Warning:</strong>
-//     * Serialized objects of this class will not be compatible with
-//     * future Swing releases. The current serialization support is
-//     * appropriate for short term storage or RMI between applications running
-//     * the same version of Swing.  As of 1.4, support for long term storage
-//     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-//     * has been added to the <code>java.beans</code> package.
-//     * Please see {@link jsjava.beans.XMLEncoder}.
-//     */
-//    protected class AccessibleJButton extends AccessibleAbstractButton {
-//
-//        /**
-//         * Get the role of this object.
-//         *
-//         * @return an instance of AccessibleRole describing the role of the
-//         * object
-//         * @see AccessibleRole
-//         */
-//        public AccessibleRole getAccessibleRole() {
-//            return AccessibleRole.PUSH_BUTTON;
-//        }
-//    } // inner class AccessibleJButton
 }

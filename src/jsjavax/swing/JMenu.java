@@ -201,21 +201,19 @@ public class JMenu extends JMenuItem implements MenuElement
 		void initFocusability() {
     }
 
-    /**
-     * Resets the UI property with a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((MenuUI)UIManager.getUI(this));
+	/**
+	 * Resets the UI property with a value from the current look and feel.
+	 * 
+	 * @see JComponent#updateUI
+	 */
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		if (popupMenu != null) {
+			popupMenu.setUI((PopupMenuUI) UIManager.getUI(popupMenu));
+		}
 
-        if ( popupMenu != null )
-          {
-            popupMenu.setUI((PopupMenuUI)UIManager.getUI(popupMenu));
-          }
-
-    }
+	}
 
 
     //    public void repaint(long tm, int x, int y, int width, int height) {

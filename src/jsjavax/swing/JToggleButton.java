@@ -177,31 +177,6 @@ public class JToggleButton extends AbstractButton {
         init(text, icon, uid);
     }
 
-    /**
-     * Resets the UI property to a value from the current look and feel.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((ButtonUI)UIManager.getUI(this));
-    }
-
-    /**
-     * Returns a string that specifies the name of the l&f class
-     * that renders this component.
-     *
-     * @return String "ToggleButtonUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *  description: A string that specifies the name of the L&F class
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
     /**
      * Overriden to return true, JToggleButton supports

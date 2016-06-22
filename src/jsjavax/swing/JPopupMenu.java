@@ -1449,30 +1449,14 @@ public class JPopupMenu extends JComponent implements MenuElement {
     }
 
 
-    /**
-     * A popup menu-specific separator.
-     */
-    static public class Separator extends JSeparator
-    {
-        public Separator( )
-        {
-            super( JSeparator.HORIZONTAL );
-        }
-
-        /**
-         * Returns the name of the L&F class that renders this component.
-         *
-         * @return the string "PopupMenuSeparatorUI"
-         * @see JComponent#getUIClassID
-         * @see UIDefaults#getUI
-         */
-        @Override
-				public String getUIClassID()
-        {
-            return "PopupMenuSeparatorUI";
-
-        }
-    }
+	/**
+	 * A popup menu-specific separator.
+	 */
+	static public class Separator extends JSeparator {
+		public Separator() {
+			super(JSeparator.HORIZONTAL, "PopupMenuSeparatorUI");
+		}
+	}
 
     /**
      * Returns true if the <code>MouseEvent</code> is considered a popup trigger

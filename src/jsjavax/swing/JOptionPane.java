@@ -1819,59 +1819,21 @@ public class JOptionPane extends JComponent
         updateUI();
     }
 
-    /**
-     * Sets the UI object which implements the L&F for this component.
-     *
-     * @param ui  the <code>OptionPaneUI</code> L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *       bound: true
-     *      hidden: true
-     * description: The UI object that implements the optionpane's LookAndFeel
-     */
-    public void setUI(OptionPaneUI ui) {
-        if ((OptionPaneUI)this.ui != ui) {
-            super.setUI(ui);
-            invalidate();
-        }
-    }
-
-    /**
-     * Returns the UI object which implements the L&F for this component.
-     *
-     * @return the <code>OptionPaneUI</code> object
-     */
-    @Override
-		public OptionPaneUI getUI() {
-        return (OptionPaneUI)ui;
-    }
-
-    /**
-     * Notification from the <code>UIManager</code> that the L&F has changed.
-     * Replaces the current UI object with the latest version from the
-     * <code>UIManager</code>.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI() {
-        setUI((OptionPaneUI)UIManager.getUI(this));
-    }
-
-
-    /**
-     * Returns the name of the UI class that implements the
-     * L&F for this component.
-     *
-     * @return the string "OptionPaneUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
+	/**
+	 * Sets the UI object which implements the L&F for this component.
+	 * 
+	 * @param ui
+	 *          the <code>OptionPaneUI</code> L&F object
+	 * @see UIDefaults#getUI
+	 * @beaninfo bound: true hidden: true description: The UI object that
+	 *           implements the optionpane's LookAndFeel
+	 */
+	public void setUI(OptionPaneUI ui) {
+		if ((OptionPaneUI) this.ui != ui) {
+			super.setUI(ui);
+			invalidate();
+		}
+	}
 
     /**
      * Sets the option pane's message-object.
@@ -2283,7 +2245,7 @@ public class JOptionPane extends JComponent
      * is made visible.
      */
     public void selectInitialValue() {
-        OptionPaneUI         ui = getUI();
+        OptionPaneUI         ui = (OptionPaneUI)getUI();
         if (ui != null) {
             ui.selectInitialValue(this);
         }

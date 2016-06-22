@@ -117,19 +117,6 @@ public class JTextPane extends JEditorPane {
     }
 
     /**
-     * Returns the class ID for the UI.
-     *
-     * @return the string "TextPaneUI"
-     *
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
-    /**
      * Associates the editor with a text document.  This
      * must be a <code>StyledDocument</code>.
      *

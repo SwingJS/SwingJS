@@ -3631,23 +3631,22 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         return (TableUI)ui;
     }
 
-    /**
-     * Sets the L&F object that renders this component and repaints.
-     *
-     * @param ui  the TableUI L&F object
-     * @see UIDefaults#getUI
-     * @beaninfo
-     *        bound: true
-     *       hidden: true
-     *    attribute: visualUpdate true
-     *  description: The UI object that implements the Component's LookAndFeel.
-     */
-    public void setUI(TableUI ui) {
-        if (this.ui != ui) {
-            super.setUI(ui);
-            repaint();
-        }
-    }
+	/**
+	 * Sets the L&F object that renders this component and repaints.
+	 * 
+	 * @param ui
+	 *          the TableUI L&F object
+	 * @see UIDefaults#getUI
+	 * @beaninfo bound: true hidden: true attribute: visualUpdate true
+	 *           description: The UI object that implements the Component's
+	 *           LookAndFeel.
+	 */
+	public void setUI(TableUI ui) {
+		if (this.ui != ui) {
+			super.setUI(ui);
+			repaint();
+		}
+	}
 
     /**
      * Notification from the <code>UIManager</code> that the L&F has changed.
@@ -3686,23 +3685,8 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 
         // Update UI applied to parent ScrollPane
         configureEnclosingScrollPaneUI();
-
-        setUI((TableUI)UIManager.getUI(this));
+        super.updateUI();
     }
-
-    /**
-     * Returns the suffix used to construct the name of the L&F class used to
-     * render this component.
-     *
-     * @return the string "TableUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
 
 //
 // Managing models

@@ -35,7 +35,7 @@ import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
-import jsjavax.swing.plaf.SliderUI;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.UIResource;
 
 /**
@@ -281,7 +281,7 @@ public class JSlider extends JComponent implements SwingConstants {
 	 */
 	@Override
 	public void updateUI() {
-		setUI((SliderUI) UIManager.getUI(this));
+		super.updateUI();
 		// The labels preferred size may be derived from the font
 		// of the slider, so we must update the UI of the slider first, then
 		// that of labels. This way when setSize is called the right

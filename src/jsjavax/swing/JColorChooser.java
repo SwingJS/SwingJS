@@ -224,18 +224,6 @@ public class JColorChooser extends JComponent {
     }
 
     /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "ColorChooserUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
-    @Override
-		public String getUIClassID() {
-        return uiClassID;
-    }
-
-    /**
      * Gets the current color value from the color chooser.
      * By default, this delegates to the model.
      *

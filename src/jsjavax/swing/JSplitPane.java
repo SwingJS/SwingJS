@@ -344,7 +344,7 @@ public class JSplitPane extends JComponent {
 	 */
 	@Override
 	public void updateUI() {
-		setUI((SplitPaneUI) UIManager.getUI(this));
+		super.updateUI();
 		revalidate();
 	}
 
@@ -940,22 +940,7 @@ public class JSplitPane extends JComponent {
 		}
 	}
 
-	// /**
-	// * See <code>readObject</code> and <code>writeObject</code> in
-	// * <code>JComponent</code> for more
-	// * information about serialization in Swing.
-	// */
-	// private void writeObject(ObjectOutputStream s) throws IOException {
-	// s.defaultWriteObject();
-	// if (getUIClassID().equals(uiClassID)) {
-	// byte count = JComponent.getWriteObjCounter(this);
-	// JComponent.setWriteObjCounter(this, --count);
-	// if (count == 0 && ui != null) {
-	// ui.installUI(this);
-	// }
-	// }
-	// }
-	//
+
 	@Override
 	void setUIProperty(String propertyName, Object value) {
 		if (propertyName == "dividerSize") {
@@ -994,137 +979,4 @@ public class JSplitPane extends JComponent {
 				+ oneTouchExpandableString + ",orientation=" + orientationString;
 	}
 
-	// /////////////////////////
-	// Accessibility support //
-	// /////////////////////////
-	//
-	//
-	// /**
-	// * Gets the AccessibleContext associated with this JSplitPane.
-	// * For split panes, the AccessibleContext takes the form of an
-	// * AccessibleJSplitPane.
-	// * A new AccessibleJSplitPane instance is created if necessary.
-	// *
-	// * @return an AccessibleJSplitPane that serves as the
-	// * AccessibleContext of this JSplitPane
-	// * @beaninfo
-	// * expert: true
-	// * description: The AccessibleContext associated with this SplitPane.
-	// */
-	// public AccessibleContext getAccessibleContext() {
-	// if (accessibleContext == null) {
-	// accessibleContext = new AccessibleJSplitPane();
-	// }
-	// return accessibleContext;
-	// }
-	//
-	//
-	// /**
-	// * This class implements accessibility support for the
-	// * <code>JSplitPane</code> class. It provides an implementation of the
-	// * Java Accessibility API appropriate to split pane user-interface elements.
-	// * <p>
-	// * <strong>Warning:</strong>
-	// * Serialized objects of this class will not be compatible with
-	// * future Swing releases. The current serialization support is
-	// * appropriate for short term storage or RMI between applications running
-	// * the same version of Swing. As of 1.4, support for long term storage
-	// * of all JavaBeans<sup><font size="-2">TM</font></sup>
-	// * has been added to the <code>java.beans</code> package.
-	// * Please see {@link jsjava.beans.XMLEncoder}.
-	// */
-	// protected class AccessibleJSplitPane extends AccessibleJComponent
-	// implements AccessibleValue {
-	// /**
-	// * Gets the state set of this object.
-	// *
-	// * @return an instance of AccessibleState containing the current state
-	// * of the object
-	// * @see AccessibleState
-	// */
-	// public AccessibleStateSet getAccessibleStateSet() {
-	// AccessibleStateSet states = super.getAccessibleStateSet();
-	// // FIXME: [[[WDW - Should also add BUSY if this implements
-	// // Adjustable at some point. If this happens, we probably
-	// // should also add actions.]]]
-	// if (getOrientation() == VERTICAL_SPLIT) {
-	// states.add(AccessibleState.VERTICAL);
-	// } else {
-	// states.add(AccessibleState.HORIZONTAL);
-	// }
-	// return states;
-	// }
-	//
-	//
-	// /**
-	// * Get the AccessibleValue associated with this object. In the
-	// * implementation of the Java Accessibility API for this class,
-	// * return this object, which is responsible for implementing the
-	// * AccessibleValue interface on behalf of itself.
-	// *
-	// * @return this object
-	// */
-	// public AccessibleValue getAccessibleValue() {
-	// return this;
-	// }
-	//
-	//
-	// /**
-	// * Gets the accessible value of this object.
-	// *
-	// * @return a localized String describing the value of this object
-	// */
-	// public Number getCurrentAccessibleValue() {
-	// return new Integer(getDividerLocation());
-	// }
-	//
-	//
-	// /**
-	// * Sets the value of this object as a Number.
-	// *
-	// * @return True if the value was set.
-	// */
-	// public boolean setCurrentAccessibleValue(Number n) {
-	// // TIGER - 4422535
-	// if (n == null) {
-	// return false;
-	// }
-	// setDividerLocation(n.intValue());
-	// return true;
-	// }
-	//
-	//
-	// /**
-	// * Gets the minimum accessible value of this object.
-	// *
-	// * @return The minimum value of this object.
-	// */
-	// public Number getMinimumAccessibleValue() {
-	// return new Integer(getUI().getMinimumDividerLocation(
-	// JSplitPane.this));
-	// }
-	//
-	//
-	// /**
-	// * Gets the maximum accessible value of this object.
-	// *
-	// * @return The maximum value of this object.
-	// */
-	// public Number getMaximumAccessibleValue() {
-	// return new Integer(getUI().getMaximumDividerLocation(
-	// JSplitPane.this));
-	// }
-	//
-	//
-	// /**
-	// * Gets the role of this object.
-	// *
-	// * @return an instance of AccessibleRole describing the role of
-	// * the object
-	// * @see AccessibleRole
-	// */
-	// public AccessibleRole getAccessibleRole() {
-	// return AccessibleRole.SPLIT_PANE;
-	// }
-	// } // inner class AccessibleJSplitPane
 }

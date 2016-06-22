@@ -32,7 +32,7 @@ import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JTable;
 import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.UIManager;
+import jsjavax.swing.UIDefaults;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ListSelectionEvent;
 import jsjavax.swing.event.TableColumnModelEvent;
@@ -442,23 +442,21 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
         }
     }
 
-    /**
-     * Notification from the <code>UIManager</code> that the look and feel
-     * (L&F) has changed.
-     * Replaces the current UI object with the latest version from the
-     * <code>UIManager</code>.
-     *
-     * @see JComponent#updateUI
-     */
-    @Override
-		public void updateUI(){
-        setUI((TableHeaderUI)UIManager.getUI(this));
-
-        TableCellRenderer renderer = getDefaultRenderer();
-        if (renderer instanceof Component) {
-            SwingUtilities.updateComponentTreeUI((Component)renderer);
-        }
-    }
+	/**
+	 * Notification from the <code>UIManager</code> that the look and feel (L&F)
+	 * has changed. Replaces the current UI object with the latest version from
+	 * the <code>UIManager</code>.
+	 * 
+	 * @see JComponent#updateUI
+	 */
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		TableCellRenderer renderer = getDefaultRenderer();
+		if (renderer instanceof Component) {
+			SwingUtilities.updateComponentTreeUI((Component) renderer);
+		}
+	}
 
 
 
@@ -670,18 +668,6 @@ public class JTableHeader extends JComponent implements TableColumnModelListener
     public void setResizingColumn(TableColumn aColumn) {
         resizingColumn = aColumn;
     }
-
-//    /**
-//     * See <code>readObject</code> and <code>writeObject</code> in
-//     * <code>JComponent</code> for more
-//     * information about serialization in Swing.
-//     */
-//    private void writeObject(ObjectOutputStream s) throws IOException {
-//        s.defaultWriteObject();
-//        if ((ui != null) && (getUIClassID().equals(uiClassID))) {
-//            ui.installUI(this);
-//        }
-//    }
 
     private int getWidthInRightToLeft() {
         if ((table != null) &&

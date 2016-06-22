@@ -492,8 +492,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
      */
     @Override
 		public void updateUI() {
-        setUI((ListUI)UIManager.getUI(this));
-
+    	super.updateUI();
         ListCellRenderer renderer = getCellRenderer();
         if (renderer instanceof Component) {
             SwingUtilities.updateComponentTreeUI((Component)renderer);
