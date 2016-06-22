@@ -29,7 +29,6 @@ import jsjava.awt.EventQueue;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.ItemEvent;
-import jsjavax.swing.plaf.ButtonUI;
 
 /**
  * An implementation of a two-state button.

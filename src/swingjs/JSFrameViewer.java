@@ -30,7 +30,7 @@ public class JSFrameViewer implements JSInterface {
 
 	public JSAppletViewer appletViewer;
 	public boolean isApplet, isFrame;	
-	public HTML5Applet html5Applet; // will be null for new frame.
+	public HTML5Applet html5Applet; 
 	
 	public JSFrameViewer setForWindow(Container window) {
 		isFrame = true;
@@ -163,8 +163,8 @@ public class JSFrameViewer implements JSInterface {
 		/**
 		 * @j2sNative
 		 * 
-		 *            wOld = (canvas == null ? 0 : canvas.width); hOld = (canvas ==
-		 *            null ? 0 : canvas.height)
+		 *            wOld = (this.canvas == null ? 0 : this.canvas.width); hOld = (this.canvas ==
+		 *            null ? 0 : this.canvas.height)
 		 * 
 		 */
 		{
@@ -179,7 +179,7 @@ public class JSFrameViewer implements JSInterface {
 
 
 	public HTML5Canvas newCanvas() {
-		if (html5Applet != null) {
+		if (isApplet) {
 				canvas = html5Applet._getHtml5Canvas();
 				return canvas;
 			}

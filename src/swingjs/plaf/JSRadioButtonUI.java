@@ -50,14 +50,12 @@ public class JSRadioButtonUI extends JSButtonUI {
 				groupNames = new HashMap<ButtonGroup, String>();
 			ButtonGroup bg = null;
 			String name = id;
-			isNew = true;
 			if (b.getModel() instanceof DefaultButtonModel) {
 				bg = ((DefaultButtonModel) b.getModel()).getGroup();
 				name = groupNames.get(bg);
-				if (name == null)
+				isNew = (bg != null && name == null);
+				if (isNew)
 					groupNames.put(bg, name = id);
-				else
-					isNew = false;
 			}
 			domBtn = enableNode = createDOMObject("input", id, "type", myType, "name",
 					name);

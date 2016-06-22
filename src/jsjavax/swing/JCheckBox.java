@@ -24,8 +24,6 @@
  */
 package jsjavax.swing;
 
-import jsjavax.swing.plaf.ButtonUI;
-
 
 /**
  * An implementation of a check box -- an item that can be selected or
