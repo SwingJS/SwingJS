@@ -8,6 +8,8 @@ package test.falstad;
 //
 //import java.awt [Applet, Canvas, Checkbox, Choice, Label, Scrollbar] --> swingjs.awt
 
+// missing hist_cv.updateComponent()
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -64,6 +66,11 @@ class HistogramCanvas extends Canvas {
  public void update(Graphics g) {
 	pg.updateHistogram(g);
  }
+
+ public void paintComponent(Graphics g) {
+	pg.updateHistogram(g);
+ }
+
 };
 
 class GasLayout implements LayoutManager {
@@ -370,249 +377,256 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  long secTime, lastTime;
  double t, lastSecT, totalKE, temp, totalV;
  
- public void updateGas(Graphics realg) {
-	if (winSize == null)
-	    return;
-	Graphics g = dbimage.getGraphics();
-	g.setColor(cv.getBackground());
-	g.fillRect(0, 0, winSize.width, winSize.height);
-	int j;
+	public void updateGas(Graphics realg) {
+		if (winSize == null)
+			return;
+		Graphics g = dbimage.getGraphics();
+		g.setColor(cv.getBackground());
+		g.fillRect(0, 0, winSize.width, winSize.height);
+		int j;
 
-	double dt = speedBar.getValue()/100.;
-	if (!stoppedCheck.getState()) {
-	    long sysTime = System.currentTimeMillis();
-	    if (lastTime != 0) {
-		int inc = (int) (sysTime-lastTime);
-		dt *= inc/8.;
-	    }
-	    if (sysTime-secTime >= 1000) {
-		if (t > 0)
-		    wallF /= t-lastSecT;
-		wallFMeasure = wallF;
-		wallF = 0;
-		secTime = sysTime;
-		lastSecT = t;
-	    }
-	    lastTime = sysTime;
-	} else
-	    lastTime = 0;
-	
-	for (short i = 0; i != molCount; i++) {
-	    Molecule m = mols[i];
-	    boolean bounce = false;
-	    int ix = (int) m.x;
-	    int iy = (int) m.y;
-	    j = (stoppedCheck.getState()) ? 5 : 0;
-	    for (; j < 5; j++) {
-		m.dy += gravity*dt;
-		m.x += m.dx*dt;
-		m.y += m.dy*dt;
-		if (Double.isNaN(m.dx) || Double.isNaN(m.dy))
-		    System.out.println("nan2");
-		int r = m.r;
-		if (m.x < r || m.x >= winSize.width-r) {
-		    wallF += Math.abs(m.dx)*m.mass;
-		    m.dx = -m.dx;
-		    if (m.x < m.r) m.x = m.r;
-		    if (m.x >= winSize.width-r)
-			m.x = winSize.width-r-1;
-		    setColor(m);
-		    bounce = true;
+		double dt = speedBar.getValue() / 100.;
+		if (!stoppedCheck.getState()) {
+			long sysTime = System.currentTimeMillis();
+			if (lastTime != 0) {
+				int inc = (int) (sysTime - lastTime);
+				dt *= inc / 8.;
+			}
+			if (sysTime - secTime >= 1000) {
+				if (t > 0)
+					wallF /= t - lastSecT;
+				wallFMeasure = wallF;
+				wallF = 0;
+				secTime = sysTime;
+				lastSecT = t;
+			}
+			lastTime = sysTime;
+		} else
+			lastTime = 0;
+
+		for (short i = 0; i != molCount; i++) {
+			Molecule m = mols[i];
+			boolean bounce = false;
+			int ix = (int) m.x;
+			int iy = (int) m.y;
+			j = (stoppedCheck.getState()) ? 5 : 0;
+			for (; j < 5; j++) {
+				m.dy += gravity * dt;
+				m.x += m.dx * dt;
+				m.y += m.dy * dt;
+				if (Double.isNaN(m.dx) || Double.isNaN(m.dy))
+					System.out.println("nan2");
+				int r = m.r;
+				if (m.x < r || m.x >= winSize.width - r) {
+					wallF += Math.abs(m.dx) * m.mass;
+					m.dx = -m.dx;
+					if (m.x < m.r)
+						m.x = m.r;
+					if (m.x >= winSize.width - r)
+						m.x = winSize.width - r - 1;
+					setColor(m);
+					bounce = true;
+				}
+				if (m.y < upperBound + r || m.y >= winSize.height - r) {
+					wallF += Math.abs(m.dy) * m.mass;
+					if (m.y < upperBound + r)
+						m.y = upperBound + r;
+					if (m.y >= winSize.height - r)
+						m.y = winSize.height - r - 1;
+					if (m.y == upperBound + r && m.dy < 0 && false) {
+						double wallMass = 1000;
+						double totmass = m.mass + wallMass;
+						double comdy = (m.mass * m.dy + wallMass * topWallVel) / totmass;
+						double chg = (m.dy - comdy);
+						// System.out.print("< " + m.dy + " " + topWallVel + "\n");
+						m.dy -= 2 * chg;
+						topWallVel += 2 * chg * m.mass / wallMass;
+						// System.out.print("> " + m.dy + " " + topWallVel + "\n");
+					} else
+						m.dy = -m.dy;
+					setColor(m);
+					bounce = true;
+				}
+				int nix = (int) m.x;
+				int niy = (int) m.y;
+				if (!bounce && nix >= heaterLeft && nix <= heaterRight
+						&& niy >= heaterTop - 1 && heaterCheck.getState()) {
+					double v = java.lang.Math.sqrt(m.dx * m.dx + m.dy * m.dy);
+					double oldy = m.dy;
+					// calculate velocity of particle if it were at heater temp
+					double mxv = Math.sqrt(3 * heaterTemp / m.mass);
+					// mix this velocity with particle's velocity randomly
+					double mix = getrand(100) / 99.0;
+					mix = 0;
+					double newv = v * mix + mxv * (1 - mix);
+					// randomize direction
+					m.dx = getrand(101) / 50.0 - 1;
+					m.dy = -Math.sqrt(1 - m.dx * m.dx) * newv;
+					m.dx *= newv;
+					if (Double.isNaN(m.dx) || Double.isNaN(m.dy))
+						System.out.println("nan3");
+					wallF += (oldy - m.dy) * m.mass;
+					setColor(m);
+					bounce = true;
+					m.y = heaterTop - 2;
+					niy = (int) m.y;
+				}
+				Molecule m2 = (bounce) ? null : checkCollision(m);
+				if (m2 != null) {
+					// handle a collision
+					// first, find exact moment they collided by solving
+					// a quadratic equation:
+					// [(x1-x2)+t(dx1-dx2)]^2 + [(y1-y2)+...]^2 = mindist^2
+					// (first deal with degenerate case where molecules are on top
+					// of each other)
+					if (m.dx == m2.dx && m.dy == m2.dy) {
+						if (m.dx == 0 && m.dy == 0)
+							continue;
+						m.dx += .001;
+					}
+					double sdx = m.dx - m2.dx;
+					double sx = m.x - m2.x;
+					double sdy = m.dy - m2.dy;
+					double sy = m.y - m2.y;
+					int mindist = m.r + m2.r;
+					double a = sdx * sdx + sdy * sdy;
+					double b = 2 * (sx * sdx + sy * sdy);
+					double c = sx * sx + sy * sy - mindist * mindist;
+					double t = (-b - java.lang.Math.sqrt(b * b - 4 * a * c)) / a;
+					double t2 = (-b + java.lang.Math.sqrt(b * b - 4 * a * c)) / a;
+					if (java.lang.Math.abs(t) > java.lang.Math.abs(t2))
+						t = t2;
+					if (Double.isNaN(t))
+						System.out.print("nan " + m.dx + " " + m.dy + " " + m2.dx + " "
+								+ m2.dy + " " + a + " " + b + " " + c + " " + t + " " + t2
+								+ "\n");
+
+					// backtrack m to where they collided.
+					// (t is typically negative.)
+					m.x += t * m.dx;
+					m.y += t * m.dy;
+
+					// ok, so now they are just touching. find vector
+					// separating their centers and normalize it.
+					sx = m.x - m2.x;
+					sy = m.y - m2.y;
+					double sxynorm = java.lang.Math.sqrt(sx * sx + sy * sy);
+					double sxn = sx / sxynorm;
+					double syn = sy / sxynorm;
+
+					// find velocity of center of mass
+					double totmass = m.mass + m2.mass;
+					double comdx = (m.mass * m.dx + m2.mass * m2.dx) / totmass;
+					double comdy = (m.mass * m.dy + m2.mass * m2.dy) / totmass;
+					// System.out.print("<x " + (m.dx-comdx) + " " + (m2.dx-comdx) +
+					// "\n");
+					// System.out.print("<y " + (m.dy-comdy) + " " + (m2.dy-comdy) +
+					// "\n");
+
+					// subtract COM velocity from m's momentum and
+					// project result onto the vector separating them.
+					// This is the component of m's momentum which
+					// must be turned the other way. Double the
+					// result. This is the momentum that is
+					// transferred.
+					double pn = (m.dx - comdx) * sxn + (m.dy - comdy) * syn;
+					double px = 2 * sxn * pn;
+					double py = 2 * syn * pn;
+
+					// subtract this vector from m's momentum
+					m.dx -= px;
+					m.dy -= py;
+					if (Double.isNaN(m.dx))
+						System.out.println("nan0 " + sxynorm + " " + pn);
+
+					// adjust m2's momentum so that total momentum
+					// is conserved
+					double mult = m.mass / m2.mass;
+					m2.dx += px * mult;
+					m2.dy += py * mult;
+					// System.out.print(">x " + (m.dx-comdx) + " " + (m2.dx-comdx) +
+					// "\n");
+					// System.out.print(">y " + (m.dy-comdy) + " " + (m2.dy-comdy) +
+					// "\n");
+
+					// send m on its way
+					if (t < 0) {
+						m.x -= t * m.dx;
+						m.y -= t * m.dy;
+					}
+					if (m.x < r)
+						m.x = r;
+					if (m.x >= winSize.width - r)
+						m.x = winSize.width - r;
+					if (m.y < upperBound + r)
+						m.y = upperBound + r;
+					if (m.y >= winSize.height - r)
+						m.y = winSize.height - r - 1;
+					if (Double.isNaN(m.dx) || Double.isNaN(m.dy))
+						System.out.println("nan4");
+					if (Double.isNaN(m2.dx) || Double.isNaN(m2.dy))
+						System.out.println("nan5");
+					setColor(m);
+					setColor(m2);
+				}
+				// this line may not be reached
+			}
+			g.setColor(m.color);
+			g.fillOval((int) m.x - m.r, (int) m.y - m.r, m.r * 2, m.r * 2);
+			// XXX
+			// g.fillRect((int)m.x-m.r, (int)m.y-m.r, m.r*2, m.r*2);
+			gridRemove(m);
+			gridAdd(m);
 		}
-		if (m.y < upperBound+r || m.y >= winSize.height-r) {
-		    wallF += Math.abs(m.dy)*m.mass;
-		    if (m.y < upperBound+r) m.y = upperBound+r;
-		    if (m.y >= winSize.height-r)
-			m.y = winSize.height-r-1;
-		    if (m.y == upperBound+r && m.dy < 0 && false) {
-			double wallMass = 1000;
-			double totmass = m.mass + wallMass;
-			double comdy =
-			    (m.mass*m.dy+wallMass*topWallVel)/totmass;
-			double chg = (m.dy-comdy);
-			//System.out.print("< " + m.dy + " " + topWallVel + "\n");
-			m.dy -= 2*chg;
-			topWallVel += 2*chg*m.mass/wallMass;
-			//System.out.print("> " + m.dy + " " + topWallVel + "\n");
-		    } else
-			m.dy = -m.dy;
-		    setColor(m);
-		    bounce = true;
+		t += dt * 5;
+		totalKE = 0;
+		totalV = 0;
+		for (short i = 0; i != molCount; i++) {
+			Molecule m = mols[i];
+			totalKE += m.ke;
+			totalV += m.r * m.r;
 		}
-		int nix = (int) m.x;
-		int niy = (int) m.y;
-		if (!bounce && nix >= heaterLeft && nix <= heaterRight &&
-		    niy >= heaterTop-1 && heaterCheck.getState()) {
-		    double v = java.lang.Math.sqrt(m.dx*m.dx+m.dy*m.dy);
-		    double oldy = m.dy;
-		    // calculate velocity of particle if it were at heater temp
-		    double mxv = Math.sqrt(3*heaterTemp/m.mass);
-		    // mix this velocity with particle's velocity randomly
-		    double mix = getrand(100)/99.0;
-		    mix = 0;
-		    double newv = v*mix + mxv*(1-mix);
-		    // randomize direction
-		    m.dx = getrand(101)/50.0-1;
-		    m.dy = -Math.sqrt(1-m.dx*m.dx)*newv;
-		    m.dx *= newv;
-		    if (Double.isNaN(m.dx) || Double.isNaN(m.dy))
-			System.out.println("nan3");
-		    wallF += (oldy-m.dy)*m.mass;
-		    setColor(m);
-		    bounce = true;
-		    m.y = heaterTop-2;
-		    niy = (int) m.y;
+		totalV *= Math.PI;
+		temp = totalKE / molCount; // T = K.E./k in 2-d
+
+		// topWallVel += volumeBar.getValue()*.01;
+		if (topWallVel > .5)
+			topWallVel = .5;
+		topWallPos += topWallVel * 5;
+		if (topWallPos < 0) {
+			topWallPos = 0;
+			if (topWallVel < 0)
+				topWallVel = 0;
 		}
-		Molecule m2 = (bounce) ? null : checkCollision(m);
-		if (m2 != null) {
-		    // handle a collision
-		    // first, find exact moment they collided by solving
-		    // a quadratic equation:
-		    // [(x1-x2)+t(dx1-dx2)]^2 + [(y1-y2)+...]^2 = mindist^2
-		    // (first deal with degenerate case where molecules are on top
-		    // of each other)
-		    if (m.dx == m2.dx && m.dy == m2.dy) {
-			if (m.dx == 0 && m.dy == 0)
-			    continue;
-			m.dx += .001;
-		    }
-		    double sdx = m.dx-m2.dx;
-		    double sx  = m.x -m2.x;
-		    double sdy = m.dy-m2.dy;
-		    double sy  = m.y -m2.y;
-		    int mindist = m.r + m2.r;
-		    double a = sdx*sdx + sdy*sdy;
-		    double b = 2*(sx*sdx+sy*sdy);
-		    double c = sx*sx + sy*sy - mindist*mindist;
-		    double t = (-b-java.lang.Math.sqrt(b*b-4*a*c))/a;
-		    double t2 = (-b+java.lang.Math.sqrt(b*b-4*a*c))/a;
-		    if (java.lang.Math.abs(t) > java.lang.Math.abs(t2))
-			t = t2;
-		    if (Double.isNaN(t))
-			System.out.print("nan " + m.dx + " " + m.dy + " " +
-					 m2.dx + " " + m2.dy + " " + a + " " + b +
-					 " " +c + " " + t + " " + t2 + "\n");
-
-		    // backtrack m to where they collided.
-		    // (t is typically negative.)
-		    m.x += t*m.dx;
-		    m.y += t*m.dy;
-
-		    // ok, so now they are just touching.  find vector
-		    // separating their centers and normalize it.
-		    sx = m.x-m2.x;
-		    sy = m.y-m2.y;
-		    double sxynorm = java.lang.Math.sqrt(sx*sx+sy*sy);
-		    double sxn = sx/sxynorm;
-		    double syn = sy/sxynorm;
-		    
-		    // find velocity of center of mass
-		    double totmass = m.mass + m2.mass;
-		    double comdx = (m.mass*m.dx+m2.mass*m2.dx)/totmass;
-		    double comdy = (m.mass*m.dy+m2.mass*m2.dy)/totmass;
-		    //System.out.print("<x " + (m.dx-comdx) + " " + (m2.dx-comdx) + "\n");
-		    //System.out.print("<y " + (m.dy-comdy) + " " + (m2.dy-comdy) + "\n");
-
-		    // subtract COM velocity from m's momentum and
-		    // project result onto the vector separating them.
-		    // This is the component of m's momentum which
-		    // must be turned the other way.  Double the
-		    // result.  This is the momentum that is
-		    // transferred.
-		    double pn = (m.dx-comdx)*sxn + (m.dy-comdy)*syn;
-		    double px = 2*sxn*pn;
-		    double py = 2*syn*pn;
-
-		    // subtract this vector from m's momentum
-		    m.dx -= px;
-		    m.dy -= py;
-		    if (Double.isNaN(m.dx))
-			System.out.println("nan0 " + sxynorm + " " + pn);
-
-		    // adjust m2's momentum so that total momentum
-		    // is conserved
-		    double mult = m.mass/m2.mass;
-		    m2.dx += px*mult;
-		    m2.dy += py*mult;
-		    //System.out.print(">x " + (m.dx-comdx) + " " + (m2.dx-comdx) + "\n");
-		    //System.out.print(">y " + (m.dy-comdy) + " " + (m2.dy-comdy) + "\n");
-
-		    // send m on its way
-		    if (t < 0) {
-			m.x -= t*m.dx;
-			m.y -= t*m.dy;
-		    }
-		    if (m.x < r)
-			m.x = r;
-		    if (m.x >= winSize.width-r)
-			m.x = winSize.width-r;
-		    if (m.y < upperBound+r) m.y = upperBound+r;
-		    if (m.y >= winSize.height-r)
-			m.y = winSize.height-r-1;
-		    if (Double.isNaN(m.dx) || Double.isNaN(m.dy))
-			System.out.println("nan4");
-		    if (Double.isNaN(m2.dx) || Double.isNaN(m2.dy))
-			System.out.println("nan5");
-		    setColor(m);
-		    setColor(m2);
+		if (topWallPos > (winSize.height * 4 / 5)) {
+			topWallPos = (winSize.height * 4 / 5);
+			if (topWallVel > 0)
+				topWallVel = 0;
 		}
-		// this line may not be reached
-	    }
-	    g.setColor(m.color);
-	    g.fillOval((int)m.x-m.r, (int)m.y-m.r, m.r*2, m.r*2);
-	    // XXX
-	    //g.fillRect((int)m.x-m.r, (int)m.y-m.r, m.r*2, m.r*2);
-	    gridRemove(m);
-	    gridAdd(m);
-	}
-	t += dt*5;
-	totalKE = 0;
-	totalV = 0;
-	for (short i = 0; i != molCount; i++) {
-	    Molecule m = mols[i];
-	    totalKE += m.ke;
-	    totalV += m.r*m.r;
-	}
-	totalV *= Math.PI;
-	temp = totalKE/molCount; // T = K.E./k in 2-d
+		upperBound = (int) topWallPos;
 
-	//topWallVel += volumeBar.getValue()*.01;
-	if (topWallVel > .5)
-	    topWallVel = .5;
-	topWallPos += topWallVel*5;
-	if (topWallPos < 0) {
-	    topWallPos = 0;
-	    if (topWallVel < 0)
-		topWallVel = 0;
+		int heatstateint = ((int) heatstate);
+		if (heaterCheck.getState()) {
+			for (j = 0; j != heaterSize; j++, heatstateint++) {
+				int x = heaterLeft + j * 3;
+				int y = heatstateint & 3;
+				if ((heatstateint & 4) == 4)
+					y = 4 - y;
+				g.setColor(heaterColor);
+				g.fillRect(x, heaterTop + y, 2, 2);
+			}
+		}
+		g.setColor(Color.lightGray);
+		g.drawRect(0, upperBound, winSize.width - 1, winSize.height - 1
+				- upperBound);
+		g.fillRect(winSize.width / 2 - 20, 0, 40, upperBound);
+		realg.drawImage(dbimage, 0, 0, this);
+		if (!stoppedCheck.getState()) {
+			heatstate += heaterMove;
+			cv.repaint(pause);
+			hist_cv.repaint(pause);
+		}
 	}
-	if (topWallPos > (winSize.height*4/5)) {
-	    topWallPos = (winSize.height*4/5);
-	    if (topWallVel > 0)
-		topWallVel = 0;
-	}
-	upperBound = (int) topWallPos;
-
-	int heatstateint = ((int) heatstate);
-	if (heaterCheck.getState()) {
-	    for (j = 0; j != heaterSize; j++, heatstateint++) {
-		int x = heaterLeft + j*3;
-		int y = heatstateint & 3;
-		if ((heatstateint & 4) == 4) y = 4-y;
-		g.setColor(heaterColor);
-		g.fillRect(x, heaterTop+y, 2, 2);
-	    }
-	}
-	g.setColor(Color.lightGray);
-	g.drawRect(0, upperBound,
-		   winSize.width-1, winSize.height-1-upperBound);
-	g.fillRect(winSize.width/2 - 20, 0, 40, upperBound);
-	realg.drawImage(dbimage, 0, 0, this);
-	if (!stoppedCheck.getState()) {
-	    heatstate += heaterMove;
-	    cv.repaint(pause);
-	    hist_cv.repaint(pause);
-	}
- }
 
  void gridAdd(Molecule m) {
 	int gx = (int) (m.x/gridEltWidth);

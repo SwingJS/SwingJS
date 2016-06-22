@@ -150,6 +150,32 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		drawArc(x, y, diameter, diameter, 0, 360);
 	}
 
+	public void fillCircle(int x, int y, int diameter) {
+		double r = diameter / 2f;
+		ctx.beginPath();
+		ctx.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
+		ctx.fill();
+	}
+
+	@Override
+	public void drawOval(int x, int y, int width, int height) {
+		if (width == height) {
+			drawCircle(x, y, width);			
+			return;
+		}
+		JSToolkit.notImplemented(null);
+	}
+
+	@Override
+	public void fillOval(int x, int y, int width, int height) {
+		if (width == height) {
+			fillCircle(x, y, width);
+			return;
+		}
+		JSToolkit.notImplemented(null);
+	}
+
+
 	@Override
 	public void fillArc(int x, int y, int width, int height, int startAngle,
 			int arcAngle) {
@@ -241,13 +267,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		ctx.clearRect(0, 0, windowWidth, windowHeight);
 		setGraphicsColor(bgcolor);
 		fillRect(0, 0, windowWidth, windowHeight);
-	}
-
-	public void fillCircle(int x, int y, int diameter) {
-		double r = diameter / 2f;
-		ctx.beginPath();
-		ctx.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
-		ctx.fill();
 	}
 
 	@Override
@@ -775,16 +794,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			int arcHeight) {
 		JSToolkit.notImplemented(null);
 		fillRect(x, y, width, height);
-	}
-
-	@Override
-	public void drawOval(int x, int y, int width, int height) {
-		JSToolkit.notImplemented(null);
-	}
-
-	@Override
-	public void fillOval(int x, int y, int width, int height) {
-		JSToolkit.notImplemented(null);
 	}
 
 	@Override
