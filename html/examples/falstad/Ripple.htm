@@ -5,25 +5,24 @@
 <meta charset="utf-8" />
 <!-- breaking out the library for debugging -->
 <script type="text/javascript" src="../../jquery/jquery.js"></script>
-<script type="text/javascript" src="../../js/SwingJSjQueryExt.js"></script>
-<script type="text/javascript" src="../../js/JSmolCore.js"></script>
+<script type="text/javascript" src="../../js/SJSjQueryExt.js"></script>
+<script type="text/javascript" src="../../js/j2sApplet.js"></script>
 <script type="text/javascript" src="../../js/j2sSwingJS.js"></script>
-<script type="text/javascript" src="../../js/JSmol.js"></script>
-<script type="text/javascript" src="../../js/SwingJS.js"></script>
+<script type="text/javascript" src="../../js/SJSApplet.js"></script>
 
 <script type="text/javascript">
 
-Jmol._checkLoad = true;
+J2S._checkLoad = true;
 
-Jmol._isAsync = false;
+J2S._isAsync = false;
 
-Jmol.getProfile() // records repeat calls to overridden or overloaded Java methods
+J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
 
 // use ?_USE=JAVA or _USE=SIGNED or _USE=HTML5
 
 jmol_isReady = function(applet) {
 	document.title = (applet._id + " is ready")
-	Jmol._getElement(applet, "appletdiv").style.border="1px solid blue"
+	J2S._getElement(applet, "appletdiv").style.border="1px solid blue"
  
 }		
 

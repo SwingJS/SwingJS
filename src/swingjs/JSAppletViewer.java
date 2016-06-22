@@ -18,14 +18,17 @@ import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
+
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JComponent;
+
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
 import jssun.applet.AppletListener;
+
 import jssun.awt.AppContext;
+
 import swingjs.api.HTML5Applet;
-import swingjs.api.HTML5Canvas;
 import swingjs.api.Interface;
 import swingjs.api.JSInterface;
 
@@ -73,7 +76,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	public boolean async;
 	public String strJavaVersion;
 	public Object strJavaVendor;
-	public HTML5Applet html5Applet;
 
 	public GraphicsConfiguration graphicsConfig;
 	public ThreadGroup threadGroup;
@@ -183,9 +185,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		/**
 		 * @j2sNative
 		 * 
-		 *            if(self.Jmol) { applet =
-		 *            Jmol._applets[this.htmlName.split("_object")[0]]; javaver =
-		 *            Jmol._version; }
+		 *            if(self.J2S) { applet =
+		 *            J2S._applets[this.htmlName.split("_object")[0]]; javaver =
+		 *            J2S._version; }
 		 * 
 		 * 
 		 */
@@ -205,7 +207,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		/**
 		 * @j2sNative
 		 * 
-		 *            Jmol._applets[this.appletName + "_thread"] =
+		 *            J2S._applets[this.appletName + "_thread"] =
 		 *            jsjava.lang.Thread.thisThread = this.myThread;
 		 * 
 		 */
@@ -518,7 +520,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				System.err.println("runloader.err-- \"code\" must be specified.");
 				throw new InstantiationException("\"code\" must be specified.");
 			}
-			applet = japplet = (JApplet) JSToolkit.getInstance(code);
+			top = applet = japplet = (JApplet) JSToolkit.getInstance(code);
 			if (applet == null) {
 				System.out.println(code + " could not be launched");
 				status = APPLET_ERROR;
@@ -556,22 +558,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		}
 	}
 	
-//  /**
-//   * repaint from JApplet class via Component.repaint()
-//   * 
-//   */
-//  @Override 
-//  public void repaintImpl(long tm, int x, int y, int width, int height) {
-//      if (appletOrFrame.isVisible() && 
-//          appletOrFrame.getWidth() > 0 && appletOrFrame.getHeight() > 0) {
-//      	appletOrFrame.getContentPane().repaint(tm, x, y, width, height);
-//      	
-//   //   	  PaintEvent e = new PaintEvent(getContentPane(), PaintEvent.UPDATE,
-//     //                                   new Rectangle(x, y, width, height));
-//       //   Toolkit.getEventQueue().postEvent(e);
-//      }    		
-//  	}
-
 	public JSFrameViewer newFrameViewer(boolean forceNew) {
 		return (haveFrames || forceNew ? new JSFrameViewer() : null);
 	}
@@ -585,11 +571,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		// Here we go straight to the contentPane and paint that.
 		g = setGraphics(g);
 		applet.paint(g);
-	}
-
-
-	protected HTML5Canvas getCanvas() {
-		return (canvas == null ? (canvas = html5Applet._getHtml5Canvas()) : canvas);
 	}
 
 }

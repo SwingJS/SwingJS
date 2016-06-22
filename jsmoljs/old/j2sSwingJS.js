@@ -28,7 +28,7 @@
  
 LoadClazz = function() {
 
-// BH c$ is the ONLY global used in SwingJS now. I do not think it is necessary,
+// BH c$ is the ONLY global used in J2S now. I do not think it is necessary,
 // but it is created by the compiler, and I have not found a post-compile work-around.
 // It is used as a local variable in class definitions to point to the 
 // current method. See Clazz.p0p and Clazz.pu$h
@@ -70,7 +70,7 @@ window["j2s.object.native"] = true;
   _debugging: false
 };
 
-;(function(Clazz, J2S) {
+;(function(Clazz, Jmol) {
 
 
 try {
@@ -102,7 +102,7 @@ Clazz.duplicatedMethods = {};
 // which could be a bottle-neck for function calling.
 // This is critical for performance optimization.
 
-// J2S.getProfile()
+// Jmol.getProfile()
 
 var _profile = null;
 
@@ -1302,7 +1302,7 @@ var inF = {
       url = new java.net.URL(fname);
     } catch (e) {
     }
-		var data = (url == null ? null : J2S._getFileData(fname.toString()));
+		var data = (url == null ? null : Jmol._getFileData(fname.toString()));
     if (!data || data == "error" || data.indexOf("[Exception") == 0)
       return null;
     var bytes = new java.lang.String(data).getBytes();      
@@ -1648,13 +1648,13 @@ Clazz._callingStackTraces = [];
 /* private */
 var MethodException = function () {
 	this.toString = function () {
-		return "j2s MethodException";
+		return "J2S MethodException";
 	};
 };
 /* private */
 //var MethodNotFoundException = function () {
 //	this.toString = function () {
-//		return "j2s MethodNotFoundException";
+//		return "J2S MethodNotFoundException";
 //	};
 //};
 
@@ -2335,7 +2335,7 @@ Clazz.isAP = function(a) {
 /* public */
 /*
 Clazz.makeFunction = function (jsr) {
-// never used in SwingJS -- called by Enum, but not accessible to it -- part of SWT
+// never used in Jmol -- called by Enum, but not accessible to it -- part of SWT
 	return function(e) {
 		if (!e)
 			e = window.event;
@@ -2780,7 +2780,7 @@ var Node = function () {
 
 ;(function(Clazz, _Loader) {
 
-_Loader._checkLoad = J2S._checkLoad;
+_Loader._checkLoad = Jmol._checkLoad;
  
 _Loader.updateNodeForFunctionDecoration = function(qName) {
 
@@ -3413,7 +3413,7 @@ var removeScriptNode = function (n) {
 Clazz._4Name = function(clazzName, applet, state) {
 	if (Clazz.isClassDefined(clazzName))
 		return evalType(clazzName);
-	var f = (J2S._isAsync && applet ? applet._restoreState(clazzName, state) : null);
+	var f = (Jmol._isAsync && applet ? applet._restoreState(clazzName, state) : null);
 	if (f == 1)
 		return null; // must be already being created
 	if (_Loader.setLoadingMode(f ? _Loader.MODE_SCRIPT : "xhr.sync")) {
@@ -3466,7 +3466,7 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
 		// synchronous loading
 		// works in MSIE locally unless a binary file :)
 		// from Jmol.api.Interface only
-		var data = J2S._getFileData(file);
+		var data = Jmol._getFileData(file);
     try{
 		  evaluate(file, file0, data);
     }catch(e) {
@@ -3492,7 +3492,7 @@ System.out.println("for file " + file +" fSuccess = " + (fSuccess ? fSuccess.toS
 		error:W3CScriptOnCallback(file, true, fSuccess)
 	};
 	inLoadingThreads++;
-	J2S.$ajax(info);
+	Jmol.$ajax(info);
 };
 
 var removeArrayItem = function(arr, item) {
@@ -4497,7 +4497,7 @@ Clazz.binaryFolders =  _Loader.binaryFolders = [ _Loader.getJ2SLibBase() ];
 
 Clazz._LoaderProgressMonitor = {};
 
-;(function(CLPM, J2S) {
+;(function(CLPM, Jmol) {
 
 var fadeOutTimer = null;
 var fadeAlpha = 0;
@@ -4505,7 +4505,7 @@ var monitorEl = null;
 var lastScrollTop = 0;
 var bindingParent = null;
 
-CLPM.DEFAULT_OPACITY = (J2S && J2S._j2sLoadMonitorOpacity ? J2S._j2sLoadMonitorOpacity : 55);
+CLPM.DEFAULT_OPACITY = (Jmol && Jmol._j2sLoadMonitorOpacity ? Jmol._j2sLoadMonitorOpacity : 55);
 
 /* public */
 /*CLPM.initialize = function (parent) {
@@ -4670,7 +4670,7 @@ if (window["ClazzLoader"]) {
 }
 */
 
-})(Clazz._LoaderProgressMonitor, J2S);
+})(Clazz._LoaderProgressMonitor, Jmol);
 
 //}
 /******************************************************************************
@@ -7458,7 +7458,7 @@ return null;
 })(Clazz);
 
 
-})(Clazz, J2S); // requires JSmolCore.js
+})(Clazz, Jmol); // requires JSmolCore.js
 
 if (!window["java.registered"])
  window["java.registered"] = false;
@@ -7468,9 +7468,9 @@ if (!window["java.registered"])
 	if (window["java.packaged"]) return;
 	window["java.packaged"] = true;
 
-	//if (!J2S._isAsync) {
-		for (var i = 0; i < J2S._coreFiles.length; i++)
-		  ClazzLoader.loadZJar(J2S._coreFiles[i], ClazzLoader.runtimeKeyClass);
+	//if (!Jmol._isAsync) {
+		for (var i = 0; i < Jmol._coreFiles.length; i++)
+		  ClazzLoader.loadZJar(Jmol._coreFiles[i], ClazzLoader.runtimeKeyClass);
 	//}
 		
 ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "java/awt/geom/Point2D.js", [
@@ -7535,4 +7535,4 @@ Clazz._Loader.loadZJar(Clazz._Loader.getJ2SLibBase() + "core/coreswingjs.z.js", 
 
 }; // called by external application 
 
-//J2S._debugCode = false;
+//Jmol._debugCode = false;

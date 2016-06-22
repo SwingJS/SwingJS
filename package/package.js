@@ -6,7 +6,7 @@
 
 (function (ClazzLoader) {
 		
-  if (Jmol._debugCode)
+  if (J2S._debugCode)
     return;
 
 	var	base = ClazzLoader.getJ2SLibBase() + "core/";

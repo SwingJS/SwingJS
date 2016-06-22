@@ -1,11 +1,9 @@
 package swingjs.plaf;
 
-import javajs.util.PT;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.FramePeer;
-import jsjavax.swing.JComboBox;
 import jsjavax.swing.JFrame;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;

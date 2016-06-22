@@ -42,12 +42,10 @@
    	<copy todir="site/swingjs/js">
   	  <fileset dir="jsmoljs">		
   	    <include name="core/**/**" />
+  	    <include name="J2SApplet.js" />
+  	    <include name="SJSApplet.js" />
   	    <include name="j2sSwingJS.js" />
-  	  	<include name="JSmol.js" />
-  	    <include name="JSmolCore.js" />
-  	  	<include name="SwingJSJavaExt.js" />
-  	  	<include name="SwingJSjQueryExt.js" />
-  	    <include name="SwingJS.js" />
+  	  	<include name="SJSjQueryExt.js" />
   	  </fileset>
     </copy> 
    	
@@ -215,7 +213,6 @@
     <antcall target="call-core">
         <param name="call-core.name" value="" />
         <param name="call-core.list" value="
-       		../js/SwingJSJavaExt.js
             JU/DebugJS.js
         	"/>
     </antcall>
@@ -224,7 +221,6 @@
     <antcall target="call-core">
         <param name="call-core.name" value="swingjs" />
         <param name="call-core.list" value="
-       		../js/SwingJSJavaExt.js
         	JU/DebugJS.js
             java/awt/ActiveEvent.js
             java/awt/AWTEvent.js

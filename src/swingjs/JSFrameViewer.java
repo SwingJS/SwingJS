@@ -4,6 +4,7 @@ import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjavax.swing.JApplet;
 import swingjs.api.DOMNode;
+import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
 import swingjs.plaf.JSComponentUI;
@@ -29,6 +30,7 @@ public class JSFrameViewer implements JSInterface {
 
 	public JSAppletViewer appletViewer;
 	public boolean isApplet, isFrame;	
+	public HTML5Applet html5Applet; // will be null for new frame.
 	
 	public JSFrameViewer setForWindow(Container window) {
 		isFrame = true;
@@ -169,19 +171,18 @@ public class JSFrameViewer implements JSInterface {
 		}
 		if (wNew != 0 && hNew != 0 && wOld != wNew || hOld != wOld
 				|| canvas == null) {
-			newCanvas();
-			jsgraphics = new JSGraphics2D(canvas);
+			jsgraphics = new JSGraphics2D(canvas = newCanvas());
 			jsgraphics.setWindowParameters(top.getWidth(), top.getHeight());
-		}
-		if (jsgraphics == null) {
-			canvas = appletViewer.getCanvas();
-			jsgraphics = new JSGraphics2D(canvas);
 		}
 		return jsgraphics;
 	}
 
 
 	public HTML5Canvas newCanvas() {
+		if (html5Applet != null) {
+				canvas = html5Applet._getHtml5Canvas();
+				return canvas;
+			}
 		// tODO - actually, we need to run the code to in SJSApplet to create a new canvas 
 		if (canvasId != null)
 			DOMNode.remove(canvas);
@@ -190,8 +191,7 @@ public class JSFrameViewer implements JSInterface {
 		display = id;
 		canvas = JSComponentUI
 				.createCanvas(id, top.getWidth(), top.getHeight());
-		System.out.println("JSFrameViewer creating new canvas " + top.getWidth() +"  "+ top.getHeight());
-		
+		System.out.println("JSFrameViewer creating new canvas " + top.getWidth() +"  "+ top.getHeight());		
 		return canvas;
 	}
 	

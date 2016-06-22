@@ -3,15 +3,20 @@
 <title>SwingJS test</title>
 <head>
 <meta charset="utf-8" />
-<!-- breaking out the library for debugging -->
+<!-- standard Jquery -->
 <script type="text/javascript" src="../../jquery/jquery.js"></script>
-<script type="text/javascript" src="../../js/SJSjQueryExt.js"></script>
-
-<script type="text/javascript" src="../../js/j2sApplet.js"></script>
-<script type="text/javascript" src="../../js/j2sSwingJS.js"></script>
-<script type="text/javascript" src="../../js/SJSApplet.js"></script>
+<!-- additions for binary synchronous AJAX -->
+<script type="text/javascript" src="../../js/new/SwingJSjQueryExt.js"></script>
+<!-- j2s library (SwingJS adaptation) -->
+<script type="text/javascript" src="../../js/new/j2sApplet.js"></script>
+<!-- code for both SwingJS and Jmol -->
+<script type="text/javascript" src="../../js/new/j2sSwingJS.js"></script>
+<!-- SwingJS and SwingJS._Applet -->
+<script type="text/javascript" src="../../js/new/SwingJSApplet.js"></script>
 
 <script type="text/javascript">
+
+Jmol = J2S; // legacy
 
 J2S._checkLoad = true;
 
@@ -21,15 +26,14 @@ J2S.getProfile() // records repeat calls to overridden or overloaded Java method
 
 // use ?_USE=JAVA or _USE=SIGNED or _USE=HTML5
 
-jmol_isReady = function(applet) {
+j2s_isReady = function(applet) {
 	document.title = (applet._id + " is ready")
 	J2S._getElement(applet, "appletdiv").style.border="1px solid blue"
  
 }		
 
 Info = {
-    code: "test.falstad.Diffraction",
-    useFrame: false,
+    code: "test.falstad.Ripple",
 	width: 700,
 	height: 600,
 	debug: false,
@@ -46,7 +50,7 @@ Info = {
 	disableInitialConsole: false,
 	console:"sysoutdiv",
   useFrame:"false",
-	readyFunction: jmol_isReady,
+	readyFunction: j2s_isReady,
   allowjavascript: true
 }
 
@@ -76,7 +80,7 @@ SwingJS.getApplet("testApplet", Info)
 This is System.out. <a href="javascript:testApplet._clearConsole()">clear it</a> 
 <a href="javascript:alert('The methods listed in the next message are those that are overloaded in such a way -- for example, Color(int r, int g, int b) and Color(float r, float g, float b) -- that make them impossible for Java2Script to differentiate and so must be refactored.'); Clazz.showDuplicates()">Show Duplicates</a>
 <br> <a href="../../j2s" target="_blank">Converted Java class directory</a>
-<br><img src=diffraction.png /> (Java)</div>
+<br><img src=ripple.png /> (Java)</div>
 </div>
 </body>
 </html>

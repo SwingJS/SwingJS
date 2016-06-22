@@ -652,7 +652,7 @@ public class JSToolkit extends SunToolkit {
 		 * 
 		 * @j2sNative
 		 * 
-		 *            Jmol._readyCallback(aname, fname, true,a, me);
+		 *            J2S._readyCallback(aname, fname, true,a, me);
 		 * 
 		 */
 		{
@@ -757,7 +757,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * return Jmol._getFileData(uri);
+		 * return J2S._getFileData(uri);
 		 */
 		{
 			try {
