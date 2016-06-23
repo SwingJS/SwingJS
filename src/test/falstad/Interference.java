@@ -7,7 +7,15 @@ package test.falstad;
 //import javax.swing.applet.Applet --> swingjs.awt
 //
 //import java.awt [Applet, Canvas, Checkbox, Choice, Label, Scrollbar] --> swingjs.awt
-
+//
+//Changed paint() to paintComponent() in BarWavesCanvas and BarWavesFrame
+//
+//Added Container main and added components to main
+//
+//resize and show --> useFrame options
+//
+//added triggerShow()
+//
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -30,6 +38,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.text.NumberFormat;
+
+
 
 
 import javax.sound.sampled.AudioFormat;
@@ -131,6 +141,20 @@ public class Interference extends Applet {
 	    ff.dispose();
 	ff = null;
  }
+ 
+ boolean started = false;
+ 
+ public void paint(Graphics g) {
+	 String s = "Applet is open in a separate window.";
+		if (!started)
+			s = "Applet is starting.";
+		else if (ff == null)
+			s = "Applet is finished.";
+		else if (ff.useFrame)
+			ff.triggerShow();
+		g.drawString(s, 10, 30);
+		super.paint(g);
+ }
 };
 
 class InterferenceFrame extends Frame
@@ -150,6 +174,8 @@ implements ComponentListener, ActionListener, ItemListener,
  InterferenceFrame(Interference a) {
 	super("Interference Applet");
 	applet = a;
+	useFrame = true;
+	showControls = true;
  }
  Interference applet;
  Checkbox soundCheck;
@@ -168,67 +194,109 @@ implements ComponentListener, ActionListener, ItemListener,
 
  InterferenceCanvas cv;
  NumberFormat nf;
+ Container main;
+ boolean showControls;
+ public boolean useFrame;
 
  public void init() {
+	 
+	 try {
+			if (applet != null) {
+				String param = applet.getParameter("useFrame");
+				if (param != null && param.equalsIgnoreCase("false"))
+					useFrame = false;
+				param = applet.getParameter("showControls");
+				if (param != null && param.equalsIgnoreCase("false"))
+					showControls = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (useFrame)
+			main = this;
+		else
+			main = applet;
 	nf = NumberFormat.getInstance();
 	nf.setMaximumFractionDigits(1);
 
 	java2present = true;
 	if (System.getProperty("java.version").indexOf("1.1") == 0)
 	    java2present = false;
-	setLayout(new InterferenceLayout());
+	main.setLayout(new InterferenceLayout());
 	cv = new InterferenceCanvas(this);
 	cv.addComponentListener(this);
 	cv.addMouseMotionListener(this);
 	cv.addMouseListener(this);
-	add(cv);
+	main.add(cv);
 
-	add(soundCheck = new Checkbox("Sound"));
+	main.add(soundCheck = new Checkbox("Sound"));
 	soundCheck.addItemListener(this);
 
-	add(stereoCheck = new Checkbox("Stereo"));
+	main.add(stereoCheck = new Checkbox("Stereo"));
 	stereoCheck.addItemListener(this);
 
-	add(metricCheck = new Checkbox("Metric Units", true));
+	main.add(metricCheck = new Checkbox("Metric Units", true));
 	metricCheck.addItemListener(this);
 
-	add(new Label("Speaker Separation", Label.CENTER));
-	add(speakerSepBar = new Scrollbar(Scrollbar.HORIZONTAL, 68, 1, 1, 600));
+	main.add(new Label("Speaker Separation", Label.CENTER));
+	main.add(speakerSepBar = new Scrollbar(Scrollbar.HORIZONTAL, 68, 1, 1, 600));
 	speakerSepBar.addAdjustmentListener(this);
 
-	add(new Label("Playing Frequency", Label.CENTER));
-	add(freqBar = new Scrollbar(Scrollbar.HORIZONTAL, 750, 1, 0, 1100));
+	main.add(new Label("Playing Frequency", Label.CENTER));
+	main.add(freqBar = new Scrollbar(Scrollbar.HORIZONTAL, 750, 1, 0, 1100));
 	freqBar.addAdjustmentListener(this);
 
-	add(new Label("Phase Difference", Label.CENTER));
-	add(phaseBar = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 0, 100));
+	main.add(new Label("Phase Difference", Label.CENTER));
+	main.add(phaseBar = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 0, 100));
 	phaseBar.addAdjustmentListener(this);
 
-	add(new Label("Balance", Label.CENTER));
-	add(balanceBar = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 0, 100));
+	main.add(new Label("Balance", Label.CENTER));
+	main.add(balanceBar = new Scrollbar(Scrollbar.HORIZONTAL, 50, 1, 0, 100));
 	balanceBar.addAdjustmentListener(this);
 
-	add(new Label("Brightness", Label.CENTER));
-	add(brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 280,
+	main.add(new Label("Brightness", Label.CENTER));
+	main.add(brightnessBar = new Scrollbar(Scrollbar.HORIZONTAL, 280,
 					  1, 1, 1000));
 	brightnessBar.addAdjustmentListener(this);
 
-	add(new Label("View Scale", Label.CENTER));
-	add(scaleBar = new Scrollbar(Scrollbar.HORIZONTAL, 200, 1, 100, 1000));
+	main.add(new Label("View Scale", Label.CENTER));
+	main.add(scaleBar = new Scrollbar(Scrollbar.HORIZONTAL, 200, 1, 100, 1000));
 	scaleBar.addAdjustmentListener(this);
 	balanceBar.disable();
 	phaseBar.disable();
-	add(new Label("http://www.falstad.com", Label.CENTER));
+	main.add(new Label("http://www.falstad.com", Label.CENTER));
 	reinit();
 	cv.setBackground(Color.black);
 	cv.setForeground(Color.lightGray);
-	resize(550, 415);
-	handleResize();
-	show();
+	
+	if (useFrame) {
+		setSize(800, 640);
+		handleResize();
+		Dimension x = getSize();
+		Dimension screen = getToolkit().getScreenSize();
+		setLocation((screen.width - x.width) / 2,
+				(screen.height - x.height) / 2);
+		setVisible(true);
+	} else {
+		setVisible(false);
+		handleResize();
+		applet.validate();
+	}
+//	resize(550, 415);
+//	handleResize();
+//	show();
  }
 
  void reinit() {
  }
+ 
+ boolean shown = false;
+
+	public void triggerShow() {
+		if (!shown)
+			setVisible(true);
+		shown = true;
+	}
  
  void handleResize() {
      Dimension d = winSize = cv.getSize();
