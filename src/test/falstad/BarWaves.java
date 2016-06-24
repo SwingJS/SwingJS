@@ -33,6 +33,9 @@ import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
 import swingjs.awt.Button;
 
+import sun.audio.*;
+
+
 //BarWaves.java (C) 2001 by Paul Falstad, www.falstad.com
 //
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
@@ -1449,8 +1452,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		break;
 	} while (true);
 
-//	AudioDataStream ads = new AudioDataStream(new AudioData(b));
-//	AudioPlayer.player.start(ads);
-//	cv.repaint();
+	AudioDataStream ads = new AudioDataStream(new AudioData(b));
+	AudioPlayer.player.start(ads);
+	cv.repaint();
  }
 };
