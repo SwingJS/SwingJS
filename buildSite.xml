@@ -42,7 +42,7 @@
    	<copy todir="site/swingjs/js">
   	  <fileset dir="jsmoljs">		
   	    <include name="core/**/**" />
-  	  	<include name="j2sjQueryExt.js" />
+  	  	<include name="j2sJQueryExt.js" />
   	    <include name="j2sApplet.js" />
   	    <include name="j2sSwingJS.js" />
   	    <include name="SJSApplet.js" />
