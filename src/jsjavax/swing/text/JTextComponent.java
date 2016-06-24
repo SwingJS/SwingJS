@@ -57,7 +57,6 @@ import jsjavax.swing.KeyStroke;
 import jsjavax.swing.Scrollable;
 import jsjavax.swing.SwingConstants;
 import jsjavax.swing.TransferHandler;
-import jsjavax.swing.UIManager;
 import jsjavax.swing.event.CaretEvent;
 import jsjavax.swing.event.CaretListener;
 import jsjavax.swing.event.ChangeEvent;
