@@ -86,7 +86,7 @@ import swingjs.api.HTML5CanvasContext2D;
 @J2SIgnoreImport(jsjava.awt.AlphaComposite.class)
 public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
-	private int count;
+	private int backgroundTaintCount;
 	
   public int constrainX;
   public int constrainY;
@@ -99,15 +99,15 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	private GraphicsConfiguration gc;
 
 	private BasicStroke currentStroke;
-
-	public int paintState;
-  public int compositeState = Integer.MIN_VALUE;
-  public int strokeState;
-  public int transformState;
-  public int clipState;
+	private Rectangle currentClip;
+	private AlphaComposite currentComposite;
+	private int initialState;
+	
+  //public int strokeState;
+  //public int transformState;
+  //public int clipState;
 
   //public Color foregroundColor;
-
 	boolean isShifted;// private, but only JavaScript
 	private Font font;
 
@@ -146,78 +146,67 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.stroke();
 	}
 
-	public void drawCircle(int x, int y, int diameter) {
-		drawArc(x, y, diameter, diameter, 0, 360);
+	@Override
+	public void drawOval(int left, int top, int width, int height) {
+		if (width == height)
+			doCirc(left, top, width, false);
+		else
+			doArc(left + width/2f, top + height/2f, width, height, 0, 360, false);
 	}
 
-	public void fillCircle(int x, int y, int diameter) {
+	@Override
+	public void fillOval(int left, int top, int width, int height) {
+		if (width == height)
+			doCirc(left, top, width, true);
+		else
+			doArc(left + width/2f, top + height/2f, width, height, 0, 360, true);
+	}
+
+	@Override
+	public void drawArc(int centerX, int centerY, int width, int height, int startAngle,
+			int arcAngle) {
+		doArc(centerX, centerY, width, height, startAngle, arcAngle, false);
+	}
+
+	@Override
+	public void fillArc(int centerX, int centerY, int width, int height, int startAngle,
+			int arcAngle) {
+		doArc(centerX, centerY, width, height, startAngle, arcAngle, true);
+	}
+
+	private void doCirc(int left, int top, int diameter, boolean fill) {
 		double r = diameter / 2f;
 		ctx.beginPath();
-		ctx.arc(x + r, y + r, r, 0, 2 * Math.PI, false);
-		ctx.fill();
+		ctx.arc(left + r, top + r, r, 0, 2 * Math.PI);
+		ctx.closePath();
+		if (fill)
+			ctx.fill();
+		else
+			ctx.stroke();
 	}
 
-	@Override
-	public void drawOval(int x, int y, int width, int height) {
-		if (width == height) {
-			drawCircle(x, y, width);			
-			return;
-		}
-		JSToolkit.notImplemented(null);
-	}
-
-	@Override
-	public void fillOval(int x, int y, int width, int height) {
-		if (width == height) {
-			fillCircle(x, y, width);
-			return;
-		}
-		JSToolkit.notImplemented(null);
-	}
-
-
-	@Override
-	public void fillArc(int x, int y, int width, int height, int startAngle,
-			int arcAngle) {
-		doArc(x, y, width, height, startAngle, arcAngle, true);
-	}
-
-	@Override
-	public void drawArc(int x, int y, int width, int height, int startAngle,
-			int arcAngle) {
-		doArc(x, y, width, height, startAngle, arcAngle, false);
-	}
-
-	private void save() {
-		HTML5CanvasContext2D.saveStroke(ctx, currentStroke);
-		ctx.save();
-	}
-
-	private void restore() {
-		ctx.restore();
-		setStroke(HTML5CanvasContext2D.getSavedStroke(ctx));
-	}
-
-	private void doArc(int x, int y, int width, int height, int startAngle,
-			int arcAngle, boolean fill) {
+	private void doArc(double centerX, double centerY, double width, double height, double startAngle,
+			double arcAngle, boolean fill) {
 		// width
-		boolean isCircle = (arcAngle - startAngle == 360);
-		save();
-		ctx.translate(x, y);
-		ctx.scale(width / height, height);
-		ctx.beginPath();
-		if (fill) {
-			// do something here to fill this arc
+		boolean doClose = (arcAngle - startAngle == 360);
+		ctx.save();
+		{
+			ctx.translate(centerX, centerY);
+			ctx.scale(width / height, 1);
+			ctx.beginPath();
+			ctx.arc(0, 0, height/2f, toRad(startAngle), toRad(arcAngle));
 		}
-		ctx.arc(0.5, 0.5, 0.5, toRad(startAngle), toRad(arcAngle), false);
-		if (isCircle)
+		ctx.restore();
+		if (doClose)
 			ctx.closePath();
-		ctx.stroke();
-		restore();
+		if (fill)
+			ctx.fill();
+		else
+			ctx.stroke();
 	}
 
-	private double toRad(int a) {
-		return a * Math.PI / 180;
+	private double toRad(double a) {
+		return a * (Math.PI / 180);
 	}
 
 	@Override
@@ -251,7 +240,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	public void background(Color bgcolor) {
-		count++;
+		backgroundTaintCount++;
 		backgroundColor = bgcolor;
 		if (bgcolor == null) {
 			/*
@@ -276,35 +265,22 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
-		count++;
+		backgroundTaintCount++;
 		ctx.fillRect(x, y, width, height);
 	}
 
 	public void setGraphicsColor(Color c) {
-		String s = JSToolkit.getCSSColor(c);
-		/**
-		 * @j2sNative this.ctx.fillStyle = s; this.ctx.strokeStyle = s;
-		 */
-		{
-			ctx._setFillStyle(s);
-			ctx._setStrokeStyle(s);
-		}
+		HTML5CanvasContext2D.setColor(ctx, JSToolkit.getCSSColor(c));
 	}
 
 	@Override
 	public void setFont(Font font) {
-		this.font = font;
-		if (ctx == null) // some graphics do not include ctx. 
+		// this equality check speeds mark/reset significantly
+		if (font == this.font)
 			return;
-		String s = JSToolkit.getCanvasFont(font);
-		/**
-		 * @j2sNative
-		 * 
-		 *            this.ctx.font = s;
-		 */
-		{
-			ctx._setFont(s);
-		}
+		this.font = font;
+		if (font != null)
+			HTML5CanvasContext2D.setFont(ctx, JSToolkit.getCanvasFont(font));		
 	}
 
 	public void setStrokeBold(boolean tf) {
@@ -312,15 +288,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private void setLineWidth(double d) {
-		/**
-		 * @j2sNative
-		 * 
-		 *    this.ctx.lineWidth = d;
-		 *            
-		 */
-		{
-			ctx._setLineWidth(d);
-		}
+		HTML5CanvasContext2D.setLineWidth(ctx, d);
 	}
 
 	public void setWindowParameters(int width, int height) {
@@ -407,7 +375,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@SuppressWarnings("unused")
 	@Override
 	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		count++;
+		backgroundTaintCount++;
 		if (img != null) {
 			int[] pixels = null;
 			/**
@@ -445,7 +413,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
-		count++;
+		backgroundTaintCount++;
 		if (img != null) {
 			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
@@ -459,7 +427,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
-		count++;
+		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, observer);
 	}
@@ -467,7 +435,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
-		count++;
+		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, width, height, observer);
 	}
@@ -476,7 +444,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		count++;
+		backgroundTaintCount++;
 		if (img != null) {
 			byte[] bytes = null;
 		  DOMNode imgNode = getImageNode(img);
@@ -490,7 +458,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private DOMNode getImageNode(Image img) {
-		count++;
+		backgroundTaintCount++;
 		DOMNode imgNode = null;
 		/**
 		 * @j2sNative
@@ -506,27 +474,27 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-		count++;
+		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
 	}
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		count++;
+		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 		return false;
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-		count++;
+		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-		count++;
+		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 	}
 
@@ -620,28 +588,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	@Override
-	public void translate(int x, int y) {
-		ctx.translate(x, y);
-	}
-	
-	@Override
-	public void rotate(double radians) {
-		ctx.rotate(radians);
-	}
-
-	@Override
-	public void rotate(double theta, double x, double y) {
-		ctx.translate(x, y);
-        ctx.rotate(theta);
-        ctx.translate(-x, -y);
-	}
-
-	@Override
-	public void scale(double sx, double sy) {
-		ctx.scale(sx, sy);
-	}
-
-	@Override
 	public void setBackground(Color color) {
 		background(color);
 	}
@@ -649,33 +595,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public Color getBackground() {
 		return backgroundColor;
-	}
-
-	@Override
-	public Graphics create() {
-		return (Graphics) clone();
-	}
-
-	@Override
-	public Object clone() {
-		save();
-		JSGraphics2D g = (JSGraphics2D) clone0();
-		g.setStroke((BasicStroke) currentStroke.clone());
-		return g;
-	}
-
-	public int getCount() {
-		int c = count;
-		count = 0;
-		return c;
-	}
-	
-	@Override
-	public void dispose() {
-		if (compositeState >= 0)
-			setComposite(null);
-		restore();
-		//System.out.println("disposed");
 	}
 
 	@Override
@@ -826,19 +745,45 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	@Override
+	public void translate(int x, int y) {
+		ctx.translate(x, y);
+		transform.translate(x, y);
+	}
+	
+	@Override
+	public void rotate(double radians) {
+		ctx.rotate(radians);
+		transform.rotate(radians);
+	}
+
+	@Override
+	public void rotate(double theta, double x, double y) {
+		ctx.translate(x, y);
+		ctx.rotate(theta);
+		ctx.translate(-x, -y);
+		transform.rotate(theta, x, y);
+	}
+
+	@Override
+	public void scale(double sx, double sy) {
+		ctx.scale(sx, sy);
+		transform.scale(sx, sy);
+	}
+
+	@Override
 	public void transform(AffineTransform xform) {
 		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public void setTransform(AffineTransform Tx) {
+		// TODO
 		JSToolkit.notImplemented(null);
 	}
 
 	@Override
 	public AffineTransform getTransform() {
-		JSToolkit.notImplemented(null);
-		return null;
+		return transform;
 	}
 
   /**
@@ -846,8 +791,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
    * rectangle.
    */
   public AffineTransform cloneTransform() {
-		JSToolkit.notImplemented(null);
-    return null;
+  	return (AffineTransform) transform.clone();
   }
 
 	@Override
@@ -895,7 +839,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		return r;
 	}
 
-	Rectangle currentClip;
 	private Rectangle getClipBoundsImpl() {
 		if (currentClip == null) {
 			currentClip = new Rectangle(0, 0, windowWidth, windowHeight);
@@ -905,13 +848,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void setComposite(Composite comp) {
+		// this equality check speeds mark/reset significantly
+		if (comp == this.currentComposite)
+			return;
 		// alpha composite only here
 		int newRule = 0;
-		boolean isValid = (comp == null || (comp instanceof AlphaComposite) && (newRule = ((AlphaComposite) comp).getRule()) != compositeState);
-		if (!isValid)
-			return;
-		if (JSToolkit.setGraphicsCompositeAlpha(this, newRule))
-			compositeState = newRule;
+		boolean isValid = (comp == null || currentComposite == null ||
+				(comp instanceof AlphaComposite)
+				   && (newRule = ((AlphaComposite) comp).getRule()) != currentComposite.getRule());
+		if (isValid && JSToolkit.setGraphicsCompositeAlpha(this, newRule))
+			currentComposite = (AlphaComposite) comp;
 	}
 
 	@Override
@@ -931,4 +877,108 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public HTML5Canvas getCanvas() {
 		return canvas;
 	}
+
+	/**
+	 * used to determine if it is likely that the background was painted
+	 * 
+	 * @return background taint count
+	 */
+	public int getBackgroundCount() {
+		int c = backgroundTaintCount;
+		backgroundTaintCount = 0;
+		return c;
+	}
+	
+	/////////////// saving of the state ////////////////
+
+	/**
+	 * creates a save object to extend the capabilities of context2d.save()
+	 * that brings that into line with Java's graphics2d .create()
+	 * 
+	 * in development -- we need to identify all differences
+	 * 
+	 * 
+	 * @return the length of the ctx._aSaved array after the push
+	 */
+	public int mark() {
+		ctx.save();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("composite", currentComposite);
+		map.put("stroke", currentStroke);
+		map.put("transform", transform); // not implemented
+		map.put("font", font);
+		return HTML5CanvasContext2D.push(ctx, map);
+	}
+
+	/**
+	 * try to equate g.dispose() with ctx.restore().
+	 * @param n0
+	 */
+	public void reset(int n0) {
+		if (n0 < 1)
+			n0 = 1;
+		while (HTML5CanvasContext2D.getSavedLevel(ctx) >= n0) {
+			Map<String, Object> map = HTML5CanvasContext2D.pop(ctx);
+			setComposite((Composite) map.get("composite"));
+			setStroke((Stroke) map.get("stroke"));
+			setTransform((AffineTransform) map.get("transform"));
+			setFont((Font) map.get("font"));
+			ctx.restore();
+		}
+	}
+
+	@Override
+	public Graphics create() {
+		return (Graphics) clone();
+	}
+
+	@Override
+	public Object clone() {
+		int n = mark();
+		JSGraphics2D g = null;
+		/**
+		 * avoid super call to Object.clone();
+		 * 
+		 * @j2sNative
+		 * 
+		 *            g = Clazz.clone(this);
+		 * 
+		 */
+		{
+			g = this; // not passed on to JavaScript
+		}
+		g.transform = new AffineTransform(transform);
+		if (hints != null) {
+			g.hints = (RenderingHints) hints.clone();
+		}
+		/*
+		 * FontInfos are re-used, so must be cloned too, if they are valid, and be
+		 * nulled out if invalid. The implied trade-off is that there is more to be
+		 * gained from re-using these objects than is lost by having to clone them
+		 * when the SG2D is cloned.
+		 */
+		// if (this.fontInfo != null) {
+		// if (this.validFontInfo) {
+		// g.fontInfo = (FontInfo)this.fontInfo.clone();
+		// } else {
+		// g.fontInfo = null;
+		// }
+		// }
+		// if (this.glyphVectorFontInfo != null) {
+		// g.glyphVectorFontInfo =
+		// (FontInfo)this.glyphVectorFontInfo.clone();
+		// g.glyphVectorFRC = this.glyphVectorFRC;
+		// }
+		// g.invalidatePipe();
+		g.setStroke((BasicStroke) currentStroke.clone());
+		g.initialState = n;
+		return g;
+	}
+
+	@Override
+	public void dispose() {
+		reset(initialState);
+	}
+
+
 }
