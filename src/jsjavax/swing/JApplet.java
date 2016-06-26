@@ -544,7 +544,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
     @Override
 		public void repaint(long time, int x, int y, int width, int height) {
       if (RepaintManager.HANDLE_TOP_LEVEL_PAINT) {
-      	System.out.println("repaintNow " + this);
+      	//System.out.println("repaintNow " + this);
           RepaintManager.currentManager(this).addDirtyRegion(
                             this, x, y, width, height);
       }

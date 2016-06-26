@@ -652,27 +652,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	@Override
-	public Graphics createSwingJS() {
-		save();
-		return (JSGraphics2D) clone0();
-	}
-
-	@Override
 	public Graphics create() {
-		save();
-		return cloneMe();
+		return (Graphics) clone();
 	}
 
 	@Override
 	public Object clone() {
-		//System.out.println("new graphics");
 		save();
-		return cloneMe();
-	}
-	
-	
-
-	private JSGraphics2D cloneMe() {
 		JSGraphics2D g = (JSGraphics2D) clone0();
 		g.setStroke((BasicStroke) currentStroke.clone());
 		return g;

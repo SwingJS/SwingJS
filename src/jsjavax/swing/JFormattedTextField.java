@@ -293,7 +293,9 @@ public class JFormattedTextField extends JTextField {
      * value.
      */
     public JFormattedTextField() {
-        super(null, null, 0, "FormattedTextFieldUI");
+        super(null, null, 0);
+        uiClassID = "FormattedTextFieldUI";
+        updateUI();
         enableEvents(AWTEvent.FOCUS_EVENT_MASK);
         setFocusLostBehavior(COMMIT_OR_REVERT);
     }

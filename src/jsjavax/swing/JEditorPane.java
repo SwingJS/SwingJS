@@ -229,7 +229,7 @@ public class JEditorPane extends JTextComponent {
      * The document model is set to <code>null</code>.
      */
     public JEditorPane() {
-    	this(null, null, "EditorPaneUI");
+    	this(null, null);
 //        setFocusCycleRoot(true);
 //        setFocusTraversalPolicy(new LayoutFocusTraversalPolicy() {
 //                public Component getComponentAfter(Container focusCycleRoot,
@@ -293,7 +293,7 @@ public class JEditorPane extends JTextComponent {
      *          or cannot be accessed
      */
     public JEditorPane(URL initialPage) throws IOException {
-        this(null, null, "EditorPane");
+        this(null, null);
         setPage(initialPage);
     }
 
@@ -306,7 +306,7 @@ public class JEditorPane extends JTextComponent {
      *          cannot be accessed
      */
     public JEditorPane(String url) throws IOException {
-        this(null, null, "EditorPane");
+        this(null, null);
         setPage(url);
     }
 
@@ -321,10 +321,11 @@ public class JEditorPane extends JTextComponent {
      *          is <code>null</code>
      */
     public JEditorPane(String type, String text) {
-        this(type, text, "editorPane");
+        this(type, text, "EditorPaneUI");
     }
 
     public JEditorPane(String type, String text, String uid) {
+    	super(uid);
     	if (type != null)
     		setContentType(type);
       if (text != null)

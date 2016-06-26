@@ -934,7 +934,7 @@ public class JSplitPane extends JComponent {
 		SplitPaneUI ui = (SplitPaneUI) getUI();
 
 		if (ui != null) {
-			Graphics tempG = g.createSwingJS();
+			Graphics tempG = g.create();
 			ui.finishedPaintingChildren(this, tempG);
 			tempG.dispose();
 		}

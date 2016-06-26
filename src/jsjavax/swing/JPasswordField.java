@@ -129,7 +129,9 @@ public class JPasswordField extends JTextField {
      *   the component implementation
      */
     public JPasswordField(Document doc, String txt, int columns) {
-        super(doc, txt, columns, "PasswordFieldUI");
+        super(doc, txt, columns);
+    		uiClassID = "PasswordFieldUI";
+    		updateUI();
         // We could either leave this on, which wouldn't be secure,
         // or obscure the composted text, which essentially makes displaying
         // it useless. Therefore, we turn off input methods.

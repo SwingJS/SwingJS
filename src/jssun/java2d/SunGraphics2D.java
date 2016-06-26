@@ -3343,9 +3343,5 @@ public abstract class SunGraphics2D
 //			
 //		}
 //
-//		@Override
-//		public Graphics createSwingJS() {
-//			// TODO Auto-generated method stub
-//			return null;
 //		}
 }

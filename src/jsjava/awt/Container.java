@@ -1833,7 +1833,7 @@ public class Container extends JSComponent {
 		public void paint(Graphics g) {
     	// SwingJS : The developer should override paint() to draw;
     	//this method will take care of all buttons, in case the
-    	//paintComponent() method for them has been overridden.
+    	//paintComponent(g) method for them has been overridden.
 //    	
 //        if (isShowing()) {
 ////            synchronized (this) {

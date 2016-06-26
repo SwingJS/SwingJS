@@ -143,6 +143,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	public void stateChanged(ChangeEvent e) {
 		// from Java
 		int v;
+		System.out.println(id + " stateChange " + e);
 		if ((v = jSlider.getMinimum()) != min)
 			setSliderAttr("min", min = v);
 		if ((v = jSlider.getMaximum()) != max)

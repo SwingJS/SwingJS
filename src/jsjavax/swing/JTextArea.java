@@ -198,7 +198,7 @@ public class JTextArea extends JTextComponent {
      *  arguments are negative.
      */
     public JTextArea(Document doc, String text, int rows, int columns) {
-        super();
+        super("TextAreaUI");
         this.rows = rows;
         this.columns = columns;
         if (doc == null) {

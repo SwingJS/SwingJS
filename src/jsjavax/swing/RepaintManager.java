@@ -429,26 +429,22 @@ public class RepaintManager {
 	 * @see JComponent#repaint
 	 */
 	private void addDirtyRegion0(Container c, int x, int y, int w, int h) {
-		/**
-		 * @j2sNative
-		 * 
-		 * var g = c.getGraphics();
-		 * if (g == null || g.gc == null)return;
-		 * 
-		 */
-		{}
-		
 		/*
 		 * Special cases we don't have to bother with.
 		 */
-		if ((w <= 0) || (h <= 0) || (c == null)) {
+		if (w <= 0 || h <= 0 || c == null 
+				|| c.getWidth() <= 0 || c.getHeight() <= 0)
 			return;
-		}
 
-		if ((c.getWidth() <= 0) || (c.getHeight() <= 0)) {
-			return;
-		}
-
+//		/**
+//		 * @j2sNative
+//		 * 
+//		 * var g = c.getGraphics();
+//		 * if (g == null || g.gc == null)return;
+//		 * 
+//		 */
+//		{}
+//		
 		if (extendDirtyRegion(c, x, y, w, h)) {
 			// Component was already marked as dirty, region has been
 			// extended, no need to continue.

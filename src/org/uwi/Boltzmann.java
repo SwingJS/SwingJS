@@ -200,15 +200,9 @@ public class Boltzmann extends JApplet {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			Object object = event.getSource();
+			initEnvironment();
 			if (object == bStartSim)
 				bStartSim_actionPerformed(event);
-//			else if (object == tEnergy)
-//				tEnergy_actionPerformed(event);
-//			else if (object == tParticles)
-//				tParticles_actionPerformed(event);
-//			else if (object == tCollisions)
-//				tCollisions_actionPerformed(event);
-
 			ShowText.levelInfo.setLength(0);
 		}
 	}
@@ -244,17 +238,18 @@ public class Boltzmann extends JApplet {
 		simThread.start();
 	}
 
-  boolean initEnvironment() {
+
+	boolean initEnvironment() {
 
 		try {
 		int tmp = (Integer.parseInt(tCollisions.getText().trim()));
-		if (tmp >= 200)
+		if (tmp >= 0)
 			maxCollisions = tmp;
 		tmp = (Integer.parseInt(tEnergy.getText().trim()));
 		if (tmp > 0)
 			initialEnergy = tmp;
 		tmp = (Integer.parseInt(tParticles.getText().trim()));
-		if (tmp >= 50)
+		if (tmp >= 0)
 			maxParticles = tmp;
 		} catch (NumberFormatException e) {
 			return false;

@@ -55,7 +55,9 @@ public class Panel extends Container {
     	setLayout(new FlowLayout());
     }
 
-    protected boolean canPaint() {
+    @Override
+		protected boolean canPaint() {
+    	//return this.isContentPane || this.rootPane; ??
 			return isContentPane;
     }
 

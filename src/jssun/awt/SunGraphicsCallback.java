@@ -68,7 +68,7 @@ public abstract class SunGraphicsCallback {
         }
 
         if (clip == null || clip.intersects(bounds)) {
-            Graphics cg = g.createSwingJS();
+            Graphics cg = g.create();
             try {
                 constrainGraphics(cg, bounds);
                 cg.setFont(comp.getFont());

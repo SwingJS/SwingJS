@@ -307,22 +307,31 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 	 * established, and the pluggable UI installed. The component is marked as
 	 * editable. No layout manager is used, because layout is managed by the view
 	 * subsystem of text. The document model is set to <code>null</code>.
+	 * 
+	 * Note that for SwingJS we need JSComponentUI, not ComponentUI
+	 * 
 	 */
 	public JTextComponent() {
-		super();
+		this("JSComponentUI");
 	}
 
-  protected void initTJA(String uid) {
-  		// enable InputMethodEvent for on-the-spot pre-editing
-  		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.INPUT_METHOD_EVENT_MASK);
-  		caretEvent = new MutableCaretEvent(this);
-  		addMouseListener(caretEvent);
-  		addFocusListener(caretEvent);
-  		setEditable(true);
-  		setDragEnabled(false);
-  		setLayout(null); // layout is managed by View hierarchy
-  		uiClassID = uid;
-  		updateUI();
+	/**
+	 * SwingJS sets UID from constructors without a static reference
+	 * 
+	 * @param uid
+	 */
+	protected JTextComponent(String uid) {
+		super();
+		// enable InputMethodEvent for on-the-spot pre-editing
+		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.INPUT_METHOD_EVENT_MASK);
+		caretEvent = new MutableCaretEvent(this);
+		addMouseListener(caretEvent);
+		addFocusListener(caretEvent);
+		setEditable(true);
+		setDragEnabled(false);
+		setLayout(null); // layout is managed by View hierarchy
+		uiClassID = uid;
+		updateUI();
 	}
 
 	/**

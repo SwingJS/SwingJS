@@ -48,7 +48,7 @@ import swingjs.api.JSFunction;
  * @author Bob Hanson
  *
  */
-public abstract class JSComponentUI extends ComponentUI implements ContainerPeer, JSEventHandler {
+public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEventHandler {
 
 	/**
 	 * provides a unique id for any component; set on instantiation
@@ -203,8 +203,8 @@ public abstract class JSComponentUI extends ComponentUI implements ContainerPeer
 		{}
 	}
 
-	protected abstract void installJSUI();
-	protected abstract void uninstallJSUI();
+	protected void installJSUI(){};
+	protected void uninstallJSUI(){};
 	
 	public void installUI(JComponent c) {
 		// already done installJSUI();
@@ -230,7 +230,10 @@ public abstract class JSComponentUI extends ComponentUI implements ContainerPeer
   	isTainted = true;
   }
   
-  public abstract DOMNode createDOMNode();
+  public DOMNode createDOMNode(){
+  	System.out.println("Swingjs WARNING: default JSComponentUI is being used for " + getClass().getName());
+  	return (domNode == null ? domNode = DOMNode.createElement("div", id) : domNode);  	
+  }
 
 	public JSComponentUI set(JComponent target) {
 		c = target;

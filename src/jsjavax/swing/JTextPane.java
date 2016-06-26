@@ -92,8 +92,7 @@ public class JTextPane extends JEditorPane {
      * created and set, and the document model set to <code>null</code>.
      */
     public JTextPane() {
-        super(null, null,"Text PaneUI");
-        
+        super(null, null,"TextPaneUI");        
         EditorKit editorKit = createDefaultEditorKit();
         String contentType = editorKit.getContentType();
         if (contentType != null

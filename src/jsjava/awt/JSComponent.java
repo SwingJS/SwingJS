@@ -28,6 +28,7 @@ import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.plaf.ComponentUI;
+import jssun.awt.ConstrainableGraphics;
 import swingjs.JSAppletViewer;
 import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
@@ -65,16 +66,31 @@ public abstract class JSComponent extends Component {
 	/**
 	 * 
 	 * For SwingJS, we have the graphics without needing to get it from a peer.
-	 * Creates a canvas and graphics context for this component's window or applet 
-	 * at the Applet or Frame level. 
+	 * Creates a canvas and graphics context for this component's window or applet
+	 * at the Applet or Frame level.
 	 * 
 	 */
 	@Override
 	public Graphics getGraphics() {
-		if (!isVisible())
+		if (width == 0 || height == 0 || !isVisible())
 			return null;
-		JSFrameViewer v = getFrameViewer();
-		return (v == null ? null : v.getGraphics());
+		if (frameViewer != null)
+			return frameViewer.getGraphics().create();
+		// This is for a lightweight component, need to
+		// translate coordinate spaces and clip relative to the parent
+		if (parent == null)
+			return null;
+		Graphics g = parent.getGraphics();
+		if (g == null)
+			return null;
+//		if (g instanceof ConstrainableGraphics) {
+//			((ConstrainableGraphics) g).constrain(x, y, width, height);
+//		} else {
+			g.translate(x, y);
+			g.setClip(0, 0, width, height);
+//		}
+		g.setFont(getFont());
+		return g;
 	}
 
   public JSFrameViewer getFrameViewer() {

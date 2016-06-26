@@ -623,6 +623,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor,
          * @since 1.4
          */
         public DefaultTextField(Border border) {
+        	super(null, null, 0);
+        	// UI will be for JTextField
             setBorder(border);
         }
 

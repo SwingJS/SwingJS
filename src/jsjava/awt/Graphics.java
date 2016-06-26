@@ -123,19 +123,8 @@ public abstract class Graphics {
 	 * <code>Graphics</code> object.
 	 * 
 	 * @return a new graphics context that is a copy of this graphics context.
-	 * @deprecated
 	 */
     public abstract Graphics create();
-
-    /**
-     * 
-     * SwingJS name change from "create" to avoid SAEM collision with Graphics.create(clipx,...)
-     * Creates a new <code>Graphics</code> object that is
-     * a copy of this <code>Graphics</code> object.
-     * @return     a new graphics context that is a copy of
-     *                       this graphics context.
-     */
-    public abstract Graphics createSwingJS();
 
     /**
      * Creates a new <code>Graphics</code> object based on this

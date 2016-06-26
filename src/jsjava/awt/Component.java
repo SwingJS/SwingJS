@@ -3050,7 +3050,7 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public void repaint() {
-        repaintImpl(0, 0, 0, width, height);
+        repaint(0, 0, 0, width, height);
     }
 
     /**
@@ -3069,7 +3069,7 @@ protected  transient ComponentPeer peer;
      * @since JDK1.0
      */
     public void repaint(long tm) {
-        repaintImpl(tm, 0, 0, width, height);
+        repaint(tm, 0, 0, width, height);
     }
 
     /**
@@ -3093,7 +3093,7 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public void repaint(int x, int y, int width, int height) {
-        repaintImpl(0, x, y, width, height);
+        repaint(0, x, y, width, height);
     }
 
     /**
@@ -3119,10 +3119,6 @@ protected  transient ComponentPeer peer;
      * @since     JDK1.0
      */
     public void repaint(long tm, int x, int y, int width, int height) {
-    	repaintImpl(tm, x, y, width, height);
-    }
-
-	public void repaintImpl(long tm, int x, int y, int width, int height) {
 		// System.out.println("C repaint " + this.name);
 		if (canPaint()) {
 			// System.out.println("C firing Paint event on " + this.name);

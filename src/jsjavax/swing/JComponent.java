@@ -616,7 +616,7 @@ public abstract class JComponent extends Container {
 	protected void paintComponent(Graphics g) {
 		if (ui != null) {
 			isBackgroundPainted = false;
-			Graphics scratchGraphics = (g == null) ? null : g.createSwingJS();
+			Graphics scratchGraphics = (g == null) ? null : g.create();
 			try {
 				ui.update(scratchGraphics, this);
 				isBackgroundPainted = (((JSGraphics2D)scratchGraphics).getCount() > 0);
@@ -822,7 +822,7 @@ public abstract class JComponent extends Container {
 
 		// just sets font and color
 		Graphics componentGraphics = getComponentGraphics(g);
-		Graphics co = componentGraphics.createSwingJS();
+		Graphics cg = componentGraphics.create();
 		try {
 			// RepaintManager repaintManager = RepaintManager.currentManager(this);
 
@@ -883,8 +883,8 @@ public abstract class JComponent extends Container {
 
 			// if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
 			// if (!printing) {
-			paintComponent(co);
-			paintBorder(co);
+			paintComponent(cg);
+			paintBorder(cg);
 			// }
 			// else {
 			// printComponent(co);
@@ -892,14 +892,14 @@ public abstract class JComponent extends Container {
 			// }
 			// }
 			// if (!printing) {
-			paintChildren(co);
+			paintChildren(cg);
 			// }
 			// else {
 			// printChildren(co);
 			// }
 			// }
 		} finally {
-			co.dispose();
+			cg.dispose();
 			if (shouldClearPaintFlags) {
 				setFlag(ANCESTOR_USING_BUFFER, false);
 				setFlag(IS_PAINTING_TILE, false);
@@ -4819,14 +4819,9 @@ public abstract class JComponent extends Container {
 	 * @see #repaint
 	 */
 	public void paintImmediately(int x, int y, int w, int h) {
-		/**
-		 * @j2sNative
-		 * 
-		 *            if (arguments.length == 1) { var r = x; x = r.x; y = r.y; w =
-		 *            r.width; h = r.height; }
-		 */
-		{
-		}
+		// from RepaintManager
+		// we know the component, but not its full offset, only its
+		// offset from its parent
 		Component c = this;
 		Component parent;
 
@@ -5029,8 +5024,8 @@ public abstract class JComponent extends Container {
 		}
 
 		try {
-			// SwingJS added .createSwingJS()
-			g = safelyGetGraphics(paintingComponent, c).createSwingJS();
+			// SwingJS added .create()
+			g = safelyGetGraphics(paintingComponent, c);
 			try {
 				if (hasBuffer) {
 					RepaintManager rm = RepaintManager.currentManager(bufferedComponent);

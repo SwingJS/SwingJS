@@ -218,43 +218,42 @@ public class JTextField extends JTextComponent implements SwingConstants {
         this(null, text, columns);
     }
 
-    /**
-     * Constructs a new <code>JTextField</code> that uses the given text
-     * storage model and the given number of columns.
-     * This is the constructor through which the other constructors feed.
-     * If the document is <code>null</code>, a default model is created.
-     *
-     * @param doc  the text storage to use; if this is <code>null</code>,
-     *          a default will be provided by calling the
-     *          <code>createDefaultModel</code> method
-     * @param text  the initial string to display, or <code>null</code>
-     * @param columns  the number of columns to use to calculate
-     *   the preferred width >= 0; if <code>columns</code>
-     *   is set to zero, the preferred width will be whatever
-     *   naturally results from the component implementation
-     * @exception IllegalArgumentException if <code>columns</code> < 0
-     */
-    public JTextField(Document doc, String text, int columns) {
-    	this(doc, text, columns, "TextFieldUI");
-    	
-    }
-    JTextField(Document doc, String text, int columns, String sid) {
-    	super();
-    	initTJA(sid);
-        if (columns < 0) {
-            throw new IllegalArgumentException("columns less than zero.");
-        }
-//        visibility = new DefaultBoundedRangeModel();
-//        visibility.addChangeListener(new ScrollRepainter());
-        this.columns = columns;
-        if (doc == null) {
-            doc = createDefaultModel();
-        }
-        setDocument(doc);
-        if (text != null) {
-            setText(text);
-        }
-    }
+	/**
+	 * Constructs a new <code>JTextField</code> that uses the given text storage
+	 * model and the given number of columns. This is the constructor through
+	 * which the other constructors feed. If the document is <code>null</code>, a
+	 * default model is created.
+	 * 
+	 * @param doc
+	 *          the text storage to use; if this is <code>null</code>, a default
+	 *          will be provided by calling the <code>createDefaultModel</code>
+	 *          method
+	 * @param text
+	 *          the initial string to display, or <code>null</code>
+	 * @param columns
+	 *          the number of columns to use to calculate the preferred width >=
+	 *          0; if <code>columns</code> is set to zero, the preferred width
+	 *          will be whatever naturally results from the component
+	 *          implementation
+	 * @exception IllegalArgumentException
+	 *              if <code>columns</code> < 0
+	 */
+	public JTextField(Document doc, String text, int columns) {
+		super("TextFieldUI");
+		if (columns < 0) {
+			throw new IllegalArgumentException("columns less than zero.");
+		}
+		// visibility = new DefaultBoundedRangeModel();
+		// visibility.addChangeListener(new ScrollRepainter());
+		this.columns = columns;
+		if (doc == null) {
+			doc = createDefaultModel();
+		}
+		setDocument(doc);
+		if (text != null) {
+			setText(text);
+		}
+	}
 
     /**
      * Associates the editor with a text document.

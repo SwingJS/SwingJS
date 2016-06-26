@@ -8,7 +8,8 @@ import java.awt.Rectangle;
 import javax.swing.JPanel;
 
 // SwingJS only change was using JPanel instead of Canvas
-
+// reactivated text fields
+// adjusted final title 
 public class BoltzCanvas extends JPanel { // SwingJS was Canvas
   public int maxEnergy;      //Max energy a particle can get
   public int energyLevels[]; //number of particles at each Level
@@ -22,9 +23,11 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 
 	@Override
 	public void paintComponent(Graphics g) {
+		//BH?? g = g.create();
 		g.setColor(getForeground());
 		g.setPaintMode();
 		displayBoltz(g);
+		//BH?? g.dispose();
 	}
 
 	static int nPaint;
@@ -38,8 +41,10 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 		g.setColor(Color.black);
 
 		// Display Axis Labels
-		g.drawString("A Boltzmann Simulation (" + boltzmann.numOfCollisions + ")",
-				r.x + 110, r.y + 10);
+		g.drawString(
+				"A Boltzmann Simulation ("
+						+ (boltzmann.ShowText.levelInfo.length() == 0 ? (boltzmann.maxCollisions - boltzmann.numOfCollisions)
+								: boltzmann.maxCollisions) + ")", r.x + 110, r.y + 10);
 		g.drawString("E", r.x + 5, r.y + 145);
 		g.drawString("No. of Particles", r.x + 110, r.y + 286);
 
@@ -89,7 +94,7 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 						+ ((int) (xScale * energyLevels[i])), curY);
 				if (isMax)
 					g.setColor(Color.RED);
-				
+
 			}
 		}
 	}
