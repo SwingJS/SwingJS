@@ -52,6 +52,7 @@ import sun.audio.*;
 //
 //added triggerShow()
 //
+// AudioDataStream calls removed -BH
 
 class BarWavesCanvas extends Canvas {
  BarWavesFrame pg;
@@ -1452,8 +1453,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		break;
 	} while (true);
 
-	AudioDataStream ads = new AudioDataStream(new AudioData(b));
-	AudioPlayer.player.start(ads);
+	//AudioDataStream ads = new AudioDataStream(new AudioData(b));
+	//AudioPlayer.player.start(ads);
 	cv.repaint();
  }
 };
