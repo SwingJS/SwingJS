@@ -247,6 +247,6 @@ public class A4 implements JSONEncodable, Serializable {
 
   @Override
   public String toJSON() {
-    return "[" + x + "," + y + "," + z + "," + (float) (angle * 180.0 / Math.PI) + "]";
+    return "[" + x + "," + y + "," + z + "," + (float) (angle * (180 / Math.PI)) + "]";
   }
 }

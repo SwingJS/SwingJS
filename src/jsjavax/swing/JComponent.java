@@ -619,7 +619,7 @@ public abstract class JComponent extends Container {
 			Graphics scratchGraphics = (g == null) ? null : g.create();
 			try {
 				ui.update(scratchGraphics, this);
-				isBackgroundPainted = (((JSGraphics2D)scratchGraphics).getCount() > 0);
+				isBackgroundPainted = (((JSGraphics2D)scratchGraphics).getBackgroundCount() > 0);
 			} finally {
 				scratchGraphics.dispose();
 			}
@@ -863,7 +863,7 @@ public abstract class JComponent extends Container {
 			}
 
 			// int bw,bh;
-			// boolean printing = getFlag(IS_PRINTING);
+			boolean printing = getFlag(IS_PRINTING);
 			// if(!printing && repaintManager.isDoubleBufferingEnabled() &&
 			// !getFlag(ANCESTOR_USING_BUFFER) && isDoubleBuffered()) {
 			// repaintManager.beginPaint();
@@ -881,22 +881,20 @@ public abstract class JComponent extends Container {
 			// clipH);
 			// }
 
-			// if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
-			// if (!printing) {
-			paintComponent(cg);
-			paintBorder(cg);
+			//if (!rectangleIsObscured(clipX,clipY,clipW,clipH)) {
+			if (!printing) {
+			  paintComponentSafely(cg);
+			  paintBorderSafely(cg);
+			} else {
+			   printComponentSafely(cg);
+			   printBorderSafely(cg);
+			}
 			// }
-			// else {
-			// printComponent(co);
-			// printBorder(co);
-			// }
-			// }
-			// if (!printing) {
-			paintChildren(cg);
-			// }
-			// else {
-			// printChildren(co);
-			// }
+			if (!printing) {
+			  paintChildren(cg);
+			} else {
+			  printChildren(cg);
+		  }
 			// }
 		} finally {
 			cg.dispose();
@@ -1037,6 +1035,81 @@ public abstract class JComponent extends Container {
 			firePropertyChangeBool("paintingForPrint", true, false);
 		}
 	}
+
+	/**
+	 * In SwingJS we have only one canvas's context2d object, with one 
+	 * save/restore. We add the methods mark() and reset() to track the
+	 * use of g.create() to make sure that the proper number of dispose()
+	 * are generated. It is no problem that we run dispose() on the original
+	 * graphic or on a derivative graphic, as the key information is kept with 
+	 * the canvas, not the graphic itself.
+	 * 
+	 * @author Bob Hanson hansonr@stolaf.edu
+	 * 
+	 * @param g
+	 */
+	private void paintComponentSafely(Graphics g) {
+		int nSave = ((JSGraphics2D) g).mark();
+		paintComponent(g);
+		((JSGraphics2D) g).reset(nSave);
+	}
+
+	/**
+	 * In SwingJS we have only one canvas's context2d object, with one 
+	 * save/restore. We add the methods mark() and reset() to track the
+	 * use of g.create() to make sure that the proper number of dispose()
+	 * are generated. It is no problem that we run dispose() on the original
+	 * graphic or on a derivative graphic, as the key information is kept with 
+	 * the canvas, not the graphic itself.
+	 * 
+	 * @author Bob Hanson hansonr@stolaf.edu
+	 * 
+	 * @param g
+	 */
+	private void printComponentSafely(Graphics g) {
+		int nSave = ((JSGraphics2D) g).mark();
+		printComponent(g);
+		((JSGraphics2D) g).reset(nSave);
+	}
+
+	/**
+	 * In SwingJS we have only one canvas's context2d object, with one 
+	 * save/restore. We add the methods mark() and reset() to track the
+	 * use of g.create() to make sure that the proper number of dispose()
+	 * are generated. It is no problem that we run dispose() on the original
+	 * graphic or on a derivative graphic, as the key information is kept with 
+	 * the canvas, not the graphic itself.
+	 * 
+	 * @author Bob Hanson hansonr@stolaf.edu
+	 * 
+	 * @param g
+	 */
+	private void paintBorderSafely(Graphics g) {
+		int nSave = ((JSGraphics2D) g).mark();
+		printBorder(g);
+		((JSGraphics2D) g).reset(nSave);
+	}
+
+	/**
+	 * In SwingJS we have only one canvas's context2d object, with one 
+	 * save/restore. We add the methods mark() and reset() to track the
+	 * use of g.create() to make sure that the proper number of dispose()
+	 * are generated. It is no problem that we run dispose() on the original
+	 * graphic or on a derivative graphic, as the key information is kept with 
+	 * the canvas, not the graphic itself.
+	 * 
+	 * @author Bob Hanson hansonr@stolaf.edu
+	 * 
+	 * @param g
+	 */
+	private void printBorderSafely(Graphics g) {
+		int nSave = ((JSGraphics2D) g).mark();
+		printBorder(g);
+		((JSGraphics2D) g).reset(nSave);
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	/**
 	 * This is invoked during a printing operation. This is implemented to invoke
@@ -5083,7 +5156,7 @@ public abstract class JComponent extends Container {
 			} else {
 				// Called from paint() (AWT) to repair damage
 				if (!rectangleIsObscured(x, y, w, h)) {
-					paintComponent(g);
+					paintComponentSafely(g);
 					paintBorder(g);
 				}
 				paintChildren(g);

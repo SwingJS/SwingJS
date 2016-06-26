@@ -331,7 +331,7 @@ public class PDFCreator {
       cos = -1;
       break;
     default:
-      float a = (float) (angle / 180.0 * Math.PI);
+      float a = (float) (angle * (Math.PI / 180));
       cos = (float) Math.cos(a);
       sin = (float) Math.sin(a);
       if (Math.abs(cos) < 0.0001)

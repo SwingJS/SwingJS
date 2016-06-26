@@ -1,6 +1,6 @@
 package swingjs.api;
 
-import jsjava.awt.Stroke;
+import java.util.Map;
 
 
 public abstract class HTML5CanvasContext2D {
@@ -17,7 +17,7 @@ public abstract class HTML5CanvasContext2D {
 
 	public abstract void scale(double f, double g);
 
-	public abstract void arc(double x, double y, double width, double startAngle, double  endAngle, boolean fill);
+	public abstract void arc(double centerX, double centerY, double radius, double startAngle, double  endAngle);
 
 	public abstract void closePath();
 
@@ -32,14 +32,6 @@ public abstract class HTML5CanvasContext2D {
 	public abstract void rect(double x, double y, double width, double height);
 
 	public abstract void fillText(String s, double x, double y);
-
-	public abstract void _setLineWidth(double d);
-
-	public abstract void _setFont(String s);
-
-	public abstract void _setFillStyle(String s);
-
-	public abstract void _setStrokeStyle(String s);
 
 	public abstract void fillRect(double x, double y, double width, double height);
 
@@ -76,24 +68,48 @@ public abstract class HTML5CanvasContext2D {
 		}
 	}
 
-	public static void saveStroke(HTML5CanvasContext2D ctx, Stroke s) {
+	/**
+	 * pull one save structure onto the stack array ctx._aSaved
+	 * 
+	 * @param ctx
+	 * @return the length of the stack array after the push
+	 */
+	public static int push(HTML5CanvasContext2D ctx, Map<String, Object> map) {
 		/**
 		 * @j2sNative
 		 * 
-		 *   ctx.currentStroke = s;
+		 * (ctx._aSaved || (ctx._aSaved = [])).push(map); 
+		 * return ctx._aSaved.length;
 		 */
 		{
+			return 0;
 		}
 	}
 
-	public static Stroke getSavedStroke(HTML5CanvasContext2D ctx) {
+	/**
+	 * pull one save structure off the stack array ctx._aSaved
+	 * 
+	 * @param ctx
+	 * @return
+	 */
+	public static Map<String, Object> pop(HTML5CanvasContext2D ctx) {
 		/**
 		 * @j2sNative
 		 * 
-		 *   return ctx.currentStroke;
+		 * return (ctx._aSaved && ctx._aSaved.length > 0 ? ctx._aSaved.pop() : null); 
+		 */
+		{}
+		return null;
+	}
+
+	public static int getSavedLevel(HTML5CanvasContext2D ctx) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return (ctx._aSaved ? ctx._aSaved.length : 0); 
 		 */
 		{
-			return null;
+			return 0;
 		}
 	}
 
@@ -132,5 +148,33 @@ public abstract class HTML5CanvasContext2D {
 		}
 	}
 	
+	public static void setLineWidth(HTML5CanvasContext2D ctx, double d) {
+		/**
+		 * @j2sNative
+		 * 
+		 *    ctx.lineWidth = d;
+		 *            
+		 */
+		{}
+	}
+
+	public static void setFont(HTML5CanvasContext2D ctx, String canvasFont) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            ctx.font = s;
+		 */
+		{}
+	}
+
+	public static void setColor(HTML5CanvasContext2D ctx, String s) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            ctx.fillStyle = ctx.strokeStyle = s;
+		 */
+		{}
+	}
+
 
 }

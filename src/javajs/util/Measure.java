@@ -34,7 +34,7 @@ import javajs.api.Interface;
 
 final public class Measure {
 
-  public final static float radiansPerDegree = (float) (2 * Math.PI / 360);
+  public final static float radiansPerDegree = (float) (Math.PI / 180);
   
   public static float computeAngle(T3 pointA, T3 pointB, T3 pointC, V3 vectorBA, V3 vectorBC, boolean asDegrees) {
     vectorBA.sub2(pointA, pointB);
@@ -142,7 +142,7 @@ final public class Measure {
     vda.sub2(vcb, vab);
     vda.scale(0.5f);
     va_prime_d.scale(theta == 0 ? 0 : (float) (vda.length() / Math.tan(theta
-        / 2 / 180 * Math.PI)));
+        * (Math.PI / 360))));
     V3 r = V3.newV(va_prime_d);
     if (theta != 0)
       r.add(vda);

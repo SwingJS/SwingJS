@@ -23,11 +23,9 @@ public class BoltzCanvas extends JPanel { // SwingJS was Canvas
 
 	@Override
 	public void paintComponent(Graphics g) {
-		//BH?? g = g.create();
 		g.setColor(getForeground());
 		g.setPaintMode();
 		displayBoltz(g);
-		//BH?? g.dispose();
 	}
 
 	static int nPaint;

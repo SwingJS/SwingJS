@@ -6,6 +6,7 @@ import javax.swing.SwingConstants;
 import jsjava.awt.Dimension;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.BoundedRangeModel;
 import jsjavax.swing.JSlider;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
@@ -22,6 +23,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
+	private BoundedRangeModel model;
 
 	public JSSliderUI() {
 		needPreferred = true;
@@ -39,6 +41,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if (isNew) {
 			domNode = wrap("div", id + "_wrap", jqSlider = DOMNode.createElement("div", id));
 			$(domNode).addClass("swingjs");
+			model = js.getModel();
 			orientation = (js.getOrientation() == SwingConstants.VERTICAL ? "vertical" : "horizontal");
 			min = js.getMinimum();
 			max = js.getMaximum();

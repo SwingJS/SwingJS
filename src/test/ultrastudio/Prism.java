@@ -151,8 +151,6 @@ public class Prism extends JComponent {
 		ggg.setColor(Color.ORANGE);
 		ggg.drawLine(E.x, E.y, E.x + 100+width , E.y);
 		
-		ggg = (Graphics2D) ggg.create();
-		
 		double a1 = Math.toRadians(rayEntry);		
 		double dev = delta1(a1);
 		double a2 = a2(a1);
@@ -176,12 +174,15 @@ public class Prism extends JComponent {
 		O.x = A.x + (int) ( ad * Math.sin(AA/2) );
 		O.y = A.y + (int) (ad * Math.cos(AA/2)  );
 		
+		ggg.dispose(); // BH --- must revert in order to return to the original state of g		
 		ggg = (Graphics2D) g.create();
 		ggg.setColor(Color.RED);
 		
-		ggg.rotate(a2 - AA/2, O.x, O.y);
-		ggg.drawLine(O.x, O.y, O.x-200, O.y);
-		
+		if (!Double.isNaN(a2)) { // BH
+			ggg.rotate(a2 - AA/2, O.x, O.y);
+			ggg.drawLine(O.x, O.y, O.x-200, O.y);
+		}		
+		ggg.dispose(); // BH		
 		ggg = (Graphics2D) g.create();
 		ggg.setColor(Color.RED);		
 		
@@ -189,8 +190,10 @@ public class Prism extends JComponent {
 
 		line(ggg, E, O);		
 		
-		ggg.rotate(a2 - AA/2, O.x, O.y);
-		ggg.drawLine(O.x, O.y, O.x+100, O.y);
+		if (!Double.isNaN(a2)) { // BH
+			ggg.rotate(a2 - AA/2, O.x, O.y);
+			ggg.drawLine(O.x, O.y, O.x+100, O.y);
+		}		
 	}
 
 	private void line(Graphics2D g, Point a, Point b) {

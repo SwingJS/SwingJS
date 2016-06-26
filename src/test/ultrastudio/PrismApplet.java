@@ -9,6 +9,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+
+// BH: private static String name(double n) conflicts with java.awt.Component.name
+// BH: ggg.destroy() required before second call to g.create()
 @SuppressWarnings("serial")
 public class PrismApplet extends JApplet {
 
@@ -73,7 +76,7 @@ public class PrismApplet extends JApplet {
 
 	private void updateLabels() {
 		int a1 = angle.getValue();				
-		String nn = name(prism.n);
+		String nn = myName(prism.n);
 		if (nn.length() > 0)
 			nn = ", "+nn;
 		bDensity.setTitle(String.format("Refraction %.3f"+nn, prism.n));
@@ -83,7 +86,7 @@ public class PrismApplet extends JApplet {
 	}
 	
 	//theoretically added to remove Namer dependency
-	private static String name(double n){
+	private static String myName(double n){
 		int d = (int) (n * 10);
 		switch (d) {
 		  case 10: return "air";

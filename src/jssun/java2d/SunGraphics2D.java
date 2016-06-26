@@ -270,44 +270,44 @@ public abstract class SunGraphics2D
     }
     
     protected Object clone0() {
-        try {
-          SunGraphics2D g;
-        	/**
-        	 * avoid super call to Object.clone();
-        	 * @j2sNative
-        	 * 
-        	 * g = Clazz.clone(this);
-        	 * 
-        	 */
-        	{
-            g = (SunGraphics2D) super.clone();
-        	}
-            g.transform = new AffineTransform(this.transform);
-            if (hints != null) {
-                g.hints = (RenderingHints) this.hints.clone();
-            }
-            /* FontInfos are re-used, so must be cloned too, if they
-             * are valid, and be nulled out if invalid.
-             * The implied trade-off is that there is more to be gained
-             * from re-using these objects than is lost by having		 to
-             * clone them when the SG2D is cloned.
-             */
-//            if (this.fontInfo != null) {
-//                if (this.validFontInfo) {
-//                    g.fontInfo = (FontInfo)this.fontInfo.clone();
-//                } else {
-//                    g.fontInfo = null;
-//                }
+//        try {
+//          SunGraphics2D g;
+//        	/**
+//        	 * avoid super call to Object.clone();
+//        	 * @j2sNative
+//        	 * 
+//        	 * g = Clazz.clone(this);
+//        	 * 
+//        	 */
+//        	{
+//            g = (SunGraphics2D) super.clone();
+//        	}
+//            g.transform = new AffineTransform(this.transform);
+//            if (hints != null) {
+//                g.hints = (RenderingHints) this.hints.clone();
 //            }
-//            if (this.glyphVectorFontInfo != null) {
-//                g.glyphVectorFontInfo =
-//                    (FontInfo)this.glyphVectorFontInfo.clone();
-//                g.glyphVectorFRC = this.glyphVectorFRC;
-//            }
-            //g.invalidatePipe();
-            return g;
-        } catch (CloneNotSupportedException e) {
-        }
+//            /* FontInfos are re-used, so must be cloned too, if they
+//             * are valid, and be nulled out if invalid.
+//             * The implied trade-off is that there is more to be gained
+//             * from re-using these objects than is lost by having		 to
+//             * clone them when the SG2D is cloned.
+//             */
+////            if (this.fontInfo != null) {
+////                if (this.validFontInfo) {
+////                    g.fontInfo = (FontInfo)this.fontInfo.clone();
+////                } else {
+////                    g.fontInfo = null;
+////                }
+////            }
+////            if (this.glyphVectorFontInfo != null) {
+////                g.glyphVectorFontInfo =
+////                    (FontInfo)this.glyphVectorFontInfo.clone();
+////                g.glyphVectorFRC = this.glyphVectorFRC;
+////            }
+//            //g.invalidatePipe();
+//            return g;
+//        } catch (CloneNotSupportedException e) {
+//        }
         return null;
     }
 

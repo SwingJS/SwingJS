@@ -28,6 +28,7 @@ package test.falstad;
 //
 // *** BH *** moved subclass BlockAperture up before referencing subclasses ***
 
+// note that static references preclude multiple applets on the same page
 
 import java.awt.Color;
 import java.awt.Component;
@@ -341,11 +342,11 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		handleResize();
 		applet.validate();
 	}
-	
-
-	resize(750, 547);
-	handleResize();
-	show();
+//	
+//
+//	resize(750, 547);
+//	handleResize();
+//	show();
  }
 
  void reinit() {
