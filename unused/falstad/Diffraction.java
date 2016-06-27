@@ -12,7 +12,7 @@ import java.applet.Applet;
 import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Enumeration;
-import java.io.File;
+//import java.io.File;
 import java.util.Random;
 import java.util.Arrays;
 import java.awt.image.*;
