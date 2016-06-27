@@ -911,9 +911,24 @@ public class JSToolkit extends SunToolkit {
 		return ((JSAppletThread) Thread.currentThread()).appletViewer;
 	}
 
-	public static void playAudio(byte[] data, int samplesPerSecond, int bytesPerSample) {
+	/**
+	 * creates and/or just plays an audio file using DOM <audio> element.
+	 * 
+	 * @param format
+	 *          one of: MPG, OGG, WAV, ALAW, ULAW, PCM, FLOAT
+	 * @param data
+	 *          bytes of full MPG, OGG, or WAV formatted data or raw bytes for
+	 *          ALAW - FLOAT. Note that in my experimentation, Firefox accepted
+	 *          only uLAW for 8-bit data. Test file falstad/BarWaves.java gives the
+	 *          uLAW data;
+	 * @param samplesPerSecond
+	 *          0 if full format; otherwise one of 8000 11025 16000 22050 44100
+	 * @param bytesPerSample
+	 *          1 for 8-bit; 2 for 16-bit
+	 */
+	public static void playAudio(String format, byte[] data, int samplesPerSecond, int bytesPerSample) {
 		JSAudio audio = (JSAudio) getInstance("swingjs.JSAudio");
-		audio.playAudio(data, samplesPerSecond, bytesPerSample);
+		audio.playAudio(data, samplesPerSecond, bytesPerSample, format);
 	}
 	
 //	@Override

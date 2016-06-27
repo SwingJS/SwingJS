@@ -57,7 +57,9 @@ import swingjs.awt.Scrollbar;
 //added triggerShow()
 //
 // AudioDataStream calls removed from JS version -BH
-// added JSAudio support; not that mu-law compression is not supported
+
+// added JSAudio support; not that ONLY 8-bit mu-law compression is supported by browsers
+
 // and this.isJava both turns that off and selects swingjs.JSToolkit.playAudio instead of AudioDataStream. 
 // however, we could fake those.
 
@@ -270,7 +272,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
 	main.add(new Label("Base Frequency", Label.CENTER));
 	main.add(baseFreqBar = new Scrollbar(Scrollbar.HORIZONTAL,
-					84, 12, 30, 168));
+					105, 12, 30, 168));
 	baseFreqBar.addAdjustmentListener(this);
 	baseFreqBar.disable();
 
@@ -1399,9 +1401,9 @@ private boolean isJava = true;
 				if (dy < -127 || dy > 127)
 					failed = true;
 				else {
-					b[ii] = (byte) (isJava ? to_ulaw[128 + (int) dy] : dy);
-					if (ii < 100)
-						System.out.println(ii + " " + b[ii]);
+					b[ii] = (byte) to_ulaw[128 + (int) dy];
+//					if (ii < 100)
+//						System.out.println(ii + " " + b[ii]);
 				}
 			}
 			sndmin /= scale;
@@ -1421,12 +1423,11 @@ private boolean isJava = true;
 			 * 
 			 */
 			{
-				JSToolkit.playAudio(b, 8000, 1);
 				AudioDataStream ads = new AudioDataStream(new AudioData(b));
 				AudioPlayer.player.start(ads);
 			}
 		} else {
-			JSToolkit.playAudio(b, 8000, 1);
+			JSToolkit.playAudio("uLAW", b, 8000, 1);
 		}
 		cv.repaint();
 	}
