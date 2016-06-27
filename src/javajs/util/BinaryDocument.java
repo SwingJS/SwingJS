@@ -26,6 +26,7 @@ package javajs.util;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Map;
 
 
@@ -101,12 +102,12 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
   
   @Override
-  public byte readByte() throws Exception {
+  public byte readByte() throws IOException {
     nBytes++;
     return ioReadByte();
   }
 
-  private byte ioReadByte() throws Exception {
+  private byte ioReadByte() throws IOException {
     byte b = stream.readByte();
     if (out != null)
       out.writeByteAsInt(b);
@@ -114,13 +115,13 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
 
   @Override
-  public int readByteArray(byte[] b, int off, int len) throws Exception {
+  public int readByteArray(byte[] b, int off, int len) throws IOException {
     int n = ioRead(b, off, len);
     nBytes += n;
     return n;
   }
 
-  private int ioRead(byte[] b, int off, int len) throws Exception {
+  private int ioRead(byte[] b, int off, int len) throws IOException {
     int m = 0;
     while (len > 0) {
       int n = stream.read(b, off, len);
@@ -135,19 +136,23 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     return m;
   }
 
-  public void writeBytes(byte[] b, int off, int n) throws Exception {
+  public void writeString(String s) throws IOException {
+  	byte[] b = s.getBytes();
+    out.write(b, 0, b.length);
+  }
+  public void writeBytes(byte[] b, int off, int n) throws IOException {
     out.write(b, off, n);
   }
 
   @Override
-  public String readString(int nChar) throws Exception {
+  public String readString(int nChar) throws IOException {
     byte[] temp = new byte[nChar];
     int n = readByteArray(temp, 0, nChar);
     return new String(temp, 0, n, "UTF-8");
   }
   
   @Override
-  public short readShort() throws Exception {
+  public short readShort() throws IOException {
     nBytes += 2;
     short n = (isBigEndian ? ioReadShort()
         : (short) ((ioReadByte() & 0xff) 
@@ -162,7 +167,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     }
   }
 
-  private short ioReadShort() throws Exception {
+  private short ioReadShort() throws IOException {
     short b = stream.readShort();
     if (out != null)
       writeShort(b);
@@ -170,36 +175,48 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
 
 
-  public void writeShort(short i) throws Exception {
-    out.writeByteAsInt(i >> 8);
-    out.writeByteAsInt(i);
+  public void writeShort(short i) throws IOException {
+  	if (out.bigEndian) {
+  		out.writeByteAsInt(i >> 8);
+  		out.writeByteAsInt(i);
+  	} else {
+      out.writeByteAsInt(i);
+      out.writeByteAsInt(i >> 8);  		
+  	}
   }
 
   @Override
-  public int readIntLE() throws Exception {
+  public int readIntLE() throws IOException {
     nBytes += 4;
     return readLEInt();
   }
   
   @Override
-  public int readInt() throws Exception {
+  public int readInt() throws IOException {
     nBytes += 4;
     return (isBigEndian ? ioReadInt() : readLEInt());
   }
   
-  private int ioReadInt() throws Exception {
+  private int ioReadInt() throws IOException {
     int i = stream.readInt();
     if (out != null)
       writeInt(i);
     return i;
   }
 
-  public void writeInt(int i) throws Exception {
-    out.writeByteAsInt(i >> 24);
-    out.writeByteAsInt(i >> 16);
-    out.writeByteAsInt(i >> 8);
-    out.writeByteAsInt(i);
-  }
+	public void writeInt(int i) throws IOException {
+		if (out.bigEndian) {
+			out.writeByteAsInt(i >> 24);
+			out.writeByteAsInt(i >> 16);
+			out.writeByteAsInt(i >> 8);
+			out.writeByteAsInt(i);
+		} else {
+			out.writeByteAsInt(i);
+			out.writeByteAsInt(i >> 8);
+			out.writeByteAsInt(i >> 16);
+			out.writeByteAsInt(i >> 24);
+		}
+	}
 
   @Override
   public int swapBytesI(int n) {
@@ -217,7 +234,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
 
   
   @Override
-  public int readUnsignedShort() throws Exception {
+  public int readUnsignedShort() throws IOException {
     nBytes += 2;
     int a = (ioReadByte() & 0xff);
     int b = (ioReadByte() & 0xff);
@@ -225,7 +242,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
   
   @Override
-  public long readLong() throws Exception {
+  public long readLong() throws IOException {
     nBytes += 8;
     return (isBigEndian ? ioReadLong()
        : ((((long) ioReadByte()) & 0xff)
@@ -238,19 +255,31 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
         | (((long) ioReadByte()) & 0xff) << 54));
   }
 
-  private long ioReadLong() throws Exception {
+  private long ioReadLong() throws IOException {
     long b = stream.readLong();
     if (out != null)
       writeLong(b);
     return b;
   }
 
-  public void writeLong(long b) throws Exception {
-    writeInt((int)((b >> 32) & 0xFFFFFFFFl));
-    writeInt((int)(b & 0xFFFFFFFFl));
+  public void writeLong(long b) throws IOException {
+  	if (out.bigEndian) {
+	    writeInt((int)((b >> 32) & 0xFFFFFFFFl));
+	    writeInt((int)(b & 0xFFFFFFFFl));
+  	} else {
+  		out.writeByteAsInt((int) (b >> 56));
+  		out.writeByteAsInt((int) (b >> 48));
+  		out.writeByteAsInt((int) (b >> 40));
+  		out.writeByteAsInt((int) (b >> 32));
+  		out.writeByteAsInt((int) (b >> 24));
+  		out.writeByteAsInt((int) (b >> 16));
+  		out.writeByteAsInt((int) (b >> 8));
+  		out.writeByteAsInt((int) b);
+  	}
+  	
   }
 
-  private int readLEInt() throws Exception {
+  private int readLEInt() throws IOException {
     ioRead(t8, 0, 4);
     return bytesToInt(t8, 0, false);
   }
@@ -258,12 +287,12 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   byte[] t8 = new byte[8];
   
   @Override
-  public float readFloat() throws Exception {
+  public float readFloat() throws IOException {
     return intToFloat(readInt());
   }
 
   @Override
-  public double readDouble() throws Exception {
+  public double readDouble() throws IOException {
     /**
      * 
      * reading the float equivalent here in JavaScript
@@ -280,14 +309,14 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     }
   }
   
-  private double ioReadDouble() throws Exception {
+  private double ioReadDouble() throws IOException {
     double d = stream.readDouble();
     if (out != null)
       writeLong(Double.doubleToRawLongBits(d));
     return d;
   }
 
-  private long readLELong() throws Exception {
+  private long readLELong() throws IOException {
     return ((((long) ioReadByte()) & 0xff)
           | (((long) ioReadByte()) & 0xff) << 8
           | (((long) ioReadByte()) & 0xff) << 16 

@@ -24,16 +24,20 @@ import java.awt.event.MouseMotionListener;
 import java.util.Random;
 import java.util.Vector;
 
+import sun.audio.AudioData;
+import sun.audio.AudioDataStream;
+import sun.audio.AudioPlayer;
+
+import swingjs.J2SIgnoreImport;
+import swingjs.JSToolkit;
 import swingjs.awt.Applet;
+import swingjs.awt.Button;
 import swingjs.awt.Canvas;
 import swingjs.awt.Checkbox;
 import swingjs.awt.Choice;
 import swingjs.awt.Frame;
 import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
-import swingjs.awt.Button;
-
-import sun.audio.*;
 
 
 //BarWaves.java (C) 2001 by Paul Falstad, www.falstad.com
@@ -52,71 +56,14 @@ import sun.audio.*;
 //
 //added triggerShow()
 //
-// AudioDataStream calls removed -BH
+// AudioDataStream calls removed from JS version -BH
+// added JSAudio support; not that mu-law compression is not supported
+// and this.isJava both turns that off and selects swingjs.JSToolkit.playAudio instead of AudioDataStream. 
+// however, we could fake those.
 
-class BarWavesCanvas extends Canvas {
- BarWavesFrame pg;
- BarWavesCanvas(BarWavesFrame p) {
-	pg = p;
- }
- public Dimension getPreferredSize() {
-	return new Dimension(300,400);
- }
- public void update(Graphics g) {
-	pg.updateBarWaves(g);
- }
- public void paintComponent(Graphics g) {
-	pg.updateBarWaves(g);
- }
-};
+// removed System.out.println business
 
-class BarWavesLayout implements LayoutManager {
- public BarWavesLayout() {}
- public void addLayoutComponent(String name, Component c) {}
- public void removeLayoutComponent(Component c) {}
- public Dimension preferredLayoutSize(Container target) {
-	return new Dimension(500, 500);
- }
- public Dimension minimumLayoutSize(Container target) {
-	return new Dimension(100,100);
- }
- public void layoutContainer(Container target) {
-	int barwidth = 0;
-	int i;
-	for (i = 1; i < target.getComponentCount(); i++) {
-	    Component m = target.getComponent(i);
-	    if (m.isVisible()) {
-		Dimension d = m.getPreferredSize();
-		if (d.width > barwidth)
-		    barwidth = d.width;
-	    }
-	}
-	Insets insets = target.insets();
-	int targetw = target.size().width - insets.left - insets.right;
-	int cw = targetw-barwidth;
-	int targeth = target.size().height - (insets.top+insets.bottom);
-	target.getComponent(0).move(insets.left, insets.top);
-	target.getComponent(0).resize(cw, targeth);
-	cw += insets.left;
-	int h = insets.top;
-	for (i = 1; i < target.getComponentCount(); i++) {
-	    Component m = target.getComponent(i);
-	    if (m.isVisible()) {
-		Dimension d = m.getPreferredSize();
-		if (m instanceof Scrollbar)
-		    d.width = barwidth;
-		if (m instanceof Label) {
-		    h += d.height/5;
-		    d.width = barwidth;
-		}
-		m.move(cw, h);
-		m.resize(d.width, d.height);
-		h += d.height;
-	    }
-	}
- }
-};
-
+	@J2SIgnoreImport({AudioDataStream.class, AudioPlayer.class, AudioData.class})
 public class BarWaves extends Applet {
  static BarWavesFrame mf;
  void destroyFrame() {
@@ -868,7 +815,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  }
 
  public void adjustmentValueChanged(AdjustmentEvent e) {
-	System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
+	//System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	if (e.getSource() == dampingBar || e.getSource() == speedBar)
 	    setDamping();
 	if (e.getSource() == loadBar)
@@ -1034,84 +981,85 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    matrix[r][i] += mult;
  }
 
- void genModes() {
-	int n = sampleCount-1;
-	double matrix[][] = new double[n+1][n+1];
-	double d[] = new double[n+1];
-	double e[] = new double[n+1];
-	int i, j;
-	for (i = 1; i <= n; i++)
-	    setup.doMatrixStep(matrix, i, n);
+	void genModes() {
+		int n = sampleCount - 1;
+		double matrix[][] = new double[n + 1][n + 1];
+		double d[] = new double[n + 1];
+		double e[] = new double[n + 1];
+		int i, j;
+		for (i = 1; i <= n; i++)
+			setup.doMatrixStep(matrix, i, n);
 
-	if (setup instanceof StringSetup) {
-	    if (setup.leftBoundary() == BOUND_FREE)
-		matrix[1][1]--;
-	    if (setup.rightBoundary() == BOUND_FREE)
-		matrix[n][n]--;
+		if (setup instanceof StringSetup) {
+			if (setup.leftBoundary() == BOUND_FREE)
+				matrix[1][1]--;
+			if (setup.rightBoundary() == BOUND_FREE)
+				matrix[n][n]--;
+		}
+
+//		for (j = 1; j <= n; j++) {
+//			for (i = 1; i <= n; i++) {
+//				System.out.print(matrix[i][j] + " ");
+//			}
+//			System.out.print("\n");
+//		}
+
+		tred2(matrix, n, d, e);
+		tqli(d, e, n, matrix);
+
+		modeCount = sampleCount - 1;
+		omega = new double[modeCount];
+
+		// now get the eigenvalues and sort them
+		int omegamap[] = new int[sampleCount];
+		for (i = j = 0; i != n; i++) {
+			if (d[i + 1] < 1e-8) {
+				modeCount--;
+				continue;
+			}
+			omega[j] = java.lang.Math.sqrt(d[i + 1]);
+			omegamap[j] = i;
+			j++;
+		}
+
+		int si, sj;
+		// sort the omegas
+		for (si = 1; si < modeCount; si++) {
+			double v = omega[si];
+			int vm = omegamap[si];
+			sj = si;
+			while (omega[sj - 1] > v) {
+				omega[sj] = omega[sj - 1];
+				omegamap[sj] = omegamap[sj - 1];
+				sj--;
+				if (sj <= 0)
+					break;
+			}
+			omega[sj] = v;
+			omegamap[sj] = vm;
+		}
+
+		modeTable = new double[sampleCount + 1][modeCount];
+		modeNorms = new double[modeCount];
+		for (i = 0; i != modeCount; i++) {
+			int om = omegamap[i] + 1;
+			double maxf = 0;
+			for (j = 0; j != sampleCount; j++) {
+				modeTable[j][i] = matrix[j][om];
+				if (modeTable[j][i] > maxf)
+					maxf = modeTable[j][i];
+				if (-modeTable[j][i] > maxf)
+					maxf = -modeTable[j][i];
+			}
+			modeNorms[i] = 1 / (maxf * maxf);
+			for (j = 0; j != sampleCount; j++)
+				modeTable[j][i] /= maxf;
+		}
+
+		double mult = 1 / omega[0];
+		for (i = 0; i != modeCount; i++)
+			omega[i] *= mult;
 	}
-
-	for (j = 1; j <= n; j++) {
-	    for (i = 1; i <= n; i++) {
-		System.out.print(matrix[i][j] + " ");
-	    }
-	    System.out.print("\n");
-	    }
-
-	tred2(matrix, n, d, e);
-	tqli(d, e, n, matrix);
-
-	modeCount = sampleCount-1;
-	omega = new double[modeCount];
-
-	// now get the eigenvalues and sort them
-	int omegamap[] = new int[sampleCount];
-	for (i = j = 0; i != n; i++) {
-	    if (d[i+1] < 1e-8) {
-		modeCount--;
-		continue;
-	    }
-	    omega[j] = java.lang.Math.sqrt(d[i+1]);
-	    omegamap[j] = i;
-	    j++;
-	}
-
-	int si, sj;
-	// sort the omegas
-	for (si = 1; si < modeCount; si++) {
-	    double v = omega[si];
-	    int vm = omegamap[si];
-	    sj = si;
-	    while (omega[sj-1] > v) {
-		omega[sj] = omega[sj-1];
-		omegamap[sj] = omegamap[sj-1];
-		sj--;
-		if (sj <= 0) break;
-	    }
-	    omega[sj] = v;
-	    omegamap[sj] = vm;
-	}
-
-	modeTable = new double[sampleCount+1][modeCount];
-	modeNorms = new double[modeCount];
-	for (i = 0; i != modeCount; i++) {
-	    int om = omegamap[i]+1;
-	    double maxf = 0;
-	    for (j = 0; j != sampleCount; j++) {
-		modeTable[j][i] = matrix[j][om];
-		if (modeTable[j][i] > maxf)
-		    maxf = modeTable[j][i];
-		if (-modeTable[j][i] > maxf)
-		    maxf = -modeTable[j][i];
-	    }
-	    modeNorms[i] = 1/(maxf*maxf);
-	    for (j = 0; j != sampleCount; j++)
-		modeTable[j][i] /= maxf;
-	}
-
-	double mult = 1/omega[0];
-	for (i = 0; i != modeCount; i++)
-	    omega[i] *= mult;
- }
 
  
  void tred2(double a[][], int n, double d[], double e[]) {
@@ -1378,83 +1326,170 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
  double sndmin, sndmax;
 
+private boolean isJava = true;
+
  int getFreq(int n) {
 	double stepsize = java.lang.Math.log(2)/12;
 	double freq = java.lang.Math.exp(baseFreqBar.getValue()*stepsize);
 	return (int) (freq*omega[n]);
  }
 
- void doPlay() {
-	final int rate = 8000;
-	final int sampcount = rate;
+	void doPlay() {
+		/**
+		 * @j2sNative
+		 * 
+		 *            this.isJava = false;
+		 * 
+		 */
+		{
+			isJava = true;
+		}
+		final int rate = 8000;
+		final int sampcount = rate;
 
-	byte b[] = new byte[sampcount];
-	
-	double stepsize = java.lang.Math.log(2)/12;
-	double freq = java.lang.Math.exp(baseFreqBar.getValue()*stepsize);
-	double n = 2*pi*freq/rate;
-	n /= omega[0];
-	// filter out frequencies above Nyquist freq
-	double maxomega = pi/n;
-	int m = modeCount;
-	while (m > 0 && omega[m-1] > maxomega)
-	    m--;
-	if (m == 0)
-	    return;
-	// filter out frequencies less than 20 Hz (we do that so that
-	// they do not throw off the bounds checking of the waveform)
-	int m0 = 0;
-	// freq = rate*omega*n/(2*pi)
-	double minomega = 20*2*pi/(rate*n);
-	while (m0 < m && omega[m0] < minomega)
-	    m0++;
-	if (m0 == m)
-	    return;
-	boolean failed;
-	int i;
-	int sampWindow = rate/40;
-	int offset = 0;
-	double lastscale = 1000;
-	double mag[] = new double[modeCount];
-	for (i = 0; i != modeCount; i++)
-	    mag[i] = magcoef[i];
-	do {
-	    failed = false;
-	    double mn = (-sndmin > sndmax) ? -sndmin : sndmax;
-	    if (mn < .02)
-		mn = .02;
-	    double scale = 126/mn;
-	    if (scale > lastscale)
-		scale = lastscale;
-	    sndmin = sndmax = 0;
-	    for (i = 0; i != sampWindow; i++) {
-		double dy = 0;
-		int j;
-		int ii = i+offset;
-		for (j = m0; j != m; j++)
-		    dy += mag[j] * java.lang.Math.sin(ii*n*omega[j])*scale;
-		if (dy < sndmin)
-		    sndmin = dy;
-		if (dy > sndmax)
-		    sndmax = dy;
-		if (dy < -127 || dy > 127)
-		    failed = true;
-		else
-		    b[ii] = (byte) to_ulaw[128+(int) dy];
-	    }
-	    sndmin /= scale;
-	    sndmax /= scale;
-	    if (failed)
-		continue;
-	    offset += sampWindow;
-	    for (i = 0; i != modeCount; i++)
-		mag[i] *= dampcoef[i];
-	    if (offset >= sampcount)
-		break;
-	} while (true);
+		byte b[] = new byte[sampcount];
 
-	//AudioDataStream ads = new AudioDataStream(new AudioData(b));
-	//AudioPlayer.player.start(ads);
-	cv.repaint();
- }
+		double stepsize = java.lang.Math.log(2) / 12;
+		double freq = java.lang.Math.exp(baseFreqBar.getValue() * stepsize);
+		double n = 2 * pi * freq / rate;
+		n /= omega[0];
+		// filter out frequencies above Nyquist freq
+		double maxomega = pi / n;
+		int m = modeCount;
+		while (m > 0 && omega[m - 1] > maxomega)
+			m--;
+		if (m == 0)
+			return;
+		// filter out frequencies less than 20 Hz (we do that so that
+		// they do not throw off the bounds checking of the waveform)
+		int m0 = 0;
+		// freq = rate*omega*n/(2*pi)
+		double minomega = 20 * 2 * pi / (rate * n);
+		while (m0 < m && omega[m0] < minomega)
+			m0++;
+		if (m0 == m)
+			return;
+		boolean failed;
+		int i;
+		int sampWindow = rate / 40;
+		int offset = 0;
+		double lastscale = 1000;
+		double mag[] = new double[modeCount];
+		for (i = 0; i != modeCount; i++)
+			mag[i] = magcoef[i];
+		do {
+			failed = false;
+			double mn = (-sndmin > sndmax) ? -sndmin : sndmax;
+			if (mn < .02)
+				mn = .02;
+			double scale = 126 / mn;
+			if (scale > lastscale)
+				scale = lastscale;
+			sndmin = sndmax = 0;
+			for (i = 0; i != sampWindow; i++) {
+				double dy = 0;
+				int j;
+				int ii = i + offset;
+				for (j = m0; j != m; j++)
+					dy += mag[j] * java.lang.Math.sin(ii * n * omega[j]) * scale;
+				if (dy < sndmin)
+					sndmin = dy;
+				if (dy > sndmax)
+					sndmax = dy;
+				if (dy < -127 || dy > 127)
+					failed = true;
+				else
+					b[ii] = (byte) (isJava ? to_ulaw[128 + (int) dy] : dy);
+			}
+			sndmin /= scale;
+			sndmax /= scale;
+			if (failed)
+				continue;
+			offset += sampWindow;
+			for (i = 0; i != modeCount; i++)
+				mag[i] *= dampcoef[i];
+			if (offset >= sampcount)
+				break;
+		} while (true);
+
+		if (isJava) {
+			/**
+			 * @j2sNative
+			 * 
+			 */
+			{
+				JSToolkit.playAudio(b, 8000, 1);
+				AudioDataStream ads = new AudioDataStream(new AudioData(b));
+				AudioPlayer.player.start(ads);
+			}
+		} else {
+			JSToolkit.playAudio(b, 8000, 1);
+		}
+		cv.repaint();
+	}
+
+ class BarWavesCanvas extends Canvas {
+	 BarWavesFrame pg;
+	 BarWavesCanvas(BarWavesFrame p) {
+		pg = p;
+	 }
+	 public Dimension getPreferredSize() {
+		return new Dimension(300,400);
+	 }
+	 public void update(Graphics g) {
+		pg.updateBarWaves(g);
+	 }
+	 public void paintComponent(Graphics g) {
+		pg.updateBarWaves(g);
+	 }
+	};
+
+	class BarWavesLayout implements LayoutManager {
+	 public BarWavesLayout() {}
+	 public void addLayoutComponent(String name, Component c) {}
+	 public void removeLayoutComponent(Component c) {}
+	 public Dimension preferredLayoutSize(Container target) {
+		return new Dimension(500, 500);
+	 }
+	 public Dimension minimumLayoutSize(Container target) {
+		return new Dimension(100,100);
+	 }
+	 public void layoutContainer(Container target) {
+		int barwidth = 0;
+		int i;
+		for (i = 1; i < target.getComponentCount(); i++) {
+		    Component m = target.getComponent(i);
+		    if (m.isVisible()) {
+			Dimension d = m.getPreferredSize();
+			if (d.width > barwidth)
+			    barwidth = d.width;
+		    }
+		}
+		Insets insets = target.insets();
+		int targetw = target.size().width - insets.left - insets.right;
+		int cw = targetw-barwidth;
+		int targeth = target.size().height - (insets.top+insets.bottom);
+		target.getComponent(0).move(insets.left, insets.top);
+		target.getComponent(0).resize(cw, targeth);
+		cw += insets.left;
+		int h = insets.top;
+		for (i = 1; i < target.getComponentCount(); i++) {
+		    Component m = target.getComponent(i);
+		    if (m.isVisible()) {
+			Dimension d = m.getPreferredSize();
+			if (m instanceof Scrollbar)
+			    d.width = barwidth;
+			if (m instanceof Label) {
+			    h += d.height/5;
+			    d.width = barwidth;
+			}
+			m.move(cw, h);
+			m.resize(d.width, d.height);
+			h += d.height;
+		    }
+		}
+	 }
+	};
+
+
 };

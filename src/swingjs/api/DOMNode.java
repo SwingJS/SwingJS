@@ -115,17 +115,25 @@ public abstract class DOMNode {
 		return obj;
 	}
 
+	public static DOMNode setAttrs(DOMNode obj, String... attr) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            for (var i = 0; i < attr.length;) { 
+		 *            obj[attr[i++]] = attr[i++]; }
+		 * 
+		 */
+		{
+		}
+		return obj;
+	}
 
 	public static DOMNode setStyles(DOMNode obj, String... attr) {
 		/**
 		 * @j2sNative
 		 * 
 		 *            for (var i = 0; i < attr.length;) {
-		 * 
-		 *            //System.out.println(["DOMNode.setStyles ",attr[i],attr[i+1]])
-		 *            ;
-		 * 
-		 *            obj.style[attr[i++]] = attr[i++]; }
+		 *             obj.style[attr[i++]] = attr[i++]; }
 		 * 
 		 */
 		{
@@ -172,5 +180,17 @@ public abstract class DOMNode {
 		return setStyles(node, "z-index", "" + z);
 	}
 
-
+	public static void playWav(String filePath) {
+		DOMNode node = DOMNode.createElement("audio", "jsaudio");
+		DOMNode.setAttrs(node, "controls", "true", "src", filePath, "type",
+				"audio/wav");
+		/**
+		 * @j2sNative
+		 * 
+		 *            node.play();
+		 * 
+		 */
+		{
+		}
+	}
 }

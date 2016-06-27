@@ -910,6 +910,11 @@ public class JSToolkit extends SunToolkit {
 	public static JSAppletViewer getAppletViewer() {
 		return ((JSAppletThread) Thread.currentThread()).appletViewer;
 	}
+
+	public static void playAudio(byte[] data, int samplesPerSecond, int bytesPerSample) {
+		JSAudio audio = (JSAudio) getInstance("swingjs.JSAudio");
+		audio.playAudio(data, samplesPerSecond, bytesPerSample);
+	}
 	
 //	@Override
 //	protected MenuBarPeer createMenuBar(MenuBar target) {

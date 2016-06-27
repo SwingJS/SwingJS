@@ -1,5 +1,6 @@
 package javajs.util;
 
+
 public class BC {
 
   public BC() {
@@ -26,7 +27,7 @@ public class BC {
     }
   }
 
-  public static float intToFloat(int x) throws Exception {
+  public static float intToFloat(int x) {
     /**
      * see http://en.wikipedia.org/wiki/Binary32
      * 

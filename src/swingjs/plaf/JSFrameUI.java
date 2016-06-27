@@ -103,12 +103,10 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.add(closerWrap, closerNode);
 			contentNode = DOMNode.createElement("div", id+"_content");
 			DOMNode.setPositionAbsolute(contentNode, 0, 0);
-			DOMNode.setAttr(contentNode, "width",  "" + f.getWidth());
-			DOMNode.setAttr(contentNode, "height", "" + f.getHeight());
+			DOMNode.setAttrs(contentNode, "width",  "" + f.getWidth(), "height", "" + f.getHeight());
 			Insets s = getInsets();
 			DOMNode.setPositionAbsolute(frameNode,  f.getY() - s.top, f.getX() - s.left);
-			DOMNode.setAttr(frameNode, "width",  "" + f.getWidth() + s.left + s.right);
-			DOMNode.setAttr(frameNode, "height", "" + f.getHeight() + s.top + s.bottom);
+			DOMNode.setAttrs(frameNode, "width",  "" + f.getWidth() + s.left + s.right, "height", "" + f.getHeight() + s.top + s.bottom);
 			
 			
 			DOMNode.add(frameNode, contentNode);

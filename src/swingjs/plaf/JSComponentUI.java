@@ -1012,8 +1012,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	public static HTML5Canvas createCanvas(String id, int width, int height) {
 		DOMNode node = DOMNode.createElement("canvas", id);
 		DOMNode.setPositionAbsolute(node, 0, 0);
-		DOMNode.setAttr(node, "width", "100%");
-		DOMNode.setAttr(node, "height", "100%");
+		DOMNode.setAttrs(node, "width", "100%", "height", "100%");
 		return (HTML5Canvas) node;
 	}
 	

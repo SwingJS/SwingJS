@@ -62,7 +62,12 @@ public class OC extends OutputStream {
 	private boolean isBase64;
 	private OutputStream os0;
 	private byte[] bytes; // preset bytes; output only
+	
+	public boolean bigEndian = true;
   
+  public void setBigEndian(boolean TF) {
+  	bigEndian = TF;
+  }
   public OC setParams(BytePoster bytePoster, String fileName,
                                      boolean asWriter, OutputStream os) {
     this.bytePoster = bytePoster;
