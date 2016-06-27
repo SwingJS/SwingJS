@@ -1398,8 +1398,11 @@ private boolean isJava = true;
 					sndmax = dy;
 				if (dy < -127 || dy > 127)
 					failed = true;
-				else
+				else {
 					b[ii] = (byte) (isJava ? to_ulaw[128 + (int) dy] : dy);
+					if (ii < 100)
+						System.out.println(ii + " " + b[ii]);
+				}
 			}
 			sndmin /= scale;
 			sndmax /= scale;
