@@ -372,8 +372,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	cv.setForeground(Color.lightGray);
 
 	resize(800, 700);
-	handleResize();
 	show();
+	handleResize();
 	
 	finished = true;
  }
@@ -696,13 +696,13 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  long lastTime;
 
  public void updateQuantumOsc(Graphics realg) {
-	Graphics g = dbimage.getGraphics();
 	if (winSize == null || winSize.width == 0) {
 	    // this works around some weird bug in IE which causes the
 	    // applet to not show up properly sometimes.
 	    handleResize();
 	    return;
 	}
+	Graphics g = dbimage.getGraphics();
 	boolean allQuiet = true;
 	double tadd = 0;
 	if (!stoppedCheck.getState() && !dragging) {
