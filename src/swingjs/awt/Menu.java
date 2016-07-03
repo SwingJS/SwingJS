@@ -14,4 +14,8 @@ public class Menu extends JMenu {
 		String s = null;
 	}
 
+	public int countItems() {
+		return super.getComponentCount();
+	}
+
 }
