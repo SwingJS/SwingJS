@@ -805,6 +805,12 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
  long lastTime;
  public void updateQuantumCirc(Graphics realg) {
+		if (winSize == null || winSize.width == 0) {
+	    // this works around some weird bug in IE which causes the
+	    // applet to not show up properly sometimes.
+	    handleResize();
+	    return;
+	}
 	Graphics g = dbimage.getGraphics();
 	if (winSize == null || winSize.width == 0 || dbimage == null)
 	    return;
