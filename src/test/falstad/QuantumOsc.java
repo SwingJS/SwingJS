@@ -702,6 +702,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    handleResize();
 	    return;
 	}
+	// next line moved here, after winSize check -- BH
 	Graphics g = dbimage.getGraphics();
 	boolean allQuiet = true;
 	double tadd = 0;
