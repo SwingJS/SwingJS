@@ -3,6 +3,10 @@ Notes
 
 PROGRESS
 ========
+BH 7/4/2016 1:36:20 PM  --  j2s bug #23 inner/anonymous class may reference wrong superclass instance
+BH 7/4/2016 10:22:39 AM  -- j2s bug #22 final vars not passed to local class	
+
+
 6/01/2015 BH -- development has shifted for the summer to the "near" branch.
                 working applet development can be followed at
                 http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples
@@ -486,6 +490,42 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#23 inner/anonymous class may reference wrong superclass instance
+
+When an anonymous class is created in an inner class (Dialog) of an outer
+class (Frame) that has a common superclass as the inner class, 
+the callback array b$[] will be filled with the wrong super class instance 
+
+Solution: fixed in j2sSwingJS
+
+#22 final vars not passed to local class	
+
+ void doDispose() {
+		final Component me = this;
+
+		class DisposeAction implements Runnable {
+      ...
+    }
+    ...
+ }    
+
+does not pass final variable "me" to DisposeAction
+
+solution: recast as:
+
+
+ void doDispose() {
+		final Component me = this;
+
+		Runnable r = new Runnable {
+      ...
+    }
+    ...
+ }    
+
+
+
+
 #21 (byte) ignored so that 0xFF remains 0xFF.
 
 With the implementation of Int8Array in j2sJmol, it becomes more important to consider
