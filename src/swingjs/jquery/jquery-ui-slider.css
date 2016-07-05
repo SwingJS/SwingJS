@@ -5,7 +5,7 @@
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
 /* BH */
-.ui-slider-horizontal { height: .3em; top: 30%;margin:0px .8em}
+.ui-slider-horizontal { height: .3em; top: 20%;margin:0px .8em}
 .ui-slider-horizontal .ui-slider-handle { top: -.25em; margin-left: -.3em; }
 .ui-slider-horizontal .ui-slider-range { top: 0.1em; height: 30%; }
 .ui-slider-horizontal .ui-slider-range-min { left: 0; }
@@ -16,6 +16,10 @@
 .ui-slider-vertical .ui-slider-range { left: 0.1em; width: 30%; }
 .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
 .ui-slider-vertical .ui-slider-range-max { top: 0; }
+
+/*Tick Marks
+----------------------------------*/
+.ui-slider-tick-mark{ display:inline-block; width:1px; background: black; height:5px; position: absolute; top: .8em; }
 
 
 /* Layout helpers
