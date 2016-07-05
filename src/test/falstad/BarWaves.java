@@ -42,30 +42,29 @@ import swingjs.awt.Scrollbar;
 
 //BarWaves.java (C) 2001 by Paul Falstad, www.falstad.com
 //
-//Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
+//Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
-//import javax.swing.applet.Applet --> swingjs.awt
-//
-//import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> swingjs.awt
-//
-//Changed paint() to paintComponent() in BarWavesCanvas and BarWavesFrame
-//
-//Added Container main and added components to main
-//
-//resize and show --> useFrame options
-//
-//added triggerShow()
-//
-// AudioDataStream calls removed from JS version -BH
 
+//AWT -> SWING
+//
+// import javax.swing.applet.Applet --> swingjs.awt
+// import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> swingjs.awt
+// Changed paint() to paintComponent() in BarWavesCanvas and BarWavesFrame
+// changed createImage to cv.createImage  
+
+//useFrame option
+//
+// Added Container main and added components to main
+// resize and show --> useFrame options
+// added triggerShow()
+//
+
+// Java --> SwingJS
+// AudioDataStream calls removed from JS version using J2SIgnore -BH
 // added JSAudio support; not that ONLY 8-bit mu-law compression is supported by browsers
-
 // and this.isJava both turns that off and selects swingjs.JSToolkit.playAudio instead of AudioDataStream. 
-// however, we could fake those.
 
-// removed System.out.println business
-
-	@J2SIgnoreImport({AudioDataStream.class, AudioPlayer.class, AudioData.class})
+@J2SIgnoreImport({AudioDataStream.class, AudioPlayer.class, AudioData.class})
 public class BarWaves extends Applet {
  static BarWavesFrame mf;
  void destroyFrame() {
@@ -73,10 +72,13 @@ public class BarWaves extends Applet {
 	    mf.dispose();
 	mf = null;
  }
- public void init() {
-	mf = new BarWavesFrame(this);
-	mf.init();
+ public void start() {
+		mf = new BarWavesFrame(this);
+		mf.init();
+		mf.handleResize();
+	 System.out.println("init");
  }
+
  public static void main(String args[]) {
      mf = new BarWavesFrame(null);
      mf.init();
@@ -91,6 +93,7 @@ public class BarWaves extends Applet {
  boolean started = false;
  
  public void paint(Graphics g) {
+	 System.out.println(mf.cv.getSize());
 	 String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -299,8 +302,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	random = new Random();
 	setDamping();
 	reinit();
-	cv.setBackground(Color.black);
-	cv.setForeground(Color.lightGray);
+  cv.setBackground(Color.black);
+  cv.setForeground(Color.lightGray);
 	
 	if (useFrame) {
 		setSize(800, 640);
@@ -334,9 +337,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
  void handleResize() {
      Dimension d = winSize = cv.getSize();
+     System.out.println(d);
 	if (winSize.width == 0)
 	    return;
-	dbimage = createImage(d.width, d.height);
+	dbimage = cv.createImage(d.width, d.height);
  }
  
  void doFundamental() {
@@ -389,7 +393,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  }
 
  public void updateBarWaves(Graphics realg) {
-	if (winSize == null || winSize.width == 0)
+	if (winSize == null || winSize.width == 0 || dbimage == null)
 	    return;
 	Graphics g = dbimage.getGraphics();
 	boolean allQuiet = true;
@@ -1440,9 +1444,9 @@ private boolean isJava = true;
 	 public Dimension getPreferredSize() {
 		return new Dimension(300,400);
 	 }
-	 public void update(Graphics g) {
-		pg.updateBarWaves(g);
-	 }
+//	 public void update(Graphics g) {
+//		pg.updateBarWaves(g);
+//	 }
 	 public void paintComponent(Graphics g) {
 		pg.updateBarWaves(g);
 	 }
@@ -1494,6 +1498,5 @@ private boolean isJava = true;
 		}
 	 }
 	};
-
 
 };
