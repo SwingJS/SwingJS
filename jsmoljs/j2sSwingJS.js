@@ -6,6 +6,8 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 7/4/2016 1:34:18 PM Frame1$Dialog1 uses wrong instance of Window in prepareCallbacks #23 
+ // BH 7/3/2016 3:49:29 PM tweak of delegate, replacing evaluateMethod with findMethod
  // BH 6/16/2016 5:55:33 PM adds Class.isInstance(obj)
  // BH 6/16/2016 3:27:50 PM adds System property java.code.version == "50" (Java 1.6)
  // BH 6/16/2016 1:47:41 PM fixing java.lang.reflect.Constructor and java.lang.reflect.Method
@@ -197,7 +199,7 @@ Clazz.declareInterface = function (prefix, name, interfacez, _declareInterface) 
 	decorateFunction(clazzFun, prefix, name);
 	if (interfacez)
 		implementOf(clazzFun, interfacez);
-  clazzFun.$$INT$$ = true;
+  clazzFun.$$INT$$ = clazzFun;
 	return clazzFun;
 };
 
@@ -344,7 +346,13 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig) {
 		//Generate a new delegating method for the class
     var isConstruct = (funName == "construct"); 
     Clazz.saemCount1++;
-  	var delegate = function () { return executeMethod.apply(this, [clazzThis, arguments]) };
+  	var delegate = function () {    
+      var f = findMethod(this, clazzThis, arguments);
+      if (f == -1 || f == null)
+        return null;
+      var args = fixNullParams(arguments);
+      return f.apply(this, args); 
+    };
   	delegate.claxxRef = clazzThis;
   	delegate.methodName = funName;
     delegate.sigs = {};
@@ -376,6 +384,21 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig) {
 	return f$;
 };                     
 
+var findMethod = function(obj, clazzThis, args) {
+  var pTypes = getParamTypes(args);
+	var dsig = clazzThis.__CLASS_NAME__ + pTypes.typeString;
+  var dsigs = arguments.callee.caller.dsigs; // delegate.dsigs
+  var f = dsigs[dsig]; 
+  if (!f) {
+    Clazz.saemCount2++;
+    var claxxRef = arguments.callee.caller.claxxRef;
+    var fxName = arguments.callee.caller.methodName;
+    var fx = obj[fxName];
+	  var f = bindMethod(claxxRef, fx, fxName, args, pTypes);
+    dsigs[dsig] = (f == null ? -1 : f);
+  }
+  return f;
+}
 /*
  * Override the existed methods which are in the same name.
  * Overriding methods is provided for the purpose that the JavaScript
@@ -453,15 +476,14 @@ Clazz.prepareCallback = function (innerObj, args) {
 	var outerObj = args[0];
 	//var cbName = "b$"; // "callbacks";
 	if (innerObj && outerObj && outerObj !== window) {
-		var className = Clazz.getClassName(outerObj, true);	
-    var obs = innerObj.b$ = appendMap({}, innerObj.b$);
+		var className = Clazz.getClassName(outerObj, true);
+    // BH -- must first transfer the outer class's own callbacks
+    var obs = innerObj.b$ = appendMap({}, outerObj.b$);        
   	// all references to outer class and its superclass objects must be here as well
-    // but these are all to the outer object? why? - BH
 		obs[className] = outerObj;
 		var clazz = Clazz.getClass(outerObj);
 		while (clazz.superClazz)
       obs[Clazz.getClassName(clazz = clazz.superClazz, true)] = outerObj;
-    appendMap(obs, outerObj.b$);
 	}
 	// note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
 	for (var i = 0, n = args.length - 1; i < n; i++)
@@ -482,52 +504,48 @@ Clazz.prepareCallback = function (innerObj, args) {
 Clazz.innerTypeInstance = function (clazzInner, outerObj, finalVars) {
 	if (!clazzInner)
 		clazzInner = arguments.callee.caller;
-	var obj;
-	if (finalVars || outerObj.$finals) {
-			obj = new clazzInner(outerObj, Clazz.inheritArgs);
-		// f$ is short for the once choosen "$finals"
+  var n = arguments.length - 3;
+  var haveFinals = (finalVars || outerObj.$finals); 
+	if (!haveFinals) {
+    // actual number of arguments is arguments.length - 3;
+		switch (n) {
+		case 0:
+      // null constructor
+			return new clazzInner(outerObj);
+		case 1:
+      // when arguments[3] === Clazz.inheritArgs (i.e. arguments[3].$J2SNOCREATE$ == true), 
+      // we have an inner class that is a subclass of another inner class, 
+      // and we are simply creating a new instance, not actually running its constructor 
+			return (outerObj.__CLASS_NAME__ == clazzInner.__CLASS_NAME__ 
+          && arguments[3].$J2SNOCREATE$ ? outerObj : new clazzInner(outerObj, arguments[3]));
+		case 2:
+			return new clazzInner(outerObj, arguments[3], arguments[4]);
+		case 3:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5]);
+		case 4:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6]);
+		case 5:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6], arguments[7]);
+		case 6:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6], arguments[7], arguments[8]);
+		case 7:
+			return new clazzInner(outerObj, arguments[3], arguments[4], 
+					arguments[5], arguments[6], arguments[7], arguments[8],
+					arguments[9]);
+		}
+	}
+	var obj = new clazzInner(outerObj, Clazz.inheritArgs);
+  if (haveFinals) {
+		// f$ is short for the once-chosen "$finals"
     var of$ = outerObj.f$;
     obj.f$ = (finalVars ? 
       (of$ ? appendMap(appendMap({}, of$), finalVars) : finalVars)
       : of$ ? of$ : null);
-	} else {
-		switch (arguments.length) {
-		case 3:
-			return new clazzInner(outerObj);
-		case 4:
-      if (arguments[3] === Clazz.inheritArgs) {
-      // we should only be doing a field prep? this next check is never true??
-      System.out.println([outerObj.__CLASS_NAME__ , clazzInner.__CLASS_NAME__])
-      //debugger;
-      }      
-			return (
-      outerObj.__CLASS_NAME__ == clazzInner.__CLASS_NAME__ && 
-      arguments[3] === Clazz.inheritArgs ? outerObj : new clazzInner(outerObj, arguments[3]));
-		case 5:
-			return new clazzInner(outerObj, arguments[3], arguments[4]);
-		case 6:
-			return new clazzInner(outerObj, arguments[3], arguments[4], 
-					arguments[5]);
-		case 7:
-			return new clazzInner(outerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6]);
-		case 8:
-			return new clazzInner(outerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6], arguments[7]);
-		case 9:
-			return new clazzInner(outerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6], arguments[7], arguments[8]);
-		case 10:
-			return new clazzInner(outerObj, arguments[3], arguments[4], 
-					arguments[5], arguments[6], arguments[7], arguments[8],
-					arguments[9]);
-		default:
-			//Should construct instance manually.
-			obj = new clazzInner(outerObj, Clazz.inheritArgs);
-			break;
-		}
-	}
-	var n = arguments.length - 3;
+  }
 	var args = new Array(n);
 	for (var i = n; --i >= 0;)
 		args[i] = arguments[i + 3];
@@ -800,25 +818,6 @@ var extractClassName = function(clazzStr) {
 		: clazzName);
 }
 
-var executeMethod = function(clazzThis, args) {
-  var pTypes = getParamTypes(args);
-	var dsig = clazzThis.__CLASS_NAME__ + pTypes.typeString;
-  var dsigs = arguments.callee.caller.dsigs; // delegate.dsigs
-  var f = dsigs[dsig]; 
-  if (!f) {
-    Clazz.saemCount2++;
-    var claxxRef = arguments.callee.caller.claxxRef;
-    var fxName = arguments.callee.caller.methodName;
-    var fx = this[fxName];
-	  var f = bindMethod(claxxRef, fx, fxName, args, pTypes);
-    dsigs[dsig] = (f == null ? -1 : f);
-  }
-  if (f == -1 || f == null)
-    return null;
-  args = fixNullParams(args);
-  return f.apply(this, args); 
-}
-
 /**
  * A substantially modified search for the appropriate function prototype, 
  * find the method with the same method name and the same parameter signatures
@@ -972,7 +971,7 @@ var getInheritedLevel = function (clazzTarget, clazzBase, isTgtStr, isBaseStr) {
 			for (var i = 0; i < impls.length; i++) {
 				var implsLevel = equalsOrExtendsLevel (impls[i], clazzBase);
 				if (implsLevel >= 0)
-					return level + implsLevel + 1 + (clazzBase.$$INT$$ ? -0.2 : 0);
+					return level + implsLevel + 1 + (clazzBase.$$INT$$ == clazzBase ? -0.2 : 0);
 			}
 		}
 		zzalc = zzalc.superClazz;

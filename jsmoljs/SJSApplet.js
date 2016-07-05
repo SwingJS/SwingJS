@@ -1,4 +1,6 @@
-// SwingJSApplet.js
+// SJSApplet.js
+
+// generic SwingJS Applet
 
 // BH 7/24/2015 9:09:39 AM allows setting Info.resourcePath
 // BH 4/28/2015 10:15:32 PM adds getAppletHtml 

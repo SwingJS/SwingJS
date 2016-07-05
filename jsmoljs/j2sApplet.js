@@ -1,4 +1,6 @@
 
+// was JmolCore.js
+
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required, but it's not defined.")
 
 self.J2S || (J2S = {});
@@ -11,7 +13,7 @@ J2S = (function(document) {
 			rear:z++,
 			header:z++,
 			main:z++,
-			image:z++,
+			content:z++,
 			front:z++,
 			fileOpener:z++,
 			coverImage:z++,
@@ -596,6 +598,7 @@ J2S = (function(document) {
 	}
 
 	J2S._getFileData = function(fileName, fSuccess, doProcess) {
+    // swingjs.api.J2SInterface
 		// use host-server PHP relay if not from this host
 		var isBinary = J2S._isBinaryUrl(fileName);
 		var isPDB = (fileName.indexOf("pdb.gz") >= 0 && fileName.indexOf("http://www.rcsb.org/pdb/files/") == 0);
@@ -788,7 +791,7 @@ J2S = (function(document) {
 			a.click();
 			a.remove();		
 		} else {
-		// Asynchronous outputto be reflected as a download
+		// Asynchronous output to be reflected as a download
 			if (!J2S._formdiv) {
 					var sform = '<div id="__jsmolformdiv__" style="display:none">\
 						<form id="__jsmolform__" method="post" target="_blank" action="">\
@@ -825,7 +828,22 @@ J2S = (function(document) {
 
 	////////////// applet start-up functionality //////////////
 
-	J2S._setConsoleDiv = function (d) {
+  J2S._findApplet = function(name) {
+    // swingjs.api.J2SInterface
+		return J2S._applets[name.split("_object")[0]];  
+  }
+  
+  J2S._getJavaVersion = function() {
+    // swingjs.api.J2SInterface
+    return J2S._version;
+  }
+
+	J2S._setAppletThread = function(appletName, myThread) {
+    // swingjs.api.J2SInterface
+    J2S._applets[appletName + "_thread"] = myThread;
+	}
+
+	J2S._setConsoleDiv = function(d) {
 		if (!self.Clazz)return;
 		Clazz.setConsoleDiv(d);
 	}
@@ -835,6 +853,7 @@ J2S = (function(document) {
 	} 
 
 	J2S._readyCallback = function (appId,fullId,isReady,javaApplet,javaAppletPanel) {
+    // swingjs.api.J2SInterface
 		appId = appId.split("_object")[0];
     var applet = J2S._applets[appId];
 		isReady = (isReady.booleanValue ? isReady.booleanValue() : isReady);
@@ -1009,7 +1028,7 @@ J2S = (function(document) {
 		try {
 			if (applet._appletPanel) applet._appletPanel.destroy();
 			applet._applet = null;
-			J2S._unsetMouse(applet._canvas)
+			J2S._unsetMouse(applet._mouseInterface)
 			applet._canvas = null;
 			var n = 0;
 			for (var i = 0; i < J2S._syncedApplets.length; i++) {
@@ -1092,6 +1111,146 @@ J2S = (function(document) {
 
 	//////////////////// mouse events //////////////////////
 
+	J2S._jsSetMouse = function(who, isSwing) {
+      // swingjs.api.J2SInterface
+    var doIgnore 
+      = function(ev) { return (!ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
+
+		J2S.$bind(who, 'mousedown touchstart', function(ev) {
+      if (doIgnore(ev))
+        return true;
+			J2S._setMouseOwner(who, true);
+			ev.stopPropagation();
+      var ui = ev.target["data-UI"];
+      if (!ui || !ui.handleJSEvent(who, 501, ev)) 
+  			ev.preventDefault();
+			who.isDragging = true;
+			if ((ev.type == "touchstart") && J2S._gestureUpdate(who, ev))
+				return !!ui;
+			J2S._setConsoleDiv(who.applet._console);
+			var xym = J2S._jsGetXY(who, ev);
+			if(xym) {
+		  	if (ev.button != 2 && J2S.Swing) // older Jmol "jsSwing" idea -- still used in Jmol
+          J2S.Swing.hideMenus(who.applet);
+        who.applet._processEvent(501, xym, ev, who._frameViewer); //java.awt.Event.MOUSE_DOWN
+      }
+			return !!ui;
+		});
+    
+		J2S.$bind(who, 'mouseup touchend', function(ev) {
+      if (doIgnore(ev))
+        return true;
+			J2S._setMouseOwner(null);
+			ev.stopPropagation();
+      var ui = ev.target["data-UI"];
+      if (!ui || !ui.handleJSEvent(who, 502, ev))
+  			ev.preventDefault();
+			who.isDragging = false;
+			if (ev.type == "touchend" && J2S._gestureUpdate(who, ev))
+				return !!ui;
+			var xym = J2S._jsGetXY(who, ev);
+			if(xym)
+  			who.applet._processEvent(502, xym, ev, who._frameViewer);//java.awt.Event.MOUSE_UP
+			return !!ui;
+		});
+    
+		J2S.$bind(who, 'mousemove touchmove', function(ev) { // touchmove
+      if (doIgnore(ev))
+        return true;
+		  // defer to console or menu when dragging within this who
+			if (J2S._mouseOwner && J2S._mouseOwner != who && J2S._mouseOwner.isDragging) {
+        if (!J2S._mouseOwner.mouseMove)
+          return true;
+	   			J2S._mouseOwner.mouseMove(ev);
+				return false;
+			}
+			return J2S._drag(who, ev);
+		});
+		
+		J2S.$bind(who, 'DOMMouseScroll mousewheel', function(ev) { // Zoom
+      if (doIgnore(ev))
+        return true;
+			ev.stopPropagation();
+			ev.preventDefault();
+			// Webkit or Firefox
+			who.isDragging = false;
+			var oe = ev.originalEvent;
+			var scroll = (oe.detail ? oe.detail : (J2S.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
+			var modifiers = J2S._jsGetMouseModifiers(ev);
+			who.applet._processEvent(-1,[scroll < 0 ? -1 : 1,0,modifiers], ev, who._frameViewer);
+			return false;
+		});
+
+		// context menu is fired on mouse down, not up, and it's handled already anyway.
+
+		J2S.$bind(who, "contextmenu", function() {return false;});
+
+		J2S.$bind(who, 'mouseout', function(ev) {
+      if (doIgnore(ev))
+        return true;
+      if (J2S._mouseOwner && !J2S._mouseOwner.mouseMove) 
+        J2S._setMouseOwner(null);
+			if (who.applet._appletPanel)
+				who.applet._appletPanel.startHoverWatcher(false);
+			//who.isDragging = false;
+			var xym = J2S._jsGetXY(who, ev);
+			if (!xym)
+				return false;
+			//who.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
+			//who.applet._processEvent(505, xym, ev);//J.api.Event.MOUSE_EXITED
+			return false;
+		});
+
+		J2S.$bind(who, 'mouseenter', function(ev) {
+      if (doIgnore(ev))
+        return true;
+			if (who.applet._appletPanel)
+				who.applet._appletPanel.startHoverWatcher(true);
+			if (ev.buttons === 0 || ev.which === 0) {
+				who.isDragging = false;
+				var xym = J2S._jsGetXY(who, ev);
+				if (!xym)
+					return false;
+				who.applet._processEvent(504, xym, ev, who._frameViewer);//J.api.Event.MOUSE_ENTERED	
+				who.applet._processEvent(502, xym, ev, who._frameViewer);//J.api.Event.MOUSE_UP
+				return false;
+			}
+		});
+
+    if (!isSwing) {
+    	J2S.$bind(who, 'mousemoveoutjsmol', function(evspecial, target, ev) {
+          if (doIgnore(ev))
+            return true;
+    		if (who == J2S._mouseOwner && who.isDragging)
+    			return J2S._drag(who, ev);
+        return true;
+    	});
+  
+  		if (who.applet._is2D)
+  			J2S.$resize(function() {
+  				if (!who.applet)
+  					return;
+  				who.applet._resize();
+  			});
+    } 
+		J2S.$bind('body', 'mouseup touchend', function(ev) {
+      if (doIgnore(ev))
+        return true;
+			if (who.applet)
+				who.isDragging = false;
+			J2S._setMouseOwner(null);
+      return true;
+		});
+
+	}
+
+	J2S._jsUnsetMouse = function(who) {
+    // swingjs.api.J2SInterface
+  	who.applet = null;
+		J2S.$bind(who, 'mousedown touchstart mousemove touchmove mouseup touchend DOMMouseScroll mousewheel contextmenu mouseout mouseenter mousemoveoutjsmol', null);
+		J2S._setMouseOwner(null);
+	}
+
 	J2S._setMouseOwner = function(who, tf) {
 		if (who == null || tf)
 			J2S._mouseOwner = who;
@@ -1121,11 +1280,11 @@ J2S = (function(document) {
 		return modifiers;
 	}
 
-	J2S._jsGetXY = function(canvas, ev) {
-		if (!canvas.applet._ready || J2S._touching && ev.type.indexOf("touch") < 0)
+	J2S._jsGetXY = function(who, ev) {
+		if (!who.applet._ready || J2S._touching && ev.type.indexOf("touch") < 0)
 			return false;
 		//ev.preventDefault(); // removed 5/9/2015 -- caused loss of focus on text-box clicking in SwingJS
-		var offsets = J2S.$offset(canvas.id);
+		var offsets = J2S.$offset(who.id);
 		var x, y;
 		var oe = ev.originalEvent;
 		// drag-drop jQuery event is missing pageX
@@ -1143,10 +1302,11 @@ J2S = (function(document) {
 			x = ev.pageX - offsets.left;
 			y = ev.pageY - offsets.top;
 		}
+    //System.out.println([x,y,J2S._jsGetMouseModifiers(ev)])
 		return (x == undefined ? null : [Math.round(x), Math.round(y), J2S._jsGetMouseModifiers(ev)]);
 	}
 
-	J2S._gestureUpdate = function(canvas, ev) {
+	J2S._gestureUpdate = function(who, ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		var oe = ev.originalEvent;
@@ -1161,12 +1321,12 @@ J2S = (function(document) {
 		if (!oe.touches || oe.touches.length != 2) return false;
 		switch (ev.type) {
 		case "touchstart":
-			canvas._touches = [[],[]];
+			who._touches = [[],[]];
 			break;
 		case "touchmove":
-			var offsets = J2S.$offset(canvas.id);
-			var t0 = canvas._touches[0];
-			var t1 = canvas._touches[1];
+			var offsets = J2S.$offset(who.id);
+			var t0 = who._touches[0];
+			var t1 = who._touches[1];
 			t0.push([oe.touches[0].pageX - offsets.left, oe.touches[0].pageY - offsets.top]);
 			t1.push([oe.touches[1].pageX - offsets.left, oe.touches[1].pageY - offsets.top]);
 			var n = t0.length;
@@ -1175,168 +1335,32 @@ J2S = (function(document) {
 				t1.shift();
 			}
 			if (n >= 2)
-				canvas.applet._processGesture(canvas._touches);
+				who.applet._processGesture(who._touches, who._frameViewer);
 			break;
 		}
 		return true;
 	}
 
-	J2S._jsSetMouse = function(canvas) {
-
-    var doIgnore = function(ev) { return (!ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
-
-		J2S.$bind(canvas, 'mousedown touchstart', function(ev) {
-      if (doIgnore(ev))
-        return true;
-			J2S._setMouseOwner(canvas, true);
-			ev.stopPropagation();
-      var ui = ev.target["data-UI"];
-      if (!ui || !ui.handleJSEvent(canvas, 501, ev)) 
-  			ev.preventDefault();
-			canvas.isDragging = true;
-			if ((ev.type == "touchstart") && J2S._gestureUpdate(canvas, ev))
-				return !!ui;
-			J2S._setConsoleDiv(canvas.applet._console);
-			var xym = J2S._jsGetXY(canvas, ev);
-			if(xym) {
-		  	if (ev.button != 2 && J2S.Swing) // older Jmol "jsSwing" idea -- still used in Jmol
-          J2S.Swing.hideMenus(canvas.applet);
-        canvas.applet._processEvent(501, xym, ev); //java.awt.Event.MOUSE_DOWN
-      }
-			return !!ui;
-		});
+	J2S._drag = function(who, ev) {
     
-		J2S.$bind(canvas, 'mouseup touchend', function(ev) {
-      if (doIgnore(ev))
-        return true;
-			J2S._setMouseOwner(null);
-			ev.stopPropagation();
-      var ui = ev.target["data-UI"];
-      if (!ui || !ui.handleJSEvent(canvas, 502, ev))
-  			ev.preventDefault();
-			canvas.isDragging = false;
-			if (ev.type == "touchend" && J2S._gestureUpdate(canvas, ev))
-				return !!ui;
-			var xym = J2S._jsGetXY(canvas, ev);
-			if(xym)
-  			canvas.applet._processEvent(502, xym, ev);//java.awt.Event.MOUSE_UP
-			return !!ui;
-		});
+		ev.stopPropagation();
+		ev.preventDefault();
     
-		J2S.$bind(canvas, 'mousemove touchmove', function(ev) { // touchmove
-      if (doIgnore(ev))
-        return true;
-		  // defer to console or menu when dragging within this canvas
-			if (J2S._mouseOwner && J2S._mouseOwner != canvas && J2S._mouseOwner.isDragging) {
-        if (!J2S._mouseOwner.mouseMove)
-          return true;
-	   			J2S._mouseOwner.mouseMove(ev);
-				return false;
-			}
-			return J2S._drag(canvas, ev);
-		});
-		
-		J2S._drag = function(canvas, ev) {
-      
-			ev.stopPropagation();
-			ev.preventDefault();
-      
-			var isTouch = (ev.type == "touchmove");
-			if (isTouch && J2S._gestureUpdate(canvas, ev))
-				return false;
-			var xym = J2S._jsGetXY(canvas, ev);
-			if(!xym) return false;
-      
-			if (!canvas.isDragging)
-				xym[2] = 0;
-
-      var ui = ev.target["data-UI"];
-      if (canvas.isdragging && (!ui || !ui.handleJSEvent(canvas, 506, ev))) {}
-			canvas.applet._processEvent((canvas.isDragging ? 506 : 503), xym, ev); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
-			return !!ui;
-		}
-		
-		J2S.$bind(canvas, 'DOMMouseScroll mousewheel', function(ev) { // Zoom
-      if (doIgnore(ev))
-        return true;
-			ev.stopPropagation();
-			ev.preventDefault();
-			// Webkit or Firefox
-			canvas.isDragging = false;
-			var oe = ev.originalEvent;
-			var scroll = (oe.detail ? oe.detail : (J2S.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
-			var modifiers = J2S._jsGetMouseModifiers(ev);
-			canvas.applet._processEvent(-1,[scroll < 0 ? -1 : 1,0,modifiers], ev);
+		var isTouch = (ev.type == "touchmove");
+		if (isTouch && J2S._gestureUpdate(who, ev))
 			return false;
-		});
+		var xym = J2S._jsGetXY(who, ev);
+		if(!xym) return false;
+    
+		if (!who.isDragging)
+			xym[2] = 0;
 
-		// context menu is fired on mouse down, not up, and it's handled already anyway.
-
-		J2S.$bind(canvas, "contextmenu", function() {return false;});
-
-		J2S.$bind(canvas, 'mouseout', function(ev) {
-      if (doIgnore(ev))
-        return true;
-      if (J2S._mouseOwner && !J2S._mouseOwner.mouseMove) 
-        J2S._setMouseOwner(null);
-			if (canvas.applet._appletPanel)
-				canvas.applet._appletPanel.startHoverWatcher(false);
-			//canvas.isDragging = false;
-			var xym = J2S._jsGetXY(canvas, ev);
-			if (!xym)
-				return false;
-			//canvas.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
-			//canvas.applet._processEvent(505, xym, ev);//J.api.Event.MOUSE_EXITED
-			return false;
-		});
-
-		J2S.$bind(canvas, 'mouseenter', function(ev) {
-      if (doIgnore(ev))
-        return true;
-			if (canvas.applet._appletPanel)
-				canvas.applet._appletPanel.startHoverWatcher(true);
-			if (ev.buttons === 0 || ev.which === 0) {
-				canvas.isDragging = false;
-				var xym = J2S._jsGetXY(canvas, ev);
-				if (!xym)
-					return false;
-				canvas.applet._processEvent(504, xym, ev);//J.api.Event.MOUSE_ENTERED	
-				canvas.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
-				return false;
-			}
-		});
-
-	J2S.$bind(canvas, 'mousemoveoutjsmol', function(evspecial, target, ev) {
-      if (doIgnore(ev))
-        return true;
-		if (canvas == J2S._mouseOwner && canvas.isDragging) {
-			return J2S._drag(canvas, ev);
-		}
-	});
-
-		if (canvas.applet._is2D)
-			J2S.$resize(function() {
-				if (!canvas.applet)
-					return;
-				canvas.applet._resize();
-			});
- 
-		J2S.$bind('body', 'mouseup touchend', function(ev) {
-      if (doIgnore(ev))
-        return true;
-			if (canvas.applet)
-				canvas.isDragging = false;
-			J2S._setMouseOwner(null);
-		});
-
+    var ui = ev.target["data-UI"];
+    if (who.isdragging && (!ui || !ui.handleJSEvent(who, 506, ev))) {}
+		who.applet._processEvent((who.isDragging ? 506 : 503), xym, ev, who._frameViewer); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
+		return !!ui;
 	}
-
-	J2S._jsUnsetMouse = function(canvas) {
-		canvas.applet = null;
-		J2S.$bind(canvas, 'mousedown touchstart mousemove touchmove mouseup touchend DOMMouseScroll mousewheel contextmenu mouseout mouseenter', null);
-		J2S._setMouseOwner(null);
-	}
-
+	
 
 J2S._track = function(applet) {
 	// this function inserts an iFrame that can be used to track your page's applet use. 
@@ -1558,13 +1582,13 @@ J2S.Cache.put = function(filename, data) {
 	}      		
 
 	J2S._Canvas2D = function(id, Info, type, checkOnly){
-		// type: Jmol or JSV
+		// type: Jmol or JSV or SwingJS
 		this._uniqueId = ("" + Math.random()).substring(3);
 		this._id = id;
 		this._is2D = true;
 		this._isJava = false;
 		this._jmolType = "J2S._Canvas2D (" + type + ")";
-    this._isLayered = Info._isLayered || false;
+    this._isLayered = Info._isLayered || false; // JSV or SwingJS are layered
     this._isSwing = Info._isSwing || false;
     this._isJSV = Info._isJSV || false;
     this._isAstex = Info._isAstex || false;            
@@ -1599,13 +1623,8 @@ J2S.Cache.put = function(filename, data) {
 				this._showInfo(false);
 		};
 
-		proto._createCanvas = function(id, Info, glmol) {
+		proto._createCanvas = function(id, Info) {
 			J2S._setObject(this, id, Info);
-			if (glmol) {
-				this._GLmol = glmol;
-		 		this._GLmol.applet = this;
-				this._GLmol.id = this._id;
-			}      
 			var t = J2S._getWrapper(this, true);
 			if (this._deferApplet) {
 			} else if (J2S._document) {
@@ -1668,28 +1687,22 @@ J2S.Cache.put = function(filename, data) {
 			container.append(canvas);
 			J2S._$(canvas.id).css({"z-index":J2S._getZ(this, "main")});
 			if (this._isLayered){
-				var img = document.createElement("div");
-				canvas.contentLayer = img;
-				img.id = this._id + "_contentLayer";
-				container.append(img);
-				J2S._$(img.id).css({zIndex:J2S._getZ(this, "image"),position:"absolute",left:"0px",top:"0px",
+				var content = document.createElement("div");
+				canvas.contentLayer = content;
+				content.id = this._id + "_contentLayer";
+				container.append(content);
+				J2S._$(content.id).css({zIndex:J2S._getZ(this, "content"),position:"absolute",left:"0px",top:"0px",
         width:(this._isSwing ? w : 0) + "px", height:(this._isSwing ? h : 0) +"px", overflow:"hidden"});
         if (this._isSwing) {
-        	var d = document.createElement("div");
-          d.id = this._id + "_swingdiv";
-        	J2S._$(this._id + "_appletinfotablediv").append(d);
-				  J2S._$(d.id).css({zIndex:J2S._getZ(this, "rear"),position:"absolute",left:"0px",top:"0px", width:w +"px", height:h+"px", overflow:"hidden"});
-  				this._mouseInterface = canvas.contentLayer;
-          canvas.contentLayer.applet = this;
+  				this._mouseInterface = content;
+          content.applet = this;
         } else {
   				this._mouseInterface = this._getLayer("front", container, w, h, false);
         }
-				//this._getLayer("rear", container, w, h, true);
-				//J2S._$(canvas.id).css({background:"rgb(0,0,0,0.001)", "z-index":J2S._z.main}); 
 			} else {
 				this._mouseInterface = canvas;
 			}
-			J2S._jsSetMouse(this._mouseInterface);
+			J2S._jsSetMouse(this._mouseInterface, this._isSwing);
 		}
     
     proto._getLayer = function(name, container, w, h, isOpaque) {
@@ -1801,12 +1814,12 @@ J2S.Cache.put = function(filename, data) {
 		proto.hashCode = function() { return parseInt(this._uniqueId) };  
 
 
-		proto._processGesture = function(touches) {
-			return this._appletPanel.processTwoPointGesture(touches);
+		proto._processGesture = function(touches, frameViewer) {
+      (frameViewer || this._appletPanel).processTwoPointGesture(touches);
 		}
 
-		proto._processEvent = function(type, xym, ev) {
-			this._appletPanel.processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis(), ev);
+		proto._processEvent = function(type, xym, ev, frameViewer) {
+      (frameViewer || this._appletPanel).processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis(), ev);
 		}
 
 		proto._resize = function() {
