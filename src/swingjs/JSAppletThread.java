@@ -1,6 +1,5 @@
 package swingjs;
 
-import jsjava.awt.Frame;
 import jsjavax.swing.SwingUtilities;
 
 /**

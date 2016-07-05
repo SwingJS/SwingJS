@@ -67,8 +67,32 @@ public class Lst<V> extends ArrayList<V> {
    */
   @Override
   @Deprecated
+  public V remove(int location) {
+    throw new NullPointerException("use Lst.removeItemAt(location), not Lst.remove(location)");
+  }
+  
+  public V removeItemAt(int location) {
+    /**
+     * no overloading of remove(location) in JavaScript
+     * 
+     * @j2sNative
+     * 
+     * return this._removeItemAt(location);
+     *  
+     */
+    {
+      return super.remove(location);
+    }
+  }
+
+  /**
+   * @j2sIgnore
+   * 
+   */
+  @Override
+  @Deprecated
   public boolean remove(Object v) {
-    throw new NullPointerException("use removeObj(obj), not remove(obj) in List for JavaScript compatibility");
+    throw new NullPointerException("use Lst.removeObj(obj), not Lst.remove(obj)");
   }
   
   public boolean removeObj(Object v) {
@@ -77,7 +101,7 @@ public class Lst<V> extends ArrayList<V> {
      * 
      * @j2sNative
      * 
-     * return this.removeObject(v);
+     * return this._removeObject(v);
      *  
      */
     {

@@ -496,6 +496,7 @@
             swingjs/api/HTML5CanvasContext2D.js
             swingjs/api/Interface.js
             swingjs/api/JSFunction.js
+            swingjs/api/J2SInterface.js
             swingjs/api/JSInterface.js
             swingjs/JSAppletViewer.js
             swingjs/JSFrameViewer.js

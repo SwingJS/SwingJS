@@ -3,10 +3,14 @@ package swingjs.plaf;
 
 public class JSDialogUI extends JSFrameUI {
 
-	// a frame without min/max buttons; typically modal 
+	// TODO: modal type
+	
+	// a frame without min/max buttons; typically modal
+	
+	// uses Frame.createDOMNode()
 	
 	public JSDialogUI() {
-		frameZ = 40000;
+		z = frameZ + 40000;
 		isFrame = true;
 		isDialog = true;
 		defaultWidth = 500;

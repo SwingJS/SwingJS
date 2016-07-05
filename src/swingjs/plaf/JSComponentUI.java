@@ -25,6 +25,7 @@ import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
+import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
@@ -84,7 +85,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	/**
 	 * the main object for the component, possibly containing others, such as radio button with its label
 	 */
-	protected DOMNode domNode;
+	public DOMNode domNode;
 	
 	/**
 	 * a component or subcomponent that can be enabled/disabled 
@@ -169,12 +170,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	 */
 	protected String classID;
 	
+  /**
+   * initial frameZ
+   * 
+   */
+  protected static int frameZ = 19000;
 
 
 	protected DOMNode body;
 	private DOMNode document;
-	@SuppressWarnings("unused")
-	private HTML5Applet applet; // used in getting z value
+	protected HTML5Applet applet; // used in getting z value, setting frame mouse actions
 
 	
 	protected boolean needPreferred;
@@ -435,9 +440,21 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 				DOMNode
 						.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
 			}
-			if (jc.isHTML5AppletRoot) {
-				swingjs.JSToolkit.getHTML5Applet(jc)._getContentLayer()
-						.appendChild(outerNode);
+			if (jc.isRootPane) {
+				if (jc.getFrameViewer().isApplet) {
+					// If the applet's root pane, we insert it into the applet's content
+					// layer div
+					swingjs.JSToolkit.getHTML5Applet(jc)._getContentLayer()
+							.appendChild(outerNode);
+				} else {
+					// This is the root pane of a JFrame, JDialog, JWindow, etc.
+					// we insert the canvas for the frame into this content pane
+					HTML5Canvas canvas = jc.getFrameViewer().canvas;
+					if (DOMNode.getAttr(canvas, "_installed") != null) {
+						outerNode.appendChild(canvas);
+						DOMNode.setAttr(canvas, "_installed", "1");
+					}
+				}
 			}
 			// add all children
 			for (int i = 0; i < n; i++) {
@@ -468,9 +485,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		return outerNode;
 	}
 
-	/**
-	 * c ignored because JSComponentUI is one per component
-	 */
 	@Override
 	public Dimension getPreferredSize() {
   	return setHTMLSize(createDOMNode(), false);
@@ -1008,13 +1022,5 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	public String getId() {
 		return  id;
 	}
-
-	public static HTML5Canvas createCanvas(String id, int width, int height) {
-		DOMNode node = DOMNode.createElement("canvas", id);
-		DOMNode.setPositionAbsolute(node, 0, 0);
-		DOMNode.setAttrs(node, "width", "100%", "height", "100%");
-		return (HTML5Canvas) node;
-	}
-	
 
 }

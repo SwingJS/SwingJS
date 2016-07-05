@@ -365,17 +365,17 @@ public class GifEncoder extends ImageEncoder {
       case 0:
         for (int i = n; --i >= 0;)
           if (get(i).x >= val)
-            newCell.addLast(remove(i));
+            newCell.addLast(removeItemAt(i));
         break;
       case 1:
         for (int i = n; --i >= 0;)
           if (get(i).y >= val)
-            newCell.addLast(remove(i));
+            newCell.addLast(removeItemAt(i));
         break;
       case 2:
         for (int i = size(); --i >= 0;)
           if (get(i).z >= val)
-            newCell.addLast(remove(i));
+            newCell.addLast(removeItemAt(i));
         break;
       }
       return true;

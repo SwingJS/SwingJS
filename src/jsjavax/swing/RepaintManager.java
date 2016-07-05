@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javajs.util.Lst;
+
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -96,7 +98,7 @@ public class RepaintManager {
 
 	private Map<Component, Rectangle> dirtyComponents;
 	private Map<Component, Rectangle> tmpDirtyComponents;
-	private java.util.List<Component> invalidComponents;
+	private Lst<Component> invalidComponents;
 
 	// List of Runnables that need to be processed before painting from AWT.
 	private java.util.List<Runnable> runnableList;
@@ -391,7 +393,7 @@ public class RepaintManager {
 		 * we're done.
 		 */
 		if (invalidComponents == null) {
-			invalidComponents = new ArrayList<Component>();
+			invalidComponents = new Lst<Component>();
 		} else {
 			int n = invalidComponents.size();
 			for (int i = 0; i < n; i++) {
@@ -416,7 +418,7 @@ public class RepaintManager {
 		if (invalidComponents != null) {
 			int index = invalidComponents.indexOf(component);
 			if (index != -1) {
-				invalidComponents.remove(index);
+				invalidComponents.removeItemAt(index);
 			}
 		}
 	}
@@ -816,8 +818,7 @@ public class RepaintManager {
 		// removed from the list
 		updateWindows(tmpDirtyComponents);
 
-		final java.util.List<Component> roots = new ArrayList<Component>(
-				tmpDirtyComponents.size());
+		final Lst<Component> roots = new Lst<Component>(); // tmpDirtyComponents.size()
 
 		for (Component dirty : tmpDirtyComponents.keySet()) {
 			collectDirtyComponents(tmpDirtyComponents, dirty, roots);
@@ -886,7 +887,7 @@ public class RepaintManager {
 	/**
 	 * Removes any components from roots that are children of root.
 	 */
-	private void adjustRoots(JComponent root, java.util.List<Component> roots,
+	private void adjustRoots(JComponent root, Lst<Component> roots,
 			int index) {
 		for (int i = roots.size() - 1; i >= index; i--) {
 			Component c = roots.get(i);
@@ -897,7 +898,7 @@ public class RepaintManager {
 				c = c.getParent();
 			}
 			if (c == root) {
-				roots.remove(i);
+				roots.removeItemAt(i);
 			}
 		}
 	}

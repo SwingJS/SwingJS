@@ -30,6 +30,8 @@ import java.awt.KeyboardFocusManager;
 import java.util.EventListener;
 import java.util.Set;
 
+import javajs.util.Lst;
+
 
 import jsjava.awt.event.AWTEventListener;
 import jsjava.awt.event.ComponentEvent;
@@ -83,7 +85,7 @@ public class Container extends JSComponent {
      * @see #add
      * @see #getComponents
      */
-    private java.util.List<Component> children;
+    private Lst<Component> children;
 
     /**
      * Layout manager for this container.
@@ -254,7 +256,7 @@ public class Container extends JSComponent {
      *
      */
     public Container() {
-    	children = new java.util.ArrayList<Component>();
+    	children = new Lst<Component>();
     }
 
 		void initializeFocusTraversalKeys() {
@@ -493,7 +495,7 @@ public class Container extends JSComponent {
             adjustDescendants(-(comp.countHierarchyMembers()));
 
             comp.parent = null;
-            children.remove(index);
+            children.removeItemAt(index);
 
             invalidateIfValid();
         } else {
@@ -502,7 +504,7 @@ public class Container extends JSComponent {
             // after remove. Consult the rules below:
             // 2->4: 012345 -> 013425, 2->5: 012345 -> 013452
             // 4->2: 012345 -> 014235
-            children.remove(index);
+            children.removeItemAt(index);
             children.add(newIndex, comp);
         }
         if (comp.parent == null) { // was actually removed
@@ -1187,7 +1189,7 @@ public class Container extends JSComponent {
 			adjustDescendants(-(comp.countHierarchyMembers()));
 
 			comp.parent = null;
-			children.remove(index);
+			children.removeItemAt(index);
 
 			invalidateIfValid();
 			if (containerListener != null
@@ -1266,7 +1268,7 @@ public class Container extends JSComponent {
             adjustDescendants(-descendantsCount);
 
             while (!children.isEmpty()) {
-                Component comp = children.remove(children.size()-1);
+                Component comp = children.removeItemAt(children.size()-1);
 
                 if (peer != null) {
                     comp.removeNotify();
@@ -2715,7 +2717,7 @@ public class Container extends JSComponent {
             // the menu is being assigned as a child to JLayeredPane
             // instead of particular component so always affect
             // collection of component if menu is becoming shown or hidden.
-            for (int i = children.size()-1 ; i >= 0 ; i--) {
+            for (int i = children.size(); --i >= 0;) {
                 Component comp = children.get(i);
                 if (comp != null) {
                     // Fix for 6607170.

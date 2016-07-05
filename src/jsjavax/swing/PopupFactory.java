@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javajs.util.Lst;
+
 import jsjava.applet.Applet;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -373,18 +375,18 @@ public class PopupFactory {
          */
         private static HeavyWeightPopup getRecycledHeavyWeightPopup(Window w) {
             synchronized (HeavyWeightPopup.class) {
-                List cache;
+                Lst cache;
                 Map heavyPopupCache = getHeavyWeightPopupCache();
 
                 if (heavyPopupCache.containsKey(w)) {
-                    cache = (List)heavyPopupCache.get(w);
+                    cache = (Lst)heavyPopupCache.get(w);
                 } else {
                     return null;
                 }
                 int c;
                 if ((c = cache.size()) > 0) {
                     HeavyWeightPopup r = (HeavyWeightPopup)cache.get(0);
-                    cache.remove(0);
+                    cache.removeItemAt(0);
                     return r;
                 }
                 return null;
@@ -851,12 +853,12 @@ public class PopupFactory {
         /**
          * Returns the cache to use for medium weight popups.
          */
-        private static List getMediumWeightPopupCache() {
-            List cache = (List)SwingUtilities.appContextGet(
+        private static Lst getMediumWeightPopupCache() {
+            Lst cache = (Lst)SwingUtilities.appContextGet(
                                     mediumWeightPopupCacheKey);
 
             if (cache == null) {
-                cache = new ArrayList();
+                cache = new Lst();
                 SwingUtilities.appContextPut(mediumWeightPopupCacheKey, cache);
             }
             return cache;
@@ -880,13 +882,13 @@ public class PopupFactory {
          */
         private static MediumWeightPopup getRecycledMediumWeightPopup() {
             synchronized (MediumWeightPopup.class) {
-                java.util.List mediumPopupCache =
+                Lst mediumPopupCache =
                                      getMediumWeightPopupCache();
                 int c;
                 if ((c=mediumPopupCache.size()) > 0) {
                     MediumWeightPopup r = (MediumWeightPopup)mediumPopupCache.
                                                  get(0);
-                    mediumPopupCache.remove(0);
+                    mediumPopupCache.removeItemAt(0);
                     return r;
                 }
                 return null;

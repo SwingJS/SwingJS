@@ -25,15 +25,12 @@
 
 package jsjava.awt;
 
+import java.io.ObjectStreamField;
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.Enumeration;
 
-import java.io.Serializable;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamField;
-import java.io.IOException;
+import javajs.util.Lst;
 
 /**
  * A <code>CardLayout</code> object is a layout manager for a
@@ -66,13 +63,13 @@ public class CardLayout implements LayoutManager2,
      * pairs of components and their names.
      * @see java.util.Vector
      */
-    Vector vector = new Vector();
+    private Lst vector = new Lst();
 
     /*
      * A pair of Component and String that represents its name.
      */
     class Card implements Serializable {
-        static final long serialVersionUID = 6640330810709497518L;
+//        static final long serialVersionUID = 6640330810709497518L;
         public String name;
         public Component comp;
         public Card(String cardName, Component cardComponent) {
@@ -251,7 +248,7 @@ public class CardLayout implements LayoutManager2,
                         next(comp.getParent());
                     }
 
-                    vector.remove(i);
+                    vector.removeItemAt(i);
 
                     // correct currentCard if this is necessary
                     if (currentCard > i) {
@@ -568,56 +565,56 @@ public class CardLayout implements LayoutManager2,
         return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + "]";
     }
 
-    /**
-     * Reads serializable fields from stream.
-     */
-    private void readObject(ObjectInputStream s)
-        throws ClassNotFoundException, IOException
-    {
-        ObjectInputStream.GetField f = s.readFields();
-
-        hgap = f.get("hgap", 0);
-        vgap = f.get("vgap", 0);
-
-        if (f.defaulted("vector")) {
-            //  pre-1.4 stream
-            Hashtable tab = (Hashtable)f.get("tab", null);
-            vector = new Vector();
-            if (tab != null && !tab.isEmpty()) {
-                for (Enumeration e = tab.keys() ; e.hasMoreElements() ; ) {
-                    String key = (String)e.nextElement();
-                    Component comp = (Component)tab.get(key);
-                    vector.add(new Card(key, comp));
-                    if (comp.isVisible()) {
-                        currentCard = vector.size() - 1;
-                    }
-                }
-            }
-        } else {
-            vector = (Vector)f.get("vector", null);
-            currentCard = f.get("currentCard", 0);
-        }
-    }
-
-    /**
-     * Writes serializable fields to stream.
-     */
-    private void writeObject(ObjectOutputStream s)
-        throws IOException
-    {
-        Hashtable tab = new Hashtable();
-        int ncomponents = vector.size();
-        for (int i = 0; i < ncomponents; i++) {
-            Card card = (Card)vector.get(i);
-            tab.put(card.name, card.comp);
-        }
-
-        ObjectOutputStream.PutField f = s.putFields();
-        f.put("hgap", hgap);
-        f.put("vgap", vgap);
-        f.put("vector", vector);
-        f.put("currentCard", currentCard);
-        f.put("tab", tab);
-        s.writeFields();
-    }
+//    /**
+//     * Reads serializable fields from stream.
+//     */
+//    private void readObject(ObjectInputStream s)
+//        throws ClassNotFoundException, IOException
+//    {
+//        ObjectInputStream.GetField f = s.readFields();
+//
+//        hgap = f.get("hgap", 0);
+//        vgap = f.get("vgap", 0);
+//
+//        if (f.defaulted("vector")) {
+//            //  pre-1.4 stream
+//            Hashtable tab = (Hashtable)f.get("tab", null);
+//            vector = new Lst();
+//            if (tab != null && !tab.isEmpty()) {
+//                for (Enumeration e = tab.keys() ; e.hasMoreElements() ; ) {
+//                    String key = (String)e.nextElement();
+//                    Component comp = (Component)tab.get(key);
+//                    vector.addLast(new Card(key, comp));
+//                    if (comp.isVisible()) {
+//                        currentCard = vector.size() - 1;
+//                    }
+//                }
+//            }
+//        } else {
+//            vector = (Lst)f.get("vector", null);
+//            currentCard = f.get("currentCard", 0);
+//        }
+//    }
+//
+//    /**
+//     * Writes serializable fields to stream.
+//     */
+//    private void writeObject(ObjectOutputStream s)
+//        throws IOException
+//    {
+//        Hashtable tab = new Hashtable();
+//        int ncomponents = vector.size();
+//        for (int i = 0; i < ncomponents; i++) {
+//            Card card = (Card)vector.get(i);
+//            tab.put(card.name, card.comp);
+//        }
+//
+//        ObjectOutputStream.PutField f = s.putFields();
+//        f.put("hgap", hgap);
+//        f.put("vgap", vgap);
+//        f.put("vector", vector);
+//        f.put("currentCard", currentCard);
+//        f.put("tab", tab);
+//        s.writeFields();
+//    }
 }

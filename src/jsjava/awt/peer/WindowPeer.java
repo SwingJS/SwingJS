@@ -78,4 +78,5 @@ public interface WindowPeer extends ContainerPeer {
     void repositionSecurityWarning();
     
 		WindowPeer setFrame(Window target, boolean b);
+		
 }

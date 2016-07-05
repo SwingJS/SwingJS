@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javajs.util.Lst;
+
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
@@ -331,8 +333,8 @@ public class SpringLayout implements LayoutManager2 {
         private Spring verticalCenter;
         private Spring baseline;
 
-        private List<String> horizontalHistory = new ArrayList<String>(2);
-        private List<String> verticalHistory = new ArrayList<String>(2);
+        private Lst<String> horizontalHistory = new Lst<String>();
+        private Lst<String> verticalHistory = new Lst<String>();
 
         // Used for baseline calculations
         protected Component c;
@@ -406,17 +408,17 @@ public class SpringLayout implements LayoutManager2 {
 
         private void pushConstraint(String name, Spring value, boolean horizontal) {
             boolean valid = true;
-            List<String> history = horizontal ? horizontalHistory :
+            Lst<String> history = horizontal ? horizontalHistory :
                                                 verticalHistory;
             if (history.contains(name)) {
                 history.remove(name);
                 valid = false;
             } else if (history.size() == 2 && value != null) {
-                history.remove(0);
+                history.removeItemAt(0);
                 valid = false;
             }
             if (value != null) {
-                history.add(name);
+                history.addLast(name);
             }
             if (!valid) {
                 String[] all = horizontal ? ALL_HORIZONTAL : ALL_VERTICAL;

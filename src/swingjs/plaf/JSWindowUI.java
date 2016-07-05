@@ -4,6 +4,7 @@ import jsjava.awt.Dialog;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics2D;
+import jsjava.awt.Insets;
 import jsjava.awt.JSComponent;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
@@ -23,19 +24,17 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
   /************/ titleBarNode, /********************/
   /**/ titleNode,                      closerNode, //
   /***************/ layerNode, /********************/
-  /*************/ menuBarNode, /********************/
-  /*************/ contentNode; /********************/
+  /*************/ menuBarNode; /********************/
   
 	protected JWindow w;
+	protected int z;
 
   protected int defaultWidth = 400;
   protected int defaultHeight = 400;
 	
 
-  protected int frameZ = 19000;
 	protected boolean isFrame, isDialog;
 	protected Window window;
-	protected HTML5Applet applet;
 	protected Font font;
 
 	private Graphics2D graphics;
@@ -178,5 +177,17 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	@Override
 	protected void uninstallJSUI() {
 	}
+
+	@Override
+	public void dispose() {
+		JSToolkit.J2S._jsUnsetMouse(domNode);
+		DOMNode.remove(outerNode);
+	}
+
+	@Override
+	public Insets getInsets() {
+		return new Insets(0, 0, 0, 0);
+	}
+
 
 }

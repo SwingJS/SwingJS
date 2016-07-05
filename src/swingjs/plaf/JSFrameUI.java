@@ -5,6 +5,8 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.FramePeer;
 import jsjavax.swing.JFrame;
+import swingjs.JSFrameViewer;
+import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;
 
@@ -33,7 +35,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	private boolean resizeable;
 
 	public JSFrameUI() {
-		frameZ = 19000;
+		frameZ += 1000;
+		z = frameZ;
 		isContainer = true;
 		defaultHeight = 500;
 		defaultWidth = 500;
@@ -47,11 +50,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			f = (JFrame) (Object) c;
 
 			domNode = frameNode = createDOMObject("div", id + "_frame");
-			DOMNode.setStyles(frameNode, 
-					"z-index", "" + frameZ++,
-					"border-style", "solid", 
-					"border-width", "5px"
-					);
+			DOMNode.setStyles(frameNode, "z-index", "" + z, "border-style", "solid",
+					"border-width", "5px");
 			int w = c.getWidth();
 			int h = c.getHeight();
 			if (w == 0)
@@ -61,58 +61,48 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setStyles(frameNode, "background", "white");
 			DOMNode.setSize(frameNode, w, h);
 			DOMNode.setPositionAbsolute(frameNode, f.getX(), f.getY());
-			
+
+			JSFrameViewer vwr = jc.getFrameViewer();
+			DOMNode.setAttrs(frameNode, "applet", applet, "_frameViewer", vwr);
+			JSToolkit.J2S._jsSetMouse(frameNode, true);
 			titleBarNode = createDOMObject("div", id + "_titlebar");
 			DOMNode.setPositionAbsolute(titleBarNode, 0, 0);
-			DOMNode.setStyles(titleBarNode, 
-					"background-color", "#E0E0E0",
-					"height", "20px", 
-					"font-size", "14px", 
-					"font-family", "sans-serif", 
-					"font-weight", "bold"//,
-//					"border-style", "solid",
-//					"border-width", "1px"
-					);
-			
-      titleNode = createDOMObject("label", id + "_title");
+			DOMNode.setStyles(titleBarNode, "background-color", "#E0E0E0", "height",
+					"20px", "font-size", "14px", "font-family", "sans-serif",
+					"font-weight", "bold"// ,
+					// "border-style", "solid",
+					// "border-width", "1px"
+			);
+
+			titleNode = createDOMObject("label", id + "_title");
 			DOMNode.setPositionAbsolute(titleNode, 0, 0);
-			DOMNode.setStyles(titleNode, 
-					"width", w + "px",
-					"height", "20px"
-					);
+			DOMNode.setStyles(titleNode, "width", w + "px", "height", "20px");
 			setTitle(f.getTitle());
-			
+
 			DOMNode closerWrap = createDOMObject("div", id + "_closerwrap");
 			DOMNode.setPositionAbsolute(closerWrap, 0, 0);
-			DOMNode.setStyles(closerWrap, "text-align", "right", "width", w + "px"); 
+			DOMNode.setStyles(closerWrap, "text-align", "right", "width", w + "px");
 
 			closerNode = createDOMObject("label", id + "_closer", "innerHTML", "X");
-			DOMNode.setStyles(closerNode, 
-					"background-color", "white",
-					"width", "20px",
-					"height", "20px",
-					"position", "absolute",
-					"text-align", "center",
-					"right", "0px"
-			);
-			DOMNode.addJqueryHandledEvent(this, closerNode, "click mouseenter mouseout");
-			
-			DOMNode.add(frameNode, titleBarNode);
-			DOMNode.add(titleBarNode, titleNode);
-			DOMNode.add(titleBarNode, closerWrap);
-			DOMNode.add(closerWrap, closerNode);
-			contentNode = DOMNode.createElement("div", id+"_content");
-			DOMNode.setPositionAbsolute(contentNode, 0, 0);
-			DOMNode.setAttrs(contentNode, "width",  "" + f.getWidth(), "height", "" + f.getHeight());
+			DOMNode.setStyles(closerNode, "background-color", "white", "width",
+					"20px", "height", "20px", "position", "absolute", "text-align",
+					"center", "right", "0px");
+			DOMNode.addJqueryHandledEvent(this, closerNode,
+					"click mouseenter mouseout");
+
+			frameNode.appendChild(titleBarNode);
+			titleBarNode.appendChild(titleNode);
+			titleBarNode.appendChild(closerWrap);
+			closerWrap.appendChild(closerNode);
 			Insets s = getInsets();
-			DOMNode.setPositionAbsolute(frameNode,  f.getY() - s.top, f.getX() - s.left);
-			DOMNode.setAttrs(frameNode, "width",  "" + f.getWidth() + s.left + s.right, "height", "" + f.getHeight() + s.top + s.bottom);
-			
-			
-			DOMNode.add(frameNode, contentNode);
+			DOMNode.setPositionAbsolute(frameNode, f.getY() - s.top, f.getX()
+					- s.left);
+			DOMNode.setAttrs(frameNode, "width",
+					"" + f.getWidth() + s.left + s.right, "height", "" + f.getHeight()
+							+ s.top + s.bottom);
 
 			menuBarNode = createDOMObject("div", id + "_menubar");
-			
+
 			containerNode = frameNode;
 		}
 		return domNode;
@@ -134,6 +124,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			if (eventType == -1) {
 		  	if (type == "click") {
 					f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+					JSToolkit.J2S._jsUnsetMouse(frameNode);
+					$(frameNode).remove();
 					$(outerNode).remove();
 					return true;		  		
 		  	} else if (type.equals("mouseout")) {
@@ -191,24 +183,26 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	private Rectangle bounds;
 	@Override
 	public void setBoundsPrivate(int x, int y, int width, int height) {
-		// includes frame insets or not?
-		// do we need to subract them? Add them?
-		// is the width and height of a frame a measure of the internal contents pane?
+	// only for embedded frames -- not supported in SwingJS
+//		// includes frame insets or not?
+//		// do we need to subtract them? Add them?
+//		// is the width and height of a frame a measure of the internal contents pane?
 		bounds = new Rectangle(x, y, width, height);
-		HTML5Canvas canvas = f.frameViewer.newCanvas();
-		if (contentNode != null)
-			DOMNode.remove(DOMNode.firstChild(contentNode));
-		DOMNode.add(contentNode, canvas);
+//		HTML5Canvas canvas = f.frameViewer.newCanvas();
+//		if (contentNode != null)
+//			DOMNode.remove(DOMNode.firstChild(contentNode));
+//		contentNode.appendChild(canvas);
 	}
 
 	@Override
 	public Rectangle getBoundsPrivate() {
+		// only for embedded frames -- not supported in SwingJS
 		return bounds;
 	}
 
 	@Override
 	public Insets getInsets() {
-		return new Insets(30, 10, 10, 15);
+		return jc.getFrameViewer().getInsets();
 	}
 
 

@@ -52,7 +52,7 @@ public abstract class JSComponent extends Component {
 	protected int num;
 	private static int incr;
 
-	public boolean isHTML5AppletRoot, isContentPane;
+	public boolean isRootPane, isContentPane;
 	public HTML5Canvas canvas;
 	public JSFrameViewer frameViewer;
 	public JSAppletViewer appletViewer = JSToolkit.getAppletViewer();    
@@ -75,7 +75,7 @@ public abstract class JSComponent extends Component {
 		if (width == 0 || height == 0 || !isVisible())
 			return null;
 		if (frameViewer != null)
-			return frameViewer.getGraphics().create();
+			return frameViewer.getGraphics(0, 0).create();
 		// This is for a lightweight component, need to
 		// translate coordinate spaces and clip relative to the parent
 		if (parent == null)

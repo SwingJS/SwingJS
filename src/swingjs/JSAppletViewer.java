@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import javajs.util.Lst;
+
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
@@ -16,6 +18,7 @@ import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
+import jsjava.awt.Insets;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 
@@ -78,8 +81,8 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	public Object strJavaVendor;
 
 	public GraphicsConfiguration graphicsConfig;
-	public ThreadGroup threadGroup;
-	public Thread myThread;
+	public JSThreadGroup threadGroup;
+	public JSThread myThread;
   public boolean haveFrames = false;
 
   
@@ -127,7 +130,13 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 	private AppletListener listeners;
 
-	public ArrayList<Window>allWindows = new ArrayList<Window>();
+	public Lst<Window>allWindows = new Lst<Window>();
+
+	public void addWindow(Window window) {
+		// not entirely clear why we are getting multiples here
+		allWindows.removeObj(window);
+		allWindows.addLast(window);
+	}
 
 	public Frame sharedOwnerFrame;
 
@@ -180,19 +189,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		if (params.containsKey("maximumSize"))
 			Math.max(((Integer) params.get("maximumSize")).intValue(), 100);
 		async = (testAsync || params.containsKey("async"));
-		HTML5Applet applet = null;
-		String javaver = "?";
-		/**
-		 * @j2sNative
-		 * 
-		 *            if(self.J2S) { applet =
-		 *            J2S._applets[this.htmlName.split("_object")[0]]; javaver =
-		 *            J2S._version; }
-		 * 
-		 * 
-		 */
-		{
-		}
+		int pt = htmlName.indexOf("_object");
+		HTML5Applet applet = JSToolkit.J2S._findApplet(htmlName); 
+		String javaver = JSToolkit.J2S._getJavaVersion();
 		html5Applet = applet;
 		strJavaVersion = javaver;
 		strJavaVendor = "Java2Script/Java 1.6 (HTML5)";
@@ -204,15 +203,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		threadGroup = new JSThreadGroup(appletName);
 		myThread = new JSAppletThread(this, threadGroup, appletName);
 		((JSThreadGroup) threadGroup).setHtmlApplet(html5Applet);
-		/**
-		 * @j2sNative
-		 * 
-		 *            J2S._applets[this.appletName + "_thread"] =
-		 *            jsjava.lang.Thread.thisThread = this.myThread;
-		 * 
-		 */
-		{
-		}
+		JSToolkit.J2S._setAppletThread(appletName, myThread);
+		jsjava.lang.Thread.thisThread = (jsjava.lang.Thread) ((Object) myThread);
+		
 		appContext = JSToolkit.createNewAppContext();
 		Toolkit.getDefaultToolkit();
 		try {
@@ -222,6 +215,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 			// that's fine -- already created
 		}
 		System.out.println("JSAppletViewer initialized");
+		insets = new Insets(0, 0, 0, 0);
 	}
 
 	public void start() {
@@ -405,13 +399,13 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	 * @return LOOP or DONE
 	 */
 	public int run1(int mode) {
-		//System.out.println("JSAP run1 mode " + mode + " " + nextStatus);
+		// System.out.println("JSAP run1 mode " + mode + " " + nextStatus);
 		boolean ok = false;
 		switch (mode) {
 		case JSThread.INIT:
 			currentAppletSize.width = defaultAppletSize.width = getWidth();
 			currentAppletSize.height = defaultAppletSize.height = getHeight();
-			//setLayout(new BorderLayout());
+			// setLayout(new BorderLayout());
 			nextStatus = APPLET_LOAD;
 			ok = true;
 			break;
@@ -463,7 +457,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				ok = true;
 				break;
 			case APPLET_READY:
-				JSToolkit.readyCallback(appletName,fullName,applet,this);
+				JSToolkit.readyCallback(appletName, fullName, applet, this);
 				break;
 			case APPLET_STOP:
 				if (status == APPLET_START) {
@@ -492,7 +486,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 					status = APPLET_ERROR;
 				} else {
 					status = APPLET_UNINITIALIZED;
-					//removeChild(japplet);
+					// removeChild(japplet);
 					applet = null;
 					showAppletStatus("disposed");
 				}
@@ -569,8 +563,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		// Note that this "Panel" is never painted.
 		// This class simply maintains valuable information for applet loading.
 		// Here we go straight to the contentPane and paint that.
-		g = setGraphics(g);
+		g = setGraphics(g, 0, 0);
 		applet.paint(g);
 	}
+
 
 }

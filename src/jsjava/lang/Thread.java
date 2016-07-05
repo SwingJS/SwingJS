@@ -201,7 +201,7 @@ class Thread implements Runnable {
 
     /* For generating thread ID */
     private static long threadSeqNumber;
-		private static Thread thisThread;
+		public static Thread thisThread;
 
     /* Java thread status for tools,
      * initialized to indicate thread 'not yet started'

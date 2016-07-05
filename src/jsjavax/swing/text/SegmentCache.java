@@ -27,6 +27,8 @@ package jsjavax.swing.text;
 import java.util.ArrayList;
 import java.util.List;
 
+import javajs.util.Lst;
+
 /**
  * SegmentCache caches <code>Segment</code>s to avoid continually creating
  * and destroying of <code>Segment</code>s. A common use of this class would
@@ -48,7 +50,7 @@ class SegmentCache {
     /**
      * A list of the currently unused Segments.
      */
-    private List segments;
+    private Lst segments;
 
 
     /**
@@ -80,7 +82,7 @@ class SegmentCache {
      * Creates and returns a SegmentCache.
      */
     public SegmentCache() {
-        segments = new ArrayList(11);
+        segments = new Lst();
     }
 
     /**
@@ -92,7 +94,7 @@ class SegmentCache {
             int size = segments.size();
 
             if (size > 0) {
-                return (Segment)segments.remove(size - 1);
+                return (Segment)segments.removeItemAt(size - 1);
             }
         }
         return new CachedSegment();

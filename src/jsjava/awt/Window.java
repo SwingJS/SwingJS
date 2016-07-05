@@ -26,8 +26,8 @@ package jsjava.awt;
 
 //import java.lang.ref.WeakReference;
 //import java.lang.reflect.InvocationTargetException;
-import java.awt.AWTPermission;
-import java.awt.HeadlessException;
+//import java.awt.AWTPermission;
+//import java.awt.HeadlessException;
 import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -644,44 +644,34 @@ public class Window extends Container {
         setIconImages(imageList);
     }
 
-    /**
-     * Makes this Window displayable by creating the connection to its
-     * native screen resource.
-     * This method is called internally by the toolkit and should
-     * not be called directly by programs.
-     * @see Component#isDisplayable
-     * @see Container#removeNotify
-     * @since JDK1.0
-     */
-    @Override
-		public void addNotify() {
-//        synchronized (getTreeLock()) {
-            Container parent = this.parent;
-            if (parent != null && parent.getPeer() == null) {
-                parent.addNotify();
-            }
-            if (peer == null) {
-                peer = getToolkit().createWindow(this);
-            }
-//            synchronized (allWindows) {
-                JSToolkit.getAppletViewer().allWindows.add(this);
-//            }
-            super.addNotify();
-//        }
-    }
+	/**
+	 * Makes this Window displayable by creating the connection to its native
+	 * screen resource. This method is called internally by the toolkit and should
+	 * not be called directly by programs.
+	 * 
+	 * @see Component#isDisplayable
+	 * @see Container#removeNotify
+	 * @since JDK1.0
+	 */
+	@Override
+	public void addNotify() {
+		Container parent = this.parent;
+		if (parent != null && parent.getPeer() == null)
+			parent.addNotify();
+		if (peer == null)
+			peer = getToolkit().createWindow(this);
+		JSToolkit.getAppletViewer().addWindow(this);
+		super.addNotify();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-		public void removeNotify() {
-//        synchronized (getTreeLock()) {
-//            synchronized (allWindows) {
-                JSToolkit.getAppletViewer().allWindows.remove(this);
-//            }
-            super.removeNotify();
- //       }
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void removeNotify() {
+		JSToolkit.getAppletViewer().allWindows.removeObj(this);
+		super.removeNotify();
+	}
 
     /**
      * Causes this Window to be sized to fit the preferred size
@@ -997,10 +987,10 @@ public class Window extends Container {
 //        }
     }
 
-    void doDispose() {
-    	final Component me = this;
-    	
-    class DisposeAction implements Runnable {
+	void doDispose() {
+		final Component me = this;
+
+		Runnable action = new Runnable() {
 			@Override
 			public void run() {
 
@@ -1035,29 +1025,29 @@ public class Window extends Container {
 				// }
 				clearCurrentFocusCycleRootOnHide();
 			}
-    }
-        DisposeAction action = new DisposeAction();
-//        if (EventQueue.isDispatchThread()) {
-            action.run();
-//        }
-// SwingJS  can't invokeAndWait        else {
-//            try {
-//                EventQueue.invokeAndWait(this, action);
-//            }
-//            catch (InterruptedException e) {
-//                System.err.println("Disposal was interrupted:");
-//                e.printStackTrace();
-//            }
-//            catch (InvocationTargetException e) {
-//                System.err.println("Exception during disposal:");
-//                e.printStackTrace();
-//            }
-//        }
-        // Execute outside the Runnable because postWindowEvent is
-        // synchronized on (this). We don't need to synchronize the call
-        // on the EventQueue anyways.
-        postWindowEvent(WindowEvent.WINDOW_CLOSED);
-    }
+		};
+//		DisposeAction action = new DisposeAction();
+		// if (EventQueue.isDispatchThread()) {
+		action.run();
+		// }
+		// SwingJS can't invokeAndWait else {
+		// try {
+		// EventQueue.invokeAndWait(this, action);
+		// }
+		// catch (InterruptedException e) {
+		// System.err.println("Disposal was interrupted:");
+		// e.printStackTrace();
+		// }
+		// catch (InvocationTargetException e) {
+		// System.err.println("Exception during disposal:");
+		// e.printStackTrace();
+		// }
+		// }
+		// Execute outside the Runnable because postWindowEvent is
+		// synchronized on (this). We don't need to synchronize the call
+		// on the EventQueue anyways.
+		postWindowEvent(WindowEvent.WINDOW_CLOSED);
+	}
 
     /*
      * Should only be called while holding the tree lock.

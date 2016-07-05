@@ -14,6 +14,7 @@ import javajs.util.SB;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
+import jsjava.awt.Container;
 import jsjava.awt.Dialog;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
@@ -40,6 +41,7 @@ import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
+import jsjavax.swing.plaf.ComponentUI;
 import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
@@ -47,6 +49,7 @@ import jssun.awt.SunToolkit;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
+import swingjs.api.J2SInterface;
 import swingjs.api.JQuery;
 import swingjs.api.JSFunction;
 import swingjs.plaf.JSComponentUI;
@@ -54,13 +57,26 @@ import swingjs.plaf.JSComponentUI;
 @J2SIgnoreImport(URL.class)
 public class JSToolkit extends SunToolkit {
 
+	public static J2SInterface J2S;
+	
+	static {
+		/**
+		 * @j2sNative
+		 * 
+		 * swingjs.JSToolkit.J2S = self.J2S;
+		 * 
+		 */
+		{
+		}
+	}
+	
 	/*
 	 * NOTE: This class is constructed from jsjava.awt.Toolkit.getDefaultToolkit()
 	 * 
 	 */
 
 	public JSToolkit() {
-		super();
+		super();		
 		System.out.println("JSToolkit initialized");
 	}
 
@@ -273,6 +289,10 @@ public class JSToolkit extends SunToolkit {
 		JSAppletViewer ap = getAppletViewer();
 		GraphicsConfiguration gc = ap.graphicsConfig;
 		return (gc == null ? (gc = ap.graphicsConfig = (GraphicsConfiguration) getInstance("swingjs.JSGraphicsConfiguration")) : gc);
+	}
+
+	public static JSAppletViewer getAppletViewer() {
+		return ((JSAppletThread) Thread.currentThread()).appletViewer;
 	}
 
 	public static boolean isFocused(Window window) {
@@ -646,17 +666,9 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
-	public static void readyCallback(String aname, String fname, Object a,
-			Object me) {
-		/**
-		 * 
-		 * @j2sNative
-		 * 
-		 *            J2S._readyCallback(aname, fname, true,a, me);
-		 * 
-		 */
-		{
-		}
+	public static void readyCallback(String aname, String fname, Container applet,
+			JSAppletViewer appletPanel) {
+		J2S._readyCallback(aname, fname, true, applet, appletPanel);
 	}
 
 	public static void forceRepaint(Component c) {
@@ -693,9 +705,27 @@ public class JSToolkit extends SunToolkit {
 	@Override
   protected LightweightPeer createComponent(Component target) {
   	LightweightPeer peer = (LightweightPeer) getUI(target, true);
-  	System.out.println("JSToolkit creating Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
+  	System.out.println("JSToolkit creating UI-Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
   	return peer;
   }
+
+	@Override
+	protected DialogPeer createDialog(Dialog target) {
+  	System.out.println("JSToolkit creating Dialog Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+		return (DialogPeer) ((WindowPeer) target.getUI()).setFrame(target, true);
+	}
+
+	@Override
+	protected FramePeer createFrame(Frame target) {
+  	System.out.println("JSToolkit creating Frame Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+		return (FramePeer) ((WindowPeer) target.getUI()).setFrame(target, true);
+	}
+
+	@Override
+	protected WindowPeer createWindow(Window target) {
+  	System.out.println("JSToolkit creating Window Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+		return ((WindowPeer) target.getUI()).setFrame(target, false);
+	}
 
 	public static JSComponentUI getUI(Component c, boolean isQuiet) {
 		JSComponentUI ui = null;
@@ -754,18 +784,18 @@ public class JSToolkit extends SunToolkit {
 	 * @return
 	 */
 	public static Object getFileContents(String uri) {
+		Object data = null;
 		/**
 		 * @j2sNative
 		 * 
-		 * return J2S._getFileData(uri);
 		 */
 		{
 			try {
-				return Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) new URL(uri).getContent()));
+				data = Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) new URL(uri).getContent()));
 			} catch (Exception e) {
-				return null;
 			}
 		}
+		return (J2S == null ? data : J2S._getFileData(uri, null, false));
 	}
 
 
@@ -890,25 +920,6 @@ public class JSToolkit extends SunToolkit {
 	public static BufferedImage filterImage(BufferedImage src, BufferedImage dst,
 			BufferedImageOp op) {
 		return getCompositor().filterImage(src, dst, op);
-	}
-
-	@Override
-	protected DialogPeer createDialog(Dialog target) {
-		return (DialogPeer) ((WindowPeer) getInstance("swingjs.plaf.JSDialogUI")).setFrame(target, true);
-	}
-
-	@Override
-	protected FramePeer createFrame(Frame target) {
-		return (FramePeer) ((WindowPeer) getInstance("swingjs.plaf.JSFrameUI")).setFrame(target, true);
-	}
-
-	@Override
-	protected WindowPeer createWindow(Window target) {
-		return ((WindowPeer) getInstance("swingjs.plaf.JSWindowUI")).setFrame(target, false);
-	}
-
-	public static JSAppletViewer getAppletViewer() {
-		return ((JSAppletThread) Thread.currentThread()).appletViewer;
 	}
 
 	/**

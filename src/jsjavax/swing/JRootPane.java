@@ -353,7 +353,7 @@ public class JRootPane extends JComponent {
 	public JRootPane(String prefix, boolean isApplet) {
 		// can come here from JApplet, JWindow, JDialog, or JFrame
 		// JApplet is special, because it means we are embedded.
-		isHTML5AppletRoot = isApplet;
+		isRootPane = true;
 		uiClassID = "RootPaneUI";
 		setName(AppContext.getAppContext().getThreadGroup().getName() + prefix + (++paneCount)
 				+ ".JRootPane");

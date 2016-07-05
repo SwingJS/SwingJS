@@ -9,6 +9,8 @@ public abstract class DOMNode {
 
 	public abstract boolean hasFocus();
 
+	public abstract boolean play();
+
 	public abstract DOMNode removeChild(DOMNode object);
 
 	public abstract DOMNode removeAttribute(String attr);
@@ -46,6 +48,8 @@ public abstract class DOMNode {
 	 * @return parent or null
 	 */
 	public static DOMNode remove(DOMNode obj) {
+		if (obj == null)
+			return null;
 		/**
 		 * @j2sNative
 		 * 
@@ -59,17 +63,6 @@ public abstract class DOMNode {
 		 */
 		{
 			return null;
-		}
-	}
-	
-	public static void add(DOMNode parent, DOMNode child) {
-		/**
-		 * @j2sNative
-		 * 
-		 * parent && parent.appendChild(child);
-		 * 
-		 */
-		{
 		}
 	}
 	
@@ -115,7 +108,7 @@ public abstract class DOMNode {
 		return obj;
 	}
 
-	public static DOMNode setAttrs(DOMNode obj, String... attr) {
+	public static DOMNode setAttrs(DOMNode obj, Object... attr) {
 		/**
 		 * @j2sNative
 		 * 
@@ -181,16 +174,7 @@ public abstract class DOMNode {
 	}
 
 	public static void playWav(String filePath) {
-		DOMNode node = DOMNode.createElement("audio", "jsaudio");
-		DOMNode.setAttrs(node, "controls", "true", "src", filePath, "type",
-				"audio/wav");
-		/**
-		 * @j2sNative
-		 * 
-		 *            node.play();
-		 * 
-		 */
-		{
-		}
+		DOMNode.setAttrs(DOMNode.createElement("audio", "jsaudio"), 
+				"controls", "true", "src", filePath).play();
 	}
 }

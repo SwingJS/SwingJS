@@ -25,8 +25,7 @@
 
 package jsjavax.swing;
 
-import java.util.ArrayList;
-
+import javajs.util.Lst;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Point;
@@ -34,6 +33,7 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.TabbedPaneUI;
 import jsjavax.swing.plaf.UIResource;
 
@@ -141,7 +141,7 @@ public class JTabbedPane extends JComponent
      */
     protected ChangeListener changeListener = null;
 
-    private final java.util.List<Page> pages;
+    private final Lst<Page> pages;
 
     /* The component that is currently visible */
     private Component visComp = null;
@@ -193,7 +193,7 @@ public class JTabbedPane extends JComponent
     public JTabbedPane(int tabPlacement, int tabLayoutPolicy) {
         setTabPlacement(tabPlacement);
         setTabLayoutPolicy(tabLayoutPolicy);
-        pages = new ArrayList<Page>(1);
+        pages = new Lst<Page>();
         setModel(new DefaultSingleSelectionModel());
         uiClassID = "TabbedPaneUI";
         updateUI();
@@ -937,7 +937,7 @@ public class JTabbedPane extends JComponent
 
         // Force the tabComponent to be cleaned up.
         setTabComponentAt(index, null);
-        pages.remove(index);
+        pages.removeItemAt(index);
 
         // NOTE 4/15/2002 (joutwate):
         // This fix is implemented using client properties since there is

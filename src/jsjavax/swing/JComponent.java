@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
+import javajs.util.Lst;
+
 import javax.swing.SortingFocusTraversalPolicy;
 
 import jsjava.applet.Applet;
@@ -319,7 +321,7 @@ public abstract class JComponent extends Container {
 	/**
 	 * Temporary rectangles.
 	 */
-	private static java.util.List tempRectangles = new java.util.ArrayList(11);
+	private static Lst<Rectangle> tempRectangles = new Lst<Rectangle>();
 
 	/** Used for <code>WHEN_FOCUSED</code> bindings. */
 	private InputMap focusInputMap;
@@ -422,7 +424,7 @@ public abstract class JComponent extends Container {
 			Rectangle rect;
 			int size = tempRectangles.size();
 			if (size > 0) {
-				rect = (Rectangle) tempRectangles.remove(size - 1);
+				rect = (Rectangle) tempRectangles.removeItemAt(size - 1);
 			} else {
 				rect = new Rectangle(0, 0, 0, 0);
 			}
@@ -432,7 +434,7 @@ public abstract class JComponent extends Container {
 
 	private static void recycleRectangle(Rectangle rect) {
 		synchronized (tempRectangles) {
-			tempRectangles.add(rect);
+			tempRectangles.addLast(rect);
 		}
 	}
 

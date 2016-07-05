@@ -25,7 +25,6 @@
 
 package jsjavax.swing.plaf;
 
-import swingjs.api.HTML5Canvas;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;

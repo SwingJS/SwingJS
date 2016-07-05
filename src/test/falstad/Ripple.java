@@ -30,6 +30,7 @@ package test.falstad;
 //
 // removal of setBackground() for canvas. 
 
+
 // optimizations for JavaScript:
 //
 // 1. changed some FOR statements to be more efficient
@@ -37,8 +38,11 @@ package test.falstad;
 // 3. changed logic in code to stop adjusting if resolutions is sufficient.
 
 
+// program fixes:
+// BH changed impDialog.show(false) to impDialog.dispose();
+// BH added for impDialog setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+// BH added for frame setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-// 
 
 import java.awt.Adjustable;
 import java.awt.Color;
@@ -73,6 +77,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -373,7 +378,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		// and ImportDialog will never show, either, as its parent frame (RippleFrame)
 		// is hiding.
 		super("Ripple Tank Applet v1.7f");
-
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		/**
 		 * @j2sNative
 		 * 
@@ -2068,7 +2073,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 	void doImport() {
 		if (impDialog != null) {
 			requestFocus();
-			impDialog.setVisible(false);
+			//impDialog.setVisible(false);
+			impDialog.dispose(); // BH added
 			impDialog = null;
 		}
 		String dump = "";
@@ -2248,6 +2254,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 
 		ImportDialog(RippleFrame f, String str) {
 			super(f, (str.length() > 0) ? "Export" : "Import", false);
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			rframe = f;
 			setLayout(new ImportDialogLayout());
 			// add(text = new TextArea(str, 10, 60, TextArea.SCROLLBARS_BOTH));

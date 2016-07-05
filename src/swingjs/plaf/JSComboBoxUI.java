@@ -65,7 +65,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 			DOMNode.setAttr(option,  "innerHTML", item);
 			if (i == iselect)
 				DOMNode.setAttr(option, "selected", "true");
-			DOMNode.add(domNode, option);
+			domNode.appendChild(option);
 		}		
 	}
 

@@ -2365,20 +2365,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	State state;
  }
 
- class State extends Complex {
-	double elevel;
- }
-
- class BasisState extends State {
-	int nx, ny;
- }
-
- class DerivedState extends State {
-	int count, lz;
-	BasisState bstates[];
-	Complex coefs[];
- }
-
  class Complex {
 	public double re, im, mag, phase;
 	Complex() { re = im = mag = phase = 0; }
@@ -2444,5 +2430,20 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    phase = -phase;
 	}
  };
+
+ class State extends Complex {
+	double elevel;
+ }
+
+ class BasisState extends State {
+	int nx, ny;
+ }
+
+ class DerivedState extends State {
+	int count, lz;
+	BasisState bstates[];
+	Complex coefs[];
+ }
+
 };
 

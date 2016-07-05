@@ -6094,9 +6094,9 @@ protected  transient ComponentPeer peer;
 //                if (dropTarget != null) dropTarget.removeNotify(peer);
 
                 // Hide peer first to stop system events such as cursor moves.
-// SwingJS  unnec?                if (visible) {
-//                    p.hide();
-//                }
+                if (visible) {
+                    p.setVisible(false);
+                }
 
                 peer = null; // Stop peer updates.
                 peerFont = null;

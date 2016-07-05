@@ -636,7 +636,6 @@ public class JDialog extends Dialog implements WindowConstants,
 		updateUI();
 		addNotify(); // BH added; applet will not do this automatically
 		rootPane.addNotify(); // builds a peer for the root pane
-		rootPane.addNotify(); // builds a peer for the root pane
 	}
 
     private static int dialogCount;

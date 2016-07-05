@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import swingjs.JSFrameViewer;
 import swingjs.api.DOMNode;
 
 public class JSRootPaneUI extends JSLightweightUI {
@@ -11,8 +12,9 @@ public class JSRootPaneUI extends JSLightweightUI {
 
 	@Override
 	public DOMNode createDOMNode() {
-		if (domNode == null)
+		if (domNode == null) {
 			domNode = createDOMObject("div", id);
+		}
 		return domNode;
 	}
 
