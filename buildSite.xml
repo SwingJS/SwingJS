@@ -61,9 +61,15 @@
     </copy>
 
   	<!--      -->
-  	<echo>...adding standard j2s classes from j2s/java </echo>
+  	<echo>...adding standard classes from j2s/java </echo>
    	<copy todir="site/swingjs/j2s/java"  overwrite="true" >
       <fileset dir="j2s/java">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+  	<echo>...adding modified classes from bin/java </echo>
+  	<copy todir="site/swingjs/j2s/java"  overwrite="true" >
+      <fileset dir="bin/java">
         <include name="**/*.js" />
       </fileset>
     </copy>
@@ -85,6 +91,7 @@
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
         <include name="**/*.js" />
+        <exclude name="**/java/*.js" />
         <exclude name="javajs/**/*.js" />
         <exclude name="jsjava/**/*.js" />
         <exclude name="jsjavax/**/*.js" />

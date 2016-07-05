@@ -1,6 +1,6 @@
 package swingjs.plaf;
 
-
+import jsjavax.swing.JMenu;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
 import swingjs.J2SRequireImport;
@@ -12,11 +12,14 @@ import swingjs.api.DOMNode;
 @J2SRequireImport(swingjs.jquery.JQueryUI.class)
 public class JSMenuUI extends JSMenuItemUI {
 
-	static {		
+	static {
 		JSToolkit.getJavaResource("swingjs/jquery/dropit.css", true);
 		JSToolkit.getJavaResource("swingjs/jquery/dropit.js", true);
 	}
-	
+
+	private JMenu jm;
+	private String myClass;
+
 	public JSMenuUI() {
 		isContainer = true;
 		setDoc();
@@ -26,29 +29,34 @@ public class JSMenuUI extends JSMenuItemUI {
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			containerNode = domNode = createDOMObject("ul", id);
+			jm = (JMenu) jc;
+			children = jm.getPopupMenu().getComponents();
+			myClass = "swingjs-menu-" + id;
 			$(domNode).addClass("swingjs");
-			String myClass = "swingjs-menu-" + id;
 			$(domNode).addClass(myClass);
+			$(domNode).addClass("dropit");
 			mi = (JMenuItem) jc;
 			addItem();
-		  domNode.appendChild(itemNode);
+			domNode.appendChild(itemNode);
 		}
-		
-		
+		return domNode;
+
+	}
+
+	@Override
+	protected DOMNode setHTMLElement() {
+		DOMNode node = setHTMLElementCUI();
 		/**
 		 * @j2sNative
 		 * 
 		 * 
-		 *            $(myClass).dropit();
+		 *            this.$(this.myClass).dropit();
 		 */
-		{}
-		
-
-		
-		return domNode;
+		{
+		}
+		return node;
 	}
 
-	
 	// @Override
 	// protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 	// // SwingJS for now: just designated container width/height
@@ -71,6 +79,11 @@ public class JSMenuUI extends JSMenuItemUI {
 	protected void uninstallJSUI() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	protected int getCompHeight() {
+		return height = 30;
 	}
 
 }

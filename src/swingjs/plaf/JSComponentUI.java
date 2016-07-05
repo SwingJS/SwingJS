@@ -129,7 +129,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	 * 
 	 */
 	protected boolean isTainted = true;
+
+	/**
+	 * indicates that we need an outerNode
+	 */
 	
+	protected boolean hasOuterDiv = true;
+
 	/**
 	 * left and top coordinates
 	 */
@@ -190,7 +196,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	protected DOMNode containerNode;
 
 
-	private boolean isNull;
+	public boolean isNull;
 
 
 	public JSComponentUI() {
@@ -417,7 +423,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 		domNode = createDOMNode();
 
-		if (outerNode == null)
+		if (!hasOuterDiv)
+			return outerNode = domNode;
+		
+		if (outerNode == null) 
 			outerNode = wrap("div", id, domNode);
 
 		// set position
@@ -437,7 +446,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 				System.out.println("JSComponentUI container " + id + " "
 						+ c.getBounds());
 				DOMNode
-						.setSize(outerNode, width = c.getWidth(), height = c.getHeight());
+						.setSize(outerNode, getCompHeight(), getCompWidth());
 			}
 			if (jc.isRootPane) {
 				if (jc.getFrameViewer().isApplet) {
@@ -484,6 +493,14 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		return outerNode;
 	}
 
+	protected int getCompWidth() {
+		return width = c.getWidth();
+	}
+
+	protected int getCompHeight() {
+		 return height = c.getHeight();
+	}
+	
 	@Override
 	public Dimension getPreferredSize() {
   	return setHTMLSize(createDOMNode(), false);
@@ -1022,5 +1039,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	public String getId() {
 		return  id;
 	}
+
 
 }

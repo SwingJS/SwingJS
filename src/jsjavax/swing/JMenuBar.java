@@ -77,7 +77,7 @@ public class JMenuBar extends JComponent implements MenuElement
      */
     private transient SingleSelectionModel selectionModel;
 
-    private boolean paintBorder           = true;
+    private boolean paintBorder           = false;//SwingJS true;
     private Insets     margin             = null;
 
 //    /* diagnostic aids -- should be false for production builds. */
@@ -256,6 +256,11 @@ public class JMenuBar extends JComponent implements MenuElement
      *  description: Whether the border should be painted.
      */
     public void setBorderPainted(boolean b) {
+      /**
+       * @j2sNative
+       * 
+       */
+      {
         boolean oldValue = paintBorder;
         paintBorder = b;
         firePropertyChangeBool("borderPainted", oldValue, paintBorder);
@@ -263,6 +268,7 @@ public class JMenuBar extends JComponent implements MenuElement
             revalidate();
             repaint();
         }
+      }
     }
 
     /**

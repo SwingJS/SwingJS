@@ -29,11 +29,11 @@ import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.MenuDragMouseEvent;
 import jsjavax.swing.event.MenuDragMouseListener;
 import jsjavax.swing.event.MenuKeyEvent;
 import jsjavax.swing.event.MenuKeyListener;
-import jsjavax.swing.plaf.MenuItemUI;
 
 /**
  * An implementation of an item in a menu. A menu item is essentially a button
@@ -161,7 +161,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
 	}
 
 
-    private void init0(String text, Icon icon, int mnemonic, String uid) {
+  private void init0(String text, Icon icon, int mnemonic, String uid) {
   		setModel(new DefaultButtonModel());
       init(text, icon, uid);
     	if (mnemonic >= 0)    		

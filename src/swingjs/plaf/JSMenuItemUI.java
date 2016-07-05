@@ -24,18 +24,27 @@ public class JSMenuItemUI extends JSButtonUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-		  containerNode = domNode = addItem();
+		  domNode = addItem();
 		}
+		hasOuterDiv  = false;
 		return domNode;
 	}
 
 	protected DOMNode addItem() {
 		domBtn = enableNode = itemNode = createDOMObject("li", id + "_item");
 		aNode = createDOMObject("a", id + "_a", "href", "#");
+		domBtn.appendChild(aNode);
 		DOMNode.setAttr(itemNode, "data-component", c);
 		$(itemNode).addClass("swingjs");
-		setCssFont(DOMNode.setAttr(aNode, "innerHTML", ((AbstractButton) c).getText()),
-				c.getFont());	
+		$(itemNode).addClass("dropit");
+		String text = null;
+		/**
+		 * @j2sNative
+		 * 
+		 * text = (this.c.getText ? this.c.getText() : "---------------");
+		 */
+		{}
+		setCssFont(DOMNode.setAttr(aNode, "innerHTML", text), c.getFont());
 		return itemNode;
 	}
 	

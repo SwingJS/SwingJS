@@ -877,12 +877,12 @@ public class JSToolkit extends SunToolkit {
 
 	public static boolean hasFocus(Component c) {
 	  JSComponentUI ui = getUI(c, false);
-		return (ui != null && ui.hasFocus());
+		return (ui != null && !ui.isNull && ui.hasFocus());
 	}
 
 	public static boolean requestFocus(Component c) {
 		final JSComponentUI ui = getUI(c, false);
-		if (ui == null || !ui.isFocusable())
+		if (ui == null || ui.isNull || !ui.isFocusable())
 			return  false;
 		Runnable r = new Runnable() {
 

@@ -27,6 +27,7 @@
       <fileset dir="bin">
         <include name="org/**/*.js" />
         <include name="test/**/*.js" />
+        <exclude name="**/java/*.js" />
       </fileset>
     </copy>
    	

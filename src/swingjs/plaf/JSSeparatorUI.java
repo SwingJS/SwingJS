@@ -25,17 +25,24 @@
 
 package swingjs.plaf;
 
+import jsjavax.swing.JSeparator;
+import jsjavax.swing.SwingConstants;
 import swingjs.api.DOMNode;
-import jsjavax.swing.JLabel;
 
-public class JSSeparatorUI extends JSLabelUI {
+public class JSSeparatorUI extends JSLightweightUI {
 
+	JSeparator js;
+	private String text;
+	
 	@Override
 	public DOMNode createDOMNode() {
-		if (domNode == null)
+		if (domNode == null) {
 			textNode = domNode = createDOMObject("label", id);
+			js = (JSeparator) c;
+			text = (js.getOrientation() == SwingConstants.HORIZONTAL ? "|" : "-----------");
+		}
 		vCenter(domNode, 10);
-		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
+		return setCssFont(DOMNode.setAttr(domNode, "innerHTML", text), c.getFont());
 	}
 
 	@Override
