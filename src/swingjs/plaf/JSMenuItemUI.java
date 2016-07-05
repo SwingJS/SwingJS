@@ -1,12 +1,12 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
-import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIManager;
-import swingjs.api.DOMNode;
 import jsjavax.swing.plaf.UIResource;
+import swingjs.api.DOMNode;
 /**
  * SWingJS implementation of stateful user interface for buttons. 
  * Modeled after javax.swing.plaf.basic.BasicButtonUI.java (commented out below).
@@ -16,22 +16,30 @@ import jsjavax.swing.plaf.UIResource;
  */
 public class JSMenuItemUI extends JSButtonUI {
 
-	
-	/**
-	 * the radio or check-box or simple button
-	 * 
-	 */
-	protected DOMNode domBtn;
+	protected JMenuItem mi;
+	protected DOMNode itemNode;
+	private DOMNode aNode;
+
 
 	@Override
 	public DOMNode createDOMNode() {
-		if (domNode == null)
-			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
-					"type", "button");
-		setCssFont(DOMNode.setAttr(domNode, "value", ((AbstractButton) c).getText()),
-				c.getFont());
+		if (domNode == null) {
+		  containerNode = domNode = addItem();
+		}
 		return domNode;
 	}
+
+	protected DOMNode addItem() {
+		domBtn = enableNode = itemNode = createDOMObject("li", id + "_item");
+		aNode = createDOMObject("a", id + "_a", "href", "#");
+		DOMNode.setAttr(itemNode, "data-component", c);
+		$(itemNode).addClass("swingjs");
+		setCssFont(DOMNode.setAttr(aNode, "innerHTML", ((AbstractButton) c).getText()),
+				c.getFont());	
+		return itemNode;
+	}
+	
+
 
 
 	// from BasicButtonUI

@@ -26,11 +26,7 @@
 package swingjs.plaf;
 
 
-import jsjava.awt.Component;
-import jsjava.awt.Dimension;
-
 import jsjavax.swing.LookAndFeel;
-
 import swingjs.api.DOMNode;
 
 public class JSMenuBarUI extends JSPanelUI {
@@ -43,7 +39,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null)
-			domNode = createDOMObject("div", id);
+			domNode = createDOMObject("div", id, "class", "swingjs-menubar");
     return domNode;
 	}
 

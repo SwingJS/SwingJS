@@ -122,7 +122,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @since 1.3
      */
     public JMenuItem(Action a) {
-    	init0(null, null, Integer.MIN_VALUE, null);
+    	init0(null, null, Integer.MIN_VALUE, "MenuItemUI");
         setAction(a);
     }
 
@@ -136,7 +136,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      * @param icon the icon of the <code>JMenuItem</code>
      */
     public JMenuItem(String text, Icon icon) {
-    	init0(text, icon, Integer.MIN_VALUE, null);
+    	init0(text, icon, Integer.MIN_VALUE, "MenuItemUI");
     }
 
 	/**
@@ -149,7 +149,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
 	 *          the keyboard mnemonic for the <code>JMenuItem</code>
 	 */
 	public JMenuItem(String text, int mnemonic) {
-  	init0(text, null, mnemonic, null);
+  	init0(text, null, mnemonic, "MenuItemUI");
 	}
 
   public JMenuItem(String text, Icon icon, String uid) {
@@ -171,7 +171,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
      */
     @Override
 		protected void init(String text, Icon icon, String uid) {
-    	uiClassID = (uid == null ? "MenuBarUI" : uid);
+    	uiClassID = uid;
       updateUI();
         if(text != null)
             setText(text);

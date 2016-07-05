@@ -299,7 +299,7 @@ public class Frame extends Window {
      * @see #getMenuBar
      * @see #setMenuBar(MenuBar)
      */
-//    MenuBar     menuBar;
+     //MenuBar     menuBar;
 
     /**
      * This field indicates whether the frame is resizable.
@@ -347,7 +347,7 @@ public class Frame extends Window {
     Vector ownedWindows;
 
 
-		private Object menuBar; // JSSwing -- no real menubar here
+		//private Object menuBar; // JSSwing -- no real menubar here
 
     private static final String base = "frame";
     private static int nameCounter = 0;

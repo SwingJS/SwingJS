@@ -26,9 +26,6 @@ package jsjavax.swing;
 
 import java.awt.HeadlessException;
 
-import swingjs.JSFrameViewer;
-import swingjs.JSToolkit;
-
 import jsjava.awt.AWTEvent;
 import jsjava.awt.BorderLayout;
 import jsjava.awt.Component;
@@ -39,6 +36,7 @@ import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.event.WindowEvent;
+import swingjs.JSFrameViewer;
 //
 
 //BH: Added rootPane.addNotify(); // builds a peer for the root pane
@@ -328,11 +326,11 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 		}
 	}
 
-	// public void setMenuBar(MenuBar menu) {
-	// throw new
-	// IllegalComponentStateException("Please use setJMenuBar() with JFrame.");
-	// }
-
+//	public void setMenuBar(MenuBar menu) {
+//		throw new IllegalComponentStateException(
+//				"Please use setJMenuBar() with JFrame.");
+//	}
+//
 	/**
 	 * Sets the operation that will happen by default when the user initiates a
 	 * "close" on this frame. You must specify one of the following choices:
