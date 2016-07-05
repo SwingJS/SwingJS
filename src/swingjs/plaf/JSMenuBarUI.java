@@ -47,17 +47,17 @@ public class JSMenuBarUI extends JSPanelUI {
     return domNode;
 	}
 
-	@Override
-  protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		// SwingJS for now: just designated container width/height 
-		return new Dimension(c.getWidth(), c.getHeight());
-	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		// SwingJS should defer to containing panel
-		return null;
-	}
+//	@Override
+//  protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+//		// SwingJS for now: just designated container width/height 
+//		return new Dimension(c.getWidth(), c.getHeight());
+//	}
+//	
+//	@Override
+//	public Dimension getPreferredSize() {
+//		// SwingJS should defer to containing panel
+//		return null;
+//	}
 
 	@Override
 	protected void installJSUI() {
