@@ -25,7 +25,6 @@ import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
-import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
@@ -208,8 +207,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		{}
 	}
 
-	protected void installJSUI(){};
-	protected void uninstallJSUI(){};
+	protected void installJSUI(){}
+	protected void uninstallJSUI(){}
 	
 	public void installUI(JComponent c) {
 		// already done installJSUI();
@@ -241,7 +240,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
   }
 
 	public JSComponentUI set(JComponent target) {
-		c = target;
+ 		c = target;
 		jc = (JComponent) c; // in JavaScript, in certain cases this will not be a JComponent
 		applet = JSToolkit.getHTML5Applet(c);
 		newID();
@@ -731,15 +730,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		case SET_CLIENT_SIZE:
 			if (scrollerNode != null) {
 				width = Math.min(width, scrollerNode.c.getWidth());
-				height = Math.min(height, scrollerNode.c.getHeight());			
+				height = Math.min(height, scrollerNode.c.getHeight());
 			}
-			this.width = width;
-			this.height = height;
-			System.out.println(id + " setBounds " + x + " " + y + " " + width + " " + height + " op=" + op);
-				if (domNode == null && createDOMNode() == null)
-					System.out.println("JSCUI no DOM node created for " + id);
-				else
-					DOMNode.setSize(domNode, width, height);
+			// allow for special adjustments
+			Dimension size = getCSSDimension(this.width = width, this.height = height);
+			System.out.println(id + " setBounds " + x + " " + y + " " + this.width
+					+ " " + this.height + " op=" + op);
+			if (domNode == null && createDOMNode() == null)
+				System.out.println("JSCUI no DOM node created for " + id);
+			else
+				DOMNode.setSize(domNode, this.width, this.height);
 			break;
 		}
 	}

@@ -49,7 +49,7 @@ public class JSFrameViewer implements JSInterface {
 		this.fullName = appletViewer.fullName;
 		canvas = null;
 		jsgraphics = null;
-		insets = new Insets(30, 10, 10, 15);
+		insets = new Insets(30, 0, 0, 0);
 		getGraphics(0, 0);
 		return this;
 	}

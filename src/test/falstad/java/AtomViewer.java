@@ -1,55 +1,34 @@
+package test.falstad.java;
+
 // AtomViewer.java (c) 2002 by Paul Falstad, www.falstad.com.
 // Rendering algorithm in this applet is based on the description of
 // the algorithm used in Atom in a Box by Dean Dauger (www.dauger.com).
 // We raytrace through a 3-d dataset, sampling a number of points and
 // integrating over them using Simpson's rule.
 
-package test.falstad;
-
-// Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
-//
-// Changes include:
-//
-// import javax.swing.applet.Applet --> swingjs.awt
-// 
-// import java.awt.[Button, Canvas, Checkbox, CheckboxMenuItem, Choice, Frame, Label, Scrollbar, Menu, MenuBar, MenuItem] --> swingjs.awt
-//
-// Applet.show does not trigger componentShown(e); showFrame() moved to AtomViewer.init()
-// 
-// AtomViewerFrame.init() changed to AtomViewerFrame.initA
-//
-// note: In JavaScript System.getProperty("java.class.version") is null, so useBufferedImage is false
-//
-// added else statement at the end of layoutContainer to set components visibility to true
-//
-// removed paint(Graphics g) entirely, allowing menubar to display
-//
-// in both setLValue() and setNValue() changed removeAll to removeAllItems
-//
-// deprecated method .insets --> .getInsets
-// deprecated method .size --> .getSize
-// deprecated method .resize --> .setSize
-// deprecated method .move --> .setLocation
-// deprecated method .show --> .setVisible(true)
-// deprecated method .hide --> .setVisible(false)
-// deprecated method .enable --> .setEnabled(true)
-// deprecated method .disable --> .setEnabled(false)
-// deprecated method .inside --> .contains
-// deprecated method .handleEvent --> .processEvent
-
-// paint  --> paintComponent
-
+import java.applet.Applet;
+import java.awt.Button;
+import java.awt.Canvas;
+import java.awt.Checkbox;
+import java.awt.CheckboxMenuItem;
+import java.awt.Choice;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FontMetrics;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Label;
 import java.awt.LayoutManager;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.Rectangle;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -65,19 +44,6 @@ import java.awt.image.MemoryImageSource;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
-
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
 
 class AtomViewerCanvas extends Canvas {
 	AtomViewerFrame pg;
@@ -97,10 +63,10 @@ class AtomViewerCanvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
 		pg.updateAtomViewer(g);
 	}
-}
+};
 
 class AtomViewerLayout implements LayoutManager {
 	public AtomViewerLayout() {
@@ -136,12 +102,12 @@ class AtomViewerLayout implements LayoutManager {
 					barwidth = d.width;
 			}
 		}
-		Insets insets = target.getInsets();
-		int targetw = target.getSize().width - insets.left - insets.right;
+		Insets insets = target.insets();
+		int targetw = target.size().width - insets.left - insets.right;
 		int cw = targetw - barwidth;
-		int targeth = target.getSize().height - (insets.top + insets.bottom);
-		target.getComponent(0).setLocation(insets.left, insets.top);
-		target.getComponent(0).setSize(cw, targeth);
+		int targeth = target.size().height - (insets.top + insets.bottom);
+		target.getComponent(0).move(insets.left, insets.top);
+		target.getComponent(0).resize(cw, targeth);
 		cw += insets.left;
 		int h = insets.top;
 		for (i = 1; i < target.getComponentCount(); i++) {
@@ -156,8 +122,8 @@ class AtomViewerLayout implements LayoutManager {
 					h += d.height / 5;
 					d.width = barwidth;
 				}
-				m.setLocation(cw, h);
-				m.setSize(d.width, d.height);
+				m.move(cw, h);
+				m.resize(d.width, d.height);
 				h += d.height;
 			}
 		}
@@ -165,7 +131,6 @@ class AtomViewerLayout implements LayoutManager {
 }
 
 public class AtomViewer extends Applet implements ComponentListener {
-
 	static AtomViewerFrame ogf;
 
 	void destroyFrame() {
@@ -179,22 +144,19 @@ public class AtomViewer extends Applet implements ComponentListener {
 
 	@Override
 	public void init() {
-		// addComponentListener(this);
-		showFrame();
-		// ogf.revalidate();
-		// ogf.repaint();
+		addComponentListener(this);
 	}
 
 	public static void main(String args[]) {
 		ogf = new AtomViewerFrame(null);
-		ogf.initA();
+		ogf.init();
 	}
 
 	void showFrame() {
 		if (ogf == null) {
 			started = true;
 			ogf = new AtomViewerFrame(this);
-			ogf.initA();
+			ogf.init();
 			repaint();
 		}
 	}
@@ -207,7 +169,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 		else if (ogf == null)
 			s = "Applet is finished.";
 		else
-			ogf.setVisible(true);
+			ogf.show();
 		g.drawString(s, 10, 30);
 	}
 
@@ -390,12 +352,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	boolean useBufferedImage = false;
 
-	boolean useFrame = false;
-
-	public void initA() {
-
-		System.out.println("initA...");
-
+	public void init() {
 		gray2 = new Color(127, 127, 127);
 
 		int res = 100;
@@ -415,14 +372,13 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		Menu m = new Menu("File");
 		mb.add(m);
 		m.add(exitItem = getMenuItem("Exit"));
-
 		m = new Menu("View");
 		mb.add(m);
 		m.add(eCheckItem = getCheckItem("Energy"));
 		eCheckItem.setState(true);
 		m.add(xCheckItem = getCheckItem("Position"));
 		xCheckItem.setState(true);
-		xCheckItem.setEnabled(false);
+		xCheckItem.disable();
 		m.add(lCheckItem = getCheckItem("Angular Momentum"));
 		m.add(l2CheckItem = getCheckItem("Angular Momentum^2"));
 		m.add(rCheckItem = getCheckItem("Radial Distribution"));
@@ -453,8 +409,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		m.add(samplesItems[4] = getCheckItem("Samples = 45"));
 		m.add(samplesItems[5] = getCheckItem("Samples = 55 (best)"));
 		samplesItems[1].setState(true);
-		//mb.setVisible(true);
-		// add(mb); //adds menubar to side bar, but does display and function
 
 		viewChooser = new Choice();
 		viewChooser.add("Real Orbitals (chem.)");
@@ -581,15 +535,12 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		reinit();
 		cv.setBackground(Color.black);
 		cv.setForeground(Color.white);
-		setSize(580, 500);
+		resize(580, 500);
 		handleResize();
 		Dimension x = getSize();
 		Dimension screen = getToolkit().getScreenSize();
 		setLocation((screen.width - x.width) / 2, (screen.height - x.height) / 2);
-		setVisible(true);
-		// setupMenus();
-		finished = true;
-		System.out.println("...done, skipped menus; visible = true");
+		show();
 	}
 
 	void setupStates() {
@@ -909,33 +860,32 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		switch (viewChooser.getSelectedIndex()) {
 		case VIEW_COMPLEX:
 		case VIEW_REAL:
-			nChooser.setVisible(true);
-			lChooser.setVisible(true);
-			mChooser.setVisible(true);
-			modeChooser.setVisible(false);
+			nChooser.show();
+			lChooser.show();
+			mChooser.show();
+			modeChooser.hide();
 			modeChooser.select(MODE_ANGLE);
-			blankButton.setVisible(false);
-			normalizeButton.setVisible(false);
-			maximizeButton.setVisible(false);
-			alwaysNormItem.setEnabled(false);
+			blankButton.hide();
+			normalizeButton.hide();
+			maximizeButton.hide();
+			alwaysNormItem.disable();
 			break;
 		default:
-			nChooser.setVisible(false);
-			lChooser.setVisible(false);
-			mChooser.setVisible(false);
-			modeChooser.setVisible(true);
-			blankButton.setVisible(true);
-			normalizeButton.setVisible(true);
-			maximizeButton.setVisible(true);
-			alwaysNormItem.setEnabled(true);
+			nChooser.hide();
+			lChooser.hide();
+			mChooser.hide();
+			modeChooser.show();
+			blankButton.show();
+			normalizeButton.show();
+			maximizeButton.show();
+			alwaysNormItem.enable();
 			break;
 		}
 		if (viewChooser.getSelectedIndex() == VIEW_REAL)
-			cubicItem.setEnabled(true);
+			cubicItem.enable();
 		else
-			cubicItem.setEnabled(false);
+			cubicItem.disable();
 		validate();
-		//repaint();
 	}
 
 	void createPhasors() {
@@ -1263,9 +1213,8 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			}
 		}
 		if (pixels == null) {
-			int npix = viewX.width * viewX.height;
-			pixels = new int[npix];
-			for (i = 0; i != npix; i++)
+			pixels = new int[viewX.width * viewX.height];
+			for (i = 0; i != viewX.width * viewX.height; i++)
 				pixels[i] = 0xFF000000;
 			imageSource = new MemoryImageSource(viewX.width, viewX.height, pixels, 0,
 					viewX.width);
@@ -1358,7 +1307,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		int i;
 		int n = nChooser.getSelectedIndex() + 1;
 		int l = lChooser.getSelectedIndex();
-		lChooser.removeAllItems();
+		lChooser.removeAll();
 		for (i = 0; i < n; i++)
 			lChooser.add("l = " + i + ((i < 6) ? " (" + codeLetter[i] + ")" : ""));
 		if (l < n && l >= 0)
@@ -1369,11 +1318,11 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	void setLValue() {
 		int l = getL();
 		int i;
-		mChooser.removeAllItems();
+		mChooser.removeAll();
 		if (viewChooser.getSelectedIndex() == VIEW_REAL) {
-			if (l == 0) {
+			if (l == 0)
 				mChooser.add(getN() + "s");
-			} else if (l == 1) {
+			else if (l == 1) {
 				for (i = 0; i != 3; i++)
 					mChooser.add(getN() + l1RealText[i]);
 			} else if (l == 2) {
@@ -1555,10 +1504,11 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		cr *= colorMult;
 		cg *= colorMult;
 		cb *= colorMult;
+		int k, l;
 		if (cr == 0 && cg == 0 && cb == 0) {
 			int y2l = y2 * viewX.width;
-			for (int k = x; k < x2; k++)
-				for (int d = viewX.width, l = y * d; l < y2l; l += d)
+			for (k = x; k < x2; k++)
+				for (l = y * viewX.width; l < y2l; l += viewX.width)
 					pixels[k + l] = 0xFF000000;
 			return;
 		}
@@ -1572,8 +1522,8 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		int colval = 0xFF000000 + (((int) cr) << 16) | (((int) cg) << 8)
 				| (((int) cb));
 		int y2l = y2 * viewX.width;
-		for (int k = x; k < x2; k++)
-			for (int l = y * viewX.width; l < y2l; l += viewX.width)
+		for (k = x; k < x2; k++)
+			for (l = y * viewX.width; l < y2l; l += viewX.width)
 				pixels[k + l] = colval;
 	}
 
@@ -1722,18 +1672,15 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		return x < 0 ? -1 : 1;
 	}
 
-	// public void paint(Graphics g) {
-	// cv.repaint();
-	// }
-	// commenting this out might fix it?
+	@Override
+	public void paint(Graphics g) {
+		cv.repaint();
+	}
 
 	long lastTime;
 	int frameLen;
 
 	public void updateAtomViewer(Graphics realg) {
-
-		System.out.println("...updating..." + !stoppedCheck.getState());
-
 		Graphics g = null;
 		if (winSize == null || winSize.width == 0)
 			return;
@@ -1819,9 +1766,10 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 			g.setColor(Color.white);
 			int ox = -1, oy = -1;
+			int x;
 			int floory = viewPotential.y + viewPotential.height - 1;
-			for (int x = 0, w = winSize.width; x != w; x++) {
-				double xx = (x - w / 2) * xp;
+			for (x = 0; x != winSize.width; x++) {
+				double xx = (x - winSize.width / 2) * xp;
 				if (xx < 0)
 					xx = -xx;
 				if (xx < 1e-3)
@@ -1929,8 +1877,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		if (imageSource != null)
 			imageSource.newPixels();
 		g.drawImage(memimage, viewX.x, viewX.y, null);
-		System.out.println("...image drawn");
-
 		g.setColor(Color.white);
 		if (sliced)
 			drawCube(g, false);
@@ -1962,9 +1908,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			drawPhasors(g, viewStates);
 
 		realg.drawImage(dbimage, 0, 0, this);
-
-		System.out.println("...image drawn");
-
 		if (!allQuiet)
 			cv.repaint(pause);
 	}
@@ -2317,12 +2260,8 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	int scaleValue = -1;
 
-	private boolean finished;
-
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
-		if (!finished)
-			return;
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 		if (e.getSource() == scaleBar) {
 			if (scaleBar.getValue() == scaleValue)
@@ -2415,13 +2354,13 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				selection = SEL_HANDLE;
 			}
 		}
-		if (viewX != null && viewX.contains(x, y)) {
+		if (viewX != null && viewX.inside(x, y)) {
 			selection = SEL_X;
 			checkSlice(e.getX(), e.getY());
 		} else if (viewPotential.contains(x, y)) {
 			selection = SEL_POTENTIAL;
 			// findStateByEnergy(y);
-		} else if (viewStates != null && viewStates.contains(x, y))
+		} else if (viewStates != null && viewStates.inside(x, y))
 			findPhasor(viewStates, x, y);
 		if (oldsph != selectedPaneHandle || olds != selection
 				|| oldss != selectedState)
@@ -2431,7 +2370,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	void findPhasor(View v, int x, int y) {
 		int i;
 		for (i = 0; i != phasorCount; i++) {
-			if (!phasors[i].contains(x, y))
+			if (!phasors[i].inside(x, y))
 				continue;
 			selectedPhasor = phasors[i];
 			selectedState = selectedPhasor.state;
@@ -2497,9 +2436,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		if (!finished) {
-			return;
-		}
 		if (e.getItemSelectable() == cubicItem) {
 			setLValue();
 			setupDisplay();
@@ -2508,14 +2444,13 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			return;
 		}
 		if (e.getItemSelectable() instanceof CheckboxMenuItem) {
-			int nsam = samplesNums.length;
 			int i;
-			for (i = 0; i != nsam; i++)
+			for (i = 0; i != samplesNums.length; i++)
 				if (samplesItems[i] == e.getItemSelectable())
 					break;
-			if (i != nsam) {
+			if (i != samplesNums.length) {
 				int j;
-				for (j = 0; j != nsam; j++)
+				for (j = 0; j != samplesNums.length; j++)
 					samplesItems[j].setState(i == j);
 				setupSimpson();
 			}
@@ -3160,98 +3095,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		State state;
 	}
 
-	class Complex {
-		public double re, im, mag, phase;
-
-		Complex() {
-			re = im = mag = phase = 0;
-		}
-
-		Complex(double r, double i) {
-			set(r, i);
-		}
-
-		double magSquared() {
-			return mag * mag;
-		}
-
-		void set(double aa, double bb) {
-			re = aa;
-			im = bb;
-			setMagPhase();
-		}
-
-		void set(double aa) {
-			re = aa;
-			im = 0;
-			setMagPhase();
-		}
-
-		void set(Complex c) {
-			re = c.re;
-			im = c.im;
-			mag = c.mag;
-			phase = c.phase;
-		}
-
-		void add(double r) {
-			re += r;
-			setMagPhase();
-		}
-
-		void add(double r, double i) {
-			re += r;
-			im += i;
-			setMagPhase();
-		}
-
-		void add(Complex c) {
-			re += c.re;
-			im += c.im;
-			setMagPhase();
-		}
-
-		void square() {
-			set(re * re - im * im, 2 * re * im);
-		}
-
-		void mult(double c, double d) {
-			set(re * c - im * d, re * d + im * c);
-		}
-
-		void mult(double c) {
-			re *= c;
-			im *= c;
-			mag *= c;
-		}
-
-		void mult(Complex c) {
-			mult(c.re, c.im);
-		}
-
-		void setMagPhase() {
-			mag = Math.sqrt(re * re + im * im);
-			phase = Math.atan2(im, re);
-		}
-
-		void setMagPhase(double m, double ph) {
-			mag = m;
-			phase = ph;
-			re = m * Math.cos(ph);
-			im = m * Math.sin(ph);
-		}
-
-		void rotate(double a) {
-			setMagPhase(mag, (phase + a) % (2 * pi));
-		}
-
-		void conjugate() {
-			im = -im;
-			phase = -phase;
-		}
-	}
-
-	class State extends Complex {
+	abstract class State extends Complex {
 		double elevel;
 
 		void convertDerivedToBasis() {
@@ -3263,23 +3107,17 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		void setBasisActive() {
 		}
 
-		String getText() {
-			return null;
-		}
+		abstract String getText();
 	}
 
 	class BasisState extends State {
 		int n, l, m;
 		Orbital orb;
 
-		BasisState() {
-		}
-
 		@Override
 		String getText() {
 			return "n = " + n + ", l = " + l + ", m = " + m;
 		}
-
 	}
 
 	class DerivedState extends State {
@@ -3381,6 +3219,97 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			}
 		}
 	}
+
+	class Complex {
+		public double re, im, mag, phase;
+
+		Complex() {
+			re = im = mag = phase = 0;
+		}
+
+		Complex(double r, double i) {
+			set(r, i);
+		}
+
+		double magSquared() {
+			return mag * mag;
+		}
+
+		void set(double aa, double bb) {
+			re = aa;
+			im = bb;
+			setMagPhase();
+		}
+
+		void set(double aa) {
+			re = aa;
+			im = 0;
+			setMagPhase();
+		}
+
+		void set(Complex c) {
+			re = c.re;
+			im = c.im;
+			mag = c.mag;
+			phase = c.phase;
+		}
+
+		void add(double r) {
+			re += r;
+			setMagPhase();
+		}
+
+		void add(double r, double i) {
+			re += r;
+			im += i;
+			setMagPhase();
+		}
+
+		void add(Complex c) {
+			re += c.re;
+			im += c.im;
+			setMagPhase();
+		}
+
+		void square() {
+			set(re * re - im * im, 2 * re * im);
+		}
+
+		void mult(double c, double d) {
+			set(re * c - im * d, re * d + im * c);
+		}
+
+		void mult(double c) {
+			re *= c;
+			im *= c;
+			mag *= c;
+		}
+
+		void mult(Complex c) {
+			mult(c.re, c.im);
+		}
+
+		void setMagPhase() {
+			mag = Math.sqrt(re * re + im * im);
+			phase = Math.atan2(im, re);
+		}
+
+		void setMagPhase(double m, double ph) {
+			mag = m;
+			phase = ph;
+			re = m * Math.cos(ph);
+			im = m * Math.sin(ph);
+		}
+
+		void rotate(double a) {
+			setMagPhase(mag, (phase + a) % (2 * pi));
+		}
+
+		void conjugate() {
+			im = -im;
+			phase = -phase;
+		}
+	};
 
 	class PhaseColor {
 		public double r, g, b;

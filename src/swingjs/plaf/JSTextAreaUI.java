@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
 import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
@@ -24,6 +25,7 @@ public class JSTextAreaUI extends JSTextUI {
 		if (domNode == null) {
 			updateHandler.checkDocument();
 			domBtn = focusNode = enableNode = textNode = domNode = createDOMObject("textarea", id);
+			DOMNode.setStyles(domNode, "resize", "none");
 			bindMouse(domNode);
 			if (((JTextComponent) c).isEditable()) {
 				bindKeys(domNode);
@@ -38,10 +40,17 @@ public class JSTextAreaUI extends JSTextUI {
 		return domNode;
 	}
 
+	private Insets myInsets = new Insets(0, 0, 5, 5); 
 	@Override
 	public Insets getInsets() {
-		return new Insets(5, 5, 5, 5);
+		return myInsets;
 	}
-
-
+	
+	@Override
+	protected Dimension getCSSDimension(int w, int h) {
+		width -= 5;
+		height -= 5;
+		return new Dimension(w - 5, h - 5);
+	}
+	
 }

@@ -53,7 +53,7 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	 */
 	@Override
 	public WindowPeer setFrame(Window target, boolean isFrame) {
-		set((JComponent)(Object)target); // yes, I know it is not a JComponent. This is JavaScript!
+		//set((JComponent)(Object)target); // yes, I know it is not a JComponent. This is JavaScript!
 		window = target;
 		w = (JWindow) window;
 		this.isFrame = isFrame;
