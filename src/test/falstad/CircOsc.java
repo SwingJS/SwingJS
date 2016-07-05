@@ -759,9 +759,9 @@ boolean shown = false;
 
  long lastTime;
  public void updateCircOsc(Graphics realg) {
-	Graphics g = dbimage.getGraphics();
-	if (winSize == null || winSize.width == 0 || dbimage == null)
+		if (winSize == null || winSize.width == 0 || dbimage == null)
 	    return;
+	Graphics g = dbimage.getGraphics();
 	boolean allQuiet = true;
 	double tadd = 0;
 	if (!stoppedCheck.getState()) {
