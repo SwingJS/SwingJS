@@ -18,8 +18,10 @@ import swingjs.api.DOMNode;
 public class JSSliderUI extends JSLightweightUI implements PropertyChangeListener, ChangeListener {
 
 	private JSlider jSlider;
-	private int min, max, val;
+	private int min, max, val, majorSpacing, minorSpacing;
 	private String orientation;
+	
+	private boolean ticks;
 	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
@@ -46,28 +48,35 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			min = js.getMinimum();
 			max = js.getMaximum();
 			val = js.getValue();
-					
+			majorSpacing = js.getMajorTickSpacing();
+			System.out.print("The Tick Spacing is: " + majorSpacing + " and the max is " + max);
+			minorSpacing = js.getMinorTickSpacing();
+			ticks = js.getPaintTicks();
 
 			/**	
 			 * @j2sNative
 			 *
-    var me = this;
-    me.$(me.jqSlider).slider({
-      orientation: me.orientation,
-      range: false,
-      min: me.min,
-      max: me.max,
-      value: me.val,
-      change: function( jqevent, handle ) {
-      	me.jqueryCallback(jqevent, handle);
-      },
-      slide: function( jqevent, handle ) {
-      	me.jqueryCallback(jqevent, handle);
-      }
-    });
-    
+    			var me = this;
+    			me.$(me.jqSlider).slider({
+      				orientation: me.orientation,
+      				range: false,
+      				min: me.min,
+      				max: me.max,
+      				value: me.val,
+      				change: function( jqevent, handle ) {
+      					me.jqueryCallback(jqevent, handle);
+      				},
+      				slide: function( jqevent, handle ) {
+      					me.jqueryCallback(jqevent, handle);
+      				}
+    			});
 			 */
 			{}
+			//TODO: fix such that it actually enters the loop when we want ticks
+			if(!js.getPaintTicks()){
+				//5 and 10 are test values
+				//setSliderTicks(5,10);
+			}
 			
 		}
 		setZ(isNew);
@@ -117,9 +126,34 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		jSlider.setValue(val = value);
 	}
 	
+	public void setSliderTicks(int min_space, int maj_space){
+		/**
+		 * @j2sNative
+		 * 
+		 * var $slider =  this.$(this.jqSlider);
+		 * var check = maj_space/min_space;
+		 * var spacing =  min_space*100 / (this.max - this.min);
+		 * var numticks = (this.max/min_space)+1;
+		 * var label = this.min;
+		 * 
+		 * $slider.find('.ui-slider-tick-mark').remove();
+		 * for (var i = 0; i < numticks; i++) {
+		 * 		if(i%check == 0){
+		 * 			$('<span class="ui-slider-tick-mark"></span>').css({'height': '10px', 'left':(spacing * i) +  '%'}).appendTo($slider);
+		 * 			$('<span class="p_special">'+label+'</span>').css({'left':(spacing * i) +  '%'}).appendTo($slider);
+              		label += maj_space;
+		 * 		} else {
+		 * 			$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) +  '%').appendTo($slider);
+		 * 		}
+		 * }	
+		 * 
+		 */
+		{}
+	}
+	
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		return (orientation == "horizontal" ? new Dimension(100, 20) : new Dimension(20, 100));
+		return (orientation == "horizontal" ? new Dimension(100, 40) : new Dimension(20, 100));
 	}
 
 	@Override
@@ -152,7 +186,17 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if ((v = jSlider.getMaximum()) != max)
 			setSliderAttr("max", max = v);		
 		if ((v = jSlider.getValue()) != val)
-			setSliderAttr("value", val = v);		
+			setSliderAttr("value", val = v);
+		//Note: this is a hacky way of painting ticks when we're supposed to
+		//also prevents applets without tick spacing from running
+		if ((v = jSlider.getMajorTickSpacing()) != majorSpacing){
+			System.out.print("THE PAINT TICKS IS " + jSlider.getPaintTicks());
+			setSliderTicks(5, majorSpacing = v);
+		}
+		if (jSlider.getPaintTicks())
+			System.out.print("balalalala");
+		
+			//setSliderTicks(5,10);
 		setZ(false);
 	}
 
