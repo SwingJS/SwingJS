@@ -156,7 +156,12 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
   	init0(text, icon, 0, uid);
 	}
 
-    protected void init0(String text, Icon icon, int mnemonic, String uid) {
+  protected JMenuItem(String text, Icon icon, int mnemonic, String uid) {
+  	init0(text, icon, mnemonic, uid);
+	}
+
+
+    private void init0(String text, Icon icon, int mnemonic, String uid) {
   		setModel(new DefaultButtonModel());
       init(text, icon, uid);
     	if (mnemonic >= 0)    		
