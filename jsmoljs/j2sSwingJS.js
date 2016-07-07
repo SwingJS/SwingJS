@@ -6,6 +6,11 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 7/7/2016 10:24:36 AM fixed Float.isInfinite(), Double.isInfinite()
+ // BH 7/7/2016 10:12:20 AM added Number.compare(a,b) (technically just Float and Double)
+ // BH 7/7/2016 7:10:09 AM note added about String and CharSequence
+ // BH 7/6/2016 5:30:24 PM adds Character.charCount(c)
+ // BH 7/6/2016 6:26:41 AM adds String.format()
  // BH 7/4/2016 1:34:18 PM Frame1$Dialog1 uses wrong instance of Window in prepareCallbacks #23 
  // BH 7/3/2016 3:49:29 PM tweak of delegate, replacing evaluateMethod with findMethod
  // BH 6/16/2016 5:55:33 PM adds Class.isInstance(obj)
@@ -4954,6 +4959,7 @@ implementOf(Number,java.io.Serializable);
 Number.equals=inF.equals;
 Number.getName=inF.getName;
 Number.prototype.compareTo = function(x) { var a = this.value, b = x.value; return (a < b ? -1 : a == b ? 0 : 1) };
+Number.compare = function(a,b) { return (a < b ? -1 : a == b ? 0 : 1) };
 
 Clazz.defineMethod(Number,"shortValue",
 function(){
@@ -5406,7 +5412,7 @@ return isNaN(arguments.length == 1 ? num : this.valueOf());
 Float.isNaN=Float.prototype.isNaN;
 Clazz.defineMethod(Float,"isInfinite",
 function(num){
-return!isFinite(arguments.length == 1 ? num : this.valueOf());
+return !Number.isFinite(arguments.length == 1 ? num : this.valueOf());
 },"Number");
 Float.isInfinite=Float.prototype.isInfinite;
 
@@ -5456,7 +5462,7 @@ return isNaN(arguments.length == 1 ? num : this.valueOf());
 Double.isNaN=Double.prototype.isNaN;
 Clazz.defineMethod(Double,"isInfinite",
 function(num){
-return!isFinite(arguments.length == 1 ? num : this.valueOf());
+return!Number.isFinite(arguments.length == 1 ? num : this.valueOf());
 },"Number");
 Double.isInfinite=Double.prototype.isInfinite;
 
@@ -5727,12 +5733,30 @@ String.prototype[p]=Clazz._O.prototype[p];
 }
 }
 
+// Actually, String does not implement CharSequence because it does not
+// implement getSubsequence() or length(). Any use of CharSequence that
+// utilizes either of these methods must explicitly check for typeof x.length
+// or existance of x.subSequence.  
+// classes affected include:
+//   java.io.CharArrayWriter,StringWriter,Writer
+//   java.lang.AbstractStringBuilder
+//   java.util.regex.Matcher,Pattern
+ 
 implementOf(String,[java.io.Serializable,CharSequence,Comparable]);
 
 String.getName=inF.getName;
 
 String.serialVersionUID=String.prototype.serialVersionUID=-6849794470754667710;
 
+var formatterClass;
+
+if (!String.format)
+ String.format = function() {
+  if (!formatterClass)
+    formatterClass = Class.forName("java.util.Formatter");
+  var f = formatterClass.newInstance();
+  return f.format.apply(f,arguments).toString();
+ }
 
 ;(function(sp) {
 
@@ -6221,6 +6245,7 @@ Clazz.makeConstructor(c$,
 function(value){
 this.value=value;
 },"~N");
+
 Clazz.defineMethod(c$,"charValue",
 function(){
 return this.value;
@@ -6324,8 +6349,7 @@ Clazz.defineStatics(c$,
 "TYPE",null);
 
 java.lang.Character.TYPE=java.lang.Character.prototype.TYPE=java.lang.Character;
-
-
+java.lang.Character.charCount = java.lang.Character.prototype.charCount = function(codePoint){return codePoint >= 0x010000 ? 2 : 1;};
 
 Clazz._ArrayWrapper = function(a, type) {
  return {

@@ -11,6 +11,7 @@ import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.BoundedRangeModel;
 import jsjavax.swing.JLabel;
+import jsjavax.swing.JScrollBar;
 import jsjavax.swing.JSlider;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
@@ -33,6 +34,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private boolean paintTrack = true;
 
 	protected boolean isScrollBar;
+	private JScrollBar jScrollBar;
+	private DOMNode sliderTrack;
 
 	public JSSliderUI() {
 		needPreferred = true;
@@ -51,7 +54,10 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		min = js.getMinimum();
 		max = js.getMaximum();
 		val = js.getValue();
-		if (!isScrollBar) {
+		if (isScrollBar) {
+			// temporary
+			jScrollBar = (JScrollBar) c;
+		} else {
 			minorSpacing = js.getMinorTickSpacing();
 			majorSpacing = js.getMajorTickSpacing();
 			paintTicks = js.getPaintTicks();
@@ -100,7 +106,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			return;
 		z0 = z;
 		System.out.println("JSSliderUI setting z to " + z);
-		DOMNode sliderTrack = DOMNode.firstChild(domNode);
+		sliderTrack = DOMNode.firstChild(domNode);
 		DOMNode sliderHandle = DOMNode.firstChild(sliderTrack);
 		DOMNode.setZ(sliderTrack, z++);
 		DOMNode.setZ(sliderHandle, z++);
@@ -149,6 +155,11 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("value", val);
 		setSliderAttr("min", min);
 		setSliderAttr("max", max);
+		
+		int barPlace = 40;
+		if (jSlider.getBorder() != null)
+			barPlace += 10;
+
 		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
 		String tickClass = "ui-slider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
 		$(jqSlider).find(tickClass).remove();
@@ -206,13 +217,18 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				DOMNode.setPositionAbsolute(labelNode, top, left);
 				domNode.appendChild(labelNode);
 			}
+			DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%"); 
 			setHTMLSize(domNode, false);
 		}
 	}
 
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		int d = (paintLabels || paintTicks ? 50 : 30);
+		int d = 20;
+		if (paintLabels || paintTicks)
+			d += 20;
+		if (jSlider.getBorder() != null)
+			d += 10;
 		return (orientation == "horizontal" ? new Dimension(100, d) : new Dimension(d, 100));
 	}
 
