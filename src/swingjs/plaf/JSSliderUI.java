@@ -156,11 +156,12 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("min", min);
 		setSliderAttr("max", max);
 		
+		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
+
 		int barPlace = 40;
-		if (jSlider.getBorder() != null)
+		if (isHoriz &&  jSlider.getBorder() != null)
 			barPlace += 10;
 
-		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
 		String tickClass = "ui-slider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
 		$(jqSlider).find(tickClass).remove();
 		$(jqSlider).find(".jslider-labels").remove();
