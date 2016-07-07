@@ -150,7 +150,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("min", min);
 		setSliderAttr("max", max);
 		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
-		String tickClass = ".ui-slider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
+		String tickClass = "ui-slider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
 		$(jqSlider).find(tickClass).remove();
 		$(jqSlider).find(".jslider-labels").remove();
 		setHTMLSize(jqSlider, false);
@@ -159,21 +159,24 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			return;
 		// TODO: test inverted
 		boolean isInverted = jSlider.getInverted();
+		int margin = 10;
+		int totalWidth = jSlider.getWidth();
 		if (paintTicks) {
 			int check = majorSpacing / minorSpacing;
-			int spacing = minorSpacing * 100 / (max - min);
-			int numTicks = (max / minorSpacing) + 1;
+			float fracSpacing = minorSpacing * 1f / (max - min);
+			int numTicks = (100 / minorSpacing) + 1;
 			for (int i = 0; i < numTicks; i++) {
-				DOMNode node = DOMNode.createElement("span", id + "_t" + i, "class",
-						tickClass);
+				DOMNode node = DOMNode.createElement("span", id + "_t" + i);
+				$(node).addClass("swingjs");
+				$(node).addClass(tickClass);
 				boolean isMajor = (i % check == 0);
-				String spt = (isHoriz == isInverted ? 100 - spacing * i : spacing * i)
-						+ "%";
+				float frac = (isHoriz == isInverted ? 1 - fracSpacing * i : fracSpacing * i);
+				String spt = (frac * (totalWidth - 2 * margin) + margin) + "px";
 				if (isMajor)
 					$(node).css(isHoriz ? "height" : "width", "10px");
-				$(node).css(isHoriz ? "left" : "top", spt).appendTo(jqSlider);
+				$(node).css(isHoriz ? "left" : "top", spt).appendTo(domNode);
 			}
-			setHTMLSize(jqSlider, false);
+			setHTMLSize(domNode, false);
 		}
 		if (paintLabels) {
 			int m = 10;
@@ -191,24 +194,26 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				float frac = (n - min) * 1f / (max - min);
 				if (isHoriz == isInverted)
 					frac = 1 - frac;
-				int top, left;
+				float px = (frac * (totalWidth - 2 * margin) + margin);
+				int left = (int) (px - label.getWidth() / 2);
+				int top;
 				if (isHoriz) {
-					left = m + (int) (frac * w) - label.getWidth() / 2;
-					top = (int) (h * 0.7);
+					top = 28;
 				} else {
-					left = (int) (w * 0.7);
-					top = m + (int) (frac * w) - label.getHeight() / 2;
+					top = left;
+					left = 28;
 				}
 				DOMNode.setPositionAbsolute(labelNode, top, left);
-				jqSlider.appendChild(labelNode);
+				domNode.appendChild(labelNode);
 			}
-			setHTMLSize(jqSlider, false);
+			setHTMLSize(domNode, false);
 		}
 	}
 
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		return (orientation == "horizontal" ? new Dimension(100, 40) : new Dimension(20, 100));
+		int d = (paintLabels || paintTicks ? 50 : 30);
+		return (orientation == "horizontal" ? new Dimension(100, d) : new Dimension(d, 100));
 	}
 
 	@Override
@@ -235,6 +240,13 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	public void stateChanged(ChangeEvent e) {
 		// from Java
 		isTainted = true;
+				int v;
+		if ((v = jSlider.getMinimum()) != min)
+			setSliderAttr("min", min = v);
+		if ((v = jSlider.getMaximum()) != max)
+			setSliderAttr("max", max = v);		
+		if ((v = jSlider.getValue()) != val)
+			setSliderAttr("value", val = v);
 		setZ(false);
 	}
 

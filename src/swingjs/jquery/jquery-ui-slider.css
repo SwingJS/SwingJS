@@ -5,13 +5,13 @@
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
 /* BH */
-.ui-slider-horizontal { height: .3em; top: 20%;margin:0px .8em}
-.ui-slider-horizontal .ui-slider-handle { top: -.25em; margin-left: -.3em; }
+.ui-slider-horizontal { height: .3em; top: 40%;margin:0px 10px}
+.ui-slider-horizontal .ui-slider-handle { top: -.25em; margin-left: -.4em; }
 .ui-slider-horizontal .ui-slider-range { top: 0.1em; height: 30%; }
 .ui-slider-horizontal .ui-slider-range-min { left: 0; }
 .ui-slider-horizontal .ui-slider-range-max { right: 0; }
 
-.ui-slider-vertical { width: .3em; left: 30%; height: 100px; margin:.8em 0px }
+.ui-slider-vertical { width: .3em; left: 40%; margin:10px 0px }
 .ui-slider-vertical .ui-slider-handle { left: -.25em; margin-left: 0; margin-bottom: -.3em; }
 .ui-slider-vertical .ui-slider-range { left: 0.1em; width: 30%; }
 .ui-slider-vertical .ui-slider-range-min { bottom: 0; }
@@ -299,7 +299,7 @@
 
 /*Tick Marks added for SwingJS
 ----------------------------------*/
-.swingjs .ui-slider-tick-mark-vert { display:inline-block; width:1px; background: black; height:5px; position: absolute; top: .8em; }
-.swingjs .ui-slider-tick-mark-horiz { display:inline-block; width:1px; background: black; width:5px; position: absolute; left: .8em; }
+.swingjs .ui-slider-tick-mark-vert { display:inline-block; width:1px; background: black; border:1px; height:5px; position:absolute; top:22px; }
+.swingjs .ui-slider-tick-mark-horiz { display:inline-block; height:1px; background: black; border:1px; width:5px; position:absolute; left:22px; }
 
 
