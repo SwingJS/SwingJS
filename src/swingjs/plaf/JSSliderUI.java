@@ -1,12 +1,16 @@
 package swingjs.plaf;
 
 
+import java.util.Dictionary;
+import java.util.Enumeration;
+
 import javax.swing.SwingConstants;
 
 import jsjava.awt.Dimension;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.BoundedRangeModel;
+import jsjavax.swing.JLabel;
 import jsjavax.swing.JSlider;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
@@ -21,11 +25,14 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private int min, max, val, majorSpacing, minorSpacing;
 	private String orientation;
 	
-	private boolean ticks;
+	private boolean paintTicks, paintLabels;
 	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
 	private BoundedRangeModel model;
+	private boolean paintTrack = true;
+
+	protected boolean isScrollBar;
 
 	public JSSliderUI() {
 		needPreferred = true;
@@ -36,51 +43,51 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.css", true);
 		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.js", true);
 	}
+
 	@Override
 	public DOMNode createDOMNode() {
-		JSlider js  = jSlider = (JSlider) c;
 		boolean isNew = (domNode == null);
-		if (isNew) {
-			domNode = wrap("div", id + "_wrap", jqSlider = DOMNode.createElement("div", id));
-			$(domNode).addClass("swingjs");
-			model = js.getModel();
-			orientation = (js.getOrientation() == SwingConstants.VERTICAL ? "vertical" : "horizontal");
-			min = js.getMinimum();
-			max = js.getMaximum();
-			val = js.getValue();
-			majorSpacing = js.getMajorTickSpacing();
-			System.out.print("The Tick Spacing is: " + majorSpacing + " and the max is " + max);
+		JSlider js = jSlider = (JSlider) c;
+		min = js.getMinimum();
+		max = js.getMaximum();
+		val = js.getValue();
+		if (!isScrollBar) {
 			minorSpacing = js.getMinorTickSpacing();
-			ticks = js.getPaintTicks();
+			majorSpacing = js.getMajorTickSpacing();
+			paintTicks = js.getPaintTicks();
+			paintLabels = js.getPaintLabels();
+			paintTrack = js.getPaintTrack();
+		}
+		orientation = (js.getOrientation() == SwingConstants.VERTICAL ? "vertical"
+				: "horizontal");
+		model = js.getModel();
+		if (isNew) {
+			domNode = wrap("div", id + "_wrap",
+					jqSlider = DOMNode.createElement("div", id));
+			$(domNode).addClass("swingjs");
 
-			/**	
+			/**
 			 * @j2sNative
-			 *
-    			var me = this;
-    			me.$(me.jqSlider).slider({
-      				orientation: me.orientation,
-      				range: false,
-      				min: me.min,
-      				max: me.max,
-      				value: me.val,
-      				change: function( jqevent, handle ) {
-      					me.jqueryCallback(jqevent, handle);
-      				},
-      				slide: function( jqevent, handle ) {
-      					me.jqueryCallback(jqevent, handle);
-      				}
-    			});
+			 * 
+			 *            var me = this; 
+			 *            me.$(me.jqSlider).slider(
+			 *             { orientation: me.orientation, 
+			 *               range: false, 
+			 *               min: me.min,
+			 *               max: me.max,
+			 *               value: me.val, 
+			 *               change: function(jqevent, handle) {
+			 *                     me.jqueryCallback(jqevent, handle); }, 
+			 *               slide: function(jqevent, handle) { 
+			 *                     me.jqueryCallback(jqevent, handle); }
+			 *            });
 			 */
-			{}
-			//TODO: fix such that it actually enters the loop when we want ticks
-			if(!js.getPaintTicks()){
-				//5 and 10 are test values
-				//setSliderTicks(5,10);
+			{
 			}
-			
 		}
 		setZ(isNew);
-    return domNode;
+		setSlider();
+		return domNode;
 	}
 
 	/**
@@ -125,32 +132,80 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		
 		jSlider.setValue(val = value);
 	}
-	
-	public void setSliderTicks(int min_space, int maj_space){
+
+	private void setSliderAttr(String key, int val) {
+		System.out.println(id + " setting " + key + " = " + val);
 		/**
 		 * @j2sNative
 		 * 
-		 * var $slider =  this.$(this.jqSlider);
-		 * var check = maj_space/min_space;
-		 * var spacing =  min_space*100 / (this.max - this.min);
-		 * var numticks = (this.max/min_space)+1;
-		 * var label = this.min;
-		 * 
-		 * $slider.find('.ui-slider-tick-mark').remove();
-		 * for (var i = 0; i < numticks; i++) {
-		 * 		if(i%check == 0){
-		 * 			$('<span class="ui-slider-tick-mark"></span>').css({'height': '10px', 'left':(spacing * i) +  '%'}).appendTo($slider);
-		 * 			$('<span class="p_special">'+label+'</span>').css({'left':(spacing * i) +  '%'}).appendTo($slider);
-              		label += maj_space;
-		 * 		} else {
-		 * 			$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) +  '%').appendTo($slider);
-		 * 		}
-		 * }	
-		 * 
+		 *  var a = {};
+		 *  a[key]= val;
+		 *  this.$(this.jqSlider).slider(a);
 		 */
 		{}
 	}
-	
+
+	public void setSlider() {
+		setSliderAttr("value", val);
+		setSliderAttr("min", min);
+		setSliderAttr("max", max);
+		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
+		String tickClass = ".ui-slider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
+		$(jqSlider).find(tickClass).remove();
+		$(jqSlider).find(".jslider-labels").remove();
+		setHTMLSize(jqSlider, false);
+		if (majorSpacing == 0 || minorSpacing == 0
+				|| !paintTicks && !paintLabels)
+			return;
+		// TODO: test inverted
+		boolean isInverted = jSlider.getInverted();
+		if (paintTicks) {
+			int check = majorSpacing / minorSpacing;
+			int spacing = minorSpacing * 100 / (max - min);
+			int numTicks = (max / minorSpacing) + 1;
+			for (int i = 0; i < numTicks; i++) {
+				DOMNode node = DOMNode.createElement("span", id + "_t" + i, "class",
+						tickClass);
+				boolean isMajor = (i % check == 0);
+				String spt = (isHoriz == isInverted ? 100 - spacing * i : spacing * i)
+						+ "%";
+				if (isMajor)
+					$(node).css(isHoriz ? "height" : "width", "10px");
+				$(node).css(isHoriz ? "left" : "top", spt).appendTo(jqSlider);
+			}
+			setHTMLSize(jqSlider, false);
+		}
+		if (paintLabels) {
+			int m = 10;
+			int h = height;
+			int w = width;			
+			Dictionary<Integer, JLabel> labels = jSlider.getLabelTable();
+			Enumeration keys = labels.keys();
+			while (keys.hasMoreElements()) {
+				Object key = keys.nextElement();
+				int n = Integer.parseInt(key.toString());
+				JLabel label = labels.get(key);
+				DOMNode labelNode = ((JSComponentUI) label.getUI())
+						.getOuterNode();
+				// need calculation of pixels
+				float frac = (n - min) * 1f / (max - min);
+				if (isHoriz == isInverted)
+					frac = 1 - frac;
+				int top, left;
+				if (isHoriz) {
+					left = m + (int) (frac * w) - label.getWidth() / 2;
+					top = (int) (h * 0.7);
+				} else {
+					left = (int) (w * 0.7);
+					top = m + (int) (frac * w) - label.getHeight() / 2;
+				}
+				DOMNode.setPositionAbsolute(labelNode, top, left);
+				jqSlider.appendChild(labelNode);
+			}
+			setHTMLSize(jqSlider, false);
+		}
+	}
+
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		return (orientation == "horizontal" ? new Dimension(100, 40) : new Dimension(20, 100));
@@ -179,37 +234,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// from Java
-		int v;
-		System.out.println(id + " stateChange " + e);
-		if ((v = jSlider.getMinimum()) != min)
-			setSliderAttr("min", min = v);
-		if ((v = jSlider.getMaximum()) != max)
-			setSliderAttr("max", max = v);		
-		if ((v = jSlider.getValue()) != val)
-			setSliderAttr("value", val = v);
-		//Note: this is a hacky way of painting ticks when we're supposed to
-		//also prevents applets without tick spacing from running
-		if ((v = jSlider.getMajorTickSpacing()) != majorSpacing){
-			System.out.print("THE PAINT TICKS IS " + jSlider.getPaintTicks());
-			setSliderTicks(5, majorSpacing = v);
-		}
-		if (jSlider.getPaintTicks())
-			System.out.print("balalalala");
-		
-			//setSliderTicks(5,10);
+		isTainted = true;
 		setZ(false);
-	}
-
-	private void setSliderAttr(String key, int val) {
-		System.out.println(id + " setting " + key + " = " + val);
-		/**
-		 * @j2sNative
-		 * 
-		 *  var a = {};
-		 *  a[key]= val;
-		 *  this.$(this.jqSlider).slider(a);
-		 */
-		{}
 	}
 
 }

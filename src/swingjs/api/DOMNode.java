@@ -17,7 +17,7 @@ public abstract class DOMNode {
 	
 	public abstract void setSelectionRange(int pt0, int pt1);
 
-	public static DOMNode createElement(String key, String id) {
+	public static DOMNode createElement(String key, String id, Object... attrs) {
 		DOMNode obj = null;
 		/**
 		 * 
@@ -27,7 +27,7 @@ public abstract class DOMNode {
 		 */
 		{
 		}
-		return obj;
+		return setAttrs(obj, attrs);
 	}
 
 	public static DOMNode getParent(DOMNode obj) {

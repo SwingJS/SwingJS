@@ -36,27 +36,30 @@ public class Interface {
 		}
 	}
   public static Object getInstance(String name, boolean isQuiet) {
+  	Object x = null;
+  	/**
+  	 * @j2sNative
+  	 * 
+  	 * Clazz._isQuiet = isQuiet;
+  	 */
+  	{}
     try {
-    	/**
-    	 * @j2sNative
-    	 * 
-    	 * Clazz._isQuiet = isQuiet;
-    	 */
-    	{}
     	if (!isQuiet)
     		System.out.println("swingjs.api.Interface creating instance of " + name);
-      Class<?> x = Class.forName(name);
+    	Class<?> y = Class.forName(name); 
+      if (y != null)
+      	x = y.newInstance();
+    } catch (Exception e) {
+      System.out.println("Swingjs.api.Interface Error creating instance for " + name + ": \n" + e);
+    } finally {
     	/**
     	 * @j2sNative
     	 * 
     	 * Clazz._isQuiet = false;
     	 */
     	{}      
-      return (x == null ? null : x.newInstance());
-    } catch (Exception e) {
-      System.out.println("Interface.java Error creating instance for " + name + ": \n" + e);
-      return null;
     }
+    return x;    	
   }
 
 }

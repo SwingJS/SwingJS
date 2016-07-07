@@ -247,5 +247,130 @@ public class BugTest extends HashMap {
 		System.out.println("Done.");
 	}
 
+	private static void test(double value, int prec) {
+//  String s = PT.formatD(value, 1, precision, false, false, true);
+//  char[] v = s.toCharArray();
+//  int len = s.length();
+
+		
+//		char[] v = new char[30 + 1];
+//	  
+//
+//	  sun.misc.FormattedFloatingDecimal fd
+//      = new sun.misc.FormattedFloatingDecimal(value, prec,
+//          sun.misc.FormattedFloatingDecimal.Form.GENERAL);
+//
+//  int ex = fd.getExponent();
+//  // MAX_FD_CHARS + 1 (round?)
+//  String sv = "" + value;
+//  if (sv.indexOf("E") >= 0)
+//  	sv = sv.substring(0, sv.indexOf("E"));
+//  int dig = sv.length();
+//  if ((""+value).indexOf(".") >= 0)
+//   dig--;
+//
+//  
+//  
+//  int len = fd.getChars(v);
+//  int expr = fd.getExponentRounded();
+//  int exp = fd.getExponent();
+//  if (exp != expr)
+//  	System.out.println("ahaha");
+//  String s = new String(v).substring(0, len);
+//
+//
+//  sun.misc.FormattedFloatingDecimal fd1
+//  = new sun.misc.FormattedFloatingDecimal(value, prec,
+//      sun.misc.FormattedFloatingDecimal.Form.DECIMAL_FLOAT);
+//  
+//  len = fd1.getChars(v);
+//  String sf = new String(v).substring(0, len); 
+//  
+//  sun.misc.FormattedFloatingDecimal fd2
+//  = new sun.misc.FormattedFloatingDecimal(value, prec,
+//      sun.misc.FormattedFloatingDecimal.Form.SCIENTIFIC);
+//  
+//  len = fd2.getChars(v);
+//  String ss = new String(v).substring(0, len);
+//  
+//  sun.misc.FormattedFloatingDecimal fd3
+//  = new sun.misc.FormattedFloatingDecimal(value, prec - 1,
+//      sun.misc.FormattedFloatingDecimal.Form.SCIENTIFIC);
+//  
+//  len = fd3.getChars(v);
+//  String ss1 = new String(v).substring(0, len);
+  
+  System.out.println(value + " prec=" + prec + " "
+  + String.format("%1." + prec + "f", value)  + " " 
+  + String.format("%1." + prec + "g", value)  + " " 
+  + String.format("%1." + prec + "e", value)  + " " 
+  	  	);
+	}
+	
+	static {
+		double d = 1234.56789356789; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 1.5; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 2.5; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 1; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 100; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 100.34567891234; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 4.95; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 4.5; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 3.95; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 3.5; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		d = 12345; 
+		for (int i = -10; i < 10; i++) {
+			System.out.println("----");
+			test2(d * Math.pow(10, i));
+	  }
+		System.out.println("{"+String.format("%.3f", 36f)+"}");
+		System.out.println("----");
+		
+	}
+
+	private static void test2(double d) {
+		for (int i = 0; i < 10; i++)
+		test(d , i);
+	}	
 }
 

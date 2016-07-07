@@ -30,5 +30,11 @@ public interface JQueryObject {
 
 	public abstract void remove();
 
+	public abstract JQueryObject find(String selector);
+
+	public abstract void appendTo(Object obj);
+
+	public abstract JQueryObject css(String key, String value);
+
 	
 }

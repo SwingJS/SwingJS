@@ -1,4 +1,4 @@
-/*
+  /*
  * Dropit v1.1.0
  * http://dev7studios.com/dropit
  *
@@ -18,7 +18,7 @@
     position: absolute;
     top: 100%;
     left: 0; /* dropdown left or right */
-    z-index: 1000;
+    /*z-index: 1000;*/
     display: none;
     min-width: 150px;
     list-style: none;

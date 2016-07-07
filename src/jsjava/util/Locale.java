@@ -248,8 +248,8 @@ public final class Locale implements Cloneable, Serializable {
 //
 //    /** Useful constant for country.
 //     */
-//    static public final Locale US = createSingleton("en_US_", "en", "US");
-//
+    static public final Locale US = createSingleton("en_US_", "en", "US");
+
 //    /** Useful constant for country.
 //     */
 //    static public final Locale CANADA = createSingleton("en_CA_", "en", "CA");
