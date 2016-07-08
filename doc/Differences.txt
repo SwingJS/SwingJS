@@ -1,8 +1,87 @@
 Notes
 =====
 
+=============================================================================
+SwingJS and JDK 1.6
+=============================================================================
+
+SwingJS implements a wide range of the Java language in JavaScript. The base
+version for this implementation is Java 1.6. However, some classes were
+implemented using older source code, and there are some missing methods.  
+
+MINOR ISSUES--unimplemented classes
+===================================
+
+accessibility
+native classes
+security
+serialization
+
+MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
+================================================================
+
+java.util.BitSet must be 16-bit
+
+Thread.currentThread() == dispatchThread
+
+
+MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
+=====================================================================
+
+primitive numerical types
+distinguishing arrays
+forced null typing
+native classes
+java.awt.Color
+javax.swing.JFileDialog
+key focus
+static methods and classes -- order is important
+LookAndFeel
+inner class order
+String does not implement CharSequence.length() or .subSequence()
+
+
+MAJOR ISSUES--for Bob and Udo within SwingJS
+============================================
+
+fonts
+OS-dependent classes
+AWT component peers
+
+
+MAJOR ISSUES--to be resolved by implementers
+============================================
+
+fonts
+specific AWT components not implemented
+threads
+image loading
+no BigInteger; no BigDecimal
+no format internationalization
+no winding rules
+text-related field implementation
+Formatter/Regex limitations
+
+======================================================================== 
+
+DISCUSS
+=======
+
+Table row/col sorter needs checking after removal of java.text.Collator references
+
+I had to move all of SunHints class to RenderingHints, or the 
+two classes could not be loaded. Shouldn't be a problem, I think. The sun classes are
+not accessible anyway.
+
+We now have jsjava.lang.Thread and jsjava.lang.ThreadGroup. These should be useful in
+figuring out what we want to do with those. ThreadGroup in particular is interesting,
+as it is used to key for AppContexts. We will see if that use useful or not.
+
 PROGRESS
 ========
+BH 7/7/2016 2:28:59 PM  -- Formatter/Regex implemented
+
+BH 7/7/2016 11:21:48 AM --  j2s bug #3 is still a serious issue 
 BH 7/4/2016 1:36:20 PM  --  j2s bug #23 inner/anonymous class may reference wrong superclass instance
 BH 7/4/2016 10:22:39 AM  -- j2s bug #22 final vars not passed to local class	
 
@@ -886,77 +965,10 @@ Class.loadClass("jsjava.text.SimpleDateFormat", function() { x = new jsjava.text
 
   
 
-Differences to Original JDK 1.6
-===============================
-
-DISCUSS
-=======
-
-Table row/col sorter needs checking after removal of java.text.Collator references
-
-I had to move all of SunHints class to RenderingHints, or the 
-two classes could not be loaded. Shouldn't be a problem, I think. The sun classes are
-not accessible anyway.
-
-We now have jsjava.lang.Thread and jsjava.lang.ThreadGroup. These should be useful in
-figuring out what we want to do with those. ThreadGroup in particular is interesting,
-as it is used to key for AppContexts. We will see if that use useful or not.
-
-
-MINOR ISSUES--requiring no rewriting
-====================================
-
-accessibility
-native classes
-security
-serialization
-
-MINOR ISSUES--requiring some rewriting/refactoring by Bob and Udo  
-=================================================================
-
-java.util.BitSet must be 16-bit
-
-Thread.currentThread() == dispatchThread
-
-
-MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
-=====================================================================
-
-primitive numerical types
-distinguishing arrays
-forced null typing
-native classes
-java.awt.Color
-javax.swing.JFileDialog
-key focus
-static methods and classes -- order is important
-LookAndFeel
-inner class order
-
-MAJOR ISSUES--for Bob and Udo within SwingJS
-============================================
-
-fonts
-OS-dependent classes
-AWT component peers
-
-
-MAJOR ISSUES--to be resolved by implementers
-============================================
-
-fonts
-specific AWT components not implemented
-threads
-image loading
-no BigInteger; no BigDecimal
-no format internationalization
-no winding rules
-text-related field implementation
- 
 //////////////////////////////////////////////////////////////////////////////
 
-MINOR ISSUES--requiring no rewriting
-====================================
+MINOR ISSUES--unimplemented classes
+===================================
 
 accessibility
 -------------
@@ -981,8 +993,8 @@ All serialization has been removed. It was never very useful for Swing anyway,
 because one needs exactly the same Java version to save and restore serialized objects.
 
 
-MINOR ISSUES--requiring some rewriting/refactoring by Bob and Udo  
-=================================================================
+MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
+================================================================
 
 
 java.util.BitSet must be 16-bit
@@ -1227,6 +1239,18 @@ is null, and then CopyIterator does not extend Iterator.
 Solution is to simply move the inner class definitions in the .java file
 
 
+String does not implement CharSequence.length() or .subSequence()
+-----------------------------------------------------------------
+
+JavaScript String uses .length instead of .length(). As such, although
+nominally String implements CharSequence, in fact, it does not. It has neither
+.length() nor .subSequence(). All java core classes that require this implementation
+have been adjusted. Developers simply need to know that this is the case and
+adjust accordingly. String.length() is converted to String.length by the j2s
+compiler. But String.subSequence() is not convereted automatically to String.substring().
+Clear error messages will notify the developer if use of String.subSequence() is
+used.
+
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
 
@@ -1256,8 +1280,8 @@ will be implemented as JavaScript classes in the swingjs package
 AWTAccessor and  AwtContext need to be customized 
 
    
-AWT component peers
--------------------
+AWT component peers and component "ui" user interfaces
+------------------------------------------------------
 
 ComponentPeer is a class that represents a native AWT component.
 Components with such peers are called "heavy-weight" components.
@@ -1379,7 +1403,7 @@ text-related field implementation
 Text fields are:
 
 JTextField   (JavaScript <input type="text">)
-JTextArea    (JavaScript <textarea>; TODO)
+JTextArea    (JavaScript <textarea>;)
 JTextPane    (JavaScript <div>; non-editing; TODO)
 JEditorPane  NOT IMPLEMENTED
 
@@ -1396,6 +1420,17 @@ public static methods .stop, .isRunning, .processMouseDragged require true Java 
 javax.swing.text.View and its subclasses are not implemented. 
 
 The JS document model does not allow two fields to address the same underlying document. 
+
+
+Formatter/Regex limitations
+---------------------------
+
+java.util.regex.Matcher and Pattern use JavaScript's RegExp object rather than
+the native Java object. These are not identical. Only flags /igm are supported.
+Matcher.start(groupID) is not supported.
+
+java.util.Formatter will function correctly for all standard %... patterns.
+
 
  
 
