@@ -1966,7 +1966,7 @@ boolean shown = false;
 	}
 		}
 	} else {
-		JSToolkit.playAudio("uLAW", b, 8000, 1);
+		JSToolkit.playAudio("PCM", b, 22050, 1);
 	}
 	
 	cv.repaint();

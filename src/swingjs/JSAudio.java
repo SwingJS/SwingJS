@@ -29,10 +29,11 @@ public class JSAudio {
 
 	/**
 	 * indicates that the data are already in wave format (this could be MPEG, for example, too)
-	 * @param data
+	 * @param fileData 
+	 * @param fileFormat  MPEG, WAVE, MP3
 	 */
-	public void playAudio(byte[] data, String format) {
-		playAudio(data, 0, 0, format);		
+	public void playAudioFile(byte[] fileData, String fileFormat) {
+		playAudio(fileData, 0, 0, fileFormat);		
 	}
 	/**
 	 * 
@@ -49,7 +50,7 @@ public class JSAudio {
 		}
 		if (data == null)
 			return false;			
-		DOMNode.playWav("data:audio/" + format + ";base64," + Base64.getBase64(data));
+		DOMNode.playWav("data:audio/" + format.toLowerCase() + ";base64," + Base64.getBase64(data));
 		return true;
 	}
 
@@ -85,16 +86,27 @@ public class JSAudio {
 //			0x0006 	WAVE_FORMAT_ALAW 	8-bit ITU-T G.711 A-law
 //			0x0007 	WAVE_FORMAT_MULAW 	8-bit ITU-T G.711 µ-law			
 
-			int fmt = 7;
+			int fmt = 7; // ULAW
 		
 			/////////0         1
 			/////////01234567890123456789
 			switch ("PCM ;ALAW;ULAW;FLOAT".indexOf(format.toUpperCase())) {
 			case 0:
-				fmt = 1; // probably not supported by browsers
+				if (bytesPerSample == 2) {
+					fmt = 1; // probably not supported by browsers
+				} else {
+					fmt = 7;
+					byte[] b = data;
+					data = new byte[data.length];
+					System.arraycopy(b, 0, data, 0, b.length);
+					toULaw(data);
+				}
 				break;
 			case 5:
 				fmt = 6;
+				break;
+			case 10:
+				fmt = 7;
 				break;
 			case 15:
 				fmt = 3;
