@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
 import jsjavax.swing.JMenu;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
@@ -12,15 +13,10 @@ import swingjs.api.DOMNode;
 @J2SRequireImport(swingjs.jquery.JQueryUI.class)
 public class JSMenuUI extends JSMenuItemUI {
 
-	static {
-		JSToolkit.getJavaResource("swingjs/jquery/dropit.css", true);
-		JSToolkit.getJavaResource("swingjs/jquery/dropit.js", true);
-	}
-
 	private JMenu jm;
-	private String myClass;
 
 	public JSMenuUI() {
+		hasOuterDiv = false;
 		isContainer = true;
 		setDoc();
 	}
@@ -28,46 +24,27 @@ public class JSMenuUI extends JSMenuItemUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			containerNode = domNode = createDOMObject("ul", id);
-			jm = (JMenu) jc;
-			children = jm.getPopupMenu().getComponents();
-			myClass = "swingjs-menu-" + id;
-			$(domNode).addClass("swingjs");
-			$(domNode).addClass(myClass);
-			$(domNode).addClass("dropit");
 			mi = (JMenuItem) jc;
-			addItem();
-			domNode.appendChild(itemNode);
+			jm = (JMenu) jc;
+			domNode = createItem("_menu");
+			containerNode = createDOMObject("ul", id);
+			domNode.appendChild(containerNode);
 		}
+		children = jm.getPopupMenu().getComponents();
 		return domNode;
 
 	}
 
 	@Override
-	protected DOMNode setHTMLElement() {
-		DOMNode node = setHTMLElementCUI();
-		/**
-		 * @j2sNative
-		 * 
-		 * 
-		 *            this.$(this.myClass).dropit();
-		 */
-		{
-		}
-		return node;
+	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+		// SwingJS for now: just designated container width/height
+		return new Dimension(30, 150);
 	}
 
-	// @Override
-	// protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-	// // SwingJS for now: just designated container width/height
-	// return new Dimension(c.getWidth(), c.getHeight());
-	// }
-	//
-	// @Override
-	// public Dimension getPreferredSize() {
-	// // SwingJS should defer to containing panel
-	// return null;
-	// }
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(30, 150);
+	}
 
 	@Override
 	protected void installJSUI() {
@@ -81,9 +58,5 @@ public class JSMenuUI extends JSMenuItemUI {
 
 	}
 
-	@Override
-	protected int getCompHeight() {
-		return height = 30;
-	}
 
 }

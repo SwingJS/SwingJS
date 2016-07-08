@@ -26,10 +26,19 @@
 package swingjs.plaf;
 
 
+import jsjava.awt.Dimension;
 import jsjavax.swing.LookAndFeel;
+import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
 public class JSMenuBarUI extends JSPanelUI {
+
+	// http://www.kriesi.at/wp-content/extra_data/suckerfish_tutorial/step4.html
+	
+	static {
+		JSToolkit.getJavaResource("swingjs/jquery/swingjs-menu.css", true);
+	}
+
 
 	public JSMenuBarUI() {
 		isContainer = true;
@@ -38,12 +47,36 @@ public class JSMenuBarUI extends JSPanelUI {
 	
 	@Override
 	public DOMNode createDOMNode() {
-		if (domNode == null)
-			domNode = createDOMObject("div", id, "class", "swingjs-menubar");
-    return domNode;
+		if (domNode == null) {
+			containerNode = domNode = createDOMObject("ui", id);
+			DOMNode.setPositionAbsolute(domNode, 20, 0); // after title bar 
+			$(domNode).addClass("swingjs-menu");
+		}
+
+		return domNode;
 	}
 
-//	@Override
+	private void setMenu() {
+		
+		/**
+		 * @j2sNative
+
+  $(".swingjs-menu ul").css({display: "none"});
+  $(".swingjs-menu li").hover(
+    function(){$(this).find('ul:first').css({visibility: "visible",display: "none"}).show();},
+    function(){$(this).find('ul:first').css({visibility: "hidden"});}
+   );
+
+		 * 
+		 */
+		{}
+		
+	
+	}
+
+	
+	
+	//	@Override
 //  protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 //		// SwingJS for now: just designated container width/height 
 //		return new Dimension(c.getWidth(), c.getHeight());
@@ -68,5 +101,17 @@ public class JSMenuBarUI extends JSPanelUI {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected int getCompHeight() {
+		return height = 25;
+	}
+	@Override
+	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+		setMenu();
+		return new Dimension(25, 150);
+	}
+
+
 
 }

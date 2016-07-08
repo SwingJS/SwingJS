@@ -1,6 +1,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import jsjava.awt.Dimension;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
@@ -23,20 +24,19 @@ public class JSMenuItemUI extends JSButtonUI {
 
 	@Override
 	public DOMNode createDOMNode() {
+		
 		if (domNode == null) {
-		  domNode = addItem();
+		  domNode = createItem("_item");
+			hasOuterDiv  = false;
 		}
-		hasOuterDiv  = false;
 		return domNode;
 	}
 
-	protected DOMNode addItem() {
-		domBtn = enableNode = itemNode = createDOMObject("li", id + "_item");
+	protected DOMNode createItem(String type) {
+		domBtn = enableNode = itemNode = createDOMObject("li", id + type);
 		aNode = createDOMObject("a", id + "_a", "href", "#");
 		domBtn.appendChild(aNode);
 		DOMNode.setAttr(itemNode, "data-component", c);
-		$(itemNode).addClass("swingjs");
-		$(itemNode).addClass("dropit");
 		String text = null;
 		/**
 		 * @j2sNative
@@ -557,5 +557,12 @@ public class JSMenuItemUI extends JSButtonUI {
 //  }
 //
 //
+
+
+	protected int getCompWidth() {
+		return width = 150;
+	}
+
+
 
 }
