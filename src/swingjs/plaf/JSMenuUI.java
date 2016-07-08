@@ -38,12 +38,12 @@ public class JSMenuUI extends JSMenuItemUI {
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		// SwingJS for now: just designated container width/height
-		return new Dimension(150, 30);
+		return new Dimension(50, 25);
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(150, 30);
+		return new Dimension(50, 25);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class JSMenuUI extends JSMenuItemUI {
 	}
 
 	protected int getCompWidth() {
-		return width = 150;
+		return width = 50;
 	}
 
 

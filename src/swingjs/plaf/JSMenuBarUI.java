@@ -109,7 +109,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		setMenu();
-		return new Dimension(25, 150);
+		return new Dimension(150, 25);
 	}
 
 

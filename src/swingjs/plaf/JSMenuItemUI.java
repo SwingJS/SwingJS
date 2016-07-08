@@ -548,7 +548,7 @@ public class JSMenuItemUI extends JSButtonUI {
 	// }
 
 	protected int getCompHeight() {
-		return width = 25;
+		return height = 25;
 	}
 
 

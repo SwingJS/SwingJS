@@ -64,7 +64,7 @@ public class JSRadioButtonUI extends JSButtonUI {
 			label = createDOMObject("label", id + "2", "htmlFor", id);
 			label.appendChild(domBtn);
 			label.appendChild(textNode);
-			wrapper = (hasOuterDiv ? createItem("_item", label) : label);
+			wrapper = (hasOuterDiv ? label : createItem("_item", label));
 		}
 		if (b.isSelected() || isNew)
 			DOMNode.setAttr(domBtn, "checked", "true");
