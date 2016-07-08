@@ -26,7 +26,7 @@ public class JSMenuUI extends JSMenuItemUI {
 		if (domNode == null) {
 			mi = (JMenuItem) jc;
 			jm = (JMenu) jc;
-			domNode = createItem("_menu");
+			domNode = createItem("_menu", null);
 			containerNode = createDOMObject("ul", id);
 			domNode.appendChild(containerNode);
 		}
@@ -38,12 +38,12 @@ public class JSMenuUI extends JSMenuItemUI {
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		// SwingJS for now: just designated container width/height
-		return new Dimension(30, 150);
+		return new Dimension(150, 30);
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(30, 150);
+		return new Dimension(150, 30);
 	}
 
 	@Override
@@ -56,6 +56,10 @@ public class JSMenuUI extends JSMenuItemUI {
 	protected void uninstallJSUI() {
 		// TODO Auto-generated method stub
 
+	}
+
+	protected int getCompWidth() {
+		return width = 150;
 	}
 
 

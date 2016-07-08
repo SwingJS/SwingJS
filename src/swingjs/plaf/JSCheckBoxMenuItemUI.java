@@ -16,6 +16,11 @@ import swingjs.api.DOMNode;
  */
 public class JSCheckBoxMenuItemUI extends JSCheckBoxUI {
 
+	public JSCheckBoxMenuItemUI() {
+		super();
+		hasOuterDiv = false;
+	}
+	
 	@Override
 	public DOMNode createDOMNode() {
 		return getButtonObject("checkBox");

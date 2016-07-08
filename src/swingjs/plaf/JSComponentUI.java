@@ -422,22 +422,26 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			return outerNode;
 
 		domNode = createDOMNode();
+		Component[] children = (this.children == null ? jc.getComponents()
+				: this.children);
+		int n = children.length;
 
-		if (!hasOuterDiv)
-			return outerNode = domNode;
+		if (!hasOuterDiv) {
+			outerNode = domNode;
+			if (n == 0)
+				return outerNode; 
+		}
 		
 		if (outerNode == null) 
 			outerNode = wrap("div", id, domNode);
 
 		// set position
 
-		DOMNode.setPositionAbsolute(outerNode, -1, -1);
-		DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
-				(y = c.getY()) + "px");
-
-		Component[] children = (this.children == null ? jc.getComponents()
-				: this.children);
-		int n = children.length;
+		if (hasOuterDiv) {
+			DOMNode.setPositionAbsolute(outerNode, -1, -1);
+			DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
+					(y = c.getY()) + "px");
+		}
 		if (n > 0 && containerNode == null)
 			containerNode = outerNode;
 		if (isContainer || n > 0) {
@@ -446,7 +450,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 				System.out.println("JSComponentUI container " + id + " "
 						+ c.getBounds());
 				DOMNode
-						.setSize(outerNode, getCompHeight(), getCompWidth());
+						.setSize(outerNode, getCompWidth(), getCompHeight());
 			}
 			if (jc.isRootPane) {
 				if (jc.getFrameViewer().isApplet) {

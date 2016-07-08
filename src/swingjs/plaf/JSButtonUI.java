@@ -24,6 +24,8 @@ public class JSButtonUI extends JSLightweightUI {
 	 */
 	protected DOMNode domBtn;
 	protected boolean isRadio;
+	protected DOMNode itemNode;
+	private DOMNode aNode;
 
 	@Override
 	public DOMNode createDOMNode() {
@@ -36,6 +38,27 @@ public class JSButtonUI extends JSLightweightUI {
 		return domNode;
 	}
 
+	protected DOMNode createItem(String type, DOMNode myNode) {
+		itemNode = createDOMObject("li", id + type);
+		if (myNode != null) {
+			itemNode.appendChild(myNode);
+			return itemNode; 
+		}
+		domBtn = enableNode = itemNode;
+		aNode = createDOMObject("a", id + "_a", "href", "#");
+		domBtn.appendChild(aNode);
+		DOMNode.setAttr(itemNode, "data-component", c);
+		String text = null;
+		/**
+		 * @j2sNative
+		 * 
+		 * text = (this.c.getText ? this.c.getText() : "---------------");
+		 */
+		{}
+		setCssFont(DOMNode.setAttr(aNode, "innerHTML", text), c.getFont());
+		return itemNode;
+	}
+	
 	/**
 	 * Just ensure the button is in sync. Because of the surrounding label tag, 
 	 * it may not have actually indicate having been pressed.

@@ -12,6 +12,7 @@ import jsjavax.swing.JRadioButton;
 
 public class JSRadioButtonUI extends JSButtonUI {
 
+	private DOMNode label;
 	private DOMNode wrapper;
 	private static Map<ButtonGroup, String> groupNames;
 	
@@ -32,11 +33,11 @@ public class JSRadioButtonUI extends JSButtonUI {
 		// "absolute" is required for positioning of button, but must not be there for setting the size. 
 		DOMNode.setStyles(domBtn, "position", null);
 		DOMNode.setStyles(textNode, "position", null);
-		DOMNode.setStyles(wrapper, "position", null);
+		DOMNode.setStyles(label, "position", null);
 		Dimension d = setHTMLSize1(obj, addCSS, false);
 		DOMNode.setPositionAbsolute(domBtn, -1, -1);
 		DOMNode.setPositionAbsolute(textNode, -1, -1);
-		DOMNode.setPositionAbsolute(wrapper, -1, -1);
+		DOMNode.setPositionAbsolute(label, -1, -1);
 		return d;
 	}
 
@@ -60,9 +61,10 @@ public class JSRadioButtonUI extends JSButtonUI {
 			domBtn = enableNode = createDOMObject("input", id, "type", myType, "name",
 					name);
 			textNode = createDOMObject("label", id + "l");
-			wrapper = createDOMObject("label", id + "2", "htmlFor", id);
-			wrapper.appendChild(domBtn);
-			wrapper.appendChild(textNode);
+			label = createDOMObject("label", id + "2", "htmlFor", id);
+			label.appendChild(domBtn);
+			label.appendChild(textNode);
+			wrapper = (hasOuterDiv ? createItem("_item", label) : label);
 		}
 		if (b.isSelected() || isNew)
 			DOMNode.setAttr(domBtn, "checked", "true");
@@ -78,8 +80,8 @@ public class JSRadioButtonUI extends JSButtonUI {
 		setHTMLSize1(textNode, false, false);
 		DOMNode obj = wrap("div", "", domBtn, textNode);
 		Dimension dobj = setHTMLSize1(obj, true, true);
-		wrapper.appendChild(domBtn);
-		wrapper.appendChild(textNode);
+		label.appendChild(domBtn);
+		label.appendChild(textNode);
 		
 		// set the offset of the text based on the radio button size
 		DOMNode.setStyles(textNode, "left", drad.width + "px");
@@ -91,15 +93,16 @@ public class JSRadioButtonUI extends JSButtonUI {
 		// make everything absolute to pass sizing info to all
 		DOMNode.setPositionAbsolute(domBtn, -1, -1);
 		DOMNode.setPositionAbsolute(textNode, -1, -1);
-		DOMNode.setPositionAbsolute(wrapper, -1, -1);
+		DOMNode.setPositionAbsolute(label, -1, -1);
 		if (doAll) {
 			// now wrap these in a div
-			domNode = obj = wrap("div", id + "_0", wrapper);
-			DOMNode.setPositionAbsolute(obj, -1, -1);
+			domNode = obj = (hasOuterDiv ? wrap("div", id + "_0", label) : wrapper);
+			if (hasOuterDiv)
+				DOMNode.setPositionAbsolute(obj, -1, -1);
 		} else {
 			obj = domNode;
 		}
-		DOMNode.setSize(wrapper, dobj.width, dobj.height);
+		DOMNode.setSize(label, dobj.width, dobj.height);
 		return DOMNode.setSize(obj, dobj.width, dobj.height);
 	}
 
