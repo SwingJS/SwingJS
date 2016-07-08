@@ -49,7 +49,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			containerNode = domNode = createDOMObject("ui", id);
-			DOMNode.setPositionAbsolute(domNode, 20, 0); // after title bar 
+			DOMNode.setPositionAbsolute(domNode, 0, 0); // after title bar 
 			$(domNode).addClass("swingjs-menu");
 		}
 

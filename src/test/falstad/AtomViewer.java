@@ -587,9 +587,8 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		Dimension screen = getToolkit().getScreenSize();
 		setLocation((screen.width - x.width) / 2, (screen.height - x.height) / 2);
 		setVisible(true);
-		// setupMenus();
+		setupMenus();
 		finished = true;
-		System.out.println("...done, skipped menus; visible = true");
 	}
 
 	void setupStates() {
