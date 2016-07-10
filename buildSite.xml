@@ -86,6 +86,12 @@
         <include name="**/*.js" />
       </fileset>
     </copy>
+    <echo>...copying bin/jssun JavaScript files to j2s/sun</echo>
+  	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
+      <fileset dir="bin/jssun">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
   	
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
@@ -95,6 +101,7 @@
         <exclude name="javajs/**/*.js" />
         <exclude name="jsjava/**/*.js" />
         <exclude name="jsjavax/**/*.js" />
+        <exclude name="jssun/**/*.js" />
       </fileset>
     </copy>
    	
@@ -143,8 +150,11 @@
 -->
 
    	 		
-   	<echo>Changing "jsjava" to "java" and "jsjavax" to "javax"</echo>
+   	<echo>Changing "jsjava" to "java", "jsjavax" to "javax", and "jssun" to "sun"</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
+  	<replace dir="site/swingjs/" includes="**/*.js" token="jssun" value="sun" />
+
+  	<echo>Changing "javajs.util" references to "JU"</echo>
   	<replace dir="site/swingjs/" includes="**/*.js" token="javajs.util" value="JU" />
   		
   	<echo>...adding to swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
@@ -289,12 +299,12 @@
             javax/swing/event/PopupMenuListener.js
             javax/swing/event/SwingPropertyChangeSupport.js
             javax/swing/SwingPaintEventDispatcher.js
-            jssun/applet/AppletEvent.js
-            jssun/applet/AppletEventMulticaster.js
-            jssun/awt/EventQueueItem.js
-            jssun/awt/PaintEventDispatcher.js
-            jssun/awt/PeerEvent.js
-            jssun/awt/PostEventQueue.js
+            sun/applet/AppletEvent.js
+            sun/applet/AppletEventMulticaster.js
+            sun/awt/EventQueueItem.js
+            sun/awt/PaintEventDispatcher.js
+            sun/awt/PeerEvent.js
+            sun/awt/PostEventQueue.js
             java/applet/Applet.js
             java/applet/AppletContext.js
             java/applet/AppletStub.js
@@ -468,27 +478,27 @@
             javax/swing/SwingUtilities.js
             javax/swing/UIManager.js
             javax/swing/WindowConstants.js
-            jssun/applet/AppletListener.js
-            jssun/awt/AppContext.js
-            jssun/awt/AWTAccessor.js
-            jssun/awt/AWTAutoShutdown.js
-            jssun/awt/ComponentFactory.js
-            jssun/awt/ConstrainableGraphics.js
-            jssun/awt/geom/Curve.js
-            jssun/awt/Graphics2Delegate.js
-            jssun/awt/ModalExclude.js
-            jssun/awt/NullComponentPeer.js
-            jssun/awt/RequestFocusController.js
-            jssun/awt/SunGraphicsCallback.js
-            jssun/awt/SunToolkit.js
-            jssun/awt/WindowClosingListener.js
-            jssun/awt/WindowClosingSupport.js
-            jssun/font/FontDesignMetrics.js
-            jssun/java2d/StateTrackable.js
-            jssun/java2d/StateTrackableDelegate.js
-            jssun/java2d/StateTracker.js
-            jssun/java2d/SunGraphics2D.js
-            jssun/swing/UIAction.js
+            sun/applet/AppletListener.js
+            sun/awt/AppContext.js
+            sun/awt/AWTAccessor.js
+            sun/awt/AWTAutoShutdown.js
+            sun/awt/ComponentFactory.js
+            sun/awt/ConstrainableGraphics.js
+            sun/awt/geom/Curve.js
+            sun/awt/Graphics2Delegate.js
+            sun/awt/ModalExclude.js
+            sun/awt/NullComponentPeer.js
+            sun/awt/RequestFocusController.js
+            sun/awt/SunGraphicsCallback.js
+            sun/awt/SunToolkit.js
+            sun/awt/WindowClosingListener.js
+            sun/awt/WindowClosingSupport.js
+            sun/font/FontDesignMetrics.js
+            sun/java2d/StateTrackable.js
+            sun/java2d/StateTrackableDelegate.js
+            sun/java2d/StateTracker.js
+            sun/java2d/SunGraphics2D.js
+            sun/swing/UIAction.js
         	JU/AjaxURLStreamHandlerFactory.js
         	JU/AjaxURLStreamHandler.js
         	JU/AjaxURLConnection.js

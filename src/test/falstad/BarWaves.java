@@ -28,8 +28,6 @@ import sun.audio.AudioData;
 import sun.audio.AudioDataStream;
 import sun.audio.AudioPlayer;
 
-import swingjs.J2SIgnoreImport;
-import swingjs.JSToolkit;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -64,7 +62,6 @@ import swingjs.awt.Scrollbar;
 // added JSAudio support; not that ONLY 8-bit mu-law compression is supported by browsers
 // and this.isJava both turns that off and selects swingjs.JSToolkit.playAudio instead of AudioDataStream. 
 
-@J2SIgnoreImport({AudioDataStream.class, AudioPlayer.class, AudioData.class})
 public class BarWaves extends Applet {
  static BarWavesFrame mf;
  void destroyFrame() {
@@ -1332,8 +1329,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
  double sndmin, sndmax;
 
-private boolean isJava = true;
-
  int getFreq(int n) {
 	double stepsize = java.lang.Math.log(2)/12;
 	double freq = java.lang.Math.exp(baseFreqBar.getValue()*stepsize);
@@ -1341,15 +1336,6 @@ private boolean isJava = true;
  }
 
 	void doPlay() {
-		/**
-		 * @j2sNative
-		 * 
-		 *            this.isJava = false;
-		 * 
-		 */
-		{
-			isJava = true;
-		}
 		final int rate = 8000;
 		final int sampcount = rate;
 
@@ -1421,18 +1407,8 @@ private boolean isJava = true;
 				break;
 		} while (true);
 
-		if (isJava) {
-			/**
-			 * @j2sNative
-			 * 
-			 */
-			{
-				AudioDataStream ads = new AudioDataStream(new AudioData(b));
-				AudioPlayer.player.start(ads);
-			}
-		} else {
-			JSToolkit.playAudio("uLAW", b, 8000, 1);
-		}
+		AudioDataStream ads = new AudioDataStream(new AudioData(b));
+		AudioPlayer.player.start(ads);
 		cv.repaint();
 	}
 
@@ -1451,7 +1427,7 @@ private boolean isJava = true;
 		pg.updateBarWaves(g);
 	 }
 	};
-
+	
 	class BarWavesLayout implements LayoutManager {
 	 public BarWavesLayout() {}
 	 public void addLayoutComponent(String name, Component c) {}

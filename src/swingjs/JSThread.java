@@ -5,7 +5,10 @@ import java.awt.event.InvocationEvent;
 import swingjs.api.JSFunction;
 
 /**
- * A class that takes care of simple threading. There are three states: INIT, LOOP, and DONE.
+ * A class that takes care of simple threading in Java or JavaScript. 
+ * 
+ * There are three states: INIT, LOOP, and DONE.
+ * 
  * These states are passed into run1
  * 
  * 
@@ -17,8 +20,18 @@ public abstract class JSThread extends Thread implements JSFunction {
 	public static final int INIT = 0;
 	public static final int LOOP = 1;
 	public static final int DONE = 2;
+	
+	public static int threadCount = 0;
 
 	protected boolean isJS;
+	
+	public JSThread() {
+		this(null, "JSThread-" + (++threadCount));
+	}
+	
+	public JSThread(String name) {
+		this(null, name);
+	}
 	
 	public JSThread(ThreadGroup group, String name) {
 		super(group, name);
@@ -51,45 +64,94 @@ public abstract class JSThread extends Thread implements JSFunction {
 	}
 
 	/**
-	 * a generic method that loops until done, or in JavaScript, will reenter and
-	 * continue at the appropriate spot. Example given here
+	 * thread initialization
+	 * 
+	 * @return false to exit thread before any looping
+	 */
+	protected abstract boolean myInit();
+	
+	/**
+	 * check for continuing to loop
+	 * 
+	 * @return true if we are to continue looping
+	 */
+	protected abstract boolean isLooping();
+	
+	/**
+	 * 
+	 * @return false to handle sleepAndReturn yourself
+	 */
+	protected abstract boolean myLoop();
+	/**
+	 * what to do when the DONE state is reached
+	 * 
+	 */
+	protected abstract void whenDone();
+	
+	/**
+	 * 
+	 * @return the sleep time in milliseconds
+	 */
+	protected abstract int getDelayMillis();
+	
+	/**
+	 * handle an exception -- state will be set to DONE no matter what you do here
+	 * 
+	 * @param e
+	 */
+	protected abstract void onException(Exception e);
+	
+	/**
+	 * anything you want done in  try{}catch(}finally() 
+	 */
+	protected abstract void doFinally();
+	
+	/**
+	 * a generic method that loops until done, either in Java or JavaScript.
+	 * 
+	 * In JavaScript it will reenter and continue at the appropriate spot.
+	 * 
+	 * This method may be overridden if desired. 
+	 * 
+	 * @see org.uwi.SimThread
 	 * 
 	 * @param state
 	 */
-	protected abstract void run1(int state);
-
-	
-	// protected void run1(int state) {
-	// try {
-	// while (true)
-	// switch (state) {
-	// case INIT:
-	// // once-through stuff here
-	// state = LOOP;
-	// break;
-	// case LOOP:
-	// if (isInterrupted()) {
-	// state = DONE;
-	// } else {
-	// // put the loop code here
-	// };
-	// dispatchAndReturn(state);
-	// if (isJS)
-	// return;
-	// }
-	// break;
-	// // add more cases as needed
-	// case DONE:
-	// // finish up here
-	// if (isInterrupted())
-	// return;
-	// // or here
-	// break;
-	// }
-	// } finally {
-	// // stuff here to be executed after each loop in JS or at the end in Java
-	// }
-	// }
+	protected void run1(int state) {
+		// called by thisThread.run();
+		while (!interrupted()) {
+			try {
+				switch (state) {
+				case INIT:
+					if (!myInit())
+						return;
+					// initial code here
+					state = LOOP;
+					continue;
+				case LOOP:
+					// looping code here
+					if (isLooping()) {
+						// to handle sleepAndReturn yourself, return false from myLoop(); 
+						if (!myLoop() || sleepAndReturn(getDelayMillis(), state))
+							return;
+						break;
+					}
+					state = DONE;
+					continue;
+				case DONE:
+					whenDone();
+					// whatever
+					return;
+				}
+			} catch (Exception e) {
+				onException(e);
+				state = DONE;
+			} finally {
+				doFinally();
+			}
+		}
+		// normal exit
+	}
 
 	/**
 	 * 

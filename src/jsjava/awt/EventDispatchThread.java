@@ -64,6 +64,78 @@ import swingjs.api.JSFunction;
  * @since 1.1
  */
 class EventDispatchThread extends JSThread {
+	
+	/**
+	 * SwingJS: In JavaScript we have just one thread. So what we do is to
+	 * (a) initialize the thread; (b) run the thread via a setTimeout that
+	 * has a function callback to restart this method at the "LOOP" mode.
+	 * 
+	 */
+
+	@Override
+	protected boolean myInit() {
+		addEventFilter(filter);
+		return true;
+	}
+
+	@Override
+	protected boolean isLooping() {
+		if (!doDispatch || cond != null && !cond.evaluate() || isInterrupted()) {
+			doDispatch = false;
+			return false;
+		}
+		return true;
+	}
+
+	@SuppressWarnings("unused")
+	@Override
+	protected boolean myLoop() {
+		final int myid = id;
+		Runnable r = new Runnable() {
+			@Override
+			public void run() {
+				pumpOneEventForFilters(myid);
+			}
+		};
+		JSFunction f = null;
+		JSThread me = this;
+		int mode = LOOP;
+		/**
+		 * @j2sNative
+		 * 
+		 *            f = function() {r.run();me.run1(mode)};
+		 * 
+		 */
+		{
+		}
+		JSToolkit.dispatch(f, 0, 0);
+		// handling sleepAndReturn myself
+		return false;
+	}
+
+	@Override
+	protected int getDelayMillis() {
+		return 0;
+	}
+
+	@Override
+	protected void whenDone() {
+		doDispatch = false;
+	}
+
+	@Override
+	protected void doFinally() {
+		if (!doDispatch)
+			finish();
+	}
+
+	@Override
+	protected void onException(Exception e) {
+		// JSToolkit.dispatch() will handle this
+	}
+
+
+	
 	// private static final Logger eventLog =
 	// Logger.getLogger("jsjava.awt.event.EventDispatchThread");
 
@@ -177,47 +249,41 @@ class EventDispatchThread extends JSThread {
 		run1(INIT);
 	}
 
-	/**
-	 * SwingJS: In JavaScript we have just one thread. So what we do is to
-	 * (a) initialize the thread; (b) run the thread via a setTimeout that
-	 * has a function callback to restart this method at the "LOOP" mode.
-	 * 
-	 */
-	@Override
-	protected void run1(int mode) {
-		try {
-		while (true)
-			switch (mode) {
-			case INIT:
-				addEventFilter(filter);
-				mode = LOOP;
-				//$FALL-THROUGH$
-			case LOOP:
-				if (!doDispatch || cond != null && !cond.evaluate() || isInterrupted()) {
-					doDispatch = false;
-					return;
-				}
-				final int myid = id;
-				Runnable r = new Runnable() {
-					@Override
-					public void run() {
-						pumpOneEventForFilters(myid);
-					}
-				};
-				dispatchAndReturn(r, mode);
-				if (isJS)
-					return;
-				break;
-			case DONE:
-				doDispatch = false;
-			  return;
-			}
-		} finally {
-			if (!doDispatch)
-				finish();
-		}
-	}
-
+//	@Override
+//	protected void run1(int mode) {
+//		try {
+//		while (true)
+//			switch (mode) {
+//			case INIT:
+//				addEventFilter(filter);
+//				mode = LOOP;
+//				//$FALL-THROUGH$
+//			case LOOP:
+//				if (!doDispatch || cond != null && !cond.evaluate() || isInterrupted()) {
+//					doDispatch = false;
+//					return;
+//				}
+//				final int myid = id;
+//				Runnable r = new Runnable() {
+//					@Override
+//					public void run() {
+//						pumpOneEventForFilters(myid);
+//					}
+//				};
+//				dispatchAndReturn(r, mode);
+//				if (isJS)
+//					return;
+//				break;
+//			case DONE:
+//				doDispatch = false;
+//			  return;
+//			}
+//		} finally {
+//			if (!doDispatch)
+//				finish();
+//		}
+//	}
+//
 	/**
 	 * override JSThread so that we do not use any queuing
 	 */
@@ -535,4 +601,5 @@ class EventDispatchThread extends JSThread {
 			return FilterAction.ACCEPT;
 		}
 	}
+
 }

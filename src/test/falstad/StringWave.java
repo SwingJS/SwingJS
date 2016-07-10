@@ -50,6 +50,7 @@ import java.lang.reflect.Method;
 import java.util.Random;
 
 import swingjs.J2SIgnoreImport;
+import swingjs.JSThread;
 import swingjs.JSToolkit;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -61,7 +62,10 @@ import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
 
 public class StringWave extends Applet implements ComponentListener {
+	
 	static StringWaveFrame ogf;
+	
+	
 
 	void destroyFrame() {
 		if (ogf != null)
@@ -72,6 +76,7 @@ public class StringWave extends Applet implements ComponentListener {
 
 	boolean started = false;
 
+	@Override
 	public void init() {
 		// addComponentListener(this);
 		showFrame();
@@ -91,6 +96,7 @@ public class StringWave extends Applet implements ComponentListener {
 		}
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (!started)
@@ -103,19 +109,24 @@ public class StringWave extends Applet implements ComponentListener {
 		super.paint(g);
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		showFrame();
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 	}
 
+	@Override
 	public void destroy() {
 		if (ogf != null)
 			ogf.dispose();
@@ -127,6 +138,10 @@ public class StringWave extends Applet implements ComponentListener {
 class StringWaveFrame extends Frame implements ComponentListener,
 		ActionListener, AdjustmentListener, MouseMotionListener, MouseListener,
 		ItemListener {
+	
+	boolean isJava = true;
+	
+
 
 	PlayThread playThread;
 
@@ -224,6 +239,14 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		applet = a;
 		useFrame = true;
 		showControls = true;
+		/**
+		 * @j2sNative
+		 * 
+		 * isJava = false;
+		 */
+		{
+			isJava = true;
+		}
 	}
 
 	Container main;
@@ -1137,21 +1160,26 @@ class StringWaveFrame extends Frame implements ComponentListener,
 			transform(false);
 	}
 
+	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
+	@Override
 	public void componentShown(ComponentEvent e) {
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void componentResized(ComponentEvent e) {
 		handleResize();
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == triangleButton) {
 			doTriangle();
@@ -1171,6 +1199,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		}
 	}
 
+	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 		if (e.getSource() == dampingBar || e.getSource() == speedBar)
@@ -1188,6 +1217,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		cv.repaint(pause);
 	}
 
+	@Override
 	public boolean handleEvent(Event ev) {
 		if (ev.id == Event.WINDOW_DESTROY) {
 			applet.destroyFrame();
@@ -1237,11 +1267,13 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		dampcoef = -damper;
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		dragging = true;
 		edit(e);
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 			return;
@@ -1267,6 +1299,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 			cv.repaint(pause);
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2 && selectedCoef != -1) {
 			int i;
@@ -1279,9 +1312,11 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		}
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent e) {
 		if (!dragging && selectedCoef != -1) {
 			selectedCoef = -1;
@@ -1289,6 +1324,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		}
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
@@ -1298,6 +1334,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		edit(e);
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
@@ -1310,6 +1347,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		cv.repaint(pause);
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getItemSelectable() == stoppedCheck) {
 			cv.repaint(pause);
@@ -1344,26 +1382,44 @@ class StringWaveFrame extends Frame implements ComponentListener,
 			cv.repaint(pause);
 	}
 
-	class PlayThread extends Thread {
+	/**
+	 * changes for JavaScript:
+	 * 
+	 * 1) extends JSThread
+	 * 
+	 * 2) implements run1(), not run()
+	 * 
+	 * 3) code modified to allow re-entry with myInit() and myLoop()
+	 * 
+	 * including moving local variables to private fields
+	 * 
+	 */
+	class PlayThread extends JSThread {
+		
 		public void soundChanged() {
 			changed = true;
 		}
 
 		boolean changed;
 		final int rate = 22050;
+		
+		
+		// BH: made global for JavaScript reentry
+		
+		private Method write = null;
+		private Object line;
+		private FFT playFFT;
+		private double[] playfunc;
+		private byte[] b;
+		private int offset;
+		private int dampCount;
+		private int playSampleCount;
+		private double mx;
+		private boolean failed;
 
-		public void run() {
-			try {
-				doRun();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			playThread = null;
-			soundCheck.setState(false);
-		}
-
-		void doRun() {
-
+		@Override
+		protected boolean myInit() {
+			
 			// this lovely code is a translation of the following, using
 			// reflection, so we can run on JDK 1.1:
 
@@ -1374,122 +1430,165 @@ class StringWaveFrame extends Frame implements ComponentListener,
 			// line = (SourceDataLine) AudioSystem.getLine(info);
 			// line.open(format, playSampleCount);
 			// line.start();
+			// 
+			// 
 
-			Method wrmeth = null;
-			Object line;
 
-			/**
-			 * @j2sNative
-			 * 
-			 */
-			{
+			try {
+				Class _AudioFormat = Class.forName("javax.sound.sampled.AudioFormat");
+				Class _DataLine$Info = Class
+						.forName("javax.sound.sampled.DataLine$Info");
+				Class _SourceDataLine = Class
+						.forName("javax.sound.sampled.SourceDataLine");
+				Class _AudioSystem = Class.forName("javax.sound.sampled.AudioSystem");
+				Class _LineInfo = Class.forName("javax.sound.sampled.Line$Info");
+				Method getLine = _AudioSystem.getMethod("getLine",
+						new Class[] { _LineInfo });
+				Method open = _SourceDataLine.getMethod("open", new Class[] {
+						_AudioFormat, int.class });
+				Method start = _SourceDataLine.getMethod("start", (Class[]) null);
 
-				// Java Only
+				Object audioFormat = _AudioFormat.getConstructor(
+						new Class[] { float.class, int.class, int.class, boolean.class,
+								boolean.class }).newInstance(
+						new Object[] { new Float(rate), new Integer(16), new Integer(1),
+								new Boolean(true), new Boolean(true) });
+				Object dataLineInfo = _DataLine$Info.getConstructor(
+						new Class[] { Class.class, _AudioFormat }).newInstance(
+						new Object[] { _SourceDataLine, audioFormat });
 
-				try {
-					Class afclass = Class.forName("javax.sound.sampled.AudioFormat");
-					Constructor cstr = afclass.getConstructor(new Class[] { float.class,
-							int.class, int.class, boolean.class, boolean.class });
-					Object format = cstr.newInstance(new Object[] { new Float(rate),
-							new Integer(16), new Integer(1), new Boolean(true),
-							new Boolean(true) });
-					Class ifclass = Class.forName("javax.sound.sampled.DataLine$Info");
-					Class sdlclass = Class.forName("javax.sound.sampled.SourceDataLine");
-					cstr = ifclass.getConstructor(new Class[] { Class.class, afclass });
-					Object info = cstr.newInstance(new Object[] { sdlclass, format });
-					Class asclass = Class.forName("javax.sound.sampled.AudioSystem");
-					Class liclass = Class.forName("javax.sound.sampled.Line$Info");
-					Method glmeth = asclass.getMethod("getLine", new Class[] { liclass });
-					line = glmeth.invoke(null, new Object[] { info });
-					Method opmeth = sdlclass.getMethod("open", new Class[] { afclass,
-							int.class });
-					opmeth.invoke(line, new Object[] { format, new Integer(4096) });
-					Method stmeth = sdlclass.getMethod("start", null);
-					stmeth.invoke(line, null);
-					byte b[] = new byte[1];
-					wrmeth = sdlclass.getMethod("write", new Class[] { b.getClass(),
-							int.class, int.class });
-				} catch (Exception e) {
-					e.printStackTrace();
-					return;
-				}
+				line = getLine.invoke(null, new Object[] { dataLineInfo });
+				open.invoke(line, new Object[] { audioFormat, new Integer(4096) });
+				start.invoke(line, (Object[]) null);
+
+				byte b[] = new byte[1];
+				write = _SourceDataLine.getMethod("write", new Class[] { b.getClass(),
+						int.class, int.class });
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
 			}
 
-			int playSampleCount = 16384;
-			FFT playFFT = new FFT(playSampleCount);
-			double playfunc[] = null;
-			byte b[] = new byte[4096];
-			int offset = 0;
-			int dampCount = 0;
-			double mx = .2;
-
-			while (soundCheck.getState() && applet.ogf != null) {
-				double damper = dampcoef * 1e-2;
-
-				if (playfunc == null || changed) {
-					playfunc = new double[playSampleCount * 2];
-					int i;
-					// double bstep = 2*pi*440./rate;
-					// int dfreq0 = 440; // XXX
-					double n = 2 * pi * 20.0
-							* java.lang.Math.sqrt((double) tensionBarValue);
-					n /= omega[1];
-					changed = false;
-					mx = .2;
-					for (i = 1; i != maxTerms; i++) {
-						int dfreq = (int) (n * omega[i]);
-						if (dfreq >= playSampleCount)
-							break;
-						playfunc[dfreq] = magcoef[i];
-					}
-					playFFT.transform(playfunc, true);
-					for (i = 0; i != playSampleCount; i++) {
-						double dy = playfunc[i * 2] * Math.exp(damper * i);
-						if (dy > mx)
-							mx = dy;
-						if (dy < -mx)
-							mx = -dy;
-					}
-					dampCount = offset = 0;
-				}
-
-				double mult = 32767 / mx;
-				int bl = b.length / 2;
-				int i;
-				for (i = 0; i != bl; i++) {
-					double v = playfunc[(i + offset) * 2] * mult * Math
-							.exp(damper * dampCount++);
-					short x = (short) (v);
-					b[i * 2] = (byte) ((x / 256) & 0xFF); // BH necessary for JavaScript
-					b[i * 2 + 1] = (byte) (x & 255);
-				}
-				offset += bl;
-				if (offset == playfunc.length / 2)
-					offset = 0;
-
-				/**
-				 * @j2sNative
-				 * 
-				 */
-
-				{
-					// Java only
-					try {
-						wrmeth.invoke(line, new Object[] { b, new Integer(0),
-								new Integer(b.length) });
-					} catch (Exception e) {
-						e.printStackTrace();
-						break;
-					}
-				}
-				
-				if (wrmeth == null) {
-					JSToolkit.playAudio("PCM", b, 22050, 2);
-				}
-				
-				
-			}
+			playSampleCount = 16384;
+			playFFT = new FFT(playSampleCount);
+			b = new byte[4096];
+			offset = 0;
+			dampCount = 0;
+			return true;
 		}
+		
+		@Override
+		protected boolean isLooping() {
+			return !failed && soundCheck.getState() && applet.ogf != null;
+		}
+
+		@Override
+		protected boolean myLoop() {
+			double damper = dampcoef * 1e-2;
+			if (playfunc == null || changed) {
+				playfunc = new double[playSampleCount * 2];
+				int i;
+				// double bstep = 2*pi*440./rate;
+				// int dfreq0 = 440; // XXX
+				double n = 2 * pi * 20.0
+						* java.lang.Math.sqrt((double) tensionBarValue);
+				n /= omega[1];
+				changed = false;
+				mx = .2;
+				for (i = 1; i != maxTerms; i++) {
+					int dfreq = (int) (n * omega[i]);
+					if (dfreq >= playSampleCount)
+						break;
+					playfunc[dfreq] = magcoef[i];
+				}
+				playFFT.transform(playfunc, true);
+				for (i = 0; i != playSampleCount; i++) {
+					double dy = playfunc[i * 2] * Math.exp(damper * i);
+					if (dy > mx)
+						mx = dy;
+					if (dy < -mx)
+						mx = -dy;
+				}
+				dampCount = offset = 0;
+			}
+
+			double mult = 32767 / mx;
+			int bl = b.length / 2;
+			int i;
+			for (i = 0; i != bl; i++) {
+				double v = playfunc[(i + offset) * 2] * mult
+						* Math.exp(damper * dampCount++);
+				short x = (short) (v);
+				b[i * 2] = (byte) ((x / 256) & 0xFF); // BH necessary for JavaScript
+				b[i * 2 + 1] = (byte) (x & 255);
+			}
+			offset += bl;
+			if (offset == playfunc.length / 2)
+				offset = 0;
+
+			try {
+				write.invoke(line, new Object[] { b, new Integer(0),
+						new Integer(b.length) });
+			} catch (Exception e) {
+				e.printStackTrace();
+				failed = true;
+				return false;
+			}
+//			if (isJava) {
+//				/**
+//				 * @j2sNative
+//				 * 
+//				 */
+//
+//				{
+//					// Java only
+//				}
+//
+//			} else {
+//				/*
+//				 * var startTime = 0;
+//				 * 
+//				 * for (var i = 0, audioChunk; audioChunk = AUDIO_CHUNKS[i]; ++i) { //
+//				 * Create/set audio buffer for each chunk var audioBuffer =
+//				 * audioCtx.createBuffer(NUM_CHANNELS, NUM_SAMPLES, SAMPLE_RATE);
+//				 * audioBuffer.getChannelData(0).set(audioChunk);
+//				 * 
+//				 * var source = audioCtx.createBufferSource(); source.buffer =
+//				 * audioBuffer; source.noteOn(startTime);
+//				 * source.connect(audioCtx.destination);
+//				 * 
+//				 * startTime += audioBuffer.duration; }
+//				 */
+//				JSToolkit.playAudio("PCMB", b, 22050, 2);
+//			}
+
+			return true;
+		}
+
+		@Override
+		protected void whenDone() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected int getDelayMillis() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		protected void onException(Exception e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void doFinally() {
+			// TODO Auto-generated method stub
+			
+		}
+
 	}
 
 	class FFT {
@@ -1629,14 +1728,17 @@ class StringWaveFrame extends Frame implements ComponentListener,
 			pg = p;
 		}
 
+		@Override
 		public Dimension getPreferredSize() {
 			return new Dimension(300, 400);
 		}
 
+		@Override
 		public void update(Graphics g) {
 			pg.updateStringWave(g);
 		}
 
+		@Override
 		public void paintComponent(Graphics g) {
 			pg.updateStringWave(g);
 		}
@@ -1646,20 +1748,25 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		public StringWaveLayout() {
 		}
 
+		@Override
 		public void addLayoutComponent(String name, Component c) {
 		}
 
+		@Override
 		public void removeLayoutComponent(Component c) {
 		}
 
+		@Override
 		public Dimension preferredLayoutSize(Container target) {
 			return new Dimension(500, 500);
 		}
 
+		@Override
 		public Dimension minimumLayoutSize(Container target) {
 			return new Dimension(100, 100);
 		}
 
+		@Override
 		public void layoutContainer(Container target) {
 			int barwidth = 0;
 			int i;

@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import javajs.util.AU;
 import javajs.util.Rdr;
 import javajs.util.SB;
@@ -38,6 +40,7 @@ import jsjava.awt.peer.DialogPeer;
 import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.WindowPeer;
+import jsjavax.sound.sampled.AudioFormat;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
@@ -922,48 +925,9 @@ public class JSToolkit extends SunToolkit {
 		return getCompositor().filterImage(src, dst, op);
 	}
 
-	/**
-	 * creates and/or just plays an audio file using DOM <audio> element.
-	 * 
-	 * @param format
-	 *          one of: MPG, OGG, WAV, ALAW, ULAW, PCM, FLOAT
-	 * @param data
-	 *          bytes of full MPG, OGG, or WAV formatted data or raw bytes for
-	 *          ALAW - FLOAT. Note that in my experimentation, Firefox accepted
-	 *          only uLAW for 8-bit data. Test file falstad/BarWaves.java gives the
-	 *          uLAW data;
-	 * @param samplesPerSecond
-	 *          0 if full format; otherwise one of 8000 11025 16000 22050 44100
-	 * @param bytesPerSample
-	 *          1 for 8-bit; 2 for 16-bit
-	 */
-	public static void playAudio(String format, byte[] data, int samplesPerSecond, int bytesPerSample) {
+	public static void playAudio(byte[] data, AudioFormat audioFormat, String format) throws UnsupportedAudioFileException {
 		JSAudio audio = (JSAudio) getInstance("swingjs.JSAudio");
-		audio.playAudio(data, samplesPerSecond, bytesPerSample, format);
+		audio.playAudio(data, audioFormat, format);
 	}
 	
-//	@Override
-//	protected MenuBarPeer createMenuBar(MenuBar target) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	protected MenuPeer createMenu(Menu target) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	protected PopupMenuPeer createPopupMenu(PopupMenu target) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	protected MenuItemPeer createMenuItem(MenuItem target) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
 }

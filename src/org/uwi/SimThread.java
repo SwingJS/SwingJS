@@ -5,47 +5,48 @@ import swingjs.JSThread;
 public class SimThread extends JSThread {
 
 	private Boltzmann boltzmann;
+	private boolean repainted;
 
 	public SimThread(Boltzmann boltzmann) {
 		super(null, "BoltzmannThread");
 		this.boltzmann = boltzmann;
 	}
 
-
 	@Override
-	public void run() {
-		run1(JSThread.INIT);
+	protected boolean myInit() {
+		boltzmann.sjs_initSimulation();
+		return true;
 	}
 
-	// @Override
-	@Override
-	protected void run1(int state) {
-		while (!interrupted()) {
-			try {
-				switch (state) {
-				case JSThread.INIT:
-					boltzmann.sjs_initSimulation();
-					state = JSThread.LOOP;
-					continue;
-				case JSThread.LOOP:
-					boolean repainted = boltzmann.sjs_checkRepaint();
-					if (!boltzmann.sjs_loopSimulation()) {
-						state = JSThread.DONE;
-						continue;
-					}
-					if (repainted && sleepAndReturn(0, state))
-						return;
-					break;
-				case JSThread.DONE:
-					boltzmann.sjs_finalizeGraph();
-					return;
-				}
 
-			} catch (Exception e) {
-				state = JSThread.DONE;
-			}
-		}
-		// normal exit
+	@Override
+	protected boolean isLooping() {
+		repainted = boltzmann.sjs_checkRepaint();
+		return boltzmann.sjs_loopSimulation();
+	}
+
+	@Override
+	protected boolean myLoop() {
+		return repainted;
+	}
+
+	@Override
+	protected void whenDone() {
+		boltzmann.sjs_finalizeGraph();
+	}
+
+	@Override
+	protected int getDelayMillis() {
+		return 0;
+	}
+
+	@Override
+	protected void onException(Exception e) {
+		System.out.println(e.getMessage());
+	}
+
+	@Override
+	protected void doFinally() {		
 	}
 
 }

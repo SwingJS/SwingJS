@@ -43,4 +43,49 @@ public class JSAppletThread extends JSThread {
 		});
 	}
 
+	// the rest of these are not used by JSAppletThread because we are 
+	// overwriting run() completely
+	
+	@Override
+	protected boolean myInit() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean isLooping() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected boolean myLoop() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void whenDone() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected int getDelayMillis() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void onException(Exception e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void doFinally() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

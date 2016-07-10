@@ -47,6 +47,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
+
 import sun.audio.AudioData;
 import sun.audio.AudioDataStream;
 import sun.audio.AudioPlayer;
@@ -1853,8 +1858,8 @@ boolean shown = false;
 
  FFT fftPlay;
  
- void doPlay() {
-	 /**
+	void doPlay() {
+		/**
 		 * @j2sNative
 		 * 
 		 *            this.isJava = false;
@@ -1863,114 +1868,118 @@ boolean shown = false;
 		{
 			isJava = true;
 		}
-	if (!soundCheck.getState())
-	    return;
-	final int rate = 22050;
-	final int playSampleCount = 32768;
+		if (!soundCheck.getState())
+			return;
+		final int rate = 22050;
+		final int playSampleCount = 32768;
 
-	byte b[] = new byte[playSampleCount];
-	
-	double stepsize = Math.log(2)/12;
-	double mx = .2;
-	double nmult = 2*pi/rate;
-	double freq = Math.exp(baseFreqBar.getValue()*stepsize);
-	double n = freq*nmult;
-	// filter out frequencies above Nyquist freq
-	double maxomega = pi/n;
-	boolean failed;
-	double sndmax = 1e-8;
-	int i, j, k;
+		byte b[] = new byte[playSampleCount];
 
-	double playfunc[] = new double[playSampleCount*2];
-	for (j = 0; j < modeCountTh; j += 2)
-	    for (k = 0; k != modeCountR; k++) {
-		double f = omega[j][k]*freq;
-		if (f < 20 || f > rate/2)
-		    continue;
-		int dfreq = ((int)(f*(double) playSampleCount/rate))*2;
-		if (dfreq >= playSampleCount*2)
-		    break;
-		double mag = magcoef[j][k];
-		if (j > 0) {
-		    double mag2 = magcoef[j-1][k];
-		    mag = Math.sqrt(mag*mag+mag2*mag2);
+		double stepsize = Math.log(2) / 12;
+		double mx = .2;
+		double nmult = 2 * pi / rate;
+		double freq = Math.exp(baseFreqBar.getValue() * stepsize);
+		double n = freq * nmult;
+		// filter out frequencies above Nyquist freq
+		double maxomega = pi / n;
+		boolean failed;
+		double sndmax = 1e-8;
+		int i, j, k;
+
+		double playfunc[] = new double[playSampleCount * 2];
+		for (j = 0; j < modeCountTh; j += 2)
+			for (k = 0; k != modeCountR; k++) {
+				double f = omega[j][k] * freq;
+				if (f < 20 || f > rate / 2)
+					continue;
+				int dfreq = ((int) (f * (double) playSampleCount / rate)) * 2;
+				if (dfreq >= playSampleCount * 2)
+					break;
+				double mag = magcoef[j][k];
+				if (j > 0) {
+					double mag2 = magcoef[j - 1][k];
+					mag = Math.sqrt(mag * mag + mag2 * mag2);
+				}
+				playfunc[dfreq + 1] += mag;
+			}
+		if (fftPlay == null)
+			fftPlay = new FFT(playSampleCount);
+		fftPlay.transform(playfunc);
+		double damper = dampingBar.getValue() * 1e-5;
+		damper = java.lang.Math.exp(damper) - 1;
+		for (i = 0; i != playSampleCount; i++) {
+			playfunc[i * 2] *= Math.exp(-damper * i);
+			double dy = playfunc[i * 2];
+			if (dy > sndmax)
+				sndmax = dy;
+			if (dy < -sndmax)
+				sndmax = -dy;
 		}
-		playfunc[dfreq+1] += mag;
-	    }
-	if (fftPlay == null)
-	    fftPlay = new FFT(playSampleCount);
-	fftPlay.transform(playfunc);
-	double damper = dampingBar.getValue()*1e-5;
-	damper = java.lang.Math.exp(damper)-1;
-	for (i = 0; i != playSampleCount; i++) {
-	    playfunc[i*2] *= Math.exp(-damper*i);
-	    double dy = playfunc[i*2];
-	    if (dy >  sndmax) sndmax = dy;
-	    if (dy < -sndmax) sndmax = -dy;
-	}
-	if (sndmax < .01)
-	    return;
-	double mult = 127/sndmax;
-	
-	for (i = 0; i != playSampleCount; i++)
-	    b[i] = (byte) (playfunc[i*2]*mult);
+		if (sndmax < .01)
+			return;
+		double mult = 127 / sndmax;
 
-	// this lovely code is a translation of the following, using
-	// reflection, so we can run on JDK 1.1:
-	
-	// AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
-	// DataLine.Info info =
-	//           new DataLine.Info(SourceDataLine.class, format);
-	// SourceDataLine line = null;
-	// line = (SourceDataLine) AudioSystem.getLine(info);
-	// line.open(format, playSampleCount);
-	// line.start();
-	
-	if (isJava) {
-		/**
-		 * @j2sNative
-		 * 
-		 */
-		{
-	try {
-	    Class afclass = Class.forName("javax.sound.sampled.AudioFormat");
-	    Constructor cstr = afclass.getConstructor(
-		new Class[] { float.class, int.class, int.class,
-			      boolean.class, boolean.class });
-	    Object format = cstr.newInstance(new Object[]
-		{ new Float(rate), new Integer(8), new Integer(1),
-		  new Boolean(true), new Boolean(true) });
-	    Class ifclass = Class.forName("javax.sound.sampled.DataLine$Info");
-	    Class sdlclass =
-		Class.forName("javax.sound.sampled.SourceDataLine");
-	    cstr = ifclass.getConstructor(
-		new Class[] { Class.class, afclass });
-	    Object info = cstr.newInstance(new Object[]
-		{ sdlclass, format });
-	    Class asclass = Class.forName("javax.sound.sampled.AudioSystem");
-	    Class liclass = Class.forName("javax.sound.sampled.Line$Info");
-	    Method glmeth = asclass.getMethod("getLine",
-					      new Class[] { liclass });
-	    Object line = glmeth.invoke(null, new Object[] {info} );
-	    Method opmeth = sdlclass.getMethod("open",
-		 new Class[] { afclass, int.class });
-	    opmeth.invoke(line, new Object[] { format,
-		 new Integer(playSampleCount) });
-	    Method stmeth = sdlclass.getMethod("start", null);
-	    stmeth.invoke(line, null);
-	    Method wrmeth = sdlclass.getMethod("write",
-		 new Class[] { b.getClass(), int.class, int.class });
-	    new WriteThread(wrmeth, line, b, playSampleCount).start();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
+		for (i = 0; i != playSampleCount; i++)
+			b[i] = (byte) (playfunc[i * 2] * mult);
+
+		// this lovely code is a translation of the following, using
+		// reflection, so we can run on JDK 1.1:
+
+		// AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
+		// DataLine.Info info =
+		// new DataLine.Info(SourceDataLine.class, format);
+		// SourceDataLine line = null;
+		// line = (SourceDataLine) AudioSystem.getLine(info);
+		// line.open(format, playSampleCount);
+		// line.start();
+
+		try {
+		if (isJava) {
+			/**
+			 * @j2sNative
+			 * 
+			 */
+			{
+					Class afclass = Class.forName("javax.sound.sampled.AudioFormat");
+					Constructor cstr = afclass.getConstructor(new Class[] { float.class,
+							int.class, int.class, boolean.class, boolean.class });
+					Object format = cstr.newInstance(new Object[] { new Float(rate),
+							new Integer(8), new Integer(1), new Boolean(true),
+							new Boolean(true) });
+					Class ifclass = Class.forName("javax.sound.sampled.DataLine$Info");
+					Class sdlclass = Class.forName("javax.sound.sampled.SourceDataLine");
+					cstr = ifclass.getConstructor(new Class[] { Class.class, afclass });
+					Object info = cstr.newInstance(new Object[] { sdlclass, format });
+					Class asclass = Class.forName("javax.sound.sampled.AudioSystem");
+					Class liclass = Class.forName("javax.sound.sampled.Line$Info");
+					Method glmeth = asclass.getMethod("getLine", new Class[] { liclass });
+					Object line = glmeth.invoke(null, new Object[] { info });
+					Method opmeth = sdlclass.getMethod("open", new Class[] { afclass,
+							int.class });
+					opmeth.invoke(line, new Object[] { format,
+							new Integer(playSampleCount) });
+					Method stmeth = sdlclass.getMethod("start", (Class[]) null);
+					stmeth.invoke(line, (Object[]) null);
+					Method wrmeth = sdlclass.getMethod("write",
+							new Class[] { b.getClass(), int.class, int.class });
+					new WriteThread(wrmeth, line, b, playSampleCount).start();
+			}
+		} else {
+//			AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
+//			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+//			SourceDataLine line = null;
+//			line = (SourceDataLine) AudioSystem.getLine(info);
+//			line.open(format, playSampleCount);
+//			line.start();
+			JSToolkit.playAudio(b, new jsjavax.sound.sampled.AudioFormat(rate, 3, 1, true, true), null);
+
 		}
-	} else {
-		JSToolkit.playAudio("PCM", b, 22050, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		cv.repaint();
 	}
-	
-	cv.repaint();
- }
 
  class WriteThread extends Thread {
 	Object line;
