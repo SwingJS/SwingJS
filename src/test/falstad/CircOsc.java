@@ -18,7 +18,7 @@ package test.falstad;
 //
 //added triggerShow()
 //
-// Added sound (JSToolkit)
+//added JSThread
 
 import java.awt.Color;
 import java.awt.Component;
@@ -53,6 +53,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import javax.sound.sampled.AudioSystem;
 
+import swingjs.JSThread;
 import swingjs.JSToolkit;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -1843,7 +1844,7 @@ boolean shown = false;
 	
  double sndmax;
  
- private boolean isJava = true;
+// private boolean isJava = true;
 
  int getFreq(int n) {
 	double stepsize = java.lang.Math.log(2)/12;
@@ -1855,15 +1856,15 @@ boolean shown = false;
  FFT fftPlay;
  
 	void doPlay() {
-		/**
-		 * @j2sNative
-		 * 
-		 *            this.isJava = false;
-		 * 
-		 */
-		{
-			isJava = true;
-		}
+//		/**
+//		 * @j2sNative
+//		 * 
+//		 *            this.isJava = false;
+//		 * 
+//		 */
+//		{
+//			isJava = true;
+//		}
 		if (!soundCheck.getState())
 			return;
 		final int rate = 22050;
@@ -1930,47 +1931,45 @@ boolean shown = false;
 		// line.start();
 
 		try {
-		if (isJava) {
-			/**
-			 * @j2sNative
-			 * 
-			 */
-			{
-					Class afclass = Class.forName("javax.sound.sampled.AudioFormat");
-					Constructor cstr = afclass.getConstructor(new Class[] { float.class,
-							int.class, int.class, boolean.class, boolean.class });
-					Object format = cstr.newInstance(new Object[] { new Float(rate),
-							new Integer(8), new Integer(1), new Boolean(true),
-							new Boolean(true) });
-					Class ifclass = Class.forName("javax.sound.sampled.DataLine$Info");
-					Class sdlclass = Class.forName("javax.sound.sampled.SourceDataLine");
-					cstr = ifclass.getConstructor(new Class[] { Class.class, afclass });
-					Object info = cstr.newInstance(new Object[] { sdlclass, format });
-					Class asclass = Class.forName("javax.sound.sampled.AudioSystem");
-					Class liclass = Class.forName("javax.sound.sampled.Line$Info");
-					Method glmeth = asclass.getMethod("getLine", new Class[] { liclass });
-					Object line = glmeth.invoke(null, new Object[] { info });
-					Method opmeth = sdlclass.getMethod("open", new Class[] { afclass,
-							int.class });
-					opmeth.invoke(line, new Object[] { format,
-							new Integer(playSampleCount) });
-					Method stmeth = sdlclass.getMethod("start", (Class[]) null);
-					stmeth.invoke(line, (Object[]) null);
-					Method wrmeth = sdlclass.getMethod("write",
-							new Class[] { b.getClass(), int.class, int.class });
-					new WriteThread(wrmeth, line, b, playSampleCount).start();
-			}
-		} else {
+//		if (isJava) {
+//			// note: J2S cannot create inner class by reflection
+//			/**
+//			 * @j2sNative
+//			 * 
+//			 */
+//			{
+//					Class afclass = Class.forName("javax.sound.sampled.AudioFormat");
+//					Constructor cstr = afclass.getConstructor(new Class[] { float.class,
+//							int.class, int.class, boolean.class, boolean.class });
+//					Object format = cstr.newInstance(new Object[] { new Float(rate),
+//							new Integer(8), new Integer(1), new Boolean(true),
+//							new Boolean(true) });
+//					Class ifclass = Class.forName("javax.sound.sampled.DataLine$Info");
+//					Class sdlclass = Class.forName("javax.sound.sampled.SourceDataLine");
+//					cstr = ifclass.getConstructor(new Class[] { Class.class, afclass });
+//					Object info = cstr.newInstance(new Object[] { sdlclass, format });
+//					Class asclass = Class.forName("javax.sound.sampled.AudioSystem");
+//					Class liclass = Class.forName("javax.sound.sampled.Line$Info");
+//					Method glmeth = asclass.getMethod("getLine", new Class[] { liclass });
+//					Object line = glmeth.invoke(null, new Object[] { info });
+//					Method opmeth = sdlclass.getMethod("open", new Class[] { afclass,
+//							int.class });
+//					opmeth.invoke(line, new Object[] { format,
+//							new Integer(playSampleCount) });
+//					Method stmeth = sdlclass.getMethod("start", (Class[]) null);
+//					stmeth.invoke(line, (Object[]) null);
+//					Method wrmeth = sdlclass.getMethod("write",
+//							new Class[] { b.getClass(), int.class, int.class });
+//					new WriteThread(wrmeth, line, b, playSampleCount).start();
+//			}
+//		} else {
 			AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
 			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 			SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
 			line.open(format, playSampleCount);
 			line.start();
-			line.write(b, 0, playSampleCount);
 			new WriteThread(null, line, b, playSampleCount).start();
-//			JSToolkit.playAudio(b, new jsjavax.sound.sampled.AudioFormat(rate, 3, 1, true, true));
-
-		}
+//		}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1978,29 +1977,71 @@ boolean shown = false;
 		cv.repaint();
 	}
 
- class WriteThread extends Thread {
-	Object line;
+ class WriteThread extends JSThread {
+	SourceDataLine line;
 	Method m;
 	byte b[];
 	int count;
-	WriteThread(Method mt, Object l, byte bb[], int c) {
+	WriteThread(Method mt, SourceDataLine l, byte bb[], int c) {
 	    line = l;
 	    b = bb;
 	    count = c;
 	    m = mt;
 	}
 
-		public void run() {
-			try {
-				/**
-				 * @j2sNative this.line.write(this.b, 0, this.count);
-				 */
-				{
-					m.invoke(line, new Object[] { b, new Integer(0), new Integer(count) });
+//		public void run() {
+//			try {
+//				line.write(b, 0, count);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+
+		@Override
+		protected boolean myInit() {
+				try {
+					line.write(b, 0, count);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+				// once through
+			return false;
+		}
+
+		@Override
+		protected boolean isLooping() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected boolean myLoop() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		protected void whenDone() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected int getDelayMillis() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		protected void onException(Exception e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void doFinally() {
+			// TODO Auto-generated method stub
+			
 		}
  }
 }
