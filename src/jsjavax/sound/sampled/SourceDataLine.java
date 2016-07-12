@@ -105,7 +105,7 @@ public interface SourceDataLine extends DataLine {
      * @see Line#isOpen
      * @see LineEvent
      */
-    public void open(AudioFormat format, int bufferSize) throws LineUnavailableException;
+    public void open(AudioFormat format, int bufferSize) throws javax.sound.sampled.LineUnavailableException;
 
 
     /**
@@ -144,7 +144,7 @@ public interface SourceDataLine extends DataLine {
      * @see Line#isOpen
      * @see LineEvent
      */
-    public void open(AudioFormat format) throws LineUnavailableException;
+    public void open(AudioFormat format) throws javax.sound.sampled.LineUnavailableException;
 
 
     /**

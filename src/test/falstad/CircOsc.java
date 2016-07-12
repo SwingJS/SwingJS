@@ -48,14 +48,11 @@ import java.lang.reflect.Method;
 import java.util.Random;
 
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-import sun.audio.AudioData;
-import sun.audio.AudioDataStream;
-import sun.audio.AudioPlayer;
-import swingjs.J2SIgnoreImport;
+import javax.sound.sampled.AudioSystem;
+
 import swingjs.JSToolkit;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -67,7 +64,6 @@ import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
 
 
-@J2SIgnoreImport({AudioDataStream.class, AudioPlayer.class, AudioData.class})
 class CircOscCanvas extends Canvas {
  CircOscFrame pg;
  CircOscCanvas(CircOscFrame p) {
@@ -1363,7 +1359,7 @@ boolean shown = false;
  }
  public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == sineButton) {
-	    doSine();
+	     ;
 	    cv.repaint();
 	}
 	if (e.getSource() == blankButton) {
@@ -1965,13 +1961,14 @@ boolean shown = false;
 					new WriteThread(wrmeth, line, b, playSampleCount).start();
 			}
 		} else {
-//			AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
-//			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-//			SourceDataLine line = null;
-//			line = (SourceDataLine) AudioSystem.getLine(info);
-//			line.open(format, playSampleCount);
-//			line.start();
-			JSToolkit.playAudio(b, new jsjavax.sound.sampled.AudioFormat(rate, 3, 1, true, true), null);
+			AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+			SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+			line.open(format, playSampleCount);
+			line.start();
+			line.write(b, 0, playSampleCount);
+			new WriteThread(null, line, b, playSampleCount).start();
+//			JSToolkit.playAudio(b, new jsjavax.sound.sampled.AudioFormat(rate, 3, 1, true, true));
 
 		}
 		} catch (Exception e) {
@@ -1992,15 +1989,18 @@ boolean shown = false;
 	    count = c;
 	    m = mt;
 	}
-	public void run() {
-	    //line.write(b, 0, count);
 
-	    try {
-		m.invoke(line, new Object[] { b, new Integer(0),
-					      new Integer(count) });
-	    } catch (Exception e) {
-		e.printStackTrace();
-	    }
-	}
+		public void run() {
+			try {
+				/**
+				 * @j2sNative this.line.write(this.b, 0, this.count);
+				 */
+				{
+					m.invoke(line, new Object[] { b, new Integer(0), new Integer(count) });
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
  }
-};
+}

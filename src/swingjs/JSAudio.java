@@ -1,15 +1,21 @@
 package swingjs;	
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
-import swingjs.api.DOMNode;
+import java.util.Hashtable;
+import java.util.Map;
 
 import javajs.util.Base64;
 import javajs.util.BinaryDocument;
 import javajs.util.OC;
-import jsjavax.sound.sampled.AudioFormat;
-import jsjavax.sound.sampled.Line;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.Line;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import swingjs.api.DOMNode;
+
 
 
 /**
@@ -31,9 +37,8 @@ public class JSAudio {
 	}
 
 	
-	public static Line getAudioLine(Object info) {
-		// TODO Auto-generated method stub
-		return null;
+	public Line getAudioLine(Line.Info info) {
+		return new JSAudioLine(info);
 	}
 
 
@@ -47,7 +52,9 @@ public class JSAudio {
 	 * @throws UnsupportedAudioFileException 
 	 */
 	public void playAudioFile(byte[] fileData, String fileFormat) throws UnsupportedAudioFileException {
-		playAudio(fileData, null, fileFormat);		
+		Map<String, Object> props = new Hashtable<String, Object>();
+		props.put("fileFormat", fileFormat);
+		playAudio(fileData, new AudioFormat(null, -1, -1, -1, -1, -1, false, props));		
 	}
 	/**
 	 * 
@@ -61,9 +68,9 @@ public class JSAudio {
 	 * @throws UnsupportedAudioFileException 
 	 * @throws IOException
 	 */
-	public boolean playAudio(byte[] data, AudioFormat audioFormat, String format) throws UnsupportedAudioFileException {
-		
-		if (audioFormat != null) {
+	public boolean playAudio(byte[] data, AudioFormat audioFormat) throws UnsupportedAudioFileException {
+		String format = (String) audioFormat.getProperty("fileFormat");
+		if (format == null) {
 			data = createWaveData(data, audioFormat);
 			format = "wave";
 		}
@@ -187,7 +194,7 @@ public class JSAudio {
 	 * @param data
 	 * @return
 	 */
-	private byte[] toLittleEndian(byte[] data) {
+	public static byte[] toLittleEndian(byte[] data) {
 		// switch to little-endian form
 		byte[] b = new byte[data.length];
 		for (int i = data.length;--i > 0;--i) { // > 0 here
@@ -203,10 +210,10 @@ public class JSAudio {
 	 * 
 	 * @param data
 	 */
-	 private byte[] toULaw(byte[] data) {
+	 public static byte[] toULaw(byte[] data) {
 			byte[] b = new byte[data.length];
-			System.arraycopy(b, 0, data, 0, b.length);		 
-		 for (int i = data.length; --i >= 0;)
+			System.arraycopy(data, 0, b, 0, b.length);		 
+		 for (int i = b.length; --i >= 0;)
 			 b[i] = (byte) to_ulaw[128 + b[i]];
 		 return b;
 	 }
@@ -247,5 +254,48 @@ public class JSAudio {
 			131,  131,  131,  131,  130,  130,  130,  130,
 			129,  129,  129,  129,  128,  128,  128,  128
 		 };
+	 
+	 public static AudioInputStream getAudioInputStream(ByteArrayInputStream stream) throws UnsupportedAudioFileException {
+		AudioFormat format = null; 
+		stream.mark(10);
+		byte[] b = new byte[10];
+		try {
+			stream.read(b);
+		} catch (IOException e) {
+			// no problem
+		}
+		stream.reset();
+		Map<String, Object> props = new Hashtable<String, Object>();
+		String fmt = null;
+		if (isWave(b)) {
+			fmt = "WAV";
+		} else if (isMP3(b)) {
+			fmt = "MP3";
+		} else if (isOGG(b)) {
+			fmt= "OGG";
+		}
+		if (fmt == null)
+			throw new UnsupportedAudioFileException();
+			props.put("fileFormat",fmt);
+		format = new javax.sound.sampled.AudioFormat(null, -1, 
+				-1, -1, -1, -1, false, props);
+		return new JSAudioInputStream(stream, format, -1);
+	}
+
+	private static boolean isOGG(byte[] b) {
+		// "OggS"
+		return b[0] == 0x4F && b[1] == 0x67 && b[2] == 0x67 && b[3] == 0x53;
+	}
+
+	private static boolean isMP3(byte[] b) {
+		// FF FB.., or "ID3" 
+		return b[0] == 0xFF && b[1] == 0xFB
+				|| b[0] == 0x49 && b[1] == 0x44 && b[2] == 0x33;
+	}
+	private static boolean isWave(byte[] b) {
+		// "RIFF....WAVE" // 52 49 46 46
+		return b[0] == 0x52 && b[1] == 0x49 && b[2] == 0x46 && b[3] == 0x46
+			  && b[8] == 0x57 && b[8] == 0x41 && b[8] == 0x56 && b[8] == 0x45;
+	}
 
 }

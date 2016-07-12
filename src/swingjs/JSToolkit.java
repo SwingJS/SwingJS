@@ -8,11 +8,14 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.Map;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import javajs.util.AU;
 import javajs.util.Rdr;
 import javajs.util.SB;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.Line;
+
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -40,11 +43,9 @@ import jsjava.awt.peer.DialogPeer;
 import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.WindowPeer;
-import jsjavax.sound.sampled.AudioFormat;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
-import jsjavax.swing.plaf.ComponentUI;
 import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
@@ -925,9 +926,29 @@ public class JSToolkit extends SunToolkit {
 		return getCompositor().filterImage(src, dst, op);
 	}
 
-	public static void playAudio(byte[] data, AudioFormat audioFormat, String format) throws UnsupportedAudioFileException {
-		JSAudio audio = (JSAudio) getInstance("swingjs.JSAudio");
-		audio.playAudio(data, audioFormat, format);
+	private static JSAudio audioPlayer;
+
+	private static JSAudio getAudioPlayer() {
+		return (audioPlayer == null ? audioPlayer = (JSAudio) getInstance("swingjs.JSAudio")
+				: audioPlayer);
+	}
+	/**
+	 * 
+	 * @param data
+	 * @param audioFormat
+	 *          may have property "fileFormat" describing full file format to use
+	 *          in "data:audio/" + format.toLowerCase() + ";base64, in which case
+	 *          all other information in audioFormat is ignored.
+	 * @throws UnsupportedAudioFileException 
+	 * @throws UnsupportedAudioFileException
+	 */
+	public static void playAudio(byte[] data, AudioFormat audioFormat) throws UnsupportedAudioFileException {
+		getAudioPlayer().playAudio(data, audioFormat);
+	}
+
+	public static Line getAudioLine(Line.Info info) {
+		// TODO Auto-generated method stub
+		return getAudioPlayer().getAudioLine(info);
 	}
 	
 }

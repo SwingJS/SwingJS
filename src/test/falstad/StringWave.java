@@ -24,6 +24,16 @@ package test.falstad;
 //
 // called showFrame() in stringWave.init()
 
+
+// BH SwingJS: There is a problem with loading inner classes by
+// reflection using Outer$Inner.
+
+// BH (new byte[] b).getClass  is not defined.
+
+// BH problem in Java -- write(byte[], int, int) is not available.
+// BH line.flush(); // necessary in JavaScript, not in Java
+
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -45,13 +55,15 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import swingjs.J2SIgnoreImport;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
+
 import swingjs.JSThread;
-import swingjs.JSToolkit;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -1407,7 +1419,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		// BH: made global for JavaScript reentry
 		
 		private Method write = null;
-		private Object line;
+		private SourceDataLine line;
 		private FFT playFFT;
 		private double[] playfunc;
 		private byte[] b;
@@ -1419,7 +1431,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 
 		@Override
 		protected boolean myInit() {
-			
+
 			// this lovely code is a translation of the following, using
 			// reflection, so we can run on JDK 1.1:
 
@@ -1430,40 +1442,50 @@ class StringWaveFrame extends Frame implements ComponentListener,
 			// line = (SourceDataLine) AudioSystem.getLine(info);
 			// line.open(format, playSampleCount);
 			// line.start();
-			// 
-			// 
-
+			//
+			//
 
 			try {
-				Class _AudioFormat = Class.forName("javax.sound.sampled.AudioFormat");
-				Class _DataLine$Info = Class
-						.forName("javax.sound.sampled.DataLine$Info");
-				Class _SourceDataLine = Class
-						.forName("javax.sound.sampled.SourceDataLine");
-				Class _AudioSystem = Class.forName("javax.sound.sampled.AudioSystem");
-				Class _LineInfo = Class.forName("javax.sound.sampled.Line$Info");
-				Method getLine = _AudioSystem.getMethod("getLine",
-						new Class[] { _LineInfo });
-				Method open = _SourceDataLine.getMethod("open", new Class[] {
-						_AudioFormat, int.class });
-				Method start = _SourceDataLine.getMethod("start", (Class[]) null);
+				// BH SwingJS: There is a problem with loading inner classes by
+				// reflection using Outer$Inner.
 
-				Object audioFormat = _AudioFormat.getConstructor(
-						new Class[] { float.class, int.class, int.class, boolean.class,
-								boolean.class }).newInstance(
-						new Object[] { new Float(rate), new Integer(16), new Integer(1),
-								new Boolean(true), new Boolean(true) });
-				Object dataLineInfo = _DataLine$Info.getConstructor(
-						new Class[] { Class.class, _AudioFormat }).newInstance(
-						new Object[] { _SourceDataLine, audioFormat });
+				AudioFormat format = new AudioFormat(rate, 16, 1, true, true);
+				DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+				line = (SourceDataLine) AudioSystem.getLine(info);
+				line.open(format, 4096);
+				line.start();
 
-				line = getLine.invoke(null, new Object[] { dataLineInfo });
-				open.invoke(line, new Object[] { audioFormat, new Integer(4096) });
-				start.invoke(line, (Object[]) null);
+				// Class _AudioFormat =
+				// Class.forName("javax.sound.sampled.AudioFormat");
+				// Class _DataLine$Info = Class
+				// .forName("javax.sound.sampled.DataLine$Info");
+				// Class _SourceDataLine = Class
+				// .forName("javax.sound.sampled.SourceDataLine");
+				// Class _AudioSystem =
+				// Class.forName("javax.sound.sampled.AudioSystem");
+				// Class _LineInfo = Class.forName("javax.sound.sampled.Line$Info");
+				// Method getLine = _AudioSystem.getMethod("getLine",
+				// new Class[] { _LineInfo });
+				// Method open = _SourceDataLine.getMethod("open", new Class[] {
+				// _AudioFormat, int.class });
+				// Method start = _SourceDataLine.getMethod("start", (Class[]) null);
+				//
+				// Object audioFormat = _AudioFormat.getConstructor(
+				// new Class[] { float.class, int.class, int.class, boolean.class,
+				// boolean.class }).newInstance(
+				// new Object[] { new Float(rate), new Integer(16), new Integer(1),
+				// new Boolean(true), new Boolean(true) });
+				// Object dataLineInfo = _DataLine$Info.getConstructor(
+				// new Class[] { Class.class, _AudioFormat }).newInstance(
+				// new Object[] { _SourceDataLine, audioFormat });
+				//
+				// line = getLine.invoke(null, new Object[] { dataLineInfo });
+				// open.invoke(line, new Object[] { audioFormat, new Integer(4096) });
+				// start.invoke(line, (Object[]) null);
 
 				byte b[] = new byte[1];
-				write = _SourceDataLine.getMethod("write", new Class[] { b.getClass(),
-						int.class, int.class });
+				write = line.getClass().getMethod("write",
+						new Class[] { b.getClass()	, int.class, int.class });
 			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
@@ -1486,6 +1508,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 		protected boolean myLoop() {
 			double damper = dampcoef * 1e-2;
 			if (playfunc == null || changed) {
+				line.flush(); // necessary in JavaScript, not in Java
 				playfunc = new double[playSampleCount * 2];
 				int i;
 				// double bstep = 2*pi*440./rate;
@@ -1519,7 +1542,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 				double v = playfunc[(i + offset) * 2] * mult
 						* Math.exp(damper * dampCount++);
 				short x = (short) (v);
-				b[i * 2] = (byte) ((x / 256) & 0xFF); // BH necessary for JavaScript
+				b[i * 2] = (byte) (x / 256); 
 				b[i * 2 + 1] = (byte) (x & 255);
 			}
 			offset += bl;
@@ -1527,41 +1550,14 @@ class StringWaveFrame extends Frame implements ComponentListener,
 				offset = 0;
 
 			try {
-				write.invoke(line, new Object[] { b, new Integer(0),
-						new Integer(b.length) });
+				line.write(b, 0, b.length);
+//				write.invoke(line, new Object[] { b, new Integer(0),
+//						new Integer(b.length) });
 			} catch (Exception e) {
 				e.printStackTrace();
 				failed = true;
 				return false;
 			}
-//			if (isJava) {
-//				/**
-//				 * @j2sNative
-//				 * 
-//				 */
-//
-//				{
-//					// Java only
-//				}
-//
-//			} else {
-//				/*
-//				 * var startTime = 0;
-//				 * 
-//				 * for (var i = 0, audioChunk; audioChunk = AUDIO_CHUNKS[i]; ++i) { //
-//				 * Create/set audio buffer for each chunk var audioBuffer =
-//				 * audioCtx.createBuffer(NUM_CHANNELS, NUM_SAMPLES, SAMPLE_RATE);
-//				 * audioBuffer.getChannelData(0).set(audioChunk);
-//				 * 
-//				 * var source = audioCtx.createBufferSource(); source.buffer =
-//				 * audioBuffer; source.noteOn(startTime);
-//				 * source.connect(audioCtx.destination);
-//				 * 
-//				 * startTime += audioBuffer.duration; }
-//				 */
-//				JSToolkit.playAudio("PCMB", b, 22050, 2);
-//			}
-
 			return true;
 		}
 

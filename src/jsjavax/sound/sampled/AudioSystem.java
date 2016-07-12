@@ -27,8 +27,19 @@ package jsjavax.sound.sampled;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.Port;
+import javax.sound.sampled.TargetDataLine;
 
 import swingjs.JSAudio;
+import swingjs.JSAudioInputStream;
+import swingjs.JSToolkit;
 
 
 /**
@@ -55,7 +66,7 @@ import swingjs.JSAudio;
  * properties file, the system property takes precedence. If none is
  * specified, a suitable default is chosen among the available devices.
  * The syntax of the properties file is specified in
- * {@link java.util.Properties#load(InputStream) Properties.load}. The
+ * {@link java.util.Properties#load(JSAudioInputStream) Properties.load}. The
  * following table lists the available property keys and which methods
  * consider them:
  *
@@ -164,8 +175,8 @@ public class AudioSystem {
      */
     public static final int NOT_SPECIFIED = -1;
     
-    public static Line getLine(Line.Info info) throws LineUnavailableException {
-    	Line line = JSAudio.getAudioLine((Object) info);
+    public static javax.sound.sampled.Line getLine(javax.sound.sampled.Line.Info info) throws LineUnavailableException {
+    	javax.sound.sampled.Line line = JSToolkit.getAudioLine(info);
     	if (line != null)
     		return line;
 
@@ -175,10 +186,8 @@ public class AudioSystem {
                                          info.toString() + " is supported.");
   }
 
-	public static AudioInputStream getAudioInputStream(ByteArrayInputStream stream)
-			throws UnsupportedAudioFileException {
-		// here we would distinguish a stream type - very interesting!
-		throw new UnsupportedAudioFileException();
+	public static javax.sound.sampled.AudioInputStream getAudioInputStream(ByteArrayInputStream stream)
+			throws javax.sound.sampled.UnsupportedAudioFileException {
+		return JSAudio.getAudioInputStream(stream);
 	}
-
 }

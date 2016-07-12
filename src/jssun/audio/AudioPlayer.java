@@ -59,7 +59,7 @@ public class AudioPlayer extends JSThread {
 
 	public void start(AudioDataStream ads) {
 		try {
-			JSToolkit.playAudio(ads.getAudioData().buffer, ads.getAudioData().format, null);
+			JSToolkit.playAudio(ads.getAudioData().buffer, ads.getAudioData().format);
 		} catch (UnsupportedAudioFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

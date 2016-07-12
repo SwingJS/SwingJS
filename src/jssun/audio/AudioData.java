@@ -28,10 +28,10 @@ package jssun.audio;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import jsjavax.sound.sampled.AudioFormat;
-import jsjavax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import jsjavax.sound.sampled.AudioSystem;
-import jsjavax.sound.sampled.UnsupportedAudioFileException;
 
 
 /**

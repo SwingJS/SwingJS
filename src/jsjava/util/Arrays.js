@@ -1,5 +1,5 @@
 // BH adjusted to have only one sort method.
-
+// BH adding copyOf 7/12/2016 10:35:01 AM
 Clazz.load(["java.util.AbstractList","$.RandomAccess"],"java.util.Arrays",["java.lang.ArrayIndexOutOfBoundsException","$.IllegalArgumentException","$.NullPointerException"],function(){
 c$=Clazz.declareType(java.util,"Arrays");
 
@@ -143,6 +143,13 @@ if (arguments.length == 2) {
 	}	
 	java.util.Arrays.rangeCheck(a.length,fromIndex,toIndex);
 	for(var i=fromIndex;i<toIndex;i++)a[i]=val;
+});
+
+c$.copyOf=Clazz.overrideMethod(c$,"copyOf",
+function(a,len){
+  var b = Clazz.newArray(len,null)
+  for(var i=Math.min(a.length, len);--i >= 0;)b[i]=a[i];
+  return b;
 });
 
 c$.asList=Clazz.defineMethod(c$,"asList",

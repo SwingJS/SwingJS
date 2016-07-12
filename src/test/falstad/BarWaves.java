@@ -1407,7 +1407,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 				break;
 		} while (true);
 
+		// this constructor uses default new AudioFormat(ULAW,8000,8,1,1,800,true)
 		AudioDataStream ads = new AudioDataStream(new AudioData(b));
+		// threading is taken care of by the browser in JavaScript
 		AudioPlayer.player.start(ads);
 		cv.repaint();
 	}
