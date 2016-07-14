@@ -1,5 +1,7 @@
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
+import jsjavax.swing.JMenuItem;
 import swingjs.api.DOMNode;
 
 public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
@@ -11,6 +13,7 @@ public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
 	
 	@Override
 	public DOMNode createDOMNode() {
+		menuItem = (JMenuItem) c;
 		return getButtonObject("radio");
 	}
 
@@ -19,6 +22,4 @@ public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
 		return "RadioButtonMenuItem.";
 	}
 
-
-	
 }

@@ -50,4 +50,8 @@ public class JSPopupMenuUI extends JSWindowUI {
 		
 	}
 
+	public Object getPopup() {
+		// TODO: this causes an uncaught error. 
+		return null;		
+	}
 }

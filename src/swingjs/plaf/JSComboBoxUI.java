@@ -34,7 +34,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		populateList();
 		JComboBox b = (JComboBox) c;
 		b.addPropertyChangeListener(this);
-		bindMouse(domNode);
+		setDataUI(domNode);
 		//bindKeys(domNode); // ? perhaps?
 		DOMNode.addJqueryHandledEvent(this, domNode, "change");
 		DOMNode.setStyles(domNode, "z-index", "" + (getZIndex(null) + 5));

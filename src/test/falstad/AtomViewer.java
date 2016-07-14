@@ -18,8 +18,6 @@ package test.falstad;
 // 
 // AtomViewerFrame.init() changed to AtomViewerFrame.initA
 //
-// note: In JavaScript System.getProperty("java.class.version") is null, so useBufferedImage is false
-//
 // added else statement at the end of layoutContainer to set components visibility to true
 //
 // removed paint(Graphics g) entirely, allowing menubar to display
@@ -39,6 +37,13 @@ package test.falstad;
 
 // paint  --> paintComponent
 
+// Swing improvements
+
+// Sample CheckboxMenuItem --> JRadioButtonMenuItem
+//  - easier to process
+//  - was the desired action
+//  - avoids infinite recursion error
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -48,6 +53,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.ItemSelectable;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -65,6 +71,9 @@ import java.awt.image.MemoryImageSource;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -270,7 +279,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	CheckboxMenuItem axesItem;
 	CheckboxMenuItem autoZoomItem;
 	CheckboxMenuItem animatedZoomItem;
-	CheckboxMenuItem samplesItems[];
+	JRadioButtonMenuItem samplesItems[];
 	int samplesNums[] = { 9, 15, 25, 35, 45, 55 };
 	MenuItem exitItem;
 	Choice modeChooser;
@@ -392,9 +401,11 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	boolean useFrame = false;
 
+	private ButtonGroup samplesGroup;
+
 	public void initA() {
 
-		System.out.println("initA...");
+		//System.out.println("initA...");
 
 		gray2 = new Color(127, 127, 127);
 
@@ -420,7 +431,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		mb.add(m);
 		m.add(eCheckItem = getCheckItem("Energy"));
 		eCheckItem.setState(true);
-		m.add(xCheckItem = getCheckItem("Position"));
+		//m.add(
+		xCheckItem = getCheckItem("Position");
+				//);
 		xCheckItem.setState(true);
 		xCheckItem.setEnabled(false);
 		m.add(lCheckItem = getCheckItem("Angular Momentum"));
@@ -445,14 +458,21 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 		m = new Menu("Samples");
 		mb.add(m);
-		samplesItems = new CheckboxMenuItem[6];
-		m.add(samplesItems[0] = getCheckItem("Samples = 9 (fastest)"));
-		m.add(samplesItems[1] = getCheckItem("Samples = 15 (default)"));
-		m.add(samplesItems[2] = getCheckItem("Samples = 25"));
-		m.add(samplesItems[3] = getCheckItem("Samples = 35"));
-		m.add(samplesItems[4] = getCheckItem("Samples = 45"));
-		m.add(samplesItems[5] = getCheckItem("Samples = 55 (best)"));
-		samplesItems[1].setState(true);
+//		samplesItems = new CheckboxMenuItem[6];
+		samplesItems = new JRadioButtonMenuItem[6];
+		m.add(samplesItems[0] = getRadioItem("Samples = 9 (fastest)"));
+		m.add(samplesItems[1] = getRadioItem("Samples = 15 (default)"));
+		m.add(samplesItems[2] = getRadioItem("Samples = 25"));
+		m.add(samplesItems[3] = getRadioItem("Samples = 35"));
+		m.add(samplesItems[4] = getRadioItem("Samples = 45"));
+		m.add(samplesItems[5] = getRadioItem("Samples = 55 (best)"));
+		samplesGroup = new ButtonGroup();
+		for (int i = 0; i < 6; i++) {
+			samplesGroup.add(samplesItems[i]);
+			samplesItems[i].setActionCommand(""+ samplesNums[i]);
+		}
+		samplesItems[1].setSelected(true);
+		
 		//mb.setVisible(true);
 		// add(mb); //adds menubar to side bar, but does display and function
 
@@ -839,6 +859,12 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		return mi;
 	}
 
+	JRadioButtonMenuItem getRadioItem(String s) {
+		JRadioButtonMenuItem mi = new JRadioButtonMenuItem(s);
+		mi.addItemListener(this);
+		return mi;
+	}
+
 	PhaseColor genPhaseColor(int sec, double ang) {
 		// convert to 0 .. 2*pi angle
 		ang += sec * pi / 4;
@@ -873,18 +899,12 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	}
 
 	void setupSimpson() {
-		sampleCount = 15;
-		// sampleCount = sampleBar.getValue()*2+1;
-		int i;
-		for (i = 0; i != samplesNums.length; i++) {
-			if (samplesItems[i].getState())
-				sampleCount = samplesNums[i];
-		}
+		sampleCount = Integer.parseInt(samplesGroup.getSelection().getActionCommand());
 		System.out.print("sampleCount = " + sampleCount + "\n");
 
 		// generate table of sample multipliers for efficient Simpson's rule
 		sampleMult = new int[sampleCount];
-		for (i = 1; i < sampleCount; i += 2) {
+		for (int i = 1; i < sampleCount; i += 2) {
 			sampleMult[i] = 4;
 			sampleMult[i + 1] = 2;
 		}
@@ -1731,7 +1751,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	public void updateAtomViewer(Graphics realg) {
 
-		System.out.println("...updating..." + !stoppedCheck.getState());
+		//System.out.println("...updating..." + !stoppedCheck.getState());
 
 		Graphics g = null;
 		if (winSize == null || winSize.width == 0)
@@ -1928,7 +1948,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		if (imageSource != null)
 			imageSource.newPixels();
 		g.drawImage(memimage, viewX.x, viewX.y, null);
-		System.out.println("...image drawn");
+		//System.out.println("...image drawn");
 
 		g.setColor(Color.white);
 		if (sliced)
@@ -1962,7 +1982,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 		realg.drawImage(dbimage, 0, 0, this);
 
-		System.out.println("...image drawn");
+		//System.out.println("...image drawn");
 
 		if (!allQuiet)
 			cv.repaint(pause);
@@ -2499,45 +2519,43 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		if (!finished) {
 			return;
 		}
-		if (e.getItemSelectable() == cubicItem) {
+		ItemSelectable c = e.getItemSelectable(); 
+		if (c == cubicItem) {
 			setLValue();
 			setupDisplay();
 			orbitalChanged();
-			cv.repaint(pause);
-			return;
-		}
-		if (e.getItemSelectable() instanceof CheckboxMenuItem) {
-			int nsam = samplesNums.length;
-			int i;
-			for (i = 0; i != nsam; i++)
-				if (samplesItems[i] == e.getItemSelectable())
-					break;
-			if (i != nsam) {
-				int j;
-				for (j = 0; j != nsam; j++)
-					samplesItems[j].setState(i == j);
-				setupSimpson();
-			}
+		} else if (c instanceof JRadioButtonMenuItem) {
+			if (e.getStateChange() != ItemEvent.SELECTED)
+				return;
+			// int nsam = samplesNums.length;
+			// int i;
+			// for (i = 0; i != nsam; i++)
+			// if (samplesItems[i] == e.getItemSelectable())
+			// break;
+			// if (i != nsam) {
+			// samplesItems[i].setSelected(true);
+			// // int j;
+			// // for (j = 0; j != nsam; j++)
+			// // samplesItems[j].setState(i == j);
+			// }
+			setupSimpson();
 			setupDisplay();
-			cv.repaint(pause);
-			return;
-		}
-		if (e.getItemSelectable() == nChooser) {
+		} else if (c instanceof CheckboxMenuItem) {
+			setupSimpson();
+			setupDisplay();
+		} else if (c == nChooser) {
 			setNValue();
 			orbitalChanged();
-		} else if (e.getItemSelectable() == lChooser) {
+		} else if (c == lChooser) {
 			setLValue();
 			orbitalChanged();
-		} else if (e.getItemSelectable() == mChooser) {
+		} else if (c == mChooser) {
 			orbitalChanged();
-		} else if (e.getItemSelectable() == viewChooser) {
+		} else if (c == viewChooser) {
 			setLValue();
 			orbitalChanged();
 			setupDisplay();
 			setInitialOrbital();
-		} else if (e.getItemSelectable() == cubicItem) {
-			setLValue();
-			orbitalChanged();
 		}
 		cv.repaint(pause);
 	}

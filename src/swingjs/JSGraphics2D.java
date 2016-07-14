@@ -393,7 +393,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 				if ((imgNode = getImageNode(img)) != null)
 					ctx.drawImage(imgNode, x, y, width, height);
 			} else {
-				Object imageData = HTML5CanvasContext2D.getImageData(ctx, width, height);
+				Object imageData = HTML5CanvasContext2D.getImageData(ctx, x, y, width, height);
 				int[] buf8 = HTML5CanvasContext2D.getBuf8(imageData);
 				for (int pt = 0, i = 0, n = Math.min(buf8.length/4, pixels.length); i < n; i++) {
 					int argb = pixels[i];
@@ -402,7 +402,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 					buf8[pt++] = argb & 0xFF;
 					buf8[pt++] = (argb >> 24) & 0xFF;
 				}
-				HTML5CanvasContext2D.putImageData(ctx, imageData, 0, 0);				
+				HTML5CanvasContext2D.putImageData(ctx, imageData, x, y);				
 			}
 			if (observer != null)
 				observe(img, observer, imgNode != null);

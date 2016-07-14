@@ -26,7 +26,7 @@ public class JSTextAreaUI extends JSTextUI {
 			updateHandler.checkDocument();
 			domBtn = focusNode = enableNode = textNode = domNode = createDOMObject("textarea", id);
 			DOMNode.setStyles(domNode, "resize", "none");
-			bindMouse(domNode);
+			setDataUI(domNode);
 			if (((JTextComponent) c).isEditable()) {
 				bindKeys(domNode);
 				setFocusable();
@@ -48,8 +48,6 @@ public class JSTextAreaUI extends JSTextUI {
 	
 	@Override
 	protected Dimension getCSSDimension(int w, int h) {
-		width -= 5;
-		height -= 5;
 		return new Dimension(w - 5, h - 5);
 	}
 	

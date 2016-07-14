@@ -42,7 +42,10 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setDoc();
 	}
 
-	static {		
+	static {
+		
+		// this mechanism allows on-demand loading of the jQuery slider
+		
 		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.css", true);
 		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.js", true);
 	}
@@ -71,29 +74,53 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			domNode = wrap("div", id + "_wrap",
 					jqSlider = DOMNode.createElement("div", id));
 			$(domNode).addClass("swingjs");
-
-			/**
-			 * @j2sNative
-			 * 
-			 *            var me = this; 
-			 *            me.$(me.jqSlider).slider(
-			 *             { orientation: me.orientation, 
-			 *               range: false, 
-			 *               min: me.min,
-			 *               max: me.max,
-			 *               value: me.val, 
-			 *               change: function(jqevent, handle) {
-			 *                     me.jqueryCallback(jqevent, handle); }, 
-			 *               slide: function(jqevent, handle) { 
-			 *                     me.jqueryCallback(jqevent, handle); }
-			 *            });
-			 */
-			{
-			}
+			setJQuerySliderAndEvents();
 		}
 		setZ(isNew);
 		setSlider();
 		return domNode;
+	}
+
+	private void setJQuerySliderAndEvents() {
+
+		/**
+		 * @j2sNative
+		 * 
+		 *            var me = this; 
+		 *            me.$(me.jqSlider).slider(
+		 *             { orientation: me.orientation, 
+		 *               range: false, 
+		 *               min: me.min,
+		 *               max: me.max,
+		 *               value: me.val, 
+		 *               change: function(jqevent, handle) {
+		 *                     me.jqueryCallback(jqevent, handle); }, 
+		 *               slide: function(jqevent, handle) { 
+		 *                     me.jqueryCallback(jqevent, handle); }
+		 *            });
+		 */
+		{
+		}
+	}
+
+	/**
+	 * called from JavaScript via the hook added in setJQuerySliderAndEvents  
+	 * 
+	 * @param event
+	 * @param ui
+	 */
+	public void jqueryCallback(Object event, DOMNode ui) {
+		int value = 0;
+		
+		/**
+		 * @j2sNative
+		 * 
+		 * value = ui.value;
+		 * 
+		 */
+		{}
+		
+		jSlider.setValue(val = value);
 	}
 
 	/**
@@ -116,27 +143,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			$(sliderHandle).addClass("swingjs-ui");
 			$(sliderTrack).addClass("swingjs-ui");
 		}
-	}
-
-	/**
-	 * called from JavaScript via the hook added in getDOMObject  
-	 * 
-	 * @param event
-	 * @param ui
-	 */
-	public void jqueryCallback(Object event, DOMNode ui) {
-		// from JavaScript
-		int value = 0;
-		
-		/**
-		 * @j2sNative
-		 * 
-		 * value = ui.value;
-		 * 
-		 */
-		{}
-		
-		jSlider.setValue(val = value);
 	}
 
 	private void setSliderAttr(String key, int val) {

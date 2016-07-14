@@ -195,14 +195,16 @@ public class JSFrameViewer implements JSInterface {
 			canvas = html5Applet._getHtml5Canvas();
 			return canvas;
 		}
-		DOMNode parent = (top.getComponentCount() > 0 ? ((JSComponentUI)((JRootPane) top.getComponent(0)).getUI()).domNode : null);
+		JRootPane root = (JRootPane) (top.getComponentCount() > 0 ? top.getComponent(0) : null);
+		DOMNode parent = (root == null ? null : ((JSComponentUI) root.getUI()).domNode);
 		if (parent != null)
 			DOMNode.remove(canvas);
 		display = canvasId = appletViewer.appletName + "_canvas" + ++canvasCount;
 		System.out.println("JSFrameViewer creating new canvas " + canvasId + ": "
 				+ width + "  " + height);
 		canvas = (HTML5Canvas) DOMNode.createElement("canvas", canvasId);
-		DOMNode.setPositionAbsolute(canvas, 0, 0);
+		int iTop = (root == null ? 0 : root.getContentPane().getY()); 
+		DOMNode.setPositionAbsolute(canvas, iTop, 0);
 		DOMNode.setStyles(canvas, "width", width + "px", "height", height + "px");
 		if (parent != null) {
 			parent.appendChild(canvas);

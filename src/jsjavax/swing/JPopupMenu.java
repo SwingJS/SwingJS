@@ -1396,15 +1396,18 @@ public class JPopupMenu extends JComponent implements MenuElement {
 //        if (DEBUG) {
 //            System.out.println("In JPopupMenu.menuSelectionChanged " + isIncluded);
 //        }
-        if(invoker instanceof JMenu) {
-            JMenu m = (JMenu) invoker;
-            if(isIncluded)
-                m.setPopupMenuVisible(true);
-            else
-                m.setPopupMenuVisible(false);
-        }
-        if (isPopupMenu() && !isIncluded)
-          setVisible(false);
+//        if(invoker instanceof JMenu) {
+//        	// when menubar item is clicked on, this opens its popup menu. 
+//        	// we do not need to do this in SwingJS
+//        	
+//            JMenu m = (JMenu) invoker;
+//            if(isIncluded)
+//                m.setPopupMenuVisible(true);
+//            else
+//                m.setPopupMenuVisible(false);
+//        }
+//        if (isPopupMenu() && !isIncluded)
+//          setVisible(false);
     }
 
     /**

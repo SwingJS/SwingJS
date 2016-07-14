@@ -3762,6 +3762,8 @@ protected  transient ComponentPeer peer;
     public final void dispatchEvent(AWTEvent e) {
         dispatchEventImpl(e);
     }
+    
+    
 
     void dispatchEventImpl(AWTEvent e) {
     	dispatchEventImplComp(e);

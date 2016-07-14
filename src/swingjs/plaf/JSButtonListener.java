@@ -25,6 +25,7 @@
 
 package swingjs.plaf;
 
+import swingjs.api.DOMNode;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
@@ -64,6 +65,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
     private long lastPressedTimestamp = -1;
     private boolean shouldDiscardRelease = false;
     AbstractButton btn;
+		private boolean isMenuItem;
 
     /**
      * Populates Buttons actions.
@@ -74,8 +76,9 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
     }
 
 
-    public JSButtonListener(AbstractButton b) {
+    public JSButtonListener(AbstractButton b, boolean isMenuItem) {
     	btn = b;
+    	this.isMenuItem = isMenuItem;
     }
 
   static String labelprops = ";" + AbstractButton.TEXT_CHANGED_PROPERTY
@@ -182,7 +185,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
     @Override
 		public void stateChanged(ChangeEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
-        b.repaint();
+        verifyButtonClick(b);
     }
 
     @Override
@@ -244,58 +247,83 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e)) {
-			AbstractButton b = (AbstractButton) e.getSource();
-			if (!b.contains(e.getX(), e.getY()))
-				return;
-			// We need to check the state before and after the button click 
-			// for radio and checkboxes to make sure the DOM button actually got hit.
-			// mousePress is an "arm"; mouseRelease is a "click"
-			
-			long multiClickThreshhold = b.getMultiClickThreshhold();
-			long lastTime = lastPressedTimestamp;
-			long currentTime = lastPressedTimestamp = e.getWhen();
-			if (lastTime != -1 && currentTime - lastTime < multiClickThreshhold) {
-				shouldDiscardRelease = true;
-				return;
-			}
-
-			//System.out.println("JSButtonListener press " + b.getName() + " " + e);
-
-			ButtonModel model = b.getModel();
-			if (!model.isEnabled()) {
-				// Disabled buttons ignore all input...
-				return;
-			}
-			if (!model.isArmed()) {
-				// button not armed, should be
-				model.setArmed(true);
-			}
-			model.setPressed(true);
-			if (!b.hasFocus() && b.isRequestFocusEnabled()) {
-				b.requestFocus();
-			}
-		}
 	}
 
     @Override
 		public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
-            // Support for multiClickThreshhold
-            if (shouldDiscardRelease) {
-                shouldDiscardRelease = false;
-                return;
-            }
-            AbstractButton b = (AbstractButton) e.getSource();
-            ButtonModel model = b.getModel();
-      			((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(model);
-      			
-      			//System.out.println("JSButtonListener released " + b.getName() + " " + e);
+      			AbstractButton b = (AbstractButton) e.getSource();
+      			b.doClick(0);
+      			verifyButtonClick(b);
 
-            model.setPressed(false);
-            model.setArmed(false);
+////      			if (!isMenuItem && !b.contains(e.getX(), e.getY()))
+//      	//			return;
+//      			// We need to check the state before and after the button click 
+//      			// for radio and checkboxes to make sure the DOM button actually got hit.
+//      			// mousePress is an "arm"; mouseRelease is a "click"
+//      			
+//      			long multiClickThreshhold = b.getMultiClickThreshhold();
+//      			long lastTime = lastPressedTimestamp;
+//      			long currentTime = lastPressedTimestamp = e.getWhen();
+//      			if (lastTime != -1 && currentTime - lastTime < multiClickThreshhold) {
+//      				shouldDiscardRelease = true;
+//      				return;
+//      			}
+//
+//      			//System.out.println("JSButtonListener press " + b.getName() + " " + e);
+//
+//      			ButtonModel model = b.getModel();
+//      			if (!model.isEnabled()) {
+//      				// Disabled buttons ignore all input...
+//      				return;
+//      			}
+//      			if (!model.isArmed()) {
+//      				// button not armed, should be
+//      				model.setArmed(true);
+//      			}
+//      			model.setPressed(true);
+//      			if (!b.hasFocus() && b.isRequestFocusEnabled()) {
+//      				b.requestFocus();
+//      			}
+//            // Support for multiClickThreshhold
+//            if (shouldDiscardRelease) {
+//                shouldDiscardRelease = false;
+//                return;
+//            }
+//            AbstractButton b = (AbstractButton) e.getSource();
+//            ButtonModel model = b.getModel();
+//      			//necessary?  ((JSButtonUI) (ComponentUI) b.getUI()).verifyButtonClick(model);
+//      			
+//      			//System.out.println("JSButtonListener released " + b.getName() + " " + e);
+//
+//            model.setPressed(false);
+//            model.setArmed(false);
         }
     }
+
+	/**
+	 * Just ensure the button is in sync. Because of the surrounding label tag, it
+	 * may not have actually indicate having been pressed.
+	 * 
+	 * @param m
+	 * 
+	 * @return true
+	 */
+	boolean verifyButtonClick(AbstractButton b) {
+		JSButtonUI ui = (JSButtonUI) (Object) b.getUI();
+		ButtonModel m = b.getModel();
+		DOMNode btn = ui.domBtn;
+		boolean state = m.isSelected() && !ui.isRadio;
+		/**
+		 * @j2sNative
+		 * 
+		 *            setTimeout(function(){btn && (btn.checked = state)}, 0);
+		 */
+		{
+			System.out.println("" + btn + state);
+		}
+		return true;
+	}
 
     @Override
 		public void mouseEntered(MouseEvent e) {

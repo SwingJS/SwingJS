@@ -31,12 +31,11 @@ position:relative;
 .swingjs-menu ul {
 position:absolute;
 display:none;
-width:150px;
+width:50px;
 top:1.2em;
 }
 
 .swingjs-menu li ul a{
-width:150px;
 height:auto;
 float:left;
 }
@@ -46,7 +45,7 @@ top:auto;
 }	
 
 .swingjs-menu li ul ul {
-left: 150px;
+left:50px;
 margin:0px 0 0 10px;
 }
 

@@ -1471,7 +1471,7 @@ public class Container extends JSComponent {
      */
     @Override
 		public void doLayout() {
-    	// only called by JTable
+    	// called by Container.validateTree
         layout();
     }
 
@@ -4395,14 +4395,16 @@ class LightweightDispatcher implements AWTEventListener {
         int id = e.getID();
         Component mouseOver = null;   // sensitive to mouse events
         /**
+         * @see swingjs.plaf.JSButtionUI
+         * 
          * @j2sNative
          * 
-         * mouseOver = e.mouseOver;
+         * mouseOver = e.bdata.jqevent && e.bdata.jqevent.target["data-component"];
          * 
          */
         {}
         
-        if (mouseOver == null)  // sensitive to mouse events
+        if (mouseOver == null) 
             mouseOver = nativeContainer.getMouseEventTarget(e.getX(), e.getY(),
                                                 Container.INCLUDE_SELF);
 
@@ -4696,6 +4698,9 @@ class LightweightDispatcher implements AWTEventListener {
      * coordinates of the event are translated to those of the target.
      * If the target has been removed, we don't bother to send the
      * message.
+     * 
+     * Except for SwingJS we are using the parent frame as the native container,
+     * and the PopupMenu does not have that as a parent. 
      */
     void retargetMouseEvent(Component target, int id, MouseEvent e) {
         if (target == null) {
@@ -4706,10 +4711,12 @@ class LightweightDispatcher implements AWTEventListener {
         Component component;
 
         for(component = target;
-            component != null && component != nativeContainer;
+            component != null && component != nativeContainer;            		
             component = component.getParent()) {
             x -= component.x;
             y -= component.y;
+            if (((JSComponent) component).uiClassID == "PopupMenuUI")
+            	break; // SwingJS not to worry
         }
         MouseEvent retargeted;
         if (component != null) {

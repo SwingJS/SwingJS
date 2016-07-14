@@ -41,7 +41,7 @@ import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.text.JTextComponent;
 
 public class TextListener implements MouseListener, MouseMotionListener,
-                                   FocusListener, ChangeListener, PropertyChangeListener, DocumentListener, JSEventHandler
+                                   FocusListener, ChangeListener, PropertyChangeListener, DocumentListener
 {
 
     private JTextComponent txtComp;
@@ -132,9 +132,7 @@ public class TextListener implements MouseListener, MouseMotionListener,
     }
 
 
-	@Override
-	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
-		JSTextUI ui = (JSTextUI) target;
+	boolean handleJSTextEvent(JSTextUI ui, int eventType, Object jQueryEvent) {
 		int dot = 0, mark = 0;
 		String evType = null;
 		int keyCode = 0;

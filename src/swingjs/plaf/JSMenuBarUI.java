@@ -31,11 +31,20 @@ import jsjavax.swing.LookAndFeel;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
+/**
+ * The JSMenuBarUI uses a very simple bare-bones jQuery-driven ul/li menuing
+ * system. See http://www.kriesi.at/wp-content/extra_data/suckerfish_tutorial/step4.html.
+ * It uses only four lines of JavaScript and a bit of CSS.
+ * 
+ * @author Bob Hanson
+ *
+ */
 public class JSMenuBarUI extends JSPanelUI {
 
-	// http://www.kriesi.at/wp-content/extra_data/suckerfish_tutorial/step4.html
-	
 	static {
+		
+		// this mechanism allows on-demand loading of the CSS used for the slider 
+		
 		JSToolkit.getJavaResource("swingjs/jquery/swingjs-menu.css", true);
 	}
 
@@ -48,7 +57,8 @@ public class JSMenuBarUI extends JSPanelUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			containerNode = domNode = createDOMObject("ui", id);
+			containerNode = domNode = createDOMObject("div", id);
+			//DOMNode.setStyles(containerNode, "overflow", "hidden");
 			DOMNode.setPositionAbsolute(domNode, 0, 0); // after title bar 
 			$(domNode).addClass("swingjs-menu");
 		}
@@ -102,14 +112,23 @@ public class JSMenuBarUI extends JSPanelUI {
 		
 	}
 
+	
 	@Override
-	protected int getCompHeight() {
+	protected int getContainerHeight() {
 		return height = 25;
 	}
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		setMenu();
 		return new Dimension(150, 25);
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		// layout manager will call this specifically for the height
+		// we could make this larger if it ends up being multilevel?
+  	Dimension d = new Dimension(0, 25);
+  	return d;
 	}
 
 

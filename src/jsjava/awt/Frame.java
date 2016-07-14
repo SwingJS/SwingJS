@@ -894,7 +894,7 @@ public class Frame extends Window {
 //                    menuBar.removeNotify();
 //                }
 //            }
-//            super.removeNotify();
+            super.removeNotify();
 //        }
     }
 

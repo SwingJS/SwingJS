@@ -28,7 +28,7 @@ public class JSTextFieldUI extends JSTextUI {
 					.setStyles(createDOMObject("input", id, "type", inputType),
 							"padding", "0px 1px");
 			vCenter(domNode, -10);
-			bindMouse(domNode);
+			setDataUI(domNode);
 			if (((JTextComponent) c).isEditable()) {
 				bindKeys(domNode);
 				setFocusable();

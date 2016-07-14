@@ -1,5 +1,7 @@
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
+import jsjavax.swing.JMenuItem;
 import swingjs.api.DOMNode;
 
 /**
@@ -23,6 +25,7 @@ public class JSCheckBoxMenuItemUI extends JSCheckBoxUI {
 	
 	@Override
 	public DOMNode createDOMNode() {
+		menuItem = (JMenuItem) c;
 		return getButtonObject("checkBox");
 	}
 

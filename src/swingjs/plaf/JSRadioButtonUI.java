@@ -60,10 +60,12 @@ public class JSRadioButtonUI extends JSButtonUI {
 			}
 			domBtn = enableNode = createDOMObject("input", id, "type", myType, "name",
 					name);
+			setDataComponent(domBtn);
 			textNode = createDOMObject("label", id + "l");
 			label = createDOMObject("label", id + "2", "htmlFor", id);
 			label.appendChild(domBtn);
 			label.appendChild(textNode);
+			setDataComponent(label);
 			wrapper = (hasOuterDiv ? label : createItem("_item", label));
 		}
 		if (b.isSelected() || isNew)

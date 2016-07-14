@@ -137,11 +137,11 @@ public abstract class HTML5CanvasContext2D {
 		{}
 	}
 
-	public static Object getImageData(HTML5CanvasContext2D ctx, int width, int height) {
+	public static Object getImageData(HTML5CanvasContext2D ctx, int x, int y, int width, int height) {
 		/**
 		 * @j2sNative
 		 * 
-		 *   return ctx.getImageData(0, 0, width, height);
+		 *   return ctx.getImageData(x, y, width, height);
 		 */
 		{
 			return null;

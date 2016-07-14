@@ -10,12 +10,10 @@ import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.peer.WindowPeer;
-import jsjavax.swing.JComponent;
 import jsjavax.swing.JWindow;
 import swingjs.JSAppletViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
-import swingjs.api.HTML5Applet;
 
 public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
@@ -188,6 +186,5 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	public Insets getInsets() {
 		return new Insets(0, 0, 0, 0);
 	}
-
 
 }

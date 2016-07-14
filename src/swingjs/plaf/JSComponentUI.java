@@ -33,20 +33,54 @@ import swingjs.api.JQueryObject;
 import swingjs.api.JSFunction;
 
 /**
- * The JSComponentUI subclasses are where all the detailed HTML5 implementation is 
- * carried out. These subclasses mirror the subclasses found in the actual javax.swing.plaf
- * but have an important difference in that that effectively act as both the UI (a single
- * implementation for a given AppContext in Swing) and a peer (one implementation per component).
+ * The JSComponentUI subclasses are where all the detailed HTML5 implementation
+ * is carried out. These subclasses mirror the subclasses found in the actual
+ * javax.swing.plaf but have an important difference in that that effectively
+ * act as both the UI (a single implementation for a given AppContext in Swing)
+ * and a peer (one implementation per component).
  * 
- * So here we store both the constants for the HTML5 "LookAndFeel", but also
- * HTML5 objects that really are on the page. 
+ * So here we store both the constants for the HTML5 "LookAndFeel" as well as
+ * HTML5 DOM objects (aka DOMNode) that really are on the page.
  * 
- * Essentially, at least for now, we are not implementing the HTML5LookAndFeel as such. We'll see how that goes. 
+ * Essentially, at least for now, we are not implementing the HTML5LookAndFeel
+ * as such. We'll see how that goes.
  * 
- *  
- *   
+ * MOUSE EVENT HANDLING
+ * 
+ * In SwingJS, the domBtn DOM element will be given the "data-component"
+ * attribute pointing to its corresponding AWT component.
+ * 
+ * A mouse action starts in j2sApplet.js as jQuery events, where it is processed
+ * and then passed to JSFrameViewer's JSMouse object.
+ * 
+ * In JSMouse the event is converted to a java.awt.event.MouseEvent, with the
+ * jQuery event saved as event.bdata[].jqevent. This standard MouseEvent is then
+ * posted just like a "real Java" event using
+ * Toolkit.getEventQueue().postEvent(e), thus giving it its own "thread."
+ * 
+ * The event is dispatched by java.awt.LightweightDispatcher (in
+ * Container.java), where the "nativeContainer" for this window (JApplet,
+ * JFrame, JWindow, JDialog, or JPopupMenu) is identified. Java has to search
+ * the native container for the right X,Y coordinate for this control, but in
+ * SwingJS we already know the control that was clicked. We can find that from
+ * bdata.jqevent.target["data-component"]
+ * 
+ * Some UIs (JSComboBoxUI, JSFrameUI, and JSTextUI) set
+ * jqevent.target["data-ui"] to point to themselves. This allows the control to
+ * bypass the Java dispatch system entirely and just come here for processing.
+ * This method is used for specific operations, including JFrame closing,
+ * JComboBox selection, and JSText action handling. This connection is set up in
+ * JSComponentUI.setDataUI() and handled by overriding
+ * JSComponentUI.handleJSEvent().
+ * 
+ * Finally, some UIs (JSSliderUI and JSMenuUI) set up jQueryEvents that call
+ * back to themselves or handle some internal event processing themselves.
+ * 
+ * 
+ * @see jsjava.awt.LightweightDispatcher (in Container.js)
+ * 
  * @author Bob Hanson
- *
+ * 
  */
 public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEventHandler {
 
@@ -74,7 +108,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	protected JComponent jc;
 
 	/**
-	 * the outermost div holding a component -- left, top, and for a container width and height
+	 * The outermost div holding a component -- left, top, and for a container
+	 * width and height
+	 * 
+	 * Note that all controls have an associated outerNode div. Specifically, menu items will be
+	 * surrounded by an li element, not a div.
 	 * 
 	 * This must be set up here, nowhere else.
 	 * 
@@ -82,9 +120,17 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	protected DOMNode outerNode; 
 
 	/**
-	 * the main object for the component, possibly containing others, such as radio button with its label
+	 * the main HTML5 element for the component, possibly containing others, such as
+	 * radio button with its label. 
+	 * 
 	 */
 	public DOMNode domNode;
+	
+	/**
+	 * The HTML5 input element being pressed, if the control subclasses JSButtonUI.
+	 * 
+	 */
+	protected DOMNode domBtn;
 	
 	/**
 	 * a component or subcomponent that can be enabled/disabled 
@@ -251,7 +297,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		applet = JSToolkit.getHTML5Applet(c);
 		newID();
 		if (needPreferred)
-	  	setHTMLSize(createDOMNode(), false);
+	  	getHTMLSize();
 		installJSUI(); // need to do this immediately, not later
 		return this;
 	}
@@ -396,6 +442,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	}
 
 	/**
+	 * allows for 
 	 * can be overloaded to allow some special adjustments
 	 * 
 	 * @param w
@@ -450,7 +497,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 				System.out.println("JSComponentUI container " + id + " "
 						+ c.getBounds());
 				DOMNode
-						.setSize(outerNode, getCompWidth(), getCompHeight());
+						.setSize(outerNode, getContainerWidth(), getContainerHeight());
 			}
 			if (jc.isRootPane) {
 				if (jc.getFrameViewer().isApplet) {
@@ -497,18 +544,22 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		return outerNode;
 	}
 
-	protected int getCompWidth() {
+	protected int getContainerWidth() {
 		return width = c.getWidth();
 	}
 
-	protected int getCompHeight() {
+	protected int getContainerHeight() {
 		 return height = c.getHeight();
 	}
 	
 	@Override
 	public Dimension getPreferredSize() {
-  	return setHTMLSize(createDOMNode(), false);
+  	return getHTMLSize();
   }
+
+	private Dimension getHTMLSize() {
+		return setHTMLSize(createDOMNode(), false);
+	}
 
 	@Override
 	public void paint(Graphics g, JComponent c) {
@@ -719,7 +770,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 	@Override
 	public void setVisible(boolean b) {
-		DOMNode.setStyles(getOuterNode(), "display", b ? "block" : "none");
+		DOMNode node = getOuterNode();
+		if (node == null)
+			node = domNode; // a frame or other window
+		DOMNode.setStyles(node, "display", b ? "block" : "none");
 	}
 
 	@Override
@@ -754,7 +808,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 				height = Math.min(height, scrollerNode.c.getHeight());
 			}
 			// allow for special adjustments
-			Dimension size = getCSSDimension(this.width = width, this.height = height);
+			Dimension size = getCSSDimension(width, height);
+			this.width = size.width;
+			this.height = size.height;
 			System.out.println(id + " setBounds " + x + " " + y + " " + this.width
 					+ " " + this.height + " op=" + op);
 			if (domNode == null && createDOMNode() == null)
@@ -810,7 +866,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 	@Override
 	public void dispose() {
-		JSToolkit.notImplemented("");
+    DOMNode.remove(domNode);
+    DOMNode.remove(outerNode);
 	}
 
 	@Override
@@ -968,15 +1025,40 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	}
 
 	/**
-	 * JSmolCore.js will look for  data-UI attribute  and, if found, reroute directly here 
-	 * @param node 
+	 * JSmolCore.js will look for the data-ui attribute of a jQuery event target
+	 * and, if found, reroute the event to handleJSEvent.
+	 * 
+	 * Some UIs (JSComboBoxUI, JSFrameUI, and JSTextUI) set
+	 * jqevent.target["data-ui"] to point to themselves. This allows the control
+	 * to bypass the Java dispatch system entirely and just come here for
+	 * processing. This method is used for specific operations, including JFrame
+	 * closing, JComboBox selection, and JSText action handling. This connection
+	 * is set up in JSComponentUI.setDataUI() and handled by overriding
+	 * JSComponentUI.handleJSEvent().
+	 * 
+	 * @param node
 	 */
-	protected void bindMouse(DOMNode node) {
-		DOMNode.setAttr(node, "data-UI", this);		
+	protected void setDataUI(DOMNode node) {
+		DOMNode.setAttr(node, "data-ui", this);		
 	}
 	
 	/**
-	 * called by JmolCore.js
+	 * called by JmolCore.js;
+	 * 
+	 * Some UIs (JSComboBoxUI, JSFrameUI, and JSTextUI) set
+	 * jqevent.target["data-ui"] to point to themselves. This allows the control
+	 * to bypass the Java dispatch system entirely and just come here for
+	 * processing. This method is used for specific operations, including JFrame
+	 * closing, JComboBox selection, and JSText action handling. This connection
+	 * is set up in JSComponentUI.setDataUI() and handled by overriding
+	 * JSComponentUI.handleJSEvent().
+	 * 
+	 * @param target
+	 *          a DOMNode
+	 * @param eventType
+	 *          a MouseEvent id, including 501, 502, 503, or 506 (pressed,
+	 *          released, moved, and dragged, respectively)
+	 * @param jQueryEvent
 	 * @return false to prevent the default process
 	 */
 	@Override

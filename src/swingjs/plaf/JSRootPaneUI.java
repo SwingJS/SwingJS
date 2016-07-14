@@ -1,6 +1,5 @@
 package swingjs.plaf;
 
-import swingjs.JSFrameViewer;
 import swingjs.api.DOMNode;
 
 public class JSRootPaneUI extends JSLightweightUI {
