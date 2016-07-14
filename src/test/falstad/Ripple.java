@@ -2,6 +2,15 @@ package test.falstad;
 
 //Ripple.java (c) 2001 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= Ripple
+//web_Description= A simulation of a ripple tank demonstrating wave interference.
+//web_JavaSource= http://www.falstad.com/ripple/
+//web_Location= test.falstad.Ripple
+//web_AppletImage= images/ripple.png
+//web_Category= Physics
+//web_Date= $Date$
+
 // see http://www.falstad.com/ripple/
 
 // Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 

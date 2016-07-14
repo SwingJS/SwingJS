@@ -9,15 +9,16 @@ package test.falstad;
 //import java.awt [Applet, Canvas, Checkbox, Choice, Label, Scrollbar] --> swingjs.awt
 
 // missing hist_cv.updateComponent()
-//web_Date= $Date: xxx $
+
 //web_Ready
 //web_AppletName= Gas
-//web_Description= A simulation of a ripple tank demonstrating wave interferance.
-//web_JavaSource= www.falstad.com/Gas
-//web_Location= test.falstad.Ripple
-//web_AppletImage= images/ripple.png
-//web_Category= Physics
-//web_Date= 11.07.2016
+//web_Description= A simulation of the ideal gas law.
+//web_Date= $Date: xxx$
+//web_JavaSource= www.falstad.com/gas
+//web_Location= test.falstad.Gas
+//web_AppletImage= images/gas.png
+//web_Category= Chemistry
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;

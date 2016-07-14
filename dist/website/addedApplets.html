@@ -1,0 +1,89 @@
+
+			
+			<div class="4u work-item">
+				<a href="applets/${AppletName}.html"><span class="image fit thumb"><img src="${AppletImage}" alt="" /></span></a>
+				<h3>${AppletName}</h3>
+				<p>${Description}</p>
+				<cat>${Category}</cat>
+				<id>${Date}</id>
+			</div>
+			
+		
+			
+			<div class="4u work-item">
+				<a href="applets/Boltzmann.html"><span class="image fit thumb"><img src="${AppletImage}" alt="" /></span></a>
+				<h3>Boltzmann</h3>
+				<p>${Description}</p>
+				<cat>${Category}</cat>
+				<id>${Date}</id>
+			</div>
+			
+		
+			
+			<div class="4u work-item">
+				<a href="applets/Gas.html"><span class="image fit thumb"><img src="images/ripple.png" alt="" /></span></a>
+				<h3>Gas</h3>
+				<p>A simulation of a ripple tank demonstrating wave interferance.</p>
+				<cat>Physics</cat>
+				<id>11.07.2016</id>
+			</div>
+			
+		
+			
+			<div class="4u work-item">
+				<a href="applets/Ripple.html"><span class="image fit thumb"><img src="images/ripple.png" alt="" /></span></a>
+				<h3>Ripple</h3>
+				<p>A simulation of a ripple tank demonstrating wave interference.</p>
+				<cat>Physics</cat>
+				<id>$Date: 2016-07-14 10:031:27 -0600 (Thurs, 14 Jul 2016) $</id>
+			</div>
+			
+		
+			
+			<script>
+				$(document).ready(function () {
+			    	size_li = $("#container .work-item").size();
+			    	x = 6;
+			    	$('#showLess').hide();
+			    	$('.work-item:lt('+x+')').show();
+				});
+
+				$('#loadMore').on('click', function () {
+					x = size_li;
+					$('.work-item:lt('+x+')').show();
+					$('#showLess').show();
+					$('#loadMore').hide();
+				});
+			    $('#showLess').click(function () {
+			        x = size_li - 6;
+			        $('.work-item:lt('+x+')').hide();
+			        $('#loadMore').show();
+			        $('#showLess').hide();
+			    });
+
+			    var $divs = $("div.work-item");
+				$('#alphBnt').on('click', function () {
+					document.getElementById("sortation").innerHTML = "Name";
+			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+			        	return $(a).find("h3").text() > $(b).find("h3").text();
+			    	});
+			    	$("#container").html(alphabeticallyOrderedDivs);
+				});
+
+				$('#numBnt').on('click', function () {
+					document.getElementById("sortation").innerHTML = "Newest First";
+			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+			        	return $(a).find("id").text() < $(b).find("id").text();
+			    	});
+			    	$("#container").html(alphabeticallyOrderedDivs);
+				});
+
+				$('#catBnt').on('click', function () {
+					document.getElementById("sortation").innerHTML = "Category";
+			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+			        	return $(a).find("cat").text() > $(b).find("cat").text();
+			    	});
+			    	$("#container").html(alphabeticallyOrderedDivs);
+				});
+			</script> 
+		
