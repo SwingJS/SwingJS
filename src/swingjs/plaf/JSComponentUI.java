@@ -1025,6 +1025,15 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	}
 
 	/**
+	 * specifically for buttons
+	 * 
+	 * @param button
+	 */
+	protected void setDataComponent(DOMNode button) {
+		DOMNode.setAttr(button, "data-component", c);
+	}
+
+	/**
 	 * JSmolCore.js will look for the data-ui attribute of a jQuery event target
 	 * and, if found, reroute the event to handleJSEvent.
 	 * 

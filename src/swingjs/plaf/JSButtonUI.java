@@ -56,10 +56,6 @@ public class JSButtonUI extends JSLightweightUI {
 		return domNode;
 	}
 
-	protected void setDataComponent(DOMNode button) {
-		DOMNode.setAttr(button, "data-component", c);
-	}
-
 	@SuppressWarnings("unused")
 	protected DOMNode createItem(String type, DOMNode myNode) {
 		itemNode = createDOMObject("li", id + type);		

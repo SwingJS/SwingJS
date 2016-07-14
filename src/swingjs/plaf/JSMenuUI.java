@@ -28,6 +28,7 @@ public class JSMenuUI extends JSMenuItemUI {
 			jm = (JMenu) jc;
 			domNode = createItem("_menu", null);
 			containerNode = createDOMObject("ul", id);
+			DOMNode.setStyles(containerNode, "margin", "1px 5px 1px 5px");
 			domNode.appendChild(containerNode);
 		}
 		setChildWidth();

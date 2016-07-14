@@ -31,13 +31,14 @@ public class JSRadioButtonUI extends JSButtonUI {
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		// "absolute" is required for positioning of button, but must not be there for setting the size. 
+		DOMNode.setStyles(label, "position", null, "width", null, "height", null);
 		DOMNode.setStyles(domBtn, "position", null, "width", null, "height", null);
 		DOMNode.setStyles(textNode, "position", null, "width", null, "height", null);
-		DOMNode.setStyles(label, "position", null, "width", null, "height", null);
 		Dimension d = setHTMLSize1(obj, addCSS, false);
 		DOMNode.setPositionAbsolute(domBtn, -1, -1);
 		DOMNode.setPositionAbsolute(textNode, -1, -1);
 		DOMNode.setPositionAbsolute(label, -1, -1);
+		DOMNode.setStyles(label, "width", d.width + "px", "height", d.height + "px");
 		return d;
 	}
 
@@ -61,8 +62,8 @@ public class JSRadioButtonUI extends JSButtonUI {
 			domBtn = enableNode = createDOMObject("input", id, "type", myType, "name",
 					name);
 			setDataComponent(domBtn);
-			textNode = createDOMObject("label", id + "l");
-			label = createDOMObject("label", id + "2", "htmlFor", id);
+			textNode = createDOMObject("label", id + "l1");
+			label = createDOMObject("label", id + "l2", "htmlFor", id);
 			label.appendChild(domBtn);
 			label.appendChild(textNode);
 			setDataComponent(label);
@@ -104,8 +105,10 @@ public class JSRadioButtonUI extends JSButtonUI {
 		} else {
 			obj = domNode;
 		}
+
 		DOMNode.setSize(label, dobj.width, dobj.height);
 		return DOMNode.setSize(obj, dobj.width, dobj.height);
+		
 	}
 
 	
