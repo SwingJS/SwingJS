@@ -1,5 +1,5 @@
-
-// was JmolCore.js
+// j2sApplet.js (based on JmolCore.js)
+// Bob Hanson 7/13/2016 9:43:56 PM
 
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required, but it's not defined.")
 
@@ -1160,9 +1160,6 @@ J2S = (function(document) {
         return true;
 		  // defer to console or menu when dragging within this who
       
-      if (J2S._mouseOwner)
-      System.out.println("mouseOwner is " + J2S._mouseOwner.id + " who is " + who.id)
-      
 			if (J2S._mouseOwner && J2S._mouseOwner != who && J2S._mouseOwner.isDragging) {
         if (!J2S._mouseOwner.mouseMove)
           return true;
@@ -1949,8 +1946,14 @@ J2S.Cache.put = function(filename, data) {
   }
 
 J2S._setDraggable = function(frame, tag) {
+  // draggable frames by their titles.
+  // activation of dragging with a mouse down action 
+  // deactivates all other mouse operation in SwingJS
+  // until the mouse is released.
+  // uses jQuery outside events - v1.1 - 3/16/2010 (see j2sJQueryExt.js)
 
-  // J2S.setDraggable(frame, titlebar), for example
+  // J2S.setDraggable(frame, titlebar), for example, is issued in swingjs.plaf.JSFrameUI.js
+  
 	if (tag._isDragger)
 		return;
 	var $tag = $(tag);
@@ -2021,10 +2024,7 @@ J2S._setDraggable = function(frame, tag) {
   
   tag._dragBind(true);
   
-  
-  
 }
-
   
 })(J2S);
 
