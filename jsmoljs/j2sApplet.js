@@ -1114,7 +1114,8 @@ J2S = (function(document) {
 	J2S._jsSetMouse = function(who, isSwing) {
       // swingjs.api.J2SInterface
     var doIgnore 
-      = function(ev) { return (!ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
+      = function(ev) { return (J2S._dmouseOwner
+        ||  !ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
 
 		J2S.$bind(who, 'mousedown touchstart', function(ev) {
       if (doIgnore(ev))
@@ -1158,6 +1159,10 @@ J2S = (function(document) {
       if (doIgnore(ev))
         return true;
 		  // defer to console or menu when dragging within this who
+      
+      if (J2S._mouseOwner)
+      System.out.println("mouseOwner is " + J2S._mouseOwner.id + " who is " + who.id)
+      
 			if (J2S._mouseOwner && J2S._mouseOwner != who && J2S._mouseOwner.isDragging) {
         if (!J2S._mouseOwner.mouseMove)
           return true;
@@ -1942,6 +1947,84 @@ J2S.Cache.put = function(filename, data) {
     // JmolObjectInterface
     return f(a);
   }
+
+J2S._setDraggable = function(frame, tag) {
+
+  // J2S.setDraggable(frame, titlebar), for example
+	if (tag._isDragger)
+		return;
+	var $tag = $(tag);
+  var $frame = $(frame);  
+	frame._dragger = tag;
+  tag._isDragger = true;
+  var pageX0, pageY0, pageX, pageY;
+  
+	var mouseMove = function(ev) {
+  	if (tag.isDragging && J2S._dmouseOwner == tag) {
+			var x = pageX0 + (ev.pageX - pageX);
+			var y = pageY0 + (ev.pageY - pageY);
+			$frame.css({ top: y + 'px', left: x + 'px' })
+		}
+	}
+
+	var mouseUp = function(ev) {
+		if (J2S._dmouseOwner == tag) {
+			tag.isDragging = false;
+  		J2S._dmouseOwner = null
+			return false;
+		}
+	}
+
+	$tag.bind('mousedown touchstart', function(ev) {
+		J2S._dmouseOwner = tag;//setMouseOwner(tag, true);
+		tag.isDragging = true;
+		pageX = ev.pageX;
+		pageY = ev.pageY;
+    var o = $frame.position();
+    pageX0 = o.left;
+    pageY0 = o.top;
+		return false;
+	});
+  
+	$tag.bind('mousemove touchmove', function(ev) {
+		if (tag.isDragging && J2S._dmouseOwner == tag) {
+			var x = pageX0 + (ev.pageX - pageX);
+			var y = pageY0 + (ev.pageY - pageY);
+			$frame.css({ top: y + 'px', left: x + 'px' })
+			return false;
+		}
+	});
+  
+	$tag.bind('mouseup touchend', function(ev) {
+		mouseUp(ev);
+		J2S._dmouseOwner = null;//setMouseOwner(null);
+    tag.isDragging = false;
+	});
+
+	tag._dragBind = function(isBind) {
+//		this.applet._ignoreMouse = !isBind;
+		$tag.unbind('mousemoveoutjsmol');
+		$tag.unbind('touchmoveoutjsmol');
+		$tag.unbind('mouseupoutjsmol');
+		$tag.unbind('touchendoutjsmol');
+		J2S._dmouseOwner = null;//setMouseOwner(null);
+    tag.isDragging = false;
+		if (isBind) {
+			$tag.bind('mousemoveoutjsmol touchmoveoutjsmol', function(evspecial, target, ev) {
+				mouseMove(ev);
+			});
+			$tag.bind('mouseupoutjsmol touchendoutjsmol', function(evspecial, target, ev) {
+				mouseUp(ev);
+			});
+		}
+	};
+  
+  tag._dragBind(true);
+  
+  
+  
+}
+
   
 })(J2S);
 

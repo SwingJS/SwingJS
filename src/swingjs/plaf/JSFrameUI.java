@@ -91,6 +91,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 					"click mouseenter mouseout");
 
 			frameNode.appendChild(titleBarNode);
+			JSToolkit.J2S._setDraggable(frameNode, titleBarNode);
 			titleBarNode.appendChild(titleNode);
 			titleBarNode.appendChild(closerWrap);
 			closerWrap.appendChild(closerNode);
