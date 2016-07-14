@@ -15,8 +15,6 @@ package test.falstad;
 // import java.awt.[Button, Canvas, Checkbox, CheckboxMenuItem, Choice, Frame, Label, Scrollbar, Menu, MenuBar, MenuItem] --> swingjs.awt
 //
 // Applet.show does not trigger componentShown(e); showFrame() moved to AtomViewer.init()
-// 
-// AtomViewerFrame.init() changed to AtomViewerFrame.initA
 //
 // added else statement at the end of layoutContainer to set components visibility to true
 //
@@ -196,14 +194,14 @@ public class AtomViewer extends Applet implements ComponentListener {
 
 	public static void main(String args[]) {
 		ogf = new AtomViewerFrame(null);
-		ogf.initA();
+		ogf.init();
 	}
 
 	void showFrame() {
 		if (ogf == null) {
 			started = true;
 			ogf = new AtomViewerFrame(this);
-			ogf.initA();
+			ogf.init();
 			repaint();
 		}
 	}
@@ -403,9 +401,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	private ButtonGroup samplesGroup;
 
-	public void initA() {
-
-		//System.out.println("initA...");
+	public void init() {
 
 		gray2 = new Color(127, 127, 127);
 

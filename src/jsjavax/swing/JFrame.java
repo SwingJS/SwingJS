@@ -173,7 +173,7 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 	 * 
 	 */
 	public JFrame() {
-		frameInit(null, null);
+		this(null, null);
 	}
 
 	/**
@@ -198,7 +198,7 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 	 * 
 	 */
 	public JFrame(GraphicsConfiguration gc) {
-		frameInit(null, gc);
+		this(null, gc);
 	}
 
 	/**
@@ -219,7 +219,7 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 	 * 
 	 */
 	public JFrame(String title) {
-		frameInit(title, null);
+		this(title, null);
 	}
 
 	/**
@@ -249,11 +249,6 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 	 * 
 	 */
 	public JFrame(String title, GraphicsConfiguration gc) {
-		frameInit(title, gc);
-	}
-
-	/** Called by the constructors to init the <code>JFrame</code> properly. */
-	protected void frameInit(String title, GraphicsConfiguration gc) {
 		frameViewer = new JSFrameViewer().setForWindow(this);
 		initTitleGC(title, gc);
 		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
