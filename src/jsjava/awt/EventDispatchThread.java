@@ -80,11 +80,7 @@ class EventDispatchThread extends JSThread {
 
 	@Override
 	protected boolean isLooping() {
-		if (!doDispatch || cond != null && !cond.evaluate() || isInterrupted()) {
-			doDispatch = false;
-			return false;
-		}
-		return true;
+		return (doDispatch && (cond == null || cond.evaluate()) && !isInterrupted() || (doDispatch = false));
 	}
 
 	@SuppressWarnings("unused")
@@ -110,7 +106,8 @@ class EventDispatchThread extends JSThread {
 		}
 		JSToolkit.dispatch(f, 0, 0);
 		// handling sleepAndReturn myself
-		return false;
+		// and once through only
+		return (doDispatch = false);
 	}
 
 	@Override
@@ -120,7 +117,6 @@ class EventDispatchThread extends JSThread {
 
 	@Override
 	protected void whenDone() {
-		doDispatch = false;
 	}
 
 	@Override

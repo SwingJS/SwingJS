@@ -111,7 +111,7 @@ public abstract class JSThread extends Thread implements JSFunction {
 	 * 
 	 * In JavaScript it will reenter and continue at the appropriate spot.
 	 * 
-	 * This method may be overridden if desired. 
+	 * This method may be overridden if desired.
 	 * 
 	 * @see org.uwi.SimThread
 	 * 
@@ -119,8 +119,8 @@ public abstract class JSThread extends Thread implements JSFunction {
 	 */
 	protected void run1(int state) {
 		// called by thisThread.run();
-		while (!interrupted()) {
-			try {
+		try {
+			while (!interrupted()) {
 				switch (state) {
 				case INIT:
 					if (!myInit())
@@ -129,26 +129,27 @@ public abstract class JSThread extends Thread implements JSFunction {
 					state = LOOP;
 					continue;
 				case LOOP:
-					// looping code here
-					if (isLooping()) {
-						// to handle sleepAndReturn yourself, return false from myLoop(); 
-						if (!myLoop() || sleepAndReturn(getDelayMillis(), state))
-							return;
-						break;
+					// to stop looping, return false from isLooping()
+					if (!isLooping()) {
+						state = DONE;
+						continue;
 					}
-					state = DONE;
+					// to handle sleepAndReturn yourself, or to skip the
+					// sleep when desired, return false from myLoop();
+					if (myLoop() && sleepAndReturn(getDelayMillis(), state))
+						return;
 					continue;
 				case DONE:
 					whenDone();
 					// whatever
 					return;
 				}
-			} catch (Exception e) {
-				onException(e);
-				state = DONE;
-			} finally {
-				doFinally();
 			}
+		} catch (Exception e) {
+			onException(e);
+			state = DONE;
+		} finally {
+			doFinally();
 		}
 		// normal exit
 	}
