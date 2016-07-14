@@ -8,7 +8,6 @@ import jsjavax.swing.JFrame;
 import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
-import swingjs.api.HTML5Canvas;
 
 public class JSFrameUI extends JSWindowUI implements FramePeer {
 	
