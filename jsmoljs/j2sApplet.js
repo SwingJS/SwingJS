@@ -1121,7 +1121,7 @@ J2S = (function(document) {
         return true;
 			J2S._setMouseOwner(who, true);
 			ev.stopPropagation();
-      var ui = ev.target["data-UI"];
+      var ui = ev.target["data-ui"];
       if (!ui || !ui.handleJSEvent(who, 501, ev)) 
   			ev.preventDefault();
 			who.isDragging = true;
@@ -1142,7 +1142,7 @@ J2S = (function(document) {
         return true;
 			J2S._setMouseOwner(null);
 			ev.stopPropagation();
-      var ui = ev.target["data-UI"];
+      var ui = ev.target["data-ui"];
       if (!ui || !ui.handleJSEvent(who, 502, ev))
   			ev.preventDefault();
 			who.isDragging = false;
@@ -1355,7 +1355,7 @@ J2S = (function(document) {
 		if (!who.isDragging)
 			xym[2] = 0;
 
-    var ui = ev.target["data-UI"];
+    var ui = ev.target["data-ui"];
     if (who.isdragging && (!ui || !ui.handleJSEvent(who, 506, ev))) {}
 		who.applet._processEvent((who.isDragging ? 506 : 503), xym, ev, who._frameViewer); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
 		return !!ui;

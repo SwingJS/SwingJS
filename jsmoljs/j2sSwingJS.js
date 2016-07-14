@@ -6,6 +6,7 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 7/11/2016 11:32:29 PM adds XxxxArray.getClass()
  // BH 7/7/2016 10:24:36 AM fixed Float.isInfinite(), Double.isInfinite()
  // BH 7/7/2016 10:12:20 AM added Number.compare(a,b) (technically just Float and Double)
  // BH 7/7/2016 7:10:09 AM note added about String and CharSequence
@@ -195,7 +196,7 @@ Clazz.getClass = function (clazzHost) {
 
 // c$.$StateTracker$1$ = function () {
 // pu$h(self.c$);
-// c$ = declareAnonymous (jssun.java2d, "StateTracker$1", null, jssun.java2d.StateTracker);
+// c$ = declareAnonymous (sun.java2d, "StateTracker$1", null, sun.java2d.StateTracker);
 // overrideMethod 
 // c$ = p0p ();
 
@@ -325,7 +326,6 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig) {
 
 	funBody.exClazz = clazzThis; // make it traceable
   // we have found a duplicate
-  //debugger;
 	var oldFun = null;
 	var oldStack = f$.stack;
   var hadStack = (!!oldStack);
@@ -381,7 +381,6 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig) {
       // In this case, we assign a "one-parameter; unknown" model, resulting in an automatic fail. 
       // TODO: check the way this works.
       setSignature(f$, oldFun, "\\void");
-      //debugger;
       f$.sigs.fparams[0] = oldFun;
     }   
 	}
@@ -848,8 +847,6 @@ var bindMethod = function (claxxRef, fx, fxName, args, pTypes) {
 
  //System.out.println("SAEM " + Clazz.saemCount1+ "/" + Clazz.saemCount2 + ":" + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params.join(",") + ")");
  
- //if (Clazz.saemCount2 == 2325) debugger;
-
 	_profile && addProfile(claxxRef, fxName, pTypes);
   
   var f = null;
@@ -1370,7 +1367,6 @@ var inF = {
 
   newInstance : function(a) {
   	var clz = this;
-    //debugger;
     allowImplicit = false;
     var c = null;
     switch(a == null ? 0 : a.length) {
@@ -1541,9 +1537,8 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
         break;
       case 0:
         // called by a class that has a Clazz.superConstructor call but actually
-        // no superconstructor. -- jssun.SunToolkit, javax.swing.border.EmptyBorder
+        // no superconstructor. -- sun.SunToolkit, javax.swing.border.EmptyBorder
         // TODO: test with ... extends Integer
-        // debugger;
 				fx = stack[0].prototype[funName];
         fx = (fx.sigs.fparams ? fx.sigs.fparams[0] : null); // unknown or null
         break;
@@ -1582,7 +1577,6 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
     for (var i = preps.length; --i >= 0;)
       preps[i].apply(objThis, []);
 	} else if (!fx) {
-    //debugger;
     allowImplicit = true;
     var pTypes = getParamTypes(args).typeString;
 		Clazz.alert (["j2sSwingJS","no class found",pTypes])
@@ -1893,7 +1887,6 @@ Clazz.instantialize = function (objThis, args) {
   if (!allowImplicit) {
     allowImplicit = true;
     if (!c) {
-      //debugger;
       newMethodNotFoundException(myclass, null, getParamTypes(args).typeString);
     }
   }
@@ -1901,7 +1894,6 @@ Clazz.instantialize = function (objThis, args) {
   var pp = null; 
 	if (c && p && myclass.superClazz) {
   //System.out.println("instantialize" + myclass.__CLASS_NAME__);
-  //debugger;
     // when we have a superclass and a prepareFields, 
     // the order must be:
     //  superclass-superclass-superclass-prepareFields
@@ -2101,7 +2093,6 @@ var newMethodNotFoundException = function (clazz, method, params) {
 					+ method : "") + "(" + paramStr + ") was not found";
   System.out.println(message);
   console.log(message);
-  //debugger;
   throw new java.lang.NoSuchMethodException(message);        
 };
 
@@ -2164,6 +2155,10 @@ if ((Clazz.haveInt32 = !!(self.Int32Array && self.Int32Array != Array)) == true)
 if (!Int32Array.prototype.slice)
   Int32Array.prototype.slice = function() {return arraySlice.apply(this, arguments)};
 Int32Array.prototype.clone = function() { var a = this.slice(); a.BYTES_PER_ELEMENT = 4; return a; };
+Int32Array.prototype.getClass = function () { return this.constructor; };
+
+
+
 
 if ((Clazz.haveFloat64 = !!(self.Float64Array && self.Float64Array != Array)) == true) {
 	if (!Float64Array.prototype.sort)
@@ -2178,6 +2173,7 @@ if ((Clazz.haveFloat64 = !!(self.Float64Array && self.Float64Array != Array)) ==
 if (!Float64Array.prototype.slice)
   Float64Array.prototype.slice = function() {return arraySlice.apply(this, arguments)};
 Float64Array.prototype.clone =  function() { return this.slice(); };
+Float64Array.prototype.getClass = function () { return this.constructor; };
 
 /**
  * Make arrays.
@@ -2284,11 +2280,13 @@ if ((Clazz.haveInt8 = !!self.Int8Array) == true) {
 	if (!Int8Array.prototype.sort)
 		Int8Array.prototype.sort = Array.prototype.sort
   if (!Int8Array.prototype.slice)
-    Int8Array.prototype.slice = function() {return arraySlice.apply(this, arguments)}; 
+    Int8Array.prototype.slice = function() {return arraySlice.apply(this, arguments)};
+ 
 } else {
   Clazz.newByteArray = Clazz.newIntArray;
 }
 Int8Array.prototype.clone = function() { var a = this.slice(); a.BYTES_PER_ELEMENT = 1;return a; };
+Int8Array.prototype.getClass = function () { return this.constructor; };
 
 Clazz.isAB = function(a) {
 	return (a && typeof a == "object" && a.BYTES_PER_ELEMENT == 1);
@@ -7502,12 +7500,12 @@ ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "java/awt/geom/Point2D.j
   "java.awt.geom.Point2D.Float"  
 	]);
 
-ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jssun/awt/SunHints.js", [
-  "jssun.awt.SunHints", 
-  "jssun.awt.SunHints.Value", 
-  "jssun.awt.SunHints.Key", 
-  "jssun.awt.SunHints.LCDContrastKey",
-  "jssun.awt.SunHints.SunKey" 
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "sun/awt/SunHints.js", [
+  "sun.awt.SunHints", 
+  "sun.awt.SunHints.Value", 
+  "sun.awt.SunHints.Key", 
+  "sun.awt.SunHints.LCDContrastKey",
+  "sun.awt.SunHints.SunKey" 
 	]);
 
 ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "javax/swing/text/AbstractDocument.js", [
@@ -7539,14 +7537,22 @@ ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "javax/swing/JComponent.
   "javax.swing.JComponent.IntVector" 
 	]);
 
-ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "jssun/util/resources/LocaleData.js", [
-  "jssun.util.resources.LocaleData", 
-  "jssun.util.resources.LocaleDataResourceBundleControl"
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "sun/util/resources/LocaleData.js", [
+  "sun.util.resources.LocaleData", 
+  "sun.util.resources.LocaleDataResourceBundleControl"
 	]);
 
 ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "java/text/DateFormat.js", [
   "java.text.DateFormat", 
   "java.text.DateFormat.Field"
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "javax/sound/sampled/Line.js", [
+  "java.text.Line.Info"
+	]);
+
+ClazzLoader.jarClasspath (ClazzLoader.getJ2SLibBase() + "javax/sound/sampled/DataLine.js", [
+  "java.text.DataLine.Info"
 	]);
 
 
