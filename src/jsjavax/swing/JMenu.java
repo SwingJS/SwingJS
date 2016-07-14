@@ -46,7 +46,6 @@ import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.MenuEvent;
 import jsjavax.swing.event.MenuListener;
-import jsjavax.swing.plaf.MenuUI;
 import jsjavax.swing.plaf.PopupMenuUI;
 
 /**

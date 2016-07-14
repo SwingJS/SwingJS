@@ -1,20 +1,10 @@
 package swingjs.plaf;
 
-//import jsjava.awt.FontMetrics;
+
 import jsjava.awt.Dimension;
-import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JMenuItem;
-import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.UIManager;
-import jsjavax.swing.plaf.UIResource;
 import swingjs.api.DOMNode;
-/**
- * SWingJS implementation of stateful user interface for buttons. 
- * Modeled after javax.swing.plaf.basic.BasicButtonUI.java (commented out below).
- * 
- * @author Bob Hanson
- *
- */
+
 public class JSMenuItemUI extends JSButtonUI {
 
 	@Override

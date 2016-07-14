@@ -431,7 +431,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		mb.add(m);
 		m.add(eCheckItem = getCheckItem("Energy"));
 		eCheckItem.setState(true);
-		//m.add(
+		//m.add( // BH: removed; not functional
 		xCheckItem = getCheckItem("Position");
 				//);
 		xCheckItem.setState(true);

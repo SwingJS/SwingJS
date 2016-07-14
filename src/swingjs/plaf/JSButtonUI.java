@@ -5,7 +5,6 @@ import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
-import jsjavax.swing.ButtonModel;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIManager;
