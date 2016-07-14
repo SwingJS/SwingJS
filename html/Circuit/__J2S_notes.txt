@@ -1,0 +1,6 @@
+BH - notes 7/13/2016
+
+- downloaded and opened up html
+- downloaded and opened up src
+
+- in order to run in eclipse, allowed for codebase to be http://www.falstad.com/circuit-java

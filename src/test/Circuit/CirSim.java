@@ -152,6 +152,9 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	static final int HINT_3DB_C = 3;
 	static final int HINT_TWINT = 4;
 	static final int HINT_3DB_L = 5;
+
+	private static final String BASE_PACKAGE = "test.Circuit";
+	
 	Vector<CircuitElm> elmList;
 	// Vector setupList;
 	CircuitElm dragElm, menuElm, mouseElm, stopElm;
@@ -663,7 +666,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	CheckboxMenuItem getClassCheckItem(String s, String t) {
 		try {
-			Class c = Class.forName(t);
+			Class c = Class.forName(BASE_PACKAGE + "." + t);
 			CircuitElm elm = constructElement(c, 0, 0);
 			register(c, elm);
 			if (elm.needsShortcut()) {
@@ -2200,8 +2203,12 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	URL getCodeBase() {
 		try {
-			if (applet != null)
-				return applet.getCodeBase();
+			if (applet != null) {
+				URL base = applet.getCodeBase();
+				if (base.toString().indexOf("/bin/") >= 0)
+					base = new URL("http://www.falstad.com/circuit-java/");
+				return base;
+			}
 			File f = new File(".");
 			return new URL("file:" + f.getCanonicalPath() + "/");
 		} catch (Exception e) {
