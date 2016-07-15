@@ -10,6 +10,7 @@ package test.falstad;
 //web_AppletImage= images/ripple.png
 //web_Category= Physics
 //web_Date= $Date$
+//web_Features= Graphics2D, Threads, etc
 
 // see http://www.falstad.com/ripple/
 
