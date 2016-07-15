@@ -1122,9 +1122,14 @@ J2S = (function(document) {
         return true;
 			J2S._setMouseOwner(who, true);
 			ev.stopPropagation();
+      debugger;
       var ui = ev.target["data-ui"];
-      if (!ui || !ui.handleJSEvent(who, 501, ev)) 
+      var handled = (ui && ui.handleJSEvent(who, 501, ev));
+      if (!ui || !handled)
   			ev.preventDefault();
+      if (handled)
+        return true;
+      ui = ev.target["data-component"];
 			who.isDragging = true;
 			if ((ev.type == "touchstart") && J2S._gestureUpdate(who, ev))
 				return !!ui;
@@ -1144,8 +1149,12 @@ J2S = (function(document) {
 			J2S._setMouseOwner(null);
 			ev.stopPropagation();
       var ui = ev.target["data-ui"];
-      if (!ui || !ui.handleJSEvent(who, 502, ev))
+      var handled = (ui && ui.handleJSEvent(who, 502, ev));
+      if (!ui || !handled)
   			ev.preventDefault();
+      if (handled)
+        return true;
+      ui || (ui = ev.target["data-component"]);
 			who.isDragging = false;
 			if (ev.type == "touchend" && J2S._gestureUpdate(who, ev))
 				return !!ui;
@@ -1214,7 +1223,7 @@ J2S = (function(document) {
 				if (!xym)
 					return false;
 				who.applet._processEvent(504, xym, ev, who._frameViewer);//J.api.Event.MOUSE_ENTERED	
-				who.applet._processEvent(502, xym, ev, who._frameViewer);//J.api.Event.MOUSE_UP
+				//who.applet._processEvent(502, xym, ev, who._frameViewer);//J.api.Event.MOUSE_UP
 				return false;
 			}
 		});
@@ -1358,8 +1367,9 @@ J2S = (function(document) {
 			xym[2] = 0;
 
     var ui = ev.target["data-ui"];
-    if (who.isdragging && (!ui || !ui.handleJSEvent(who, 506, ev))) {}
+    //if (who.isdragging && (!ui || !ui.handleJSEvent(who, 506, ev))) {}
 		who.applet._processEvent((who.isDragging ? 506 : 503), xym, ev, who._frameViewer); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
+    ui || (ui = ev.target["data-component"]);
 		return !!ui;
 	}
 	
