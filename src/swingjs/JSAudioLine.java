@@ -100,6 +100,13 @@ class JSAudioLine implements SourceDataLine {
 	@Override
 	public void flush() {
 		this.startTime = 0;
+		/**
+		 * @j2sNative
+		 * 
+		 *            this.ctx.currentTime = 0;
+		 */
+		{
+		}
 	}
 
 	@Override
@@ -238,7 +245,7 @@ class JSAudioLine implements SourceDataLine {
 		 * 
 		 *            var source = this.ctx.createBufferSource();
 		 *            if (this.starTime == 0)
-		 *              this.ctx.currentTime = 0;
+		 *              this.flush();
 		 *            if (this.startTime < this.ctx.currentTime)
 		 *            	this.startTime = this.ctx.currentTime;
 		 * 
