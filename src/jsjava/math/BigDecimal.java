@@ -31,6 +31,8 @@ package jsjava.math;
 
 
 /**
+ * SwingJS only implements constants in this class
+ * 
  * Immutable, arbitrary-precision signed decimal numbers.  A
  * {@code BigDecimal} consists of an arbitrary precision integer
  * <i>unscaled value</i> and a 32-bit integer <i>scale</i>.  If zero

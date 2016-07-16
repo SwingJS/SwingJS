@@ -52,11 +52,15 @@ import java.util.Hashtable;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import javajs.util.FFT;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
+import swingjs.JSAudioThread;
+import swingjs.JSAudioThreadOwner;
 import swingjs.JSThread;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -166,11 +170,11 @@ public class Fourier extends Applet implements ComponentListener {
 		showFrame();
 		addComponentListener(this);
 	}
-	
+
 	@Override
 	public void start() {
 		showFrame();
-		
+
 	}
 
 	public static void main(String args[]) {
@@ -209,7 +213,7 @@ public class Fourier extends Applet implements ComponentListener {
 	}
 
 	@Override
-	public void componentShown(ComponentEvent e) { 
+	public void componentShown(ComponentEvent e) {
 		showFrame();
 	}
 
@@ -227,7 +231,8 @@ public class Fourier extends Applet implements ComponentListener {
 };
 
 class FourierFrame extends Frame implements ComponentListener, ActionListener,
-		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
+		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener,
+		JSAudioThreadOwner {
 
 	Dimension winSize;
 	Image dbimage;
@@ -427,39 +432,39 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 		showFormat.setMaximumFractionDigits(5);
 
 		if (state != null) {
-		
-		if (state.equalsIgnoreCase("square"))
-			doSquare();
-		else if (state.equalsIgnoreCase("sine"))
-			doSine();
-		else if (state.equalsIgnoreCase("triangle"))
-			doTriangle();
-		else if (state.equalsIgnoreCase("noise"))
-			doNoise();
-		else if (state.equalsIgnoreCase("quant")) {
-			doSine();
-			doQuantize();
-		} else if (state.equalsIgnoreCase("resample")) {
-			doSine();
-			doResample();
-		} else if (state.equalsIgnoreCase("clip")) {
-			doSine();
-			doClip();
-		} else if (state.equalsIgnoreCase("rect")) {
-			doSine();
-			doRect();
-		} else if (state.equalsIgnoreCase("fullrect")) {
-			doSine();
-			doFullRect();
-		} else if (state.equalsIgnoreCase("fullsaw")) {
-			doSawtooth();
-			doFullRect();
-		} else if (state.equalsIgnoreCase("beats"))
-			doBeats();
-		else if (state.equalsIgnoreCase("loudsoft"))
-			doLoudSoft();
-		else
-			doSawtooth();
+
+			if (state.equalsIgnoreCase("square"))
+				doSquare();
+			else if (state.equalsIgnoreCase("sine"))
+				doSine();
+			else if (state.equalsIgnoreCase("triangle"))
+				doTriangle();
+			else if (state.equalsIgnoreCase("noise"))
+				doNoise();
+			else if (state.equalsIgnoreCase("quant")) {
+				doSine();
+				doQuantize();
+			} else if (state.equalsIgnoreCase("resample")) {
+				doSine();
+				doResample();
+			} else if (state.equalsIgnoreCase("clip")) {
+				doSine();
+				doClip();
+			} else if (state.equalsIgnoreCase("rect")) {
+				doSine();
+				doRect();
+			} else if (state.equalsIgnoreCase("fullrect")) {
+				doSine();
+				doFullRect();
+			} else if (state.equalsIgnoreCase("fullsaw")) {
+				doSawtooth();
+				doFullRect();
+			} else if (state.equalsIgnoreCase("beats"))
+				doBeats();
+			else if (state.equalsIgnoreCase("loudsoft"))
+				doLoudSoft();
+			else
+				doSawtooth();
 
 		}
 		if (useFrame) {
@@ -473,7 +478,7 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 			hide();
 			handleResize();
 			applet.validate();
-			cv.repaint();     // BH added
+			cv.repaint(); // BH added
 		}
 		main.requestFocus();
 	}
@@ -661,11 +666,6 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 			func[i] = data[i * 2];
 		func[sampleCount] = func[0];
 		updateSound();
-	}
-
-	void updateSound() {
-		if (playThread != null)
-			playThread.soundChanged();
 	}
 
 	void doClip() {
@@ -1276,15 +1276,15 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 		ItemSelectable c = e.getItemSelectable();
 		if (c == soundCheck) {
 			if (!soundCheck.getState()) {
-				if (playThread != null) {
+				if (audioThread != null) {
 					resetAudio();
-					playThread = null;
+					audioThread = null;
 					return;
 				}
 			}
-			if (playThread == null) {
-				playThread = new PlayThread();
-				playThread.start();
+			if (audioThread == null) {
+				createAudioThread();
+				audioThread.start();
 				if (buttonPressed != null)
 					pressButton(buttonPressed);
 			}
@@ -1296,7 +1296,7 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
-		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
+		resetAudio();
 		if (e.getSource() == termBar) {
 			updateSound();
 			cv.repaint();
@@ -1409,8 +1409,51 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 		return super.handleEvent(ev);
 	}
 
-	protected void createWave(boolean changed) {
-		if (playfunc == null || changed) {
+	@Override
+	public boolean checkSoundStatus() {
+		return (soundCheck.getState() && applet.ogf != null);
+	}
+
+	private void resetAudio() {
+		if (audioThread != null)
+			audioThread.resetAudio();
+	}
+
+	// ////////////////////// JSAudio //////////////////////
+
+	final int playSampleCount = 16384;
+	final int rate = 22050;
+	final int audioBufferByteLength = playSampleCount * 2;
+	final int bitsPerSample = 16;
+	final int nChannels = 1;
+
+	FFT playFFT;
+	double[] playfunc;
+	byte[] audioByteBuffer;
+	int offset;
+	int dampCount;
+
+	private JSAudioThread audioThread;
+
+	private void createAudioThread() {
+		audioByteBuffer = new byte[audioBufferByteLength];
+		audioThread = new JSAudioThread(this, 
+				new AudioFormat(rate, bitsPerSample, nChannels, true, true), 
+				audioByteBuffer);
+	}
+
+	private boolean soundChanged;
+
+	private void updateSound() {
+		soundChanged = true;
+	}
+
+	private double mx;
+
+	@Override
+	public int fillAudioBuffer() {
+		if (playfunc == null || soundChanged) {
+			soundChanged = false;
 			playfunc = new double[playSampleCount * 2];
 			int i;
 			int terms = termBar.getValue();
@@ -1428,11 +1471,11 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 				playfunc[dfreq] = sgn * magcoef[i] * Math.cos(phasecoef[i]);
 				playfunc[dfreq + 1] = -sgn * magcoef[i] * Math.sin(phasecoef[i]);
 			}
+			if (playFFT == null)
+				playFFT = new FFT(playSampleCount);
 			playFFT.transform(playfunc, true);
 			for (i = 0; i != playSampleCount; i++)
-				mx = Math.max(mx,  Math.abs(playfunc[i * 2]));
-
-			audioByteBuffer = new byte[audioByteBufferLength];
+				mx = Math.max(mx, Math.abs(playfunc[i * 2]));
 			double mult = 32767 / mx;
 			for (i = 0; i != playSampleCount; i++) {
 				short x = (short) (playfunc[i * 2] * mult);
@@ -1440,271 +1483,11 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 				audioByteBuffer[i * 2 + 1] = (byte) (x & 255);
 			}
 		}
-//		try {
-//			int ss = 4096;
-//			if (offset >= audioByteBuffer.length)
-//				offset = 0;
-//
-//			line.write(audioByteBuffer, offset, ss);
-//			// wrmeth.invoke(line, new Object[] { b, new Integer(offset),
-//			// new Integer(ss) });
-//			offset += ss;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
-//		return true;
+		return audioBufferByteLength;
 	}
 
-	boolean checkSoundStatus() {
-		return (soundCheck.getState() && applet.ogf != null);
+	@Override
+	public void audioThreadExiting() {
+		audioThread = null;
 	}
-
-	private void resetAudio() {
-		if (playThread != null)
-			playThread.resetAudio();
-	}
-
-	//////////////////////// JSAudio //////////////////////
-	
-	/**
-	 * changes for JavaScript:
-	 * 
-	 * 1) extends JSThread
-	 * 
-	 * 2) code modified to allow re-entry with myInit() and myLoop()
-	 * 
-	 * 3) requires createWave() and checkSoundStatus();
-	 * 
-	 */
-	PlayThread playThread;
-	final int playSampleCount = 16384;
-	final int rate = 22050;
-	final int audioByteBufferLength = playSampleCount * 2;
-
-
-	SourceDataLine line;
-	FFT playFFT;
-	double[] playfunc;
-	byte[] audioByteBuffer;
-	int offset;
-	int dampCount;
-	
-	class PlayThread extends JSThread {
-		
-		private boolean done;
-		private boolean changed;
-				
-		public void soundChanged() {
-			changed = true;
-		}
-
-		@Override
-		protected boolean myInit() {
-			try {
-				AudioFormat format = new AudioFormat(rate, 16, 1, true, true);
-				DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-				if (line != null) {
-					line.flush();
-					line.close();
-				}
-				line = (SourceDataLine) AudioSystem.getLine(info);
-				line.open(format, audioByteBufferLength);
-				line.start();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-
-			playFFT = new FFT(playSampleCount);
-			offset = 0;
-			dampCount = 0;
-			return true;
-		}
-		
-		@Override
-		protected boolean isLooping() {
-			return !done && checkSoundStatus();
-		}
-
-		@Override
-		protected boolean myLoop() {
-			if (!done) {
-				if (line == null)
-					myInit();
-				createWave(changed);
-				changed = false;
-				try {
-					line.write(audioByteBuffer, 0, audioByteBuffer.length);
-				} catch (Exception e) {
-					e.printStackTrace();
-					done = true;
-				}
-			}
-			return !done;
-		}
-
-		@Override
-		protected void whenDone() {
-			resetAudio();
-			done = true;
-		}
-
-	  void resetAudio() {
-			if (line == null)
-				return;
-			line.flush();
-			line.close();
-			line = null;
-		}
-
-		protected int getDelayMillis() {
-			// about 25% of the actual play time
-			return 1000 * (audioByteBufferLength / 2) / rate / 4;
-		}
-
-		@Override
-		protected void onException(Exception e) {
-		}
-
-		@Override
-		protected void doFinally() {
-		}
-
-	}
-
-	/////////////////////////// FFT /////////////////////////////////
-	
-	class FFT {
-		double wtabf[];
-		double wtabi[];
-		int size;
-
-		FFT(int sz) {
-			size = sz;
-			if ((size & (size - 1)) != 0)
-				System.out.println("size must be power of two!");
-			calcWTable();
-		}
-
-		void calcWTable() {
-			// calculate table of powers of w
-			wtabf = new double[size];
-			wtabi = new double[size];
-			int i;
-			for (i = 0; i != size; i += 2) {
-				double pi = 3.1415926535;
-				double th = pi * i / size;
-				wtabf[i] = (double) Math.cos(th);
-				wtabf[i + 1] = (double) Math.sin(th);
-				wtabi[i] = wtabf[i];
-				wtabi[i + 1] = -wtabf[i + 1];
-			}
-		}
-
-		void transform(double data[], boolean inv) {
-			int i;
-			int j = 0;
-			int size2 = size * 2;
-
-			if ((size & (size - 1)) != 0)
-				System.out.println("size must be power of two!");
-
-			// bit-reversal
-			double q;
-			int bit;
-			for (i = 0; i != size2; i += 2) {
-				if (i > j) {
-					q = data[i];
-					data[i] = data[j];
-					data[j] = q;
-					q = data[i + 1];
-					data[i + 1] = data[j + 1];
-					data[j + 1] = q;
-				}
-				// increment j by one, from the left side (bit-reversed)
-				bit = size;
-				while ((bit & j) != 0) {
-					j &= ~bit;
-					bit >>= 1;
-				}
-				j |= bit;
-			}
-
-			// amount to skip through w table
-			int tabskip = size << 1;
-			double wtab[] = (inv) ? wtabi : wtabf;
-
-			int skip1, skip2, ix, j2;
-			double wr, wi, d1r, d1i, d2r, d2i, d2wr, d2wi;
-
-			// unroll the first iteration of the main loop
-			for (i = 0; i != size2; i += 4) {
-				d1r = data[i];
-				d1i = data[i + 1];
-				d2r = data[i + 2];
-				d2i = data[i + 3];
-				data[i] = d1r + d2r;
-				data[i + 1] = d1i + d2i;
-				data[i + 2] = d1r - d2r;
-				data[i + 3] = d1i - d2i;
-			}
-			tabskip >>= 1;
-
-			// unroll the second iteration of the main loop
-			int imult = (inv) ? -1 : 1;
-			for (i = 0; i != size2; i += 8) {
-				d1r = data[i];
-				d1i = data[i + 1];
-				d2r = data[i + 4];
-				d2i = data[i + 5];
-				data[i] = d1r + d2r;
-				data[i + 1] = d1i + d2i;
-				data[i + 4] = d1r - d2r;
-				data[i + 5] = d1i - d2i;
-				d1r = data[i + 2];
-				d1i = data[i + 3];
-				d2r = data[i + 6] * imult;
-				d2i = data[i + 7] * imult;
-				data[i + 2] = d1r - d2i;
-				data[i + 3] = d1i + d2r;
-				data[i + 6] = d1r + d2i;
-				data[i + 7] = d1i - d2r;
-			}
-			tabskip >>= 1;
-
-			for (skip1 = 16; skip1 <= size2; skip1 <<= 1) {
-				// skip2 = length of subarrays we are combining
-				// skip1 = length of subarray after combination
-				skip2 = skip1 >> 1;
-				tabskip >>= 1;
-				for (i = 0; i != 1000; i++)
-					;
-				// for each subarray
-				for (i = 0; i < size2; i += skip1) {
-					ix = 0;
-					// for each pair of complex numbers (one in each subarray)
-					for (j = i; j != i + skip2; j += 2, ix += tabskip) {
-						wr = wtab[ix];
-						wi = wtab[ix + 1];
-						d1r = data[j];
-						d1i = data[j + 1];
-						j2 = j + skip2;
-						d2r = data[j2];
-						d2i = data[j2 + 1];
-						d2wr = d2r * wr - d2i * wi;
-						d2wi = d2r * wi + d2i * wr;
-						data[j] = d1r + d2wr;
-						data[j + 1] = d1i + d2wi;
-						data[j2] = d1r - d2wr;
-						data[j2 + 1] = d1i - d2wi;
-					}
-				}
-			}
-		}
-
-	}
-
-
 }
-

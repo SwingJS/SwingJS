@@ -47,14 +47,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
 
+import javajs.util.FFT;
+
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.SourceDataLine;
 
-import javax.sound.sampled.AudioSystem;
-
-import swingjs.JSThread;
-import swingjs.JSToolkit;
+import swingjs.JSAudioThread;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -1768,79 +1765,6 @@ boolean shown = false;
 	}
  }
 
- class FFT {
-	double wtab[];
-	int size;
-	FFT(int sz) {
-	    size = sz;
-	    if ((size & (size-1)) != 0)
-		System.out.println("size must be power of two!");
-	    calcWTable();
-	}
-	
-	void calcWTable() {
-	    // calculate table of powers of w
-	    wtab = new double[size];
-	    int i;
-	    for (i = 0; i != size; i += 2) {
-		double th = pi*i/size;
-		wtab[i  ] = Math.cos(th);
-		wtab[i+1] = Math.sin(th);
-	    }
-	}
- 
-	void transform(double data[]) {
-	    int i;
-	    int j = 0;
-	    int size2 = size*2;
-	    
-	    // bit-reversal
-	    for (i = 0; i != size2; i += 2) {
-		if (i > j) {
-		    double q = data[i]; data[i] = data[j]; data[j] = q;
-		    q = data[i+1]; data[i+1] = data[j+1]; data[j+1] = q;
-		}
-		// increment j by one, from the left side (bit-reversed)
-		int bit = size;
-		while ((bit & j) != 0) {
-		    j &= ~bit;
-		    bit >>= 1;
-		}
-		j |= bit;
-	    }
-	    
-	    // amount to skip through w table
-	    int tabskip = size2;
-	    
-	    int skip1;
-	    for (skip1 = 4; skip1 <= size2; skip1 <<= 1) {
-		// skip2 = length of subarrays we are combining
-		// skip1 = length of subarray after combination
-		int skip2 = skip1 >> 1;
-		tabskip >>= 1;
-		// for each subarray
-		for (i = 0; i < size2; i += skip1) {
-		    int ix = 0;
-		    // for each pair of complex numbers (one in each subarray)
-		    for (j = i; j != i+skip2; j += 2, ix += tabskip) {
-			double wr = wtab[ix];
-			double wi = wtab[ix+1];
-			double d1r = data[j];
-			double d1i = data[j+1];
-			int j2 = j+skip2;
-			double d2r = data[j2];
-			double d2i = data[j2+1];
-			double d2wr = d2r*wr - d2i*wi;
-			double d2wi = d2r*wi + d2i*wr;
-			data[j]    = d1r+d2wr;
-			data[j+1]  = d1i+d2wi;
-			data[j2  ] = d1r-d2wr;
-			data[j2+1] = d1i-d2wi;
-		    };
-		}
-	    }
-	}
- }
 	
  double sndmax;
  
@@ -1856,15 +1780,6 @@ boolean shown = false;
  FFT fftPlay;
  
 	void doPlay() {
-//		/**
-//		 * @j2sNative
-//		 * 
-//		 *            this.isJava = false;
-//		 * 
-//		 */
-//		{
-//			isJava = true;
-//		}
 		if (!soundCheck.getState())
 			return;
 		final int rate = 22050;
@@ -1919,129 +1834,10 @@ boolean shown = false;
 		for (i = 0; i != playSampleCount; i++)
 			b[i] = (byte) (playfunc[i * 2] * mult);
 
-		// this lovely code is a translation of the following, using
-		// reflection, so we can run on JDK 1.1:
-
-		// AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
-		// DataLine.Info info =
-		// new DataLine.Info(SourceDataLine.class, format);
-		// SourceDataLine line = null;
-		// line = (SourceDataLine) AudioSystem.getLine(info);
-		// line.open(format, playSampleCount);
-		// line.start();
-
-		try {
-//		if (isJava) {
-//			// note: J2S cannot create inner class by reflection
-//			/**
-//			 * @j2sNative
-//			 * 
-//			 */
-//			{
-//					Class afclass = Class.forName("javax.sound.sampled.AudioFormat");
-//					Constructor cstr = afclass.getConstructor(new Class[] { float.class,
-//							int.class, int.class, boolean.class, boolean.class });
-//					Object format = cstr.newInstance(new Object[] { new Float(rate),
-//							new Integer(8), new Integer(1), new Boolean(true),
-//							new Boolean(true) });
-//					Class ifclass = Class.forName("javax.sound.sampled.DataLine$Info");
-//					Class sdlclass = Class.forName("javax.sound.sampled.SourceDataLine");
-//					cstr = ifclass.getConstructor(new Class[] { Class.class, afclass });
-//					Object info = cstr.newInstance(new Object[] { sdlclass, format });
-//					Class asclass = Class.forName("javax.sound.sampled.AudioSystem");
-//					Class liclass = Class.forName("javax.sound.sampled.Line$Info");
-//					Method glmeth = asclass.getMethod("getLine", new Class[] { liclass });
-//					Object line = glmeth.invoke(null, new Object[] { info });
-//					Method opmeth = sdlclass.getMethod("open", new Class[] { afclass,
-//							int.class });
-//					opmeth.invoke(line, new Object[] { format,
-//							new Integer(playSampleCount) });
-//					Method stmeth = sdlclass.getMethod("start", (Class[]) null);
-//					stmeth.invoke(line, (Object[]) null);
-//					Method wrmeth = sdlclass.getMethod("write",
-//							new Class[] { b.getClass(), int.class, int.class });
-//					new WriteThread(wrmeth, line, b, playSampleCount).start();
-//			}
-//		} else {
-			AudioFormat format = new AudioFormat(rate, 8, 1, true, true);
-			DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-			SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-			line.open(format, playSampleCount);
-			line.start();
-			new WriteThread(null, line, b, playSampleCount).start();
-//		}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		new JSAudioThread(new AudioFormat(rate, 8, 1, true, true)).playOnce(b, 0, b.length);
 
 		cv.repaint();
 	}
 
- class WriteThread extends JSThread {
-	SourceDataLine line;
-	Method m;
-	byte b[];
-	int count;
-	WriteThread(Method mt, SourceDataLine l, byte bb[], int c) {
-	    line = l;
-	    b = bb;
-	    count = c;
-	    m = mt;
-	}
 
-//		public void run() {
-//			try {
-//				line.write(b, 0, count);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-
-		@Override
-		protected boolean myInit() {
-				try {
-					line.write(b, 0, count);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				// once through
-			return false;
-		}
-
-		@Override
-		protected boolean isLooping() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		protected boolean myLoop() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		protected void whenDone() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected int getDelayMillis() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		protected void onException(Exception e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		protected void doFinally() {
-			// TODO Auto-generated method stub
-			
-		}
- }
 }

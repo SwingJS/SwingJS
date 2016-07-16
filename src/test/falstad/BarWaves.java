@@ -24,10 +24,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.Random;
 import java.util.Vector;
 
-import sun.audio.AudioData;
-import sun.audio.AudioDataStream;
-import sun.audio.AudioPlayer;
-
+import swingjs.JSAudioThread;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -107,8 +104,6 @@ class BarWavesFrame extends Frame
 implements ComponentListener, ActionListener, AdjustmentListener,
           MouseMotionListener, MouseListener, ItemListener {
  
- Thread engine = null;
-
  Dimension winSize;
  Image dbimage;
  
@@ -1407,10 +1402,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 				break;
 		} while (true);
 
-		// this constructor uses default new AudioFormat(ULAW,8000,8,1,1,800,true)
-		AudioDataStream ads = new AudioDataStream(new AudioData(b));
-		// threading is taken care of by the browser in JavaScript
-		AudioPlayer.player.start(ads);
+		new JSAudioThread().playULawData(b);
+		
 		cv.repaint();
 	}
 

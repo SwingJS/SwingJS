@@ -186,8 +186,6 @@ class DiffractionFrame extends Frame
 implements ComponentListener, ActionListener, AdjustmentListener,
           MouseMotionListener, MouseListener, ItemListener {
  
- Thread engine = null;
-
  Dimension winSize, fullWinSize;
  Image dbimage;
  

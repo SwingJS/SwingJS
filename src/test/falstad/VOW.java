@@ -1,6 +1,6 @@
-// Vowel.java (C) 2005 by Paul Falstad, www.falstad.com
-
 package test.falstad;
+
+//VOW.java (C) 2005 by Paul Falstad, www.falstad.com
 
 import java.awt.Color;
 import java.awt.Component;
@@ -25,20 +25,19 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.MemoryImageSource;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import javajs.util.FFT;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.SourceDataLine;
-
-import swingjs.JSAudioThread;
-import swingjs.JSAudioThreadOwner;
+import sun.audio.AudioData;
+import sun.audio.AudioDataStream;
+import sun.audio.AudioPlayer;
+import swingjs.J2SIgnoreImport;
+import swingjs.JSToolkit;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -54,52 +53,55 @@ import swingjs.awt.MenuItem;
 import swingjs.awt.Scrollbar;
 import swingjs.awt.TextArea;
 
-class VowelCanvas extends Canvas {
-	VowelFrame pg;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
 
-	VowelCanvas(VowelFrame p) {
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+
+class VOWCanvas extends Canvas {
+	VOWFrame pg;
+
+	VOWCanvas(VOWFrame p) {
 		pg = p;
 	}
 
-	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(300, 400);
 	}
 
-	@Override
 	public void update(Graphics g) {
-		pg.updateVowel(g);
+		pg.updateVOW(g);
 	}
 
-	@Override
 	public void paintComponent(Graphics g) {
-		pg.updateVowel(g);
+		pg.updateVOW(g);
 	}
 };
 
-class VowelLayout implements LayoutManager {
-	public VowelLayout() {
+class VOWLayout implements LayoutManager {
+	public VOWLayout() {
 	}
 
-	@Override
 	public void addLayoutComponent(String name, Component c) {
 	}
 
-	@Override
 	public void removeLayoutComponent(Component c) {
 	}
 
-	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		return new Dimension(500, 500);
 	}
 
-	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		return new Dimension(100, 100);
 	}
 
-	@Override
 	public void layoutContainer(Container target) {
 		Insets insets = target.insets();
 		int targetw = target.size().width - insets.left - insets.right;
@@ -131,8 +133,8 @@ class VowelLayout implements LayoutManager {
 	}
 };
 
-public class Vowel extends Applet implements ComponentListener {
-	static VowelFrame ogf;
+public class VOW extends Applet implements ComponentListener {
+	static VOWFrame ogf;
 
 	void destroyFrame() {
 		if (ogf != null)
@@ -143,14 +145,13 @@ public class Vowel extends Applet implements ComponentListener {
 
 	boolean started = false;
 
-	@Override
 	public void init() {
 		// addComponentListener(this);
 		showFrame();
 	}
 
 	public static void main(String args[]) {
-		ogf = new VowelFrame(null);
+		ogf = new VOWFrame(null);
 		ogf.init();
 	}
 
@@ -158,7 +159,7 @@ public class Vowel extends Applet implements ComponentListener {
 		if (ogf == null) {
 			started = true;
 			try {
-				ogf = new VowelFrame(this);
+				ogf = new VOWFrame(this);
 				ogf.init();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -172,7 +173,6 @@ public class Vowel extends Applet implements ComponentListener {
 
 	boolean security = false;
 
-	@Override
 	public void paint(Graphics g) {
 		String s = "Applet is open in a separate window.";
 		if (security)
@@ -187,23 +187,18 @@ public class Vowel extends Applet implements ComponentListener {
 		super.paint(g);
 	}
 
-	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
-	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
-	@Override
 	public void componentShown(ComponentEvent e) { /* showFrame(); */
 	}
 
-	@Override
 	public void componentResized(ComponentEvent e) {
 	}
 
-	@Override
 	public void destroy() {
 		if (ogf != null)
 			ogf.dispose();
@@ -212,7 +207,7 @@ public class Vowel extends Applet implements ComponentListener {
 	}
 };
 
-class VowelFrame extends Frame implements ComponentListener, ActionListener,
+class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
 
 	Dimension winSize;
@@ -232,7 +227,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	public static final double soundSpeed = 35396; // cm/sec
 
 	public String getAppletInfo() {
-		return "Vowel Series by Paul Falstad";
+		return "VOW Series by Paul Falstad";
 	}
 
 	Checkbox soundCheck;
@@ -291,6 +286,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	double pipeLen;
 	double t;
 	int pause;
+	PlayThread playThread;
 	Filter curFilter;
 	FilterType filterType;
 	double spectrumBuf[];
@@ -331,12 +327,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		return q % x;
 	}
 
-	VowelCanvas cv;
-	Vowel applet;
+	VOWCanvas cv;
+	VOW applet;
 	NumberFormat showFormat;
 
-	VowelFrame(Vowel a) {
-		super("Vowel Applet v1.0");
+	VOWFrame(VOW a) {
+		super("VOW Applet v1.0");
 		applet = a;
 		useFrame = true;
 		showControls = true;
@@ -385,8 +381,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		for (; i != 20; i++)
 			pipeRadius[i] = 1;
 
-		main.setLayout(new VowelLayout());
-		cv = new VowelCanvas(this);
+		main.setLayout(new VOWLayout());
+		cv = new VOWCanvas(this);
 		cv.addComponentListener(this);
 		cv.addMouseMotionListener(this);
 		cv.addMouseListener(this);
@@ -571,11 +567,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		return mi;
 	}
 
-	/**
-	 *
-	 * @param n
-	 * @return smallest power of 2 >= n
-	 */
 	int getPower2(int n) {
 		int o = 2;
 		while (o < n)
@@ -699,9 +690,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	long lastTime;
 	double minlog, logrange;
 
-	public void updateVowel(Graphics realg) {
-		if (dbimage == null)
-			return;
+	public void updateVOW(Graphics realg) {
 		Graphics g = dbimage.getGraphics();
 		if (winSize == null || winSize.width == 0 || dbimage == null)
 			return;
@@ -714,15 +703,15 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		if (curFilter == null) {
 			Filter f = filterType.genFilter();
 			curFilter = f;
-			if (audioThread != null)
-				audioThread.setFilter(f);
+			if (playThread != null)
+				playThread.setFilter(f);
 			filterChanged = true;
 			unstable = false;
 		}
 
-		if (audioThread == null && !unstable && soundCheck.getState()) {
-			createAudioThread();
-			audioThread.start();
+		if (playThread == null && !unstable && soundCheck.getState()) {
+			playThread = new PlayThread();
+			playThread.start();
 		}
 
 		if (displayCheck.getState())
@@ -845,31 +834,23 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
-		// BH localize variables to avoid synthetic accessor for inner functions
-		// inside for loops
-		
-		double[] pr = pipeRadius;
-		int prlen = pr.length;
-		double plen = pipeLen;
-		View pv = pipeView;
-		
-		if (pv != null && filterType instanceof PipeFIRFilter) {
-			pv.drawLabel(g, "Cross Section");
+		if (pipeView != null && filterType instanceof PipeFIRFilter) {
+			pipeView.drawLabel(g, "Cross Section");
 			g.setColor(Color.darkGray);
-			g.fillRect(pv.x, pv.y, pv.width, pv.height);
+			g.fillRect(pipeView.x, pipeView.y, pipeView.width, pipeView.height);
 			g.setColor(Color.black);
-			pv.mult = 1 / 7.;
+			pipeView.mult = 1 / 7.;
 			for (i = 0; i != 10; i++) {
-				double y1 = pv.y + pv.height * (.5 - i * pv.mult);
-				if (y1 < pv.y)
+				double y1 = pipeView.y + pipeView.height * (.5 - i * pipeView.mult);
+				if (y1 < pipeView.y)
 					break;
 				g.drawLine(0, (int) y1, winSize.width - 1, (int) y1);
-				double y2 = pv.y + pv.height * (.5 + i * pv.mult);
+				double y2 = pipeView.y + pipeView.height * (.5 + i * pipeView.mult);
 				g.drawLine(0, (int) y2, winSize.width - 1, (int) y2);
 			}
-			for (i = 0; i * .01 <= plen; i++) {
-				int xi = pv.x + (int) (pv.width * i * .01 / plen);
-				g.drawLine(xi, pv.y, xi, pv.y + pv.height);
+			for (i = 0; i * .01 <= pipeLen; i++) {
+				int xi = pipeView.x + (int) (pipeView.width * i * .01 / pipeLen);
+				g.drawLine(xi, pipeView.y, xi, pipeView.y + pipeView.height);
 			}
 			double f = 0;
 			double k = 0;
@@ -879,12 +860,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 					|| (spectrumView != null && spectrumView.contains(mouseX, mouseY))) {
 				f = getFreqFromX(mouseX, respView);
 				f *= sampleRate;
-				wave = new Complex[prlen + 1];
+				wave = new Complex[pipeRadius.length + 1];
 				calcWave(f, wave);
 				k = 2 * Math.PI * f / soundSpeed;
-				k *= plen * 100 / prlen;
+				k *= pipeLen * 100 / pipeRadius.length;
 			}
-			for (i = 0; i != prlen; i++) {
+			for (i = 0; i != pipeRadius.length; i++) {
 				if (f > 0) {
 					wave[i].rotate(t);
 					double wv = wave[i].re / 2.;
@@ -896,12 +877,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 						c = 255;
 					g.setColor(new Color(c, c, c));
 				}
-				int x1 = pv.width * i / prlen + pv.x;
-				int x2 = pv.width * (i + 1) /prlen + pv.x;
-				int y1 = pv.y
-						+ (int) (pv.height * (.5 - pr[i] * pv.mult));
-				int y2 = pv.y
-						+ (int) (pv.height * (.5 + pr[i] * pv.mult));
+				int x1 = pipeView.width * i / pipeRadius.length + pipeView.x;
+				int x2 = pipeView.width * (i + 1) / pipeRadius.length + pipeView.x;
+				int y1 = pipeView.y
+						+ (int) (pipeView.height * (.5 - pipeRadius[i] * pipeView.mult));
+				int y2 = pipeView.y
+						+ (int) (pipeView.height * (.5 + pipeRadius[i] * pipeView.mult));
 				g.fillRect(x1, y1, x2 - x1, y2 - y1);
 			}
 		}
@@ -1063,16 +1044,16 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
-		if (audioThread != null) {
-			int splen = audioThread.spectrumLen;
+		if (playThread != null) {
+			int splen = playThread.spectrumLen;
 			if (spectrumBuf == null || spectrumBuf.length != splen * 2)
 				spectrumBuf = new double[splen * 2];
-			int off = audioThread.spectrumOffset;
+			int off = playThread.spectrumOffset;
 			int i2;
-			int mask = audioThread.fbufmask;
+			int mask = playThread.fbufmask;
 			for (i = i2 = 0; i != splen; i++, i2 += 2) {
 				int o = mask & (off + i);
-				spectrumBuf[i2] = audioThread.fbufLo[o] + audioThread.fbufRo[o];
+				spectrumBuf[i2] = playThread.fbufLo[o] + playThread.fbufRo[o];
 				spectrumBuf[i2 + 1] = 0;
 			}
 		} else
@@ -1157,8 +1138,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				double ht = .54 - .46 * Math.cos(i * cosmult);
 				spectrumBuf[i] *= ht;
 			}
-			if (spectrumFFT == null
-					|| spectrumFFT.getSize() != spectrumBuf.length / 2)
+			if (spectrumFFT == null || spectrumFFT.size != spectrumBuf.length / 2)
 				spectrumFFT = new FFT(spectrumBuf.length / 2);
 			spectrumFFT.transform(spectrumBuf, false);
 			double logmult = spectrumView.width
@@ -1291,43 +1271,43 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		int filt = filterChooser.getSelectedIndex();
 		switch (filt) {
 		case 0:
-			filterType = new AVowelFilter();
+			filterType = new AVOWFilter();
 			break;
 		case 1:
-			filterType = new OVowelFilter();
+			filterType = new OVOWFilter();
 			break;
 		case 2:
-			filterType = new UVowelFilter();
+			filterType = new UVOWFilter();
 			break;
 		case 3:
-			filterType = new IVowelFilter();
+			filterType = new IVOWFilter();
 			break;
 		case 4:
-			filterType = new EVowelFilter();
+			filterType = new EVOWFilter();
 			break;
 		case 5:
-			filterType = new IBarVowelFilter();
+			filterType = new IBarVOWFilter();
 			break;
 
 		case 6:
-			filterType = new AVowelFilterSimple();
+			filterType = new AVOWFilterSimple();
 			break;
 		case 7:
-			filterType = new IVowelFilterSimple();
+			filterType = new IVOWFilterSimple();
 			break;
 		case 8:
-			filterType = new AEVowelFilterSimple();
+			filterType = new AEVOWFilterSimple();
 			break;
 		case 9:
-			filterType = new IhVowelFilterSimple();
+			filterType = new IhVOWFilterSimple();
 			break;
 		case 10:
-			filterType = new OoVowelFilterSimple();
+			filterType = new OoVOWFilterSimple();
 			break;
 		case 11:
-			filterType = new YVowelFilterSimple();
+			filterType = new YVOWFilterSimple();
 			break;
-		// case 8: filterType = new UrVowelFilterSimple(); break;
+		// case 8: filterType = new UrVOWFilterSimple(); break;
 
 		case 12:
 			filterType = new OpenTubeFilter();
@@ -1418,26 +1398,21 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		return wform;
 	}
 
-	@Override
 	public void componentHidden(ComponentEvent e) {
 	}
 
-	@Override
 	public void componentMoved(ComponentEvent e) {
 	}
 
-	@Override
 	public void componentShown(ComponentEvent e) {
 		cv.repaint(pause);
 	}
 
-	@Override
 	public void componentResized(ComponentEvent e) {
 		handleResize();
 		cv.repaint(pause);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == exitItem) {
 			destroyFrame();
@@ -1447,7 +1422,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			doImport();
 	}
 
-	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
 		if ((e.getSource()) != inputBar)
 			setupFilter();
@@ -1462,7 +1436,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		inputW /= 20;
 	}
 
-	@Override
 	public boolean handleEvent(Event ev) {
 		if (ev.id == Event.WINDOW_DESTROY) {
 			destroyFrame();
@@ -1472,14 +1445,14 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	void destroyFrame() {
-		requestAudioShutdown();
+		if (playThread != null)
+			playThread.requestShutdown();
 		if (applet == null)
 			dispose();
 		else
 			applet.destroyFrame();
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
 		mouseX = e.getX();
 		mouseY = e.getY();
@@ -1487,17 +1460,15 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		cv.repaint(pause);
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent e) {
 		dragX = mouseX = e.getX();
 		dragY = mouseY = e.getY();
 		cv.repaint(pause);
-		// BH added "else" here -- no need to check multiple times
 		if (respView != null && respView.contains(e.getX(), e.getY()))
 			selection = SELECT_RESPONSE;
-		else if (spectrumView != null && spectrumView.contains(e.getX(), e.getY()))
+		if (spectrumView != null && spectrumView.contains(e.getX(), e.getY()))
 			selection = SELECT_SPECTRUM;
-		else if (pipeView != null && pipeView.contains(e.getX(), e.getY()))
+		if (pipeView != null && pipeView.contains(e.getX(), e.getY()))
 			selection = SELECT_PIPE;
 	}
 
@@ -1540,25 +1511,20 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 	}
 
-	@Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
-	@Override
 	public void mouseExited(MouseEvent e) {
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseMoved(e);
 		edit(e);
 	}
 
-	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
@@ -1614,7 +1580,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		pipeRadius[xx] = Math.abs(yy);
 	}
 
-	@Override
 	public void itemStateChanged(ItemEvent e) {
 		filterChanged = true;
 		if (e.getSource() == displayCheck) {
@@ -1622,11 +1587,13 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return;
 		}
 		if (e.getSource() == inputChooser) {
-			requestAudioShutdown();
+			if (playThread != null)
+				playThread.requestShutdown();
 			setInputLabel();
 		}
 		if ((e.getSource()) == rateChooser) {
-			requestAudioShutdown();
+			if (playThread != null)
+				playThread.requestShutdown();
 			inputW *= sampleRate;
 			switch (rateChooser.getSelectedIndex()) {
 			case 0:
@@ -1697,6 +1664,137 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		sampleRate = r;
 	}
 
+	class FFT {
+		double wtabf[];
+		double wtabi[];
+		int size;
+
+		FFT(int sz) {
+			size = sz;
+			if ((size & (size - 1)) != 0)
+				System.out.println("size must be power of two!");
+			calcWTable();
+		}
+
+		void calcWTable() {
+			// calculate table of powers of w
+			wtabf = new double[size];
+			wtabi = new double[size];
+			int i;
+			for (i = 0; i != size; i += 2) {
+				double pi = 3.1415926535;
+				double th = pi * i / size;
+				wtabf[i] = Math.cos(th);
+				wtabf[i + 1] = Math.sin(th);
+				wtabi[i] = wtabf[i];
+				wtabi[i + 1] = -wtabf[i + 1];
+			}
+		}
+
+		void transform(double data[], boolean inv) {
+			int i;
+			int j = 0;
+			int size2 = size * 2;
+
+			if ((size & (size - 1)) != 0)
+				System.out.println("size must be power of two!");
+
+			// bit-reversal
+			double q;
+			int bit;
+			for (i = 0; i != size2; i += 2) {
+				if (i > j) {
+					q = data[i];
+					data[i] = data[j];
+					data[j] = q;
+					q = data[i + 1];
+					data[i + 1] = data[j + 1];
+					data[j + 1] = q;
+				}
+				// increment j by one, from the left side (bit-reversed)
+				bit = size;
+				while ((bit & j) != 0) {
+					j &= ~bit;
+					bit >>= 1;
+				}
+				j |= bit;
+			}
+
+			// amount to skip through w table
+			int tabskip = size << 1;
+			double wtab[] = (inv) ? wtabi : wtabf;
+
+			int skip1, skip2, ix, j2;
+			double wr, wi, d1r, d1i, d2r, d2i, d2wr, d2wi;
+
+			// unroll the first iteration of the main loop
+			for (i = 0; i != size2; i += 4) {
+				d1r = data[i];
+				d1i = data[i + 1];
+				d2r = data[i + 2];
+				d2i = data[i + 3];
+				data[i] = d1r + d2r;
+				data[i + 1] = d1i + d2i;
+				data[i + 2] = d1r - d2r;
+				data[i + 3] = d1i - d2i;
+			}
+			tabskip >>= 1;
+
+			// unroll the second iteration of the main loop
+			int imult = (inv) ? -1 : 1;
+			if (size2 >= 8) {
+				for (i = 0; i != size2; i += 8) {
+					d1r = data[i];
+					d1i = data[i + 1];
+					d2r = data[i + 4];
+					d2i = data[i + 5];
+					data[i] = d1r + d2r;
+					data[i + 1] = d1i + d2i;
+					data[i + 4] = d1r - d2r;
+					data[i + 5] = d1i - d2i;
+					d1r = data[i + 2];
+					d1i = data[i + 3];
+					d2r = data[i + 6] * imult;
+					d2i = data[i + 7] * imult;
+					data[i + 2] = d1r - d2i;
+					data[i + 3] = d1i + d2r;
+					data[i + 6] = d1r + d2i;
+					data[i + 7] = d1i - d2r;
+				}
+				tabskip >>= 1;
+			}
+
+			for (skip1 = 16; skip1 <= size2; skip1 <<= 1) {
+				// skip2 = length of subarrays we are combining
+				// skip1 = length of subarray after combination
+				skip2 = skip1 >> 1;
+				tabskip >>= 1;
+				for (i = 0; i != 1000; i++)
+					;
+				// for each subarray
+				for (i = 0; i < size2; i += skip1) {
+					ix = 0;
+					// for each pair of complex numbers (one in each subarray)
+					for (j = i; j != i + skip2; j += 2, ix += tabskip) {
+						wr = wtab[ix];
+						wi = wtab[ix + 1];
+						d1r = data[j];
+						d1i = data[j + 1];
+						j2 = j + skip2;
+						d2r = data[j2];
+						d2i = data[j2 + 1];
+						d2wr = d2r * wr - d2i * wi;
+						d2wi = d2r * wi + d2i * wr;
+						data[j] = d1r + d2wr;
+						data[j + 1] = d1i + d2wi;
+						data[j2] = d1r - d2wr;
+						data[j2 + 1] = d1i - d2wi;
+					}
+				}
+			}
+		}
+	}
+
 	abstract class Waveform {
 		short buffer[];
 
@@ -1724,13 +1822,11 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class NoiseWaveform extends Waveform {
-		@Override
 		boolean start() {
 			getBuffer();
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			for (i = 0; i != buffer.length; i++)
@@ -1738,12 +1834,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return buffer.length;
 		}
 
-		@Override
 		String getInputText() {
 			return null;
 		}
 
-		@Override
 		boolean needsFrequency() {
 			return false;
 		}
@@ -1753,12 +1847,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		short smbuf[];
 		int ix;
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			smbuf = new short[1];
@@ -1766,7 +1858,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int period = (int) (2 * pi / inputW);
 			if (period != smbuf.length) {
@@ -1788,19 +1879,16 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	class SineWaveform extends Waveform {
 		int ix;
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			for (i = 0; i != buffer.length; i++) {
@@ -1815,12 +1903,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		int ix;
 		short smbuf[];
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
@@ -1828,7 +1914,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			int period = (int) (2 * pi / inputW);
@@ -1853,12 +1938,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		int ix;
 		short smbuf[];
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
@@ -1866,7 +1949,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			int period = (int) (2 * pi / inputW);
@@ -1888,12 +1970,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	class VocalWaveform extends Waveform {
 		int ix;
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
@@ -1903,7 +1983,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		int period = 0;
 		double p2 = 0;
 
-		@Override
 		int getData() {
 			int i;
 			for (i = 0; i != buffer.length; i++, ix++) {
@@ -1924,12 +2003,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		double omega;
 		short smbuf[];
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
@@ -1937,7 +2014,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			int period = (int) (2 * pi / inputW);
@@ -1963,12 +2039,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		int ix;
 		double omega, nextOmega, t, startOmega;
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
@@ -1977,7 +2051,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			double nmul = 1;
@@ -2006,12 +2079,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return buffer.length;
 		}
 
-		@Override
 		String getInputText() {
 			return "Sweep Speed";
 		}
 
-		@Override
 		boolean needsFrequency() {
 			return false;
 		}
@@ -2020,19 +2091,16 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	class ImpulseWaveform extends Waveform {
 		int ix;
 
-		@Override
 		int getChannels() {
 			return 1;
 		}
 
-		@Override
 		boolean start() {
 			getBuffer();
 			ix = 0;
 			return true;
 		}
 
-		@Override
 		int getData() {
 			int i;
 			int ww = inputBar.getValue() / 51 + 1;
@@ -2047,14 +2115,328 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return buffer.length;
 		}
 
-		@Override
 		String getInputText() {
 			return "Impulse Frequency";
 		}
 
-		@Override
 		boolean needsFrequency() {
 			return false;
+		}
+	}
+
+	class PlayThread extends Thread {
+		SourceDataLine line;
+		Waveform wform;
+		boolean shutdownRequested;
+		boolean stereo;
+		Filter filt, newFilter;
+		double fbufLi[];
+		double fbufRi[];
+		double fbufLo[];
+		double fbufRo[];
+		double stateL[], stateR[];
+		int fbufmask, fbufsize;
+		int spectrumOffset, spectrumLen;
+
+		PlayThread() {
+			shutdownRequested = false;
+		}
+
+		void requestShutdown() {
+			shutdownRequested = true;
+		}
+
+		void setFilter(Filter f) {
+			newFilter = f;
+		}
+
+		void openLine() {
+			try {
+				stereo = (wform.getChannels() == 2);
+				AudioFormat playFormat = new AudioFormat(sampleRate, 16, 2, true, false);
+				DataLine.Info info = new DataLine.Info(SourceDataLine.class, playFormat);
+
+				if (!AudioSystem.isLineSupported(info)) {
+					throw new LineUnavailableException(
+							"sorry, the sound format cannot be played");
+				}
+				line = (SourceDataLine) AudioSystem.getLine(info);
+				int n = getPower2(sampleRate / 4);
+				line.open(playFormat, n);
+				line.start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		int inbp, outbp;
+		int spectCt;
+
+		public void run() {
+			try {
+				doRun();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			line.close();
+			cv.repaint();
+			playThread = null;
+		}
+
+		void doRun() {
+			rateChooser.enable();
+			wform = getWaveformObject();
+			mp3Error = null;
+			unstable = false;
+			if (!wform.start()) {
+				cv.repaint();
+				try {
+					Thread.sleep(1000L);
+				} catch (Exception e) {
+				}
+				return;
+			}
+
+			fbufsize = 32768;
+			fbufmask = fbufsize - 1;
+			fbufLi = new double[fbufsize];
+			fbufRi = new double[fbufsize];
+			fbufLo = new double[fbufsize];
+			fbufRo = new double[fbufsize];
+			openLine();
+			inbp = outbp = spectCt = 0;
+			int ss = (stereo) ? 2 : 1;
+			outputGain = 1;
+			newFilter = filt = curFilter;
+			spectrumLen = getPower2(sampleRate / 12);
+			int gainCounter = 0;
+			boolean maxGain = true;
+			boolean useConvolve = false;
+
+			ob = new byte[16384];
+			int shiftCtr = 0;
+			while (!shutdownRequested && soundCheck.getState()
+					&& (applet == null || applet.ogf != null)) {
+				// System.out.println("nf " + newFilter + " " +(inbp-outbp));
+				if (newFilter != null) {
+					gainCounter = 0;
+					maxGain = true;
+					if (wform instanceof SweepWaveform || wform instanceof SineWaveform)
+						maxGain = false;
+					outputGain = 1;
+					// we avoid doing this unless necessary because it sounds bad
+					if (filt == null || filt.getLength() != newFilter.getLength())
+						convBufPtr = inbp = outbp = spectCt = 0;
+					filt = newFilter;
+					newFilter = null;
+					impulseBuf = null;
+					useConvolve = filt.useConvolve();
+					stateL = filt.createState();
+					stateR = filt.createState();
+				}
+				int length = wform.getData();
+				if (length == 0)
+					break;
+				short ib[] = wform.buffer;
+
+				int i2;
+				int i = inbp;
+				for (i2 = 0; i2 < length; i2 += ss) {
+					fbufLi[i] = ib[i2];
+					i = (i + 1) & fbufmask;
+				}
+				i = inbp;
+				if (stereo) {
+					for (i2 = 0; i2 < length; i2 += 2) {
+						fbufRi[i] = ib[i2 + 1];
+						i = (i + 1) & fbufmask;
+					}
+				} else {
+					for (i2 = 0; i2 < length; i2++) {
+						fbufRi[i] = fbufLi[i];
+						i = (i + 1) & fbufmask;
+					}
+				}
+				/*
+				 * if (shiftSpectrumCheck.getState()) { double shiftFreq =
+				 * shiftFreqBar.getValue()*pi/1000.; if (shiftFreq > pi) shiftFreq = pi;
+				 * i = inbp; for (i2 = 0; i2 < length; i2 += ss) { double q =
+				 * Math.cos(shiftFreq*shiftCtr++); fbufLi[i] *= q; fbufRi[i] *= q; i =
+				 * (i+1) & fbufmask; } }
+				 */
+
+				int sampleCount = length / ss;
+				if (useConvolve) {
+					doConvolveFilter(sampleCount, maxGain);
+				} else {
+					doFilter(sampleCount);
+					if (unstable)
+						break;
+					int outlen = sampleCount * 4;
+					doOutput(outlen, maxGain);
+				}
+
+				if (unstable)
+					break;
+
+				if (spectCt >= spectrumLen) {
+					spectrumOffset = (outbp - spectrumLen) & fbufmask;
+					spectCt -= spectrumLen;
+					cv.repaint();
+				}
+				gainCounter += sampleCount;
+				if (maxGain && gainCounter >= sampleRate) {
+					gainCounter = 0;
+					maxGain = false;
+					// System.out.println("gain ctr up " + outputGain);
+				}
+			}
+			if (shutdownRequested || unstable || !soundCheck.getState())
+				line.flush();
+			else
+				line.drain();
+			cv.repaint();
+		}
+
+		void doFilter(int sampleCount) {
+			filt.run(fbufLi, fbufLo, inbp, fbufmask, sampleCount, stateL);
+			filt.run(fbufRi, fbufRo, inbp, fbufmask, sampleCount, stateR);
+			inbp = (inbp + sampleCount) & fbufmask;
+			double q = fbufLo[(inbp - 1) & fbufmask];
+			if (Double.isNaN(q) || Double.isInfinite(q))
+				unstable = true;
+		}
+
+		double impulseBuf[], convolveBuf[];
+		int convBufPtr;
+		FFT convFFT;
+
+		void doConvolveFilter(int sampleCount, boolean maxGain) {
+			int i;
+			int fi2 = inbp, i20;
+			double filtA[] = ((DirectFilter) filt).aList;
+			int cblen = getPower2(512 + filtA.length * 2);
+			if (convolveBuf == null || convolveBuf.length != cblen)
+				convolveBuf = new double[cblen];
+			if (impulseBuf == null) {
+				// take FFT of the impulse response
+				impulseBuf = new double[cblen];
+				for (i = 0; i != filtA.length; i++)
+					impulseBuf[i * 2] = filtA[i];
+				convFFT = new FFT(convolveBuf.length / 2);
+				convFFT.transform(impulseBuf, false);
+			}
+			int cbptr = convBufPtr;
+			// result = impulseLen+inputLen-1 samples long; result length
+			// is fixed, so use it to get inputLen
+			int cbptrmax = convolveBuf.length + 2 - 2 * filtA.length;
+			// System.out.println("reading " + sampleCount);
+			for (i = 0; i != sampleCount; i++, fi2++) {
+				i20 = fi2 & fbufmask;
+				convolveBuf[cbptr] = fbufLi[i20];
+				convolveBuf[cbptr + 1] = fbufRi[i20];
+				cbptr += 2;
+				if (cbptr == cbptrmax) {
+					// buffer is full, do the transform
+					convFFT.transform(convolveBuf, false);
+					double mult = 2. / cblen;
+					int j;
+					// multiply transforms to get convolution
+					for (j = 0; j != cblen; j += 2) {
+						double a = convolveBuf[j] * impulseBuf[j] - convolveBuf[j + 1]
+								* impulseBuf[j + 1];
+						double b = convolveBuf[j] * impulseBuf[j + 1] + convolveBuf[j + 1]
+								* impulseBuf[j];
+						convolveBuf[j] = a * mult;
+						convolveBuf[j + 1] = b * mult;
+					}
+					// inverse transform to get signal
+					convFFT.transform(convolveBuf, true);
+					int fj2 = outbp, j20;
+					int overlap = cblen - cbptrmax;
+					// generate output that overlaps with old data
+					for (j = 0; j != overlap; j += 2, fj2++) {
+						j20 = fj2 & fbufmask;
+						fbufLo[j20] += convolveBuf[j];
+						fbufRo[j20] += convolveBuf[j + 1];
+					}
+					// generate new output
+					for (; j != cblen; j += 2, fj2++) {
+						j20 = fj2 & fbufmask;
+						fbufLo[j20] = convolveBuf[j];
+						fbufRo[j20] = convolveBuf[j + 1];
+					}
+					cbptr = 0;
+					// output the sound
+					doOutput(cbptrmax * 2, maxGain);
+					// System.out.println("outputting " + cbptrmax);
+					// clear transform buffer
+					for (j = 0; j != cblen; j++)
+						convolveBuf[j] = 0;
+				}
+			}
+			inbp = fi2 & fbufmask;
+			convBufPtr = cbptr;
+		}
+
+		byte ob[];
+
+		void doOutput(int outlen, boolean maxGain) {
+			if (ob.length < outlen)
+				ob = new byte[outlen];
+			int qi;
+			int i, i2;
+			while (true) {
+				int max = 0;
+				i = outbp;
+				for (i2 = 0; i2 < outlen; i2 += 4) {
+					qi = (int) (fbufLo[i] * outputGain);
+					if (qi > max)
+						max = qi;
+					if (qi < -max)
+						max = -qi;
+					ob[i2 + 1] = (byte) (qi >> 8);
+					ob[i2] = (byte) qi;
+					i = (i + 1) & fbufmask;
+				}
+				i = outbp;
+				for (i2 = 2; i2 < outlen; i2 += 4) {
+					qi = (int) (fbufRo[i] * outputGain);
+					if (qi > max)
+						max = qi;
+					if (qi < -max)
+						max = -qi;
+					ob[i2 + 1] = (byte) (qi >> 8);
+					ob[i2] = (byte) qi;
+					i = (i + 1) & fbufmask;
+				}
+				// if we're getting overflow, adjust the gain
+				if (max > 32767) {
+					// System.out.println("max = " + max);
+					outputGain *= 30000. / max;
+					if (outputGain < 1e-8 || Double.isInfinite(outputGain)) {
+						unstable = true;
+						break;
+					}
+					continue;
+				} else if (maxGain && max < 24000) {
+					if (max == 0) {
+						if (outputGain == 1)
+							break;
+						outputGain = 1;
+					} else
+						outputGain *= 30000. / max;
+					continue;
+				}
+				break;
+			}
+			if (unstable)
+				return;
+			int oldoutbp = outbp;
+			outbp = i;
+
+			line.write(ob, 0, outlen);
+			spectCt += outlen / 4;
 		}
 	}
 
@@ -2257,12 +2639,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			nList = new int[] { 0 };
 		}
 
-		@Override
 		int getLength() {
 			return aList.length;
 		}
 
-		@Override
 		boolean useConvolve() {
 			return bList == null && aList.length > 25;
 		}
@@ -2285,7 +2665,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 		Complex czn, top, bottom;
 
-		@Override
 		void evalTransfer(Complex c) {
 			if (czn == null) {
 				czn = new Complex();
@@ -2318,7 +2697,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			c.set(top);
 		}
 
-		@Override
 		void run(double inBuf[], double outBuf[], int bp, int mask, int count,
 				double state[]) {
 			int j;
@@ -2352,14 +2730,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return nList[nList.length - 1] == nList.length - 1;
 		}
 
-		@Override
 		int getImpulseOffset() {
 			if (isSimpleAList())
 				return 0;
 			return getStepOffset();
 		}
 
-		@Override
 		int getStepOffset() {
 			int i;
 			int offset = 0;
@@ -2369,14 +2745,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return offset;
 		}
 
-		@Override
 		double[] getImpulseResponse(int offset) {
 			if (isSimpleAList())
 				return aList;
 			return super.getImpulseResponse(offset);
 		}
 
-		@Override
 		int getImpulseLen(int offset, double buf[]) {
 			if (isSimpleAList())
 				return aList.length;
@@ -2400,7 +2774,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		double a1[], a2[], b0[], b1[], b2[];
 		int size;
 
-		@Override
 		double[] createState() {
 			return new double[size * 3];
 		}
@@ -2449,7 +2822,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			System.out.println("setBStage failed");
 		}
 
-		@Override
 		void run(double inBuf[], double outBuf[], int bp, int mask, int count,
 				double state[]) {
 			int fi2, i20;
@@ -2472,7 +2844,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 		Complex cm2, cm1, top, bottom;
 
-		@Override
 		void evalTransfer(Complex c) {
 			if (cm1 == null) {
 				cm1 = new Complex();
@@ -2498,17 +2869,14 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			}
 		}
 
-		@Override
 		int getImpulseOffset() {
 			return 0;
 		}
 
-		@Override
 		int getStepOffset() {
 			return 0;
 		}
 
-		@Override
 		int getLength() {
 			return 1;
 		}
@@ -2561,7 +2929,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	abstract class FIRFilterType extends FilterType {
 		double response[];
 
-		@Override
 		void getResponse(double w, Complex c) {
 			if (response == null) {
 				c.set(0);
@@ -2797,7 +3164,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	double uresp[];
 
 	class PipeFIRFilter extends FIRFilterType {
-		@Override
 		int select() {
 			/*
 			 * auxLabels[0].setText("Order"); auxBars[0].setValue(256);
@@ -2829,7 +3195,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			genPipeResponse(x, sampleRate / 2, count, resp, null);
 		}
 
-		@Override
 		Filter genFilter() {
 			int rlen = 16;
 			int n = 256; // auxBars[0].getValue();
@@ -2871,7 +3236,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return f;
 		}
 
-		@Override
 		void getInfo(String x[]) {
 			// int n = auxBars[0].getValue();
 			// x[0] = "Order: " + n;
@@ -2882,13 +3246,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return Math.sqrt(x / Math.PI);
 		}
 
-		@Override
 		boolean needsWindow() {
 			return true;
 		}
 	}
 
-	class IBarVowelFilter extends PipeFIRFilter {
+	class IBarVOWFilter extends PipeFIRFilter {
 		double data[] = { 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5,
 				6.42857, 2.83929, 2.73214, 3.13393, 3.29464, 3.45536, 3.45536, 4.58036,
 				5.49107, 6.45536, 6.96429, 7.33929, 7.66071, 7.84821, 8.03571, 8.19643,
@@ -2915,7 +3278,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				3.05357, 3.02679, 3.02679, 3.02679, 3, 3.02679, 3.02679, 3, 3, 3,
 				2.97321, 2.94643, 2.97321 };
 
-		@Override
 		int select() {
 			int r = super.select();
 			int i;
@@ -2926,7 +3288,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class IVowelFilter extends PipeFIRFilter {
+	class IVOWFilter extends PipeFIRFilter {
 		double data[] = { 8.74254, 8.74254, 7.71642, 7.18284, 6.64925, 5.99254,
 				4.96642, 4.63806, 4.55597, 4.43284, 4.02239, 2.95522, 2.87313, 2.83209,
 				2.83209, 2.83209, 2.83209, 2.79104, 2.25746, 1.76493, 1.76493, 1.76493,
@@ -2954,7 +3316,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				2.42164, 2.46269, 2.46269, 2.46269, 2.54478, 2.58582, 2.66791, 2.66791,
 				2.75, 2.79104, 2.83209, 2.87313, 2.91418, 2.99627, 3.03731, };
 
-		@Override
 		int select() {
 			int bars = super.select();
 			int i;
@@ -2965,7 +3326,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class EVowelFilter extends PipeFIRFilter {
+	class EVOWFilter extends PipeFIRFilter {
 		double data[] = { 10.2, 10.2, 10.2, 9.31174, 8.98785, 8.70445, 8.54251,
 				8.34008, 7.85425, 5.91093, 5.34413, 5.26316, 5.18219, 5.06073, 4.97976,
 				4.93927, 4.93927, 4.97976, 5.06073, 5.10121, 5.10121, 5.06073, 5.06073,
@@ -2992,7 +3353,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				1.53846, 1.61943, 1.61943, 1.65992, 1.78138, 1.78138, 1.94332, 2.06478,
 				2.14575, 2.22672, 2.30769, 2.38866, 2.51012, 2.59109, 2.63158, 2.75304, };
 
-		@Override
 		int select() {
 			int bars = super.select();
 			int i;
@@ -3004,7 +3364,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class OpenTubeFilter extends PipeFIRFilter {
-		@Override
 		int select() {
 			int bars = super.select();
 			int i;
@@ -3015,7 +3374,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class CustomFilter extends PipeFIRFilter {
-		@Override
 		int select() {
 			int bars = super.select();
 			auxBars[0].setValue((int) (pipeLen * 1000));
@@ -3023,7 +3381,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class AVowelFilter extends PipeFIRFilter {
+	class AVOWFilter extends PipeFIRFilter {
 		double data[] = { 6.08276, 6.08276, 6.08276, 6.08276, 6.08276, 6.05379,
 				5.93793, 5.59034, 5.18483, 5.01103, 4.92414, 4.89517, 4.86621, 4.86621,
 				4.86621, 4.86621, 4.86621, 4.89517, 4.9531, 5.04, 5.18483, 5.38759,
@@ -3051,7 +3409,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				1.56414, 1.65103, 1.73793, 1.82483, 1.91172, 1.99862, 2.11448, 2.17241,
 				2.25931, 2.37517, 2.46207, 2.54897, 2.63586 };
 
-		@Override
 		int select() {
 			int bars = super.select();
 			auxBars[bars - 1].setValue(190);
@@ -3064,7 +3421,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return bars + 2;
 		}
 
-		@Override
 		Filter genFilter() {
 			int i;
 			double pw = auxBars[1].getValue() / 100.;
@@ -3077,8 +3433,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class AVowelFilterSimple extends PipeFIRFilter {
-		@Override
+	class AVOWFilterSimple extends PipeFIRFilter {
 		int select() {
 			super.select();
 			auxLabels[1].setText("1st Section Length");
@@ -3087,7 +3442,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return 2;
 		}
 
-		@Override
 		Filter genFilter() {
 			int i;
 			for (i = 0; i < auxBars[1].getValue(); i++)
@@ -3098,8 +3452,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class AEVowelFilterSimple extends AVowelFilterSimple {
-		@Override
+	class AEVOWFilterSimple extends AVOWFilterSimple {
 		int select() {
 			super.select();
 			auxBars[1].setValue(200 / 3);
@@ -3107,7 +3460,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class OVowelFilter extends PipeFIRFilter {
+	class OVOWFilter extends PipeFIRFilter {
 		double data[] = { 3.8, 3.8, 3.8, 3.86077, 3.53659, 3.4187, 3.35976,
 				3.30081, 3.30081, 3.24187, 3.33028, 3.38923, 3.59553, 3.89024, 4.15549,
 				4.30285, 4.56809, 4.8628, 5.03963, 6.07114, 7.39736, 8.4878, 9.75508,
@@ -3134,7 +3487,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				1.70935, 1.73882, 1.70935, 1.73882, 1.76829, 1.79776, 1.82724, 1.85671,
 				1.94512, 2.00407, 2.06301, 2.15142, 2.23984, 2.29878, 2.35772, 2.53455 };
 
-		@Override
 		int select() {
 			super.select();
 			int i;
@@ -3145,7 +3497,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class UVowelFilter extends PipeFIRFilter {
+	class UVOWFilter extends PipeFIRFilter {
 		double data[] = { 0.975787, 1.57385, 0.94431, 0.661017, 0.535109, 0.440678,
 				0.440678, 0.377724, 0.346247, 0.31477, 0.346247, 0.409201, 0.472155,
 				0.62954, 0.849879, 1.07022, 1.32203, 1.66828, 2.14044, 2.48668,
@@ -3173,7 +3525,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				2.58111, 2.61259, 2.67554, 2.70702, 2.7385, 2.80145, 2.86441, 2.92736,
 				2.95884, 2.99031, 3.05327, 3.08475 };
 
-		@Override
 		int select() {
 			super.select();
 			int i;
@@ -3184,8 +3535,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class YVowelFilterSimple extends PipeFIRFilter {
-		@Override
+	class YVOWFilterSimple extends PipeFIRFilter {
 		int select() {
 			super.select();
 			auxLabels[1].setText("1st Section Length");
@@ -3194,7 +3544,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return 2;
 		}
 
-		@Override
 		Filter genFilter() {
 			int i;
 			for (i = 0; i < auxBars[1].getValue(); i++)
@@ -3205,8 +3554,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class IVowelFilterSimple extends YVowelFilterSimple {
-		@Override
+	class IVOWFilterSimple extends YVOWFilterSimple {
 		int select() {
 			super.select();
 			auxBars[0].setValue(145);
@@ -3215,8 +3563,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class UrVowelFilterSimple extends YVowelFilterSimple {
-		@Override
+	class UrVOWFilterSimple extends YVOWFilterSimple {
 		int select() {
 			super.select();
 			auxBars[1].setValue(200 * 8 / 9);
@@ -3224,15 +3571,13 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class IhVowelFilterSimple extends PipeFIRFilter {
-		@Override
+	class IhVOWFilterSimple extends PipeFIRFilter {
 		int select() {
 			super.select();
 			auxBars[0].setValue(160);
 			return 1;
 		}
 
-		@Override
 		Filter genFilter() {
 			int i;
 			for (i = 0; i < 200 * 3 / 16; i++)
@@ -3245,15 +3590,13 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class OoVowelFilterSimple extends PipeFIRFilter {
-		@Override
+	class OoVOWFilterSimple extends PipeFIRFilter {
 		int select() {
 			super.select();
 			auxBars[0].setValue(180);
 			return 1;
 		}
 
-		@Override
 		Filter genFilter() {
 			int i;
 			for (i = 0; i < 200 * 3 / 18; i++)
@@ -3271,12 +3614,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class NoFilter extends FilterType {
-		@Override
 		void getResponse(double w, Complex c) {
 			c.set(1);
 		}
 
-		@Override
 		Filter genFilter() {
 			DirectFilter f = new DirectFilter();
 			f.aList = new double[1];
@@ -3352,25 +3693,20 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		public ImportDialogLayout() {
 		}
 
-		@Override
 		public void addLayoutComponent(String name, Component c) {
 		}
 
-		@Override
 		public void removeLayoutComponent(Component c) {
 		}
 
-		@Override
 		public Dimension preferredLayoutSize(Container target) {
 			return new Dimension(500, 500);
 		}
 
-		@Override
 		public Dimension minimumLayoutSize(Container target) {
 			return new Dimension(100, 100);
 		}
 
-		@Override
 		public void layoutContainer(Container target) {
 			Insets insets = target.insets();
 			int targetw = target.size().width - insets.left - insets.right;
@@ -3400,11 +3736,11 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	};
 
 	class ImportDialog extends Dialog implements ActionListener {
-		VowelFrame rframe;
+		VOWFrame rframe;
 		Button importButton, clearButton, closeButton;
 		TextArea text;
 
-		ImportDialog(VowelFrame f, String str) {
+		ImportDialog(VOWFrame f, String str) {
 			super(f, (str.length() > 0) ? "Export" : "Import", false);
 			rframe = f;
 			setLayout(new ImportDialogLayout());
@@ -3425,7 +3761,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				text.selectAll();
 		}
 
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			int i;
 			Object src = e.getSource();
@@ -3439,7 +3774,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				text.setText("");
 		}
 
-		@Override
 		public boolean handleEvent(Event ev) {
 			if (ev.id == Event.WINDOW_DESTROY) {
 				rframe.requestFocus();
@@ -3449,345 +3783,4 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return super.handleEvent(ev);
 		}
 	}
-
-	PlayThread audioThread;
-
-	private void createAudioThread() {
-		audioThread = new PlayThread();
-	}
-
-	boolean shutdownRequested;
-
-	void requestAudioShutdown() {
-		shutdownRequested = true;
-	}
-
-	/**
-	 * In the SwingJS implementation of PlayThread, we extend JSAudioThread
-	 * so that we can control the 
-	 *
-	 */
-	class PlayThread extends JSAudioThread implements JSAudioThreadOwner {
-		private Waveform wform;
-		private boolean stereo;
-		private Filter filt, newFilter;
-		private double fbufLi[], fbufRi[], fbufLo[], fbufRo[];
-		private double stateL[], stateR[];
-		private int fbufmask, fbufsize;
-		private int spectrumOffset, spectrumLen;
-
-		private int inbp, outbp;
-		private int spectCt;
-
-		private int gainCounter = 0;
-		private boolean maxGain = true;
-		private boolean useConvolve = false;
-		private int ss;
-		
-		private double impulseBuf[], convolveBuf[];
-		private int convBufPtr;
-		private FFT convFFT;
-
-
-		public PlayThread() {
-		}
-
-		void setFilter(Filter f) {
-			newFilter = f;
-		}
-
-		@Override
-		public boolean myInit() {
-			try {
-				owner = this;
-				rateChooser.enable();
-				wform = getWaveformObject();
-				mp3Error = null;
-				unstable = false;
-				if (!wform.start()) {
-					cv.repaint();
-					return false;
-				}
-
-				fbufsize = 32768;
-				fbufmask = fbufsize - 1;
-				fbufLi = new double[fbufsize];
-				fbufRi = new double[fbufsize];
-				fbufLo = new double[fbufsize];
-				fbufRo = new double[fbufsize];
-				openLine();
-				inbp = outbp = spectCt = 0;
-				outputGain = 1;
-				newFilter = filt = curFilter;
-				spectrumLen = getPower2(sampleRate / 12);
-				audioBufferByteLength = 16384;
-				audioByteBuffer = new byte[audioBufferByteLength];
-	//			int shiftCtr = 0;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-			return true;
-		}
-
-		@Override
-		public boolean checkSoundStatus() {
-			return !shutdownRequested && soundCheck.getState()
-					&& (applet == null || applet.ogf != null);
-		}
-
-		@Override
-		protected boolean myLoop() {
-			// System.out.println("nf " + newFilter + " " +(inbp-outbp));
-			if (newFilter != null) {
-				gainCounter = 0;
-				maxGain = true;
-				if (wform instanceof SweepWaveform || wform instanceof SineWaveform)
-					maxGain = false;
-				outputGain = 1;
-				// we avoid doing this unless necessary because it sounds bad
-				if (filt == null || filt.getLength() != newFilter.getLength())
-					convBufPtr = inbp = outbp = spectCt = 0;
-				filt = newFilter;
-				newFilter = null;
-				impulseBuf = null;
-				useConvolve = filt.useConvolve();
-				stateL = filt.createState();
-				stateR = filt.createState();
-			}
-			int length = wform.getData();
-			if (length == 0)
-				return true;
-			short ib[] = wform.buffer;
-
-			int i2;
-			int i = inbp;
-			for (i2 = 0; i2 < length; i2 += ss) {
-				fbufLi[i] = ib[i2];
-				i = (i + 1) & fbufmask;
-			}
-			i = inbp;
-			if (stereo) {
-				for (i2 = 0; i2 < length; i2 += 2) {
-					fbufRi[i] = ib[i2 + 1];
-					i = (i + 1) & fbufmask;
-				}
-			} else {
-				for (i2 = 0; i2 < length; i2++) {
-					fbufRi[i] = fbufLi[i];
-					i = (i + 1) & fbufmask;
-				}
-			}
-			/*
-			 * if (shiftSpectrumCheck.getState()) { double shiftFreq =
-			 * shiftFreqBar.getValue()*pi/1000.; if (shiftFreq > pi) shiftFreq = pi; i
-			 * = inbp; for (i2 = 0; i2 < length; i2 += ss) { double q =
-			 * Math.cos(shiftFreq*shiftCtr++); fbufLi[i] *= q; fbufRi[i] *= q; i =
-			 * (i+1) & fbufmask; } }
-			 */
-
-			int sampleCount = length / ss;
-			if (useConvolve) {
-				doConvolveFilter(sampleCount);
-			} else {
-				doFilter(sampleCount);
-				if (!unstable)
-					doOutput(sampleCount * 4);
-			}
-			if (unstable)
-				return false;
-			if (spectCt >= spectrumLen) {
-				spectrumOffset = (outbp - spectrumLen) & fbufmask;
-				spectCt -= spectrumLen;
-				cv.repaint();
-			}
-			gainCounter += sampleCount;
-			if (maxGain && gainCounter >= sampleRate) {
-				gainCounter = 0;
-				maxGain = false;
-			}
-			return true;
-		}
-
-		@Override
-		public int fillAudioBuffer() {
-			int qi;
-			int i, i2;
-			int outlen = myBufferLength;
-			while (true) {
-				int max = 0;
-				i = outbp;
-				for (i2 = 0; i2 < outlen; i2 += 4) {
-					qi = (int) (fbufLo[i] * outputGain);
-					if (qi > max)
-						max = qi;
-					if (qi < -max)
-						max = -qi;
-					audioByteBuffer[i2] = (byte) qi;
-					audioByteBuffer[i2 + 1] = (byte) (qi >> 8);
-					i = (i + 1) & fbufmask;
-				}
-				i = outbp;
-				for (i2 = 2; i2 < outlen; i2 += 4) {
-					qi = (int) (fbufRo[i] * outputGain);
-					if (qi > max)
-						max = qi;
-					if (qi < -max)
-						max = -qi;
-					audioByteBuffer[i2 + 1] = (byte) (qi >> 8);
-					audioByteBuffer[i2] = (byte) qi;
-					i = (i + 1) & fbufmask;
-				}
-				// if we're getting overflow, adjust the gain
-				if (max > 32767) {
-					// System.out.println("max = " + max);
-					outputGain *= 30000. / max;
-					if (outputGain < 1e-8 || Double.isInfinite(outputGain)) {
-						unstable = true;
-						break;
-					}
-					continue;
-				} else if (maxGain && max < 24000) {
-					if (max == 0) {
-						if (outputGain == 1)
-							break;
-						outputGain = 1;
-					} else
-						outputGain *= 30000. / max;
-					continue;
-				}
-				break;
-			}
-			if (unstable)
-				return 0;
-			outbp = i;
-			return outlen;
-		}
-
-		@Override
-		public void whenDone() {
-			if (shutdownRequested || unstable || !soundCheck.getState())
-				line.flush();
-			else
-				line.drain();
-			cv.repaint();
-		}
-		
-		@Override
-		public void audioThreadExiting() {
-			line.close();
-			cv.repaint();
-			audioThread = null;
-		}
-
-		private void openLine() {
-			try {
-				stereo = (wform.getChannels() == 2);
-				ss = (stereo ? 2 : 1);
-				bitsPerSample = 16;
-				nChannels = 2;
-				rate = sampleRate;
-				// mono will be carried out how?  Note this is littleEndian
-				AudioFormat playFormat = new AudioFormat(rate, bitsPerSample, nChannels, true, false);
-				DataLine.Info info = new DataLine.Info(SourceDataLine.class, playFormat);
-
-				line = (SourceDataLine) AudioSystem.getLine(info);
-				int n = getPower2(sampleRate/4);
-				line.open(playFormat, n);
-				line.start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		private void doFilter(int sampleCount) {
-			filt.run(fbufLi, fbufLo, inbp, fbufmask, sampleCount, stateL);
-			filt.run(fbufRi, fbufRo, inbp, fbufmask, sampleCount, stateR);
-			inbp = (inbp + sampleCount) & fbufmask;
-			double q = fbufLo[(inbp - 1) & fbufmask];
-			if (Double.isNaN(q) || Double.isInfinite(q))
-				unstable = true;
-		}
-
-		private void doConvolveFilter(int sampleCount) {
-			int i;
-			int fi2 = inbp, i20;
-			double filtA[] = ((DirectFilter) filt).aList;
-			int cblen = getPower2(512 + filtA.length * 2);
-			if (convolveBuf == null || convolveBuf.length != cblen)
-				convolveBuf = new double[cblen];
-			if (impulseBuf == null) {
-				// take FFT of the impulse response
-				impulseBuf = new double[cblen];
-				for (i = 0; i != filtA.length; i++)
-					impulseBuf[i * 2] = filtA[i];
-				convFFT = new FFT(convolveBuf.length / 2);
-				convFFT.transform(impulseBuf, false);
-			}
-			int cbptr = convBufPtr;
-			// result = impulseLen+inputLen-1 samples long; result length
-			// is fixed, so use it to get inputLen
-			int cbptrmax = convolveBuf.length + 2 - 2 * filtA.length;
-			// System.out.println("reading " + sampleCount);
-			int nout = 0;
-			for (i = 0; i != sampleCount; i++, fi2++) {
-				i20 = fi2 & fbufmask;
-				convolveBuf[cbptr] = fbufLi[i20];
-				convolveBuf[cbptr + 1] = fbufRi[i20];
-				cbptr += 2;
-				if (cbptr == cbptrmax) {
-					// buffer is full, do the transform
-					convFFT.transform(convolveBuf, false);
-					double mult = 2. / cblen;
-					int j;
-					// multiply transforms to get convolution
-					for (j = 0; j != cblen; j += 2) {
-						double a = convolveBuf[j] * impulseBuf[j] - convolveBuf[j + 1]
-								* impulseBuf[j + 1];
-						double b = convolveBuf[j] * impulseBuf[j + 1] + convolveBuf[j + 1]
-								* impulseBuf[j];
-						convolveBuf[j] = a * mult;
-						convolveBuf[j + 1] = b * mult;
-					}
-					// inverse transform to get signal
-					convFFT.transform(convolveBuf, true);
-					int fj2 = outbp, j20;
-					int overlap = cblen - cbptrmax;
-					// generate output that overlaps with old data
-					for (j = 0; j != overlap; j += 2, fj2++) {
-						j20 = fj2 & fbufmask;
-						fbufLo[j20] += convolveBuf[j];
-						fbufRo[j20] += convolveBuf[j + 1];
-					}
-					// generate new output
-					for (; j != cblen; j += 2, fj2++) {
-						j20 = fj2 & fbufmask;
-						fbufLo[j20] = convolveBuf[j];
-						fbufRo[j20] = convolveBuf[j + 1];
-					}
-					cbptr = 0;
-					// output the sound
-					doOutput(cbptrmax * 2);
-					// System.out.println("outputting " + cbptrmax);
-					// clear transform buffer
-					for (j = 0; j != cblen; j++)
-						convolveBuf[j] = 0;
-					System.out.println("nout=" + ++nout);
-				}
-			}
-			inbp = fi2 & fbufmask;
-			convBufPtr = cbptr;
-		}
-
-		private void doOutput(int outlen) {
-			if (audioByteBuffer.length < outlen)
-				audioByteBuffer = new byte[outlen];
-			myBufferLength = outlen;
-			if (fillAudioBuffer() <= 0)
-				return;
-			line.write(audioByteBuffer, 0, myBufferLength);
-			spectCt += outlen / 4;
-		}
-				
-	}
-}
+};
