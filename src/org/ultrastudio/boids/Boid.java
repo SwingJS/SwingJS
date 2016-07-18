@@ -18,7 +18,7 @@
  USA.
 */
  
-package test.ultrastudio.boids;
+package org.utltrastudio.boids;
 
 import java.awt.geom.Point2D;
 

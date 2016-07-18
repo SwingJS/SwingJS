@@ -1,4 +1,4 @@
-package test.ultrastudio;
+package org.utltrastudio;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;

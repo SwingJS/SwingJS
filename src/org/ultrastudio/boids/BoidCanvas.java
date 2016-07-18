@@ -18,7 +18,7 @@
  USA.
 */
 
-package test.ultrastudio.boids;
+package org.utltrastudio.boids;
 
 import java.awt.Color;
 import java.awt.Graphics;
