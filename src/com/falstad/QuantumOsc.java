@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //QuantumOsc.java (C) 2003 by Paul Falstad, www.falstad.com
 

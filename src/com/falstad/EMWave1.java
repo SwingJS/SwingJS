@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //EMWave1.java (c) 2002 by Paul Falstad, www.falstad.com
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 

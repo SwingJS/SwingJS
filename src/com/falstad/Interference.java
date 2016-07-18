@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //Interference.java (C) 2002 by Paul Falstad, www.falstad.com
 //

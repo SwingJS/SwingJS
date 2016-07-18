@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //EMWave2.java (c) 2002 by Paul Falstad, www.falstad.com
 //

@@ -4,7 +4,7 @@
 // We raytrace through a 3-d dataset, sampling a number of points and
 // integrating over them using Simpson's rule.
 
-package test.falstad;
+package com.falstad;
 
 // Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //

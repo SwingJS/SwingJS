@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //Gas.java (C) 2001 by Paul Falstad, www.falstad.com
 //
@@ -15,7 +15,7 @@ package test.falstad;
 //web_Description= A simulation of the ideal gas law.
 //web_Date= $Date: xxx$
 //web_JavaSource= www.falstad.com/gas
-//web_Location= test.falstad.Gas
+//web_Location= com.falstad.Gas
 //web_AppletImage= images/gas.png
 //web_Category= Chemistry
 

@@ -1,7 +1,7 @@
 // Wave2d.java (c) 2004 by Paul Falstad, www.falstad.com
 
 
-package test.falstad;
+package com.falstad;
 
 //Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //

@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 // WaveBox.java (c) 2001 by Paul Falstad, www.falstad.com.
 // Rendering algorithm in this applet is based on the description of

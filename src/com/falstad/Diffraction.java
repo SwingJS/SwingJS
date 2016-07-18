@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //Diffraction.java (c) 2001 by Paul Falstad, www.falstad.com.
 //Algorithm used for circular apertures is from "Simulation and Study
@@ -417,7 +417,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 			 * browsers) runs nearly twice as fast
 			 */
 
-			// test.falstad.DiffractionFrame.prototype.test1 = function(){
+			// com.falstad.DiffractionFrame.prototype.test1 = function(){
 			// var d = {width:500,height:500}
 			// this.pixels = Clazz.newIntArray (d.width * d.height, 0);
 			// var t = +new Date
@@ -443,7 +443,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 			//
 
 			//
-			// function test.falstad.DiffractionFrame.prototype.test1()
+			// function com.falstad.DiffractionFrame.prototype.test1()
 			// this.test1()
 			// 194
 			// 146

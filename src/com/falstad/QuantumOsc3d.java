@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //QuantumOsc3d.java (c) 2002 by Paul Falstad, www.falstad.com.
 //Rendering algorithm in this applet is based on the description of

@@ -1,6 +1,6 @@
 // Vowel.java (C) 2005 by Paul Falstad, www.falstad.com
 
-package test.falstad;
+package com.falstad;
 
 import java.awt.AWTEvent;
 import java.awt.Color;

@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 import java.awt.Color;
 import java.awt.Component;

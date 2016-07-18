@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //Fourier.java (C) 2001 by Paul Falstad, www.falstad.com
 //

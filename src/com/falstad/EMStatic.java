@@ -1,6 +1,6 @@
 // EMStatic.java (c) 2001 by Paul Falstad, www.falstad.com
 
-package test.falstad;
+package com.falstad;
 
 // Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //

@@ -1,4 +1,4 @@
-package test.falstad;
+package com.falstad;
 
 //CircOsc.java (C) 2001 by Paul Falstad, www.falstad.com
 //
