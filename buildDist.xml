@@ -1,4 +1,5 @@
 <project name = "swingjs" default="createDist" basedir=".">
+	<!-- Author Andreas Raduege 7/2016 -->
 	<description> Generates publishable website for successfully converted applets. </description>
 	
 	<target name="createDist" id="createDist">
