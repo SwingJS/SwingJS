@@ -1122,7 +1122,6 @@ J2S = (function(document) {
         return true;
 			J2S._setMouseOwner(who, true);
 			ev.stopPropagation();
-      debugger;
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 501, ev));
       if (!ui || !handled)

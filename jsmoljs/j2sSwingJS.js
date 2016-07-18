@@ -6,6 +6,9 @@
 
  // NOTES by Bob Hanson and Andreas Raduege 
 
+ // BH 7/17/2016 4:19:07 PM prepareFields modified to save b$[] in outer class, not inner
+ //                         thus saving considerably on overhead when inner classes are created
+ //                         Also note that use of @j2sOverrideConstructor 
  // BH 7/11/2016 11:32:29 PM adds XxxxArray.getClass()
  // BH 7/7/2016 10:24:36 AM fixed Float.isInfinite(), Double.isInfinite()
  // BH 7/7/2016 10:12:20 AM added Number.compare(a,b) (technically just Float and Double)
@@ -262,7 +265,7 @@ Clazz.makeConstructor = function (clazzThis, funBody, rawSig) {
 
 /**
  * Override constructor for the class with the given function body and
- * parameters signature.
+ * parameters signature. 
  * 
  * @param clazzThis host class
  * @param funBody constructor body
@@ -480,14 +483,20 @@ Clazz.prepareCallback = function (innerObj, args) {
 	var outerObj = args[0];
 	//var cbName = "b$"; // "callbacks";
 	if (innerObj && outerObj && outerObj !== window) {
-		var className = Clazz.getClassName(outerObj, true);
-    // BH -- must first transfer the outer class's own callbacks
-    var obs = innerObj.b$ = appendMap({}, outerObj.b$);        
-  	// all references to outer class and its superclass objects must be here as well
-		obs[className] = outerObj;
-		var clazz = Clazz.getClass(outerObj);
-		while (clazz.superClazz)
-      obs[Clazz.getClassName(clazz = clazz.superClazz, true)] = outerObj;
+    // BH: A major change here -- save the b$ array with the OUTER class,
+    //     not the inner class, as it is a property of the outer class and
+    //     does not have to be recreated upon every new instance of the inner class.    
+    var b = outerObj.$b$;
+    if (!b) {
+      // BH -- must first transfer the outer class's own callbacks
+      b = outerObj.$b$ = appendMap({}, outerObj.b$);        
+    	// all references to outer class and its superclass objects must be here as well
+  		b[Clazz.getClassName(outerObj, true)] = outerObj;
+  		var clazz = Clazz.getClass(outerObj);
+  		while (clazz.superClazz)
+        b[Clazz.getClassName(clazz = clazz.superClazz, true)] = outerObj;
+    }
+    innerObj.b$ = b;
 	}
 	// note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
 	for (var i = 0, n = args.length - 1; i < n; i++)
@@ -1467,18 +1476,23 @@ Clazz._superCount1 = 0;
  */
 /* public */
 Clazz.superConstructor = function (objThis, clazzThis, args) {
-  var f = arguments.callee.caller.exMeth;
-  if (f) {
-    // Note that this function may be null. It is created in superCall.
-    f != -1 && f(objThis, args);
-    Clazz._superCount0++
+  if (clazzThis == null) {
+   // SwingJS insertion
+    clazzThis = objThis;
   } else {
-    Clazz._superCount1++
-  	Clazz.superCall(objThis, clazzThis, "construct", args, true);
+    var f = arguments.callee.caller.exMeth;
+    if (f) {
+      // Note that this function may be null. It is created in superCall.
+      f != -1 && f(objThis, args);
+      Clazz._superCount0++
+    } else {
+      Clazz._superCount1++
+    	f = Clazz.superCall(objThis, clazzThis, "construct", args, true);
+      f && f.apply(objThis, args)
+    }
   }
   var p = Clazz._preps[clazzThis.__CLASS_NAME__];
-  if (p)
-    p.apply(objThis, []);
+  p && p.apply(objThis, []);
 };
 
 /**
@@ -1507,6 +1521,9 @@ Clazz.superConstructor = function (objThis, clazzThis, args) {
 Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
 	var fx = null;
 	var i = -1;
+  
+  // this next code block sets both fx and i
+      
 	var clazzFun = objThis[funName];
 	if (clazzFun) {
 		if (clazzFun.claxxOwner) { 
@@ -1582,7 +1599,7 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
 		Clazz.alert (["j2sSwingJS","no class found",pTypes])
 		newMethodNotFoundException(clazzThis, funName, pTypes);	
   }
-	return (fx ? fx.apply(objThis, args || []) : null);
+	return (isConstruct ? fx : fx ? fx.apply(objThis, args || []) : null);
 };
 
 
