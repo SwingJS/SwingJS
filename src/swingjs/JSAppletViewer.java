@@ -144,6 +144,8 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 	public AppContext appContext;
 
+	private ArrayList<Object> timerQueue;
+
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
 	 * JavaScript
@@ -567,5 +569,8 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		applet.paint(g);
 	}
 
+	public ArrayList<Object> getTimerQueue() {
+		return (timerQueue == null ? (timerQueue = new ArrayList<Object>()) : timerQueue);
+	}
 
 }

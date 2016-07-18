@@ -313,7 +313,7 @@ return i-this.firstIndex;
 },"~O");
 Clazz.overrideMethod(c$,"remove",
 function(location){
-return this._removeItemAt(location);
+return (typeof location == "number" ? this._removeItemAt(location) : this._removeObject(location));
 },"~N"); 
 
 Clazz.overrideMethod(c$,"_removeItemAt",

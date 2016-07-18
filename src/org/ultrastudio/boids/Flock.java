@@ -66,4 +66,15 @@ public class Flock extends ArrayList<Boid> {
 		this.cooperative = cooperative;
 	}
 
+	public void multiply() {
+		for (int i = size(); --i >= 0;)
+			addBoid();
+	}
+
+	public void addBoid() {
+		Boid boid = new Boid();
+		boid.flock = this;
+		add(boid);
+	}
+
 }

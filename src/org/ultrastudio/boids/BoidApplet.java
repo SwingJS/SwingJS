@@ -65,9 +65,7 @@ public class BoidApplet extends JApplet implements ActionListener {
 		canvas.flock = flock;
 
 		for (int n = 0; n < Constants.count; n++) {
-			Boid boid = new Boid();
-			boid.flock = flock;
-			flock.add(boid);
+			flock.addBoid();
 		}
 
 		add(canvas, BorderLayout.CENTER);
@@ -81,6 +79,8 @@ public class BoidApplet extends JApplet implements ActionListener {
 			public void mousePressed(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON3)
 					flock.setCooperative(false);
+				else if ((e.getModifiers() & MouseEvent.SHIFT_MASK) != 0)
+					flock.multiply();
 				else
 					flock.setScared(true);
 			}

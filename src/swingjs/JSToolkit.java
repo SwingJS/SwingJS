@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -567,7 +568,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param msDelay a time to wait for, in milliseconds
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
-	public static void dispatch(Object f, int msDelay, int id) {
+	public static int dispatch(Object f, int msDelay, int id) {
 			
 		/**
 		 * @j2sNative
@@ -575,7 +576,7 @@ public class JSToolkit extends SunToolkit {
 		 *            var thread = java.lang.Thread.thisThread;
 		 *            var thread0 = thread;
 		 *            var id0 = SwingJS.eventID || 0;
-		 *            setTimeout(function(_JSToolkit_setTimeout) {
+		 *            return setTimeout(function(_JSToolkit_setTimeout) {
 		 *            SwingJS.eventID = id;
 		 *            java.lang.Thread.thisThread = thread; 
 		 *            try {
@@ -595,6 +596,7 @@ public class JSToolkit extends SunToolkit {
 		 * 
 		 */
 		{
+			return  0;
 		}
 	}
 
@@ -949,6 +951,10 @@ public class JSToolkit extends SunToolkit {
 	public static Line getAudioLine(Line.Info info) {
 		// TODO Auto-generated method stub
 		return getAudioPlayer().getAudioLine(info);
+	}
+
+	public static ArrayList<Object> getTimerQueue() {
+		return getAppletViewer().getTimerQueue();
 	}
 	
 }
