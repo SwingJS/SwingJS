@@ -1108,13 +1108,13 @@ public class Window extends Container {
     // to insure that it cannot be overridden by client subclasses.
     final void toFront_NoClientCode() {
         if (visible) {
-//            WindowPeer peer = (WindowPeer)this.peer;
-//            if (peer != null) {
-//                peer.toFront();
-//            }
-//            if (isModalBlocked()) {
-//                modalBlocker.toFront_NoClientCode();
-//            }
+            WindowPeer peer = (WindowPeer)this.peer;
+            if (peer != null) {
+                peer.toFront();
+            }
+            if (isModalBlocked()) {
+                modalBlocker.toFront_NoClientCode();
+            }
         }
     }
 

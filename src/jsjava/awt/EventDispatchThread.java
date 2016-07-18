@@ -136,7 +136,7 @@ class EventDispatchThread extends JSThread {
 	// Logger.getLogger("jsjava.awt.event.EventDispatchThread");
 
 	private EventQueue theQueue;
-	private static final int ANY_EVENT = -1;
+	static final int ANY_EVENT = -1;
 
 	private Vector<EventFilter> eventFilters = new Vector<EventFilter>();
 	// used in handleException

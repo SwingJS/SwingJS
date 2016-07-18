@@ -6001,9 +6001,9 @@ protected  transient ComponentPeer peer;
 //                }
             }
 
-            if (!isAddNotifyComplete) {
-                mixOnShowing();
-            }
+//            if (!isAddNotifyComplete) {
+//                mixOnShowing();
+//            }
 
             isAddNotifyComplete = true;
 
