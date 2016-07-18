@@ -18,7 +18,7 @@
  USA.
 */
 
-package org.utltrastudio.boids;
+package org.ultrastudio.boids;
 
 /**
  * Various constants of the model.

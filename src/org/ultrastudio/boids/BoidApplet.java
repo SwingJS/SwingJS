@@ -18,7 +18,7 @@
  USA.
 */
 
-package org.utltrastudio.boids;
+package org.ultrastudio.boids;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
