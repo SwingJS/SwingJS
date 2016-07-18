@@ -94,14 +94,14 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
 	@Override
 	public void toFront() {
-		System.out.println("window to front for " + jc.htmlName);
+		System.out.println("window to front for " + id);
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void toBack() {
-		System.out.println("window to back for " + jc.htmlName);
+		System.out.println("window to back for " + id);
 		// TODO Auto-generated method stub
 		
 	}
