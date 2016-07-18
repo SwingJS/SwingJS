@@ -22,7 +22,7 @@
   	<!-- create a NON svn local directory only containing JS files  -->
   	
   	<echo>deleting the site directory</echo>
-   	 	<delete quiet="true" dir="site" />
+   	 	<delete quiet="true" dir="site/swingjs" />
   	
 <!--  	working here -->
 
