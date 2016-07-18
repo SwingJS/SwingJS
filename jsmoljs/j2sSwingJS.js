@@ -4,8 +4,9 @@
 // latest author: Bob Hanson, St. Olaf College, hansonr@stolaf.edu
 
 
- // NOTES by Bob Hanson and Andreas Raduege 
+ // NOTES by Bob Hanson
 
+ // BH 7/18/2016 10:28:47 AM adds System.nanoTime()
  // BH 7/17/2016 4:19:07 PM prepareFields modified to save b$[] in outer class, not inner
  //                         thus saving considerably on overhead when inner classes are created
  //                         Also note that use of @j2sOverrideConstructor 
@@ -2650,6 +2651,11 @@ java.lang.System = System = {
 				src[--destPos] = src[--srcPos];
 		}
 	},
+  
+  nanoTime: function() {
+   return Math.round(window.performance.now() * 1e6)
+  },
+  
 	currentTimeMillis : function () {
 		return new Date ().getTime ();
 	},

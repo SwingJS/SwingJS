@@ -956,5 +956,5 @@ public class JSToolkit extends SunToolkit {
 	public static ArrayList<Object> getTimerQueue() {
 		return getAppletViewer().getTimerQueue();
 	}
-	
+
 }

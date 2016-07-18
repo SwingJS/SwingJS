@@ -67,10 +67,16 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			containerNode = domNode = createDOMObject("div", id);
+			setWindowClass(domNode);
 		}
 		return domNode;
 	}
 	
+	protected void setWindowClass(DOMNode windowNode) {
+		DOMNode.setZ(windowNode, z);
+		$(windowNode).addClass("swingjs-window");
+	}
+
 	@Override
 	protected DOMNode setHTMLElement() {
 		
@@ -95,14 +101,13 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	@Override
 	public void toFront() {
 		System.out.println("window to front for " + id);
-		// TODO Auto-generated method stub
-		
+		z = JSToolkit.J2S._setWindowPosition(domNode, Integer.MAX_VALUE);
 	}
 
 	@Override
 	public void toBack() {
 		System.out.println("window to back for " + id);
-		// TODO Auto-generated method stub
+		z = JSToolkit.J2S._setWindowPosition(domNode, Integer.MIN_VALUE);
 		
 	}
 

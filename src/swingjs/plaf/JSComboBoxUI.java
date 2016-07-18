@@ -37,7 +37,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		setDataUI(domNode);
 		//bindKeys(domNode); // ? perhaps?
 		DOMNode.addJqueryHandledEvent(this, domNode, "change");
-		DOMNode.setStyles(domNode, "z-index", "" + (getZIndex(null) + 5));
+		//DOMNode.setZ(domNode, getZIndex(null) + 5);
 		setFocusable();
     return domNode;
 	}

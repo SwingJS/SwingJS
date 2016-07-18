@@ -27,5 +27,7 @@ public interface J2SInterface {
 
 	void _setDraggable(DOMNode frameNode, DOMNode titleBarNode);
 
+	int _setWindowPosition(DOMNode domNode, int pos);
+
 }
 

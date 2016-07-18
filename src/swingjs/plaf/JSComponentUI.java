@@ -774,6 +774,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		if (node == null)
 			node = domNode; // a frame or other window
 		DOMNode.setStyles(node, "display", b ? "block" : "none");
+		if (b)
+			toFront();
+	}
+	
+	public void toFront() {
+		// windows only
 	}
 
 	@Override

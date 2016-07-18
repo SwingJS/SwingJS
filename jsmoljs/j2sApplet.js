@@ -1,5 +1,6 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
+// BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
 
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required, but it's not defined.")
 
@@ -26,6 +27,7 @@ J2S = (function(document) {
 	};
   
 	var j = {
+    
 		_version: "$Date: 2015-12-20 16:06:27 -0600 (Sun, 20 Dec 2015) $", // svn.keywords:lastUpdated
 		_alertNoBinary: true,
 		_allowedAppletSize: [25, 2048, 500],   // min, max, default (pixels)
@@ -64,7 +66,7 @@ J2S = (function(document) {
 		_XhtmlElement: null,
 		_XhtmlAppendChild: false
 	}
-
+  j.z = z;
 	var ref = document.location.href.toLowerCase();
 	j._httpProto = (ref.indexOf("https") == 0 ? "https://" : "http://"); 
 	j._isFile = (ref.indexOf("file:") == 0);
@@ -1137,6 +1139,9 @@ J2S = (function(document) {
 			if(xym) {
 		  	if (ev.button != 2 && J2S.Swing) // older Jmol "jsSwing" idea -- still used in Jmol
           J2S.Swing.hideMenus(who.applet);
+          
+        if (who._frameViewer && who._frameViewer.isFrame)
+          J2S._setWindowPosition(who._frameViewer.top.ui.domNode, Integer.MAX_VALUE); 
         who.applet._processEvent(501, xym, ev, who._frameViewer); //java.awt.Event.MOUSE_DOWN
       }
 			return !!ui;
@@ -1966,16 +1971,17 @@ J2S._setDraggable = function(frame, tag) {
 	if (tag._isDragger)
 		return;
 	var $tag = $(tag);
-  var $frame = $(frame);  
+  var $frame = $(frame);
 	frame._dragger = tag;
   tag._isDragger = true;
   var pageX0, pageY0, pageX, pageY;
   
 	var mouseMove = function(ev) {
+  // we will move the frame's parent node and take the frame along with it
   	if (tag.isDragging && J2S._dmouseOwner == tag) {
 			var x = pageX0 + (ev.pageX - pageX);
 			var y = pageY0 + (ev.pageY - pageY);
-			$frame.css({ top: y + 'px', left: x + 'px' })
+			$frame.parent().css({ top: y + 'px', left: x + 'px' })
 		}
 	}
 
@@ -1992,7 +1998,7 @@ J2S._setDraggable = function(frame, tag) {
 		tag.isDragging = true;
 		pageX = ev.pageX;
 		pageY = ev.pageY;
-    var o = $frame.position();
+    var o = $frame.parent().position();
     pageX0 = o.left;
     pageY0 = o.top;
 		return false;
@@ -2002,7 +2008,7 @@ J2S._setDraggable = function(frame, tag) {
 		if (tag.isDragging && J2S._dmouseOwner == tag) {
 			var x = pageX0 + (ev.pageX - pageX);
 			var y = pageY0 + (ev.pageY - pageY);
-			$frame.css({ top: y + 'px', left: x + 'px' })
+			$frame.parent().css({ top: y + 'px', left: x + 'px' })
 			return false;
 		}
 	});
@@ -2034,7 +2040,26 @@ J2S._setDraggable = function(frame, tag) {
   tag._dragBind(true);
   
 }
-  
+
+J2S._setWindowPosition = function(node, z) {
+  // on frame show or mouse-down, create a stack of frames and sort by z-order 
+  var zbase = J2S._z.rear + 2000;
+  var a = [];
+  var zmin = 1e10
+  var zmax = -1e10
+  var $windows = $(".swingjs-window");
+  $windows.each(function(a,b){if (b != node)a.push([+b.style.zIndex,b]);});
+  a.sort(function(a,b){return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0})
+  var z0 = zbase;
+  for (var i = 0; i < a.length; i++) {
+    a[i][1].style.zIndex = zbase;
+    zbase += 1000;
+  }
+  z = (node.style.zIndex = (z > 0 ? zbase : z0));
+  System.out.println("setting z-index to " + z + " for " + node.id); 
+  return z;
+} 
+ 
 })(J2S);
 
 

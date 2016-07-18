@@ -76,7 +76,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			$(domNode).addClass("swingjs");
 			setJQuerySliderAndEvents();
 		}
-		setZ(isNew);
+		setup(isNew);
 		setSlider();
 		return domNode;
 	}
@@ -127,7 +127,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	 * 
 	 * @param isNew
 	 */
-	private void setZ(boolean isNew) {
+	private void setup(boolean isNew) {
 		int z = getZIndex(null);
 		if (z == z0)
 			return;
@@ -135,8 +135,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		System.out.println("JSSliderUI setting z to " + z);
 		sliderTrack = DOMNode.firstChild(domNode);
 		DOMNode sliderHandle = DOMNode.firstChild(sliderTrack);
-		DOMNode.setZ(sliderTrack, z++);
-		DOMNode.setZ(sliderHandle, z++);
+		//DOMNode.setZ(sliderTrack, z++);
+		//DOMNode.setZ(sliderHandle, z++);
 		// mark the handle and track with the "swingjs-ui" class
 		// so as to ignore all mouse/touch events from Jmol._jsSetMouse();
 		if (isNew) {
@@ -256,7 +256,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		String prop = e.getPropertyName();
 		System.out.println(id + " propertyChange " + prop);
 		if (prop == "ancestor")
-			setZ(false);
+			setup(false);
 	}
 
 	@Override
@@ -270,7 +270,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			setSliderAttr("max", max = v);		
 		if ((v = jSlider.getValue()) != val)
 			setSliderAttr("value", val = v);
-		setZ(false);
+		setup(false);
 	}
 
 }
