@@ -1,4 +1,4 @@
-package javajs.util;
+package com.falstad;
 
 /**
  * 

@@ -21,6 +21,8 @@ package test.falstad;
 // Added 'finished' boolean/state machine to itemState & adjustmentListener and at the end of init
 //		--> otherwise it calls items before they exist
 
+import com.falstad.Complex;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -656,7 +658,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			ds.text = "n = " + ds.n + ", nr = " + nr + ", l = " + l + ", "
 					+ mtext + " = " + ds.m;
 			for (j = 0; j != lct; j++) {
-				ds.coefs[j].set(arr[ap], arr[ap + 1]);
+				ds.coefs[j].setReIm(arr[ap], arr[ap + 1]);
 				ap += 2;
 			}
 		}
@@ -690,7 +692,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			int j;
 			for (j = 0; j != ds.count; j++) {
 				ds.bstates[j] = getState(nr, l, m);
-				ds.coefs[j] = new Complex(rectArrayR[ap], rectArrayI[ap]);
+				ds.coefs[j] = new Complex().setReIm(rectArrayR[ap], rectArrayI[ap]);
 				ap++;
 				if (m++ == l) {
 					l += 2;
@@ -1117,7 +1119,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		if (viewChooser.getSelectedIndex() == VIEW_COMBO_COMP)
 			for (i = 0; i != stateCount; i++)
 				if (states[i].nr >= 4 || states[i].l >= 5)
-					states[i].set(0);
+					states[i].setRe(0);
 
 		// in case the states changed
 		createOrbitals();
@@ -1142,7 +1144,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		doClear();
 
 		// no states active, so pick a phasor and select it.
-		phasors[0].state.set(1);
+		phasors[0].state.setRe(1);
 		createOrbitals();
 	}
 
@@ -1656,7 +1658,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		for (i = 0; i != stateCount; i++) {
 			State st = states[i];
 			if (st.mag < epsilon) {
-				st.set(0);
+				st.setRe(0);
 				continue;
 			}
 			if (tadd != 0) {
@@ -2160,7 +2162,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		int i;
 		rectBasis.convertBasisToDerived();
 		for (i = 0; i != 5; i++)
-			rectBasis.altStates[i].set(movedGaussian[i], 0);
+			rectBasis.altStates[i].setReIm(movedGaussian[i], 0);
 		rectBasis.convertDerivedToBasis();
 		createOrbitals();
 	}
@@ -2169,7 +2171,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		doClear();
 		int i;
 		for (i = 0; i != 8; i++)
-			getState(i, 0, 0).set(scaledGaussian[i]);
+			getState(i, 0, 0).setRe(scaledGaussian[i]);
 		createOrbitals();
 	}
 
@@ -2178,11 +2180,11 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		int i;
 		for (i = 0; i != rectBasis.altStateCount; i++) {
 			DerivedState ds = rectBasis.altStates[i];
-			ds.set(0);
+			ds.setRe(0);
 			if ((ds.nx & 1) > 0 || ds.ny > 0 || (ds.nz & 1) > 0)
 				continue;
 			int s = (ds.nx / 2) * 3 + ds.nz / 2;
-			ds.set(scaled2Gaussian[s]);
+			ds.setRe(scaled2Gaussian[s]);
 		}
 		rectBasis.convertDerivedToBasis();
 		createOrbitals();
@@ -2193,11 +2195,11 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		int i;
 		for (i = 0; i != rectBasis.altStateCount; i++) {
 			DerivedState ds = rectBasis.altStates[i];
-			ds.set(0);
+			ds.setRe(0);
 			int s = ds.nx * 3 + ds.nz;
 			if (ds.ny > 0 || ds.nx > 2 || ds.nz > 2)
 				continue;
-			ds.set(rotGaussianR[s], rotGaussianI[s]);
+			ds.setReIm(rotGaussianR[s], rotGaussianI[s]);
 		}
 		rectBasis.convertDerivedToBasis();
 		createOrbitals();
@@ -2208,10 +2210,10 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		int i;
 		for (i = 0; i != rectBasis.altStateCount; i++) {
 			DerivedState ds = rectBasis.altStates[i];
-			ds.set(0);
+			ds.setRe(0);
 			if (ds.nz != 1 || ds.ny != 0)
 				continue;
-			ds.set(dispX110Array[ds.nx]);
+			ds.setRe(dispX110Array[ds.nx]);
 		}
 		rectBasis.convertDerivedToBasis();
 		createOrbitals();
@@ -2222,11 +2224,11 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		int i;
 		for (i = 0; i != rectBasis.altStateCount; i++) {
 			DerivedState ds = rectBasis.altStates[i];
-			ds.set(0);
+			ds.setRe(0);
 			// if (ds.nx != 1 || ds.ny != 1)
 			if (ds.nx != 1 || ds.ny != 0)
 				continue;
-			ds.set(dispZ110Array[ds.nz]);
+			ds.setRe(dispZ110Array[ds.nz]);
 		}
 		rectBasis.convertDerivedToBasis();
 		createOrbitals();
@@ -2388,9 +2390,9 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		int i;
 		for (i = 0; i != stateCount; i++)
 			if (states[i] != selectedState)
-				states[i].set(0);
+				states[i].setRe(0);
 		selectedState.convertBasisToDerived();
-		selectedState.set(1);
+		selectedState.setRe(1);
 		selectedState.convertDerivedToBasis();
 		createOrbitals();
 		cv.repaint(pause);
@@ -2570,9 +2572,9 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		if (selectedState == null)
 			return;
 		if (magDragStart < .5)
-			selectedState.set(1, 0);
+			selectedState.setReIm(1, 0);
 		else
-			selectedState.set(0);
+			selectedState.setRe(0);
 		cv.repaint(pause);
 		createOrbitals();
 	}
@@ -2702,7 +2704,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 	void doClear() {
 		int x;
 		for (x = 0; x != stateCount; x++)
-			states[x].set(0);
+			states[x].setRe(0);
 	}
 
 	void normalize() {
@@ -2714,7 +2716,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			return;
 		double normmult = 1 / java.lang.Math.sqrt(norm);
 		for (i = 0; i != stateCount; i++)
-			states[i].mult(normmult);
+			states[i].multRe(normmult);
 		cv.repaint(pause);
 	}
 
@@ -2727,7 +2729,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		if (maxm == 0)
 			return;
 		for (i = 0; i != stateCount; i++)
-			states[i].mult(1 / maxm);
+			states[i].multRe(1 / maxm);
 		cv.repaint(pause);
 	}
 
@@ -2750,7 +2752,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		for (i = 0; i != stateCount; i++) {
 			State st = states[i];
 			if (st.elevel != states[picki].elevel)
-				st.set(0);
+				st.setRe(0);
 		}
 		normalize();
 	}
@@ -2798,14 +2800,14 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			for (i = 0; i != stateCount; i++) {
 				BasisState bs = states[i];
 				if (bs.m != pickm)
-					bs.set(0);
+					bs.setRe(0);
 			}
 			break;
 		default:
 			for (i = 0; i != ab.altStateCount; i++) {
 				DerivedState ds = ab.altStates[i];
 				if (ds.m != pickm)
-					ds.set(0);
+					ds.setRe(0);
 			}
 			ab.convertDerivedToBasis();
 		}
@@ -2819,7 +2821,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		if (viewChooser.getSelectedIndex() > VIEW_COMPLEX)
 			return;
 		doClear();
-		getState(getNR(), getL(), getM()).set(1, 0);
+		getState(getNR(), getL(), getM()).setReIm(1, 0);
 		createOrbitals();
 		manualScale = false;
 	}
@@ -3165,7 +3167,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			int i, j;
 			if (clear)
 				for (i = 0; i != stateCount; i++)
-					states[i].set(0);
+					states[i].setRe(0);
 			Complex c = new Complex();
 			for (i = 0; i != altStateCount; i++) {
 				DerivedState ds = altStates[i];
@@ -3183,7 +3185,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			if (maxm > 1) {
 				double mult = 1 / maxm;
 				for (i = 0; i != stateCount; i++)
-					states[i].mult(mult);
+					states[i].multRe(mult);
 			}
 		}
 
@@ -3194,7 +3196,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			double maxm = 0;
 			for (i = 0; i != altStateCount; i++) {
 				DerivedState ds = altStates[i];
-				c1.set(0);
+				c1.setRe(0);
 				try {
 					for (j = 0; j != ds.count; j++) {
 						c2.set(ds.coefs[j]);
@@ -3205,7 +3207,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 					System.out.print("Exception at " + i + "\n");
 				}
 				if (c1.mag < epsilon)
-					c1.set(0);
+					c1.setRe(0);
 				ds.set(c1);
 				if (c1.mag > maxm)
 					maxm = ds.mag;
@@ -3213,101 +3215,10 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			if (maxm > 1) {
 				double mult = 1 / maxm;
 				for (i = 0; i != altStateCount; i++)
-					altStates[i].mult(mult);
+					altStates[i].multRe(mult);
 			}
 		}
 	}
-
-	class Complex {
-		public double re, im, mag, phase;
-
-		Complex() {
-			re = im = mag = phase = 0;
-		}
-
-		Complex(double r, double i) {
-			set(r, i);
-		}
-
-		double magSquared() {
-			return mag * mag;
-		}
-
-		void set(double aa, double bb) {
-			re = aa;
-			im = bb;
-			setMagPhase();
-		}
-
-		void set(double aa) {
-			re = aa;
-			im = 0;
-			setMagPhase();
-		}
-
-		void set(Complex c) {
-			re = c.re;
-			im = c.im;
-			mag = c.mag;
-			phase = c.phase;
-		}
-
-		void add(double r) {
-			re += r;
-			setMagPhase();
-		}
-
-		void add(double r, double i) {
-			re += r;
-			im += i;
-			setMagPhase();
-		}
-
-		void add(Complex c) {
-			re += c.re;
-			im += c.im;
-			setMagPhase();
-		}
-
-		void square() {
-			set(re * re - im * im, 2 * re * im);
-		}
-
-		void mult(double c, double d) {
-			set(re * c - im * d, re * d + im * c);
-		}
-
-		void mult(double c) {
-			re *= c;
-			im *= c;
-			mag *= c;
-		}
-
-		void mult(Complex c) {
-			mult(c.re, c.im);
-		}
-
-		void setMagPhase() {
-			mag = java.lang.Math.sqrt(re * re + im * im);
-			phase = java.lang.Math.atan2(im, re);
-		}
-
-		void setMagPhase(double m, double ph) {
-			mag = m;
-			phase = ph;
-			re = m * java.lang.Math.cos(ph);
-			im = m * java.lang.Math.sin(ph);
-		}
-
-		void rotate(double a) {
-			setMagPhase(mag, (phase + a) % (2 * pi));
-		}
-
-		void conjugate() {
-			im = -im;
-			phase = -phase;
-		}
-	};
 
 	class PhaseColor {
 		public double r, g, b;

@@ -67,9 +67,11 @@ public class JSAudioThread extends JSThread {
 	protected int audioBufferByteLength;
 
 	private AudioFormat audioFormat;
+	private int myBufferOffset;
+	private int playCount;
 	
-	public JSAudioThread(JSAudioThreadOwner user, AudioFormat audioFormat, byte[] audioByteBuffer) {
-		this.owner = user;
+	public JSAudioThread(JSAudioThreadOwner owner, AudioFormat audioFormat, byte[] audioByteBuffer) {
+		this.owner = owner;
 		setFormat(audioFormat);
 		setBuffer(audioByteBuffer);
 	}
@@ -78,17 +80,15 @@ public class JSAudioThread extends JSThread {
 	 * A convenience constructor requiring standard settings of 
 	 * signed (for 8-bit) and littleEndian (for 16-bit)
 	 *   
-	 * @param user
+	 * @param owner
 	 * @param rate
 	 * @param bitsPerSample
 	 * @param nChannels
 	 * @param audioByteBuffer
 	 */
-	public JSAudioThread(JSAudioThreadOwner user, int rate, int bitsPerSample, int nChannels, byte[] audioByteBuffer) {
-		this.owner = user;
+	public JSAudioThread(JSAudioThreadOwner owner, int rate, int bitsPerSample, int nChannels, byte[] audioByteBuffer) {
+		this.owner = owner;
 		setFormat(new AudioFormat(rate, bitsPerSample, nChannels, true, false));
-		this.owner = user;
-		setFormat(audioFormat);
 		setBuffer(audioByteBuffer);
 	}
 	
@@ -126,8 +126,11 @@ public class JSAudioThread extends JSThread {
 	 * @param data
 	 */
 	public void playOnce(byte[] data, int offset, int length) {
-			myInit();
-			line.write(data, offset, length);
+		setBuffer(data);
+		myBufferOffset = offset;
+		myBufferLength = length;
+		playCount = 1;
+		start();
 	}
 
 	public void setBuffer(byte[] audioByteBuffer) {
@@ -180,18 +183,18 @@ public class JSAudioThread extends JSThread {
 	
 	@Override
 	protected boolean isLooping() {
-		return !done && owner.checkSoundStatus();
+		return !done && (--playCount >= 0 || owner != null && owner.checkSoundStatus());
 	}
 
 	@Override
 	protected boolean myLoop() {
 		if (!done) {
-			if ((myBufferLength = owner.fillAudioBuffer()) <= 0)
+			if ((myBufferLength = (owner == null ? myBufferLength : owner.fillAudioBuffer())) <= 0)
 				return !(done = true);
 			try {
 				if (line == null)
 					myInit();					
-				line.write(audioByteBuffer, 0, myBufferLength);
+				line.write(audioByteBuffer, myBufferOffset, myBufferLength);
 			} catch (Exception e) {
 				e.printStackTrace();
 				done = true;
@@ -223,7 +226,8 @@ public class JSAudioThread extends JSThread {
 
 	@Override
 	protected void doFinally() {
-		owner.audioThreadExiting();
+		if (owner != null)
+			owner.audioThreadExiting();
 	}
 
 }

@@ -31,12 +31,14 @@ import java.text.NumberFormat;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import javajs.util.FFT;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+
+import com.falstad.Complex;
+import com.falstad.FFT;
 
 import swingjs.JSAudioThread;
 import swingjs.JSAudioThreadOwner;
@@ -55,82 +57,19 @@ import swingjs.awt.MenuItem;
 import swingjs.awt.Scrollbar;
 import swingjs.awt.TextArea;
 
-class VowelCanvas extends Canvas {
-	VowelFrame pg;
+/*
+ * SwingJS note -- BH
+ * 
+ * This SwingJS applet conversion demonstrates the use of 16-bit streaming stereo
+ * audio using a subclassed JSAudioThread. 
+ * 
+ * The original applet was Java 1.2, preSWING, AWT-only.
+ * 
+ * Note that in Swing one uses processEvent(), not handleEvent().
+ * 
+ */
 
-	VowelCanvas(VowelFrame p) {
-		pg = p;
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(300, 400);
-	}
-
-	@Override
-	public void update(Graphics g) {
-		pg.updateVowel(g);
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		pg.updateVowel(g);
-	}
-};
-
-class VowelLayout implements LayoutManager {
-	public VowelLayout() {
-	}
-
-	@Override
-	public void addLayoutComponent(String name, Component c) {
-	}
-
-	@Override
-	public void removeLayoutComponent(Component c) {
-	}
-
-	@Override
-	public Dimension preferredLayoutSize(Container target) {
-		return new Dimension(500, 500);
-	}
-
-	@Override
-	public Dimension minimumLayoutSize(Container target) {
-		return new Dimension(100, 100);
-	}
-
-	@Override
-	public void layoutContainer(Container target) {
-		Insets insets = target.insets();
-		int targetw = target.size().width - insets.left - insets.right;
-		int cw = targetw * 7 / 10;
-		int targeth = target.size().height - (insets.top + insets.bottom);
-		target.getComponent(0).move(insets.left, insets.top);
-		target.getComponent(0).resize(cw, targeth);
-		int barwidth = targetw - cw;
-		cw += insets.left;
-		int i;
-		int h = insets.top;
-		for (i = 1; i < target.getComponentCount(); i++) {
-			Component m = target.getComponent(i);
-			if (m.isVisible()) {
-				Dimension d = m.getPreferredSize();
-				if (m instanceof Scrollbar)
-					d.width = barwidth;
-				if (m instanceof Choice)
-					d.width = barwidth;
-				if (m instanceof Label) {
-					h += d.height / 5;
-					d.width = barwidth;
-				}
-				m.move(cw, h);
-				m.resize(d.width, d.height);
-				h += d.height;
-			}
-		}
-	}
-};
+// using swingjs.awt classes for pre-Swing AWT controls
 
 public class Vowel extends Applet implements ComponentListener {
 	static VowelFrame ogf;
@@ -1240,7 +1179,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		genPipeResponse(pipeRadius, f * 2, ll, resp, wave);
 		double m = 1 / wave[0].mag;
 		for (int i = wave.length; --i >= 0;)
-			wave[i].mult(m);
+			wave[i].multRe(m);
 	}
 
 	void setCutoff(double f) {
@@ -2154,9 +2093,9 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				bottom = new Complex();
 			}
 			int i, j;
-			czn.setReal(1);
-			top.setReal(0);
-			bottom.setReal(0);
+			czn.setRe(1);
+			top.setRe(0);
+			bottom.setRe(0);
 			int n = 0;
 			for (i = 0; i != aList.length; i++) {
 				int n1 = nList[i];
@@ -2347,15 +2286,15 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			cm1.recip();
 			cm2.set(cm1);
 			cm2.square();
-			c.setReal(1);
+			c.setRe(1);
 			for (i = 0; i != size; i++) {
-				top.setReal(b0[i]);
+				top.setRe(b0[i]);
 				top.scaleAdd(b1[i], cm1);
 				top.scaleAdd(b2[i], cm2);
-				bottom.setReal(1);
+				bottom.setRe(1);
 				bottom.scaleAdd(-a1[i], cm1);
 				bottom.scaleAdd(-a2[i], cm2);
-				c.multComp(top);
+				c.mult(top);
 				c.divide(bottom);
 			}
 		}
@@ -2395,11 +2334,11 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 
 		void getPole(int i, Complex c) {
-			c.setReal(0);
+			c.setRe(0);
 		}
 
 		void getZero(int i, Complex c) {
-			c.setReal(0);
+			c.setRe(0);
 		}
 
 		abstract Filter genFilter();
@@ -2426,7 +2365,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		@Override
 		void getResponse(double w, Complex c) {
 			if (response == null) {
-				c.setReal(0);
+				c.setRe(0);
 				return;
 			}
 			int off = (int) (response.length * w / (2 * Math.PI));
@@ -2435,7 +2374,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				off = 0;
 			if (off >= response.length)
 				off = response.length - 2;
-			c.setDouble(response[off], response[off + 1]);
+			c.setReIm(response[off], response[off + 1]);
 		}
 
 		double getWindow(int i, int n) {
@@ -2486,7 +2425,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			int j;
 			Complex c1 = new Complex();
 			for (j = 0; j != response.length; j += 2) {
-				c1.setDouble(response[j], response[j + 1]);
+				c1.setReIm(response[j], response[j + 1]);
 				// divide out the uninteresting (and confusing) constant delay
 				c1.rotate(-offset * 2 * Math.PI * j / response.length);
 				double ms = c1.magSquared();
@@ -2652,11 +2591,11 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	
 	double solve(Complex m[][], int n, Complex wave[]) {
 		int i;
-		s0.setDouble(1, 0);
-		s1.setDouble(0, 0);
-		det.setDouble(0, 0);
-		rs0.setDouble(0, 0);
-		rs1.setDouble(0, 0);
+		s0.setReIm(1, 0);
+		s1.setReIm(0, 0);
+		det.setReIm(0, 0);
+		rs0.setReIm(0, 0);
+		rs1.setReIm(0, 0);
 		/*
 		 * for (i = 0; i != n; i++) { System.out.println(i + " " +
 		 * m[i][0].asString() + " " + m[i][1].asString() + " " + m[i][2].asString()
@@ -2665,33 +2604,33 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		for (i = n - 2; i >= 0; i -= 2) {
 			// use variables we know to get rid of 2 columns, moving them to right
 			// side
-			rs0.setReal(0);
-			rs0.addMult3(-1, m[i][2], s0);
-			rs0.addMult3(-1, m[i][3], s1);
-			rs1.setReal(0);
-			rs1.addMult3(-1, m[i + 1][2], s0);
-			rs1.addMult3(-1, m[i + 1][3], s1);
+			rs0.setRe(0);
+			rs0.scaleAdd2(-1, m[i][2], s0);
+			rs0.scaleAdd2(-1, m[i][3], s1);
+			rs1.setRe(0);
+			rs1.scaleAdd2(-1, m[i + 1][2], s0);
+			rs1.scaleAdd2(-1, m[i + 1][3], s1);
 			// System.out.println("rs0 rs1 " + rs0.asString() + " " + rs1.asString());
 			// use cramer's rule to solve the remaining 2x2 matrix
 			// first, get determinant
-			det.setReal(0);
-			det.addMult3(1, m[i][0], m[i + 1][1]);
-			det.addMult3(-1, m[i][1], m[i + 1][0]);
+			det.setRe(0);
+			det.scaleAdd2(1, m[i][0], m[i + 1][1]);
+			det.scaleAdd2(-1, m[i][1], m[i + 1][0]);
 			// then solve
-			s0.setReal(0);
-			s0.addMult3(-1, m[i][1], rs1);
-			s0.addMult3(1, m[i + 1][1], rs0);
+			s0.setRe(0);
+			s0.scaleAdd2(-1, m[i][1], rs1);
+			s0.scaleAdd2(1, m[i + 1][1], rs0);
 			s0.divide(det);
-			s1.setReal(0);
-			s1.addMult3(1, m[i][0], rs1);
-			s1.addMult3(-1, m[i + 1][0], rs0);
+			s1.setRe(0);
+			s1.scaleAdd2(1, m[i][0], rs1);
+			s1.scaleAdd2(-1, m[i + 1][0], rs0);
 			s1.divide(det);
 			// System.out.println("s0 s1 " + s0.asString() + " " + s1.asString());
 			if (wave != null) {
-				Complex cx = wave[i / 2] = new Complex().setDouble(s0.re, s0.im);
-				cx.multComp(m[i][0]);
-				cy.setDouble(s1.re, s1.im);
-				cy.multComp(m[i][1]);
+				Complex cx = wave[i / 2] = new Complex().setReIm(s0.re, s0.im);
+				cx.mult(m[i][0]);
+				cy.setReIm(s1.re, s1.im);
+				cy.mult(m[i][1]);
 				cx.add(cy);
 			}
 		}
@@ -2701,8 +2640,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	Complex iexp(double x, double alpha, double mul) {
 		Complex a = new Complex();
-		a.setMagPhase2(Math.exp(alpha), x);
-		a.mult(mul);
+		a.setMagPhase(Math.exp(alpha), x);
+		a.multRe(mul);
 		return a;
 	}
 
@@ -3217,7 +3156,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		
 		@Override
 		void getResponse(double w, Complex c) {
-			c.setReal(1);
+			c.setRe(1);
 		}
 
 		@Override
@@ -3737,136 +3676,83 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 				
 	}
-}
+	
+	class VowelCanvas extends Canvas {
+		VowelFrame pg;
 
-class Complex {
-	public double re, im, mag, phase;
+		VowelCanvas(VowelFrame p) {
+			pg = p;
+		}
 
-	public Complex() {
-		re = im = mag = phase = 0;
-	}
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(300, 400);
+		}
 
-	public double magSquared() {
-		return mag * mag;
-	}
+		@Override
+		public void update(Graphics g) {
+			pg.updateVowel(g);
+		}
 
-	public Complex setDouble(double r, double i) {
-		re = r;
-		im = i;
-		setMagPhase();
-		return this;
-	}
+		@Override
+		public void paintComponent(Graphics g) {
+			pg.updateVowel(g);
+		}
+	};
 
-	public void setReal(double r) {
-		re = r;
-		im = 0;
-		setMagPhase();
-	}
+	class VowelLayout implements LayoutManager {
+		public VowelLayout() {
+		}
 
-	public void set(Complex c) {
-		re = c.re;
-		im = c.im;
-		mag = c.mag;
-		phase = c.phase;
-	}
+		@Override
+		public void addLayoutComponent(String name, Component c) {
+		}
 
-	public void addReal(double r) {
-		re += r;
-		setMagPhase();
-	}
+		@Override
+		public void removeLayoutComponent(Component c) {
+		}
 
-	public void addDouble(double r, double i) {
-		re += r;
-		im += i;
-		setMagPhase();
-	}
+		@Override
+		public Dimension preferredLayoutSize(Container target) {
+			return new Dimension(500, 500);
+		}
 
-	public void add(Complex c) {
-		re += c.re;
-		im += c.im;
-		setMagPhase();
-	}
+		@Override
+		public Dimension minimumLayoutSize(Container target) {
+			return new Dimension(100, 100);
+		}
 
-	public void subtractComp(Complex c) {
-		re -= c.re;
-		im -= c.im;
-		setMagPhase();
-	}
-
-	public void scaleAdd(double x, Complex z) {
-		re += z.re * x;
-		im += z.im * x;
-		setMagPhase();
-	}
-
-	public void addMult3(double x, Complex c1, Complex c2) {
-		re += x * (c1.re * c2.re - c1.im * c2.im);
-		im += x * (c1.re * c2.im + c1.im * c2.re);
-		setMagPhase();
-	}
-
-	public void square() {
-		setDouble(re * re - im * im, 2 * re * im);
-	}
-
-	public void sqrt() {
-		setMagPhase2(Math.sqrt(mag), phase * .5);
-	}
-
-	public void mult2(double c, double d) {
-		setDouble(re * c - im * d, re * d + im * c);
-	}
-
-	public void mult(double c) {
-		re *= c;
-		im *= c;
-		mag *= c;
-	}
-
-	public void multComp(Complex c) {
-		mult2(c.re, c.im);
-	}
-
-	public void setMagPhase() {
-		mag = Math.sqrt(re * re + im * im);
-		phase = Math.atan2(im, re);
-	}
-
-	public void setMagPhase2(double m, double ph) {
-		mag = m;
-		phase = ph;
-		re = m * Math.cos(ph);
-		im = m * Math.sin(ph);
-	}
-
-	public void recip() {
-		double n = re * re + im * im;
-		setDouble(re / n, -im / n);
-	}
-
-	public void divide(Complex c) {
-		double n = c.re * c.re + c.im * c.im;
-		mult2(c.re / n, -c.im / n);
-	}
-
-	public void rotate(double a) {
-		setMagPhase2(mag, (phase + a) % (2 * Math.PI));
-	}
-
-	public void conjugate() {
-		im = -im;
-		phase = -phase;
-	}
-
-	public void pow(double p) {
-		phase *= p;
-		double abs = Math.pow(re * re + im * im, p * .5);
-		setMagPhase2(abs, phase);
-	}
-
-	@Override
-	public String toString() {
-		return re + "+" + im + "i";
+		@Override
+		public void layoutContainer(Container target) {
+			Insets insets = target.insets();
+			int targetw = target.size().width - insets.left - insets.right;
+			int cw = targetw * 7 / 10;
+			int targeth = target.size().height - (insets.top + insets.bottom);
+			target.getComponent(0).move(insets.left, insets.top);
+			target.getComponent(0).resize(cw, targeth);
+			int barwidth = targetw - cw;
+			cw += insets.left;
+			int i;
+			int h = insets.top;
+			for (i = 1; i < target.getComponentCount(); i++) {
+				Component m = target.getComponent(i);
+				if (m.isVisible()) {
+					Dimension d = m.getPreferredSize();
+					if (m instanceof Scrollbar)
+						d.width = barwidth;
+					if (m instanceof Choice)
+						d.width = barwidth;
+					if (m instanceof Label) {
+						h += d.height / 5;
+						d.width = barwidth;
+					}
+					m.move(cw, h);
+					m.resize(d.width, d.height);
+					h += d.height;
+				}
+			}
+		}
 	}
 
 }
+

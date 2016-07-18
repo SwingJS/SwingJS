@@ -2,6 +2,8 @@ package test.falstad;
 
 //QuantumOsc.java (C) 2003 by Paul Falstad, www.falstad.com
 
+import com.falstad.Complex;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -358,7 +360,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	phaseColors = new PhaseColor[8][phaseColorCount+1];
 	for (i = 0; i != 8; i++)
 	    for (j = 0; j <= phaseColorCount; j++) {
-		double ang = java.lang.Math.atan(j/(double) phaseColorCount);
+		double ang = Math.atan(j/(double) phaseColorCount);
 		phaseColors[i][j] = genPhaseColor(i, ang);
 	    }
 	whitePhaseColor = new PhaseColor(1, 1, 1);
@@ -580,8 +582,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int x, y;
 	for (x = 0; x != stateCount; x++)
 	    for (y = 0; y != stateCount; y++)
-		states[x][y].set(0);
-	states[0][0].set(1, 0);
+		states[x][y].setRe(0);
+	states[0][0].setReIm(1, 0);
  }
 
  void doBlank() {
@@ -600,10 +602,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		norm += states[i][j].magSquared();
 	if (norm == 0)
 	    return;
-	double normmult = 1/java.lang.Math.sqrt(norm);
+	double normmult = 1/Math.sqrt(norm);
 	for (i = 0; i != stateCount; i++)
 	    for (j = 0; j != stateCount; j++)
-		states[i][j].mult(normmult);
+		states[i][j].multRe(normmult);
 	cv.repaint(pause);
  }
 
@@ -618,7 +620,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return;
 	for (i = 0; i != stateCount; i++)
 	    for (j = 0; j != stateCount; j++)
-		states[i][j].mult(1/maxm);
+		states[i][j].multRe(1/maxm);
 	cv.repaint(pause);
  }
 
@@ -645,7 +647,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    for (j = 0; j != stateCount; j++) {
 		State st = states[i][j];
 		if (st.elevel != states[picki][pickj].elevel)
-		    st.set(0);
+		    st.setRe(0);
 	    }
 	if (alwaysNormItem.getState())
 	    normalize();
@@ -672,7 +674,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		if (b < epsilon && b > -epsilon) b = 0;
 		if (novel)
 		    b = 0;
-		st.set(a, b);
+		st.setReIm(a, b);
 	    }
 	cv.repaint(pause);
 	if (alwaysNormItem.getState())
@@ -746,7 +748,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    for (j = 0; j != stateCount; j++) {
 		State st = states[i][j];
 		if (st.mag < epsilon) {
-		    st.set(0);
+		    st.setRe(0);
 		    continue;
 		}
 		allQuiet = false;
@@ -757,13 +759,13 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	normmult2 = 1/norm;
 	if (norm == 0)
 	    normmult2 = 0;
-	normmult = java.lang.Math.sqrt(normmult2);
+	normmult = Math.sqrt(normmult2);
 	if (!changingDerivedStates)
 	    convertBasisToDerived();
 	genFunc(normmult);
 
 	double brightmult =
-	    java.lang.Math.exp(brightnessBar.getValue()/200.-5);
+	    Math.exp(brightnessBar.getValue()/200.-5);
 	if (norm == 0)
 	    normmult = normmult2 = 0;
 	if (dragStop)
@@ -842,7 +844,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 			expecte += prob*st.elevel;
 			expecte2 += prob*st.elevel*st.elevel;
 		    }
-		double uncert = java.lang.Math.sqrt(expecte2-expecte*expecte);
+		double uncert = Math.sqrt(expecte2-expecte*expecte);
 		if (uncertaintyCheckItem.getState()) {
 		    if (!(uncert >= 0))
 			uncert = 0;
@@ -912,7 +914,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    int lzcount = (stateCount*2+1)*lspacing; // XXX
 	    calcLSpectrum();
 	    for (i = 0; i != lzcount; i++)
-		lzspectrum[i] = java.lang.Math.sqrt(lzspectrum[i]);
+		lzspectrum[i] = Math.sqrt(lzspectrum[i]);
 	    drawFunction(g, viewL, lzspectrum, null, lzcount, 0);
 	}
 
@@ -924,8 +926,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		x = winSize.width-termWidth;
 		y = viewStatesMap.y + viewStatesMap.height/2;
 		double omega = states[0][0].elevel;
-		double tcos = java.lang.Math.cos(-omega*t+pi/2);
-		double tsin = java.lang.Math.sin(-omega*t+pi/2);
+		double tcos = Math.cos(-omega*t+pi/2);
+		double tsin = Math.sin(-omega*t+pi/2);
 		int ss2 = termWidth/2;
 		int xa = (int) (tcos*ss2);
 		int ya = (int) (-tsin*ss2);
@@ -976,9 +978,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    boolean draw = false;
 
 	    // check if we hit the meaty part of the curve
-	    if (java.lang.Math.abs(hermite[nx][i]) > .1)
+	    if (Math.abs(hermite[nx][i]) > .1)
 		maxed = true;
-	    if (java.lang.Math.abs(hermite[nx][i]) > thresh) {
+	    if (Math.abs(hermite[nx][i]) > thresh) {
 
 		// put a marker where the curve first exceeds the threshold
 		if (cross == 0)
@@ -1006,9 +1008,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	maxed = false;
 	for (i = 0; i != sampleCount; i++) {
 	    boolean draw = false;
-	    if (java.lang.Math.abs(hermite[ny][i]) > .1)
+	    if (Math.abs(hermite[ny][i]) > .1)
 		maxed = true;
-	    if (java.lang.Math.abs(hermite[ny][i]) > thresh) {
+	    if (Math.abs(hermite[ny][i]) > thresh) {
 		if (cross == 0)
 		    draw = true;
 	    } else if (cross == ny+1 && maxed)
@@ -1045,7 +1047,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		     ", m = " + ds.lz,
 		     viewX.y+viewX.height-10);
 	double e = ds.elevel;
-	double xx = java.lang.Math.sqrt(e*2)/1.7888;
+	double xx = Math.sqrt(e*2)/1.7888;
 	int x = (int) ((.5-xx)*viewXMap.width);
 	if (x < 0)
 	    return;
@@ -1109,9 +1111,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	expectx2 /= tot;
 	expecty /= tot;
 	expecty2 /= tot;
-	double maxnm = java.lang.Math.sqrt(maxsq);
-	double uncertx = java.lang.Math.sqrt(expectx2-expectx*expectx);
-	double uncerty = java.lang.Math.sqrt(expecty2-expecty*expecty);
+	double maxnm = Math.sqrt(maxsq);
+	double uncertx = Math.sqrt(expectx2-expectx*expectx);
+	double uncerty = Math.sqrt(expecty2-expecty*expecty);
 	double bestscale = 0;
 	if (probCheckItem.getState() || probPhaseCheckItem.getState())
 	    bestscale = 1/maxsq;
@@ -1132,7 +1134,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		double fi = arrayi[x][y];
 		double fv = (fr*fr+fi*fi);
 		if (magPhaseCheckItem.getState())
-		    fv = java.lang.Math.sqrt(fv);
+		    fv = Math.sqrt(fv);
 		fv *= 255*vmap.scale*brightmult;
 		PhaseColor c = getPhaseColor(fr, fi);
 		if (fv > 255)
@@ -1225,7 +1227,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    DerivedState ds = lzStates[i];
 	    int m = lc+lspacing*ds.lz;
 	    if (m != picki)
-		ds.set(0);
+		ds.setRe(0);
 	}
 	convertDerivedToBasis();
 	if (alwaysNormItem.getState())
@@ -1344,8 +1346,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int y0 = selectedPhasor.y + ss2;
 	x -= x0;
 	y -= y0;
-	double mag = java.lang.Math.sqrt(x*x+y*y)/ss2;
-	double ang = java.lang.Math.atan2(-y, x);
+	double mag = Math.sqrt(x*x+y*y)/ss2;
+	double ang = Math.atan2(-y, x);
 	if (mag > 10)
 	    mag = 0;
 	if (mag > 1)
@@ -1364,7 +1366,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int i, j;
 	for (i = 0; i != stateCount; i++)
 	    for (j = 0; j != stateCount; j++)
-		states[i][j].set(0);
+		states[i][j].setRe(0);
 	Complex c = new Complex();
 	for (i = 0; i != lzStateCount; i++) {
 	    DerivedState ds = lzStates[i];
@@ -1384,7 +1386,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    double mult = 1/maxm;
 	    for (i = 0; i != stateCount; i++)
 		for (j = 0; j != stateCount; j++)
-		    states[i][j].mult(mult);
+		    states[i][j].multRe(mult);
 	}
  }
 
@@ -1395,7 +1397,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	double maxm = 0;
 	for (i = 0; i != lzStateCount; i++) {
 	    DerivedState ds = lzStates[i];
-	    c1.set(0);
+	    c1.setRe(0);
 	    try {
 		for (j = 0; j != ds.count; j++) {
 		    c2.set(ds.coefs[j]);
@@ -1406,7 +1408,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		System.out.print("Exception at " + i + "\n");
 	    }
 	    if (c1.mag < epsilon)
-		c1.set(0);
+		c1.setRe(0);
 	    ds.set(c1);
 	    if (c1.mag > maxm)
 		maxm = ds.mag;
@@ -1414,7 +1416,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (maxm > 1) {
 	    double mult = 1/maxm;
 	    for (i = 0; i != lzStateCount; i++)
-		lzStates[i].mult(mult);
+		lzStates[i].multRe(mult);
 	}
  }
 
@@ -1422,9 +1424,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (selectedState == null)
 	    return;
 	if (magDragStart < .5)
-	    selectedState.set(1, 0);
+	    selectedState.setRe(1);
 	else
-	    selectedState.set(0);
+	    selectedState.setRe(0);
 	cv.repaint(pause);
  }
 
@@ -1549,8 +1551,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return;
 	int cx = viewXMap.x + viewXMap.width/2;
 	int cy = viewXMap.y + viewXMap.height/2;
-	double angle1 = java.lang.Math.atan2(-(dragY-cy), dragX-cx);
-	double angle2 = java.lang.Math.atan2(-(y-cy), x-cx);
+	double angle1 = Math.atan2(-(dragY-cy), dragX-cx);
+	double angle2 = Math.atan2(-(y-cy), x-cx);
 	double ad = angle2-angle1;
 	int i, j;
 	for (i = 0; i != lzStateCount; i++) {
@@ -1588,7 +1590,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    for (j = 0; j != sampleCount; j++) {
 		int x1 = i-selectedGridX;
 		int y1 = j-selectedGridY;
-		func[i][j] = java.lang.Math.exp(rm*(wx*x1*x1+wy*y1*y1));
+		func[i][j] = Math.exp(rm*(wx*x1*x1+wy*y1*y1));
 	    }
 	transform(true);
  }
@@ -1615,11 +1617,11 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    for (j = 0; j <= sampleCount; j++) {
 		int x1 = i-selectedGridX;
 		int y1 = j-selectedGridY;
-		double n = java.lang.Math.exp(rm*(wx*x1*x1+wy*y1*y1));
-		double cx = java.lang.Math.cos(momentumX*x1);
-		double cy = java.lang.Math.cos(momentumY*y1);
-		double sx = java.lang.Math.sin(momentumX*x1);
-		double sy = java.lang.Math.sin(momentumY*y1);
+		double n = Math.exp(rm*(wx*x1*x1+wy*y1*y1));
+		double cx = Math.cos(momentumX*x1);
+		double cy = Math.cos(momentumY*y1);
+		double sx = Math.sin(momentumX*x1);
+		double sy = Math.sin(momentumY*y1);
 		func [i][j] = n*(cx*cy - sx*sy);
 		funci[i][j] = n*(cx*sy + cy*sx);
 	    }
@@ -1671,11 +1673,11 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    for (j = 0; j <= sampleCount; j++) {
 		int x1 = i-sampleCount/2;
 		int y1 = j-sampleCount/2;
-		double n = java.lang.Math.exp(rm*(wx*x1*x1+wy*y1*y1));
-		double cx = java.lang.Math.cos(momentumX*x1);
-		double cy = java.lang.Math.cos(momentumY*y1);
-		double sx = java.lang.Math.sin(momentumX*x1);
-		double sy = java.lang.Math.sin(momentumY*y1);
+		double n = Math.exp(rm*(wx*x1*x1+wy*y1*y1));
+		double cx = Math.cos(momentumX*x1);
+		double cy = Math.cos(momentumY*y1);
+		double sx = Math.sin(momentumX*x1);
+		double sy = Math.sin(momentumY*y1);
 		func [i][j] = n*(cx*cy - sx*sy);
 		funci[i][j] = n*(cx*sy + cy*sx);
 	    }
@@ -1706,8 +1708,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	}
 	expectx /= tot;
 	expectx2 /= tot;
-	double maxnm = java.lang.Math.sqrt(maxsq);
-	double uncert = java.lang.Math.sqrt(expectx2-expectx*expectx);
+	double maxnm = Math.sqrt(maxsq);
+	double uncert = Math.sqrt(expectx2-expectx*expectx);
 	int ox = -1, oy = 0;
 	double bestscale = 0;
 	if (fi != null &&
@@ -1863,7 +1865,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	alpha = .3*32/sampleCount;
 	for (i = 0; i <= sampleCount; i++) {
 	    double x = alpha*(i-sampleCount/2);
-	    double e = java.lang.Math.exp(-x*x*.5);
+	    double e = Math.exp(-x*x*.5);
 	    xp[1] = x;
 	    for (j = 2; j != stateCount; j++)
 		xp[j] = xp[j-1]*x;
@@ -1900,7 +1902,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    double dy = 0;
 	    for (j = 0; j <= sampleCount; j++)
 		dy += hermite[i][j]*hermite[i][j];
-	    dy = java.lang.Math.sqrt(dy);
+	    dy = Math.sqrt(dy);
 	    if (dy > 0) { // XXX
 		for (j = 0; j <= sampleCount; j++)
 		    hermite[i][j] /= dy;
@@ -1913,7 +1915,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    dy += hermite[1][j]*hermite[1][j];
 
 	for (i = 1; i <= stateCount; i++) {
-	    double dy0 = java.lang.Math.sqrt(dy);
+	    double dy0 = Math.sqrt(dy);
 	    System.out.print(dy0 + "\n");
 	    for (j = 0; j != sampleCount; j++)
 		hermite[i][j] /= dy0;
@@ -1936,7 +1938,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	lzStateCount = (stateCount*(stateCount+1))/2;
 	lzStates = new DerivedState[lzStateCount];
 	Complex x[] = new Complex[1];
-	x[0] = new Complex(1, 0);
+	x[0] = new Complex().setReIm(1, 0);
 	setLzState(0, 0, x);
 	calcLzStates(x, 0, 0);
 	setupDisplay();
@@ -1973,16 +1975,16 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    Complex c = arr1[j] = new Complex();
 	    if (j > 0) {
 		c.set(arr0[j-1]);
-		c.mult(java.lang.Math.sqrt(j));
+		c.multRe(Math.sqrt(j));
 	    } else
-		c.set(0);
+		c.setRe(0);
 	    if (j < n-1) {
 		c2.set(arr0[j]);
-		c2.mult(0, -java.lang.Math.sqrt(n-j-1));
+		c2.multReIm(0, -Math.sqrt(n-j-1));
 	    } else
-		c2.set(0);
+		c2.setRe(0);
 	    c.add(c2);
-	    c.mult(1/java.lang.Math.sqrt(2*(g+1)));
+	    c.multRe(1/Math.sqrt(2*(g+1)));
 	    //System.out.println("G " + j + " " + c.re + " " + c.im);
 	}
 	setLzState(d, g+1, arr1);
@@ -2001,16 +2003,16 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    Complex c = arr1[j] = new Complex();
 	    if (j > 0) {
 		c.set(arr0[j-1]);
-		c.mult(java.lang.Math.sqrt(j));
+		c.multRe(Math.sqrt(j));
 	    } else
-		c.set(0);
+		c.setRe(0);
 	    if (j < n-1) {
 		c2.set(arr0[j]);
-		c2.mult(0, java.lang.Math.sqrt(n-j-1));
+		c2.multReIm(0, Math.sqrt(n-j-1));
 	    } else
-		c2.set(0);
+		c2.setRe(0);
 	    c.add(c2);
-	    c.mult(1/java.lang.Math.sqrt(2*d));
+	    c.multRe(1/Math.sqrt(2*d));
 	    //System.out.println("D " + j + " " + c.re + " " + c.im);
 	}
 	setLzState(d, g, arr1);
@@ -2093,7 +2095,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	for (i = 0; i != stateCount; i++)
 	    for (j = 0; j != stateCount; j++) {
 		int yy = floory - (int) (ymult * states[i][j].elevel);
-		double d = java.lang.Math.abs(y-yy);
+		double d = Math.abs(y-yy);
 		if (d < dist) {
 		    dist = d;
 		    selectedState = states[i][j];
@@ -2113,9 +2115,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	for (i = 0; i != stateCount; i++)
 	    for (j = 0; j != stateCount; j++)
 		if (states[i][j] != selectedState)
-		    states[i][j].set(0);
+		    states[i][j].setRe(0);
 	convertBasisToDerived();
-	selectedState.set(1);
+	selectedState.setRe(1);
 	if (selectedState instanceof DerivedState)
 	    convertDerivedToBasis();
 	cv.repaint(pause);
@@ -2293,9 +2295,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 				double wi = 0.0;
 				int i3;
 
-				wpr = java.lang.Math.sin(0.5 * theta);
+				wpr = Math.sin(0.5 * theta);
 				wpr *= wpr * -2.0;
-				wpi = java.lang.Math.sin(theta);
+				wpi = Math.sin(theta);
 
 				for (i3 = 0; i3 < ifp1; i3 += ip1) {
 
@@ -2362,72 +2364,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	}
 	State state;
  }
-
- class Complex {
-	public double re, im, mag, phase;
-	Complex() { re = im = mag = phase = 0; }
-	Complex(double r, double i) {
-	    set(r, i);
-	}
-	double magSquared() { return mag*mag; }
-	void set(double aa, double bb) {
-	    re = aa; im = bb;
-	    setMagPhase();
-	}
-	void set(double aa) {
-	    re = aa; im = 0;
-	    setMagPhase();
-	}
-	void set(Complex c) {
-	    re = c.re;
-	    im = c.im;
-	    mag = c.mag;
-	    phase = c.phase;
-	}
-	void add(double r) {
-	    re += r;
-	    setMagPhase();
-	}
-	void add(double r, double i) {
-	    re += r; im += i;
-	    setMagPhase();
-	}
-	void add(Complex c) {
-	    re += c.re;
-	    im += c.im;
-	    setMagPhase();
-	}
-	void square() {
-	    set(re*re-im*im, 2*re*im);
-	}
-	void mult(double c, double d) {
-	    set(re*c-im*d, re*d+im*c);
-	}
-	void mult(double c) {
-	    re *= c; im *= c;
-	    mag *= c;
-	}
-	void mult(Complex c) {
-	    mult(c.re, c.im);
-	}
-	void setMagPhase() {
-	    mag = java.lang.Math.sqrt(re*re+im*im);
-	    phase = java.lang.Math.atan2(im, re);
-	}
-	void setMagPhase(double m, double ph) {
-	    mag = m;
-	    phase = ph;
-	    re = m*java.lang.Math.cos(ph);
-	    im = m*java.lang.Math.sin(ph);
-	}
-	void rotate(double a) {
-	    setMagPhase(mag, (phase+a) % (2*pi));
-	}
-	void conjugate() {
-	    im = -im;
-	    phase = -phase;
-	}
- };
 
  class State extends Complex {
 	double elevel;

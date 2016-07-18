@@ -52,12 +52,13 @@ import java.util.Hashtable;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import javajs.util.FFT;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+
+import com.falstad.FFT;
 
 import swingjs.JSAudioThread;
 import swingjs.JSAudioThreadOwner;

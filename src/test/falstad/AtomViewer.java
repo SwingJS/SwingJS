@@ -73,6 +73,8 @@ import java.util.Random;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButtonMenuItem;
 
+import com.falstad.Complex;
+
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;
@@ -651,7 +653,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				ds.bstates = new BasisState[1];
 				ds.bstates[0] = getState(n, l, 0);
 				ds.coefs = new Complex[1];
-				ds.coefs[0] = new Complex(1, 0);
+				ds.coefs[0] = new Complex().setReIm(1, 0);
 			} else {
 				int m0 = m - 1;
 				int realm = m0 / 2 + 1;
@@ -662,11 +664,11 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				ds.coefs = new Complex[2];
 				double mphase = Math.pow(-1, realm);
 				if ((m0 & 1) == 0) {
-					ds.coefs[0] = new Complex(mphase * root2inv, 0);
-					ds.coefs[1] = new Complex(root2inv, 0);
+					ds.coefs[0] = new Complex().setReIm(mphase * root2inv, 0);
+					ds.coefs[1] = new Complex().setReIm(root2inv, 0);
 				} else {
-					ds.coefs[0] = new Complex(0, mphase * root2inv);
-					ds.coefs[1] = new Complex(0, -root2inv);
+					ds.coefs[0] = new Complex().setReIm(0, mphase * root2inv);
+					ds.coefs[1] = new Complex().setReIm(0, -root2inv);
 				}
 			}
 			switch (l) {
@@ -746,7 +748,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		for (i = 0; i != sct; i++) {
 			int j;
 			for (j = 0; j != sct; j++) {
-				basis.altStates[i].coefs[j].set(arr[ap], arr[ap + 1]);
+				basis.altStates[i].coefs[j].setReIm(arr[ap], arr[ap + 1]);
 				ap += 2;
 			}
 		}
@@ -778,7 +780,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		for (i = 0; i != sct; i++) {
 			int j;
 			for (j = 0; j != sct; j++) {
-				basis.altStates[i].coefs[j].set(arr[ap], arr[ap + 1]);
+				basis.altStates[i].coefs[j].setReIm(arr[ap], arr[ap + 1]);
 				ap += 2;
 			}
 		}
@@ -1134,7 +1136,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		// by the previous loop.
 		if (viewChooser.getSelectedIndex() == VIEW_COMBO_COMP)
 			for (i = realBasis.altStateCount; i != stateCount; i++)
-				states[i].set(0);
+				states[i].setRe(0);
 
 		// in case the states changed
 		createOrbitals();
@@ -1160,7 +1162,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		// and select it.
 		for (i = 0; i != phasorCount; i++)
 			if (phasors[i].state instanceof BasisState) {
-				phasors[i].state.set(1);
+				phasors[i].state.setRe(1);
 				createOrbitals();
 				return;
 			}
@@ -1786,7 +1788,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		for (i = 0; i != stateCount; i++) {
 			State st = states[i];
 			if (st.mag < epsilon) {
-				st.set(0);
+				st.setRe(0);
 				continue;
 			}
 			if (tadd != 0) {
@@ -2467,9 +2469,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		int i;
 		for (i = 0; i != stateCount; i++)
 			if (states[i] != selectedState)
-				states[i].set(0);
+				states[i].setRe(0);
 		selectedState.convertBasisToDerived();
-		selectedState.set(1);
+		selectedState.setRe(1);
 		selectedState.convertDerivedToBasis();
 		createOrbitals();
 		cv.repaint(pause);
@@ -2683,9 +2685,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		if (selectedState == null)
 			return;
 		if (magDragStart < .5)
-			selectedState.set(1, 0);
+			selectedState.setReIm(1, 0);
 		else
-			selectedState.set(0);
+			selectedState.setRe(0);
 		cv.repaint(pause);
 		createOrbitals();
 	}
@@ -2770,7 +2772,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		// clear out all states which are not spherically symmetric
 		for (i = 0; i != stateCount; i++) {
 			if (states[i].l > 0)
-				states[i].set(0);
+				states[i].setRe(0);
 		}
 
 		// convert back to the Lz basis
@@ -2846,7 +2848,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	void doClear() {
 		int x;
 		for (x = 0; x != stateCount; x++)
-			states[x].set(0);
+			states[x].setRe(0);
 	}
 
 	void normalize() {
@@ -2858,7 +2860,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			return;
 		double normmult = 1 / Math.sqrt(norm);
 		for (i = 0; i != stateCount; i++)
-			states[i].mult(normmult);
+			states[i].multRe(normmult);
 		cv.repaint(pause);
 	}
 
@@ -2871,7 +2873,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		if (maxm == 0)
 			return;
 		for (i = 0; i != stateCount; i++)
-			states[i].mult(1 / maxm);
+			states[i].multRe(1 / maxm);
 		cv.repaint(pause);
 	}
 
@@ -2884,28 +2886,28 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		if (viewChooser.getSelectedIndex() == VIEW_REAL) {
 			int m = mChooser.getSelectedIndex();
 			if (m == 0)
-				getState(getN(), getL(), 0).set(1, 0);
+				getState(getN(), getL(), 0).setReIm(1, 0);
 			else if (getL() == 3 && cubicItem.getState()) {
 				int i;
 				for (i = 0; i != 7; i++) {
 					int ar = m * 14 + i * 2;
 					getState(getN(), 3, i - 3)
-							.set(l3CubicArray[ar], l3CubicArray[ar + 1]);
+							.setReIm(l3CubicArray[ar], l3CubicArray[ar + 1]);
 				}
 			} else {
 				m--;
 				int realm = m / 2 + 1;
 				double mphase = Math.pow(-1, realm);
 				if ((m & 1) == 0) {
-					getState(getN(), getL(), realm).set(mphase * root2inv);
-					getState(getN(), getL(), -realm).set(root2inv);
+					getState(getN(), getL(), realm).setRe(mphase * root2inv);
+					getState(getN(), getL(), -realm).setRe(root2inv);
 				} else {
-					getState(getN(), getL(), realm).set(0, -mphase * root2inv);
-					getState(getN(), getL(), -realm).set(0, root2inv);
+					getState(getN(), getL(), realm).setReIm(0, -mphase * root2inv);
+					getState(getN(), getL(), -realm).setReIm(0, root2inv);
 				}
 			}
 		} else
-			getState(getN(), getL(), getM()).set(1, 0);
+			getState(getN(), getL(), getM()).setReIm(1, 0);
 		createOrbitals();
 		manualScale = false;
 	}
@@ -3173,97 +3175,6 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		State state;
 	}
 
-	class Complex {
-		public double re, im, mag, phase;
-
-		Complex() {
-			re = im = mag = phase = 0;
-		}
-
-		Complex(double r, double i) {
-			set(r, i);
-		}
-
-		double magSquared() {
-			return mag * mag;
-		}
-
-		void set(double aa, double bb) {
-			re = aa;
-			im = bb;
-			setMagPhase();
-		}
-
-		void set(double aa) {
-			re = aa;
-			im = 0;
-			setMagPhase();
-		}
-
-		void set(Complex c) {
-			re = c.re;
-			im = c.im;
-			mag = c.mag;
-			phase = c.phase;
-		}
-
-		void add(double r) {
-			re += r;
-			setMagPhase();
-		}
-
-		void add(double r, double i) {
-			re += r;
-			im += i;
-			setMagPhase();
-		}
-
-		void add(Complex c) {
-			re += c.re;
-			im += c.im;
-			setMagPhase();
-		}
-
-		void square() {
-			set(re * re - im * im, 2 * re * im);
-		}
-
-		void mult(double c, double d) {
-			set(re * c - im * d, re * d + im * c);
-		}
-
-		void mult(double c) {
-			re *= c;
-			im *= c;
-			mag *= c;
-		}
-
-		void mult(Complex c) {
-			mult(c.re, c.im);
-		}
-
-		void setMagPhase() {
-			mag = Math.sqrt(re * re + im * im);
-			phase = Math.atan2(im, re);
-		}
-
-		void setMagPhase(double m, double ph) {
-			mag = m;
-			phase = ph;
-			re = m * Math.cos(ph);
-			im = m * Math.sin(ph);
-		}
-
-		void rotate(double a) {
-			setMagPhase(mag, (phase + a) % (2 * pi));
-		}
-
-		void conjugate() {
-			im = -im;
-			phase = -phase;
-		}
-	}
-
 	class State extends Complex {
 		double elevel;
 
@@ -3342,7 +3253,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			int i, j;
 			if (clear)
 				for (i = 0; i != stateCount; i++)
-					states[i].set(0);
+					states[i].setRe(0);
 			Complex c = new Complex();
 			for (i = 0; i != altStateCount; i++) {
 				DerivedState ds = altStates[i];
@@ -3360,7 +3271,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			if (maxm > 1) {
 				double mult = 1 / maxm;
 				for (i = 0; i != stateCount; i++)
-					states[i].mult(mult);
+					states[i].multRe(mult);
 			}
 		}
 
@@ -3371,7 +3282,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			double maxm = 0;
 			for (i = 0; i != altStateCount; i++) {
 				DerivedState ds = altStates[i];
-				c1.set(0);
+				c1.setRe(0);
 				try {
 					for (j = 0; j != ds.count; j++) {
 						c2.set(ds.coefs[j]);
@@ -3382,7 +3293,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 					System.out.print("Exception at " + i + "\n");
 				}
 				if (c1.mag < epsilon)
-					c1.set(0);
+					c1.setRe(0);
 				ds.set(c1);
 				if (c1.mag > maxm)
 					maxm = ds.mag;
@@ -3390,7 +3301,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			if (maxm > 1) {
 				double mult = 1 / maxm;
 				for (i = 0; i != altStateCount; i++)
-					altStates[i].mult(mult);
+					altStates[i].multRe(mult);
 			}
 		}
 	}

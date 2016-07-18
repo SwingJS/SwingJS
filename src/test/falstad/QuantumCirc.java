@@ -30,7 +30,8 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
 
-import javajs.util.FFT;
+import com.falstad.FFT;
+
 
 import swingjs.awt.Applet;
 import swingjs.awt.Canvas;

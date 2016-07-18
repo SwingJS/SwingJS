@@ -23,6 +23,8 @@ package test.falstad;
 // added triggerShow()
 
 
+import com.falstad.Complex;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -51,7 +53,8 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
 
-import javajs.util.FFT;
+import com.falstad.FFT;
+
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -486,7 +489,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		m = -l;
 	    }
 	}
-	states[13].set(1);
+	states[13].setRe(1);
  }
 
  MenuItem getMenuItem(String s) {
@@ -585,7 +588,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	// and select it.
 	for (i = 0; i != phasorCount; i++)
 	    if (phasors[i].state instanceof BasisState) {
-		phasors[i].state.set(1);
+		phasors[i].state.setRe(1);
 		return;
 	    }
  }
@@ -981,39 +984,38 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	}
  }
 
- void transform() {
-	int wc = dataSizePh*2;
-	int wm = wc - 1;
+	void transform() {
+		int wc = dataSizePh * 2;
+		int wm = wc - 1;
 
-	int i;
-	for (i = 0; i != stateCount; i++)
-	    states[i].set(0);
+		int i;
+		for (i = 0; i != stateCount; i++)
+			states[i].setRe(0);
 
-	t = 0;
-	int th;
+		t = 0;
+		int th;
 
-	double xformbuf[] = new double[wc]; // XXX
+		double xformbuf[] = new double[wc]; // XXX
 
-	for (th = 0; th != dataSizeTh; th++) {
-	    double mult = java.lang.Math.sin(th*pi/(dataSizeTh-1));
-	    for (i = 0; i != dataSizePh; i++) {
-		xformbuf[i*2]   = func [th][i];
-		xformbuf[i*2+1] = funci[th][i];
-	    }
-	    fft.transform(xformbuf, false);
+		for (th = 0; th != dataSizeTh; th++) {
+			double mult = java.lang.Math.sin(th * pi / (dataSizeTh - 1));
+			for (i = 0; i != dataSizePh; i++) {
+				xformbuf[i * 2] = func[th][i];
+				xformbuf[i * 2 + 1] = funci[th][i];
+			}
+			fft.transform(xformbuf, false);
 
-	    for (i = 0; i != stateCount; i++) {
-		BasisState st = states[i];
-		int ii = wm & (-st.m*2);
-		st.quickAdd(xformbuf[ii]  *st.plm[th]*mult,
-			    xformbuf[ii+1]*st.plm[th]*mult);
-	    }
+			for (i = 0; i != stateCount; i++) {
+				BasisState st = states[i];
+				int ii = wm & (-st.m * 2);
+				st.addQuick(xformbuf[ii] * st.plm[th] * mult, xformbuf[ii + 1]
+						* st.plm[th] * mult);
+			}
+		}
+		for (i = 0; i != stateCount; i++)
+			states[i].setMP();
+		maximize();
 	}
-
-	for (i = 0; i != stateCount; i++)
-	    states[i].setMagPhase();
-	maximize();
- }
 
 
  int sign(double x) {
@@ -1064,7 +1066,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    for (i = 0; i != stateCount; i++) {
 		State st = states[i];
 		if (st.mag < epsilon) {
-		    st.set(0);
+		    st.setRe(0);
 		    continue;
 		}
 		st.rotate(-(st.elevel+baseEnergy)*tadd);
@@ -1559,8 +1561,8 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int i;
 	for (i = 0; i != stateCount; i++)
 	    if (states[i] != selectedState)
-		states[i].set(0);
-	selectedState.set(1);
+		states[i].setRe(0);
+	selectedState.setRe(1);
 	cv.repaint(pause);
  }
 
@@ -1691,9 +1693,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (selectedState == null)
 	    return;
 	if (magDragStart < .5)
-	    selectedState.set(1, 0);
+	    selectedState.setRe(1);
 	else
-	    selectedState.set(0);
+	    selectedState.setRe(0);
 	cv.repaint(pause);
  }
 
@@ -1720,7 +1722,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  void doClear() {
 	int x;
 	for (x = 0; x != stateCount; x++)
-	    states[x].set(0);
+	    states[x].setRe(0);
  }
 
  void normalize() {
@@ -1732,7 +1734,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return;
 	double normmult = 1/java.lang.Math.sqrt(norm);
 	for (i = 0; i != stateCount; i++)
-	    states[i].mult(normmult);
+	    states[i].multRe(normmult);
 	cv.repaint(pause);
  }
 
@@ -1745,9 +1747,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (maxm == 0)
 	    return;
 	for (i = 0; i != stateCount; i++) {
-	    states[i].mult(1/maxm);
+	    states[i].multRe(1/maxm);
 	    if (states[i].mag < epsilon)
-		states[i].set(0);
+		states[i].setRe(0);
 	}
 	cv.repaint(pause);
  }
@@ -1798,76 +1800,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    return "l = " + l + ", m = " + m;
 	}
  }
-
- class Complex {
-	public double re, im, mag, phase;
-	Complex() { re = im = mag = phase = 0; }
-	Complex(double r, double i) {
-	    set(r, i);
-	}
-	double magSquared() { return mag*mag; }
-	void set(double aa, double bb) {
-	    re = aa; im = bb;
-	    setMagPhase();
-	}
-	void set(double aa) {
-	    re = aa; im = 0;
-	    setMagPhase();
-	}
-	void set(Complex c) {
-	    re = c.re;
-	    im = c.im;
-	    mag = c.mag;
-	    phase = c.phase;
-	}
-	void add(double r) {
-	    re += r;
-	    setMagPhase();
-	}
-	void add(double r, double i) {
-	    re += r; im += i;
-	    setMagPhase();
-	}
-	void add(Complex c) {
-	    re += c.re;
-	    im += c.im;
-	    setMagPhase();
-	}
-	void quickAdd(double a, double b) {
-	    re += a;
-	    im += b;
-	}
-	void square() {
-	    set(re*re-im*im, 2*re*im);
-	}
-	void mult(double c, double d) {
-	    set(re*c-im*d, re*d+im*c);
-	}
-	void mult(double c) {
-	    re *= c; im *= c;
-	    mag *= c;
-	}
-	void mult(Complex c) {
-	    mult(c.re, c.im);
-	}
-	void setMagPhase() {
-	    mag = java.lang.Math.sqrt(re*re+im*im);
-	    phase = java.lang.Math.atan2(im, re);
-	}
-	void setMagPhase(double m, double ph) {
-	    mag = m;
-	    phase = ph;
-	    re = m*java.lang.Math.cos(ph);
-	    im = m*java.lang.Math.sin(ph);
-	}
-	void rotate(double a) {
-	    setMagPhase(mag, (phase+a) % (2*pi));
-	}
-	void conjugate() {
-	    im = -im;
-	    phase = -phase;
-	}
- };
 
  class PhaseColor {
 	public double r, g, b;

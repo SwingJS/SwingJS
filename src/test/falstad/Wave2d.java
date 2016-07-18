@@ -66,9 +66,10 @@ import java.util.Random;
 import java.util.Vector;
 import java.text.NumberFormat;
 
-import javajs.util.FFT;
 
 import javax.swing.SwingUtilities;
+
+import com.falstad.FFT;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;

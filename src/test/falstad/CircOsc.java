@@ -47,9 +47,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import javajs.util.FFT;
 
 import javax.sound.sampled.AudioFormat;
+
+import com.falstad.FFT;
 
 import swingjs.JSAudioThread;
 import swingjs.awt.Applet;
