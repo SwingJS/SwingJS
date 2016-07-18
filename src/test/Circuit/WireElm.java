@@ -1,6 +1,9 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
     class WireElm extends CircuitElm {
 	public WireElm(int xx, int yy) { super(xx, yy); }

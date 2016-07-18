@@ -1,12 +1,15 @@
 package test.Circuit;
 
-import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
+
+
 
 abstract class ChipElm extends CircuitElm {
 	int csize, cspc, cspc2;

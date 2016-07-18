@@ -1,6 +1,10 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
     class TransformerElm extends CircuitElm {
 	double inductance, ratio, couplingCoef;

@@ -1,6 +1,11 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Choice;
 
 class VoltageElm extends CircuitElm {
     static final int FLAG_COS = 2;

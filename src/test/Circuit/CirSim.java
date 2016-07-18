@@ -4,29 +4,34 @@ package test.Circuit;
 
 // For information about the theory behind this, see Electronic Circuit & System Simulation Methods by Pillage
 
-import java.awt.Button;
-import java.awt.Checkbox;
-import java.awt.CheckboxMenuItem;
+// Changed paint to paintComponent
+
+//Added 'finished' boolean/state machine to itemState & adjustmentListener and at the end of init
+//--> otherwise it calls items before they exist
+
+import swingjs.awt.Button;
+import swingjs.awt.Checkbox;
+import swingjs.awt.CheckboxMenuItem;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Font;
-import java.awt.Frame;
+import swingjs.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Label;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
+import swingjs.awt.Label;
+import swingjs.awt.Menu;
+import swingjs.awt.MenuBar;
+import swingjs.awt.MenuItem;
 import java.awt.MenuShortcut;
 import java.awt.Point;
-import java.awt.PopupMenu;
+import swingjs.awt.PopupMenu;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Scrollbar;
+import swingjs.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -589,6 +594,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			applet.validate();
 		}
 		requestFocus();
+		finished = true;
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
@@ -778,7 +784,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return super.handleEvent(ev);
 	}
 
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		cv.repaint();
 	}
 
@@ -2182,7 +2188,11 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return dump;
 	}
 
+	private boolean finished;
 	public void adjustmentValueChanged(AdjustmentEvent e) {
+		if(!finished){
+			return;
+		}
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	}
 
@@ -2876,19 +2886,24 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	private void doMainMenuChecks(PopupMenu mainMenu2) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	void doMainMenuChecks(Menu m) {
 		int i;
 		if (m == optionsMenu)
 			return;
-		for (i = 0; i != m.getItemCount(); i++) {
-			MenuItem mc = m.getItem(i);
-			if (mc instanceof Menu)
-				doMainMenuChecks((Menu) mc);
-			if (mc instanceof CheckboxMenuItem) {
-				CheckboxMenuItem cmi = (CheckboxMenuItem) mc;
-				cmi.setState(mouseModeStr.compareTo(cmi.getActionCommand()) == 0);
-			}
-		}
+//		for (i = 0; i != m.getItemCount(); i++) {
+//			MenuItem mc = m.getItem(i);
+//			if (mc instanceof Menu)
+//				doMainMenuChecks((Menu) mc);
+//			if (mc instanceof CheckboxMenuItem) {
+//				CheckboxMenuItem cmi = (CheckboxMenuItem) mc;
+//				cmi.setState(mouseModeStr.compareTo(cmi.getActionCommand()) == 0);
+//			}
+//		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -2937,6 +2952,9 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	}
 
 	public void itemStateChanged(ItemEvent e) {
+		if(!finished){
+			return;
+		}
 		cv.repaint(pause);
 		Object mi = e.getItemSelectable();
 		if (mi == stoppedCheck)

@@ -1,7 +1,9 @@
 package test.Circuit;
 
-import java.awt.Checkbox;
+
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
 class CounterElm extends ChipElm {
 	final int FLAG_ENABLE = 2;

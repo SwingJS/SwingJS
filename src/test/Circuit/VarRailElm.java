@@ -1,6 +1,10 @@
 package test.Circuit;
-import java.awt.*;
+
+
 import java.util.StringTokenizer;
+
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
 
     class VarRailElm extends RailElm {
 	Scrollbar slider;

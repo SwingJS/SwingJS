@@ -1,10 +1,11 @@
 package test.Circuit;
 
 // Circuit.java (c) 2005,2008 by Paul Falstad, www.falstad.com
-import java.applet.Applet;
+
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import swingjs.awt.Applet;
 
 public class Circuit extends Applet implements ComponentListener {
 	static CirSim ogf;

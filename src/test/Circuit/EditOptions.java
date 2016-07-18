@@ -1,4 +1,5 @@
 package test.Circuit;
+
 class EditOptions implements Editable {
     CirSim sim;
     public EditOptions(CirSim s) { sim = s; }

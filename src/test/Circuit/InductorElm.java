@@ -1,6 +1,9 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
     class InductorElm extends CircuitElm {
 	Inductor ind;

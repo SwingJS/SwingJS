@@ -3,7 +3,9 @@ package test.Circuit;
 // FIXME need to add DiacElm.java to srclist
 // FIXME need to uncomment DiacElm line from CirSim.java
 
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
 
 class DiacElm extends CircuitElm {

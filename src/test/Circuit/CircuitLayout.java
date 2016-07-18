@@ -1,13 +1,15 @@
 package test.Circuit;
 
-import java.awt.Choice;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.awt.Label;
 import java.awt.LayoutManager;
-import java.awt.Scrollbar;
+
+import swingjs.awt.Choice;
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
+
 
 class CircuitLayout implements LayoutManager {
 	public CircuitLayout() {

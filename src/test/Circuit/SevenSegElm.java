@@ -1,5 +1,7 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.StringTokenizer;
 
     class SevenSegElm extends ChipElm {

@@ -1,7 +1,14 @@
 package test.Circuit;
-import java.awt.*;
-import java.awt.event.*;
+
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
 
 class PotElm extends CircuitElm implements AdjustmentListener {
     double position, maxResistance, resistance1, resistance2;

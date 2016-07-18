@@ -1,4 +1,5 @@
 package test.Circuit;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.StringTokenizer;

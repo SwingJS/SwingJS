@@ -1,9 +1,10 @@
 package test.Circuit;
 
-import java.awt.Checkbox;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
 class AnalogSwitchElm extends CircuitElm {
 	final int FLAG_INVERT = 1;

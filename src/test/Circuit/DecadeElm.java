@@ -1,5 +1,5 @@
 package test.Circuit;
-import java.awt.*;
+
 import java.util.StringTokenizer;
 
     class DecadeElm extends ChipElm {

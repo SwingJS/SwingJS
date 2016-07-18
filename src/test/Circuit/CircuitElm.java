@@ -10,6 +10,8 @@ import java.awt.Rectangle;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+
+
 public abstract class CircuitElm implements Editable {
 	static double voltageRange = 5;
 	static int colorScaleCount = 32;

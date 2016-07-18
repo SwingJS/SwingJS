@@ -3,7 +3,10 @@ package test.Circuit;
 // FIXME need to add TriacElm to srclist
 // FIXME need to uncomment TriacElm line from CirSim.java
 
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 // Silicon-Controlled Rectifier

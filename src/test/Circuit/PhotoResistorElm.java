@@ -3,8 +3,13 @@ package test.Circuit;
 // FIXME need to uncomment PhotoResistorElm line from CirSim.java
 // FIXME need to add PhotoResistorElm.java to srclist
 
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
 
 class PhotoResistorElm extends CircuitElm {
     double minresistance, maxresistance;

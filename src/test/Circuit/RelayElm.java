@@ -1,6 +1,11 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
 // 0 = switch
 // 1 = switch end 1

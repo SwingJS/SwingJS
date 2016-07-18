@@ -1,10 +1,18 @@
 package test.Circuit;
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
-import java.util.StringTokenizer;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.MemoryImageSource;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.StringTokenizer;
+
+import swingjs.awt.PopupMenu;
+
+
 
 class Scope {
     final int FLAG_YELM = 32;

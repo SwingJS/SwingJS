@@ -1,5 +1,6 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
 import java.util.StringTokenizer;
 
     class GroundElm extends CircuitElm {

@@ -1,5 +1,6 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Point;
 import java.util.StringTokenizer;
 
     class OrGateElm extends GateElm {

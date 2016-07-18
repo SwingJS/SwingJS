@@ -1,5 +1,7 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
 
     class TappedTransformerElm extends CircuitElm {

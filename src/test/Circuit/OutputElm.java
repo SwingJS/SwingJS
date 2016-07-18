@@ -1,6 +1,12 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
     class OutputElm extends CircuitElm {
 	final int FLAG_VALUE = 1;

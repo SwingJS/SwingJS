@@ -1,6 +1,8 @@
 package test.Circuit;
-import java.awt.*;
+
 import java.util.StringTokenizer;
+
+import swingjs.awt.Checkbox;
 
     class JKFlipFlopElm extends ChipElm {
     	final int FLAG_RESET = 2;

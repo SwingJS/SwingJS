@@ -1,7 +1,12 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import swingjs.awt.Checkbox;
 
 class TextElm extends GraphicElm {
     String text;

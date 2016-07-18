@@ -1,11 +1,17 @@
 package test.Circuit;
-import java.awt.*;
-import java.awt.event.*;
 
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Point;
+import java.awt.event.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+
+import swingjs.awt.Button;
+import swingjs.awt.Dialog;
+import swingjs.awt.TextArea;
 
 class ImportExportClipboardDialog
 extends Dialog
@@ -22,7 +28,7 @@ implements ImportExportDialog,ActionListener
 	super(f, (type == Action.EXPORT) ? "Export" : "Import", false);
 	cframe = f;
 	setLayout(new ImportExportDialogLayout());
-	add(text = new TextArea("", 10, 60, TextArea.SCROLLBARS_BOTH));
+	add(text = new TextArea("", 10, 60));
 /*
 	if (type == Action.EXPORT)
 	    importButton = new Button("Copy to clipboard");

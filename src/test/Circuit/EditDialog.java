@@ -1,8 +1,17 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Point;
 import java.awt.event.*;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
+
+import swingjs.awt.Button;
+import swingjs.awt.Dialog;
+import swingjs.awt.Label;
+import swingjs.awt.TextField;
+import swingjs.awt.Scrollbar;
 
 interface Editable {
     EditInfo getEditInfo(int n);

@@ -1,5 +1,12 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
+import java.awt.Insets;
+
 
 class ImportExportDialogLayout implements LayoutManager {
     public ImportExportDialogLayout() {}

@@ -1,6 +1,10 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.util.StringTokenizer;
+
 
 // Silicon-Controlled Rectifier
 // 3 nodes, 1 internal node

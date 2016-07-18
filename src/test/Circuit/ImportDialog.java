@@ -1,6 +1,15 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Point;
 import java.awt.event.*;
+
+import swingjs.awt.Button;
+import swingjs.awt.Dialog;
+import swingjs.awt.TextArea;
+
+
 
 class ImportDialog extends Dialog implements ActionListener {
     CirSim cframe;
@@ -13,7 +22,7 @@ class ImportDialog extends Dialog implements ActionListener {
 	isURL = url;
 	cframe = f;
 	setLayout(new ImportDialogLayout());
-	add(text = new TextArea(str, 10, 60, TextArea.SCROLLBARS_BOTH));
+	add(text = new TextArea(str, 10, 60));
 	importButton = new Button("Import");
 	if (!isURL)
 	    add(importButton);

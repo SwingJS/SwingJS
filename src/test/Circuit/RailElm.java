@@ -1,5 +1,7 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.StringTokenizer;
 
 class RailElm extends VoltageElm {

@@ -1,5 +1,10 @@
 package test.Circuit;
-import java.awt.*;
+
+
+import swingjs.awt.Checkbox;
+import swingjs.awt.Choice;
+import swingjs.awt.Scrollbar;
+import swingjs.awt.TextField;
 
 class EditInfo {
     EditInfo(String n, double val, double mn, double mx) {

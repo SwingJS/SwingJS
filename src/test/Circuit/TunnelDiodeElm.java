@@ -1,5 +1,8 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.util.StringTokenizer;
 
 class TunnelDiodeElm extends CircuitElm {

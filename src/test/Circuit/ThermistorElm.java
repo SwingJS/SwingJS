@@ -1,10 +1,16 @@
 package test.Circuit;
+
+import java.awt.Graphics;
+import java.awt.Point;
+import java.util.StringTokenizer;
+
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
+
 // stub ThermistorElm based on SparkGapElm
 // FIXME need to uncomment ThermistorElm line from CirSim.java
 // FIXME need to add ThermistorElm.java to srclist
 
-import java.awt.*;
-import java.util.StringTokenizer;
 
 class ThermistorElm extends CircuitElm {
     double minresistance, maxresistance;

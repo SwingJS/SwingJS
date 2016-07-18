@@ -1,6 +1,16 @@
 package test.Circuit;
-import java.awt.*;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.event.*;
+
+import swingjs.awt.Button;
+import swingjs.awt.Choice;
+import swingjs.awt.Label;
+import swingjs.awt.Scrollbar;
 
 class EditDialogLayout implements LayoutManager {
     public EditDialogLayout() {}

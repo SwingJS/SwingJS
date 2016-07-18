@@ -1,5 +1,9 @@
 package test.Circuit;
-import java.awt.*;
+
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.StringTokenizer;
 
 class TransLineElm extends CircuitElm {
