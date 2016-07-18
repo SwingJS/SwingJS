@@ -1,57 +1,28 @@
 package test.falstad;
 
+
 //VOW.java (C) 2005 by Paul Falstad, www.falstad.com
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.MemoryImageSource;
+import java.io.InputStream;
+import java.awt.*;
+import java.awt.image.ImageProducer;
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.util.Vector;
+import java.util.Hashtable;
+import java.util.Enumeration;
+import java.io.File;
+import java.net.URL;
+import java.util.Random;
+import java.io.FilterInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.awt.image.*;
+import java.lang.Math;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Random;
 import java.util.StringTokenizer;
-
-import sun.audio.AudioData;
-import sun.audio.AudioDataStream;
-import sun.audio.AudioPlayer;
-import swingjs.J2SIgnoreImport;
-import swingjs.JSToolkit;
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Dialog;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
-import swingjs.awt.TextArea;
 
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
@@ -59,7 +30,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
-
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
@@ -79,7 +49,7 @@ class VOWCanvas extends Canvas {
 		pg.updateVOW(g);
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
 		pg.updateVOW(g);
 	}
 };
@@ -146,8 +116,7 @@ public class VOW extends Applet implements ComponentListener {
 	boolean started = false;
 
 	public void init() {
-		// addComponentListener(this);
-		showFrame();
+		addComponentListener(this);
 	}
 
 	public static void main(String args[]) {
@@ -181,10 +150,9 @@ public class VOW extends Applet implements ComponentListener {
 			s = "Applet is starting.";
 		else if (ogf == null)
 			s = "Applet is finished.";
-		else if (ogf.useFrame)
-			ogf.triggerShow();
+		else
+			ogf.show();
 		g.drawString(s, 10, 30);
-		super.paint(g);
 	}
 
 	public void componentHidden(ComponentEvent e) {
@@ -193,7 +161,8 @@ public class VOW extends Applet implements ComponentListener {
 	public void componentMoved(ComponentEvent e) {
 	}
 
-	public void componentShown(ComponentEvent e) { /* showFrame(); */
+	public void componentShown(ComponentEvent e) {
+		showFrame();
 	}
 
 	public void componentResized(ComponentEvent e) {
@@ -295,9 +264,6 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 	PhaseColor phaseColors[];
 	static final int phaseColorCount = 50 * 8;
 	boolean filterChanged;
-	Container main;
-	public boolean useFrame;
-	boolean showControls;
 
 	class View extends Rectangle {
 		public double mult;
@@ -334,8 +300,6 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 	VOWFrame(VOW a) {
 		super("VOW Applet v1.0");
 		applet = a;
-		useFrame = true;
-		showControls = true;
 	}
 
 	boolean java2 = false;
@@ -344,22 +308,14 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 
 	public void init() {
 		mp3List = new String[20];
+
 		try {
-			if (applet != null) {
-				String param = applet.getParameter("useFrame");
-				if (param != null && param.equalsIgnoreCase("false"))
-					useFrame = false;
-				param = applet.getParameter("showControls");
-				if (param != null && param.equalsIgnoreCase("false"))
-					showControls = false;
-			}
+			String param = applet.getParameter("PAUSE");
+			if (param != null)
+				pause = Integer.parseInt(param);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		if (useFrame)
-			main = this;
-		else
-			main = applet;
+
 		String jv = System.getProperty("java.class.version");
 		double jvf = new Double(jv).doubleValue();
 		if (jvf >= 48)
@@ -381,12 +337,12 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		for (; i != 20; i++)
 			pipeRadius[i] = 1;
 
-		main.setLayout(new VOWLayout());
+		setLayout(new VOWLayout());
 		cv = new VOWCanvas(this);
 		cv.addComponentListener(this);
 		cv.addMouseMotionListener(this);
 		cv.addMouseListener(this);
-		main.add(cv);
+		add(cv);
 
 		MenuBar mb = new MenuBar();
 		Menu m = new Menu("File");
@@ -416,7 +372,7 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		else
 			soundCheck.disable();
 		soundCheck.addItemListener(this);
-		main.add(soundCheck);
+		add(soundCheck);
 
 		displayCheck = new Checkbox("Stop Display");
 		displayCheck.addItemListener(this);
@@ -430,12 +386,12 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		attenuationCheck = new Checkbox("Attenuation");
 		attenuationCheck.setState(true);
 		attenuationCheck.addItemListener(this);
-		main.add(attenuationCheck);
+		add(attenuationCheck);
 
 		envelopeCheck = new Checkbox("Envelope");
 		envelopeCheck.setState(true);
 		envelopeCheck.addItemListener(this);
-		main.add(envelopeCheck);
+		add(envelopeCheck);
 
 		/*
 		 * woofCheck = new Checkbox("Woof"); woofCheck.addItemListener(this);
@@ -443,10 +399,10 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		 */
 
 		exportButton = new Button("Import/Export");
-		main.add(exportButton);
+		add(exportButton);
 		exportButton.addActionListener(this);
 
-		main.add(inputChooser = new Choice());
+		add(inputChooser = new Choice());
 		inputChooser.add("Input = Noise");
 		inputChooser.add("Input = Vocal");
 		inputChooser.add("Input = Sawtooth");
@@ -461,13 +417,13 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		inputChooser.select(1);
 		inputChooser.addItemListener(this);
 
-		main.add(filterChooser = new Choice());
+		add(filterChooser = new Choice());
 		filterChooser.add("Filter = ah");
 		filterChooser.add("Filter = oh");
 		filterChooser.add("Filter = oo");
 		filterChooser.add("Filter = ee");
 		filterChooser.add("Filter = eh");
-		filterChooser.add("Filter = barred-I (Russian vowel)");
+		filterChooser.add("Filter = barred-I (Russian VOW)");
 		filterChooser.add("Filter = ah (simple)");
 		filterChooser.add("Filter = ee (simple)");
 		filterChooser.add("Filter = a as in bad (simple)");
@@ -489,9 +445,9 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		windowChooser.add("Window = Bartlett");
 		windowChooser.add("Window = Welch");
 		windowChooser.addItemListener(this);
-		// windowChooser.select(1);
+		windowChooser.select(1);
 
-		main.add(rateChooser = new Choice());
+		add(rateChooser = new Choice());
 		rateChooser.add("Sampling Rate = 8000");
 		rateChooser.add("Sampling Rate = 11025");
 		rateChooser.add("Sampling Rate = 16000");
@@ -505,17 +461,17 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		auxLabels = new Label[5];
 		auxBars = new Scrollbar[5];
 		for (i = 0; i != 5; i++) {
-			main.add(auxLabels[i] = new Label("", Label.CENTER));
-			main.add(auxBars[i] = new Scrollbar(Scrollbar.HORIZONTAL, 25, 1, 1, 999));
+			add(auxLabels[i] = new Label("", Label.CENTER));
+			add(auxBars[i] = new Scrollbar(Scrollbar.HORIZONTAL, 25, 1, 1, 999));
 			auxBars[i].addAdjustmentListener(this);
 		}
 
-		main.add(inputLabel = new Label("Input Frequency", Label.CENTER));
-		main.add(inputBar = new Scrollbar(Scrollbar.HORIZONTAL, 400, 1, 1, 999));
+		add(inputLabel = new Label("Input Frequency", Label.CENTER));
+		add(inputBar = new Scrollbar(Scrollbar.HORIZONTAL, 400, 1, 1, 999));
 		inputBar.addAdjustmentListener(this);
 
-		main.add(kaiserLabel = new Label("Kaiser Parameter", Label.CENTER));
-		main.add(kaiserBar = new Scrollbar(Scrollbar.HORIZONTAL, 500, 1, 1, 999));
+		add(kaiserLabel = new Label("Kaiser Parameter", Label.CENTER));
+		add(kaiserBar = new Scrollbar(Scrollbar.HORIZONTAL, 500, 1, 1, 999));
 		kaiserBar.addAdjustmentListener(this);
 
 		random = new Random();
@@ -527,26 +483,12 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		showFormat = DecimalFormat.getInstance();
 		showFormat.setMaximumFractionDigits(2);
 
-		if (useFrame) {
-			setSize(800, 640);
-			handleResize();
-			Dimension x = getSize();
-			Dimension screen = getToolkit().getScreenSize();
-			setLocation((screen.width - x.width) / 2, (screen.height - x.height) / 2);
-			setVisible(true);
-		} else {
-			setVisible(false);
-			handleResize();
-			applet.validate();
-		}
-
-		// resize(640, 640);
-		// handleResize();
-		// Dimension x = getSize();
-		// Dimension screen = getToolkit().getScreenSize();
-		// setLocation((screen.width - x.width)/2,
-		// (screen.height - x.height)/2);
-		// show();
+		resize(640, 640);
+		handleResize();
+		Dimension x = getSize();
+		Dimension screen = getToolkit().getScreenSize();
+		setLocation((screen.width - x.width) / 2, (screen.height - x.height) / 2);
+		show();
 	}
 
 	void reinit() {
@@ -617,14 +559,6 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	boolean shown = false;
-
-	public void triggerShow() {
-		if (!shown)
-			setVisible(true);
-		shown = true;
-	}
-
 	void handleResize() {
 		Dimension d = winSize = cv.getSize();
 		if (winSize.width == 0)
@@ -683,7 +617,7 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 		g.drawString(s, (winSize.width - fm.stringWidth(s)) / 2, y);
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
 		cv.repaint();
 	}
 
@@ -2144,6 +2078,8 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 
 		void requestShutdown() {
 			shutdownRequested = true;
+			if (line != null)
+				line.flush();
 		}
 
 		void setFilter(Filter f) {
@@ -2161,8 +2097,7 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 							"sorry, the sound format cannot be played");
 				}
 				line = (SourceDataLine) AudioSystem.getLine(info);
-				int n = getPower2(sampleRate / 4);
-				line.open(playFormat, n);
+				line.open(playFormat, getPower2(sampleRate / 4));
 				line.start();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2219,6 +2154,7 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 					&& (applet == null || applet.ogf != null)) {
 				// System.out.println("nf " + newFilter + " " +(inbp-outbp));
 				if (newFilter != null) {
+					line.flush(); // BH added
 					gainCounter = 0;
 					maxGain = true;
 					if (wform instanceof SweepWaveform || wform instanceof SineWaveform)
@@ -2266,9 +2202,9 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 				 */
 
 				int sampleCount = length / ss;
-				if (useConvolve) {
+				if (useConvolve)
 					doConvolveFilter(sampleCount, maxGain);
-				} else {
+				else {
 					doFilter(sampleCount);
 					if (unstable)
 						break;
@@ -3744,7 +3680,7 @@ class VOWFrame extends Frame implements ComponentListener, ActionListener,
 			super(f, (str.length() > 0) ? "Export" : "Import", false);
 			rframe = f;
 			setLayout(new ImportDialogLayout());
-			add(text = new TextArea(str, 10, 60));
+			add(text = new TextArea(str, 10, 60, TextArea.SCROLLBARS_BOTH));
 			add(importButton = new Button("Import"));
 			importButton.addActionListener(this);
 			add(clearButton = new Button("Clear"));

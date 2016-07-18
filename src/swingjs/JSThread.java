@@ -102,7 +102,10 @@ public abstract class JSThread extends Thread implements JSFunction {
 	protected abstract void onException(Exception e);
 	
 	/**
-	 * anything you want done in  try{}catch(}finally() 
+	 * anything you want done in  try{}catch(}finally().
+	 * Note that this method is not fired if we are in JavaScript
+	 * mode and the normal return from sleepAndReturn() is taken. 
+	 *  
 	 */
 	protected abstract void doFinally();
 	
@@ -118,6 +121,7 @@ public abstract class JSThread extends Thread implements JSFunction {
 	 * @param state
 	 */
 	protected void run1(int state) {
+		boolean executeFinally = true;
 		// called by thisThread.run();
 		try {
 			while (!interrupted()) {
@@ -134,10 +138,15 @@ public abstract class JSThread extends Thread implements JSFunction {
 						state = DONE;
 						continue;
 					}
-					// to handle sleepAndReturn yourself, or to skip the
+					// To handle sleepAndReturn yourself, or to skip the
 					// sleep when desired, return false from myLoop();
-					if (myLoop() && sleepAndReturn(getDelayMillis(), state))
-						return;
+					// Note that doFinally must not be executed in this case.
+					// This is because JavaScript will do a return here
+					// for every loop, and Java will not.
+					if (myLoop() && sleepAndReturn(getDelayMillis(), state)) {
+						executeFinally = false;
+						return;						
+					}
 					continue;
 				case DONE:
 					whenDone();
@@ -149,7 +158,8 @@ public abstract class JSThread extends Thread implements JSFunction {
 			onException(e);
 			state = DONE;
 		} finally {
-			doFinally();
+			if (executeFinally)
+				doFinally();
 		}
 		// normal exit
 	}

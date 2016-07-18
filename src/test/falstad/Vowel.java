@@ -2,6 +2,7 @@
 
 package test.falstad;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -272,7 +273,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	boolean editingFunc;
 	boolean dragStop;
 	double inputW;
-	static final double pi = 3.14159265358979323846;
 	double step;
 	double waveGain = 1. / 65536;
 	double outputGain = 1;
@@ -416,7 +416,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 		soundCheck = new Checkbox("Sound On");
 		if (java2)
-			soundCheck.setState(true);
+			soundCheck.setState(false);//true);
 		else
 			soundCheck.disable();
 		soundCheck.addItemListener(this);
@@ -585,9 +585,9 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	PhaseColor genPhaseColor(int sec, double ang) {
 		// convert to 0 .. 2*pi angle
-		ang += sec * pi / 4;
+		ang += sec * Math.PI / 4;
 		// convert to 0 .. 6
-		ang *= 3 / pi;
+		ang *= 3 / Math.PI;
 		int hsec = (int) ang;
 		double a2 = ang % 1;
 		double a3 = 1. - a2;
@@ -772,10 +772,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			for (i = 0; i != respView.width; i++) {
 				double w = 0;
 				if (!logFreqCheckItem.getState())
-					w = pi * i / (respView.width);
+					w = Math.PI * i / (respView.width);
 				else {
 					double f = Math.exp(minlog + i * logrange / respView.width);
-					w = 2 * pi * f;
+					w = 2 * Math.PI * f;
 				}
 				filterType.getResponse(w, cc);
 				double bw = cc.magSquared();
@@ -827,13 +827,13 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			for (i = 0; i != phaseView.width; i++) {
 				double w = 0;
 				if (!logFreqCheckItem.getState())
-					w = pi * i / (phaseView.width);
+					w = Math.PI * i / (phaseView.width);
 				else {
 					double f = Math.exp(minlog + i * logrange / phaseView.width);
-					w = 2 * pi * f;
+					w = 2 * Math.PI * f;
 				}
 				filterType.getResponse(w, cc);
-				double val = .5 - cc.phase / (2 * pi);
+				double val = .5 - cc.phase / (2 * Math.PI);
 				int y = phaseView.y + (int) (phaseView.height * val);
 				int x = i + phaseView.x;
 				if (ox != -1)
@@ -952,7 +952,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				if (info[i] == null)
 					break;
 			if (wformInfo.needsFrequency())
-				info[i++] = "Input Freq = " + (int) (inputW * sampleRate / (2 * pi))
+				info[i++] = "Input Freq = " + (int) (inputW * sampleRate / (2 * Math.PI))
 						+ " Hz";
 			/*
 			 * info[i++] = "Output adjust = " +
@@ -967,7 +967,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 					|| (spectrumView != null && spectrumView.contains(mouseX, mouseY))) {
 				double f = getFreqFromX(mouseX, respView);
 				if (f >= 0) {
-					double fw = 2 * pi * f;
+					double fw = 2 * Math.PI * f;
 					f *= sampleRate;
 					g.setColor(Color.yellow);
 					String s = "f = " + (int) f;
@@ -1152,20 +1152,20 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 			g.setColor(Color.white);
 			int isub = spectrumBuf.length / 2;
-			double cosmult = 2 * pi / (spectrumBuf.length - 2);
+			double cosmult = 2 * Math.PI / (spectrumBuf.length - 2);
 			for (i = 0; i != spectrumBuf.length; i += 2) {
 				double ht = .54 - .46 * Math.cos(i * cosmult);
 				spectrumBuf[i] *= ht;
 			}
 			if (spectrumFFT == null
-					|| spectrumFFT.getSize() != spectrumBuf.length / 2)
-				spectrumFFT = new FFT(spectrumBuf.length / 2);
+					|| spectrumFFT.getSize() != isub)
+				spectrumFFT = new FFT(isub);
 			spectrumFFT.transform(spectrumBuf, false);
-			double logmult = spectrumView.width
-					/ Math.log(spectrumBuf.length / 2 + 1);
+//			double logmult = spectrumView.width
+//					/ Math.log(isub + 1);
 
-			int ox = -1, oy = -1;
-			double bufmult = 1. / (spectrumBuf.length / 2);
+//			int ox = -1, oy = -1;
+			double bufmult = 1. / isub;
 			// if (logAmpCheckItem.getState())
 			bufmult /= 65536;
 			bufmult *= bufmult;
@@ -1174,7 +1174,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			if (logFreqCheckItem.getState()) {
 				// freq = i*rate/(spectrumBuf.length)
 				// min frequency = 40 Hz
-				for (i = 0; i != spectrumBuf.length / 2; i += 2) {
+				for (i = 0; i != isub; i += 2) {
 					double f = i / (double) spectrumBuf.length;
 					int ix = (int) (specArray.length * (Math.log(f) - minlog) / logrange);
 					if (ix < 0)
@@ -1183,8 +1183,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 							* spectrumBuf[i + 1];
 				}
 			} else {
-				for (i = 0; i != spectrumBuf.length / 2; i += 2) {
-					int ix = specArray.length * i * 2 / spectrumBuf.length;
+				for (i = 0; i != isub; i += 2) {
+					int ix = specArray.length * i / isub;
 					specArray[ix] += spectrumBuf[i] * spectrumBuf[i] + spectrumBuf[i + 1]
 							* spectrumBuf[i + 1];
 				}
@@ -1234,13 +1234,12 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	void calcWave(double f, Complex wave[]) {
 		int ll[] = new int[pipeRadius.length + 1];
-		int i;
-		for (i = 0; i != ll.length; i++)
+		for (int i = 0; i != ll.length; i++)
 			ll[i] = i;
 		double resp[] = new double[2];
 		genPipeResponse(pipeRadius, f * 2, ll, resp, wave);
 		double m = 1 / wave[0].mag;
-		for (i = 0; i != wave.length; i++)
+		for (int i = wave.length; --i >= 0;)
 			wave[i].mult(m);
 	}
 
@@ -1308,7 +1307,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		case 5:
 			filterType = new IBarVowelFilter();
 			break;
-
 		case 6:
 			filterType = new AVowelFilterSimple();
 			break;
@@ -1458,17 +1456,17 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	void setInputW() {
-		inputW = pi * inputBar.getValue() / 1000.;
+		inputW = Math.PI * inputBar.getValue() / 1000.;
 		inputW /= 20;
 	}
 
 	@Override
-	public boolean handleEvent(Event ev) {
-		if (ev.id == Event.WINDOW_DESTROY) {
+	public void processEvent(AWTEvent ev) {
+		if (ev.getID() == Event.WINDOW_DESTROY) {
 			destroyFrame();
-			return true;
+			return;
 		}
-		return super.handleEvent(ev);
+		super.processEvent(ev);
 	}
 
 	void destroyFrame() {
@@ -1573,7 +1571,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			double f = getFreqFromX(e.getX(), spectrumView);
 			if (f < 0)
 				return;
-			inputW = 2 * pi * f;
+			inputW = 2 * Math.PI * f;
 			inputBar.setValue((int) (2000 * f));
 		}
 		if (selection == SELECT_PIPE) {
@@ -1768,7 +1766,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 		@Override
 		int getData() {
-			int period = (int) (2 * pi / inputW);
+			int period = (int) (2 * Math.PI / inputW);
 			if (period != smbuf.length) {
 				smbuf = new short[period];
 				int i;
@@ -1831,7 +1829,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		@Override
 		int getData() {
 			int i;
-			int period = (int) (2 * pi / inputW);
+			int period = (int) (2 * Math.PI / inputW);
 			if (period != smbuf.length) {
 				smbuf = new short[period];
 				double p2 = period / 2.;
@@ -1869,7 +1867,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		@Override
 		int getData() {
 			int i;
-			int period = (int) (2 * pi / inputW);
+			int period = (int) (2 * Math.PI / inputW);
 			if (period != smbuf.length) {
 				smbuf = new short[period];
 				double p2 = period / 2.;
@@ -1909,7 +1907,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			for (i = 0; i != buffer.length; i++, ix++) {
 				if (ix >= period) {
 					ix = 0;
-					period = (int) (2 * pi / inputW);
+					period = (int) (2 * Math.PI / inputW);
 					period += getrand(3) - 1;
 					p2 = period / 2;
 				}
@@ -1940,7 +1938,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		@Override
 		int getData() {
 			int i;
-			int period = (int) (2 * pi / inputW);
+			int period = (int) (2 * Math.PI / inputW);
 			if (period != smbuf.length) {
 				smbuf = new short[period];
 				for (i = 0; i != period / 2; i++)
@@ -1972,7 +1970,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		boolean start() {
 			getBuffer();
 			ix = 0;
-			startOmega = nextOmega = omega = 2 * pi * 40 / sampleRate;
+			startOmega = nextOmega = omega = 2 * Math.PI * 40 / sampleRate;
 			t = 0;
 			return true;
 		}
@@ -1986,18 +1984,18 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			double minspeed = 1 / (sampleRate * 16);
 			if (logFreqCheckItem.getState())
 				nmul = Math
-						.pow(2 * pi / startOmega, 2 * (minspeed + (maxspeed - minspeed)
+						.pow(2 * Math.PI / startOmega, 2 * (minspeed + (maxspeed - minspeed)
 								* inputBar.getValue() / 1000.));
 			else
-				nadd = (2 * pi - startOmega)
+				nadd = (2 * Math.PI - startOmega)
 						* (minspeed + (maxspeed - minspeed) * inputBar.getValue() / 1000.);
 			for (i = 0; i != buffer.length; i++) {
 				ix++;
 				t += omega;
-				if (t > 2 * pi) {
-					t -= 2 * pi;
+				if (t > 2 * Math.PI) {
+					t -= 2 * Math.PI;
 					omega = nextOmega;
-					if (nextOmega > pi)
+					if (nextOmega > Math.PI)
 						omega = nextOmega = startOmega;
 				}
 				buffer[i] = (short) (Math.sin(t) * 32000);
@@ -2058,143 +2056,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
-	class Complex {
-		public double re, im, mag, phase;
-
-		Complex() {
-			re = im = mag = phase = 0;
-		}
-
-		Complex(double r, double i) {
-			set(r, i);
-		}
-
-		Complex(Complex c) {
-			set(c.re, c.im);
-		}
-
-		double magSquared() {
-			return mag * mag;
-		}
-
-		String asString() {
-			return re + "+" + im + "i";
-		}
-
-		void set(double aa, double bb) {
-			re = aa;
-			im = bb;
-			setMagPhase();
-		}
-
-		void set(double aa) {
-			re = aa;
-			im = 0;
-			setMagPhase();
-		}
-
-		void set(Complex c) {
-			re = c.re;
-			im = c.im;
-			mag = c.mag;
-			phase = c.phase;
-		}
-
-		void add(double r) {
-			re += r;
-			setMagPhase();
-		}
-
-		void add(double r, double i) {
-			re += r;
-			im += i;
-			setMagPhase();
-		}
-
-		void add(Complex c) {
-			re += c.re;
-			im += c.im;
-			setMagPhase();
-		}
-
-		void subtract(Complex c) {
-			re -= c.re;
-			im -= c.im;
-			setMagPhase();
-		}
-
-		void addMult(double x, Complex z) {
-			re += z.re * x;
-			im += z.im * x;
-			setMagPhase();
-		}
-
-		void addMult(double x, Complex c1, Complex c2) {
-			re += x * (c1.re * c2.re - c1.im * c2.im);
-			im += x * (c1.re * c2.im + c1.im * c2.re);
-			setMagPhase();
-		}
-
-		void square() {
-			set(re * re - im * im, 2 * re * im);
-		}
-
-		void sqrt() {
-			setMagPhase(Math.sqrt(mag), phase * .5);
-		}
-
-		void mult(double c, double d) {
-			set(re * c - im * d, re * d + im * c);
-		}
-
-		void mult(double c) {
-			re *= c;
-			im *= c;
-			mag *= c;
-		}
-
-		void mult(Complex c) {
-			mult(c.re, c.im);
-		}
-
-		void setMagPhase() {
-			mag = Math.sqrt(re * re + im * im);
-			phase = Math.atan2(im, re);
-		}
-
-		void setMagPhase(double m, double ph) {
-			mag = m;
-			phase = ph;
-			re = m * Math.cos(ph);
-			im = m * Math.sin(ph);
-		}
-
-		void recip() {
-			double n = re * re + im * im;
-			set(re / n, -im / n);
-		}
-
-		void divide(Complex c) {
-			double n = c.re * c.re + c.im * c.im;
-			mult(c.re / n, -c.im / n);
-		}
-
-		void rotate(double a) {
-			setMagPhase(mag, (phase + a) % (2 * pi));
-		}
-
-		void conjugate() {
-			im = -im;
-			phase = -phase;
-		}
-
-		void pow(double p) {
-			double arg = java.lang.Math.atan2(im, re);
-			phase *= p;
-			double abs = java.lang.Math.pow(re * re + im * im, p * .5);
-			setMagPhase(abs, phase);
-		}
-	};
 
 	abstract class Filter {
 		abstract void run(double inBuf[], double outBuf[], int bp, int mask,
@@ -2293,9 +2154,9 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 				bottom = new Complex();
 			}
 			int i, j;
-			czn.set(1);
-			top.set(0);
-			bottom.set(0);
+			czn.setReal(1);
+			top.setReal(0);
+			bottom.setReal(0);
 			int n = 0;
 			for (i = 0; i != aList.length; i++) {
 				int n1 = nList[i];
@@ -2309,9 +2170,9 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 					czn.divide(c);
 					n++;
 				}
-				top.addMult(aList[i], czn);
+				top.scaleAdd(aList[i], czn);
 				if (bList != null)
-					bottom.addMult(bList[i], czn);
+					bottom.scaleAdd(bList[i], czn);
 			}
 			if (bList != null)
 				top.divide(bottom);
@@ -2385,6 +2246,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class CascadeFilter extends Filter {
+		
 		CascadeFilter(int s) {
 			size = s;
 			a1 = new double[s];
@@ -2485,15 +2347,15 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			cm1.recip();
 			cm2.set(cm1);
 			cm2.square();
-			c.set(1);
+			c.setReal(1);
 			for (i = 0; i != size; i++) {
-				top.set(b0[i]);
-				top.addMult(b1[i], cm1);
-				top.addMult(b2[i], cm2);
-				bottom.set(1);
-				bottom.addMult(-a1[i], cm1);
-				bottom.addMult(-a2[i], cm2);
-				c.mult(top);
+				top.setReal(b0[i]);
+				top.scaleAdd(b1[i], cm1);
+				top.scaleAdd(b2[i], cm2);
+				bottom.setReal(1);
+				bottom.scaleAdd(-a1[i], cm1);
+				bottom.scaleAdd(-a2[i], cm2);
+				c.multComp(top);
 				c.divide(bottom);
 			}
 		}
@@ -2533,11 +2395,11 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 
 		void getPole(int i, Complex c) {
-			c.set(0);
+			c.setReal(0);
 		}
 
 		void getZero(int i, Complex c) {
-			c.set(0);
+			c.setReal(0);
 		}
 
 		abstract Filter genFilter();
@@ -2555,7 +2417,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	String getOmegaText(double wc) {
-		return ((int) (wc * sampleRate / (2 * pi))) + " Hz";
+		return ((int) (wc * sampleRate / (2 * Math.PI))) + " Hz";
 	}
 
 	abstract class FIRFilterType extends FilterType {
@@ -2564,22 +2426,22 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		@Override
 		void getResponse(double w, Complex c) {
 			if (response == null) {
-				c.set(0);
+				c.setReal(0);
 				return;
 			}
-			int off = (int) (response.length * w / (2 * pi));
+			int off = (int) (response.length * w / (2 * Math.PI));
 			off &= ~1;
 			if (off < 0)
 				off = 0;
 			if (off >= response.length)
 				off = response.length - 2;
-			c.set(response[off], response[off + 1]);
+			c.setDouble(response[off], response[off + 1]);
 		}
 
 		double getWindow(int i, int n) {
 			if (n == 1)
 				return 1;
-			double x = 2 * pi * i / (n - 1);
+			double x = 2 * Math.PI * i / (n - 1);
 			double n2 = n / 2; // int
 			switch (windowChooser.getSelectedIndex()) {
 			case 0:
@@ -2591,7 +2453,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			case 3:
 				return .42 - .5 * Math.cos(x) + .08 * Math.cos(2 * x); // blackman
 			case 4: {
-				double kaiserAlphaPi = kaiserBar.getValue() * pi / 120.;
+				double kaiserAlphaPi = kaiserBar.getValue() * Math.PI / 120.;
 				double q = (2 * i / (double) n) - 1;
 				return bessi0(kaiserAlphaPi * Math.sqrt(1 - q * q));
 			}
@@ -2624,9 +2486,9 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			int j;
 			Complex c1 = new Complex();
 			for (j = 0; j != response.length; j += 2) {
-				c1.set(response[j], response[j + 1]);
+				c1.setDouble(response[j], response[j + 1]);
 				// divide out the uninteresting (and confusing) constant delay
-				c1.rotate(-offset * 2 * pi * j / response.length);
+				c1.rotate(-offset * 2 * Math.PI * j / response.length);
 				double ms = c1.magSquared();
 				if (maxresp < ms)
 					maxresp = ms;
@@ -2672,8 +2534,9 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	void genPipeResponse(double rad[], double maxf, int lens[], double resp[],
 			Complex wave[]) {
+		// BH here is the time sink in JavaScript
+
 		int n = 1 + rad.length;
-		int wi;
 		double zair = 40.3; // g/cm^2*sec
 		double dim = pipeLen;
 		dim /= lens[lens.length - 1];
@@ -2685,28 +2548,68 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		// z[0] = 10e7; // formants at 500(n+1), sounds ok
 		// z[0] = 1e7; // formants at 500(n+1), sounds ok
 		z[0] = 200;
-		int i;
 		// pipe Z = zair/S
-		for (i = 0; i != rad.length; i++)
-			z[i + 1] = zair / (Math.PI * rad[i] * rad[i]);
+		for (int i = 1; i != n; i++)
+			z[i] = zair / (Math.PI * rad[i - 1] * rad[i - 1]);
 		// end of pipe Z = (zair/S)((ka/2)^2+.6ka i)
 		// z[i+1] = zair/1000;
 		Complex cond[][] = new Complex[n * 2][4];
 		Complex rs[] = new Complex[n * 2];
-		for (wi = 1; wi != resp.length; wi++) {
+		
+// BH this is the double loop that is very slow in JavaScript
+// 		int wi;
+//		for (wi = 1; wi != resp.length; wi++) {
+//			// double f = sampleRate*wi/(resp.length*2);
+//			double f = maxf * wi / resp.length;
+//			double w = f * 2 * Math.PI;
+//			double k = w / soundSpeed;
+//			z[rad.length + 1] = zair * k * k / (4 * Math.PI);
+//			z[rad.length + 1] = z[rad.length] / 4; // sounds better
+//			for (i = 0; i != n; i++) {
+//				int ii = i * 2;
+//				double x = lens[i] * dim;
+//				int i2 = ii + 1;
+//				double alpha = (i == n - 1) ? 0 : .007
+//						* Math.sqrt(1 / (rad[i] * rad[i])) * (.5 + f / 4000.); // p125 Fant
+//				if (!attenuationCheck.getState())
+//					alpha = 0;
+//				// voltages
+//				cond[ii][0] = iexp(-k * x, -alpha * x, 1);
+//				cond[ii][1] = iexp(k * x, alpha * x, 1);
+//				cond[ii][2] = iexp(-k * x, -alpha * x, -1);
+//				cond[ii][3] = iexp(k * x, alpha * x, -1);
+//				// currents
+//				cond[i2][0] = iexp(-k * x, -alpha * x, 1 / z[i]);
+//				cond[i2][1] = iexp(k * x, alpha * x, -1 / z[i]);
+//				cond[i2][2] = iexp(-k * x, -alpha * x, -1 / z[i + 1]);
+//				cond[i2][3] = iexp(k * x, alpha * x, 1 / z[i + 1]);
+//			}
+//			// System.out.print((w/(Math.PI*2)) + " ");
+//			double f100 = f / 100;
+//			double envelope = envelopeCheck.getState() ? f100 / (1 + f100 * f100) : 1;
+//			resp[wi] = solve(cond, n * 2, wave) * envelope;
+//		}
+		double ss = soundSpeed;
+		boolean attCheck = attenuationCheck.getState();
+		boolean envCheck = envelopeCheck.getState();
+		for (int wi = 1, len = resp.length; wi < len; wi++) {
 			// double f = sampleRate*wi/(resp.length*2);
-			double f = maxf * wi / resp.length;
+			// BH there is no need to create wave[] until the last iteration of wi.
+			Complex[] wav = (wi == len - 1 ? wave : null);
+			double f = maxf * wi / len;
 			double w = f * 2 * Math.PI;
-			double k = w / soundSpeed;
-			z[rad.length + 1] = zair * k * k / (4 * Math.PI);
-			z[rad.length + 1] = z[rad.length] / 4; // sounds better
-			for (i = 0; i != n; i++) {
+			double k = w / ss;
+			//z[rad.length + 1] = zair * k * k / (4 * Math.PI);
+			z[n] = z[n-1] / 4; // sounds better
+			for (int i = 0; i != n; i++) {
 				int ii = i * 2;
-				double x = lens[i] * dim;
 				int i2 = ii + 1;
-				double alpha = (i == n - 1) ? 0 : .007
-						* Math.sqrt(1 / (rad[i] * rad[i])) * (.5 + f / 4000.); // p125 Fant
-				if (!attenuationCheck.getState())
+				double x = lens[i] * dim;
+				// BH why this? 
+				//double alpha = (i == n - 1) ? 0 : .007
+					//	* Math.sqrt(1 / (rad[i] * rad[i])) * (.5 + f / 4000.); // p125 Fant
+				double alpha = (i == n - 1) ? 0 : .007 / rad[i] * (.5 + f / 4000.); // p125 Fant
+				if (!attCheck)
 					alpha = 0;
 				// voltages
 				cond[ii][0] = iexp(-k * x, -alpha * x, 1);
@@ -2721,8 +2624,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			}
 			// System.out.print((w/(Math.PI*2)) + " ");
 			double f100 = f / 100;
-			double envelope = envelopeCheck.getState() ? f100 / (1 + f100 * f100) : 1;
-			resp[wi] = solve(cond, n * 2, wave) * envelope;
+			double envelope = envCheck ? f100 / (1 + f100 * f100) : 1;
+			resp[wi] = solve(cond, n * 2, wav) * envelope;
 		}
 		resp[0] = resp[1];
 	}
@@ -2736,15 +2639,24 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	// m20 m21 m22 m23
 	// m30 m31 m32 m33
 	// m40 m41 m42 m43
-	// m40 m41 m42 m43
+	// m40 m41 m42 m43		s1.set2(0, 0);
+
 	// ...
+	
+	Complex s0 = new Complex();
+	Complex s1 = new Complex();
+	Complex det = new Complex();
+	Complex rs0 = new Complex();
+	Complex rs1 = new Complex();
+	Complex cy = new Complex();
+	
 	double solve(Complex m[][], int n, Complex wave[]) {
 		int i;
-		Complex s0 = new Complex(1, 0);
-		Complex s1 = new Complex(0, 0);
-		Complex det = new Complex();
-		Complex rs0 = new Complex();
-		Complex rs1 = new Complex();
+		s0.setDouble(1, 0);
+		s1.setDouble(0, 0);
+		det.setDouble(0, 0);
+		rs0.setDouble(0, 0);
+		rs1.setDouble(0, 0);
 		/*
 		 * for (i = 0; i != n; i++) { System.out.println(i + " " +
 		 * m[i][0].asString() + " " + m[i][1].asString() + " " + m[i][2].asString()
@@ -2753,33 +2665,33 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		for (i = n - 2; i >= 0; i -= 2) {
 			// use variables we know to get rid of 2 columns, moving them to right
 			// side
-			rs0.set(0);
-			rs0.addMult(-1, m[i][2], s0);
-			rs0.addMult(-1, m[i][3], s1);
-			rs1.set(0);
-			rs1.addMult(-1, m[i + 1][2], s0);
-			rs1.addMult(-1, m[i + 1][3], s1);
+			rs0.setReal(0);
+			rs0.addMult3(-1, m[i][2], s0);
+			rs0.addMult3(-1, m[i][3], s1);
+			rs1.setReal(0);
+			rs1.addMult3(-1, m[i + 1][2], s0);
+			rs1.addMult3(-1, m[i + 1][3], s1);
 			// System.out.println("rs0 rs1 " + rs0.asString() + " " + rs1.asString());
 			// use cramer's rule to solve the remaining 2x2 matrix
 			// first, get determinant
-			det.set(0);
-			det.addMult(1, m[i][0], m[i + 1][1]);
-			det.addMult(-1, m[i][1], m[i + 1][0]);
+			det.setReal(0);
+			det.addMult3(1, m[i][0], m[i + 1][1]);
+			det.addMult3(-1, m[i][1], m[i + 1][0]);
 			// then solve
-			s0.set(0);
-			s0.addMult(-1, m[i][1], rs1);
-			s0.addMult(1, m[i + 1][1], rs0);
+			s0.setReal(0);
+			s0.addMult3(-1, m[i][1], rs1);
+			s0.addMult3(1, m[i + 1][1], rs0);
 			s0.divide(det);
-			s1.set(0);
-			s1.addMult(1, m[i][0], rs1);
-			s1.addMult(-1, m[i + 1][0], rs0);
+			s1.setReal(0);
+			s1.addMult3(1, m[i][0], rs1);
+			s1.addMult3(-1, m[i + 1][0], rs0);
 			s1.divide(det);
 			// System.out.println("s0 s1 " + s0.asString() + " " + s1.asString());
 			if (wave != null) {
-				Complex cx = wave[i / 2] = new Complex(s0);
-				cx.mult(m[i][0]);
-				Complex cy = new Complex(s1);
-				cy.mult(m[i][1]);
+				Complex cx = wave[i / 2] = new Complex().setDouble(s0.re, s0.im);
+				cx.multComp(m[i][0]);
+				cy.setDouble(s1.re, s1.im);
+				cy.multComp(m[i][1]);
 				cx.add(cy);
 			}
 		}
@@ -2789,7 +2701,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	Complex iexp(double x, double alpha, double mul) {
 		Complex a = new Complex();
-		a.setMagPhase(Math.exp(alpha), x);
+		a.setMagPhase2(Math.exp(alpha), x);
 		a.mult(mul);
 		return a;
 	}
@@ -2797,6 +2709,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	double uresp[];
 
 	class PipeFIRFilter extends FIRFilterType {
+				
 		@Override
 		int select() {
 			/*
@@ -2889,6 +2802,19 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class IBarVowelFilter extends PipeFIRFilter {
+		
+		IBarVowelFilter(){
+			
+			/**
+			 * @j2sNative
+			 * 
+			 * Clazz.prepareFields(this);
+			 */
+			{}
+		}
+
+		
+
 		double data[] = { 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5,
 				6.42857, 2.83929, 2.73214, 3.13393, 3.29464, 3.45536, 3.45536, 4.58036,
 				5.49107, 6.45536, 6.96429, 7.33929, 7.66071, 7.84821, 8.03571, 8.19643,
@@ -2927,6 +2853,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class IVowelFilter extends PipeFIRFilter {
+		
+
 		double data[] = { 8.74254, 8.74254, 7.71642, 7.18284, 6.64925, 5.99254,
 				4.96642, 4.63806, 4.55597, 4.43284, 4.02239, 2.95522, 2.87313, 2.83209,
 				2.83209, 2.83209, 2.83209, 2.79104, 2.25746, 1.76493, 1.76493, 1.76493,
@@ -2966,6 +2894,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class EVowelFilter extends PipeFIRFilter {
+				
+
 		double data[] = { 10.2, 10.2, 10.2, 9.31174, 8.98785, 8.70445, 8.54251,
 				8.34008, 7.85425, 5.91093, 5.34413, 5.26316, 5.18219, 5.06073, 4.97976,
 				4.93927, 4.93927, 4.97976, 5.06073, 5.10121, 5.10121, 5.06073, 5.06073,
@@ -3004,6 +2934,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class OpenTubeFilter extends PipeFIRFilter {
+		
 		@Override
 		int select() {
 			int bars = super.select();
@@ -3015,7 +2946,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class CustomFilter extends PipeFIRFilter {
-		@Override
+
+		@Override		
 		int select() {
 			int bars = super.select();
 			auxBars[0].setValue((int) (pipeLen * 1000));
@@ -3024,6 +2956,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class AVowelFilter extends PipeFIRFilter {
+		
 		double data[] = { 6.08276, 6.08276, 6.08276, 6.08276, 6.08276, 6.05379,
 				5.93793, 5.59034, 5.18483, 5.01103, 4.92414, 4.89517, 4.86621, 4.86621,
 				4.86621, 4.86621, 4.86621, 4.89517, 4.9531, 5.04, 5.18483, 5.38759,
@@ -3078,6 +3011,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class AVowelFilterSimple extends PipeFIRFilter {
+		
 		@Override
 		int select() {
 			super.select();
@@ -3099,6 +3033,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class AEVowelFilterSimple extends AVowelFilterSimple {
+		
 		@Override
 		int select() {
 			super.select();
@@ -3108,6 +3043,8 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class OVowelFilter extends PipeFIRFilter {
+		
+		
 		double data[] = { 3.8, 3.8, 3.8, 3.86077, 3.53659, 3.4187, 3.35976,
 				3.30081, 3.30081, 3.24187, 3.33028, 3.38923, 3.59553, 3.89024, 4.15549,
 				4.30285, 4.56809, 4.8628, 5.03963, 6.07114, 7.39736, 8.4878, 9.75508,
@@ -3146,6 +3083,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class UVowelFilter extends PipeFIRFilter {
+		
 		double data[] = { 0.975787, 1.57385, 0.94431, 0.661017, 0.535109, 0.440678,
 				0.440678, 0.377724, 0.346247, 0.31477, 0.346247, 0.409201, 0.472155,
 				0.62954, 0.849879, 1.07022, 1.32203, 1.66828, 2.14044, 2.48668,
@@ -3185,6 +3123,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class YVowelFilterSimple extends PipeFIRFilter {
+		
 		@Override
 		int select() {
 			super.select();
@@ -3206,6 +3145,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class IVowelFilterSimple extends YVowelFilterSimple {
+
 		@Override
 		int select() {
 			super.select();
@@ -3216,6 +3156,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class UrVowelFilterSimple extends YVowelFilterSimple {
+		
 		@Override
 		int select() {
 			super.select();
@@ -3225,6 +3166,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class IhVowelFilterSimple extends PipeFIRFilter {
+		
 		@Override
 		int select() {
 			super.select();
@@ -3246,6 +3188,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class OoVowelFilterSimple extends PipeFIRFilter {
+		
 		@Override
 		int select() {
 			super.select();
@@ -3271,9 +3214,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 	}
 
 	class NoFilter extends FilterType {
+		
 		@Override
 		void getResponse(double w, Complex c) {
-			c.set(1);
+			c.setReal(1);
 		}
 
 		@Override
@@ -3464,7 +3408,7 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	/**
 	 * In the SwingJS implementation of PlayThread, we extend JSAudioThread
-	 * so that we can control the 
+	 * so that we have full control of looping with only occasional sleeping. 
 	 *
 	 */
 	class PlayThread extends JSAudioThread implements JSAudioThreadOwner {
@@ -3490,13 +3434,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 
 		public PlayThread() {
+			shutdownRequested = false;
 		}
 
-		void setFilter(Filter f) {
-			newFilter = f;
-		}
-
-		@Override
+		@Override // JSAudioThread
 		public boolean myInit() {
 			try {
 				owner = this;
@@ -3530,16 +3471,17 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
+		@Override // JSAudioThread
 		public boolean checkSoundStatus() {
 			return !shutdownRequested && soundCheck.getState()
 					&& (applet == null || applet.ogf != null);
 		}
 
-		@Override
+		@Override // JSAudioThread
 		protected boolean myLoop() {
 			// System.out.println("nf " + newFilter + " " +(inbp-outbp));
 			if (newFilter != null) {
+				line.flush(); // BH added
 				gainCounter = 0;
 				maxGain = true;
 				if (wform instanceof SweepWaveform || wform instanceof SineWaveform)
@@ -3609,7 +3551,24 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return true;
 		}
 
-		@Override
+		@Override // JSAudioThread
+		public void whenDone() {
+			if (shutdownRequested || unstable || !soundCheck.getState())
+				line.flush();
+			else
+				line.drain();
+			cv.repaint();
+		}
+		
+		@Override // JSAudioThread
+		public void audioThreadExiting() {
+			line.close();
+			audioThread = null;
+			cv.repaint();
+		}
+
+		
+		@Override // JSAudioThreadOwner
 		public int fillAudioBuffer() {
 			int qi;
 			int i, i2;
@@ -3664,20 +3623,10 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			return outlen;
 		}
 
-		@Override
-		public void whenDone() {
-			if (shutdownRequested || unstable || !soundCheck.getState())
-				line.flush();
-			else
-				line.drain();
-			cv.repaint();
-		}
+		///////////// below here, unchanged ///////////////
 		
-		@Override
-		public void audioThreadExiting() {
-			line.close();
-			cv.repaint();
-			audioThread = null;
+		void setFilter(Filter f) {
+			newFilter = f;
 		}
 
 		private void openLine() {
@@ -3729,7 +3678,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 			// is fixed, so use it to get inputLen
 			int cbptrmax = convolveBuf.length + 2 - 2 * filtA.length;
 			// System.out.println("reading " + sampleCount);
-			int nout = 0;
 			for (i = 0; i != sampleCount; i++, fi2++) {
 				i20 = fi2 & fbufmask;
 				convolveBuf[cbptr] = fbufLi[i20];
@@ -3772,7 +3720,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 					// clear transform buffer
 					for (j = 0; j != cblen; j++)
 						convolveBuf[j] = 0;
-					System.out.println("nout=" + ++nout);
 				}
 			}
 			inbp = fi2 & fbufmask;
@@ -3790,4 +3737,136 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 		}
 				
 	}
+}
+
+class Complex {
+	public double re, im, mag, phase;
+
+	public Complex() {
+		re = im = mag = phase = 0;
+	}
+
+	public double magSquared() {
+		return mag * mag;
+	}
+
+	public Complex setDouble(double r, double i) {
+		re = r;
+		im = i;
+		setMagPhase();
+		return this;
+	}
+
+	public void setReal(double r) {
+		re = r;
+		im = 0;
+		setMagPhase();
+	}
+
+	public void set(Complex c) {
+		re = c.re;
+		im = c.im;
+		mag = c.mag;
+		phase = c.phase;
+	}
+
+	public void addReal(double r) {
+		re += r;
+		setMagPhase();
+	}
+
+	public void addDouble(double r, double i) {
+		re += r;
+		im += i;
+		setMagPhase();
+	}
+
+	public void add(Complex c) {
+		re += c.re;
+		im += c.im;
+		setMagPhase();
+	}
+
+	public void subtractComp(Complex c) {
+		re -= c.re;
+		im -= c.im;
+		setMagPhase();
+	}
+
+	public void scaleAdd(double x, Complex z) {
+		re += z.re * x;
+		im += z.im * x;
+		setMagPhase();
+	}
+
+	public void addMult3(double x, Complex c1, Complex c2) {
+		re += x * (c1.re * c2.re - c1.im * c2.im);
+		im += x * (c1.re * c2.im + c1.im * c2.re);
+		setMagPhase();
+	}
+
+	public void square() {
+		setDouble(re * re - im * im, 2 * re * im);
+	}
+
+	public void sqrt() {
+		setMagPhase2(Math.sqrt(mag), phase * .5);
+	}
+
+	public void mult2(double c, double d) {
+		setDouble(re * c - im * d, re * d + im * c);
+	}
+
+	public void mult(double c) {
+		re *= c;
+		im *= c;
+		mag *= c;
+	}
+
+	public void multComp(Complex c) {
+		mult2(c.re, c.im);
+	}
+
+	public void setMagPhase() {
+		mag = Math.sqrt(re * re + im * im);
+		phase = Math.atan2(im, re);
+	}
+
+	public void setMagPhase2(double m, double ph) {
+		mag = m;
+		phase = ph;
+		re = m * Math.cos(ph);
+		im = m * Math.sin(ph);
+	}
+
+	public void recip() {
+		double n = re * re + im * im;
+		setDouble(re / n, -im / n);
+	}
+
+	public void divide(Complex c) {
+		double n = c.re * c.re + c.im * c.im;
+		mult2(c.re / n, -c.im / n);
+	}
+
+	public void rotate(double a) {
+		setMagPhase2(mag, (phase + a) % (2 * Math.PI));
+	}
+
+	public void conjugate() {
+		im = -im;
+		phase = -phase;
+	}
+
+	public void pow(double p) {
+		phase *= p;
+		double abs = Math.pow(re * re + im * im, p * .5);
+		setMagPhase2(abs, phase);
+	}
+
+	@Override
+	public String toString() {
+		return re + "+" + im + "i";
+	}
+
 }

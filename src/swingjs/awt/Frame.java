@@ -4,6 +4,8 @@ import java.awt.GraphicsConfiguration;
 
 import javax.swing.JFrame;
 
+import java.awt.AWTEvent;
+
 public class Frame extends JFrame {
 
 		
@@ -53,5 +55,4 @@ public class Frame extends JFrame {
 	public MenuBar getMenubar() {
 		return (MenuBar) getJMenuBar();
 	}
-
 }
