@@ -76,7 +76,7 @@ public class JSTableUI extends JSLightweightUI {
 			textNode = domNode = createDOMObject("label", id);
 		vCenter(domNode, 10);
 		DOMNode.setStyles(domNode,  "width", c.getWidth() + "px",  "height", c.getHeight() + "px");
-		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
+		return domNode;//setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
 	
 	}
 
