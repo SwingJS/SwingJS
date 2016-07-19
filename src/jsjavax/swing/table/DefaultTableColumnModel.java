@@ -50,7 +50,7 @@ import jsjavax.swing.event.TableColumnModelListener;
  * the same version of Swing.  As of 1.4, support for long term storage
  * of all JavaBeans<sup><font size="-2">TM</font></sup>
  * has been added to the <code>java.beans</code> package.
- * Please see {@link jsjava.beans.XMLEncoder}.
+ * Please see {@link jsjava.beans.XMLEncoder}.t
  *
  * @author Alan Chung
  * @author Philip Milne

@@ -6,6 +6,7 @@
 
  // NOTES by Bob Hanson
 
+ // BH BUG 7/18/2016 10:21:40 PM abstract classes that have prepareFields must declare a default superconstructor
  // BH 7/18/2016 10:28:47 AM adds System.nanoTime()
  // BH 7/17/2016 4:19:07 PM prepareFields modified to save b$[] in outer class, not inner
  //                         thus saving considerably on overhead when inner classes are created
@@ -109,6 +110,8 @@ var supportsNativeObject = window["j2s.object.native"];
 Clazz.Console = {};
 
 Clazz.duplicatedMethods = {};
+
+Clazz._preps = {}; // prepareFields functions based on class name
 
 // BH Clazz.getProfile monitors exactly what is being delegated with SAEM,
 // which could be a bottle-neck for function calling.
@@ -236,18 +239,20 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
 	return clazzFun;
 };
 
-/* public */
 Clazz.declareType = function (prefix, name, clazzParent, interfacez, 
 		parentClazzInstance, _declareType) {
 	return Clazz.decorateAsClass (function () { Clazz.instantialize (this, arguments);}, 
     prefix, name, clazzParent, interfacez, parentClazzInstance);
 };
 
-Clazz._preps = {};
-
-/* public */
 Clazz.prepareFields = function (clazz, fieldsFun) {
-  Clazz._preps[clazz.__CLASS_NAME__] = fieldsFun;  
+  Clazz._preps[clazz.__CLASS_NAME__] = fieldsFun;
+  // BH even if it is overwritten, a default constructor
+  // that checks for a superconstructor must be present
+  // if fields such as byte[] a = new byte[30] are declared
+  Clazz.makeConstructor(clazz, function() {
+  Clazz.superConstructor (this, clazz, []);
+  });
 };
 
 /**
@@ -1939,14 +1944,9 @@ Clazz.instantialize = function (objThis, args) {
 		}
 	}
   // BH order reversed -- field preparation must come before constructor call
-  if (pp && (pp = Clazz._preps[pp.__CLASS_NAME__]))
-		pp.apply(objThis, []);
-  if (p)
-		p.apply(objThis, []);  
-  if (c) {
-    //System.out.println("class " +  objThis.__CLASS_NAME__ + "/" +  (c.exClazz || c.claxxRef || c.claxxOwner).__CLASS_NAME__ + " executing constructor")
-		c.apply (objThis, args);
-  }
+  pp && (pp = Clazz._preps[pp.__CLASS_NAME__]) && pp.apply(objThis, []);
+  p && p.apply(objThis, []);  
+  c && c.apply (objThis, args);
 };
 
 
