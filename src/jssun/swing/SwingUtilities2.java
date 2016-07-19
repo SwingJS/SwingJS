@@ -26,26 +26,9 @@
 package jssun.swing;
 
 import static jsjava.awt.RenderingHints.KEY_TEXT_ANTIALIASING;
-//import static jsjava.awt.RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT;
-//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
-//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;
-
-//import java.io.BufferedInputStream;
-//import java.io.ByteArrayOutputStream;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.lang.reflect.Field;
-import jsjava.util.Locale;
-//import java.util.Map;
-//import java.util.concurrent.Callable;
-//import java.util.concurrent.Future;
-//import java.util.concurrent.FutureTask;
-
-import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
-//import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
 import jsjava.awt.Graphics;
@@ -54,10 +37,9 @@ import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.RenderingHints;
 import jsjava.awt.Toolkit;
-//import jsjava.awt.event.InputEvent;
-//import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.font.FontRenderContext;
+import jsjava.util.Locale;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JList;
 import jsjavax.swing.JTable;
@@ -65,14 +47,28 @@ import jsjavax.swing.ListCellRenderer;
 import jsjavax.swing.ListModel;
 import jsjavax.swing.ListSelectionModel;
 import jsjavax.swing.SwingUtilities;
-//import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.table.TableCellRenderer;
-//import jsjavax.swing.text.DefaultCaret;
 import jsjavax.swing.text.DefaultHighlighter;
 import jsjavax.swing.text.Highlighter;
 import jsjavax.swing.text.JTextComponent;
-import jssun.font.FontDesignMetrics;
+//import static jsjava.awt.RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+//import static jsjava.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF;
+//import java.io.BufferedInputStream;
+//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.lang.reflect.Field;
+//import java.util.Map;
+//import java.util.concurrent.Callable;
+//import java.util.concurrent.Future;
+//import java.util.concurrent.FutureTask;
+//import jsjava.awt.EventQueue;
+//import jsjava.awt.event.InputEvent;
+//import jsjava.awt.event.KeyEvent;
+//import jsjavax.swing.UIDefaults;
+//import jsjavax.swing.text.DefaultCaret;
 
 /**
  * A collection of utility methods for Swing.
