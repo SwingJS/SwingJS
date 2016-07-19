@@ -4,24 +4,6 @@ import java.util.Enumeration;
 
 import javax.swing.plaf.UIResource;
 
-import jsjavax.swing.Action;
-import jsjavax.swing.ActionMap;
-import jsjavax.swing.CellEditor;
-import jsjavax.swing.CellRendererPane;
-import jsjavax.swing.DefaultListSelectionModel;
-import jsjavax.swing.InputMap;
-import jsjavax.swing.JLabel;
-import jsjavax.swing.JScrollPane;
-import jsjavax.swing.JTable;
-import jsjavax.swing.KeyStroke;
-import jsjavax.swing.ListSelectionModel;
-import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.SwingConstants;
-import jsjavax.swing.Timer;
-import jsjavax.swing.UIManager;
-import swingjs.api.DOMNode;
-
-
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.ComponentOrientation;
@@ -36,26 +18,36 @@ import jsjava.awt.event.KeyListener;
 import jsjava.awt.event.MouseEvent;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.Action;
+import jsjavax.swing.ActionMap;
+import jsjavax.swing.CellEditor;
+import jsjavax.swing.CellRendererPane;
+import jsjavax.swing.DefaultListSelectionModel;
+import jsjavax.swing.InputMap;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.JScrollPane;
 import jsjavax.swing.JTable;
+import jsjavax.swing.KeyStroke;
+import jsjavax.swing.ListSelectionModel;
+import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.SwingUtilities;
+import jsjavax.swing.Timer;
 import jsjavax.swing.UIDefaults;
-import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.UIManager;
 import jsjavax.swing.event.ListSelectionEvent;
 import jsjavax.swing.event.ListSelectionListener;
 import jsjavax.swing.event.MouseInputListener;
-import jsjavax.swing.event.TableColumnModelEvent;
-import jsjavax.swing.event.TableColumnModelListener;
-import jsjavax.swing.plaf.TableHeaderUI;
 import jsjavax.swing.table.DefaultTableCellRenderer;
 import jsjavax.swing.table.JTableHeader;
 import jsjavax.swing.table.TableCellEditor;
+import jsjavax.swing.table.TableCellRenderer;
 import jsjavax.swing.table.TableColumn;
 import jsjavax.swing.table.TableColumnModel;
+import jsjavax.swing.table.TableModel;
 import jssun.swing.DefaultLookup;
 import jssun.swing.SwingUtilities2;
 import jssun.swing.UIAction;
-import jssun.swing.table.DefaultTableCellHeaderRenderer;
+import swingjs.api.DOMNode;
 
 /**
  * A JavaScript equivalent for a JTable
@@ -72,11 +64,37 @@ public class JSTableUI extends JSLightweightUI {
 	@Override
 	public DOMNode createDOMNode() {
 		table = (JTable) c;
+		
+		// what can we know about a table?
+		
+		int rc = table.getRowCount();
+		int rh = table.getRowHeight();
+		TableCellRenderer cr = table.getCellRenderer(1, 1);
+		TableModel m = table.getModel();
+		JTableHeader th = table.getTableHeader();
+		TableColumnModel tcm = table.getColumnModel();
+		TableColumn c1 = tcm.getColumn(0);
+		int cw = c1.getWidth();
+		
+		TableColumnModel hcm = th.getColumnModel();
+		int thh = th.getHeight();
+		Object v = m.getValueAt(2, 2);
+		
+		int w = tcm.getTotalColumnWidth();
+		int h = (rc + 1) * rh;
+		
+		/**
+		 * @j2sNative
+		 * 
+		 * debugger;
+		 */
+		{}
+		
 		if (domNode == null)
-			textNode = domNode = createDOMObject("label", id);
-		vCenter(domNode, 10);
-		DOMNode.setStyles(domNode,  "width", c.getWidth() + "px",  "height", c.getHeight() + "px");
-		return domNode;//setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
+			domNode = createDOMObject("table", id);
+		//vCenter(domNode, 10);
+		DOMNode.setStyles(domNode,  "width", w + "px",  "height", h + "px");
+		return setCssFont(domNode, c.getFont());
 	
 	}
 
@@ -1712,7 +1730,7 @@ public class JSTableUI extends JSLightweightUI {
    * row height times the number of rows.
    * The minimum width is the sum of the minimum widths of each column.
    */
-  public Dimension getMinimumSize(JComponent c) {
+  public Dimension getMinimumSize() {
       long width = 0;
       Enumeration enumeration = table.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {
@@ -1727,7 +1745,7 @@ public class JSTableUI extends JSLightweightUI {
    * row height times the number of rows.
    * The preferred width is the sum of the preferred widths of each column.
    */
-  public Dimension getPreferredSize(JComponent c) {
+  public Dimension getPreferredSize() {
       long width = 0;
       Enumeration enumeration = table.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {
@@ -1742,7 +1760,7 @@ public class JSTableUI extends JSLightweightUI {
    * row heighttimes the number of rows.
    * The maximum width is the sum of the maximum widths of each column.
    */
-  public Dimension getMaximumSize(JComponent c) {
+  public Dimension getMaximumSize() {
       long width = 0;
       Enumeration enumeration = table.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {

@@ -26,6 +26,7 @@ import jsjavax.swing.table.JTableHeader;
 import jsjavax.swing.table.TableCellRenderer;
 import jsjavax.swing.table.TableColumn;
 import jsjavax.swing.table.TableColumnModel;
+import jsjavax.swing.table.TableModel;
 import jssun.swing.SwingUtilities2;
 import jssun.swing.UIAction;
 import swingjs.api.DOMNode;
@@ -40,13 +41,24 @@ public class JSTableHeaderUI extends JSLightweightUI {
 
 	@Override
 	public DOMNode createDOMNode() {
+
 		header = (JTableHeader) c;
 		if (domNode == null)
-			textNode = domNode = createDOMObject("label", id);
-		vCenter(domNode, 10);
-		DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "height",
-				c.getHeight() + "px");
-		return domNode;//setCssFont(DOMNode.setAttr(domNode, "innerHTML", ((JLabel) c).getText()),c.getFont());
+			domNode = createDOMObject("table", id);
+		TableColumnModel hcm = header.getColumnModel();
+		int w = hcm.getTotalColumnWidth();
+		int h  = getHeaderHeight();
+		
+		/**
+		 * @j2sNative
+		 * 
+		 * debugger;
+		 */
+		{}
+		
+
+		DOMNode.setStyles(domNode,  "width", w + "px",  "height", h + "px");
+		return setCssFont(domNode, c.getFont());
 
 	}
 
@@ -749,7 +761,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
    * Return the minimum size of the header. The minimum width is the sum
    * of the minimum widths of each column (plus inter-cell spacing).
    */
-  public Dimension getMinimumSize(JComponent c) {
+  public Dimension getMinimumSize() {
       long width = 0;
       Enumeration enumeration = header.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {
@@ -765,7 +777,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
    * by the header renderers. The preferred width is the sum of the
    * preferred widths of each column (plus inter-cell spacing).
    */
-  public Dimension getPreferredSize(JComponent c) {
+  public Dimension getPreferredSize() {
       long width = 0;
       Enumeration enumeration = header.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {
@@ -779,7 +791,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
    * Return the maximum size of the header. The maximum width is the sum
    * of the maximum widths of each column (plus inter-cell spacing).
    */
-  public Dimension getMaximumSize(JComponent c) {
+  public Dimension getMaximumSize() {
       long width = 0;
       Enumeration enumeration = header.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {
