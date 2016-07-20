@@ -457,7 +457,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	 * creates the DOM node and inserts it into the tree at the correct place,
 	 * iterating through all children if this is a container
 	 * 
-	 * @return
+	 * @return the outerNode
 	 * 
 	 */
 	protected DOMNode setHTMLElement() {
