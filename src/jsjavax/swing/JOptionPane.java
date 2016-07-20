@@ -856,7 +856,7 @@ public class JOptionPane extends JComponent {
 		/**
 		 * @j2sNative
 		 * 
-		 *  return (message.join)message.join("\n\n") : message);
+		 *  return (message.join ? message.join("\n\n") : message);
 		 * 
 		 */
 		{
