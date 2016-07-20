@@ -1,7 +1,7 @@
 package javajs.api;
 
 /**
- * methods in JSmol JavaScript accessed in Jmol 
+ * methods in JSmol JavaScript accessed in Jmol (aka J2S) 
  */
 public interface JmolObjectInterface {
 

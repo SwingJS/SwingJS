@@ -162,7 +162,7 @@ public abstract class HTML5CanvasContext2D {
 		/**
 		 * @j2sNative
 		 * 
-		 *            ctx.font = s;
+		 *            ctx.font = canvasFont;
 		 */
 		{}
 	}

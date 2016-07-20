@@ -44,7 +44,7 @@ public class AjaxURLConnection extends URLConnection {
     /**
      * @j2sNative
      * 
-     *            jmol = Jmol;
+     *            jmol = J2S || Jmol;
      * 
      */
     {

@@ -169,7 +169,9 @@ public class UIDefaults extends Hashtable<Object,Object>
 					|| skey.endsWith(".foreground"))
 				value = super.get("*" + skey.substring(skey.lastIndexOf (".")));
 		}
-		if ((value != PENDING) && !(value instanceof ActiveValue)
+		// SwingJS not implementing PENDING - single thread - though if we ever
+		// had to go fully asynchronous, this would be a problem.
+		if (/*(value != PENDING) && */ !(value instanceof ActiveValue)
 				&& !(value instanceof LazyValue)) {
 			return value;
 		}
@@ -197,9 +199,9 @@ public class UIDefaults extends Hashtable<Object,Object>
 //					) {
 //			super.put(key, PENDING);
 //		} else 			
-			if (!(value instanceof ActiveValue)) {
-			return value;
-		}
+//			if (!(value instanceof ActiveValue)) {
+//			return value;
+//		}
 		// }
 
 		/*

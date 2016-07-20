@@ -515,22 +515,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 					}
 				}
 			}
-			// add all children
-			for (int i = 0; i < n; i++) {
-				JSComponentUI ui = JSToolkit.getUI(children[i], false);
-				if (ui == null || ui.isNull) {
-					// Box.Filler has no ui.
-					continue;
-				}
-				if (ui.getOuterNode() == null) {
-					System.out.println("JSCUI could not add " + ui.c.getName() + " to "
-							+ c.getName());
-				} else {
-
-					containerNode.appendChild(ui.outerNode);
-				}
-				ui.parent = this;
-			}
+			
+			addChildrenToDOM(children);
 
 			if (isWindow) {
 				DOMNode.remove(outerNode);
@@ -542,6 +528,26 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		// debugDump(divObj);
 		isTainted = false;
 		return outerNode;
+	}
+
+	protected void addChildrenToDOM(Component[] children) {
+		// add all children
+		int n = children.length;
+		for (int i = 0; i < n; i++) {
+			JSComponentUI ui = JSToolkit.getUI(children[i], false);
+			if (ui == null || ui.isNull) {
+				// Box.Filler has no ui.
+				continue;
+			}
+			if (ui.getOuterNode() == null) {
+				System.out.println("JSCUI could not add " + ui.c.getName() + " to "
+						+ c.getName());
+			} else {
+
+				containerNode.appendChild(ui.outerNode);
+			}
+			ui.parent = this;
+		}
 	}
 
 	protected int getContainerWidth() {
@@ -562,18 +568,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	}
 
 	@Override
-	public void paint(Graphics g, JComponent c) {
-    // Note that for now, button graphics 
-		// are BEHIND the button. We will need to paint onto the
-		// glass pane for this to work, and then also manage
-		// mouse clicks and key clicks with that in mind. 
-		if (c.isOpaque()) {
-			g.setColor(c.getBackground());
-			g.fillRect(0, 0, c.getWidth(), c.getHeight());
-		}
-	}
-
-	@Override
 	public void update(Graphics g, JComponent c) {
 		// called from JComponent.paintComponent
 		boolean testing = false;//true;
@@ -584,6 +578,18 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		}
 		setHTMLElement();
 		paint(g, c);
+	}
+
+	@Override
+	public void paint(Graphics g, JComponent c) {
+    // Note that for now, button graphics 
+		// are BEHIND the button. We will need to paint onto the
+		// glass pane for this to work, and then also manage
+		// mouse clicks and key clicks with that in mind. 
+		if (c.isOpaque()) {
+			g.setColor(c.getBackground());
+			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		}
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import jsjava.awt.Component;
 import jsjava.awt.ComponentOrientation;
 import jsjava.awt.Container;
 import jsjava.awt.Dimension;
+import jsjava.awt.JSComponent;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
@@ -56,10 +57,11 @@ import swingjs.api.DOMNode;
  *
  */
 public class JSTableUI extends JSLightweightUI {
-	private JTable table;
+	protected JTable table, header;
+	private int oldrc;
+	private int oldrh;
+	private DOMNode tableNode;
 
-  private static final StringBuilder BASELINE_COMPONENT_KEY =
-      new StringBuilder("Table.baselineComponent");
 
 	@Override
 	public DOMNode createDOMNode() {
@@ -69,6 +71,12 @@ public class JSTableUI extends JSLightweightUI {
 		
 		int rc = table.getRowCount();
 		int rh = table.getRowHeight();
+		
+		boolean rebuild = (rc != oldrc || rh != oldrh);
+		
+		oldrh = rh;
+		oldrc = rc;
+
 		TableCellRenderer cr = table.getCellRenderer(1, 1);
 		TableModel m = table.getModel();
 		JTableHeader th = table.getTableHeader();
@@ -81,23 +89,105 @@ public class JSTableUI extends JSLightweightUI {
 		Object v = m.getValueAt(2, 2);
 		
 		int w = tcm.getTotalColumnWidth();
-		int h = (rc + 1) * rh;
+		int h = table.getVisibleRect().height - thh;
 		
-		/**
-		 * @j2sNative
-		 * 
-		 * debugger;
-		 */
-		{}
-		
-		if (domNode == null)
-			domNode = createDOMObject("table", id);
-		//vCenter(domNode, 10);
-		DOMNode.setStyles(domNode,  "width", w + "px",  "height", h + "px");
+		if (domNode == null) {
+			tableNode = domNode = createDOMObject("table", id);
+		}
+		if (rebuild)
+			createChildren();
+		DOMNode.setStyles(domNode, 
+				"width", w + "px", 
+				"height", h + "px", 
+				"table-layout", "fixed", 
+				"border-collapse", "collapse",
+				"padding", "0px"
+				);
 		return setCssFont(domNode, c.getFont());
 	
 	}
 
+
+	private void createChildren() {
+		int nrows = table.getRowCount();
+		int ncols = table.getColumnCount();;
+		children  = new Component[nrows * ncols];
+		// we do not need to fill these, as they may end up being 
+		// all the same object -- a single cell renderer	
+	}
+
+	/**
+	 * Each cell is controlled by a single renderer, but 
+	 * each renderer may control any number of cells in any number
+	 * of tables. So in this case there is no 1:1 mapping of 
+	 * component and ui. But we do have the table/row/col to distinguish
+	 * them.
+	 *  
+	 * @param row
+	 * @param column
+	 * @return
+	 */
+	private JSComponent getCellComponent(int row, int column) {
+	  TableCellRenderer renderer = table.getCellRenderer(row, column);
+		return (JSComponent) table.prepareRenderer(renderer, row, column);
+	}
+
+	protected void addChildrenToDOM(Component[] children) {
+		int nrows = table.getRowCount();
+		int ncols = table.getColumnCount();
+		int h = table.getRowHeight();
+		int th = table.getVisibleRect().height - table.getTableHeader().getHeight();
+		int[] cw = new int[ncols];
+		for (int col = 0; col < ncols; col++)
+			cw[col] = table.getColumnModel().getColumn(col).getWidth();
+		DOMNode.setStyles(outerNode,  "overflow", "hidden", "height", th + "px");
+		DOMNode.setStyles(domNode, 
+				"table-layout", "fixed", 
+				"border-collapse", "collapse",
+				"padding", "0px"
+				);
+
+		$(domNode).empty();
+		JSComponentUI ui;
+		for (int row = 0; row < nrows; row++) {
+			String rid = id + "_tab_row" + row;
+			DOMNode tr = DOMNode.createElement("tr", rid);
+			DOMNode.setStyles(tr, "height", h + "px");
+			domNode.appendChild(tr);
+			for (int col = 0; col < ncols; col++) {
+				DOMNode td = DOMNode.createElement("td", rid + "_col" + col);
+				DOMNode.setStyles(td, "border", "1px solid black");
+				$(td).addClass("swing-td");
+				DOMNode.setAttrs(td, "data-table-ui", this, "data-row", row, "data-col", col);
+				DOMNode.setStyles(td, "width", cw[col] + "px");
+				tr.appendChild(td);
+				JSComponent c = (JSComponent) getCellComponent(row, col);
+  			if (c != null && !(ui = (JSComponentUI) c.getUI()).isNull) {
+					ui.domNode = null;
+					ui.createDOMNode();
+					td.appendChild(ui.domNode);
+				}
+			}
+		}
+	}
+
+	
+  @Override
+	public void notifyPropertyChanged(String prop) {
+  	notifyPropChangeCUI(prop);
+	}
+	
+	
+	
+
+  
+  
+  
+  
+  
+  
+  private static final StringBuilder BASELINE_COMPONENT_KEY =
+      new StringBuilder("Table.baselineComponent");
 
   protected CellRendererPane rendererPane;
 
@@ -1746,6 +1836,7 @@ public class JSTableUI extends JSLightweightUI {
    * The preferred width is the sum of the preferred widths of each column.
    */
   public Dimension getPreferredSize() {
+     	createDOMNode();
       long width = 0;
       Enumeration enumeration = table.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {
@@ -2016,58 +2107,58 @@ public class JSTableUI extends JSLightweightUI {
       }
       return -1;
   }
+//JTableHeader header = table.getTableHeader();
+//TableColumn draggedColumn = (header == null) ? null : header.getDraggedColumn();
+//
+//TableColumnModel cm = table.getColumnModel();
+//int columnMargin = cm.getColumnMargin();
+//
+//Rectangle cellRect;
+//TableColumn aColumn;
+//int columnWidth;
+//if (table.getComponentOrientation().isLeftToRight()) {
+//    for(int row = rMin; row <= rMax; row++) {
+//        cellRect = table.getCellRect(row, cMin, false);
+//        for(int column = cMin; column <= cMax; column++) {
+//            aColumn = cm.getColumn(column);
+//            columnWidth = aColumn.getWidth();
+//            cellRect.width = columnWidth - columnMargin;
+//            if (aColumn != draggedColumn) {
+//                paintCell(g, cellRect, row, column);
+//            }
+//            cellRect.x += columnWidth;
+//        }
+//    }
+//} else {
+//    for(int row = rMin; row <= rMax; row++) {
+//        cellRect = table.getCellRect(row, cMin, false);
+//        aColumn = cm.getColumn(cMin);
+//        if (aColumn != draggedColumn) {
+//            columnWidth = aColumn.getWidth();
+//            cellRect.width = columnWidth - columnMargin;
+//            paintCell(g, cellRect, row, cMin);
+//        }
+//        for(int column = cMin+1; column <= cMax; column++) {
+//            aColumn = cm.getColumn(column);
+//            columnWidth = aColumn.getWidth();
+//            cellRect.width = columnWidth - columnMargin;
+//            cellRect.x -= columnWidth;
+//            if (aColumn != draggedColumn) {
+//                paintCell(g, cellRect, row, column);
+//            }
+//        }
+//    }
+//}
+//
+//// Paint the dragged column if we are dragging.
+//if (draggedColumn != null) {
+//    paintDraggedArea(g, rMin, rMax, draggedColumn, header.getDraggedDistance());
+//}
+//
+//// Remove any renderers that may be left in the rendererPane.
+//rendererPane.removeAll();
 
 //  private void paintCells(Graphics g, int rMin, int rMax, int cMin, int cMax) {
-//      JTableHeader header = table.getTableHeader();
-//      TableColumn draggedColumn = (header == null) ? null : header.getDraggedColumn();
-//
-//      TableColumnModel cm = table.getColumnModel();
-//      int columnMargin = cm.getColumnMargin();
-//
-//      Rectangle cellRect;
-//      TableColumn aColumn;
-//      int columnWidth;
-//      if (table.getComponentOrientation().isLeftToRight()) {
-//          for(int row = rMin; row <= rMax; row++) {
-//              cellRect = table.getCellRect(row, cMin, false);
-//              for(int column = cMin; column <= cMax; column++) {
-//                  aColumn = cm.getColumn(column);
-//                  columnWidth = aColumn.getWidth();
-//                  cellRect.width = columnWidth - columnMargin;
-//                  if (aColumn != draggedColumn) {
-//                      paintCell(g, cellRect, row, column);
-//                  }
-//                  cellRect.x += columnWidth;
-//              }
-//          }
-//      } else {
-//          for(int row = rMin; row <= rMax; row++) {
-//              cellRect = table.getCellRect(row, cMin, false);
-//              aColumn = cm.getColumn(cMin);
-//              if (aColumn != draggedColumn) {
-//                  columnWidth = aColumn.getWidth();
-//                  cellRect.width = columnWidth - columnMargin;
-//                  paintCell(g, cellRect, row, cMin);
-//              }
-//              for(int column = cMin+1; column <= cMax; column++) {
-//                  aColumn = cm.getColumn(column);
-//                  columnWidth = aColumn.getWidth();
-//                  cellRect.width = columnWidth - columnMargin;
-//                  cellRect.x -= columnWidth;
-//                  if (aColumn != draggedColumn) {
-//                      paintCell(g, cellRect, row, column);
-//                  }
-//              }
-//          }
-//      }
-//
-//      // Paint the dragged column if we are dragging.
-//      if (draggedColumn != null) {
-//          paintDraggedArea(g, rMin, rMax, draggedColumn, header.getDraggedDistance());
-//      }
-//
-//      // Remove any renderers that may be left in the rendererPane.
-//      rendererPane.removeAll();
 //  }
 
 //  private void paintDraggedArea(Graphics g, int rMin, int rMax, TableColumn draggedColumn, int distance) {
@@ -2236,42 +2327,32 @@ public class JSTableUI extends JSLightweightUI {
 //      }
 //
 //  }
-  @Override
-	public void notifyPropertyChanged(String prop) {
-		boolean isVert = (prop.indexOf("vert") >= 0);
-		boolean isAlign = (prop.indexOf("Ali") >= 0);
-		if (isAlign && !isVert) {
-			setTainted();
-			setHTMLElement();
-		} else {
-			notifyPropChangeCUI(prop);
-		}
-	}
 
-//	/**
-//	 * adding in outer styles for text alignment of a label
-//	 */
-//	@Override
-//	protected DOMNode setHTMLElement() {
-//		domNode = setHTMLElementCUI();
-//		String prop = null;
-//		switch (label.getHorizontalAlignment()) {
-//		case SwingConstants.RIGHT:
-//		case SwingConstants.TRAILING:
-//			prop = "right";
-//			break;
-//		case SwingConstants.LEFT:
-//		case SwingConstants.LEADING:
-//			prop = "left";
-//			break;
-//		case SwingConstants.CENTER:
-//			prop = "center";
-//			break;
-//		}
-//		if (prop != null)
-//			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align", prop);
-//		return domNode;
-//	}
-//	
+	// /**
+	// * adding in outer styles for text alignment of a label
+	// */
+	// @Override
+	// protected DOMNode setHTMLElement() {
+	// domNode = setHTMLElementCUI();
+	// String prop = null;
+	// switch (label.getHorizontalAlignment()) {
+	// case SwingConstants.RIGHT:
+	// case SwingConstants.TRAILING:
+	// prop = "right";
+	// break;
+	// case SwingConstants.LEFT:
+	// case SwingConstants.LEADING:
+	// prop = "left";
+	// break;
+	// case SwingConstants.CENTER:
+	// prop = "center";
+	// break;
+	// }
+	// if (prop != null)
+	// DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align",
+	// prop);
+	// return domNode;
+	// }
+	//
 
 }

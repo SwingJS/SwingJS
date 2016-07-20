@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComponent;
@@ -29,6 +30,8 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		isContainer = true;
 		if (domNode == null)
 			domNode = createDOMObject("div", id);
+		scrollNode = scrolledUI.getOuterNode();
+		DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 		return domNode;
 	}
 
@@ -49,8 +52,6 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		if (sc != null && sc != scrolledComponent) {
 			scrolledComponent = sc;
 			scrolledUI = JSToolkit.getUI(sc, false);
-			scrollNode = scrolledUI.getOuterNode();
-			DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 			scrolledUI.scrollerNode = this;
 			// children = new Component[] { scrolledComponent };
 		}
@@ -115,6 +116,11 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		notifyPropChangeCUI(prop);
 	}
 	
+
+	@Override
+	public Dimension getPreferredSize() {
+  	return null;
+  }
 
 		
 

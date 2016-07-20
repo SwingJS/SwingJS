@@ -25,6 +25,7 @@
 
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
 import swingjs.api.DOMNode;
 
 public class JSViewportUI extends JSLightweightUI {
@@ -47,5 +48,10 @@ public class JSViewportUI extends JSLightweightUI {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public Dimension getPreferredSize() {
+  	return null;
+  }
+
 
 }

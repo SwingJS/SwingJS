@@ -45,15 +45,19 @@ public class SwingLazyValue implements UIDefaults.LazyValue {
     private Object[] args;
 
     public SwingLazyValue(String c) {
+    	// new class()
         this(c, (String)null);
     }
     public SwingLazyValue(String c, String m) {
+    	// new class.method()
         this(c, m, null);
     }
     public SwingLazyValue(String c, Object[] o) {
+    	// new class(args)
         this(c, null, o);
     }
     public SwingLazyValue(String c, String m, Object[] o) {
+    	// new class.method(args)
         className = c;
         methodName = m;
         if (o != null) {

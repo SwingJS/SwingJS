@@ -299,7 +299,7 @@ public class OC extends OutputStream {
     /**
      * @j2sNative
      * 
-     *            jmol = Jmol; _function = (typeof this.fileName == "function" ?
+     *            jmol = J2S || Jmol; _function = (typeof this.fileName == "function" ?
      *            this.fileName : null);
      * 
      */

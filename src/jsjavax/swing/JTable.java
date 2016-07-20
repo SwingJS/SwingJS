@@ -72,6 +72,7 @@ import jsjavax.swing.table.TableColumn;
 import jsjavax.swing.table.TableColumnModel;
 import jsjavax.swing.table.TableModel;
 import jsjavax.swing.table.TableRowSorter;
+import jssun.swing.SwingLazyValue;
 import jssun.swing.SwingUtilities2;
 // SwingJS  TODO import jsjava.text.DateFormat;
 //import jssun.swing.SwingLazyValue;
@@ -5352,7 +5353,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     }
 
     private void setLazyValue(Hashtable h, Class c, String s) {
-        h.put(c, s);//new SwingLazyValue(s));
+        h.put(c, new SwingLazyValue(s));
     }
 
     private void setLazyRenderer(Class c, String s) {

@@ -33,18 +33,6 @@ public class JSPanelUI extends JSLightweightUI {
 		return new Dimension(c.getWidth(), c.getHeight());
 	}
 	
-	@Override
-	public Dimension getPreferredSize() {
-		// called by JComponent when it doesn't have width or height info
-		// and is looking for that from the UI. 
-		return null;
-//		int w = c.getWidth();
-//		int h = c.getHeight();
-//		Dimension d = new Dimension(w, h);
-//		if (d.width <= 0 || d.height <= 0)
-//			d = c.getPreferredSize();
-//		return d;
-	}
 
 	@Override
 	protected void installJSUI() {
@@ -59,5 +47,11 @@ public class JSPanelUI extends JSLightweightUI {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Dimension getPreferredSize() {
+  	return null;
+  }
+
 
 }
