@@ -87,7 +87,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 * @j2sNative
 		 * 
 		 *            var me = this; 
-		 *            me.$(me.jqSlider).slider(
+		 *            me.$(me.jqSlider).sjsslider(
 		 *             { orientation: me.orientation, 
 		 *               range: false, 
 		 *               min: me.min,
@@ -152,7 +152,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 * 
 		 *  var a = {};
 		 *  a[key]= val;
-		 *  this.$(this.jqSlider).slider(a);
+		 *  this.$(this.jqSlider).sjsslider(a);
 		 */
 		{}
 	}

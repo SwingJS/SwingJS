@@ -4,18 +4,21 @@
 * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Trebuchet%20MS%2CTahoma%2CVerdana%2CArial%2Csans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=f6a828&bgTextureHeader=gloss_wave&bgImgOpacityHeader=35&borderColorHeader=e78f08&fcHeader=ffffff&iconColorHeader=ffffff&bgColorContent=eeeeee&bgTextureContent=highlight_soft&bgImgOpacityContent=100&borderColorContent=dddddd&fcContent=333333&iconColorContent=222222&bgColorDefault=f6f6f6&bgTextureDefault=glass&bgImgOpacityDefault=100&borderColorDefault=cccccc&fcDefault=1c94c4&iconColorDefault=ef8c08&bgColorHover=fdf5ce&bgTextureHover=glass&bgImgOpacityHover=100&borderColorHover=fbcb09&fcHover=c77405&iconColorHover=ef8c08&bgColorActive=ffffff&bgTextureActive=glass&bgImgOpacityActive=65&borderColorActive=fbd850&fcActive=eb8f00&iconColorActive=ef8c08&bgColorHighlight=ffe45c&bgTextureHighlight=highlight_soft&bgImgOpacityHighlight=75&borderColorHighlight=fed22f&fcHighlight=363636&iconColorHighlight=228ef1&bgColorError=b81900&bgTextureError=diagonals_thick&bgImgOpacityError=18&borderColorError=cd0a0a&fcError=ffffff&iconColorError=ffd27a&bgColorOverlay=666666&bgTextureOverlay=diagonals_thick&bgImgOpacityOverlay=20&opacityOverlay=50&bgColorShadow=000000&bgTextureShadow=flat&bgImgOpacityShadow=10&opacityShadow=20&thicknessShadow=5px&offsetTopShadow=-5px&offsetLeftShadow=-5px&cornerRadiusShadow=5px
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
-/* BH */
-.ui-slider-horizontal { height: .3em; top: 40%;margin:0px 10px}
-.ui-slider-horizontal .ui-slider-handle { top: -.25em; margin-left: -.4em; }
-.ui-slider-horizontal .ui-slider-range { top: 0.1em; height: 30%; }
-.ui-slider-horizontal .ui-slider-range-min { left: 0; }
-.ui-slider-horizontal .ui-slider-range-max { right: 0; }
+// adapted for SwingJS to make slider options simpler
+// requires j2sSwingjs.js
 
-.ui-slider-vertical { width: .3em; left: 40%; margin:10px 0px }
-.ui-slider-vertical .ui-slider-handle { left: -.25em; margin-left: 0; margin-bottom: -.3em; }
-.ui-slider-vertical .ui-slider-range { left: 0.1em; width: 30%; }
-.ui-slider-vertical .ui-slider-range-min { bottom: 0; }
-.ui-slider-vertical .ui-slider-range-max { top: 0; }
+/* BH */
+.ui-sjsslider-horizontal { height: .3em; top: 40%;margin:0px 10px}
+.ui-sjsslider-horizontal .ui-sjsslider-handle { top: -.25em; margin-left: -.4em; }
+.ui-sjsslider-horizontal .ui-sjsslider-range { top: 0.1em; height: 30%; }
+.ui-sjsslider-horizontal .ui-sjsslider-range-min { left: 0; }
+.ui-sjsslider-horizontal .ui-sjsslider-range-max { right: 0; }
+
+.ui-sjsslider-vertical { width: .3em; left: 40%; margin:10px 0px }
+.ui-sjsslider-vertical .ui-sjsslider-handle { left: -.25em; margin-left: 0; margin-bottom: -.3em; }
+.ui-sjsslider-vertical .ui-sjsslider-range { left: 0.1em; width: 30%; }
+.ui-sjsslider-vertical .ui-sjsslider-range-min { bottom: 0; }
+.ui-sjsslider-vertical .ui-sjsslider-range-max { top: 0; }
 
 
 /* Layout helpers
@@ -58,9 +61,9 @@
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
 .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
 .ui-selectable-helper { position: absolute; z-index: 100; border:1px dotted black; }
-.ui-slider { position: relative; text-align: left;}
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 0.8em; height: 0.8em; cursor: default; }
-.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: 0.3em; display: block; border: 0; background-position: 0 0; }
+.ui-sjsslider { position: relative; text-align: left;}
+.ui-sjsslider .ui-sjsslider-handle { position: absolute; z-index: 2; width: 0.8em; height: 0.8em; cursor: default; }
+.ui-sjsslider .ui-sjsslider-range { position: absolute; z-index: 1; font-size: 0.3em; display: block; border: 0; background-position: 0 0; }
 
 /* Component containers
 ----------------------------------*/
@@ -299,7 +302,7 @@
 
 /*Tick Marks added for SwingJS
 ----------------------------------*/
-.swingjs .ui-slider-tick-mark-vert { display:inline-block; width:1px; background: black; border:1px; height:5px; position:absolute; top:22px; }
-.swingjs .ui-slider-tick-mark-horiz { display:inline-block; height:1px; background: black; border:1px; width:5px; position:absolute; left:22px; }
+.swingjs .ui-sjsslider-tick-mark-vert { display:inline-block; width:1px; background: black; border:1px; height:5px; position:absolute; top:22px; }
+.swingjs .ui-sjsslider-tick-mark-horiz { display:inline-block; height:1px; background: black; border:1px; width:5px; position:absolute; left:22px; }
 
 

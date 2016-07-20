@@ -1,7 +1,12 @@
 package swingjs.plaf;
 
+import java.util.List;
 
-public class JSDialogUI extends JSFrameUI {
+import jsjava.awt.Window;
+import jsjava.awt.peer.DialogPeer;
+
+
+public class JSDialogUI extends JSFrameUI implements DialogPeer {
 
 	// These dialogs are not modal. 
 	// Someday, perhaps, HTML5 will implement broadly the <dialog> element,
@@ -31,6 +36,12 @@ public class JSDialogUI extends JSFrameUI {
 
 	@Override
 	protected void uninstallJSUI() {
+	}
+
+	@Override
+	public void blockWindows(List<Window> windows) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

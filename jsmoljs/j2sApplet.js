@@ -1959,85 +1959,142 @@ J2S.Cache.put = function(filename, data) {
     return f(a);
   }
 
-J2S._setDraggable = function(frame, tag) {
+J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
+
+ // draggable tag object; target is itself
+ 
+    // J2S._setDraggable(tag)
+    // J2S._setDraggable(tag, true)
+    
+ // draggable tag object that controls another target, 
+ // either given as a DOM element or jQuery selector or function returning such
+    
+    // J2S._setDraggable(tag, target)
+    // J2S._setDraggable(tag, fTarget)
+    
+ // draggable tag object simply loades/reports mouse position as 
+ // fDown({x:x,y:y,ev:ev}) should fill x and y with starting points
+ // fDrag(xy) and fUp(xy) will get {x:x,y:y,ev:ev} to use as desired 
+
+    // J2S._setDraggable(tag, fDown, fDrag)
+    // J2S._setDraggable(tag, fDown, fDrag, fUp)
+
+ // unbind tag
+ 
+    // J2S._setDraggable(tag, false)
+    
+    
   // draggable frames by their titles.
   // activation of dragging with a mouse down action 
   // deactivates all other mouse operation in SwingJS
   // until the mouse is released.
   // uses jQuery outside events - v1.1 - 3/16/2010 (see j2sJQueryExt.js)
 
-  // J2S.setDraggable(frame, titlebar), for example, is issued in swingjs.plaf.JSFrameUI.js
+
+  // J2S._setDraggable(titlebar, frame.outerNode), for example, is issued in swingjs.plaf.JSFrameUI.js
   
+	var $tag = $(tag);
+  tag = $tag[0];
 	if (tag._isDragger)
 		return;
-	var $tag = $(tag);
-  var $frame = $(frame);
-	frame._dragger = tag;
+
+  var target, fDown;
+  if (arguments.length <= 2) {
+    if (targetOrFDown === false) {
+      dragBind(tag, false);
+      return;
+    }
+    // J2S._setDraggable(tag)
+    // J2S._setDraggable(tag, true)
+    // J2S._setDraggable(tag, target)
+    // J2S._setDraggable(tag, fTarget)
+    target = (targetOrFDown !== true && targetOrFDown || tag);
+    // allow for a function to return the target
+    // this allows the target to be created after the call to J2S._setDraggable()
+    if (!(typeof target == "function")) {
+      var t = target;
+      target = function(){return $(t).parent()}  
+    }
+  } else {
+    // J2S._setDraggable(tag, fDown, fDrag)
+    // J2S._setDraggable(tag, fDown, fDrag, fUp)
+    fDown = targetOrFDown;
+  }
+
   tag._isDragger = true;
-  var pageX0, pageY0, pageX, pageY;
+
+  var x, y, pageX0, pageY0, pageX, pageY;
   
-	var mouseMove = function(ev) {
+  var down = function(ev) {
+  	J2S._dmouseOwner = tag;
+		tag.isDragging = true; // used by J2S mouse event business
+		pageX = ev.pageX;
+		pageY = ev.pageY;
+    var xy = {x:0,y:0, ev};
+    if (fDown) {
+      fDown(xy);
+    } else if (target) {
+      var o = $(target()).position();
+      xy = {x:o.left, y:o.top};
+    }
+    pageX0 = xy.x;
+    pageY0 = xy.y;
+		return false;
+  };
+
+	var drag = function(ev) {
   // we will move the frame's parent node and take the frame along with it
   	if (tag.isDragging && J2S._dmouseOwner == tag) {
-			var x = pageX0 + (ev.pageX - pageX);
-			var y = pageY0 + (ev.pageY - pageY);
-			$frame.parent().css({ top: y + 'px', left: x + 'px' })
+			x = pageX0 + (ev.pageX - pageX);
+			y = pageY0 + (ev.pageY - pageY);
+      if (fDrag) {
+        fDrag({x:x, y:y, ev});
+      } else if (target) {
+  			$(target()).css({ top: y + 'px', left: x + 'px' })
+      }
 		}
-	}
-
-	var mouseUp = function(ev) {
+	};
+  
+	var up = function(ev) {
 		if (J2S._dmouseOwner == tag) {
 			tag.isDragging = false;
   		J2S._dmouseOwner = null
+      fUp && fUp({x:x,y:y,ev:ev}, 3);
 			return false;
 		}
-	}
+	};
 
-	$tag.bind('mousedown touchstart', function(ev) {
-		J2S._dmouseOwner = tag;//setMouseOwner(tag, true);
-		tag.isDragging = true;
-		pageX = ev.pageX;
-		pageY = ev.pageY;
-    var o = $frame.parent().position();
-    pageX0 = o.left;
-    pageY0 = o.top;
-		return false;
-	});
-  
-	$tag.bind('mousemove touchmove', function(ev) {
-		if (tag.isDragging && J2S._dmouseOwner == tag) {
-			var x = pageX0 + (ev.pageX - pageX);
-			var y = pageY0 + (ev.pageY - pageY);
-			$frame.parent().css({ top: y + 'px', left: x + 'px' })
-			return false;
-		}
-	});
-  
-	$tag.bind('mouseup touchend', function(ev) {
-		mouseUp(ev);
-		J2S._dmouseOwner = null;//setMouseOwner(null);
-    tag.isDragging = false;
-	});
-
-	tag._dragBind = function(isBind) {
-//		this.applet._ignoreMouse = !isBind;
+	var dragBind = function(isBind) {
 		$tag.unbind('mousemoveoutjsmol');
 		$tag.unbind('touchmoveoutjsmol');
 		$tag.unbind('mouseupoutjsmol');
 		$tag.unbind('touchendoutjsmol');
-		J2S._dmouseOwner = null;//setMouseOwner(null);
+		J2S._dmouseOwner = null;
     tag.isDragging = false;
+    tag._isDragger = false;
 		if (isBind) {
 			$tag.bind('mousemoveoutjsmol touchmoveoutjsmol', function(evspecial, target, ev) {
-				mouseMove(ev);
+				drag(ev);
 			});
 			$tag.bind('mouseupoutjsmol touchendoutjsmol', function(evspecial, target, ev) {
-				mouseUp(ev);
+				up(ev);
 			});
 		}
-	};
+	};  
+
+	$tag.bind('mousedown touchstart', function(ev) {
+    return down(ev);
+	});
   
-  tag._dragBind(true);
+	$tag.bind('mousemove touchmove', function(ev) {
+    return drag(ev);
+	});
+  
+	$tag.bind('mouseup touchend', function(ev) {
+		return up(ev);
+	});
+
+  dragBind(true);
   
 }
 
@@ -2063,3 +2120,15 @@ J2S._setWindowPosition = function(node, z) {
 })(J2S);
 
 
+/*
+fDrag(pt){
+			$frameParent.css({ top: pt.y + 'px', left: pt.x + 'px' })
+}
+
+fDown(pt) {
+    var o = $target.position();
+    pageX0 = o.left;
+    pageY0 = o.top;
+
+}
+*/

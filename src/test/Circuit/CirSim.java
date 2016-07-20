@@ -310,19 +310,19 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 		m = new Menu("Edit");
 		m.add(undoItem = getMenuItem("Undo"));
-		undoItem.setShortcut(new MenuShortcut(KeyEvent.VK_Z));
+		//undoItem.setShortcut(new MenuShortcut(KeyEvent.VK_Z));
 		m.add(redoItem = getMenuItem("Redo"));
-		redoItem.setShortcut(new MenuShortcut(KeyEvent.VK_Z, true));
+		//redoItem.setShortcut(new MenuShortcut(KeyEvent.VK_Z, true));
 		m.addSeparator();
 		m.add(cutItem = getMenuItem("Cut"));
-		cutItem.setShortcut(new MenuShortcut(KeyEvent.VK_X));
+		//cutItem.setShortcut(new MenuShortcut(KeyEvent.VK_X));
 		m.add(copyItem = getMenuItem("Copy"));
-		copyItem.setShortcut(new MenuShortcut(KeyEvent.VK_C));
+		//copyItem.setShortcut(new MenuShortcut(KeyEvent.VK_C));
 		m.add(pasteItem = getMenuItem("Paste"));
-		pasteItem.setShortcut(new MenuShortcut(KeyEvent.VK_V));
+		//pasteItem.setShortcut(new MenuShortcut(KeyEvent.VK_V));
 		pasteItem.setEnabled(false);
 		m.add(selectAllItem = getMenuItem("Select All"));
-		selectAllItem.setShortcut(new MenuShortcut(KeyEvent.VK_A));
+		//selectAllItem.setShortcut(new MenuShortcut(KeyEvent.VK_A));
 		if (useFrame)
 			mb.add(m);
 		else
