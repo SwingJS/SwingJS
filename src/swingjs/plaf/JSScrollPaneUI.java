@@ -53,7 +53,6 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 			scrolledComponent = sc;
 			scrolledUI = JSToolkit.getUI(sc, false);
 			scrolledUI.scrollerNode = this;
-			// children = new Component[] { scrolledComponent };
 		}
 	}
 

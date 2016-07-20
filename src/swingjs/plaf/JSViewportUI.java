@@ -54,4 +54,12 @@ public class JSViewportUI extends JSLightweightUI {
   }
 
 
+	@Override
+	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+		Dimension d = setHTMLSize1(obj, addCSS, true);
+		DOMNode.setStyles(outerNode, "overflow", "auto");
+		return d;
+	}
+
+
 }
