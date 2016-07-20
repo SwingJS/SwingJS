@@ -171,34 +171,34 @@ public class BufferedReader extends Reader {
     }
   }
 
-//      /**
-//       * Reads a single character.
-//       *
-//       * @return The character read, as an integer in the range
-//       *         0 to 65535 (<tt>0x00-0xffff</tt>), or -1 if the
-//       *         end of the stream has been reached
-//       * @exception  IOException  If an I/O error occurs
-//       */
-//      public int read() throws IOException {
-//          synchronized (lock) {
-//              ensureOpen();
-//              for (;;) {
-//                  if (nextChar >= nChars) {
-//                      fill();
-//                      if (nextChar >= nChars)
-//                          return -1;
-//                  }
-//                  if (skipLF) {
-//                      skipLF = false;
-//                      if (cb[nextChar] == '\n') {
-//                          nextChar++;
-//                          continue;
-//                      }
-//                  }
-//                  return cb[nextChar++];
-//              }
-//          }
-//      }
+      /**
+       * Reads a single character.
+       *
+       * @return The character read, as an integer in the range
+       *         0 to 65535 (<tt>0x00-0xffff</tt>), or -1 if the
+       *         end of the stream has been reached
+       * @exception  IOException  If an I/O error occurs
+       */
+      public int readCharAsInt() throws IOException {
+          synchronized (lock) {
+              ensureOpen();
+              for (;;) {
+                  if (nextChar >= nChars) {
+                      fill();
+                      if (nextChar >= nChars)
+                          return -1;
+                  }
+                  if (skipLF) {
+                      skipLF = false;
+                      if (cb[nextChar] == '\n') {
+                          nextChar++;
+                          continue;
+                      }
+                  }
+                  return cb[nextChar++];
+              }
+          }
+      }
 
   /**
    * Reads characters into a portion of an array, reading from the underlying
@@ -295,6 +295,14 @@ public class BufferedReader extends Reader {
   @Override
   public int read(char cbuf[], int off, int len) throws IOException {
     synchronized (lock) {
+      /**
+       * @j2sNative
+       * 
+       * if (arguments.length == 0)
+       * return this.readCharAsInt();
+       */
+      {}
+
       ensureOpen();
       if ((off < 0) || (off > cbuf.length) || (len < 0)
           || ((off + len) > cbuf.length) || ((off + len) < 0)) {

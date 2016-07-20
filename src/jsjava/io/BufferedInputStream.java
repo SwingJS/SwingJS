@@ -330,7 +330,22 @@ class BufferedInputStream extends FilterInputStream {
     @Override
     public synchronized int read(byte b[], int off, int len)
         throws IOException
-    {
+    
+        {
+    	
+      /**
+       * @j2sNative
+       * 
+       * switch (arguments.length) {
+       * case 0:
+       *   return this.readByteAsInt();
+       * case 1:
+       *   off = 0;
+       *   len = b.length;
+       *  }
+       */
+      {}
+
         getBufIfOpen(); // Check for closed stream
         if ((off | len | (off + len) | (b.length - (off + len))) < 0) {
             throw new IndexOutOfBoundsException();

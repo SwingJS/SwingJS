@@ -197,7 +197,7 @@ public class AudioInputStream extends InputStream {
      * @see #available
      * <p>
      */
-    public int read() throws IOException {
+		public int readByteAsInt() throws IOException {
         if( frameSize != 1 ) {
             throw new IOException("cannot read a single byte if frame size > 1");
         }
@@ -213,6 +213,8 @@ public class AudioInputStream extends InputStream {
 
 
     /**
+     * @j2sIgnore
+     * 
      * Reads some number of bytes from the audio input stream and stores them into
      * the buffer array <code>b</code>. The number of bytes actually read is
      * returned as an integer. This method blocks until input data is
@@ -230,7 +232,8 @@ public class AudioInputStream extends InputStream {
      * @see #read()
      * @see #available
      */
-    public int read(byte[] b) throws IOException {
+    @Override
+		public int read(byte[] b) throws IOException {
         return read(b,0,b.length);
     }
 
@@ -255,7 +258,20 @@ public class AudioInputStream extends InputStream {
      * @see #skip
      * @see #available
      */
-    public int read(byte[] b, int off, int len) throws IOException {
+    @Override
+		public int read(byte[] b, int off, int len) throws IOException {
+      /**
+       * @j2sNative
+       * 
+       * switch (arguments.length) {
+       * case 0:
+       *  return this.readByteAsInt();
+       * case 1:
+       *   off = 0;
+       *   len = b.length;
+       *  }
+       */
+      {}
 
         // make sure we don't read fractions of a frame.
         if( (len%frameSize) != 0 ) {
@@ -326,7 +342,8 @@ public class AudioInputStream extends InputStream {
      * @see #read
      * @see #available
      */
-    public long skip(long n) throws IOException {
+    @Override
+		public long skip(long n) throws IOException {
 
         // make sure not to skip fractional frames
         if( (n%frameSize) != 0 ) {
@@ -369,7 +386,8 @@ public class AudioInputStream extends InputStream {
      * @see #read()
      * @see #skip
      */
-    public int available() throws IOException {
+    @Override
+		public int available() throws IOException {
 
         int temp = stream.available();
 
@@ -387,7 +405,8 @@ public class AudioInputStream extends InputStream {
      * with the stream.
      * @throws IOException if an input or output error occurs
      */
-    public void close() throws IOException {
+    @Override
+		public void close() throws IOException {
         stream.close();
     }
 
@@ -400,7 +419,8 @@ public class AudioInputStream extends InputStream {
      * @see #markSupported
      */
 
-    public void mark(int readlimit) {
+    @Override
+		public void mark(int readlimit) {
 
         stream.mark(readlimit);
         if (markSupported()) {
@@ -424,7 +444,8 @@ public class AudioInputStream extends InputStream {
      * @see #mark
      * @see #markSupported
      */
-    public void reset() throws IOException {
+    @Override
+		public void reset() throws IOException {
 
         stream.reset();
         framePos = markpos;
@@ -447,10 +468,22 @@ public class AudioInputStream extends InputStream {
      * @see #mark
      * @see #reset
      */
-    public boolean markSupported() {
+    @Override
+		public boolean markSupported() {
 
         return stream.markSupported();
     }
+
+
+    /**
+     * @j2sIgnore
+     * 
+     */
+		@Override
+		public int read() throws IOException {
+			// TODO Auto-generated method stub
+			return -1;
+		}
 
 
 //    /**

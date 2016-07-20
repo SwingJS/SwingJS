@@ -2227,6 +2227,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	static int STARTUP_READ_COUNT = 0;
+	
 	void getSetupList(Menu menu, boolean retry) {
 		Menu stack[] = new Menu[6];
 		int stackptr = 0;
@@ -2237,8 +2239,11 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			ByteArrayOutputStream ba = null;
 			try {
 				URL url = new URL(getCodeBase() + "setuplist.txt");
+				// this will fail 
 				ba = readUrlData(url);
 			} catch (Exception e) {
+			}
+			if (ba == null) {
 				URL url = getClass().getClassLoader().getResource("setuplist.txt");
 				ba = readUrlData(url);
 			}
@@ -2247,6 +2252,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			byte b[] = ba.toByteArray();
 			int len = ba.size();
 			int p;
+			if (++STARTUP_READ_COUNT < 5) // BH added
 			if (len == 0 || b[0] != '#') {
 				// got a redirect, try again
 				getSetupList(menu, true);

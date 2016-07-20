@@ -110,8 +110,7 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.read</code>
      * to update the progress monitor after the read.
      */
-    @Override
-		public int read() throws IOException {
+		public int readByteAsInt() throws IOException {
         int c = in.read();
         if (c >= 0) monitor.setProgress(++nread);
         if (monitor.isCanceled()) {
@@ -128,8 +127,7 @@ public class ProgressMonitorInputStream extends FilterInputStream
      * Overrides <code>FilterInputStream.read</code>
      * to update the progress monitor after the read.
      */
-    @Override
-		public int read(byte b[]) throws IOException {
+		public int readB(byte b[]) throws IOException {
         int nr = in.read(b);
         if (nr > 0) monitor.setProgress(nread += nr);
         if (monitor.isCanceled()) {
@@ -150,6 +148,19 @@ public class ProgressMonitorInputStream extends FilterInputStream
 		public int read(byte b[],
                     int off,
                     int len) throws IOException {
+      /**
+       * @j2sNative
+       * 
+       * switch(arguments.length) {
+       * case 0:
+       *   return readByteAsInt();
+       *  case 1;
+       *   off = 0;
+       *   len = b.length;
+       *   }
+       */
+      {}
+
         int nr = in.read(b, off, len);
         if (nr > 0) monitor.setProgress(nread += nr);
         if (monitor.isCanceled()) {

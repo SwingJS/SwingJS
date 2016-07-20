@@ -134,6 +134,16 @@ class FilterInputStream extends InputStream {
      */
     @Override
     public int read(byte b[], int off, int len) throws IOException {
+      /**
+       * @j2sNative
+       * 
+       * if (arguments.length == 1) {
+       *   off = 0;
+       *   len = b.length;
+       *   }
+       */
+      {}
+
         return in.read(b, off, len);
     }
 

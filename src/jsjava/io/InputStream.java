@@ -165,6 +165,19 @@ public abstract class InputStream {
      * see        java.io.InputStream#read()
      */
     public int read(byte b[], int off, int len) throws IOException {
+      /**
+       * @j2sNative
+       * 
+       * switch (arguments.length) {
+       * case 0:
+       *   return this.readByteAsInt();
+       * case 1:
+       *   off = 0;
+       *   len = b.length;
+       *  }
+       */
+      {}
+
       if (b == null) {
         throw new NullPointerException();
     } else if (off < 0 || len < 0 || len > b.length - off) {
