@@ -22,7 +22,8 @@ public class Circuit extends Applet implements ComponentListener {
 	boolean started = false;
 
 	public void init() {
-		addComponentListener(this);
+		//addComponentListener(this);
+		showFrame();
 	}
 
 	public static void main(String args[]) {
