@@ -3,6 +3,7 @@
 * Includes: jquery.ui.slider.js
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
+// adjusted for SwingJS for smoother operation 
 
 (function( $, undefined ) {
 
@@ -12,10 +13,7 @@ var numPages = 5;
 
 var position, normValue, distance, closestHandle, index, allowed, offset, mouseOverHandle;
 
-var fDown, fDrag, fUp;//, _mymouseStart, _mymouseDrag, _mymouseStop;
-  
-
-$.widget( "ui.sjsslider", $.ui.mouse, {
+$.widget( "ui.j2sslider", $.ui.mouse, {
 	version: "1.9.2",
 	widgetEventPrefix: "slide",
 
@@ -34,8 +32,8 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 	_create: function() {
 		var i, handleCount,
 			o = this.options,
-			existingHandles = this.element.find( ".ui-sjsslider-handle" ).addClass( "ui-state-default ui-corner-all" ),
-			handle = "<a class='ui-sjsslider-handle ui-state-default ui-corner-all' href='#'></a>",
+			existingHandles = this.element.find( ".ui-j2sslider-handle" ).addClass( "ui-state-default ui-corner-all" ),
+			handle = "<a class='ui-j2sslider-handle ui-state-default ui-corner-all' href='#'></a>",
 			handles = [];
 
 		this._keySliding = false;
@@ -46,12 +44,12 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 		this._mouseInit();
 
 		this.element
-			.addClass( "ui-sjsslider" +
-				" ui-sjsslider-" + this.orientation +
+			.addClass( "ui-j2sslider" +
+				" ui-j2sslider-" + this.orientation +
 				" ui-widget" +
 				" ui-widget-content" +
 				" ui-corner-all" +
-				( o.disabled ? " ui-sjsslider-disabled ui-disabled" : "" ) );
+				( o.disabled ? " ui-j2sslider-disabled ui-disabled" : "" ) );
 
 		this.range = $([]);
 
@@ -67,190 +65,63 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 
 			this.range = $( "<div></div>" )
 				.appendTo( this.element )
-				.addClass( "ui-sjsslider-range" +
+				.addClass( "ui-j2sslider-range" +
 				// note: this isn't the most fittingly semantic framework class for this element,
 				// but worked best visually with a variety of themes
 				" ui-widget-header" +
-				( ( o.range === "min" || o.range === "max" ) ? " ui-sjsslider-range-" + o.range : "" ) );
+				( ( o.range === "min" || o.range === "max" ) ? " ui-j2sslider-range-" + o.range : "" ) );
 		}
+
+    var me = this; 
+    
+    var fDown = function(xye) {
+      me._doMouseCapture(xye.ev);
+    };
+    
+    var fDrag = function(xye) {
+      var event = xye.ev;
+  		var position = { x: event.pageX, y: event.pageY };
+      var normValue = me._normValueFromMouse( position );
+  		me._slide( event, me._handleIndex, normValue );
+    };
+    
+    var fUp = function(xye) {
+      var event = xye.ev;
+  		me.handles.removeClass( "ui-state-active" );
+  		me._mouseSliding = false;  
+  		me._stop( event, me._handleIndex );
+  		me._change( event, me._handleIndex );
+  		me._handleIndex = null;
+  		me._clickOffset = null;
+  		me._animateOff = false;
+    };
 
 		handleCount = ( o.values && o.values.length ) || 1;
 
-		for ( i = existingHandles.length; i < handleCount; i++ ) {
+		for ( i = 0; i < handleCount; i++ ) {
 			handles.push( handle );
-      handle.index = i;
 		}
+
 		this.handles = existingHandles.add( $( handles.join( "" ) ).appendTo( this.element ) );
+
+		for ( i = 0; i < handleCount; i++ ) {
+		  handle = this.handles[i];
+      handle.index = i;
+      J2S._setDraggable(handle, fDown, fDrag, fUp);
+		}
 
 		this.handle = this.handles.eq( 0 );
     
-    fDown = function(xye) {
-      
-      document.title = "down"
-      me._xmouseCapture(xye.ev);
-      document.title = "down ok"
-      me._mymouseStart();
-    };
-    
-    fDrag = function(xye) {
-      document.title = "drag"
-      me._mymouseDrag(xye.ev);
-      document.title = "drag ok"
-    };
-    
-    fUp = function(xye) {
-          document.title = "up"
-
-      me._mymouseStop(xye.ev);
-    };
-
-    J2S._setDraggable(this.handle, fDown, fDrag, fUp);
-
 		this.handles.add( this.range ).filter( "a" )
 			.click(function( event ) {
 				event.preventDefault();
 			})
-/*      
-			.mouseenter(function() {
-				if ( !o.disabled ) {
-					$( this ).addClass( "ui-state-hover" );
-				}
-			})
-			.mouseleave(function() {
-				$( this ).removeClass( "ui-state-hover" );
-			})
-			.focus(function() {
-				if ( !o.disabled ) {
-					$( ".ui-sjsslider .ui-state-focus" ).removeClass( "ui-state-focus" );
-					$( this ).addClass( "ui-state-focus" );
-				} else {
-					$( this ).blur();
-				}
-			})
-			.blur(function() {
-				$( this ).removeClass( "ui-state-focus" );
-			});
-*/      
-
 		this.handles.each(function( i ) {
-			$( this ).data( "ui-sjsslider-handle-index", i );
+			$( this ).data( "ui-j2sslider-handle-index", i );
 		});
-/*
-		this._on( this.handles, {
-			keydown: function( event ) {
-				var allowed, curVal, newVal, step,
-					index = $( event.target ).data( "ui-sjsslider-handle-index" );
 
-				switch ( event.keyCode ) {
-					case $.ui.keyCode.HOME:
-					case $.ui.keyCode.END:
-					case $.ui.keyCode.PAGE_UP:
-					case $.ui.keyCode.PAGE_DOWN:
-					case $.ui.keyCode.UP:
-					case $.ui.keyCode.RIGHT:
-					case $.ui.keyCode.DOWN:
-					case $.ui.keyCode.LEFT:
-						event.preventDefault();
-						if ( !this._keySliding ) {
-							this._keySliding = true;
-							$( event.target ).addClass( "ui-state-active" );
-							allowed = this._start( event, index );
-							if ( allowed === false ) {
-								return;
-							}
-						}
-						break;
-				}
-
-				step = this.options.step;
-				if ( this.options.values && this.options.values.length ) {
-					curVal = newVal = this.values( index );
-				} else {
-					curVal = newVal = this.value();
-				}
-
-				switch ( event.keyCode ) {
-					case $.ui.keyCode.HOME:
-						newVal = this._valueMin();
-						break;
-					case $.ui.keyCode.END:
-						newVal = this._valueMax();
-						break;
-					case $.ui.keyCode.PAGE_UP:
-						newVal = this._trimAlignValue( curVal + ( (this._valueMax() - this._valueMin()) / numPages ) );
-						break;
-					case $.ui.keyCode.PAGE_DOWN:
-						newVal = this._trimAlignValue( curVal - ( (this._valueMax() - this._valueMin()) / numPages ) );
-						break;
-					case $.ui.keyCode.UP:
-					case $.ui.keyCode.RIGHT:
-						if ( curVal === this._valueMax() ) {
-							return;
-						}
-						newVal = this._trimAlignValue( curVal + step );
-						break;
-					case $.ui.keyCode.DOWN:
-					case $.ui.keyCode.LEFT:
-						if ( curVal === this._valueMin() ) {
-							return;
-						}
-						newVal = this._trimAlignValue( curVal - step );
-						break;
-				}
-
-				this._slide( event, index, newVal );
-			},
-			keyup: function( event ) {
-				var index = $( event.target ).data( "ui-sjsslider-handle-index" );
-
-				if ( this._keySliding ) {
-					this._keySliding = false;
-					this._stop( event, index );
-					this._change( event, index );
-					$( event.target ).removeClass( "ui-state-active" );
-				}
-			}
-		});
-*/
 		this._refreshValue();
-
 		this._animateOff = false;
-    
-  var me = this;    
-    
-  this._mymouseStart = function() {
-		return true;
-	};
-
-	this._mymouseDrag = function( event ) {
-		var position = { x: event.pageX, y: event.pageY },
-			normValue = me._normValueFromMouse( position );
-
-		me._slide( event, me._handleIndex, normValue );
-
-		return false;
-	};
-
-	this._mymouseStop = function( event ) {
-		me.handles.removeClass( "ui-state-active" );
-		me._mouseSliding = false;
-
-		me._stop( event, me._handleIndex );
-		me._change( event, me._handleIndex );
-
-		me._handleIndex = null;
-		me._clickOffset = null;
-		me._animateOff = false;
-
-		return false;
-	};
-
-
-
-    
-    
-    
-    
     
 	},
 
@@ -259,10 +130,10 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 		this.range.remove();
 
 		this.element
-			.removeClass( "ui-sjsslider" +
-				" ui-sjsslider-horizontal" +
-				" ui-sjsslider-vertical" +
-				" ui-sjsslider-disabled" +
+			.removeClass( "ui-j2sslider" +
+				" ui-j2sslider-horizontal" +
+				" ui-j2sslider-vertical" +
+				" ui-j2sslider-disabled" +
 				" ui-widget" +
 				" ui-widget-content" +
 				" ui-corner-all" );
@@ -270,7 +141,7 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 		this._mouseDestroy();
 	},
 
-	_xmouseCapture: function( event ) {
+	_doMouseCapture: function( event ) {
 
 		var that = this, o = this.options;
 
@@ -278,7 +149,7 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 			return false;
 		}
 
-		this.elementSize = {
+  	this.elementSize = {
 			width: this.element.outerWidth(),
 			height: this.element.outerHeight()
 		};
@@ -312,7 +183,7 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 			.focus();
 
 		offset = closestHandle.offset();
-		mouseOverHandle = !$( event.target ).parents().andSelf().is( ".ui-sjsslider-handle" );
+		mouseOverHandle = !$( event.target ).parents().andSelf().is( ".ui-j2sslider-handle" );
 		this._clickOffset = mouseOverHandle ? { left: 0, top: 0 } : {
 			left: event.pageX - offset.left - ( closestHandle.width() / 2 ),
 			top: event.pageY - offset.top -
@@ -328,20 +199,6 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 		this._animateOff = true;
 		return true;
 	},
-
-
-	_xmouseStart: function() {
-    return this._mymouseStart();
-	},
-
-	_xmouseDrag: function( event ) {
-    return this._mymouseDrag(event);
-	},
-
-	_xmouseStop: function( event ) {
-    return this._mymouseStop(event);
-	},
-
 
 	_detectOrientation: function() {
 		this.orientation = ( this.options.orientation === "vertical" ) ? "vertical" : "horizontal";
@@ -530,8 +387,8 @@ $.widget( "ui.sjsslider", $.ui.mouse, {
 			case "orientation":
 				this._detectOrientation();
 				this.element
-					.removeClass( "ui-sjsslider-horizontal ui-sjsslider-vertical" )
-					.addClass( "ui-sjsslider-" + this.orientation );
+					.removeClass( "ui-j2sslider-horizontal ui-j2sslider-vertical" )
+					.addClass( "ui-j2sslider-" + this.orientation );
 				this._refreshValue();
 				break;
 			case "value":

@@ -93,12 +93,13 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			frameNode.appendChild(titleBarNode);
 			
 			// we have to wait until the frame is wrapped. 
-			
+			@SuppressWarnings("unused")
+			DOMNode fnode = frameNode;
 			Object fGetFrameParent = null;
 			/**
 			 * @j2sNative
 			 * 
-			 * fGetFrameParent = function(){$(frameNode).parent()}  
+			 * fGetFrameParent = function(){return $(fnode).parent()}  
 			 */
 			{}
 			JSToolkit.J2S._setDraggable(titleBarNode, fGetFrameParent);
@@ -131,9 +132,17 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			 * 
 			 */
 			{}
-			System.out.println(id + " event " + type);
 			if (eventType == -1) {
 		  	if (type == "click") {
+		  		@SuppressWarnings("unused")
+					DOMNode tbar = titleBarNode;
+		  		/**
+		  		 * @j2sNative  
+		  		 * 
+		  		 * 					J2S._setDraggable(tbar, false);
+
+		  		 */
+		  		{}
 					f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
 					JSToolkit.J2S._jsUnsetMouse(frameNode);
 					$(frameNode).remove();

@@ -8,17 +8,17 @@
 // requires j2sSwingjs.js
 
 /* BH */
-.ui-sjsslider-horizontal { height: .3em; top: 40%;margin:0px 10px}
-.ui-sjsslider-horizontal .ui-sjsslider-handle { top: -.25em; margin-left: -.4em; }
-.ui-sjsslider-horizontal .ui-sjsslider-range { top: 0.1em; height: 30%; }
-.ui-sjsslider-horizontal .ui-sjsslider-range-min { left: 0; }
-.ui-sjsslider-horizontal .ui-sjsslider-range-max { right: 0; }
+.ui-j2sslider-horizontal { height: .3em; top: 40%;margin:0px 10px}
+.ui-j2sslider-horizontal .ui-j2sslider-handle { top: -.25em; margin-left: -.4em; }
+.ui-j2sslider-horizontal .ui-j2sslider-range { top: 0.1em; height: 30%; }
+.ui-j2sslider-horizontal .ui-j2sslider-range-min { left: 0; }
+.ui-j2sslider-horizontal .ui-j2sslider-range-max { right: 0; }
 
-.ui-sjsslider-vertical { width: .3em; left: 40%; margin:10px 0px }
-.ui-sjsslider-vertical .ui-sjsslider-handle { left: -.25em; margin-left: 0; margin-bottom: -.3em; }
-.ui-sjsslider-vertical .ui-sjsslider-range { left: 0.1em; width: 30%; }
-.ui-sjsslider-vertical .ui-sjsslider-range-min { bottom: 0; }
-.ui-sjsslider-vertical .ui-sjsslider-range-max { top: 0; }
+.ui-j2sslider-vertical { width: .3em; left: 40%; margin:10px 0px }
+.ui-j2sslider-vertical .ui-j2sslider-handle { left: -.25em; margin-left: 0; margin-bottom: -.3em; }
+.ui-j2sslider-vertical .ui-j2sslider-range { left: 0.1em; width: 30%; }
+.ui-j2sslider-vertical .ui-j2sslider-range-min { bottom: 0; }
+.ui-j2sslider-vertical .ui-j2sslider-range-max { top: 0; }
 
 
 /* Layout helpers
@@ -61,9 +61,9 @@
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
 .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
 .ui-selectable-helper { position: absolute; z-index: 100; border:1px dotted black; }
-.ui-sjsslider { position: relative; text-align: left;}
-.ui-sjsslider .ui-sjsslider-handle { position: absolute; z-index: 2; width: 0.8em; height: 0.8em; cursor: default; }
-.ui-sjsslider .ui-sjsslider-range { position: absolute; z-index: 1; font-size: 0.3em; display: block; border: 0; background-position: 0 0; }
+.ui-j2sslider { position: relative; text-align: left;}
+.ui-j2sslider .ui-j2sslider-handle { position: absolute; z-index: 2; width: 0.8em; height: 0.8em; cursor: default; }
+.ui-j2sslider .ui-j2sslider-range { position: absolute; z-index: 1; font-size: 0.3em; display: block; border: 0; background-position: 0 0; }
 
 /* Component containers
 ----------------------------------*/
@@ -302,7 +302,7 @@
 
 /*Tick Marks added for SwingJS
 ----------------------------------*/
-.swingjs .ui-sjsslider-tick-mark-vert { display:inline-block; width:1px; background: black; border:1px; height:5px; position:absolute; top:22px; }
-.swingjs .ui-sjsslider-tick-mark-horiz { display:inline-block; height:1px; background: black; border:1px; width:5px; position:absolute; left:22px; }
+.swingjs .ui-j2sslider-tick-mark-vert { display:inline-block; width:1px; background: black; border:1px; height:5px; position:absolute; top:22px; }
+.swingjs .ui-j2sslider-tick-mark-horiz { display:inline-block; height:1px; background: black; border:1px; width:5px; position:absolute; left:22px; }
 
 

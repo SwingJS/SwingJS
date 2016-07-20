@@ -46,8 +46,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		
 		// this mechanism allows on-demand loading of the jQuery slider
 		
-		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.css", true);
-		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-slider.js", true);
+		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-j2sslider.css", true);
+		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-j2sslider.js", true);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 * @j2sNative
 		 * 
 		 *            var me = this; 
-		 *            me.$(me.jqSlider).sjsslider(
+		 *            me.$(me.jqSlider).j2sslider(
 		 *             { orientation: me.orientation, 
 		 *               range: false, 
 		 *               min: me.min,
@@ -152,7 +152,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 * 
 		 *  var a = {};
 		 *  a[key]= val;
-		 *  this.$(this.jqSlider).sjsslider(a);
+		 *  this.$(this.jqSlider).j2sslider(a);
 		 */
 		{}
 	}
