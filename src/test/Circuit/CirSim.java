@@ -2243,14 +2243,19 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				ba = readUrlData(url);
 			} catch (Exception e) {
 			}
-			if (ba == null) {
+			if (ba == null || ba.size() < 300) { // BH needed this because 
+				
 				URL url = getClass().getClassLoader().getResource("setuplist.txt");
 				ba = readUrlData(url);
 			}
+			
+			
+			
 			// /hausen
 
 			byte b[] = ba.toByteArray();
 			int len = ba.size();
+			
 			int p;
 			if (++STARTUP_READ_COUNT < 5) // BH added
 			if (len == 0 || b[0] != '#') {
