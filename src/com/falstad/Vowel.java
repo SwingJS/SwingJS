@@ -2742,18 +2742,6 @@ class VowelFrame extends Frame implements ComponentListener, ActionListener,
 
 	class IBarVowelFilter extends PipeFIRFilter {
 		
-		IBarVowelFilter(){
-			
-			/**
-			 * @j2sNative
-			 * 
-			 * Clazz.prepareFields(this);
-			 */
-			{}
-		}
-
-		
-
 		double data[] = { 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5, 6.5,
 				6.42857, 2.83929, 2.73214, 3.13393, 3.29464, 3.45536, 3.45536, 4.58036,
 				5.49107, 6.45536, 6.96429, 7.33929, 7.66071, 7.84821, 8.03571, 8.19643,
