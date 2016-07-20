@@ -1993,6 +1993,24 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
 
   // J2S._setDraggable(titlebar, frame.outerNode), for example, is issued in swingjs.plaf.JSFrameUI.js
   
+	var dragBind = function(isBind) {
+		$tag.unbind('mousemoveoutjsmol');
+		$tag.unbind('touchmoveoutjsmol');
+		$tag.unbind('mouseupoutjsmol');
+		$tag.unbind('touchendoutjsmol');
+		J2S._dmouseOwner = null;
+    tag.isDragging = false;
+    tag._isDragger = false;
+		if (isBind) {
+			$tag.bind('mousemoveoutjsmol touchmoveoutjsmol', function(ev) {
+				drag(ev);
+			});
+			$tag.bind('mouseupoutjsmol touchendoutjsmol', function(ev) {
+				up(ev);
+			});
+		}
+	};  
+
 	var $tag = $(tag);
   tag = $tag[0];
 	if (tag._isDragger)
@@ -2063,24 +2081,6 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
 			return false;
 		}
 	};
-
-	var dragBind = function(isBind) {
-		$tag.unbind('mousemoveoutjsmol');
-		$tag.unbind('touchmoveoutjsmol');
-		$tag.unbind('mouseupoutjsmol');
-		$tag.unbind('touchendoutjsmol');
-		J2S._dmouseOwner = null;
-    tag.isDragging = false;
-    tag._isDragger = false;
-		if (isBind) {
-			$tag.bind('mousemoveoutjsmol touchmoveoutjsmol', function(evspecial, target, ev) {
-				drag(ev);
-			});
-			$tag.bind('mouseupoutjsmol touchendoutjsmol', function(evspecial, target, ev) {
-				up(ev);
-			});
-		}
-	};  
 
 	$tag.bind('mousedown touchstart', function(ev) {
     return down(ev);
