@@ -6,6 +6,7 @@ package test.falstadOriginal;
 //		- StringWaveCanvas.paint() --> StringWaveCanvas.paintComponent()
 //		- StringWaveFrame.paint() --> StringWaveFrame.paintComponent()
 //		- imports java.awt --> swingjs.awt
+//		- Called showFrame() in Frame.init()
 
 
 import java.awt.Color;
@@ -116,7 +117,8 @@ public class StringWave extends Applet implements ComponentListener {
  }
  boolean started = false;
  public void init() {
-	addComponentListener(this);
+	//addComponentListener(this);
+	 showFrame();
  }
  
  public static void main(String args[]) {

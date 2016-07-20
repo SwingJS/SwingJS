@@ -4,6 +4,7 @@
 //		- Weve2dCanvas.paint() --> Wave2d.paintComponent()
 //		- Wave2dFrame.paint() --> Wave2d.paintComponent()
 //		- imports java.awt --> swingjs.awt
+//		- Called showFrame() in applet.init()
 
 package test.falstadOriginal;
 
@@ -114,7 +115,8 @@ public class Wave2d extends Applet implements ComponentListener {
     }
     boolean started = false;
     public void init() {
-	addComponentListener(this);
+	//addComponentListener(this);
+    	showFrame();
     }
     
     public static void main(String args[]) {
@@ -144,7 +146,7 @@ public class Wave2d extends Applet implements ComponentListener {
     
     public void componentHidden(ComponentEvent e){}
     public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) { showFrame(); }
+    public void componentShown(ComponentEvent e) { /*showFrame()*/; }
     public void componentResized(ComponentEvent e) {}
     
     public void destroy() {
