@@ -6,7 +6,9 @@
 
  // NOTES by Bob Hanson
 
- // BH BUG 7/18/2016 10:21:40 PM abstract classes that have prepareFields must declare a default superconstructor
+ // BH 7/19/2016 11:20:03 AM static nested class instances are referenced by the Java compiler as "Outer$Inner" 
+ //                          and must be able to be references as such in Clazz._4Name
+ // BH 7/18/2016 10:21:40 PM abstract classes that have prepareFields must declare a default superconstructor
  // BH 7/18/2016 10:28:47 AM adds System.nanoTime()
  // BH 7/17/2016 4:19:07 PM prepareFields modified to save b$[] in outer class, not inner
  //                         thus saving considerably on overhead when inner classes are created
@@ -804,7 +806,7 @@ var fixNullParams = function(args) {
   var n = args.length;
 	var bits = 0;
   for (var i = 0; i < n; i++) {
-		if (arguments[i] instanceof CastedNull)
+		if (args[i] instanceof CastedNull)
       bits |= (1 << i);
 	}
 	if (!bits)
@@ -3438,6 +3440,16 @@ var removeScriptNode = function (n) {
 Clazz._4Name = function(clazzName, applet, state) {
 	if (Clazz.isClassDefined(clazzName))
 		return evalType(clazzName);
+  if (clazzName.indexOf("$") >= 0) {
+    // BH we allow Java's java.swing.JTable.$BooleanRenderer as a stand-in for java.swing.JTable.BooleanRenderer
+    // when the static nested class is created using declareType  
+   var name2 = clazzName.replace(/\$/g,".");
+   alert(name2)
+   alert(Clazz.isClassDefined(name2))
+   debugger;
+   if (Clazz.isClassDefined(name2))
+    return evalType(name2);   
+  }
 	var f = (J2S._isAsync && applet ? applet._restoreState(clazzName, state) : null);
 	if (f == 1)
 		return null; // must be already being created
