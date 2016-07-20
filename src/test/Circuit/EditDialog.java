@@ -13,11 +13,6 @@ import swingjs.awt.Label;
 import swingjs.awt.TextField;
 import swingjs.awt.Scrollbar;
 
-interface Editable {
-    EditInfo getEditInfo(int n);
-    void setEditValue(int n, EditInfo ei);
-}
-
 class EditDialog extends Dialog implements AdjustmentListener, ActionListener, ItemListener {
     Editable elm;
     CirSim cframe;
