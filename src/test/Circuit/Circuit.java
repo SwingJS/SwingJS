@@ -2,6 +2,10 @@ package test.Circuit;
 
 // Circuit.java (c) 2005,2008 by Paul Falstad, www.falstad.com
 
+
+// see CirSim.java for JavaScript implementation notes.
+
+
 import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;

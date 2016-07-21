@@ -49,6 +49,9 @@ public class JSMenuBarUI extends JSPanelUI {
 	}
 
 
+	protected boolean isPopup;
+	
+
 	public JSMenuBarUI() {
 		isContainer = true;
 		setDoc();
@@ -76,12 +79,15 @@ public class JSMenuBarUI extends JSPanelUI {
     function(){$(this).find('ul:first').css({visibility: "visible",display: "none"}).show();},
     function(){$(this).find('ul:first').css({visibility: "hidden"});}
    );
+   
 
 		 * 
 		 */
 		{}
 		
-	
+    if (this.isPopup)
+    	setVisible(false);
+		
 	}
 
 	

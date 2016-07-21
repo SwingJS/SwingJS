@@ -7,48 +7,49 @@ import jsjavax.swing.LookAndFeel;
 
 import swingjs.api.DOMNode;
 
-public class JSPopupMenuUI extends JSWindowUI {
+public class JSPopupMenuUI extends JSMenuBarUI {
 	
 	// a frameless independent window
 	
 
 	public JSPopupMenuUI() {
 		isContainer = true;
+		isPopup = true;
 		setDoc();
 	}
 	
-	@Override
-	public DOMNode createDOMNode() {
-		if (domNode == null)
-			domNode = createDOMObject("select", id);
-    return domNode;
-	}
-
-	@Override
-  protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		// SwingJS for now: just designated container width/height 
-		return new Dimension(c.getWidth(), c.getHeight());
-	}
-	
-	@Override
-	public Dimension getPreferredSize() {
-		// SwingJS should defer to containing panel
-		return null;
-	}
-
-	@Override
-	protected void installJSUI() {
-    LookAndFeel.installColorsAndFont(jc,
-        "PopupMenu.background",
-        "PopupMenu.foreground",
-        "PopupMenu.font");
-	}
-
-	@Override
-	protected void uninstallJSUI() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public DOMNode createDOMNode() {
+//		if (domNode == null)
+//			domNode = createDOMObject("select", id);
+//    return domNode;
+//	}
+//
+//	@Override
+//  protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+//		// SwingJS for now: just designated container width/height 
+//		return new Dimension(c.getWidth(), c.getHeight());
+//	}
+//	
+//	@Override
+//	public Dimension getPreferredSize() {
+//		// SwingJS should defer to containing panel
+//		return null;
+//	}
+//
+//	@Override
+//	protected void installJSUI() {
+//    LookAndFeel.installColorsAndFont(jc,
+//        "PopupMenu.background",
+//        "PopupMenu.foreground",
+//        "PopupMenu.font");
+//	}
+//
+//	@Override
+//	protected void uninstallJSUI() {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	public Object getPopup() {
 		// TODO: this causes an uncaught error. 

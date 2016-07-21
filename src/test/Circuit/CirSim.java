@@ -9,6 +9,23 @@ package test.Circuit;
 //Added 'finished' boolean/state machine to itemState & adjustmentListener and at the end of init
 //--> otherwise it calls items before they exist
 
+//BH issues - 5 hrs required; graphics not quite right:
+
+//cannot read setup files in Eclipse -- allowing read from http://falstad.com/circuit-java
+//could use byte array to read setup, but it's easier to use StringTokenizer on \n\r
+//cannot sleep -- need a javax.Swing.Timer
+//Elm classes returning character for an int, as in 
+//int getDumpType() { return 'w'; }
+//are being misread -- this is a J2S compiler bug.
+//fixed using 
+///**
+//* @j2sNative
+//* 
+//* if (typeof t == "string") t = t.charCodeAt(0);
+//*/
+//{}
+
+
 import swingjs.awt.Button;
 import swingjs.awt.Checkbox;
 import swingjs.awt.CheckboxMenuItem;
@@ -50,13 +67,18 @@ import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.reflect.Constructor;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import javax.swing.Timer;
 
 public class CirSim extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener,
@@ -498,7 +520,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 		mainMenu.add(getCheckItem("Select/Drag Selected (space or Shift-drag)",
 				"Select"));
-		main.add(mainMenu);
+		// TEMPORARY ONLY main.add(mainMenu);
 
 		main.add(resetButton = new Button("Reset"));
 		resetButton.addActionListener(this);
@@ -561,7 +583,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		elmMenu.add(elmCutMenuItem = getMenuItem("Cut"));
 		elmMenu.add(elmCopyMenuItem = getMenuItem("Copy"));
 		elmMenu.add(elmDeleteMenuItem = getMenuItem("Delete"));
-		main.add(elmMenu);
+		
+		//TEMPORARY ONLY SWINGJS main.add(elmMenu);
 
 		scopeMenu = buildScopeMenu(false);
 		transScopeMenu = buildScopeMenu(true);
@@ -646,7 +669,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			m.add(scopeSelectYMenuItem = getMenuItem("Select Y", "selecty"));
 			m.add(scopeResistMenuItem = getCheckItem("Show Resistance"));
 		}
-		main.add(m);
+		//TEMPORARY ONLY SWINGJS main.add(m);
 		return m;
 	}
 
@@ -694,6 +717,12 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	void register(Class c, CircuitElm elm) {
 		int t = elm.getDumpType();
+		/**
+		 * @j2sNative
+		 * 
+		 * if (typeof t == "string") t = t.charCodeAt(0);
+		 */
+		{}
 		if (t == 0) {
 			System.out.println("no dump type: " + c);
 			return;
@@ -793,6 +822,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	int frames = 0;
 	int steps = 0;
 	int framerate = 0, steprate = 0;
+
+	private Timer timer;
 
 	public void updateCircuit(Graphics realg) {
 		CircuitElm realMouseElm;
@@ -977,22 +1008,25 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		 */
 
 		realg.drawImage(dbimage, 0, 0, this);
-		if (!stoppedCheck.getState() && circuitMatrix != null) {
-			// Limit to 50 fps (thanks to Jurgen Klotzer for this)
-			long delay = 1000 / 50 - (System.currentTimeMillis() - lastFrameTime);
-			// realg.drawString("delay: " + delay, 10, 90);
-			if (delay > 0) {
-				try {
-					Thread.sleep(delay);
-				} catch (InterruptedException e) {
-				}
-			}
-
-			cv.repaint(0);
+		if (stoppedCheck.getState() || circuitMatrix == null) {
+			lastFrameTime = lastTime;
+			return;
 		}
-		lastFrameTime = lastTime;
+		// BH: In JavaScript we cannot sleep. 
+		//     Besides, we should not sit on the Graphics object like this. 
+		
+		// Limit to 50 fps (thanks to Jurgen Klotzer for this)
+		long delay = 1000 / 50 - (System.currentTimeMillis() - lastFrameTime);
+		realg.drawString("delay: " + delay, 10, 90);
+		
+		if (timer == null) {
+			timer = new Timer((int) delay, this);
+			timer.setRepeats(false);
+			timer.setActionCommand("repaint");
+		}
+		timer.restart();
 	}
-
+	
 	void setupScopes() {
 		int i;
 
@@ -1987,7 +2021,12 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	public void actionPerformed(ActionEvent e) {
 		String ac = e.getActionCommand();
-		if (e.getSource() == resetButton) {
+		Object src = e.getSource();
+		if (ac == "repaint") {
+			cv.repaint(0);
+			lastFrameTime = lastTime;
+			return;
+		} else if (src == resetButton) {
 			int i;
 
 			// on IE, drawImage() stops working inexplicably every once in
@@ -2002,51 +2041,48 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			t = 0;
 			stoppedCheck.setState(false);
 			cv.repaint();
-		}
-		if (e.getSource() == dumpMatrixButton)
+		} else if (src == dumpMatrixButton) {
 			dumpMatrix = true;
-		if (e.getSource() == exportItem)
+		} else if (src == exportItem) {
 			doExport(false);
-		if (e.getSource() == optionsItem)
+		} else if (src == optionsItem) {
 			doEdit(new EditOptions(this));
-		if (e.getSource() == importItem)
+		} else if (src == importItem) {
 			doImport();
-		if (e.getSource() == exportLinkItem)
+		} else if (src == exportLinkItem) {
 			doExport(true);
-		if (e.getSource() == undoItem)
+		} else if (src == undoItem) {
 			doUndo();
-		if (e.getSource() == redoItem)
+		} else if (src == redoItem) {
 			doRedo();
-		if (ac.compareTo("Cut") == 0) {
-			if (e.getSource() != elmCutMenuItem)
+		} else if (ac.compareTo("Cut") == 0) {
+			if (src != elmCutMenuItem)
 				menuElm = null;
 			doCut();
-		}
-		if (ac.compareTo("Copy") == 0) {
-			if (e.getSource() != elmCopyMenuItem)
+		} else if (ac.compareTo("Copy") == 0) {
+			if (src != elmCopyMenuItem)
 				menuElm = null;
 			doCopy();
-		}
-		if (ac.compareTo("Paste") == 0)
+		} else if (ac.compareTo("Paste") == 0) {
 			doPaste();
-		if (e.getSource() == selectAllItem)
+		} else if (src == selectAllItem) {
 			doSelectAll();
-		if (e.getSource() == exitItem) {
+		} else if (src == exitItem) {
 			destroyFrame();
 			return;
 		}
 		if (ac.compareTo("stackAll") == 0)
 			stackAll();
-		if (ac.compareTo("unstackAll") == 0)
+		else if (ac.compareTo("unstackAll") == 0)
 			unstackAll();
-		if (e.getSource() == elmEditMenuItem)
+		else if (src == elmEditMenuItem)
 			doEdit(menuElm);
-		if (ac.compareTo("Delete") == 0) {
-			if (e.getSource() != elmDeleteMenuItem)
+		else if (ac.compareTo("Delete") == 0) {
+			if (src != elmDeleteMenuItem)
 				menuElm = null;
 			doDelete();
 		}
-		if (e.getSource() == elmScopeMenuItem && menuElm != null) {
+		if (src == elmScopeMenuItem && menuElm != null) {
 			int i;
 			for (i = 0; i != scopeCount; i++)
 				if (scopes[i].elm == null)
@@ -2064,21 +2100,21 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		if (menuScope != -1) {
 			if (ac.compareTo("remove") == 0)
 				scopes[menuScope].setElm(null);
-			if (ac.compareTo("speed2") == 0)
+			else if (ac.compareTo("speed2") == 0)
 				scopes[menuScope].speedUp();
-			if (ac.compareTo("speed1/2") == 0)
+			else if (ac.compareTo("speed1/2") == 0)
 				scopes[menuScope].slowDown();
-			if (ac.compareTo("scale") == 0)
+			else if (ac.compareTo("scale") == 0)
 				scopes[menuScope].adjustScale(.5);
-			if (ac.compareTo("maxscale") == 0)
+			else if (ac.compareTo("maxscale") == 0)
 				scopes[menuScope].adjustScale(1e-50);
-			if (ac.compareTo("stack") == 0)
+			else if (ac.compareTo("stack") == 0)
 				stackScope(menuScope);
-			if (ac.compareTo("unstack") == 0)
+			else if (ac.compareTo("unstack") == 0)
 				unstackScope(menuScope);
-			if (ac.compareTo("selecty") == 0)
+			else if (ac.compareTo("selecty") == 0)
 				scopes[menuScope].selectY();
-			if (ac.compareTo("reset") == 0)
+			else if (ac.compareTo("reset") == 0)
 				scopes[menuScope].resetGraph();
 			cv.repaint();
 		}
@@ -2196,8 +2232,13 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 	}
 
-	ByteArrayOutputStream readUrlData(URL url) throws java.io.IOException {
+	ByteArrayOutputStream readUrlData(URL url) throws IOException {
+		if (url == null)
+			return null;
+		System.out.println("Looking for " + url);
 		Object o = url.getContent();
+		if (o == null)
+			throw new IOException("Could not read " + url);
 		FilterInputStream fis = (FilterInputStream) o;
 		ByteArrayOutputStream ba = new ByteArrayOutputStream(fis.available());
 		int blen = 1024;
@@ -2213,12 +2254,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	URL getCodeBase() {
 		try {
-			if (applet != null) {
-				URL base = applet.getCodeBase();
-				if (base.toString().indexOf("/bin/") >= 0)
-					base = new URL("http://www.falstad.com/circuit-java/");
-				return base;
-			}
+			if (applet != null)
+				return applet.getCodeBase();
 			File f = new File(".");
 			return new URL("file:" + f.getCanonicalPath() + "/");
 		} catch (Exception e) {
@@ -2233,47 +2270,34 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		Menu stack[] = new Menu[6];
 		int stackptr = 0;
 		stack[stackptr++] = menu;
+		URL url = null;
+		// modified by Bob Hanson to allow remote access to www.falstad.com for
+		// startup.
+		byte b[] = null;
+		int len = 0;
+		ByteArrayOutputStream ba = getResource("setuplist.txt");
 		try {
-			// hausen: if setuplist.txt does not exist in the same
-			// directory, try reading from the jar file
-			ByteArrayOutputStream ba = null;
-			try {
-				URL url = new URL(getCodeBase() + "setuplist.txt");
-				// this will fail 
-				ba = readUrlData(url);
-			} catch (Exception e) {
-			}
-			if (ba == null || ba.size() < 300) { // BH needed this because 
-				
-				URL url = getClass().getClassLoader().getResource("setuplist.txt");
-				ba = readUrlData(url);
-			}
-			
-			
-			
-			// /hausen
 
-			byte b[] = ba.toByteArray();
-			int len = ba.size();
-			
-			int p;
-			if (++STARTUP_READ_COUNT < 5) // BH added
+			if (ba != null) {
+				len = ba.size();
+				b = ba.toByteArray();
+			}
+
 			if (len == 0 || b[0] != '#') {
+				if (++STARTUP_READ_COUNT == 3)
+					throw new IOException("Could not find setuplist.txt");
 				// got a redirect, try again
 				getSetupList(menu, true);
 				return;
 			}
-			for (p = 0; p < len;) {
-				int l;
-				for (l = 0; l != len - p; l++)
-					if (b[l + p] == '\n') {
-						l++;
-						break;
-					}
-				String line = new String(b, p, l - 1);
-				if (line.charAt(0) == '#')
-					;
-				else if (line.charAt(0) == '+') {
+			String s = new String(b);
+			StringTokenizer st = new StringTokenizer(s, "\n\r", false);
+			String line = null;
+			while (st.hasMoreTokens()) {
+				if ((line = st.nextToken()) == null || line.length() == 0 || line.startsWith("#"))
+					continue;
+				System.out.println(line);
+				if (line.charAt(0) == '+') {
 					Menu n = new Menu(line.substring(1));
 					menu.add(n);
 					menu = stack[stackptr++] = n;
@@ -2294,12 +2318,45 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 						}
 					}
 				}
-				p += l;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			stop("Can't read setuplist.txt!", null);
 		}
+		System.out.println("done reading setuplist.txt");
+		
+	}
+
+	private ByteArrayOutputStream getResource(String file) {	
+		for (int i = 0; i < 3; i++) {
+			try {
+				ByteArrayOutputStream os = readUrlData(getUrlResource(i, file));
+				if (os != null && os.size() >= 200)
+					return os;
+			} catch (Exception e) {
+			}
+		}
+		return null;
+	}
+
+	private URL getUrlResource(int i, String s) throws MalformedURLException {
+		switch (i) {
+		case 0:
+			String cb = getCodeBase().toString();
+			int pt = cb.indexOf("/bin/"); 
+			if (pt >= 0)
+				cb = cb.substring(0, pt) + "/src/test/Circuit/"; 
+			return  new URL(cb + s);
+		case 1:
+			// hausen: if setuplist.txt does not exist in the same
+			// directory, try reading from the jar file
+			ClassLoader cl = getClass().getClassLoader();
+			return  cl.getResource(s);
+		case 2:
+			// hanson: also allow remote access
+			return new URL("http://www.falstad.com/circuit-java/" + s);
+		}
+		return null;
 	}
 
 	void readSetup(String text) {
@@ -2315,18 +2372,11 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		t = 0;
 		System.out.println(str);
 		try {
-			URL url = new URL(getCodeBase() + "circuits/" + str);
-			ByteArrayOutputStream ba = readUrlData(url);
+			ByteArrayOutputStream ba = getResource("circuits/" + str);
 			readSetup(ba.toByteArray(), ba.size(), false);
-		} catch (Exception e1) {
-			try {
-				URL url = getClass().getClassLoader().getResource("circuits/" + str);
-				ByteArrayOutputStream ba = readUrlData(url);
-				readSetup(ba.toByteArray(), ba.size(), false);
-			} catch (Exception e) {
-				e.printStackTrace();
-				stop("Unable to read " + str + "!", null);
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			stop("Unable to read circuits/" + str + "!", null);
 		}
 		titleLabel.setText(title);
 	}
@@ -2354,23 +2404,22 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			scopeCount = 0;
 		}
 		cv.repaint();
-		int p;
-		for (p = 0; p < len;) {
-			int l;
-			int linelen = 0;
-			for (l = 0; l != len - p; l++)
-				if (b[l + p] == '\n' || b[l + p] == '\r') {
-					linelen = l++;
-					if (l + p < b.length && b[l + p] == '\n')
-						l++;
-					break;
-				}
-			String line = new String(b, p, linelen);
+		String s = new String(b);
+		StringTokenizer t = new StringTokenizer(s, "\n\r", false);
+		while (t.hasMoreTokens()) {
+			String line = t.nextToken();
+			if (line.length() == 0)
+				continue;
+			System.out.println(line);
+			if (line.startsWith("#"))
+				continue;
 			StringTokenizer st = new StringTokenizer(line);
 			while (st.hasMoreTokens()) {
 				String type = st.nextToken();
-				int tint = type.charAt(0);
+				
+				char tint = type.charAt(0);
 				try {
+					
 					if (tint == 'o') {
 						Scope sc = new Scope(this);
 						sc.position = scopeCount;
@@ -2390,15 +2439,16 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 						// ignore afilter-specific stuff
 						break;
 					}
+					int ttint = (int) tint;
 					if (tint >= '0' && tint <= '9')
-						tint = new Integer(type).intValue();
+						 ttint = new Integer(type).intValue();
 					int x1 = new Integer(st.nextToken()).intValue();
 					int y1 = new Integer(st.nextToken()).intValue();
 					int x2 = new Integer(st.nextToken()).intValue();
 					int y2 = new Integer(st.nextToken()).intValue();
 					int f = new Integer(st.nextToken()).intValue();
 					CircuitElm ce = null;
-					Class cls = dumpTypes[tint];
+					Class cls = dumpTypes[ttint];
 					if (cls == null) {
 						System.out.println("unrecognized dump type: " + type);
 						break;
@@ -2432,8 +2482,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				}
 				break;
 			}
-			p += l;
-
 		}
 		enableItems();
 		if (!retain)
