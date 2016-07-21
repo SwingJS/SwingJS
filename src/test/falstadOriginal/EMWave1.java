@@ -1,6 +1,15 @@
 package test.falstadOriginal;
 
 // EMWave1.java (c) 2002 by Paul Falstad, www.falstad.com
+//changes made:
+//- EMWave1Canvas.paint() --> EMWave1Canvas.paintComponent()
+//- EMWave1Frame.paint() --> EMWave1Frame.paintComponent()
+//- imports java.awt --> swingjs.awt
+//- Commented applet.paint() out
+//- Added this to applet.init()
+//		  ogf = new EMWave1Frame(this);
+//		  ogf.init();
+
 
 import java.awt.Color;
 import java.awt.Component;
@@ -106,7 +115,10 @@ public class EMWave1 extends Applet implements ComponentListener {
     }
     boolean started = false;
     public void init() {
-	addComponentListener(this);
+	//addComponentListener(this);
+    	//showFrame();
+    	ogf = new EMWave1Frame(this);
+    	ogf.init();
     }
     
     public static void main(String args[]) {
@@ -123,16 +135,16 @@ public class EMWave1 extends Applet implements ComponentListener {
 	}
     }
     
-    public void paint(Graphics g) {
-	String s = "Applet is open in a separate window.";
-	if (!started)
-	    s = "Applet is starting.";
-	else if (ogf == null)
-	    s = "Applet is finished.";
-	else
-	    ogf.show();
-	g.drawString(s, 10, 30);
-    }
+//    public void paint(Graphics g) {
+//	String s = "Applet is open in a separate window.";
+//	if (!started)
+//	    s = "Applet is starting.";
+//	else if (ogf == null)
+//	    s = "Applet is finished.";
+//	else
+//	    ogf.show();
+//	g.drawString(s, 10, 30);
+//    }
     
     public void componentHidden(ComponentEvent e){}
     public void componentMoved(ComponentEvent e){}
