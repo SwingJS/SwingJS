@@ -55,7 +55,7 @@ class StringWaveCanvas extends Canvas {
  public void update(Graphics g) {
 	pg.updateStringWave(g);
  }
- public void paint(Graphics g) {
+ public void paintComponent(Graphics g) {
 	pg.updateStringWave(g);
  }
 };
@@ -444,7 +444,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
      g.drawString(s, (winSize.width-fm.stringWidth(s))/2, y);
  }
 
- public void paint(Graphics g) {
+ public void paintComponent(Graphics g) {
 	cv.repaint();
  }
 
