@@ -382,10 +382,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		backgroundTaintCount++;
 		if (img != null) {
 			int[] pixels = null;
+			boolean isRGB = false; // usually RGBA 
 			/**
 			 * @j2sNative
 			 * 
 			 * pixels = img._pix;
+			 * isRGB = (img.imageType == 1);
+			 * 
 			 */
 			{
 				
@@ -404,7 +407,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 					buf8[pt++] = (argb >> 16) & 0xFF;
 					buf8[pt++] = (argb >> 8) & 0xFF;
 					buf8[pt++] = argb & 0xFF;
-					buf8[pt++] = (argb >> 24) & 0xFF;
+					buf8[pt++] = (isRGB ? 0xFF : (argb >> 24) & 0xFF);
 				}
 				HTML5CanvasContext2D.putImageData(ctx, imageData, x, y);				
 			}

@@ -823,7 +823,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	int steps = 0;
 	int framerate = 0, steprate = 0;
 
-	private Timer timer;
+	private Timer timer; // BH SwingJS
 
 	public void updateCircuit(Graphics realg) {
 		CircuitElm realMouseElm;
@@ -1082,8 +1082,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				s.speed = speed;
 				s.resetGraph();
 			}
-			Rectangle r = new Rectangle(pos * w, winSize.height - h + colh * row, w
-					- marg, colh);
+			Rectangle r = new Rectangle(pos * w, winSize.height - h + colh * row, w - marg, colh);
 			row++;
 			if (!r.equals(s.rect))
 				s.setRect(r);
