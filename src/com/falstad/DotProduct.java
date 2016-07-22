@@ -30,32 +30,32 @@ import swingjs.awt.Canvas;
 import swingjs.awt.Button;
 
 class DotProductCanvas extends Canvas {
-    DotProduct pg;
-    DotProductCanvas(DotProduct p) {
+ DotProduct pg;
+ DotProductCanvas(DotProduct p) {
 	pg = p;
-    }
-    public Dimension getPreferredSize() {
+ }
+ public Dimension getPreferredSize() {
 	return new Dimension(300,400);
-    }
-    public void update(Graphics g) {
+ }
+ public void update(Graphics g) {
 	pg.updateDotProduct(g);
-    }
-    public void paintComponent(Graphics g) {
+ }
+ public void paintComponent(Graphics g) {
 	pg.updateDotProduct(g);
-    }
+ }
 };
 
 class DotProductLayout implements LayoutManager {
-    public DotProductLayout() {}
-    public void addLayoutComponent(String name, Component c) {}
-    public void removeLayoutComponent(Component c) {}
-    public Dimension preferredLayoutSize(Container target) {
+ public DotProductLayout() {}
+ public void addLayoutComponent(String name, Component c) {}
+ public void removeLayoutComponent(Component c) {}
+ public Dimension preferredLayoutSize(Container target) {
 	return new Dimension(500, 500);
-    }
-    public Dimension minimumLayoutSize(Container target) {
+ }
+ public Dimension minimumLayoutSize(Container target) {
 	return new Dimension(100,100);
-    }
-    public void layoutContainer(Container target) {
+ }
+ public void layoutContainer(Container target) {
 	int cw = target.size().width;
 	int ct = target.getComponentCount();
 	target.getComponent(ct-1).move(0, 0);
@@ -71,39 +71,38 @@ class DotProductLayout implements LayoutManager {
 		h += d.height;
 	    }
 	}
-    }
+ }
 };
 
 
 public class DotProduct extends Applet
-  implements ComponentListener, ActionListener, AdjustmentListener,
-             MouseMotionListener, MouseListener {
-    
-    Thread engine = null;
+implements ComponentListener, ActionListener, AdjustmentListener,
+          MouseMotionListener, MouseListener {
+ 
+ Thread engine = null;
 
-    Dimension winSize;
-    Image dbimage;
-    
-    Random random;
-    
-    public String getAppletInfo() {
+ Dimension winSize;
+ Image dbimage;
+ 
+ Random random;
+ 
+ public String getAppletInfo() {
 	return "DotProduct by Paul Falstad";
-    }
+ }
 
-    Button swapButton;
-    double vecs[][];
-    int selection = -1;
+ Button swapButton;
+ double vecs[][];
+ int selection = -1;
 
-    int getrand(int x) {
+ int getrand(int x) {
 	int q = random.nextInt();
 	if (q < 0) q = -q;
 	return q % x;
-    }
-    DotProductCanvas cv;
-  
+ }
+ DotProductCanvas cv;
 
-    public void init() {
-    	setLayout(new DotProductLayout());
+ public void init() {
+	setLayout(new DotProductLayout());
 	cv = new DotProductCanvas(this);
 	cv.addComponentListener(this);
 	cv.addMouseMotionListener(this);
@@ -119,32 +118,31 @@ public class DotProduct extends Applet
 	vecs[1][0] = 1; vecs[1][1] = 1;
 	reinit();
 	repaint();
-    }
-    
+ }
 
-    void reinit() {
-        Dimension d = winSize = cv.getSize();
+ void reinit() {
+     Dimension d = winSize = cv.getSize();
 	if (winSize.width == 0)
 	    return;
 	dbimage = createImage(d.width, d.height);
-    }
-    
-    public void paintComponent(Graphics g) {
+ }
+ 
+ public void paint(Graphics g) {
 	cv.repaint();
-    }
+ }
 
-    void findVecCoords(double x, double y, int result[]) {
+ void findVecCoords(double x, double y, int result[]) {
 	int cy = winSize.height/4;
 	int cx = cy;
 	result[0] = (int) (cx*(x+2));
 	result[1] = (int) (cy*(2-y));
-    }
+ }
 
-    void findVecCoords(int num, int result[]) {
+ void findVecCoords(int num, int result[]) {
 	findVecCoords(vecs[num][0], vecs[num][1], result);
-    }
+ }
 
-    void drawArrow(Graphics g, int x1, int y1, int x2, int y2, double len) {
+ void drawArrow(Graphics g, int x1, int y1, int x2, int y2, double len) {
 	g.drawLine(x1, y1, x2, y2);
 	if (len > .05) {
 	    double l = java.lang.Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
@@ -158,9 +156,9 @@ public class DotProduct extends Applet
 		       (int) (-haty*as-hatx*as+x2),
 		       (int) (hatx*as-haty*as+y2));
 	}
-    }
+ }
 
-    void drawBar(Graphics g, int offset, double val) {
+ void drawBar(Graphics g, int offset, double val) {
 	int x = (int) (winSize.width * val/6);
 	int cx = winSize.width/2;
 	int h = 5;
@@ -170,9 +168,9 @@ public class DotProduct extends Applet
 	    g.fillRect(cx+x, y, -x, h);
 	else
 	    g.fillRect(cx, y, x, h);
-    }
+ }
 
-    public void updateDotProduct(Graphics realg) {
+ public void updateDotProduct(Graphics realg) {
 	double alen = java.lang.Math.sqrt(
 	    vecs[0][0] * vecs[0][0] + vecs[0][1] * vecs[0][1]);
 	double blen = java.lang.Math.sqrt(
@@ -260,16 +258,16 @@ public class DotProduct extends Applet
 	displayString(g, "A dot B = " + nf.format(dot), y += yl);
 	drawBar(g, -1, dot);
 	realg.drawImage(dbimage, 0, 0, this);
-    }
+ }
 
-    void displayString(Graphics g, String s, int y) {
+ void displayString(Graphics g, String s, int y) {
 	int lx = winSize.height;
 	int lw = winSize.width - lx;
 	FontMetrics fm = g.getFontMetrics();
-        g.drawString(s, lx+(lw-fm.stringWidth(s))/2, y);
-    }
+     g.drawString(s, lx+(lw-fm.stringWidth(s))/2, y);
+ }
 
-    void edit(MouseEvent e) {
+ void edit(MouseEvent e) {
 	if (selection == -1)
 	    return;
 	int x = e.getX();
@@ -285,19 +283,19 @@ public class DotProduct extends Applet
 	vecs[selection][0] = xf;
 	vecs[selection][1] = yf;
 	cv.repaint();
-    }
+ }
 
-    public void componentHidden(ComponentEvent e){}
-    public void componentMoved(ComponentEvent e){}
-    public void componentShown(ComponentEvent e) {
+ public void componentHidden(ComponentEvent e){}
+ public void componentMoved(ComponentEvent e){}
+ public void componentShown(ComponentEvent e) {
 	cv.repaint();
-    }
+ }
 
-    public void componentResized(ComponentEvent e) {
+ public void componentResized(ComponentEvent e) {
 	reinit();
 	cv.repaint(100);
-    }
-    public void actionPerformed(ActionEvent e) {
+ }
+ public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == swapButton) {
 	    int x;
 	    for (x = 0; x < 2; x++) {
@@ -307,24 +305,24 @@ public class DotProduct extends Applet
 	    }
 	    cv.repaint();
 	}
-    }
-    public void adjustmentValueChanged(AdjustmentEvent e) {
-    }
-    public void mouseDragged(MouseEvent e) {
+ }
+ public void adjustmentValueChanged(AdjustmentEvent e) {
+ }
+ public void mouseDragged(MouseEvent e) {
 	edit(e);
-    }
-    public void mouseMoved(MouseEvent e) {
+ }
+ public void mouseMoved(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	    return;
 	edit(e);
-    }
-    public void mouseClicked(MouseEvent e) {
-    }
-    public void mouseEntered(MouseEvent e) {
-    }
-    public void mouseExited(MouseEvent e) {
-    }
-    public void mousePressed(MouseEvent e) {
+ }
+ public void mouseClicked(MouseEvent e) {
+ }
+ public void mouseEntered(MouseEvent e) {
+ }
+ public void mouseExited(MouseEvent e) {
+ }
+ public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	int x = e.getX();
@@ -343,11 +341,11 @@ public class DotProduct extends Applet
 	}
 	if (selection != -1)
 	    edit(e);
-    }
-    public void mouseReleased(MouseEvent e) {
+ }
+ public void mouseReleased(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	selection = -1;
-    }
+ }
 }
 
