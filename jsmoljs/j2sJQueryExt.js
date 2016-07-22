@@ -1,7 +1,8 @@
-// SwingJSjQueryExt.js
+// j2sQueryExt.js
+// BH 7/21/2016 9:25:38 PM passing .pageX and  .pageY to jQuery event
 // BH 7/24/2015 7:24:30 AM renamed from JSmoljQueryExt.js
-// 9/2/2013 7:43:12 AM BH Opera/Safari fix for binary file reading
-// 3/11/2014 6:31:01 AM BH fix for MSIE not working locally
+// BH 3/11/2014 6:31:01 AM BH fix for MSIE not working locally
+// BH 9/2/2013 7:43:12 AM BH Opera/Safari fix for binary file reading
 
 ;(function($) {
 
@@ -272,13 +273,16 @@
 			},
 			add: function( handleObj ) {
 				var old_handler = handleObj.handler;
-				handleObj.handler = function( event, elem ) {
+				handleObj.handler = function( event, elem, ev0) {
 					event.target = elem;
+          event.ev0 = ev0;
+          event.pageX = ev0.pageX;
+          event.pageY = ev0.pageY;
 					old_handler.apply( this, arguments );
 				};
 			}
 		};
-		function handle_event( event ) {
+		function handle_event( event) {
 			$(elems).each(function(){
 				self.J2S && (outside_event_name.indexOf("mouseup") >= 0 || outside_event_name.indexOf("touchend") >= 0) && J2S._setMouseOwner(null);
 				var elem = $(this);

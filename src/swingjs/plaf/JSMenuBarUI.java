@@ -26,9 +26,15 @@
 package swingjs.plaf;
 
 
+import swingjs.plaf.DefaultMenuLayout;
+
+import jsjava.awt.Container;
 import jsjava.awt.Dimension;
+import jsjavax.swing.BoxLayout;
+import jsjavax.swing.JComponent;
+import jsjavax.swing.JMenuBar;
 import jsjavax.swing.LookAndFeel;
-import swingjs.JSToolkit;
+import jsjavax.swing.plaf.UIResource;
 import swingjs.api.DOMNode;
 
 /**
@@ -41,16 +47,15 @@ import swingjs.api.DOMNode;
  */
 public class JSMenuBarUI extends JSPanelUI {
 
-	static {
-		
-		// this mechanism allows on-demand loading of the CSS used for the slider 
-		
-		JSToolkit.getJavaResource("swingjs/jquery/swingjs-menu.css", true);
-	}
+//	static {
+//		
+//		// this mechanism allows on-demand loading of the CSS used for the menu bar 
+//		
+//		JSToolkit.getJavaResource("swingjs/jquery/swingjs-menu.css", true);
+//	}
+//
 
-
-	protected boolean isPopup;
-	
+	private JMenuBar menuBar;
 
 	public JSMenuBarUI() {
 		isContainer = true;
@@ -63,33 +68,29 @@ public class JSMenuBarUI extends JSPanelUI {
 			containerNode = domNode = createDOMObject("div", id);
 			//DOMNode.setStyles(containerNode, "overflow", "hidden");
 			DOMNode.setPositionAbsolute(domNode, 0, 0); // after title bar 
-			$(domNode).addClass("swingjs-menu");
+//			$(domNode).addClass("swingjs-menu");
 		}
 
 		return domNode;
 	}
 
-	private void setMenu() {
-		
-		/**
-		 * @j2sNative
-
-  $(".swingjs-menu ul").css({display: "none"});
-  $(".swingjs-menu li").hover(
-    function(){$(this).find('ul:first').css({visibility: "visible",display: "none"}).show();},
-    function(){$(this).find('ul:first').css({visibility: "hidden"});}
-   );
-   
-
-		 * 
-		 */
-		{}
-		
-    if (this.isPopup)
-    	setVisible(false);
-		
-	}
-
+//	private void setMenu() {
+//		
+//		/**
+//		 * @j2sNative
+//
+//  $(".swingjs-menu ul").css({display: "none"});
+//  $(".swingjs-menu li").hover(
+//    function(){$(this).find('ul:first').css({visibility: "visible",display: "none"}).show();},
+//    function(){$(this).find('ul:first').css({visibility: "hidden"});}
+//   );
+//   
+//
+//		 * 
+//		 */
+//		{}
+//	}
+//
 	
 	
 	//	@Override
@@ -105,7 +106,13 @@ public class JSMenuBarUI extends JSPanelUI {
 //	}
 
 	@Override
-	protected void installJSUI() {
+	public void installUI(JComponent c) {
+		menuBar = (JMenuBar) c;
+    if (menuBar.getLayout() == null ||
+        menuBar.getLayout() instanceof UIResource) {
+        menuBar.setLayout(new DefaultMenuLayout(menuBar,BoxLayout.LINE_AXIS));
+    }
+
     LookAndFeel.installColorsAndFont(jc,
         "MenuBar.background",
         "MenuBar.foreground",
@@ -123,11 +130,11 @@ public class JSMenuBarUI extends JSPanelUI {
 	protected int getContainerHeight() {
 		return height = 25;
 	}
-	@Override
-	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		setMenu();
-		return new Dimension(150, 25);
-	}
+//	@Override
+//	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
+////		setMenu();
+//		return new Dimension(150, 25);
+//	}
 
 	@Override
 	public Dimension getPreferredSize() {
@@ -136,7 +143,5 @@ public class JSMenuBarUI extends JSPanelUI {
   	Dimension d = new Dimension(0, 25);
   	return d;
 	}
-
-
 
 }

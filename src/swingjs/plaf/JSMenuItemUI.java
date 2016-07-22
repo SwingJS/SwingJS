@@ -11,8 +11,8 @@ public class JSMenuItemUI extends JSButtonUI {
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			menuItem = (JMenuItem) c;
-		  domNode = createItem("_item", null);
 			hasOuterDiv  = false;
+		  domNode = createItem("_item", null);
 		}
 		return domNode;
 	}

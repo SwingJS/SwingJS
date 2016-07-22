@@ -111,5 +111,7 @@ public class JSRadioButtonUI extends JSButtonUI {
 		
 	}
 
-	
+	public void handleDOMEvent(Object e) {
+		((AbstractButton) c).doClick(0);
+	}
 }

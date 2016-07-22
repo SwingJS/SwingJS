@@ -73,7 +73,7 @@ import swingjs.api.JSFunction;
  * JSComponentUI.setDataUI() and handled by overriding
  * JSComponentUI.handleJSEvent().
  * 
- * Finally, some UIs (JSSliderUI and JSMenuUI) set up jQueryEvents that call
+ * Finally, some UIs (JSSliderUI and JSPopupMenuUI) set up jQueryEvents that call
  * back to themselves or handle some internal event processing themselves.
  * 
  * 
@@ -263,7 +263,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	protected void uninstallJSUI(){}
 	
 	public void installUI(JComponent c) {
-		// already done installJSUI();
+		
+		// can be overloaded to install layout managers, for example. (JSMenuBarUI)
 	}
 
 	public void uninstallUI(JComponent c) {

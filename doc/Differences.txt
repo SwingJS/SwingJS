@@ -79,6 +79,9 @@ as it is used to key for AppContexts. We will see if that use useful or not.
 
 PROGRESS
 ========
+BH 7/20/2016 2:58:17 PM  -- bug #24 in compiler found for files with both interfaces and classes present
+
+BH 7/20/2016 2:57:36 PM  -- basic audio (8- and 16-bit mono/stereo once-through or streamed)
 BH 7/7/2016 2:28:59 PM  -- Formatter/Regex implemented
 
 BH 7/7/2016 11:21:48 AM --  j2s bug #3 is still a serious issue 
@@ -569,6 +572,16 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#24 in a file starting with an interface and also including a class, only the class is found.
+
+interface Editable {
+    EditInfo getEditInfo(int n);
+    void setEditValue(int n, EditInfo ei);
+}
+
+class EditDialog extends Dialog implements AdjustmentListener, ActionListener, ItemListener {
+...
+
 #23 inner/anonymous class may reference wrong superclass instance
 
 When an anonymous class is created in an inner class (Dialog) of an outer

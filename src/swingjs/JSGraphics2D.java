@@ -272,6 +272,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	public void setGraphicsColor(Color c) {
+		if (c == null)
+			return; // this was the case with a JRootPanel graphic call
 		HTML5CanvasContext2D.setColor(ctx, JSToolkit.getCSSColor(c));
 	}
 

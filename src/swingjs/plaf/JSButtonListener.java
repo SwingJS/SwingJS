@@ -38,6 +38,7 @@ import jsjavax.swing.AbstractButton;
 import jsjavax.swing.ButtonModel;
 import jsjavax.swing.InputMap;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.JMenu;
 import jsjavax.swing.KeyStroke;
 import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.event.ChangeEvent;
@@ -234,16 +235,26 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		System.out.println("The button was clicked");
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			AbstractButton b = (AbstractButton) e.getSource();
+			if (b.uiClassID == "MenuUI") {
+				((JMenu) b).setPopupMenuVisible(true);
+			}
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			AbstractButton b = (AbstractButton) e.getSource();
+			if (b.uiClassID == "MenuUI") {
+				return;
+			}
 			b.doClick(0);
 			verifyButtonClick(b);
 

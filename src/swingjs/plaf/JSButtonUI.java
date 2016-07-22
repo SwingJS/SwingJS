@@ -58,13 +58,16 @@ public class JSButtonUI extends JSLightweightUI {
 
 	@SuppressWarnings("unused")
 	protected DOMNode createItem(String type, DOMNode myNode) {
-		itemNode = createDOMObject("li", id + type);		
+		itemNode = createDOMObject("li", id + type);
+		DOMNode aNode = createDOMObject("a", id + type + "_a" );
+		DOMNode.setStyles(aNode, "margin", "1px 4px 1 px 4px");
+	  itemNode.appendChild(aNode);
 	  if (myNode != null) {
-			itemNode.appendChild(myNode);
+			aNode.appendChild(myNode);
 			setDataUI(myNode);
 			return itemNode;
 		}
-		domBtn = enableNode = itemNode;
+		domBtn = enableNode = aNode;
 		setDataComponent(domBtn);
 		labelNode = createDOMObject("label", id + "_lbl");
 		domBtn.appendChild(labelNode);
@@ -93,6 +96,7 @@ public class JSButtonUI extends JSLightweightUI {
 	@Override
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		// from menus only - action is on mouse-up
+		System.out.println("handling JSButtonUI handlJSEvent for " + ((JSComponentUI)target).id); // actually it is DOMNode
 		if (menuItem != null && eventType == MouseEvent.MOUSE_RELEASED) {
 			if (domBtn == null) {
 				menuItem.doClick(0);

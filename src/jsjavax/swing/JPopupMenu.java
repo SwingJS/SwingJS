@@ -681,8 +681,18 @@ public class JPopupMenu extends JComponent implements MenuElement {
         if (b == isVisible())
             return;
 
+        this.getUI().setVisible(true);
+      	/**
+      	 * @j2sNative
+      	 * 
+      	 * 
+      	 */
+      	{
+      	
+
         // if closing, first close all Submenus
         if (b == false) {
+        	
 
             // 4234793: This is a workaround because JPopupMenu.firePopupMenuCanceled is
             // a protected method and cannot be called from BasicPopupMenuUI directly
@@ -722,6 +732,11 @@ public class JPopupMenu extends JComponent implements MenuElement {
                 MenuSelectionManager.defaultManager().clearSelectedPath();
             }
         }
+        
+    		
+    	}
+    	
+
     }
 
     /**
@@ -851,18 +866,23 @@ public class JPopupMenu extends JComponent implements MenuElement {
 //        if (DEBUG) {
 //            System.out.println("in JPopupMenu.show " );
 //        }
+    	
+    	
         setInvoker(invoker);
-        Frame newFrame = getFrame(invoker);
-        if (newFrame != frame) {
-            // Use the invoker's frame so that events
-            // are propagated properly
-            if (newFrame!=null) {
-                this.frame = newFrame;
-                if(popup != null) {
-                    setVisible(false);
-                }
-            }
-        }
+        
+        
+//        Frame newFrame = getFrame(invoker);
+//        if (newFrame != frame) {
+//            // Use the invoker's frame so that events
+//            // are propagated properly
+//            if (newFrame!=null) {
+//                this.frame = newFrame;
+//                if(popup != null) {
+//                    setVisible(false);
+//                }
+//            }
+//        }
+        
         Point invokerOrigin;
         if (invoker != null) {
             invokerOrigin = invoker.getLocationOnScreen();
