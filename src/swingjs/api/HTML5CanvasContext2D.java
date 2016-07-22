@@ -17,7 +17,7 @@ public abstract class HTML5CanvasContext2D {
 
 	public abstract void scale(double f, double g);
 
-	public abstract void arc(double centerX, double centerY, double radius, double startAngle, double  endAngle);
+	public abstract void arc(double centerX, double centerY, double radius, double startAngle, double  endAngle, boolean counterclockwise);
 
 	public abstract void closePath();
 
