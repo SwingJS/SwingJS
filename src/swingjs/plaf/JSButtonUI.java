@@ -58,34 +58,40 @@ public class JSButtonUI extends JSLightweightUI {
 
 	@SuppressWarnings("unused")
 	protected DOMNode createItem(String type, DOMNode myNode) {
-		itemNode = createDOMObject("li", id + type);
-		DOMNode aNode = createDOMObject("a", id + type + "_a" );
-		DOMNode.setStyles(aNode, "margin", "1px 4px 1 px 4px");
-	  itemNode.appendChild(aNode);
-	  if (myNode != null) {
-			aNode.appendChild(myNode);
-			setDataUI(myNode);
-			return itemNode;
-		}
-		domBtn = enableNode = aNode;
-		setDataComponent(domBtn);
-		labelNode = createDOMObject("label", id + "_lbl");
-		domBtn.appendChild(labelNode);
+
 		String text = null;
 		/**
 		 * @j2sNative
 		 * 
-		 *            text = (this.c.getText ? this.c.getText() :  null);
+		 *            text = (this.c.getText ? this.c.getText() : null);
 		 */
 		{
 		}
-		if (text == null) {
-			text = "---------------";
-		} else {
-			setDataUI(labelNode);
+		if (text != null && (text.trim().length() == 0 || text.equals("|"))) {
+			text = null;
 		}
-		setCssFont(DOMNode.setAttr(labelNode, "innerHTML", text), c.getFont());
+
+		itemNode = createDOMObject("li", id + type);
+
+		if (text != null) {
+			DOMNode aNode = createDOMObject("a", id + type + "_a");
+			DOMNode.setStyles(aNode, "margin", "1px 4px 1 px 4px");
+			itemNode.appendChild(aNode);
+			DOMNode nobr = createDOMObject("nobr", "");
+			aNode.appendChild(nobr);
+			if (myNode == null) {
+				setCssFont(DOMNode.setAttr(nobr, "innerHTML", text), c.getFont());	
+				domBtn = enableNode = aNode;
+				setDataComponent(domBtn);
+				setDataUI(aNode);
+			} else {
+				nobr.appendChild(myNode);
+				setDataUI(myNode);
+			}
+		}
 		return itemNode;
+	
+
 	}
 
 	/**
