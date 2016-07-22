@@ -212,6 +212,7 @@ class Scope {
 	}
 
 	void draw2d(Graphics g) {
+		
 		if (pixels == null || dpixels == null)
 			return;
 		int col = ((sim.printableCheckItem.getState()) ? 0xFFFFFFFF : 0);
@@ -226,7 +227,7 @@ class Scope {
 		for (int i = pixels.length; --i >= 0;) {
 			int q = (int) (255 * dpixels[i]);
 			if (q > 0)
-				pixels[i] = (0xFF000000 | (0x10101 * q)) ; // BH
+				pixels[i] = (0xFF000000 | (0x10101 * q)) ;
 			dpixels[i] *= .997;
 		}
 		
@@ -332,7 +333,7 @@ class Scope {
 			col = 0xFF202020 ; // short-time marks (dark, almost black)
 //			first = 0;
 			if (((tl + gridStep / 4) % (gridStep * 10)) < gridStep) {
-				col = 0xFF202020 ;  // traveling line - every 10th
+				col = 0xFF909090 ;  // traveling line - every 10th
 				if (((tl + gridStep / 4) % (gridStep * 100)) < gridStep)
 					col = 0xFF4040D0 ; // every 100th
 			}
