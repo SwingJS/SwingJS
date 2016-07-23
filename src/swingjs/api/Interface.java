@@ -26,6 +26,8 @@
 package swingjs.api;
 
 public class Interface {
+	
+	private static String instances=""; 
 
 	public static Object getInstanceWithParams(String name, Class[] classes, Object... params) {
 		try {
@@ -44,8 +46,10 @@ public class Interface {
   	 */
   	{}
     try {
-    	if (!isQuiet)
+    	if (!isQuiet && instances.indexOf(name + ";") <= 0) {
     		System.out.println("swingjs.api.Interface creating instance of " + name);
+    		instances += name + ";";
+    	}
     	Class<?> y = Class.forName(name); 
       if (y != null)
       	x = y.newInstance();

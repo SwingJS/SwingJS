@@ -105,14 +105,14 @@ public class JSButtonUI extends JSLightweightUI {
 	@Override
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		// from menus only - action is on mouse-up
-		System.out.println("handling JSButtonUI handlJSEvent for " + ((JSComponentUI)target).id); // actually it is DOMNode
-		if (menuItem != null && eventType == MouseEvent.MOUSE_RELEASED) {
-			if (domBtn == null) {
+		System.out.println("JSButtonUI handleJSEvent for " + ((JSComponentUI)target).id);
+  	// checkbox or radio menuitem handle themselves
+		if (menuItem != null && domBtn == null) {			
+		 switch (eventType) {
+		 case MouseEvent.MOUSE_RELEASED:
 				menuItem.doClick(0);
-			} else { // checkbox or radio menuitem
-				
-			}
-			return true;
+				return true;
+		 }
 		}
 		return false;
 	}

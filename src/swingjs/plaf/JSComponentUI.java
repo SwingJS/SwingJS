@@ -495,8 +495,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		if (isContainer || n > 0) {
 			// set width from component
 			if (isContainer && hasOuterDiv) {
-				System.out.println("JSComponentUI container " + id + " "
-						+ c.getBounds());
+				//System.out.println("JSComponentUI container " + id + " "
+					//	+ c.getBounds());
 				DOMNode
 						.setSize(outerNode, getContainerWidth(), getContainerHeight());
 			}
@@ -829,8 +829,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			Dimension size = getCSSDimension(width, height);
 			this.width = size.width;
 			this.height = size.height;
-			System.out.println(id + " setBounds " + x + " " + y + " " + this.width
-					+ " " + this.height + " op=" + op);
+			//System.out.println(id + " setBounds " + x + " " + y + " " + this.width
+				//	+ " " + this.height + " op=" + op);
 			if (domNode == null && createDOMNode() == null)
 				System.out.println("JSCUI no DOM node created for " + id);
 			else

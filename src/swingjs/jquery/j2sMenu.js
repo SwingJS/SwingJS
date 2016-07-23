@@ -129,12 +129,12 @@ Swing.setMenu = function(menu) {
   menu._applet = (menu.ui ? menu.ui.applet : menu.applet); // SwingJS vs JSmol
 	Swing.__getMenuStyle && J2S.$after("head", '<style>'+Swing.__getMenuStyle(menu._applet)+'</style>');  
 	Swing.__getMenuStyle = null; // "static"
-	menu.popupMenu = menu;
   if (menu.uiClassID) {
-    menu._actionEvent = 'mouseup';
+    menu._visible = false;
     menu._j2sname = menu.id = menu.ui.id + '_' + (++Swing.menuCounter);
     menu.$ulTop = J2S.__$(); // empty jQuery selector
     var proto = menu.getClass().prototype;
+    proto._hideJSMenu = function(){Swing.hideMenu(this)};
     proto.dragBind || ( proto.dragBind = function(isBind){} );// J2S._setDraggable(this.$ulTop, true)};
     proto.setContainer || ( proto.setContainer = function(c){ this.$ulTop = c } );
     proto.setPosition || ( proto.setPosition = function(x,y) {
@@ -143,6 +143,7 @@ Swing.setMenu = function(menu) {
     // delay addition to the DOM 
   } else {
     menu._actionEvent = 'click';
+  	menu.popupMenu = menu;
 	  menu.id = menu.popupMenu._applet._id + "_" + menu.popupMenu.name + "_top_" + (++Swing.menuCounter);
     menu._j2sname = menu.name;
   	J2S.$after("body",'<ul id="' + menu.id + '" class="swingJSPopupMenu"></ul>');
@@ -190,12 +191,14 @@ Swing.showMenu = function(menu, x, y) {
  	menu.$ulTop.hide().menu().menu('refresh').show();  
   if (menu.uiClassID && wasTainted) {      
     menu.$ulTop.find("[role=menuitem]").each(function(){
-      this.applet = menu._applet;
-      this._frameViewer = menu.invoker.getFrameViewer();
-      J2S._jsSetMouse(this, true);
+      var node = this;
+      node.applet = menu._applet;
+      node._frameViewer = menu.invoker.getFrameViewer();
+      node._menu = menu;
+      J2S._jsSetMouse(node, true);
     });
   }
-	menu.visible = true;
+	menu._visible = true;
 	menu.timestamp = System.currentTimeMillis();
 	menu.dragBind(true);
 	menu.$ulTop.unbind('clickoutjsmol mousemoveoutjsmol');
@@ -208,12 +211,12 @@ Swing.showMenu = function(menu, x, y) {
 } 
 
 Swing.hideMenu = function(menu) {
-  // called internally
-	if (!menu.visible)return;
+  // called internally often -- even on mouse moves
+	if (menu._visible === false) return;
 	//menu.$ulTop.unbind('clickoutjsmol');
 	menu.dragBind(false);
 	menu.$ulTop.hide();
-	menu.visible = menu.isDragging = false;
+	menu._visible = menu.isDragging = false;
 };
 
 Swing.disposeMenu = function(menu) {

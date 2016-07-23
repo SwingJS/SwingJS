@@ -63,12 +63,14 @@ import swingjs.plaf.JSComponentUI;
 public class JSToolkit extends SunToolkit {
 
 	public static J2SInterface J2S;
+	public static boolean isMac;
 	
 	static {
 		/**
 		 * @j2sNative
 		 * 
 		 * swingjs.JSToolkit.J2S = self.J2S;
+		 * isMac = (J2S.featureDetection.os == "mac");
 		 * 
 		 */
 		{
@@ -394,7 +396,7 @@ public class JSToolkit extends SunToolkit {
 	public FontMetrics getFontMetrics(Font font) {
 		FontMetrics fm = font.getFontMetrics();
 		if (fm == null) {
-			fm = (FontMetrics) getInstance("swingjs.JSFontMetrics");
+			fm = new JSFontMetrics();
 			((JSFontMetrics) fm).setFont(font);
 			font.setFontMetrics(fm);
 		}

@@ -2,6 +2,7 @@ package swingjs.plaf;
 
 
 import jsjava.awt.Dimension;
+import jsjavax.swing.JComponent;
 import jsjavax.swing.JMenu;
 import jsjavax.swing.JPopupMenu;
 import jsjavax.swing.LookAndFeel;
@@ -39,14 +40,15 @@ public class JSPopupMenuUI extends JSPanelUI {
 	
 	@Override
 	public DOMNode createDOMNode() {
-		// j2sMenu.js will wrap this in a div with the appropriate 
+		// j2sMenu.js will wrap this in a div with the appropriate
 		if (domNode == null) {
 			popupMenu = (JPopupMenu) jc;
-			isTopLevel = (popupMenu.getInvoker() == null || ((JMenu) popupMenu.getInvoker()).isTopLevelMenu()); 
+			isTopLevel = (!(popupMenu.getInvoker() instanceof JMenu) 
+					|| ((JMenu) popupMenu.getInvoker()).isTopLevelMenu());
 			hasOuterDiv = false;
 			domNode = containerNode = createDOMObject("ul", id);
 		}
-    return domNode;
+		return domNode;
 	}
 
 	@Override

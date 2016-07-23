@@ -23,6 +23,8 @@
  */
 package swingjs;
 
+import java.awt.event.InputEvent;
+
 import jsjava.awt.Component;
 import jsjava.awt.Event;
 import jsjava.awt.Toolkit;
@@ -110,9 +112,10 @@ public class JSMouse {
 	public static final int MOUSE_RIGHT = 4; // Event.META_MASK;  MouseEvent.BUTTON3_MASK
 	public static final int MOUSE_WHEEL = 32;
 
+	public static final int EXTENDED_MASK = 0x3FC0; // ^(InputEvent.HIGH_MODIFIERS | JDK_1_3_MODIFIERS)  
 	public final static int MAC_COMMAND = MOUSE_LEFT | MOUSE_RIGHT;
 	public final static int BUTTON_MASK = MOUSE_LEFT | MOUSE_MIDDLE | MOUSE_RIGHT;
-
+	
 	void translateXYBy(int deltaX, int deltaY) {
 		// TODO Auto-generated method stub
 
@@ -258,7 +261,11 @@ public class JSMouse {
 
 	private void mouseAction(int id, long time, int x, int y,
 			int count, int modifiers) {
-		boolean popupTrigger = false;
+	  boolean popupTrigger = 
+	      ( (modifiers & EXTENDED_MASK) == 
+	          (JSToolkit.isMac ? InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK
+	          : InputEvent.BUTTON3_DOWN_MASK)
+	       );
 		int button = getButton(modifiers);
 		Component source = viewer.top; // may be a JFrame
 		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);

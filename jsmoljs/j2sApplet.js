@@ -1117,22 +1117,29 @@ J2S = (function(document) {
       // swingjs.api.J2SInterface
       
       
-    var doIgnore 
-      = function(ev) { return (J2S._dmouseOwner
+    var doIgnore = function(ev) { return (J2S._dmouseOwner
         ||  !ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0)
-         };
+    };
+         
+    var checkStopPropagation = function(ev, ui, handled) {
+      if (!ui || !handled || !ev.target.getAttribute("role")) {
+  			ev.preventDefault();
+			  ev.stopPropagation();
+      }
+      return handled;
+    };
 
 		J2S.$bind(who, 'mousedown touchstart', function(ev) {    
       if (doIgnore(ev))
         return true;
+        
+              System.out.println(["j2sApplet DOWN",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      
+
 			J2S._setMouseOwner(who, true);
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 501, ev));
-      if (!ui || !handled && ev.target.getAttribute("role") != "menuitem") {
-  			ev.preventDefault();
-			  ev.stopPropagation();
-      }
-      if (handled)
+      if (checkStopPropagation(ev, ui, handled))
         return true;
       ui = ev.target["data-component"];
 			who.isDragging = true;
@@ -1151,25 +1158,35 @@ J2S = (function(document) {
 		});    
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
     
-      System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target["data-ui"]]);
+      System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      
+      
       if (doIgnore(ev))
         return true;
+        
+      if (ev.target.getAttribute("role")) {
+        System.out.println("trying to hide the menu")
+        ev.target._menu._hideJSMenu()
+      }
+        
 			J2S._setMouseOwner(null);
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 502, ev));
-      if (!ui || !handled && ev.target.getAttribute("role") != "menuitem") {
-  			ev.preventDefault();
-			  ev.stopPropagation();
-      }
-      if (handled)
+      System.out.println("released 2")
+      if (checkStopPropagation(ev, ui, handled))
         return true;
+      System.out.println("released 3")
       ui || (ui = ev.target["data-component"]);
 			who.isDragging = false;
 			if (ev.type == "touchend" && J2S._gestureUpdate(who, ev))
 				return !!ui;
+              System.out.println("released 4")
+
 			var xym = J2S._jsGetXY(who, ev);
 			if(xym)
   			who.applet._processEvent(502, xym, ev, who._frameViewer);//java.awt.Event.MOUSE_UP
+     System.out.println("released 5")
+
 			return !!ui;
 		});
     
@@ -1201,7 +1218,7 @@ J2S = (function(document) {
 			who.isDragging = false;
 			var oe = ev.originalEvent;
 			var scroll = (oe.detail ? oe.detail : (J2S.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
-			var modifiers = J2S._jsGetMouseModifiers(ev);
+			var modifiers = getMouseModifiers(ev);
 			who.applet._processEvent(-1,[scroll < 0 ? -1 : 1,0,modifiers], ev, who._frameViewer);
 			return false;
 		});
@@ -1226,7 +1243,7 @@ J2S = (function(document) {
 			if (!xym)
 				return false;
 			//who.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
-			//who.applet._processEvent(505, xym, ev);//J.api.Event.MOUSE_EXITED
+			who.applet._processEvent(505, xym, ev);//J.api.Event.MOUSE_EXITED
 			return false;
 		});
 
@@ -1291,25 +1308,29 @@ J2S = (function(document) {
 			J2S._mouseOwner = null;
 	}
 
-	J2S._jsGetMouseModifiers = function(ev) {
+	var getMouseModifiers = function(ev) {
 		var modifiers = 0;
 		switch (ev.button) {
 		case 0:
-			modifiers = 16;//J.api.Event.MOUSE_LEFT;
+			modifiers = (1<<4)|(1<<10);//InputEvent.BUTTON1 + InputEvent.BUTTON1_DOWN_MASK;
 			break;
 		case 1:
-			modifiers = 8;//J.api.Event.MOUSE_MIDDLE;
+			modifiers = (1<<3)|(1<<11);//InputEvent.BUTTON2 + InputEvent.BUTTON2_DOWN_MASK;
 			break;
 		case 2:
-			modifiers = 4;//J.api.Event.MOUSE_RIGHT;
+			modifiers = (1<<2)|(1<<12);//InputEvent.BUTTON3 + InputEvent.BUTTON3_DOWN_MASK;
 			break;
 		}
 		if (ev.shiftKey)
-			modifiers += 1;//J.api.Event.SHIFT_MASK;
-		if (ev.altKey)
-			modifiers += 8;//J.api.Event.ALT_MASK;
+			modifiers |= (1<<0)|(1<<6); //InputEvent.SHIFT_MASK + InputEvent.SHIFT_DOWN_MASK;
 		if (ev.ctrlKey)
-			modifiers += 2;//J.api.Event.CTRL_MASK;
+			modifiers |= (1<<1)|(1<<7); //InputEvent.CTRL_MASK + InputEvent.CTRL_DOWN_MASK;
+		if (ev.metaKey)
+			modifiers |= (1<<2)|(1<<8); //InputEvent.META_MASK + InputEvent.META_DOWN_MASK;
+		if (ev.altKey)
+			modifiers |= (1<<3)|(1<<9); //InputEvent.ALT_MASK + InputEvent.ALT_DOWN_MASK;
+		if (ev.altGraphKey)
+			modifiers |= (1<<5)|(1<<13); //InputEvent.ALT_GRAPH_MASK + InputEvent.ALT_GRAPH_DOWN_MASK;
 		return modifiers;
 	}
 
@@ -1335,8 +1356,8 @@ J2S = (function(document) {
 			x = ev.pageX - offsets.left;
 			y = ev.pageY - offsets.top;
 		}
-    //System.out.println([x,y,J2S._jsGetMouseModifiers(ev)])
-		return (x == undefined ? null : [Math.round(x), Math.round(y), J2S._jsGetMouseModifiers(ev)]);
+    //System.out.println([x,y,getMouseModifiers(ev)])
+		return (x == undefined ? null : [Math.round(x), Math.round(y), getMouseModifiers(ev)]);
 	}
 
 	J2S._gestureUpdate = function(who, ev) {

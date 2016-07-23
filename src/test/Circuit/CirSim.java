@@ -24,6 +24,9 @@ package test.Circuit;
 //* if (typeof t == "string") t = t.charCodeAt(0);
 //*/
 //{}
+//
+// BH: popup was not enabled for non-Mac machines, as popupTrigger in that case is the
+//     right button, but the right button was being excluded by use of META_MASK
 
 
 import swingjs.awt.Button;
@@ -55,6 +58,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -180,7 +184,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	static final int HINT_TWINT = 4;
 	static final int HINT_3DB_L = 5;
 
-	private static final String BASE_PACKAGE = "test.Circuit";
+	private final String BASE_PACKAGE;
 	
 	Vector<CircuitElm> elmList;
 	// Vector setupList;
@@ -226,6 +230,13 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		super("Circuit Simulator v1.6i");
 		applet = a;
 		useFrame = false;
+		
+		// for using this in 
+		String path = this.getClass().getName();
+		int pt = path.lastIndexOf(".");
+		if (pt >=0)
+			path = path.substring(0, pt) + ".";
+		BASE_PACKAGE =  path;
 	}
 
 	String startCircuit = null;
@@ -695,7 +706,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	CheckboxMenuItem getClassCheckItem(String s, String t) {
 		try {
-			Class c = Class.forName(BASE_PACKAGE + "." + t);
+			Class c = Class.forName(BASE_PACKAGE + t);
 			CircuitElm elm = constructElement(c, 0, 0);
 			register(c, elm);
 			if (elm.needsShortcut()) {
@@ -818,6 +829,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	}
 
 	static final int resct = 6;
+
+	private static final String BASE_CLASS_PREFIX = null;
 	long lastTime = 0, lastFrameTime, lastIterTime, secTime = 0;
 	int frames = 0;
 	int steps = 0;
@@ -2524,8 +2537,11 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			return false;
 		SwitchElm se = (SwitchElm) mouseElm;
 		se.toggle();
-		if (se.momentary)
+		System.out.println("doSwitch");
+		if (se.momentary) {
+			System.out.println("se is momentary");
 			heldSwitchElm = se;
+		}
 		needAnalyze();
 		return true;
 	}
@@ -2818,6 +2834,12 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	}
 
 	public void mouseClicked(MouseEvent e) {
+		
+		int ex = e.getModifiersEx();
+		
+		System.out.println("CirSim java clicked("+ e.getClickCount()+")"
+		+ " " + Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+
 		if (e.getClickCount() == 2 && !didSwitch)
 			doEditMenu(e);
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
@@ -2836,16 +2858,24 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	}
 
 	public void mousePressed(MouseEvent e) {
-		didSwitch = false;
 
-		System.out.println(e.getModifiers());
+		didSwitch = false;
 		int ex = e.getModifiersEx();
-		if ((ex & (MouseEvent.META_DOWN_MASK | MouseEvent.SHIFT_DOWN_MASK)) == 0
+
+		System.out.println("CirSim java pressed " 
+		+ Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+
+		
+		// BH: but "meta-down" is the right button in Windows 
+		//     and the right button is the popup trigger.
+		if ((ex & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK
+				| (e.getButton() == 3 ? 0 : MouseEvent.META_DOWN_MASK)
+        )) == 0
 				&& e.isPopupTrigger()) {
 			doPopupMenu(e);
 			return;
 		}
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0) {
+		if ((e.getModifiers() & MouseEvent.BUTTON1_DOWN_MASK) != 0) {
 			// left mouse
 			tempMouseMode = mouseMode;
 			if ((ex & MouseEvent.ALT_DOWN_MASK) != 0
@@ -2890,6 +2920,50 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			return;
 
 		dragElm = constructElement(addingClass, x0, y0);
+	}
+
+	public void mouseReleased(MouseEvent e) {
+
+		int ex = e.getModifiersEx();
+		
+		System.out.println("CirSim java released " 
+		+ Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+
+		// BH: strangely enough, Windows Java reports 
+		//     META_DOWN_MASK rather than BUTTON3_DOWN_MASK on release.
+		//     when the right-mouse is clicked. Go figure....
+		if ((ex & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK
+				| (e.getButton() == 3 ? 0 : MouseEvent.META_DOWN_MASK)
+        )) == 0
+				&& e.isPopupTrigger()) {
+			doPopupMenu(e);
+			return;
+		}
+		tempMouseMode = mouseMode;
+		selectedArea = null;
+		dragging = false;
+		boolean circuitChanged = false;
+		if (heldSwitchElm != null) {
+			heldSwitchElm.mouseUp();
+			heldSwitchElm = null;
+			circuitChanged = true;
+		}
+		if (dragElm != null) {
+			// if the element is zero size then don't create it
+			if (dragElm.x == dragElm.x2 && dragElm.y == dragElm.y2)
+				dragElm.delete();
+			else {
+				elmList.addElement(dragElm);
+				circuitChanged = true;
+			}
+			dragElm = null;
+		}
+		if (circuitChanged)
+			needAnalyze();
+		if (dragElm != null)
+			dragElm.delete();
+		dragElm = null;
+		cv.repaint();
 	}
 
 	CircuitElm constructElement(Class c, int x0, int y0) {
@@ -2964,40 +3038,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 //		}
 	}
 
-	public void mouseReleased(MouseEvent e) {
-		int ex = e.getModifiersEx();
-		if ((ex & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.CTRL_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0
-				&& e.isPopupTrigger()) {
-			doPopupMenu(e);
-			return;
-		}
-		tempMouseMode = mouseMode;
-		selectedArea = null;
-		dragging = false;
-		boolean circuitChanged = false;
-		if (heldSwitchElm != null) {
-			heldSwitchElm.mouseUp();
-			heldSwitchElm = null;
-			circuitChanged = true;
-		}
-		if (dragElm != null) {
-			// if the element is zero size then don't create it
-			if (dragElm.x == dragElm.x2 && dragElm.y == dragElm.y2)
-				dragElm.delete();
-			else {
-				elmList.addElement(dragElm);
-				circuitChanged = true;
-			}
-			dragElm = null;
-		}
-		if (circuitChanged)
-			needAnalyze();
-		if (dragElm != null)
-			dragElm.delete();
-		dragElm = null;
-		cv.repaint();
-	}
-
 	void enableItems() {
 		if (powerCheckItem.getState()) {
 			powerBar.enable();
@@ -3033,7 +3073,17 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			sc.handleMenu(e, mi);
 		}
 		if (mi instanceof CheckboxMenuItem) {
-			MenuItem mmi = (MenuItem) mi;
+			// The AWT->SwingJS adapter has
+			//  CheckboxMenuItem -> JCheckboxMenuItem -> JMenuItem -> JComponent
+			// not
+			//  CheckboxMenuItem -> MenuItem -> Component
+			//
+			// so CheckboxMenuItem is no longer a subclass of Menuitem, and 
+			// we cannot do this:
+			//  
+			// MenuItem mmi = (MenuItem) mi;
+			
+			CheckboxMenuItem mmi = (CheckboxMenuItem) mi;
 			int prevMouseMode = mouseMode;
 			setMouseMode(MODE_ADD_ELM);
 			String s = mmi.getActionCommand();
@@ -3053,7 +3103,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				setMouseMode(MODE_SELECT);
 			else if (s.length() > 0) {
 				try {
-					addingClass = Class.forName(s);
+					addingClass = Class.forName(BASE_PACKAGE + s);
 				} catch (Exception ee) {
 					ee.printStackTrace();
 				}

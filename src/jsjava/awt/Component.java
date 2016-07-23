@@ -2087,7 +2087,7 @@ protected  transient ComponentPeer peer;
 
 			if (resized) {
 				isPacked = false;
-				System.out.println("C " + JSToolkit.getClassName(this) + " resized to " + getBounds());
+				//System.out.println("C " + JSToolkit.getClassName(this) + " resized to " + getBounds());
 			}
 
 			boolean needNotify = true;
@@ -3136,9 +3136,9 @@ protected  transient ComponentPeer peer;
 			int py = this.y + ((y < 0) ? 0 : y);
 			int pwidth = (width > this.width) ? this.width : width;
 			int pheight = (height > this.height) ? this.height : height;
-			System.out.println("C repaint to " + parent.getName());
+			//System.out.println("C repaint to " + parent.getName());
 			parent.repaint(tm, px, py, pwidth, pheight);
-			System.out.println("OK");
+			//System.out.println("OK");
 
 		}
 	}
@@ -4714,7 +4714,7 @@ protected  transient ComponentPeer peer;
         if (l == null) {
             return;
         }
-        System.out.println("C adding mouse listener " + l);
+        //System.out.println("C adding mouse listener " + l);
         mouseListener = AWTEventMulticaster.add(mouseListener,l);
         newEventsOnly = true;
 
