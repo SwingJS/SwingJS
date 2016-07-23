@@ -187,12 +187,11 @@ Swing.showMenu = function(menu, x, y) {
 		menu._tainted = false;
 	}
   menu.setPosition(x, y);
- 	menu.$ulTop.hide().menu().menu('refresh').show();
-  
+ 	menu.$ulTop.hide().menu().menu('refresh').show();  
   if (menu.uiClassID && wasTainted) {      
     menu.$ulTop.find("[role=menuitem]").each(function(){
-      this.applet = menu.applet;
-      this._frameViewer = menu._frameViewer;
+      this.applet = menu._applet;
+      this._frameViewer = menu.invoker.getFrameViewer();
       J2S._jsSetMouse(this, true);
     });
   }
