@@ -72,9 +72,10 @@ public class JSPopupMenuUI extends JSPanelUI {
 	/**
 	 * j2s bug in this particular method makes this Clazz.overrideMethod, 
 	 * but it cannot override if it has a super call,
-	 * so I avoid the supercall by duplicating the code from JSComponentUI
+	 * so I avoid the super call by duplicating the code from JSComponentUI
 	 * 
 	 */
+	@Override
 	public void setVisible(boolean b) {
 		if (menu == null) {
 			menu = (JPopupMenu) c;

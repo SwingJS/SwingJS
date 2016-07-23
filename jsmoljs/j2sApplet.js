@@ -1119,18 +1119,19 @@ J2S = (function(document) {
       
     var doIgnore 
       = function(ev) { return (J2S._dmouseOwner
-        ||  !ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
+        ||  !ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0)
+         };
 
-		J2S.$bind(who, 'mousedown touchstart', function(ev) {
-    
+		J2S.$bind(who, 'mousedown touchstart', function(ev) {    
       if (doIgnore(ev))
         return true;
 			J2S._setMouseOwner(who, true);
-			ev.stopPropagation();
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 501, ev));
-      if (!ui || !handled)
+      if (!ui || !handled && ev.target.getAttribute("role") != "menuitem") {
   			ev.preventDefault();
+			  ev.stopPropagation();
+      }
       if (handled)
         return true;
       ui = ev.target["data-component"];
@@ -1149,17 +1150,17 @@ J2S = (function(document) {
 			return !!ui;
 		});    
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
-      System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target["data-ui"]]);
-      debugger;
+    
+      System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target["data-ui"]]);
       if (doIgnore(ev))
         return true;
 			J2S._setMouseOwner(null);
-			ev.stopPropagation();
-
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 502, ev));
-      if (!ui || !handled)
+      if (!ui || !handled && ev.target.getAttribute("role") != "menuitem") {
   			ev.preventDefault();
+			  ev.stopPropagation();
+      }
       if (handled)
         return true;
       ui || (ui = ev.target["data-component"]);
@@ -1175,6 +1176,11 @@ J2S = (function(document) {
 		J2S.$bind(who, 'mousemove touchmove', function(ev) { // touchmove
       if (doIgnore(ev))
         return true;
+
+      if (ev.target.getAttribute("role")) {
+        return true;
+      }
+      
 		  // defer to console or menu when dragging within this who
       
 			if (J2S._mouseOwner && J2S._mouseOwner != who && J2S._mouseOwner.isDragging) {
@@ -1207,6 +1213,10 @@ J2S = (function(document) {
 		J2S.$bind(who, 'mouseout', function(ev) {
       if (doIgnore(ev))
         return true;
+      if (ev.target.getAttribute("role")) {
+        return true;
+      }
+      
       if (J2S._mouseOwner && !J2S._mouseOwner.mouseMove) 
         J2S._setMouseOwner(null);
 			if (who.applet._appletPanel)
@@ -1223,6 +1233,10 @@ J2S = (function(document) {
 		J2S.$bind(who, 'mouseenter', function(ev) {
       if (doIgnore(ev))
         return true;
+      if (ev.target.getAttribute("role")) {
+        return true;
+      }
+      
 			if (who.applet._appletPanel)
 				who.applet._appletPanel.startHoverWatcher(true);
 			if (ev.buttons === 0 || ev.which === 0) {
