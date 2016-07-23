@@ -75,19 +75,24 @@ public class JSButtonUI extends JSLightweightUI {
 
 		if (text != null) {
 			DOMNode aNode = createDOMObject("a", id + type + "_a");
-			DOMNode.setStyles(aNode, "margin", "1px 4px 1 px 4px");
+			DOMNode.setStyles(aNode, "margin", "1px 4px 1px 4px");
 			itemNode.appendChild(aNode);
 			DOMNode nobr = createDOMObject("nobr", "");
 			aNode.appendChild(nobr);
 			if (myNode == null) {
 				setCssFont(DOMNode.setAttr(nobr, "innerHTML", text), c.getFont());	
 				domBtn = enableNode = aNode;
-				setDataComponent(domBtn);
-				setDataUI(aNode);
 			} else {
 				nobr.appendChild(myNode);
-				setDataUI(myNode);
 			}
+			// j2sMenu.js will set the mouse-up event for the <a> tag with the role=menuitem
+			// attribute via j2sApplet._jsSetMouse(). 
+			// That event will then fire handleJSEvent
+			// since we .
+			setDataUI(aNode);
+			setDataComponent(aNode);
+//			setJ2sMouseHandler(aNode, false);
+			setDataComponent(itemNode);
 		}
 		return itemNode;
 	

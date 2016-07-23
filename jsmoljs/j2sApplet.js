@@ -1113,17 +1113,13 @@ J2S = (function(document) {
 
 	//////////////////// mouse events //////////////////////
 
-	J2S._jsSetMouse = function(who, isSwing) {
+	J2S._jsSetMouse = function(who, isSwingJS) {
       // swingjs.api.J2SInterface
       
       
     var doIgnore 
       = function(ev) { return (J2S._dmouseOwner
-        ||  !ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0 
-        ||   ("" + ev.target.className).indexOf("swingjsPopup") >= 0)  };
-
-
-
+        ||  !ev.target || ("" + ev.target.className).indexOf("swingjs-ui") >= 0) };
 
 		J2S.$bind(who, 'mousedown touchstart', function(ev) {
     
@@ -1150,24 +1146,18 @@ J2S = (function(document) {
           J2S._setWindowPosition(who._frameViewer.top.ui.domNode, Integer.MAX_VALUE); 
         who.applet._processEvent(501, xym, ev, who._frameViewer); //java.awt.Event.MOUSE_DOWN
       }
-      document.title = "down" + +new Date()
 			return !!ui;
-		});
-    
-    xxev = []
+		});    
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
-      System.out.println(["UP   " + ev.type + ev.pageY])
-
-    System.out.println("mouseup && " + doIgnore(ev));
+      System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target["data-ui"]]);
+      debugger;
       if (doIgnore(ev))
         return true;
 			J2S._setMouseOwner(null);
 			ev.stopPropagation();
 
       var ui = ev.target["data-ui"];
-      document.title = "up" + +new Date()
       var handled = (ui && ui.handleJSEvent(who, 502, ev));
-      xxev.push([who.id,ev,ui, handled, ev.target["data-component"]])
       if (!ui || !handled)
   			ev.preventDefault();
       if (handled)
@@ -1246,7 +1236,7 @@ J2S = (function(document) {
 			}
 		});
 
-    if (!isSwing) {
+    if (!isSwingJS) {
     	J2S.$bind(who, 'mousemoveoutjsmol', function(evspecial, target, ev) {
           if (doIgnore(ev))
             return true;
@@ -2090,14 +2080,6 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
 	};
   
 	var up = function(ev) {
-  xxxev = ev
-     
-  xxxt = tag
-  
-  xxxev = ev
-
-	          System.out.println(["outside " ,ev.type , ev.pageY ,  tag.id || tag.className])
-
 	if (J2S._dmouseOwner == tag) {
 			tag.isDragging = false;
   		J2S._dmouseOwner = null

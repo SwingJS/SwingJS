@@ -62,9 +62,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setSize(frameNode, w, h);
 			DOMNode.setPositionAbsolute(frameNode, f.getX(), f.getY());
 
-			JSFrameViewer vwr = jc.getFrameViewer();
-			DOMNode.setAttrs(frameNode, "applet", applet, "_frameViewer", vwr);
-			JSToolkit.J2S._jsSetMouse(frameNode, true);
+			setJ2sMouseHandler(frameNode, true);
 			titleBarNode = createDOMObject("div", id + "_titlebar");
 			DOMNode.setPositionAbsolute(titleBarNode, 0, 0);
 			DOMNode.setStyles(titleBarNode, "background-color", "#E0E0E0", "height",

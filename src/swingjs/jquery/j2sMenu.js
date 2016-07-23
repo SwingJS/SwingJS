@@ -94,107 +94,22 @@ Swing.__getMenuStyle = function(applet) { return '\
 	.swingjsPopupMenu .ui-state-disabled a:hover{background-color:transparent!important;border-color:transparent!important}\
 	.swingjsPopupMenu .ui-state-disabled .ui-icon{filter:Alpha(Opacity=35)}'};
 
-Swing.setMenu = function(menu) {
-  // called by javajs.swing.JPopupMenu or swingjs.plaf.JSPopupMenuUI
-  // note that the z-index is only set by the FIRST applet accessing this method
-  menu._applet = (menu.ui ? menu.ui.applet : menu.applet); // SwingJS vs JSmol
-	Swing.__getMenuStyle && J2S.$after("head", '<style>'+Swing.__getMenuStyle(menu._applet)+'</style>');  
-	Swing.__getStyle = null; // once only
-	menu._tainted = true;
-	menu.popupMenu = menu;
-  if (menu.uiClassID) {
-    menu.id = menu.ui.id;
-    menu.dragBind = function(isBind){ }// J2S._setDraggable(this.container, true)};
-    menu._j2sname = Swing.getMenuID(menu);
-  	J2S.$after("body",'<div id="' + menu.id + '"></div>');
-	  menu.container = J2S.$('#' + menu.id);
-  } else {
-    menu.id = "top";
-	  menu.id = Swing.getMenuID(menu);
-    menu._j2sname = menu.name;
-  	J2S.$after("body",'<ul id="' + menu.id + '" class="swingJSPopupMenu"></ul>');
-	  menu.setContainer(J2S.$('#' + menu.id));
-  }
-	menu._applet._menus || (menu._applet._menus = {});
-	menu._applet._menus[menu._j2sname] = menu;
-}
-
-Swing.showMenu = function(menu, x, y) {
-  // called by javajs.swing.JPopupMenu and swingjs.plaf.JSPopupMenuUI
-  // allow for a user callback for customization of menu
-  if (J2S._showMenuCallback)
-		J2S._showMenuCallback(menu, x, y);
-	if (menu._tainted) {
-    if (menu.uiClassID) {
-      menu.container.empty();
-      menu.container[0].appendChild(menu.ui.getOuterNode());
-    } else {
-  		menu.container.html(menu.toHTML());
-    }
-		menu._tainted = false;
-		Swing.bindMenuActionCommands(menu, true);
-	}
-  if (!menu.uiClassID)
-  	menu.setPosition();
-	menu.container.hide().menu().menu('refresh').show();
-  if (menu.uiClassID)
-    menu.container.css({left:x+"px",top:(y+8)+"px",position:"absolute"});
-	menu.visible = true;
-	menu.timestamp = System.currentTimeMillis();
-	menu.dragBind(true);
-	menu.container.unbind('clickoutjsmol');
-  if (!J2S._persistentMenu)
-  	menu.container.bind('clickoutjsmol mousemoveoutjsmol', function(evspecial, target, ev) {
-	  if (System.currentTimeMillis() - menu.timestamp > 1000)
-		  Swing.hideMenu(menu);
-	});
-	menu.container.bind("contextmenu", function() {return false;})
-}
-
-Swing.disposeMenu = function(menu) {
-  // called by javajs.swing.JPopupMenu
-  if (J2S._persistentMenu)
-  	return
-  Swing.hideMenu(menu);
- 	Swing.bindMenuActionCommands(menu, false);
-	delete menu._applet._menus[menu._j2sname];
-}
-
-Swing.initMenuItem = function(item) {
-  // called by javajs.swing.AbstractButton
-  item._applet = item.popupMenu._applet;
-  item.id = Swing.getMenuID(item);
-  item.icon && (item.icon = '<img src="' + item._applet._j2sPath + '/' + item.icon + '" style="max-height: 20px;" />')
-}
-
-Swing.getMenuID = function(item) {
+var bindMenuActionCommands = function(eventType, menu, isBind) {
   // called internally
-  var popup = item.popupMenu;
-	return popup._applet._id + '_' + popup._j2sname + "_" + item.id + '_' + (++Swing.menuCounter);
-}
-
-Swing.hideMenu = function(menu) {
-  // called internally
-	if (!menu.visible)return;
-	//menu.container.unbind('clickoutjsmol');
-	menu.dragBind(false);
-	menu.container.hide();
-	menu.visible = menu.isDragging = false;
-};
-
-Swing.bindMenuActionCommands = function(menu, isBind) {
-  // called internally
-	var n = menu.getComponentCount();
-	for(var i = 0; i < n; i++)
-		Swing.bindMenuActionCommands(menu.getComponent(i), isBind);
-	J2S.$documentOff('click', menu.id);
+  System.out.println("binding " + isBind + " " + menu.ui.id)
+  var children = (menu.uiClassID ? menu.ui.getChildren() : menu.getComponents());
+	for(var i = children.length; --i >= 0;)
+		bindMenuActionCommands(eventType, children[i], isBind);
+  if (!menu.uiClassID || !menu["data-ui"])
+    return;  
+	J2S.$documentOff(eventType, menu.id);
 	if (isBind)
-		J2S.$documentOn('click', menu.id, function() {
-      System.out.println("menu " + menu.ui.id + " clicked");
-      menu.ui.handleDOMEvent(event);
+		J2S.$documentOn(eventType, menu.id, function(event) {
+      if (menu.uiClassID) {
+        System.out.println(["menu " + menu.ui.id , " clicked " , event.target.id , event.target.tagName, event.target["data-component"]]);
 				Swing.hideMenus(menu._applet);
- /*     
-			if (menu.itemListener) {
+        menu["data-ui"].handleJSEvent(event);
+			} else if (menu.itemListener) {
 				menu.selected = (menu.btnType == javajs.swing.JMenuItem.TYPE_CHECKBOX ? J2S.$prop(menu.id + "-cb", "checked") : true); 
 				Swing.hideMenus(menu._applet);
 				menu.itemListener.itemStateChanged({getSource:function(){return menu}});
@@ -202,9 +117,124 @@ Swing.bindMenuActionCommands = function(menu, isBind) {
 				Swing.hideMenus(menu._applet);
 				menu.actionListener.actionPerformed({getSource:function(){return menu},getActionCommand:function(){return menu.actionCommand}});
 			}
- */     
 		});
 }
+
+Swing.setMenu = function(menu) {
+  // the object will be installed using $(body).after()
+  
+  // called by javajs.swing.JPopupMenu or swingjs.plaf.JSPopupMenuUI (menu.uiClassID)
+  // note that the z-index is only set by the FIRST applet accessing this method
+  // this is an oversight.
+  menu._applet = (menu.ui ? menu.ui.applet : menu.applet); // SwingJS vs JSmol
+	Swing.__getMenuStyle && J2S.$after("head", '<style>'+Swing.__getMenuStyle(menu._applet)+'</style>');  
+	Swing.__getMenuStyle = null; // "static"
+	menu.popupMenu = menu;
+  if (menu.uiClassID) {
+    menu._actionEvent = 'mouseup';
+    menu._j2sname = menu.id = menu.ui.id + '_' + (++Swing.menuCounter);
+    menu.$ulTop = J2S.__$(); // empty jQuery selector
+    var proto = menu.getClass().prototype;
+    proto.dragBind || ( proto.dragBind = function(isBind){} );// J2S._setDraggable(this.$ulTop, true)};
+    proto.setContainer || ( proto.setContainer = function(c){ this.$ulTop = c } );
+    proto.setPosition || ( proto.setPosition = function(x,y) {
+      this.$ulTop.css({left:x+"px",top:(y+8)+"px",position:"absolute"});
+    } );    
+    // delay addition to the DOM 
+  } else {
+    menu._actionEvent = 'click';
+	  menu.id = menu.popupMenu._applet._id + "_" + menu.popupMenu.name + "_top_" + (++Swing.menuCounter);
+    menu._j2sname = menu.name;
+  	J2S.$after("body",'<ul id="' + menu.id + '" class="swingJSPopupMenu"></ul>');
+    menu.setContainer(J2S.$('#' + menu.id));
+  }
+	menu._applet._menus || (menu._applet._menus = {});
+	menu._applet._menus[menu._j2sname] = menu;
+	menu._tainted = true;
+}
+Swing.initMenuItem = function(item) {
+  // called by javajs.swing.AbstractButton only (Jmol)
+  item._applet = item.popupMenu._applet;
+  item.id = Swing.getMenuID(item);
+  item.icon && (item.icon = '<img src="' + item._applet._j2sPath + '/' + item.icon + '" style="max-height: 20px;" />')
+}
+
+Swing.showMenu = function(menu, x, y) {
+  // called by javajs.swing.JPopupMenu and swingjs.plaf.JSPopupMenuUI (menu.uiClassID)
+  // allow for a user callback for customization of menu
+ //  debugger;
+  if (J2S._showMenuCallback)
+		J2S._showMenuCallback(menu, x, y);
+  var wasTainted = menu._tainted;
+	if (menu._tainted) {
+    if (menu.uiClassID) {
+      // for SwingJS the top node is domNode itself, which is already <ul> 
+      var node = menu.ui.domNode;
+      if (node != menu.$ulTop[0]) {
+        if (menu.$ulTop) {
+          //bindMenuActionCommands(menu._actionEvent, menu, false);
+          menu.$ulTop.remove();
+        }
+        menu.setContainer(J2S.$(node));
+        J2S.$(node).addClass("swingjsPopupMenu");
+      }
+    	J2S.$after("body",node);
+      node.style.display = "block";
+    } else {
+  		menu.$ulTop.html(menu.toHTML());
+  		bindMenuActionCommands(menu._actionEvent, menu, true);
+    }
+		menu._tainted = false;
+	}
+  menu.setPosition(x, y);
+ 	menu.$ulTop.hide().menu().menu('refresh').show();
+  
+  if (menu.uiClassID && wasTainted) {      
+    menu.$ulTop.find("[role=menuitem]").each(function(){
+      this.applet = menu.applet;
+      this._frameViewer = menu._frameViewer;
+      J2S._jsSetMouse(this, true);
+    });
+  }
+	menu.visible = true;
+	menu.timestamp = System.currentTimeMillis();
+	menu.dragBind(true);
+	menu.$ulTop.unbind('clickoutjsmol mousemoveoutjsmol');
+  if (!J2S._persistentMenu)
+  	menu.$ulTop.bind('clickoutjsmol mousemoveoutjsmol', function(evspecial, target, ev) {
+	  if (System.currentTimeMillis() - menu.timestamp > 1000)
+		  Swing.hideMenu(menu);
+	});
+	menu.$ulTop.bind("contextmenu", function() {return false;});
+} 
+
+Swing.hideMenu = function(menu) {
+  // called internally
+	if (!menu.visible)return;
+	//menu.$ulTop.unbind('clickoutjsmol');
+	menu.dragBind(false);
+	menu.$ulTop.hide();
+	menu.visible = menu.isDragging = false;
+};
+
+Swing.disposeMenu = function(menu) {
+  // called by javajs.swing.JPopupMenu
+  if (J2S._persistentMenu)
+  	return
+  Swing.hideMenu(menu);
+  debugger;
+  menu.$ulTop.menu().destroy();
+  if (menu.uiClassID) {      
+    menu.$ulTop.find("[role=menuitem]").each(function(){
+      this.applet = menu.ui.applet;
+      J2S._jsSetMouse(this, false);
+    });
+  } else {
+   	Swing.bindMenuActionCommands(menu, false);
+  }
+	delete menu._applet._menus[menu._j2sname];
+}
+
 
 })(J2S.Swing);
 

@@ -235,16 +235,16 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("The button was clicked");
+		AbstractButton b = (AbstractButton) e.getSource();
+		System.out.println("The button was clicked: " + b.htmlName);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			AbstractButton b = (AbstractButton) e.getSource();
-			if (b.uiClassID == "MenuUI") {
-				((JMenu) b).setPopupMenuVisible(true);
-			}
+			if (b.uiClassID == "MenuUI" && ((JMenu)b).isTopLevelMenu())
+				((JMenu)b).setPopupMenuVisible (true);
 		}
 	}
 

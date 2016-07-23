@@ -28,36 +28,25 @@ public class JSPopupMenuUI extends JSPanelUI {
 	}
 
 	private JPopupMenu menu;
+	private boolean isTopLevel;
+	private JPopupMenu popupMenu;
 
 
 	public JSPopupMenuUI() {
-		isContainer = true;
-		
+		isContainer = true;	
 		setDoc();
 	}
 	
 	@Override
 	public DOMNode createDOMNode() {
+		// j2sMenu.js will wrap this in a div with the appropriate 
 		if (domNode == null) {
-			containerNode = domNode = createDOMObject("ui", id);
-			$(domNode).addClass("swingjsPopupMenu");
+			popupMenu = (JPopupMenu) jc;
+			isTopLevel = (popupMenu.getInvoker() == null || ((JMenu) popupMenu.getInvoker()).isTopLevelMenu()); 
+			hasOuterDiv = false;
+			domNode = containerNode = createDOMObject("ul", id);
 		}
     return domNode;
-	}
-
-	@Override
-	protected int getContainerHeight() {
-		return height = 25;
-	}
-	@Override
-	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		return new Dimension(150, 25);
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		// SwingJS should defer to containing panel
-		return null;
 	}
 
 	@Override
@@ -115,5 +104,12 @@ public class JSPopupMenuUI extends JSPanelUI {
     DOMNode.remove(outerNode);
     j2sSwing.disposeMenu(menu);
 	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		// unnecessary  -- will never be subject to a layout manager
+		return null;
+	}
+
 
 }

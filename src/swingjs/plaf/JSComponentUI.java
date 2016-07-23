@@ -25,6 +25,7 @@ import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
+import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
@@ -470,8 +471,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			return outerNode;
 
 		domNode = createDOMNode();
-		Component[] children = (this.children == null ? jc.getComponents()
-				: this.children);
+		Component[] children = getChildren();
 		int n = children.length;
 
 		if (!hasOuterDiv) {
@@ -494,7 +494,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			containerNode = outerNode;
 		if (isContainer || n > 0) {
 			// set width from component
-			if (isContainer) {
+			if (isContainer && hasOuterDiv) {
 				System.out.println("JSComponentUI container " + id + " "
 						+ c.getBounds());
 				DOMNode
@@ -529,6 +529,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		// debugDump(divObj);
 		isTainted = false;
 		return outerNode;
+	}
+
+	protected Component[] getChildren() {
+		return (this.children == null ? jc.getComponents()
+				: this.children);
 	}
 
 	protected void addChildrenToDOM(Component[] children) {
@@ -1037,8 +1042,17 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		$(domNode).bind("keydown keypress keyup", f);
 	}
 
+	protected void setJ2sMouseHandler(DOMNode node, boolean isFrame) {
+		JSFrameViewer vwr = jc.getFrameViewer();
+		DOMNode.setAttrs(node, "applet", applet, "_frameViewer", vwr);
+		// j2sMenu.js will take care of this for each item. 
+		if (isFrame)
+			JSToolkit.J2S._jsSetMouse(node, true);
+	}
+
 	/**
-	 * specifically for buttons
+	 * specifically for buttons, indicates to LightweightDispatcher that we
+	 * already know what button was clicked; not necessary to check x and y for that
 	 * 
 	 * @param button
 	 */
