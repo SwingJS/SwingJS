@@ -79,6 +79,9 @@ as it is used to key for AppContexts. We will see if that use useful or not.
 
 PROGRESS
 ========
+BH 7/23/2016 6:16:30 PM  -- bug #27 in compiler -- need Boolean.from(string) not new Boolean(string)
+BH 7/23/2016 6:17:31 PM  -- but #26 in compiler -- compiler can inappropriately use Clazz.overrideMethod
+BH 7/22/2016 1:29:12 PM  -- bug #25 in compiler for int f() { return 'o' }  -- will return a string, not int
 BH 7/20/2016 2:58:17 PM  -- bug #24 in compiler found for files with both interfaces and classes present
 
 BH 7/20/2016 2:57:36 PM  -- basic audio (8- and 16-bit mono/stereo once-through or streamed)
@@ -572,6 +575,19 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#27 compiler produces 
+
+  new Boolean(string)
+  
+but the native Boolean in JavaScript cannot support that as a constructor.
+
+#26 occasionally, the compiler will insert Clazz.overwriteMethod when it should use Clazz.defineMethod
+
+  This showed up in a case where we had   void setVisible(b) { super.setVisible(b) ... and then super.setVisible(b)
+  was not found.     
+    
+#25 for int f() { return 'o' }  -- will return a string, not int 
+
 #24 in a file starting with an interface and also including a class, only the class is found.
 
 interface Editable {
@@ -1233,6 +1249,9 @@ LookAndFeel
 
 SwingJS implements the native browser LookAndFeel. Token UIManager methods are
 present but unimplemented; methods returning key bindings or other arrays return null.
+
+Note that LookAndFeel determines canvas size in a Frame because diffent operating
+systems (Mac OS vs Windows vs HTML5) will have different edge sizes on their frames. 
 
 inner class order
 -----------------

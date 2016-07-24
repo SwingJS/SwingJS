@@ -260,13 +260,15 @@ public class JSMouse {
 	}
 
 	private void mouseAction(int id, long time, int x, int y,
-			int count, int modifiers) {
+			int xcount, int modifiers) {
 	  boolean popupTrigger = 
 	      ( (modifiers & EXTENDED_MASK) == 
 	          (JSToolkit.isMac ? InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK
 	          : InputEvent.BUTTON3_DOWN_MASK)
 	       );
 		int button = getButton(modifiers);
+		int count = updateClickCount(id, time, x, y);
+		
 		Component source = viewer.top; // may be a JFrame
 		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);
 		byte[] bdata = new byte[0];
@@ -282,5 +284,47 @@ public class JSMouse {
 		Toolkit.getEventQueue().postEvent(e);
 	}
 
+	private long lasttime;
+	private int lastx, lasty, clickCount;
+	
+	private final static int DBL_CLICK_MAX_MS = 500;
+	private final static int DBL_CLICK_DX = 3; // verified in Windows
+
+//                  count ms  x   y  
+//	CirSim java clicked(5,323,573,177) 0 
+//	CirSim java clicked(7,415,573,178) 0 
+//	CirSim java clicked(8,217,573,178) 0 
+//	CirSim java clicked(9,180,573,178) 0 
+//	CirSim java clicked(10,158,573,178) 0 
+//	CirSim java clicked(11,331,573,175) 0 
+//	CirSim java clicked(12,416,573,174) 0 
+
+// interesting that clicks are being combined and skipped
+	
+	private int updateClickCount(int id, long time, int x, int y) {
+		boolean reset = (time - lasttime > DBL_CLICK_MAX_MS
+				|| Math.abs(x - lastx) > DBL_CLICK_DX 
+				|| Math.abs(y - lasty) > DBL_CLICK_DX);
+		lasttime = time;
+		lastx = x;
+		lasty = y;
+		int ret = clickCount;
+		switch (id) {
+		case Event.MOUSE_DOWN:
+			ret = clickCount = (reset ? 1 : clickCount + 1);
+			break;
+		case Event.MOUSE_ENTER:
+		case Event.MOUSE_EXIT:
+		case Event.MOUSE_MOVE:
+		case Event.MOUSE_UP:
+			clickCount = 0;
+			break;
+		case Event.MOUSE_DRAG:
+		case -1: // JavaScript wheeled
+			// ignore
+			break;
+		}
+		return ret;
+	}
 
 }

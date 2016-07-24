@@ -2833,12 +2833,17 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return x2 * x2 + y2 * y2;
 	}
 
+	long ti = 0;
 	public void mouseClicked(MouseEvent e) {
+		
 		
 		int ex = e.getModifiersEx();
 		
-		System.out.println("CirSim java clicked("+ e.getClickCount()+")"
+		long t1 = System.currentTimeMillis();
+		System.out.println("CirSim java clicked("+ e.getClickCount()+"," + (t1 - ti) 
+				+","+e.getX()+","+ e.getY()+")"
 		+ " " + Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+		ti = t1;
 
 		if (e.getClickCount() == 2 && !didSwitch)
 			doEditMenu(e);

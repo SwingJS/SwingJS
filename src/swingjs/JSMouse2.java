@@ -27,13 +27,9 @@ import javajs.util.V3;
 import jsjava.awt.event.MouseEvent;
 
 /**
- * JavaScript interface from JmolJSmol.js via handleOldJvm10Event (for now)
- * 
- * J2SRequireImport is needed because we want to allow JavaScript access to
- * java.awt.Event constant names
+ * JavaScript interface for two-point gesture
  * 
  */
-
 public class JSMouse2 {
 
 	private JSMouse mouse;
