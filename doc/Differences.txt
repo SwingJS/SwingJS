@@ -82,7 +82,14 @@ PROGRESS
 
 7/23/2016
 
-We have now converted 
+We (Andreas Raduege, Nadia ElMouldi, and Bob Hanson) have now converted 24 Falstad applets, 
+including Circuit. These applets are running approximately 3-6 times slower than in Java, 
+in some cases after a bit of for-loop optimization. 
+
+No significant issues have been found, though we continue to find mostly minor j2s
+compiler bugs. Mostly what is taking time is the addition of missing features, such
+as audio, pop-up menus, menu bars, sliders, independent frames, and dialogs. 
+
 
 BH 7/23/2016 6:16:30 PM  -- bug #27 in compiler -- need Boolean.from(string) not new Boolean(string)
 BH 7/23/2016 6:17:31 PM  -- but #26 in compiler -- compiler can inappropriately use Clazz.overrideMethod
