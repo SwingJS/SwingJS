@@ -79,6 +79,11 @@ as it is used to key for AppContexts. We will see if that use useful or not.
 
 PROGRESS
 ========
+
+7/23/2016
+
+We have now converted 
+
 BH 7/23/2016 6:16:30 PM  -- bug #27 in compiler -- need Boolean.from(string) not new Boolean(string)
 BH 7/23/2016 6:17:31 PM  -- but #26 in compiler -- compiler can inappropriately use Clazz.overrideMethod
 BH 7/22/2016 1:29:12 PM  -- bug #25 in compiler for int f() { return 'o' }  -- will return a string, not int

@@ -6,6 +6,8 @@
 
 // NOTES by Bob Hanson
 
+// BH 7/23/2016 6:03:20 PM work-around for new Boolean(string), since native JavaScript Boolean does not support that;
+//                         uses "new Boolean" --> "Boolean.from" in build.xml
 // BH 7/23/2016 8:00:43 AM added Clazz._traceOutput
 // BH 7/21/2016 12:37:01 PM added note for infinite loop when a dependency file is needed but not found loading a UI file. (Clazz._isQuiet) 
 // BH 7/20/2016 6:21:36 PM  class.getClassLoader().getResource(URL) does not find correct base directory
@@ -5548,6 +5550,8 @@ return s.valueOf()==this.valueOf();
 
 
 //java.lang.B00lean = Boolean; ?? BH why this?
+
+
 Boolean = java.lang.Boolean = Boolean || function () {Clazz.instantialize (this, arguments);};
 if (supportsNativeObject) {
 	for (var i = 0; i < extendedObjectMethods.length; i++) {
@@ -5614,8 +5618,16 @@ return(b.value==this.value?0:(this.value?1:-1));
 },"Boolean");
 Boolean.toBoolean=Clazz.defineMethod(Boolean,"toBoolean",
 ($fz=function(name){
-return((name!=null)&&name.equalsIgnoreCase("true"));
+return(typeof name == "string" ? name.equalsIgnoreCase("true") : !!name);
 },$fz.isPrivate=true,$fz),"~S");
+
+// the need is to have new Boolean(string), but that won't work with native Boolean
+// so instead we have to do a lexical switch from "new Boolean" to "Boolean.from"
+Boolean.from=Clazz.defineMethod(Boolean,"from",
+($fz=function(name){
+return new Boolean(typeof name == "string" ? name.equalsIgnoreCase("true") : !!name);
+},$fz.isPrivate=true,$fz),"~S");
+
 Boolean.TRUE=Boolean.prototype.TRUE=new Boolean(true);
 Boolean.FALSE=Boolean.prototype.FALSE=new Boolean(false);
 Boolean.TYPE=Boolean.prototype.TYPE=Boolean;
