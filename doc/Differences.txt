@@ -88,7 +88,11 @@ in some cases after a bit of for-loop optimization.
 
 No significant issues have been found, though we continue to find mostly minor j2s
 compiler bugs. Mostly what is taking time is the addition of missing features, such
-as audio, pop-up menus, menu bars, sliders, independent frames, and dialogs. 
+as audio, pop-up menus, menu bars, sliders, graphics2D capability, 
+independent frames and dialogs, and threading.
+
+At this point we have a good variety of common controls. Events are being handled properly
+through the "java" event queue. Mouse operation is smooth.  
 
 
 BH 7/23/2016 6:16:30 PM  -- bug #27 in compiler -- need Boolean.from(string) not new Boolean(string)
