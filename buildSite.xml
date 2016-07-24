@@ -171,7 +171,9 @@
   	<!-- no idea what this problem could be -->
   	<replace dir="site/swingjs/j2s/java/lang" includes="Thread.js" token="(g.Thread" value="(java.lang.Thread" />
     <echo>...replacing "new Boolean" with "Boolean.from"</echo>
-  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
+  	<replace dir="site/swingjs/j2s/org" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
+  	<replace dir="site/swingjs/j2s/com" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
+  	<replace dir="site/swingjs/j2s/test" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
 
   	<!-- modify class names -->		
 
