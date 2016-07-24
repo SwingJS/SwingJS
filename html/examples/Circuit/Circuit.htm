@@ -4,12 +4,12 @@
 <head>
 <meta charset="utf-8" />
 <!-- breaking out the library for debugging -->
-<script type="text/javascript" src="../../jquery/jquery.js"></script>
-<script type="text/javascript" src="../../js/j2sJQueryExt.js"></script>
+<script type="text/javascript" src="../../../jquery/jquery.js"></script>
+<script type="text/javascript" src="../../../js/j2sJQueryExt.js"></script>
 
-<script type="text/javascript" src="../../js/j2sApplet.js"></script>
-<script type="text/javascript" src="../../js/j2sSwingJS.js"></script>
-<script type="text/javascript" src="../../js/SJSApplet.js"></script>
+<script type="text/javascript" src="../../../js/j2sApplet.js"></script>
+<script type="text/javascript" src="../../../js/j2sSwingJS.js"></script>
+<script type="text/javascript" src="../../../js/SJSApplet.js"></script>
 
 <script type="text/javascript">
 
@@ -17,7 +17,7 @@ J2S._checkLoad = true;
 
 J2S._isAsync = false;
 
-J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
+//J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
 
 // use ?_USE=JAVA or _USE=SIGNED or _USE=HTML5
 
@@ -28,7 +28,7 @@ jmol_isReady = function(applet) {
 }		
 
 Info = {
-    code: "test.Circuit.Circuit",
+    code: "com.falstad.Circuit.Circuit",
 	width: 200,
 	height: 50,
 	debug: false,
