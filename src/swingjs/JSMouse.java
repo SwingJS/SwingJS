@@ -259,28 +259,27 @@ public class JSMouse {
 		// nothing here?
 	}
 
-	private void mouseAction(int id, long time, int x, int y,
-			int xcount, int modifiers) {
-		
+	private void mouseAction(int id, long time, int x, int y, int xcount,
+			int modifiers) {
+
 		// Oddly, Windows returns InputEvent.META_DOWN_MASK on release, though
-		// BUTTON3_DOWN_MASK for pressed. So here we just accept both when not a mac.
+		// BUTTON3_DOWN_MASK for pressed. So here we just accept both when not a
+		// mac.
 		// A bit of a kludge.
-		
-	  boolean popupTrigger = 
-	      ( (modifiers & EXTENDED_MASK) == 
-	          (JSToolkit.isMac ? InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK
-	          : InputEvent.BUTTON3_DOWN_MASK | InputEvent.META_DOWN_MASK)
-	       );
+
+		int extended = modifiers & EXTENDED_MASK;
+		boolean popupTrigger = (extended == InputEvent.BUTTON3_DOWN_MASK	|| extended == InputEvent.META_DOWN_MASK
+				|| JSToolkit.isMac && extended == (InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK));
 		int button = getButton(modifiers);
 		int count = updateClickCount(id, time, x, y);
-		
+
 		Component source = viewer.top; // may be a JFrame
-		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y, count, popupTrigger, button);
+		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y,
+				count, popupTrigger, button);
 		byte[] bdata = new byte[0];
 		Object jqevent = this.jqevent;
 		/**
-		 * @j2sNative
-		 *  bdata.jqevent = this.jqevent; 
+		 * @j2sNative bdata.jqevent = this.jqevent;
 		 */
 		{
 			System.out.println(jqevent);
@@ -330,8 +329,8 @@ public class JSMouse {
 		case -1: // JavaScript wheeled
 			break;
 		}
-		System.out.println("setting mouse click to " + clickCount + " returning  "
-				+ ret);
+//		System.out.println("setting mouse click to " + clickCount + " returning  "
+	//			+ ret);
 		return ret;
 	}
 

@@ -47,8 +47,8 @@ public class JSTextAreaUI extends JSTextUI {
 	}
 	
 	@Override
-	protected Dimension getCSSDimension(int w, int h) {
-		return new Dimension(w - 5, h - 5);
+	protected Dimension getCSSAdjustment() {
+		return new Dimension(-5, -5);
 	}
 	
 }

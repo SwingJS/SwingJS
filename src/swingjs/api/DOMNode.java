@@ -55,8 +55,8 @@ public abstract class DOMNode {
 		 * @j2sNative
 		 * 
 		 * try {
-		 *   var p = obj.parentNode;
-		 *   p.removeNode(obj);
+		 *   var p = obj.parentElement;
+		 *   p.removeChild(obj);
 		 *   $(body).remove(obj);
 		 * } catch(e) {
 		 * };
@@ -193,5 +193,15 @@ public abstract class DOMNode {
 	public static void playWav(String filePath) {
 		DOMNode.setAttrs(DOMNode.createElement("audio", "jsaudio"), 
 				"controls", "true", "src", filePath).play();
+	}
+
+	public static void setCursor(String c) {
+		/**
+		 * @j2sNative
+		 * 
+		 * document.body.style.cursor = c;
+		 * 
+		 */
+		{}
 	}
 }

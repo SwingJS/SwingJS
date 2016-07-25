@@ -78,14 +78,6 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	}
 
 	@Override
-	protected DOMNode setHTMLElement() {
-		
-		DOMNode node = setHTMLElementCUI();
-		return node;		
-	}
-	
-
-	@Override
 	public Toolkit getToolkit() {
 		return Toolkit.getDefaultToolkit();
 	}

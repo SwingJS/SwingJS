@@ -43,6 +43,7 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.event.WindowFocusListener;
 import jsjava.awt.event.WindowListener;
 import jsjava.awt.event.WindowStateListener;
+import jsjava.awt.peer.ComponentPeer;
 import jsjava.awt.peer.WindowPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.util.Locale;
@@ -800,7 +801,7 @@ public class Window extends Container {
 
     void setClientSize(int w, int h) {
         synchronized (getTreeLock()) {
-//            setBoundsOp(ComponentPeer.SET_CLIENT_SIZE);
+            setBoundsOp(ComponentPeer.SET_CLIENT_SIZE);
             setBounds(x, y, w, h);
         }
     }

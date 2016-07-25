@@ -426,8 +426,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			h = (int) Math.max(0, Math.ceil($(div).height() + 0.5));
 			body.removeChild(div);
 		}
-
-		Dimension size = getCSSDimension(width = w, height = h);
+		Dimension size = getCSSAdjustment();
+		size.width += w;
+		size.height += h;
 		if (addCSS) {
 			DOMNode.setPositionAbsolute(node, Integer.MIN_VALUE, 0);
 			DOMNode.setSize(node, size.width, size.height);
@@ -447,12 +448,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	 * allows for 
 	 * can be overloaded to allow some special adjustments
 	 * 
-	 * @param w
-	 * @param h
 	 * @return
 	 */
-	protected Dimension getCSSDimension(int w, int h) {
-		return new Dimension(w, h);
+	protected Dimension getCSSAdjustment() {
+		return new Dimension(0, 0);
 	}
 
 	/**
@@ -463,6 +462,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	 * 
 	 */
 	protected DOMNode setHTMLElement() {
+		// Overridden in Label, Viewport, and Window, though both of those classes do 
+		// setHTMLElementCUI() first; they just append to it.
 		return setHTMLElementCUI();
 	}
 	
@@ -485,11 +486,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 		// set position
 
-		if (hasOuterDiv) {
-			DOMNode.setPositionAbsolute(outerNode, Integer.MIN_VALUE, 0);
-			DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
-					(y = c.getY()) + "px");
-		}
+		setOuterLocationFromComponent();
 		if (n > 0 && containerNode == null)
 			containerNode = outerNode;
 		if (isContainer || n > 0) {
@@ -531,6 +528,20 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		return outerNode;
 	}
 
+	private void setOuterLocationFromComponent() {
+		// In SwingJS we just used the "local" lightweight location 
+		// for all components, not the native adjusted one, because
+		// we maintain the hierarchy of the divs. I think this is
+		// saying that everything is basically heavyweight. It 
+		// "paints" itself.
+		
+		if (hasOuterDiv && outerNode != null) {
+			DOMNode.setPositionAbsolute(outerNode, Integer.MIN_VALUE, 0);
+			DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
+					(y = c.getY()) + "px");
+		}
+	}
+
 	protected Component[] getChildren() {
 		return (this.children == null ? jc.getComponents()
 				: this.children);
@@ -564,9 +575,23 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		 return height = c.getHeight();
 	}
 	
+	/**
+	 * getPreferredSize reports to a LayoutManager what the 
+	 * size is for this component will be when placed in the DOM.
+	 * 
+	 * It is only called if the user has not already set the 
+	 * preferred size of the component.
+	 * 
+	 * Later, the LayoutManager will make a call to setBounds in
+	 * order to complete the transaction, after taking everything into
+	 * consideration.
+	 *  
+	 */
 	@Override
 	public Dimension getPreferredSize() {
-  	return getHTMLSize();
+  	Dimension d = getHTMLSize();
+		System.out.println("CUI >> getPrefSize >> " + d + " for " + this.id);
+  	return d;
   }
 
 	private Dimension getHTMLSize() {
@@ -817,26 +842,46 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 	@Override
 	public void setBounds(int x, int y, int width, int height, int op) {
+		System.out.println("CUI << SetBounds >> [" + x + " " + y + " " + width
+				+ " " + height + "] op=" + op + " for " + this.id);
+		// Note that this.x and this.y are never used. We go get those directly.
+		// Coming in here they are adjusted.
 		switch (op) {
+		case SET_LOCATION:
+			x = c.getX();
+			y = c.getY();
+			if (this.x != x || this.y != y) {
+				this.x = x;
+				this.y = y;
+			}
+			setOuterLocationFromComponent();
+			break;
 		case SET_SIZE:
 		case SET_BOUNDS:
-		case SET_CLIENT_SIZE:
+		case SET_CLIENT_SIZE: // is supposed to be without insets
 			if (scrollerNode != null) {
 				width = Math.min(width, scrollerNode.c.getWidth());
 				height = Math.min(height, scrollerNode.c.getHeight());
 			}
 			// allow for special adjustments
-			Dimension size = getCSSDimension(width, height);
-			this.width = size.width;
-			this.height = size.height;
-			//System.out.println(id + " setBounds " + x + " " + y + " " + this.width
-				//	+ " " + this.height + " op=" + op);
-			if (domNode == null && createDOMNode() == null)
-				System.out.println("JSCUI no DOM node created for " + id);
-			else
-				DOMNode.setSize(domNode, this.width, this.height);
+			// currently MenuItem, TextField, and TextArea
+			Dimension size = getCSSAdjustment();
+			// if (this.width != width || this.height != height) {
+			this.width = width;
+			this.height = height;
+			System.out
+					.println(id + " setBounds " + x + " " + y + " " + this.width + " "
+							+ this.height + " op=" + op + " createDOM?" + (domNode == null));
+			if (domNode == null)
+				createDOMNode();
+			DOMNode.setSize(domNode, width + size.width, height + size.height);
+			setBoundsDOM(width, height);
 			break;
 		}
+	}
+
+	protected void setBoundsDOM(int width, int height) {
+		System.out.println("CUI reshapeMe: need to reshape " + id + " w:" + this.width + "->"+ width + " h:" + this.height + "->" + height);
 	}
 
 	@Override

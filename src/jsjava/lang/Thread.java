@@ -1866,7 +1866,7 @@ class Thread implements Runnable {
          * @param t the thread
          * @param e the exception
          */
-        void uncaughtException(Thread t, Throwable e);
+        void uncaughtException(jsjava.lang.Thread t, Throwable e);
     }
 
     // null unless explicitly set
