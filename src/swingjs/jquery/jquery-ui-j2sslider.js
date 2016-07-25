@@ -107,7 +107,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		for ( i = 0; i < handleCount; i++ ) {
 		  handle = this.handles[i];
       handle.index = i;
-      J2S._setDraggable(handle, fDown, fDrag, fUp);
+      J2S._setDraggable(handle, [fDown, fDrag, fUp]);
 		}
 
 		this.handle = this.handles.eq( 0 );

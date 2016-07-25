@@ -212,7 +212,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	@Override
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		//System.out.println("Handling for " + id + " " + eventType + " "	+ jQueryEvent);
-		return updateHandler.handleJSTextEvent(this, eventType, jQueryEvent);
+		return textListener.handleJSTextEvent(this, eventType, jQueryEvent);
 	}
 
 	/**
@@ -580,7 +580,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 
 	// --- ComponentUI methods --------------------------------------------
 
-	TextListener updateHandler;
+	TextListener textListener; // referred to in j2sApplet.js
 
 	/**
 	 * Installs the UI for a component. This does the following things.
@@ -605,7 +605,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	@Override
 	protected void installJSUI() {
 		editor = (JTextComponent) c;
-		updateHandler = new TextListener(this, editor);
+		textListener = new TextListener(this, editor);
 
 		// install defaults
 		installDefaults();
@@ -676,11 +676,11 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		uninstallListeners(editor);
 
 		editor = null;
-		updateHandler = null;
+		textListener = null;
 	}
 
 	protected void installListeners(JTextComponent b) {
-		TextListener listener = updateHandler;
+		TextListener listener = textListener;
 		b.addMouseListener(listener);
 		b.addMouseMotionListener(listener);
 		b.addFocusListener(listener);
@@ -690,7 +690,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	}
 
 	protected void uninstallListeners(JTextComponent b) {
-		TextListener listener = updateHandler;
+		TextListener listener = textListener;
 		b.removeMouseListener(listener);
 		b.removeMouseMotionListener(listener);
 		b.removeFocusListener(listener);

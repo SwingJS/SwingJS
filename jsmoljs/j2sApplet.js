@@ -1148,24 +1148,25 @@ J2S = (function(document) {
          
     var checkStopPropagation = function(ev, ui, handled) {
       if (!ui || !handled || !ev.target.getAttribute("role")) {
-  			ev.preventDefault();
+        if (!ui.texthandler)
+      			ev.preventDefault();
 			  ev.stopPropagation();
       }
       return handled;
     };
 
 		J2S.$bind(who, 'mousedown touchstart', function(ev) {    
+        
+      System.out.println(["j2sApplet DOWN",ev.type,doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      
       if (doIgnore(ev))
         return true;
-        
-      //System.out.println(["j2sApplet DOWN",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
-      
 
 			J2S._setMouseOwner(who, true);
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 501, ev));
       if (checkStopPropagation(ev, ui, handled))
-        return true;
+        return true;  
       ui = ev.target["data-component"];
 			who.isDragging = true;
 			if ((ev.type == "touchstart") && J2S._gestureUpdate(who, ev))
@@ -1184,7 +1185,7 @@ J2S = (function(document) {
 
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
     
-      //System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      System.out.println(["j2sApplet UP",ev.type, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
       
       
       if (doIgnore(ev))

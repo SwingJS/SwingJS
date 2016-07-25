@@ -23,7 +23,7 @@ public class JSTextFieldUI extends JSTextUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			updateHandler.checkDocument();
+			textListener.checkDocument();
 			focusNode = enableNode = valueNode = domNode = DOMNode
 					.setStyles(newDOMObject("input", id, "type", inputType),
 							"padding", "0px 1px");
