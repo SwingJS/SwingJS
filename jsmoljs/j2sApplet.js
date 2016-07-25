@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
+// BH 7/25/2016 8:28:57 AM adds 3Dialog(fDone, asBytes)
 
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required, but it's not defined.")
 
@@ -754,6 +755,30 @@ J2S = (function(document) {
 	return b;
 	}
 
+  J2S._getFileFromDialog = function(fDone, format) {
+    // streamlined file dialog using <input type="file">.click()
+    format || (format = "string");
+    var x = document.createElement("input");
+    x.type="file";
+    x.onchange=function(ev){
+      var file = this.files[0];
+      var reader = new FileReader();
+      reader.onloadend = function(evt) {
+        if (evt.target.readyState == FileReader.DONE) {
+          var data = evt.target.result;
+          if (format != "ArrayBuffer") {
+            data = J2S._toBytes(data);
+            if (format == "string")
+              data = String.instantialize(data);
+          }
+        }
+        fDone(data, file.name);
+      };
+      reader.readAsArrayBuffer(file);
+    };
+    x.click();
+  }
+
 	J2S._doAjax = function(url, postOut, dataOut) {
 		// called by org.J2S.awtjs2d.JmolURLConnection.doAjax()
 		url = url.toString();
@@ -1133,7 +1158,7 @@ J2S = (function(document) {
       if (doIgnore(ev))
         return true;
         
-              System.out.println(["j2sApplet DOWN",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      //System.out.println(["j2sApplet DOWN",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
       
 
 			J2S._setMouseOwner(who, true);
@@ -1151,42 +1176,37 @@ J2S = (function(document) {
 		  	if (ev.button != 2 && J2S.Swing && J2S.Swing.hideMenus)
           J2S.Swing.hideMenus(who.applet);         
         if (who._frameViewer && who._frameViewer.isFrame)
-          J2S._setWindowPosition(who._frameViewer.top.ui.domNode, Integer.MAX_VALUE); 
+          J2S._setWindowZIndex(who._frameViewer.top.ui.domNode, Integer.MAX_VALUE); 
         who.applet._processEvent(501, xym, ev, who._frameViewer); //java.awt.Event.MOUSE_DOWN
       }
 			return !!ui;
 		});    
+
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
     
-      System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      //System.out.println(["j2sApplet UP",ev.type + ev.pageY, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
       
       
       if (doIgnore(ev))
         return true;
         
       if (ev.target.getAttribute("role")) {
-        System.out.println("trying to hide the menu")
+        //System.out.println("trying to hide the menu")
         ev.target._menu._hideJSMenu()
       }
         
 			J2S._setMouseOwner(null);
       var ui = ev.target["data-ui"];
       var handled = (ui && ui.handleJSEvent(who, 502, ev));
-      System.out.println("released 2")
       if (checkStopPropagation(ev, ui, handled))
         return true;
-      System.out.println("released 3")
       ui || (ui = ev.target["data-component"]);
 			who.isDragging = false;
 			if (ev.type == "touchend" && J2S._gestureUpdate(who, ev))
 				return !!ui;
-              System.out.println("released 4")
-
 			var xym = J2S._jsGetXY(who, ev);
 			if(xym)
   			who.applet._processEvent(502, xym, ev, who._frameViewer);//java.awt.Event.MOUSE_UP
-     System.out.println("released 5")
-
 			return !!ui;
 		});
     
@@ -1998,7 +2018,7 @@ J2S.Cache.put = function(filename, data) {
     return f(a);
   }
 
-J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
+J2S._setDraggable = function(tag, targetOrArray) {
 
 
  // draggable tag object; target is itself
@@ -2013,11 +2033,11 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
     // J2S._setDraggable(tag, fTarget)
     
  // draggable tag object simply loades/reports mouse position as 
- // fDown({x:x,y:y,ev:ev}) should fill x and y with starting points
- // fDrag(xy) and fUp(xy) will get {x:x,y:y,ev:ev} to use as desired 
+ // fDown({x:x,y:y,dx:dx,dy:dy,ev:ev}) should fill x and y with starting points
+ // fDrag(xy) and fUp(xy) will get {x:x,y:y,dx:dx,dy:dy,ev:ev} to use as desired 
 
-    // J2S._setDraggable(tag, fDown, fDrag)
-    // J2S._setDraggable(tag, fDown, fDrag, fUp)
+    // J2S._setDraggable(tag, [fAll])
+    // J2S._setDraggable(tag, [fDown, fDrag, fUp])
 
  // unbind tag
  
@@ -2057,41 +2077,43 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
 	if (tag._isDragger)
 		return;
 
-  var target, fDown;
-  if (arguments.length <= 2) {
-    if (targetOrFDown === false) {
-      dragBind(tag, false);
-      return;
-    }
+  var target, fDown, fDrag, fUp;
+  if (targetOrArray === false) {
+    dragBind(tag, false);
+    return;
+  }
+  if (targetOrArray instanceof Array) { 
+    // J2S._setDraggable(tag, [fAll])
+    // J2S._setDraggable(tag, [fDown, fDrag, fUp])
+    fDown = targetOrArray[0];
+    fDrag = targetOrArray[1] || fDown;
+    fUp = targetOrArray[2] || fDown;
+  } else { 
     // J2S._setDraggable(tag)
     // J2S._setDraggable(tag, true)
     // J2S._setDraggable(tag, target)
     // J2S._setDraggable(tag, fTarget)
-    target = (targetOrFDown !== true && targetOrFDown || tag);
+    target = (targetOrArray !== true && targetOrArray || tag);
     // allow for a function to return the target
     // this allows the target to be created after the call to J2S._setDraggable()
     if (!(typeof target == "function")) {
       var t = target;
       target = function(){return $(t).parent()}  
     }
-  } else {
-    // J2S._setDraggable(tag, fDown, fDrag)
-    // J2S._setDraggable(tag, fDown, fDrag, fUp)
-    fDown = targetOrFDown;
   }
 
   tag._isDragger = true;
 
-  var x, y, pageX0, pageY0, pageX, pageY;
+  var x, y, dx, dy, pageX0, pageY0, pageX, pageY;
   
   var down = function(ev) {
   	J2S._dmouseOwner = tag;
 		tag.isDragging = true; // used by J2S mouse event business
 		pageX = ev.pageX;
 		pageY = ev.pageY;
-    var xy = {x:0,y:0, ev};
+    var xy = {x:0,y:0,dx:0,dy:0, ev:ev};
     if (fDown) {
-      fDown(xy);
+      fDown(xy, 501);
     } else if (target) {
       var o = $(target()).position();
       xy = {x:o.left, y:o.top};
@@ -2104,10 +2126,10 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
 	var drag = function(ev) {
   // we will move the frame's parent node and take the frame along with it
   	if (tag.isDragging && J2S._dmouseOwner == tag) {
-			x = pageX0 + (ev.pageX - pageX);
-			y = pageY0 + (ev.pageY - pageY);
+			x = pageX0 + (dx = ev.pageX - pageX);
+			y = pageY0 + (dy = ev.pageY - pageY);
       if (fDrag) {
-        fDrag({x:x, y:y, ev});
+        fDrag({x:x, y:y, dx:dx, dy:dy, ev:ev}, 506);
       } else if (target) {
   			$(target()).css({ top: y + 'px', left: x + 'px' })
       }
@@ -2118,7 +2140,7 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
 	if (J2S._dmouseOwner == tag) {
 			tag.isDragging = false;
   		J2S._dmouseOwner = null
-      fUp && fUp({x:x,y:y,ev:ev}, 3);
+      fUp && fUp({x:x,y:y,dx:dx,dy:dy,ev:ev}, 502);
 			return false;
 		} else {
     }
@@ -2140,14 +2162,15 @@ J2S._setDraggable = function(tag, targetOrFDown, fDrag, fUp) {
   
 }
 
-J2S._setWindowPosition = function(node, z) {
+J2S._setWindowZIndex = function(node, z) {
   // on frame show or mouse-down, create a stack of frames and sort by z-order 
   var zbase = J2S._z.rear + 2000;
   var a = [];
   var zmin = 1e10
   var zmax = -1e10
   var $windows = $(".swingjs-window");
-  $windows.each(function(a,b){if (b != node)a.push([+b.style.zIndex,b]);});
+  $windows.each(function(c,b){
+  if (b != node)a.push([+b.style.zIndex,b]);});
   a.sort(function(a,b){return a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0})
   var z0 = zbase;
   for (var i = 0; i < a.length; i++) {
@@ -2165,24 +2188,6 @@ J2S.Swing = {
 	menuInitialized:0,
 	menuCounter:0
 };
-
-
-
-
-
  
 })(J2S);
 
-
-/*
-fDrag(pt){
-			$frameParent.css({ top: pt.y + 'px', left: pt.x + 'px' })
-}
-
-fDown(pt) {
-    var o = $target.position();
-    pageX0 = o.left;
-    pageY0 = o.top;
-
-}
-*/

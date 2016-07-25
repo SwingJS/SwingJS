@@ -39,7 +39,7 @@ public interface JQueryObject {
 	public abstract void hide();
 	public abstract void show();
 
-	public abstract void resize(Object fHandleResize);
+	public abstract void resize(JSFunction fHandleResize);
 
 	
 }

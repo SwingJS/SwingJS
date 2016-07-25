@@ -1448,6 +1448,7 @@ public class JViewport extends JComponent
         Component heavyParent = getParent();
 
         while (heavyParent != null && heavyParent.isLightweight()) {
+        	// this never happens in SwingJS
             heavyParent = heavyParent.getParent();
         }
 

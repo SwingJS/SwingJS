@@ -29,5 +29,9 @@ public interface J2SInterface {
 
 	int _setWindowZIndex(DOMNode domNode, int pos);
 
+	void _getFileFromDialog(JSFunction f, String type);
+
+	void _saveFile(String fileName, Object data, String mimeType, String encoding);
+
 }
 

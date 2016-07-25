@@ -56,6 +56,7 @@ import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
 import swingjs.api.J2SInterface;
 import swingjs.api.JQuery;
+import swingjs.api.JSFileHandler;
 import swingjs.api.JSFunction;
 import swingjs.plaf.JSComponentUI;
 
@@ -957,6 +958,22 @@ public class JSToolkit extends SunToolkit {
 
 	public static ArrayList<Object> getTimerQueue() {
 		return getAppletViewer().getTimerQueue();
+	}
+
+	public static void getFileFromDialog(JSFileHandler jsFileHandler, String type) {
+		JSFunction f = null;
+		/**
+		 * @j2sNative
+	   *   
+	   *   f = function(data, fileName) { jsFileHandler.handleFileLoaded(data, fileName) };
+	   * 
+	   */
+		{}
+		J2S._getFileFromDialog(f, type);
+	}
+
+	public static void saveFile(String fileName, Object data, String mimeType, String encoding) {
+		J2S._saveFile(fileName, data, mimeType, encoding);
 	}
 
 }

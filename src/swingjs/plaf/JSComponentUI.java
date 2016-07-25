@@ -246,6 +246,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	public boolean isNull;
 
 
+	private DOMNode waitImage;
+
+
 	public JSComponentUI() {
 		setDoc();
 	}
@@ -953,7 +956,51 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 	@Override
 	public void updateCursorImmediately() {
-		JSToolkit.notImplemented("");		
+		String curs;
+		switch (c.getCursor().getType()) {
+		case 1:
+			curs = "crosshair";
+			break;
+		case 3: // wait
+			curs = "wait";
+			break;
+		case 8: // zoom
+			curs = "ns-resize";
+			break;
+		case 12: // hand
+			curs = "grab";
+			break;
+		case 13:
+			curs = "move";
+			break;
+		default:
+			curs = "default";
+			break;
+		}
+		DOMNode.setStyles(getOuterNode(), "cursor", curs);
+		setWaitImage(curs == "wait");
+	}
+	
+	protected void setWaitImage(boolean doShow) {
+		if (waitImage != null) {
+			if (!doShow)
+				return;
+			String path = "";
+			/**
+			 * @j2sNative
+			 * 
+			 * path = this.applet._j2sPath;
+			 * 
+			 */
+			{}
+			path += "/img/cursor_wait.gif";
+			System.out.println("loading wait cursor " + path);
+			waitImage = newDOMObject("image", id + "_waitImage", "src", path);
+		}
+		if (doShow)
+			$(waitImage).show();
+		else
+			$(waitImage).hide();
 	}
 
 	@Override

@@ -1477,9 +1477,12 @@ public abstract class SunToolkit extends Toolkit implements
 	// /////////////////////////////////////////////////////////////////////////
 
 	public static boolean isLightweightOrUnknown(Component comp) {
+		// SwingJS - not tested; probably never called
+		// if (false || !true)...
 		if (comp.isLightweight() || !(getDefaultToolkit() instanceof SunToolkit)) {
 			return true;
 		}
+		// SwingJS no idea what this is for
 		return !(
 		// comp instanceof Button
 		// || comp instanceof Canvas

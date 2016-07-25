@@ -2362,12 +2362,19 @@ protected  transient ComponentPeer peer;
      * is not displayable because it is impossible to determine the
      * weight of an undisplayable component.
      *
+     * However, in SwingJS we always return false from this method. All our
+     * Swing components have peers in the form of JSXxxxxUI.  
+     *
+     *
+     *
      * @return true if this component has a lightweight peer; false if
      *         it has a native peer or no peer
+     *         
      * @see #isDisplayable
      * @since 1.2
      */
     public boolean isLightweight() {
+    
       return false;//peer instanceof LightweightPeer;
     }
 

@@ -12,6 +12,7 @@ import jsjava.awt.peer.FramePeer;
 import jsjavax.swing.JFrame;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
+import swingjs.api.JSFunction;
 
 public class JSFrameUI extends JSWindowUI implements FramePeer {
 	
@@ -99,11 +100,10 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			// we have to wait until the frame is wrapped. 
 			@SuppressWarnings("unused")
 			DOMNode fnode = frameNode;
-			Object fGetFrameParent = null;
-			Object me = this;
+			JSFunction fGetFrameParent = null;
 			/**
 			 * @j2sNative
-			 * 
+			 * var me = this;
 			 * fGetFrameParent = function(){me.notifyFrameMoved();return $(fnode).parent()}  
 			 */
 			{}
@@ -147,7 +147,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setSize(resizer, 10, 10);
 			DOMNode.setStyles(resizer, "background-color", "red");
 		  frameNode.appendChild(resizer);
-			Object fHandleResizer = null, fHandleDOMResize = null;
+			JSFunction fHandleResizer = null, fHandleDOMResize = null;
 			Object me = this;
 			/**
 			 * @j2sNative
@@ -156,7 +156,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			 * fDOMResize = function(ev){me.fDOMResize(ev)};
 			 */
 			{}
-    	JSToolkit.J2S._setDraggable(resizer, new Object[] {fHandleResizer});
+    	JSToolkit.J2S._setDraggable(resizer, new JSFunction[] {fHandleResizer});
 			$(frameNode).resize(fHandleDOMResize);
 		}
 	}

@@ -748,6 +748,9 @@ public class Container extends JSComponent {
             return;
         }
         if (comp.isLightweight()) {
+        	
+        	// never true in SwingJS
+        	
             // If component is lightweight container we need to reparent all its explicit  heavyweight children
             if (comp instanceof Container) {
                 // Traverse component's tree till depth-first until encountering heavyweight component
@@ -813,6 +816,7 @@ public class Container extends JSComponent {
 //                    ((ContainerPeer)newNativeContainer.getPeer()).restack();
 //                }
                 if (!comp.isLightweight() && isLightweight()) {
+                	// SwingJS cannot reach this.
                     // If component is heavyweight and one of the containers is lightweight
                     // the location of the component should be fixed.
                     comp.relocateComponent();
