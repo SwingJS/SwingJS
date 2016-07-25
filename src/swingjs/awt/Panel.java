@@ -10,12 +10,6 @@ public class Panel extends JPanel {
 		super(layout);
 	}
 
-	@Override
-	public void setName(String name) {
-		System.out.println("Panel " + name);
-		super.setName(name);
-
-	}
 	public Panel() {
 		super();
 	}

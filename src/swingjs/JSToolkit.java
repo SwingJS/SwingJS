@@ -65,6 +65,8 @@ public class JSToolkit extends SunToolkit {
 
 	public static J2SInterface J2S;
 	public static boolean isMac;
+		
+	public static boolean debugging;
 	
 	static {
 		/**
@@ -72,6 +74,7 @@ public class JSToolkit extends SunToolkit {
 		 * 
 		 * swingjs.JSToolkit.J2S = self.J2S;
 		 * isMac = (J2S.featureDetection.os == "mac");
+		 * debugging = J2S._checkLoad
 		 * 
 		 */
 		{
@@ -714,25 +717,29 @@ public class JSToolkit extends SunToolkit {
 	@Override
   protected LightweightPeer createComponent(Component target) {
   	LightweightPeer peer = (LightweightPeer) getUI(target, true);
-  	System.out.println("JSToolkit creating UI-Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
+  	if (debugging)
+  		System.out.println("JSToolkit creating UI-Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
   	return peer;
   }
 
 	@Override
 	protected DialogPeer createDialog(Dialog target) {
-  	System.out.println("JSToolkit creating Dialog Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+  	if (debugging)
+  		System.out.println("JSToolkit creating Dialog Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
 		return (DialogPeer) ((WindowPeer) target.getUI()).setFrame(target, true);
 	}
 
 	@Override
 	protected FramePeer createFrame(Frame target) {
-  	System.out.println("JSToolkit creating Frame Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+  	if (debugging)
+  		System.out.println("JSToolkit creating Frame Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
 		return (FramePeer) ((WindowPeer) target.getUI()).setFrame(target, true);
 	}
 
 	@Override
 	protected WindowPeer createWindow(Window target) {
-  	System.out.println("JSToolkit creating Window Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+  	if (debugging)
+  		System.out.println("JSToolkit creating Window Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
 		return ((WindowPeer) target.getUI()).setFrame(target, false);
 	}
 

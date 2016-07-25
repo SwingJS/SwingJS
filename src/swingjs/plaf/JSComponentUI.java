@@ -261,7 +261,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		 * this.document = document;
 		 * this.body = document.body;
 		 * 
-		 * this.debugging = J2S._checkLoad;
+		 * this.debugging = swingjs.JSToolkit.debugging;
 		 * 
 		 */
 		{}

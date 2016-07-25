@@ -86,7 +86,8 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("JSComboBoxUI " + evt);
+		if (debugging)
+			System.out.println("JSComboBoxUI " + evt);
 	}
 	
 	@Override

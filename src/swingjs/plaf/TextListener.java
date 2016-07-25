@@ -64,7 +64,7 @@ public class TextListener implements MouseListener, MouseMotionListener,
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
-		System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
+		//System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
 		if ("font" == prop || "foreground" == prop || "preferredSize" == prop) {
 			JTextComponent txtComp = (JTextComponent) e.getSource();
 			((JSComponentUI) (Object) txtComp.getUI()).notifyPropertyChanged(prop);
@@ -184,7 +184,8 @@ public class TextListener implements MouseListener, MouseMotionListener,
 				ui.editor.getCaret().moveDot(mark);
 			ui.editor.caretEvent.fire();
 		}
-		System.out.println(ui.id + " TextListener handling event " + evType + " " + eventType
+		if (ui.debugging)
+			System.out.println(ui.id + " TextListener handling event " + evType + " " + eventType
 				+ " " + ui.editor.getCaret() + " " + ui.getComponentText().length());
 		return true;
 	}

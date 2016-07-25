@@ -236,7 +236,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		AbstractButton b = (AbstractButton) e.getSource();
-		System.out.println("The button was clicked: " + b.htmlName);
+		//System.out.println("The button was clicked: " + b.htmlName);
 	}
 
 	@Override
@@ -326,7 +326,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 		 *            setTimeout(function(){btn && (btn.checked = state)}, 0);
 		 */
 		{
-			System.out.println("" + btn + state);
+		  System.out.println("" + btn + state);
 		}
 		return true;
 	}

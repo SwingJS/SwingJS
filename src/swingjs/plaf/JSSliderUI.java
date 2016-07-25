@@ -132,7 +132,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if (z == z0)
 			return;
 		z0 = z;
-		System.out.println("JSSliderUI setting z to " + z);
+		//System.out.println("JSSliderUI setting z to " + z);
 		sliderTrack = DOMNode.firstChild(domNode);
 		DOMNode sliderHandle = DOMNode.firstChild(sliderTrack);
 		//DOMNode.setZ(sliderTrack, z++);
@@ -254,7 +254,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
-		System.out.println(id + " propertyChange " + prop);
+		if (debugging)
+			System.out.println(id + " propertyChange " + prop);
 		if (prop == "ancestor")
 			setup(false);
 	}

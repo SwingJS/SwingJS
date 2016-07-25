@@ -19,6 +19,8 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class JSSAXContentHandler extends DefaultHandler {
 
+	private boolean debugging;
+
 	@Override
 	public void processingInstruction(String target, String data) {
 		
@@ -26,13 +28,16 @@ public class JSSAXContentHandler extends DefaultHandler {
 		// such as <?xml....?> at all.
 		// JSSAXParser converts these temporarily to CDATA blocks, then  
 		// reports them this way. A bit of a hack, but important.
-		System.out.println("<?" + target + ' ' + data + "?>");
+		if (debugging)
+			System.out.println("JSSAX <?" + target + ' ' + data + "?>");
 	}
 
 
 	@Override
 	public void startDocument() {
-		System.out.println("Start document");
+		debugging = JSToolkit.debugging;
+		if (debugging)
+			System.out.println("JSSAX Start document");
 	}
 
 	@Override
@@ -72,7 +77,8 @@ public class JSSAXContentHandler extends DefaultHandler {
 					+ JSSAXAttributes.getFullName(atts.getURI(i), atts.getLocalName(i),
 							atts.getQName(i)) + " = \"" + atts.getValue(i) + "\"");
 		
-		System.out.println(sb.toString());
+		if (debugging)
+			System.out.println("JSSAX " + sb.toString());
 	}
 
 	@Override
@@ -80,19 +86,22 @@ public class JSSAXContentHandler extends DefaultHandler {
 			String s = "";
 			for (int i = start; i < start + length; i++)
 				s += ch[i];
-		System.out.println("Characters: " + PT.esc(s));
+			if (debugging)
+				System.out.println("JSSAX Characters: " + PT.esc(s));
 	}
 
 	@Override
 	public void endElement(String uri, String localName, String nodeName)
 			throws SAXException {
 		localName = fixXerces(localName, nodeName);
-		System.out.println("End element: " + JSSAXAttributes.getFullName(uri, localName, nodeName));
+		if (debugging)
+			System.out.println("JSSAX End element: " + JSSAXAttributes.getFullName(uri, localName, nodeName));
 	}
 
 	@Override
 	public void endDocument() {
-		System.out.println("End document");
+		if (debugging)
+			System.out.println("JSSAX End document");
 	}
 
 	/*

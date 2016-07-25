@@ -145,7 +145,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		if (resizer == null) {
 			resizer = newDOMObject("div", id + "_resizer");
 			DOMNode.setSize(resizer, 10, 10);
-			DOMNode.setStyles(resizer, "background-color", "red");
+			DOMNode.setStyles(resizer, "background-color", "red", "cursor", "move");
 		  frameNode.appendChild(resizer);
 			JSFunction fHandleResizer = null, fHandleDOMResize = null;
 			Object me = this;
@@ -154,6 +154,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			 * 
 			 * fHandleResizer = function(xyev,type){me.fHandleResizer(xyev.dx, xyev.dy,type)};
 			 * fDOMResize = function(ev){me.fDOMResize(ev)};
+			 * 
 			 */
 			{}
     	JSToolkit.J2S._setDraggable(resizer, new JSFunction[] {fHandleResizer});

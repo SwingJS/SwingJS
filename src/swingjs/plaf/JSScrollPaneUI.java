@@ -42,7 +42,7 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		viewport = scrollpane.getViewport();
 		if (viewport == null)
 			return;
-		System.out.println("JSScrollPaneUI v=" + viewport);
+		//System.out.println("JSScrollPaneUI v=" + viewport);
 		JComponent sc = null;
 		try {
 			sc = (JComponent) viewport.getComponent(0);
@@ -79,7 +79,8 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
 		Object src = e.getSource();
-		System.out.println(id + " propertyChange " + prop + "  " + src);
+		if (debugging)
+			System.out.println(id + " propertyChange " + prop + "  " + src);
 	}
 
 	@Override
@@ -111,7 +112,8 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 
 	@Override
 	public void notifyPropertyChanged(String prop) {
-		System.out.println(id + " notifyPropertyChanged " + prop);
+		if (debugging)
+			System.out.println(id + " notifyPropertyChanged " + prop);
 		notifyPropChangeCUI(prop);
 	}
 	
