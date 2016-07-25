@@ -280,7 +280,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			in = doc.lastIndexOf('/');
 			if (in > 0)
 				baseURL = doc.substring(0, in + 1);
-
 			String param = applet.getParameter("PAUSE");
 			if (param != null)
 				pause = Integer.parseInt(param);
@@ -615,7 +614,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		if (startCircuitText != null)
 			readSetup(startCircuitText);
 		else if (stopMessage == null && startCircuit != null)
-			readSetupFile(startCircuit, startLabel);
+			readCircuitFile(startCircuit, startLabel);
 		else
 			readSetup(null, 0, false);
 
@@ -2141,7 +2140,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		}
 		if (ac.indexOf("setup ") == 0) {
 			pushUndo();
-			readSetupFile(ac.substring(6), ((MenuItem) e.getSource()).getLabel());
+			readCircuitFile(ac.substring(6), ((MenuItem) e.getSource()).getLabel());
 		}
 	}
 
@@ -2288,72 +2287,59 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	static int STARTUP_READ_COUNT = 0;
 	
 	void getSetupList(Menu menu, boolean retry) {
+		byte b[] = null;
 		Menu stack[] = new Menu[6];
 		int stackptr = 0;
 		stack[stackptr++] = menu;
 		URL url = null;
 		// modified by Bob Hanson to allow remote access to www.falstad.com for
 		// startup.
-		byte b[] = null;
-		int len = 0;
-		ByteArrayOutputStream ba = getResource("setuplist.txt");
-		try {
-
-			if (ba != null) {
-				len = ba.size();
-				b = ba.toByteArray();
-			}
-
-			if (len == 0 || b[0] != '#') {
-				if (++STARTUP_READ_COUNT == 3)
-					throw new IOException("Could not find setuplist.txt");
-				// got a redirect, try again
-				getSetupList(menu, true);
-				return;
-			}
-			String s = new String(b);
-			StringTokenizer st = new StringTokenizer(s, "\n\r", false);
-			String line = null;
-			while (st.hasMoreTokens()) {
-				if ((line = st.nextToken()) == null || line.length() == 0 || line.startsWith("#"))
-					continue;
-				System.out.println(line);
-				if (line.charAt(0) == '+') {
-					Menu n = new Menu(line.substring(1));
-					menu.add(n);
-					menu = stack[stackptr++] = n;
-				} else if (line.charAt(0) == '-') {
-					menu = stack[--stackptr - 1];
-				} else {
-					int i = line.indexOf(' ');
-					if (i > 0) {
-						String title = line.substring(i + 1);
-						boolean first = false;
-						if (line.charAt(0) == '>')
-							first = true;
-						String file = line.substring(first ? 1 : 0, i);
-						menu.add(getMenuItem(title, "setup " + file));
-						if (first && startCircuit == null) {
-							startCircuit = file;
-							startLabel = title;
-						}
+		b = getResource("setuplist.txt", true);
+		if (b == null) {
+			stop("Can't read setuplist.txt!", null);
+			return;
+		}
+		String s = new String(b);
+		StringTokenizer st = new StringTokenizer(s, "\n\r", false);
+		String line = null;
+		while (st.hasMoreTokens()) {
+			if ((line = st.nextToken()) == null || line.length() == 0
+					|| line.startsWith("#"))
+				continue;
+			System.out.println(line);
+			if (line.charAt(0) == '+') {
+				Menu n = new Menu(line.substring(1));
+				menu.add(n);
+				menu = stack[stackptr++] = n;
+			} else if (line.charAt(0) == '-') {
+				menu = stack[--stackptr - 1];
+			} else {
+				int i = line.indexOf(' ');
+				if (i > 0) {
+					String title = line.substring(i + 1);
+					boolean first = false;
+					if (line.charAt(0) == '>')
+						first = true;
+					String file = line.substring(first ? 1 : 0, i);
+					menu.add(getMenuItem(title, "setup " + file));
+					if (first && startCircuit == null) {
+						startCircuit = file;
+						startLabel = title;
 					}
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			stop("Can't read setuplist.txt!", null);
 		}
 		System.out.println("done reading setuplist.txt");
-		
+
 	}
 
-	private ByteArrayOutputStream getResource(String file) {	
+	private byte[] getResource(String file, boolean isStartup) {
 		for (int i = 0; i < 3; i++) {
 			try {
 				ByteArrayOutputStream os = readUrlData(getUrlResource(i, file));
-				if (os != null && os.size() >= 200)
-					return os;
+				byte[] b = os.toByteArray();
+				if (b != null && b.length > 0 && b[0] == (isStartup ? '#' : '$'))
+					return b;
 			} catch (Exception e) {
 			}
 		}
@@ -2380,6 +2366,19 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return null;
 	}
 
+	void readCircuitFile(String str, String title) {
+		t = 0;
+		System.out.println(str);
+		try {
+			byte[] b = getResource("circuits/" + str, false);
+			readSetup(b, b.length, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			stop("Unable to read circuits/" + str + "!", null);
+		}
+		titleLabel.setText(title);
+	}
+
 	void readSetup(String text) {
 		readSetup(text, false);
 	}
@@ -2387,19 +2386,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	void readSetup(String text, boolean retain) {
 		readSetup(text.getBytes(), text.length(), retain);
 		titleLabel.setText("untitled");
-	}
-
-	void readSetupFile(String str, String title) {
-		t = 0;
-		System.out.println(str);
-		try {
-			ByteArrayOutputStream ba = getResource("circuits/" + str);
-			readSetup(ba.toByteArray(), ba.size(), false);
-		} catch (Exception e) {
-			e.printStackTrace();
-			stop("Unable to read circuits/" + str + "!", null);
-		}
-		titleLabel.setText(title);
 	}
 
 	void readSetup(byte b[], int len, boolean retain) {
