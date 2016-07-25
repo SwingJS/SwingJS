@@ -52,7 +52,7 @@ class ImportDialog extends Dialog implements ActionListener {
 	
     public boolean handleEvent(Event ev) {
 	if (ev.id == Event.WINDOW_DESTROY) {
-	    CirSim.main.requestFocus();
+	    cframe.main.requestFocus();
 	    setVisible(false);
 	    cframe.impDialog = null;
 	    return true;

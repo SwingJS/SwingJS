@@ -101,7 +101,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return "Circuit by Paul Falstad";
 	}
 
-	static Container main;
+	/*static*/ Container main;
 	Label titleLabel;
 	Button resetButton;
 	Button dumpMatrixButton;
@@ -206,8 +206,17 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 	int scopeCount;
 	Scope scopes[];
 	int scopeColCount[];
-	static EditDialog editDialog;
-	static ImportExportDialog impDialog, expDialog;
+	
+	// BH - in SwingJS we don't want static classes instantialized
+	//      because they might interfere with other applets running on the 
+	//      page. Especially since a dialog has a reference to a cframe, 
+	//      and if there is only one (static) dialog, then it can only serve
+	//      one non-static frame. In general I am very leery of static 
+	//      fields that are not final.
+	
+	
+	/*static*/ EditDialog editDialog;
+	/*static*/ ImportExportDialog impDialog, expDialog;
 	Class dumpTypes[], shortcuts[];
 	static String muString = "u";
 	static String ohmString = "ohm";

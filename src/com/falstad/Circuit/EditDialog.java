@@ -63,8 +63,9 @@ class EditDialog extends Dialog implements AdjustmentListener, ActionListener, I
 	applyButton.addActionListener(this);
 	add(okButton = new Button("OK"));
 	okButton.addActionListener(this);
+	pack(); // BH needed this to get d value
 	Point x = cframe.main.getLocationOnScreen();
-	Dimension d = getSize();
+	Dimension d = getSize(); // BH note that d is 0 here
 	setLocation(x.x + (cframe.winSize.width-d.width)/2,
 		    x.y + (cframe.winSize.height-d.height)/2);
 	addWindowListener(new WindowAdapter()
