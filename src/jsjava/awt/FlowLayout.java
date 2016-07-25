@@ -590,7 +590,7 @@ public class FlowLayout implements LayoutManager, java.io.Serializable {
      */
     @Override
 		public void layoutContainer(Container target) {
-    	System.out.println("FlowLayout laying out " + target);
+    	//System.out.println("FlowLayout laying out " + target);
       synchronized (target.getTreeLock()) {
         Insets insets = target.getInsets();
         int maxwidth = target.width - (insets.left + insets.right + hgap*2);

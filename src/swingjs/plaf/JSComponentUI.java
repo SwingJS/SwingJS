@@ -248,7 +248,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 	private DOMNode waitImage;
 
-
+  protected boolean debugging;
+  
 	public JSComponentUI() {
 		setDoc();
 	}
@@ -259,6 +260,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		 * 
 		 * this.document = document;
 		 * this.body = document.body;
+		 * 
+		 * this.debugging = J2S._checkLoad;
+		 * 
 		 */
 		{}
 	}
@@ -593,7 +597,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	@Override
 	public Dimension getPreferredSize() {
   	Dimension d = getHTMLSize();
-		System.out.println("CUI >> getPrefSize >> " + d + " for " + this.id);
+  	if (debugging)
+  		System.out.println("CUI >> getPrefSize >> " + d + " for " + this.id);
   	return d;
   }
 
@@ -778,9 +783,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			}
 		}
 		if (obj == null) {
-			System.out.println("JSComponentUI: unrecognized prop: " + prop);
+			if (debugging)
+				System.out.println("JSComponentUI: unrecognized prop: " + prop);
 		} else {
-			System.out.println("JSComponentUI: setting " + id + " " + prop);// + " " + val);
+			if (debugging)
+				System.out.println("JSComponentUI: setting " + id + " " + prop);// + " " + val);
 			if (isStyle)
 				DOMNode.setStyles(obj, prop, val);
 			else
@@ -845,7 +852,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 	@Override
 	public void setBounds(int x, int y, int width, int height, int op) {
-		System.out.println("CUI << SetBounds >> [" + x + " " + y + " " + width
+		if (debugging)
+			System.out.println("CUI << SetBounds >> [" + x + " " + y + " " + width
 				+ " " + height + "] op=" + op + " for " + this.id);
 		// Note that this.x and this.y are never used. We go get those directly.
 		// Coming in here they are adjusted.
@@ -872,7 +880,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			// if (this.width != width || this.height != height) {
 			this.width = width;
 			this.height = height;
-			System.out
+			if (debugging)	
+				System.out
 					.println(id + " setBounds " + x + " " + y + " " + this.width + " "
 							+ this.height + " op=" + op + " createDOM?" + (domNode == null));
 			if (domNode == null)
@@ -884,7 +893,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	}
 
 	protected void setBoundsDOM(int width, int height) {
-		System.out.println("CUI reshapeMe: need to reshape " + id + " w:" + this.width + "->"+ width + " h:" + this.height + "->" + height);
+		if (debugging)
+			System.out.println("CUI reshapeMe: need to reshape " + id + " w:" + this.width + "->"+ width + " h:" + this.height + "->" + height);
 	}
 
 	@Override
@@ -994,7 +1004,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 			 */
 			{}
 			path += "/img/cursor_wait.gif";
-			System.out.println("loading wait cursor " + path);
+			if (debugging)
+				System.out.println("loading wait cursor " + path);
 			waitImage = newDOMObject("image", id + "_waitImage", "src", path);
 		}
 		if (doShow)
@@ -1128,7 +1139,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		 *            f = function(event) { me.handleJSEvent(me.domNode, 401, event)
 		 *            }
 		 */
-		{
+		{			
 			System.out.println(me);
 		}
 		$(domNode).bind("keydown keypress keyup", f);

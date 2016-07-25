@@ -813,7 +813,7 @@ java.io.Serializable {
      */
     @Override
 		public void layoutContainer(Container parent) {
-    	System.out.println("GridBagLayout laying out " + parent);
+    	//System.out.println("GridBagLayout laying out " + parent);
         arrangeGrid(parent);
     }
 

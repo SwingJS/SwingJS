@@ -17,7 +17,7 @@
 
 J2S._isAsync = false;
 
-J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
+//J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
 
 // use ?_USE=JAVA or _USE=SIGNED or _USE=HTML5
 
@@ -28,9 +28,9 @@ jmol_isReady = function(applet) {
 }		
 
 Info = {
-    code: "com.falstad.QuantumOsc",
-	width: 700,
-	height: 500,
+    code: "com.falstad.Circuit.Circuit",
+	width: 200,
+	height: 50,
 	debug: false,
 	color: "#F0F0F0",
 	zIndexBase: 20000,
@@ -38,13 +38,12 @@ Info = {
 	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
 	use: "HTML5",
 	j2sPath: "../../j2s",
-	jarPath: "../../java",
-//	jarFile: "JStest.jar",
+//	jarPath: "../../java",
 	isSigned: false,
 	disableJ2SLoadMonitor: false,
 	disableInitialConsole: false,
 	console:"sysoutdiv",
-  useFrame:"false",
+  useFrame:true,
 	readyFunction: jmol_isReady,
   allowjavascript: true
 }
@@ -75,7 +74,7 @@ SwingJS.getApplet("testApplet", Info)
 This is System.out. <a href="javascript:testApplet._clearConsole()">clear it</a> 
 <a href="javascript:alert('The methods listed in the next message are those that are overloaded in such a way -- for example, Color(int r, int g, int b) and Color(float r, float g, float b) -- that make them impossible for Java2Script to differentiate and so must be refactored.'); Clazz.showDuplicates()">Show Duplicates</a>
 <br> <a href="../../j2s" target="_blank">Converted Java class directory</a>
-<br><img src=QuantumOsc.png /> (Java)</div>
+<br><img width=580 height=500 src= /> (Java)</div>
 </div>
 </body>
 </html>

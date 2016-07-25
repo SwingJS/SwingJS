@@ -811,7 +811,7 @@ public class BorderLayout implements LayoutManager2,
      */
     @Override
 		public void layoutContainer(Container target) {
-    	System.out.println("BorderLayout laying out " + target);
+    	//System.out.println("BorderLayout laying out " + target);
       synchronized (target.getTreeLock()) {
         Insets insets = target.getInsets();
         int top = insets.top;

@@ -146,7 +146,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	}
 
 	private void setSliderAttr(String key, int val) {
-		System.out.println(id + " setting " + key + " = " + val);
+		//	System.out.println(id + " setting " + key + " = " + val);
 		/**
 		 * @j2sNative
 		 * 

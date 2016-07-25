@@ -2337,6 +2337,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		for (int i = 0; i < 3; i++) {
 			try {
 				ByteArrayOutputStream os = readUrlData(getUrlResource(i, file));
+				if (os == null)
+					continue;
 				byte[] b = os.toByteArray();
 				if (b != null && b.length > 0 && b[0] == (isStartup ? '#' : '$'))
 					return b;

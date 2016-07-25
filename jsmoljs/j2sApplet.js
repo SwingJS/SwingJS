@@ -1315,6 +1315,7 @@ J2S = (function(document) {
 	}
 
 	J2S._jsUnsetMouse = function(who) {
+    if (!who)return;
     // swingjs.api.J2SInterface
   	who.applet = null;
 		J2S.$bind(who, 'mousedown touchstart mousemove touchmove mouseup touchend DOMMouseScroll mousewheel contextmenu mouseout mouseenter mousemoveoutjsmol', null);

@@ -3768,6 +3768,7 @@ var tryToLoadNext = function (file, fSuccess) {
 				done[i].onLoaded = null, f();
 	}
   
+  if (_Loader._checkLoad)  
   System.out.println("classes loaded: " + Clazz._Loader._classCountOK + "; maximum dependency depth: " + Clazz._nodeDepth);
 
 	//System.out.println(node.name + " loaded completely" + _Loader.onGlobalLoaded + "\n\n")
