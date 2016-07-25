@@ -30,7 +30,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null)
-			domNode = focusNode = createDOMObject("select", id);
+			domNode = focusNode = newDOMObject("select", id);
 		populateList();
 		JComboBox b = (JComboBox) c;
 		b.addPropertyChangeListener(this);

@@ -2003,7 +2003,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 				bgcolor0 = JSToolkit.getCSSColor(c.getBackground());
 			} else {
 				if (bgcolor0 == null)
-					bgcolor0 = domNode.getStyle("background-color");
+					bgcolor0 = DOMNode.getStyle(domNode, "background-color");
 			}
 			DOMNode.setStyles(domNode, "background-color", "rgba(0,0,0,0)");
 		}

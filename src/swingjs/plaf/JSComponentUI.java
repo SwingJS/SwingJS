@@ -330,7 +330,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		return obj;
 	}
 
-	protected DOMNode createDOMObject(String key, String id, String... attr) {
+	protected DOMNode newDOMObject(String key, String id, String... attr) {
 		DOMNode obj = DOMNode.createElement(key, id);
 		for (int i = 0; i < attr.length;)
 			DOMNode.setAttr(obj, attr[i++], attr[i++]);
@@ -340,7 +340,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 	}
 
 	protected DOMNode wrap(String type, String id, DOMNode... elements) {
-		return append(createDOMObject(type, id + type), elements);
+		return append(newDOMObject(type, id + type), elements);
 	}
 
 	protected DOMNode append(DOMNode obj, DOMNode[] elements) {
@@ -415,7 +415,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 				div = node;
 			else
 				div = wrap("div", id + "_temp", node);
-			DOMNode.setPositionAbsolute(div, -1, -1);
+			DOMNode.setPositionAbsolute(div, Integer.MIN_VALUE, 0);
 
 			// process of discovering width and height is facilitated using jQuery
 			// and appending to document.body.
@@ -429,7 +429,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 
 		Dimension size = getCSSDimension(width = w, height = h);
 		if (addCSS) {
-			DOMNode.setPositionAbsolute(node, -1, -1);
+			DOMNode.setPositionAbsolute(node, Integer.MIN_VALUE, 0);
 			DOMNode.setSize(node, size.width, size.height);
 		} else {
 			DOMNode.setStyles(node, "position", null);
@@ -486,7 +486,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer, JSEvent
 		// set position
 
 		if (hasOuterDiv) {
-			DOMNode.setPositionAbsolute(outerNode, -1, -1);
+			DOMNode.setPositionAbsolute(outerNode, Integer.MIN_VALUE, 0);
 			DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
 					(y = c.getY()) + "px");
 		}

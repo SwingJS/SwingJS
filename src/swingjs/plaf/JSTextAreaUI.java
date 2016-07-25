@@ -24,7 +24,7 @@ public class JSTextAreaUI extends JSTextUI {
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			updateHandler.checkDocument();
-			domBtn = focusNode = enableNode = textNode = domNode = createDOMObject("textarea", id);
+			domBtn = focusNode = enableNode = textNode = domNode = newDOMObject("textarea", id);
 			DOMNode.setStyles(domNode, "resize", "none");
 			setDataUI(domNode);
 			if (((JTextComponent) c).isEditable()) {

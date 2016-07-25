@@ -47,7 +47,7 @@ public class JSButtonUI extends JSLightweightUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null)
-			domBtn = enableNode = valueNode = domNode = createDOMObject("input", id,
+			domBtn = enableNode = valueNode = domNode = newDOMObject("input", id,
 					"type", "button");
 		setDataComponent(domBtn);
 		setCssFont(
@@ -71,10 +71,10 @@ public class JSButtonUI extends JSLightweightUI {
 			text = null;
 		}
 
-		itemNode = createDOMObject("li", id + type);
+		itemNode = newDOMObject("li", id + type);
 
 		if (text != null) {
-			DOMNode aNode = createDOMObject("a", id + type + "_a");
+			DOMNode aNode = newDOMObject("a", id + type + "_a");
 			DOMNode.setStyles(aNode, "margin", "1px 4px 1px 4px");
 			itemNode.appendChild(aNode);
 			if (myNode == null) {

@@ -46,7 +46,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 			isTopLevel = (!(popupMenu.getInvoker() instanceof JMenu) 
 					|| ((JMenu) popupMenu.getInvoker()).isTopLevelMenu());
 			hasOuterDiv = false;
-			domNode = containerNode = createDOMObject("ul", id);
+			domNode = containerNode = newDOMObject("ul", id);
 		}
 		return domNode;
 	}

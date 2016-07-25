@@ -32,7 +32,7 @@ public class JSMenuUI extends JSMenuItemUI {
 			menuItem = jm = (JMenu) jc;
 			isMenuBarMenu = jm.isTopLevelMenu();
 			if (isMenuBarMenu) {
-				domNode = createDOMObject("label", id);
+				domNode = newDOMObject("label", id);
 				setCssFont(DOMNode.setAttr(domNode, "innerHTML", menuItem.getText()),
 						c.getFont());
 				setDataComponent(domNode);

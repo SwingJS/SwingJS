@@ -27,7 +27,7 @@ public interface J2SInterface {
 
 	void _setDraggable(DOMNode tagNode, Object targetNodeOrFDown);
 
-	int _setWindowPosition(DOMNode domNode, int pos);
+	int _setWindowZIndex(DOMNode domNode, int pos);
 
 }
 

@@ -45,7 +45,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	public DOMNode createDOMNode() {
 		header = (JTableHeader) c;
 		if (domNode == null) {
-			domNode = createDOMObject("table", id);
+			domNode = newDOMObject("table", id);
 			table = header.getTable();
 			int w = this.width;//table.getWidth();
 			int h = this.height;//getHeaderHeight();

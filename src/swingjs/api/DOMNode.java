@@ -1,5 +1,6 @@
 package swingjs.api;
 
+import jsjava.awt.Rectangle;
 import swingjs.JSToolkit;
 import swingjs.plaf.JSComponentUI;
 
@@ -85,7 +86,7 @@ public abstract class DOMNode {
 		}
 	}
 
-	public String getStyle(String style) {
+	public static String getStyle(DOMNode obj, String style) {
 		/**
 		 * @j2sNative
 		 * 
@@ -96,6 +97,22 @@ public abstract class DOMNode {
 			return null;
 		}
 	}
+
+	public static void getRectangle(DOMNode obj, Rectangle r) {
+		/**
+		 * @j2sNative
+		 * 
+		 *       r.x = parseInt(obj.style.left.split("p")[0]);
+		 *       r.y = parseInt(obj.style.top.split("p")[0]);
+		 *       r.width = parseInt(obj.style.width.split("p")[0]);
+		 *       r.height = parseInt(obj.style.height.split("p")[0]);
+		 * 
+		 */
+		{
+		}
+	}
+
+	
 	public static DOMNode setAttr(DOMNode obj, String attr, Object val) {
 		/**
 		 * @j2sNative
@@ -139,10 +156,10 @@ public abstract class DOMNode {
 	}
 
 	public static DOMNode setPositionAbsolute(DOMNode domBtn, int top, int left) {
-		if (top >= 0)
+		if (top != Integer.MIN_VALUE) {
 			DOMNode.setStyles(domBtn, "top", top + "px");
-		if (top >= 0)
 			DOMNode.setStyles(domBtn, "left", left + "px");
+		}
 		return DOMNode.setStyles(domBtn, "position", "absolute");
 	}
 

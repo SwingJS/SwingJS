@@ -33,7 +33,7 @@ public class JSViewportUI extends JSLightweightUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null)
-			domNode = createDOMObject("div", id);
+			domNode = newDOMObject("div", id);
 		return domNode;
 	}
 

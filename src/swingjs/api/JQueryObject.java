@@ -36,5 +36,10 @@ public interface JQueryObject {
 
 	public abstract JQueryObject css(String key, String value);
 
+	public abstract void hide();
+	public abstract void show();
+
+	public abstract void resize(Object fHandleResize);
+
 	
 }

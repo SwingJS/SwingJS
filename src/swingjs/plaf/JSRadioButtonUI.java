@@ -35,9 +35,9 @@ public class JSRadioButtonUI extends JSButtonUI {
 		DOMNode.setStyles(domBtn, "position", null, "width", null, "height", null);
 		DOMNode.setStyles(textNode, "position", null, "width", null, "height", null);
 		Dimension d = setHTMLSize1(obj, addCSS, false);
-		DOMNode.setPositionAbsolute(domBtn, -1, -1);
-		DOMNode.setPositionAbsolute(textNode, -1, -1);
-		DOMNode.setPositionAbsolute(label, -1, -1);
+		DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
+		DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
+		DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
 		DOMNode.setStyles(label, "width", d.width + "px", "height", d.height + "px");
 		return d;
 	}
@@ -59,11 +59,11 @@ public class JSRadioButtonUI extends JSButtonUI {
 				if (isNew)
 					groupNames.put(bg, name = id);
 			}
-			domBtn = enableNode = createDOMObject("input", id, "type", myType, "name",
+			domBtn = enableNode = newDOMObject("input", id, "type", myType, "name",
 					name);
 			setDataComponent(domBtn);
-			textNode = createDOMObject("label", id + "l1");
-			label = createDOMObject("label", id + "l2", "htmlFor", id);
+			textNode = newDOMObject("label", id + "l1");
+			label = newDOMObject("label", id + "l2", "htmlFor", id);
 			label.appendChild(domBtn);
 			label.appendChild(textNode);
 			setDataComponent(label);
@@ -94,14 +94,14 @@ public class JSRadioButtonUI extends JSButtonUI {
 		vCenter(textNode, -50);
 		
 		// make everything absolute to pass sizing info to all
-		DOMNode.setPositionAbsolute(domBtn, -1, -1);
-		DOMNode.setPositionAbsolute(textNode, -1, -1);
-		DOMNode.setPositionAbsolute(label, -1, -1);
+		DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
+		DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
+		DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
 		if (doAll) {
 			// now wrap these in a div
 			domNode = obj = (hasOuterDiv ? wrap("div", id + "_0", label) : wrapper);
 			if (hasOuterDiv)
-				DOMNode.setPositionAbsolute(obj, -1, -1);
+				DOMNode.setPositionAbsolute(obj, Integer.MIN_VALUE, 0);
 		} else {
 			obj = domNode;
 		}

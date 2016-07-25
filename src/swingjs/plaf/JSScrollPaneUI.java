@@ -29,7 +29,7 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 	public DOMNode createDOMNode() {
 		isContainer = true;
 		if (domNode == null)
-			domNode = createDOMObject("div", id);
+			domNode = newDOMObject("div", id);
 		scrollNode = scrolledUI.getOuterNode();
 		DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 		return domNode;

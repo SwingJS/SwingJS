@@ -92,7 +92,7 @@ public class JSTableUI extends JSLightweightUI {
 		int h = table.getVisibleRect().height - thh;
 		
 		if (domNode == null) {
-			tableNode = domNode = createDOMObject("table", id);
+			tableNode = domNode = newDOMObject("table", id);
 		}
 		if (rebuild)
 			createChildren();

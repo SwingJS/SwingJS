@@ -261,10 +261,15 @@ public class JSMouse {
 
 	private void mouseAction(int id, long time, int x, int y,
 			int xcount, int modifiers) {
+		
+		// Oddly, Windows returns InputEvent.META_DOWN_MASK on release, though
+		// BUTTON3_DOWN_MASK for pressed. So here we just accept both when not a mac.
+		// A bit of a kludge.
+		
 	  boolean popupTrigger = 
 	      ( (modifiers & EXTENDED_MASK) == 
 	          (JSToolkit.isMac ? InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK
-	          : InputEvent.BUTTON3_DOWN_MASK)
+	          : InputEvent.BUTTON3_DOWN_MASK | InputEvent.META_DOWN_MASK)
 	       );
 		int button = getButton(modifiers);
 		int count = updateClickCount(id, time, x, y);
@@ -290,21 +295,20 @@ public class JSMouse {
 	private final static int DBL_CLICK_MAX_MS = 500;
 	private final static int DBL_CLICK_DX = 3; // verified in Windows
 
-//                  count ms  x   y  
-//	CirSim java clicked(5,323,573,177) 0 
-//	CirSim java clicked(7,415,573,178) 0 
-//	CirSim java clicked(8,217,573,178) 0 
-//	CirSim java clicked(9,180,573,178) 0 
-//	CirSim java clicked(10,158,573,178) 0 
-//	CirSim java clicked(11,331,573,175) 0 
-//	CirSim java clicked(12,416,573,174) 0 
+	// count ms x y
+	// CirSim java clicked(5,323,573,177) 0
+	// CirSim java clicked(7,415,573,178) 0
+	// CirSim java clicked(8,217,573,178) 0
+	// CirSim java clicked(9,180,573,178) 0
+	// CirSim java clicked(10,158,573,178) 0
+	// CirSim java clicked(11,331,573,175) 0
+	// CirSim java clicked(12,416,573,174) 0
 
-// interesting that clicks are being combined and skipped
-	
+	// interesting that clicks are being combined and skipped
+
 	private int updateClickCount(int id, long time, int x, int y) {
 		boolean reset = (time - lasttime > DBL_CLICK_MAX_MS
-				|| Math.abs(x - lastx) > DBL_CLICK_DX 
-				|| Math.abs(y - lasty) > DBL_CLICK_DX);
+				|| Math.abs(x - lastx) > DBL_CLICK_DX || Math.abs(y - lasty) > DBL_CLICK_DX);
 		lasttime = time;
 		lastx = x;
 		lasty = y;
@@ -315,15 +319,19 @@ public class JSMouse {
 			break;
 		case Event.MOUSE_ENTER:
 		case Event.MOUSE_EXIT:
-		case Event.MOUSE_MOVE:
-		case Event.MOUSE_UP:
 			clickCount = 0;
 			break;
+		case Event.MOUSE_MOVE:
+			if (reset)
+				clickCount = 0;
+			break;
+		case Event.MOUSE_UP:
 		case Event.MOUSE_DRAG:
 		case -1: // JavaScript wheeled
-			// ignore
 			break;
 		}
+		System.out.println("setting mouse click to " + clickCount + " returning  "
+				+ ret);
 		return ret;
 	}
 

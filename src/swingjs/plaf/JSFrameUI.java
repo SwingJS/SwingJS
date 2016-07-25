@@ -1,11 +1,12 @@
 package swingjs.plaf;
 
+import java.awt.event.MouseEvent;
+
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.FramePeer;
 import jsjavax.swing.JFrame;
-import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
@@ -32,6 +33,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	private String title;
 	private int state;
 	private boolean resizeable;
+	private DOMNode resizer;
+	private DOMNode[] resizerTabs = new DOMNode[9];
 
 	public JSFrameUI() {
 		frameZ += 1000;
@@ -48,7 +51,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 
 			f = (JFrame) (Object) c;
 
-			domNode = frameNode = createDOMObject("div", id + "_frame");
+			domNode = frameNode = newDOMObject("div", id + "_frame");
 			DOMNode.setStyles(frameNode, "border-style", "solid",
 					"border-width", "5px");
 			setWindowClass(frameNode);
@@ -63,7 +66,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setPositionAbsolute(frameNode, f.getX(), f.getY());
 
 			setJ2sMouseHandler(frameNode, true);
-			titleBarNode = createDOMObject("div", id + "_titlebar");
+			titleBarNode = newDOMObject("div", id + "_titlebar");
 			DOMNode.setPositionAbsolute(titleBarNode, 0, 0);
 			DOMNode.setStyles(titleBarNode, "background-color", "#E0E0E0", "height",
 					"20px", "font-size", "14px", "font-family", "sans-serif",
@@ -72,16 +75,16 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 					// "border-width", "1px"
 			);
 
-			titleNode = createDOMObject("label", id + "_title");
+			titleNode = newDOMObject("label", id + "_title");
 			DOMNode.setPositionAbsolute(titleNode, 0, 0);
 			DOMNode.setStyles(titleNode, "width", w + "px", "height", "20px");
 			setTitle(f.getTitle());
 
-			DOMNode closerWrap = createDOMObject("div", id + "_closerwrap");
+			DOMNode closerWrap = newDOMObject("div", id + "_closerwrap");
 			DOMNode.setPositionAbsolute(closerWrap, 0, 0);
 			DOMNode.setStyles(closerWrap, "text-align", "right", "width", w + "px");
 
-			closerNode = createDOMObject("label", id + "_closer", "innerHTML", "X");
+			closerNode = newDOMObject("label", id + "_closer", "innerHTML", "X");
 			DOMNode.setStyles(closerNode, "background-color", "white", "width",
 					"20px", "height", "20px", "position", "absolute", "text-align",
 					"center", "right", "0px");
@@ -111,13 +114,158 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 					"" + f.getWidth() + s.left + s.right, "height", "" + f.getHeight()
 							+ s.top + s.bottom);
 
-			menuBarNode = createDOMObject("div", id + "_menubar");
+			menuBarNode = newDOMObject("div", id + "_menubar");
 
 			containerNode = frameNode;
+			setResizer();
 		}
 		return domNode;
 	}
 	
+	private void setResizer() {
+		if (!f.isResizable()) {
+			$(resizer).hide();
+			return;
+		}
+		if (resizer == null) {
+			resizer = newDOMObject("div", id + "_resizer");
+			DOMNode.setStyles(resizer, "border", "1px dashed purple");
+		  frameNode.appendChild(resizer);
+			rResize = new Rectangle();
+			Object fHandleResizer = null, fHandleDOMResize = null;
+			Object me = this;
+			/**
+			 * @j2sNative
+			 * 
+			 * fHandleResizer = function(xyev,type){me.fHandleResizer(xyev,type)};
+			 * fDOMResize = function(ev){me.fDOMResize(ev)};
+			 */
+			{}
+			setResizeTabs(fHandleResizer);
+			$(frameNode).resize(fHandleDOMResize);
+		}
+	}
+
+	/**
+	 * set position of 8 tabs around the frame
+	 * 
+	 * @param fHandleResize
+	 */
+	private void setResizeTabs(Object fHandleResizer) {
+		boolean isNew = (fHandleResizer != null);
+//  [0]----------[1]----------[2]
+//	 |                         |   
+//	 |                         |   
+//	 |                         |   
+//  [3]                       [4]   
+//	 |                         |   
+//	 |                         |
+//	 |                         |   
+//  [6]----------[7]----------[8]
+		
+		int w = 4 + width + rResize.width;
+		int x = -2 + rResize.x;
+		int y = -2 + rResize.y;
+		int h = 4 + height + rResize.height;
+		DOMNode.setPositionAbsolute(resizer, y, x);
+		DOMNode.setSize(resizer, w, h);
+		for (int pt = 0, i = 0; i <= 2; i++) {
+			for (int j = 0; j <= 2; j++, pt++) {
+				if (i == 1 && j == 1)
+					continue;
+				DOMNode tab = (isNew ? (resizerTabs[pt] = newDOMObject("div", id + "_resize_tab" + pt)) : resizerTabs[pt]);
+				int top = y + i * h/2 - 4;
+				int left = x + j * w/2 - 4;
+			  DOMNode.setPositionAbsolute(tab, top, left);
+			  if (isNew) {
+			  	DOMNode.setAttr(tab, "data-pt", new int[] {pt});
+			  	DOMNode.setSize(tab, 8, 8);
+			  	DOMNode.setStyles(tab, "background-color","red");
+			  	resizer.appendChild(tab);
+			  	JSToolkit.J2S._setDraggable(tab, new Object[] {fHandleResizer});
+			  }
+			}
+		}
+	}
+
+	private Rectangle rResize;
+	
+
+	private final static String[] controls = {
+		"tl", "t_","tw", "_l", "__", "_w", "hl", "h_", "hw" 
+	};
+	
+
+	/**
+	 * 
+	 * @param xyev
+	 * @param type
+	 */
+	public void fHandleResizer(Object xyev, int type) {
+
+		int dx = 0, dy = 0, pt = 0;
+		DOMNode tab = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            dx = xyev.dx; 
+		 *            dy = xyev.dy; 
+		 *            tab = xyev.ev.currentTarget; 
+		 *            pt = tab["data-pt"][0];
+		 */
+		{
+		}
+
+		switch (type) {
+		case MouseEvent.MOUSE_PRESSED:
+			rResize = new Rectangle();
+			// set cursor to dragging
+			break;
+		case MouseEvent.MOUSE_DRAGGED:
+			switch (controls[pt].charAt(0)) {
+			case 't':
+				rResize.y = dy;
+				rResize.height = -dy;
+				break;
+			case 'h':
+				rResize.height = dy;
+				break;
+			}
+			switch (controls[pt].charAt(1)) {
+			case 'l':
+				rResize.x = dx;
+				rResize.width = -dx;
+				break;
+			case 'w':
+				rResize.width = dx;
+				break;
+			}
+			setResizeTabs(null);
+			break;
+		case MouseEvent.MOUSE_RELEASED:
+			fHandleResize(null);
+			// resize frame
+			// set cursor to standard
+		}
+
+	}
+	private void fHandleResize(Object event) {
+		Rectangle r = f.getBounds();
+		if (event == null) {
+			// from mouse release
+			r.x += rResize.x;
+			r.y += rResize.y;
+			r.width += rResize.width;
+			r.height += rResize.height;
+		} else {
+			// from some DOM event
+	   DOMNode.getRectangle(frameNode, r);
+		}
+		rResize = new Rectangle();
+		f.setBounds(r);
+		f.validate();
+	}
+
 	@Override
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 	  String type = "";
