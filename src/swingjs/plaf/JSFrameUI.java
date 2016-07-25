@@ -100,6 +100,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			@SuppressWarnings("unused")
 			DOMNode fnode = frameNode;
 			Object fGetFrameParent = null;
+			Object me = this;
 			/**
 			 * @j2sNative
 			 * 
@@ -202,7 +203,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		}
 		f.setPreferredSize(new Dimension(r.width, r.height));
 		f.invalidate();
-		f.validate();
+		f.pack();
 		//Toolkit.getEventQueue().postEvent(new ComponentEvent(f, ComponentEvent.COMPONENT_RESIZED));
 	}
 
