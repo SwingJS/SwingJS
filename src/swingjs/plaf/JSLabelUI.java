@@ -16,7 +16,6 @@ public class JSLabelUI extends JSLightweightUI {
 
 	@Override
 	public DOMNode createDOMNode() {
-		label = (JLabel) c;
 		if (domNode == null)
 			textNode = domNode = newDOMObject("label", id);
 		vCenter(domNode, 10);
@@ -26,14 +25,14 @@ public class JSLabelUI extends JSLightweightUI {
 	}
 
 	@Override
-	public void notifyPropertyChanged(String prop) {
+	public void propertyChangedFromListener(String prop) {
 		boolean isVert = (prop.indexOf("vert") >= 0);
 		boolean isAlign = (prop.indexOf("Ali") >= 0);
 		if (isAlign && !isVert) {
 			setTainted();
 			setHTMLElement();
 		} else {
-			notifyPropChangeCUI(prop);
+			propertyChangedFromListenerSAEM(prop);
 		}
 	}
 
@@ -63,13 +62,14 @@ public class JSLabelUI extends JSLightweightUI {
 	}
 	
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
+		label = (JLabel) c;
     LookAndFeel.installColorsAndFont(jc, null, null,
         "Label.font");
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}

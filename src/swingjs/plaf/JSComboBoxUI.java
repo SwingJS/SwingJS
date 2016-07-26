@@ -22,6 +22,8 @@ import swingjs.api.DOMNode;
 
 public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListener {
 
+	private JComboBox combobox;
+
 	public JSComboBoxUI() {
 		isContainer = true;
 		setDoc();
@@ -32,8 +34,6 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		if (domNode == null)
 			domNode = focusNode = newDOMObject("select", id);
 		populateList();
-		JComboBox b = (JComboBox) c;
-		b.addPropertyChangeListener(this);
 		$(domNode).addClass("swingjs-ui");
 		DOMNode.addJqueryHandledEvent(this, domNode, "change");
 		//setDataUI(domNode);
@@ -48,7 +48,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		switch (eventType) {
 		case -1:
       int index = PT.parseInt("" + DOMNode.getAttr(domNode, "selectedIndex"));
-      ((JComboBox) c).setSelectedIndex(index);
+      combobox.setSelectedIndex(index);
 			break;
 		}
 		return true;
@@ -57,11 +57,10 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	
 	private void populateList() {
 		$(domNode).empty();
-		JComboBox b = (JComboBox) c;
-		int n = b.getItemCount();
-		int iselect = b.getSelectedIndex();
+		int n = combobox.getItemCount();
+		int iselect = combobox.getSelectedIndex();
 		for (int i = 0; i < n; i++) {
-			String item = b.getItemAt(i).toString();
+			String item = combobox.getItemAt(i).toString();
 			DOMNode option = DOMNode.createElement("option", id + "_" + (++incr));
 			DOMNode.setAttr(option,  "innerHTML", item);
 			if (i == iselect)
@@ -71,7 +70,8 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
+		combobox = (JComboBox) c;
     LookAndFeel.installColorsAndFont(jc,
         "ComboBox.background",
         "ComboBox.foreground",
@@ -79,7 +79,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}

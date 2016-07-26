@@ -13,7 +13,6 @@ public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
 	
 	@Override
 	public DOMNode createDOMNode() {
-		menuItem = (JMenuItem) c;
 		return getButtonObject("radio");
 	}
 
@@ -21,5 +20,10 @@ public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
 	protected String getPropertyPrefix() {
 		return "RadioButtonMenuItem.";
 	}
-
+	
+	@Override
+	protected void installUIImpl() {
+		menuItem = (JMenuItem) c;
+		super.installUIImpl();
+	}
 }

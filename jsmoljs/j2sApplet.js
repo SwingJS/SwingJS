@@ -1148,7 +1148,7 @@ J2S = (function(document) {
          
     var checkStopPropagation = function(ev, ui, handled) {
       if (!ui || !handled || !ev.target.getAttribute("role")) {
-        if (!ui.texthandler)
+        if (!ui || !ui.textListener)
       			ev.preventDefault();
 			  ev.stopPropagation();
       }
@@ -1156,8 +1156,8 @@ J2S = (function(document) {
     };
 
 		J2S.$bind(who, 'mousedown touchstart', function(ev) {    
-        
-      System.out.println(["j2sApplet DOWN",ev.type,doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+      
+   //   System.out.println(["j2sApplet DOWN",ev.type,doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
       
       if (doIgnore(ev))
         return true;
@@ -1185,7 +1185,7 @@ J2S = (function(document) {
 
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
     
-      System.out.println(["j2sApplet UP",ev.type, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
+  //    System.out.println(["j2sApplet UP",ev.type, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
       
       
       if (doIgnore(ev))

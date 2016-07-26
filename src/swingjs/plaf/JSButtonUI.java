@@ -122,21 +122,21 @@ public class JSButtonUI extends JSLightweightUI {
 	// from BasicButtonUI
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
 		installDefaults((AbstractButton) c);
 		installListeners((AbstractButton) c);
 		installKeyboardActions((AbstractButton) c);
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		uninstallKeyboardActions((AbstractButton) c);
 		uninstallListeners((AbstractButton) c);
 		// uninstallDefaults((AbstractButton) c);
 	}
 
 	protected void installListeners(AbstractButton b) {
-		JSButtonListener listener = new JSButtonListener(b, !this.hasOuterDiv);
+		ButtonListener listener = new ButtonListener(b, !hasOuterDiv);
 		if (listener != null) {
 			b.addMouseListener(listener);
 			b.addMouseMotionListener(listener);
@@ -147,7 +147,7 @@ public class JSButtonUI extends JSLightweightUI {
 	}
 
 	protected void uninstallListeners(AbstractButton b) {
-		JSButtonListener listener = getButtonListener(b);
+		ButtonListener listener = getButtonListener(b);
 		if (listener != null) {
 			b.removeMouseListener(listener);
 			b.removeMouseMotionListener(listener);
@@ -158,14 +158,14 @@ public class JSButtonUI extends JSLightweightUI {
 	}
 
 	protected void installKeyboardActions(AbstractButton b) {
-		JSButtonListener listener = getButtonListener(b);
+		ButtonListener listener = getButtonListener(b);
 		if (listener != null) {
 			listener.installKeyboardActions(b);
 		}
 	}
 
 	protected void uninstallKeyboardActions(AbstractButton b) {
-		JSButtonListener listener = getButtonListener(b);
+		ButtonListener listener = getButtonListener(b);
 		if (listener != null) {
 			listener.uninstallKeyboardActions(b);
 		}
@@ -175,13 +175,13 @@ public class JSButtonUI extends JSLightweightUI {
 	 * Returns the ButtonListener for the passed in Button, or null if one could
 	 * not be found.
 	 */
-	protected JSButtonListener getButtonListener(AbstractButton b) {
+	protected ButtonListener getButtonListener(AbstractButton b) {
 		MouseMotionListener[] listeners = b.getMouseMotionListeners();
 
 		if (listeners != null) {
 			for (int counter = 0; counter < listeners.length; counter++) {
-				if (listeners[counter] instanceof JSButtonListener) {
-					return (JSButtonListener) listeners[counter];
+				if (listeners[counter] instanceof ButtonListener) {
+					return (ButtonListener) listeners[counter];
 				}
 			}
 		}

@@ -6,36 +6,36 @@ import swingjs.plaf.JSComponentUI;
 
 public abstract class DOMNode {
 
-	public abstract void appendChild(DOMNode object);
+	public abstract void appendChild(DOMNode node);
 
 	public abstract boolean hasFocus();
 
 	public abstract boolean play();
 
-	public abstract DOMNode removeChild(DOMNode object);
+	public abstract DOMNode removeChild(DOMNode node);
 
 	public abstract DOMNode removeAttribute(String attr);
 	
 	public abstract void setSelectionRange(int pt0, int pt1);
 
 	public static DOMNode createElement(String key, String id, Object... attrs) {
-		DOMNode obj = null;
+		DOMNode node = null;
 		/**
 		 * 
 		 * @j2sNative
-		 * 					obj = document.createElement(key); 
-		 *          obj.id = id;
+		 * 					node = document.createElement(key); 
+		 *          node.id = id;
 		 */
 		{
 		}
-		return setAttrs(obj, attrs);
+		return setAttrs(node, attrs);
 	}
 
-	public static DOMNode getParent(DOMNode obj) {
+	public static DOMNode getParent(DOMNode node) {
 		/**
 		 * @j2sNative
 		 * 
-		 *            return obj.parentNode;
+		 *            return node.parentNode;
 		 * 
 		 */
 		{
@@ -44,20 +44,20 @@ public abstract class DOMNode {
 	}
 
 	/**
-	 * remove this object and return its parent
-	 * @param obj
+	 * remove this node and return its parent
+	 * @param node
 	 * @return parent or null
 	 */
-	public static DOMNode remove(DOMNode obj) {
-		if (obj == null)
+	public static DOMNode remove(DOMNode node) {
+		if (node == null)
 			return null;
 		/**
 		 * @j2sNative
 		 * 
 		 * try {
-		 *   var p = obj.parentElement;
-		 *   p.removeChild(obj);
-		 *   $(body).remove(obj);
+		 *   var p = node.parentElement;
+		 *   p.removeChild(node);
+		 *   $(body).remove(node);
 		 * } catch(e) {
 		 * };
 		 * return p;
@@ -70,15 +70,15 @@ public abstract class DOMNode {
 	/**
 	 * note: this works with 'checked' as well
 	 * 
-	 * @param obj
+	 * @param node
 	 * @param attr
 	 * @return
 	 */
-	public static Object getAttr(DOMNode obj, String attr) {
+	public static Object getAttr(DOMNode node, String attr) {
 		/**
 		 * @j2sNative
 		 * 
-		 *       if (obj)return obj[attr];
+		 *       if (node)return node[attr];
 		 * 
 		 */
 		{
@@ -86,11 +86,11 @@ public abstract class DOMNode {
 		}
 	}
 
-	public static String getStyle(DOMNode obj, String style) {
+	public static String getStyle(DOMNode node, String style) {
 		/**
 		 * @j2sNative
 		 * 
-		 *       if (obj)return obj.style[style];
+		 *       if (node)return node.style[style];
 		 * 
 		 */
 		{
@@ -98,14 +98,14 @@ public abstract class DOMNode {
 		}
 	}
 
-	public static void getRectangle(DOMNode obj, Rectangle r) {
+	public static void getRectangle(DOMNode node, Rectangle r) {
 		/**
 		 * @j2sNative
 		 * 
-		 *       r.x = parseInt(obj.style.left.split("p")[0]);
-		 *       r.y = parseInt(obj.style.top.split("p")[0]);
-		 *       r.width = parseInt(obj.style.width.split("p")[0]);
-		 *       r.height = parseInt(obj.style.height.split("p")[0]);
+		 *       r.x = parseInt(node.style.left.split("p")[0]);
+		 *       r.y = parseInt(node.style.top.split("p")[0]);
+		 *       r.width = parseInt(node.style.width.split("p")[0]);
+		 *       r.height = parseInt(node.style.height.split("p")[0]);
 		 * 
 		 */
 		{
@@ -113,61 +113,61 @@ public abstract class DOMNode {
 	}
 
 	
-	public static DOMNode setAttr(DOMNode obj, String attr, Object val) {
+	public static DOMNode setAttr(DOMNode node, String attr, Object val) {
 		/**
 		 * @j2sNative
 		 * 
-		 *            obj[attr] = (val == "TRUE" ? true : val);
+		 *            node[attr] = (val == "TRUE" ? true : val);
 		 * 
 		 */
 		{
 		}
-		return obj;
+		return node;
 	}
 
-	public static DOMNode setAttrs(DOMNode obj, Object... attr) {
+	public static DOMNode setAttrs(DOMNode node, Object... attr) {
 		/**
 		 * @j2sNative
 		 * 
 		 *            for (var i = 0; i < attr.length;) { 
-		 *            obj[attr[i++]] = attr[i++]; }
+		 *            node[attr[i++]] = attr[i++]; }
 		 * 
 		 */
 		{
 		}
-		return obj;
+		return node;
 	}
 
-	public static DOMNode setStyles(DOMNode obj, String... attr) {
+	public static DOMNode setStyles(DOMNode node, String... attr) {
 		/**
 		 * @j2sNative
 		 * 
 		 *            for (var i = 0; i < attr.length;) {
-		 *             obj.style[attr[i++]] = attr[i++]; }
+		 *             node.style[attr[i++]] = attr[i++]; }
 		 * 
 		 */
 		{
 		}
-		return obj;
+		return node;
 	}
 
-	public static DOMNode setSize(DOMNode obj, int width, int height) {
-		return setStyles(obj, "width", width + "px", "height", height + "px");
+	public static DOMNode setSize(DOMNode node, int width, int height) {
+		return setStyles(node, "width", width + "px", "height", height + "px");
 	}
 
-	public static DOMNode setPositionAbsolute(DOMNode domBtn, int top, int left) {
+	public static DOMNode setPositionAbsolute(DOMNode node, int top, int left) {
 		if (top != Integer.MIN_VALUE) {
-			DOMNode.setStyles(domBtn, "top", top + "px");
-			DOMNode.setStyles(domBtn, "left", left + "px");
+			DOMNode.setStyles(node, "top", top + "px");
+			DOMNode.setStyles(node, "left", left + "px");
 		}
-		return DOMNode.setStyles(domBtn, "position", "absolute");
+		return DOMNode.setStyles(node, "position", "absolute");
 	}
 
-	public static DOMNode firstChild(DOMNode domNode) {
+	public static DOMNode firstChild(DOMNode node) {
 		/**
 		 * @j2sNative
 		 * 
-		 * return domNode.firstChild;
+		 * return node.firstChild;
 		 * 
 		 */
 		{

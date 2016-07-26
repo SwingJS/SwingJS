@@ -18,13 +18,13 @@ public class JSLayeredPaneUI extends JSLightweightUI {
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}

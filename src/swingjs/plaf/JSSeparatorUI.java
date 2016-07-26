@@ -31,28 +31,26 @@ import swingjs.api.DOMNode;
 
 public class JSSeparatorUI extends JSLightweightUI {
 
-	JSeparator js;
+	JSeparator jsep;
 	private String text;
 	
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
 			textNode = domNode = newDOMObject("label", id);
-			js = (JSeparator) c;
-			text = (js.getOrientation() == SwingConstants.HORIZONTAL ? "|" : "-----------");
+			text = "";//(jsep.getOrientation() == SwingConstants.HORIZONTAL ? "|" : "-----------");
 		}
 		vCenter(domNode, 10);
 		return setCssFont(DOMNode.setAttr(domNode, "innerHTML", text), c.getFont());
 	}
 
 	@Override
-	protected void installJSUI() {
-		// TODO Auto-generated method stub
-		
+	protected void installUIImpl() {
+		jsep = (JSeparator) c;
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}

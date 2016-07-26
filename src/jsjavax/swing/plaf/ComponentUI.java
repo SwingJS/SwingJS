@@ -28,7 +28,6 @@ package jsjavax.swing.plaf;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
-import jsjava.awt.JSComponent;
 import jsjava.awt.peer.ComponentPeer;
 import jsjavax.swing.JComponent;
 
@@ -110,7 +109,7 @@ public abstract class ComponentUI implements ComponentPeer {
      * @see jsjavax.swing.JComponent#setUI
      * @see jsjavax.swing.JComponent#updateUI
      */
-    public void installUI(JSComponent jsComponent) {
+    public void installUI(Component component) {
     }
 
     /**
@@ -138,7 +137,7 @@ public abstract class ComponentUI implements ComponentPeer {
      * @see #installUI
      * @see jsjavax.swing.JComponent#updateUI
      */
-    public void uninstallUI(JSComponent c) {
+    public void uninstallUI(Component c) {
     }
 
     /**

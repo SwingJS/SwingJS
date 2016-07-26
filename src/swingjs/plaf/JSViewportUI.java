@@ -26,9 +26,17 @@
 package swingjs.plaf;
 
 import jsjava.awt.Dimension;
+import jsjava.beans.PropertyChangeEvent;
+import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.JViewport;
+import jsjavax.swing.event.ChangeEvent;
+import jsjavax.swing.event.ChangeListener;
 import swingjs.api.DOMNode;
 
-public class JSViewportUI extends JSLightweightUI {
+public class JSViewportUI extends JSLightweightUI implements PropertyChangeListener,
+ChangeListener {
+
+	private JViewport viewport;
 
 	@Override
 	public DOMNode createDOMNode() {
@@ -38,18 +46,17 @@ public class JSViewportUI extends JSLightweightUI {
 	}
 
 	@Override
-	protected void installJSUI() {
-		// TODO Auto-generated method stub
-		
+	protected void installUIImpl() {
+		viewport = (JViewport) c;
 	}
 
 	@Override
-	protected void uninstallJSUI() {
-		// TODO Auto-generated method stub
-		
+	protected void uninstallUIImpl() {
 	}
+	
 	@Override
 	public Dimension getPreferredSize() {
+		System.out.println(id + " getPreferredSize");
   	return null;
   }
 
@@ -58,6 +65,10 @@ public class JSViewportUI extends JSLightweightUI {
 	protected DOMNode setHTMLElement() {
 		return DOMNode.setStyles(setHTMLElementCUI(), "overflow", "hidden");
 	}
+
+
+
+
 
 
 }

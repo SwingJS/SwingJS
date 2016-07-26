@@ -47,19 +47,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.MemoryImageSource;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Random;
-import java.util.Vector;
 
 import swingjs.awt.Applet;
+import swingjs.awt.Button;
 import swingjs.awt.Canvas;
 import swingjs.awt.Checkbox;
 import swingjs.awt.Choice;
 import swingjs.awt.Frame;
 import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
-import swingjs.awt.Button;
 
 class EMBoxCanvas extends Canvas {
     EMBoxFrame pg;

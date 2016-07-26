@@ -52,7 +52,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
     LookAndFeel.installColorsAndFont(jc,
         "PopupMenu.background",
         "PopupMenu.foreground",
@@ -60,7 +60,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -80,6 +80,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 	@Override
 	public void setVisible(boolean b) {
 		if (menu == null) {
+			// important to do this here, not earlier?
 			menu = (JPopupMenu) c;
 			j2sSwing.setMenu(menu);
 		}

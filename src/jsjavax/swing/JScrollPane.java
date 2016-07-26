@@ -1272,70 +1272,70 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
 //    }
 //
 
-    /**
-     * Returns a string representation of this <code>JScrollPane</code>.
-     * This method
-     * is intended to be used only for debugging purposes, and the
-     * content and format of the returned string may vary between
-     * implementations. The returned string may be empty but may not
-     * be <code>null</code>.
-     *
-     * @return  a string representation of this <code>JScrollPane</code>.
-     */
-    @Override
-		protected String paramString() {
-        String viewportBorderString = (viewportBorder != null ?
-                                       viewportBorder.toString() : "");
-        String viewportString = (viewport != null ?
-                                 viewport.toString() : "");
-        String verticalScrollBarPolicyString;
-        if (verticalScrollBarPolicy == VERTICAL_SCROLLBAR_AS_NEEDED) {
-            verticalScrollBarPolicyString = "VERTICAL_SCROLLBAR_AS_NEEDED";
-        } else if (verticalScrollBarPolicy == VERTICAL_SCROLLBAR_NEVER) {
-            verticalScrollBarPolicyString = "VERTICAL_SCROLLBAR_NEVER";
-        } else if (verticalScrollBarPolicy == VERTICAL_SCROLLBAR_ALWAYS) {
-            verticalScrollBarPolicyString = "VERTICAL_SCROLLBAR_ALWAYS";
-        } else verticalScrollBarPolicyString = "";
-        String horizontalScrollBarPolicyString;
-        if (horizontalScrollBarPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED) {
-            horizontalScrollBarPolicyString = "HORIZONTAL_SCROLLBAR_AS_NEEDED";
-        } else if (horizontalScrollBarPolicy == HORIZONTAL_SCROLLBAR_NEVER) {
-            horizontalScrollBarPolicyString = "HORIZONTAL_SCROLLBAR_NEVER";
-        } else if (horizontalScrollBarPolicy == HORIZONTAL_SCROLLBAR_ALWAYS) {
-            horizontalScrollBarPolicyString = "HORIZONTAL_SCROLLBAR_ALWAYS";
-        } else horizontalScrollBarPolicyString = "";
-        String horizontalScrollBarString = (horizontalScrollBar != null ?
-                                            horizontalScrollBar.toString()
-                                            : "");
-        String verticalScrollBarString = (verticalScrollBar != null ?
-                                          verticalScrollBar.toString() : "");
-        String columnHeaderString = (columnHeader != null ?
-                                     columnHeader.toString() : "");
-        String rowHeaderString = (rowHeader != null ?
-                                  rowHeader.toString() : "");
-        String lowerLeftString = (lowerLeft != null ?
-                                  lowerLeft.toString() : "");
-        String lowerRightString = (lowerRight != null ?
-                                  lowerRight.toString() : "");
-        String upperLeftString = (upperLeft != null ?
-                                  upperLeft.toString() : "");
-        String upperRightString = (upperRight != null ?
-                                  upperRight.toString() : "");
-
-        return super.paramString() +
-        ",columnHeader=" + columnHeaderString +
-        ",horizontalScrollBar=" + horizontalScrollBarString +
-        ",horizontalScrollBarPolicy=" + horizontalScrollBarPolicyString +
-        ",lowerLeft=" + lowerLeftString +
-        ",lowerRight=" + lowerRightString +
-        ",rowHeader=" + rowHeaderString +
-        ",upperLeft=" + upperLeftString +
-        ",upperRight=" + upperRightString +
-        ",verticalScrollBar=" + verticalScrollBarString +
-        ",verticalScrollBarPolicy=" + verticalScrollBarPolicyString +
-        ",viewport=" + viewportString +
-        ",viewportBorder=" + viewportBorderString;
-    }
+//    /**
+//     * Returns a string representation of this <code>JScrollPane</code>.
+//     * This method
+//     * is intended to be used only for debugging purposes, and the
+//     * content and format of the returned string may vary between
+//     * implementations. The returned string may be empty but may not
+//     * be <code>null</code>.
+//     *
+//     * @return  a string representation of this <code>JScrollPane</code>.
+//     */
+//    @Override
+//		protected String paramString() {
+//        String viewportBorderString = (viewportBorder != null ?
+//                                       viewportBorder.toString() : "");
+//        String viewportString = (viewport != null ?
+//                                 viewport.toString() : "");
+//        String verticalScrollBarPolicyString;
+//        if (verticalScrollBarPolicy == VERTICAL_SCROLLBAR_AS_NEEDED) {
+//            verticalScrollBarPolicyString = "VERTICAL_SCROLLBAR_AS_NEEDED";
+//        } else if (verticalScrollBarPolicy == VERTICAL_SCROLLBAR_NEVER) {
+//            verticalScrollBarPolicyString = "VERTICAL_SCROLLBAR_NEVER";
+//        } else if (verticalScrollBarPolicy == VERTICAL_SCROLLBAR_ALWAYS) {
+//            verticalScrollBarPolicyString = "VERTICAL_SCROLLBAR_ALWAYS";
+//        } else verticalScrollBarPolicyString = "";
+//        String horizontalScrollBarPolicyString;
+//        if (horizontalScrollBarPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED) {
+//            horizontalScrollBarPolicyString = "HORIZONTAL_SCROLLBAR_AS_NEEDED";
+//        } else if (horizontalScrollBarPolicy == HORIZONTAL_SCROLLBAR_NEVER) {
+//            horizontalScrollBarPolicyString = "HORIZONTAL_SCROLLBAR_NEVER";
+//        } else if (horizontalScrollBarPolicy == HORIZONTAL_SCROLLBAR_ALWAYS) {
+//            horizontalScrollBarPolicyString = "HORIZONTAL_SCROLLBAR_ALWAYS";
+//        } else horizontalScrollBarPolicyString = "";
+//        String horizontalScrollBarString = (horizontalScrollBar != null ?
+//                                            horizontalScrollBar.toString()
+//                                            : "");
+//        String verticalScrollBarString = (verticalScrollBar != null ?
+//                                          verticalScrollBar.toString() : "");
+//        String columnHeaderString = (columnHeader != null ?
+//                                     columnHeader.toString() : "");
+//        String rowHeaderString = (rowHeader != null ?
+//                                  rowHeader.toString() : "");
+//        String lowerLeftString = (lowerLeft != null ?
+//                                  lowerLeft.toString() : "");
+//        String lowerRightString = (lowerRight != null ?
+//                                  lowerRight.toString() : "");
+//        String upperLeftString = (upperLeft != null ?
+//                                  upperLeft.toString() : "");
+//        String upperRightString = (upperRight != null ?
+//                                  upperRight.toString() : "");
+//
+//        return super.paramString() +
+//        ",columnHeader=" + columnHeaderString +
+//        ",horizontalScrollBar=" + horizontalScrollBarString +
+//        ",horizontalScrollBarPolicy=" + horizontalScrollBarPolicyString +
+//        ",lowerLeft=" + lowerLeftString +
+//        ",lowerRight=" + lowerRightString +
+//        ",rowHeader=" + rowHeaderString +
+//        ",upperLeft=" + upperLeftString +
+//        ",upperRight=" + upperRightString +
+//        ",verticalScrollBar=" + verticalScrollBarString +
+//        ",verticalScrollBarPolicy=" + verticalScrollBarPolicyString +
+//        ",viewport=" + viewportString +
+//        ",viewportBorder=" + viewportBorderString;
+//    }
 
 /////////////////
 // Accessibility support

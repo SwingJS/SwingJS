@@ -25,7 +25,7 @@
 
 package jsjava.util;
 
-import java.io.IOException;
+import java.util.FormattableFlags;
 
 /**
  * The <tt>Formattable</tt> interface must be implemented by any class that

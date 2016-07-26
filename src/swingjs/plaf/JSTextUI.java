@@ -603,7 +603,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 * @see ComponentUI#installUI
 	 */
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
 		editor = (JTextComponent) c;
 		textListener = new TextListener(this, editor);
 
@@ -656,7 +656,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 * @see ComponentUI#uninstallUI
 	 */
 	@Override
-	public void uninstallJSUI() {
+	public void uninstallUIImpl() {
 		// detach from the model
 		// editor.removePropertyChangeListener(updateHandler);
 		// editor.getDocument().removeDocumentListener(updateHandler);

@@ -14,14 +14,15 @@ public class JSColorChooserUI extends JSDialogUI {
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
+		super.installUIImpl();
 		// LookAndFeel.installColors(c,
 		// "Frame.background",
 		// "Frame.foreground");
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 	}
 
 }

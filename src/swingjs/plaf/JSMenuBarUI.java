@@ -26,12 +26,8 @@
 package swingjs.plaf;
 
 
-import swingjs.plaf.DefaultMenuLayout;
-
-import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjavax.swing.BoxLayout;
-import jsjavax.swing.JComponent;
 import jsjavax.swing.JMenuBar;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.plaf.UIResource;
@@ -106,7 +102,7 @@ public class JSMenuBarUI extends JSPanelUI {
 //	}
 
 	@Override
-	public void installUI(JComponent c) {
+	public void installUIImpl() {
 		menuBar = (JMenuBar) c;
     if (menuBar.getLayout() == null ||
         menuBar.getLayout() instanceof UIResource) {
@@ -120,7 +116,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}

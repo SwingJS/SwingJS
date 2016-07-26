@@ -10,6 +10,7 @@ import jsjava.awt.event.ComponentEvent;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.FramePeer;
 import jsjavax.swing.JFrame;
+import jsjavax.swing.LookAndFeel;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JSFunction;
@@ -33,7 +34,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	//           
 	
 
-	private JFrame f;
+	protected JFrame frame;
 	private String title;
 	private int state;
 	private boolean resizeable;
@@ -52,9 +53,6 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-
-			f = (JFrame) (Object) c;
-
 			domNode = frameNode = newDOMObject("div", id + "_frame");
 			DOMNode.setStyles(frameNode, "border-style", "solid",
 					"border-width", "5px");
@@ -67,7 +65,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 				h = defaultHeight;
 			DOMNode.setStyles(frameNode, "background", "white");
 			DOMNode.setSize(frameNode, w, h);
-			DOMNode.setPositionAbsolute(frameNode, f.getX(), f.getY());
+			DOMNode.setPositionAbsolute(frameNode, frame.getX(), frame.getY());
 
 			setJ2sMouseHandler(frameNode, true);
 			titleBarNode = newDOMObject("div", id + "_titlebar");
@@ -82,7 +80,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			titleNode = newDOMObject("label", id + "_title");
 			DOMNode.setPositionAbsolute(titleNode, 0, 0);
 			DOMNode.setStyles(titleNode, "height", "20px");
-			setTitle(f.getTitle());
+			setTitle(frame.getTitle());
 
 			closerWrap = newDOMObject("div", id + "_closerwrap");
 			DOMNode.setPositionAbsolute(closerWrap, 0, 0);
@@ -112,9 +110,9 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			titleBarNode.appendChild(closerWrap);
 			closerWrap.appendChild(closerNode);
 			Insets s = getInsets();
-			DOMNode.setPositionAbsolute(frameNode, f.getY(), f.getX());
+			DOMNode.setPositionAbsolute(frameNode, frame.getY(), frame.getX());
 			DOMNode.setAttrs(frameNode, "width",
-					"" + f.getWidth() + s.left + s.right, "height", "" + f.getHeight()
+					"" + frame.getWidth() + s.left + s.right, "height", "" + frame.getHeight()
 							+ s.top + s.bottom);
 
 			menuBarNode = newDOMObject("div", id + "_menubar");
@@ -127,7 +125,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	}
 
 	public void notifyFrameMoved() {
-		Toolkit.getEventQueue().postEvent(new ComponentEvent(f, ComponentEvent.COMPONENT_MOVED));
+		Toolkit.getEventQueue().postEvent(new ComponentEvent(frame, ComponentEvent.COMPONENT_MOVED));
 	}
 	
 	@Override
@@ -138,7 +136,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	}
 	
 	private void setResizer() {
-		if (!f.isResizable()) {
+		if (!frame.isResizable()) {
 			$(resizer).hide();
 			return;
 		}
@@ -191,7 +189,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	}
 
 	private void fHandleResize(Object event, int dw, int dh) {
-		Rectangle r = f.getBounds();
+		Rectangle r = frame.getBounds();
 		if (event == null) {
 			// from mouse release
 			if (r.width + dw > 50)
@@ -202,9 +200,9 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			// from some DOM event
 			DOMNode.getRectangle(frameNode, r);
 		}
-		f.setPreferredSize(new Dimension(r.width, r.height));
-		f.invalidate();
-		f.pack();
+		frame.setPreferredSize(new Dimension(r.width, r.height));
+		frame.invalidate();
+		frame.pack();
 		//Toolkit.getEventQueue().postEvent(new ComponentEvent(f, ComponentEvent.COMPONENT_RESIZED));
 	}
 
@@ -231,7 +229,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 
 		  		 */
 		  		{}
-					f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
+					frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 					JSToolkit.J2S._jsUnsetMouse(frameNode);
 					$(frameNode).remove();
 					$(outerNode).remove();
@@ -249,10 +247,13 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	}
 
 	@Override
-	protected void installJSUI() {
-		// LookAndFeel.installColors(c,
-		// "Frame.background",
-		// "Frame.foreground");
+	protected void installUIImpl() {
+		// problem here with J2S compiler turning JSDialogUI's override to overrideMethod
+		frame = (JFrame) c;
+		//super.installUIImpl(); // compiler bug will not allow this
+		 LookAndFeel.installColors(jc,
+		 "Frame.background",
+		 "Frame.foreground");
 	}
 
 	@Override

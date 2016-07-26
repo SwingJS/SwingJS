@@ -4,6 +4,7 @@
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
 // adjusted for SwingJS for smoother operation 
+// added j2sslider("getState")
 
 (function( $, undefined ) {
 
@@ -26,6 +27,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		range: false,
 		step: 1,
 		value: 0,
+    inverted: false,
 		values: null
 	},
 
@@ -318,6 +320,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		}
 	},
 
+  getState: function() { return this.options },
+
 	value: function( newValue ) {
 		if ( arguments.length ) {
 			this.options.value = this._trimAlignValue( newValue );
@@ -516,7 +520,9 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			valPercent = ( valueMax !== valueMin ) ?
 					( value - valueMin ) / ( valueMax - valueMin ) * 100 :
 					0;
-			_set[ this.orientation === "horizontal" ? "left" : "bottom" ] = valPercent + "%";
+      if (this.options.inverted)valPercent = 100 - valPercent;
+      System.out.println("valPercent=" + valPercent)
+			_set[ this.orientation === "horizontal" ? "left" : this.options.inverted ? "top" : "bottom" ] = valPercent + "%";
 			this.handle.stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 
 			if ( oRange === "min" && this.orientation === "horizontal" ) {

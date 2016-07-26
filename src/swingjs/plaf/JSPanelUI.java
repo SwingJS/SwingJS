@@ -35,7 +35,7 @@ public class JSPanelUI extends JSLightweightUI {
 	
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
     LookAndFeel.installColorsAndFont(jc,
         "Panel.background",
         "Panel.foreground",
@@ -43,7 +43,7 @@ public class JSPanelUI extends JSLightweightUI {
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -65,10 +65,6 @@ public class JSTableUI extends JSLightweightUI {
 
 	@Override
 	public DOMNode createDOMNode() {
-		table = (JTable) c;
-		
-		// what can we know about a table?
-		
 		int rc = table.getRowCount();
 		int rh = table.getRowHeight();
 		
@@ -172,19 +168,6 @@ public class JSTableUI extends JSLightweightUI {
 	}
 
 	
-  @Override
-	public void notifyPropertyChanged(String prop) {
-  	notifyPropChangeCUI(prop);
-	}
-	
-	
-	
-
-  
-  
-  
-  
-  
   
   private static final StringBuilder BASELINE_COMPONENT_KEY =
       new StringBuilder("Table.baselineComponent");
@@ -201,7 +184,7 @@ public class JSTableUI extends JSLightweightUI {
   /**
    * Local cache of Table's client property "Table.isFileList"
    */
-  private boolean isFileList = false;
+  boolean isFileList = false;
 
 //
 //Helper class for keyboard actions
@@ -1495,9 +1478,9 @@ public class JSTableUI extends JSLightweightUI {
 
 //Installation
 
-  public void installJSUI(JComponent c) {
+  @Override
+	public void installUIImpl() {
       table = (JTable)c;
-
       rendererPane = new CellRendererPane();
       table.add(rendererPane);
       installDefaults();
@@ -1718,7 +1701,8 @@ public class JSTableUI extends JSLightweightUI {
 
 //Uninstallation
 
-  public void uninstallUI(JComponent c) {
+  @Override
+	public void uninstallUIImpl() {
       uninstallDefaults();
       uninstallListeners();
       uninstallKeyboardActions();

@@ -22,10 +22,14 @@ import swingjs.api.DOMNode;
 @J2SRequireImport(swingjs.jquery.JQueryUI.class)
 public class JSSliderUI extends JSLightweightUI implements PropertyChangeListener, ChangeListener {
 
-	private JSlider jSlider;
+	JSlider jSlider;
 	private int min, max, val, majorSpacing, minorSpacing;
 	private String orientation;
 	
+	boolean iVertScrollBar; // vertical scrollbars on scroll panes are inverted
+	
+	JSScrollPaneUI scrollPaneUI;
+
 	private boolean paintTicks, paintLabels;
 	
 	protected DOMNode jqSlider;
@@ -36,6 +40,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	protected boolean isScrollBar;
 	private JScrollBar jScrollBar;
 	private DOMNode sliderTrack;
+	private DOMNode sliderHandle;
 
 	public JSSliderUI() {
 		needPreferred = true;
@@ -53,14 +58,11 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public DOMNode createDOMNode() {
 		boolean isNew = (domNode == null);
-		JSlider js = jSlider = (JSlider) c;
+		JSlider js = (JSlider) c;
 		min = js.getMinimum();
 		max = js.getMaximum();
 		val = js.getValue();
-		if (isScrollBar) {
-			// temporary
-			jScrollBar = (JScrollBar) c;
-		} else {
+		if (!isScrollBar) {
 			minorSpacing = js.getMinorTickSpacing();
 			majorSpacing = js.getMajorTickSpacing();
 			paintTicks = js.getPaintTicks();
@@ -74,13 +76,20 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			domNode = wrap("div", id + "_wrap",
 					jqSlider = DOMNode.createElement("div", id));
 			$(domNode).addClass("swingjs");
-			setJQuerySliderAndEvents();
+			setJQuerySliderAndEvents();	
 		}
 		setup(isNew);
 		setSlider();
 		return domNode;
 	}
 
+	@Override
+	public void installUIImpl() {
+		jSlider = (JSlider) c;
+		if (isScrollBar)
+			jScrollBar = (JScrollBar) c;
+	}
+	
 	private void setJQuerySliderAndEvents() {
 
 		/**
@@ -93,6 +102,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 *               min: me.min,
 		 *               max: me.max,
 		 *               value: me.val, 
+		 *               inverted: me.iVertScrollBar,
 		 *               change: function(jqevent, handle) {
 		 *                     me.jqueryCallback(jqevent, handle); }, 
 		 *               slide: function(jqevent, handle) { 
@@ -120,7 +130,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 */
 		{}
 		
-		jSlider.setValue(val = value);
+		jSlider.setValue(val = (iVertScrollBar ? 100 - value : value));
 	}
 
 	/**
@@ -134,7 +144,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		z0 = z;
 		//System.out.println("JSSliderUI setting z to " + z);
 		sliderTrack = DOMNode.firstChild(domNode);
-		DOMNode sliderHandle = DOMNode.firstChild(sliderTrack);
+		sliderHandle = DOMNode.firstChild(sliderTrack);
 		//DOMNode.setZ(sliderTrack, z++);
 		//DOMNode.setZ(sliderHandle, z++);
 		// mark the handle and track with the "swingjs-ui" class
@@ -240,22 +250,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	}
 
 	@Override
-	protected void installJSUI() {
-	  jSlider.addChangeListener(this);
-	  jSlider.addPropertyChangeListener(this);
-	}
-
-	@Override
-	protected void uninstallJSUI() {
-	  jSlider.removeChangeListener(this);
-	  jSlider.removePropertyChangeListener(this);
-	}
-
-	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
-		if (debugging)
-			System.out.println(id + " propertyChange " + prop);
 		if (prop == "ancestor")
 			setup(false);
 	}
@@ -269,9 +265,18 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			setSliderAttr("min", min = v);
 		if ((v = jSlider.getMaximum()) != max)
 			setSliderAttr("max", max = v);		
-		if ((v = jSlider.getValue()) != val)
+		if ((v = jSlider.getValue()) != val) 
 			setSliderAttr("value", val = v);
 		setup(false);
+	}
+
+
+	@Override
+	public void setBoundsDOM(int width, int height) {
+		DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
+		if (iVertScrollBar)
+			DOMNode.setStyles(sliderHandle, "left", "-8px");
+			
 	}
 
 }

@@ -1,6 +1,7 @@
 package swingjs.plaf;
 
 import jsjava.awt.Dimension;
+import jsjava.awt.Rectangle;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComponent;
@@ -9,117 +10,146 @@ import jsjavax.swing.JScrollPane;
 import jsjavax.swing.JViewport;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
-import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
 public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeListener, ChangeListener {
 
+	/*
+	 * This first implementation is an attempt to 
+	 * reproduce Java's JScrollPane with its associated
+	 * separate ViewPort, View, vertical and horizontal JScrollBars.
+	 * 
+	 * It is only marginally successful and requires that the scrollbars be
+	 * implemented as sliders, primarily because it is too difficult to do
+	 * actual scrollbars. Or at least that is what I concluded based on 
+	 * looking at different browsers. 
+	 * 
+	 * So now the way it works is that we allow the scrolled component ("view")
+	 * to scroll itself. Somewhat less control, but more along the lines of 
+	 * letting the browser do its work when possible.
+	 * 
+	 *  
+	 */
+	
 	private JComponent scrolledComponent;
 	private JScrollPane scrollpane;
 	private JViewport viewport;
 	private JSComponentUI scrolledUI;
-	private JScrollBar horizBar;
-	private JScrollBar vertBar;
 	private JSScrollBarUI horizNode;
 	private JSScrollBarUI vertNode;
-	private boolean horizIsSet;
-	private boolean vertIsSet;
+	private JScrollBar vscrollbar;
+	private JScrollBar hscrollbar;
 	
 	@Override
 	public DOMNode createDOMNode() {
 		isContainer = true;
 		if (domNode == null)
 			domNode = newDOMObject("div", id);
-		scrollNode = scrolledUI.getOuterNode();
-		DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 		return domNode;
 	}
 
-	private void setViewPort() {
-		if (viewport != null && scrolledComponent != null)
-			return;
-		scrollpane = (JScrollPane) c;
+	// all are required: 
+	
+	// children[0]  viewport
+	// children[1]  vert scrollbar
+	// children[2]  horiz scrollbar
+	
+	boolean scrollBarUIDisabled = true;
+
+	private boolean setViewPort() {
+		// first time through -- could be a view, but not necessarily
+		// need to find a listener for this
+		hscrollbar = scrollpane.getHorizontalScrollBar();
+		hscrollbar.addChangeListener(this);
+		hscrollbar.addPropertyChangeListener(this);
+		vscrollbar = scrollpane.getVerticalScrollBar();
+		vscrollbar.addChangeListener(this);
+		vscrollbar.addPropertyChangeListener(this);
+		
+		horizNode = (JSScrollBarUI) hscrollbar.getUI();
+		vertNode = (JSScrollBarUI) vscrollbar.getUI();
+		vertNode.iVertScrollBar = true;
+		horizNode.scrollPaneUI = vertNode.scrollPaneUI = this;
 		viewport = scrollpane.getViewport();
-		if (viewport == null)
-			return;
-		//System.out.println("JSScrollPaneUI v=" + viewport);
-		JComponent sc = null;
-		try {
-			sc = (JComponent) viewport.getComponent(0);
-		} catch (Exception e) {
-			// unusable
-		}
-		if (sc != null && sc != scrolledComponent) {
+		JComponent sc = (JComponent) viewport.getView();
+		// for whatever reason, the component being scrolled 
+		// in Java is referred to as the "view". This makes 
+		// no sense to me; I am calling it scrolledComponent.
+		if (sc == null || sc.ui == null)
+			return false;
+		if (sc != scrolledComponent) {
+			if (scrolledUI != null && scrolledUI.scrollerNode == this)
+				scrolledUI.scrollerNode = null;
 			scrolledComponent = sc;
-			scrolledUI = JSToolkit.getUI(sc, false);
+			scrolledUI = (JSComponentUI) sc.ui;
 			scrolledUI.scrollerNode = this;
+			scrollNode = scrolledUI.domNode; // why outer node?
+			DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 		}
+		return true;
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
+		scrollpane = (JScrollPane) c;
 		setViewPort();
-		if (viewport != null) {
-			viewport.addChangeListener(this);
-			viewport.addPropertyChangeListener(this);
-		}
-	  scrollpane.addPropertyChangeListener(this);
+		viewport.addChangeListener(this);
+		viewport.addPropertyChangeListener(this);
 	}
 
 	@Override
-	protected void uninstallJSUI() {
-		if (viewport != null) {
-			viewport.removeChangeListener(this);
-			viewport.removePropertyChangeListener(this);
-		}
-	  scrollpane.removePropertyChangeListener(this);
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		String prop = e.getPropertyName();
-		Object src = e.getSource();
-		if (debugging)
-			System.out.println(id + " propertyChange " + prop + "  " + src);
+	protected void uninstallUIImpl() {
+		viewport.removeChangeListener(this);
+		viewport.removePropertyChangeListener(this);
+	  hscrollbar.removePropertyChangeListener(this);
+	  vscrollbar.removePropertyChangeListener(this);
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		if (!horizIsSet) {
-			horizIsSet = true;
-			horizBar = scrollpane.getHorizontalScrollBar();
-			if (horizBar != null) {
-				horizNode = (JSScrollBarUI) horizBar.getUI();
-				horizBar.addChangeListener(this);
-				horizBar.addPropertyChangeListener(this);
-				// DOMNode.setStyles(horizNode.domNode, "width", viewport.getWidth() +
-				// "px");
-			}
+		// from Java
+		if (scrolledComponent == null && !setViewPort())
+			return;
+		if (scrollBarUIDisabled) {
+//			if (scrolledComponent.uiClassID == "TextAreaUI") {
+			// a problem will occur if the scrollers turn on; the content may be shifted
+			// there is discussion of this on StackOverflow. It is possible to correct for it.
+			Rectangle r1 = viewport.getBounds();
+			Rectangle r2 = scrolledComponent.getBounds();
+			if (!r1.equals(r2) && e.getSource() != viewport) // infinite loop if resizing
+				scrolledComponent.setBounds(r1);
+				DOMNode.setStyles(scrolledUI.domNode, "overflow-x", getScrollBarPolicyCSS(scrollpane.getHorizontalScrollBarPolicy()),
+						"overflow-y", getScrollBarPolicyCSS(scrollpane.getHorizontalScrollBarPolicy()));
+				DOMNode.setStyles(horizNode.jqSlider, "display", "none");
+				DOMNode.setStyles(vertNode.jqSlider, "display", "none");
+//			}
+			return;
 		}
-		if (!vertIsSet) {
-			vertIsSet = true;
-			vertBar = scrollpane.getVerticalScrollBar();
-			if (vertBar != null) {
-				vertNode = (JSScrollBarUI) vertBar.getUI();
-				vertBar.addChangeListener(this);
-				vertBar.addPropertyChangeListener(this);
-				// DOMNode.setStyles(vertNode.domNode, "height", viewport.getHeight() +
-				// "px");
-			}
-		}
-		System.out.println(id + " stateChange ");
+		// isTainted = true;
+		float v = vertNode.jSlider.getValue();
+		float range = viewport.getHeight() - scrolledComponent.getHeight();
+		int pos = Math.min(0, (int) (range * v / 100));
+		System.out.println("v=" + v + " range=" + range + " pos=" + pos);
+		DOMNode.setStyles(((JSComponentUI) scrolledComponent.ui).domNode, "top",
+				pos + "px");
 	}
 
-	@Override
-	public void notifyPropertyChanged(String prop) {
-		if (debugging)
-			System.out.println(id + " notifyPropertyChanged " + prop);
-		notifyPropChangeCUI(prop);
+
+	private String getScrollBarPolicyCSS(int policy) {
+		switch  (policy % 10) {
+		default:
+		case 0: // as needed
+			return "auto";
+		case 1: // never
+			return "none";
+		case 2: // always
+			return "scroll";
+		}
 	}
-	
 
 	@Override
 	public Dimension getPreferredSize() {
+		System.out.println(id + " getpreferredSize");
   	return null;
   }
 

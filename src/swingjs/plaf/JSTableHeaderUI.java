@@ -6,28 +6,23 @@ import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Cursor;
 import jsjava.awt.Dimension;
-import jsjava.awt.JSComponent;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjavax.swing.CellRendererPane;
 import jsjavax.swing.JComponent;
-import jsjavax.swing.JLabel;
 import jsjavax.swing.JScrollPane;
 import jsjavax.swing.JTable;
 import jsjavax.swing.JViewport;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.RowSorter;
-import jsjavax.swing.SwingConstants;
 import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.event.MouseInputListener;
 import jsjavax.swing.table.JTableHeader;
 import jsjavax.swing.table.TableCellRenderer;
 import jsjavax.swing.table.TableColumn;
 import jsjavax.swing.table.TableColumnModel;
-import jsjavax.swing.table.TableModel;
-import jssun.swing.SwingUtilities2;
 import jssun.swing.UIAction;
 import swingjs.api.DOMNode;
 
@@ -43,7 +38,6 @@ public class JSTableHeaderUI extends JSLightweightUI {
 
 	@Override
 	public DOMNode createDOMNode() {
-		header = (JTableHeader) c;
 		if (domNode == null) {
 			domNode = newDOMObject("table", id);
 			table = header.getTable();
@@ -72,7 +66,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	protected MouseInputListener mouseInputListener;
 
 	// The column header over which the mouse currently is.
-	private int rolloverColumn = -1;
+	int rolloverColumn = -1;
 
 	// The column that should be highlighted when the table header has the focus.
 	private int selectedColumnIndex = 0; // Read ONLY via getSelectedColumnIndex!
@@ -112,6 +106,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 		private int mouseXOffset;
 		private Cursor otherCursor = resizeCursor;
 
+		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() % 2 == 1 && SwingUtilities.isLeftMouseButton(e)) {
 				JTable table = header.getTable();
@@ -152,6 +147,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			return header.getColumnModel().getColumn(columnIndex);
 		}
 
+		@Override
 		public void mousePressed(MouseEvent e) {
 			header.setDraggedColumn(null);
 			header.setResizingColumn(null);
@@ -193,6 +189,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			otherCursor = tmp;
 		}
 
+		@Override
 		public void mouseMoved(MouseEvent e) {
 			if (canResize(getResizingColumn(e.getPoint()), header) != (header
 					.getCursor() == resizeCursor)) {
@@ -201,6 +198,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			updateRolloverColumn(e);
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent e) {
 			int mouseX = e.getX();
 
@@ -254,6 +252,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			updateRolloverColumn(e);
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			setDraggedDistance(0, viewIndexForColumn(header.getDraggedColumn()));
 
@@ -263,10 +262,12 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			updateRolloverColumn(e);
 		}
 
+		@Override
 		public void mouseEntered(MouseEvent e) {
 			updateRolloverColumn(e);
 		}
 
+		@Override
 		public void mouseExited(MouseEvent e) {
 			int oldRolloverColumn = rolloverColumn;
 			rolloverColumn = -1;
@@ -298,9 +299,9 @@ public class JSTableHeaderUI extends JSLightweightUI {
 
 	// Installation
 
-	public void installJSUI(JComponent c) {
+	@Override
+	public void installUIImpl() {
 		header = (JTableHeader) c;
-
 		rendererPane = new CellRendererPane();
 		header.add(rendererPane);
 
@@ -348,14 +349,11 @@ public class JSTableHeaderUI extends JSLightweightUI {
 
 	// Uninstall methods
 
-	public void uninstallJSUI(JComponent c) {
+	public void uninstallUIImpl() {
 		uninstallDefaults();
 		uninstallListeners();
 		uninstallKeyboardActions();
-
 		header.remove(rendererPane);
-		rendererPane = null;
-		header = null;
 	}
 
 	protected void uninstallDefaults() {
@@ -573,6 +571,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	 * @see javax.swing.JComponent#getBaseline(int, int)
 	 * @since 1.6
 	 */
+	@Override
 	public int getBaseline(JComponent c, int width, int height) {
 		super.getBaseline(c, width, height);
 		int baseline = -1;
@@ -748,9 +747,8 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	 * Return the minimum size of the header. The minimum width is the sum of the
 	 * minimum widths of each column (plus inter-cell spacing).
 	 */
+	@Override
 	public Dimension getMinimumSize() {
-		if (header == null)
-			header = (JTableHeader) c;
 		long width = 0;
 		Enumeration enumeration = header.getColumnModel().getColumns();
 		while (enumeration.hasMoreElements()) {
@@ -766,9 +764,8 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	 * header renderers. The preferred width is the sum of the preferred widths of
 	 * each column (plus inter-cell spacing).
 	 */
+	@Override
 	public Dimension getPreferredSize() {
-		if (header == null)
-			header = (JTableHeader) c;
 		long width = 0;
 		Enumeration enumeration = header.getColumnModel().getColumns();
 		while (enumeration.hasMoreElements()) {
@@ -782,9 +779,8 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	 * Return the maximum size of the header. The maximum width is the sum of the
 	 * maximum widths of each column (plus inter-cell spacing).
 	 */
+	@Override
 	public Dimension getMaximumSize() {
-		if (header == null)
-			header = (JTableHeader) c;
 		long width = 0;
 		Enumeration enumeration = header.getColumnModel().getColumns();
 		while (enumeration.hasMoreElements()) {
@@ -808,6 +804,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			super(name);
 		}
 
+		@Override
 		public boolean isEnabled(Object sender) {
 			if (sender instanceof JTableHeader) {
 				JTableHeader th = (JTableHeader) sender;
@@ -835,6 +832,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 			return true;
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			JTableHeader th = (JTableHeader) e.getSource();
 			JSTableHeaderUI ui = (JSTableHeaderUI) th.getUI();
@@ -924,18 +922,6 @@ public class JSTableHeaderUI extends JSLightweightUI {
 
 			ui.changeColumnWidth(resizingColumn, th, oldWidth, newWidth);
 		}
-	}
-
-	@Override
-	public void notifyPropertyChanged(String prop) {
-		// boolean isVert = (prop.indexOf("vert") >= 0);
-		// boolean isAlign = (prop.indexOf("Ali") >= 0);
-		// if (isAlign && !isVert) {
-		// setTainted();
-		// setHTMLElement();
-		// } else {
-		// notifyPropChangeCUI(prop);
-		// }
 	}
 
 	// /**

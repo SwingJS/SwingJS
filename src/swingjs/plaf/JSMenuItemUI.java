@@ -10,7 +10,6 @@ public class JSMenuItemUI extends JSButtonUI {
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
-			menuItem = (JMenuItem) c;
 			hasOuterDiv  = false;
 		  domNode = createItem("_item", null);
 		}
@@ -27,6 +26,9 @@ public class JSMenuItemUI extends JSButtonUI {
 		return new Dimension(5, 0);
 	}
 	
-
+	@Override
+	protected void installUIImpl() {
+		menuItem = (JMenuItem) c;
+	}
 
 }

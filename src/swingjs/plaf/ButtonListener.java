@@ -59,7 +59,7 @@ import swingjs.api.DOMNode;
  * 
  */
 
-public class JSButtonListener implements MouseListener, MouseMotionListener,
+public class ButtonListener implements MouseListener, MouseMotionListener,
 		FocusListener, ChangeListener, PropertyChangeListener {
 	
 	private AbstractButton btn;
@@ -72,7 +72,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 		map.put(new Actions(Actions.RELEASE));
 	}
 
-	public JSButtonListener(AbstractButton b, boolean isMenuItem) {
+	public ButtonListener(AbstractButton b, boolean isMenuItem) {
 		btn = b;
 	}
 
@@ -95,7 +95,7 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 		} else if ("font" == prop || "foreground" == prop
 				|| labelprops.indexOf(prop) >= 0) {
 			AbstractButton b = (AbstractButton) e.getSource();
-			((JSComponentUI) (Object) b.getUI()).notifyPropertyChanged(prop);
+			((JSComponentUI) (Object) b.getUI()).propertyChangedFromListener(prop);
 		}
 	}
 
@@ -108,11 +108,11 @@ public class JSButtonListener implements MouseListener, MouseMotionListener,
 	 * registring the keyboard mnemonic (if any).
 	 */
 	public void installKeyboardActions(JComponent c) {
-		AbstractButton b = (AbstractButton) c;
+		AbstractButton button = (AbstractButton) c;
 		// Update the mnemonic binding.
-		updateMnemonicBinding(b);
+		updateMnemonicBinding(button);
 
-		LazyActionMap.installLazyActionMap(c, JSButtonListener.class,
+		LazyActionMap.installLazyActionMap(c, ButtonListener.class,
 				"Button.actionMap");
 
 		InputMap km = getInputMap(JComponent.WHEN_FOCUSED, c);

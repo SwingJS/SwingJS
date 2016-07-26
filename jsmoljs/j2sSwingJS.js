@@ -305,6 +305,50 @@ Clazz.declareAnonymous = function (prefix, name, clazzParent, interfacez,
 };
 
 /*
+ * Override the existed methods which are in the same name.
+ * Overriding methods is provided for the purpose that the JavaScript
+ * does not need to search the whole hierarchied methods to find the
+ * correct method to execute.
+ * Be cautious about this method. Incorrectly using this method may
+ * break the inheritance system.
+ *
+ * @param clazzThis host class in which the method to be defined
+ * @param funName method name
+ * @param funBody function object, e.g function () { ... }
+ * @param rawSig paramether signature, e.g ["string", "number"]
+ */
+/* public */
+Clazz.overrideMethod = function(clazzThis, funName, funBody, rawSig) {
+  // there are problems. for example, 
+  
+  // A extends B
+  // A.xxx() {
+  //   B.yyy()
+  // }
+  
+  // B.xxx() {
+  // }
+  
+  // B.yyy() {
+  //   super.xxx()
+  // }
+  
+  // compiler may indicate A.xxx() as overrideMethod 
+  // but then the stack is missing.
+  
+  var sig = formatSignature(rawSig);
+  if (Clazz._Loader._checkLoad)
+    checkDuplicate(clazzThis, funName, sig);
+    
+	if (Clazz.unloadClass) 
+    assureInnerClass(clazzThis, funBody);
+	funBody.exName = funName;	
+  funBody.sigs = {sig: sig};
+	funBody.claxxOwner = clazzThis;
+	return addProto(clazzThis.prototype, funName, funBody);
+};
+
+/*
  * Define method for the class with the given method name and method
  * body and method parameter signature.
  *
@@ -423,32 +467,6 @@ var findMethod = function(obj, clazzThis, args) {
   }
   return f;
 }
-/*
- * Override the existed methods which are in the same name.
- * Overriding methods is provided for the purpose that the JavaScript
- * does not need to search the whole hierarchied methods to find the
- * correct method to execute.
- * Be cautious about this method. Incorrectly using this method may
- * break the inheritance system.
- *
- * @param clazzThis host class in which the method to be defined
- * @param funName method name
- * @param funBody function object, e.g function () { ... }
- * @param rawSig paramether signature, e.g ["string", "number"]
- */
-/* public */
-Clazz.overrideMethod = function(clazzThis, funName, funBody, rawSig) {
-	if (Clazz.unloadClass) 
-    assureInnerClass(clazzThis, funBody);
-	funBody.exName = funName;
-	var sig = formatSignature(rawSig);
-  if (Clazz._Loader._checkLoad)
-    checkDuplicate(clazzThis, funName, sig);
-  funBody.sigs = {sig: sig};
-	funBody.claxxOwner = clazzThis;
-	return addProto(clazzThis.prototype, funName, funBody);
-};
-
 Clazz.defineStatics = function(clazz) {
 	for (var j = arguments.length, i = (j - 1) / 2; --i >= 0;) {
 		var val = arguments[--j]

@@ -4,6 +4,8 @@ import java.util.List;
 
 import jsjava.awt.Window;
 import jsjava.awt.peer.DialogPeer;
+import jsjavax.swing.JFrame;
+import jsjavax.swing.LookAndFeel;
 
 
 public class JSDialogUI extends JSFrameUI implements DialogPeer {
@@ -27,15 +29,16 @@ public class JSDialogUI extends JSFrameUI implements DialogPeer {
 		setDoc();
 	}
 
+		@Override
+		protected void installUIImpl() {
+			frame = (JFrame) c;
+			LookAndFeel.installColors(jc,
+			   "Frame.background",
+			   "Frame.foreground");
+		}
+	
 	@Override
-	protected void installJSUI() {
-		// LookAndFeel.installColors(c,
-		// "Frame.background",
-		// "Frame.foreground");
-	}
-
-	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 	}
 
 	@Override

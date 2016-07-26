@@ -164,13 +164,13 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 	}
 
 	@Override

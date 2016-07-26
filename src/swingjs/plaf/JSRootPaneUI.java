@@ -19,11 +19,11 @@ public class JSRootPaneUI extends JSLightweightUI {
 	}
 
 	@Override
-	protected void installJSUI() {
+	protected void installUIImpl() {
 	}
 
 	@Override
-	protected void uninstallJSUI() {
+	protected void uninstallUIImpl() {
 	}
 
 	@Override
