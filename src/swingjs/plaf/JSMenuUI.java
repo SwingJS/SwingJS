@@ -21,12 +21,12 @@ public class JSMenuUI extends JSMenuItemUI {
 	 protected void installUIImpl(){
 	 super.installUIImpl();
 		jm = (JMenu) jc;
-		isMenuBarMenu = jm.isTopLevelMenu();
 	 }
 
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
+			isMenuBarMenu = jm.isTopLevelMenu();
 			if (isMenuBarMenu) {
 				domNode = newDOMObject("label", id);
 				setCssFont(DOMNode.setAttr(domNode, "innerHTML", menuItem.getText()),

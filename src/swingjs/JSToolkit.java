@@ -73,8 +73,8 @@ public class JSToolkit extends SunToolkit {
 		 * @j2sNative
 		 * 
 		 * swingjs.JSToolkit.J2S = self.J2S;
-		 * isMac = (J2S.featureDetection.os == "mac");
-		 * debugging = J2S._checkLoad
+		 * swingjs.JSToolkit.isMac = (J2S.featureDetection.os == "mac");
+		 * swingjs.JSToolkit.debugging = J2S._checkLoad
 		 * 
 		 */
 		{
@@ -571,7 +571,7 @@ public class JSToolkit extends SunToolkit {
 	 * "current thread" prior to execution. This is in case of multiple applets.
 	 * 
 	 * @param f a function or Runnable
-	 * @param msDelay a time to wait for, in milliseconds
+	 * @param msDelay a time to wait for, in milliseconds. If this is < 0, just run without the dispatch (debugging)
 	 * @param id an event id or 0 if not via EventQueue 
 	 */
 	public static int dispatch(Object f, int msDelay, int id) {
@@ -582,7 +582,7 @@ public class JSToolkit extends SunToolkit {
 		 *            var thread = java.lang.Thread.thisThread;
 		 *            var thread0 = thread;
 		 *            var id0 = SwingJS.eventID || 0;
-		 *            return setTimeout(function(_JSToolkit_setTimeout) {
+		 *            var ff = function(_JSToolkit_setTimeout) {
 		 *            SwingJS.eventID = id;
 		 *            java.lang.Thread.thisThread = thread; 
 		 *            try {
@@ -596,7 +596,8 @@ public class JSToolkit extends SunToolkit {
 		 *             alert(s)}
 		 *            SwingJS.eventID = id0; 
 		 *            java.lang.Thread.thisThread = thread0; 
-		 *            }, msDelay);
+		 *            }
+		 *            return (msDelay == -1 ? ff() : setTimeout(ff, msDelay));
 		 * 
 		 * 
 		 * 

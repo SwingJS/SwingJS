@@ -2165,7 +2165,8 @@ J2S._setDraggable = function(tag, targetOrArray) {
 }
 
 J2S._setWindowZIndex = function(node, z) {
-  // on frame show or mouse-down, create a stack of frames and sort by z-order 
+  // on frame show or mouse-down, create a stack of frames and sort by z-order
+  if (!node) return 
   var zbase = J2S._z.rear + 2000;
   var a = [];
   var zmin = 1e10
@@ -2180,7 +2181,8 @@ J2S._setWindowZIndex = function(node, z) {
     zbase += 1000;
   }
   z = (node.style.zIndex = (z > 0 ? zbase : z0));
-  System.out.println("setting z-index to " + z + " for " + node.id); 
+  if (J2S._checkLoading)
+    System.out.println("setting z-index to " + z + " for " + node.id); 
   return z;
 } 
 

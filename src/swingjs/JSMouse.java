@@ -268,8 +268,10 @@ public class JSMouse {
 		// A bit of a kludge.
 
 		int extended = modifiers & EXTENDED_MASK;
-		boolean popupTrigger = (extended == InputEvent.BUTTON3_DOWN_MASK	|| extended == InputEvent.META_DOWN_MASK
-				|| JSToolkit.isMac && extended == (InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK));
+		boolean popupTrigger = (
+				extended == InputEvent.BUTTON3_DOWN_MASK	|| 
+				extended == InputEvent.META_DOWN_MASK ||
+				JSToolkit.isMac && extended == (InputEvent.CTRL_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK));
 		int button = getButton(modifiers);
 		int count = updateClickCount(id, time, x, y);
 

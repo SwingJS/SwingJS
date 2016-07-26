@@ -263,14 +263,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 	}
 
-	protected void installUIImpl() {
-	}
-
-	protected void uninstallUIImpl() {
-	}
-
 	/**
-	 * subclasses should not implement this method; use installUIImpl() instead
+	 * installUI is called prior to completion of UI creation, guaranteeing that
+	 * this.c and this.jc have been set up and well before any call to this.createDOMNode.
+	 * 
+	 * Subclasses should not implement this method; use installUIImpl() instead
 	 * 
 	 */
 	@Override
@@ -287,7 +284,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	/**
-	 * subclasses should not implement this method; use installUIImpl() instead
+	 * Called upon disposal of Window, JPopupMenu, and JComponent. 
+	 * 
+	 * Subclasses should not implement this method; use uninstallUIImpl() instead
 	 * 
 	 */
 	@Override
@@ -309,6 +308,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			DOMNode.remove(outerNode);
 			outerNode = null;
 		}
+	}
+
+	protected void installUIImpl() {
+	}
+
+	protected void uninstallUIImpl() {
 	}
 
 	protected JQueryObject $(DOMNode node) {
@@ -940,8 +945,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void handleEvent(AWTEvent e) {
-		JSToolkit.notImplemented("");
-
+		// Mouse events will show up here immediately after being dispatched 
+		// to the target by Container.dispatchEventImpl. 
+		// We do not handle them here since we are already handling them there.		
 	}
 
 	@Override

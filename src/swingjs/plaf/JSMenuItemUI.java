@@ -29,6 +29,7 @@ public class JSMenuItemUI extends JSButtonUI {
 	@Override
 	protected void installUIImpl() {
 		menuItem = (JMenuItem) c;
+		super.installUIImpl();
 	}
 
 }

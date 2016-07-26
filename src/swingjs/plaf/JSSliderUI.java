@@ -246,7 +246,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			d += 20;
 		if (jSlider.getBorder() != null)
 			d += 10;
-		return (orientation == "horizontal" ? new Dimension(100, d) : new Dimension(d, 100));
+		// only the width or height will be read here, not both
+		return new Dimension(d, d);
 	}
 
 	@Override
@@ -273,7 +274,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	@Override
 	public void setBoundsDOM(int width, int height) {
-		DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
+		//DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
 		if (iVertScrollBar)
 			DOMNode.setStyles(sliderHandle, "left", "-8px");
 			

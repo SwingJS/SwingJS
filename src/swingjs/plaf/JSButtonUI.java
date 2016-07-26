@@ -123,6 +123,10 @@ public class JSButtonUI extends JSLightweightUI {
 
 	@Override
 	protected void installUIImpl() {
+		// response to general button actions 
+		// takes place through the standard Java
+		// pathway involving Component.LightweightDispatcher 
+		// posting to the event queue 
 		installDefaults((AbstractButton) c);
 		installListeners((AbstractButton) c);
 		installKeyboardActions((AbstractButton) c);
