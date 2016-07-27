@@ -202,7 +202,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * panels
 	 * 
 	 */
-	protected boolean isContainer, isWindow, isRootPane;
+	protected boolean isContainer, isWindow, isRootPane, isContentPane;
 
 	/**
 	 * linked nodes of this class
@@ -538,6 +538,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				// System.out.println("JSComponentUI container " + id + " "
 				// + c.getBounds());
 				DOMNode.setSize(outerNode, getContainerWidth(), getContainerHeight());
+				if (isContentPane)
+					DOMNode.setStyles(domNode, "overflow", "hidden");
 			}
 			if (isRootPane) {
 				if (jc.getFrameViewer().isApplet) {
