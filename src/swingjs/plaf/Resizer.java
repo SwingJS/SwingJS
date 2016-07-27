@@ -57,7 +57,11 @@ public class Resizer {
 		String id = rootPane.htmlName + "_resizer";
 		resizer = DOMNode.createElement("div", id);
 		DOMNode.setSize(resizer, 10, 10);
-		DOMNode.setStyles(resizer, "background-color", "red", "cursor", "move");
+		DOMNode.setStyles(resizer, 
+				"background-color", "red", 
+				"opacity", "0", 
+				"cursor", "move"
+		);
 		$(resizer).addClass("swingjs-resizer");
 		domNode.appendChild(resizer);
 		JSFunction fHandleResizer = null, fHandleDOMResize = null;
