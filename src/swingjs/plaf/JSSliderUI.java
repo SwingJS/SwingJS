@@ -273,7 +273,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 
 	@Override
-	public void setBoundsDOM(int width, int height) {
+	public void setInnerComponentBounds(int width, int height) {
 		//DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
 		if (iVertScrollBar)
 			DOMNode.setStyles(sliderHandle, "left", "-8px");

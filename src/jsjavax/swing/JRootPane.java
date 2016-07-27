@@ -353,7 +353,6 @@ public class JRootPane extends JComponent {
 	public JRootPane(String prefix, boolean isApplet) {
 		// can come here from JApplet, JWindow, JDialog, or JFrame
 		// JApplet is special, because it means we are embedded.
-		isRootPane = true;
 		uiClassID = "RootPaneUI";
 		setName(AppContext.getAppContext().getThreadGroup().getName() + prefix + (++paneCount)
 				+ ".JRootPane");
@@ -445,7 +444,6 @@ public class JRootPane extends JComponent {
 	protected JLayeredPane createLayeredPane() {
 		JLayeredPane p = new JLayeredPane();
 		p.setName(this.getName() + ".layeredPane");
-		p.frameViewer = frameViewer;
 		return p;
 	}
 
@@ -474,7 +472,6 @@ public class JRootPane extends JComponent {
 				super.addLayoutComponent(comp, constraints);
 			}
 		});
-		c.frameViewer = frameViewer;
 		return c;
 	}
 
@@ -490,7 +487,6 @@ public class JRootPane extends JComponent {
 		c.setName(this.getName() + ".glassPane");
 		c.setVisible(false);
 		c.setOpaque(false);
-		c.frameViewer = frameViewer;
 		return c;
 	}
 
@@ -1028,15 +1024,13 @@ public class JRootPane extends JComponent {
 		return super.paramString();
 	}
 
-	public void setFrameViewer(JSFrameViewer v) {
-	   frameViewer = 
-	   layeredPane.frameViewer =  
-	   contentPane.frameViewer = v;
-	   if (glassPane != null)
-	  	 glassPane.frameViewer = v;
-		
-		// TODO Auto-generated method stub
-		
+	@Override
+	public JSFrameViewer setFrameViewer(JSFrameViewer v) {
+		layeredPane.setFrameViewer(v);
+		contentPane.setFrameViewer(v);
+		if (glassPane != null)
+			glassPane.setFrameViewer(v);
+		return super.setFrameViewer(v);
 	}
 
 	// ///////////////

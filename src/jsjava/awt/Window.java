@@ -690,18 +690,14 @@ public class Window extends Container {
         if (peer == null) {
             addNotify();
         }
-        Dimension newSize = getPreferredSize();
-        if (peer != null) {
-            setClientSize(newSize.width, newSize.height);
-        }
-
         if(beforeFirstShow) {
-            isPacked = true;
+          isPacked = true;
         }
-        validate();
+        
+        repackContainer();
     }
 
-    /**
+		/**
      * Sets the minimum size of this window to a constant
      * value.  Subsequent calls to {@code getMinimumSize}
      * will always return this value. If current window's
@@ -797,13 +793,6 @@ public class Window extends Container {
             }
         }
         super.reshape(x, y, width, height);
-    }
-
-    void setClientSize(int w, int h) {
-        synchronized (getTreeLock()) {
-            setBoundsOp(ComponentPeer.SET_CLIENT_SIZE);
-            setBounds(x, y, w, h);
-        }
     }
 
 //    static private final AtomicBoolean

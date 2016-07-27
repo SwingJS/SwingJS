@@ -262,10 +262,9 @@ public class JWindow extends Window implements RootPaneContainer {
 	 * Called by the constructors to init the <code>JWindow</code> properly.
 	 */
 	protected void windowInit() {
-		frameViewer = new JSFrameViewer().setForWindow(this);
 		setLocale(JComponent.getDefaultLocale());
 		setRootPane(createRootPane());
-    rootPane.setFrameViewer(frameViewer);
+    rootPane.setFrameViewer(setFrameViewer(null));
 		setRootPaneCheckingEnabled(true);
 		uiClassID = "WindowUI";
 		updateUI();

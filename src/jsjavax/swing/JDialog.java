@@ -618,11 +618,10 @@ public class JDialog extends Dialog implements WindowConstants,
 	 * Called by the constructors to init the <code>JDialog</code> properly.
 	 */
 	protected void dialogInit() {
-		frameViewer = new JSFrameViewer().setForWindow(this);
 		enableEvents(AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK);
 		setLocale(JComponent.getDefaultLocale());
 		setRootPane(createRootPane());
-		rootPane.setFrameViewer(frameViewer);
+		rootPane.setFrameViewer(setFrameViewer(null));
  	  setRootPaneCheckingEnabled(true);
 		if (JDialog.isDefaultLookAndFeelDecorated()) {
 			boolean supportsWindowDecorations = UIManager.getLookAndFeel()

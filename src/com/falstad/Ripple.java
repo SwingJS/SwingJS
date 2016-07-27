@@ -181,7 +181,7 @@ class RippleLayout implements LayoutManager {
 }
 
 public class Ripple extends Applet implements ComponentListener {
-	static RippleFrame ogf;
+	RippleFrame ogf;
 
 	void destroyFrame() {
 		if (ogf != null)
@@ -199,8 +199,8 @@ public class Ripple extends Applet implements ComponentListener {
 	}
 
 	public static void main(String args[]) {
-		ogf = new RippleFrame(null);
-		ogf.initFrame();
+		Ripple ripple = new Ripple();
+		ripple.showFrame();
 	}
 
 	void showFrame() {
@@ -240,6 +240,8 @@ public class Ripple extends Applet implements ComponentListener {
 
 	@Override
 	public void componentResized(ComponentEvent e) {
+		if (ogf != null)
+			ogf.handleResize();
 	}
 
 	@Override
@@ -709,6 +711,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		Dimension d = winSize = cv.getSize();
 		if (winSize.width <= 0 || winSize.height <= 0) // should never be < 0 TODO
 			return;
+		aspectRatio = winSize.width/winSize.height;
 		pixels = null;
 		if (useBufferedImage) {
 			try {
@@ -2961,13 +2964,15 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		}
 	}
 
+	double aspectRatio = 1;
+	
 	void setupMode(int x, int y, int sx, int sy, int nx, int ny) {
 		int i, j;
 		for (i = 0; i != sx; i++)
 			for (j = 0; j != sy; j++) {
 				int gi = i + x + gw * (j + y);
 				func[gi] = (float) (Math.sin(pi * nx * (i + 1) / (sx + 1)) * Math
-						.sin(pi * ny * (j + 1) / (sy + 1)));
+						.sin(aspectRatio * pi * ny * (j + 1) / (sy + 1)));
 				funci[gi] = 0;
 			}
 	}
@@ -2979,7 +2984,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		for (i = 0; i != sx; i++)
 			for (j = 0; j != sy; j++) {
 				int gi = i + x + gw * (j + y);
-				func[gi] = (float) (Math.cos(pi * nx * i / (sx - 1)) * Math.cos(pi * ny
+				func[gi] = (float) (Math.cos(pi * nx * i / (sx - 1)) * Math.cos(aspectRatio * pi * ny
 						* j / (sy - 1)));
 				funci[gi] = 0;
 			}

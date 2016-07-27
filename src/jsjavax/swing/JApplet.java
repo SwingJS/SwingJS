@@ -131,7 +131,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
      * @see JComponent#getDefaultLocale
      */
     public JApplet() {
-    	frameViewer = appletViewer;
+    	setFrameViewer(appletViewer);
     	setJApplet();
     }
 
@@ -155,7 +155,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
     setLocale( JComponent.getDefaultLocale() );
     setLayout(new BorderLayout());
     setRootPane(createRootPane());
-    rootPane.setFrameViewer(frameViewer);
+    rootPane.setFrameViewer(appletViewer);
     setRootPaneCheckingEnabled(true);
 
     setFocusTraversalPolicyProvider(true);

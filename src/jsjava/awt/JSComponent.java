@@ -54,9 +54,9 @@ public abstract class JSComponent extends Component {
 
 	public boolean isRootPane, isContentPane;
 	public HTML5Canvas canvas;
-	public JSFrameViewer frameViewer;
 	public JSAppletViewer appletViewer = JSToolkit.getAppletViewer();    
 
+	private  JSFrameViewer frameViewer;
 
   public JSComponent() {
   	super();
@@ -93,6 +93,11 @@ public abstract class JSComponent extends Component {
 		return g;
 	}
 
+	public JSFrameViewer setFrameViewer(JSFrameViewer viewer) {
+		return frameViewer = (viewer == null ? viewer = new JSFrameViewer()
+				.setForWindow((Container) this) : viewer);
+	}
+	
   public JSFrameViewer getFrameViewer() {
   	JSComponent parent = null;
     return (frameViewer != null  ? frameViewer 

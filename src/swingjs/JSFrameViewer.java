@@ -5,11 +5,13 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JRootPane;
+import jsjavax.swing.RootPaneContainer;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.JSInterface;
 import swingjs.plaf.JSComponentUI;
+import swingjs.plaf.Resizer;
 
 /**
  * JSJavaViewer 
@@ -33,6 +35,8 @@ public class JSFrameViewer implements JSInterface {
 	public JSAppletViewer appletViewer;
 	public boolean isApplet, isFrame;	
 	public HTML5Applet html5Applet;
+	public Resizer resizer;
+  
 
 	protected Insets insets;
 
@@ -45,7 +49,6 @@ public class JSFrameViewer implements JSInterface {
 		appletViewer = window.appletViewer;
 		this.top = window;
 		applet = window;
-		window.frameViewer = this;
 		this.fullName = appletViewer.fullName;
 		canvas = null;
 		jsgraphics = null;
@@ -206,6 +209,9 @@ public class JSFrameViewer implements JSInterface {
 		int iTop = (root == null ? 0 : root.getContentPane().getY()); 
 		DOMNode.setPositionAbsolute(canvas, iTop, 0);
 		DOMNode.setStyles(canvas, "width", width + "px", "height", height + "px");
+		if (resizer != null)
+			resizer.setPosition(width, height);
+			
 		if (parent != null) {
 			parent.appendChild(canvas);
 		}
@@ -220,5 +226,26 @@ public class JSFrameViewer implements JSInterface {
 		{}	
 		return canvas;
 	}
+
+	public Resizer getResizer() {
+		if (resizer != null || !appletViewer.isResizable)
+			return resizer;
+		resizer = new Resizer().set(this);
+		if (resizer != null)
+			resizer.show();
+		return resizer;
+	}
+
+	public DOMNode getDiv(String id) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return J2S.$(this.html5Applet, id)[0];
+		 */
+		{
+			return null;
+		}
+	}
+
 
 }

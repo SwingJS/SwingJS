@@ -20,4 +20,12 @@ public interface HTML5Applet {
 	 */
 	DOMNode _getContentLayer();
 
+	/**
+	 * Simple resizing for an inline applet
+	 * 
+	 * @param widthHeight
+	 */
+	void _resizeApplet(int[] widthHeight);
+
+
 }

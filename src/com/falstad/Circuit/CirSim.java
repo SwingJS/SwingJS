@@ -2272,29 +2272,13 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return ba;
 	}
 
-	URL getCodeBase() {
-		try {
-			if (applet != null)
-				return applet.getCodeBase();
-			File f = new File(".");
-			return new URL("file:" + f.getCanonicalPath() + "/");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 	static int STARTUP_READ_COUNT = 0;
 	
 	void getSetupList(Menu menu, boolean retry) {
-		byte b[] = null;
 		Menu stack[] = new Menu[6];
 		int stackptr = 0;
 		stack[stackptr++] = menu;
-		URL url = null;
-		// modified by Bob Hanson to allow remote access to www.falstad.com for
-		// startup.
-		b = getResource("setuplist.txt", true);
+		byte[] b = getResource("setuplist.txt", true);
 		if (b == null) {
 			stop("Can't read setuplist.txt!", null);
 			return;
@@ -2333,10 +2317,56 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	}
 
+	/**
+	 * A streamlined sequence of tests for setuplist.txt or xxxxelm.txt
+	 * 
+	 * Assumes files must start with either "#" or "$"
+	 * 
+	 * 1) document base -- "." for application; applet.getDocumentBase() for applet
+	 * 
+	 * 2) code base -- applet only; applet.getCodeBase()
+	 * 
+	 * 3) jar file -- applet or application
+	 * 
+	 * 4) http://www.falstad.com/circuit-java/
+	 * 
+	 * 
+	 * @param file
+	 * @param isStartup
+	 * @return file contents or null
+	 */
 	private byte[] getResource(String file, boolean isStartup) {
-		for (int i = 0; i < 3; i++) {
+		// BH: organized into a sequence rather than leading to 
+		//     iterative calling of getSetupList
+		//
+		
+		for (int i = 0; i < 4; i++) {
+			URL url = null;
 			try {
-				ByteArrayOutputStream os = readUrlData(getUrlResource(i, file));
+				switch (i) {
+				case 0:
+					if (applet == null) {
+						File f = new File(".");
+						url = new URL("file:" + f.getCanonicalPath() + "/");
+					} else {
+						url = new URL(applet.getDocumentBase().toString() + file);
+					}
+					break;
+				case 1:
+					url = (applet == null ? null : new URL(applet.getCodeBase()
+							.toString() + file));
+					break;
+				case 2:
+					// hausen: if setuplist.txt does not exist in the same
+					// directory, try reading from the jar file
+					ClassLoader cl = getClass().getClassLoader();
+					url = cl.getResource(file);
+					break;
+				case 3:
+					url = new URL("http://www.falstad.com/circuit-java/" + file);
+					break;
+				}
+				ByteArrayOutputStream os = (url == null ? null : readUrlData(url));
 				if (os == null)
 					continue;
 				byte[] b = os.toByteArray();
@@ -2344,26 +2374,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 					return b;
 			} catch (Exception e) {
 			}
-		}
-		return null;
-	}
-
-	private URL getUrlResource(int i, String s) throws MalformedURLException {
-		switch (i) {
-		case 0:
-			String cb = getCodeBase().toString();
-			int pt = cb.indexOf("/bin/"); 
-			if (pt >= 0)
-				cb = cb.substring(0, pt) + "/src/test/Circuit/"; 
-			return  new URL(cb + s);
-		case 1:
-			// hausen: if setuplist.txt does not exist in the same
-			// directory, try reading from the jar file
-			ClassLoader cl = getClass().getClassLoader();
-			return  cl.getResource(s);
-		case 2:
-			// hanson: also allow remote access
-			return new URL("http://www.falstad.com/circuit-java/" + s);
 		}
 		return null;
 	}

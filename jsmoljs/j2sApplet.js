@@ -91,7 +91,7 @@ J2S = (function(document) {
 
 
 (function (J2S) {
-// needs fixing!
+
   J2S.extend = function(map, map0, key0) {
     for (key in map) {
       var val = map[key]
@@ -2186,12 +2186,16 @@ J2S._setWindowZIndex = function(node, z) {
   return z;
 } 
 
+J2S.say = function(msg) {
+	alert(msg);
+}
+ 
 J2S.Swing = {
 	// a static class for menus
 	count:0,
 	menuInitialized:0,
 	menuCounter:0
 };
- 
+
 })(J2S);
 

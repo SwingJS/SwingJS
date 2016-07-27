@@ -1,8 +1,5 @@
 package swingjs.plaf;
 
-import java.awt.event.MouseEvent;
-
-import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
@@ -38,7 +35,6 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	private String title;
 	private int state;
 	private boolean resizeable;
-	private DOMNode resizer;
 	private DOMNode closerWrap;
 
 	public JSFrameUI() {
@@ -50,6 +46,10 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		setDoc();
 	}
 
+//	public void notifyFrameMoved() {
+//		Toolkit.getEventQueue().postEvent(new ComponentEvent(frame, ComponentEvent.COMPONENT_MOVED));
+//	}
+	
 	@Override
 	public DOMNode createDOMNode() {
 		if (domNode == null) {
@@ -118,92 +118,15 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			menuBarNode = newDOMObject("div", id + "_menubar");
 
 			containerNode = frameNode;
-			setResizer();
 		}
-		setBoundsDOM(width, height);
+		setInnerComponentBounds(width, height);
 		return domNode;
 	}
 
 	public void notifyFrameMoved() {
-		Toolkit.getEventQueue().postEvent(new ComponentEvent(frame, ComponentEvent.COMPONENT_MOVED));
-	}
-	
-	@Override
-	protected void setBoundsDOM(int width, int height) {
-		DOMNode.setStyles(closerWrap, "text-align", "right", "width", width + "px");
-		DOMNode.setStyles(titleNode, "width", width + "px", "height", "20px");
-		DOMNode.setPositionAbsolute(resizer, height - 6, width - 6);		
-	}
-	
-	private void setResizer() {
-		if (!frame.isResizable()) {
-			$(resizer).hide();
-			return;
-		}
-		if (resizer == null) {
-			resizer = newDOMObject("div", id + "_resizer");
-			DOMNode.setSize(resizer, 10, 10);
-			DOMNode.setStyles(resizer, "background-color", "red", "cursor", "move");
-		  frameNode.appendChild(resizer);
-			JSFunction fHandleResizer = null, fHandleDOMResize = null;
-			Object me = this;
-			/**
-			 * @j2sNative
-			 * 
-			 * fHandleResizer = function(xyev,type){me.fHandleResizer(xyev.dx, xyev.dy,type)};
-			 * fDOMResize = function(ev){me.fDOMResize(ev)};
-			 * 
-			 */
-			{}
-    	JSToolkit.J2S._setDraggable(resizer, new JSFunction[] {fHandleResizer});
-			$(frameNode).resize(fHandleDOMResize);
-		}
-	}
-
-	
-
-	/**
-	 * 
-	 * @param xyev
-	 * @param type
-	 */
-	public void fHandleResizer(int dx, int dy, int type) {
-
-
-		switch (type) {
-		case MouseEvent.MOUSE_PRESSED:
-			DOMNode.setStyles(resizer, "background-color", "green");
-			DOMNode.setCursor("move");
-			// set cursor to dragging
-			break;
-		case MouseEvent.MOUSE_DRAGGED:
-			break;
-		case MouseEvent.MOUSE_RELEASED:
-			DOMNode.setStyles(resizer, "background-color", "red");
-			DOMNode.setCursor("auto");
-			fHandleResize(null, dx, dy);
-			// resize frame
-			// set cursor to standard
-		}
-
-	}
-
-	private void fHandleResize(Object event, int dw, int dh) {
-		Rectangle r = frame.getBounds();
-		if (event == null) {
-			// from mouse release
-			if (r.width + dw > 50)
-				r.width += dw;
-			if (r.height + dh > 50)
-				r.height += dh;
-		} else {
-			// from some DOM event
-			DOMNode.getRectangle(frameNode, r);
-		}
-		frame.setPreferredSize(new Dimension(r.width, r.height));
-		frame.invalidate();
-		frame.pack();
-		//Toolkit.getEventQueue().postEvent(new ComponentEvent(f, ComponentEvent.COMPONENT_RESIZED));
+		// from JavaScript
+		Toolkit.getEventQueue().postEvent(
+				new ComponentEvent(frame, ComponentEvent.COMPONENT_MOVED));
 	}
 
 	@Override
@@ -247,9 +170,15 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	}
 
 	@Override
+	protected void setInnerComponentBounds(int width, int height) {
+		DOMNode.setStyles(closerWrap, "text-align", "right", "width", width + "px");
+		DOMNode.setStyles(titleNode, "width", width + "px", "height", "20px");
+	}
+	
+	@Override
 	protected void installUIImpl() {
 		// problem here with J2S compiler turning JSDialogUI's override to overrideMethod
-		frame = (JFrame) c;
+		frame = (JFrame) c;		
 		//super.installUIImpl(); // compiler bug will not allow this
 		 LookAndFeel.installColors(jc,
 		 "Frame.background",
@@ -264,8 +193,6 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 
 	@Override
 	public void setMenuBar(Object mb) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

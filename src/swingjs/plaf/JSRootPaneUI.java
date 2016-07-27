@@ -5,8 +5,14 @@ import swingjs.api.DOMNode;
 
 public class JSRootPaneUI extends JSLightweightUI {
 
+	Resizer resizer;
+	
+	void setResizer(Resizer resizer) {
+		this.resizer = resizer;
+	}
+
 	public JSRootPaneUI() {
-		isContainer = true;
+		isRootPane = isContainer = true;
 		setDoc();
 	}
 
@@ -31,5 +37,11 @@ public class JSRootPaneUI extends JSLightweightUI {
   	return null;
   }
 
-
+	@Override
+	protected void setInnerComponentBounds(int width, int height) {
+		Resizer resizer = jc.getFrameViewer().getResizer();
+		if (resizer != null)
+			resizer.setPosition(width, height);
+	}
+	
 }

@@ -8,7 +8,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javajs.util.Lst;
-
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
@@ -21,19 +20,16 @@ import jsjava.awt.Image;
 import jsjava.awt.Insets;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
-
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JComponent;
-
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
 import jssun.applet.AppletListener;
-
 import jssun.awt.AppContext;
-
 import swingjs.api.HTML5Applet;
 import swingjs.api.Interface;
 import swingjs.api.JSInterface;
+import swingjs.plaf.Resizer;
 
 /**
  * JSAppletViewer 
@@ -146,6 +142,10 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 	private ArrayList<Object> timerQueue;
 
+	boolean isResizable;
+
+	private boolean useFrame;
+
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
 	 * JavaScript
@@ -201,6 +201,8 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		// if (platform != null && platform.length() > 0)
 		// apiPlatform = (GenericPlatform) Interface.getInterface(platform);
 		display = params.get("display");
+		isResizable = "true".equalsIgnoreCase("" + params.get("isResizable"));
+		useFrame = "true".equalsIgnoreCase("" + params.get("useFrame"));
 
 		threadGroup = new JSThreadGroup(appletName);
 		myThread = new JSAppletThread(this, threadGroup, appletName);
@@ -460,6 +462,12 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				break;
 			case APPLET_READY:
 				JSToolkit.readyCallback(appletName, fullName, applet, this);
+				if (isResizable && !useFrame) {
+					resizer = ((Resizer) JSToolkit.getInstance("swingjs.plaf.Resizer"))
+							.set(this);
+					if (resizer != null)
+						resizer.show();
+				}
 				break;
 			case APPLET_STOP:
 				if (status == APPLET_START) {

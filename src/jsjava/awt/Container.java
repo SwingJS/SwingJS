@@ -42,6 +42,7 @@ import jsjava.awt.event.InputEvent;
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseWheelEvent;
+import jsjava.awt.peer.ComponentPeer;
 import jsjava.awt.peer.ContainerPeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.beans.PropertyChangeListener;
@@ -1569,6 +1570,24 @@ public class Container extends JSComponent {
 			}
 		}
 	}
+
+	// BH SwingJS These next two methods are moved from Window so that we can resize in-line applets 
+	//
+  public void repackContainer() {
+    Dimension newSize = getPreferredSize();
+    if (peer != null) {
+        setClientSize(newSize.width, newSize.height);
+    }
+    validate();
+	}
+
+	void setClientSize(int w, int h) {
+		synchronized (getTreeLock()) {
+			setBoundsOp(ComponentPeer.SET_CLIENT_SIZE);
+			setBounds(x, y, w, h);
+		}
+	}
+
 
     /**
      * Recursively descends the container tree and recomputes the

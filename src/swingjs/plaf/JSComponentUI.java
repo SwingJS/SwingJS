@@ -202,7 +202,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * panels
 	 * 
 	 */
-	protected boolean isContainer, isWindow;
+	protected boolean isContainer, isWindow, isRootPane;
 
 	/**
 	 * linked nodes of this class
@@ -539,7 +539,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				// + c.getBounds());
 				DOMNode.setSize(outerNode, getContainerWidth(), getContainerHeight());
 			}
-			if (jc.isRootPane) {
+			if (isRootPane) {
 				if (jc.getFrameViewer().isApplet) {
 					// If the applet's root pane, we insert it into the applet's content
 					// layer div
@@ -932,12 +932,14 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			if (domNode == null)
 				createDOMNode();
 			DOMNode.setSize(domNode, width + size.width, height + size.height);
-			setBoundsDOM(width, height);
+			if (outerNode != null)
+				DOMNode.setSize(outerNode, width + size.width, height + size.height);				
+			setInnerComponentBounds(width, height);
 			break;
 		}
 	}
 
-	protected void setBoundsDOM(int width, int height) {
+	protected void setInnerComponentBounds(int width, int height) {
 		if (debugging)
 			System.out.println("CUI reshapeMe: need to reshape " + id + " w:"
 					+ this.width + "->" + width + " h:" + this.height + "->" + height);
