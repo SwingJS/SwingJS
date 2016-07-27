@@ -4,6 +4,8 @@
 //		- RippleCanvas.paint() --> RippleCanvas.paintComponent()
 //		- RippleFrame.paint() --> RippleFrame.paintComponent()
 //		- imports java.awt --> swingjs.awt
+//		- // Class.getMethod not implemented; timerMethod option removed
+//		- Called showFrame() in Frame.init()
 
 package test.falstadOriginal;
 
@@ -36,6 +38,8 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import javax.swing.WindowConstants;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
@@ -118,7 +122,10 @@ public class Ripple extends Applet implements ComponentListener {
     }
     boolean started = false;
     public void init() {
-	addComponentListener(this);
+    	//addComponentListener(this);
+    	//showFrame();
+    	ogf = new RippleFrame(this);
+    	ogf.init();
     }
 
     public static void main(String args[]) {
@@ -135,17 +142,17 @@ public class Ripple extends Applet implements ComponentListener {
 	}
     }
     
-    public void paint(Graphics g) {
-	String s = "Applet is open in a separate window.";
-	if (!started)
-	    s = "Applet is starting.";
-	else if (ogf == null)
-	    s = "Applet is finished.";
-	else if (ogf.useFrame)
-	    ogf.triggerShow();
-	g.drawString(s, 10, 30);
-    }
-    
+//    public void paint(Graphics g) {
+//	String s = "Applet is open in a separate window.";
+//	if (!started)
+//	    s = "Applet is starting.";
+//	else if (ogf == null)
+//	    s = "Applet is finished.";
+//	else if (ogf.useFrame)
+//	    ogf.triggerShow();
+//	g.drawString(s, 10, 30);
+//    }
+//    
     public void componentHidden(ComponentEvent e){}
     public void componentMoved(ComponentEvent e){}
     public void componentShown(ComponentEvent e) { showFrame(); }
@@ -162,6 +169,9 @@ public class Ripple extends Applet implements ComponentListener {
 class RippleFrame extends Frame
   implements ComponentListener, ActionListener, AdjustmentListener,
              MouseMotionListener, MouseListener, ItemListener {
+	
+	// original values:
+		int defaultSpeed = 1, defaultResolution = 110, startupTime = 1000, resolutionCutoff = 55;
     
     Thread engine = null;
 
@@ -287,6 +297,23 @@ class RippleFrame extends Frame
 
     RippleFrame(Ripple a) {
 	super("Ripple Tank Applet v1.7f");
+	
+	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	/**
+	 * @j2sNative
+	 * 
+	 *            this.defaultSpeed = 15; this.defaultResolution = 300;
+	 *            this.startupTime = 1500; this.resolutionCutoff = 200;
+	 * 
+	 * 
+	 */
+	{
+		defaultSpeed = 1;
+		defaultResolution = 160;
+		startupTime  = 1000;
+		resolutionCutoff = 55;
+	}
+
 	applet = a;
 	useFrame = true;
 	showControls = true;
@@ -324,6 +351,10 @@ class RippleFrame extends Frame
         if (jvf >= 48)
 	    useBufferedImage = true;
 
+        /**
+		 * @j2sIgnore
+		 * 
+		 */
 	try {
 	    Class sysclass = Class.forName("java.lang.System");
 	    timerMethod = sysclass.getMethod("nanoTime", null);
@@ -669,6 +700,12 @@ class RippleFrame extends Frame
     void setMedium(int x, int y, int q) { medium[x+gw*y] = q; }
 
     long getTimeMillis() {
+    	
+    	/**
+		 * @j2sNative
+		 * 
+		 *            return System.currentTimeMillis();
+		 */
 	try {
 	    Long time = (Long) timerMethod.invoke(null, new Object[] { } );
 	    return time.longValue() / timerDiv;
