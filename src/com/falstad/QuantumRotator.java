@@ -434,6 +434,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		setupStates();
 	} else {
 		setVisible(false);
+		setupStates();
 		handleResize();
 		applet.validate();
 	}
