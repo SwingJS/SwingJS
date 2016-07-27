@@ -1,6 +1,12 @@
 package test.falstadOriginal;
 
 // Interference.java (C) 2002 by Paul Falstad, www.falstad.com
+//changes made:
+//- InterferenceCanvas.paint() --> InterferenceCanvas.paintComponent()
+//- InterferenceFrame.paint() --> InterferenceFrame.paintComponent()
+//- imports java.awt --> swingjs.awt
+
+
 
 import java.awt.Color;
 import java.awt.Component;
