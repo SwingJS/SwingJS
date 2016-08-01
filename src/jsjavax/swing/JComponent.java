@@ -4145,8 +4145,16 @@ public abstract class JComponent extends Container {
 	 * @return true if this component is lightweight
 	 */
 	public static boolean isLightweightComponent(Component c) {
-		return !(c instanceof JApplet || c instanceof JFrame
-				|| c instanceof JWindow || c instanceof JDialog);
+		/**
+		 * @j2sNative
+		 * 
+		 *            return(!c.rootPane);
+		 */
+		{
+			return !(c instanceof JApplet || c instanceof JFrame
+					|| c instanceof JWindow || c instanceof JDialog);
+
+		}
 		// return c.getPeer() instanceof LightweightPeer;
 	}
 

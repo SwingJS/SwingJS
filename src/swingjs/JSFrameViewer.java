@@ -2,6 +2,7 @@ package swingjs;
 
 import jsjava.awt.Container;
 import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.PaintEvent;
@@ -258,6 +259,7 @@ public class JSFrameViewer implements JSInterface {
 		// This class simply maintains valuable information for applet loading.
 		// Here we go straight to the contentPane and paint that.
 		g = setGraphics(g, 0, 0);
+		((Graphics2D) g).setBackground(top.getBackground());
 		top.paint(g);
 	}
 

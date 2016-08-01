@@ -40,6 +40,7 @@ import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Rectangle;
@@ -855,6 +856,7 @@ public class RepaintManager {
 					if (g != null) {
 						// SwingJS not clipping, for performance g.setClip(rect.x, rect.y, rect.width, rect.height);
 						try {
+							((Graphics2D) g).setBackground(dirtyComponent.getBackground());
 							dirtyComponent.paint(g);
 						} finally {
 							g.dispose();

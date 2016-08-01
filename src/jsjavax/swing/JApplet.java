@@ -33,6 +33,7 @@ import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
 import jsjava.awt.LayoutManager;
 import swingjs.JSAppletViewer;
 import swingjs.JSToolkit;
@@ -237,9 +238,7 @@ public class JApplet extends Applet implements /* Accessible ,*/
 		public void paint(Graphics g) {
     	// SwingJS adding this so that it can be overridden
     	// by a call to appletViewer to paint the applet
-    	getUI().setBackground(getBackground());
-    	getRootPane().paint(g);
-   	
+    	((Graphics2D)g).setBackground(getBackground());
     	JSAppletViewer p = JSToolkit.getAppletViewer();
     	if (p.allWindows != null)
     		for (int i = p.allWindows.size(); --i >= 0;) 
