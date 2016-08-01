@@ -171,7 +171,7 @@
   	<!-- no idea what this problem could be -->
     <echo>...fixing Thread.js error</echo>
   	<replace dir="site/swingjs/j2s/java/lang" includes="Thread.js" token="(g.Thread" value="(java.lang.Thread" />
-    <echo>...replacing "new Boolean" with "Boolean.from"</echo>
+    <echo>...replacing "new Boolean" with "Boolean.from" in com, org, and test</echo>
   	<replace dir="site/swingjs/j2s/org" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
   	<replace dir="site/swingjs/j2s/com" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
   	<replace dir="site/swingjs/j2s/test" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
