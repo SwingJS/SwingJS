@@ -1,0 +1,57 @@
+/* http://www.kriesi.at/archives/create-a-multilevel-dropdown-menu-with-css-and-improve-it-via-jquery */
+
+.swingjs-menu, .swingjs-menu ul{
+margin:0;
+padding:0;
+list-style-type:none;
+list-style-position:outside;
+position:relative;
+line-height:1.2em;
+width:700px;
+background-color:#e8e8e8;
+}
+
+.swingjs-menu a{
+display:block;
+padding:0px 5px;
+text-decoration:none;
+background-color:#e8e8e8;
+color:black;
+}
+
+.swingjs-menu a:hover{
+background-color:#c8c8c8;
+}
+
+.swingjs-menu li{
+float:left;
+position:relative;
+}
+
+.swingjs-menu ul {
+position:absolute;
+display:none;
+width:50px;
+top:1.2em;
+}
+
+.swingjs-menu li ul a{
+height:auto;
+float:left;
+}
+
+.swingjs-menu ul ul{
+top:auto;
+}	
+
+.swingjs-menu li ul ul {
+left:50px;
+margin:0px 0 0 10px;
+}
+
+.swingjs-menu li:hover ul ul, .swingjs-menu li:hover ul ul ul, .swingjs-menu li:hover ul ul ul ul{
+display:none;
+}
+.swingjs-menu li:hover ul, .swingjs-menu li li:hover ul, .swingjs-menu li li li:hover ul, .swingjs-menu li li li li:hover ul{
+display:block;
+}
