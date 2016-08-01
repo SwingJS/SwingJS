@@ -63,33 +63,36 @@ public class JSRadioButtonUI extends JSButtonUI {
 				c.getFont());
 
 		// Get the dimensions of the radio button by itself.
-		
-		// We have to remove any position:abolute because if that 
+
+		// We have to remove any position:abolute because if that
 		// is there, it messes up the width and height calculation.
 		DOMNode.setStyles(domBtn, "position", null);
 		DOMNode.setStyles(textNode, "position", null);
-    // We need the width of the text to position the button.		
-		int wBtn = setHTMLSize1(domBtn, false, false).width;		
-		// Now wrap the two with a zzzz and get its dimensions
-		// and then put them back into wrapper.
-		DOMNode obj = wrap("div", "", domBtn, textNode);
-		Dimension dobj = setHTMLSize1(obj, false, false);
-		// (Re)create label.
+		DOMNode obj;
+		Dimension dobj = null;
+		if (hasOuterDiv) {
+			// We need the width of the text to position the button.
+			int wBtn = setHTMLSize1(domBtn, false, false).width;
+			// Now wrap the two with a zzzz and get its dimensions
+			// and then put them back into wrapper.
+			obj = wrap("div", "", domBtn, textNode);
+			dobj = setHTMLSize1(obj, false, false);
+			// set the offset of the text based on the radio button size
+			DOMNode.setStyles(textNode, "left", wBtn + "px");
+			// add a couple of vertical adjustments
+
+			vCenter(domBtn, -75);
+			vCenter(textNode, -50);
+
+			// make everything absolute to pass sizing info to all
+			DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
+			DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
+			DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
+
+			// (Re)create label.
+		}
 		label.appendChild(domBtn);
 		label.appendChild(textNode);
-		
-		// set the offset of the text based on the radio button size
-		DOMNode.setStyles(textNode, "left", wBtn + "px");
-		
-		// add a couple of vertical adjustments
-
-		vCenter(domBtn, -75);
-		vCenter(textNode, -50);
-
-		// make everything absolute to pass sizing info to all
-		DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
-		DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
-		DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
 		if (doAll) {
 			// now wrap these in a div
 			domNode = obj = (hasOuterDiv ? wrap("div", id + "_0", label) : wrapper);
@@ -98,23 +101,32 @@ public class JSRadioButtonUI extends JSButtonUI {
 		} else {
 			obj = domNode;
 		}
-
-		DOMNode.setSize(label, dobj.width, dobj.height);
-		return DOMNode.setSize(obj, dobj.width, dobj.height);
-		
+		if (hasOuterDiv) {
+			DOMNode.setSize(label, dobj.width, dobj.height);
+			DOMNode.setSize(obj, dobj.width, dobj.height);
+		}
+		return obj;
 	}
 
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
-		// "absolute" is required for positioning of button, but must not be there for setting the size. 
+		// "absolute" is required for positioning of button, but must not be there
+		// for setting the size.
 		DOMNode.setStyles(label, "position", null, "width", null, "height", null);
 		DOMNode.setStyles(domBtn, "position", null, "width", null, "height", null);
-		DOMNode.setStyles(textNode, "position", null, "width", null, "height", null);
-		Dimension d = setHTMLSize1(obj, addCSS, false);
-		DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
-		DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
-		DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
-		DOMNode.setStyles(label, "width", d.width + "px", "height", d.height + "px");
+		DOMNode
+				.setStyles(textNode, "position", null, "width", null, "height", null);
+		Dimension d;
+		if (hasOuterDiv) {
+			d = setHTMLSize1(obj, addCSS, false);
+			DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
+			DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
+			DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
+			DOMNode.setStyles(label, "width", d.width + "px", "height", d.height
+					+ "px");
+		} else {
+			d = new Dimension(20,20);
+		}
 		return d;
 	}
 

@@ -18,11 +18,11 @@ import swingjs.api.JSFunction;
 public class Resizer {
 
 	private JRootPane rootPane;
-	private DOMNode resizer, domNode;
+	private DOMNode resizer, rootNode, rubberBand;
 	private JFrame jframe;
 	private int offsetx = -4, offsety = -4, minSize = 10;
-	private JSComponentUI ui;
 	private RootPaneContainer rpc;
+	private int titleHeight;
 
 	public Resizer() {
 	}
@@ -30,14 +30,14 @@ public class Resizer {
 	public Resizer set(JSFrameViewer viewer) {
 		rpc = (RootPaneContainer) viewer.top;
 		rootPane = rpc.getRootPane();
-		ui = (JSComponentUI) rootPane.ui;
+		titleHeight = viewer.getInsets().top; // 20px
 		if (viewer.isApplet) {
-			domNode = viewer.getDiv("appletdiv");
+			rootNode = viewer.getDiv("appletdiv");
 		} else {
 			jframe = (JFrame) rpc;
-			domNode = ui.domNode;
+			rootNode = ((JSComponentUI) jframe.getUI()).domNode;
 		}
-		return (domNode == null ? null : this);
+		return (rootNode == null ? null : this);
 	}
 
 	public void show() {
@@ -45,7 +45,7 @@ public class Resizer {
 			createAndShowResizer();
 		else
 			$(resizer).show();
-		setPosition($(domNode).width(), $(domNode).height());
+		setPosition($(rootNode).width(), $(rootNode).height());
 	}
 
 	public void hide() {
@@ -64,10 +64,19 @@ public class Resizer {
 		DOMNode.setStyles(resizer, 
 				"background-color", "red", 
 				"opacity", "0", 
-				"cursor", "move"
+				"cursor", "nwse-resize"
 		);
 		$(resizer).addClass("swingjs-resizer");
-		domNode.appendChild(resizer);
+		rubberBand = DOMNode.createElement("div", id + "_rb");
+		DOMNode.setStyles(rubberBand, 
+				"border", "1px dashed #FF00FF",
+				"z-index", "100000",
+				"position", "absolute", 
+				"left", "0px", 
+				"top", "0px",
+				"display", "none");
+		rootNode.appendChild(resizer);
+		rootNode.appendChild(rubberBand);
 		JSFunction fHandleResizer = null, fHandleDOMResize = null;
 		Object me = this;
 		/**
@@ -81,11 +90,13 @@ public class Resizer {
 		}
 		// set to track size changes
 		JSToolkit.J2S._setDraggable(resizer, new JSFunction[] { fHandleResizer });
-		$(domNode).resize(fHandleDOMResize);
+		$(rootNode).resize(fHandleDOMResize);
 	}
 
 	public void setPosition(int width, int height) {
-		DOMNode.setPositionAbsolute(resizer, height + offsetx, width + offsety);		
+		height += titleHeight;
+		DOMNode.setPositionAbsolute(resizer, height + offsety, width + offsetx);
+		DOMNode.setSize(rubberBand, width, height);
 	}
 	
 	public DOMNode getDOMNode() {
@@ -101,13 +112,16 @@ public class Resizer {
 		switch (type) {
 		case MouseEvent.MOUSE_PRESSED:
 			DOMNode.setStyles(resizer, "background-color", "green");
+			DOMNode.setStyles(rubberBand, "display", "block");
 			DOMNode.setCursor("move");
 			// set cursor to dragging
 			break;
 		case MouseEvent.MOUSE_DRAGGED:
+			setPosition($(rootNode).width() + dx, $(rootNode).height() + dy);
 			break;
 		case MouseEvent.MOUSE_RELEASED:
 			DOMNode.setStyles(resizer, "background-color", "red");
+			DOMNode.setStyles(rubberBand, "display", "none");
 			DOMNode.setCursor("auto");
 			fHandleDOMResize(null, dx, dy);
 		}
@@ -117,22 +131,24 @@ public class Resizer {
 		Rectangle r;
 		if (event == null) {
 			// from above
-			r = getFrameOffset(dw, dh);			
+			r = getFrameOffset(dw, dh);
 		} else {
 			// from some DOM event
-			DOMNode.getRectangle(domNode, r = new Rectangle());
+			DOMNode.getRectangle(rootNode, r = new Rectangle());
 		}
 		if (jframe == null) {
 			rootPane.getGraphics().setColor(Color.WHITE);
 			rootPane.getGraphics().fillRect(0, 0, r.width, r.height);
-			rootPane.appletViewer.html5Applet._resizeApplet(new int[] {r.width, r.height});
+			rootPane.appletViewer.html5Applet._resizeApplet(new int[] { r.width,
+					r.height });
 		} else {
-		jframe.setPreferredSize(new Dimension(r.width, r.height));
-		jframe.invalidate();
-		jframe.repackContainer();
+			jframe.setPreferredSize(new Dimension(r.width, r.height));
+			jframe.invalidate();
+			jframe.repackContainer();
 		}
 		setPosition(r.width, r.height);
-		//Toolkit.getEventQueue().postEvent(new ComponentEvent(f, ComponentEvent.COMPONENT_RESIZED));
+		// Toolkit.getEventQueue().postEvent(new ComponentEvent(f,
+		// ComponentEvent.COMPONENT_RESIZED));
 	}
 
 	private JQueryObject $(DOMNode node) {

@@ -181,14 +181,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected boolean isTainted = true;
 
 	/**
-	 * indicates that we need an outerNode
+	 * Indicates that we need an outerNode and that we should not
+	 * be applying any positioning to the control. All popup menu items
+	 * will have this set false.   
 	 */
 
 	protected boolean hasOuterDiv = true;
 
-	/**
-	 * left and top coordinates
-	 */
 	protected int x, y;
 
 	/**
@@ -583,11 +582,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		return obj;
 	}
 
-	protected DOMNode wrap(String type, String id, DOMNode... elements) {
-		return append(newDOMObject(type, id + type), elements);
-	}
-
-	protected DOMNode append(DOMNode obj, DOMNode[] elements) {
+  protected DOMNode wrap(String type, String id, DOMNode... elements) {
+	  DOMNode obj = newDOMObject(type, id + type);
 		for (int i = 0; i < elements.length; i++) {
 			obj.appendChild(elements[i]);
 		}
@@ -627,6 +623,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			boolean usePreferred) {
 		if (node == null)
 			return null;
+		addCSS &= hasOuterDiv;
 		int h, w;
 		String w0 = null, h0 = null, position = null;
 		DOMNode parentNode = null;
@@ -645,6 +642,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 			// remove position, width, and height, because those are what we are
 			// setting here
+			
+			if (hasOuterDiv)
 			/**
 			 * @j2sNative
 			 * 
@@ -679,7 +678,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		} else {
 			DOMNode.setStyles(node, "position", null);
 			// check to reset width/height after getPreferredSize
-			if (w0 != null) {
+			if (w0 != null && hasOuterDiv) {
 				DOMNode.setStyles(node, "width", w0, "height", h0, "position", position);
 			}
 		}
