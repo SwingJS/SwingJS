@@ -37,7 +37,7 @@ public class JSTableHeaderUI extends JSLightweightUI {
 	private JTable table;
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			domNode = newDOMObject("table", id);
 			table = header.getTable();

@@ -69,9 +69,9 @@ public abstract class DataBuffer {
     /** Tag for unsigned byte data. */
     public static final int TYPE_BYTE  = 0;
 
-// SwingJS not supported    /** Tag for unsigned short data. */
-//    public static final int TYPE_USHORT = 1;
-//
+    /** Tag for unsigned short data. */
+    public static final int TYPE_USHORT = 1;
+
     /** Tag for signed short data.  Placeholder for future use. */
     public static final int TYPE_SHORT = 2;
 

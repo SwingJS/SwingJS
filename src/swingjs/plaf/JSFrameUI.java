@@ -51,7 +51,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 //	}
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			domNode = frameNode = newDOMObject("div", id + "_frame");
 			DOMNode.setStyles(frameNode, "border-style", "solid",
@@ -66,8 +66,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setStyles(frameNode, "background", "white");
 			DOMNode.setSize(frameNode, w, h);
 			DOMNode.setPositionAbsolute(frameNode, frame.getX(), frame.getY());
-
-			setJ2sMouseHandler(frameNode, true);
+			setJ2sMouseHandler(frameNode);
 			titleBarNode = newDOMObject("div", id + "_titlebar");
 			DOMNode.setPositionAbsolute(titleBarNode, 0, 0);
 			DOMNode.setStyles(titleBarNode, "background-color", "#E0E0E0", "height",
@@ -179,7 +178,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	protected void installUIImpl() {
 		// problem here with J2S compiler turning JSDialogUI's override to overrideMethod
 		frame = (JFrame) c;		
-		//super.installUIImpl(); // compiler bug will not allow this
+		super.installUIImpl(); // compiler bug will not allow this
 		 LookAndFeel.installColors(jc,
 		 "Frame.background",
 		 "Frame.foreground");

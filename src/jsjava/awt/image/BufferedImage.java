@@ -239,26 +239,26 @@ public class BufferedImage extends Image implements Transparency // ,
 	// * <code>IndexColorModel</code> colormap.
 	// */
 	// public static final int TYPE_BYTE_BINARY = 12;
-	//
-	// /**
-	// * Represents an indexed byte image. When this type is used as the
-	// * <code>imageType</code> argument to the <code>BufferedImage</code>
-	// * constructor that takes an <code>imageType</code> argument
-	// * but no <code>ColorModel</code> argument, an
-	// * <code>IndexColorModel</code> is created with
-	// * a 256-color 6/6/6 color cube palette with the rest of the colors
-	// * from 216-255 populated by grayscale values in the
-	// * default sRGB ColorSpace.
-	// *
-	// * <p> When color data is stored in an image of this type,
-	// * the closest color in the colormap is determined
-	// * by the <code>IndexColorModel</code> and the resulting index is stored.
-	// * Approximation and loss of alpha or color components
-	// * can result, depending on the colors in the
-	// * <code>IndexColorModel</code> colormap.
-	// */
-	// public static final int TYPE_BYTE_INDEXED = 13;
-	//
+	
+	 /**
+	 * Represents an indexed byte image. When this type is used as the
+	 * <code>imageType</code> argument to the <code>BufferedImage</code>
+	 * constructor that takes an <code>imageType</code> argument
+	 * but no <code>ColorModel</code> argument, an
+	 * <code>IndexColorModel</code> is created with
+	 * a 256-color 6/6/6 color cube palette with the rest of the colors
+	 * from 216-255 populated by grayscale values in the
+	 * default sRGB ColorSpace.
+	 *
+	 * <p> When color data is stored in an image of this type,
+	 * the closest color in the colormap is determined
+	 * by the <code>IndexColorModel</code> and the resulting index is stored.
+	 * Approximation and loss of alpha or color components
+	 * can result, depending on the colors in the
+	 * <code>IndexColorModel</code> colormap.
+	 */
+	 public static final int TYPE_BYTE_INDEXED = 13;
+	
 	// private static final int DCM_RED_MASK = 0x00ff0000;
 	// private static final int DCM_GREEN_MASK = 0x0000ff00;
 	// private static final int DCM_BLUE_MASK = 0x000000ff;

@@ -253,9 +253,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			isShifted = true;
 			return;
 		}
-		ctx.clearRect(0, 0, windowWidth, windowHeight);
-		setGraphicsColor(bgcolor);
-		fillRect(0, 0, windowWidth, windowHeight);
+		clearRect(0, 0, windowWidth, windowHeight);
 	}
 
 	@Override
@@ -675,6 +673,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public void clearRect(int x, int y, int width, int height) {
 		ctx.clearRect(x, y, width, height);
+		setGraphicsColor(backgroundColor);
+		fillRect(x, y, width, height);
 	}
 
 	@Override

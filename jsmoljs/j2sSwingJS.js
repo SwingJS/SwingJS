@@ -6,6 +6,8 @@
 
 // NOTES by Bob Hanson
 
+// BH 7/31/2016 2:56:07 PM fix for compiler error using overrideMethod for functions that contain superCall()
+// BH 7/31/2016 5:56:59 AM floatToInt and floatToChar need to consider NaN
 // BH 7/23/2016 6:03:20 PM work-around for new Boolean(string), since native JavaScript Boolean does not support that;
 //                         uses "new Boolean" --> "Boolean.from" in build.xml
 // BH 7/23/2016 8:00:43 AM added Clazz._traceOutput
@@ -1554,6 +1556,9 @@ Clazz.superConstructor = function (objThis, clazzThis, args) {
  * @param args Array of method parameters
  */
 /* public */
+ 
+Clazz._supercallMsg = "";
+
 Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
 	var fx = null;
 	var i = -1;
@@ -1565,11 +1570,23 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
 		if (clazzFun.claxxOwner) { 
 			// claxxOwner is a mark for methods that is single.
 			if (clazzFun.claxxOwner !== clazzThis) {
-				// This is a single method, call directly!
+				// This is a single method in a superclass, call directly!
 				fx = clazzFun;
-			} else if (!isConstruct || !allowImplicit) {
-        debugger;
-      // what's the deal? 
+			} else if (!isConstruct || !allowImplicit) { 
+        // The developer or compiler has labeled as "overrideMethod" a method xxx() that utilizes super.xxx().
+        // Check the super class to see if a function by this name exists and use it. 
+        // Save the found function on a stack to speed processing later.
+        var superFuncs = clazzThis.superfuncs || (clazzThis.superfuncs = []);
+        if ((fx = superFuncs[funName]) == null) {
+          var sc = clazzThis.superClazz; 
+          fx = sc && sc.prototype && sc.prototype[funName];
+          var msg = "\n!!!! j2sSwingJS Clazz.overrideMethod+superCall() found for " + clazzThis.__CLASS_NAME__ + "." + funName;
+          System.out.println(msg); 
+          Clazz._supercallMsg += msg;
+        } 
+        if (fx && fx.stack)
+          fx = fx.stack[fx.stack.length - 1].prototype[funName];
+        superFuncs[funName] = fx;
       }
 		} else if (!clazzFun.stack) { // super.toString
 			fx = clazzFun;
@@ -1961,7 +1978,7 @@ Clazz.instantialize = function (objThis, args) {
     //  preparefields
     //  construct
     if ((c.claxxOwner && c.claxxOwner === myclass)
-				|| (c.stack	&& c.stack[c.stack.length - 1] == myclass)) {
+				|| (c.stack	&& c.stack[c.length - 1] == myclass)) {
       p = null;
 			/*
 			 * This #construct is defined by this class itself.
@@ -2150,14 +2167,14 @@ var newMethodNotFoundException = function (clazz, method, params) {
 //////// (int) conversions //////////
 
 Clazz.floatToInt = function (x) {
-	return x < 0 ? Math.ceil(x) : Math.floor(x);
+	return isNaN(x) ? 0 : x < 0 ? Math.ceil(x) : Math.floor(x);
 };
 
 Clazz.floatToByte = Clazz.floatToShort = Clazz.floatToLong = Clazz.floatToInt;
 Clazz.doubleToByte = Clazz.doubleToShort = Clazz.doubleToLong = Clazz.doubleToInt = Clazz.floatToInt;
 
 Clazz.floatToChar = function (x) {
-	return String.fromCharCode (x < 0 ? Math.ceil(x) : Math.floor(x));
+	return String.fromCharCode (isNaN(x) ? 0 : x < 0 ? Math.ceil(x) : Math.floor(x));
 };
 
 Clazz.doubleToChar = Clazz.floatToChar;

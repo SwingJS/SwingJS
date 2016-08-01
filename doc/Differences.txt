@@ -31,6 +31,7 @@ MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS
 primitive numerical types
 distinguishing arrays
 forced null typing
+ArrayOutOfBounds
 native classes
 java.awt.Color
 javax.swing.JFileDialog
@@ -1201,6 +1202,11 @@ method receives a "null" URL object, which does not in JavaScript
 evaluate to true for "== null". Thus, testing for null within 
 functions called this way process improperly.
 
+ArrayOutOfBounds
+----------------
+
+You cannot intentionally throw an ArrayOutOfBoundsException in JavaScript.
+JavaScript will simply return "undefined", not throw an Exception. 
 
 java.awt.Color
 --------------

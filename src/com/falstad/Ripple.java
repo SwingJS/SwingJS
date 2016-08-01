@@ -256,6 +256,7 @@ public class Ripple extends Applet implements ComponentListener {
 class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		AdjustmentListener, MouseMotionListener, MouseListener, ItemListener {
 
+	
 	// original values:
 	int defaultSpeed = 1, defaultResolution = 110, startupTime = 1000, resolutionCutoff = 55;
 	
@@ -873,7 +874,9 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		g.drawString(s, (winSize.width - fm.stringWidth(s)) / 2, y);
 	}
 
-	public void paintComponent(Graphics g) {
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
 		cv.repaint();
 	}
 

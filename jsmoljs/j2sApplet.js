@@ -1178,7 +1178,7 @@ J2S = (function(document) {
           J2S.Swing.hideMenus(who.applet);         
         if (who._frameViewer && who._frameViewer.isFrame)
           J2S._setWindowZIndex(who._frameViewer.top.ui.domNode, Integer.MAX_VALUE); 
-        who.applet._processEvent(501, xym, ev, who._frameViewer); //java.awt.Event.MOUSE_DOWN
+        who.applet._processEvent(501, xym, ev, who._frameViewer); //MouseEvent.MOUSE_PRESSED
       }
 			return !!ui;
 		});    
@@ -1207,7 +1207,7 @@ J2S = (function(document) {
 				return !!ui;
 			var xym = J2S._jsGetXY(who, ev);
 			if(xym)
-  			who.applet._processEvent(502, xym, ev, who._frameViewer);//java.awt.Event.MOUSE_UP
+  			who.applet._processEvent(502, xym, ev, who._frameViewer);//MouseEvent.MOUSE_RELEASED
 			return !!ui;
 		});
     
@@ -1233,15 +1233,22 @@ J2S = (function(document) {
 		J2S.$bind(who, 'DOMMouseScroll mousewheel', function(ev) { // Zoom
       if (doIgnore(ev))
         return true;
-			ev.stopPropagation();
-			ev.preventDefault();
-			// Webkit or Firefox
+        
+      if (ev.target.getAttribute("role")) {
+        return true;
+      }
+      var ui = ev.target["data-ui"];
+      var handled = (ui && ui.handleJSEvent(who, 507, ev));
+      if (checkStopPropagation(ev, ui, handled))
+        return true;
+      ui || (ui = ev.target["data-component"]);
 			who.isDragging = false;
+      
 			var oe = ev.originalEvent;
 			var scroll = (oe.detail ? oe.detail : (J2S.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
 			var modifiers = getMouseModifiers(ev);
-			who.applet._processEvent(-1,[scroll < 0 ? -1 : 1,0,modifiers], ev, who._frameViewer);
-			return false;
+			who.applet._processEvent(507,[scroll < 0 ? -1 : 1,0,modifiers], ev, who._frameViewer);
+			return !!ui;
 		});
 
 		// context menu is fired on mouse down, not up, and it's handled already anyway.
@@ -1263,8 +1270,8 @@ J2S = (function(document) {
 			var xym = J2S._jsGetXY(who, ev);
 			if (!xym)
 				return false;
-			//who.applet._processEvent(502, xym, ev);//J.api.Event.MOUSE_UP
-			who.applet._processEvent(505, xym, ev);//J.api.Event.MOUSE_EXITED
+			//who.applet._processEvent(502, xym, ev);//MouseEvent.MOUSE_RELEASED
+			who.applet._processEvent(505, xym, ev);//MouseEvent.MOUSE_EXITED
 			return false;
 		});
 
@@ -1282,8 +1289,8 @@ J2S = (function(document) {
 				var xym = J2S._jsGetXY(who, ev);
 				if (!xym)
 					return false;
-				who.applet._processEvent(504, xym, ev, who._frameViewer);//J.api.Event.MOUSE_ENTERED	
-				//who.applet._processEvent(502, xym, ev, who._frameViewer);//J.api.Event.MOUSE_UP
+				who.applet._processEvent(504, xym, ev, who._frameViewer);//MouseEvent.MOUSE_ENTERED	
+				//who.applet._processEvent(502, xym, ev, who._frameViewer);//MouseEvent.MOUSE_RELEASED
 				return false;
 			}
 		});
@@ -1433,7 +1440,7 @@ J2S = (function(document) {
 
     var ui = ev.target["data-ui"];
     //if (who.isdragging && (!ui || !ui.handleJSEvent(who, 506, ev))) {}
-		who.applet._processEvent((who.isDragging ? 506 : 503), xym, ev, who._frameViewer); // java.awt.Event.MOUSE_DRAG : java.awt.Event.MOUSE_MOVE
+		who.applet._processEvent((who.isDragging ? 506 : 503), xym, ev, who._frameViewer); // MouseEvent.MOUSE_DRAGGED : MouseEvent.MOUSE_MOVED
     ui || (ui = ev.target["data-component"]);
 		return !!ui;
 	}

@@ -34,7 +34,7 @@ public class JSScrollBarUI extends JSSliderUI {
 	@Override
 	public Dimension getPreferredSize() {
 		// thin because we are implementing jquery slider here
-		int wh = (scrollPaneUI == null ? 5 : scrollPaneUI.scrollBarUIDisabled ? 0 : 15);
+		int wh = (scrollPaneUI == null ? 15 : scrollPaneUI.scrollBarUIDisabled ? 0 : 15);
 		// just used for width or height, but not both. I think.... 
 		return new Dimension(wh, wh);
 	}

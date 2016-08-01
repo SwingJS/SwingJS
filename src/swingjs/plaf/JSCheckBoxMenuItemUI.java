@@ -24,7 +24,7 @@ public class JSCheckBoxMenuItemUI extends JSCheckBoxUI {
 	}
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		return getButtonObject("checkBox");
 	}
 

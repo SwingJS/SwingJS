@@ -35,7 +35,7 @@ public class JSSeparatorUI extends JSLightweightUI {
 	private String text;
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			textNode = domNode = newDOMObject("label", id);
 			text = "";//(jsep.getOrientation() == SwingConstants.HORIZONTAL ? "|" : "-----------");

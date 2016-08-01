@@ -95,7 +95,7 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 		} else if ("font" == prop || "foreground" == prop
 				|| labelprops.indexOf(prop) >= 0) {
 			AbstractButton b = (AbstractButton) e.getSource();
-			((JSComponentUI) (Object) b.getUI()).propertyChangedFromListener(prop);
+			((JSComponentUI) b.ui).propertyChangedFromListener(prop);
 		}
 	}
 
@@ -316,7 +316,7 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 	 * @return true
 	 */
 	boolean verifyButtonClick(AbstractButton b) {
-		JSButtonUI ui = (JSButtonUI) (Object) b.getUI();
+		JSButtonUI ui = (JSButtonUI) b.ui;
 		ButtonModel m = b.getModel();
 		DOMNode btn = ui.domBtn;
 		boolean state = m.isSelected() && !ui.isRadio;

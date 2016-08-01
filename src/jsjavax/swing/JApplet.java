@@ -237,8 +237,9 @@ public class JApplet extends Applet implements /* Accessible ,*/
 		public void paint(Graphics g) {
     	// SwingJS adding this so that it can be overridden
     	// by a call to appletViewer to paint the applet
+    	getUI().setBackground(getBackground());
     	getRootPane().paint(g);
-    	
+   	
     	JSAppletViewer p = JSToolkit.getAppletViewer();
     	if (p.allWindows != null)
     		for (int i = p.allWindows.size(); --i >= 0;) 

@@ -39,7 +39,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 	}
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		// j2sMenu.js will wrap this in a div with the appropriate
 		if (domNode == null) {
 			popupMenu = (JPopupMenu) jc;

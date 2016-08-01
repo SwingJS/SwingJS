@@ -2601,9 +2601,9 @@ public final class Formatter implements Flushable {
             if (arg != null)
                 s = ((arg instanceof Boolean)
                      ? ((Boolean)arg).toString()
-                     : Boolean.toString(true));
+                     : "true");
             else
-                s = Boolean.toString(false);
+                s = "false";
             printS(s);
         }
 

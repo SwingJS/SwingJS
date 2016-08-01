@@ -45,7 +45,7 @@ public class JSButtonUI extends JSLightweightUI {
 
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null)
 			domBtn = enableNode = valueNode = domNode = newDOMObject("input", id,
 					"type", "button");

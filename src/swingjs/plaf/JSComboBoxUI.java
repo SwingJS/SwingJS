@@ -4,11 +4,15 @@ package swingjs.plaf;
 import javajs.util.PT;
 
 
+import jsjava.awt.event.ItemEvent;
+import jsjava.awt.event.ItemListener;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComboBox;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.LookAndFeel;
+import jsjavax.swing.event.ListDataEvent;
+import jsjavax.swing.event.ListDataListener;
 import swingjs.api.DOMNode;
 
 /**
@@ -20,9 +24,9 @@ import swingjs.api.DOMNode;
  * 
  */
 
-public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListener {
+public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListener, ItemListener, ListDataListener {
 
-	private JComboBox combobox;
+	private JComboBox comboBox;
 
 	public JSComboBoxUI() {
 		isContainer = true;
@@ -30,16 +34,14 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	}
 	
 	@Override
-	public DOMNode createDOMNode() {
-		if (domNode == null)
+	protected DOMNode updateDOMNode() {
+		if (domNode == null) {
 			domNode = focusNode = newDOMObject("select", id);
+			handleAllMouseEvents(domNode);
+			DOMNode.addJqueryHandledEvent(this, domNode, "change");
+			addJQueryFocusCallbacks();
+		}
 		populateList();
-		$(domNode).addClass("swingjs-ui");
-		DOMNode.addJqueryHandledEvent(this, domNode, "change");
-		//setDataUI(domNode);
-		//bindKeys(domNode); // ? perhaps?
-		//DOMNode.setZ(domNode, getZIndex(null) + 5);
-		setFocusable();
     return domNode;
 	}
 
@@ -48,7 +50,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		switch (eventType) {
 		case -1:
       int index = PT.parseInt("" + DOMNode.getAttr(domNode, "selectedIndex"));
-      combobox.setSelectedIndex(index);
+      comboBox.setSelectedIndex(index);
 			break;
 		}
 		return true;
@@ -57,10 +59,10 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	
 	private void populateList() {
 		$(domNode).empty();
-		int n = combobox.getItemCount();
-		int iselect = combobox.getSelectedIndex();
+		int n = comboBox.getItemCount();
+		int iselect = comboBox.getSelectedIndex();
 		for (int i = 0; i < n; i++) {
-			String item = combobox.getItemAt(i).toString();
+			String item = comboBox.getItemAt(i).toString();
 			DOMNode option = DOMNode.createElement("option", id + "_" + (++incr));
 			DOMNode.setAttr(option,  "innerHTML", item);
 			if (i == iselect)
@@ -71,7 +73,8 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	@Override
 	protected void installUIImpl() {
-		combobox = (JComboBox) c;
+		comboBox = (JComboBox) c;
+		installListeners();
     LookAndFeel.installColorsAndFont(jc,
         "ComboBox.background",
         "ComboBox.foreground",
@@ -80,20 +83,60 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	@Override
 	protected void uninstallUIImpl() {
-		// TODO Auto-generated method stub
-		
+    uninstallListeners();
+  }
+
+	
+  protected void installListeners() {
+    comboBox.addItemListener( this );
+//    if ( (propertyChangeListener = createPropertyChangeListener()) != null ) {
+//        comboBox.addPropertyChangeListener( propertyChangeListener );
+//    }
+//    if ( (keyListener = createKeyListener()) != null ) {
+//        comboBox.addKeyListener( keyListener );
+//    }
+//    if ( (focusListener = createFocusListener()) != null ) {
+//        comboBox.addFocusListener( focusListener );
+//    }
+//    if ((popupMouseListener = popup.getMouseListener()) != null) {
+//        comboBox.addMouseListener( popupMouseListener );
+//    }
+//    if ((popupMouseMotionListener = popup.getMouseMotionListener()) != null) {
+//        comboBox.addMouseMotionListener( popupMouseMotionListener );
+//    }
+//    if ((popupKeyListener = popup.getKeyListener()) != null) {
+//        comboBox.addKeyListener(popupKeyListener);
+//    }
+
+    if ( comboBox.getModel() != null ) {
+        comboBox.getModel().addListDataListener( this );
+    }
+}
+
+	/**
+	 * Removes the installed listeners from the combo box and its model. The
+	 * number and types of listeners removed and in this method should be the same
+	 * that was added in <code>installListeners</code>
+	 */
+	protected void uninstallListeners() {
+		comboBox.removeItemListener(this);
+		if (comboBox.getModel() != null)
+			comboBox.getModel().removeListDataListener(this);
 	}
 
+	
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (debugging)
-			System.out.println("JSComboBoxUI " + evt);
+			System.out.println("JSComboBoxUI propertychange " + evt);
 	}
 	
 	@Override
   public boolean contains(JComponent c, int x, int y) {
-    return false; // do not accept responsibility for this one?
-}
+//		System.out.println("JSComboBoxUI contains check " + c);
+    return true; // do not accept responsibility for this one?
+  }
 
   /**
    * Set the visiblity of the popup
@@ -115,6 +158,29 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
   public boolean isFocusTraversable( JComboBox c ) {
   	return true;
   }
+
+	@Override
+	public void intervalAdded(ListDataEvent e) {
+		System.out.println("JSComboBoxUI interval added itemStateChanged " + e);
+		revalidate();
+	}
+
+	@Override
+	public void intervalRemoved(ListDataEvent e) {
+		System.out.println("JSComboBoxUI interval removed itemStateChanged " + e);
+		revalidate();
+	}
+
+	@Override
+	public void contentsChanged(ListDataEvent e) {
+		System.out.println("JSComboBoxUI content changed itemStateChanged " + e);
+		revalidate();
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		System.out.println("JSComboBoxUI itemStateChanged " + e);
+	}
 
 
 }

@@ -3,6 +3,8 @@ package swingjs;
 import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjava.awt.Insets;
+import jsjava.awt.Rectangle;
+import jsjava.awt.event.PaintEvent;
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JRootPane;
 import jsjavax.swing.RootPaneContainer;
@@ -52,7 +54,7 @@ public class JSFrameViewer implements JSInterface {
 		this.fullName = appletViewer.fullName;
 		canvas = null;
 		jsgraphics = null;
-		insets = new Insets(30, 0, 0, 0);
+		insets = new Insets(20, 0, 0, 0);
 		getGraphics(0, 0);
 		return this;
 	}
@@ -187,6 +189,7 @@ public class JSFrameViewer implements JSInterface {
 				&& (wOld != wNew || hOld != hNew || canvas == null || jsgraphics == null)) {
 			jsgraphics = new JSGraphics2D(canvas = newCanvas(wNew, hNew));
 			jsgraphics.setWindowParameters(wNew, hNew);
+			top.repaint(0, 0, wNew, hNew);
 		}
 		return jsgraphics;
 	}
@@ -245,6 +248,17 @@ public class JSFrameViewer implements JSInterface {
 		{
 			return null;
 		}
+	}
+
+	/**
+	 * @j2sOverride
+	 */
+	public void paint(Graphics g) {
+		// Note that the applet "Panel" is never painted.
+		// This class simply maintains valuable information for applet loading.
+		// Here we go straight to the contentPane and paint that.
+		g = setGraphics(g, 0, 0);
+		top.paint(g);
 	}
 
 

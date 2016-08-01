@@ -68,6 +68,7 @@ import jsjavax.swing.plaf.ComponentUI;
 import jssun.font.FontDesignMetrics;
 import swingjs.JSGraphics2D;
 import swingjs.JSToolkit;
+import swingjs.plaf.JSComponentUI;
 
 /**
  * The base class for all Swing components except top-level containers. To use a
@@ -4792,6 +4793,10 @@ public abstract class JComponent extends Container {
 	 * @see RepaintManager#addInvalidComponent
 	 */
 	public void revalidate() {
+		// SwingJS - set this UI to rebuild itself due to some 
+		// internal structural change.
+		if (ui != null)
+			((JSComponentUI)ui).setTainted();
 		// System.out.println("revalidate on " + this);
 		if (getParent() == null) {
 			// Note: We don't bother invalidating here as once added

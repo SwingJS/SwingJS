@@ -36,7 +36,6 @@ import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.event.WindowEvent;
-import swingjs.JSFrameViewer;
 //
 
 //BH: Added rootPane.addNotify(); // builds a peer for the root pane
@@ -881,6 +880,4 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 				+ defaultCloseOperationString + ",rootPane=" + rootPaneString
 				+ ",rootPaneCheckingEnabled=" + rootPaneCheckingEnabledString;
 	}
-
-
 }

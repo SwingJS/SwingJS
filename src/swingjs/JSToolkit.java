@@ -32,6 +32,7 @@ import jsjava.awt.Frame;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Window;
+import jsjava.awt.datatransfer.Clipboard;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.ColorModel;
@@ -758,7 +759,9 @@ public class JSToolkit extends SunToolkit {
 			String s = "[JSToolkit] Component " + c.getClass().getName()
 					+ " has no corresponding JSComponentUI.";
 			System.out.println(s);
-
+			// Coerce JSComponentUI for this peer.
+			// This is a JavaScript-only trick that would be
+			// problematic in Java as well as in JavaScript.
 			ui = (JSComponentUI) (Object) new JSNullComponentPeer(c);
 		}
 		return ui;
@@ -982,6 +985,24 @@ public class JSToolkit extends SunToolkit {
 
 	public static void saveFile(String fileName, Object data, String mimeType, String encoding) {
 		J2S._saveFile(fileName, data, mimeType, encoding);
+	}
+
+	public static void killDispatched(int html5Id) {
+		/**
+		 * @j2sNative
+		 * 
+		 * clearTimeout(html5Id);
+		 * 
+		 */		
+		{}
+	}
+
+	static Clipboard systemClipboard;
+	@Override
+	public Clipboard getSystemClipboard() {
+		if (systemClipboard == null)
+			systemClipboard = (Clipboard) getInstance("jsjava.awt.datatransfer.Clipboard");
+		return systemClipboard;
 	}
 
 }

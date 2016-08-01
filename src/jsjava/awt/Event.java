@@ -360,6 +360,14 @@ public class Event {
     public static final int MOUSE_DRAG          = 6 + MOUSE_EVENT;
 
 
+    /**
+     * The "mouse wheel" event.  This is the only <code>MouseWheelEvent</code>.
+     * It occurs when a mouse equipped with a wheel has its wheel rotated.
+     * @since 1.4
+     */
+    public static final int MOUSE_WHEEL = 7 + MOUSE_EVENT;
+
+
     /* Scrolling events */
     private static final int SCROLL_EVENT       = 600;
 

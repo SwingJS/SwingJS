@@ -29,6 +29,7 @@ package com.falstad.Circuit;
 //     right button, but the right button was being excluded by use of META_MASK
 
 
+import swingjs.JSToolkit;
 import swingjs.awt.Button;
 import swingjs.awt.Checkbox;
 import swingjs.awt.CheckboxMenuItem;
@@ -231,7 +232,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			q = -q;
 		return q % x;
 	}
-
 	CircuitCanvas cv;
 	Circuit applet;
 
@@ -569,8 +569,10 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 		main.add(new Label("www.falstad.com"));
 
+		// BH note that in Java, an empty label does nothing,
+		// but in JavaScript it leaves a line. I changed this to "\n"
 		if (useFrame)
-			main.add(new Label(""));
+			main.add(new Label("\n"));
 		Font f = new Font("SansSerif", 0, 10);
 		Label l;
 		l = new Label("Current Circuit:");
@@ -832,7 +834,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return super.handleEvent(ev);
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paint(Graphics g) {
+		super.paint(g);
 		cv.repaint();
 	}
 
@@ -879,6 +882,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			try {
 				runCircuit();
 			} catch (Exception e) {
+				JSToolkit.alert(e);
 				e.printStackTrace();
 				analyzeFlag = true;
 				cv.repaint();
@@ -1044,8 +1048,11 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			timer = new Timer((int) delay, this);
 			timer.setRepeats(false);
 			timer.setActionCommand("repaint");
+			timer.start();
+		} else if (!timer.isRunning()) {
+			timer.setInitialDelay(Math.max(0, (int) delay));
+			timer.restart();
 		}
-		timer.restart();
 	}
 	
 	void setupScopes() {
@@ -1221,7 +1228,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		boolean gotRail = false;
 		CircuitElm volt = null;
 
-		// System.out.println("ac1");
 		// look for voltage or ground element
 		for (i = 0; i != elmList.size(); i++) {
 			CircuitElm ce = getElm(i);
@@ -1249,8 +1255,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			cn.x = cn.y = -1;
 			nodeList.addElement(cn);
 		}
-		// System.out.println("ac2");
-
 		// allocate nodes and voltage sources
 		for (i = 0; i != elmList.size(); i++) {
 			CircuitElm ce = getElm(i);
@@ -1305,8 +1309,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		voltageSources = new CircuitElm[vscount];
 		vscount = 0;
 		circuitNonLinear = false;
-		// System.out.println("ac3");
-
 		// determine if circuit is nonlinear
 		for (i = 0; i != elmList.size(); i++) {
 			CircuitElm ce = getElm(i);
@@ -1338,8 +1340,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			CircuitElm ce = getElm(i);
 			ce.stamp();
 		}
-		// System.out.println("ac4");
-
 		// determine nodes that are unconnected
 		boolean closure[] = new boolean[nodeList.size()];
 		boolean tempclosure[] = new boolean[nodeList.size()];
@@ -1375,7 +1375,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			// connect unconnected nodes
 			for (i = 0; i != nodeList.size(); i++)
 				if (!closure[i] && !getCircuitNode(i).internal) {
-					System.out.println("node " + i + " unconnected");
+					//System.out.println("node " + i + " unconnected");
 					stampResistor(0, i, 1e8);
 					closure[i] = true;
 					changed = true;
@@ -1420,7 +1420,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				FindPathInfo fpi = new FindPathInfo(FindPathInfo.SHORT, ce,
 						ce.getNode(1));
 				if (fpi.findPath(ce.getNode(0))) {
-					System.out.println(ce + " shorted");
+					//System.out.println(ce + " shorted");
 					ce.reset();
 				} else {
 					fpi = new FindPathInfo(FindPathInfo.CAP_V, ce, ce.getNode(1));
@@ -1438,10 +1438,6 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 			int qm = -1, qp = -1;
 			double qv = 0;
 			RowInfo re = circuitRowInfo[i];
-			/*
-			 * System.out.println("row " + i + " " + re.lsChanges + " " + re.rsChanges
-			 * + " " + re.dropRow);
-			 */
 			if (re.lsChanges || re.dropRow || re.rsChanges)
 				continue;
 			double rsadd = 0;
@@ -2317,6 +2313,9 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 	}
 
+	
+	private static int foundSite = -1;
+	
 	/**
 	 * A streamlined sequence of tests for setuplist.txt or xxxxelm.txt
 	 * 
@@ -2339,17 +2338,34 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		// BH: organized into a sequence rather than leading to 
 		//     iterative calling of getSetupList
 		//
+		int i0 = 0, i1 = 4;
+		if (foundSite >= 0)
+			i0 = i1 = foundSite;
 		
-		for (int i = 0; i < 4; i++) {
+		for (int i = i0; i <= i1; i++) {
+			foundSite = i;
 			URL url = null;
 			try {
 				switch (i) {
 				case 0:
 					if (applet == null) {
 						File f = new File(".");
-						url = new URL("file:" + f.getCanonicalPath() + "/");
+						url = new URL("file:" + f.getCanonicalPath() + "/" + file);
 					} else {
-						url = new URL(applet.getDocumentBase().toString() + file);
+						// java applet.getDocumentBase() may look like
+						// file:/C:/jmol-dev/workspace/swingjs-near/bin/com.falstad.Circuit.Circuit1469652678726.html
+						
+						String path = applet.getDocumentBase().toString();
+						int pt = path.lastIndexOf(".htm");
+						if (pt > 0)
+							path = path.substring(0, pt);
+						path = path.replace('.', '/').replace('\\', '/');
+					  pt = path.lastIndexOf('/');
+						if (pt > 0)
+							path = path.substring(0, pt + 1);
+						else
+							path = path + "/";
+						url = new URL(path + file);
 					}
 					break;
 				case 1:
@@ -2370,8 +2386,10 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				if (os == null)
 					continue;
 				byte[] b = os.toByteArray();
-				if (b != null && b.length > 0 && b[0] == (isStartup ? '#' : '$'))
+				if (b != null && b.length > 0 && b[0] == (isStartup ? '#' : '$')) {
+					foundSite = i;
 					return b;
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -2830,8 +2848,9 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 					mousePost = i;
 			}
 		}
-		if (mouseElm != origMouse)
+		if (mouseElm != origMouse) {
 			cv.repaint();
+		}
 	}
 
 	int distanceSq(int x1, int y1, int x2, int y2) {
@@ -2840,17 +2859,17 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		return x2 * x2 + y2 * y2;
 	}
 
-	long ti = 0;
+//	long ti = 0;
 	public void mouseClicked(MouseEvent e) {
 		
 		
 		int ex = e.getModifiersEx();
 		
-		long t1 = System.currentTimeMillis();
-		System.out.println("CirSim java clicked("+ e.getClickCount()+"," + (t1 - ti) 
-				+","+e.getX()+","+ e.getY()+")"
-		+ " " + Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
-		ti = t1;
+	//	long t1 = System.currentTimeMillis();
+		//System.out.println("CirSim java clicked("+ e.getClickCount()+"," + (t1 - ti) 
+	//			+","+e.getX()+","+ e.getY()+")"
+	//	+ " " + Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+//		ti = t1;
 
 		if (e.getClickCount() == 2 && !didSwitch)
 			doEditMenu(e);
@@ -2874,8 +2893,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 		didSwitch = false;
 		int ex = e.getModifiersEx();
 
-		System.out.println("CirSim java pressed " 
-		+ Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+//		System.out.println("CirSim java pressed " 
+	//	+ Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
 
 		
 		// BH: but "meta-down" is the right button in Windows 
@@ -2938,8 +2957,8 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 
 		int ex = e.getModifiersEx();
 		
-		System.out.println("CirSim java released " 
-		+ Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
+	//	System.out.println("CirSim java released " 
+		//+ Integer.toBinaryString(ex) + " " + InputEvent.getModifiersExText(ex));
 
 		// BH: strangely enough, Windows Java reports 
 		//     META_DOWN_MASK rather than BUTTON3_DOWN_MASK on release.

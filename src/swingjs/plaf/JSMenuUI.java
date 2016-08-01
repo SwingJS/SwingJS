@@ -24,7 +24,7 @@ public class JSMenuUI extends JSMenuItemUI {
 	 }
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			isMenuBarMenu = jm.isTopLevelMenu();
 			if (isMenuBarMenu) {

@@ -8,7 +8,7 @@ import swingjs.api.DOMNode;
 public class JSMenuItemUI extends JSButtonUI {
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			hasOuterDiv  = false;
 		  domNode = createItem("_item", null);

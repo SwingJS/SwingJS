@@ -139,6 +139,7 @@ public abstract class DOMNode {
 	}
 
 	public static DOMNode setStyles(DOMNode node, String... attr) {
+		if (node != null)
 		/**
 		 * @j2sNative
 		 * 
@@ -175,6 +176,18 @@ public abstract class DOMNode {
 		}
 	}
 
+	public static DOMNode lastChild(DOMNode node) {
+		/**
+		 * @j2sNative
+		 * 
+		 * return node.lastChild;
+		 * 
+		 */
+		{
+			return null;
+		}
+	}
+
 	public static void addJqueryHandledEvent(JSComponentUI me, DOMNode node, String event) {
 		Object f = null;
 	  /**
@@ -204,4 +217,5 @@ public abstract class DOMNode {
 		 */
 		{}
 	}
+
 }

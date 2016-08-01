@@ -73,7 +73,7 @@ Swing.__getMenuStyle = function(applet) { return '\
 	.swingjsPopupMenu input[type="checkbox"]{vertical-align:middle;}\
 	.swingjsPopupMenu,.swingjsPopupMenu .ui-menu{list-style:none;padding:2px;margin:0;display:block;outline:none;box-shadow:1px 1px 5px rgba(50,50,50,0.75)}\
 	.swingjsPopupMenu .ui-menu{margin-top:-3px;position:absolute}\
-	.swingjsPopupMenu .ui-menu-item{cursor:pointer;margin:0 2ex 0 0;padding:0;width:100%}\
+	.swingjsPopupMenu .ui-menu-item{cursor:pointer;margin:0 0 0 0;padding:0;width:100%}\
 	.swingjsPopupMenu .ui-menu-divider{margin:3px 1px;height:0;font-size:0;line-height:0;border-width:1px 0 0 0}\
 	.swingjsPopupMenu .ui-menu-item a{text-decoration:none;display:block;padding:0.05em 0.4em;white-space:nowrap;border:1px solid transparent}\
 	.swingjsPopupMenu .ui-menu-icons{position:relative}\

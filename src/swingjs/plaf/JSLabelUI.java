@@ -13,13 +13,14 @@ import swingjs.api.DOMNode;
  */
 public class JSLabelUI extends JSLightweightUI {
 	private JLabel label;
+	private String textAlign;
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null)
 			textNode = domNode = newDOMObject("label", id);
 		vCenter(domNode, 10);
-		DOMNode.setStyles(domNode,  "width", c.getWidth() + "px",  "height", c.getHeight() + "px");
+		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
 		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
 	
 	}
@@ -29,10 +30,9 @@ public class JSLabelUI extends JSLightweightUI {
 		boolean isVert = (prop.indexOf("vert") >= 0);
 		boolean isAlign = (prop.indexOf("Ali") >= 0);
 		if (isAlign && !isVert) {
-			setTainted();
-			setHTMLElement();
+			revalidate();
 		} else {
-			propertyChangedFromListenerSAEM(prop);
+			propertyChangedFromListenerCUI(prop);
 		}
 	}
 
@@ -56,8 +56,8 @@ public class JSLabelUI extends JSLightweightUI {
 			prop = "center";
 			break;
 		}
-		if (prop != null)
-			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align", prop);
+		if (prop != null) 
+			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align", textAlign = prop);
 		return outerNode;
 	}
 	

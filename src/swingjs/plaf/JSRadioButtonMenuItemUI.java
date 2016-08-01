@@ -12,7 +12,7 @@ public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
 	}
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		return getButtonObject("radio");
 	}
 

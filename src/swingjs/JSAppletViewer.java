@@ -11,6 +11,7 @@ import javajs.util.Lst;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
+import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.Frame;
@@ -18,10 +19,14 @@ import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Insets;
+import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
+import jsjava.awt.event.PaintEvent;
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.JFrame;
+import jsjavax.swing.JPanel;
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
 import jssun.applet.AppletListener;
@@ -144,7 +149,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 	boolean isResizable;
 
-	private boolean useFrame;
+	private boolean addFrame;
+
+	private JFrame jAppletFrame;
 
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
@@ -202,7 +209,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		// apiPlatform = (GenericPlatform) Interface.getInterface(platform);
 		display = params.get("display");
 		isResizable = "true".equalsIgnoreCase("" + params.get("isResizable"));
-		useFrame = "true".equalsIgnoreCase("" + params.get("useFrame"));
+		addFrame = "true".equalsIgnoreCase("" + params.get("addFrame"));
 
 		threadGroup = new JSThreadGroup(appletName);
 		myThread = new JSAppletThread(this, threadGroup, appletName);
@@ -271,6 +278,16 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		japplet.getRootPane().setBounds(0, 0, getWidth(), getHeight());
 		japplet.getContentPane().setBounds(0, 0, getWidth(), getHeight());
 		((JComponent) japplet.getContentPane()).revalidate();
+//		if (addFrame) {
+//			jAppletFrame = new JFrame("SwingJS Applet Viewer");
+//			Container pane = japplet.getContentPane();
+//			jAppletFrame.setContentPane(pane);
+//		  japplet.setVisible(false);
+//		  jAppletFrame.pack();
+//		}
+	//if (wNew > 0 && hNew > 0)
+	  japplet.repaint(0, 0, getWidth(), getHeight());
+
 		dispatchAppletEvent(APPLET_RESIZE, currentSize);
 	}
 
@@ -409,7 +426,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		case JSThread.INIT:
 			currentAppletSize.width = defaultAppletSize.width = getWidth();
 			currentAppletSize.height = defaultAppletSize.height = getHeight();
-			// setLayout(new BorderLayout());
 			nextStatus = APPLET_LOAD;
 			ok = true;
 			break;
@@ -462,7 +478,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				break;
 			case APPLET_READY:
 				JSToolkit.readyCallback(appletName, fullName, applet, this);
-				if (isResizable && !useFrame) {
+				if (isResizable && !addFrame) {
 					resizer = ((Resizer) JSToolkit.getInstance("swingjs.plaf.Resizer"))
 							.set(this);
 					if (resizer != null)
@@ -515,6 +531,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		return (ok ? JSThread.LOOP : JSThread.DONE);
 	}
 
+	@SuppressWarnings("static-access")
 	private void runLoader() {
 		dispatchAppletEvent(APPLET_LOADING, null);
 		status = APPLET_LOAD;
@@ -564,17 +581,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	
 	public JSFrameViewer newFrameViewer(boolean forceNew) {
 		return (haveFrames || forceNew ? new JSFrameViewer() : null);
-	}
-
-	/**
-	 * @j2sOverride
-	 */
-	public void paint(Graphics g) {
-		// Note that this "Panel" is never painted.
-		// This class simply maintains valuable information for applet loading.
-		// Here we go straight to the contentPane and paint that.
-		g = setGraphics(g, 0, 0);
-		applet.paint(g);
 	}
 
 	public ArrayList<Object> getTimerQueue() {

@@ -39,7 +39,7 @@ ChangeListener {
 	private JViewport viewport;
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null)
 			domNode = newDOMObject("div", id);
 		return domNode;

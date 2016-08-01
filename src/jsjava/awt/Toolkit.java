@@ -36,6 +36,7 @@ import swingjs.JSToolkit;
 import jsjava.util.ResourceBundle;
 //import java.util.WeakHashMap;
 
+import jsjava.awt.datatransfer.Clipboard;
 import jsjava.awt.event.AWTEventListener;
 import jsjava.awt.event.AWTEventListenerProxy;
 import jsjava.awt.event.ActionEvent;
@@ -1248,113 +1249,112 @@ public abstract class Toolkit {
 //     */
 //    public abstract void beep();
 //
-//    /**
-//     * Gets the singleton instance of the system Clipboard which interfaces
-//     * with clipboard facilities provided by the native platform. This
-//     * clipboard enables data transfer between Java programs and native
-//     * applications which use native clipboard facilities.
-//     * <p>
-//     * In addition to any and all formats specified in the flavormap.properties
-//     * file, or other file specified by the <code>AWT.DnD.flavorMapFileURL
-//     * </code> Toolkit property, text returned by the system Clipboard's <code>
-//     * getTransferData()</code> method is available in the following flavors:
-//     * <ul>
-//     * <li>DataFlavor.stringFlavor</li>
-//     * <li>DataFlavor.plainTextFlavor (<b>deprecated</b>)</li>
-//     * </ul>
-//     * As with <code>java.awt.datatransfer.StringSelection</code>, if the
-//     * requested flavor is <code>DataFlavor.plainTextFlavor</code>, or an
-//     * equivalent flavor, a Reader is returned. <b>Note:</b> The behavior of
-//     * the system Clipboard's <code>getTransferData()</code> method for <code>
-//     * DataFlavor.plainTextFlavor</code>, and equivalent DataFlavors, is
-//     * inconsistent with the definition of <code>DataFlavor.plainTextFlavor
-//     * </code>. Because of this, support for <code>
-//     * DataFlavor.plainTextFlavor</code>, and equivalent flavors, is
-//     * <b>deprecated</b>.
-//     * <p>
-//     * Each actual implementation of this method should first check if there
-//     * is a security manager installed. If there is, the method should call
-//     * the security manager's <code>checkSystemClipboardAccess</code> method
-//     * to ensure it's ok to to access the system clipboard. If the default
-//     * implementation of <code>checkSystemClipboardAccess</code> is used (that
-//     * is, that method is not overriden), then this results in a call to the
-//     * security manager's <code>checkPermission</code> method with an <code>
-//     * AWTPermission("accessClipboard")</code> permission.
-//     *
-//     * @return    the system Clipboard
-//     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-//     * returns true
-//     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
-//     * @see       jsjava.awt.datatransfer.Clipboard
-//     * @see       jsjava.awt.datatransfer.StringSelection
-//     * @see       jsjava.awt.datatransfer.DataFlavor#stringFlavor
-//     * @see       jsjava.awt.datatransfer.DataFlavor#plainTextFlavor
-//     * @see       java.io.Reader
-//     * @see       jsjava.awt.AWTPermission
-//     * @since     JDK1.1
-//     */
-//    public abstract Clipboard getSystemClipboard()
-//        ;
-//
-//    /**
-//     * Gets the singleton instance of the system selection as a
-//     * <code>Clipboard</code> object. This allows an application to read and
-//     * modify the current, system-wide selection.
-//     * <p>
-//     * An application is responsible for updating the system selection whenever
-//     * the user selects text, using either the mouse or the keyboard.
-//     * Typically, this is implemented by installing a
-//     * <code>FocusListener</code> on all <code>Component</code>s which support
-//     * text selection, and, between <code>FOCUS_GAINED</code> and
-//     * <code>FOCUS_LOST</code> events delivered to that <code>Component</code>,
-//     * updating the system selection <code>Clipboard</code> when the selection
-//     * changes inside the <code>Component</code>. Properly updating the system
-//     * selection ensures that a Java application will interact correctly with
-//     * native applications and other Java applications running simultaneously
-//     * on the system. Note that <code>java.awt.TextComponent</code> and
-//     * <code>javax.swing.text.JTextComponent</code> already adhere to this
-//     * policy. When using these classes, and their subclasses, developers need
-//     * not write any additional code.
-//     * <p>
-//     * Some platforms do not support a system selection <code>Clipboard</code>.
-//     * On those platforms, this method will return <code>null</code>. In such a
-//     * case, an application is absolved from its responsibility to update the
-//     * system selection <code>Clipboard</code> as described above.
-//     * <p>
-//     * Each actual implementation of this method should first check if there
-//     * is a <code>SecurityManager</code> installed. If there is, the method
-//     * should call the <code>SecurityManager</code>'s
-//     * <code>checkSystemClipboardAccess</code> method to ensure that client
-//     * code has access the system selection. If the default implementation of
-//     * <code>checkSystemClipboardAccess</code> is used (that is, if the method
-//     * is not overridden), then this results in a call to the
-//     * <code>SecurityManager</code>'s <code>checkPermission</code> method with
-//     * an <code>AWTPermission("accessClipboard")</code> permission.
-//     *
-//     * @return the system selection as a <code>Clipboard</code>, or
-//     *         <code>null</code> if the native platform does not support a
-//     *         system selection <code>Clipboard</code>
-//     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-//     *            returns true
-//     *
-//     * @see jsjava.awt.datatransfer.Clipboard
-//     * @see jsjava.awt.event.FocusListener
-//     * @see jsjava.awt.event.FocusEvent#FOCUS_GAINED
-//     * @see jsjava.awt.event.FocusEvent#FOCUS_LOST
-//     * @see TextComponent
-//     * @see javax.swing.text.JTextComponent
-//     * @see AWTPermission
-//     * @see GraphicsEnvironment#isHeadless
-//     * @since 1.4
-//     */
-//    public Clipboard getSystemSelection()  {
-//        if (this != Toolkit.getDefaultToolkit()) {
-//            return Toolkit.getDefaultToolkit().getSystemSelection();
-//        } else {
-//            GraphicsEnvironment.checkHeadless();
-//            return null;
-//        }
-//    }
+    /**
+     * Gets the singleton instance of the system Clipboard which interfaces
+     * with clipboard facilities provided by the native platform. This
+     * clipboard enables data transfer between Java programs and native
+     * applications which use native clipboard facilities.
+     * <p>
+     * In addition to any and all formats specified in the flavormap.properties
+     * file, or other file specified by the <code>AWT.DnD.flavorMapFileURL
+     * </code> Toolkit property, text returned by the system Clipboard's <code>
+     * getTransferData()</code> method is available in the following flavors:
+     * <ul>
+     * <li>DataFlavor.stringFlavor</li>
+     * <li>DataFlavor.plainTextFlavor (<b>deprecated</b>)</li>
+     * </ul>
+     * As with <code>java.awt.datatransfer.StringSelection</code>, if the
+     * requested flavor is <code>DataFlavor.plainTextFlavor</code>, or an
+     * equivalent flavor, a Reader is returned. <b>Note:</b> The behavior of
+     * the system Clipboard's <code>getTransferData()</code> method for <code>
+     * DataFlavor.plainTextFlavor</code>, and equivalent DataFlavors, is
+     * inconsistent with the definition of <code>DataFlavor.plainTextFlavor
+     * </code>. Because of this, support for <code>
+     * DataFlavor.plainTextFlavor</code>, and equivalent flavors, is
+     * <b>deprecated</b>.
+     * <p>
+     * Each actual implementation of this method should first check if there
+     * is a security manager installed. If there is, the method should call
+     * the security manager's <code>checkSystemClipboardAccess</code> method
+     * to ensure it's ok to to access the system clipboard. If the default
+     * implementation of <code>checkSystemClipboardAccess</code> is used (that
+     * is, that method is not overriden), then this results in a call to the
+     * security manager's <code>checkPermission</code> method with an <code>
+     * AWTPermission("accessClipboard")</code> permission.
+     *
+     * @return    the system Clipboard
+     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
+     * returns true
+     * @see       jsjava.awt.GraphicsEnvironment#isHeadless
+     * @see       jsjava.awt.datatransfer.Clipboard
+     * @see       jsjava.awt.datatransfer.StringSelection
+     * @see       jsjava.awt.datatransfer.DataFlavor#stringFlavor
+     * @see       jsjava.awt.datatransfer.DataFlavor#plainTextFlavor
+     * @see       java.io.Reader
+     * @see       jsjava.awt.AWTPermission
+     * @since     JDK1.1
+     */
+    public abstract Clipboard getSystemClipboard();
+
+    /**
+     * Gets the singleton instance of the system selection as a
+     * <code>Clipboard</code> object. This allows an application to read and
+     * modify the current, system-wide selection.
+     * <p>
+     * An application is responsible for updating the system selection whenever
+     * the user selects text, using either the mouse or the keyboard.
+     * Typically, this is implemented by installing a
+     * <code>FocusListener</code> on all <code>Component</code>s which support
+     * text selection, and, between <code>FOCUS_GAINED</code> and
+     * <code>FOCUS_LOST</code> events delivered to that <code>Component</code>,
+     * updating the system selection <code>Clipboard</code> when the selection
+     * changes inside the <code>Component</code>. Properly updating the system
+     * selection ensures that a Java application will interact correctly with
+     * native applications and other Java applications running simultaneously
+     * on the system. Note that <code>java.awt.TextComponent</code> and
+     * <code>javax.swing.text.JTextComponent</code> already adhere to this
+     * policy. When using these classes, and their subclasses, developers need
+     * not write any additional code.
+     * <p>
+     * Some platforms do not support a system selection <code>Clipboard</code>.
+     * On those platforms, this method will return <code>null</code>. In such a
+     * case, an application is absolved from its responsibility to update the
+     * system selection <code>Clipboard</code> as described above.
+     * <p>
+     * Each actual implementation of this method should first check if there
+     * is a <code>SecurityManager</code> installed. If there is, the method
+     * should call the <code>SecurityManager</code>'s
+     * <code>checkSystemClipboardAccess</code> method to ensure that client
+     * code has access the system selection. If the default implementation of
+     * <code>checkSystemClipboardAccess</code> is used (that is, if the method
+     * is not overridden), then this results in a call to the
+     * <code>SecurityManager</code>'s <code>checkPermission</code> method with
+     * an <code>AWTPermission("accessClipboard")</code> permission.
+     *
+     * @return the system selection as a <code>Clipboard</code>, or
+     *         <code>null</code> if the native platform does not support a
+     *         system selection <code>Clipboard</code>
+     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
+     *            returns true
+     *
+     * @see jsjava.awt.datatransfer.Clipboard
+     * @see jsjava.awt.event.FocusListener
+     * @see jsjava.awt.event.FocusEvent#FOCUS_GAINED
+     * @see jsjava.awt.event.FocusEvent#FOCUS_LOST
+     * @see TextComponent
+     * @see javax.swing.text.JTextComponent
+     * @see AWTPermission
+     * @see GraphicsEnvironment#isHeadless
+     * @since 1.4
+     */
+    public Clipboard getSystemSelection()  {
+        if (this != Toolkit.getDefaultToolkit()) {
+            return Toolkit.getDefaultToolkit().getSystemSelection();
+        } else {
+            GraphicsEnvironment.checkHeadless();
+            return null;
+        }
+    }
 
     /**
      * Determines which modifier key is the appropriate accelerator

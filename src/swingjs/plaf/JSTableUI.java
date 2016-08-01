@@ -64,7 +64,7 @@ public class JSTableUI extends JSLightweightUI {
 
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		int rc = table.getRowCount();
 		int rh = table.getRowHeight();
 		
@@ -160,7 +160,7 @@ public class JSTableUI extends JSLightweightUI {
 				JSComponent c = (JSComponent) getCellComponent(row, col);
   			if (c != null && !(ui = (JSComponentUI) c.getUI()).isNull) {
 					ui.domNode = null;
-					ui.createDOMNode();
+					ui.updateDOMNode();
 					td.appendChild(ui.domNode);
 				}
 			}
@@ -1383,8 +1383,8 @@ public class JSTableUI extends JSLightweightUI {
 //              repaintDropLocation(table.getDropLocation());
           } else if ("Table.isFileList" == changeName) {
               isFileList = Boolean.TRUE.equals(table.getClientProperty("Table.isFileList"));
-              table.revalidate();
-              table.repaint();
+              revalidate();
+//              table.repaint();
               if (isFileList) {
                   table.getSelectionModel().addListSelectionListener(getHandler());
               } else {
@@ -1820,7 +1820,7 @@ public class JSTableUI extends JSLightweightUI {
    * The preferred width is the sum of the preferred widths of each column.
    */
   public Dimension getPreferredSize() {
-     	createDOMNode();
+     	updateDOMNode();
       long width = 0;
       Enumeration enumeration = table.getColumnModel().getColumns();
       while (enumeration.hasMoreElements()) {

@@ -41,7 +41,7 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 	private JScrollBar hscrollbar;
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		isContainer = true;
 		if (domNode == null)
 			domNode = newDOMObject("div", id);

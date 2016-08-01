@@ -21,7 +21,7 @@ public class JSTextAreaUI extends JSTextUI {
 	protected DOMNode domBtn;
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			textListener.checkDocument();
 			domBtn = focusNode = enableNode = textNode = domNode = newDOMObject("textarea", id);
@@ -29,7 +29,7 @@ public class JSTextAreaUI extends JSTextUI {
 			setDataUI(domNode);
 			if (((JTextComponent) c).isEditable()) {
 				bindKeys(domNode);
-				setFocusable();
+				addJQueryFocusCallbacks();
 			}
 		}
 		setCssFont(

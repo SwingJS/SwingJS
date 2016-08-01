@@ -77,21 +77,21 @@ public interface RenderedImage {
       */
     String[] getPropertyNames();
 
-//    /**
-//     * Returns the ColorModel associated with this image.  All Rasters
-//     * returned from this image will have this as their ColorModel.  This
-//     * can return null.
-//     * @return the <code>ColorModel</code> of this image.
-//     */
-//    ColorModel getColorModel();
+    /**
+     * Returns the ColorModel associated with this image.  All Rasters
+     * returned from this image will have this as their ColorModel.  This
+     * can return null.
+     * @return the <code>ColorModel</code> of this image.
+     */
+    ColorModel getColorModel();
 
-//    /**
-//     * Returns the SampleModel associated with this image.  All Rasters
-//     * returned from this image will have this as their SampleModel.
-//     * @return the <code>SampleModel</code> of this image.
-//     */
-//    SampleModel getSampleModel();
-//
+    /**
+     * Returns the SampleModel associated with this image.  All Rasters
+     * returned from this image will have this as their SampleModel.
+     * @return the <code>SampleModel</code> of this image.
+     */
+    SampleModel getSampleModel();
+
     /**
      * Returns the width of the RenderedImage.
      * @return the width of this <code>RenderedImage</code>.

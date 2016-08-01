@@ -41,6 +41,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private JScrollBar jScrollBar;
 	private DOMNode sliderTrack;
 	private DOMNode sliderHandle;
+	private int disabled;
 
 	public JSSliderUI() {
 		needPreferred = true;
@@ -56,7 +57,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	}
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		boolean isNew = (domNode == null);
 		JSlider js = (JSlider) c;
 		min = js.getMinimum();
@@ -102,6 +103,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 *               min: me.min,
 		 *               max: me.max,
 		 *               value: me.val, 
+		 *               disabled: me.disabled,
 		 *               inverted: me.iVertScrollBar,
 		 *               change: function(jqevent, handle) {
 		 *                     me.jqueryCallback(jqevent, handle); }, 
@@ -111,6 +113,12 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 */
 		{
 		}
+	}
+
+	@Override
+	public void setEnabled(boolean b) {
+		super.setEnabled(b);
+		setSliderAttr("disabled", (disabled = (b ? 0 : 1)));
 	}
 
 	/**
@@ -150,8 +158,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		// mark the handle and track with the "swingjs-ui" class
 		// so as to ignore all mouse/touch events from Jmol._jsSetMouse();
 		if (isNew) {
-			$(sliderHandle).addClass("swingjs-ui");
-			$(sliderTrack).addClass("swingjs-ui");
+			handleAllMouseEvents(sliderHandle);
+			handleAllMouseEvents(sliderTrack);
 		}
 	}
 
@@ -260,7 +268,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// from Java
-		isTainted = true;
+		//isTainted = true;
 				int v;
 		if ((v = jSlider.getMinimum()) != min)
 			setSliderAttr("min", min = v);

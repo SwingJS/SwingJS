@@ -18,7 +18,7 @@ public class JSDialogUI extends JSFrameUI implements DialogPeer {
 	//
 	// a frame without min/max buttons
 	
-	// uses Frame.createDOMNode()
+	// uses Frame.updateDOMNode()
 	
 	public JSDialogUI() {
 		z = frameZ + 500;

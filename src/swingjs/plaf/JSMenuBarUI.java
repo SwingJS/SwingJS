@@ -59,7 +59,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	}
 	
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			containerNode = domNode = newDOMObject("div", id);
 			//DOMNode.setStyles(containerNode, "overflow", "hidden");

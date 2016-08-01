@@ -552,6 +552,18 @@ public class Window extends Container {
     }
 
     /**
+     * SwingJS -- needed because there is no external peer source of paint messages
+     */
+    @Override
+  	public void paint(Graphics g) {
+    	// SwingJS adding this so that it can be overridden
+    	// by a call to appletViewer to paint the applet
+    	getUI().setBackground(getBackground());
+    	super.paint(g);
+    }
+    
+
+    /**
      * Returns the sequence of images to be displayed as the icon for this window.
      * <p>
      * This method returns a copy of the internally stored list, so all operations

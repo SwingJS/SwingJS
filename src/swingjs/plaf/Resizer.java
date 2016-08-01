@@ -20,7 +20,7 @@ public class Resizer {
 	private JRootPane rootPane;
 	private DOMNode resizer, domNode;
 	private JFrame jframe;
-	private int offsetx = -4, offsety = -4;
+	private int offsetx = -4, offsety = -4, minSize = 10;
 	private JSComponentUI ui;
 	private RootPaneContainer rpc;
 
@@ -50,6 +50,10 @@ public class Resizer {
 
 	public void hide() {
 		$(resizer).hide();		
+	}
+	
+	public void setMin(int min) {
+		minSize = min;
 	}
 	
 	@SuppressWarnings("unused")
@@ -138,9 +142,9 @@ public class Resizer {
   private Rectangle getFrameOffset(int dw, int dh) {
  	 Rectangle r = ((JSComponent) rpc).getBounds();			
 			// from mouse release
-			if (r.width + dw > 50)
+			if (r.width + dw > minSize)
 				r.width += dw;
-			if (r.height + dh > 50)
+			if (r.height + dh > minSize)
 				r.height += dh;
 			return r;
 	}

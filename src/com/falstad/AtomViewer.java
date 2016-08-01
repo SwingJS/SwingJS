@@ -1465,7 +1465,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				double camvy = rotm[3] * camvx0 + rotm[4] * camvy0 - rotm[5];
 				double camvz = rotm[6] * camvx0 + rotm[7] * camvy0 - rotm[8];
 				double camnorm = Math.sqrt(camvx0 * camvx0 + camvy0 * camvy0 + 1);
-				int n;
+				int n;	
 				float simpr = 0;
 				float simpg = 0;
 				float simpb = 0;

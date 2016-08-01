@@ -21,7 +21,7 @@ public class JSTextFieldUI extends JSTextUI {
 	protected String inputType = "text";
 
 	@Override
-	public DOMNode createDOMNode() {
+	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			textListener.checkDocument();
 			focusNode = enableNode = valueNode = domNode = DOMNode
@@ -31,7 +31,7 @@ public class JSTextFieldUI extends JSTextUI {
 			setDataUI(domNode);
 			if (((JTextComponent) c).isEditable()) {
 				bindKeys(domNode);
-				setFocusable();
+				addJQueryFocusCallbacks();
 			}
 		}
 		setCssFont(setProp(domNode, "value", getComponentText()),

@@ -29,7 +29,6 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.IndexColorModel;
 import java.util.Map;
 
-import javajs.J2SRequireImport;
 import javajs.util.AU;
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
@@ -593,26 +592,26 @@ public abstract class ColorModel implements Transparency{
      */
     public int getRed(Object inData) {
         int pixel=0,length=0;
-//        switch (transferType) {
-//            case DataBuffer.TYPE_BYTE:
-//               byte bdata[] = (byte[])inData;
-//               pixel = bdata[0] & 0xff;
-//               length = bdata.length;
-//            break;
-//            case DataBuffer.TYPE_USHORT:
-//               short sdata[] = (short[])inData;
-//               pixel = sdata[0] & 0xffff;
-//               length = sdata.length;
-//            break;
-//            case DataBuffer.TYPE_INT:
+        switch (transferType) {
+            case DataBuffer.TYPE_BYTE:
+               byte bdata[] = (byte[])inData;
+               pixel = bdata[0] & 0xff;
+               length = bdata.length;
+            break;
+            case DataBuffer.TYPE_USHORT:
+               short sdata[] = (short[])inData;
+               pixel = sdata[0] & 0xffff;
+               length = sdata.length;
+            break;
+            case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
                length = idata.length;
-//            break;
-//            default:
-//               throw new UnsupportedOperationException("This method has not been "+
-//                   "implemented for transferType " + transferType);
-//        }
+            break;
+            default:
+               throw new UnsupportedOperationException("This method has not been "+
+                   "implemented for transferType " + transferType);
+        }
         if (length == 1) {
             return getRed(pixel);
         }
@@ -660,26 +659,26 @@ public abstract class ColorModel implements Transparency{
      */
     public int getGreen(Object inData) {
         int pixel=0,length=0;
-//        switch (transferType) {
-//            case DataBuffer.TYPE_BYTE:
-//               byte bdata[] = (byte[])inData;
-//               pixel = bdata[0] & 0xff;
-//               length = bdata.length;
-//            break;
-//            case DataBuffer.TYPE_USHORT:
-//               short sdata[] = (short[])inData;
-//               pixel = sdata[0] & 0xffff;
-//               length = sdata.length;
-//            break;
-//            case DataBuffer.TYPE_INT:
+        switch (transferType) {
+            case DataBuffer.TYPE_BYTE:
+               byte bdata[] = (byte[])inData;
+               pixel = bdata[0] & 0xff;
+               length = bdata.length;
+            break;
+            case DataBuffer.TYPE_USHORT:
+               short sdata[] = (short[])inData;
+               pixel = sdata[0] & 0xffff;
+               length = sdata.length;
+            break;
+            case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
                length = idata.length;
-//            break;
-//            default:
-//               throw new UnsupportedOperationException("This method has not been "+
-//                   "implemented for transferType " + transferType);
-//        }
+            break;
+            default:
+               throw new UnsupportedOperationException("This method has not been "+
+                   "implemented for transferType " + transferType);
+        }
         if (length == 1) {
             return getGreen(pixel);
         }
@@ -727,26 +726,26 @@ public abstract class ColorModel implements Transparency{
      */
     public int getBlue(Object inData) {
         int pixel=0,length=0;
-//        switch (transferType) {
-//            case DataBuffer.TYPE_BYTE:
-//               byte bdata[] = (byte[])inData;
-//               pixel = bdata[0] & 0xff;
-//               length = bdata.length;
-//            break;
-//            case DataBuffer.TYPE_USHORT:
-//               short sdata[] = (short[])inData;
-//               pixel = sdata[0] & 0xffff;
-//               length = sdata.length;
-//            break;
-//            case DataBuffer.TYPE_INT:
+        switch (transferType) {
+            case DataBuffer.TYPE_BYTE:
+               byte bdata[] = (byte[])inData;
+               pixel = bdata[0] & 0xff;
+               length = bdata.length;
+            break;
+            case DataBuffer.TYPE_USHORT:
+               short sdata[] = (short[])inData;
+               pixel = sdata[0] & 0xffff;
+               length = sdata.length;
+            break;
+            case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
                length = idata.length;
-//            break;
-//            default:
-//               throw new UnsupportedOperationException("This method has not been "+
-//                   "implemented for transferType " + transferType);
-//        }
+            break;
+            default:
+               throw new UnsupportedOperationException("This method has not been "+
+                   "implemented for transferType " + transferType);
+        }
         if (length == 1) {
             return getBlue(pixel);
         }
@@ -790,26 +789,26 @@ public abstract class ColorModel implements Transparency{
      */
     public int getAlpha(Object inData) {
         int pixel=0,length=0;
-//        switch (transferType) {
-//            case DataBuffer.TYPE_BYTE:
-//               byte bdata[] = (byte[])inData;
-//               pixel = bdata[0] & 0xff;
-//               length = bdata.length;
-//            break;
-//            case DataBuffer.TYPE_USHORT:
-//               short sdata[] = (short[])inData;
-//               pixel = sdata[0] & 0xffff;
-//               length = sdata.length;
-//            break;
-//            case DataBuffer.TYPE_INT:
+        switch (transferType) {
+            case DataBuffer.TYPE_BYTE:
+               byte bdata[] = (byte[])inData;
+               pixel = bdata[0] & 0xff;
+               length = bdata.length;
+            break;
+            case DataBuffer.TYPE_USHORT:
+               short sdata[] = (short[])inData;
+               pixel = sdata[0] & 0xffff;
+               length = sdata.length;
+            break;
+            case DataBuffer.TYPE_INT:
                int idata[] = (int[])inData;
                pixel = idata[0];
                length = idata.length;
-//            break;
-//            default:
-//               throw new UnsupportedOperationException("This method has not been "+
-//                   "implemented for transferType " + transferType);
-//        }
+            break;
+            default:
+               throw new UnsupportedOperationException("This method has not been "+
+                   "implemented for transferType " + transferType);
+        }
         if (length == 1) {
             return getAlpha(pixel);
         }

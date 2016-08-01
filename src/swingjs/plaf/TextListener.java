@@ -67,7 +67,7 @@ public class TextListener implements MouseListener, MouseMotionListener,
 		//System.out.println("JSTextListener property change: " + prop + " " + e.getSource());
 		if ("font" == prop || "foreground" == prop || "preferredSize" == prop) {
 			JTextComponent txtComp = (JTextComponent) e.getSource();
-			((JSComponentUI) (Object) txtComp.getUI()).propertyChangedFromListener(prop);
+			((JSComponentUI)  txtComp.getUI()).propertyChangedFromListener(prop);
 		}
 		if ("editable" == prop)
 			ui.setEditable(((Boolean) e.getNewValue()).booleanValue());
@@ -210,7 +210,7 @@ public class TextListener implements MouseListener, MouseMotionListener,
 		// the double qualification to prevent Java compilation errors.
 		// Not a great idea in general....
 	
-		((JSComponentUI) (Object) txtComp.getUI()).propertyChangedFromListener("text");	
+		((JSComponentUI)txtComp.getUI()).propertyChangedFromListener("text");	
 	}
 }
   
