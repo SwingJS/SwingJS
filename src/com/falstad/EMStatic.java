@@ -1,5 +1,15 @@
 // EMStatic.java (c) 2001 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= EMStatic
+//web_Description= A simulation of electrostatics and static current distributions in two dimensions.
+//web_JavaSource= http://www.falstad.com/emstatic/
+//web_Location= com.falstad.EMStatic
+//web_AppletImage= images/EMStatic.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+
+
 package com.falstad;
 
 // Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
@@ -146,6 +156,7 @@ public class EMStatic extends Applet {
     
     @Override
 	public void paint(Graphics g) {
+    	super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -153,8 +164,9 @@ public class EMStatic extends Applet {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
+	
 	}
 }
 

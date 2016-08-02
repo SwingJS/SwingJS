@@ -1,5 +1,13 @@
 // Wave2d.java (c) 2004 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= Wave2d
+//web_Description= A simulation that demonstrates scalar waves (such as sound waves) in two dimensions.
+//web_JavaSource= http://www.falstad.com/wave2d/
+//web_Location= com.falstad.Wave2d
+//web_AppletImage= images/wave2d.png
+//web_Category= Physics
+//web_Date=  08/02/2016
 
 package com.falstad;
 
@@ -177,6 +185,7 @@ public class Wave2d extends Applet implements ComponentListener {
     
     @Override
 		public void paint(Graphics g) {
+    	super.paint(g);
 	String s = "Applet is open in a separate window.";
 	if (!started)
 	    s = "Applet is starting.";
@@ -184,8 +193,8 @@ public class Wave2d extends Applet implements ComponentListener {
 	    s = "Applet is finished.";
 	else if (ogf.useFrame)
 	    ogf.triggerShow();
-	g.drawString(s, 10, 30);
-	super.paint(g);
+	if(ogf == null || ogf.useFrame)
+		g.drawString(s, 10, 30);
     }
     
     @Override

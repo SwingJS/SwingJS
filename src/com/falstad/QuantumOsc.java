@@ -2,6 +2,15 @@ package com.falstad;
 
 //QuantumOsc.java (C) 2003 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= QuantumOsc
+//web_Description= A quantum mechanics simulation that shows the behavior of a particle in a two dimensional harmonic oscillator.
+//web_JavaSource= http://www.falstad.com/qm2dosc/
+//web_Location= com.falstad.QuantumOsc
+//web_AppletImage= images/quantumosc.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+
 import com.falstad.Complex;
 
 import java.awt.Color;

@@ -1,6 +1,17 @@
 package com.falstad;
 
 //EMWave1.java (c) 2002 by Paul Falstad, www.falstad.com
+
+//web_Ready
+//web_AppletName= EMWave1
+//web_Description= A simulation that demonstrates electrodynamics in two dimensions.
+//web_JavaSource= http://www.falstad.com/emwave1/
+//web_Location= com.falstad.EMWave1
+//web_AppletImage= images/EMWave1.png
+//web_Category= Physics
+//web_Date= 08/02/2016 
+
+
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> swingjs.awt
@@ -142,6 +153,7 @@ public class EMWave1 extends Applet implements ComponentListener {
  }
  
  public void paint(Graphics g) {
+	 super.paint(g);
 	 String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -149,8 +161,8 @@ public class EMWave1 extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
  }
  
  public void componentHidden(ComponentEvent e){}

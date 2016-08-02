@@ -13,7 +13,7 @@ package com.falstad;
 //web_Ready
 //web_AppletName= Gas
 //web_Description= A simulation of the ideal gas law.
-//web_Date= $Date: xxx$
+//web_Date= 02/08/2016
 //web_JavaSource= www.falstad.com/gas
 //web_Location= com.falstad.Gas
 //web_AppletImage= images/gas.png

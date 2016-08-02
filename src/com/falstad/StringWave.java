@@ -2,6 +2,16 @@ package com.falstad;
 
 //StringWave.java (C) 2001 by Paul Falstad, www.falstad.com
 //
+//web_Ready
+//web_AppletName= StringWave
+//web_Description= A simulation that demonstrates standing waves on a vibrating string (a loaded string, to be precise).
+//web_JavaSource= http://www.falstad.com/loadedstring/
+//web_Location= com.falstad.StringWave
+//web_AppletImage= images/StringWave.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+//web_Features= sounds
+//
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> swingjs.awt
@@ -107,6 +117,7 @@ public class StringWave extends Applet implements ComponentListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -114,8 +125,8 @@ public class StringWave extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 	@Override

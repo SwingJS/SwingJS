@@ -1,6 +1,17 @@
 package com.falstad;
 
 // WaveBox.java (c) 2001 by Paul Falstad, www.falstad.com.
+
+//web_Ready
+//web_AppletName= WaveBox
+//web_Description= 
+//web_JavaSource= http://www.falstad.com/wavebox/
+//web_Location= com.falstad.WaveBox
+//web_AppletImage= images/WaveBox.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+
+
 // Rendering algorithm in this applet is based on the description of
 // the algorithm used in Atom in a Box by Dean Dauger (www.dauger.com).
 // We raytrace through a 3-d dataset, sampling a number of points and
@@ -187,6 +198,7 @@ public class WaveBox extends Applet implements ComponentListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -194,8 +206,8 @@ public class WaveBox extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 	@Override

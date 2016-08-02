@@ -1,12 +1,20 @@
 package com.falstad;
 
+//web_Ready
+//web_AppletName= Diffraction
+//web_Description= Generation of Fresnel diffraction patterns.
+//web_JavaSource= http://www.falstad.com/diffraction/
+//web_Location= com.falstad.Diffraction
+//web_AppletImage= images/diffraction.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+
 //Diffraction.java (c) 2001 by Paul Falstad, www.falstad.com.
 //Algorithm used for circular apertures is from "Simulation and Study
 //of Fresnel Diffraction for Arbitrary Two-Dimensional Apertures", by
 //Dean Dauger, published in Computers In Physics, Nov/Dec 1996,
 //except I use ray tracing to find edges instead of the (more general)
 //method he describes.
-
 // Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> swingjs.awt
@@ -179,6 +187,7 @@ public class Diffraction extends Applet {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -186,8 +195,9 @@ public class Diffraction extends Applet {
 			s = "Applet is finished.";
 		else if (mf.useFrame)
 			mf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(mf == null || mf.useFrame)
+			g.drawString(s, 10, 30);
+		
 	}
 }
 

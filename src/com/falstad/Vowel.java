@@ -1,5 +1,15 @@
 // Vowel.java (C) 2005 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= Vowel
+//web_Description= A simulation of sound waves in the human vocal tract to make vowel sounds.
+//web_JavaSource= http://www.falstad.com/vowel/
+//web_Location= com.falstad.Vowel
+//web_AppletImage= images/vowel.png
+//web_Category= Physics
+//web_Date= 08/0/2016
+//web_Features= sound
+
 package com.falstad;
 
 import java.awt.AWTEvent;
@@ -114,6 +124,7 @@ public class Vowel extends Applet implements ComponentListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (security)
 			s = "Security exception, use nosound version";
@@ -123,8 +134,8 @@ public class Vowel extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 	@Override

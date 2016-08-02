@@ -1,5 +1,15 @@
 package com.falstad;
 
+//web_Ready
+//web_AppletName= CircOsc
+//web_Description= A simulation of waves in a circular membrane, showing its various vibrational modes. 
+//web_JavaSource= http://www.falstad.com/circosc/
+//web_Location= com.falstad.CircOsc
+//web_AppletImage= images/CircOsc.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+//web_Features= Sound, Threads, Graphics2D, etc
+
 //CircOsc.java (C) 2001 by Paul Falstad, www.falstad.com
 //
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
@@ -171,6 +181,7 @@ public class CircOsc extends Applet implements ComponentListener {
 	boolean security = false;
 
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (security)
 			s = "Security exception, use nosound version";
@@ -180,8 +191,8 @@ public class CircOsc extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 	public void componentHidden(ComponentEvent e) {

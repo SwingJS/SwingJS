@@ -2,6 +2,16 @@ package com.falstad;
 
 //Fourier.java (C) 2001 by Paul Falstad, www.falstad.com
 //
+//web_Ready
+//web_AppletName= Fourier
+//web_Description= Simulation of Fourier series, which is a method of expressing an arbitrary periodic function as a sum of cosine terms.
+//web_JavaSource= http://www.falstad.com/fourier/
+//web_Location= com.falstad.Fourier
+//web_AppletImage= images/Fourier.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+//web_Features= sound
+//
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> swingjs.awt
@@ -194,6 +204,7 @@ public class Fourier extends Applet implements ComponentListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g); //required to avoid hover-mouse repaint
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -201,8 +212,8 @@ public class Fourier extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g); // required to avoid hover-mouse repaint
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 	@Override

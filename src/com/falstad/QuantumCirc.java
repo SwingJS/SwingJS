@@ -2,6 +2,15 @@ package com.falstad;
 
 //QuantumCirc.java (C) 2001 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= QuantumCirc
+//web_Description= A simulation that shows the behavior of a particle in a two dimensional circular square well.
+//web_JavaSource= http://www.falstad.com/qm2dcirc/
+//web_Location= com.falstad.QuantumCirc
+//web_AppletImage= images/quantumcirc.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -133,6 +142,7 @@ public class QuantumCirc extends Applet implements ComponentListener {
  }
  
  public void paint(Graphics g) {
+	super.paint(g);
 	String s = "Applet is open in a separate window.";
 	if (!started)
 	    s = "Applet is starting.";
@@ -140,8 +150,8 @@ public class QuantumCirc extends Applet implements ComponentListener {
 	    s = "Applet is finished.";
 	else if (ogf.useFrame)
 		ogf.triggerShow();
-	g.drawString(s, 10, 30);
-	super.paint(g);
+	if(ogf == null || ogf.useFrame)
+		g.drawString(s, 10, 30);
  }
  
  public void componentHidden(ComponentEvent e){}

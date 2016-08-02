@@ -35,6 +35,17 @@ import swingjs.awt.Label;
 import swingjs.awt.Scrollbar;
 
 
+//web_Ready
+//web_AppletName= BarWaves
+//web_Description= A simulation that demonstrates standing flexural waves in a bar.
+//web_JavaSource= http://www.falstad.com/barwaves/
+//web_Location= com.falstad.BarWaves
+//web_AppletImage= images/BarWaves.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+//web_Features= Sound, etc
+
+
 //BarWaves.java (C) 2001 by Paul Falstad, www.falstad.com
 //
 //Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
@@ -88,6 +99,7 @@ public class BarWaves extends Applet {
  
  public void paint(Graphics g) {
 	 System.out.println(mf.cv.getSize());
+	 super.paint(g);
 	 String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -95,8 +107,9 @@ public class BarWaves extends Applet {
 			s = "Applet is finished.";
 		else if (mf.useFrame)
 			mf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		 if(mf == null || mf.useFrame)
+			 g.drawString(s, 10, 30);
+		
  }
 };
 

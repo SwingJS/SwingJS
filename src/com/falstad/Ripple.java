@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.Ripple
 //web_AppletImage= images/ripple.png
 //web_Category= Physics
-//web_Date= $Date$
+//web_Date= 08/02/2016
 //web_Features= Graphics2D, Threads, etc
 
 // see http://www.falstad.com/ripple/
@@ -214,6 +214,7 @@ public class Ripple extends Applet implements ComponentListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g); // required to avoid hover-mouse repaint
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -221,8 +222,8 @@ public class Ripple extends Applet implements ComponentListener {
 			s = "Applet is finished.";
 		else if (ogf.useFrame)
 			ogf.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g); // required to avoid hover-mouse repaint
+		if(ogf == null || ogf.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 	@Override
@@ -393,7 +394,6 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		super("Ripple Tank Applet v1.7f");
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		/**
-		 * @j2sNative
 		 * 
 		 *            this.defaultSpeed = 15; this.defaultResolution = 300;
 		 *            this.startupTime = 1500; this.resolutionCutoff = 200;

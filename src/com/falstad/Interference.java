@@ -2,6 +2,16 @@ package com.falstad;
 
 //Interference.java (C) 2002 by Paul Falstad, www.falstad.com
 //
+//web_Ready
+//web_AppletName= Interference
+//web_Description= A simulation of interference between two sources of sound waves.
+//web_JavaSource= http://www.falstad.com/interference/
+//web_Location= com.falstad.Interference
+//web_AppletImage= images/Interference.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+//web_Features= sound
+//
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> swingjs.awt
@@ -167,6 +177,7 @@ public class Interference extends Applet {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -174,8 +185,8 @@ public class Interference extends Applet {
 			s = "Applet is finished.";
 		else if (ff.useFrame)
 			ff.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(ff == null || ff.useFrame)
+			g.drawString(s, 10, 30);
 	}
 }
 

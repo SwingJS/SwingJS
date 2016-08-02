@@ -6,6 +6,15 @@ package com.falstad;
 //We raytrace through a 3-d dataset, sampling a number of points and
 //integrating over them using Simpson's rule.
 
+//web_Ready
+//web_AppletName= ModeBox
+//web_Description= A simulation of standing sound waves in a 3-d rectangular box.
+//web_JavaSource= http://www.falstad.com/modebox/
+//web_Location= com.falstad.ModeBox
+//web_AppletImage= images/ModeBox.png
+//web_Category= Physics
+//web_Date= 08/02/2016
+
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //Changes include:
@@ -173,6 +182,7 @@ public class ModeBox extends Applet {
 	
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -181,8 +191,8 @@ public class ModeBox extends Applet {
 		else if (oc.useFrame)
 			oc.triggerShow();
 		started = true;
-		g.drawString(s, 10, 30);
-		super.paint(g);
+		if(oc == null || oc.useFrame)
+			g.drawString(s, 10, 30);
 	}
 
 }

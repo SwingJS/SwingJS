@@ -1,5 +1,14 @@
 package com.falstad;
 
+//web_Ready
+//web_AppletName= EMBox
+//web_Description= A simulation of standing electromagnetic waves in a 3-d rectangular box.
+//web_JavaSource= http://www.falstad.com/embox/
+//web_Location= com.falstad.EMBox
+//web_AppletImage= images/EMBox.png
+//web_Category= Physics
+//web_Date= 02/08/2016
+
 //EMBox.java (c) 2001 by Paul Falstad, www.falstad.com.
 //Rendering algorithm in this applet is based on the description of
 //the algorithm used in Atom in a Box by Dean Dauger (www.dauger.com).
@@ -154,6 +163,7 @@ public class EMBox extends Applet {
     }
     
     public void paint(Graphics g) {
+    	super.paint(g);
     	String s = "Applet is open in a separate window.";
     	if (!started)
     	    s = "Applet is starting.";
@@ -161,8 +171,8 @@ public class EMBox extends Applet {
     	    s = "Applet is finished.";
     	else if (oc.useFrame)
 			oc.triggerShow();
-		g.drawString(s, 10, 30);
-		super.paint(g);
+    	if(oc == null || oc.useFrame)
+    		g.drawString(s, 10, 30);
      }
 };
 
