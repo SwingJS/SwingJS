@@ -25,6 +25,7 @@
 
 package jsjavax.swing;
 
+import java.awt.HeadlessException;
 import java.util.Vector;
 
 import jsjava.awt.Color;
@@ -35,10 +36,10 @@ import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.MouseEvent;
+import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.event.ListSelectionEvent;
 import jsjavax.swing.event.ListSelectionListener;
 import jsjavax.swing.plaf.ListUI;
-import jsjavax.swing.plaf.TextUI;
 import jsjavax.swing.text.Position;
 
 

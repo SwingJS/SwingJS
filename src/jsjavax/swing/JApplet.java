@@ -35,6 +35,7 @@ import jsjava.awt.Container;
 import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.LayoutManager;
+import jsjava.awt.Window;
 import swingjs.JSAppletViewer;
 import swingjs.JSToolkit;
 
@@ -239,8 +240,12 @@ public class JApplet extends Applet implements /* Accessible ,*/
 			paint(g);// this will call SunGraphicsCallback on the rootPanel
     	JSAppletViewer p = appletViewer;//getAppletViewer();
     	if (p.allWindows != null)
-    		for (int i = p.allWindows.size(); --i >= 0;) 
-    			p.allWindows.get(i).paint(p.allWindows.get(i).getGraphics());    	
+    		for (int i = p.allWindows.size(); --i >= 0;) {
+    			Window c = p.allWindows.get(i);
+    			g = c.getGraphics();
+    			if (g != null)
+    				c.paint(g);
+    		}
     }
 
     /**
