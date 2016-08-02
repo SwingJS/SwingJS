@@ -33,7 +33,7 @@ public class JSFrameViewer implements JSInterface {
 
 	public String fullName = "Main";
 
-	public Container top; // null for a standard applet
+	public Container top; // JApplet or JFrame
 
 	public JSAppletViewer appletViewer;
 	public boolean isApplet, isFrame;	
@@ -258,9 +258,7 @@ public class JSFrameViewer implements JSInterface {
 		// Note that the applet "Panel" is never painted.
 		// This class simply maintains valuable information for applet loading.
 		// Here we go straight to the contentPane and paint that.
-		g = setGraphics(g, 0, 0);
-		((Graphics2D) g).setBackground(top.getBackground());
-		top.paint(g);
+		top.prePaint(setGraphics(g, 0, 0));
 	}
 
 

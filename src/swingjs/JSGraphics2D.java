@@ -111,6 +111,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	boolean isShifted;// private, but only JavaScript
 	private Font font;
 
+	private Color currentColor;
+
 	public JSGraphics2D(Object canvas) { // this must be Object, because we are passing an actual HTML5 canvas
 		hints = new RenderingHints(new HashMap());
 		this.canvas = (HTML5Canvas) canvas;
@@ -267,7 +269,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		ctx.fillRect(x, y, width, height);
 	}
 
-	public void setGraphicsColor(Color c) {
+	private void setGraphicsColor(Color c) {
 		if (c == null)
 			return; // this was the case with a JRootPanel graphic call
 		HTML5CanvasContext2D.setColor(ctx, JSToolkit.getCSSColor(c));
@@ -675,6 +677,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		ctx.clearRect(x, y, width, height);
 		setGraphicsColor(backgroundColor);
 		fillRect(x, y, width, height);
+		setGraphicsColor(foregroundColor);
 	}
 
 	@Override

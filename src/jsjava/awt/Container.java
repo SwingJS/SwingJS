@@ -4026,6 +4026,12 @@ public class Container extends JSComponent {
 //        return super.getOpaqueShape();
 //    }
 
+		public void prePaint(Graphics g) {
+			((Graphics2D) g).setBackground(getBackground());
+			((Graphics2D) g).setColor(getForeground());
+			paint(g);
+		}
+
 //    final void recursiveSubtractAndApplyShape(Region shape) {
 //        recursiveSubtractAndApplyShape(shape, getTopmostComponentIndex(), getBottommostComponentIndex());
 //    }

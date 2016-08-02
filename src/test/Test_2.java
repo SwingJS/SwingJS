@@ -811,4 +811,12 @@ class Test_2Controls extends JPanel implements ItemListener {
 			canvas.redraw(range);
 		}
 	}
+	static {
+		int i = 33;
+		double d = 33.;
+		i /= 3;
+		i /= d; // REALLY??? GO FIGURE!!!
+				
+
+	}
 } // End Class Test_2Controls

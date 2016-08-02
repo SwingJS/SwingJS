@@ -849,15 +849,15 @@ public class RepaintManager {
 					((JComponent) dirtyComponent).paintImmediately(rect.x, rect.y,
 							rect.width, rect.height);
 				} else if (dirtyComponent.isShowing()) {
-					Graphics g = JComponent.safelyGetGraphics(dirtyComponent,
-							dirtyComponent);
+					// in SwingJS this means we are working with  
+					// a JApplet, JFrame, JWindow, or JDialog
+					Graphics g = dirtyComponent.getGraphics();//JComponent.safelyGetGraphics(dirtyComponent,	dirtyComponent);
 					// If the Graphics goes away, it means someone disposed of
 					// the window, don't do anything.
 					if (g != null) {
 						// SwingJS not clipping, for performance g.setClip(rect.x, rect.y, rect.width, rect.height);
 						try {
-							((Graphics2D) g).setBackground(dirtyComponent.getBackground());
-							dirtyComponent.paint(g);
+							((Container) dirtyComponent).prePaint(g); // SwingJS
 						} finally {
 							g.dispose();
 						}

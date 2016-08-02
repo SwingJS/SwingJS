@@ -77,7 +77,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			);
 
 			titleNode = newDOMObject("label", id + "_title");
-			DOMNode.setPositionAbsolute(titleNode, 0, 0);
+			DOMNode.setPositionAbsolute(titleNode, 0, 4);
 			DOMNode.setStyles(titleNode, "height", "20px");
 			setTitle(frame.getTitle());
 
