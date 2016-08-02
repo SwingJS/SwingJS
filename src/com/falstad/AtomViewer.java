@@ -13,7 +13,7 @@ package com.falstad;
 //web_Location= com.falstad.AtomViewer
 //web_AppletImage= images/atomviewer.png
 //web_Category= Chemistry
-//web_Date= 08/02/2016
+//web_Date= $Date$
 //web_Features: menubars, etc
 
 // Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 

@@ -12,7 +12,7 @@ package com.falstad;
 
 //CircOsc.java (C) 2001 by Paul Falstad, www.falstad.com
 //
-//Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
+//Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> swingjs.awt
 //
