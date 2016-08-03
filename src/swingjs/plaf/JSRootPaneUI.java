@@ -41,7 +41,7 @@ public class JSRootPaneUI extends JSLightweightUI {
 	protected void setInnerComponentBounds(int width, int height) {
 		Resizer resizer = jc.getFrameViewer().getResizer();
 		if (resizer != null)
-			resizer.setPosition(width, height);
+			resizer.setPosition(0, 0);
 	}
 	
 }

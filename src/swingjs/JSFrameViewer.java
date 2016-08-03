@@ -214,7 +214,7 @@ public class JSFrameViewer implements JSInterface {
 		DOMNode.setPositionAbsolute(canvas, iTop, 0);
 		DOMNode.setStyles(canvas, "width", width + "px", "height", height + "px");
 		if (resizer != null)
-			resizer.setPosition(width, height);
+			resizer.setPosition(0, 0);
 			
 		if (parent != null) {
 			parent.appendChild(canvas);

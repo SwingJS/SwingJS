@@ -45,7 +45,7 @@ public class Resizer {
 			createAndShowResizer();
 		else
 			$(resizer).show();
-		setPosition($(rootNode).width(), $(rootNode).height());
+		setPosition(0, 0);
 	}
 
 	public void hide() {
@@ -93,10 +93,10 @@ public class Resizer {
 		$(rootNode).resize(fHandleDOMResize);
 	}
 
-	public void setPosition(int width, int height) {
-		height += titleHeight;
-		DOMNode.setPositionAbsolute(resizer, height + offsety, width + offsetx);
-		DOMNode.setSize(rubberBand, width, height);
+	public void setPosition(int dw, int dh) {
+		Rectangle r = getFrameOffset(dw, dh);
+		DOMNode.setPositionAbsolute(resizer, r.height + offsety, r.width + offsetx);
+		DOMNode.setSize(rubberBand, r.width, r.height);
 	}
 	
 	public DOMNode getDOMNode() {
@@ -113,11 +113,11 @@ public class Resizer {
 		case MouseEvent.MOUSE_PRESSED:
 			DOMNode.setStyles(resizer, "background-color", "green");
 			DOMNode.setStyles(rubberBand, "display", "block");
-			DOMNode.setCursor("move");
+			DOMNode.setCursor("nwse-resize");
 			// set cursor to dragging
 			break;
 		case MouseEvent.MOUSE_DRAGGED:
-			setPosition($(rootNode).width() + dx, $(rootNode).height() + dy);
+			setPosition(dx, dy);
 			break;
 		case MouseEvent.MOUSE_RELEASED:
 			DOMNode.setStyles(resizer, "background-color", "red");
@@ -146,7 +146,7 @@ public class Resizer {
 			jframe.invalidate();
 			jframe.repackContainer();
 		}
-		setPosition(r.width, r.height);
+		setPosition(0, 0);
 		// Toolkit.getEventQueue().postEvent(new ComponentEvent(f,
 		// ComponentEvent.COMPONENT_RESIZED));
 	}
