@@ -198,10 +198,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 
 	@Override
 	public void init() {
-		// addComponentListener(this);
-		showFrame();
-		// ogf.revalidate();
-		// ogf.repaint();
+		addComponentListener(this);
 	}
 
 	public static void main(String args[]) {
@@ -1749,10 +1746,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		return x < 0 ? -1 : 1;
 	}
 
-	// public void paint(Graphics g) {
-	// cv.repaint();
-	// }
-	// commenting this out might fix it?
+	 public void paint(Graphics g) {
+	 cv.repaint();
+	 }
 
 	long lastTime;
 	int frameLen;

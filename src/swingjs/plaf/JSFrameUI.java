@@ -113,9 +113,6 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setAttrs(frameNode, "width",
 					"" + frame.getWidth() + s.left + s.right, "height", "" + frame.getHeight()
 							+ s.top + s.bottom);
-
-			menuBarNode = newDOMObject("div", id + "_menubar");
-
 			containerNode = frameNode;
 		}
 		setInnerComponentBounds(width, height);

@@ -477,6 +477,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				ok = true;
 				break;
 			case APPLET_READY:
+				japplet.setVisible(true);
 				JSToolkit.readyCallback(appletName, fullName, applet, this);
 				if (isResizable && !addFrame) {
 					resizer = ((Resizer) JSToolkit.getInstance("swingjs.plaf.Resizer"))
@@ -574,7 +575,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 			japplet.setVisible(false);
 			japplet.setDispatcher();
 			//japplet.addNotify(); // we need this here because there is no frame
-			japplet.setVisible(true);
 			showAppletStatus("loaded");
 		}
 	}

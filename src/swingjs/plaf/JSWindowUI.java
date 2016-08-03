@@ -21,8 +21,7 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 	/**************/ frameNode, /*********************/
   /************/ titleBarNode, /********************/
   /**/ titleNode,                      closerNode, //
-  /***************/ layerNode, /********************/
-  /*************/ menuBarNode; /********************/
+  /***************/ layerNode; /********************/
   
 	protected JWindow w;
 	protected int z;

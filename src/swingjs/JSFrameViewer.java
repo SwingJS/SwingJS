@@ -172,8 +172,8 @@ public class JSFrameViewer implements JSInterface {
 
 	public Graphics getGraphics(int wNew, int hNew) {
 		if (wNew == 0 && top != null) {
-			wNew = Math.max(0, top.getWidth() - insets.left - insets.right);
-			hNew = Math.max(0, top.getHeight() - insets.top - insets.bottom);
+			wNew = Math.max (0, ((RootPaneContainer)top).getContentPane().getWidth());
+			hNew = Math.max (0, ((RootPaneContainer)top).getContentPane().getHeight());
 		}
 		int wOld = 0, hOld = 0;
 		/**
