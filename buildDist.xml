@@ -38,7 +38,10 @@
 		
 		<foreach target="genWebpage" param="applet">
 			<path>
-			<fileset dir="${basedir}/src/test/">
+			<fileset dir="${basedir}/src/com">
+				<contains text="//web_Ready"/>
+			</fileset>
+			<fileset dir="${basedir}/src/org">
 				<contains text="//web_Ready"/>
 			</fileset>
 			</path>
@@ -51,18 +54,18 @@
 			    	size_li = $("#container .work-item").size();
 			    	x = 6;
 			    	$('#showLess').hide();
-			    	$('.work-item:lt('+x+')').show();
+					$('.work-item:lt('+x+')').css('display','inline-block');
 				});
 
 				$('#loadMore').on('click', function () {
 					x = size_li;
-					$('.work-item:lt('+x+')').show();
+					$('.work-item:lt('+x+')').css('display','inline-block');
 					$('#showLess').show();
 					$('#loadMore').hide();
 				});
 			    $('#showLess').click(function () {
 			        x = size_li - 6;
-			        $('.work-item:lt('+x+')').hide();
+					$('.work-item:lt('+x+')').css('display','none');
 			        $('#loadMore').show();
 			        $('#showLess').hide();
 			    });
