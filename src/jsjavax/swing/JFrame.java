@@ -32,6 +32,7 @@ import jsjava.awt.Component;
 import jsjava.awt.Container;
 import jsjava.awt.Frame;
 import jsjava.awt.Graphics;
+import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.LayoutManager;
@@ -470,6 +471,14 @@ RootPaneContainer// TransferHandler.HasGetTransferHandler
 	@Override
 	public void update(Graphics g) {
 		paint(g);
+	}
+	
+	
+	@Override
+	public void paint(Graphics g) {
+		((Graphics2D) g).setBackground(getBackground());
+		((Graphics2D) g).setColor(getForeground());
+		super.paint(g);
 	}
 
 	/**

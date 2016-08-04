@@ -1,5 +1,8 @@
 package swingjs.plaf;
 
+import javajs.api.GenericColor;
+import javajs.util.CU;
+import jsjava.awt.Color;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
@@ -63,7 +66,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 				w = defaultWidth;
 			if (h == 0)
 				h = defaultHeight;
-			DOMNode.setStyles(frameNode, "background", "white");
+			DOMNode.setStyles(frameNode, "background", toCSSString(c.getBackground()));
 			DOMNode.setSize(frameNode, w, h);
 			DOMNode.setPositionAbsolute(frameNode, frame.getX(), frame.getY());
 			setJ2sMouseHandler(frameNode);
@@ -86,7 +89,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setStyles(closerWrap, "text-align", "right");
 
 			closerNode = newDOMObject("label", id + "_closer", "innerHTML", "X");
-			DOMNode.setStyles(closerNode, "background-color", "white", "width",
+			DOMNode.setStyles(closerNode, "background-color", toCSSString(c.getBackground()), "width",
 					"20px", "height", "20px", "position", "absolute", "text-align",
 					"center", "right", "0px");
 			DOMNode.addJqueryHandledEvent(this, closerNode,
@@ -154,7 +157,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 					$(outerNode).remove();
 					return true;		  		
 		  	} else if (type.equals("mouseout")) {
-			  	DOMNode.setStyles(closerNode, "background-color", "white");
+			  	DOMNode.setStyles(closerNode, "background-color", toCSSString(c.getBackground()));
 					return true;
 		  	} else if (type.equals("mouseenter")) {
 			  	DOMNode.setStyles(closerNode, "background-color", "red");

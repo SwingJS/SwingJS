@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import jsjava.awt.dnd.DropTarget;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.AdjustmentEvent;
 import jsjava.awt.event.ComponentEvent;
@@ -730,6 +731,8 @@ protected  transient ComponentPeer peer;
     // of the peer and therefore the call to XSetBackground.
     transient boolean backgroundEraseDisabled;
 
+		private DropTarget dropTarget;
+
 //    static {
 //        AWTAccessor.setComponentAccessor(new AWTAccessor.ComponentAccessor() {
 //                public AppContext getAppContext(Component comp) {
@@ -907,52 +910,52 @@ protected  transient ComponentPeer peer;
      * @param dt The DropTarget
      */
 
-//    public synchronized void setDropTarget(DropTarget dt) {
-//        if (dt == dropTarget || (dropTarget != null && dropTarget.equals(dt)))
-//            return;
-//
-//        DropTarget old;
-//
-//        if ((old = dropTarget) != null) {
-//            if (peer != null) dropTarget.removeNotify(peer);
-//
-//            DropTarget t = dropTarget;
-//
-//            dropTarget = null;
-//
-//            try {
-//                t.setComponent(null);
-//            } catch (IllegalArgumentException iae) {
-//                // ignore it.
-//            }
-//        }
-//
-//        // if we have a new one, and we have a peer, add it!
-//
-//        if ((dropTarget = dt) != null) {
-//            try {
-//                dropTarget.setComponent(this);
-//                if (peer != null) dropTarget.addNotify(peer);
-//            } catch (IllegalArgumentException iae) {
-//                if (old != null) {
-//                    try {
-//                        old.setComponent(this);
-//                        if (peer != null) dropTarget.addNotify(peer);
-//                    } catch (IllegalArgumentException iae1) {
-//                        // ignore it!
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    /**
-//     * Gets the <code>DropTarget</code> associated with this
-//     * <code>Component</code>.
-//     */
-//
-//    public synchronized DropTarget getDropTarget() { return dropTarget; }
-//
+    public synchronized void setDropTarget(DropTarget dt) {
+        if (dt == dropTarget || (dropTarget != null && dropTarget.equals(dt)))
+            return;
+
+        DropTarget old;
+
+        if ((old = dropTarget) != null) {
+            if (peer != null) dropTarget.removeNotify(peer);
+
+            DropTarget t = dropTarget;
+
+            dropTarget = null;
+
+            try {
+                t.setComponent(null);
+            } catch (IllegalArgumentException iae) {
+                // ignore it.
+            }
+        }
+
+        // if we have a new one, and we have a peer, add it!
+
+        if ((dropTarget = dt) != null) {
+            try {
+                dropTarget.setComponent(this);
+                if (peer != null) dropTarget.addNotify(peer);
+            } catch (IllegalArgumentException iae) {
+                if (old != null) {
+                    try {
+                        old.setComponent(this);
+                        if (peer != null) dropTarget.addNotify(peer);
+                    } catch (IllegalArgumentException iae1) {
+                        // ignore it!
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets the <code>DropTarget</code> associated with this
+     * <code>Component</code>.
+     */
+
+    public synchronized DropTarget getDropTarget() { return dropTarget; }
+
     
     public GraphicsConfiguration graphicsConfig;
 

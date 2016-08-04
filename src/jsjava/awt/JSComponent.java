@@ -76,10 +76,9 @@ public abstract class JSComponent extends Component {
 			return null;
 		if (frameViewer != null)
 			return frameViewer.getGraphics(0, 0).create();
-		// This is for a lightweight component, need to
-		// translate coordinate spaces and clip relative to the parent
-		if (parent == null)
+		if (parent == null) {
 			return null;
+		}
 		Graphics g = parent.getGraphics();
 		if (g == null)
 			return null;

@@ -857,7 +857,7 @@ public class RepaintManager {
 					if (g != null) {
 						// SwingJS not clipping, for performance g.setClip(rect.x, rect.y, rect.width, rect.height);
 						try {
-							((Container) dirtyComponent).prePaint(g); // SwingJS
+							((Container) dirtyComponent).paint(g); // SwingJS
 						} finally {
 							g.dispose();
 						}

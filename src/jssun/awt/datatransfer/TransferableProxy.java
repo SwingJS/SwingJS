@@ -25,25 +25,11 @@
 
 package jssun.awt.datatransfer;
 
+import java.io.IOException;
+
 import jsjava.awt.datatransfer.DataFlavor;
 import jsjava.awt.datatransfer.Transferable;
 import jsjava.awt.datatransfer.UnsupportedFlavorException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamClass;
-import java.io.OutputStream;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import jsjava.security.AccessController;
-import jsjava.security.PrivilegedAction;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -61,39 +47,42 @@ public class TransferableProxy implements Transferable {
         transferable = t;
         isLocal = local;
     }
-    public DataFlavor[] getTransferDataFlavors() {
+    @Override
+		public DataFlavor[] getTransferDataFlavors() {
         return transferable.getTransferDataFlavors();
     }
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
+    @Override
+		public boolean isDataFlavorSupported(DataFlavor flavor) {
         return transferable.isDataFlavorSupported(flavor);
     }
-    public Object getTransferData(DataFlavor df)
+    @Override
+		public Object getTransferData(DataFlavor df)
         throws UnsupportedFlavorException, IOException
     {
         Object data = transferable.getTransferData(df);
 
-        // If the data is a Serializable object, then create a new instance
-        // before returning it. This insulates applications sharing DnD and
-        // Clipboard data from each other.
-        if (data != null && isLocal && df.isFlavorSerializedObjectType()) {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            ClassLoaderObjectOutputStream oos =
-                new ClassLoaderObjectOutputStream(baos);
-            oos.writeObject(data);
-
-            ByteArrayInputStream bais =
-                new ByteArrayInputStream(baos.toByteArray());
-
-            try {
-                ClassLoaderObjectInputStream ois =
-                    new ClassLoaderObjectInputStream(bais,
-                                                     oos.getClassLoaderMap());
-                data = ois.readObject();
-            } catch (ClassNotFoundException cnfe) {
-                throw (IOException)new IOException().initCause(cnfe);
-            }
-        }
+//        // If the data is a Serializable object, then create a new instance
+//        // before returning it. This insulates applications sharing DnD and
+//        // Clipboard data from each other.
+//        if (data != null && isLocal && df.isFlavorSerializedObjectType()) {
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//
+//            ClassLoaderObjectOutputStream oos =
+//                new ClassLoaderObjectOutputStream(baos);
+//            oos.writeObject(data);
+//
+//            ByteArrayInputStream bais =
+//                new ByteArrayInputStream(baos.toByteArray());
+//
+//            try {
+//                ClassLoaderObjectInputStream ois =
+//                    new ClassLoaderObjectInputStream(bais,
+//                                                     oos.getClassLoaderMap());
+//                data = ois.readObject();
+//            } catch (ClassNotFoundException cnfe) {
+//                throw (IOException)new IOException().initCause(cnfe);
+//            }
+//        }
 
         return data;
     }
@@ -102,111 +91,115 @@ public class TransferableProxy implements Transferable {
     protected final boolean isLocal;
 }
 
-class ClassLoaderObjectOutputStream extends ObjectOutputStream {
-    private final Map<Set<String>, ClassLoader> map =
-        new HashMap<Set<String>, ClassLoader>();
+//class ClassLoaderObjectOutputStream extends ObjectOutputStream {
+//    private final Map<Set<String>, ClassLoader> map =
+//        new HashMap<Set<String>, ClassLoader>();
+//
+//    public ClassLoaderObjectOutputStream(OutputStream os) throws IOException {
+//        super(os);
+//    }
+//
+//    @Override
+//		protected void annotateClass(final Class<?> cl) throws IOException {
+//        ClassLoader classLoader =
+//            (ClassLoader)AccessController.doPrivileged(new PrivilegedAction() {
+//                @Override
+//								public Object run() {
+//                    return cl.getClassLoader();
+//                }
+//            });
+//
+//        Set<String> s = new HashSet<String>(1);
+//        s.add(cl.getName());
+//
+//        map.put(s, classLoader);
+//    }
+//    @Override
+//		protected void annotateProxyClass(final Class<?> cl) throws IOException {
+//        ClassLoader classLoader =
+//            (ClassLoader)AccessController.doPrivileged(new PrivilegedAction() {
+//                @Override
+//								public Object run() {
+//                    return cl.getClassLoader();
+//                }
+//            });
+//
+//        Class[] interfaces = cl.getInterfaces();
+//        Set<String> s = new HashSet<String>(interfaces.length);
+//        for (int i = 0; i < interfaces.length; i++) {
+//            s.add(interfaces[i].getName());
+//        }
+//
+//        map.put(s, classLoader);
+//    }
+//
+//    public Map<Set<String>, ClassLoader> getClassLoaderMap() {
+//        return new HashMap(map);
+//    }
+//}
 
-    public ClassLoaderObjectOutputStream(OutputStream os) throws IOException {
-        super(os);
-    }
-
-    protected void annotateClass(final Class<?> cl) throws IOException {
-        ClassLoader classLoader =
-            (ClassLoader)AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    return cl.getClassLoader();
-                }
-            });
-
-        Set<String> s = new HashSet<String>(1);
-        s.add(cl.getName());
-
-        map.put(s, classLoader);
-    }
-    protected void annotateProxyClass(final Class<?> cl) throws IOException {
-        ClassLoader classLoader =
-            (ClassLoader)AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    return cl.getClassLoader();
-                }
-            });
-
-        Class[] interfaces = cl.getInterfaces();
-        Set<String> s = new HashSet<String>(interfaces.length);
-        for (int i = 0; i < interfaces.length; i++) {
-            s.add(interfaces[i].getName());
-        }
-
-        map.put(s, classLoader);
-    }
-
-    public Map<Set<String>, ClassLoader> getClassLoaderMap() {
-        return new HashMap(map);
-    }
-}
-
-class ClassLoaderObjectInputStream extends ObjectInputStream {
-    private final Map<Set<String>, ClassLoader> map;
-
-    public ClassLoaderObjectInputStream(InputStream is,
-                                        Map<Set<String>, ClassLoader> map)
-      throws IOException {
-        super(is);
-        if (map == null) {
-            throw new NullPointerException("Null map");
-        }
-        this.map = map;
-    }
-
-    protected Class<?> resolveClass(ObjectStreamClass classDesc)
-      throws IOException, ClassNotFoundException {
-        String className = classDesc.getName();
-
-        Set<String> s = new HashSet<String>(1);
-        s.add(className);
-
-        ClassLoader classLoader = map.get(s);
-
-        return Class.forName(className, false, classLoader);
-    }
-
-    protected Class<?> resolveProxyClass(String[] interfaces)
-      throws IOException, ClassNotFoundException {
-
-        Set<String> s = new HashSet<String>(interfaces.length);
-        for (int i = 0; i < interfaces.length; i++) {
-            s.add(interfaces[i]);
-        }
-
-        ClassLoader classLoader = map.get(s);
-
-        // The code below is mostly copied from the superclass.
-        ClassLoader nonPublicLoader = null;
-        boolean hasNonPublicInterface = false;
-
-        // define proxy in class loader of non-public interface(s), if any
-        Class[] classObjs = new Class[interfaces.length];
-        for (int i = 0; i < interfaces.length; i++) {
-            Class cl = Class.forName(interfaces[i], false, classLoader);
-            if ((cl.getModifiers() & Modifier.PUBLIC) == 0) {
-                if (hasNonPublicInterface) {
-                    if (nonPublicLoader != cl.getClassLoader()) {
-                        throw new IllegalAccessError(
-                            "conflicting non-public interface class loaders");
-                    }
-                } else {
-                    nonPublicLoader = cl.getClassLoader();
-                    hasNonPublicInterface = true;
-                }
-            }
-            classObjs[i] = cl;
-        }
-        try {
-            return Proxy.getProxyClass(hasNonPublicInterface ?
-                                       nonPublicLoader : classLoader,
-                                       classObjs);
-        } catch (IllegalArgumentException e) {
-            throw new ClassNotFoundException(null, e);
-        }
-    }
-}
+//class ClassLoaderObjectInputStream extends ObjectInputStream {
+//    private final Map<Set<String>, ClassLoader> map;
+//
+//    public ClassLoaderObjectInputStream(InputStream is,
+//                                        Map<Set<String>, ClassLoader> map)
+//      throws IOException {
+//        super(is);
+//        if (map == null) {
+//            throw new NullPointerException("Null map");
+//        }
+//        this.map = map;
+//    }
+//
+//    protected Class<?> resolveClass(ObjectStreamClass classDesc)
+//      throws IOException, ClassNotFoundException {
+//        String className = classDesc.getName();
+//
+//        Set<String> s = new HashSet<String>(1);
+//        s.add(className);
+//
+//        ClassLoader classLoader = map.get(s);
+//
+//        return Class.forName(className, false, classLoader);
+//    }
+//
+//    protected Class<?> resolveProxyClass(String[] interfaces)
+//      throws IOException, ClassNotFoundException {
+//
+//        Set<String> s = new HashSet<String>(interfaces.length);
+//        for (int i = 0; i < interfaces.length; i++) {
+//            s.add(interfaces[i]);
+//        }
+//
+//        ClassLoader classLoader = map.get(s);
+//
+//        // The code below is mostly copied from the superclass.
+//        ClassLoader nonPublicLoader = null;
+//        boolean hasNonPublicInterface = false;
+//
+//        // define proxy in class loader of non-public interface(s), if any
+//        Class[] classObjs = new Class[interfaces.length];
+//        for (int i = 0; i < interfaces.length; i++) {
+//            Class cl = Class.forName(interfaces[i], false, classLoader);
+//            if ((cl.getModifiers() & Modifier.PUBLIC) == 0) {
+//                if (hasNonPublicInterface) {
+//                    if (nonPublicLoader != cl.getClassLoader()) {
+//                        throw new IllegalAccessError(
+//                            "conflicting non-public interface class loaders");
+//                    }
+//                } else {
+//                    nonPublicLoader = cl.getClassLoader();
+//                    hasNonPublicInterface = true;
+//                }
+//            }
+//            classObjs[i] = cl;
+//        }
+//        try {
+//            return Proxy.getProxyClass(hasNonPublicInterface ?
+//                                       nonPublicLoader : classLoader,
+//                                       classObjs);
+//        } catch (IllegalArgumentException e) {
+//            throw new ClassNotFoundException(null, e);
+//        }
+//    }
+//}

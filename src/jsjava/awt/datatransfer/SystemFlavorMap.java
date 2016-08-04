@@ -45,7 +45,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
+//import java.util.WeakHashMap;
 
 import jssun.awt.datatransfer.DataTransferer;
 
@@ -76,7 +76,8 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable {
     /**
      * System singleton which maps a thread's ClassLoader to a SystemFlavorMap.
      */
-    private static final WeakHashMap flavorMaps = new WeakHashMap();
+    //private static final WeakHashMap flavorMaps = new WeakHashMap();
+    private static final HashMap flavorMaps = new HashMap();
 
     /**
      * Copied from java.util.Properties.

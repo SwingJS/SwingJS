@@ -33,6 +33,9 @@ import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Window;
 import jsjava.awt.datatransfer.Clipboard;
+import jsjava.awt.dnd.DragGestureEvent;
+import jsjava.awt.dnd.InvalidDnDOperationException;
+import jsjava.awt.dnd.peer.DragSourceContextPeer;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
 import jsjava.awt.image.ColorModel;
@@ -1003,6 +1006,13 @@ public class JSToolkit extends SunToolkit {
 		if (systemClipboard == null)
 			systemClipboard = (Clipboard) getInstance("jsjava.awt.datatransfer.Clipboard");
 		return systemClipboard;
+	}
+
+	@Override
+	public DragSourceContextPeer createDragSourceContextPeer(DragGestureEvent dge)
+			throws InvalidDnDOperationException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

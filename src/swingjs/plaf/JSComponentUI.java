@@ -742,6 +742,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		// set position
 
 		setOuterLocationFromComponent();
+		
+		
 		if (n > 0 && containerNode == null)
 			containerNode = outerNode;
 		if (isContainer || n > 0) {
@@ -751,7 +753,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				// + c.getBounds());
 				DOMNode.setSize(outerNode, getContainerWidth(), getContainerHeight());
 				if (isContentPane)
-					DOMNode.setStyles(domNode, "overflow", "hidden");
+					DOMNode.setStyles(outerNode, "overflow", "hidden");
 			}
 			if (isRootPane) {
 				if (jc.getFrameViewer().isApplet) {
@@ -785,13 +787,19 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	private void setOuterLocationFromComponent() {
-		// In SwingJS we just used the "local" lightweight location
+		// In SwingJS we just use the "local" lightweight location
 		// for all components, not the native adjusted one, because
 		// we maintain the hierarchy of the divs. I think this is
 		// saying that everything is basically heavyweight. It
 		// "paints" itself.
 
 		if (hasOuterDiv && outerNode != null) {
+			// Considering the possibility of the parent being created
+			// before children are formed. So here we can add them later.
+			if (parent == null && jc.getParent() != null
+					&& (parent = (JSComponentUI) jc.getParent().getUI()) != null
+					&& parent.outerNode != null)
+				parent.outerNode.appendChild(outerNode);
 			DOMNode.setPositionAbsolute(outerNode, Integer.MIN_VALUE, 0);
 			DOMNode.setStyles(outerNode, "left", (x = c.getX()) + "px", "top",
 					(y = c.getY()) + "px");
@@ -811,6 +819,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				// Box.Filler has no ui.
 				continue;
 			}
+			ui.parent = this;
 			if (ui.getOuterNode() == null) {
 				System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 						+ c.getName());
@@ -818,7 +827,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 				containerNode.appendChild(ui.outerNode);
 			}
-			ui.parent = this;
 		}
 	}
 
@@ -1425,5 +1433,28 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (debugging)
 			System.out.println(id + dumpEvent(e) + prop);
 	}
+
+  public static String toCSSString(Color c) {
+    int opacity = c.getAlpha();
+    if (opacity == 255)
+      return "#" + toRGBHexString(c);
+    int rgb = c.getRGB();
+    return "rgba(" + ((rgb>>16)&0xFF) + "," + ((rgb>>8)&0xff) + "," + (rgb&0xff) + "," + opacity/255f  + ")"; 
+  }
+
+  public static String toRGBHexString(Color c) {
+    int rgb = c.getRGB();    
+    if (rgb == 0)
+      return "000000";
+    String r  = "00" + Integer.toHexString((rgb >> 16) & 0xFF);
+    r = r.substring(r.length() - 2);
+    String g  = "00" + Integer.toHexString((rgb >> 8) & 0xFF);
+    g = g.substring(g.length() - 2);
+    String b  = "00" + Integer.toHexString(rgb & 0xFF);
+    b = b.substring(b.length() - 2);
+    return r + g + b;
+  }
+
+
 
 }

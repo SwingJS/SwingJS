@@ -194,8 +194,7 @@ public class Ripple extends Applet implements ComponentListener {
 
 	@Override
 	public void init() {
-		showFrame();
-		// addComponentListener(this);
+	  addComponentListener(this);
 	}
 
 	public static void main(String args[]) {
@@ -874,11 +873,15 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		g.drawString(s, (winSize.width - fm.stringWidth(s)) / 2, y);
 	}
 
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		cv.repaint();
-	}
+//	@Override
+//	public void paint(Graphics g) {
+//
+//  BH: not needed, since cv, if it is a component of this frame, will be painted anyway,
+//      and if it is not, then this frame will not be visible and will never be painted.
+//
+//		super.paint(g);
+////		cv.repaint();
+//	}
 
 	long lastTime = 0, lastFrameTime, secTime = 0;
 	int frames = 0;

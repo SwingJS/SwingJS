@@ -37,8 +37,8 @@ import java.io.OptionalDataException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
+//import java.nio.ByteBuffer;
+//import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -520,13 +520,13 @@ public class DataFlavor implements Externalizable, Cloneable {
         } else {
            params += representationClass.getName();
         }
-        if (DataTransferer.isFlavorCharsetTextType(this) &&
-            (isRepresentationClassInputStream() ||
-             isRepresentationClassByteBuffer() ||
-             DataTransferer.byteArrayClass.equals(representationClass)))
-        {
-            params += ";charset=" + DataTransferer.getTextCharset(this);
-        }
+//        if (DataTransferer.isFlavorCharsetTextType(this) &&
+//            (isRepresentationClassInputStream() ||
+//             isRepresentationClassByteBuffer() ||
+//             DataTransferer.byteArrayClass.equals(representationClass)))
+//        {
+//            params += ";charset=" + DataTransferer.getTextCharset(this);
+//        }
         return params;
     }
 
@@ -790,12 +790,12 @@ public class DataFlavor implements Externalizable, Cloneable {
             return (Reader)transferObject;
         } else if (transferObject instanceof String) {
             return new StringReader((String)transferObject);
-        } else if (transferObject instanceof CharBuffer) {
-            CharBuffer buffer = (CharBuffer)transferObject;
-            int size = buffer.remaining();
-            char[] chars = new char[size];
-            buffer.get(chars, 0, size);
-            return new CharArrayReader(chars);
+//        } else if (transferObject instanceof CharBuffer) {
+//            CharBuffer buffer = (CharBuffer)transferObject;
+//            int size = buffer.remaining();
+//            char[] chars = new char[size];
+//            buffer.get(chars, 0, size);
+//            return new CharArrayReader(chars);
         } else if (transferObject instanceof char[]) {
             return new CharArrayReader((char[])transferObject);
         }
@@ -804,12 +804,12 @@ public class DataFlavor implements Externalizable, Cloneable {
 
         if (transferObject instanceof InputStream) {
             stream = (InputStream)transferObject;
-        } else if (transferObject instanceof ByteBuffer) {
-            ByteBuffer buffer = (ByteBuffer)transferObject;
-            int size = buffer.remaining();
-            byte[] bytes = new byte[size];
-            buffer.get(bytes, 0, size);
-            stream = new ByteArrayInputStream(bytes);
+//        } else if (transferObject instanceof ByteBuffer) {
+//            ByteBuffer buffer = (ByteBuffer)transferObject;
+//            int size = buffer.remaining();
+//            byte[] bytes = new byte[size];
+//            buffer.get(bytes, 0, size);
+//            stream = new ByteArrayInputStream(bytes);
         } else if (transferObject instanceof byte[]) {
             stream = new ByteArrayInputStream((byte[])transferObject);
         }
@@ -977,19 +977,19 @@ public class DataFlavor implements Externalizable, Cloneable {
                   isRepresentationClassCharBuffer() ||
                   DataTransferer.charArrayClass.equals(representationClass)))
             {
-                String thisCharset =
-                    DataTransferer.canonicalName(getParameter("charset"));
-                String thatCharset =
-                    DataTransferer.canonicalName(that.getParameter("charset"));
-                if (thisCharset == null) {
-                    if (thatCharset != null) {
-                        return false;
-                    }
-                } else {
-                    if (!thisCharset.equals(thatCharset)) {
-                        return false;
-                    }
-                }
+//                String thisCharset =
+//                    DataTransferer.canonicalName(getParameter("charset"));
+//                String thatCharset =
+//                    DataTransferer.canonicalName(that.getParameter("charset"));
+//                if (thisCharset == null) {
+//                    if (thatCharset != null) {
+//                        return false;
+//                    }
+//                } else {
+//                    if (!thisCharset.equals(thatCharset)) {
+//                        return false;
+//                    }
+//                }
             }
         }
 
@@ -1050,11 +1050,11 @@ public class DataFlavor implements Externalizable, Cloneable {
                   DataTransferer.charArrayClass.equals
                   (representationClass)))
             {
-                String charset =
-                    DataTransferer.canonicalName(getParameter("charset"));
-                if (charset != null) {
-                    total += charset.hashCode();
-                }
+//                String charset =
+//                    DataTransferer.canonicalName(getParameter("charset"));
+//                if (charset != null) {
+//                    total += charset.hashCode();
+//                }
             }
         }
 
@@ -1184,7 +1184,7 @@ public class DataFlavor implements Externalizable, Cloneable {
      * @since 1.4
      */
     public boolean isRepresentationClassCharBuffer() {
-        return java.nio.CharBuffer.class.isAssignableFrom(representationClass);
+        return false;//java.nio.CharBuffer.class.isAssignableFrom(representationClass);
     }
 
     /**
@@ -1195,7 +1195,8 @@ public class DataFlavor implements Externalizable, Cloneable {
      * @since 1.4
      */
     public boolean isRepresentationClassByteBuffer() {
-        return java.nio.ByteBuffer.class.isAssignableFrom(representationClass);
+    	return false;
+//        return java.nio.ByteBuffer.class.isAssignableFrom(representationClass);
     }
 
    /**
@@ -1213,7 +1214,7 @@ public class DataFlavor implements Externalizable, Cloneable {
     */
 
     public boolean isRepresentationClassRemote() {
-        return java.rmi.Remote.class.isAssignableFrom(representationClass);
+        return false;//java.rmi.Remote.class.isAssignableFrom(representationClass);
     }
 
    /**
@@ -1224,7 +1225,7 @@ public class DataFlavor implements Externalizable, Cloneable {
     */
 
     public boolean isFlavorSerializedObjectType() {
-        return isRepresentationClassSerializable() && isMimeTypeEqual(javaSerializedObjectMimeType);
+        return false;//isRepresentationClassSerializable() && isMimeTypeEqual(javaSerializedObjectMimeType);
     }
 
     /**

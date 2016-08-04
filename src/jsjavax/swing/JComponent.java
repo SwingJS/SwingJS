@@ -58,6 +58,7 @@ import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.MouseEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.util.Locale;
+import jsjavax.swing.TransferHandler.DropLocation;
 import jsjavax.swing.border.AbstractBorder;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.border.CompoundBorder;
@@ -333,6 +334,8 @@ public abstract class JComponent extends Container {
 
 	/** ActionMap. */
 	private ActionMap actionMap;
+
+	private static Autoscroller autoscroller;
 
 	/** Key used to store the default locale in an AppContext **/
 	private static final String defaultLocale = "JComponent.defaultLocale";
@@ -3037,18 +3040,27 @@ public abstract class JComponent extends Container {
 	 *           automatically scrolls its contents when dragged.
 	 */
 	public void setAutoscrolls(boolean autoscrolls) {
-		// SwingJS not implemented
-		// setFlag(AUTOSCROLLS_SET, true);
-		// if (this.autoscrolls != autoscrolls) {
-		// this.autoscrolls = autoscrolls;
-		// if (autoscrolls) {
-		// enableEvents(AWTEvent.MOUSE_EVENT_MASK);
-		// enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
-		// }
-		// else {
-		// Autoscroller.stop(this);
-		// }
-		// }
+		setFlag(AUTOSCROLLS_SET, true);
+		if (this.autoscrolls != autoscrolls) {
+			this.autoscrolls = autoscrolls;
+			if (autoscrolls) {
+				// SwingJS if we left all this static, we would alwayas require an
+				// instance of
+				// autoscroller, even if it was never used, which is a waste of
+				// resources.
+				getAutoscroller();
+				enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+				enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
+			} else {
+				getAutoscroller().stop(this);
+			}
+		}
+	}
+
+	private static Autoscroller getAutoscroller() {
+		 return (autoscroller == null?
+			 autoscroller = (Autoscroller) JSToolkit.getInstance("javax.swing.Autoscroller") : autoscroller);
+		 
 	}
 
 	/**
@@ -3061,118 +3073,6 @@ public abstract class JComponent extends Container {
 	public boolean getAutoscrolls() {
 		return autoscrolls;
 	}
-
-	// /**
-	// * Sets the <code>transferHandler</code> property,
-	// * which is <code>null</code> if the component does
-	// * not support data transfer operations.
-	// * <p>
-	// * If <code>newHandler</code> is not <code>null</code>,
-	// * and the system property
-	// * <code>suppressSwingDropSupport</code> is not true, this will
-	// * install a <code>DropTarget</code> on the <code>JComponent</code>.
-	// * The default for the system property is false, so that a
-	// * <code>DropTarget</code> will be added.
-	// * <p>
-	// * Please see
-	// * <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/dnd.html">
-	// * How to Use Drag and Drop and Data Transfer</a>,
-	// * a section in <em>The Java Tutorial</em>, for more information.
-	// *
-	// * @param newHandler mechanism for transfer of data to
-	// * and from the component
-	// *
-	// * @see TransferHandler
-	// * @see #getTransferHandler
-	// * @since 1.4
-	// * @beaninfo
-	// * bound: true
-	// * hidden: true
-	// * description: Mechanism for transfer of data to and from the component
-	// */
-	// public void setTransferHandler(TransferHandler newHandler) {
-	// TransferHandler oldHandler = (TransferHandler)getClientProperty(
-	// JComponent_TRANSFER_HANDLER);
-	// putClientProperty(JComponent_TRANSFER_HANDLER, newHandler);
-	//
-	// SwingUtilities.installSwingDropTargetAsNecessary(this, newHandler);
-	// firePropertyChange("transferHandler", oldHandler, newHandler);
-	// }
-	//
-	// /**
-	// * Gets the <code>transferHandler</code> property.
-	// *
-	// * @return the value of the <code>transferHandler</code> property
-	// *
-	// * @see TransferHandler
-	// * @see #setTransferHandler
-	// * @since 1.4
-	// */
-	// public TransferHandler getTransferHandler() {
-	// return (TransferHandler)getClientProperty(JComponent_TRANSFER_HANDLER);
-	// }
-	//
-	// /**
-	// * Calculates a custom drop location for this type of component,
-	// * representing where a drop at the given point should insert data.
-	// * <code>null</code> is returned if this component doesn't calculate
-	// * custom drop locations. In this case, <code>TransferHandler</code>
-	// * will provide a default <code>DropLocation</code> containing just
-	// * the point.
-	// *
-	// * @param p the point to calculate a drop location for
-	// * @return the drop location, or <code>null</code>
-	// */
-	// TransferHandler.DropLocation dropLocationForPoint(Point p) {
-	// return null;
-	// }
-	//
-	// /**
-	// * Called to set or clear the drop location during a DnD operation.
-	// * In some cases, the component may need to use its internal selection
-	// * temporarily to indicate the drop location. To help facilitate this,
-	// * this method returns and accepts as a parameter a state object.
-	// * This state object can be used to store, and later restore, the selection
-	// * state. Whatever this method returns will be passed back to it in
-	// * future calls, as the state parameter. If it wants the DnD system to
-	// * continue storing the same state, it must pass it back every time.
-	// * Here's how this is used:
-	// * <p>
-	// * Let's say that on the first call to this method the component decides
-	// * to save some state (because it is about to use the selection to show
-	// * a drop index). It can return a state object to the caller encapsulating
-	// * any saved selection state. On a second call, let's say the drop location
-	// * is being changed to something else. The component doesn't need to
-	// * restore anything yet, so it simply passes back the same state object
-	// * to have the DnD system continue storing it. Finally, let's say this
-	// * method is messaged with <code>null</code>. This means DnD
-	// * is finished with this component for now, meaning it should restore
-	// * state. At this point, it can use the state parameter to restore
-	// * said state, and of course return <code>null</code> since there's
-	// * no longer anything to store.
-	// *
-	// * @param location the drop location (as calculated by
-	// * <code>dropLocationForPoint</code>) or <code>null</code>
-	// * if there's no longer a valid drop location
-	// * @param state the state object saved earlier for this component,
-	// * or <code>null</code>
-	// * @param forDrop whether or not the method is being called because an
-	// * actual drop occurred
-	// * @return any saved state for this component, or <code>null</code> if none
-	// */
-	// Object setDropLocation(TransferHandler.DropLocation location,
-	// Object state,
-	// boolean forDrop) {
-	//
-	// return null;
-	// }
-	//
-	// /**
-	// * Called to indicate to this component that DnD is done.
-	// * Needed by <code>JTree</code>.
-	// */
-	// void dndDone() {
-	// }
 
 	/**
 	 * Processes mouse events occurring on this component by dispatching them to
@@ -3187,9 +3087,9 @@ public abstract class JComponent extends Container {
 	 */
 	@Override
 	protected void processMouseEvent(MouseEvent e) {
-		// if (autoscrolls && e.getID() == MouseEvent.MOUSE_RELEASED) {
-		// Autoscroller.stop(this);
-		// }
+	  if (autoscrolls && e.getID() == MouseEvent.MOUSE_RELEASED) {
+	  	getAutoscroller().stop(this);
+    }
 		super.processMouseEvent(e);
 	}
 
@@ -3202,16 +3102,16 @@ public abstract class JComponent extends Container {
 	 */
 	@Override
 	protected void processMouseMotionEvent(MouseEvent e) {
-		// boolean dispatch = true;
-		// if (autoscrolls && e.getID() == MouseEvent.MOUSE_DRAGGED) {
-		// // We don't want to do the drags when the mouse moves if we're
-		// // autoscrolling. It makes it feel spastic.
-		// dispatch = !Autoscroller.isRunning(this);
-		// Autoscroller.processMouseDragged(e);
-		// }
-		// if (dispatch) {
-		super.processMouseMotionEvent(e);
-		// }
+		boolean dispatch = true;
+		if (autoscrolls && e.getID() == MouseEvent.MOUSE_DRAGGED) {
+			// We don't want to do the drags when the mouse moves if we're
+			// autoscrolling. It makes it feel spastic.
+			dispatch = !getAutoscroller().isRunning(this);
+			getAutoscroller().processMouseDragged(e);
+		}
+		if (dispatch) {
+			super.processMouseMotionEvent(e);
+		}
 	}
 
 	// Inner classes can't get at this method from a super class
@@ -4733,9 +4633,9 @@ public abstract class JComponent extends Container {
 			RepaintManager.currentManager(this).resetDoubleBuffer();
 			setCreatedDoubleBuffer(false);
 		}
-		// if (autoscrolls) {
-		// Autoscroller.stop(this);
-		// }
+	  if (autoscrolls) {
+	  	getAutoscroller().stop(this);
+	  }
 	}
 
 	/**
@@ -5332,4 +5232,25 @@ public abstract class JComponent extends Container {
 	public static boolean isActionStandin(Action action) {
 		return action instanceof ActionStandin;
 	}
+
+	DropLocation dropLocationForPoint(Point p) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public TransferHandler getTransferHandler() {
+		return null;
+	}
+
+	Object setDropLocation(DropLocation dropLocation, Object state,
+			boolean forDrop) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void dndDone() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

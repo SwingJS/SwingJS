@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.Reader;
 import java.io.SequenceInputStream;
 import java.io.StringReader;
@@ -41,12 +40,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.UnsupportedCharsetException;
-import java.rmi.MarshalledObject;
+//import java.nio.CharBuffer;
+//import java.nio.charset.Charset;
+//import java.nio.charset.CharsetEncoder;
+//import java.nio.charset.IllegalCharsetNameException;
+//import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -317,13 +315,13 @@ public abstract class DataTransferer {
         if (encoding == null) {
             return null;
         }
-        try {
-            return Charset.forName(encoding).name();
-        } catch (IllegalCharsetNameException icne) {
+//        try {
+//            return Charset.forName(encoding).name();
+//        } catch (IllegalCharsetNameException icne) {
+//            return encoding;
+//        } catch (UnsupportedCharsetException uce) {
             return encoding;
-        } catch (UnsupportedCharsetException uce) {
-            return encoding;
-        }
+//        }
     }
 
     /**
@@ -350,7 +348,8 @@ public abstract class DataTransferer {
         if (defaultEncoding != null) {
             return defaultEncoding;
         }
-        return defaultEncoding = Charset.defaultCharset().name();
+        return  null;
+//        return defaultEncoding = Charset.defaultCharset().name();
     }
 
     /**
@@ -463,11 +462,11 @@ public abstract class DataTransferer {
         if (encoding == null) {
             return false;
         }
-        try {
-            return Charset.isSupported(encoding);
-        } catch (IllegalCharsetNameException icne) {
+//        try {
+//            return Charset.isSupported(encoding);
+//        } catch (IllegalCharsetNameException icne) {
             return false;
-        }
+//        }
     }
 
     /**
@@ -1190,15 +1189,15 @@ search:
                     ("cannot transfer non-text data as CharBuffer");
             }
 
-            CharBuffer buffer = (CharBuffer)obj;
-            int size = buffer.remaining();
-            char[] chars = new char[size];
-            buffer.get(chars, 0, size);
-
-            return translateTransferableString(
-                new String(chars),
-                format);
-
+//            CharBuffer buffer = (CharBuffer)obj;
+//            int size = buffer.remaining();
+//            char[] chars = new char[size];
+//            buffer.get(chars, 0, size);
+//
+//            return translateTransferableString(
+//                new String(chars),
+//                format);
+            return null;
         // Source data is a char array. Convert to a String and recur.
         } else if (charArrayClass.equals(flavor.getRepresentationClass())) {
             if (!(isFlavorCharsetTextType(flavor) && isTextFormat(format))) {
@@ -1214,19 +1213,19 @@ search:
         // the array. For text flavors, decode back to a String and recur to
         // reencode according to the requested format.
         } else if (flavor.isRepresentationClassByteBuffer()) {
-            ByteBuffer buffer = (ByteBuffer)obj;
-            int size = buffer.remaining();
-            byte[] bytes = new byte[size];
-            buffer.get(bytes, 0, size);
-
-            if (isFlavorCharsetTextType(flavor) && isTextFormat(format)) {
-                String sourceEncoding = DataTransferer.getTextCharset(flavor);
-                return translateTransferableString(
-                    new String(bytes, sourceEncoding),
-                    format);
-            } else {
-                return bytes;
-            }
+//            ByteBuffer buffer = (ByteBuffer)obj;
+//            int size = buffer.remaining();
+//            byte[] bytes = new byte[size];
+//            buffer.get(bytes, 0, size);
+//
+//            if (isFlavorCharsetTextType(flavor) && isTextFormat(format)) {
+//                String sourceEncoding = DataTransferer.getTextCharset(flavor);
+//                return translateTransferableString(
+//                    new String(bytes, sourceEncoding),
+//                    format);
+//            } else {
+//                return bytes;
+//            }
 
         // Source data is a byte array. For arbitrary flavors, simply return
         // the array. For text flavors, decode back to a String and recur to
@@ -1470,12 +1469,12 @@ search:
                 throw new IOException
                     ("cannot transfer non-text data as CharBuffer");
             }
-
-            CharBuffer buffer = CharBuffer.wrap(translateBytesOrStreamToString(
-                str, bytes,
-                format, localeTransferable));
-
-            return constructFlavoredObject(buffer, flavor, CharBuffer.class);
+            return null;
+//            CharBuffer buffer = CharBuffer.wrap(translateBytesOrStreamToString(
+//                str, bytes,
+//                format, localeTransferable));
+//
+//            return constructFlavoredObject(buffer, flavor, CharBuffer.class);
 
         // Target data is a char array. Recur to obtain String and convert to
         // char array.
@@ -1506,9 +1505,9 @@ search:
                     bytes = inputStreamToByteArray(str);
                 }
             }
-
-            ByteBuffer buffer = ByteBuffer.wrap(bytes);
-            return constructFlavoredObject(buffer, flavor, ByteBuffer.class);
+            return  null;
+//            ByteBuffer buffer = ByteBuffer.wrap(bytes);
+//            return constructFlavoredObject(buffer, flavor, ByteBuffer.class);
 
         // Target data is a byte array. For arbitrary flavors, just return
         // the raw bytes. For text flavors, convert to a String to strip
@@ -1526,32 +1525,32 @@ search:
                 return (bytes != null) ? bytes : inputStreamToByteArray(str);
             }
 
-        // Target data is an RMI object
-        } else if (flavor.isRepresentationClassRemote()) {
-            try {
-                byte[] ba = inputStreamToByteArray(str);
-                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
-                Object ret = ((MarshalledObject)(ois.readObject())).get();
-                ois.close();
-                str.close();
-                return ret;
-            } catch (Exception e) {
-                throw new IOException(e.getMessage());
-            }
-
-        // Target data is Serializable
-        } else if (flavor.isRepresentationClassSerializable()) {
-            try {
-                byte[] ba = inputStreamToByteArray(str);
-                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
-                Object ret = ois.readObject();
-                ois.close();
-                str.close();
-                return ret;
-            } catch (Exception e) {
-                throw new IOException(e.getMessage());
-            }
-
+//        // Target data is an RMI object
+//        } else if (flavor.isRepresentationClassRemote()) {
+//            try {
+//                byte[] ba = inputStreamToByteArray(str);
+//                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
+//                Object ret = ((MarshalledObject)(ois.readObject())).get();
+//                ois.close();
+//                str.close();
+//                return ret;
+//            } catch (Exception e) {
+//                throw new IOException(e.getMessage());
+//            }
+//
+//        // Target data is Serializable
+//        } else if (flavor.isRepresentationClassSerializable()) {
+//            try {
+//                byte[] ba = inputStreamToByteArray(str);
+//                ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(ba));
+//                Object ret = ois.readObject();
+//                ois.close();
+//                str.close();
+//                return ret;
+//            } catch (Exception e) {
+//                throw new IOException(e.getMessage());
+//            }
+//
         // Target data is Image
         } else if (DataFlavor.imageFlavor.equals(flavor)) {
             if (!isImageFormat(format)) {
@@ -1575,11 +1574,11 @@ search:
         (InputStream str, DataFlavor flavor, long format,
          Transferable localeTransferable) throws IOException
     {
-        if (isFlavorCharsetTextType(flavor) && isTextFormat(format)) {
-            str = new ReencodingInputStream
-                (str, format, DataTransferer.getTextCharset(flavor),
-                 localeTransferable);
-        }
+//        if (isFlavorCharsetTextType(flavor) && isTextFormat(format)) {
+//            str = new ReencodingInputStream
+//                (str, format, DataTransferer.getTextCharset(flavor),
+//                 localeTransferable);
+//        }
 
         return constructFlavoredObject(str, flavor, InputStream.class);
     }
@@ -1756,164 +1755,164 @@ search:
         }
     }
 
-    /**
-     * Used for decoding and reencoding an InputStream on demand so that we
-     * can strip NUL terminators and perform EOLN search-and-replace.
-     */
-    public class ReencodingInputStream extends InputStream {
-        protected BufferedReader wrapped;
-        protected final char[] in = new char[1];
-        protected byte[] out;
-
-        protected CharsetEncoder encoder;
-        protected CharBuffer inBuf;
-        protected ByteBuffer outBuf;
-
-        protected char[] eoln;
-        protected int numTerminators;
-
-        protected boolean eos;
-        protected int index, limit;
-
-        public ReencodingInputStream(InputStream bytestream, long format,
-                                     String targetEncoding,
-                                     Transferable localeTransferable)
-            throws IOException
-        {
-            Long lFormat = Long.valueOf(format);
-
-            String sourceEncoding = null;
-            if (isLocaleDependentTextFormat(format) &&
-                localeTransferable != null &&
-                localeTransferable.
-                    isDataFlavorSupported(javaTextEncodingFlavor))
-            {
-                try {
-                    sourceEncoding = new String((byte[])localeTransferable.
-                                       getTransferData(javaTextEncodingFlavor),
-                                       "UTF-8");
-                } catch (UnsupportedFlavorException cannotHappen) {
-                }
-            } else {
-                sourceEncoding = getCharsetForTextFormat(lFormat);
-            }
-
-            if (sourceEncoding == null) {
-                // Only happens when we have a custom text type.
-                sourceEncoding = getDefaultTextCharset();
-            }
-            wrapped = new BufferedReader
-                (new InputStreamReader(bytestream, sourceEncoding));
-
-            if (targetEncoding == null) {
-                // Throw NullPointerException for compatibility with the former
-                // call to sun.io.CharToByteConverter.getConverter(null)
-                // (Charset.forName(null) throws unspecified IllegalArgumentException
-                // now; see 6228568)
-                throw new NullPointerException("null target encoding");
-            }
-
-            try {
-                encoder = Charset.forName(targetEncoding).newEncoder();
-                out = new byte[(int)(encoder.maxBytesPerChar() + 0.5)];
-                inBuf = CharBuffer.wrap(in);
-                outBuf = ByteBuffer.wrap(out);
-            } catch (IllegalCharsetNameException e) {
-                throw new IOException(e.toString());
-            } catch (UnsupportedCharsetException e) {
-                throw new IOException(e.toString());
-            } catch (UnsupportedOperationException e) {
-                throw new IOException(e.toString());
-            }
-
-            String sEoln = (String)nativeEOLNs.get(lFormat);
-            if (sEoln != null) {
-                eoln = sEoln.toCharArray();
-            }
-
-            // A hope and a prayer that this works generically. This will
-            // definitely work on Win32.
-            Integer terminators = (Integer)nativeTerminators.get(lFormat);
-            if (terminators != null) {
-                numTerminators = terminators.intValue();
-            }
-        }
-
-        public int read() throws IOException {
-            if (eos) {
-                return -1;
-            }
-
-            if (index >= limit) {
-                int c = wrapped.read();
-
-                if (c == -1) { // -1 is EOS
-                    eos = true;
-                    return -1;
-                }
-
-                // "c == 0" is not quite correct, but good enough on Windows.
-                if (numTerminators > 0 && c == 0) {
-                    eos = true;
-                    return -1;
-                } else if (eoln != null && matchCharArray(eoln, c)) {
-                    c = '\n' & 0xFFFF;
-                }
-
-                in[0] = (char)c;
-
-                inBuf.rewind();
-                outBuf.rewind();
-                encoder.encode(inBuf, outBuf, false);
-                outBuf.flip();
-                limit = outBuf.limit();
-
-                index = 0;
-
-                return read();
-            } else {
-                return out[index++] & 0xFF;
-            }
-        }
-
-        public int available() throws IOException {
-            return ((eos) ? 0 : (limit - index));
-        }
-
-        public void close() throws IOException {
-            wrapped.close();
-        }
-
-        /**
-         * Checks to see if the next array.length characters in wrapped
-         * match array. The first character is provided as c. Subsequent
-         * characters are read from wrapped itself. When this method returns,
-         * the wrapped index may be different from what it was when this
-         * method was called.
-         */
-        private boolean matchCharArray(char[] array, int c)
-            throws IOException
-        {
-            wrapped.mark(array.length);  // BufferedReader supports mark
-
-            int count = 0;
-            if ((char)c == array[0]) {
-                for (count = 1; count < array.length; count++) {
-                    c = wrapped.read();
-                    if (c == -1 || ((char)c) != array[count]) {
-                        break;
-                    }
-                }
-            }
-
-            if (count == array.length) {
-                return true;
-            } else {
-                wrapped.reset();
-                return false;
-            }
-        }
-    }
+//    /**
+//     * Used for decoding and reencoding an InputStream on demand so that we
+//     * can strip NUL terminators and perform EOLN search-and-replace.
+//     */
+//    public class ReencodingInputStream extends InputStream {
+//        protected BufferedReader wrapped;
+//        protected final char[] in = new char[1];
+//        protected byte[] out;
+//
+//        protected CharsetEncoder encoder;
+//        protected CharBuffer inBuf;
+//        protected ByteBuffer outBuf;
+//
+//        protected char[] eoln;
+//        protected int numTerminators;
+//
+//        protected boolean eos;
+//        protected int index, limit;
+//
+//        public ReencodingInputStream(InputStream bytestream, long format,
+//                                     String targetEncoding,
+//                                     Transferable localeTransferable)
+//            throws IOException
+//        {
+//            Long lFormat = Long.valueOf(format);
+//
+//            String sourceEncoding = null;
+//            if (isLocaleDependentTextFormat(format) &&
+//                localeTransferable != null &&
+//                localeTransferable.
+//                    isDataFlavorSupported(javaTextEncodingFlavor))
+//            {
+//                try {
+//                    sourceEncoding = new String((byte[])localeTransferable.
+//                                       getTransferData(javaTextEncodingFlavor),
+//                                       "UTF-8");
+//                } catch (UnsupportedFlavorException cannotHappen) {
+//                }
+//            } else {
+//                sourceEncoding = getCharsetForTextFormat(lFormat);
+//            }
+//
+//            if (sourceEncoding == null) {
+//                // Only happens when we have a custom text type.
+//                sourceEncoding = getDefaultTextCharset();
+//            }
+//            wrapped = new BufferedReader
+//                (new InputStreamReader(bytestream, sourceEncoding));
+//
+//            if (targetEncoding == null) {
+//                // Throw NullPointerException for compatibility with the former
+//                // call to sun.io.CharToByteConverter.getConverter(null)
+//                // (Charset.forName(null) throws unspecified IllegalArgumentException
+//                // now; see 6228568)
+//                throw new NullPointerException("null target encoding");
+//            }
+//
+//            try {
+//                encoder = Charset.forName(targetEncoding).newEncoder();
+//                out = new byte[(int)(encoder.maxBytesPerChar() + 0.5)];
+//                inBuf = CharBuffer.wrap(in);
+//                outBuf = ByteBuffer.wrap(out);
+//            } catch (IllegalCharsetNameException e) {
+//                throw new IOException(e.toString());
+//            } catch (UnsupportedCharsetException e) {
+//                throw new IOException(e.toString());
+//            } catch (UnsupportedOperationException e) {
+//                throw new IOException(e.toString());
+//            }
+//
+//            String sEoln = (String)nativeEOLNs.get(lFormat);
+//            if (sEoln != null) {
+//                eoln = sEoln.toCharArray();
+//            }
+//
+//            // A hope and a prayer that this works generically. This will
+//            // definitely work on Win32.
+//            Integer terminators = (Integer)nativeTerminators.get(lFormat);
+//            if (terminators != null) {
+//                numTerminators = terminators.intValue();
+//            }
+//        }
+//
+//        public int read() throws IOException {
+//            if (eos) {
+//                return -1;
+//            }
+//
+//            if (index >= limit) {
+//                int c = wrapped.read();
+//
+//                if (c == -1) { // -1 is EOS
+//                    eos = true;
+//                    return -1;
+//                }
+//
+//                // "c == 0" is not quite correct, but good enough on Windows.
+//                if (numTerminators > 0 && c == 0) {
+//                    eos = true;
+//                    return -1;
+//                } else if (eoln != null && matchCharArray(eoln, c)) {
+//                    c = '\n' & 0xFFFF;
+//                }
+//
+//                in[0] = (char)c;
+//
+//                inBuf.rewind();
+//                outBuf.rewind();
+//                encoder.encode(inBuf, outBuf, false);
+//                outBuf.flip();
+//                limit = outBuf.limit();
+//
+//                index = 0;
+//
+//                return read();
+//            } else {
+//                return out[index++] & 0xFF;
+//            }
+//        }
+//
+//        public int available() throws IOException {
+//            return ((eos) ? 0 : (limit - index));
+//        }
+//
+//        public void close() throws IOException {
+//            wrapped.close();
+//        }
+//
+//        /**
+//         * Checks to see if the next array.length characters in wrapped
+//         * match array. The first character is provided as c. Subsequent
+//         * characters are read from wrapped itself. When this method returns,
+//         * the wrapped index may be different from what it was when this
+//         * method was called.
+//         */
+//        private boolean matchCharArray(char[] array, int c)
+//            throws IOException
+//        {
+//            wrapped.mark(array.length);  // BufferedReader supports mark
+//
+//            int count = 0;
+//            if ((char)c == array[0]) {
+//                for (count = 1; count < array.length; count++) {
+//                    c = wrapped.read();
+//                    if (c == -1 || ((char)c) != array[count]) {
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            if (count == array.length) {
+//                return true;
+//            } else {
+//                wrapped.reset();
+//                return false;
+//            }
+//        }
+//    }
 
     /**
      * Decodes a byte array into a set of String filenames.
@@ -2622,12 +2621,12 @@ search:
                 // application/x-java-* MIME types
                 exactTypesMap.put("application/x-java-file-list",
                                   Integer.valueOf(0));
-                exactTypesMap.put("application/x-java-serialized-object",
-                                  Integer.valueOf(1));
-                exactTypesMap.put("application/x-java-jvm-local-objectref",
-                                  Integer.valueOf(2));
-                exactTypesMap.put("application/x-java-remote-object",
-                                  Integer.valueOf(3));
+//                exactTypesMap.put("application/x-java-serialized-object",
+//                                  Integer.valueOf(1));
+//                exactTypesMap.put("application/x-java-jvm-local-objectref",
+//                                  Integer.valueOf(2));
+//                exactTypesMap.put("application/x-java-remote-object",
+//                                  Integer.valueOf(3));
 
                 exactTypes = Collections.unmodifiableMap(exactTypesMap);
             }
@@ -2645,10 +2644,10 @@ search:
 
                 nonTextRepresentationsMap.put(java.io.InputStream.class,
                                               Integer.valueOf(0));
-                nonTextRepresentationsMap.put(java.io.Serializable.class,
-                                              Integer.valueOf(1));
-                nonTextRepresentationsMap.put(java.rmi.Remote.class,
-                                              Integer.valueOf(2));
+//                nonTextRepresentationsMap.put(java.io.Serializable.class,
+//                                              Integer.valueOf(1));
+//                nonTextRepresentationsMap.put(java.rmi.Remote.class,
+//                                              Integer.valueOf(2));
 
                 nonTextRepresentations =
                     Collections.unmodifiableMap(nonTextRepresentationsMap);
@@ -2692,8 +2691,8 @@ search:
 
                 decodedTextRepresentationsMap.put
                     (DataTransferer.charArrayClass, Integer.valueOf(0));
-                decodedTextRepresentationsMap.put
-                    (java.nio.CharBuffer.class, Integer.valueOf(1));
+//                decodedTextRepresentationsMap.put
+//                    (java.nio.CharBuffer.class, Integer.valueOf(1));
                 decodedTextRepresentationsMap.put
                     (java.lang.String.class, Integer.valueOf(2));
                 decodedTextRepresentationsMap.put
@@ -2708,8 +2707,8 @@ search:
 
                 encodedTextRepresentationsMap.put
                     (DataTransferer.byteArrayClass, Integer.valueOf(0));
-                encodedTextRepresentationsMap.put
-                    (java.nio.ByteBuffer.class, Integer.valueOf(1));
+//                encodedTextRepresentationsMap.put
+//                    (java.nio.ByteBuffer.class, Integer.valueOf(1));
                 encodedTextRepresentationsMap.put
                     (java.io.InputStream.class, Integer.valueOf(2));
 

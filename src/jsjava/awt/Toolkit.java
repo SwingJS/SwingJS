@@ -25,6 +25,9 @@
 
 package jsjava.awt;
 
+import java.awt.AWTPermission;
+import java.awt.HeadlessException;
+import java.awt.TextComponent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -32,11 +35,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
 
-import swingjs.JSToolkit;
-import jsjava.util.ResourceBundle;
-//import java.util.WeakHashMap;
-
 import jsjava.awt.datatransfer.Clipboard;
+import jsjava.awt.dnd.DragGestureEvent;
+import jsjava.awt.dnd.DragGestureListener;
+import jsjava.awt.dnd.DragGestureRecognizer;
+import jsjava.awt.dnd.DragSource;
+import jsjava.awt.dnd.InvalidDnDOperationException;
+import jsjava.awt.dnd.peer.DragSourceContextPeer;
 import jsjava.awt.event.AWTEventListener;
 import jsjava.awt.event.AWTEventListenerProxy;
 import jsjava.awt.event.ActionEvent;
@@ -56,14 +61,16 @@ import jsjava.awt.event.WindowEvent;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
-import jsjava.awt.peer.DialogPeer;
 import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.PanelPeer;
 import jsjava.awt.peer.WindowPeer;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.beans.PropertyChangeSupport;
+import jsjava.util.ResourceBundle;
 import jssun.awt.NullComponentPeer;
+import swingjs.JSToolkit;
+//import java.util.WeakHashMap;
 
 /**
  * This class is the abstract superclass of all actual
@@ -1634,38 +1641,38 @@ public abstract class Toolkit {
         return getDefaultToolkit().getSystemEventQueueImpl();
     }
 
-//    /**
-//     * Creates the peer for a DragSourceContext.
-//     * Always throws InvalidDndOperationException if
-//     * GraphicsEnvironment.isHeadless() returns true.
-//     * @see jsjava.awt.GraphicsEnvironment#isHeadless
-//     */
-//    public abstract DragSourceContextPeer createDragSourceContextPeer(DragGestureEvent dge) throws InvalidDnDOperationException;
-//
-//    /**
-//     * Creates a concrete, platform dependent, subclass of the abstract
-//     * DragGestureRecognizer class requested, and associates it with the
-//     * DragSource, Component and DragGestureListener specified.
-//     *
-//     * subclasses should override this to provide their own implementation
-//     *
-//     * @param abstractRecognizerClass The abstract class of the required recognizer
-//     * @param ds                      The DragSource
-//     * @param c                       The Component target for the DragGestureRecognizer
-//     * @param srcActions              The actions permitted for the gesture
-//     * @param dgl                     The DragGestureListener
-//     *
-//     * @return the new object or null.  Always returns null if
-//     * GraphicsEnvironment.isHeadless() returns true.
-//     * @see jsjava.awt.GraphicsEnvironment#isHeadless
-//     */
-//    public <T extends DragGestureRecognizer> T
-//        createDragGestureRecognizer(Class<T> abstractRecognizerClass,
-//                                    DragSource ds, Component c, int srcActions,
-//                                    DragGestureListener dgl)
-//    {
-//        return null;
-//    }
+    /**
+     * Creates the peer for a DragSourceContext.
+     * Always throws InvalidDndOperationException if
+     * GraphicsEnvironment.isHeadless() returns true.
+     * @see jsjava.awt.GraphicsEnvironment#isHeadless
+     */
+    public abstract DragSourceContextPeer createDragSourceContextPeer(DragGestureEvent dge) throws InvalidDnDOperationException;
+
+    /**
+     * Creates a concrete, platform dependent, subclass of the abstract
+     * DragGestureRecognizer class requested, and associates it with the
+     * DragSource, Component and DragGestureListener specified.
+     *
+     * subclasses should override this to provide their own implementation
+     *
+     * @param abstractRecognizerClass The abstract class of the required recognizer
+     * @param ds                      The DragSource
+     * @param c                       The Component target for the DragGestureRecognizer
+     * @param srcActions              The actions permitted for the gesture
+     * @param dgl                     The DragGestureListener
+     *
+     * @return the new object or null.  Always returns null if
+     * GraphicsEnvironment.isHeadless() returns true.
+     * @see jsjava.awt.GraphicsEnvironment#isHeadless
+     */
+    public <T extends DragGestureRecognizer> T
+        createDragGestureRecognizer(Class<T> abstractRecognizerClass,
+                                    DragSource ds, Component c, int srcActions,
+                                    DragGestureListener dgl)
+    {
+        return null;
+    }
 
     /**
      * Obtains a value for the specified desktop property.

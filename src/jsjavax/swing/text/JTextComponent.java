@@ -24,13 +24,14 @@
  */
 package jsjavax.swing.text;
 
-import java.awt.HeadlessException;
+//import java.awt.HeadlessException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Vector;
 
 import jsjava.awt.AWTEvent;
@@ -40,6 +41,12 @@ import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
+import jsjava.awt.datatransfer.Clipboard;
+import jsjava.awt.datatransfer.DataFlavor;
+import jsjava.awt.datatransfer.StringSelection;
+import jsjava.awt.datatransfer.Transferable;
+import jsjava.awt.datatransfer.UnsupportedFlavorException;
+import jsjava.awt.dnd.DnDConstants;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
 import jsjava.awt.event.InputMethodListener;
@@ -65,6 +72,7 @@ import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.event.EventListenerList;
 import jsjavax.swing.plaf.TextUI;
+import jsjavax.swing.plaf.UIResource;
 import jssun.awt.AppContext;
 import swingjs.JSPlainDocument;
 import swingjs.JSToolkit;
@@ -753,187 +761,187 @@ public abstract class JTextComponent extends JComponent implements Scrollable
         return dropMode;
     }
 
-//
-//    /**
-//     * Calculates a drop location in this component, representing where a
-//     * drop at the given point should insert data.
-//     * <p>
-//     * Note: This method is meant to override
-//     * <code>JComponent.dropLocationForPoint()</code>, which is package-private
-//     * in jsjavax.swing. <code>TransferHandler</code> will detect text components
-//     * and call this method instead via reflection. It's name should therefore
-//     * not be changed.
-//     *
-//     * @param p the point to calculate a drop location for
-//     * @return the drop location, or <code>null</code>
-//     */
-//    DropLocation dropLocationForPoint(Point p) {
-//        Position.Bias[] bias = new Position.Bias[1];
-//        int index = getUI().viewToModel(this, p, bias);
-//
-//        // viewToModel currently returns null for some HTML content
-//        // when the point is within the component's top inset
-//        if (bias[0] == null) {
-//            bias[0] = Position.Bias.Forward;
-//        }
-//
-//        return new DropLocation(p, index, bias[0]);
-//    }
-//
-//    /**
-//     * Called to set or clear the drop location during a DnD operation.
-//     * In some cases, the component may need to use it's internal selection
-//     * temporarily to indicate the drop location. To help facilitate this,
-//     * this method returns and accepts as a parameter a state object.
-//     * This state object can be used to store, and later restore, the selection
-//     * state. Whatever this method returns will be passed back to it in
-//     * future calls, as the state parameter. If it wants the DnD system to
-//     * continue storing the same state, it must pass it back every time.
-//     * Here's how this is used:
-//     * <p>
-//     * Let's say that on the first call to this method the component decides
-//     * to save some state (because it is about to use the selection to show
-//     * a drop index). It can return a state object to the caller encapsulating
-//     * any saved selection state. On a second call, let's say the drop location
-//     * is being changed to something else. The component doesn't need to
-//     * restore anything yet, so it simply passes back the same state object
-//     * to have the DnD system continue storing it. Finally, let's say this
-//     * method is messaged with <code>null</code>. This means DnD
-//     * is finished with this component for now, meaning it should restore
-//     * state. At this point, it can use the state parameter to restore
-//     * said state, and of course return <code>null</code> since there's
-//     * no longer anything to store.
-//     * <p>
-//     * Note: This method is meant to override
-//     * <code>JComponent.setDropLocation()</code>, which is package-private
-//     * in jsjavax.swing. <code>TransferHandler</code> will detect text components
-//     * and call this method instead via reflection. It's name should therefore
-//     * not be changed.
-//     *
-//     * @param location the drop location (as calculated by
-//     *        <code>dropLocationForPoint</code>) or <code>null</code>
-//     *        if there's no longer a valid drop location
-//     * @param state the state object saved earlier for this component,
-//     *        or <code>null</code>
-//     * @param forDrop whether or not the method is being called because an
-//     *        actual drop occurred
-//     * @return any saved state for this component, or <code>null</code> if none
-//     */
-//    Object setDropLocation(TransferHandler.DropLocation location,
-//                           Object state,
-//                           boolean forDrop) {
-//
-//        Object retVal = null;
-//        DropLocation textLocation = (DropLocation)location;
-//
-//        if (dropMode == DropMode.USE_SELECTION) {
-//            if (textLocation == null) {
-//                if (state != null) {
-//                    /*
-//                     * This object represents the state saved earlier.
-//                     *     If the caret is a DefaultCaret it will be
-//                     *     an Object array containing, in order:
-//                     *         - the saved caret mark (Integer)
-//                     *         - the saved caret dot (Integer)
-//                     *         - the saved caret visibility (Boolean)
-//                     *         - the saved mark bias (Position.Bias)
-//                     *         - the saved dot bias (Position.Bias)
-//                     *     If the caret is not a DefaultCaret it will
-//                     *     be similar, but will not contain the dot
-//                     *     or mark bias.
-//                     */
-//                    Object[] vals = (Object[])state;
-//
-//                    if (!forDrop) {
-//                        if (caret instanceof DefaultCaret) {
-//                            ((DefaultCaret)caret).setDot(((Integer)vals[0]).intValue(),
-//                                                         (Position.Bias)vals[3]);
-//                            ((DefaultCaret)caret).moveDot(((Integer)vals[1]).intValue(),
-//                                                         (Position.Bias)vals[4]);
-//                        } else {
-//                            caret.setDot(((Integer)vals[0]).intValue());
-//                            caret.moveDot(((Integer)vals[1]).intValue());
-//                        }
-//                    }
-//
-//                    caret.setVisible(((Boolean)vals[2]).booleanValue());
-//                }
-//            } else {
-//                if (dropLocation == null) {
-//                    boolean visible;
-//
-//                    if (caret instanceof DefaultCaret) {
-//                        DefaultCaret dc = (DefaultCaret)caret;
-//                        visible = dc.isActive();
-//                        retVal = new Object[] {Integer.valueOf(dc.getMark()),
-//                                               Integer.valueOf(dc.getDot()),
-//                                               Boolean.valueOf(visible),
-//                                               dc.getMarkBias(),
-//                                               dc.getDotBias()};
-//                    } else {
-//                        visible = caret.isVisible();
-//                        retVal = new Object[] {Integer.valueOf(caret.getMark()),
-//                                               Integer.valueOf(caret.getDot()),
-//                                               Boolean.valueOf(visible)};
-//                    }
-//
-//                    caret.setVisible(true);
-//                } else {
-//                    retVal = state;
-//                }
-//
-//                if (caret instanceof DefaultCaret) {
-//                    ((DefaultCaret)caret).setDot(textLocation.getIndex(), textLocation.getBias());
-//                } else {
-//                    caret.setDot(textLocation.getIndex());
-//                }
-//            }
-//        } else {
-//            if (textLocation == null) {
-//                if (state != null) {
-//                    caret.setVisible(((Boolean)state).booleanValue());
-//                }
-//            } else {
-//                if (dropLocation == null) {
-//                    boolean visible = caret instanceof DefaultCaret
-//                                      ? ((DefaultCaret)caret).isActive()
-//                                      : caret.isVisible();
-//                    retVal = Boolean.valueOf(visible);
-//                    caret.setVisible(false);
-//                } else {
-//                    retVal = state;
-//                }
-//            }
-//        }
-//
-//        DropLocation old = dropLocation;
-//        dropLocation = textLocation;
-//        firePropertyChange("dropLocation", old, dropLocation);
-//
-//        return retVal;
-//    }
-//
-//    /**
-//     * Returns the location that this component should visually indicate
-//     * as the drop location during a DnD operation over the component,
-//     * or {@code null} if no location is to currently be shown.
-//     * <p>
-//     * This method is not meant for querying the drop location
-//     * from a {@code TransferHandler}, as the drop location is only
-//     * set after the {@code TransferHandler}'s <code>canImport</code>
-//     * has returned and has allowed for the location to be shown.
-//     * <p>
-//     * When this property changes, a property change event with
-//     * name "dropLocation" is fired by the component.
-//     *
-//     * @return the drop location
-//     * @see #setDropMode
-//     * @see TransferHandler#canImport(TransferHandler.TransferSupport)
-//     * @since 1.6
-//     */
-//    public final DropLocation getDropLocation() {
-//        return dropLocation;
-//    }
+
+    /**
+     * Calculates a drop location in this component, representing where a
+     * drop at the given point should insert data.
+     * <p>
+     * Note: This method is meant to override
+     * <code>JComponent.dropLocationForPoint()</code>, which is package-private
+     * in jsjavax.swing. <code>TransferHandler</code> will detect text components
+     * and call this method instead via reflection. It's name should therefore
+     * not be changed.
+     *
+     * @param p the point to calculate a drop location for
+     * @return the drop location, or <code>null</code>
+     */
+    DropLocation dropLocationForPoint(Point p) {
+        Position.Bias[] bias = new Position.Bias[1];
+        int index = ((TextUI) getUI()).viewToModel(this, p, bias);
+
+        // viewToModel currently returns null for some HTML content
+        // when the point is within the component's top inset
+        if (bias[0] == null) {
+            bias[0] = Position.Bias.Forward;
+        }
+
+        return new DropLocation(p, index, bias[0]);
+    }
+
+    /**
+     * Called to set or clear the drop location during a DnD operation.
+     * In some cases, the component may need to use it's internal selection
+     * temporarily to indicate the drop location. To help facilitate this,
+     * this method returns and accepts as a parameter a state object.
+     * This state object can be used to store, and later restore, the selection
+     * state. Whatever this method returns will be passed back to it in
+     * future calls, as the state parameter. If it wants the DnD system to
+     * continue storing the same state, it must pass it back every time.
+     * Here's how this is used:
+     * <p>
+     * Let's say that on the first call to this method the component decides
+     * to save some state (because it is about to use the selection to show
+     * a drop index). It can return a state object to the caller encapsulating
+     * any saved selection state. On a second call, let's say the drop location
+     * is being changed to something else. The component doesn't need to
+     * restore anything yet, so it simply passes back the same state object
+     * to have the DnD system continue storing it. Finally, let's say this
+     * method is messaged with <code>null</code>. This means DnD
+     * is finished with this component for now, meaning it should restore
+     * state. At this point, it can use the state parameter to restore
+     * said state, and of course return <code>null</code> since there's
+     * no longer anything to store.
+     * <p>
+     * Note: This method is meant to override
+     * <code>JComponent.setDropLocation()</code>, which is package-private
+     * in jsjavax.swing. <code>TransferHandler</code> will detect text components
+     * and call this method instead via reflection. It's name should therefore
+     * not be changed.
+     *
+     * @param location the drop location (as calculated by
+     *        <code>dropLocationForPoint</code>) or <code>null</code>
+     *        if there's no longer a valid drop location
+     * @param state the state object saved earlier for this component,
+     *        or <code>null</code>
+     * @param forDrop whether or not the method is being called because an
+     *        actual drop occurred
+     * @return any saved state for this component, or <code>null</code> if none
+     */
+    Object setDropLocation(/*TransferHandler.*/DropLocation location,
+                           Object state,
+                           boolean forDrop) {
+
+        Object retVal = null;
+        DropLocation textLocation = (DropLocation)location;
+
+        if (dropMode == DropMode.USE_SELECTION) {
+            if (textLocation == null) {
+                if (state != null) {
+                    /*
+                     * This object represents the state saved earlier.
+                     *     If the caret is a DefaultCaret it will be
+                     *     an Object array containing, in order:
+                     *         - the saved caret mark (Integer)
+                     *         - the saved caret dot (Integer)
+                     *         - the saved caret visibility (Boolean)
+                     *         - the saved mark bias (Position.Bias)
+                     *         - the saved dot bias (Position.Bias)
+                     *     If the caret is not a DefaultCaret it will
+                     *     be similar, but will not contain the dot
+                     *     or mark bias.
+                     */
+                    Object[] vals = (Object[])state;
+
+                    if (!forDrop) {
+                        if (caret instanceof DefaultCaret) {
+                            ((DefaultCaret)caret).setDot(((Integer)vals[0]).intValue(),
+                                                         (Position.Bias)vals[3]);
+                            ((DefaultCaret)caret).moveDot(((Integer)vals[1]).intValue(),
+                                                         (Position.Bias)vals[4]);
+                        } else {
+                            caret.setDot(((Integer)vals[0]).intValue());
+                            caret.moveDot(((Integer)vals[1]).intValue());
+                        }
+                    }
+
+                    caret.setVisible(((Boolean)vals[2]).booleanValue());
+                }
+            } else {
+                if (dropLocation == null) {
+                    boolean visible;
+
+                    if (caret instanceof DefaultCaret) {
+                        DefaultCaret dc = (DefaultCaret)caret;
+                        visible = dc.isActive();
+                        retVal = new Object[] {Integer.valueOf(dc.getMark()),
+                                               Integer.valueOf(dc.getDot()),
+                                               Boolean.valueOf(visible),
+                                               dc.getMarkBias(),
+                                               dc.getDotBias()};
+                    } else {
+                        visible = caret.isVisible();
+                        retVal = new Object[] {Integer.valueOf(caret.getMark()),
+                                               Integer.valueOf(caret.getDot()),
+                                               Boolean.valueOf(visible)};
+                    }
+
+                    caret.setVisible(true);
+                } else {
+                    retVal = state;
+                }
+
+                if (caret instanceof DefaultCaret) {
+                    ((DefaultCaret)caret).setDot(textLocation.getIndex(), textLocation.getBias());
+                } else {
+                    caret.setDot(textLocation.getIndex());
+                }
+            }
+        } else {
+            if (textLocation == null) {
+                if (state != null) {
+                    caret.setVisible(((Boolean)state).booleanValue());
+                }
+            } else {
+                if (dropLocation == null) {
+                    boolean visible = caret instanceof DefaultCaret
+                                      ? ((DefaultCaret)caret).isActive()
+                                      : caret.isVisible();
+                    retVal = Boolean.valueOf(visible);
+                    caret.setVisible(false);
+                } else {
+                    retVal = state;
+                }
+            }
+        }
+
+        DropLocation old = dropLocation;
+        dropLocation = textLocation;
+        firePropertyChange("dropLocation", old, dropLocation);
+
+        return retVal;
+    }
+
+    /**
+     * Returns the location that this component should visually indicate
+     * as the drop location during a DnD operation over the component,
+     * or {@code null} if no location is to currently be shown.
+     * <p>
+     * This method is not meant for querying the drop location
+     * from a {@code TransferHandler}, as the drop location is only
+     * set after the {@code TransferHandler}'s <code>canImport</code>
+     * has returned and has allowed for the location to be shown.
+     * <p>
+     * When this property changes, a property change event with
+     * name "dropLocation" is fired by the component.
+     *
+     * @return the drop location
+     * @see #setDropMode
+     * @see TransferHandler#canImport(TransferHandler.TransferSupport)
+     * @since 1.6
+     */
+    public final DropLocation getDropLocation() {
+        return dropLocation;
+    }
 
 
     /**
@@ -3843,73 +3851,79 @@ public abstract class JTextComponent extends JComponent implements Scrollable
      */
     private DropMode dropMode = DropMode.USE_SELECTION;
 
-//    /**
-//     * The drop location.
-//     */
-//    private transient DropLocation dropLocation;
-//
-//    /**
-//     * Represents a drop location for <code>JTextComponent</code>s.
-//     *
-//     * @see #getDropLocation
-//     * @since 1.6
-//     */
-//    public static final class DropLocation extends TransferHandler.DropLocation {
-//        private final int index;
-//        private final Position.Bias bias;
-//
-//        private DropLocation(Point p, int index, Position.Bias bias) {
+    /**
+     * The drop location.
+     */
+    private transient DropLocation dropLocation;
+
+    /**
+     * Represents a drop location for <code>JTextComponent</code>s.
+     *
+     * @see #getDropLocation
+     * @since 1.6
+     */
+    public static final class DropLocation {//extends TransferHandler.DropLocation {
+        private final int index;
+        private final Position.Bias bias;
+				private Point dropPoint;
+
+        private DropLocation(Point p, int index, Position.Bias bias) {
+        	this.dropPoint = new Point(p);
 //            super(p);
-//            this.index = index;
-//            this.bias = bias;
-//        }
-//
-//        /**
-//         * Returns the index where dropped data should be inserted into the
-//         * associated component. This index represents a position between
-//         * characters, as would be interpreted by a caret.
-//         *
-//         * @return the drop index
-//         */
-//        public int getIndex() {
-//            return index;
-//        }
-//
-//        /**
-//         * Returns the bias for the drop index.
-//         *
-//         * @return the drop bias
-//         */
-//        public Position.Bias getBias() {
-//            return bias;
-//        }
-//
-//        /**
-//         * Returns a string representation of this drop location.
-//         * This method is intended to be used for debugging purposes,
-//         * and the content and format of the returned string may vary
-//         * between implementations.
-//         *
-//         * @return a string representation of this drop location
-//         */
-//        public String toString() {
-//            return getClass().getName()
-//                   + "[dropPoint=" + getDropPoint() + ","
-//                   + "index=" + index + ","
-//                   + "bias=" + bias + "]";
-//        }
-//    }
-//
-//    /**
-//     * TransferHandler used if one hasn't been supplied by the UI.
-//     */
-//    private static DefaultTransferHandler defaultTransferHandler;
-//
-//    /**
-//     * Maps from class name to Boolean indicating if
-//     * <code>processInputMethodEvent</code> has been overriden.
-//     */
-//    private static Map overrideMap;
+            this.index = index;
+            this.bias = bias;
+        }
+
+        /**
+         * Returns the index where dropped data should be inserted into the
+         * associated component. This index represents a position between
+         * characters, as would be interpreted by a caret.
+         *
+         * @return the drop index
+         */
+        public int getIndex() {
+            return index;
+        }
+
+        /**
+         * Returns the bias for the drop index.
+         *
+         * @return the drop bias
+         */
+        public Position.Bias getBias() {
+            return bias;
+        }
+
+        /**
+         * Returns a string representation of this drop location.
+         * This method is intended to be used for debugging purposes,
+         * and the content and format of the returned string may vary
+         * between implementations.
+         *
+         * @return a string representation of this drop location
+         */
+        public String toString() {
+            return getClass().getName()
+                   + "[dropPoint=" + getDropPoint() + ","
+                   + "index=" + index + ","
+                   + "bias=" + bias + "]";
+        }
+
+				public Point getDropPoint() {
+					return dropPoint;
+				}
+    }
+
+    /**
+     * TransferHandler used if one hasn't been supplied by the UI.
+     */
+    private static DefaultTransferHandler defaultTransferHandler;
+
+    /**
+     * Maps from class name to Boolean indicating if
+     * <code>processInputMethodEvent</code> has been overriden.
+     */
+    private static Map overrideMap;
 
     /**
      * Returns a string representation of this <code>JTextComponent</code>.
@@ -3948,14 +3962,14 @@ public abstract class JTextComponent extends JComponent implements Scrollable
     }
 
 
-//    /**
-//     * A Simple TransferHandler that exports the data as a String, and
-//     * imports the data from the String clipboard.  This is only used
-//     * if the UI hasn't supplied one, which would only happen if someone
-//     * hasn't subclassed Basic.
-//     */
-//    static class DefaultTransferHandler extends TransferHandler implements
-//                                        UIResource {
+    /**
+     * A Simple TransferHandler that exports the data as a String, and
+     * imports the data from the String clipboard.  This is only used
+     * if the UI hasn't supplied one, which would only happen if someone
+     * hasn't subclassed Basic.
+     */
+    static class DefaultTransferHandler /*extends TransferHandler*/ implements
+                                        UIResource {
 //        public void exportToClipboard(JComponent comp, Clipboard clipboard,
 //                                      int action) throws IllegalStateException {
 //            if (comp instanceof JTextComponent) {
@@ -3985,10 +3999,10 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //                DataFlavor flavor = getFlavor(t.getTransferDataFlavors());
 //
 //                if (flavor != null) {
-//                    InputContext ic = comp.getInputContext();
-//                    if (ic != null) {
-//                        ic.endComposition();
-//                    }
+////                    InputContext ic = comp.getInputContext();
+////                    if (ic != null) {
+////                        ic.endComposition();
+////                    }
 //                    try {
 //                        String data = (String)t.getTransferData(flavor);
 //
@@ -4010,7 +4024,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //            return (getFlavor(transferFlavors) != null);
 //        }
 //        public int getSourceActions(JComponent c) {
-//            return NONE;
+//            return DnDConstants.ACTION_NONE;
 //        }
 //        private DataFlavor getFlavor(DataFlavor[] flavors) {
 //            if (flavors != null) {
@@ -4022,7 +4036,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 //            }
 //            return null;
 //        }
-//    }
+    }
 
     /**
      * Returns the JTextComponent that most recently had focus. The returned

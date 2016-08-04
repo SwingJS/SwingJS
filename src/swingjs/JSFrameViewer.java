@@ -190,7 +190,7 @@ public class JSFrameViewer implements JSInterface {
 				&& (wOld != wNew || hOld != hNew || canvas == null || jsgraphics == null)) {
 			jsgraphics = new JSGraphics2D(canvas = newCanvas(wNew, hNew));
 			jsgraphics.setWindowParameters(wNew, hNew);
-			top.repaint(0, 0, wNew, hNew);
+			//top.repaint(0, 0, wNew, hNew);
 		}
 		return jsgraphics;
 	}
@@ -258,7 +258,7 @@ public class JSFrameViewer implements JSInterface {
 		// Note that the applet "Panel" is never painted.
 		// This class simply maintains valuable information for applet loading.
 		// Here we go straight to the contentPane and paint that.
-		top.prePaint(setGraphics(g, 0, 0));
+		top.paint(setGraphics(g, 0, 0));
 	}
 
 

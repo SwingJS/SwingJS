@@ -26,10 +26,10 @@
 package jsjava.awt.datatransfer;
 
 import java.io.Externalizable;
-import java.io.ObjectOutput;
-import java.io.ObjectInput;
+//import java.io.ObjectOutput;
+//import java.io.ObjectInput;
 import java.io.IOException;
-import java.util.Enumeration;
+//import java.util.Enumeration;
 
 
 /**
@@ -40,7 +40,7 @@ import java.util.Enumeration;
  * THE PUBLIC INTERFACE, AND THIS IS PROVIDED AS A ***PRIVATE***
  * (THAT IS AS IN *NOT* PUBLIC) HELPER CLASS!
  */
-class MimeType implements Externalizable, Cloneable {
+class MimeType implements /*Externalizable,*/ Cloneable {
 
     /*
      * serialization support
@@ -292,49 +292,49 @@ MimeTypeParameterList(rawdata.substring(semIndex));
         return match(new MimeType(rawdata));
     }
 
-    /**
-     * The object implements the writeExternal method to save its contents
-     * by calling the methods of DataOutput for its primitive values or
-     * calling the writeObject method of ObjectOutput for objects, strings
-     * and arrays.
-     * @exception IOException Includes any I/O exceptions that may occur
-     */
-    public void writeExternal(ObjectOutput out) throws IOException {
-        String s = toString(); // contains ASCII chars only
-        // one-to-one correspondence between ASCII char and byte in UTF string
-        if (s.length() <= 65535) { // 65535 is max length of UTF string
-            out.writeUTF(s);
-        } else {
-            out.writeByte(0);
-            out.writeByte(0);
-            out.writeInt(s.length());
-            out.write(s.getBytes());
-        }
-    }
-
-    /**
-     * The object implements the readExternal method to restore its
-     * contents by calling the methods of DataInput for primitive
-     * types and readObject for objects, strings and arrays.  The
-     * readExternal method must read the values in the same sequence
-     * and with the same types as were written by writeExternal.
-     * @exception ClassNotFoundException If the class for an object being
-     *              restored cannot be found.
-     */
-    public void readExternal(ObjectInput in) throws IOException,
-ClassNotFoundException {
-        String s = in.readUTF();
-        if (s == null || s.length() == 0) { // long mime type
-            byte[] ba = new byte[in.readInt()];
-            in.readFully(ba);
-            s = new String(ba);
-        }
-        try {
-            parse(s);
-        } catch(MimeTypeParseException e) {
-            throw new IOException(e.toString());
-        }
-    }
+//    /**
+//     * The object implements the writeExternal method to save its contents
+//     * by calling the methods of DataOutput for its primitive values or
+//     * calling the writeObject method of ObjectOutput for objects, strings
+//     * and arrays.
+//     * @exception IOException Includes any I/O exceptions that may occur
+//     */
+//    public void writeExternal(ObjectOutput out) throws IOException {
+//        String s = toString(); // contains ASCII chars only
+//        // one-to-one correspondence between ASCII char and byte in UTF string
+//        if (s.length() <= 65535) { // 65535 is max length of UTF string
+//            out.writeUTF(s);
+//        } else {
+//            out.writeByte(0);
+//            out.writeByte(0);
+//            out.writeInt(s.length());
+//            out.write(s.getBytes());
+//        }
+//    }
+//
+//    /**
+//     * The object implements the readExternal method to restore its
+//     * contents by calling the methods of DataInput for primitive
+//     * types and readObject for objects, strings and arrays.  The
+//     * readExternal method must read the values in the same sequence
+//     * and with the same types as were written by writeExternal.
+//     * @exception ClassNotFoundException If the class for an object being
+//     *              restored cannot be found.
+//     */
+//    public void readExternal(ObjectInput in) throws IOException,
+//ClassNotFoundException {
+//        String s = in.readUTF();
+//        if (s == null || s.length() == 0) { // long mime type
+//            byte[] ba = new byte[in.readInt()];
+//            in.readFully(ba);
+//            s = new String(ba);
+//        }
+//        try {
+//            parse(s);
+//        } catch(MimeTypeParseException e) {
+//            throw new IOException(e.toString());
+//        }
+//    }
 
     /**
      * Returns a clone of this object.

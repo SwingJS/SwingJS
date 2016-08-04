@@ -233,28 +233,29 @@ public class JApplet extends Applet implements /* Accessible ,*/
 
 
     @Override
-		public void prePaint(Graphics g) {
+		public void paint(Graphics g) {
     	// from FrameViewer paint
 			((Graphics2D) g).setBackground(getBackground());
 			((Graphics2D) g).setColor(getForeground());
-			paint(g);// this will call SunGraphicsCallback on the rootPanel
-    	JSAppletViewer p = appletViewer;//getAppletViewer();
-    	if (p.allWindows != null)
-    		for (int i = p.allWindows.size(); --i >= 0;) {
-    			Window c = p.allWindows.get(i);
-    			g = c.getGraphics();
-    			if (g != null)
-    				c.paint(g);
-    		}
+			this.rootPane.paint(g);
+//			super.paint(g);// this will call SunGraphicsCallback on the rootPanel
+//    	JSAppletViewer p = appletViewer;//getAppletViewer();
+//    	if (p.allWindows != null)
+//    		for (int i = p.allWindows.size(); --i >= 0;) {
+//    			Window c = p.allWindows.get(i);
+//    			g = c.getGraphics();
+//    			if (g != null)
+//    				c.paint(g);
+//    		}
     }
 
-    /**
-     * SwingJS -- needed to allow JApplet.paint() override
-     */
-    @Override
-		public void paint(Graphics g) {
-    	getRootPane().paint(g);
-    }
+//    /**
+//     * SwingJS -- needed to allow JApplet.paint() override
+//     */
+//    @Override
+//		public void paint(Graphics g) {
+//    	getRootPane().paint(g);
+//    }
     
     /**
      * Just calls <code>paint(g)</code>.  This method was overridden to

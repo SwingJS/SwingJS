@@ -878,40 +878,40 @@ public class ArrayDeque<E> extends AbstractCollection<E>
      */
     private static final long serialVersionUID = 2340985798034038923L;
 
-    /**
-     * Serialize this deque.
-     *
-     * @serialData The current size (<tt>int</tt>) of the deque,
-     * followed by all of its elements (each an object reference) in
-     * first-to-last order.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-
-        // Write out size
-        s.writeInt(size());
-
-        // Write out elements in order.
-        int mask = elements.length - 1;
-        for (int i = head; i != tail; i = (i + 1) & mask)
-            s.writeObject(elements[i]);
-    }
-
-    /**
-     * Deserialize this deque.
-     */
-    private void readObject(ObjectInputStream s)
-            throws IOException, ClassNotFoundException {
-        s.defaultReadObject();
-
-        // Read in size and allocate array
-        int size = s.readInt();
-        allocateElements(size);
-        head = 0;
-        tail = size;
-
-        // Read in all elements in the proper order.
-        for (int i = 0; i < size; i++)
-            elements[i] = (E)s.readObject();
-    }
+//    /**
+//     * Serialize this deque.
+//     *
+//     * @serialData The current size (<tt>int</tt>) of the deque,
+//     * followed by all of its elements (each an object reference) in
+//     * first-to-last order.
+//     */
+//    private void writeObject(ObjectOutputStream s) throws IOException {
+//        s.defaultWriteObject();
+//
+//        // Write out size
+//        s.writeInt(size());
+//
+//        // Write out elements in order.
+//        int mask = elements.length - 1;
+//        for (int i = head; i != tail; i = (i + 1) & mask)
+//            s.writeObject(elements[i]);
+//    }
+//
+//    /**
+//     * Deserialize this deque.
+//     */
+//    private void readObject(ObjectInputStream s)
+//            throws IOException, ClassNotFoundException {
+//        s.defaultReadObject();
+//
+//        // Read in size and allocate array
+//        int size = s.readInt();
+//        allocateElements(size);
+//        head = 0;
+//        tail = size;
+//
+//        // Read in all elements in the proper order.
+//        for (int i = 0; i < size; i++)
+//            elements[i] = (E)s.readObject();
+//    }
 }
