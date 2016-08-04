@@ -1888,7 +1888,7 @@ J2S.Cache.put = function(filename, data) {
 
 		proto._show = function(tf) {
 			J2S.$setVisible(J2S.$(this,"appletdiv"), tf);
-			if (tf)
+			if (tf && !this._isSwing) // SwingJS applets will handle their own repainting
 				J2S._repaint(this, true);
 		};
 
