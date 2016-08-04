@@ -61,6 +61,7 @@ public class Circuit extends Applet implements ComponentListener {
 	}
 
 	public void paint(Graphics g) {
+		super.paint(g); // paints background
 		String s = "Applet is open in a separate window.";
 		if (ogf != null && !ogf.isVisible())
 			s = "Applet window is hidden.";
