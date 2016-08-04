@@ -35,6 +35,7 @@
 		
 		<delete file="${basedir}/site/swingjs/examples/addedApplets.html"/>
 		<delete dir="${basedir}/site/swingjs/examples/applets"/>
+		<mkdir dir="${basedir}/site/swingjs/examples/applets"/>
 		
 		<foreach target="genWebpage" param="applet">
 			<path>
@@ -107,9 +108,40 @@
 	</target>
 
 	<target name="genWebpage" id="genWebpage">
+		
 		<echo message="creating webpage for ${applet}"/>
 		<getAppletInfo file="${applet}"/>
 		
+		<loadresource property="ShortDate">
+		  <string value="${Date}"/>
+		  <filterchain>
+		    <tokenfilter>
+		      <replaceregex pattern="(^[\$,A-Z,a-z,0-9,\:,\ ,\,,\-]+)" replace=""/>
+		    </tokenfilter>
+		    <tokenfilter>
+		      <replaceregex pattern="[\$,\(,\)]" flags="g" replace=""/>
+		    </tokenfilter>
+		  </filterchain>
+		</loadresource>
+		
+		<loadresource property="SourceCode">
+		  <string value="${Location}"/>
+			  <filterchain>
+			    <tokenfilter>
+			      <replaceregex pattern="(\.[A-Z,a-z,0-9]+$)" replace=""/>
+			    </tokenfilter>
+			    <tokenfilter>
+			      <replaceregex pattern="\." flags="g" replace="/"/>
+			    </tokenfilter>
+			  </filterchain>
+		</loadresource>
+		
+		<echo message="${Category} ${AppletName}"/>
+		<echo message="${ShortDate}"/>
+		<echo message="${Description}"/>
+		<echo message="${Features}"/>
+		<echo message="${Location}"/>
+		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}"/>
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
 			<div class="4u work-item">
@@ -119,6 +151,7 @@
 				<cat>${Category}</cat>
 				<id>${Date}</id>
 				<feat><hr /><b>Demonstrates:</b> ${Features}</feat>
+			    <source><a target="_blank" href="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}">Java source code</a></source>
 			</div>
 			]]>
 		</echo>

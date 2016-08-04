@@ -1,5 +1,16 @@
 package org.uwi;
 
+//web_Ready
+//web_AppletName= tanSugd3S
+//web_Description= Interactive Tanabe-Sugano diagrams for inorganic d3 system
+//web_Date= $Date$
+//web_JavaSource=http://wwwchem.uwimona.edu.jm/courses/Tanabe-Sugano/TSapplets.html 
+//web_Location= org.uwi.Boltzmann
+//web_AppletImage= images/tansugd3s.png
+//web_Category= Chemistry
+//web_Features= graphics, radio buttons, scrolling text, simple threading
+
+
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;

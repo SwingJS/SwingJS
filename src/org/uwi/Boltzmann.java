@@ -44,6 +44,7 @@ import javax.swing.border.Border;
 //web_Location= org.uwi.Boltzmann
 //web_AppletImage= images/boltzmann.png
 //web_Category= Chemistry
+//web_Features= canvas, simple threading, scrolling text
 
 // SwingJS TODO: thread in JS, JTextArea
 /*
