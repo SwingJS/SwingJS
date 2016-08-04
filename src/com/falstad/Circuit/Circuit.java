@@ -13,7 +13,7 @@ package com.falstad.Circuit;
 //web_Location= com.falstad.Circuit.Circuit
 //web_AppletImage= images/circuit.png
 //web_Category= Physics
-//web_Date= $Date$
+//web_Date= $Date: 2016-07-15 16:53:09 -0500 (Fri, 15 Jul 2016) $
 
 
 import java.awt.Graphics;
