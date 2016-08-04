@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.QuantumOsc
 //web_AppletImage= images/quantumosc.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 import com.falstad.Complex;
 

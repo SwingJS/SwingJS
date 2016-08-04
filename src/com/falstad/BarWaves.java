@@ -42,7 +42,7 @@ import swingjs.awt.Scrollbar;
 //web_Location= com.falstad.BarWaves
 //web_AppletImage= images/BarWaves.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 //web_Features= Sound, etc
 
 

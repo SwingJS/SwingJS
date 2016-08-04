@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.QuantumCirc
 //web_AppletImage= images/quantumcirc.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 import java.awt.Color;
 import java.awt.Component;

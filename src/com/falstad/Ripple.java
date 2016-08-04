@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.Ripple
 //web_AppletImage= images/ripple.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 //web_Features= Graphics2D, Threads, etc
 
 // see http://www.falstad.com/ripple/

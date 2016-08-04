@@ -7,7 +7,7 @@ package com.falstad;
 //web_Location= com.falstad.CircOsc
 //web_AppletImage= images/CircOsc.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 //web_Features= Sound, Threads, Graphics2D, etc
 
 //CircOsc.java (C) 2001 by Paul Falstad, www.falstad.com

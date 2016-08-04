@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.EMWave2
 //web_AppletImage= images/EMWave2.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 

@@ -7,7 +7,7 @@
 //web_Location= com.falstad.EMStatic
 //web_AppletImage= images/EMStatic.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 
 package com.falstad;

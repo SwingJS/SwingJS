@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.WaveBox
 //web_AppletImage= images/WaveBox.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 
 // Rendering algorithm in this applet is based on the description of

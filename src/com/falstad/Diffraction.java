@@ -7,7 +7,7 @@ package com.falstad;
 //web_Location= com.falstad.Diffraction
 //web_AppletImage= images/diffraction.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 //Diffraction.java (c) 2001 by Paul Falstad, www.falstad.com.
 //Algorithm used for circular apertures is from "Simulation and Study

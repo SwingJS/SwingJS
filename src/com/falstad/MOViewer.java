@@ -11,7 +11,7 @@
 //web_Location= com.falstad.MOViewer
 //web_AppletImage= images/moviewer.png
 //web_Category= Chemistry
-//web_Date= 08/02/2016
+//web_Date= $Date$
 
 
 package com.falstad;

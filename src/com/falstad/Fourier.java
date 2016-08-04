@@ -9,7 +9,7 @@ package com.falstad;
 //web_Location= com.falstad.Fourier
 //web_AppletImage= images/Fourier.png
 //web_Category= Physics
-//web_Date= 08/02/2016
+//web_Date= $Date$
 //web_Features= sound
 //
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
