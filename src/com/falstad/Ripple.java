@@ -393,7 +393,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		super("Ripple Tank Applet v1.7f");
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		/**
-		 * 
+		 * @j2sNative
 		 *            this.defaultSpeed = 15; this.defaultResolution = 300;
 		 *            this.startupTime = 1500; this.resolutionCutoff = 200;
 		 * 
@@ -909,7 +909,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		long sysTime = getTimeMillis();
 		double tadd = 0;
 		if (!stoppedCheck.getState()) {
-			int val = 5; // speedBar.getValue();
+			int val = 5;//speedBar.getValue();
 			tadd = val * .05;
 		}
 		int i, j;
@@ -1136,7 +1136,6 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			long diff = getTimeMillis() - sysTime;
 			// we want the time it takes for a wave to travel across the screen
 			// to be more-or-less constant, but don't do anything after 5 seconds
-			//System.out.println("checkres " + diff + " "+ this.windowOffsetX + " " + iterCount + " " +  (windowOffsetX * diff / iterCount) + " " + resBar.getValue());
 			if (adjustResolution && diff > 0 && sysTime < startTime + startupTime
 					&& windowOffsetX * diff / iterCount < resolutionCutoff) {
 				increaseResolution = true;
@@ -1144,6 +1143,10 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			} else {
 				adjustResolution = false;
 			}
+	//		System.out.println("checkres " + diff + " " + iterCount + " " 
+		//	    +  (windowOffsetX * diff / iterCount) + " " + resBar.getValue()
+			//		+ " " + increaseResolution + " " + adjustResolution);
+			
 			if (dragging && selectedSource == -1
 					&& modeChooser.getSelectedIndex() == MODE_FUNCHOLD)
 				editFuncPoint(dragX, dragY);
