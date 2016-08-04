@@ -231,6 +231,10 @@
 		color:#000;
 	}
 
+	.row source {
+		font-size: 4em;
+	}
+
 	.row > * {
 		-moz-box-sizing: border-box;
 		-webkit-box-sizing: border-box;
@@ -2398,6 +2402,9 @@
 		input[type="button"].small,
 		.button.small {
 			font-size: 0.8em;
+			line-height: 2em;
+			margin-top: 0.5em;
+			height: 2.5em;
 		}
 
 		input[type="submit"].big,
@@ -2459,6 +2466,7 @@
 
 		.work-item h3 {
 			font-size: 1em;
+			padding-top: 0.5em;
 			margin: 0 0 0.5em 0;
 		}
 

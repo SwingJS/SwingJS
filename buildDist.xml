@@ -151,7 +151,7 @@
 				<cat>${Category}</cat>
 				<id>${Date}</id>
 				<feat><hr /><b>Demonstrates:</b> ${Features}</feat>
-			    <source><a target="_blank" href="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}">Java source code</a></source>
+			    <a target="_blank" class="button small" href="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}">Java source code</a>
 			</div>
 			]]>
 		</echo>
@@ -194,6 +194,8 @@
 	    					code: "${Location}",
 							width: 700,
 							height: 500,
+							useFrame: true,
+							isResizable: true,
 							debug: false,
 							color: "#787878",
 							zIndexBase: 20000,
@@ -201,13 +203,12 @@
 							serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
 							use: "HTML5",
 							j2sPath: "../../j2s",
-							jarPath: "../../java",
-							//	jarFile: "JStest.jar",
+							//jarPath: "../../java",
 							isSigned: false,
 							disableJ2SLoadMonitor: false,
 							disableInitialConsole: false,
 							console:"sysoutdiv",
-		  					useFrame:"false",
+		  					//useFrame:"false",
 							readyFunction: jmol_isReady,
 		  					allowjavascript: true
 						}
