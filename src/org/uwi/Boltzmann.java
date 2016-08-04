@@ -39,7 +39,7 @@ import javax.swing.border.Border;
 //web_Ready
 //web_AppletName= Boltzmann
 //web_Description= A simulation of the Boltzmann distribution.
-//web_Date= $Date: xxx$
+//web_Date= $Date$
 //web_JavaSource= 
 //web_Location= org.uwi.Boltzmann
 //web_AppletImage= images/boltzmann.png
