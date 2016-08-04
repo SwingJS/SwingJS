@@ -245,7 +245,7 @@
 					<div class="row">
 						<ul class="actions small">
 							<li><a href="javascript:showhide('sysout')" class="button pretty small">Show System.out</a></li>
-							<li><a href="${JavaSource}" class="button pretty small" alt="requires java-enabled browser">Java Source</a></li>
+							<li><a href="${JavaSource}" class="button pretty small" alt="requires java-enabled browser">Author's Page</a></li>
 						</ul>
 					</div>
 					<div class="nostyle">
