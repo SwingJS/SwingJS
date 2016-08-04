@@ -1746,9 +1746,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		return x < 0 ? -1 : 1;
 	}
 
-	 public void paint(Graphics g) {
-	 cv.repaint();
-	 }
+//	 public void paint(Graphics g) {
+//	 cv.repaint();
+//	 }
 
 	long lastTime;
 	int frameLen;

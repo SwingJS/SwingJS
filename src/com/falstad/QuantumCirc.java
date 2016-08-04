@@ -812,9 +812,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
      g.drawString(s, (winSize.width-fm.stringWidth(s))/2, y);
  }
 
- public void paintComponent(Graphics g) {
-	cv.repaint();
- }
+// public void paintComponent(Graphics g) {
+//	cv.repaint();
+// }
 
  long lastTime;
  public void updateQuantumCirc(Graphics realg) {

@@ -675,9 +675,9 @@ class DiffractionFrame extends Frame implements ComponentListener,
 		return x < 0 ? -1 : 1;
 	}
 
-	public void paintComponent(Graphics g) {
-		cv.repaint();
-	}
+//	public void paintComponent(Graphics g) {
+//		cv.repaint();
+//	}
 
 	void updateDiffraction(Graphics realg) {
 		if (fullWinSize == null)

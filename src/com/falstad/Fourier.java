@@ -779,9 +779,9 @@ class FourierFrame extends Frame implements ComponentListener, ActionListener,
 		g.drawString(s, (winSize.width - fm.stringWidth(s)) / 2, y);
 	}
 
-	public void paintComponent(Graphics g) {
-		cv.repaint();
-	}
+//	public void paintComponent(Graphics g) {
+//		cv.repaint();
+//	}
 
 	public void updateFourier(Graphics realg) {
 		if (winSize == null || winSize.width == 0 || dbimage == null)

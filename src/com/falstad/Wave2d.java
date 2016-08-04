@@ -573,8 +573,8 @@ class Wave2dFrame extends Frame
         g.drawString(s, (winSize.width-fm.stringWidth(s))/2, y);
     }
 
-    public void paintComponent(Graphics g) {
-    }
+//    public void paintComponent(Graphics g) {
+//    }
 
     boolean calculateNotice;
     long lastTime;

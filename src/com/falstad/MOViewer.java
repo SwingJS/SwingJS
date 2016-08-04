@@ -1192,11 +1192,11 @@ class MOViewerFrame extends Frame
 	return x < 0 ? -1 : 1;
     }
 
-    @Override
-		public void paint(Graphics g) {
-	cv.repaint();
-    }
+//		public void paint(Graphics g) {
+//	cv.repaint();
+//    }
 
+    
     public void updateMOViewer(Graphics realg) {
 	Graphics g = null;
 	if (winSize == null || winSize.width == 0)

@@ -577,9 +577,9 @@ class EMStaticFrame extends Frame
         g.drawString(s, (winSize.width-fm.stringWidth(s))/2, y);
     }
 
-    public void paintComponent(Graphics g) {
-	cv.repaint();
-    }
+//    public void paintComponent(Graphics g) {
+//	cv.repaint();
+//    }
 
     boolean calculateNotice;
 

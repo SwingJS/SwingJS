@@ -385,9 +385,9 @@ class InterferenceFrame extends Frame implements ComponentListener,
 		g.drawString(s, (winSize.width - w) / 2, y);
 	}
 
-	public void paintComponent(Graphics g) {
-		cv.repaint();
-	}
+//	public void paintComponent(Graphics g) {
+//		cv.repaint();
+//	}
 
 	final int gridSize = 100;
 

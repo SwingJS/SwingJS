@@ -836,9 +836,9 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		return x < 0 ? -1 : 1;
 	}
 
-	public void paintComponent(Graphics g) {
-		cv.repaint();
-	}
+//	public void paintComponent(Graphics g) {
+//		cv.repaint();
+//	}
 
 	long lastTime;
 
