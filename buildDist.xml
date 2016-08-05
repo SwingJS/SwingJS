@@ -174,7 +174,7 @@
 		<echo message="Description: ${Description}"/>
 		<echo message="Features: ${Features}"/>
 		<echo message="Info: ${Info}"/>
-		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}"/>
+		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src/${SourceCode}"/>
 		<echo message="Code: ${Code}" />
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
