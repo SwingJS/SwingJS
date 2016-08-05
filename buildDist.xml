@@ -184,7 +184,6 @@
 				<cat>${Category}</cat>
 				<id>${Date}</id>
 				<feat><hr /><b>Demonstrates:</b> ${Features}</feat>
-			    <a target="_blank" class="button small" href="${SourceForgePath}/${SourceCode}">Java source code</a>
 			</div>
 			]]>
 		</echo>
@@ -284,6 +283,8 @@
 						<ul class="actions small">
 							<li><a href="javascript:showhide('sysout')" class="button pretty small">Show System.out</a></li>
 							<li><a href="${JavaSource}" class="button pretty small" alt="requires java-enabled browser">Author's Page</a></li>
+							<li><a href="${SourceForgePath}/${SourceCode}" class="button pretty small">Java source code</a></li>
+
 						</ul>
 					</div>
 					<div class="nostyle">
