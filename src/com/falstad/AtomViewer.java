@@ -216,6 +216,7 @@ public class AtomViewer extends Applet implements ComponentListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g); // for background
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
