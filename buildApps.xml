@@ -94,6 +94,7 @@
   	<echo>deleting site/tmp directory</echo>
    	 	<delete quiet="true" dir="site/tmp" />
   	
+   	<ant antfile="buildDist.xml" target="testDist" />
 
   </target>
 	

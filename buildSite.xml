@@ -974,6 +974,10 @@
 	    </java>
     </else></if>
  	<delete quiet="true" file="site/swingjs/js/core/tmp.js" />
+  	
+  	<echo>...running buildDist to create site/applets</echo>
+   	<ant antfile="buildDist.xml" target="testDist" />
+  	
   </target>
 
   <target name="call-min" id="call-min">

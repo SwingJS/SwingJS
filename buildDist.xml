@@ -1,6 +1,18 @@
-<project name = "swingjs" default="createDist" basedir=".">
+<project name = "swingjs" default="releaseDist">
 	<!-- Author Andreas Raduege 7/2016 -->
 	<description> Generates publishable website for successfully converted applets. </description>
+
+	<target name="testDist" id="testDist"> 
+	<property name="basedir" value="."/>	
+	<property name="WebKey" value="web_"/>	
+		<antcall target="createDist"/>
+    </target>
+	
+	<target name="releaseDist" id="releaseDist"> 
+		<property name="basedir" value="."/>	
+		<property name="WebKey" value="web_Ready"/>	
+		<antcall target="createDist"/>
+    </target>
 	
 	<target name="createDist" id="createDist">
 		
@@ -30,6 +42,21 @@
 						</tokenfilter>
 					</filterchain>
 				</loadproperties>
+				<!-- automatically extract Code location from file name -->
+				<loadresource property="Code">
+				  <string value="@{file}"/>
+					  <filterchain>
+					    <tokenfilter>
+					      <replaceregex pattern="[\/,\\]" flags="g" replace="."/>
+					    </tokenfilter>
+					    <tokenfilter>
+					      <replaceregex pattern="(.+)(\.src\.)(.+)" replace="\3"/>
+					    </tokenfilter>
+					    <tokenfilter>
+					      <replaceregex pattern="\.java" replace=""/>
+					    </tokenfilter>
+					  </filterchain>
+				</loadresource>
 			</sequential>
 		</macrodef>
 		
@@ -40,10 +67,10 @@
 		<foreach target="genWebpage" param="applet">
 			<path>
 			<fileset dir="${basedir}/src/com">
-				<contains text="//web_Ready"/>
+				<contains text="//${WebKey}"/>
 			</fileset>
 			<fileset dir="${basedir}/src/org">
-				<contains text="//web_Ready"/>
+				<contains text="//${WebKey}"/>
 			</fileset>
 			</path>
 		</foreach>
@@ -124,7 +151,7 @@
 		  </filterchain>
 		</loadresource>		
 		<loadresource property="SourceCode">
-		  <string value="${Location}"/>
+		  <string value="${Code}"/>
 			  <filterchain>
 			    <tokenfilter>
 			      <replaceregex pattern="(\.[A-Z,a-z,0-9]+$)" replace=""/>
@@ -139,9 +166,9 @@
 		<echo message="ShortDate: ${ShortDate}"/>
 		<echo message="Description: ${Description}"/>
 		<echo message="Features: ${Features}"/>
-		<echo message="Location: ${Location}"/>
 		<echo message="Info: ${Info}"/>
 		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}"/>
+		<echo message="Code: ${Code}" />
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
 			<div class="4u work-item">
@@ -191,7 +218,7 @@
 						}		
 
 						Info = {
-	    					code: "${Location}",
+	    					code: "${Code}",
 							width: 700,
 							height: 500,
 							useFrame: true,
