@@ -1,30 +1,27 @@
-<project name = "swingjs" default="releaseDist">
+<project name = "swingjs" default="releaseDist" basedir=".">
 	<!-- Author Andreas Raduege 7/2016 -->
 	<description> Generates publishable website for successfully converted applets. </description>
 
 	<target name="testDist" id="testDist"> 
-	<property name="basedir" value="."/>	
-	<property name="WebKey" value="web_"/>	
+		<property name="WebKey" value="web_" />
 		<antcall target="createDist"/>
     </target>
 	
 	<target name="releaseDist" id="releaseDist"> 
-		<property name="basedir" value="."/>	
 		<property name="WebKey" value="web_Ready"/>	
 		<antcall target="createDist"/>
     </target>
 	
 	<target name="createDist" id="createDist">
 		
-		<property name="project.path" value="." />
-		
-		<!-- Include antcontrib -->
 		<taskdef resource="net/sf/antcontrib/antlib.xml">
 			<classpath>
 		        <pathelement location="tools/ant-contrib.jar" />
 		    </classpath>
 		</taskdef>
 		
+		<property name="project.path" value="." />
+
 		<copy todir="${basedir}/site/swingjs/examples">
 			<fileset dir="demo"/>
 		</copy>
@@ -143,6 +140,8 @@
 
 	<target name="genWebpage" id="genWebpage">
 		
+    	<property name="SourceForgePath" value="https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src" />
+
 		<echo message="creating webpage for ${applet}"/>
 		<getAppletInfo file="${applet}"/>
 		
@@ -174,7 +173,7 @@
 		<echo message="Description: ${Description}"/>
 		<echo message="Features: ${Features}"/>
 		<echo message="Info: ${Info}"/>
-		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src/${SourceCode}"/>
+		<echo message="${SourceForgePath}/${SourceCode}"/>
 		<echo message="Code: ${Code}" />
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
@@ -185,7 +184,7 @@
 				<cat>${Category}</cat>
 				<id>${Date}</id>
 				<feat><hr /><b>Demonstrates:</b> ${Features}</feat>
-			    <a target="_blank" class="button small" href="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}">Java source code</a>
+			    <a target="_blank" class="button small" href="${SourceForgePath}/${SourceCode}">Java source code</a>
 			</div>
 			]]>
 		</echo>
