@@ -61,7 +61,7 @@
 		</macrodef>
 		
 		<delete file="${basedir}/site/swingjs/examples/addedApplets.html"/>
-		<delete dir="${basedir}/site/swingjs/examples/applets"/>
+		<delete  quiet="true" dir="${basedir}/site/swingjs/examples/applets"/>
 		<mkdir dir="${basedir}/site/swingjs/examples/applets"/>
 		
 		<foreach target="genWebpage" param="applet">
@@ -303,7 +303,8 @@
 				</footer>
 
 			<!-- Scripts -->
-				<script src="../assets/js/jquery.min.js"></script>
+
+				<!-- script src="../assets/js/jquery.min.js"></script --> 
 				<script src="../assets/js/jquery.poptrox.min.js"></script>
 				<script src="../assets/js/skel.min.js"></script>
 				<script src="../assets/js/util.js"></script>
