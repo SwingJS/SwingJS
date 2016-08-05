@@ -41,5 +41,9 @@ public interface JQueryObject {
 
 	public abstract void resize(JSFunction fHandleResize);
 
+	public abstract void after(Object div);
+
+	public abstract void detach(); // like remove(), but does not change event settings
+
 	
 }

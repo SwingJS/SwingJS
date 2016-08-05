@@ -661,14 +661,15 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 			// process of discovering width and height is facilitated using jQuery
 			// and appending to document.body.
+			// By using .after() we avoid CSS changes in the BODY element. 
 
-			body.appendChild(div);
-			// System.out.println(DOMNode.getAttr(node, "outerHTML"));
+			$(body).after(div);
 			DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
 			w = (int) Math.max(0, Math.ceil($(test).width() + 0.5));
 			h = (int) Math.max(0, Math.ceil($(test).height() + 0.5));
-			body.removeChild(div);
+			$(div).detach();
 		}
+		// allow a UI to slightly adjust its dimension
 		Dimension size = getCSSAdjustment();
 		size.width += w;
 		size.height += h;
