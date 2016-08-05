@@ -10,6 +10,7 @@ package com.falstad;
 //web_AppletImage= images/WaveBox.png
 //web_Category= Physics
 //web_Date= $Date$
+//web_Features= graphics, AWT-to-Swing
 
 
 // Rendering algorithm in this applet is based on the description of

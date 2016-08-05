@@ -319,7 +319,8 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 		JSButtonUI ui = (JSButtonUI) b.ui;
 		ButtonModel m = b.getModel();
 		DOMNode btn = ui.domBtn;
-		boolean state = m.isSelected() && !ui.isRadio;
+		// BH: I don't know that this is necessary anymore
+		boolean state = m.isSelected();// && !ui.isRadio;
 		/**
 		 * @j2sNative
 		 * 

@@ -8,6 +8,7 @@
 //web_AppletImage= images/EMStatic.png
 //web_Category= Physics
 //web_Date= $Date$
+//web_Features= graphics, AWT-to-Swing
 
 
 package com.falstad;

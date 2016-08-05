@@ -18,6 +18,7 @@ package com.falstad;
 //web_Location= com.falstad.Gas
 //web_AppletImage= images/gas.png
 //web_Category= Chemistry
+//web_Features= graphics, AWT-to-Swing
 
 import java.awt.Color;
 import java.awt.Component;

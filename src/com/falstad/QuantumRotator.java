@@ -156,7 +156,6 @@ public class QuantumRotator extends Applet implements ComponentListener {
  }
  
  public void paint(Graphics g) {
-	super.paint(g);
 	String s = "Applet is open in a separate window.";
 	if (!started)
 	    s = "Applet is starting.";
@@ -164,8 +163,8 @@ public class QuantumRotator extends Applet implements ComponentListener {
 	    s = "Applet is finished.";
 	else if (ogf.useFrame)
 		ogf.triggerShow();
-	if(ogf == null || ogf.useFrame)
-		g.drawString(s, 10, 30);
+	g.drawString(s, 10, 30);
+	super.paint(g);
  }
  
  public void componentHidden(ComponentEvent e){}
@@ -1024,9 +1023,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	return x < 0 ? -1 : 1;
  }
 
-// public void paintComponent(Graphics g) {
-//	cv.repaint();
-// }
+ public void paintComponent(Graphics g) {
+	cv.repaint();
+ }
 
  long lastTime;
  

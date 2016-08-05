@@ -10,6 +10,7 @@ package com.falstad;
 //web_AppletImage= images/quantumcirc.png
 //web_Category= Physics
 //web_Date= $Date$
+//web_Features= graphics, AWT-to-Swing
 
 import java.awt.Color;
 import java.awt.Component;

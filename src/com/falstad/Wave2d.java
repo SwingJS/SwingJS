@@ -8,6 +8,8 @@
 //web_AppletImage= images/wave2d.png
 //web_Category= Physics
 //web_Date=  $Date$
+//web_Date= $Date$
+//web_Features= graphics, AWT-to-Swing
 
 package com.falstad;
 

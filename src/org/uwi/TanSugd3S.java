@@ -2,10 +2,11 @@ package org.uwi;
 
 //web_Ready
 //web_AppletName= tanSugd3S
-//web_Description= Interactive Tanabe-Sugano diagrams for inorganic d3 system
+//web_Description= Interactive Tanabe-Sugano diagrams for inorganic d3 systems
 //web_Date= $Date$
 //web_JavaSource=http://wwwchem.uwimona.edu.jm/courses/Tanabe-Sugano/TSapplets.html 
-//web_Location= org.uwi.TanSugd3S
+//web_OriginalAuthor= Robert Lancashire, University of the West Indies.
+//web_SwingJSAuthor= <a href="mailto:hansonr@stolaf.edu">Bob Hanson, St. Olaf College</a>
 //web_AppletImage= images/tansugd3s.png
 //web_Category= Chemistry
 //web_Features= graphics, radio buttons, scrolling text, simple threading
@@ -391,7 +392,7 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		//System.out.println("TanSugd3S painting ");
 		//g.setPaintMode();
 		drawDiagram(g);
@@ -448,9 +449,9 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 
 		double yDivisor;
 
-		g2.clearRect(graphRec.x, graphRec.y, graphRec.width, graphRec.height);
-		// g2.setColor(Color.white);
-		// Rectangle graphRec = new Rectangle(50,10,400,310);
+		//Rectangle graphRec = new Rectangle(50,10,400,310);
+		g2.setColor(Color.white);
+		g2.fillRect(graphRec.x, graphRec.y, graphRec.width, graphRec.height);
 		// Rectangle outPRec = new Rectangle(450,10,495,210);
 		g2.setColor(Color.black);
 		bottomLeft = new Point(graphRec.x, graphRec.y + graphRec.height);

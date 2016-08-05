@@ -7,8 +7,8 @@
 //web_Location= com.falstad.Vowel
 //web_AppletImage= images/vowel.png
 //web_Category= Physics
-//web_Date= 08/0/2016
-//web_Features= sound
+//web_Date= $Date$
+//web_Features= streaming audio, graphics, AWT-to-Swing
 
 package com.falstad;
 

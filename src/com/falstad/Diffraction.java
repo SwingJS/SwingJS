@@ -8,6 +8,7 @@ package com.falstad;
 //web_AppletImage= images/diffraction.png
 //web_Category= Physics
 //web_Date= $Date$
+//web_Features= graphics, AWT-to-Swing
 
 //Diffraction.java (c) 2001 by Paul Falstad, www.falstad.com.
 //Algorithm used for circular apertures is from "Simulation and Study

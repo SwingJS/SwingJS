@@ -4,11 +4,10 @@ package com.falstad;
 //web_AppletName= CircOsc
 //web_Description= A simulation of waves in a circular membrane, showing its various vibrational modes. 
 //web_JavaSource= http://www.falstad.com/circosc/
-//web_Location= com.falstad.CircOsc
 //web_AppletImage= images/CircOsc.png
 //web_Category= Physics
 //web_Date= $Date$
-//web_Features= Sound, Threads, Graphics2D, etc
+//web_Features= audio, graphics, AWT-to-Swing
 
 //CircOsc.java (C) 2001 by Paul Falstad, www.falstad.com
 //

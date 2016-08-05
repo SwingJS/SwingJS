@@ -4,7 +4,7 @@
 // We raytrace through a 3-d dataset, sampling a number of points and
 // integrating over them using Simpson's rule.
 
-//web_Ready
+//web_NOTReady
 //web_AppletName= MOViewer
 //web_Description= A simulation of the molecular wave functions (molecular orbitals) of the hydrogen molecular ion (H2+) in 3-D.
 //web_JavaSource= http://www.falstad.com/qmmo/
@@ -1196,7 +1196,7 @@ class MOViewerFrame extends Frame
 //	cv.repaint();
 //    }
 
-    
+
     public void updateMOViewer(Graphics realg) {
 	Graphics g = null;
 	if (winSize == null || winSize.width == 0)
@@ -1702,27 +1702,30 @@ class MOViewerFrame extends Frame
 	    cv.repaint();
 	dragging = changingDerivedStates = false;
     }
-    @Override
-		public void itemStateChanged(ItemEvent e) {
-	if (e.getItemSelectable() instanceof CheckboxMenuItem) {
-	    int i;
-	    for (i = 0; i != samplesNums.length; i++)
-		if (samplesItems[i] == e.getItemSelectable())
-		    break;
-	    if (i != samplesNums.length) {
-		int j;
-		for (j = 0; j != samplesNums.length; j++)
-		    samplesItems[j].setState(i == j);
-		setupSimpson();
-	    }
-	    setupDisplay();
-	    cv.repaint(pause);
-	    return;
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if (samplesItems == null)
+			return;
+		if (e.getItemSelectable() instanceof CheckboxMenuItem) {
+			int i;
+			for (i = 0; i != samplesNums.length; i++)
+				if (samplesItems[i] == e.getItemSelectable())
+					break;
+			if (i != samplesNums.length) {
+				int j;
+				for (j = 0; j != samplesNums.length; j++)
+					samplesItems[j].setState(i == j);
+				setupSimpson();
+			}
+			setupDisplay();
+			cv.repaint(pause);
+			return;
+		}
+		if (e.getItemSelectable() == stateChooser)
+			precomputeAll();
+		cv.repaint(pause);
 	}
-	if (e.getItemSelectable() == stateChooser)
-	    precomputeAll();
-	cv.repaint(pause);
-    }
 
     @Override
 		public boolean handleEvent(Event ev) {

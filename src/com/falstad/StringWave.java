@@ -10,7 +10,8 @@ package com.falstad;
 //web_AppletImage= images/StringWave.png
 //web_Category= Physics
 //web_Date= $Date$
-//web_Features= sounds
+//web_Features= audio, graphics, AWT-to-Swing
+
 //
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //

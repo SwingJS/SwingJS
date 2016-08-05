@@ -168,7 +168,6 @@ public class QuantumOsc3d extends Applet {
 
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
 		String s = "Applet is open in a separate window.";
 		if (!started)
 			s = "Applet is starting.";
@@ -176,8 +175,8 @@ public class QuantumOsc3d extends Applet {
 			s = "Applet is finished.";
 		else if (oc.useFrame)
 			oc.triggerShow();
-		if(oc == null || oc.useFrame)
-			g.drawString(s, 10, 30);
+		g.drawString(s, 10, 30);
+		super.paint(g);
 	}
 };
 
@@ -1623,9 +1622,9 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		return x < 0 ? -1 : 1;
 	}
 
-//	public void paintComponent(Graphics g) {
-//		cv.repaint();
-//	}
+	public void paintComponent(Graphics g) {
+		cv.repaint();
+	}
 
 	public void updateQuantumOsc3d(Graphics realg) {
 		Graphics g = null;

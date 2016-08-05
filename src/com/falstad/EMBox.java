@@ -7,7 +7,8 @@ package com.falstad;
 //web_Location= com.falstad.EMBox
 //web_AppletImage= images/EMBox.png
 //web_Category= Physics
-//web_Date= 02/08/2016
+//web_Date= $Date$
+//web_Features= graphics, AWT-to-Swing
 
 //EMBox.java (c) 2001 by Paul Falstad, www.falstad.com.
 //Rendering algorithm in this applet is based on the description of
