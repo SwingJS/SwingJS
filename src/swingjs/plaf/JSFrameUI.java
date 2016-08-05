@@ -58,7 +58,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		if (domNode == null) {
 			domNode = frameNode = newDOMObject("div", id + "_frame");
 			DOMNode.setStyles(frameNode, "border-style", "solid",
-					"border-width", "5px");
+					"border-width", "5px", " box-sizing", "content-box");
 			setWindowClass(frameNode);
 			int w = c.getWidth();
 			int h = c.getHeight();
