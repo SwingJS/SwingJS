@@ -122,8 +122,7 @@
 		      <replaceregex pattern="[\$,\(,\)]" flags="g" replace=""/>
 		    </tokenfilter>
 		  </filterchain>
-		</loadresource>
-		
+		</loadresource>		
 		<loadresource property="SourceCode">
 		  <string value="${Location}"/>
 			  <filterchain>
@@ -136,11 +135,12 @@
 			  </filterchain>
 		</loadresource>
 		
-		<echo message="${Category} ${AppletName}"/>
-		<echo message="${ShortDate}"/>
-		<echo message="${Description}"/>
-		<echo message="${Features}"/>
-		<echo message="${Location}"/>
+		<echo message="Category: ${Category} ${AppletName}"/>
+		<echo message="ShortDate: ${ShortDate}"/>
+		<echo message="Description: ${Description}"/>
+		<echo message="Features: ${Features}"/>
+		<echo message="Location: ${Location}"/>
+		<echo message="Info: ${Info}"/>
 		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}"/>
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
@@ -212,8 +212,13 @@
 							readyFunction: jmol_isReady,
 		  					allowjavascript: true
 						}
-
-
+					    eval("info = {${Info}}");
+						if (info) {
+							for (x in info) {
+								Info[x] = info[x];
+							}
+						}
+				
 						function dateTest() {
 
 		  					Class.loadClass()
