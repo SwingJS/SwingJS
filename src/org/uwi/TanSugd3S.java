@@ -9,7 +9,7 @@ package org.uwi;
 //web_AppletImage= images/tansugd3s.png
 //web_Category= Chemistry
 //web_Features= graphics, radio buttons, scrolling text, simple threading
-//web_Info=	{width: 850, height: 550}
+//web_Info=	width: 850, height: 550
 
 import java.awt.AWTEvent;
 import java.awt.BasicStroke;
