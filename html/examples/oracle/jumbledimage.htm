@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<title>SwingJS test</title>
+<head>
+<meta charset="utf-8" />
+<!-- breaking out the library for debugging -->
+<script type="text/javascript" src="../../jquery/jquery.js"></script>
+<script type="text/javascript" src="../../js/j2sJQueryExt.js"></script>
+
+<script type="text/javascript" src="../../js/j2sApplet.js"></script>
+<script type="text/javascript" src="../../js/j2sSwingJS.js"></script>
+<script type="text/javascript" src="../../js/SJSApplet.js"></script>
+
+<script type="text/javascript">
+
+J2S._checkLoad = true
+
+J2S._isAsync = false;
+
+J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
+
+var jmolApplet0; // set up in HTML table, below
+
+// use ?_USE=JAVA or _USE=SIGNED or _USE=HTML5
+
+jmol_isReady = function(applet) {
+	document.title = (applet._id + " is ready")
+	J2S._getElement(applet, "appletdiv").style.border="1px solid blue"
+ 
+}		
+
+$(document).ready(function() {
+
+  var Info = {
+    code: "test.oracle.JumbledImageApplet",
+  	width: 200,
+  	height: 200,
+  	debug: false,
+  	color: "#F0F0F0",
+  	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+  	use: "HTML5",
+  	j2sPath: "../../j2s",
+  	disableJ2SLoadMonitor: false,
+  	disableInitialConsole: false,
+  	console:"sysoutdiv",
+  	readyFunction: jmol_isReady,
+    allowjavascript: true
+  }
+  $("#appdiv").html(SwingJS.getAppletHtml("testApplet", Info))
+})
+
+
+</script>
+
+
+</head>
+<body>
+A test page for the SwingJS system demonstrating javax.imageio.ImageIO.read(URL) and Graphics2D.drawImage() 
+<a href=https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src/swingjs/test/JumbledImageApplet.java>code</a>
+Based on <a href=https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html>https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html</a>. 
+<div id="appdiv"></div>
+<!-- info <a href="javascript:testApplet._showInfo(true)">show</a>
+<a href="javascript:testApplet._showInfo(false)">hide</a>
+-->
+<div style="position:absolute;left:900px;top:30px;width:600px;height:300px;">
+<div id=sysoutdiv style="border:1px solid green;width:100%;height:95%;overflow:auto"></div>
+This is System.out. <a href="javascript:testApplet._clearConsole()">clear it</a> 
+<br> <a href="../../j2s" target="_blank">Converted Java class directory</a>
+<br> <img src=jumbledimage.png />
+</div>
+</div>
+</body>
+</html>

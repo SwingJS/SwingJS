@@ -1,0 +1,327 @@
+<project name = "swingjs" default="releaseDist">
+	<!-- Author Andreas Raduege 7/2016 -->
+	<description> Generates publishable website for successfully converted applets. </description>
+
+	<target name="testDist" id="testDist"> 
+	<property name="basedir" value="."/>	
+	<property name="WebKey" value="web_"/>	
+		<antcall target="createDist"/>
+    </target>
+	
+	<target name="releaseDist" id="releaseDist"> 
+		<property name="basedir" value="."/>	
+		<property name="WebKey" value="web_Ready"/>	
+		<antcall target="createDist"/>
+    </target>
+	
+	<target name="createDist" id="createDist">
+		
+		<property name="project.path" value="." />
+		
+		<!-- Include antcontrib -->
+		<taskdef resource="net/sf/antcontrib/antlib.xml">
+			<classpath>
+		        <pathelement location="tools/ant-contrib.jar" />
+		    </classpath>
+		</taskdef>
+		
+		<copy todir="${basedir}/site/swingjs/examples">
+			<fileset dir="demo"/>
+		</copy>
+		
+		<macrodef name="getAppletInfo">
+			<attribute name="file"/>
+			<sequential>
+				<loadproperties srcfile="@{file}">
+					<filterchain>
+						<linecontains>
+							<contains value="//web_"/>
+						</linecontains>
+						<tokenfilter>
+							<replacestring from="//web_" to=""/>
+						</tokenfilter>
+					</filterchain>
+				</loadproperties>
+				<!-- automatically extract Code location from file name -->
+				<loadresource property="Code">
+				  <string value="@{file}"/>
+					  <filterchain>
+					    <tokenfilter>
+					      <replaceregex pattern="[\/,\\]" flags="g" replace="."/>
+					    </tokenfilter>
+					    <tokenfilter>
+					      <replaceregex pattern="(.+)(\.src\.)(.+)" replace="\3"/>
+					    </tokenfilter>
+					    <tokenfilter>
+					      <replaceregex pattern="\.java" replace=""/>
+					    </tokenfilter>
+					  </filterchain>
+				</loadresource>
+			</sequential>
+		</macrodef>
+		
+		<delete file="${basedir}/site/swingjs/examples/addedApplets.html"/>
+		<delete  quiet="true" dir="${basedir}/site/swingjs/examples/applets"/>
+		<mkdir dir="${basedir}/site/swingjs/examples/applets"/>
+		
+		<foreach target="genWebpage" param="applet">
+			<path>
+			<fileset dir="${basedir}/src/com">
+				<contains text="//${WebKey}"/>
+			</fileset>
+			<fileset dir="${basedir}/src/org">
+				<contains text="//${WebKey}"/>
+			</fileset>
+			</path>
+		</foreach>
+		
+		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
+			<![CDATA[
+			<script>
+				$(document).ready(function () {
+			    	size_li = $("#container .work-item").size();
+			x = size_li;
+			$('.work-item:lt('+x+')').css('display','inline-block');
+			$('#showLess').show();
+			$('#loadMore').hide();
+
+			
+//			x = size_li;
+	////		$('.work-item:lt('+x+')').css('display','inline-block');
+		//	$('#showLess').show();
+			//$('#loadMore').hide();
+				});
+
+				$('#loadMore').on('click', function () {
+					x = size_li;
+					$('.work-item:lt('+x+')').css('display','inline-block');
+					$('#showLess').show();
+					$('#loadMore').hide();
+				});
+			    $('#showLess').click(function () {
+			        x = size_li - 6;
+					$('.work-item:lt('+x+')').css('display','none');
+			        $('#loadMore').show();
+			        $('#showLess').hide();
+			    });
+
+			    var $divs = $("div.work-item");
+				$('#alphBnt').on('click', function () {
+					document.getElementById("sortation").innerHTML = "Name";
+			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+			        	return $(a).find("h3").text() > $(b).find("h3").text();
+			    	});
+			    	$("#container").html(alphabeticallyOrderedDivs);
+				});
+
+				$('#numBnt').on('click', function () {
+					document.getElementById("sortation").innerHTML = "Newest First";
+			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+			        	return $(a).find("id").text() < $(b).find("id").text();
+			    	});
+			    	$("#container").html(alphabeticallyOrderedDivs);
+				});
+
+				$('#catBnt').on('click', function () {
+					document.getElementById("sortation").innerHTML = "Category";
+			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+			        	return $(a).find("cat").text() > $(b).find("cat").text();
+			    	});
+			    	$("#container").html(alphabeticallyOrderedDivs);
+				});
+			
+				$('#feaBnt').click(function () {
+					var feat_ele = document.getElementsByTagName('feat');
+					for (var i = 0; i < feat_ele.length; ++i) {
+						feat_ele[i].style.display = (feat_ele[i].style.display == "block") ? "none" : "block";
+						document.getElementById("feaBnt").innerHTML = (document.getElementById("feaBnt").innerHTML == "Hide Program Features") ? "View Program Features" : "Hide Program Features";  
+					}
+				});
+			</script> ]]>
+		</echo>
+	</target>
+
+	<target name="genWebpage" id="genWebpage">
+		
+		<echo message="creating webpage for ${applet}"/>
+		<getAppletInfo file="${applet}"/>
+		
+		<loadresource property="ShortDate">
+		  <string value="${Date}"/>
+		  <filterchain>
+		    <tokenfilter>
+		      <replaceregex pattern="(^[\$,A-Z,a-z,0-9,\:,\ ,\,,\-]+)" replace=""/>
+		    </tokenfilter>
+		    <tokenfilter>
+		      <replaceregex pattern="[\$,\(,\)]" flags="g" replace=""/>
+		    </tokenfilter>
+		  </filterchain>
+		</loadresource>		
+		<loadresource property="SourceCode">
+		  <string value="${Code}"/>
+			  <filterchain>
+			    <tokenfilter>
+			      <replaceregex pattern="(\.[A-Z,a-z,0-9]+$)" replace=""/>
+			    </tokenfilter>
+			    <tokenfilter>
+			      <replaceregex pattern="\." flags="g" replace="/"/>
+			    </tokenfilter>
+			  </filterchain>
+		</loadresource>
+		
+		<echo message="Category: ${Category} ${AppletName}"/>
+		<echo message="ShortDate: ${ShortDate}"/>
+		<echo message="Description: ${Description}"/>
+		<echo message="Features: ${Features}"/>
+		<echo message="Info: ${Info}"/>
+		<echo message="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}"/>
+		<echo message="Code: ${Code}" />
+		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
+			<![CDATA[
+			<div class="4u work-item">
+				<a href="applets/${AppletName}.html"><span class="image fit thumb"><img src="${AppletImage}" alt="" /></span></a>
+				<h3><a href="applets/${AppletName}.html">${AppletName}</a></h3>
+				<p>${Description}</p>
+				<cat>${Category}</cat>
+				<id>${Date}</id>
+				<feat><hr /><b>Demonstrates:</b> ${Features}</feat>
+			    <a target="_blank" class="button small" href="https://sourceforge.net/p/swingjs/code/HEAD/tree/branches/near/src/${SourceCode}">Java source code</a>
+			</div>
+			]]>
+		</echo>
+		
+		<echo file="${basedir}/site/swingjs/examples/applets/${AppletName}.html" append="false">
+			<![CDATA[<!DOCTYPE html>
+			<html>
+				<head>
+					<title>SwingJS | ${AppletName}</title>
+					<meta charset="utf-8" />
+					<meta name="viewport" content="width=device-width, initial-scale=1" />
+					<!--[if lte IE 8]><script src="../assets/js/ie/html5shiv.js"></script><![endif]-->
+					<link rel="stylesheet" href="../assets/css/applet.css" />
+					<!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
+
+					<!--SwingJS files-->
+					<script type="text/javascript" src="../../jquery/jquery.js"></script>
+					<script type="text/javascript" src="../../js/j2sJQueryExt.js"></script>
+					<script type="text/javascript" src="../../js/j2sApplet.js"></script>
+					<script type="text/javascript" src="../../js/j2sSwingJS.js"></script>
+					<script type="text/javascript" src="../../js/SJSApplet.js"></script>
+
+					<script type="text/javascript">
+
+						J2S._checkLoad = true;
+
+						J2S._isAsync = false;
+
+						J2S.getProfile() // records repeat calls to overridden or overloaded Java methods
+
+						// use ?_USE=JAVA or _USE=SIGNED or _USE=HTML5
+
+						jmol_isReady = function(applet) {
+							//document.title = (applet._id + " is ready")
+							J2S._getElement(applet, "appletdiv").style.border="1px solid #787878"
+	 
+						}		
+
+						Info = {
+	    					code: "${Code}",
+							width: 700,
+							height: 500,
+							useFrame: true,
+							isResizable: true,
+							debug: false,
+							color: "#787878",
+							zIndexBase: 20000,
+							z:{monitorZIndex:100},
+							serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+							use: "HTML5",
+							j2sPath: "../../j2s",
+							//jarPath: "../../java",
+							isSigned: false,
+							disableJ2SLoadMonitor: false,
+							disableInitialConsole: false,
+							console:"sysoutdiv",
+		  					//useFrame:"false",
+							readyFunction: jmol_isReady,
+		  					allowjavascript: true
+						}
+					    eval("info = {${Info}}");
+						if (info) {
+							for (x in info) {
+								Info[x] = info[x];
+							}
+						}
+				
+						function dateTest() {
+
+		  					Class.loadClass()
+
+		  					Class.loadClass(
+								"java.text.SimpleDateFormat",
+								function() {
+									alert(new java.text.SimpleDateFormat($("#date").val()).format(new Date))
+								}
+		  					);
+						}
+
+	 					function showhide(id) {
+	    					var e = document.getElementById(id);
+	    					e.style.display = (e.style.display == "block") ? "none" : "block";
+	 					}
+					</script>
+				</head>
+				<body id="top">
+
+					<!-- Header -->
+						<header id="header">
+							<a href="../_index.html" class="image avatar"><img src="../images/avatar.jpg" alt="" /></a>
+							<h1><strong>${AppletName}:</strong> ${Description}</h1>
+						</header>
+
+			<!-- Main -->
+				<div id="main_sub">
+					<div class="row">
+						<ul class="actions small">
+							<li><a href="javascript:showhide('sysout')" class="button pretty small">Show System.out</a></li>
+							<li><a href="${JavaSource}" class="button pretty small" alt="requires java-enabled browser">Author's Page</a></li>
+						</ul>
+					</div>
+					<div class="nostyle">
+						<script>SwingJS.getApplet("testApplet", Info)</script>
+					</div>
+					<div id="sysout" style="position:relative;padding-top:1em;width:600px;height:300px;display: none">
+						<div id="sysoutdiv" style="border:1px solid green;width:100%;height:95%;overflow:auto"></div>
+					</div><hr />
+					<ul class="actions">
+						<li><a href="../_index.html" class="button pretty">Return to Index</a></li>
+					</ul>
+				</div>
+
+				<!-- Footer -->
+				<footer id="footer">
+					<ul class="icons">
+						<li><a href="https://sourceforge.net/p/swingjs/code/HEAD/tree/" class="icon fa-archive"><span class="label">View Source Code</span></a></li>
+						<li><a href="../_index.html#three" class="icon fa-envelope-o"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>Assembled by St. Olaf College</li>
+					</ul>
+				</footer>
+
+			<!-- Scripts -->
+
+				<!-- script src="../assets/js/jquery.min.js"></script --> 
+				<script src="../assets/js/jquery.poptrox.min.js"></script>
+				<script src="../assets/js/skel.min.js"></script>
+				<script src="../assets/js/util.js"></script>
+				<!--[if lte IE 8]><script src="../assets/js/ie/respond.min.js"></script><![endif]-->
+				<script src="../assets/js/main.js"></script>
+
+				</body>
+			</html>
+			]]>
+		</echo>
+	</target>
+	
+</project>

@@ -1,0 +1,1490 @@
+Notes
+=====
+
+=============================================================================
+SwingJS and JDK 1.6
+=============================================================================
+
+SwingJS implements a wide range of the Java language in JavaScript. The base
+version for this implementation is Java 1.6. However, some classes were
+implemented using older source code, and there are some missing methods.  
+
+MINOR ISSUES--unimplemented classes
+===================================
+
+accessibility
+native classes
+security
+serialization
+
+MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
+================================================================
+
+java.util.BitSet must be 16-bit
+
+Thread.currentThread() == dispatchThread
+
+
+MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
+=====================================================================
+
+primitive numerical types
+distinguishing arrays
+forced null typing
+ArrayOutOfBounds
+native classes
+java.awt.Color
+javax.swing.JFileDialog
+key focus
+static methods and classes -- order is important
+LookAndFeel
+inner class order
+String does not implement CharSequence.length() or .subSequence()
+
+
+MAJOR ISSUES--for Bob and Udo within SwingJS
+============================================
+
+fonts
+OS-dependent classes
+AWT component peers
+
+
+MAJOR ISSUES--to be resolved by implementers
+============================================
+
+fonts
+specific AWT components not implemented
+threads
+image loading
+no BigInteger; no BigDecimal
+no format internationalization
+no winding rules
+text-related field implementation
+Formatter/Regex limitations
+
+======================================================================== 
+
+DISCUSS
+=======
+
+Table row/col sorter needs checking after removal of java.text.Collator references
+
+I had to move all of SunHints class to RenderingHints, or the 
+two classes could not be loaded. Shouldn't be a problem, I think. The sun classes are
+not accessible anyway.
+
+We now have jsjava.lang.Thread and jsjava.lang.ThreadGroup. These should be useful in
+figuring out what we want to do with those. ThreadGroup in particular is interesting,
+as it is used to key for AppContexts. We will see if that use useful or not.
+
+PROGRESS
+========
+
+7/23/2016
+
+We (Andreas Raduege, Nadia ElMouldi, and Bob Hanson) have now converted 24 Falstad applets, 
+including Circuit. These applets are running approximately 3-6 times slower than in Java, 
+in some cases after a bit of for-loop optimization. 
+
+No significant issues have been found, though we continue to find mostly minor j2s
+compiler bugs. Mostly what is taking time is the addition of missing features, such
+as audio, pop-up menus, menu bars, sliders, graphics2D capability, 
+independent frames and dialogs, and threading.
+
+At this point we have a good variety of common controls. Events are being handled properly
+through the "java" event queue. Mouse operation is smooth.  
+
+
+BH 7/23/2016 6:16:30 PM  -- bug #27 in compiler -- need Boolean.from(string) not new Boolean(string)
+BH 7/23/2016 6:17:31 PM  -- but #26 in compiler -- compiler can inappropriately use Clazz.overrideMethod
+BH 7/22/2016 1:29:12 PM  -- bug #25 in compiler for int f() { return 'o' }  -- will return a string, not int
+BH 7/20/2016 2:58:17 PM  -- bug #24 in compiler found for files with both interfaces and classes present
+
+BH 7/20/2016 2:57:36 PM  -- basic audio (8- and 16-bit mono/stereo once-through or streamed)
+BH 7/7/2016 2:28:59 PM  -- Formatter/Regex implemented
+
+BH 7/7/2016 11:21:48 AM --  j2s bug #3 is still a serious issue 
+BH 7/4/2016 1:36:20 PM  --  j2s bug #23 inner/anonymous class may reference wrong superclass instance
+BH 7/4/2016 10:22:39 AM  -- j2s bug #22 final vars not passed to local class	
+
+
+6/01/2015 BH -- development has shifted for the summer to the "near" branch.
+                working applet development can be followed at
+                http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples
+                
+
+12/20/2015 BH -- j2s bug #21 (byte) ignored so that 0xFF remains 0xFF 
+
+7/19/2015 BH -- j2s bug #20 no implicit primitive from wrapped primitive (int/Integer) in SAEM
+
+7/18/2015 BH -- j2s bug #19 improper signature identification in SAEM with untyped null parameter
+
+7/17/2015 BH -- j2s bug #18 (jalview.commands.EditCommand)
+
+7/15/2015 BH -- j2s bug #17 (jalview.analysis.RNA)
+
+6/3/2015 BH
+
+JTextField ENTER action enabled
+JPasswordField working using simple HTML5 type="password"
+JFormattedTextField working; proper validation enabled for number formatters with FocusLost action
+
+see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm
+    and swingjs/test/FormattedTextFieldDemo.java
+
+see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm
+   (this app still needs selection boxes
+
+SwingJS J2S bug #16 NumberFormat.js includes the inner public class NumberFormat.Field, which is called here by instanceOf 
+
+Solution was to change the requirement to the outer class:
+@J2SRequireImport(NumberFormat.class)
+@J2SIgnoreImport(NumberFormat.Field.class)
+public class NumberFormatter extends InternationalFormatter...
+
+
+5/30/2015 BH
+
+jQuery Slider is implemented for JSlider
+
+-- see site/swingjs/seethroughimage.htm 
+
+jQueryUI files may be found in swingjs.jquery:
+  
+  jquery-ui-slider.css
+  jquery-ui-slider.js
+  JQueryUI.js
+  
+
+JQueryUI.js is just a shell Java class; 
+loading of jQueryUI occurs when a class utilizes
+
+  @J2SRequireImport(swingjs.jquery.JQueryUI.class)
+
+and then also has a static block such as:
+
+static {
+  swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");
+  swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");
+}
+
+method in the loading a css style block or executing JavaScript, as appropriate.
+
+The CSS for the slider widget is scoped as "swingjs". On the page, a slider
+gets implemented as:
+
+ <div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">
+   <div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;">
+      <div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui">
+	    <a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a>
+      </div>
+   </div>
+ </div>
+
+The className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse
+action and work directly with jQuery events. These events fire a method in 
+the component UI class that looks like this:
+
+Clazz.defineMethod (c$, "jqueryCallback", 
+function (event, ui) {
+  var value = 0;
+  value = ui.value;
+  this.jSlider.setValue (this.val = value);
+}, "~O,swingjs.api.DOMNode");
+
+The widget itself is created using a standard jQuery widget constructor:
+
+me.$(me.jqSlider).slider({
+  orientation: me.orientation,
+  range: false,
+  min: me.min,
+  max: me.max,
+  value: me.val,
+  change: function( event, handle ) {
+    me.jqueryCallback(event, handle);
+  },
+  slide: function( event, handle ) {
+    me.jqueryCallback(event, handle);
+  }
+});
+
+It is nice to see that the jQuery bindings to key actions (UP, DOWN,
+LEFT, RIGHT, HOME, END, PGUP, PGDN all work properly.
+
+There is a complication with z-index, because jQuery sets that, and 
+we need to have it correct in the heirarchy of applets and dialogs. 
+So to implement that, we catch the "ancestor" change property event, and 
+hope that somewhere up the chain the z-index is set. I am not sure this is 
+completely correct. We probably need to adjust the z-index for all DOM child
+nodes when this happens.
+
+It seems that it is also possible to lose an event, in which case the 
+handle image just floats away from the handle with the user's mouse, and 
+a click is required to reset that.
+ 
+I have not tried tics and labels on sliders 
+
+
+5/25/2015 BH
+
+- found J2S bug #13,#14,#15
+
+- java.awt.image.BufferedImage implemented; RescaleOp working for alpha scaling
+- see seethroughimage.htm
+
+- working on SeeThroughImageApplet (slider, image filtering)
+
+5/24/2015 BH
+
+- fix for "south" button not spanning full width
+
+5/23/2015 BH
+
+- fix for java.util.Random.nextInt(bits)
+
+- adds loadimage.htm and jumbledimage.htm 
+
+- Q: What sets the "south" button to be the full width?
+
+- reading and drawing of PNG, JPG, GIF, and BMP image formats
+    
+    java.awt.Toolkit.getDefaultToolkit().getImage(String filename)
+    java.awt.Toolkit.getDefaultToolkit().getImage(URL)
+    java.awt.Toolkit.getDefaultToolkit().createImage(String filename)
+    java.awt.Toolkit.getDefaultToolkit().createImage(URL)
+    java.awt.Toolkit.getDefaultToolkit().createImage(byte[], intOffset, intLength)
+    javax.imageio.ImageIO.read(URL)
+
+	java.awt.Graphics2D.drawImage(...)
+    
+- implementation of focus, though not traversal:
+
+    java.awt.Component.hasFocus()
+    java.awt.Component.isFocusable()
+    java.awt.Component.requestFocus()
+    java.awt.Component.requestFocusInWindow()  // same as requestFocus here
+
+- reading files, both binary and ASCII
+    
+    java.net.URL.getInputStream() -- works for binary and ascii files
+    swingjs.JSToolkit.getFileAsBytes(String filename)
+    swingjs.JSToolkit.ensureSignedBytes(byte[])
+    
+========
+5/21/2015 BH
+
+- fixes JSmol bug in JSmolJavaExt for Integer.parseRadix
+
+- adds "metal ocean" LookAndFeel theme to match generic Java LookAndFeel
+- TODO: text alignments
+- TODO: icons
+
+5/17/2015 BH
+
+- adds SAX XML parsing (needed for VARNA) 
+- uses sax2r3(final) from http://sourceforge.net/projects/sax/files/sax/	
+- implements org.xml.sax and javax.xml.sax
+- includes swingjs.JSSAXParser, swingjs.JSSAXContentHandler, swingjs.JSSAXAttributes
+- see swingjs.test.TestXML.java
+	    String s = "<testing></testing>"
+		InputSource is = new InputSource(Rdr.getBR(s));
+	    javax.xml.parsers.SAXParserFactory.newInstance().newSAXParser()
+					.parse(is, new JSSAXContentHandler());
+- to test, from a developer console, enter: 
+
+  Clazz.loadClass("swingjs.test.TestXML", function() { new swingjs.test.TestXML([]) })
+  
+
+5/16/2015 BH
+
+- basic JTextArea/JScrollPane combination working
+- height problem solved for JTextFields (HTML5 default 3px padding removed)
+- background/foreground colors enabled
+- JSThread adds JSThread.JSEVENT = 2000 to EventQueue for very low (after painting) processing
+- Boltzmann.java working; did require reduction of repaint frequency for performance
+- see http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/Boltzmann.htm
+
+Note: it is quite nice to see that from the developer console you can issue
+
+  testApplet._applet.tCollisions.setSize(80,30)
+  
+and it will do it. 
+
+5/15/2015 BH
+
+- better JLabel/JTextField positioning
+- GridBagLayout working
+- winding rules: in javax.swing.border.LineBorder 
+           Path2D path = new Path2D.Float(Path2D.WIND_EVEN_ODD);
+  needs checking with browsers that ctx.fill("evenodd") works  
+
+5/11/2015 BH
+
+BH working on Boltzmann
+- found j2s bug #12; easy fix
+- JSThread 
+
+5/10/2015 BH
+
+JTextFields responding to DocumentListeners
+JLabel default font and baseline considerations
+see test_3.htm
+
+
+5/9/2015 BH
+
+JTextField works, including tracking selection caret -- see test_3.htm
+JSPlainDocument implemented (roughly)
+JSAbstractDocument implemented (roughly)
+CaretListener working
+
+5/7/2015 BH
+
+Problem with duplicate Event queue dispatches for every mouse event found. 
+  (JSComponentUI.installUI() needs to be empty)
+  
+very preliminary JTextField added -- not functional yet
+
+5/5/2015 BH
+
+Now implemented, at least minimally:
+
+JButton
+JCheckBox
+JRadioButton, with ButtonGroup
+
+Control of components is now completely handled by swingjs.plaf.JSComponentUI and its subclasses.
+These classes implement the LightweightPeer interface, which should take care of just about 
+everything we need. They are also component change listeners. 
+
+Mouse clicks on buttons are being properly retargeted by jsjava.awt.Container and 
+then are passed on to swingjs.plaf.JSButtonListener for processing as Item.    
+
+Event queues are working, although it appears to me that we are getting two dispatches for
+every mouse event. So something is odd there.
+
+Repainting is working properly.
+
+Possible next steps:
+
+1. Filling in the missing pieces in the LightweightPeer interface 
+   so that all program actions are reflected properly in HTML5. 
+
+2. Adding text boxes and starting in on handling keyboard events. 
+
+3. Adding icons for buttons.
+
+4. Implementing additional details in button classes.
+ 
+among about 1000 other possibilities....
+  
+
+4/30/2015 BH
+
+adjustments in JSmol made to be compatible with SwingJS
+
+JSCheckBoxUI added; not tested 
+Verification added that the actual DOM button was clicked for checkboxes and radio buttons.
+
+4/25/2015 BH
+
+Mouse callback action is very smooth and fast as long as 
+clipping is not carried out for each component as created.
+ 
+JRadiobuttons are working with ItemEvent (retargeted from MouseEvent)
+
+repaint() is now completely handled using synthetic JavaScript AWT EventQueue
+
+So this means:
+
+-- we have working HTML5 components in swingjs.plaf
+-- we have a working "Java" AWT event queue
+-- basic Thread operations are working - just not sleep, wait, or notify
+   but these can be handled by other means using swingjs.JSThread
+
+
+
+---------   
+4/21/2015 BH
+
+MouseListener working; ItemListener still not working
+MouseMotionListener working
+
+Component properties are not adjustable ("isTainted" is not set back to TRUE
+in swingjs.plaf.JSComponentUI
+
+---------   
+4/19/2015 BH
+
+FlowLayout reporting proper positions and sizes for JRadioButtons
+HTML alignment may be a bit off. 
+HTML5 implementation of panels and buttons working. 
+ButtonGroups working.
+
+code: "super.xxx" out in Component, Container, and JComponent
+
+---------   
+4/18/2015 BH
+
+JSAppletPanel uses swingjs.JSThread, much like sun.applet.AppletPanel
+
+/**
+ * JSAppletPanel 
+ * 
+ * SwingJS class to start an applet. Note that this must be a JApplet,
+ * not just java.awt.Applet. The implementation (for now) does not allow
+ * "mixed" contents -- That is, no non-Swing Applet components are allowed.
+ * 
+ * The basic start up in JavaScript involves:
+ * 
+ * Clazz.loadClass("swingjs.JSAppletPanel"); 
+ * var _appletPanel = new JSAppletPanel(viewerOptions);
+ * _appletPanel.start();
+ * 
+ * where viewerOptions holds critical information needed to create this applet
+ * 
+ * 
+ * @author Bob Hanson
+ * 
+ */
+
+---------   
+4/16/2015 BH
+
+SimpleDateFormat was being excluded in JSmolJavaExt.js
+
+swingjs.JSThread extends jsjava.lang.Thread and shows how to add a thread that 
+can be run or started and can continue indefinitely or upon "notification"
+using setTimeout calls with anonymous function callbacks to return to the loop
+
+AWTEvent dispatch thread working properly
+revalidation working
+peer preferredSize (w,h) working for radio buttons but not for panels; no positioning (x,y) yet
+
+ 
+JSToolkit JavaScript methods alert, log, prompt, and confirm added
+
+---------   
+4/15/2015 BH
+
+AWT Events reintroduced. Just about ready for JApplet painting via 
+
+  testApplet._appletPanel.paint(null)
+  
+The "EventQueue" is really an immediate setTimeout dispatcher.
+The "current thread" (which identifies which applet this is in its name)
+is maintained by anonymous function wrapping.
+  
+---------   
+4/14/2015 BH
+
+-- preliminary "native" user interface components implemented -- see swingjs.plaf
+   
+abstract class swingjs.api.DOMObject 
+abstract class HTML5Canvas extends DOMObject
+interface swingjs.api.JQuery 
+interface swingjs.api.JQueryObject
+
+These APIs allow considerable manipulation of page HTML5 without
+the need for @j2sNative blocks. For example, in swingjs.plaf.JSComponentUI:
+
+	protected Dimension getDimension(DOMObject span) {
+		String div = JSToolkit.getSwingDivId();
+		JQuery jq = JSToolkit.getJQuery();
+		JQueryObject jo = jq.$("#" + div);
+		jo.append(span);
+		int w = jq.$(span).width();
+		int h = jq.$(span).height();
+		jo.html("");
+		return new Dimension(w, h);
+	}
+
+---------   
+4/12/2015 BH
+
+basic very limited graphics working; no AffineTransform
+still no layout
+
+---------   
+4/4/2015 BH
+
+j2sjmol.js updated due to problems with incomplete loading
+
+several issues found in getting SimpleDateFormat working
+
+ -- integer /=
+ -- current-date processing
+ -- missing inner class constructors
+ -- cyclic static references
+ -- detailing of J2S bugs
+ -- SimpleDateFormat working
+ -- fixed sb.append(int) --> sb.append("" + i)
+
+---------   
+4/3/2015 BH
+
+ResourceBundle working with property loading. 
+But ResourceBundle.Control calls new PropertyResourceBundle(), and that 
+causes a loading loop. Solution is to give PropertyResourceBundle() an empty
+constructor and to call it with reflection.
+
+---------   
+4/2/2015 BH
+
+JApplet loading successful
+
+ResourceBundle working with Java class loading
+DecimalFormat working
+
+Thread.currentThread() working. For example, this works:
+
+  SwingJS.getJavaResource = function(path) {
+   // path looks like jssun.util...., for example
+    var appId = jsjava.lang.Thread.currentThread().getName();
+    path = Jmol._applets[appId].__Info.j2sPath + "/" + path;
+    var s = Jmol._getFileData(path);
+    return (s.startsWith("[Exception") ? null : s);
+  }
+  
+  
+ThreadGroup points to objects unique to an applet. 
+This will allow easy access to applet-specific quantities
+  
+---------   
+3/19/2015 BH
+
+Project initiated - files from GrepCode
+
+========================================================================== 
+J2S tips
+--------
+
+It is wise to always use "return(xxx)" with no space between "return" and "(". 
+and not just "return xxx" within an @j2sNative block. 
+These blocks will be rewrapped by Eclipse if ALT-S-N or Alt-S-F
+is pressed, and it is possible to have something like this:
+
+		/**
+		 * @j2sNative
+		 * 
+		 *  jQuery.$ || (jQuery.$ = jQuery);  return jQuery;
+		 */
+
+turn into this:
+
+		/**
+		 * @j2sNative
+		 * 
+		 *           jQuery.$ || (jQuery.$ = jQuery);  return
+		 *           jQuery;
+		 */
+
+which will fail. But if we have
+
+		/**
+		 * @j2sNative
+		 * 
+		 *           jQuery.$ || (jQuery.$ = jQuery);  return(jQuery);
+		 */
+
+then "return(jQuery)" will always be kept as a single unit.
+
+J2S bugs identified
+-------------------
+#27 compiler produces 
+
+  new Boolean(string)
+  
+but the native Boolean in JavaScript cannot support that as a constructor.
+
+#26 occasionally, the compiler will insert Clazz.overwriteMethod when it should use Clazz.defineMethod
+
+  This showed up in a case where we had   void setVisible(b) { super.setVisible(b) ... and then super.setVisible(b)
+  was not found.     
+    
+#25 for int f() { return 'o' }  -- will return a string, not int 
+
+#24 in a file starting with an interface and also including a class, only the class is found.
+
+interface Editable {
+    EditInfo getEditInfo(int n);
+    void setEditValue(int n, EditInfo ei);
+}
+
+class EditDialog extends Dialog implements AdjustmentListener, ActionListener, ItemListener {
+...
+
+#23 inner/anonymous class may reference wrong superclass instance
+
+When an anonymous class is created in an inner class (Dialog) of an outer
+class (Frame) that has a common superclass as the inner class, 
+the callback array b$[] will be filled with the wrong super class instance 
+
+Solution: fixed in j2sSwingJS
+
+#22 final vars not passed to local class	
+
+ void doDispose() {
+		final Component me = this;
+
+		class DisposeAction implements Runnable {
+      ...
+    }
+    ...
+ }    
+
+does not pass final variable "me" to DisposeAction
+
+solution: recast as:
+
+
+ void doDispose() {
+		final Component me = this;
+
+		Runnable r = new Runnable {
+      ...
+    }
+    ...
+ }    
+
+
+
+
+#21 (byte) ignored so that 0xFF remains 0xFF.
+
+With the implementation of Int8Array in j2sJmol, it becomes more important to consider
+the issue of no byte type in JavaScript. In particular, the construction
+
+   bytes[3] == (byte) 0xFF
+
+is being translated as
+
+   bytes[3] == 0xFF
+
+and will evaluate FALSE since JavaScript Int8Array elements cannot have value 255.
+
+The solution is to recast the byte as an integer, not the other way around:
+
+   (bytes[3] & 0xFF) == 0xFF
+
+which now works for both Java and JavaScript.
+ 
+ 
+#20 Java2Script can handle implicit conversion from Integer to int, Boolean to boolean, etc, 
+in general, but in the special case where a wrapped object is used in place of a 
+primitive and the signature of the method requires disambiguation, 
+Java2Script will not find the signature -- for example finding xxx(int) given xxx(Integer)
+when xxx is overloaded with other signatures. 
+
+#19 J2S runtime library failed to recognize null properly in a signature, allowing it to match int, float, double, short, long, or boolean.
+
+Fixed in j2sjmol.js
+
+#18 J2S compiler failed to process (in jalview.commands.EditCommand):
+
+  private static Hashtable<Character, Character> closingToOpening = new Hashtable<Character, Character>()
+  // Initializing final data structure
+  {
+    private static final long serialVersionUID = 1L;
+    {
+      for (int i = 0; i < openingPars.length; i++)
+      {
+        // System.out.println(closingPars[i] + "->" + openingPars[i]);
+        put(closingPars[i], openingPars[i]);
+      }
+    }
+  };
+
+What is happening is that the anonymous function created does not extend Hashtable. 
+I guess J2S is just considering "Hashtable" to be an interface. 
+
+Solution is to recast as:  
+  
+  private static Hashtable<Character, Character> closingToOpening = new Hashtable<Character, Character>();
+
+  // Initializing final data structure
+  static {
+      for (int i = 0; i < openingPars.length; i++)
+      {
+        // System.out.println(closingPars[i] + "->" + openingPars[i]);
+        closingToOpening.put(closingPars[i], openingPars[i]);
+      }
+  }
+
+
+#17 J2S compiler failed to process (in jalview.commands.EditCommand)
+
+  public enum Action 
+  {
+    INSERT_GAP
+    {
+      @Override
+      public Action getUndoAction()
+      {
+        ...
+      }
+    },
+    DELETE_GAP
+      ...
+    ;
+    abstract public Action getUndoAction();
+  }
+
+
+Solution is to recast this as:
+
+  public enum Action 
+  {
+    INSERT_GAP, DELETE_GAP,...;
+    
+    public Action getUndoAction() {
+    	switch (this) {
+    	case INSERT_GAP:
+    		return DELETE_GAP;
+        ...
+			case DELETE_GAP:
+				return INSERT_GAP;
+      ...
+    	}
+    	return null;
+    }
+  };
+
+
+#16 when an inner public class is called by another class using instanceOf, that inner class becomes an optional load. 
+but optional loads must still be loaded, and unless declared in package.js, J2S will look for xxx.xxx.Outer/Inner.js
+because the inner classes are not fully declared. 
+
+Solution is to switch to requiring the outer class, not the inner class:
+
+@J2SRequireImport(NumberFormat.class)
+@J2SIgnoreImport(NumberFormat.Field.class)
+public class NumberFormatter extends InternationalFormatter...
+
+
+#15 A subclass cannot have the same constructor signature as a superclass except for 
+a parameter of its class:
+
+public IntegerComponentRaster extends SunWriteableRaster
+	public IntegerComponentRaster(SampleModel sampleModel, DataBuffer dataBuffer,
+			Rectangle aRegion, Point origin, Raster parent)
+			
+public SunWriteableRaster extends WriteableRaster
+	public IntegerComponentRaster(SampleModel sampleModel, DataBuffer dataBuffer,
+			Rectangle aRegion, Point origin, SunWriteableRaster parent)
+			
+This results in an infinite loop.
+			
+Solution: there is no need for this; just make all references to the superclass:
+
+public SunWriteableRaster extends WriteableRaster
+	public IntegerComponentRaster(SampleModel sampleModel, DataBuffer dataBuffer,
+			Rectangle aRegion, Point origin, Raster parent)
+			
+ 
+
+
+
+
+
+#14 in java.awt.image.Raster, we have a static block that 
+creates new Objects. In that case, we need to add the annotation:
+      
+      @J2SRequireImport({ jsjava.awt.image.SinglePixelPackedSampleModel.class, jssun.awt.image.IntegerInterleavedRaster.class, jssun.awt.image.ByteInterleavedRaster.class })
+      
+      
+      
+#13 in javax.swing.JSlider we have
+
+  ...
+    public Hashtable createStandardLabels( int increment, int start ) {
+      ...
+        class SmartHashtable extends Hashtable implements PropertyChangeListener {
+           ...
+            class LabelUIResource extends JLabel implements UIResource {
+               ...
+            }
+            ...
+            public void propertyChange( PropertyChangeEvent e ) {
+               ...
+
+                        if ( !(value instanceof LabelUIResource) ) {
+                            hashtable.put( key, value );
+                        }
+                    }
+                    
+               ...
+            }
+                  
+  but  for that last if check, we see in the JavaScript:
+  
+    if (!(Clazz.instanceOf (e, ))) {
+      d.put (c, e);
+    }
+  
+  where "LabelUIResource" is missing. 
+  
+  fixed by moving both of these inner classes to inside class JScroller, but not inside that method.
+  
+
+#12 Inner classes must not call other inner classes defined after them in a file.
+    This showed up in java.awt.geom.Path2D.Float.CopyIterator, which extends
+    java.awt.geom.Path2D.Iterator. Since the Iterator is in the code after CopyIterator,
+    the reference to java.awt.geom.Path2D.Iterator in
+    
+    c$ = Clazz.decorateAsClass (function () {
+		this.floatCoords = null;
+		Clazz.instantialize (this, arguments);
+	}, java.awt.geom.Path2D.Float, "CopyIterator", java.awt.geom.Path2D.Iterator);
+     
+    is null, and then CopyIterator does not extend Iterator.
+   
+#11 Integer parameter is considered Number(int,float,etc.) not Object in SAEM
+
+	private void test1(Object ja) {
+		System.out.println(ja + " is an Object");
+	}
+
+	private void test1(int ja) {
+		System.out.println(ja + " is an int");
+	}
+
+	private String name;
+
+	public static void main(String[] args) {
+		
+		BugTest t = new BugTest();
+		t.name = "test";
+
+		t.test1(Integer.valueOf(33));
+		t.test1(33);
+   ,,,		
+
+    -- fixed for SwingJS
+
+
+#10 array.getClass().getComponentType() is not implemented. This breaks 
+    AbstractCollection.toArray(aa[])
+    
+    -- fixed for SwingJS
+
+#9 array.getClass() returns "array" -- there is no way to determine the class of an array
+   if it has no elements. However a work-around is to use
+   
+     java.lang.reflect.Array.newInstance(xxxx.class, n)
+     
+   which I have adjusted to allow for testing using .getClass().getComponentType() 
+   
+#8 There are times where J2S does not execute initialization in the proper order
+when constructing subclasses. In this case, in the creation of JApplet, the ArrayList
+(Container).component was cleared in Clazz.prepareFields for Container AFTER it was
+used in the constructor for JApplet. 
+
+The way around this is to not instantiate Objects in-line:
+
+public class Container
+...
+   List<Component> component =  new ArrayList();
+...
+
+but instead put that in the constructor.
+
+public class Container
+...
+   List<Component> component;
+...
+public Container () {
+   component =  new ArrayList();
+}
+
+
+#7 J2S does not properly do integer/long/short/byte  /=
+
+  n /= 3
+  
+needs to be written out as
+
+  n = n / 3
+  
+  
+#6 J2S drops seemingly unnecessary constructors in inner classes. These
+are required, and must be included. I added j2sNative blocks to do this.
+
+public class Gregorian extends BaseCalendar {
+
+    static class Date extends BaseCalendar.Date {
+      protected Date() {
+        super();
+        /**
+         * @j2sNative
+         */
+        {
+      	int dummy = 1; // forces J2S to leave this in
+        }
+    }
+
+    protected Date(TimeZone zone) {
+        super(zone);
+        /**
+         * @j2sNative
+         */
+        {
+      	int dummy = 1; // forces J2S to leave this in
+        }
+    }
+
+  ...
+  
+ 
+#5 for some reason HashMap cannot call its superclass (AbstractMap) "putall" method from its constructor.
+
+#4 @J2SRequireImport({jsjava.util.PropertyResourceBundle.class})
+
+is required for  public abstract class ResourceBundle because the inner class
+ResourceBundle.Control requires it, but for some reason it is not included in the
+MUST list in the Clazz.load() call.
+
+#3 J2S compiler bug -- inner classes variables are simplified to a b c d..., making it
+nearly impossible to insert @j2sNative blocks.
+
+#2 array declarations 
+
+ int[][] a = new int[3][]
+ 
+ and
+ 
+ int[] a = new int[3]
+ 
+ are treated the same. The first needs to be changed to javajs.util.AU.newInt2(3)
+ Several similar methods are in javajs.util.AU
+ 
+
+#1 The J2S compiler has support for proper method signature handling 
+in cases such as:
+
+  new URL((URL) null, filePath, null)
+  
+The issue here is that without that (URL) the call is ambiguous. 
+However, there is a flaw in j2slib (jmolj2s) in that the called 
+method receives a "null" URL object, which does not in JavaScript
+evaluate to true for "== null". Thus, testing for null within 
+functions called this way process improperly.
+
+For example, in javax.swing.RepaintManager:
+
+	public static RepaintManager currentManager(JComponent c) {
+		return currentManager((Component) c);
+	}
+
+This causes an infinite loop.
+
+
+j2sjmol.js (j2slib.js)
+----------------------
+j2sjmol required modification to properly identify the end of all class loading so 
+that an asynchronous function can be called. Working currently with 
+
+   Clazz.loadClass("java.util.Properties",function(){alert("ready!")})
+   
+for user-controlled loading of classes from JavaScript.
+   
+
+JavaScript Examples used for testing
+------------------------------------
+Clazz.loadClass(); // equates "Class" with "Clazz" and allow uncompressed code calling
+
+Class.loadClass("jsjava.text.SimpleDateFormat");
+
+   undefined
+
+x = new jsjava.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
+
+   Object { serialVersionOnStream: 1, pattern: "EEE, d MMM yyyy HH:mm:ss Z", compiledPattern: Array[16], zeroDigit: "
+
+x.format(new Date);
+
+   "Sat, 4 Apr 2015 03:57:31 -0500"
+
+Class.loadClass("jsjava.text.SimpleDateFormat", function() { x = new jsjava.text.SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z"); x.format(new Date)} );
+
+
+  
+
+//////////////////////////////////////////////////////////////////////////////
+
+MINOR ISSUES--unimplemented classes
+===================================
+
+accessibility
+-------------
+
+All Accessibility handling has been commented out to save the download footprint.
+This removes the need for sun.misc.SharedSecrets
+
+
+security
+--------
+
+All JavaScript security is handled by the browser natively. 
+Thus, Java security checking is no longer necessary, and 
+java.security.AccessController has been simplified to work without
+native security checking.
+
+
+serialization
+-------------
+
+All serialization has been removed. It was never very useful for Swing anyway, 
+because one needs exactly the same Java version to save and restore serialized objects.
+
+
+MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
+================================================================
+
+
+java.util.BitSet must be 16-bit
+-------------------------------
+
+Although JavaScript will support numerical values up to 2^54, 
+these "long" values are really doubles. In addition, bit-wise 
+operations on values greater than 2^30 do not give the 
+expected results because integer bit-wise operation is used. 
+
+Math.pow(2,31)
+2147483648
+Math.pow(2,31)&Math.pow(2,31)
+-2147483648
+
+This is no real consequence; it's just something that has to be done.
+
+
+Thread.currentThread() == dispatchThread
+----------------------------------------
+
+changed to JSToolkit.isDispatchThread()
+
+
+MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
+=====================================================================
+
+primitive numerical types
+-------------------------
+
+JavaScript cannot distinguish among primitive number types 
+int, short, float, and double. Bob's J2S fix does allow for
+distinguishing between int[] and float[], but that is all. 
+The implication is for overloaded methods and constructors.
+For example:
+
+  Color(int r, int g, int b, int a)
+  Color(float r, float g, float b, float a)
+
+cannot be distinguished. A very important case in this regard is 
+
+  StringBuffer.append(int)
+  StringBuffer.append(float)
+  
+There is no way to know one's intent here. Integers must be changed to strings:
+
+  sb.append("" + i)
+
+  
+
+This will need careful checking and will be the source of bugs, for sure,
+because it is next to impossible to find all of these, and even if they are
+found, certain cases such as above will never be perfectly resolved.
+
+In addition, JavaScript does not/cannot support "long". 
+One cannot test against Long.MAX_VALUE or Long.MIN_VALUE.
+
+Since int, long, byte, and char are not really integers, care must be taken 
+to avoid a loop such as the following, which was in java.text.DigitList:
+
+  while (source > 0) {
+    ... 
+    source /= 10 
+  }
+
+Similarly, large integers will never roll over to negative ones. They will
+just get bigger.
+
+						int newLength = lineBuf.length * 2;
+						/**
+						 * @j2sIgnore
+						 */
+						{
+							// never going to happen in JavaScript
+							if (newLength < 0) {
+								newLength = Integer.MAX_VALUE;
+							}
+						}
+
+
+Also, J2S does not translate properly
+
+  int n = 110
+  n /= 100
+  
+This needs to be recast as
+  
+  n = n / 100
+  
+For example, SimpleDateFormat needs
+
+month = Clazz.doubleToInt(month / 367);
+
+instead of 
+
+month /= 367
+
+
+Because "-1" in JavaScript is not 0xFFFFFFFF one must take care to not compare a negative number with a 32-bit mask;
+
+(b & 0xFF000000) == 0xFF000000
+
+is true in Java for (int) b = -1, but is false in JavaScript, because 0xFF000000 is 4278190080, 
+while (-1 & 0xFF000000) is, strangely enough, -16777216, and, in fact, 
+
+(0xFF000000 & 0xFF000000) != 0xFF000000
+
+because -16777216 is not 4278190080.
+
+One must compare similar operations:
+
+if ((b & 0xFF000000) == (0xFF000000 & 0xFF000000)) .....
+
+
+
+distinguishing arrays
+---------------------
+
+J2S cannot distinguish array types.
+One cannot test:
+
+  if (x instanceof float[]) {
+  } else if (x instanceof double[]) {
+  } else if (x instanceof Point2D[]) {
+  }
+   
+The javajs.util.AU class does provide a set of tests for specific
+kinds of arrays, but this is still not perfect, and it is not complete.
+These methods call Clazz.isAxx methods and depend upon the first
+inner-most array and, in some cases, inner-most array itself not being null.
+
+  public static boolean isAB(Object x)     // byte[]
+  public static boolean isAI(Object x)     // int[]
+  public static boolean isAII(Object x)    // int[][]
+  public static boolean isAF(Object x)     // float[]
+  public static boolean isAFF(Object x)    // float[][]
+  public static boolean isAFFF(Object x)   // float[][][]
+  public static boolean isAD(Object x)     // double[]
+  public static boolean isADD(Object x)    // double[][]
+  
+  public static boolean isAFloat(Object x) // Float[]
+  public static boolean isAS(Object x)     // String[]
+  public static boolean isASS(Object x)    // String[][]
+  public static boolean isAP(Object x)     // javajs.util.T3[]
+
+  
+
+forced null typing
+------------------
+
+The J2S compiler has support for proper method signature handling 
+in cases such as:
+
+  new URL((URL) null, filePath, null)
+  
+The issue here is that without that (URL) the call is ambiguous. 
+However, there is a flaw in j2slib (jmolj2s) in that the called 
+method receives a "null" URL object, which does not in JavaScript
+evaluate to true for "== null". Thus, testing for null within 
+functions called this way process improperly.
+
+ArrayOutOfBounds
+----------------
+
+You cannot intentionally throw an ArrayOutOfBoundsException in JavaScript.
+JavaScript will simply return "undefined", not throw an Exception. 
+
+java.awt.Color
+--------------
+
+See note under primitive types, above.
+
+ColorSpace: only "support" CS_sRGB
+
+ -BH: This is a temporary edit just to get us started.
+
+
+javax.swing.JFileDialog
+-----------------------
+
+Not implemented. HTML5 cannot expose a file directory structure
+
+
+native classes
+--------------
+
+The J2S compiler ignores all static native method declarations.
+Anything of this nature needs to be implemented in JavaScript if it is needed,
+using j2sNative blocks:
+
+/**
+ * @j2sNative
+ *
+ */
+ {
+   // it is critical to remember to insert this { } phrasing, 
+   // or the block will be ignored!
+ }
+ 
+
+key Focus
+---------
+- Less explicit key focus 
+- handling (mostly done by Browser/HTML)
+- no SwingUtilities.findFocusOwner
+
+static methods and classes -- order is important
+------------------------------------------------
+
+J2S cannot run a static method that calls an uninitiated static variable:
+
+	static int x = createX();
+
+    static int createX() {
+		return y;
+	}
+	
+	static int y = 20;
+
+will fail. It's actually quite odd that it does not fail in Java as well.
+
+Likewise, static classes hidden in other classes must be presented in an order
+that does not call an uninitiated class. In java.util.Collections, for example,
+it was important to move SynchronizedRandomAccessList to after SynchronizedList.
+
+LookAndFeel
+-----------
+
+SwingJS implements the native browser LookAndFeel. Token UIManager methods are
+present but unimplemented; methods returning key bindings or other arrays return null.
+
+Note that LookAndFeel determines canvas size in a Frame because diffent operating
+systems (Mac OS vs Windows vs HTML5) will have different edge sizes on their frames. 
+
+inner class order
+-----------------
+For J2S, inner classes must not call other inner classes defined after them in a file.
+
+This showed up in java.awt.geom.Path2D.Float.CopyIterator, which extends
+java.awt.geom.Path2D.Iterator. Since the Iterator is in the code after CopyIterator,
+the reference to java.awt.geom.Path2D.Iterator in
+    
+    c$ = Clazz.decorateAsClass (function () {
+		this.floatCoords = null;
+		Clazz.instantialize (this, arguments);
+	}, java.awt.geom.Path2D.Float, "CopyIterator", java.awt.geom.Path2D.Iterator);
+     
+is null, and then CopyIterator does not extend Iterator.
+
+Solution is to simply move the inner class definitions in the .java file
+
+
+String does not implement CharSequence.length() or .subSequence()
+-----------------------------------------------------------------
+
+JavaScript String uses .length instead of .length(). As such, although
+nominally String implements CharSequence, in fact, it does not. It has neither
+.length() nor .subSequence(). All java core classes that require this implementation
+have been adjusted. Developers simply need to know that this is the case and
+adjust accordingly. String.length() is converted to String.length by the j2s
+compiler. But String.subSequence() is not convereted automatically to String.substring().
+Clear error messages will notify the developer if use of String.subSequence() is
+used.
+
+MAJOR ISSUES--for Bob and Udo within SwingJS
+============================================
+
+fonts
+-----
+
+Fonts and FontMetrics will all be handled in JavaScript. Font matching will 
+not be exact, and composite (drawn) fonts will not be supported. 
+
+Jmol handles calls such as font.getFontMetrics(g).stringWidth("xxx") by 
+creating an off-page DOM image and querying its context. 
+This will be done here as well.
+ 
+ 
+OS-dependent classes
+--------------------
+
+Static classes such as:
+
+   java.awt.Toolkit
+   java.awt.GraphicsEnvironment
+   
+   
+which are created using Class.forName
+will be implemented as JavaScript classes in the swingjs package
+
+AWTAccessor and  AwtContext need to be customized 
+
+   
+AWT component peers and component "ui" user interfaces
+------------------------------------------------------
+
+ComponentPeer is a class that represents a native AWT component.
+Components with such peers are called "heavy-weight" components.
+They are expected to do the dirty work of graphics drawing. 
+
+Java Swing implements peers only for JApplet, JDialog, JFrame, and JWindow. 
+References to such objects have been removed, but clearly there must be 
+some connection to similar DOM objects, even for "light-weight" components. 
+
+
+  
+MAJOR ISSUES--to be resolved by implementers
+============================================
+
+fonts
+-----
+
+Glyph/composite/outline fonts are not supported
+   
+
+specific AWT components not implemented
+---------------------------------------
+
+The only AWT components implemented are Dialog, Frame, Panel, and Window
+They are subclassed as JDialog, JFrame, JPanel/JApplet, and JWindow, respectively
+
+
+threads
+-------
+
+Thread locking and synchronization are not relevant to JavaScript.
+Thus, anything requiring "notify.." or "waitFor.." could be a serious issue.
+ 
+All threading must be "faked" in JavaScript. Specifically not available is:
+
+  Thread.sleep()
+  
+javax.swing.AbstractButton#doClick(pressTime) will not work, as it requires Thread.sleep();
+    
+However, java.lang.Thread itself is implemented and used extensively. 
+
+Methods thread.start() and thread.run() both work fine. 
+
+In addition, SwingJS provides swingjs.JSThread, which can be subclassed
+if desired. This class allows simple 
+
+  while(!interrupted()){
+  	wait()
+  	...
+  }  
+
+action through an asynchronous function run1(mode). For example:
+
+	protected void run1(int mode) {
+		try {
+			while (true)
+				switch (mode) {
+				case INIT:
+					// once-through stuff here
+					mode = LOOP;
+					break;
+				case LOOP:
+					if (!doDispatch || isInterrupted()) {
+						mode = DONE;
+					} else {
+						Runnable r = new Runnable() {
+							public void run() {
+								// put the loop code here
+							}
+						};
+						dispatchAndReturn(r);
+						if (isJS)
+							return;
+					}
+					break;
+				// add more cases as needed
+				case DONE:
+					// finish up here
+					if (isInterrupted())
+						return;
+					// or here
+					break;
+				}
+		} finally {
+			// stuff here to be executed after each loop in JS or at the end in Java
+		}
+	}
+
+image loading
+-------------
+- JavaScript does not allow synchronous image loading. A callback is required, and 
+  since there is no Thread.sleep, this could be a problem in some cases. 
+
+- BufferedImage: only "support" imageType RGB and ARGB
+  -BH: This is a temporary edit, just to get us started. Certainly GRAY will be needed
+
+
+no BigInteger; no BigDecimal
+----------------------------
+
+BigInteger and BigDecimal are not supported
+
+
+no format internationalization
+------------------------------
+
+For now, just en for number and date formatters
+
+no winding rules
+----------------
+
+  When filling a graphic, only nonzero winding rule is implemented in HTML5 Canvas2D.
+
+
+
+text-related field implementation
+---------------------------------
+
+Text fields are:
+
+JTextField   (JavaScript <input type="text">)
+JTextArea    (JavaScript <textarea>;)
+JTextPane    (JavaScript <div>; non-editing; TODO)
+JEditorPane  NOT IMPLEMENTED
+
+For the initial implementation, we don't implement infinite undo/redo, and the abstract 
+document model is much less elaborate. Only PlainDocument (in the form of JSPlainDocument)
+is implemented. 
+Thus, the Document returned by JTextField.getDocument() is a javax.swing.text.Document, but it
+is a swingjs.JSPlainDocument (extending swingjs.JSAbstractDocument)
+rather than a javax.swing.text.PlainDocument (extending javax.swing.text.AbstractDocument).
+
+all scrolling is handled by HTML5
+javax.swing.AutoScroller is not implemented
+public static methods .stop, .isRunning, .processMouseDragged require true Java threading
+javax.swing.text.View and its subclasses are not implemented. 
+
+The JS document model does not allow two fields to address the same underlying document. 
+
+
+Formatter/Regex limitations
+---------------------------
+
+java.util.regex.Matcher and Pattern use JavaScript's RegExp object rather than
+the native Java object. These are not identical. Only flags /igm are supported.
+Matcher.start(groupID) is not supported.
+
+java.util.Formatter will function correctly for all standard %... patterns.
+
+
+ 
+
