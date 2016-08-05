@@ -5,7 +5,7 @@
 //web_Description= A simulation of electrostatics and static current distributions in two dimensions.
 //web_JavaSource= http://www.falstad.com/emstatic/
 //web_Location= com.falstad.EMStatic
-//web_AppletImage= images/EMStatic.png
+//web_AppletImage= images/emstatic.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing

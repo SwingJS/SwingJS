@@ -39,7 +39,7 @@ import swingjs.awt.Scrollbar;
 //web_AppletName= BarWaves
 //web_Description= A simulation that demonstrates standing flexural waves in a bar.
 //web_JavaSource= http://www.falstad.com/barwaves/
-//web_AppletImage= images/BarWaves.png
+//web_AppletImage= images/barwaves.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features= graphics, audio, AWT-to-Swing

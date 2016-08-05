@@ -11,7 +11,7 @@ package com.falstad;
 //web_Description= A simulation of standing sound waves in a 3-d rectangular box.
 //web_JavaSource= http://www.falstad.com/modebox/
 //web_Location= com.falstad.ModeBox
-//web_AppletImage= images/ModeBox.png
+//web_AppletImage= images/modebox.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features= audio, graphics, AWT-to-Swing

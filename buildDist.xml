@@ -80,9 +80,17 @@
 			<script>
 				$(document).ready(function () {
 			    	size_li = $("#container .work-item").size();
-			    	x = 6;
-			    	$('#showLess').hide();
-					$('.work-item:lt('+x+')').css('display','inline-block');
+			debugger;	
+			x = size_li;
+			$('.work-item:lt('+x+')').css('display','inline-block');
+			$('#showLess').show();
+			$('#loadMore').hide();
+
+			
+//			x = size_li;
+	////		$('.work-item:lt('+x+')').css('display','inline-block');
+		//	$('#showLess').show();
+			//$('#loadMore').hide();
 				});
 
 				$('#loadMore').on('click', function () {
@@ -173,7 +181,7 @@
 			<![CDATA[
 			<div class="4u work-item">
 				<a href="applets/${AppletName}.html"><span class="image fit thumb"><img src="${AppletImage}" alt="" /></span></a>
-				<h3>${AppletName}</h3>
+				<h3><a href="applets/${AppletName}.html">${AppletName}</a></h3>
 				<p>${Description}</p>
 				<cat>${Category}</cat>
 				<id>${Date}</id>
@@ -184,7 +192,7 @@
 		</echo>
 		
 		<echo file="${basedir}/site/swingjs/examples/applets/${AppletName}.html" append="false">
-			<![CDATA[
+			<![CDATA[<!DOCTYPE html>
 			<html>
 				<head>
 					<title>SwingJS | ${AppletName}</title>
