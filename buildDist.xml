@@ -80,7 +80,6 @@
 			<script>
 				$(document).ready(function () {
 			    	size_li = $("#container .work-item").size();
-			debugger;	
 			x = size_li;
 			$('.work-item:lt('+x+')').css('display','inline-block');
 			$('#showLess').show();
