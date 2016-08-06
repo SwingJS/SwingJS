@@ -83,6 +83,12 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
     var fDrag = function(xye) {
       var event = xye.ev;
   		var position = { x: event.pageX, y: event.pageY };
+
+		// touch event?  get position from touch
+                if (!event.pageX) {
+                      position.x = event.originalEvent.touches[0].pageX;
+                      position.y = event.originalEvent.touches[0].pageY;
+                }
       var normValue = me._normValueFromMouse( position );
   		me._slide( event, me._handleIndex, normValue );
     };
@@ -144,7 +150,6 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 	},
 
 	_doMouseCapture: function( event ) {
-
 		var that = this, o = this.options;
 
 		if ( o.disabled ) {
@@ -158,6 +163,12 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		this.elementOffset = this.element.offset();
 
 		position = { x: event.pageX, y: event.pageY };
+
+		// touch event?  get position from touch
+                if (!event.pageX) {
+                      position.x = event.originalEvent.touches[0].pageX;
+                      position.y = event.originalEvent.touches[0].pageY;
+                }
 		normValue = this._normValueFromMouse( position );
 		distance = this._valueMax() - this._valueMin() + 1;
     
@@ -187,8 +198,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		offset = closestHandle.offset();
 		mouseOverHandle = !$( event.target ).parents().andSelf().is( ".ui-j2sslider-handle" );
 		this._clickOffset = mouseOverHandle ? { left: 0, top: 0 } : {
-			left: event.pageX - offset.left - ( closestHandle.width() / 2 ),
-			top: event.pageY - offset.top -
+			left: position.x - offset.left - ( closestHandle.width() / 2 ),
+			top: position.y - offset.top -
 				( closestHandle.height() / 2 ) -
 				( parseInt( closestHandle.css("borderTopWidth"), 10 ) || 0 ) -
 				( parseInt( closestHandle.css("borderBottomWidth"), 10 ) || 0) +
@@ -237,7 +248,6 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 
 		valueTotal = this._valueMax() - this._valueMin();
 		valueMouse = this._valueMin() + percentMouse * valueTotal;
-
 		return this._trimAlignValue( valueMouse );
 	},
 

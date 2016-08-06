@@ -2501,6 +2501,10 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseDown = true;
+		
+		// this is needed for touch interfaces, since they don't get mouse motion events
+		mouseMoved(e);
+		
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
 		dragX = dragStartX = e.getX();
