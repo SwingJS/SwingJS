@@ -319,11 +319,11 @@ class Wave2dFrame extends Frame
 	int res = 120;
         String jv = System.getProperty("java.class.version");
         double jvf = new Double(jv).doubleValue();
-	//muString = "u";
+        muString = "u";
         if (jvf >= 48) {
-	    //muString = "\u03bc";
+        	muString = "\u03bc";
         	useBufferedImage = true;
-	}
+        }
 
 	main.setLayout(new Wave2dLayout());
 	cv = new Wave2dCanvas(this);
@@ -1304,7 +1304,7 @@ class Wave2dFrame extends Frame
 	    auxLabels[0].setText("Width");
 	    // waves with an incidence angle don't work for some reason
 	    // with obstacles, so disable them
-	    angleBar.setVisible(false);
+	    angleBar.setEnabled(false);
 	    angleBar.setValue(90);
 	    // don't feel like getting Reset Time to work with Obstacle
 	    resetTimeButton.setVisible(false);
