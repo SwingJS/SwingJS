@@ -378,7 +378,8 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   @Override
   public void setOutputChannel(GenericOutputChannel out) {
       this.out = out;
-      isBigendianOut = out.isBigEndian();
+      if (out != null)
+        isBigendianOut = out.isBigEndian();
   }
 
   @Override
