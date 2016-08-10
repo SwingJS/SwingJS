@@ -57,8 +57,10 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   protected DataInputStream stream;
   protected boolean isRandom = false;
   protected boolean isBigEndian = true;
-  protected boolean isBigEndianOut = true;
-  private BufferedInputStream bis;
+  protected BufferedInputStream bis;
+  protected long nBytes;  
+  protected GenericOutputChannel out;
+  
 
   @Override
   public void close() {
@@ -93,6 +95,11 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     this.isBigEndian = isBigEndian;
   }
   
+  @Override
+  public void setOutputChannel(GenericOutputChannel out) {
+      this.out = out;
+  }
+
   public void setRandom(boolean TF) {
     isRandom = TF;
     //CANNOT be random for web 
@@ -365,21 +372,9 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     }
   }
 
-  long nBytes;
-  
   @Override
   public long getPosition() {
     return nBytes;
-  }
-
-  GenericOutputChannel out;
-  private boolean isBigendianOut;
-  
-  @Override
-  public void setOutputChannel(GenericOutputChannel out) {
-      this.out = out;
-      if (out != null)
-        isBigendianOut = out.isBigEndian();
   }
 
   @Override
