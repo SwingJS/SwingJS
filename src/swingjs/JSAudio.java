@@ -127,7 +127,7 @@ public class JSAudio {
 			// 0x0006 WAVE_FORMAT_ALAW 8-bit ITU-T G.711 A-law
 			// 0x0007 WAVE_FORMAT_MULAW 8-bit ITU-T G.711 µ-law
 
-			byte[] b;
+//			byte[] b;
 			int fmt = FORMAT_UNSUPPORTED;
 
 			// "PCM ;PCMB;ALAW;ULAW;FLOAT"

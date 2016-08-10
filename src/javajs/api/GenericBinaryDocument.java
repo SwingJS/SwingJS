@@ -2,15 +2,14 @@ package javajs.api;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
+import java.io.InputStream;
 import java.util.Map;
 
-
-import javajs.util.OC;
 import javajs.util.SB;
 
 public interface GenericBinaryDocument {
 
-  void setStream(GenericZipTools jzt, BufferedInputStream bis, boolean isBigEndian);
+  void setStream(BufferedInputStream bis, boolean isBigEndian);
 
   void setStreamData(DataInputStream dataInputStream, boolean isBigEndian);
 
@@ -27,6 +26,8 @@ public interface GenericBinaryDocument {
   void seek(long i);
 
   byte readByte() throws Exception;
+
+  int readUInt8() throws Exception;
 
   int readInt() throws Exception;
 
@@ -46,8 +47,12 @@ public interface GenericBinaryDocument {
 
   int readByteArray(byte[] b, int off, int len) throws Exception;
 
+  byte[] readBytes(int n) throws Exception;
+
   void close();
 
-  void setOutputChannel(OC out);
+  void setOutputChannel(GenericOutputChannel out);
+
+  InputStream getInputStream();
 
 }

@@ -57,6 +57,8 @@ public class CompoundDocument extends BinaryDocument{
   Lst<CompoundDocDirEntry> directory = new  Lst<CompoundDocDirEntry>();
   CompoundDocDirEntry rootEntry;
 
+  protected GenericZipTools jzt;
+
   int[] SAT;
   int[] SSAT;
   int sectorSize;
@@ -72,16 +74,7 @@ public class CompoundDocument extends BinaryDocument{
     this.isBigEndian = true;
   }
   
-  @Override
-  public void setStream(GenericZipTools jzt, BufferedInputStream bis, boolean isBigEndian) {
-    // isBigEndian is ignored here; it must be true
-    /*    try {
-     file = new RandomAccessFile(fileName, "r");
-     isRandom = true;
-     } catch (Exception e) {
-     // probably an applet
-     }
-     */
+  public void setDocStream(GenericZipTools jzt, BufferedInputStream bis) {
     this.jzt = jzt;
     if (!isRandom) {
       stream = new DataInputStream(bis);
@@ -143,11 +136,7 @@ public class CompoundDocument extends BinaryDocument{
         boolean isBinary = (binaryFileList.indexOf("|" + name + "|") >= 0);
         if (isBinary)
           name += ":asBinaryString";
-        SB data = new SB();
-        data.append("BEGIN Directory Entry ").append(name).append("\n"); 
-        data.appendSB(getEntryAsString(thisEntry, isBinary));
-        data.append("\nEND Directory Entry ").append(name).append("\n");
-        fileData.put(prefix + "/" + name, data.toString());
+        fileData.put(prefix + "/" + name, appendData(new SB(), name, thisEntry, isBinary).toString());
       }
     }
     close();
@@ -185,14 +174,19 @@ public class CompoundDocument extends BinaryDocument{
       case 2: // user stream (file)
         if (name.endsWith(".gz"))
           name = name.substring(0, name.length() - 3);
-        data.append("BEGIN Directory Entry ").append(name).append("\n");            
-        data.appendSB(getEntryAsString(thisEntry, binaryFileList.indexOf("|" + thisEntry.entryName + "|") >= 0));
-        data.append("\n");
-        data.append("END Directory Entry ").append(thisEntry.entryName).append("\n");            
+        appendData(data, name, thisEntry, binaryFileList.indexOf("|" + thisEntry.entryName + "|") >= 0);
         break;
       }
     }
     close();
+    return data;
+  }
+
+  private SB appendData(SB data, String name, CompoundDocDirEntry thisEntry,
+                          boolean isBinary) {
+    data.append("BEGIN Directory Entry ").append(name).append("\n");            
+    data.appendSB(getEntryAsString(thisEntry, isBinary));
+    data.append("\nEND Directory Entry ").append(name).append("\n");
     return data;
   }
 

@@ -29,19 +29,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Map;
 
-
 import javajs.api.GenericBinaryDocument;
-import javajs.api.GenericZipTools;
-
-
-//import java.io.RandomAccessFile;
+import javajs.api.GenericOutputChannel;
 
 /* a basic binary file reader (extended by CompoundDocument). 
- * 
- * random access file info: 
- * http://java.sun.com/docs/books/tutorial/essential/io/rafs.html
- * 
- * SHOOT! random access is only for applications, not applets!
  * 
  * Note that YOU are responsible for determining whether a file
  * is bigEndian or littleEndian; the default is bigEndian.
@@ -65,15 +56,16 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   
   protected DataInputStream stream;
   protected boolean isRandom = false;
-  public boolean isBigEndian = true;
-  protected GenericZipTools jzt;
+  protected boolean isBigEndian = true;
+  protected boolean isBigEndianOut = true;
+  private BufferedInputStream bis;
 
   @Override
   public void close() {
     if (stream != null)
       try {
         stream.close();
-      } catch (Exception e) {
+      } catch (IOException e) {
         // ignore
       }
     if (out != null)
@@ -81,12 +73,17 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
   
   @Override
-  public void setStream(GenericZipTools jzt, BufferedInputStream bis, boolean isBigEndian) {
-    if (jzt != null)
-      this.jzt = jzt;
-    if (bis != null)
+  public void setStream(BufferedInputStream bis, boolean isBigEndian) {
+    this.bis = bis;
+    if (bis != null) {
       stream = new DataInputStream(bis);
+    }
     this.isBigEndian = isBigEndian;
+  }
+
+  @Override
+  public BufferedInputStream getInputStream() {
+    return bis;
   }
   
   @Override
@@ -107,10 +104,26 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     return ioReadByte();
   }
 
+  @Override
+  public int readUInt8() throws IOException {
+    nBytes++;
+    int b = stream.readUnsignedByte();
+    if (out != null)
+      out.writeByteAsInt(b);
+    return b;
+  }
+
   private byte ioReadByte() throws IOException {
     byte b = stream.readByte();
     if (out != null)
       out.writeByteAsInt(b);
+    return b;
+  }
+
+  @Override
+  public byte[] readBytes(int n) throws IOException {
+    byte[] b = new byte[n];
+    readByteArray(b, 0, n);
     return b;
   }
 
@@ -140,6 +153,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   	byte[] b = s.getBytes();
     out.write(b, 0, b.length);
   }
+  
   public void writeBytes(byte[] b, int off, int n) throws IOException {
     out.write(b, off, n);
   }
@@ -176,13 +190,13 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
 
 
   public void writeShort(short i) throws IOException {
-  	if (out.bigEndian) {
-  		out.writeByteAsInt(i >> 8);
-  		out.writeByteAsInt(i);
-  	} else {
+    if (out.isBigEndian()) {
+      out.writeByteAsInt(i >> 8);
       out.writeByteAsInt(i);
-      out.writeByteAsInt(i >> 8);  		
-  	}
+    } else {
+      out.writeByteAsInt(i);
+      out.writeByteAsInt(i >> 8);
+    }
   }
 
   @Override
@@ -205,18 +219,18 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
 
 	public void writeInt(int i) throws IOException {
-		if (out.bigEndian) {
-			out.writeByteAsInt(i >> 24);
-			out.writeByteAsInt(i >> 16);
-			out.writeByteAsInt(i >> 8);
-			out.writeByteAsInt(i);
+    if (out.isBigEndian()) {
+    out.writeByteAsInt(i >> 24);
+    out.writeByteAsInt(i >> 16);
+    out.writeByteAsInt(i >> 8);
+    out.writeByteAsInt(i);
 		} else {
 			out.writeByteAsInt(i);
 			out.writeByteAsInt(i >> 8);
 			out.writeByteAsInt(i >> 16);
 			out.writeByteAsInt(i >> 24);
 		}
-	}
+  }
 
   @Override
   public int swapBytesI(int n) {
@@ -263,20 +277,19 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
 
   public void writeLong(long b) throws IOException {
-  	if (out.bigEndian) {
-	    writeInt((int)((b >> 32) & 0xFFFFFFFFl));
-	    writeInt((int)(b & 0xFFFFFFFFl));
-  	} else {
-  		out.writeByteAsInt((int) (b >> 56));
-  		out.writeByteAsInt((int) (b >> 48));
-  		out.writeByteAsInt((int) (b >> 40));
-  		out.writeByteAsInt((int) (b >> 32));
-  		out.writeByteAsInt((int) (b >> 24));
-  		out.writeByteAsInt((int) (b >> 16));
-  		out.writeByteAsInt((int) (b >> 8));
-  		out.writeByteAsInt((int) b);
-  	}
-  	
+    if (out.isBigEndian()) {
+      writeInt((int) ((b >> 32) & 0xFFFFFFFFl));
+      writeInt((int) (b & 0xFFFFFFFFl));
+    } else {
+      out.writeByteAsInt((int) (b >> 56));
+      out.writeByteAsInt((int) (b >> 48));
+      out.writeByteAsInt((int) (b >> 40));
+      out.writeByteAsInt((int) (b >> 32));
+      out.writeByteAsInt((int) (b >> 24));
+      out.writeByteAsInt((int) (b >> 16));
+      out.writeByteAsInt((int) (b >> 8));
+      out.writeByteAsInt((int) b);
+    }
   }
 
   private int readLEInt() throws IOException {
@@ -287,7 +300,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   byte[] t8 = new byte[8];
   
   @Override
-  public float readFloat() throws IOException {
+  public float readFloat() throws Exception {
     return intToFloat(readInt());
   }
 
@@ -347,7 +360,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
         readByteArray(new byte[(int)offset], 0, (int) offset);
       }
       nBytes += offset;
-    } catch (Exception e) {
+    } catch (IOException e) {
       System.out.println(e.toString());
     }
   }
@@ -359,10 +372,13 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     return nBytes;
   }
 
-  OC out;
+  GenericOutputChannel out;
+  private boolean isBigendianOut;
+  
   @Override
-  public void setOutputChannel(OC out) {
+  public void setOutputChannel(GenericOutputChannel out) {
       this.out = out;
+      isBigendianOut = out.isBigEndian();
   }
 
   @Override
@@ -381,7 +397,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
     void seekFile(long offset) {
     try {
       file.seek(offset);
-    } catch (Exception e) {
+    } catch (IOException e) {
       System.out.println(e.getMessage());
     }
   }

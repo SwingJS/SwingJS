@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 
 import javajs.J2SIgnoreImport;
 import javajs.api.BytePoster;
+import javajs.api.GenericOutputChannel;
 import javajs.api.JmolObjectInterface;
 
 /**
@@ -47,7 +48,7 @@ import javajs.api.JmolObjectInterface;
  */
 
 @J2SIgnoreImport({ java.io.FileOutputStream.class })
-public class OC extends OutputStream {
+public class OC extends OutputStream implements GenericOutputChannel {
  
   private BytePoster bytePoster; // only necessary for writing to http:// or https://
   private String fileName;
@@ -65,9 +66,15 @@ public class OC extends OutputStream {
 	
 	public boolean bigEndian = true;
   
-  public void setBigEndian(boolean TF) {
+	@Override
+	public boolean isBigEndian() {
+		return bigEndian;
+	}
+
+	public void setBigEndian(boolean TF) {
   	bigEndian = TF;
   }
+	
   public OC setParams(BytePoster bytePoster, String fileName,
                                      boolean asWriter, OutputStream os) {
     this.bytePoster = bytePoster;
@@ -142,7 +149,8 @@ public class OC extends OutputStream {
     return this;
   }
 
-  public void reset() {
+  @Override
+	public void reset() {
     sb = null;
     initOS();
   }
@@ -199,7 +207,8 @@ public class OC extends OutputStream {
   /**
    * @param b  
    */
-  public void writeByteAsInt(int b) {
+  @Override
+	public void writeByteAsInt(int b) {
     if (os == null)
       initOS();
     /**
@@ -256,7 +265,9 @@ public class OC extends OutputStream {
     closeChannel();
   }
 
-  public String closeChannel() {
+  @SuppressWarnings("unused")
+	@Override
+	public String closeChannel() {
     if (closed)
       return null;
     // can't cancel file writers
@@ -299,7 +310,7 @@ public class OC extends OutputStream {
     /**
      * @j2sNative
      * 
-     *            jmol = J2S || Jmol; _function = (typeof this.fileName == "function" ?
+     *            jmol = self.J2S || Jmol; _function = (typeof this.fileName == "function" ?
      *            this.fileName : null);
      * 
      */
