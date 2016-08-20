@@ -34,7 +34,7 @@ import javajs.api.Interface;
 
 final public class Measure {
 
-  public final static float radiansPerDegree = (float) (Math.PI / 180);
+  public final static float radiansPerDegree = (float) (2 * Math.PI / 360);
   
   public static float computeAngle(T3 pointA, T3 pointB, T3 pointC, V3 vectorBA, V3 vectorBC, boolean asDegrees) {
     vectorBA.sub2(pointA, pointB);
@@ -142,7 +142,7 @@ final public class Measure {
     vda.sub2(vcb, vab);
     vda.scale(0.5f);
     va_prime_d.scale(theta == 0 ? 0 : (float) (vda.length() / Math.tan(theta
-        * (Math.PI / 360))));
+        / 2 / 180 * Math.PI)));
     V3 r = V3.newV(va_prime_d);
     if (theta != 0)
       r.add(vda);
@@ -534,152 +534,125 @@ final public class Measure {
     return ptRet;
   }
 
-  /*
-    public static Point3f getTriangleIntersection(Point3f a1, Point3f a2,
-                                                 Point3f a3, Point4f plane,
-                                                 Point3f b1,
-                                                 Point3f b2, Point3f b3,
-                                                 Vector3f vNorm, Vector3f vTemp, 
-                                                 Point3f ptRet, Point3f ptTemp, Vector3f vTemp2, Point4f pTemp, Vector3f vTemp3) {
-      
-      if (getTriangleIntersection(b1, b2, a1, a2, a3, vTemp, plane, vNorm, vTemp2, vTemp3, ptRet, ptTemp))
-        return ptRet;
-      if (getTriangleIntersection(b2, b3, a1, a2, a3, vTemp, plane, vNorm, vTemp2, vTemp3, ptRet, ptTemp))
-        return ptRet;
-      if (getTriangleIntersection(b3, b1, a1, a2, a3, vTemp, plane, vNorm, vTemp2, vTemp3, ptRet, ptTemp))
-        return ptRet;
-      return null;
-    }
-  */
-  /*  
-    public static boolean getTriangleIntersection(Point3f b1, Point3f b2,
-                                                  Point3f a1, Point3f a2,
-                                                  Point3f a3, Vector3f vTemp,
-                                                  Point4f plane, Vector3f vNorm,
-                                                  Vector3f vTemp2, Vector3f vTemp3,
-                                                  Point3f ptRet,
-                                                  Point3f ptTemp) {
-      if (distanceToPlane(plane, b1) * distanceToPlane(plane, b2) >= 0)
-        return false;
-      vTemp.sub(b2, b1);
-      vTemp.normalize();
-      if (getIntersection(b1, vTemp, plane, ptRet, vNorm, vTemp2) != null) {
-        if (isInTriangle(ptRet, a1, a2, a3, vTemp, vTemp2, vTemp3))
-          return true;
-      }
-      return false;
-    }
-    private static boolean isInTriangle(Point3f p, Point3f a, Point3f b,
-                                        Point3f c, Vector3f v0, Vector3f v1,
-                                        Vector3f v2) {
-      // from http://www.blackpawn.com/texts/pointinpoly/default.html
-      // Compute barycentric coordinates
-      v0.sub(c, a);
-      v1.sub(b, a);
-      v2.sub(p, a);
-      float dot00 = v0.dot(v0);
-      float dot01 = v0.dot(v1);
-      float dot02 = v0.dot(v2);
-      float dot11 = v1.dot(v1);
-      float dot12 = v1.dot(v2);
-      float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-      float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-      float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-      return (u > 0 && v > 0 && u + v < 1);
-    }
-  */
+	/*
+	 * public static Point3f getTriangleIntersection(Point3f a1, Point3f a2,
+	 * Point3f a3, Point4f plane, Point3f b1, Point3f b2, Point3f b3, Vector3f
+	 * vNorm, Vector3f vTemp, Point3f ptRet, Point3f ptTemp, Vector3f vTemp2,
+	 * Point4f pTemp, Vector3f vTemp3) {
+	 * 
+	 * if (getTriangleIntersection(b1, b2, a1, a2, a3, vTemp, plane, vNorm,
+	 * vTemp2, vTemp3, ptRet, ptTemp)) return ptRet; if
+	 * (getTriangleIntersection(b2, b3, a1, a2, a3, vTemp, plane, vNorm, vTemp2,
+	 * vTemp3, ptRet, ptTemp)) return ptRet; if (getTriangleIntersection(b3, b1,
+	 * a1, a2, a3, vTemp, plane, vNorm, vTemp2, vTemp3, ptRet, ptTemp)) return
+	 * ptRet; return null; }
+	 */
+	/*
+	 * public static boolean getTriangleIntersection(Point3f b1, Point3f b2,
+	 * Point3f a1, Point3f a2, Point3f a3, Vector3f vTemp, Point4f plane, Vector3f
+	 * vNorm, Vector3f vTemp2, Vector3f vTemp3, Point3f ptRet, Point3f ptTemp) {
+	 * if (distanceToPlane(plane, b1) * distanceToPlane(plane, b2) >= 0) return
+	 * false; vTemp.sub(b2, b1); vTemp.normalize(); if (getIntersection(b1, vTemp,
+	 * plane, ptRet, vNorm, vTemp2) != null) { if (isInTriangle(ptRet, a1, a2, a3,
+	 * vTemp, vTemp2, vTemp3)) return true; } return false; } private static
+	 * boolean isInTriangle(Point3f p, Point3f a, Point3f b, Point3f c, Vector3f
+	 * v0, Vector3f v1, Vector3f v2) { // from
+	 * http://www.blackpawn.com/texts/pointinpoly/default.html // Compute
+	 * barycentric coordinates v0.sub(c, a); v1.sub(b, a); v2.sub(p, a); float
+	 * dot00 = v0.dot(v0); float dot01 = v0.dot(v1); float dot02 = v0.dot(v2);
+	 * float dot11 = v1.dot(v1); float dot12 = v1.dot(v2); float invDenom = 1 /
+	 * (dot00 * dot11 - dot01 * dot01); float u = (dot11 * dot02 - dot01 * dot12)
+	 * * invDenom; float v = (dot00 * dot12 - dot01 * dot02) * invDenom; return (u
+	 * > 0 && v > 0 && u + v < 1); }
+	 */
 
-  /**
-   * Closed-form solution of absolute orientation requiring 1:1 mapping of
-   * positions.
-   * 
-   * @param centerAndPoints
-   * @param retStddev
-   * @return unit quaternion representation rotation
-   * 
-   * @author hansonr Bob Hanson
-   * 
-   */
-  public static Quat calculateQuaternionRotation(P3[][] centerAndPoints,
-                                                 float[] retStddev) {
+	/**
+	 * Closed-form solution of absolute orientation requiring 1:1 mapping of
+	 * positions.
+	 * 
+	 * @param centerAndPoints
+	 * @param retStddev
+	 * @return unit quaternion representation rotation
+	 * 
+	 * @author hansonr Bob Hanson
+	 * 
+	 */
+	public static Quat calculateQuaternionRotation(P3[][] centerAndPoints,
+			float[] retStddev) {
+		/*
+		 * see Berthold K. P. Horn,
+		 * "Closed-form solution of absolute orientation using unit quaternions" J.
+		 * Opt. Soc. Amer. A, 1987, Vol. 4, pp. 629-642
+		 * http://www.opticsinfobase.org/viewmedia.cfm?uri=josaa-4-4-629&seq=0
+		 * 
+		 * 
+		 * A similar treatment was developed independently (and later!) by G.
+		 * Kramer, in G. R. Kramer,
+		 * "Superposition of Molecular Structures Using Quaternions" Molecular
+		 * Simulation, 1991, Vol. 7, pp. 113-119.
+		 * 
+		 * In that treatment there is a lot of unnecessary calculation along the
+		 * trace of matrix M (eqn 20). I'm not sure why the extra x^2 + y^2 + z^2 +
+		 * x'^2 + y'^2 + z'^2 is in there, but they are unnecessary and only
+		 * contribute to larger numerical averaging errors and additional processing
+		 * time, as far as I can tell. Adding aI, where a is a scalar and I is the
+		 * 4x4 identity just offsets the eigenvalues but doesn't change the
+		 * eigenvectors.
+		 * 
+		 * and Lydia E. Kavraki, "Molecular Distance Measures"
+		 * http://cnx.org/content/m11608/latest/
+		 */
 
-    retStddev[1] = Float.NaN;
-    Quat q = new Quat();
-    if (centerAndPoints[0].length == 1
-        || centerAndPoints[0].length != centerAndPoints[1].length)
-      return q;
 
-    /*
-     * see Berthold K. P. Horn,
-     * "Closed-form solution of absolute orientation using unit quaternions" J.
-     * Opt. Soc. Amer. A, 1987, Vol. 4, pp. 629-642
-     * http://www.opticsinfobase.org/viewmedia.cfm?uri=josaa-4-4-629&seq=0
-     * 
-     * 
-     * A similar treatment was developed independently (and later!) 
-     * by G. Kramer, in G. R. Kramer,
-     * "Superposition of Molecular Structures Using Quaternions"
-     * Molecular Simulation, 1991, Vol. 7, pp. 113-119. 
-     * 
-     *  In that treatment there is a lot of unnecessary calculation 
-     *  along the trace of matrix M (eqn 20). 
-     *  I'm not sure why the extra x^2 + y^2 + z^2 + x'^2 + y'^2 + z'^2
-     *  is in there, but they are unnecessary and only contribute to larger
-     *  numerical averaging errors and additional processing time, as far as
-     *  I can tell. Adding aI, where a is a scalar and I is the 4x4 identity
-     *  just offsets the eigenvalues but doesn't change the eigenvectors.
-     * 
-     * and Lydia E. Kavraki, "Molecular Distance Measures"
-     * http://cnx.org/content/m11608/latest/
-     * 
-     */
+		retStddev[1] = Float.NaN;
+		Quat q = new Quat();
+		P3[] ptsA = centerAndPoints[0];
+		P3[] ptsB = centerAndPoints[1];
+		int nPts = ptsA.length - 1;
+		if (nPts < 2 || ptsA.length != ptsB.length)
+			return q;
+		double Sxx = 0, Sxy = 0, Sxz = 0, Syx = 0, Syy = 0, Syz = 0, Szx = 0, Szy = 0, Szz = 0;
+		P3 ptA = new P3();
+		P3 ptB = new P3();
+		P3 ptA0 = ptsA[0];
+		P3 ptB0 = ptsB[0];
+		for (int i = nPts + 1; --i >= 1;) {
+			ptA.sub2(ptsA[i], ptA0);
+			ptB.sub2(ptsB[i], ptB0);
+			Sxx += (double) ptA.x * (double) ptB.x;
+			Sxy += (double) ptA.x * (double) ptB.y;
+			Sxz += (double) ptA.x * (double) ptB.z;
+			Syx += (double) ptA.y * (double) ptB.x;
+			Syy += (double) ptA.y * (double) ptB.y;
+			Syz += (double) ptA.y * (double) ptB.z;
+			Szx += (double) ptA.z * (double) ptB.x;
+			Szy += (double) ptA.z * (double) ptB.y;
+			Szz += (double) ptA.z * (double) ptB.z;
+		}
+		retStddev[0] = getRmsd(centerAndPoints, q);
+		double[][] N = new double[4][4];
+		N[0][0] = Sxx + Syy + Szz;
+		N[0][1] = N[1][0] = Syz - Szy;
+		N[0][2] = N[2][0] = Szx - Sxz;
+		N[0][3] = N[3][0] = Sxy - Syx;
 
-    int n = centerAndPoints[0].length - 1;
-    if (n < 2)
-      return q;
+		N[1][1] = Sxx - Syy - Szz;
+		N[1][2] = N[2][1] = Sxy + Syx;
+		N[1][3] = N[3][1] = Szx + Sxz;
 
-    double Sxx = 0, Sxy = 0, Sxz = 0, Syx = 0, Syy = 0, Syz = 0, Szx = 0, Szy = 0, Szz = 0;
-    P3 ptA = new P3();
-    P3 ptB = new P3();
-    for (int i = n + 1; --i >= 1;) {
-      P3 aij = centerAndPoints[0][i];
-      P3 bij = centerAndPoints[1][i];
-      ptA.sub2(aij, centerAndPoints[0][0]);
-      ptB.sub2(bij, centerAndPoints[0][1]);
-      Sxx += (double) ptA.x * (double) ptB.x;
-      Sxy += (double) ptA.x * (double) ptB.y;
-      Sxz += (double) ptA.x * (double) ptB.z;
-      Syx += (double) ptA.y * (double) ptB.x;
-      Syy += (double) ptA.y * (double) ptB.y;
-      Syz += (double) ptA.y * (double) ptB.z;
-      Szx += (double) ptA.z * (double) ptB.x;
-      Szy += (double) ptA.z * (double) ptB.y;
-      Szz += (double) ptA.z * (double) ptB.z;
-    }
-    retStddev[0] = getRmsd(centerAndPoints, q);
-    double[][] N = new double[4][4];
-    N[0][0] = Sxx + Syy + Szz;
-    N[0][1] = N[1][0] = Syz - Szy;
-    N[0][2] = N[2][0] = Szx - Sxz;
-    N[0][3] = N[3][0] = Sxy - Syx;
+		N[2][2] = -Sxx + Syy - Szz;
+		N[2][3] = N[3][2] = Syz + Szy;
 
-    N[1][1] = Sxx - Syy - Szz;
-    N[1][2] = N[2][1] = Sxy + Syx;
-    N[1][3] = N[3][1] = Szx + Sxz;
+		N[3][3] = -Sxx - Syy + Szz;
 
-    N[2][2] = -Sxx + Syy - Szz;
-    N[2][3] = N[3][2] = Syz + Szy;
+		// this construction prevents JavaScript from requiring preloading of Eigen
 
-    N[3][3] = -Sxx - Syy + Szz;
-
-    //this construction prevents JavaScript from requiring preloading of Eigen
-    
-    float[] v = ((EigenInterface) Interface.getInterface("javajs.util.Eigen"))
-        .setM(N).getEigenvectorsFloatTransposed()[3];
-    q = Quat.newP4(P4.new4(v[1], v[2], v[3], v[0]));
-    retStddev[1] = getRmsd(centerAndPoints, q);
-    return q;
-  }
+		float[] v = ((EigenInterface) Interface.getInterface("javajs.util.Eigen"))
+				.setM(N).getEigenvectorsFloatTransposed()[3];
+		q = Quat.newP4(P4.new4(v[1], v[2], v[3], v[0]));
+		retStddev[1] = getRmsd(centerAndPoints, q);
+		return q;
+	}
 
   /**
    * Fills a 4x4 matrix with rotation-translation of mapped points A to B.
