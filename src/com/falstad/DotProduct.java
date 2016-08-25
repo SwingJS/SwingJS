@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.LayoutManager;
@@ -33,6 +34,7 @@ class DotProductCanvas extends Canvas {
  DotProduct pg;
  DotProductCanvas(DotProduct p) {
 	pg = p;
+	setBackground(Color.BLACK);
  }
  public Dimension getPreferredSize() {
 	return new Dimension(300,400);
@@ -41,6 +43,7 @@ class DotProductCanvas extends Canvas {
 	pg.updateDotProduct(g);
  }
  public void paintComponent(Graphics g) {
+	 super.paintComponent(g);
 	pg.updateDotProduct(g);
  }
 };
@@ -127,10 +130,12 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	dbimage = createImage(d.width, d.height);
  }
  
+ /*
  public void paint(Graphics g) {
 	cv.repaint();
  }
-
+*/
+ 
  void findVecCoords(double x, double y, int result[]) {
 	int cy = winSize.height/4;
 	int cx = cy;
@@ -187,6 +192,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	g.setColor(cv.getBackground());
 	g.fillRect(0, 0, winSize.width, winSize.height);
 	g.setColor(Color.gray);
+	g.setFont(new Font("Helvetica", 0, 15));
 	int i, j;
 	for (i = -2; i <= 2; i++) {
 	    int x = winSize.height*(i+2)/4;
@@ -282,18 +288,18 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (yf >  2) yf =  2;
 	vecs[selection][0] = xf;
 	vecs[selection][1] = yf;
-	cv.repaint();
+	repaint();
  }
 
  public void componentHidden(ComponentEvent e){}
  public void componentMoved(ComponentEvent e){}
  public void componentShown(ComponentEvent e) {
-	cv.repaint();
+	repaint();
  }
 
  public void componentResized(ComponentEvent e) {
 	reinit();
-	cv.repaint(100);
+	repaint();
  }
  public void actionPerformed(ActionEvent e) {
 	if (e.getSource() == swapButton) {
@@ -303,7 +309,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		vecs[0][x] = vecs[1][x];
 		vecs[1][x] = y;
 	    }
-	    cv.repaint();
+	    repaint();
 	}
  }
  public void adjustmentValueChanged(AdjustmentEvent e) {
