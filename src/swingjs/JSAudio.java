@@ -72,7 +72,7 @@ public class JSAudio {
 		String format = (String) audioFormat.getProperty("fileFormat");
 		if (format == null) {
 			data = createWaveData(data, audioFormat);
-			format = "wave";
+			format = "wav";
 		}
 		if (data == null)
 			return false;			
