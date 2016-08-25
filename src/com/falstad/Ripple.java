@@ -2981,7 +2981,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 			for (j = 0; j != sy; j++) {
 				int gi = i + x + gw * (j + y);
 				func[gi] = (float) (Math.sin(pi * nx * (i + 1) / (sx + 1)) * Math
-						.sin(aspectRatio * pi * ny * (j + 1) / (sy + 1)));
+						.sin(pi * ny * (j + 1) / (sy + 1)));
 				funci[gi] = 0;
 			}
 	}
@@ -2993,7 +2993,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		for (i = 0; i != sx; i++)
 			for (j = 0; j != sy; j++) {
 				int gi = i + x + gw * (j + y);
-				func[gi] = (float) (Math.cos(pi * nx * i / (sx - 1)) * Math.cos(aspectRatio * pi * ny
+				func[gi] = (float) (Math.cos(pi * nx * i / (sx - 1)) * Math.cos(pi * ny
 						* j / (sy - 1)));
 				funci[gi] = 0;
 			}
