@@ -161,25 +161,25 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	@Override
 	public void intervalAdded(ListDataEvent e) {
-		System.out.println("JSComboBoxUI interval added itemStateChanged " + e);
+		//System.out.println("JSComboBoxUI interval added itemStateChanged " + e);
 		revalidate();
 	}
 
 	@Override
 	public void intervalRemoved(ListDataEvent e) {
-		System.out.println("JSComboBoxUI interval removed itemStateChanged " + e);
+		//System.out.println("JSComboBoxUI interval removed itemStateChanged " + e);
 		revalidate();
 	}
 
 	@Override
 	public void contentsChanged(ListDataEvent e) {
-		System.out.println("JSComboBoxUI content changed itemStateChanged " + e);
+		//System.out.println("JSComboBoxUI content changed itemStateChanged " + e);
 		revalidate();
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		System.out.println("JSComboBoxUI itemStateChanged " + e);
+		//System.out.println("JSComboBoxUI itemStateChanged " + e);
 	}
 
 
