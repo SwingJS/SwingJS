@@ -942,6 +942,10 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 			}
 			return;
 		}
+		processMouseMotion(e);
+	}
+	
+	void processMouseMotion(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
 		oldDragX = dragX;
@@ -1006,6 +1010,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 	public void mousePressed(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
+		processMouseMotion(e); // needed for mobile
 		oldDragX = dragStartX = e.getX();
 		oldDragY = dragStartY = e.getY();
 		dragZoomStart = zoom;

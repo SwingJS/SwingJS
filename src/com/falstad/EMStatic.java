@@ -2316,6 +2316,10 @@ class EMStaticFrame extends Frame
 		public void mouseMoved(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	    return;
+	processMouseMotion(e);
+    }
+    
+    void processMouseMotion(MouseEvent e) {
 	int x = e.getX();
 	int y = e.getY();
 	dragX = x; dragY = y;
@@ -2339,6 +2343,7 @@ class EMStaticFrame extends Frame
 		public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
+	processMouseMotion(e);
 	adjustSelectX1 = -1;
 	adjustBar.disable();
 	int xp = e.getX()*windowWidth/winSize.width+windowOffsetX;
@@ -2397,6 +2402,8 @@ class EMStaticFrame extends Frame
     @Override
 		public void itemStateChanged(ItemEvent e) {
 	cv.repaint(pause);
+	// needed for mobile
+	deselectAll();
 	if (e.getItemSelectable() == setupChooser)
 	    doSetup();
 	if (e.getItemSelectable() == modeChooser)
@@ -2406,6 +2413,12 @@ class EMStaticFrame extends Frame
 	    changedConductors = true;
     }
 
+    void deselectAll() {
+	objDragMap = null;
+	selectedCharge = -1;
+	cv.repaint(pause);
+    }
+    
     void setModeChooser() {
 	if (modeChooser.getSelectedIndex() < MODE_ADJUST) {
 	    adjustLabel.hide();

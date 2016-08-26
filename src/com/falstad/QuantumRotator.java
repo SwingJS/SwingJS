@@ -1581,6 +1581,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
+	mouseMoved(e); // needed for mobile
 	dragX = dragStartX = e.getX();
 	dragY = dragStartY = e.getY();
 	dragZoomStart = zoom;

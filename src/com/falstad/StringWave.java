@@ -1303,6 +1303,10 @@ class StringWaveFrame extends Frame implements ComponentListener,
 	public void mouseMoved(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 			return;
+		processMouseMotion(e);
+	}
+	
+	void processMouseMotion(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
 		dragX = x;
@@ -1354,6 +1358,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 	public void mousePressed(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
+		processMouseMotion(e);
 		if (selection == SEL_FUNC)
 			getVelocities();
 		dragging = true;

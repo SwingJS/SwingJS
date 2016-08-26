@@ -1890,6 +1890,10 @@ class EMBoxFrame extends Frame
 	    }
 	    return;
 	}
+	processMouseMotion(e);
+    }
+    
+    void processMouseMotion(MouseEvent e) {
 	int x = e.getX();
 	int y = e.getY();
 	oldDragX = dragX;
@@ -1976,6 +1980,7 @@ class EMBoxFrame extends Frame
     public void mousePressed(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
+	processMouseMotion(e);
 	oldDragX = dragStartX = e.getX();
 	oldDragY = dragStartY = e.getY();
 	dragZoomStart = zoom;

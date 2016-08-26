@@ -336,13 +336,15 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int vc[] = new int[2];
 	int i;
 	selection = -1;
+	float best = 30*30;
 	for (i = 0; i != 2; i++) {
 	    findVecCoords(i, vc);
-	    int space = 10;
-	    if (vc[0] >= x-space && vc[0] <= x+space &&
-		vc[1] >= y-space && vc[1] <= y+space) {
-		selection = i;
-		break;
+	    float dx = x-vc[0];
+	    float dy = y-vc[1];
+	    float dist = dx*dx+dy*dy;
+	    if (dist < best) {
+	    	best = dist;
+	    	selection = i;
 	    }
 	}
 	if (selection != -1)

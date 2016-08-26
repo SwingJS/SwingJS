@@ -879,6 +879,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  public void mouseMoved(MouseEvent e) {
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	    return;
+	handleMouseMotion(e);
+ }
+ 
+ void handleMouseMotion(MouseEvent e) {
 	int x = e.getX();
 	int y = e.getY();
 	dragX = x; dragY = y;
@@ -918,6 +922,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	}
  }
  public void mousePressed(MouseEvent e) {
+	 handleMouseMotion(e); // needed for mobile
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	if (selection == SEL_FUNC)

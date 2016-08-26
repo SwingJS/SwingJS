@@ -2054,10 +2054,10 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  }
 
  public void mouseClicked(MouseEvent e) {
-	if (selection == SEL_STATES)
-	    editMagClick();
 	if (e.getClickCount() == 2 && selectedCoefX != -1)
 	    enterSelectedState();
+	else if (selection == SEL_STATES)
+	    editMagClick();
  }
 
  void enterSelectedState() {

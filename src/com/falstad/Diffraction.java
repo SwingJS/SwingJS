@@ -840,6 +840,10 @@ class DiffractionFrame extends Frame implements ComponentListener,
 			}
 			return;
 		}
+		processMouseMotion(e);
+	}
+	
+	void processMouseMotion(MouseEvent e) {
 		int sel = selection;
 		selection = aperture.getSelection(e.getX(), e.getY());
 		if (selection != sel)
@@ -866,6 +870,7 @@ class DiffractionFrame extends Frame implements ComponentListener,
 	public void mousePressed(MouseEvent e) {
 		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 			return;
+		processMouseMotion(e);
 		if (selection != -1) {
 			dragging = true;
 			if (aperture.drag(e.getX(), e.getY()))
@@ -1082,7 +1087,7 @@ class DiffractionFrame extends Frame implements ComponentListener,
 			int rx = winSize.width / 2 - x;
 			int ry = winSize.height / 2 - y;
 			double r = java.lang.Math.sqrt(rx * rx + ry * ry) / winSize.width;
-			return (java.lang.Math.abs(r - radius) < 5. / winSize.width) ? 1 : -1;
+			return (java.lang.Math.abs(r - radius) < 10. / winSize.width) ? 1 : -1;
 		}
 
 		@Override

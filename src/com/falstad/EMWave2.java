@@ -1671,17 +1671,19 @@ System.out.println("forcecoef " + forcecoef + " tadd2 " + (tadd*tadd));
 	int x = me.getX();
 	int y = me.getY();
 	int i;
+	selectedSource = -1;
+	int best = sourceRadius*2;
+	best *= best;
 	for (i = 0; i != sourceCount; i++) {
 	    OscSource src = sources[i];
 	    int sx = src.getScreenX();
 	    int sy = src.getScreenY();
 	    int r2 = (sx-x)*(sx-x)+(sy-y)*(sy-y);
-	    if (sourceRadius*sourceRadius > r2) {
+	    if (r2 < best) {
 		selectedSource = i;
-		return;
+		best = r2;
 	    }
 	}
-	selectedSource = -1;
  }
 
  public void componentHidden(ComponentEvent e){}

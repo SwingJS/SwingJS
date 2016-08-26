@@ -2147,6 +2147,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  }
 
  public void mousePressed(MouseEvent e) {
+     	mouseMoved(e); // needed for mobile
 	if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) == 0)
 	    return;
 	if (selection == SEL_X)
