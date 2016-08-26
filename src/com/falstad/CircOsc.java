@@ -1392,7 +1392,7 @@ class CircOscFrame extends Frame implements ComponentListener, ActionListener,
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == sineButton) {
-			;
+			doSine();
 			cv.repaint();
 		}
 		if (e.getSource() == blankButton) {
