@@ -144,22 +144,20 @@ J2S = (function(document) {
 	/// special functions:
 
 	J2S.$ajax = function (info) {
+    info.url = fixProtocol(info.url);
 		J2S._ajaxCall = info.url;
-		info.cache = (info.cache != "NO");
-    
-    //Jmol-specific:
-    
-		if (info.url.indexOf("http://pubchem.ncbi.nlm.nih") == 0)
-			info.url = "https://" + info.url.substring(7);
-			// fluke at pubchem --- requires https now from all pages 3/8/2014
-		// don't let jQuery add $_=... to URL unless we 
-		// use cache:"NO"; other packages might use $.ajaxSetup() to set this to cache:false
-    
-    
+		info.cache = (info.cache != "NO");    
 		return $.ajax(info);
 	}
 
 
+  var fixProtocol = function(url) {
+    // force https if page is https
+  	if (Swingjs._httpProto == "https://" && url.indexOf("http://") == 0)
+  		url = "https" + url.substring(4);
+    return url;
+  }
+  
 	J2S.$appEvent = function(app, subdiv, evt, f) {
 		var o = J2S.$(app, subdiv); 
 		o.off(evt) && f && o.on(evt, f);
@@ -507,7 +505,6 @@ J2S = (function(document) {
 				isRawRet && (isRawRet[0] = true);
 			}
 		}
-    if (Swingjs.is
 		return fileName;
 	}
 	
