@@ -2202,5 +2202,11 @@ J2S.Swing = {
 	menuCounter:0
 };
 
+
+J2S.showInfo = function(applet, tf) {
+	applet._showInfo(tf);
+}
+
+
 })(J2S);
 
