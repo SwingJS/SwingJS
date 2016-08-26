@@ -239,17 +239,19 @@
 							isSigned: false,
 							disableJ2SLoadMonitor: false,
 							disableInitialConsole: false,
-							console:"sysoutdiv",
+							//console:"sysoutdiv",
 		  					//useFrame:"false",
 							readyFunction: jmol_isReady,
 		  					allowjavascript: true
 						}
-					    eval("info = {${Info}}");
-						if (info) {
-							for (x in info) {
-								Info[x] = info[x];
+						try {
+						    eval("info = {${Info}}");
+							if (info) {
+								for (x in info) {
+									Info[x] = info[x];
+								}
 							}
-						}
+						} catch (e) {}
 				
 						function dateTest() {
 
@@ -264,6 +266,7 @@
 						}
 
 	 					function showhide(id) {
+						 	if (!id) return testApplet._showInfo(true);
 	    					var e = document.getElementById(id);
 	    					e.style.display = (e.style.display == "block") ? "none" : "block";
 	 					}
@@ -281,7 +284,7 @@
 				<div id="main_sub">
 					<div class="row">
 						<ul class="actions small">
-							<li><a href="javascript:showhide('sysout')" class="button pretty small">Show System.out</a></li>
+							<li><a href="javascript:showhide(Info.console)" class="button pretty small">Show System.out</a></li>
 							<li><a href="${JavaSource}" class="button pretty small" alt="requires java-enabled browser">Author's Page</a></li>
 							<li><a href="${SourceForgePath}/${SourceCode}" class="button pretty small">Java source code</a></li>
 
