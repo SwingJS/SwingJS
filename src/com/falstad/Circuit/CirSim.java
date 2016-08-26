@@ -2359,7 +2359,7 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 						int pt = path.lastIndexOf(".htm");
 						if (pt > 0)
 							path = path.substring(0, pt);
-						path = path.replace('.', '/').replace('\\', '/');
+						path = path.replace('\\', '/');
 					  pt = path.lastIndexOf('/');
 						if (pt > 0)
 							path = path.substring(0, pt + 1);
