@@ -183,12 +183,8 @@ public class Timer implements Serializable {
 	 * @see #setRepeats
 	 */
 	public Timer(int delay, ActionListener listener) {
-		// super(); ?? Object ??
-		this.delay = (delay < 0 ? 0 : delay);
-		this.initialDelay = delay;
-
+		this.initialDelay = this.delay = (delay < 0 ? 0 : delay);
 		doPostEvent = new DoPostEvent();
-
 		if (listener != null) {
 			addActionListener(listener);
 		}
