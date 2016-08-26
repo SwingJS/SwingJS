@@ -208,7 +208,7 @@
 
 					<script type="text/javascript">
 
-						J2S._checkLoad = true;
+						J2S._checkLoad = false;
 
 						J2S._isAsync = false;
 
