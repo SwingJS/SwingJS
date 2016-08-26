@@ -61,7 +61,7 @@ J2S = (function(document) {
 		_lastAppletID: null,
 		_mousePageX: null,
 		_mouseOwner: null,
-		_serverUrl: "http://your.server.here/jsmol.php",
+		_serverUrl: "https://your.server.here/jsmol.php",
 		_syncId: ("" + Math.random()).substring(3),
 		_touching: false,
 		_XhtmlElement: null,
@@ -76,7 +76,7 @@ J2S = (function(document) {
 	j._ajaxTestSite = j._httpProto + "google.com";
 	var isLocal = (j._isFile || ref.indexOf("http://localhost") == 0 || ref.indexOf("http://127.") == 0);
   		// this url is used to Google Analytics tracking of Jmol use. You may remove it or modify it if you wish. 
-	j._tracker = (j._httpProto == "http://" && !isLocal && 'http://chemapps.stolaf.edu/jmol/JmolTracker.htm?id=UA-45940799-1');
+	j._tracker = (!isLocal && 'https://chemapps.stolaf.edu/jmol/JmolTracker.htm?id=UA-45940799-1');
 	
 	j._isChrome = (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0);
 	j._isSafari = (!j._isChrome && navigator.userAgent.toLowerCase().indexOf("safari") >= 0);
@@ -507,6 +507,7 @@ J2S = (function(document) {
 				isRawRet && (isRawRet[0] = true);
 			}
 		}
+    if (Swingjs.is
 		return fileName;
 	}
 	
@@ -604,7 +605,7 @@ J2S = (function(document) {
     // swingjs.api.J2SInterface
 		// use host-server PHP relay if not from this host
 		var isBinary = J2S._isBinaryUrl(fileName);
-		var isPDB = (fileName.indexOf("pdb.gz") >= 0 && fileName.indexOf("http://www.rcsb.org/pdb/files/") == 0);
+		var isPDB = (fileName.indexOf("pdb.gz") >= 0 && fileName.indexOf("//www.rcsb.org/pdb/files/") >= 0);
 		var asBase64 = (isBinary && !J2S._canSyncBinary(isPDB));
 		if (asBase64 && isPDB) {
 			// avoid unnecessary binary transfer

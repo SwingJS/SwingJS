@@ -232,7 +232,7 @@
 							color: "#787878",
 							zIndexBase: 20000,
 							z:{monitorZIndex:100},
-							serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+							serverURL: "https://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
 							use: "HTML5",
 							j2sPath: "../../j2s",
 							//jarPath: "../../java",
