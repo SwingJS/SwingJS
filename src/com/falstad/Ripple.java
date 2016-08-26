@@ -394,7 +394,7 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		/**
 		 * @j2sNative
-		 *            this.defaultSpeed = 15; this.defaultResolution = 300;
+		 *            this.defaultSpeed = 6; this.defaultResolution = 110;
 		 *            this.startupTime = 1500; this.resolutionCutoff = 200;
 		 * 
 		 * 
@@ -616,7 +616,8 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		schemeColors = new Color[20][8];
 
 		// BH moved here, after creation of dependent values
-		modeChooser.select(1);
+		if (!showControls)
+			modeChooser.select(1);
 		sourceChooser.select(SRC_1S1F);
 		setResolution();
 
@@ -1670,22 +1671,24 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 		cv.repaint(0);
 	}
 
-	void selectSource(MouseEvent me) {
+	 void selectSource(MouseEvent me) {
 		int x = me.getX();
 		int y = me.getY();
 		int i;
-		for (i = 0; i != sourceCount; i++) {
-			OscSource src = sources[i];
-			int sx = src.getScreenX();
-			int sy = src.getScreenY();
-			int r2 = (sx - x) * (sx - x) + (sy - y) * (sy - y);
-			if (sourceRadius * sourceRadius > r2) {
-				selectedSource = i;
-				return;
-			}
-		}
 		selectedSource = -1;
-	}
+		int best = sourceRadius*2;
+		best *= best;
+		for (i = 0; i != sourceCount; i++) {
+		    OscSource src = sources[i];
+		    int sx = src.getScreenX();
+		    int sy = src.getScreenY();
+		    int r2 = (sx-x)*(sx-x)+(sy-y)*(sy-y);
+		    if (r2 < best) {
+			selectedSource = i;
+			best = r2;
+		    }
+		}
+	 }
 
 	void setDamping() {
 		/*
