@@ -52,7 +52,6 @@ import jssun.awt.AppContext;
 import jssun.swing.UIAction;
 import swingjs.J2SIgnoreImport;
 import swingjs.JSAppletViewer;
-import swingjs.JSAppletThread;
 import swingjs.JSToolkit;
 import swingjs.api.Interface;
 
