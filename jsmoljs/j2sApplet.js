@@ -153,7 +153,7 @@ J2S = (function(document) {
 
   var fixProtocol = function(url) {
     // force https if page is https
-  	if (Swingjs._httpProto == "https://" && url.indexOf("http://") == 0)
+  	if (J2S._httpProto == "https://" && url.indexOf("http://") == 0)
   		url = "https" + url.substring(4);
     return url;
   }
