@@ -72,7 +72,9 @@ public class JSRadioButtonUI extends JSButtonUI {
 		Dimension dobj = null;
 		if (hasOuterDiv) {
 			// We need the width of the text to position the button.
-			int wBtn = setHTMLSize1(domBtn, false, false).width;
+			// But we need to slightly underestimate it so that the
+			// width of label + button does not go over the total calculated width
+			int wBtn = setHTMLSize1(domBtn, false, false).width - 1;
 			// Now wrap the two with a zzzz and get its dimensions
 			// and then put them back into wrapper.
 			obj = wrap("div", "", domBtn, textNode);
