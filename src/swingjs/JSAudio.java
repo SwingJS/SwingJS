@@ -72,7 +72,7 @@ public class JSAudio {
 		String format = (String) audioFormat.getProperty("fileFormat");
 		if (format == null) {
 			data = createWaveData(data, audioFormat);
-			format = "wav";
+			format = "wav"; // for Chrome: not "wave"
 		}
 		if (data == null)
 			return false;			
