@@ -68,7 +68,7 @@
 
 /* Component containers
 ----------------------------------*/
-.swingjs .ui-widget { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1.1em; }
+.swingjs .ui-widget { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 12pt; } /* was 1.1em */
 .swingjs .ui-widget .ui-widget { font-size: 1em; }
 .swingjs .ui-widget input, .swingjs .ui-widget select, .swingjs .ui-widget textarea, .swingjs .ui-widget button { font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif; font-size: 1em; }
 .swingjs .ui-widget-content { border: 1px solid #dddddd; background: #eeeeee url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x; color: #333333; }

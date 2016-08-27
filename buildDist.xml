@@ -196,6 +196,8 @@
 					<meta charset="utf-8" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 					<!--[if lte IE 8]><script src="../assets/js/ie/html5shiv.js"></script><![endif]-->
+					<link rel="stylesheet" href="../assets/css/applet.css" />
+					<!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
 
 					<!--SwingJS files-->
 					<script type="text/javascript" src="../../jquery/jquery.js"></script>
@@ -271,10 +273,6 @@
 					</script>
 				</head>
 				<body id="top">
-<!-- BH: These need to be within the body, not before it, so that fonts are the correct size in J2S -->
-			
-			<link rel="stylesheet" href="../assets/css/applet.css" />
-			<!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
 
 					<!-- Header -->
 						<header id="header">
