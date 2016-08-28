@@ -75,12 +75,13 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   }
   
   @Override
-  public void setStream(BufferedInputStream bis, boolean isBigEndian) {
+  public BinaryDocument setStream(BufferedInputStream bis, boolean isBigEndian) {
     this.bis = bis;
     if (bis != null) {
       stream = new DataInputStream(bis);
     }
     this.isBigEndian = isBigEndian;
+    return this;
   }
 
   @Override

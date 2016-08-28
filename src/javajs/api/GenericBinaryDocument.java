@@ -5,11 +5,12 @@ import java.io.DataInputStream;
 import java.io.InputStream;
 import java.util.Map;
 
+
 import javajs.util.SB;
 
 public interface GenericBinaryDocument {
 
-  void setStream(BufferedInputStream bis, boolean isBigEndian);
+  GenericBinaryDocument setStream(BufferedInputStream bis, boolean isBigEndian);
 
   void setStreamData(DataInputStream dataInputStream, boolean isBigEndian);
 
