@@ -197,7 +197,6 @@ class EMBoxFrame extends Frame
     Button clearButton;
     Button resetPartButton;
     static boolean waveguide;
-    Checkbox memoryImageSourceCheck;
     Checkbox stoppedCheck;
     Checkbox stopOscCheck;
     Checkbox spectrumCheck;
@@ -384,11 +383,6 @@ class EMBoxFrame extends Frame
 	spectrumCheck.addItemListener(this);
 	main.add(spectrumCheck);
 
-	memoryImageSourceCheck = new Checkbox("Alternate Rendering",
-					      altRender);
-	memoryImageSourceCheck.addItemListener(this);
-	main.add(memoryImageSourceCheck);
-
 	sidesCheck = new Checkbox("Show Sides");
 	sidesCheck.addItemListener(this);
 	main.add(sidesCheck);
@@ -486,7 +480,12 @@ class EMBoxFrame extends Frame
 	    if (param != null)
 		pause = Integer.parseInt(param);
 	} catch (Exception e) { }
-	//waveguide = (applet == null) ? true : applet.getParameter("waveguide").equals("true");
+	if (applet == null)
+	    waveguide = true;
+	else {
+	    String wg = applet.getParameter("waveguide");
+	    waveguide = (wg != null && wg.equals("true"));
+	}
 	if (!waveguide)
 	    vecDensityBar.setValue(16);
 	
@@ -581,7 +580,7 @@ class EMBoxFrame extends Frame
 	setupDisplay();
 	int w = view3d.width;
 	if (emChooser.getSelectedIndex() == EMCHOICE_EB)
-	    w /= 2;
+	    w = w/2;
 	pixels = new int[w*view3d.height];
 	int i;
 	for (i = 0; i != w*view3d.height; i++)
@@ -789,9 +788,9 @@ class EMBoxFrame extends Frame
 	view3d = new Rectangle(0, 0, winSize.width,
 			       winSize.height-freqHeight-spectrumHeight);
 	view3d_e = new Rectangle(view3d);
-	view3d_e.width /= 2;
+	view3d_e.width = view3d_e.width/2;
 	view3d_b = new Rectangle(view3d);
-	view3d_b.width /= 2;
+	view3d_b.width = view3d_b.width/2;
 	view3d_b.x += view3d_b.width;
 	if (spectrumCheck.getState())
 	    viewSpectrum = new Rectangle(0, view3d.height,
@@ -1159,7 +1158,7 @@ class EMBoxFrame extends Frame
     // display a field in the given rectangle
     void doDisplay(Rectangle view, Graphics g, int fieldno) {
 	int i, j, k;
-	boolean mis = memoryImageSourceCheck.getState();
+	boolean mis = true; // memoryImageSourceCheck.getState();
 	colorMult = brightnessBar.getValue() * 3;
 	int winw = view.width;
 	int winh = view.height;
@@ -1205,7 +1204,7 @@ class EMBoxFrame extends Frame
 		    drawVectorsZ(1, dd);
 		}
 	    } else if (!sliced) {
-		vectorSpacing /= 2;
+		vectorSpacing = vectorSpacing/2;    // doing /= 2 may convert to float in js
 		for (x = 0; x != vectorSpacing; x++) {
 		    double xx = x*(1.0/(vectorSpacing-1));
 		    for (y = 0; y != vectorSpacing; y++) {
@@ -1227,9 +1226,8 @@ class EMBoxFrame extends Frame
 	    //
 	    // particle display
 	    //
-	    int pcount = getParticleCount();
+	    int pcount = getParticleCount()/2;
 	    int pstart = 0;
-	    pcount /= 2;
 	    int f = (fieldno == EMCHOICE_J) ? 1 : fieldno;
 	    pstart = pcount*f;
 	    if (!stoppedCheck.getState()) {
