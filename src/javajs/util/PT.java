@@ -908,6 +908,7 @@ public class PT {
     url = rep(url, "%", "%25");
     url = rep(url, "#", "%23");
     url = rep(url, "[", "%5B");
+    url = rep(url, "\\", "%5C");
     url = rep(url, "]", "%5D");
     url = rep(url, " ", "%20");
     return url;
