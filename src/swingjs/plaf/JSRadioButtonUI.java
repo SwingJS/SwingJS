@@ -54,6 +54,7 @@ public class JSRadioButtonUI extends JSButtonUI {
 			setEnabled(c.isEnabled());
 			label = newDOMObject("label", id + "l2", "htmlFor", id);
 			setDataComponent(label);
+			setDataComponent(textNode);  // needed for mac safari/chrome
 			wrapper = (hasOuterDiv ? label : createItem("_item", label));
 		}
 		if (b.isSelected() || isNew)
