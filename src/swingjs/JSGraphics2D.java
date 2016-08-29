@@ -189,14 +189,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	private void doArc(double centerX, double centerY, double width, double height, double startAngle,
 			double arcAngle, boolean fill) {
-		//TODO: allow width and height to be different - ellipse arcs
 		boolean doClose = (arcAngle - startAngle == 360);
 		ctx.save();
 		{
-			ctx.translate(centerX+(width/2), centerY+(height/2));
-			//ctx.scale(width / height, 1);
+			ctx.translate(centerX-(width/2), centerY-(height/2));
+			ctx.scale(width / 2, height / 2);
 			ctx.beginPath();
-			ctx.arc(0, 0, height/2, toRad(360 - startAngle), toRad(360 - arcAngle - startAngle), true);
+			ctx.arc(1, 1, 1, toRad (360 - startAngle), toRad (360 - arcAngle - startAngle), true);
 		}
 		ctx.restore();
 		if (fill)
