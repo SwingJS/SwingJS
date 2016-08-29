@@ -907,9 +907,14 @@ needs to be written out as
 
   n = n / 3
   
+when rounding is required.
   
 #6 J2S drops seemingly unnecessary constructors in inner classes. These
 are required, and must be included. I added j2sNative blocks to do this.
+
+[Note -- This bug was almost certainly associated with the 
+ improper sequencing of inherited global field definitions. It should be
+ no further issue anymore. -- BH 8/29/2016 12:09:34 PM] 
 
 public class Gregorian extends BaseCalendar {
 
