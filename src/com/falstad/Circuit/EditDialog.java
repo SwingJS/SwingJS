@@ -21,6 +21,7 @@ class EditDialog extends Dialog implements AdjustmentListener, ActionListener, I
     int einfocount;
     final int barmax = 1000;
     NumberFormat noCommaFormat;
+    boolean ignoreChanges;
 
     EditDialog(Editable ce, CirSim f) {
 	super(f, "Edit Component", false);
@@ -170,6 +171,8 @@ class EditDialog extends Dialog implements AdjustmentListener, ActionListener, I
     }
 	
     public void adjustmentValueChanged(AdjustmentEvent e) {
+	if (ignoreChanges)
+	    return;
 	Object src = e.getSource();
 	int i;
 	for (i = 0; i != einfocount; i++) {
@@ -223,7 +226,9 @@ class EditDialog extends Dialog implements AdjustmentListener, ActionListener, I
 
     void setBar(EditInfo ei) {
 	int x = (int) (barmax*(ei.value-ei.minval)/(ei.maxval-ei.minval));
+	ignoreChanges = true;  // we don't want adjustmentValueChanged called
 	ei.bar.setValue(x);
+	ignoreChanges = false;
     }
 
     protected void closeDialog()
