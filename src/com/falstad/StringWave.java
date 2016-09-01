@@ -1502,7 +1502,7 @@ class StringWaveFrame extends Frame implements ComponentListener,
 
 	private final int playSampleCount = 16384;
 	private final int rate = 22050;
-	private final int audioBufferByteLength = 4096; // because we are damping
+	private final int audioBufferByteLength = 8*4096; // need big buffer for javascript
 	private final int bitsPerSample = 16;
 	private final int nChannels = 1;
 
@@ -1522,8 +1522,8 @@ class StringWaveFrame extends Frame implements ComponentListener,
 	}
 
 	private void resetAudio() {
-		if (audioThread != null)
-			audioThread.resetAudio();
+//		if (audioThread != null)
+//			audioThread.resetAudio();
 	}
 
 	@Override
@@ -1539,7 +1539,11 @@ class StringWaveFrame extends Frame implements ComponentListener,
 
 	@Override
 	public int fillAudioBuffer() {
-		double damper = dampcoef * 1e-2;
+	    	// try to get speed of audio damping to match damping speed in simulation.
+	    	// Still not quite right..
+		int val = speedBar.getValue();
+		double timeadj = Math.exp(val / 20.) * (.1 / 1500);
+		double damper = dampcoef * timeadj * 1000. / rate; // * 1e-2;
 		if (playfunc == null || soundChanged) {
 			soundChanged = false;
 			if (fft == null)
