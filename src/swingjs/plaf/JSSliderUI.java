@@ -108,7 +108,11 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 *               change: function(jqevent, handle) {
 		 *                     me.jqueryCallback(jqevent, handle); }, 
 		 *               slide: function(jqevent, handle) { 
-		 *                     me.jqueryCallback(jqevent, handle); }
+		 *                     me.jqueryCallback(jqevent, handle); },
+		 *               start: function(jqevent, handle) {
+		 *                     me.jqueryStart(jqevent, handle); },
+		 *               stop: function(jqevent, handle) {
+		 *                     me.jqueryStop(jqevent, handle); }
 		 *            });
 		 */
 		{
@@ -121,6 +125,26 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("disabled", (disabled = (b ? 0 : 1)));
 	}
 
+	/**
+	 * called from JavaScript via the hook added in setJQuerySliderAndEvents  
+	 * 
+	 * @param event
+	 * @param ui
+	 */
+	public void jqueryStart(Object event, DOMNode ui) {
+	    jSlider.setValueIsAdjusting(true);
+	}
+
+	/**
+	 * called from JavaScript via the hook added in setJQuerySliderAndEvents  
+	 * 
+	 * @param event
+	 * @param ui
+	 */
+	public void jqueryStop(Object event, DOMNode ui) {
+	    jSlider.setValueIsAdjusting(false);
+	}
+	
 	/**
 	 * called from JavaScript via the hook added in setJQuerySliderAndEvents  
 	 * 
