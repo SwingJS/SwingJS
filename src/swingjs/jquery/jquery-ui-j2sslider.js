@@ -81,6 +81,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
     };
     
     var fDrag = function(xye) {
+      if (me.options.disabled)
+	  return;
       var event = xye.ev;
   		var position = { x: event.pageX, y: event.pageY };
 
@@ -94,6 +96,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
     };
     
     var fUp = function(xye) {
+      if (me.options.disabled)
+	  return;
       var event = xye.ev;
   		me.handles.removeClass( "ui-state-active" );
   		me._mouseSliding = false;  
