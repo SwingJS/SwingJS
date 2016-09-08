@@ -153,7 +153,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		if (width == height)
 			doCirc(left, top, width, false);
 		else
-			doArc(left + width/2f, top + height/2f, width, height, 0, 360, false);
+			doArc(left, top, width, height, 0, 360, false);
 	}
 
 	@Override
@@ -161,13 +161,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		if (width == height)
 			doCirc(left, top, width, true);
 		else
-			doArc(left + width/2f, top + height/2f, width, height, 0, 360, true);
+			doArc(left, top, width, height, 0, 360, true);
 	}
 
 	@Override
-	public void drawArc(int centerX, int centerY, int width, int height, int startAngle,
+	public void drawArc(int x, int y, int width, int height, int startAngle,
 			int arcAngle) {
-		doArc(centerX, centerY, width, height, startAngle, arcAngle, false);
+		doArc(x, y, width, height, startAngle, arcAngle, false);
 	}
 
 	@Override
@@ -187,15 +187,17 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.stroke();
 	}
 
-	private void doArc(double centerX, double centerY, double width, double height, double startAngle,
+	private void doArc(double x, double y, double width, double height, double startAngle,
 			double arcAngle, boolean fill) {
-		boolean doClose = (arcAngle - startAngle == 360);
+//		boolean doClose = (arcAngle - startAngle == 360);
 		ctx.save();
 		{
-			ctx.translate(centerX-(width/2), centerY-(height/2));
-			ctx.scale(width / 2, height / 2);
-			ctx.beginPath();
-			ctx.arc(1, 1, 1, toRad (360 - startAngle), toRad (360 - arcAngle - startAngle), true);
+		ctx.translate(x, y);
+		ctx.scale(width / 2, height / 2);
+		ctx.beginPath();
+		ctx.arc(1, 1, 1, toRad (360 - startAngle), toRad (360 - arcAngle - startAngle), true);
+		if (fill)
+		    ctx.lineTo(1, 1);
 		}
 		ctx.restore();
 		if (fill)
