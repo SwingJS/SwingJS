@@ -766,7 +766,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		int curMedium = 0;
 		OscElement oew, oee, oen, oes, oe;
 		double previ, nexti, prevj, nextj, basis, a, b;
-System.out.println("forcecoef " + forcecoef + " tadd2 " + (tadd*tadd));
 		for (j = 1; j != mxy; j++) {
 		    int gi = j*gw+1;
 		    int giEnd = gi+mxx-1;
