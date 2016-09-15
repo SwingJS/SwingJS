@@ -655,7 +655,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 
  Molecule checkCollision(Molecule m) {
 	if (bigmol != null) {
-	    Molecule q = checkCollision(m,
+	    Molecule q = checkCollisionList(m,
 		 grid[(int) (bigmol.x/gridEltWidth)]
 		     [(int) (bigmol.y/gridEltHeight)]);
 	    if (q != null)
@@ -670,14 +670,14 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		if (gx+i < 0 || gy+j < 0 ||
 		    gx+i >= gridWidth || gy+j >= gridHeight)
 		    continue;
-		Molecule n = checkCollision(m, grid[gx+i][gy+j]);
+		Molecule n = checkCollisionList(m, grid[gx+i][gy+j]);
 		if (n != null)
 		    return n;
 	    }
 	return null;
  }
 
- Molecule checkCollision(Molecule m, Molecule list) {
+ Molecule checkCollisionList(Molecule m, Molecule list) {
 	Molecule l = list.next;
 	int count = 0;
 	for (; !l.listHead; l = l.next) {

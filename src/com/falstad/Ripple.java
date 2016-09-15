@@ -1279,9 +1279,10 @@ class RippleFrame extends Frame implements ComponentListener, ActionListener,
 							+ posMedColor.getBlue() * a3 + medColor.getBlue() * a4);
 				}
 				col = (255 << 24) | (colR << 16) | (colG << 8) | (colB);
-				for (k = 0; k != x2 - x; k++, ix++)
-					for (l = 0; l != y2 - y; l++)
-						pixels[ix + l * winSize.width] = col;
+				int ll;
+				for (k = x; k != x2; k++, ix++)
+					for (l = y, ll = 0; l != y2; l++, ll += winSize.width)
+						pixels[ix+ll] = col;
 			}
 		}
 		int intf = (gridSizeY / 2 - windowOffsetY) * winSize.height / windowHeight;
