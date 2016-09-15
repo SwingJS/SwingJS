@@ -216,7 +216,6 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 
 	boolean useFrame = true;
 	Button clearButton;
-	Checkbox memoryImageSourceCheck;
 	Checkbox stoppedCheck;
 	Checkbox spectrumCheck;
 	Choice modeChooser;
@@ -335,10 +334,6 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		spectrumCheck = new Checkbox("Show Spectrum");
 		spectrumCheck.addItemListener(this);
 		main.add(spectrumCheck);
-
-		memoryImageSourceCheck = new Checkbox("Alternate Rendering", altRender);
-		memoryImageSourceCheck.addItemListener(this);
-		main.add(memoryImageSourceCheck);
 
 		modeChooser = new Choice();
 		modeChooser.add("Mouse = Adjust Angle");
@@ -620,7 +615,7 @@ class ModeBoxFrame extends Frame implements ComponentListener, ActionListener,
 		Graphics g = null;
 		if (winSize == null || winSize.width == 0 || winSize.height == 0)
 			return;
-		boolean mis = memoryImageSourceCheck.getState();
+		boolean mis = true;
 		g = dbimage.getGraphics();
 		g.setColor(cv.getBackground());
 		g.fillRect(0, 0, winSize.width, winSize.height);
