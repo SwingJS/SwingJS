@@ -28,7 +28,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FontMetrics;
-import java.awt.Frame;
+import swingjs.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
@@ -59,6 +59,9 @@ import java.net.URL;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.ButtonGroup;
+
 class MOViewerCanvas extends Canvas {
     MOViewerFrame pg;
     MOViewerCanvas(MOViewerFrame p) {
@@ -73,7 +76,7 @@ class MOViewerCanvas extends Canvas {
 	pg.updateMOViewer(g);
     }
     @Override
-		public void paint(Graphics g) {
+		public void paintComponent(Graphics g) {
 	pg.updateMOViewer(g);
     }
 }
@@ -160,6 +163,7 @@ public class MOViewer extends Applet implements ComponentListener {
     
     @Override
 		public void paint(Graphics g) {
+	super.paint(g);
 	String s = "Applet is open in a separate window.";
 	if (!started)
 	    s = "Applet is starting.";
@@ -220,7 +224,8 @@ class MOViewerFrame extends Frame
     CheckboxMenuItem axesItem;
     MenuItem exitItem;
     Choice sliceChooser, stateChooser, sampleChooser;
-    CheckboxMenuItem samplesItems[];
+    JRadioButtonMenuItem samplesItems[];
+    private ButtonGroup samplesGroup;
     int samplesNums[] = { 9, 15, 25, 35, 45, 55 };
     static final int SLICE_NONE = 0;
     static final int SLICE_X = 1;
@@ -342,7 +347,7 @@ class MOViewerFrame extends Frame
 	eSepCheckItem.setState(true);
 	m.add(xCheckItem = getCheckItem("Position"));
 	xCheckItem.setState(true);
-	xCheckItem.disable();
+	xCheckItem.setEnabled(false);
 	m.addSeparator();
 	m.add(colorCheck = getCheckItem("Phase as Color"));
 	colorCheck.setState(true);
@@ -360,14 +365,19 @@ class MOViewerFrame extends Frame
 
 	m = new Menu("Samples");
 	mb.add(m);
-	samplesItems = new CheckboxMenuItem[6];
-	m.add(samplesItems[0] = getCheckItem("Samples = 9 (fastest)"));
-	m.add(samplesItems[1] = getCheckItem("Samples = 15 (default)"));
-	m.add(samplesItems[2] = getCheckItem("Samples = 25"));
-	m.add(samplesItems[3] = getCheckItem("Samples = 35"));
-	m.add(samplesItems[4] = getCheckItem("Samples = 45"));
-	m.add(samplesItems[5] = getCheckItem("Samples = 55 (best)"));
-	samplesItems[1].setState(true);
+        samplesItems = new JRadioButtonMenuItem[6];
+	m.add(samplesItems[0] = getRadioItem("Samples = 9 (fastest)"));
+	m.add(samplesItems[1] = getRadioItem("Samples = 15 (default)"));
+	m.add(samplesItems[2] = getRadioItem("Samples = 25"));
+	m.add(samplesItems[3] = getRadioItem("Samples = 35"));
+	m.add(samplesItems[4] = getRadioItem("Samples = 45"));
+	m.add(samplesItems[5] = getRadioItem("Samples = 55 (best)"));
+        samplesGroup = new ButtonGroup();
+        for (int i = 0; i < 6; i++) {
+                samplesGroup.add(samplesItems[i]);
+                samplesItems[i].setActionCommand(""+ samplesNums[i]);
+        }
+	samplesItems[1].setSelected(true);
 	
 	int i;
 	stateChooser = new Choice();
@@ -455,21 +465,17 @@ class MOViewerFrame extends Frame
 	reinit();
 	cv.setBackground(Color.black);
 	cv.setForeground(Color.white);
-	resize(550, 530);
+	setSize(550, 530);
 	handleResize();
 	Dimension x = getSize();
 	Dimension screen = getToolkit().getScreenSize();
 	setLocation((screen.width  - x.width)/2,
 		    (screen.height - x.height)/2);
-	show();
+	setVisible(true);
+	validate();
     }
 
-    private void setMenuBar(MenuBar mb) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	MenuItem getMenuItem(String s) {
+    MenuItem getMenuItem(String s) {
 	MenuItem mi = new MenuItem(s);
 	mi.addActionListener(this);
 	return mi;
@@ -480,6 +486,12 @@ class MOViewerFrame extends Frame
 	mi.addItemListener(this);
 	return mi;
     }
+
+    JRadioButtonMenuItem getRadioItem(String s) {
+        JRadioButtonMenuItem mi = new JRadioButtonMenuItem(s);
+        mi.addItemListener(this);
+        return mi;
+}
 
     PhaseColor genPhaseColor(int sec, double ang) {
 	// convert to 0 .. 2*pi angle
@@ -503,16 +515,12 @@ class MOViewerFrame extends Frame
     }
 
     void setupSimpson() {
-	sampleCount = 15;
-	//sampleCount = sampleBar.getValue()*2+1;
-	int i;
-	for (i = 0; i != samplesNums.length; i++) {
-	    if (samplesItems[i].getState())
-		sampleCount = samplesNums[i];
-	}
+        sampleCount = Integer.parseInt(samplesGroup.getSelection().getActionCommand());
+        System.out.println("samplecount = " + sampleCount);
 
 	// generate table of sample multipliers for efficient Simpson's rule
 	sampleMult = new int[sampleCount];
+	int i;
 	for (i = 1; i < sampleCount; i += 2) {
 	    sampleMult[i  ] = 4;
 	    sampleMult[i+1] = 2;
@@ -965,7 +973,7 @@ class MOViewerFrame extends Frame
     URL getCodeBase() {
         try {
             if (applet != null)
-                return applet.getCodeBase();
+                return applet.getDocumentBase();
             File f = new File(".");
             return new URL("file:" + f.getCanonicalPath() + "/");
         } catch (Exception e) {
@@ -1707,20 +1715,22 @@ class MOViewerFrame extends Frame
 	public void itemStateChanged(ItemEvent e) {
 		if (samplesItems == null)
 			return;
-		if (e.getItemSelectable() instanceof CheckboxMenuItem) {
-			int i;
-			for (i = 0; i != samplesNums.length; i++)
-				if (samplesItems[i] == e.getItemSelectable())
-					break;
-			if (i != samplesNums.length) {
-				int j;
-				for (j = 0; j != samplesNums.length; j++)
-					samplesItems[j].setState(i == j);
-				setupSimpson();
-			}
-			setupDisplay();
-			cv.repaint(pause);
-			return;
+		if (e.getItemSelectable() instanceof JRadioButtonMenuItem) {
+                    if (e.getStateChange() != ItemEvent.SELECTED)
+                            return;
+                    // int nsam = samplesNums.length;
+                    // int i;
+                    // for (i = 0; i != nsam; i++)
+                    // if (samplesItems[i] == e.getItemSelectable())
+                    // break;
+                    // if (i != nsam) {
+                    // samplesItems[i].setSelected(true);
+                    // // int j;
+                    // // for (j = 0; j != nsam; j++)
+                    // // samplesItems[j].setState(i == j);
+                    // }
+                    setupSimpson();
+                    setupDisplay();
 		}
 		if (e.getItemSelectable() == stateChooser)
 			precomputeAll();
