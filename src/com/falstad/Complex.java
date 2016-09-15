@@ -142,4 +142,21 @@ public class Complex {
 		phase = Math.atan2(im, re);
 	}
 
+	public void log() {
+	    setReIm(java.lang.Math.log(re*re+im*im),
+		java.lang.Math.atan2(im, re));
+	}
+	void arcsin() {
+	    Complex z2 = new Complex();
+	    z2.set(this);
+	    z2.square();
+	    z2.multRe(-1);
+	    z2.addRe(1);
+	    z2.pow(.5);
+	    multReIm(0, 1);
+	    add(z2);
+	    log();
+	    multReIm(0, -1);
+	}
+
 }
