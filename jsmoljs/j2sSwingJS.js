@@ -2167,7 +2167,8 @@ var newMethodNotFoundException = function (clazz, method, params) {
 //////// (int) conversions //////////
 
 Clazz.floatToInt = function (x) {
-	return isNaN(x) ? 0 : x < 0 ? Math.ceil(x) : Math.floor(x);
+	// asm.js-style conversion
+	return x|0;
 };
 
 Clazz.floatToByte = Clazz.floatToShort = Clazz.floatToLong = Clazz.floatToInt;
