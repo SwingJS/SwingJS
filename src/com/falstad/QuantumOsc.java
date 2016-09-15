@@ -55,6 +55,8 @@ import swingjs.awt.MenuBar;
 import swingjs.awt.MenuItem;
 import swingjs.awt.Scrollbar;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
 class QuantumOscCanvas extends Canvas {
  QuantumOscFrame pg;
@@ -68,6 +70,7 @@ class QuantumOscCanvas extends Canvas {
 	pg.updateQuantumOsc(g);
  }
  public void paintComponent(Graphics g) {
+     super.paintComponent(g);
 	pg.updateQuantumOsc(g);
  }
 };
@@ -165,7 +168,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  Button normalizeButton;
  Button maximizeButton;
  Checkbox stoppedCheck;
- Checkbox memoryImageSourceCheck;
  CheckboxMenuItem eCheckItem;
  CheckboxMenuItem xCheckItem;
  CheckboxMenuItem pCheckItem;
@@ -174,9 +176,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  CheckboxMenuItem lStatesCheckItem;
  CheckboxMenuItem expectCheckItem;
  CheckboxMenuItem uncertaintyCheckItem;
- CheckboxMenuItem probCheckItem;
- CheckboxMenuItem probPhaseCheckItem;
- CheckboxMenuItem magPhaseCheckItem;
+ JRadioButtonMenuItem probCheckItem;
+ JRadioButtonMenuItem probPhaseCheckItem;
+ JRadioButtonMenuItem magPhaseCheckItem;
  CheckboxMenuItem alwaysNormItem;
  CheckboxMenuItem alwaysMaxItem;
  Menu waveFunctionMenu;
@@ -294,16 +296,15 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	m.add(uncertaintyCheckItem = getCheckItem("Uncertainties"));
 	Menu m2 = waveFunctionMenu = new Menu("Wave Function");
 	m.add(m2);
-	m2.add(probCheckItem = getCheckItem("Probability"));
-	m2.add(probPhaseCheckItem = getCheckItem("Probability + Phase"));
-	m2.add(magPhaseCheckItem = getCheckItem("Magnitude + Phase"));
-	magPhaseCheckItem.setState(true);
+	m2.add(probCheckItem = getRadioItem("Probability"));
+	m2.add(probPhaseCheckItem = getRadioItem("Probability + Phase"));
+	m2.add(magPhaseCheckItem = getRadioItem("Magnitude + Phase"));
+	magPhaseCheckItem.setSelected(true);
 
 	m = new Menu("Measure");
 	mb.add(m);
 	m.add(measureEItem = getMenuItem("Measure Energy"));
 	m.add(measureLItem = getMenuItem("Measure Angular Momentum"));
-	setMenuBar(mb);
 
 	m = new Menu("Options");
 	mb.add(m);
@@ -333,10 +334,6 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	stoppedCheck = new Checkbox("Stopped");
 	stoppedCheck.addItemListener(this);
 	add(stoppedCheck);
-	memoryImageSourceCheck = new Checkbox("Alternate Rendering",
-					      altRender);
-	memoryImageSourceCheck.addItemListener(this);
-	add(memoryImageSourceCheck);
 
 	add(new Label("Simulation Speed", Label.CENTER));
 	add(speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 138, 1, 1, 300));
@@ -386,6 +383,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	resize(800, 700);
 	show();
 	handleResize();
+	validate();
 	
 	finished = true;
  }
@@ -402,6 +400,17 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	return mi;
  }
 
+ ButtonGroup radioGroup;
+
+ JRadioButtonMenuItem getRadioItem(String s) {
+	if (radioGroup == null)
+	    radioGroup = new ButtonGroup();
+     JRadioButtonMenuItem mi = new JRadioButtonMenuItem(s);
+     mi.addItemListener(this);
+     radioGroup.add(mi);
+     return mi;
+ }
+ 
  PhaseColor genPhaseColor(int sec, double ang) {
 	// convert to 0 .. 2*pi angle
 	ang += sec*pi/4;
@@ -575,14 +584,14 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	v.y += (v.height-h)/2 + 1;
 	v.width  = w;
 	v.height = h;
-	if (memoryImageSourceCheck.getState()) {
+	//if (memoryImageSourceCheck.getState()) {
 	    v.pixels = new int[v.width*v.height];
 	    int i;
 	    for (i = 0; i != v.width*v.height; i++)
 		v.pixels[i] = 0xFF000000;
 	    v.imageSource = new MemoryImageSource(v.width, v.height,
 						  v.pixels, 0, v.width);
-	}
+	//}
  }
 
  int min(int x, int y) { return (x < y) ? x : y; }
@@ -700,10 +709,12 @@ implements ComponentListener, ActionListener, AdjustmentListener,
      g.drawString(s, (winSize.width-fm.stringWidth(s))/2, y);
  }
 
+ /*
  public void paintComponent(Graphics g) {
 	cv.repaint();
  }
-
+*/
+ 
  Color gray1, gray2;
  long lastTime;
 
@@ -1125,7 +1136,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	double uncertx = Math.sqrt(expectx2-expectx*expectx);
 	double uncerty = Math.sqrt(expecty2-expecty*expecty);
 	double bestscale = 0;
-	if (probCheckItem.getState() || probPhaseCheckItem.getState())
+	if (probCheckItem.isSelected() || probPhaseCheckItem.isSelected())
 	    bestscale = 1/maxsq;
 	else
 	    bestscale = 1/maxnm;
@@ -1137,13 +1148,13 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	if (vmap.scale > 1e8)
 	    vmap.scale = 1e8;
 	int res1 = res+1;
-	boolean mis = memoryImageSourceCheck.getState();
+	boolean mis = true;
 	for (y = 0; y <= res; y++) {
 	    for (x = 0; x <= res; x++) {
 		double fr = arrayr[x][y];
 		double fi = arrayi[x][y];
 		double fv = (fr*fr+fi*fi);
-		if (magPhaseCheckItem.getState())
+		if (magPhaseCheckItem.isSelected())
 		    fv = Math.sqrt(fv);
 		fv *= 255*vmap.scale*brightmult;
 		PhaseColor c = getPhaseColor(fr, fi);
@@ -1266,7 +1277,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  PhaseColor getPhaseColor(double x, double y) {
 	int sector = 0;
 	double val = 0;
-	if (probCheckItem.getState())
+	if (probCheckItem.isSelected())
 	    return whitePhaseColor;
 	if (x == 0 && y == 0)
 	    return phaseColors[0][0];
@@ -1723,7 +1734,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int ox = -1, oy = 0;
 	double bestscale = 0;
 	if (fi != null &&
-	      (probCheckItem.getState() || probPhaseCheckItem.getState()))
+	      (probCheckItem.isSelected() || probPhaseCheckItem.isSelected()))
 	    bestscale = 1/maxsq;
 	else
 	    bestscale = 1/maxnm;
@@ -2194,8 +2205,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	    cv.repaint(pause);
 	    return;
 	}
-	if (e.getItemSelectable() instanceof CheckboxMenuItem ||
-	    e.getItemSelectable() == memoryImageSourceCheck) {
+	if (e.getItemSelectable() instanceof CheckboxMenuItem) {
 	    handleResize();
 	    cv.repaint(pause);
 	}

@@ -200,7 +200,6 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 	Button blankButton;
 	Button normalizeButton;
 	Button maximizeButton;
-	Checkbox memoryImageSourceCheck;
 	Checkbox stoppedCheck;
 	CheckboxMenuItem colorCheck;
 	CheckboxMenuItem eCheckItem;
@@ -316,6 +315,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 	Color gray2;
 	FontMetrics fontMetrics;
 	Container main;
+	boolean ignoreAdjustments;
 
 	int getrand(int x) {
 		int q = random.nextInt();
@@ -396,7 +396,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		m.add(measureLxItem = getMenuItem("Measure Lx"));
 		m.add(measureLyItem = getMenuItem("Measure Ly"));
 		m.add(measureLzItem = getMenuItem("Measure Lz"));
-		setMenuBar(mb);
+//		setMenuBar(mb);
 
 		m = new Menu("Options");
 		mb.add(m);
@@ -478,10 +478,6 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 
 		lChooser.select(3);
 		setLValue();
-
-		memoryImageSourceCheck = new Checkbox("Alternate Rendering", altRender);
-		memoryImageSourceCheck.addItemListener(this);
-		main.add(memoryImageSourceCheck);
 
 		main.add(new Label("Simulation Speed", Label.CENTER));
 		main.add(speedBar = new Scrollbar(Scrollbar.HORIZONTAL, 20, 1, 1, 200));
@@ -1604,7 +1600,9 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 			int nv = oldScaleValue + diff;
 			if (!animatedZoomItem.getState())
 				nv = scaleValue;
+			ignoreAdjustments = true;
 			scaleBar.setValue(nv);
+			ignoreAdjustments = false;
 			scaleValue = nv;
 			precomputeAll();
 		}
@@ -1630,7 +1628,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 		Graphics g = null;
 		if (winSize == null || winSize.width == 0)
 			return;
-		boolean mis = memoryImageSourceCheck.getState();
+		boolean mis = true;
 		g = dbimage.getGraphics();
 		g.setColor(cv.getBackground());
 		g.fillRect(0, 0, winSize.width, winSize.height);
@@ -2261,7 +2259,7 @@ class QuantumOsc3dFrame extends Frame implements ComponentListener,
 	private boolean finished;
 
 	public void adjustmentValueChanged(AdjustmentEvent e) {
-		if(!finished){
+		if(!finished || ignoreAdjustments){
 			return;
 		}
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");

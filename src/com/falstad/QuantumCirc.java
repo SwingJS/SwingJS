@@ -40,8 +40,10 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
 
-import com.falstad.FFT;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
+import com.falstad.FFT;
 
 import swingjs.awt.Applet;
 import swingjs.awt.Canvas;
@@ -56,6 +58,8 @@ import swingjs.awt.MenuItem;
 import swingjs.awt.Scrollbar;
 import swingjs.awt.Button;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
 class QuantumCircCanvas extends Canvas {
  QuantumCircFrame pg;
@@ -204,9 +208,9 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  CheckboxMenuItem statesCheckItem;
  CheckboxMenuItem expectCheckItem;
  CheckboxMenuItem uncertaintyCheckItem;
- CheckboxMenuItem probCheckItem;
- CheckboxMenuItem probPhaseCheckItem;
- CheckboxMenuItem magPhaseCheckItem;
+ JRadioButtonMenuItem probCheckItem;
+ JRadioButtonMenuItem probPhaseCheckItem;
+ JRadioButtonMenuItem magPhaseCheckItem;
  CheckboxMenuItem alwaysNormItem;
  CheckboxMenuItem alwaysMaxItem;
  Menu waveFunctionMenu;
@@ -357,16 +361,15 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	m.add(uncertaintyCheckItem = getCheckItem("Uncertainties"));
 	Menu m2 = waveFunctionMenu = new Menu("Wave Function");
 	m.add(m2);
-	m2.add(probCheckItem = getCheckItem("Probability"));
-	m2.add(probPhaseCheckItem = getCheckItem("Probability + Phase"));
-	m2.add(magPhaseCheckItem = getCheckItem("Magnitude + Phase"));
-	magPhaseCheckItem.setState(true);
+	m2.add(probCheckItem = getRadioItem("Probability"));
+	m2.add(probPhaseCheckItem = getRadioItem("Probability + Phase"));
+	m2.add(magPhaseCheckItem = getRadioItem("Magnitude + Phase"));
+	magPhaseCheckItem.setSelected(true);
 
 	m = new Menu("Measure");
 	mb.add(m);
 	m.add(measureEItem = getMenuItem("Measure Energy"));
 	m.add(measureLItem = getMenuItem("Measure Angular Momentum"));
-	setMenuBar(mb);
 
 	m = new Menu("Options");
 	mb.add(m);
@@ -480,6 +483,17 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	CheckboxMenuItem mi = new CheckboxMenuItem(s);
 	mi.addItemListener(this);
 	return mi;
+ }
+
+ ButtonGroup radioGroup;
+
+ JRadioButtonMenuItem getRadioItem(String s) {
+	if (radioGroup == null)
+	    radioGroup = new ButtonGroup();
+     JRadioButtonMenuItem mi = new JRadioButtonMenuItem(s);
+     mi.addItemListener(this);
+     radioGroup.add(mi);
+     return mi;
  }
 
  PhaseColor genPhaseColor(int sec, double ang) {
@@ -1042,7 +1056,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		expectx2 += fv*y*xv*xv;
 		expecty2 += fv*y*yv*yv;
 		tot += fv*y;
-		if (magPhaseCheckItem.getState())
+		if (magPhaseCheckItem.isSelected())
 		    fv = java.lang.Math.sqrt(fv);
 		if (fv > mx)
 		    mx = fv;
@@ -1065,7 +1079,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 		double ar = fr[x][y];
 		double ai = fi[x][y];
 		double fv = (ar*ar+ai*ai);
-		if (magPhaseCheckItem.getState())
+		if (magPhaseCheckItem.isSelected())
 		    fv = java.lang.Math.sqrt(fv);
 		fv *= mult;
 		PhaseColor c = getPhaseColor(ar, ai);
@@ -1231,7 +1245,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
 	int ox = -1, oy = 0;
 	double bestscale = 0;
 	if (fi != null &&
-	      (probCheckItem.getState() || probPhaseCheckItem.getState()))
+	      (probCheckItem.isSelected() || probPhaseCheckItem.isSelected()))
 	    bestscale = 1/maxsq;
 	else
 	    bestscale = 1/maxnm;
@@ -1385,7 +1399,7 @@ implements ComponentListener, ActionListener, AdjustmentListener,
  PhaseColor getPhaseColor(double x, double y) {
 	int sector = 0;
 	double val = 0;
-	if (probCheckItem.getState())
+	if (probCheckItem.isSelected())
 	    return whitePhaseColor;
 	if (x == 0 && y == 0)
 	    return phaseColors[0][0];
