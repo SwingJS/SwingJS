@@ -798,18 +798,16 @@ J2S = (function(document) {
 			: filename.indexOf(".png") >= 0 ? "image/png" 
 			: filename.indexOf(".gif") >= 0 ? "image/gif" 
 			: filename.indexOf(".jpg") >= 0 ? "image/jpg" : ""));
-		var isString = (typeof data == "string");
-		if (!isString)
-			data = (JU ? JU : J.util).Base64.getBase64(data).toString();
-		encoding || (encoding = (isString ? "" : "base64"));
+		var isString = (typeof data == "string");    
+   	data = (JU ? JU : J.util).Base64.getBase64(isString ? data.getBytes("UTF-8") : data).toString();
+		encoding || (encoding = "base64");
 		var url = J2S._serverUrl;
 		url && url.indexOf("your.server") >= 0 && (url = "");
 		if (J2S._useDataURI || !url) {
 			// Asynchronous output generated using an anchor tag
-			encoding || (data = btoa(data));
 			var a = document.createElement("a");
 			a.href = "data:" + mimetype + ";base64," + data;
-			a.type = mimetype || (mimetype = "text/plain");	
+			a.type = mimetype || (mimetype = "text/plain;charset=utf-8");	
 			a.download = filename;
 			a.target = "_blank";
 				$("body").append(a);
