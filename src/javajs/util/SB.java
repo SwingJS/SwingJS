@@ -1,6 +1,8 @@
 
 package javajs.util;
 
+import java.nio.charset.Charset;
+
 import javajs.J2SIgnoreImport;
 
 /**
@@ -12,7 +14,7 @@ import javajs.J2SIgnoreImport;
  * 
  */
 
-@J2SIgnoreImport({java.lang.StringBuilder.class})
+@J2SIgnoreImport({java.lang.StringBuilder.class, java.nio.charset.Charset.class})
 public class SB {
   
   private java.lang.StringBuilder sb;
@@ -183,8 +185,7 @@ public class SB {
     /**
      * @j2sNative
      * 
-     * for (var i = len,j=off; --i >= 0;)
-     *            this.s += cb[j++];
+     * this.s += cb.slice(off,off+len).join("");
      * 
      */
     {
@@ -309,19 +310,33 @@ public class SB {
   }
 
   /**
-   * simple byte conversion not allowing for unicode.
-   * Used for base64 conversion and allows for offset
-   * @param off 
-   * @param len or -1 for full length (then off must = 0)
+   * simple byte conversion properly implementing UTF-8. * Used for base64
+   * conversion and allows for offset
+   * 
+   * @param off
+   * @param len
+   *        or -1 for full length (then off must = 0)
    * @return byte[]
    */
   public byte[] toBytes(int off, int len) {
-    if (len < 0)
-      len = length() - off;
-    byte[] b = new byte[len];
-    for (int i = off + len, j = i - off; --i >= off;)
-      b[--j] = (byte) charAt(i);
-    return b;
+    if (len == 0)
+      return new byte[0];
+    Charset cs;
+    /**
+     * 
+     * just a string in JavaScript
+     * 
+     * @j2sNative
+     * 
+     *            cs = "UTF-8";
+     * 
+     */
+    {
+      cs = Charset.forName("UTF-8");
+    }
+    return (len > 0 ? substring2(off, off + len) 
+        : off == 0 ? toString()
+        : substring2(off, length() - off)).getBytes(cs);
   }
 
 	public void replace(int start, int end, String str) {
