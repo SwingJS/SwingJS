@@ -1,5 +1,6 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
+
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
 // BH 7/25/2016 8:28:57 AM adds 3Dialog(fDone, asBytes)
 
@@ -1509,7 +1510,7 @@ J2S.Cache.put = function(filename, data) {
 				// but it will be only a URL, not an actual file. 
 				try {
 				  file = "" + oe.dataTransfer.getData("text");
-				  if (file.indexOf("file:/") == 0 || file.indexOf("http:/") == 0) {
+				  if (file.indexOf("file:/") == 0 || file.indexOf("http:/") == 0 || file.indexOf("https:/") == 0) {
 				  	me._scriptLoad(file);
 				  	return;
 			  	}
