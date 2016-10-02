@@ -148,22 +148,13 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
       int n = stream.read(b, off, len);
       m += n;
       if (n > 0 && out != null)
-        writeBytes(b, off, n);
+        out.write(b, off, n);
       if (n >= len)
         break;
       off += n;
       len -= n;
     }
     return m;
-  }
-
-  public void writeString(String s) throws IOException {
-  	byte[] b = s.getBytes();
-    out.write(b, 0, b.length);
-  }
-  
-  public void writeBytes(byte[] b, int off, int n) throws IOException {
-    out.write(b, off, n);
   }
 
   @Override
@@ -192,20 +183,10 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   private short ioReadShort() throws IOException {
     short b = stream.readShort();
     if (out != null)
-      writeShort(b);
+      out.writeShort(b);
     return b;
   }
 
-
-  public void writeShort(short i) throws IOException {
-    if (out.isBigEndian()) {
-      out.writeByteAsInt(i >> 8);
-      out.writeByteAsInt(i);
-    } else {
-      out.writeByteAsInt(i);
-      out.writeByteAsInt(i >> 8);
-    }
-  }
 
   @Override
   public int readIntLE() throws IOException {
@@ -222,22 +203,8 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   private int ioReadInt() throws IOException {
     int i = stream.readInt();
     if (out != null)
-      writeInt(i);
+      out.writeInt(i);
     return i;
-  }
-
-	public void writeInt(int i) throws IOException {
-    if (out.isBigEndian()) {
-    out.writeByteAsInt(i >> 24);
-    out.writeByteAsInt(i >> 16);
-    out.writeByteAsInt(i >> 8);
-    out.writeByteAsInt(i);
-		} else {
-			out.writeByteAsInt(i);
-			out.writeByteAsInt(i >> 8);
-			out.writeByteAsInt(i >> 16);
-			out.writeByteAsInt(i >> 24);
-		}
   }
 
   @Override
@@ -280,24 +247,8 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   private long ioReadLong() throws IOException {
     long b = stream.readLong();
     if (out != null)
-      writeLong(b);
+      out.writeLong(b);
     return b;
-  }
-
-  public void writeLong(long b) throws IOException {
-    if (out.isBigEndian()) {
-      writeInt((int) ((b >> 32) & 0xFFFFFFFFl));
-      writeInt((int) (b & 0xFFFFFFFFl));
-    } else {
-      out.writeByteAsInt((int) (b >> 56));
-      out.writeByteAsInt((int) (b >> 48));
-      out.writeByteAsInt((int) (b >> 40));
-      out.writeByteAsInt((int) (b >> 32));
-      out.writeByteAsInt((int) (b >> 24));
-      out.writeByteAsInt((int) (b >> 16));
-      out.writeByteAsInt((int) (b >> 8));
-      out.writeByteAsInt((int) b);
-    }
   }
 
   private int readLEInt() throws IOException {
@@ -333,7 +284,7 @@ public class BinaryDocument extends BC implements GenericBinaryDocument {
   private double ioReadDouble() throws IOException {
     double d = stream.readDouble();
     if (out != null)
-      writeLong(Double.doubleToRawLongBits(d));
+      out.writeLong(Double.doubleToRawLongBits(d));
     return d;
   }
 
