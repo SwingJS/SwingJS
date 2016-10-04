@@ -396,7 +396,7 @@ class EMStaticFrame extends Frame
 	accuracyChooser.add("Medium Accuracy");
 	accuracyChooser.add("High Accuracy");
 	accuracyChooser.add("Highest Accuracy");
-	accuracyChooser.select(1);
+	accuracyChooser.select(2);
 	accuracyChooser.addItemListener(this);
 	main.add(accuracyChooser);
 
@@ -2684,6 +2684,23 @@ class EMStaticFrame extends Frame
 	}
     }
 
+    void doCylinderHollow(double p, int floater) {
+	int x = gridSizeX/2;
+	int y = gridSizeY/2;
+	int r = 12;
+	int n;
+	for (n = -r+1; n < r; n++) {
+	    int a = (int) java.lang.Math.sqrt(r*r-n*n-.01);
+	    int a2;
+	    for (a2 = -a; a2 != a; a2++) {
+		if (Math.sqrt(n*n+a2*a2) < 9)
+		    continue;
+		addConductor(x+n, y+a2, p);
+		grid[x+n][y+a2].floater = (byte) floater;
+	    }
+	}
+    }
+    
     void doCylinderCharge(double p, int r, int xo) {
 	int x = gridSizeX/2;
 	int y = gridSizeY/2;
@@ -2785,6 +2802,23 @@ class EMStaticFrame extends Frame
 	    for (i = d-2; i <= d; i++)
 		conductDrawRect(gridSizeX/2-i, gridSizeY/2-i,
 				gridSizeX/2+i, gridSizeY/2+i, 1, 1);
+	}
+	Setup createNext() { return new HollowFloatingCylinderSetup(); }
+    }
+    class HollowFloatingCylinderSetup extends Setup {
+	String getName() { return "Floating Hollow Cyl"; }
+	void select() {
+	    doCylinderHollow(0, 1);
+	    addCharge(gridSizeX/2+6, gridSizeY/2, chargeAmt);
+	}
+	Setup createNext() { return new HollowFloatingCylinder2Setup(); }
+    }
+    class HollowFloatingCylinder2Setup extends Setup {
+	String getName() { return "Floating Hollow Cyl 2"; }
+	void select() {
+	    doCylinderHollow(0, 1);
+	    addCharge(gridSizeX/2-3, gridSizeY/2, +chargeAmt);
+	    addCharge(gridSizeX/2+3, gridSizeY/2, -chargeAmt);
 	}
 	Setup createNext() { return new SharpPointSetup(); }
     }
