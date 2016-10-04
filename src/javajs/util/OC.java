@@ -272,6 +272,7 @@ public class OC extends OutputStream implements GenericOutputChannel {
     byteCount++;
   }
 
+  // in JSmol,  this is commented out because the underlying OutputStream does not have it.
   /**
    * Will break if used; no equivalent in JavaScript.
    * 
