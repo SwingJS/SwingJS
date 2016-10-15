@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 10/15/2016 9:28:13 AM adds Float.floatToIntBits(f)
 // BH 7/31/2016 2:56:07 PM fix for compiler error using overrideMethod for functions that contain superCall()
 // BH 7/31/2016 5:56:59 AM floatToInt and floatToChar need to consider NaN
 // BH 7/23/2016 6:03:20 PM work-around for new Boolean(string), since native JavaScript Boolean does not support that;
@@ -5458,6 +5459,15 @@ return"class java.lang.Float";
 }
 return Clazz._floatToString(this.valueOf());
 };
+
+Clazz._a32 = null;
+
+Float.floatToIntBits = function(f) {
+var a = Clazz._a32 || (Clazz._a32 = new Float32Array(1));
+a[0] = f;
+return new Int32Array(a.buffer)[0]; 
+}
+
 
 Clazz.overrideConstructor(Float, function(v){
  v == null && (v = 0);
