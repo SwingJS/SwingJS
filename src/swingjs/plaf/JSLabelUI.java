@@ -19,7 +19,7 @@ public class JSLabelUI extends JSLightweightUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null)	
 			textNode = domNode = newDOMObject("label", id);
-		vCenter(domNode, 10);
+		//vCenter(domNode, 10);
 		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
 		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
 	
