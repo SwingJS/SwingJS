@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import javajs.util.Base64;
-import javajs.util.BinaryDocument;
 import javajs.util.OC;
 
 import javax.sound.sampled.AudioFormat;
@@ -109,84 +108,76 @@ public class JSAudio {
 		int bitsPerSample = af.getSampleSizeInBits();
 		int bytesPerSample = bitsPerSample / 8;
 
-		try {
-			switch (spsec) {
-			case 8000:
-			case 11025:
-			case 16000:
-			case 22050:
-			case 44100:
-				break;
-			default:
-				throw new UnsupportedAudioFileException("sample rate of " + spsec
-						+ " must be one of 8000,11025,1600,22050,44100");
-			}
-
-			// 0x0001 WAVE_FORMAT_PCM PCM
-			// 0x0003 WAVE_FORMAT_IEEE_FLOAT IEEE float
-			// 0x0006 WAVE_FORMAT_ALAW 8-bit ITU-T G.711 A-law
-			// 0x0007 WAVE_FORMAT_MULAW 8-bit ITU-T G.711 µ-law
-
-//			byte[] b;
-			int fmt = FORMAT_UNSUPPORTED;
-
-			// "PCM ;PCMB;ALAW;ULAW;FLOAT"
-
-			// / 0 15 30 45 60
-			String format = af.getEncoding().toString();
-			switch ("PCM_SIGNED     PCM_UNSIGNED   PCM_FLOAT      ULAW           ALAW           "
-					.indexOf(format)) {
-			case 0: // PCM_SIGNED
-				switch (bitsPerSample) {
-				case 8:
-					fmt = FORMAT_ULAW;
-					data = toULaw(data);
-					break;
-				case 16:
-					fmt = FORMAT_PCM;
-					if (af.isBigEndian())
-						data = toLittleEndian(data);
-					break;
-				}
-				break;
-			case 45:
-				if (bitsPerSample == 8)
-					fmt = FORMAT_ULAW;
-				break;
-			}
-			if (fmt == FORMAT_UNSUPPORTED)
-				throw new UnsupportedAudioFileException("unsupported format " + bitsPerSample + "-bit " + format);
-			int nchannels = 1;
-			int bytesPerSecond = spsec * nchannels * bytesPerSample;
-
-			BinaryDocument outFile = new BinaryDocument();
-			OC out = new OC();
-			out.setBigEndian(false);
-			outFile.setOutputChannel(out);
-			outFile.writeString("RIFF"); // 00 "RIFF"
-			outFile.writeInt(36 + data.length); // 04 36 + data.length
-			outFile.writeString("WAVE"); // 08 "WAVE"
-
-			outFile.writeString("fmt "); // 12 "fmt "
-			outFile.writeInt(16); // 16 - size of this chunk
-			outFile.writeShort((short) fmt); // 20 - what is the audio format? 1 (PCM)
-			outFile.writeShort((short) 1); // 22 - mono or stereo? 1
-			outFile.writeInt(spsec); // 24 - samples per second
-			outFile.writeInt(bytesPerSecond); // 28 - bytes per second
-			outFile.writeShort((short) bytesPerSample); // 32 - # of bytes in one
-																									// sample (2)
-			outFile.writeShort((short) (bitsPerSample)); // 34 - how many bits in a
-																										// sample (16)
-
-			outFile.writeString("data"); // 36 - "data"
-			outFile.writeInt(data.length); // 40 - how big is this data chunk
-			outFile.writeBytes(data, 0, data.length); // 44 - the actual data itself
-			return out.toByteArray();
-
-		} catch (IOException e) {
-			// not likely
-			return null;
+		switch (spsec) {
+		case 8000:
+		case 11025:
+		case 16000:
+		case 22050:
+		case 44100:
+			break;
+		default:
+			throw new UnsupportedAudioFileException("sample rate of " + spsec
+					+ " must be one of 8000,11025,1600,22050,44100");
 		}
+
+		// 0x0001 WAVE_FORMAT_PCM PCM
+		// 0x0003 WAVE_FORMAT_IEEE_FLOAT IEEE float
+		// 0x0006 WAVE_FORMAT_ALAW 8-bit ITU-T G.711 A-law
+		// 0x0007 WAVE_FORMAT_MULAW 8-bit ITU-T G.711 µ-law
+
+		// byte[] b;
+		int fmt = FORMAT_UNSUPPORTED;
+
+		// "PCM ;PCMB;ALAW;ULAW;FLOAT"
+
+		// / 0 15 30 45 60
+		String format = af.getEncoding().toString();
+		switch ("PCM_SIGNED     PCM_UNSIGNED   PCM_FLOAT      ULAW           ALAW           "
+				.indexOf(format)) {
+		case 0: // PCM_SIGNED
+			switch (bitsPerSample) {
+			case 8:
+				fmt = FORMAT_ULAW;
+				data = toULaw(data);
+				break;
+			case 16:
+				fmt = FORMAT_PCM;
+				if (af.isBigEndian())
+					data = toLittleEndian(data);
+				break;
+			}
+			break;
+		case 45:
+			if (bitsPerSample == 8)
+				fmt = FORMAT_ULAW;
+			break;
+		}
+		if (fmt == FORMAT_UNSUPPORTED)
+			throw new UnsupportedAudioFileException("unsupported format "
+					+ bitsPerSample + "-bit " + format);
+		int nchannels = 1;
+		int bytesPerSecond = spsec * nchannels * bytesPerSample;
+		@SuppressWarnings("resource")
+		OC out = new OC();
+		out.setBigEndian(false);
+		out.append("RIFF"); // 00 "RIFF"
+		out.writeInt(36 + data.length); // 04 36 + data.length
+		out.append("WAVE"); // 08 "WAVE"
+		out.append("fmt "); // 12 "fmt "
+		out.writeInt(16); // 16 - size of this chunk
+		out.writeShort((short) fmt); // 20 - what is the audio format? 1 (PCM)
+		out.writeShort((short) 1); // 22 - mono or stereo? 1
+		out.writeInt(spsec); // 24 - samples per second
+		out.writeInt(bytesPerSecond); // 28 - bytes per second
+		out.writeShort((short) bytesPerSample); // 32 - # of bytes in one
+																						// sample (2)
+		out.writeShort((short) (bitsPerSample)); // 34 - how many bits in a
+																							// sample (16)
+		out.append("data"); // 36 - "data"
+		out.writeInt(data.length); // 40 - how big is this data chunk
+		out.write(data, 0, data.length); // 44 - the actual data itself
+		out.closeChannel();
+		return out.toByteArray();
 	}
 
 	/**
