@@ -276,8 +276,15 @@ public class JSMouse {
 		int count = updateClickCount(id, time, x, y);
 
 		Component source = viewer.top; // may be a JFrame
-		MouseEvent e = new MouseEvent(source, id, time, modifiers, x, y, x, y,
-				count, popupTrigger, button);
+		MouseEvent e = (id == MouseEvent.MOUSE_WHEEL ? 
+				new MouseWheelEvent(source, id, time, modifiers, 
+						xWhenPressed, yWhenPressed, xWhenPressed, yWhenPressed, count, 
+						popupTrigger, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, y)
+		// Component source, int id, long when, int modifiers,
+    // int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger,
+    // int scrollType, int scrollAmount, int wheelRotation
+		: new MouseEvent(source, id, time, modifiers, x, y, x, y,
+				count, popupTrigger, button));
 		byte[] bdata = new byte[0];
 		Object jqevent = this.jqevent;
 		/**
