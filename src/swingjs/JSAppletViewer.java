@@ -120,6 +120,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	public final static int APPLET_QUIT = 6;
 	public final static int APPLET_ERROR = 7;
 	public final static int APPLET_DISPOSE = 75; // SwingJS
+	public final static int RUN_MAIN = 76; // SwingJS
 
 	/* send to the parent to force relayout */
 	public final static int APPLET_RESIZE = 51234;
@@ -160,6 +161,8 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	private boolean addFrame;
 
 	private JFrame jAppletFrame;
+
+	private String main;
 
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
@@ -260,10 +263,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 			AppletEvent evt = new AppletEvent(this, id, argument);
 			listeners.appletStateChanged(evt);
 		}
-	}
-
-	private String getCode() {
-		return getParameter("code");
 	}
 
 	// ///////// AppletStub ////////////////
@@ -447,7 +446,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				}
 				System.out.println("JSAppletViewer runloader");
 				runLoader(); // applet created here
-				nextStatus = APPLET_INIT;
+				nextStatus = (main == null ? APPLET_INIT : RUN_MAIN);
 				ok = true;
 				break;
 			case APPLET_INIT:
@@ -526,6 +525,12 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 					showAppletStatus("disposed");
 				}
 				break;
+			case RUN_MAIN:
+				// we still have an applet context for a variety of reasons
+				// but main(String[] args) is run as a static method.
+				((JSApplet) applet).runMain(main, (String[]) params.get("args"));
+				JSToolkit.readyCallback(appletName, fullName, applet, this);				
+				break;
 			case APPLET_QUIT:
 				break;
 			default:
@@ -544,12 +549,15 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	private void runLoader() {
 		dispatchAppletEvent(APPLET_LOADING, null);
 		status = APPLET_LOAD;
-		String code = getCode();
+		String code = getParameter("code");
+		main = getParameter("main");
 		try {
-			if (code == null) {
-				System.err.println("runloader.err-- \"code\" must be specified.");
-				throw new InstantiationException("\"code\" must be specified.");
+			if (code == null && main == null) {
+				System.err.println("runloader.err-- \"code\" or \"main\" must be specified.");
+				throw new InstantiationException("\"code\" or \"main\" must be specified.");
 			}
+			if (code == null)
+				code = "swingjs.JSApplet";
 			top = applet = japplet = (JApplet) JSToolkit.getInstance(code);
 			if (applet == null) {
 				System.out.println(code + " could not be launched");
