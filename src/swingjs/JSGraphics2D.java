@@ -689,6 +689,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		for (int i = 1; i < nPoints; i++) {
 			ctx.lineTo(xPoints[i], yPoints[i]);
 		}
+		ctx.stroke();
 	}
 
 	@Override
