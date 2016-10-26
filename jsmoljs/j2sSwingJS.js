@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 10/26/2016 9:35:03 AM adds Clazz._Loader.setClassPathFor(className)
 // BH 10/15/2016 9:28:13 AM adds Float.floatToIntBits(f)
 // BH 7/31/2016 2:56:07 PM fix for compiler error using overrideMethod for functions that contain superCall()
 // BH 7/31/2016 5:56:59 AM floatToInt and floatToChar need to consider NaN
@@ -3259,12 +3260,22 @@ _Loader.loadPackage = function(pkg, fSuccess) {
 /* public */
 _Loader.jarClasspath = function (jar, clazzes) {
 	if (!(clazzes instanceof Array))
-		clazzes = [classes];
+		clazzes = [clazzes];
 	unwrapArray(clazzes);
 	for (var i = clazzes.length; --i >= 0;)
 		classpathMap["#" + clazzes[i]] = jar;
 	classpathMap["$" + jar] = clazzes;
 };
+
+_Loader.setClasspathFor = function(path) {
+// simpler syntax:
+// 	Clazz._Loader.setClasspathFor("edu/colorado/phet/idealgas/model/PressureSensingBox.ChangeListener");
+    var jar = path.split(".")[0]+".js";
+    path = path.replace(/\//g,".");
+		classpathMap["#" + path] = jar;
+  	var a = classpathMap["$" + jar] || (classpathMap["$" + jar] = []);
+    a.push(path);
+}
 
 /**
  * Usually be used in .../package.js. All given packages will be registered
