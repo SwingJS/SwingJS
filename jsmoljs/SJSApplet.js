@@ -108,7 +108,7 @@ if (typeof(SwingJS) == "undefined") {
 		checkOnly || (checkOnly = false);
 		Info || (Info = {});
 		var DefaultInfo = {
-      code: "swingjs.test.TanSugd3S",
+      code: null,//"swingjs.test.TanSugd3S",
       uncompressed: true,
 			color: "#FFFFFF", // applet object background color
 			width: 300,

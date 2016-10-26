@@ -11,22 +11,17 @@ import javajs.util.Lst;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
-import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.Frame;
-import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.Image;
 import jsjava.awt.Insets;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
-import jsjava.awt.event.PaintEvent;
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JFrame;
-import jsjavax.swing.JPanel;
 import jssun.applet.AppletEvent;
 import jssun.applet.AppletEventMulticaster;
 import jssun.applet.AppletListener;
@@ -545,7 +540,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		return (ok ? JSThread.LOOP : JSThread.DONE);
 	}
 
-	@SuppressWarnings("static-access")
 	private void runLoader() {
 		dispatchAppletEvent(APPLET_LOADING, null);
 		status = APPLET_LOAD;

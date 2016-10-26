@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 10/23/2016 10:13:42 PM adds support for Info.main
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
 // BH 7/25/2016 8:28:57 AM adds 3Dialog(fDone, asBytes)
 
@@ -1668,6 +1669,7 @@ J2S.Cache.put = function(filename, data) {
 		this._id = id;
 		this._is2D = true;
 		this._isJava = false;
+    this._isJNLP = !!Info.main;
 		this._jmolType = "J2S._Canvas2D (" + type + ")";
     this._isLayered = Info._isLayered || false; // JSV or SwingJS are layered
     this._isSwing = Info._isSwing || false;
@@ -1678,7 +1680,7 @@ J2S.Cache.put = function(filename, data) {
 			return this;
 		window[id] = this;
 		this._createCanvas(id, Info);
-		if (!J2S._document || this._deferApplet)
+		if (!this._isJNLP && (!J2S._document || this._deferApplet))
 			return this;
 		this._init();
 		return this;
@@ -1706,6 +1708,8 @@ J2S.Cache.put = function(filename, data) {
 
 		proto._createCanvas = function(id, Info) {
 			J2S._setObject(this, id, Info);
+      if (Info.main) // a Java application, not an applet -- let AppletViewer take care of this
+        return;
 			var t = J2S._getWrapper(this, true);
 			if (this._deferApplet) {
 			} else if (J2S._document) {
@@ -1733,8 +1737,8 @@ J2S.Cache.put = function(filename, data) {
 
 //////// swingjs.api.HTML5Applet interface    
     proto._getHtml5Canvas = function() { return this._canvas }; 
-    proto._getWidth = function() { return this._canvas.width }; 
-    proto._getHeight = function() { return this._canvas.height };
+    proto._getWidth = function() { return (this._canvas ? this._canvas.width : 0)}; 
+    proto._getHeight = function() { return (this._canvas ? this._canvas.height : 0)};
     proto._getContentLayer = function() { return J2S.$(this, "contentLayer")[0] };
     proto._repaintNow = function() { J2S._repaint(this, false) }; 
 ////////
