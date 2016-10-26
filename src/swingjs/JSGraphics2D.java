@@ -192,6 +192,10 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 //		boolean doClose = (arcAngle - startAngle == 360);
 		ctx.save();
 		{
+		    if (arcAngle < 0) {
+			startAngle += arcAngle;
+			arcAngle = -arcAngle;
+		    }
 		ctx.translate(x, y);
 		ctx.scale(width / 2, height / 2);
 		ctx.beginPath();
