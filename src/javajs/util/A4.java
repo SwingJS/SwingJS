@@ -213,8 +213,8 @@ public class A4 implements JSONEncodable, Serializable {
    */
   @Override
   public int hashCode() {
-    return T3.floatToIntBits0(x) ^ T3.floatToIntBits0(y)
-        ^ T3.floatToIntBits0(z) ^ T3.floatToIntBits0(angle);
+    return T3.floatToIntBits(x) ^ T3.floatToIntBits(y)
+        ^ T3.floatToIntBits(z) ^ T3.floatToIntBits(angle);
   }
 
   /**
@@ -247,6 +247,6 @@ public class A4 implements JSONEncodable, Serializable {
 
   @Override
   public String toJSON() {
-    return "[" + x + "," + y + "," + z + "," + (float) (angle * (180 / Math.PI)) + "]";
+    return "[" + x + "," + y + "," + z + "," + (float) (angle * 180.0 / Math.PI) + "]";
   }
 }

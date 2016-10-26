@@ -531,11 +531,11 @@ public class M3 extends M34 implements Serializable {
    */
   @Override
   public int hashCode() {
-    return T3.floatToIntBits0(m00) ^ T3.floatToIntBits0(m01)
-        ^ T3.floatToIntBits0(m02) ^ T3.floatToIntBits0(m10)
-        ^ T3.floatToIntBits0(m11) ^ T3.floatToIntBits0(m12)
-        ^ T3.floatToIntBits0(m20) ^ T3.floatToIntBits0(m21)
-        ^ T3.floatToIntBits0(m22);
+    return T3.floatToIntBits(m00) ^ T3.floatToIntBits(m01)
+        ^ T3.floatToIntBits(m02) ^ T3.floatToIntBits(m10)
+        ^ T3.floatToIntBits(m11) ^ T3.floatToIntBits(m12)
+        ^ T3.floatToIntBits(m20) ^ T3.floatToIntBits(m21)
+        ^ T3.floatToIntBits(m22);
   }
 
   /**

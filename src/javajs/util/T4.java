@@ -82,8 +82,8 @@ public abstract class T4 extends T3 {
    */
   @Override
   public int hashCode() {
-    return floatToIntBits0(x) ^ floatToIntBits0(y)
-        ^ floatToIntBits0(z) ^ floatToIntBits0(w);
+    return T3.floatToIntBits(x) ^ T3.floatToIntBits(y)
+        ^ T3.floatToIntBits(z) ^ T3.floatToIntBits(w);
   }
 
   /**
