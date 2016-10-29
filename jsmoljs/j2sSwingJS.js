@@ -3267,15 +3267,20 @@ _Loader.jarClasspath = function (jar, clazzes) {
 	classpathMap["$" + jar] = clazzes;
 };
 
-_Loader.setClasspathFor = function(path) {
-// simpler syntax:
+_Loader.setClasspathFor = function(clazzes) {
 // 	Clazz._Loader.setClasspathFor("edu/colorado/phet/idealgas/model/PressureSensingBox.ChangeListener");
-    var jar = path.split(".")[0]+".js";
-    path = path.replace(/\//g,".");
-		classpathMap["#" + path] = jar;
-  	var a = classpathMap["$" + jar] || (classpathMap["$" + jar] = []);
-    a.push(path);
+	if (!(clazzes instanceof Array))
+		clazzes = [clazzes];
+    for (var i = clazzes.length; --i >= 0;) {
+      path = clazzes[i];
+      var jar = _Loader.getJ2SLibBase() + path.split(".")[0]+".js";
+      path = path.replace(/\//g,".");
+  		classpathMap["#" + path] = jar;
+    	var a = classpathMap["$" + jar] || (classpathMap["$" + jar] = []);
+      a.push(path);
+    }
 }
+
 
 /**
  * Usually be used in .../package.js. All given packages will be registered
