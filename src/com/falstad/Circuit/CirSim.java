@@ -2375,8 +2375,11 @@ public class CirSim extends Frame implements ComponentListener, ActionListener,
 				case 2:
 					// hausen: if setuplist.txt does not exist in the same
 					// directory, try reading from the jar file
-					ClassLoader cl = getClass().getClassLoader();
-					url = cl.getResource(file);
+					//ClassLoader cl = getClass().getClassLoader();
+					
+					// BH: Using Class.getResource instead of ClassLoader.getResource,
+					// so this will be from the directory containing CirSim.class
+					url = getClass().getResource(file);
 					break;
 				case 3:
 					url = new URL("http://www.falstad.com/circuit-java/" + file);
