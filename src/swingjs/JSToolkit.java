@@ -829,7 +829,7 @@ public class JSToolkit extends SunToolkit {
 	 * @param filename
 	 * @return
 	 */
-	public byte[] getFileAsBytes(String filename) {
+	public static byte[] getFileAsBytes(String filename) {
 		Object data = getFileContents(filename);
 		byte[] b = null;
 		if (AU.isAB(data))

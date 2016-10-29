@@ -105,7 +105,7 @@
       </fileset>
     </copy>
    	
-   	
+
   	<!--  we need to remove this dependency -->
   	
    	<echo>...JU (javajs/util, com/jcraft/jzlib)</echo>
@@ -157,16 +157,6 @@
   	<echo>Changing "javajs.util" references to "JU"</echo>
   	<replace dir="site/swingjs/" includes="**/*.js" token="javajs.util" value="JU" />
   		
-  	<echo>...adding to swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
-  	<copy todir="site/swingjs/j2s"  overwrite="true" >
-      <fileset dir="src">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
-      </fileset>
-    </copy>
-   	
    	<echo>Fixing J2S compiler errors</echo>
   	<!-- no idea what this problem could be -->
     <echo>...fixing Thread.js error</echo>
@@ -195,6 +185,25 @@
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="javajs.util" value="JU"/>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/>
    	  	   	  	
+  	<echo>...adding to swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
+  	<copy todir="site/swingjs/j2s"  overwrite="true" >
+      <fileset dir="src">
+        <include name="**/*.properties" />
+        <include name="**/*.css" />
+        <include name="**/*.png" />
+        <include name="**/*.txt" />
+        <exclude name="jssun/**/*" />
+      </fileset>
+    </copy>   	
+  	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
+      <fileset dir="src\jssun">
+        <include name="**/*.properties" />
+        <include name="**/*.css" />
+        <include name="**/*.png" />
+        <include name="**/*.txt" />
+      </fileset>
+    </copy>
+
   	
   	
   	<echo>...adding jQuery and minimizing it</echo>

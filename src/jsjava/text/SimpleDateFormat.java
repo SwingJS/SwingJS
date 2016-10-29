@@ -41,23 +41,20 @@ package jsjava.text;
 //import java.io.IOException;
 //import java.io.InvalidObjectException;
 //import java.io.ObjectInputStream;
-import jsjava.util.Calendar;
-
 import java.text.MessageFormat;
 import java.util.Date;
-import jsjava.util.GregorianCalendar;
 import java.util.Hashtable;
-import jsjava.util.Locale;
-import java.util.Map;
 import java.util.MissingResourceException;
 
-import swingjs.J2SRequireImport;
+import jsjava.util.Calendar;
+import jsjava.util.GregorianCalendar;
+import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
-import jsjava.util.SimpleTimeZone;
 import jsjava.util.TimeZone;
 import jssun.util.calendar.CalendarUtils;
-//import jssun.util.calendar.ZoneInfoFile;
 import jssun.util.resources.LocaleData;
+import swingjs.J2SRequireImport;
+//import jssun.util.calendar.ZoneInfoFile;
 
 /**
  * <code>SimpleDateFormat</code> is a concrete class for formatting and
@@ -343,7 +340,10 @@ import jssun.util.resources.LocaleData;
  * @see          DateFormatSymbols
  * @author       Mark Davis, Chen-Lieh Huang, Alan Liu
  */
-@J2SRequireImport( { jsjava.util.Calendar.class, jsjava.util.TimeZone.class, 
+@J2SRequireImport( { 
+	jsjava.util.GregorianCalendar.class, 
+	sun.util.resources.LocaleData.class,
+	jsjava.util.Calendar.class, jsjava.util.TimeZone.class, 
 	jssun.util.calendar.ZoneInfo.class, jsjava.text.DecimalFormat.class })
 public class SimpleDateFormat extends DateFormat {
 

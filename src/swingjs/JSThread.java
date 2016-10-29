@@ -2,6 +2,10 @@ package swingjs;
 
 import java.awt.Toolkit;
 import java.awt.event.InvocationEvent;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import swingjs.api.JSFunction;
 
 /**
@@ -204,5 +208,36 @@ public abstract class JSThread extends Thread implements JSFunction {
 		}
 		return true;
 	}
+	
+	@Override
+	public ClassLoader getContextClassLoader() {
+		/**
+		 * @j2sNative
+		 *
+		 * return this;
+		 */
+		{
+			return super.getContextClassLoader();
+		}
+	}
+	
+	/**
+	 * masquerading as a ClassLoader here in JavaScript
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public InputStream getResourceAsStream(String name) {
+		/**
+		 * @j2sNative
+		 *  name = this.appletViewer.html5Applet._j2sPath + "/" + name;
+		 *  
+		 */
+		{}
+		byte[] bytes = JSToolkit.getFileAsBytes(name);
+		return (bytes == null ? null : new BufferedInputStream(new ByteArrayInputStream(bytes)));
+	}
+
+
 
 }

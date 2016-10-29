@@ -210,6 +210,12 @@ public final class AppContext {
         this.threadGroup = threadGroup;
         threadGroup2appContext.put(threadGroup, this);
 
+        /**
+         * @j2sNative
+         * 
+         * this.contextClassLoader = this;
+         * 
+         */
 //        this.contextClassLoader =
 //            (ClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
 //                    public Object run() {

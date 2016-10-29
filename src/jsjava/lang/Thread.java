@@ -160,8 +160,8 @@ class Thread implements Runnable {
     /* The group of this thread */
     private ThreadGroup group;
 
-//    /* The context ClassLoader for this thread */
-//    private ClassLoader contextClassLoader;
+    /* The context ClassLoader for this thread */
+    private ClassLoader contextClassLoader;
 
 //    /* The inherited AccessControlContext of this thread */
 //    private AccessControlContext inheritedAccessControlContext;

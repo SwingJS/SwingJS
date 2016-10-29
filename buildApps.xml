@@ -29,18 +29,8 @@
         <include name="org/**/*.js" />
         <include name="test/**/*.js" />
         <exclude name="**/java/*.js" />
-        <exclude name="jsjava/*.js" />
-        <exclude name="jssun/*.js" />
-      </fileset>
-    </copy>
-   	
-  	<echo>...adding to swingjs/j2s non-js files from src (for CalendarData, swingjs.jquery)</echo>
-  	<copy todir="site/swingjs/j2s"  overwrite="true" >
-      <fileset dir="src">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
+        <exclude name="jsjava/**/*.js" />
+        <exclude name="jssun/**/*.js" />
       </fileset>
     </copy>
    	
@@ -91,6 +81,24 @@
       </fileset>
     </copy>
 
+  	<copy todir="site/swingjs/j2s"  overwrite="true" >
+      <fileset dir="src">
+        <include name="**/*.properties" />
+        <include name="**/*.css" />
+        <include name="**/*.png" />
+        <include name="**/*.txt" />
+        <exclude name="jssun/**/*" />
+      </fileset>
+    </copy>   	
+  	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
+      <fileset dir="src\jssun">
+        <include name="**/*.properties" />
+        <include name="**/*.css" />
+        <include name="**/*.png" />
+        <include name="**/*.txt" />
+      </fileset>
+    </copy>
+   	
   	<echo>deleting site/tmp directory</echo>
    	 	<delete quiet="true" dir="site/tmp" />
   	

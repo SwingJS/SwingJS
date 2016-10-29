@@ -45,6 +45,8 @@ import jsjava.math.RoundingMode;
 import java.util.ArrayList;
 //import java.util.Currency;
 import java.util.Hashtable;
+
+import swingjs.J2SRequireImport;
 import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 //import java.util.concurrent.atomic.AtomicInteger;
@@ -372,6 +374,7 @@ import jssun.util.resources.LocaleData;
  * @author       Mark Davis
  * @author       Alan Liu
  */
+@J2SRequireImport(DecimalFormatSymbols.class)
 public class DecimalFormat extends NumberFormat {
 
     /**
