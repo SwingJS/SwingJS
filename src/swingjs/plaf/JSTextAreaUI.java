@@ -50,5 +50,10 @@ public class JSTextAreaUI extends JSTextUI {
 	protected Dimension getCSSAdjustment() {
 		return new Dimension(-5, -5);
 	}
+
+	@Override
+	protected String getPropertyPrefix() {
+		return "TextArea";
+	}
 	
 }

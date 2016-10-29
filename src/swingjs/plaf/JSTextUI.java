@@ -25,6 +25,7 @@
 package swingjs.plaf;
 
 import jsjava.awt.Dimension;
+import jsjava.awt.Font;
 import jsjava.awt.Insets;
 import jsjava.awt.LayoutManager;
 import jsjava.awt.event.ActionEvent;
@@ -130,12 +131,12 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 * @see #installUI
 	 */
 	protected void installDefaults() {
-		// String prefix = getPropertyPrefix();
-		// Font f = editor.getFont();
-		// if ((f == null) || (f instanceof UIResource)) {
-		// editor.setFont(UIManager.getFont(prefix + ".font"));
-		// }
-		//
+		 String prefix = getPropertyPrefix();
+		 Font f = editor.getFont();
+		 if ((f == null) || (f instanceof UIResource)) {
+		 editor.setFont(UIManager.getFont(prefix + ".font"));
+		 }
+		
 		// Color bg = editor.getBackground();
 		// if ((bg == null) || (bg instanceof UIResource)) {
 		// editor.setBackground(UIManager.getColor(prefix + ".background"));
@@ -2751,13 +2752,13 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	// }
 	// }
 	//
-	// /**
-	// * Gets the name used as a key to look up properties through the
-	// * UIManager. This is used as a prefix to all the standard
-	// * text properties.
-	// *
-	// * @return the name
-	// */
-	// protected abstract String getPropertyPrefix();
+	 /**
+	 * Gets the name used as a key to look up properties through the
+	 * UIManager. This is used as a prefix to all the standard
+	 * text properties.
+	 *
+	 * @return the name
+	 */
+	 protected abstract String getPropertyPrefix();
 
 }

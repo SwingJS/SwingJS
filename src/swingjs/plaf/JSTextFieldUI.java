@@ -56,5 +56,10 @@ public class JSTextFieldUI extends JSTextUI {
 		return true;
 	}
 
+	@Override
+	protected String getPropertyPrefix() {
+		return "TextField";
+	}
+
 
 }
