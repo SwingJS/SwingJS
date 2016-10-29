@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 10/29/2016 5:45:25 PM getClass().getClassLoader() should use full path
 // BH 10/26/2016 9:35:03 AM adds Clazz._Loader.setClassPathFor(className)
 // BH 10/15/2016 9:28:13 AM adds Float.floatToIntBits(f)
 // BH 7/31/2016 2:56:07 PM fix for compiler error using overrideMethod for functions that contain superCall()
@@ -1235,14 +1236,7 @@ var inF = {
 	},
 	getClassLoader : function () {
 		var clazzName = this.__CLASS_NAME__;
-		var baseFolder = Clazz._Loader.getClasspathFor(clazzName);
-		var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
-		if (x != -1) {
-      x = baseFolder.lastIndexOf("/"); // BH FIX
-			baseFolder = baseFolder.substring (0, x);
-		} else {
-			baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
-		}
+		var baseFolder = Clazz._Loader.getJ2SLibBase(); // getClass().getClassLoader() uses full path
 		var loader = Clazz._Loader.requireLoaderByBase(baseFolder);
 		loader.getResourceAsStream = inF.getResourceAsStream;
 		loader.getResource = inF.getResource; // BH
@@ -1286,6 +1280,7 @@ var inF = {
 			}
 		} else {
 			if (this.base) {
+        // getClass().getClassLoader() will be here
 				baseFolder = this.base;
 			} else if (Clazz._Loader) {
 				baseFolder = Clazz._Loader.getClasspathFor(clazzName);

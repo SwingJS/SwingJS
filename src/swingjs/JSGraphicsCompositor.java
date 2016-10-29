@@ -21,6 +21,8 @@ import jssun.awt.image.SunWritableRaster;
 public class JSGraphicsCompositor {
 
 
+	private static double[] mat6;
+
 	JSGraphicsCompositor() {
 		// for reflection
 	}
@@ -153,7 +155,6 @@ public class JSGraphicsCompositor {
 	}
 
 	public WritableRaster filterRaster(Raster src, WritableRaster dst, RasterOp op) {
-		JSToolkit.notImplemented(null);
 		// Create the destination tile
 		if (dst == null) {
 			dst = op.createCompatibleDestRaster(src);
@@ -182,7 +183,7 @@ public class JSGraphicsCompositor {
 
 		case 'A':
 			AffineTransformOp bOp = (AffineTransformOp) op;
-			double[] matrix = new double[6];
+			double[] matrix = (mat6 == null ? mat6 = new double[6] : mat6);
 			bOp.getTransform().getMatrix(matrix);
 			if (transformRaster(src, dst, matrix, bOp.getInterpolationType()) > 0) {
 				retRaster = dst;

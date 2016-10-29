@@ -53,7 +53,7 @@ public class Interface {
     	Class<?> y = Class.forName(name); 
       if (y != null)
       	x = y.newInstance();
-    } catch (Exception e) {
+    } catch (Throwable e) {
       System.out.println("Swingjs.api.Interface Error creating instance for " + name + ": \n" + e);
     } finally {
     	/**

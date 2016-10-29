@@ -986,6 +986,12 @@
   	
   	<echo>...running buildDist to create site/applets</echo>
    	<ant antfile="buildDist.xml" target="testDist" />
+
+  	<echo>...running buildZip to create core zip/swingjs.zip</echo>
+   	<ant antfile="buildZip.xml" target="zip" />
+  	
+
+
   	
   </target>
 
