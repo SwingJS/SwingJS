@@ -1844,7 +1844,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				'*',
 
 				"TextArea.font",
-				monospacedPlain12,
+				sansSerifPlain12,
 				"TextArea.background",
 				window,
 				"TextArea.foreground",
