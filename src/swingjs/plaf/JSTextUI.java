@@ -46,6 +46,7 @@ import jsjavax.swing.text.DefaultEditorKit;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.TextAction;
+import swingjs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 //import jsjava.awt.KeyboardFocusManager;
@@ -113,6 +114,7 @@ import swingjs.api.DOMNode;
  * @author Timothy Prinzing
  * @author Shannon Hickey (drag and drop)
  */
+@J2SRequireImport(TextListener.class)
 public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFactory
 																											// {
 
