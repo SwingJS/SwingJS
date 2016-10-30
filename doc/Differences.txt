@@ -40,7 +40,7 @@ static methods and classes -- order is important
 LookAndFeel
 inner class order
 String does not implement CharSequence.length() or .subSequence()
-
+toString() may need to be explicit
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -1309,6 +1309,18 @@ adjust accordingly. String.length() is converted to String.length by the j2s
 compiler. But String.subSequence() is not convereted automatically to String.substring().
 Clear error messages will notify the developer if use of String.subSequence() is
 used.
+
+
+toString() may need to be explicit (Can't convert .... to primitive type)
+-------------------------------------------------------------------------
+JavaScript will use its own method of creating a string form of an object. So if you
+have implemented a toString() method for x instanceof X, then you should use it 
+explicitly as "foo " + x.toString(), not "foo " + x. 
+
+This problem was first seen in the original form of java.awt.image.BufferedImage.toString() 
+where we got the JavaScript error "Can't convert .... to primitive type" in an error message
+due to " " + this.raster, where this.raster was a sun.awt.image.IntegerInterleavedRaster.
+ 
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
