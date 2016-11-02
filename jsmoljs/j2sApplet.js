@@ -600,10 +600,10 @@ J2S = (function(document) {
 		return false;
 	}
 
-	J2S._getFileData = function(fileName, fSuccess, doProcess) {
+	J2S._getFileData = function(fileName, fSuccess, doProcess, isBinary) {
     // swingjs.api.J2SInterface
 		// use host-server PHP relay if not from this host
-		var isBinary = J2S._isBinaryUrl(fileName);
+		isBinary = (isBinary || J2S._isBinaryUrl(fileName));
 		var isPDB = (fileName.indexOf("pdb.gz") >= 0 && fileName.indexOf("//www.rcsb.org/pdb/files/") >= 0);
 		var asBase64 = (isBinary && !J2S._canSyncBinary(isPDB));
 		if (asBase64 && isPDB) {
@@ -614,6 +614,7 @@ J2S = (function(document) {
 		var isPost = (fileName.indexOf("?POST?") >= 0);
 		if (fileName.indexOf("file:/") == 0 && fileName.indexOf("file:///") != 0)
 			fileName = "file://" + fileName.substring(5);      /// fixes IE problem
+    var isFile = (fileName.indexOf("file://") == 0); 
 		var isMyHost = (fileName.indexOf("://") < 0 || fileName.indexOf(document.location.protocol) == 0 && fileName.indexOf(document.location.host) >= 0);
     var isHttps2Http = (J2S._httpProto == "https://" && fileName.indexOf("http://") == 0);
 		var isDirectCall = J2S._isDirectCall(fileName);
@@ -621,7 +622,7 @@ J2S = (function(document) {
 
 		var cantDoSynchronousLoad = (!isMyHost && J2S.$supportsIECrossDomainScripting());
 		var data = null;
-		if (isHttps2Http || asBase64 || !isMyHost && !isDirectCall || !fSuccess && cantDoSynchronousLoad ) {
+		if (!isFile && (isHttps2Http || asBase64 || !isMyHost && !isDirectCall || !fSuccess && cantDoSynchronousLoad)) {
 				data = J2S._getRawDataFromServer("_",fileName, fSuccess, fSuccess, asBase64, true);
 		} else {
 			fileName = fileName.replace(/file:\/\/\/\//, "file://"); // opera
@@ -845,6 +846,11 @@ J2S = (function(document) {
 	J2S._strToBytes = function(s) {
 		if (Clazz.instanceOf(s, self.ArrayBuffer))
 			return J2S._toBytes(s);
+    if (s.indexOf(";base64,") == 0)
+      return JU.Base64.decodeBase64(s.substring(8));
+    // not UTF-8
+    
+    
 		var b = Clazz.newByteArray(s.length, 0);
 		for (var i = s.length; --i >= 0;)
 			b[i] = s.charCodeAt(i) & 0xFF;

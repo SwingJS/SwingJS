@@ -319,6 +319,7 @@ if (typeof(SwingJS) == "undefined") {
 	}
 
 	proto._showInfo = function(tf) {
+    if(this._isJNLP)return;
 		if(tf && this._2dapplet)
 			this._2dapplet._show(false);
 		J2S.$html(J2S.$(this, "infoheaderspan"), this._infoHeader);
