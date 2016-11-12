@@ -23,7 +23,7 @@ public interface J2SInterface {
 
 	void _setAppletThread(String appletName, JSThread myThread);
 
-	Object _getFileData(String fileName, Object fSuccess, boolean doProcess);
+	Object _getFileData(String fileName, Object fSuccess, boolean doProcess, boolean isBinary);
 
 	void _setDraggable(DOMNode tagNode, Object targetNodeOrFDown);
 

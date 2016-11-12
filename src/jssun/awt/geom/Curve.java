@@ -25,17 +25,21 @@
 
 package jssun.awt.geom;
 
-import jsjava.awt.geom.Rectangle2D;
-import jsjava.awt.geom.PathIterator;
-import jsjava.awt.geom.IllegalPathStateException;
 import java.util.Vector;
 
+import jsjava.awt.geom.IllegalPathStateException;
+import jsjava.awt.geom.PathIterator;
+import jsjava.awt.geom.Rectangle2D;
+
+// BH: at issue here is the fact that the J2S compiler 
+//     does not add the necessary Order1,2,3 references
+//     to the "needs" but not "requires" side of things
 public abstract class Curve {
     public static final int INCREASING = 1;
     public static final int DECREASING = -1;
 
     protected int direction;
-
+    
     public static void insertMove(Vector curves, double x, double y) {
         curves.add(new Order0(x, y));
     }
@@ -877,7 +881,7 @@ public abstract class Curve {
             System.err.println("this == "+this);
             System.err.println("that == "+that);
             System.out.println("target range = "+yrange[0]+"=>"+yrange[1]);
-            throw new InternalError("backstepping from "+yrange[0]+" to "+y1);
+            throw new InternalError("sun.awt.geom.Curve backstepping from "+yrange[0]+" to "+y1);
         }
         yrange[1] = y1;
         if (this.getXMax() <= that.getXMin()) {

@@ -2830,7 +2830,6 @@ protected  transient ComponentPeer peer;
      * @see       #getFont
      * @see       #getPeer
      * @see       java.awt.peer.ComponentPeer#getFontMetrics(Font)
-     * @see       Toolkit#getFontMetrics(Font)
      * @since     JDK1.0
      */
     public FontMetrics getFontMetrics(Font font) {
@@ -2841,7 +2840,7 @@ protected  transient ComponentPeer peer;
 //                return peer.getFontMetrics(font);
 //            }
 //        }
-        return jssun.font.FontDesignMetrics.getMetrics(font);
+        return font.getFontMetrics();
     }
 
     /**

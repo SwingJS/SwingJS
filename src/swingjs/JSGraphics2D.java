@@ -350,7 +350,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 				ctx.quadraticCurveTo(pts[0], pts[1], pts[2], pts[3]);
 				break;
 			case PathIterator.SEG_CUBICTO:
-				ctx.bezeierCurveTo(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]);
+				ctx.bezierCurveTo(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]);
 				break;
 			case PathIterator.SEG_CLOSE:
 				ctx.closePath();
@@ -500,6 +500,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
 		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
+		drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
 	}
 
 	@Override
@@ -627,12 +628,12 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public FontMetrics getFontMetrics() {
-		return Toolkit.getDefaultToolkit().getFontMetrics(getFont());
+		return getFont().getFontMetrics();
 	}
 
 	@Override
 	public FontMetrics getFontMetrics(Font f) {
-		return Toolkit.getDefaultToolkit().getFontMetrics(f);
+		return f.getFontMetrics();
 	}
 
 	@Override
@@ -654,7 +655,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		/**
 		 * @j2sNative
 		 *  
-		 *  if (arguments.length == 1) { setClip1(x); return; }
+		 *  if (arguments.length == 1) { this.setClip1(x); return; }
 		 */
 		{}
 		ctx.beginPath();
@@ -874,6 +875,10 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			currentComposite = (AlphaComposite) comp;
 	}
 
+	public Composite getComposite() {
+		return currentComposite;
+	}
+	
 	@Override
 	public void drawImage(BufferedImage img, BufferedImageOp op, int x, int y) {
 		JSToolkit.drawImageOp(this, img, op, x, y);

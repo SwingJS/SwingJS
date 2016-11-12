@@ -24,6 +24,7 @@
  */
 package jsjavax.swing;
 
+import swingjs.J2SRequireImport;
 import jsjava.awt.Color;
 import jsjava.awt.Font;
 import jsjavax.swing.border.BevelBorder;
@@ -46,6 +47,8 @@ import jsjavax.swing.border.TitledBorder;
  *
  * @author David Kloba
  */
+@J2SRequireImport({BevelBorder.class, EmptyBorder.class, EtchedBorder.class, 
+	CompoundBorder.class, LineBorder.class, MatteBorder.class, TitledBorder.class})
 public class BorderFactory
 {
 

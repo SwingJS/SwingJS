@@ -69,50 +69,49 @@ public class JSToolkit extends SunToolkit {
 
 	public static J2SInterface J2S;
 	public static boolean isMac;
-		
+
 	public static boolean debugging;
-	
+
 	static {
 		/**
 		 * @j2sNative
 		 * 
-		 * swingjs.JSToolkit.J2S = self.J2S;
-		 * swingjs.JSToolkit.isMac = (J2S.featureDetection.os == "mac");
-		 * swingjs.JSToolkit.debugging = J2S._checkLoad
+		 *            swingjs.JSToolkit.J2S = self.J2S; swingjs.JSToolkit.isMac =
+		 *            (J2S.featureDetection.os == "mac");
+		 *            swingjs.JSToolkit.debugging = J2S._checkLoad
 		 * 
 		 */
 		{
 		}
 	}
-	
+
 	/*
 	 * NOTE: This class is constructed from jsjava.awt.Toolkit.getDefaultToolkit()
-	 * 
 	 */
 
 	public JSToolkit() {
-		super();		
+		super();
 		System.out.println("JSToolkit initialized");
 	}
 
 	/**
 	 * important warnings for TODO list
-	 *  
+	 * 
 	 * @param msg
 	 */
 	public static void warn(String msg) {
 		alert(msg);
 	}
 
-  /**
+	/**
 	 * JavaScript alert
 	 */
 	public static void alert(Object object) {
 		/**
 		 * @j2sNative
 		 * 
-		 * console.log("[JSToolkit] " + object);
-		 * alert("[JSToolkit] " + object);
+		 *            console.log("[JSToolkit] " + object); alert("[JSToolkit] " +
+		 *            object);
 		 */
 		{
 			System.out.println(object);
@@ -126,10 +125,10 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * System.out.println(msg);
-		 * console.log(msg);
+		 *            System.out.println(msg); console.log(msg);
 		 */
-		{}
+		{
+		}
 	}
 
 	/**
@@ -140,7 +139,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * return confirm(msg);
+		 *            return confirm(msg);
 		 */
 		{
 			return false;
@@ -155,7 +154,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * return confirm(msg, defaultRet);
+		 *            return confirm(msg, defaultRet);
 		 */
 		{
 			return null;
@@ -174,6 +173,19 @@ public class JSToolkit extends SunToolkit {
 				AppContext.EVENT_QUEUE_KEY));
 	}
 
+	public static void exit() {
+		try {
+		/**
+		 * 
+		 * like System.exit(n)
+		 * @j2sNative 
+		 * 
+		 *   swingjs.JSToolkit.getAppletViewer().allWindows.get(0).dispose();
+		 */
+				{}
+	}catch(Throwable e){}
+	}
+
 	// ////// jsjava.awt.Toolkit /////////
 
 	@Override
@@ -184,8 +196,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * w = jq.$(window).width(); 
-		 * h = jq.$(window).height();
+		 *            w = jq.$(window).width(); h = jq.$(window).height();
 		 * 
 		 */
 		{
@@ -206,8 +217,8 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	public String[] getFontList() {
-		String[] hardwiredFontList = { Font.SANS_SERIF, Font.SANS_SERIF, Font.SERIF,
-				Font.MONOSPACED, Font.DIALOG_INPUT
+		String[] hardwiredFontList = { Font.SANS_SERIF, Font.SANS_SERIF,
+				Font.SERIF, Font.MONOSPACED, Font.DIALOG_INPUT
 
 		// -- Obsolete font names from 1.0.2. It was decided that
 		// -- getFontList should not return these old names:
@@ -253,12 +264,12 @@ public class JSToolkit extends SunToolkit {
 		return 0;
 	}
 
-//	@Override
-//	protected boolean syncNativeQueue(long timeout) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
+	// @Override
+	// protected boolean syncNativeQueue(long timeout) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
 	@Override
 	public void grab(Window w) {
 		// TODO Auto-generated method stub
@@ -296,14 +307,16 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	/**
-	 * There is one and only one graphics configuration for a given Applet. 
-	 * It is available through Thread.currentThread
+	 * There is one and only one graphics configuration for a given Applet. It is
+	 * available through Thread.currentThread
+	 * 
 	 * @return
 	 */
 	public static GraphicsConfiguration getGraphicsConfiguration() {
 		JSAppletViewer ap = getAppletViewer();
 		GraphicsConfiguration gc = ap.graphicsConfig;
-		return (gc == null ? (gc = ap.graphicsConfig = (GraphicsConfiguration) getInstance("swingjs.JSGraphicsConfiguration")) : gc);
+		return (gc == null ? (gc = ap.graphicsConfig = (GraphicsConfiguration) getInstance("swingjs.JSGraphicsConfiguration"))
+				: gc);
 	}
 
 	public static JSAppletViewer getAppletViewer() {
@@ -343,9 +356,8 @@ public class JSToolkit extends SunToolkit {
 			context = getDefaultCanvasContext2d();
 		int w = 0;
 		/**
-		 * @j2sNative
-		 * context.font = fontInfo; 
-		 * w = Math.ceil(context.measureText(text).width);
+		 * @j2sNative context.font = fontInfo; w =
+		 *            Math.ceil(context.measureText(text).width);
 		 */
 		{
 		}
@@ -354,7 +366,7 @@ public class JSToolkit extends SunToolkit {
 
 	/**
 	 * Used as a stratch pad for determining text string dimensions.
-	 *  
+	 * 
 	 * @return
 	 */
 	private static HTML5CanvasContext2D getDefaultCanvasContext2d() {
@@ -364,10 +376,10 @@ public class JSToolkit extends SunToolkit {
 		 *            if (this.defaultContext == null) this.defaultContext =
 		 *            document.createElement( 'canvas' ).getContext('2d');
 		 */
-		{}
+		{
+		}
 		return defaultContext;
 	}
-
 
 	/**
 	 * generates proper font name for JSGraphics2d Apparently Java sizes are
@@ -398,17 +410,12 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	/**
-	 * In JavaScript we only have one font metric, so we can just save it with the font itself
+	 * In JavaScript we only have one font metric, so we can just save it with the
+	 * font itself
 	 */
 	@Override
 	public FontMetrics getFontMetrics(Font font) {
-		FontMetrics fm = font.getFontMetrics();
-		if (fm == null) {
-			fm = new JSFontMetrics();
-			((JSFontMetrics) fm).setFont(font);
-			font.setFontMetrics(fm);
-		}
-		return fm;
+		return font.getFontMetrics();
 	}
 
 	public static String getCSSColor(Color c) {
@@ -432,9 +439,8 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 *            s = arguments.callee.caller;
-		 *            var cl = s.claxxOwner || s.exClazz;
-		 *            s = (cl ? cl.__CLASS_NAME__ + "." : "") +
+		 *            s = arguments.callee.caller; var cl = s.claxxOwner ||
+		 *            s.exClazz; s = (cl ? cl.__CLASS_NAME__ + "." : "") +
 		 *            arguments.callee.caller.exName;
 		 */
 		{
@@ -540,6 +546,7 @@ public class JSToolkit extends SunToolkit {
 
 	/**
 	 * dispatch an event "on the event thread"
+	 * 
 	 * @param event
 	 * @param src
 	 * @param andWait
@@ -547,19 +554,16 @@ public class JSToolkit extends SunToolkit {
 	public static void dispatchEvent(AWTEvent event, Object src, boolean andWait) {
 		JSFunction f = null;
 		int id = ++dispatchID;
-		
-//		 *            System.out.println("JST dispatchAWTEvent andWait=" + andWait +
-//		 *            "," + event + " src=" + src); 
-//		 *            System.out.println("JST dispatching AWTEvent " + event); 
+
+		// * System.out.println("JST dispatchAWTEvent andWait=" + andWait +
+		// * "," + event + " src=" + src);
+		// * System.out.println("JST dispatching AWTEvent " + event);
 
 		/**
 		 * @j2sNative
 		 * 
-		 *            f = function()
-		 *            {
-		 *            if
-		 *            (src == null) event.dispatch(); else src.dispatchEvent(event);
-		 *            };
+		 *            f = function() { if (src == null) event.dispatch(); else
+		 *            src.dispatchEvent(event); };
 		 * 
 		 */
 		{
@@ -574,40 +578,35 @@ public class JSToolkit extends SunToolkit {
 	 * encapsulate timeout with an anonymous function that re-instates the
 	 * "current thread" prior to execution. This is in case of multiple applets.
 	 * 
-	 * @param f a function or Runnable
-	 * @param msDelay a time to wait for, in milliseconds. If this is < 0, just run without the dispatch (debugging)
-	 * @param id an event id or 0 if not via EventQueue 
+	 * @param f
+	 *          a function or Runnable
+	 * @param msDelay
+	 *          a time to wait for, in milliseconds. If this is < 0, just run
+	 *          without the dispatch (debugging)
+	 * @param id
+	 *          an event id or 0 if not via EventQueue
 	 */
 	public static int dispatch(Object f, int msDelay, int id) {
-			
+
 		/**
 		 * @j2sNative
 		 * 
-		 *            var thread = java.lang.Thread.thisThread;
-		 *            var thread0 = thread;
-		 *            var id0 = SwingJS.eventID || 0;
-		 *            var ff = function(_JSToolkit_setTimeout) {
-		 *            SwingJS.eventID = id;
-		 *            java.lang.Thread.thisThread = thread; 
-		 *            try {
-		 *            if (f.run)
-		 *             f.run();
-		 *            else
-		 *             f();
-		 *             } catch (e) {
-		 *             var s = "JSToolkit.dispatch(" + id +"): " + e + (e.getStackTrace ? e.getStackTrace() : e.stack ? "\n" + e.stack : "");
-		 *             System.out.println(s);
-		 *             alert(s)}
-		 *            SwingJS.eventID = id0; 
-		 *            java.lang.Thread.thisThread = thread0; 
-		 *            }
-		 *            return (msDelay == -1 ? ff() : setTimeout(ff, msDelay));
+		 *            var thread = java.lang.Thread.thisThread; var thread0 =
+		 *            thread; var id0 = SwingJS.eventID || 0; var ff =
+		 *            function(_JSToolkit_setTimeout) { SwingJS.eventID = id;
+		 *            java.lang.Thread.thisThread = thread; try { if (f.run)
+		 *            f.run(); else f(); } catch (e) { var s = "JSToolkit.dispatch("
+		 *            + id +"): " + e + (e.getStackTrace ? e.getStackTrace() :
+		 *            e.stack ? "\n" + e.stack : ""); System.out.println(s);
+		 *            alert(s)} SwingJS.eventID = id0; java.lang.Thread.thisThread =
+		 *            thread0; } return (msDelay == -1 ? ff() : setTimeout(ff,
+		 *            msDelay));
 		 * 
 		 * 
 		 * 
 		 */
 		{
-			return  0;
+			return 0;
 		}
 	}
 
@@ -616,26 +615,21 @@ public class JSToolkit extends SunToolkit {
 	 * "current thread" prior to execution. This is in case of multiple applets.
 	 * 
 	 * 
-	 * @param f a function or Runnable
-	 * @param id an event id or 0 if not via EventQueue 
+	 * @param f
+	 *          a function or Runnable
+	 * @param id
+	 *          an event id or 0 if not via EventQueue
 	 */
 	private static void invokeAndWait(JSFunction f, int id) {
 		/**
 		 * @j2sNative
 		 * 
-		 *            var thread = java.lang.Thread.thisThread;
-		 *            var thread0 = thread;
-		 *            (function(_JSToolkit_setTimeout) {
-		 *              var id0 = SwingJS.eventID || 0;
-		 *              System.out.println("runNow " + id); SwingJS.eventID = id;
-		 *              java.lang.Thread.thisThread = thread; 
-		 *              if (f.run)
-		 *                f.run();
-		 *              else
-		 *                f();
-		 *              SwingJS.eventID = id0;
-		 *              java.lang.Thread.thisThread = thread0; 
-		 *            })();
+		 *            var thread = java.lang.Thread.thisThread; var thread0 =
+		 *            thread; (function(_JSToolkit_setTimeout) { var id0 =
+		 *            SwingJS.eventID || 0; System.out.println("runNow " + id);
+		 *            SwingJS.eventID = id; java.lang.Thread.thisThread = thread; if
+		 *            (f.run) f.run(); else f(); SwingJS.eventID = id0;
+		 *            java.lang.Thread.thisThread = thread0; })();
 		 * 
 		 * 
 		 * 
@@ -645,9 +639,9 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static boolean isDispatchThread() {
-//		 *            System.out.println("checking dispatch thread " +
-//		 *            SwingJS.eventID); 
-//		 *            
+		// * System.out.println("checking dispatch thread " +
+		// * SwingJS.eventID);
+		// *
 		/**
 		 * @j2sNative
 		 * 
@@ -683,15 +677,15 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
-	public static void readyCallback(String aname, String fname, Container applet,
-			JSAppletViewer appletPanel) {
+	public static void readyCallback(String aname, String fname,
+			Container applet, JSAppletViewer appletPanel) {
 		J2S._readyCallback(aname, fname, true, applet, appletPanel);
 	}
 
 	public static void forceRepaint(Component c) {
 		// NO LONGER NECESSARY :)
 	}
-	
+
 	public static HTML5Applet getHTML5Applet(Component c) {
 		return ((JSThreadGroup) c.getAppContext().getThreadGroup()).getHtmlApplet();
 	}
@@ -699,52 +693,57 @@ public class JSToolkit extends SunToolkit {
 	public static void taintUI(Component c) {
 		// JApplet is a JComponent, but it does not have a getUI
 		// some components may have getUI but currently no UI
-		
+
 		/**
 		 * @j2sNative
 		 * 
-		 * c.getUI && c.getUI() && c.getUI().setTainted(); 
+		 *            c.getUI && c.getUI() && c.getUI().setTainted();
 		 * 
 		 */
-		{}
+		{
+		}
 	}
 
 	/**
-	 * Provides a Peer for all Components. The JSComponentUI itself
-	 * serves as a peer for all JComponents, including heavy-weight peers 
-	 * JFrame, JWindow, and JPopupMenu and JDialog. Although those are not
-	 * lightweight, we return them as such. JavaScript will not care if
-	 * do this, and they will still be discernable as not lightweight using instanceof
+	 * Provides a Peer for all Components. The JSComponentUI itself serves as a
+	 * peer for all JComponents, including heavy-weight peers JFrame, JWindow, and
+	 * JPopupMenu and JDialog. Although those are not lightweight, we return them
+	 * as such. JavaScript will not care if do this, and they will still be
+	 * discernable as not lightweight using instanceof
 	 * 
 	 * @author Bob Hanson
-	 *  
+	 * 
 	 */
 	@Override
-  protected LightweightPeer createComponent(Component target) {
-  	LightweightPeer peer = (LightweightPeer) getUI(target, true);
-  	if (debugging)
-  		System.out.println("JSToolkit creating UI-Peer for " +  target.getClass().getName() + ": " + peer.getClass().getName());
-  	return peer;
-  }
+	protected LightweightPeer createComponent(Component target) {
+		LightweightPeer peer = (LightweightPeer) getUI(target, true);
+		if (debugging)
+			System.out.println("JSToolkit creating UI-Peer for "
+					+ target.getClass().getName() + ": " + peer.getClass().getName());
+		return peer;
+	}
 
 	@Override
 	protected DialogPeer createDialog(Dialog target) {
-  	if (debugging)
-  		System.out.println("JSToolkit creating Dialog Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+		if (debugging)
+			System.out.println("JSToolkit creating Dialog Peer for "
+					+ target.getClass().getName() + ": " + target.getClass().getName());
 		return (DialogPeer) ((WindowPeer) target.getUI()).setFrame(target, true);
 	}
 
 	@Override
 	protected FramePeer createFrame(Frame target) {
-  	if (debugging)
-  		System.out.println("JSToolkit creating Frame Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+		if (debugging)
+			System.out.println("JSToolkit creating Frame Peer for "
+					+ target.getClass().getName() + ": " + target.getClass().getName());
 		return (FramePeer) ((WindowPeer) target.getUI()).setFrame(target, true);
 	}
 
 	@Override
 	protected WindowPeer createWindow(Window target) {
-  	if (debugging)
-  		System.out.println("JSToolkit creating Window Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
+		if (debugging)
+			System.out.println("JSToolkit creating Window Peer for "
+					+ target.getClass().getName() + ": " + target.getClass().getName());
 		return ((WindowPeer) target.getUI()).setFrame(target, false);
 	}
 
@@ -788,6 +787,7 @@ public class JSToolkit extends SunToolkit {
 
 	/**
 	 * A protected version of Rdr.getStreamAsBytes
+	 * 
 	 * @param bis
 	 * @return
 	 */
@@ -800,8 +800,8 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	/**
-	 * This could be a simple String, a javajs.util.SB, or unsigned or signed bytes
-	 * depending upon the browser and the file type.
+	 * This could be a simple String, a javajs.util.SB, or unsigned or signed
+	 * bytes depending upon the browser and the file type.
 	 * 
 	 * @param uri
 	 * @return
@@ -813,18 +813,19 @@ public class JSToolkit extends SunToolkit {
 		 * 
 		 */
 		{
+			// for reference -- not used in JavaScript
 			try {
-				data = Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) new URL(uri).getContent()));
+				data = Rdr.StreamToUTF8String(new BufferedInputStream(
+						(InputStream) new URL(uri).getContent()));
 			} catch (Exception e) {
 			}
 		}
-		return (J2S == null ? data : J2S._getFileData(uri, null, false));
+		return (J2S == null ? data : J2S._getFileData(uri, null, false, false));
 	}
 
-
 	/**
-	 * Regardless of how returned by Jmol._getFileContents(), 
-	 * this method ensures that we get signed bytes.
+	 * Regardless of how returned by Jmol._getFileContents(), this method ensures
+	 * that we get signed bytes.
 	 * 
 	 * @param filename
 	 * @return
@@ -834,7 +835,7 @@ public class JSToolkit extends SunToolkit {
 		byte[] b = null;
 		if (AU.isAB(data))
 			b = (byte[]) data;
-		else if (data instanceof String) 
+		else if (data instanceof String)
 			b = ((String) data).getBytes();
 		else if (data instanceof SB)
 			b = Rdr.getBytesFromSB((SB) data);
@@ -846,35 +847,73 @@ public class JSToolkit extends SunToolkit {
 		return AU.ensureSignedBytes(b);
 	}
 
+	/**
+	 * Regardless of how returned by Jmol._getFileContents(), this method ensures
+	 * that we get a String.
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public static String getFileAsString(String filename) {
+		Object data = getFileContents(filename);
+		String s = null;
+		if (AU.isAB(data))
+			s = Rdr.StreamToUTF8String(new BufferedInputStream(
+					new ByteArrayInputStream((byte[]) data)));
+		else if (data instanceof String || data instanceof SB)
+			s = data.toString();
+		else if (data instanceof InputStream)
+			s = Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) data));
+		return s;
+	}
 
-	//////////////// images ///////////////
-	
+	// ////////////// images ///////////////
+
 	private JSImagekit imageKit;
-	
+
 	private JSImagekit getImagekit() {
-		return (imageKit == null ? imageKit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", false) : imageKit);
+		return (imageKit == null ? imageKit = (JSImagekit) Interface.getInstance(
+				"swingjs.JSImagekit", false) : imageKit);
 	}
 
 	@Override
 	public Image createImage(ImageProducer producer) {
-		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", true);
+		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit",
+				true);
 		producer.startProduction(kit); // JSImageKit is the ImageConsumer here
 		// we may create an image, but then later generate its pixels
 		// and then also draw to it using img._g
-		// If we are drawing to it and it has pixels, then we need to 
-		// "fix" those pixels to the image. 
+		// If we are drawing to it and it has pixels, then we need to
+		// "fix" those pixels to the image.
 		return kit.getCreatedImage();
 	}
 
 	@Override
 	public Image createImage(String filename) {
-		return getImagekit().createImageFromBytes(getSignedStreamBytes(new BufferedInputStream(new ByteArrayInputStream(getFileAsBytes(filename)))), 0, -1);
+		return getImagekit().createImageFromBytes(
+				getSignedStreamBytes(new BufferedInputStream(new ByteArrayInputStream(
+						getFileAsBytes(filename)))), 0, -1);
 	}
 
+	/**
+	 * We allow for url to be modified by Clazz to already have image data in it
+	 * as a BufferedInputStream
+	 */
 	@Override
 	public Image createImage(URL url) {
+		BufferedInputStream b = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            b = url._streamData; url._streamData = null;
+		 * 
+		 */
+		{
+		}
 		try {
-			return getImagekit().createImageFromBytes(getSignedStreamBytes(new BufferedInputStream(url.openStream())), 0, -1);
+			if (b == null)
+				b = new BufferedInputStream(url.openStream());
+			return getImagekit().createImageFromBytes(getSignedStreamBytes(b), 0, -1);
 		} catch (IOException e) {
 			return null;
 		}
@@ -884,11 +923,12 @@ public class JSToolkit extends SunToolkit {
 	public Image createImage(byte[] data, int imageoffset, int imagelength) {
 		return getImagekit().createImageFromBytes(data, imageoffset, imagelength);
 	}
-	
+
 	@Override
 	public int checkImage(Image image, int width, int height,
 			ImageObserver observer) {
-		return 63; // everything is here -- always has been - images are loaded asynchronously
+		return 63; // everything is here -- always has been - images are loaded
+								// asynchronously
 	}
 
 	@Override
@@ -899,21 +939,21 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	public static boolean hasFocus(Component c) {
-	  JSComponentUI ui = getUI(c, false);
+		JSComponentUI ui = getUI(c, false);
 		return (ui != null && !ui.isNull && ui.hasFocus());
 	}
 
 	public static boolean requestFocus(Component c) {
 		final JSComponentUI ui = getUI(c, false);
 		if (ui == null || ui.isNull || !ui.isFocusable())
-			return  false;
+			return false;
 		Runnable r = new Runnable() {
 
 			@Override
 			public void run() {
 				ui.requestFocus(null, false, false, 0, null);
 			}
-			
+
 		};
 		dispatch(r, 50, 0);
 		return true;
@@ -921,7 +961,7 @@ public class JSToolkit extends SunToolkit {
 
 	private static JSGraphicsCompositor compositor;
 
-  static JSGraphicsCompositor getCompositor() {
+	static JSGraphicsCompositor getCompositor() {
 		return (compositor == null ? compositor = (JSGraphicsCompositor) Interface
 				.getInstance("swingjs.JSGraphicsCompositor", false) : compositor);
 	}
@@ -930,8 +970,8 @@ public class JSToolkit extends SunToolkit {
 		return getCompositor().setGraphicsCompositeAlpha(g, rule);
 	}
 
-	public static boolean drawImageOp(JSGraphics2D g,
-			BufferedImage img, BufferedImageOp op, int x, int y) {
+	public static boolean drawImageOp(JSGraphics2D g, BufferedImage img,
+			BufferedImageOp op, int x, int y) {
 		return getCompositor().drawImageOp(g, img, op, x, y);
 	}
 
@@ -951,6 +991,7 @@ public class JSToolkit extends SunToolkit {
 		return (audioPlayer == null ? audioPlayer = (JSAudio) getInstance("swingjs.JSAudio")
 				: audioPlayer);
 	}
+
 	/**
 	 * 
 	 * @param data
@@ -958,10 +999,11 @@ public class JSToolkit extends SunToolkit {
 	 *          may have property "fileFormat" describing full file format to use
 	 *          in "data:audio/" + format.toLowerCase() + ";base64, in which case
 	 *          all other information in audioFormat is ignored.
-	 * @throws UnsupportedAudioFileException 
+	 * @throws UnsupportedAudioFileException
 	 * @throws UnsupportedAudioFileException
 	 */
-	public static void playAudio(byte[] data, AudioFormat audioFormat) throws UnsupportedAudioFileException {
+	public static void playAudio(byte[] data, AudioFormat audioFormat)
+			throws UnsupportedAudioFileException {
 		getAudioPlayer().playAudio(data, audioFormat);
 	}
 
@@ -978,15 +1020,18 @@ public class JSToolkit extends SunToolkit {
 		JSFunction f = null;
 		/**
 		 * @j2sNative
-	   *   
-	   *   f = function(data, fileName) { jsFileHandler.handleFileLoaded(data, fileName) };
-	   * 
-	   */
-		{}
+		 * 
+		 *            f = function(data, fileName) {
+		 *            jsFileHandler.handleFileLoaded(data, fileName) };
+		 * 
+		 */
+		{
+		}
 		J2S._getFileFromDialog(f, type);
 	}
 
-	public static void saveFile(String fileName, Object data, String mimeType, String encoding) {
+	public static void saveFile(String fileName, Object data, String mimeType,
+			String encoding) {
 		J2S._saveFile(fileName, data, mimeType, encoding);
 	}
 
@@ -994,13 +1039,15 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * clearTimeout(html5Id);
+		 *            clearTimeout(html5Id);
 		 * 
-		 */		
-		{}
+		 */
+		{
+		}
 	}
 
 	static Clipboard systemClipboard;
+
 	@Override
 	public Clipboard getSystemClipboard() {
 		if (systemClipboard == null)

@@ -43,7 +43,7 @@ public abstract class HTML5CanvasContext2D {
 
 	public abstract void quadraticCurveTo(double d, double e, double f, double g);
 
-	public abstract void bezeierCurveTo(double d, double e, double f, double g, double h, double i);
+	public abstract void bezierCurveTo(double d, double e, double f, double g, double h, double i);
 
 	public abstract void drawImage(DOMNode img, int x, int y, int width, int height);
 

@@ -289,7 +289,7 @@ public class StyleContext implements  AbstractDocument.AttributeContext {
     public FontMetrics getFontMetrics(Font f) {
         // The Toolkit implementations cache, so we just forward
         // to the default toolkit.
-        return Toolkit.getDefaultToolkit().getFontMetrics(f);
+        return f.getFontMetrics();
     }
 
     // --- AttributeContext methods --------------------

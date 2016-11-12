@@ -382,7 +382,7 @@ public class SwingUtilities2 {
         // mismatches when printing.
         return c.getFontMetrics(g.getFont());
     }
-    return Toolkit.getDefaultToolkit().getFontMetrics(g.getFont());
+    return g.getFont().getFontMetrics();
     }
 
 
@@ -413,7 +413,7 @@ public class SwingUtilities2 {
             // mismatches when printing.
             return c.getFontMetrics(font);
         }
-        return Toolkit.getDefaultToolkit().getFontMetrics(font);
+        return font.getFontMetrics();
     }
 
 

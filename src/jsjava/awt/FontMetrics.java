@@ -26,6 +26,7 @@
 package jsjava.awt;
 
 import jsjava.awt.font.FontRenderContext;
+import jsjava.awt.geom.Rectangle2D;
 
 /**
  * The <code>FontMetrics</code> class defines a font metrics object, which
@@ -514,70 +515,70 @@ public abstract class FontMetrics {
 //        return font.getLineMetrics(ci, beginIndex, limit, myFRC(context));
 //    }
 //
-//    /**
-//     * Returns the bounds of the specified <code>String</code> in the
-//     * specified <code>Graphics</code> context.  The bounds is used
-//     * to layout the <code>String</code>.
-//     * <p>Note: The returned bounds is in baseline-relative coordinates
-//     * (see {@link java.awt.FontMetrics class notes}).
-//     * @param str the specified <code>String</code>
-//     * @param context the specified <code>Graphics</code> context
-//     * @return a {@link Rectangle2D} that is the bounding box of the
-//     * specified <code>String</code> in the specified
-//     * <code>Graphics</code> context.
-//     * @see java.awt.Font#getStringBounds(String, FontRenderContext)
-//     */
-//    public Rectangle2D getStringBounds( String str, Graphics context) {
-//        return font.getStringBounds(str, myFRC(context));
-//    }
-//
-//    /**
-//     * Returns the bounds of the specified <code>String</code> in the
-//     * specified <code>Graphics</code> context.  The bounds is used
-//     * to layout the <code>String</code>.
-//     * <p>Note: The returned bounds is in baseline-relative coordinates
-//     * (see {@link java.awt.FontMetrics class notes}).
-//     * @param str the specified <code>String</code>
-//     * @param beginIndex the offset of the beginning of <code>str</code>
-//     * @param limit the end offset of <code>str</code>
-//     * @param context the specified <code>Graphics</code> context
-//     * @return a <code>Rectangle2D</code> that is the bounding box of the
-//     * specified <code>String</code> in the specified
-//     * <code>Graphics</code> context.
-//     * @see java.awt.Font#getStringBounds(String, int, int, FontRenderContext)
-//     */
-//    public Rectangle2D getStringBounds( String str,
-//                                        int beginIndex, int limit,
-//                                        Graphics context) {
-//        return font.getStringBounds(str, beginIndex, limit,
-//                                        myFRC(context));
-//    }
-//
-//   /**
-//     * Returns the bounds of the specified array of characters
-//     * in the specified <code>Graphics</code> context.
-//     * The bounds is used to layout the <code>String</code>
-//     * created with the specified array of characters,
-//     * <code>beginIndex</code> and <code>limit</code>.
-//     * <p>Note: The returned bounds is in baseline-relative coordinates
-//     * (see {@link java.awt.FontMetrics class notes}).
-//     * @param chars an array of characters
-//     * @param beginIndex the initial offset of the array of
-//     * characters
-//     * @param limit the end offset of the array of characters
-//     * @param context the specified <code>Graphics</code> context
-//     * @return a <code>Rectangle2D</code> that is the bounding box of the
-//     * specified character array in the specified
-//     * <code>Graphics</code> context.
-//     * @see java.awt.Font#getStringBounds(char[], int, int, FontRenderContext)
-//     */
-//    public Rectangle2D getStringBounds( char [] chars,
-//                                        int beginIndex, int limit,
-//                                        Graphics context) {
-//        return font.getStringBounds(chars, beginIndex, limit,
-//                                        myFRC(context));
-//    }
-//
+    /**
+     * Returns the bounds of the specified <code>String</code> in the
+     * specified <code>Graphics</code> context.  The bounds is used
+     * to layout the <code>String</code>.
+     * <p>Note: The returned bounds is in baseline-relative coordinates
+     * (see {@link java.awt.FontMetrics class notes}).
+     * @param str the specified <code>String</code>
+     * @param context the specified <code>Graphics</code> context
+     * @return a {@link Rectangle2D} that is the bounding box of the
+     * specified <code>String</code> in the specified
+     * <code>Graphics</code> context.
+     * @see java.awt.Font#getStringBounds(String, FontRenderContext)
+     */
+    public Rectangle2D getStringBounds( String str, Graphics context) {
+        return font.getStringBounds(str, myFRC(context));
+    }
+
+    /**
+     * Returns the bounds of the specified <code>String</code> in the
+     * specified <code>Graphics</code> context.  The bounds is used
+     * to layout the <code>String</code>.
+     * <p>Note: The returned bounds is in baseline-relative coordinates
+     * (see {@link java.awt.FontMetrics class notes}).
+     * @param str the specified <code>String</code>
+     * @param beginIndex the offset of the beginning of <code>str</code>
+     * @param limit the end offset of <code>str</code>
+     * @param context the specified <code>Graphics</code> context
+     * @return a <code>Rectangle2D</code> that is the bounding box of the
+     * specified <code>String</code> in the specified
+     * <code>Graphics</code> context.
+     * @see java.awt.Font#getStringBounds(String, int, int, FontRenderContext)
+     */
+    public Rectangle2D getStringBounds( String str,
+                                        int beginIndex, int limit,
+                                        Graphics context) {
+        return font.getStringBounds(str, beginIndex, limit,
+                                        myFRC(context));
+    }
+
+   /**
+     * Returns the bounds of the specified array of characters
+     * in the specified <code>Graphics</code> context.
+     * The bounds is used to layout the <code>String</code>
+     * created with the specified array of characters,
+     * <code>beginIndex</code> and <code>limit</code>.
+     * <p>Note: The returned bounds is in baseline-relative coordinates
+     * (see {@link java.awt.FontMetrics class notes}).
+     * @param chars an array of characters
+     * @param beginIndex the initial offset of the array of
+     * characters
+     * @param limit the end offset of the array of characters
+     * @param context the specified <code>Graphics</code> context
+     * @return a <code>Rectangle2D</code> that is the bounding box of the
+     * specified character array in the specified
+     * <code>Graphics</code> context.
+     * @see java.awt.Font#getStringBounds(char[], int, int, FontRenderContext)
+     */
+    public Rectangle2D getStringBounds( char [] chars,
+                                        int beginIndex, int limit,
+                                        Graphics context) {
+        return font.getStringBounds(chars, beginIndex, limit,
+                                        myFRC(context));
+    }
+
 //   /**
 //     * Returns the bounds of the characters indexed in the specified
 //     * <code>CharacterIterator</code> in the
@@ -612,14 +613,15 @@ public abstract class FontMetrics {
 //        return font.getMaxCharBounds(myFRC(context));
 //    }
 //
-//    private FontRenderContext myFRC(Graphics context) {
+    private FontRenderContext myFRC(Graphics context) {
+    	return  null;
 //        if (context instanceof Graphics2D) {
 //            return ((Graphics2D)context).getFontRenderContext();
 //        }
 //        return DEFAULT_FRC;
-//    }
-//
-//
+    }
+
+
     /**
      * Returns a representation of this <code>FontMetrics</code>
      * object's values as a <code>String</code>.

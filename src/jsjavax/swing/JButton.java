@@ -69,7 +69,7 @@ public class JButton extends AbstractButton {
      * Creates a button with no set text or icon.
      */
     public JButton() {
-        this(null, null);
+        this(null, (Icon) null);
     }
 
     /**
@@ -87,7 +87,7 @@ public class JButton extends AbstractButton {
      * @param text  the text of the button
      */
     public JButton(String text) {
-        this(text, null);
+        this(text, (Icon) null);
     }
 
     /**

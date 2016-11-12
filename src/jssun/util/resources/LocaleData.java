@@ -44,9 +44,13 @@ package jssun.util.resources;
 //import jsjava.security.PrivilegedAction;
 import java.util.Iterator;
 import java.util.List;
+
+import jsjava.util.ListResourceBundle;
 import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 import java.util.StringTokenizer;
+
+import swingjs.J2SRequireImport;
 
 //import sun.util.LocaleDataMetaInfo;
 
@@ -58,6 +62,7 @@ import java.util.StringTokenizer;
  * @author Mark Davis
  */
 
+@J2SRequireImport(ListResourceBundle.class)
 public class LocaleData {
 
 //    private static final String localeDataJarName = "localedata.jar";

@@ -552,7 +552,7 @@ private float leading;
     @Override
 		public int getAscent() {
     	if (ascent == 0)
-    		ascent = Toolkit.getDefaultToolkit().getFontMetrics(font).getAscent();
+    		ascent = font.getFontMetrics().getAscent();
         return (int)(roundingUpValue + ascent);
     }
 
@@ -563,7 +563,7 @@ private float leading;
     @Override
 		public int getDescent() {
     	if (descent == 0)
-    		descent = Toolkit.getDefaultToolkit().getFontMetrics(font).getDescent();
+    		descent = font.getFontMetrics().getDescent();
         return (int)(roundingUpValue + descent);
     }
 

@@ -304,7 +304,7 @@ public class RepaintManager {
 		// volatile image we immediately punt in subclasses. If this
 		// poses a problem we'll need a more sophisticated detection algorithm,
 		// or API.
-//		set();
+ 		setMaps();
 		// bufferStrategyType = BUFFER_STRATEGY_SPECIFIED_OFF;
 		processingRunnable = new ProcessingRunnable();
 	}
@@ -315,10 +315,14 @@ public class RepaintManager {
 		// Swing doublebuffering.
 		// doubleBufferingEnabled = !nativeDoubleBuffering;
 		// synchronized (this) {
+	 setMaps();
+		// }
+	}
+
+	private void setMaps() {
 		dirtyComponents = new IdentityHashMap<Component, Rectangle>();
 		tmpDirtyComponents = new IdentityHashMap<Component, Rectangle>();
 		hwDirtyComponents = new IdentityHashMap<Container, Rectangle>();
-		// }
 	}
 
 	// private void displayChanged() {

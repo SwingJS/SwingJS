@@ -224,7 +224,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		jsjava.lang.Thread.thisThread = (jsjava.lang.Thread) ((Object) myThread);
 		
 		appContext = JSToolkit.createNewAppContext();
+		// initialize toolkit and graphics configuration
 		Toolkit.getDefaultToolkit();
+		new JSGraphicsConfiguration().getDevice();
 		try {
 			URL.setURLStreamHandlerFactory((URLStreamHandlerFactory) Interface
 					.getInstance("javajs.util.AjaxURLStreamHandlerFactory", false));
@@ -422,7 +424,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	 * @return LOOP or DONE
 	 */
 	public int run1(int mode) {
-		// System.out.println("JSAP run1 mode " + mode + " " + nextStatus);
+		System.out.println("JSAppletViewer thread run1 mode=" + mode + " status=" + nextStatus);
 		boolean ok = false;
 		switch (mode) {
 		case JSThread.INIT:
@@ -480,6 +482,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				break;
 			case APPLET_READY:
 				japplet.setVisible(true);
+				showAppletStatus("ready");
 				JSToolkit.readyCallback(appletName, fullName, applet, this);
 				if (isResizable && !addFrame) {
 					resizer = ((Resizer) JSToolkit.getInstance("swingjs.plaf.Resizer"))
@@ -521,6 +524,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				}
 				break;
 			case RUN_MAIN:
+				showAppletStatus("running " + main);
 				// we still have an applet context for a variety of reasons
 				// but main(String[] args) is run as a static method.
 				((JSApplet) applet).runMain(main, (String[]) params.get("args"));

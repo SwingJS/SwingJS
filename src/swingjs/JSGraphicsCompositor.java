@@ -228,7 +228,7 @@ public class JSGraphicsCompositor {
 	public BufferedImage filterImage(BufferedImage src, BufferedImage dst,
 			BufferedImageOp op) {
 		JSToolkit.notImplemented(null);
-		BufferedImage retBI = null;
+		BufferedImage retBI = dst; // was null; this is better for development at least
 		int type = 0;
 		/**
 		 * @j2sNative

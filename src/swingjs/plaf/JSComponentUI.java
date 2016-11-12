@@ -681,6 +681,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// check to reset width/height after getPreferredSize
 			if (w0 != null && hasOuterDiv) {
 				DOMNode.setStyles(node, "width", w0, "height", h0, "position", position);
+				if (w0 == "0" || h0 == "0")
+					DOMNode.setStyles(node, "display", "none");
 			}
 		}
 		if (parentNode != null)
@@ -752,7 +754,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			if (isContainer && hasOuterDiv) {
 				// System.out.println("JSComponentUI container " + id + " "
 				// + c.getBounds());
-				DOMNode.setSize(outerNode, getContainerWidth(), getContainerHeight());
+				int w = getContainerWidth();
+				int h = getContainerHeight();
+				DOMNode.setSize(outerNode, w, h);
+				if (w == 0 || h  == 0)
+					DOMNode.setStyles(outerNode, "display", "none");
 				if (isContentPane)
 					DOMNode.setStyles(outerNode, "overflow", "hidden");
 			}
@@ -1186,9 +1192,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void setBackground(Color color) {
-		if (domNode != null)
-			DOMNode.setStyles(domNode, "background-color",
-					JSToolkit.getCSSColor(color == null ? Color.white : color));
+		if (domNode == null)
+			return;
+		DOMNode.setStyles(domNode, "background-color",
+				JSToolkit.getCSSColor(color == null ? Color.white : color));
+		if (c.isBackgroundPainted)
+			DOMNode.setStyles(domNode, "background","transparent");
 	}
 
 	@Override

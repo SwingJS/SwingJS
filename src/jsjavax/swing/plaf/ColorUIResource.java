@@ -51,7 +51,6 @@ public class ColorUIResource extends Color implements UIResource {
 	}
 
 	/**
-	 * @j2sIgnore
 	 * 
 	 * @param rgb
 	 */
@@ -60,8 +59,6 @@ public class ColorUIResource extends Color implements UIResource {
 	}
 
 	/**
-	 * @j2sIgnore
-	 * 
 	 * @param rgb
 	 */
 	public ColorUIResource(int rgb) {
@@ -69,7 +66,6 @@ public class ColorUIResource extends Color implements UIResource {
 	}
 
 	/**
-	 * @j2sIgnore
 	 * 
 	 * @param rgb
 	 */
@@ -78,7 +74,6 @@ public class ColorUIResource extends Color implements UIResource {
 	}
 
 	/**
-	 * @j2sIgnore
 	 * 
 	 * @param rgb
 	 */
