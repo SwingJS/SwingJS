@@ -19,7 +19,10 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class JSSAXContentHandler extends DefaultHandler {
 
-	private boolean debugging;
+	// in JavaScript, set swingjs.JSSAXContentHandler.debugging = true
+	// to show tags as processing occurs.
+	
+	private static boolean debugging;
 
 	@Override
 	public void processingInstruction(String target, String data) {

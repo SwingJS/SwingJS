@@ -95,6 +95,21 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected static int incr;
 
+	
+	/**
+	 * Set this during run time using swingjs.plaf.JSComponentUI.borderTest = true
+	 * to debug alignments
+	 */
+	private static boolean borderTest;
+
+	
+	/**
+	 * Derived from swingjs.JSToolkit.debugger.
+	 * Set this during run time using swingjs.plaf.JSComponentUI.debugger = true
+	 * to give detailed debugging messages
+	 */
+	protected static boolean debugging;
+
 	/**
 	 * a unique id
 	 */
@@ -242,8 +257,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	private DOMNode waitImage;
 
-	protected boolean debugging;
-
 	public JSComponentUI() {
 		setDoc();
 	}
@@ -254,11 +267,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		 * 
 		 *            this.document = document; this.body = document.body;
 		 * 
-		 *            this.debugging = swingjs.JSToolkit.debugging;
 		 * 
 		 */
 		{
 		}
+		debugging = swingjs.JSToolkit.debugging;
 	}
 
 	/**
@@ -871,8 +884,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	@Override
 	public void update(Graphics g, JComponent c) {
 		// called from JComponent.paintComponent
-		boolean testing = false;// true;
-		if (testing) {
+		if (borderTest) {
 			g.setColor(Color.red);
 			g.drawRect(0, 0, c.getWidth(), c.getHeight());
 			System.out.println("drawing " + c.getWidth() + " " + c.getHeight());

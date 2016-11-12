@@ -1478,7 +1478,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				//
 				// *** Spinner
 				"Spinner.font",
-				monospacedPlain12,
+				sansSerifPlain12,
 				// "Spinner.background", control,
 				// "Spinner.foreground", control,
 				// "Spinner.border", textFieldBorder,
@@ -1494,8 +1494,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "KP_DOWN", "decrement",
 				// }),
 				// "Spinner.editorBorderPainted", Boolean.FALSE,
-				"Spinner.editorAlignment",
-				JTextField.TRAILING,
+				//"Spinner.editorAlignment",
+				//JTextField.TRAILING,
 
 				// *** SplitPane
 				"SplitPane.background",

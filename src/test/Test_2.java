@@ -19,22 +19,20 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.JComponent;
-
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.util.Enumeration;
+import javax.swing.border.TitledBorder;
 
 public class Test_2 extends JApplet {
 
@@ -51,11 +49,11 @@ public class Test_2 extends JApplet {
 
 	@Override
 	public void init() {
-		new JSlider();
 		setLayout(new BorderLayout());
 		canvas = new Test_2Canvas();
 		canvas.setSize(850, 500);
 		Container c = getContentPane();
+		((JPanel) c).setBorder(new TitledBorder("testing"));
 		c.setSize(850, 500);
 		c.add(canvas, BorderLayout.CENTER);
 		c.add(controls = new Test_2Controls(canvas), BorderLayout.NORTH);
