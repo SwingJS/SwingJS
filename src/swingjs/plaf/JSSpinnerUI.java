@@ -22,7 +22,7 @@ public class JSSpinnerUI extends JSLightweightUI {
 		if (domNode == null)	
 			textNode = domNode = newDOMObject("label", id);
 		//vCenter(domNode, 10);
-		String temp = "XX";
+		String temp = "[spinner]";
 		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
 		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",temp), c.getFont());
 	

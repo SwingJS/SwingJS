@@ -68,7 +68,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 				h = defaultHeight;
 			DOMNode.setStyles(frameNode, "background", toCSSString(c.getBackground()));
 			DOMNode.setSize(frameNode, w, h);
-			DOMNode.setPositionAbsolute(frameNode, frame.getX(), frame.getY());
+			DOMNode.setPositionAbsolute(frameNode, 0, 0);
 			setJ2sMouseHandler(frameNode);
 			titleBarNode = newDOMObject("div", id + "_titlebar");
 			DOMNode.setPositionAbsolute(titleBarNode, 0, 0);
@@ -112,7 +112,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			titleBarNode.appendChild(closerWrap);
 			closerWrap.appendChild(closerNode);
 			Insets s = getInsets();
-			DOMNode.setPositionAbsolute(frameNode, frame.getY(), frame.getX());
+			DOMNode.setPositionAbsolute(frameNode, 0, 0);
 			DOMNode.setAttrs(frameNode, "width",
 					"" + frame.getWidth() + s.left + s.right, "height", "" + frame.getHeight()
 							+ s.top + s.bottom);
@@ -187,7 +187,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	@Override
 	public void setTitle(String title) {
 		this.title = title;
-		DOMNode.setAttr(titleNode, "innerHTML", title);
+		if (titleNode != null)
+			DOMNode.setAttr(titleNode, "innerHTML", title);
 	}
 
 	@Override

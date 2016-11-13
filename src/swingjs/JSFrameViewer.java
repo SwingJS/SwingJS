@@ -189,7 +189,6 @@ public class JSFrameViewer implements JSInterface {
 				&& hNew >= 0
 				&& (wOld != wNew || hOld != hNew || canvas == null || jsgraphics == null)) {
 			jsgraphics = new JSGraphics2D(canvas = newCanvas(wNew, hNew));
-			jsgraphics.setWindowParameters(wNew, hNew);
 			//top.repaint(0, 0, wNew, hNew);
 		}
 		return jsgraphics;

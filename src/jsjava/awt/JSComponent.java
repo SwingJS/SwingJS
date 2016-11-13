@@ -85,7 +85,7 @@ public abstract class JSComponent extends Component {
 //		if (g instanceof ConstrainableGraphics) {
 //			((ConstrainableGraphics) g).constrain(x, y, width, height);
 //		} else {
-			g.translate(x, y);
+			g.translate(x, (isContentPane ? 0 : y));
 			g.setClip(0, 0, width, height);
 //		}
 		g.setFont(getFont());

@@ -26,6 +26,7 @@ import jsjava.beans.PropertyChangeListener;
 import jsjava.util.EventObject;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.SwingConstants;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ComponentUI;
@@ -164,6 +165,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected DOMNode textNode;
 
 	/**
+	 * "left" "right" "center" if defined
+	 */
+	protected String textAlign;
+
+	/**
 	 * the subcomponent with the value field
 	 */
 	protected DOMNode valueNode;
@@ -173,6 +179,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected DOMNode scrollNode;
 
+	/**
+	 * Labels with icons will have this
+	 */
+	protected int prefHeight;	
+	
 	/**
 	 * a component that is focusable
 	 */
@@ -546,8 +557,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 
-	private String createMsgs = "";	
-	
+	private String createMsgs = "";
+
+
 	/**
 	 * Create or recreate the inner DOM element for this Swing component. 
 	 * @return the DOM element's node and, if the DOM element already
@@ -679,7 +691,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			$(body).after(div);
 			DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
 			w = (int) Math.max(0, Math.ceil($(test).width() + 0.5));
-			h = (int) Math.max(0, Math.ceil($(test).height() + 0.5));
+			h = (prefHeight > 0 ? prefHeight  : (int) Math.max(0, Math.ceil($(test).height() + 0.5)));
 			$(div).detach();
 		}
 		// allow a UI to slightly adjust its dimension
@@ -694,8 +706,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// check to reset width/height after getPreferredSize
 			if (w0 != null && hasOuterDiv) {
 				DOMNode.setStyles(node, "width", w0, "height", h0, "position", position);
-				if (w0 == "0" || h0 == "0")
-					DOMNode.setStyles(node, "display", "none");
+				//if (w0 == "0px" || h0 == "0px") // DOES Not WORK
+					//DOMNode.setStyles(node, "display", "none");
 			}
 		}
 		if (parentNode != null)
@@ -755,6 +767,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (outerNode == null)
 			outerNode = wrap("div", id, domNode);
 
+		/**
+		 * @j2sNative
+		 * 
+		 * this.outerNode.setAttribute("name", this.jc.__CLASS_NAME__);
+		 */
+		{}
 		// set position
 
 		setOuterLocationFromComponent();
@@ -1477,6 +1495,26 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
     return r + g + b;
   }
 
+
+	protected void setTextAlignment(int horizontalAlignment) {
+		String prop = null;
+		switch (horizontalAlignment) {
+		case SwingConstants.RIGHT:
+		case SwingConstants.TRAILING:
+			prop = "right";
+			break;
+		case SwingConstants.LEFT:
+		case SwingConstants.LEADING:
+			prop = "left";
+			break;
+		case SwingConstants.CENTER:
+			prop = "center";
+			break;
+		}
+		if (prop != null)
+			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align",
+					textAlign = prop);
+	}
 
 
 }

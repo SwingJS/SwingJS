@@ -178,28 +178,44 @@ public class JSToolkit extends SunToolkit {
 				AppContext.EVENT_QUEUE_KEY));
 	}
 
-	public void exit() {
+	public static void exit() {
 		getAppletViewer().exit();
 	}
 
 	// ////// jsjava.awt.Toolkit /////////
 
 	@Override
-	public Dimension getScreenSize() {
+	protected int getScreenWidth() {
 		@SuppressWarnings("unused")
 		JQuery jq = getJQuery();
-		int w = 0, h = 0;
+		int w = 0;
 		/**
 		 * @j2sNative
 		 * 
 		 * w = jq.$(window).width(); 
+		 * 
+		 */
+		{
+		}
+		return w;
+	}
+
+	@Override
+	protected int getScreenHeight() {
+		@SuppressWarnings("unused")
+		JQuery jq = getJQuery();
+		int h = 0;
+		/**
+		 * @j2sNative
+		 * 
 		 * h = jq.$(window).height();
 		 * 
 		 */
 		{
 		}
-		return new Dimension(w, h);
+		return h;
 	}
+
 
 	@Override
 	public int getScreenResolution() {
@@ -247,18 +263,6 @@ public class JSToolkit extends SunToolkit {
 	public boolean isTraySupported() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	protected int getScreenWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	protected int getScreenHeight() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 //	@Override

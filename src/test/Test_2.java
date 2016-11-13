@@ -20,6 +20,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -32,7 +33,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class Test_2 extends JApplet {
 
@@ -742,6 +747,12 @@ class Test_2Controls extends JPanel implements ItemListener {
 		setName("T3d3Controls");
 		this.canvas = canvas;
 		range = 0;
+		String text = "testing";
+	  ImageIcon icon =  new ImageIcon(getClass()
+	  		.getClassLoader()
+	  		.getResource("test/test2.png"), "test");
+	  JLabel l = new JLabel(text, icon, SwingConstants.LEFT);
+	  add(l);
 		JCheckBox c = new JCheckBox("test");
 		c.addItemListener(this);
 		c.setFont(new Font("Arial", Font.PLAIN & Font.BOLD, 10));

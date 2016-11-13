@@ -500,6 +500,9 @@
             sun/awt/ComponentFactory.js
             sun/awt/ConstrainableGraphics.js
             sun/awt/geom/Curve.js
+            sun/awt/geom/Order1.js
+            sun/awt/geom/Order2.js
+            sun/awt/geom/Order3.js
             sun/awt/Graphics2Delegate.js
             sun/awt/ModalExclude.js
             sun/awt/NullComponentPeer.js

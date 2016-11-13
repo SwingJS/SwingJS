@@ -91,15 +91,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
   public int constrainX;
   public int constrainY;
 
-  private int windowWidth;
-	private int windowHeight;
+  private int width;
+	private int height;
 	private HTML5Canvas canvas;
 
 	private HTML5CanvasContext2D ctx;
 	private GraphicsConfiguration gc;
 
 	private BasicStroke currentStroke;
-	private Rectangle currentClip;
+	private Shape currentClip;
+	
 	private AlphaComposite currentComposite;
 	private int initialState;
 	
@@ -118,11 +119,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		this.canvas = (HTML5Canvas) canvas;
 		ctx = this.canvas.getContext("2d");
 		transform = new AffineTransform();
-		setStroke(new BasicStroke());
+		setStroke(new BasicStroke());	
 		/**
 		 * @j2sNative
 		 * 
 		 *            this.gc = SwingJS;
+		 *            this.width = canvas.width;
+		 *            this.height = canvas.height;
 		 * 
 		 */
 		{
@@ -260,7 +263,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			isShifted = true;
 			return;
 		}
-		clearRect(0, 0, windowWidth, windowHeight);
+		clearRect(0, 0, width, height);
 	}
 
 	@Override
@@ -298,11 +301,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		HTML5CanvasContext2D.setLineWidth(ctx, d);
 	}
 
-	public void setWindowParameters(int width, int height) {
-		windowWidth = width;
-		windowHeight = height;
-	}
-
 	public boolean canDoLineTo() {
 		return true;
 	}
@@ -325,6 +323,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public void clip(Shape s) {
 		doShape(s);
+		currentClip = s;
 		ctx.clip();
 	}
 
@@ -469,15 +468,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	private DOMNode getImageNode(Image img) {
 		backgroundTaintCount++;
-		DOMNode imgNode = null;
-		/**
-		 * @j2sNative
-		 * 
-		 *            imgNode = img._imgNode || img._canvas;
-		 */
-		{
-			
-		}
+		DOMNode imgNode = DOMNode.getImageNode(img);
 		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
 	}
 
@@ -492,21 +483,22 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
 		backgroundTaintCount++;
-		JSToolkit.notImplemented(null);
-		return false;
+		JSToolkit.notImplemented("drawImage only uses xform translate");
+		return drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), obs);
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
 		backgroundTaintCount++;
-		JSToolkit.notImplemented(null);
+		//JSToolkit.notImplemented("drawRenderedImage only uses xform translate");
 		drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
 		backgroundTaintCount++;
-		JSToolkit.notImplemented(null);
+		//JSToolkit.notImplemented("drawRenderableImage uses drawRenderedImage");
+		drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
 	}
 
 	@Override
@@ -660,19 +652,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		{}
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
-		currentClip = new Rectangle(x, y, width, height);
 		ctx.clip();
 	}
 
-	/**
-	 * @j2sIgnore
-	 */
 	@Override
 	public void setClip(Shape clip) {
 		setClip1(clip);
 	}
 
 	public void setClip1(Shape clip) {
+		currentClip = clip;
 		ctx.beginPath();
 		doShape(clip);
 		ctx.clip();
@@ -718,9 +707,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public Shape getClip() {
-		// not available in JavaScript?
-		JSToolkit.notImplemented(null);
-		return null;
+		return currentClip == null ? getClipBoundsImpl() : currentClip;
 	}
 
 	@Override
@@ -856,9 +843,9 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	private Rectangle getClipBoundsImpl() {
 		if (currentClip == null) {
-			currentClip = new Rectangle(0, 0, windowWidth, windowHeight);
+			currentClip = new Rectangle(0, 0, width, height);
 		}
-		return currentClip;
+		return currentClip.getBounds();
 	}
 
 	@Override

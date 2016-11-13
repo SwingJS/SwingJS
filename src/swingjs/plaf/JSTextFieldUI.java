@@ -7,6 +7,7 @@ import jsjava.awt.Dimension;
 import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.Action;
 import jsjavax.swing.JTextField;
+import jsjavax.swing.SwingConstants;
 import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
 
@@ -19,23 +20,25 @@ import swingjs.api.DOMNode;
 public class JSTextFieldUI extends JSTextUI {
 
 	protected String inputType = "text";
+	private JTextField textField;
 
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			textListener.checkDocument();
-			focusNode = enableNode = valueNode = domNode = DOMNode
+			focusNode = enableNode = valueNode = textNode = domNode = DOMNode
 					.setStyles(newDOMObject("input", id, "type", inputType),
 							"padding", "0px 1px");
 			vCenter(domNode, -10);
 			setDataUI(domNode);
-			if (((JTextComponent) c).isEditable()) {
+			if (textField.isEditable()) {
 				bindKeys(domNode);
 				addJQueryFocusCallbacks();
 			}
 		}
 		setCssFont(setProp(domNode, "value", getComponentText()),
 				c.getFont());
+		setTextAlignment(textField.getHorizontalAlignment());		
 		if (!editable)
 			DOMNode.setAttr(domNode, "readOnly", "true");
 		return domNode;
@@ -46,6 +49,12 @@ public class JSTextFieldUI extends JSTextUI {
 		return new Dimension(0, -2);
 	}
 	
+	@Override
+	protected void installUIImpl() {
+		textField = (JTextField) c;
+		super.installUIImpl();
+	}
+
 	@Override
 	boolean handleEnter(int eventType) {
 		if (eventType == KeyEvent.KEY_PRESSED) {

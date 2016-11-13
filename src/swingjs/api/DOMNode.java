@@ -1,5 +1,6 @@
 package swingjs.api;
 
+import jsjava.awt.Image;
 import jsjava.awt.Rectangle;
 import swingjs.JSToolkit;
 import swingjs.plaf.JSComponentUI;
@@ -12,7 +13,7 @@ public abstract class DOMNode {
 
 	public abstract boolean play();
 
-	public abstract DOMNode removeChild(DOMNode node);
+	public abstract DOMNode removeChild(DOMNode nocde);
 
 	public abstract DOMNode removeAttribute(String attr);
 	
@@ -23,13 +24,26 @@ public abstract class DOMNode {
 		/**
 		 * 
 		 * @j2sNative
-		 * 					node = document.createElement(key); 
-		 *          node.id = id;
+		 * 					node = document.createElement(key);
+		 * 					if(id)node.id = id;
 		 */
 		{
 		}
 		return setAttrs(node, attrs);
 	}
+
+	public static DOMNode createTextNode(String text) {
+		DOMNode node = null;
+		/**
+		 * 
+		 * @j2sNative
+		 * 					node = document.createTextNode(text); 
+		 */
+		{
+		}
+		return node;
+	}
+
 
 	public static DOMNode getParent(DOMNode node) {
 		/**
@@ -204,7 +218,7 @@ public abstract class DOMNode {
 	}
 
 	public static void playWav(String filePath) {
-		DOMNode.setAttrs(DOMNode.createElement("audio", "jsaudio"), 
+		DOMNode.setAttrs(DOMNode.createElement("audio", null), 
 				"controls", "true", "src", filePath).play();
 	}
 
@@ -216,6 +230,25 @@ public abstract class DOMNode {
 		 * 
 		 */
 		{}
+	}
+
+	public static DOMNode getImageNode(Image img) {
+		
+		/**
+		 * @j2sNative
+		 * 
+		 *            return (img._imgNode || img._canvas);
+		 */
+		{
+			return null;
+		}
+	}
+
+	public static void addHorizontalGap(DOMNode domNode, int gap) {
+		DOMNode label = DOMNode.setStyles(DOMNode.createElement("label", null), 
+				"letter-spacing", gap + "px", "font-size", "0pt");
+		label.appendChild(DOMNode.createTextNode("."));
+		domNode.appendChild(label);
 	}
 
 }

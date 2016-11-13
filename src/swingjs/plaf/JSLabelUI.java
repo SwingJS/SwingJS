@@ -1,5 +1,7 @@
 package swingjs.plaf;
 
+import jsjava.awt.JSComponent;
+import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JLabel;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.SwingConstants;
@@ -13,15 +15,32 @@ import swingjs.api.DOMNode;
  */
 public class JSLabelUI extends JSLightweightUI {
 	private JLabel label;
-	private String textAlign;
+	private ImageIcon icon;
 
 	@Override
 	protected DOMNode updateDOMNode() {
-		if (domNode == null)	
+		if (domNode == null)	{
 			textNode = domNode = newDOMObject("label", id);
+		}
+		DOMNode.setAttr(domNode, "innerHTML", "");
+		icon = (ImageIcon) label.getIcon();
+		String text = label.getText();
+		if (icon != null) {
+			DOMNode imageNode = DOMNode.getImageNode(icon.getImage());
+			domNode.appendChild(imageNode);
+			prefHeight = icon.getIconHeight();
+		}
+		if (text != null) {
+			if (icon != null) {
+				int gap = label.getIconTextGap();
+				if (gap != 0)
+					DOMNode.addHorizontalGap(domNode, gap);
+			}
+			domNode.appendChild(DOMNode.createTextNode(text));
+		}
 		//vCenter(domNode, 10);
 		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
-		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",((JLabel) c).getText()), c.getFont());
+		return setCssFont(domNode, c.getFont());
 	
 	}
 
@@ -42,22 +61,7 @@ public class JSLabelUI extends JSLightweightUI {
 	@Override
 	protected DOMNode setHTMLElement() {
 		setHTMLElementCUI();
-		String prop = null;
-		switch (label.getHorizontalAlignment()) {
-		case SwingConstants.RIGHT:
-		case SwingConstants.TRAILING:
-			prop = "right";
-			break;
-		case SwingConstants.LEFT:
-		case SwingConstants.LEADING:
-			prop = "left";
-			break;
-		case SwingConstants.CENTER:
-			prop = "center";
-			break;
-		}
-		if (prop != null) 
-			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align", textAlign = prop);
+		setTextAlignment(label.getHorizontalAlignment());
 		return outerNode;
 	}
 	

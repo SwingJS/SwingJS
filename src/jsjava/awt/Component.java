@@ -3105,36 +3105,45 @@ protected  transient ComponentPeer peer;
         repaint(0, x, y, width, height);
     }
 
-    /**
-     * Repaints the specified rectangle of this component within
-     * <code>tm</code> milliseconds.
-     * <p>
-     * If this component is a lightweight component, this method causes
-     * a call to this component's <code>paint</code> method.
-     * Otherwise, this method causes a call to this component's
-     * <code>update</code> method.
-     * <p>
-     * <b>Note</b>: For more information on the paint mechanisms utilitized
-     * by AWT and Swing, including information on how to write the most
-     * efficient painting code, see
-     * <a href="http://java.sun.com/products/jfc/tsc/articles/painting/index.html">Painting in AWT and Swing</a>.
-     *
-     * @param     tm   maximum time in milliseconds before update
-     * @param     x    the <i>x</i> coordinate
-     * @param     y    the <i>y</i> coordinate
-     * @param     width    the width
-     * @param     height   the height
-     * @see       #update(Graphics)
-     * @since     JDK1.0
-     */
-    public void repaint(long tm, int x, int y, int width, int height) {
+	/**
+	 * Repaints the specified rectangle of this component within <code>tm</code>
+	 * milliseconds.
+	 * <p>
+	 * If this component is a lightweight component, this method causes a call to
+	 * this component's <code>paint</code> method. Otherwise, this method causes a
+	 * call to this component's <code>update</code> method.
+	 * <p>
+	 * <b>Note</b>: For more information on the paint mechanisms utilitized by AWT
+	 * and Swing, including information on how to write the most efficient
+	 * painting code, see <a
+	 * href="http://java.sun.com/products/jfc/tsc/articles/painting/index.html"
+	 * >Painting in AWT and Swing</a>.
+	 * 
+	 * @param tm
+	 *          maximum time in milliseconds before update
+	 * @param x
+	 *          the <i>x</i> coordinate
+	 * @param y
+	 *          the <i>y</i> coordinate
+	 * @param width
+	 *          the width
+	 * @param height
+	 *          the height
+	 * @see #update(Graphics)
+	 * @since JDK1.0
+	 */
+	public void repaint(long tm, int x, int y, int width, int height) {
 		// System.out.println("C repaint " + this.name);
 		if (canPaint()) {
 			// System.out.println("C firing Paint event on " + this.name);
-			if (isVisible() && (peer != null) && (width > 0) && (height > 0)) {
-				PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE, new Rectangle(x,
-						y, width, height));
-				Toolkit.getEventQueue().postEvent(e);
+			if (peer != null) {
+				if (isVisible() && width > 0 && height > 0) {
+					PaintEvent e = new PaintEvent(this, PaintEvent.UPDATE, new Rectangle(
+							x, y, width, height));
+					Toolkit.getEventQueue().postEvent(e);
+				} else {
+					peer.setVisible(false);
+				}
 			}
 		} else if (parent != null) {
 			// Needs to be translated to parent coordinates since
@@ -3145,9 +3154,9 @@ protected  transient ComponentPeer peer;
 			int py = this.y + ((y < 0) ? 0 : y);
 			int pwidth = (width > this.width) ? this.width : width;
 			int pheight = (height > this.height) ? this.height : height;
-			//System.out.println("C repaint to " + parent.getName());
+			// System.out.println("C repaint to " + parent.getName());
 			parent.repaint(tm, px, py, pwidth, pheight);
-			//System.out.println("OK");
+			// System.out.println("OK");
 
 		}
 	}

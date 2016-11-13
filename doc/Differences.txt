@@ -95,7 +95,14 @@ independent frames and dialogs, and threading.
 At this point we have a good variety of common controls. Events are being handled properly
 through the "java" event queue. Mouse operation is smooth.  
 
-
+BH 11/2/2016 8:53:44 AM  -- bug #38 in compiler -- if a class has a constructor such as JButton() that calls
+                                                   this(null, null), and that class is subclassed with a
+                                                   class such as ToggleButton that contains a constructor
+                                                   such as ToggleButton(String,String), then the call to JButton()
+                                                   will improperly call that subclass's constructor. This is a
+                                                   problem due to the fact that in Java "this" in a superclass
+                                                   DURING CONSTRUCTION does not refer to the "this" of the 
+                                                   subclass.    
 BH 7/23/2016 6:16:30 PM  -- bug #27 in compiler -- need Boolean.from(string) not new Boolean(string)
 BH 7/23/2016 6:17:31 PM  -- but #26 in compiler -- compiler can inappropriately use Clazz.overrideMethod
 BH 7/22/2016 1:29:12 PM  -- bug #25 in compiler for int f() { return 'o' }  -- will return a string, not int
