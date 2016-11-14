@@ -1,3 +1,4 @@
+//BH 11/14/2016 9:24:24 AM adding new ArrayList(collection) as part of the single constructor
 //BH 12/18/2015 7:30:28 AM using slice for toArray()
 //BH 7/4/2016 3:16:31 PM adding _removeItemAt and _removeObject
 
@@ -9,10 +10,25 @@ this.array=null;
 Clazz.instantialize(this,arguments);
 },java.util,"ArrayList",java.util.AbstractList,[java.util.List,Cloneable,java.io.Serializable,java.util.RandomAccess]);
 
-Clazz.overrideConstructor(c$,
+
+Clazz_overrideConstructor(c$,
 function(){
-this.setup(0);
+var n = 0;
+if (arguments.length == 1) {
+  n = arguments[0];
+  if (typeof n != "number") {
+    var collection = n;
+    //Clazz_superConstructor(this,java.util.ArrayList,[]);
+    var size=collection.size();
+    this.firstIndex=this.lastIndex=0;
+    this.array=this.newElementArray(size+(Math.floor(size/10)));
+    this.addAll(collection);
+    return
+  }
+}
+this.setup(n);
 });
+
 
 Clazz.defineMethod(c$, "setup",
 function(capacity){
@@ -28,17 +44,6 @@ throw e;
 }
 }
 },"~N");
-/*
-Clazz.makeConstructor(c$,
-function(collection){
-Clazz.superConstructor(this,java.util.ArrayList,[]);
-var size=collection.size();
-this.firstIndex=this.lastIndex=0;
-this.array=this.newElementArray(size+(Math.floor(size/10)));
-this.addAll(collection);
-},"java.util.Collection");
-
-*/
 
 Clazz.defineMethod(c$,"newElementArray",
 ($fz=function(size){
