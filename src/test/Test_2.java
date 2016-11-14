@@ -43,6 +43,8 @@ public class Test_2 extends JApplet {
 
 	Test_2Canvas canvas;
 	Test_2Controls controls;
+	Rectangle r;
+	
 
 	public Test_2() {
 //	  Object xx = java.lang.reflect.Array.newInstance(JApplet.class, 3);

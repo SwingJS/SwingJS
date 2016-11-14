@@ -6,6 +6,9 @@
 
 // NOTES by Bob Hanson
 
+// BH 11/14/2016 9:40:59 AM removing extraneous "sp" super-field-prep calls
+// BH 11/13/2016 12:16:13 PM fixing Number.compareTo
+// BH 11/10/2016 9:47:00 PM prepField work complete; added System.exit()
 // BH 11/6/2016 1:17:41 PM fixing order of superclass prep
 // BH 11/3/2016 7:26:11 PM fix for superclass "this" improperly referring to subclass constructor
 // BH 11/1/2016 7:28:32 AM rewrite of field preparation code -- now like Java, not interleaved with constructors for subclasses
@@ -656,17 +659,31 @@ Clazz.prepareCallback = function (innerObj, args) {
     //     not the inner class, as it is a property of the outer class and
     //     does not have to be recreated upon every new instance of the inner class.    
     var b = outerObj.$b$;
+    var isNew = false;
     if (!b) {
-      b = outerObj.$b$ = (outerObj.b$ || {});
+      b = outerObj.b$;
     	// all references to outer class and its superclass objects must be here as well
-  		b[Clazz.getClassName(outerObj, true)] = outerObj;
+      if (!b) {
+        b = {};
+        isNew = true;
+      }
   		var clazz = Clazz.getClass(outerObj);
   		while (clazz.superClazz) {
-        b[Clazz.getClassName(clazz = clazz.superClazz, true)] = outerObj;
-        
+        var key = Clazz.getClassName(clazz = clazz.superClazz, true);
+        if (!isNew && b[key]) 
+          break;
+        b[key] = outerObj; 
       }
+  		b[Clazz.getClassName(outerObj, true)] = outerObj;
     }
-    innerObj.b$ = b;
+    if (isNew) {
+      innerObj.b$ = outerObj.$b$ = b;
+    } else {   
+      var a = {};
+      for (var i in b)
+        a[i] = outerObj;
+      innerObj.b$ = a;
+    }
 	}
 	// note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
 	for (var i = 0, n = args.length - 1; i < n; i++)
@@ -1759,6 +1776,7 @@ Clazz.inheritArgs = new (function(){return {"$J2SNOCREATE$":true}})();
 
 var _prepOnly = new (function(){return {"$J2SPREPONLY$":true}})();
 
+var _jsid = 0;
 /* public */
 Clazz.instantialize = function (objThis, args) {
 
@@ -1776,7 +1794,7 @@ Clazz.instantialize = function (objThis, args) {
 	}
 
   var myclass = objThis.getClass();
-  
+  objThis.__JSID__ = ++_jsid;
 	var c = objThis.construct;
   if (!c){
     // a class with just the default (null) constructor that only subclasses Object and no fields to prepare
@@ -1808,6 +1826,9 @@ Clazz.instantialize = function (objThis, args) {
     // q: what about abstract classes. How does that work? What if they do not have a constructor? 
       
     var p = (n == 0 ? myclass._PREP_ : stack[0]._PREP_);
+    
+//    if (n > 2 && stack[0].prototype.construct == null)debugger;
+    
     p && p.apply(objThis, []);  
   
     // when we have a superclass and a prepareFields, 
@@ -1831,7 +1852,7 @@ Clazz.instantialize = function (objThis, args) {
     var pt = c.apply(objThis, args);
     if (n > 0)
       prepFields(objThis, myclass, pt);
-  
+    delete objThis.__PREPPT__;
   } catch (e) {
      alert("ahah2!" + e + (e.stack || Clazz.getStackTrace()));
      debugger
@@ -1848,10 +1869,13 @@ var prepFields = function(objThis, clazzThis, pt) {
   // pt may be null, undefined, 0, or some other number    
   // skip pt=0, as we have already done that
   try {  
-    var n = clazzThis.__STACKPT__;    
+    var imin = (objThis.__PREPPT__ || -1) + 1;
+    var n = objThis.__PREPPT__ = clazzThis.__STACKPT__;    
     var stack = clazzThis.__STACK__;
     pt = (pt === 0 ? 1 : pt ? pt : n);
-    var cn = clazzThis.__CLASS_NAME__ + " for " + objThis.__CLASS_NAME__ + " " + pt + " " + n
+    if (pt < imin)
+      pt = imin;
+    //var cn = clazzThis.__CLASS_NAME__ + " for " + objThis.__CLASS_NAME__ + " " + pt + " " + n
     //System.out.println(cn);
     for (var i = pt, p; i <= n; i++)
       (p = stack[i]._PREP_) && p.apply(objThis, []);
@@ -2003,7 +2027,7 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
   }
   // there are instances where even though we have supplied a superConstructor call,
   // there is no super class;
-  var sp = (i == 0  && clazzThis.superClazz ? clazzThis.superClazz._PREP_ : null);
+  var sp = null;//(i == 0  && clazzThis.superClazz ? clazzThis.superClazz._PREP_ : null);
   if (fx == null && sp == null && clazzThis._PREP_ == null) {
     arguments.callee.caller.caller.exMeth = -1;
     return null;
@@ -2822,6 +2846,7 @@ System.err.printf = function () {};
 System.err.println = function () {};
 System.err.write = function () {};
 
+System.exit = function() { swingjs.JSToolkit.exit() };
 Clazz.popup = Clazz.assert = Clazz.log = Clazz.error = window.alert;
 
 Thread = function () {};
@@ -4991,9 +5016,12 @@ Clazz.alert = function (s) {
 Sys.out.print = function (s) { 
 	Con.consoleOutput (s);
 };
+
+Clazz._nooutput = 0;
+
 /* public */
 Sys.out.println = function(s) {
-if (Clazz._nooutput)return;
+  if (Clazz._nooutput) return;
 	if (Clazz._traceOutput && s && ("" + s).indexOf(Clazz._traceOutput) >= 0)
 		alert(s + "\n\n" + Clazz.getStackTrace());
 	Con.consoleOutput(typeof s == "undefined" ? "\r\n" : s == null ?  s = "null\r\n" : s + "\r\n");
@@ -5100,7 +5128,7 @@ Number.__CLASS_NAME__="Number";
 implementOf(Number,java.io.Serializable);
 Number.equals=inF.equals;
 Number.getName=inF.getName;
-Number.prototype.compareTo = function(x) { var a = this.value, b = x.value; return (a < b ? -1 : a == b ? 0 : 1) };
+Number.prototype.compareTo = function(x) { var a = this.valueOf(), b = x.valueOf(); return (a < b ? -1 : a == b ? 0 : 1) };
 Number.compare = function(a,b) { return (a < b ? -1 : a == b ? 0 : 1) };
 
 Clazz.defineMethod(Number,"shortValue",

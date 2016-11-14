@@ -56,7 +56,6 @@ import jsjava.awt.RenderingHints;
 import jsjava.awt.RenderingHints.Key;
 import jsjava.awt.Shape;
 import jsjava.awt.Stroke;
-import jsjava.awt.Toolkit;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.geom.Path2D;
@@ -772,30 +771,53 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		transform.scale(sx, sy);
 	}
 
+	/**
+	 * concatenates the given transform matrix to the current transform
+	 * 
+	 */
 	@Override
-	public void transform(AffineTransform xform) {
-		JSToolkit.notImplemented(null);
+	public void	 transform(AffineTransform t) {
+		/**
+		 * @j2sNative
+		 * 
+		 * this.ctx.transform (t.m00, t.m10, t.m01, t.m11, t.m02, t.m12);
+		 */
+		{}
+	  transform.concatenate(t);
 	}
 
+	/**
+	 * sets the transform matrix to the given one
+	 */
 	@Override
-	public void setTransform(AffineTransform Tx) {
-		// TODO
-		JSToolkit.notImplemented(null);
-	}
-
-	@Override
-	public AffineTransform getTransform() {
-		return transform;
+	public void setTransform(AffineTransform t) {
+			/**
+			 * @j2sNative
+			 * 
+			 *            this.ctx.setTransform (t.m00, t.m10, t.m01, t.m11, t.m02,
+			 *            t.m12);
+			 */
+			{
+			}
+		transform.setTransform(t);
 	}
 
   /**
-   * Returns the current Transform ignoring the "constrain"
-   * rectangle.
+   * Returns a copy of the current transform
    */
-  public AffineTransform cloneTransform() {
+	@Override
+	public AffineTransform getTransform() {
   	return (AffineTransform) transform.clone();
-  }
+	}
 
+//  /**
+//   * Returns the current Transform ignoring the "constrain"
+//   * rectangle.
+//   */
+//  public AffineTransform cloneTransform() {
+//  	return (AffineTransform) transform.clone();
+//  }
+//
 	@Override
 	public Paint getPaint() {
 		JSToolkit.notImplemented(null);
