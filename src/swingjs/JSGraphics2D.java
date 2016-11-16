@@ -508,7 +508,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void setPaint(Paint paint) {
-		JSToolkit.notImplemented(null);
+		HTML5CanvasContext2D.setFillStyle(ctx, JSToolkit.getCSSColor((Color) paint));
 	}
 
 	@Override
@@ -935,6 +935,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		map.put("stroke", currentStroke);
 		map.put("transform", transform); // not implemented
 		map.put("font", font);
+		if (currentClip != null)
+			map.put("clip", currentClip);
 		return HTML5CanvasContext2D.push(ctx, map);
 	}
 
@@ -951,6 +953,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			setStroke((Stroke) map.get("stroke"));
 			setTransform((AffineTransform) map.get("transform"));
 			setFont((Font) map.get("font"));
+			currentClip = (Shape) map.get("clip");
 			ctx.restore();
 		}
 	}
