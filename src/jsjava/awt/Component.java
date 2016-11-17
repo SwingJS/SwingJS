@@ -2878,12 +2878,12 @@ protected  transient ComponentPeer peer;
      * message pump.
      */
     final void updateCursorImmediately() {
+    	JSToolkit.setCursor(cursor); 
     	// TODO
 //        if (peer instanceof LightweightPeer) {
 //            Container nativeContainer = getNativeContainer();
 //
 //            if (nativeContainer == null) return;
-//
 //            ComponentPeer cPeer = nativeContainer.getPeer();
 //
 //            if (cPeer != null) {

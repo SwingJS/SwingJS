@@ -24,6 +24,7 @@
  */
 package jsjavax.swing.border;
 
+import swingjs.JSGraphics2D;
 import jssun.swing.SwingUtilities2;
 
 import jsjava.awt.Graphics;
@@ -349,13 +350,16 @@ public class TitledBorder extends AbstractBorder
 
                 // save original clip
                 Rectangle saveClip = g.getClipBounds();
-
+                JSGraphics2D cg = (JSGraphics2D) g;
+                int pt = cg.mark();
                 // paint strip left of text
                 clipRect.setBounds(saveClip);
                 if (computeIntersection(clipRect, x, y, textLoc.x-1-x, height)) {
                     g.setClip(clipRect);
                     border.paintBorder(c, g, grooveRect.x, grooveRect.y,
                                   grooveRect.width, grooveRect.height);
+                    cg.reset(pt);
+                    cg.mark();
                 }
 
                 // paint strip right of text
@@ -365,6 +369,8 @@ public class TitledBorder extends AbstractBorder
                     g.setClip(clipRect);
                     border.paintBorder(c, g, grooveRect.x, grooveRect.y,
                                   grooveRect.width, grooveRect.height);
+                    cg.reset(pt);
+                    cg.mark();
                 }
 
                 if (titlePos == TOP || titlePos == DEFAULT_POSITION) {
@@ -375,6 +381,8 @@ public class TitledBorder extends AbstractBorder
                         g.setClip(clipRect);
                         border.paintBorder(c, g, grooveRect.x, grooveRect.y,
                                   grooveRect.width, grooveRect.height);
+                        cg.reset(pt);
+                        cg.mark();
                     }
 
                 } else { // titlePos == BOTTOM
@@ -385,11 +393,14 @@ public class TitledBorder extends AbstractBorder
                         g.setClip(clipRect);
                         border.paintBorder(c, g, grooveRect.x, grooveRect.y,
                                   grooveRect.width, grooveRect.height);
+                        cg.reset(pt);
+                        cg.mark();
                     }
                 }
 
                 // restore clip
                 g.setClip(saveClip);
+                cg.reset(pt);
 
             } else {
                 border.paintBorder(c, g, grooveRect.x, grooveRect.y,

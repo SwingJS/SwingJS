@@ -136,7 +136,7 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
      * @see     #InvocationEvent(Object, Runnable, Object, boolean)
      */
     public InvocationEvent(Object source, Runnable runnable) {
-        this(source, runnable, null, false);
+        this(source, INVOCATION_DEFAULT, runnable, null, false);
     }
 
     /**
@@ -202,7 +202,7 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent {
      *                          dispatch loop
      * @throws IllegalArgumentException if <code>source</code> is null
      */
-    protected InvocationEvent(Object source, int id, Runnable runnable,
+    public InvocationEvent(Object source, int id, Runnable runnable,
                               Object notifier, boolean catchThrowables) {
         super(source, id);
         this.runnable = runnable;

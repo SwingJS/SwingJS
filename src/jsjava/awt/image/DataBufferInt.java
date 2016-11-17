@@ -55,7 +55,7 @@ import javajs.util.AU;
  */
 public final class DataBufferInt extends DataBuffer {
 	/** The default data bank. */
-	int data[];
+	public int data[];
 
 	/** All data banks */
 	public int bankdata[][]; // SwingJS needs public here

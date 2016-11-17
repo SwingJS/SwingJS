@@ -1099,11 +1099,11 @@ public abstract class SunToolkit extends Toolkit implements
 
 	@Override
 	protected EventQueue getSystemEventQueueImpl() {
-		return getSystemEventQueueImplPP();
+		return getSystemEventQueueImplPP(AppContext.getAppContext());
 	}
 
 	// Package private implementation
-	static EventQueue getSystemEventQueueImplPP() {
+	static EventQueue getSystemEventQueueImplPPS() {
 		return getSystemEventQueueImplPP(AppContext.getAppContext());
 	}
 

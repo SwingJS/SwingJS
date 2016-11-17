@@ -48,8 +48,8 @@ public class JSImagekit implements ImageConsumer {
 	 * @return
 	 */
 	public JSImage createImageFromBytes(byte[] data, int imageoffset,
-			int imagelength) {
-		return createImageFromBytesStatic(data, imageoffset, imagelength);
+			int imagelength, String name) {
+		return createImageFromBytesStatic(data, imageoffset, imagelength, name);
 	}
 
 	private int width;
@@ -73,7 +73,7 @@ public class JSImagekit implements ImageConsumer {
 		//
 		//TODO: not considering pixelbytes
 		//
-		jsimage = new JSImage(pixels, width, height);
+		jsimage = new JSImage(pixels, width, height, null);
   }
 
 	public Image getCreatedImage() {
@@ -137,7 +137,7 @@ public class JSImagekit implements ImageConsumer {
 	}
 
 	private static JSImage createImageFromBytesStatic(byte[] data, int imageoffset,
-			int imagelength) {
+			int imagelength, String name) {
 		int w = 0, h = 0;
 		int[] argb = null;
 		byte[] b = null;
@@ -203,7 +203,7 @@ public class JSImagekit implements ImageConsumer {
 		}
 		if (w == 0 || h == 0)
 			return null;
-		JSImage jsimage = new JSImage(argb, w, h); 
+		JSImage jsimage = new JSImage(argb, w, h, name); 
 		if (data != null && argb == null)
 			jsimage.getDOMImage(b, type);
 		return jsimage;

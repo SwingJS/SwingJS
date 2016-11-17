@@ -1408,7 +1408,7 @@ public class RepaintManager {
 	private void scheduleProcessingRunnable(AppContext context) {
 		if (processingRunnable.markPending()) {
 			SunToolkit.getSystemEventQueueImplPP(context).postEvent(
-					new InvocationEvent(Toolkit.getDefaultToolkit(), processingRunnable));
+					new InvocationEvent(Toolkit.getDefaultToolkit(), InvocationEvent.INVOCATION_DEFAULT, processingRunnable, null, false));
 		}
 	}
 

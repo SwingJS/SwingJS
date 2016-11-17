@@ -1,20 +1,44 @@
 package swingjs;
 
 import javajs.util.Base64;
-import swingjs.api.DOMNode;
 import jsjava.awt.image.BufferedImage;
+import jsjava.awt.image.DataBufferInt;
 import jsjava.awt.image.ImageObserver;
+import swingjs.api.DOMNode;
 
+/**
+ * A JavaScript version of BufferedImage. 
+ * 
+ * Created from JSImagekit when creating an image 
+ * from byte[] or from loading a GIF, PNG, or JPG image.
+ * 
+ * The difference is that when from byte[] data, the 
+ * field _pix will be initialized to the raster data, 
+ * but _imgNode will be null; when an image is used, then
+ * _pix will be there, but it will not be populated unless
+ * a call to setRGB is made. Until then, JSGraphics2D.drawImage will
+ * simply use the image itself. But the _pix data will still
+ * be available as _imgNode.pbuf32.
+ * 
+ * Only integer raster data RGB and ARGB have been implemented.
+ * 
+ * 
+ * 
+ * @author Bob Hanson
+ *
+ */
 public class JSImage extends BufferedImage {
+
 	// a BufferedImage in name only, actually;
-	int typeRequested;
-	public DOMNode _imgNode; // used by JSGraphics2D directly
-	private int width, height;
 	
-	public JSImage(int[] argb, int width, int height) {
+	// TODO: implement simple ColorModel and Raster
+	
+	public String src;
+	private Runnable callback;
+
+	public JSImage(int[] argb, int width, int height, String src) {
 		super(width, height, TYPE_INT_ARGB);
-		this.width = width;
-		this.height = height;
+		this.src = src;
 		_pix = argb;
 	}
 	
@@ -50,43 +74,44 @@ public class JSImage extends BufferedImage {
 	@SuppressWarnings("unused")
 	public void getDOMImage(byte[] b, String type) {
 		String dataurl = "data:image/" + type + ";base64,"  + Base64.getBase64(b).toString();
-		Object me = this;
 		DOMNode img = null;
 		/**
 		 * @j2sNative
 		 *   img = new Image(this.width, this.height);
-		 *   //img.onLoad = function() { me.setDOMImage(img); };
+		 *   //if (this.callback) img.onload = this.callback;
 		 *   img.src = dataurl;
 		 */
 		{}
-		setDOMImage(img);
+		_imgNode = img;
 	}
 		
 	/**
-	 * callback from Image.src = ... ; extract the int[] data from this image;
-	 * also sets img._pbuf32 for graphing
+	 * Extract the int[] data from this image by installing it in a canvas.
+	 * Note that if if img.complete == false, then this will result in a
+	 * black rectangle.
 	 * 
 	 */
 	@SuppressWarnings("unused")
-	public void setDOMImage(DOMNode img) {
-		DOMNode canvas = DOMNode.createElement("canvas", "JSImage");
+	public void setPixels() {
+		DOMNode canvas = DOMNode.createElement("canvas", null);
 		int w = width;
 		int h = height;
-		_imgNode = img;
 		/**
 		 * @j2sNative
 		 * 
 		 * canvas.width = w;
 		 * canvas.height = h;
 		 * var ctx = canvas.getContext("2d");
-		 * ctx.drawImage(img, 0, 0, w, h);
-		 * var data = ctx.getImageData(0, 0, w, h).data;
-		 * img._pbuf32 = this.toIntARGB(data);
+		 * ctx.drawImage(this._imgNode, 0, 0, w, h);
+		 * this._pix = this.toIntARGB(ctx.getImageData(0, 0, w, h).data);
 		 * 
 		 */
 		{
+			// placeholder only, for Eclipse reference
 			toIntARGB(null);
 		}
+		((DataBufferInt) raster.getDataBuffer()).data = this._pix;
+		_havePix = true;
 	}
 
 	@Override
@@ -99,4 +124,5 @@ public class JSImage extends BufferedImage {
 		return width;
 	}
 
+	
 }

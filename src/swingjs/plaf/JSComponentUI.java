@@ -31,6 +31,7 @@ import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.CausedFocusEvent.Cause;
+import swingjs.JSGraphics2D;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
@@ -1516,5 +1517,38 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 					textAlign = prop);
 	}
 
+	/**
+	 * We allow here for an off-screen graphic for which the paint
+	 * operation also sets its location. 
+	 * 
+	 * Called from edu.colorado.phet.common.phetgraphics.view.
+	 * @param comp
+	 * @param owner
+	 * @param g
+	 */
+	public static void updateSceneGraph(JComponent comp, JComponent owner, JSGraphics2D g) {
+
+		DOMNode node = ((JSComponentUI) comp.ui).outerNode;
+		int x = 0, y = 0;
+		/**
+		 * @j2sNative
+		 * 
+		 * x = g.$transform.m02;
+		 * y = g.$transform.m12;
+		 * 
+		 */
+		{}
+
+		DOMNode.setStyles(node,  "left", x + "px", "top", y + "px");
+		
+		/**
+		 * @j2sNative
+		 * 
+		 * if (node.parent == null)
+		 *   owner.ui.outerNode.appendChild(node);
+		 * 
+		 */
+		{}
+	}
 
 }

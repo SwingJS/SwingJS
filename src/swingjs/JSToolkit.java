@@ -13,18 +13,18 @@ import javajs.util.AU;
 import javajs.util.Rdr;
 import javajs.util.SB;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.Line;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
+import jsjava.awt.Cursor;
 import jsjava.awt.Dialog;
 import jsjava.awt.Dialog.ModalExclusionType;
 import jsjava.awt.Dialog.ModalityType;
-import jsjava.awt.Dimension;
 import jsjava.awt.EventQueue;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
@@ -55,6 +55,7 @@ import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
 import jssun.awt.SunToolkit;
+import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5CanvasContext2D;
 import swingjs.api.Interface;
@@ -896,7 +897,7 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	public Image createImage(String filename) {
-		return getImagekit().createImageFromBytes(getSignedStreamBytes(new BufferedInputStream ( new ByteArrayInputStream(getFileAsBytes(filename)))), 0, -1);
+		return getImagekit().createImageFromBytes(getSignedStreamBytes(new BufferedInputStream ( new ByteArrayInputStream(getFileAsBytes(filename)))), 0, -1, filename);
 	}
 
 	/**
@@ -917,7 +918,7 @@ public class JSToolkit extends SunToolkit {
 		try {
 			if (b == null)
 				b = new BufferedInputStream(url.openStream());
-			return getImagekit().createImageFromBytes(getSignedStreamBytes(b), 0, -1);
+			return getImagekit().createImageFromBytes(getSignedStreamBytes(b), 0, -1, url.toString());
 		} catch (IOException e) {
 			return null;
 		}
@@ -925,7 +926,7 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	public Image createImage(byte[] data, int imageoffset, int imagelength) {
-		return getImagekit().createImageFromBytes(data, imageoffset, imagelength);
+		return getImagekit().createImageFromBytes(data, imageoffset, imagelength, null);
 	}
 	
 	@Override
@@ -1058,4 +1059,46 @@ public class JSToolkit extends SunToolkit {
 		return null;
 	}
 
+	public static void setCursor(Cursor c) {
+		String curs = null;
+    switch(c == null ? Cursor.DEFAULT_CURSOR : c.getType()) {
+    case Cursor.CROSSHAIR_CURSOR: 
+      curs = "crosshair";
+      break;
+    case Cursor.WAIT_CURSOR:
+      curs = "wait";
+      break;
+    case Cursor.TEXT_CURSOR:     
+    	curs = "text";
+    	break;
+    case Cursor.N_RESIZE_CURSOR:
+    case Cursor.S_RESIZE_CURSOR: 
+      curs = "ns-resize"; 
+      break;
+    case Cursor.HAND_CURSOR:
+      curs = "grab"; 
+      break;
+    case Cursor.MOVE_CURSOR: 
+    	curs = "move";
+      break;
+    case Cursor.NE_RESIZE_CURSOR:
+    case Cursor.SW_RESIZE_CURSOR:
+      curs = "nesw-resize";
+      break;
+    case Cursor.SE_RESIZE_CURSOR:
+    case Cursor.NW_RESIZE_CURSOR:
+      curs = "nwse-resize";
+      break;
+    case Cursor.E_RESIZE_CURSOR:
+    case Cursor.W_RESIZE_CURSOR:
+      curs = "ew-resize";
+      break;
+    case Cursor.DEFAULT_CURSOR:
+    default:
+      curs = "default";
+      break;
+    }		
+		DOMNode.setCursor(curs);
+	}
+	
 }

@@ -37,6 +37,8 @@ import jssun.awt.ModalExclude;
 import jssun.awt.SunToolkit;
 
 import java.util.Vector;
+
+import javajs.util.Lst;
 //import java.util.logging.*;
 
 import swingjs.JSThread;
@@ -138,7 +140,7 @@ class EventDispatchThread extends JSThread {
 	private EventQueue theQueue;
 	static final int ANY_EVENT = -1;
 
-	private Vector<EventFilter> eventFilters = new Vector<EventFilter>();
+	private Lst<EventFilter> eventFilters = new Lst<EventFilter>();
 	// used in handleException
 	private int modalFiltersCount = 0;
 	private EventFilter filter;
@@ -324,7 +326,7 @@ class EventDispatchThread extends JSThread {
 			 * Fix for 4648733. Check both the associated java event queue and the
 			 * PostEventQueue.
 			 */
-			if (theQueue.peekEvent() != null || !SunToolkit.isPostEventQueueEmpty()) {
+			if (theQueue.peekEventSAEM() != null || !SunToolkit.isPostEventQueueEmpty()) {
 				theQueue.initDispatchThread();
 			}
 			AWTAutoShutdown.getInstance().notifyThreadFree(this);
@@ -349,7 +351,7 @@ class EventDispatchThread extends JSThread {
 					eventFilters.add(k, filter);
 					modalFiltersCount++;
 				} else {
-					eventFilters.add(filter);
+					eventFilters.addLast(filter);
 				}
 			}
 		}
@@ -361,7 +363,7 @@ class EventDispatchThread extends JSThread {
 				if (filter instanceof ModalEventFilter) {
 					modalFiltersCount--;
 				}
-				eventFilters.remove(filter);
+				eventFilters.removeObj(filter);
 			}
 		}
 	}

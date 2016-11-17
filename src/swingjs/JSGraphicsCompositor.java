@@ -227,7 +227,6 @@ public class JSGraphicsCompositor {
 
 	public BufferedImage filterImage(BufferedImage src, BufferedImage dst,
 			BufferedImageOp op) {
-		JSToolkit.notImplemented(null);
 		BufferedImage retBI = dst; // was null; this is better for development at least
 		int type = 0;
 		/**
@@ -239,7 +238,6 @@ public class JSGraphicsCompositor {
 		{
 		}
 		switch (type) {
-
 		case 'L':
 			// REMIND: Fix this!
 			LookupTable table = ((LookupOp) op).getTable();
@@ -254,7 +252,6 @@ public class JSGraphicsCompositor {
 				}
 			}
 			break;
-
 		case 'A':
 			AffineTransformOp bOp = (AffineTransformOp) op;
 			double[] matrix = new double[6];
@@ -265,15 +262,14 @@ public class JSGraphicsCompositor {
 				retBI = dst;
 			}
 			break;
-
 		case 'C':
 			ConvolveOp cOp = (ConvolveOp) op;
 			if (convolveBI(src, dst, cOp.getKernel(), cOp.getEdgeCondition()) > 0) {
 				retBI = dst;
 			}
 			break;
-
 		default:
+			retBI = op.filter(src, dst);
 			break;
 		}
 

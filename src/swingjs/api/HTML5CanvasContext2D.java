@@ -176,5 +176,14 @@ public abstract class HTML5CanvasContext2D {
 		{}
 	}
 
+	public static void setFillStyle(HTML5CanvasContext2D ctx, String s) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            ctx.fillStyle = s;
+		 */
+		{}
+	}
+
 
 }

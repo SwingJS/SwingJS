@@ -553,12 +553,15 @@ public class EventQueue {
 	 * @return the first event
 	 */
 	public synchronized AWTEvent peekEvent() {
+		return peekEventSAEM();
+	}
+
+	public AWTEvent peekEventSAEM() {
 		for (int i = NUM_PRIORITIES - 1; i >= 0; i--) {
 			if (queues[i].head != null) {
 				return queues[i].head.event;
 			}
 		}
-
 		return null;
 	}
 
@@ -790,7 +793,7 @@ public class EventQueue {
 
 		synchronized (newEventQueue) {
 			// Transfer all events forward to new EventQueue.
-			while (peekEvent() != null) {
+			while (peekEventSAEM() != null) {
 				try {
 					newEventQueue.postEventPrivate(getNextEvent());
 				} catch (InterruptedException ie) {
@@ -857,7 +860,7 @@ public class EventQueue {
 
 				// Transfer all events back to previous EventQueue.
 				previousQueue.nextQueue = null;
-				while (peekEvent() != null) {
+				while (peekEventSAEM() != null) {
 					try {
 						previousQueue.postEventPrivate(getNextEvent());
 					} catch (InterruptedException ie) {
@@ -1043,7 +1046,7 @@ public class EventQueue {
 	 */
 	public static void invokeLater(Runnable runnable) {
 		Toolkit.getEventQueue().postEvent(
-				new InvocationEvent(Toolkit.getDefaultToolkit(), runnable));
+				new InvocationEvent(Toolkit.getDefaultToolkit(), InvocationEvent.INVOCATION_DEFAULT, runnable, null, false));
 	}
 
 	/**
@@ -1080,7 +1083,7 @@ public class EventQueue {
 //		Object lock = new AWTInvocationLock();
 //
 		
-		InvocationEvent event = new InvocationEvent(source, runnable, null, true);
+		InvocationEvent event = new InvocationEvent(source, InvocationEvent.INVOCATION_DEFAULT, runnable, null, true);
 		
 		// SwingJS we do this directly -- might need to flush?
 		JSToolkit.dispatchEvent(event, null, true);

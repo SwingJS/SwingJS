@@ -40,7 +40,7 @@ public class PeerEvent extends InvocationEvent {
 
     public PeerEvent(Object source, Runnable runnable, Object notifier,
                       boolean catchExceptions, long flags) {
-        super(source, runnable, notifier, catchExceptions);
+        super(source, InvocationEvent.INVOCATION_DEFAULT, runnable, notifier, catchExceptions);
         this.flags = flags;
     }
 
