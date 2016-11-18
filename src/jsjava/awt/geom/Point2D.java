@@ -386,23 +386,6 @@ public abstract class Point2D implements Cloneable {
         return Math.sqrt(px * px + py * py);
     }
 
-    /**
-     * Creates a new object of the same class and with the
-     * same contents as this object.
-     * @return     a clone of this instance.
-     * @exception  OutOfMemoryError            if there is not enough memory.
-     * @see        java.lang.Cloneable
-     * @since      1.2
-     */
-    @Override
-		public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
-    }
 
     /**
      * Returns the hashcode for this <code>Point2D</code>.
@@ -416,22 +399,29 @@ public abstract class Point2D implements Cloneable {
     }
 
     /**
-     * Determines whether or not two points are equal. Two instances of
-     * <code>Point2D</code> are equal if the values of their
-     * <code>x</code> and <code>y</code> member fields, representing
-     * their position in the coordinate space, are the same.
-     * @param obj an object to be compared with this <code>Point2D</code>
-     * @return <code>true</code> if the object to be compared is
-     *         an instance of <code>Point2D</code> and has
-     *         the same values; <code>false</code> otherwise.
-     * @since 1.2
+     * @j2sOverride 
+     * 
+     * Creates a new object of the same class as this object.
+     *
+     * @return     a clone of this instance.
+     * @exception  OutOfMemoryError            if there is not enough memory.
+     * @see        java.lang.Cloneable
+     * @since      1.2
      */
     @Override
-		public boolean equals(Object obj) {
-        if (obj instanceof Point2D) {
-            Point2D p2d = (Point2D) obj;
-            return (getX() == p2d.getX()) && (getY() == p2d.getY());
-        }
-        return super.equals(obj);
+		public Object clone() {
+    	/**
+    	 * @j2sNative
+    	 *     		 return Clazz.clone(this);
+    	 */
+    	{
+    		return null;
+    	}
+//        try {
+//            return super.clone();
+//        } catch (CloneNotSupportedException e) {
+//            // this shouldn't happen, since we are Cloneable
+//            throw new InternalError();
+//        }
     }
 }

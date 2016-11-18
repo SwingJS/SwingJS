@@ -3958,6 +3958,9 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
     }
 
     /**
+     * 
+     * @j2sOverride
+     * 
      * Returns a copy of this <code>AffineTransform</code> object.
      * @return an <code>Object</code> that is a copy of this
      * <code>AffineTransform</code> object.
@@ -3965,12 +3968,19 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      */
     @Override
 		public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
+    	/**
+    	 * @j2sNative
+    	 *     		 return Clazz.clone(this);
+    	 */
+    	{
+    		return null;
+    	}
+//        try {
+//            return super.clone();
+//        } catch (CloneNotSupportedException e) {
+//            // this shouldn't happen, since we are Cloneable
+//            throw new InternalError();
+//        }
     }
 
     /**

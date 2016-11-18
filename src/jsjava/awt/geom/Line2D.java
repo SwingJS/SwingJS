@@ -1135,6 +1135,8 @@ public abstract class Line2D implements Shape, Cloneable {
     }
 
     /**
+     * @j2sOverride 
+     * 
      * Creates a new object of the same class as this object.
      *
      * @return     a clone of this instance.
@@ -1144,11 +1146,18 @@ public abstract class Line2D implements Shape, Cloneable {
      */
     @Override
 		public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
+    	/**
+    	 * @j2sNative
+    	 *     		 return Clazz.clone(this);
+    	 */
+    	{
+    		return null;
+    	}
+//        try {
+//            return super.clone();
+//        } catch (CloneNotSupportedException e) {
+//            // this shouldn't happen, since we are Cloneable
+//            throw new InternalError();
+//        }
     }
 }

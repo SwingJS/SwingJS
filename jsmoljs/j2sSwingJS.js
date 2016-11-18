@@ -6,7 +6,6 @@
 
 // NOTES by Bob Hanson
 
-// BH 11/14/2016 9:40:59 AM removing extraneous "sp" super-field-prep calls
 // BH 11/13/2016 12:16:13 PM fixing Number.compareTo
 // BH 11/10/2016 9:47:00 PM prepField work complete; added System.exit()
 // BH 11/6/2016 1:17:41 PM fixing order of superclass prep
@@ -141,12 +140,52 @@ Clazz.duplicatedMethods = {};
 // which could be a bottle-neck for function calling.
 // This is critical for performance optimization.
 
-// J2S.getProfile()
-
 var _profile = null;
+var __signatures = ""; 
 
-Clazz._startProfiling = function(doProfile) {
-  _profile = (doProfile && self.JSON ? {} : null);
+Clazz.startProfiling = function(doProfile) {
+  _profile = ((doProfile || arguments.length == 0) && self.JSON && window.performance ? {} : null);
+  return (_profile ? "use Clazz.getProfile() to show results" : "profiling stopped and cleared")
+}
+
+var tabN = function(n) { n = ("" + n).split(".")[0]; return "        ".substring(n.length) + n + "\t" };
+
+Clazz.getProfile = function() {
+  var s = "run  Clazz.startProfiling() first";
+	if (_profile) {
+		var l = [];
+    var totalcount = 0;
+    var totalprep = 0;
+    var totaltime = 0;
+		for (var name in _profile) {
+			var n = _profile[name][0];
+      var t1 = _profile[name][1];
+      var t2 = _profile[name][2];
+			l.push(tabN(n) + tabN(t1) + tabN(t2) + name);
+      totalcount += n
+      totalprep += t1
+      totaltime += t2
+		}
+		s = "\ncount   \tprep(ms)\texec(ms)\n" 
+      + "\n--------\t--------\t--------\n" 
+      + tabN(totalcount)+ tabN(totalprep)+tabN(totaltime/1000) + " sec\n"
+      + "\n--------\t--------\t--------\n" 
+      + l.sort().reverse().join("\n")
+      ;
+		_profile = {};
+	}
+	return s; //+ __signatures;
+}
+
+
+var addProfile = function(c, f, p, t1, t2) {
+	var s = c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
+  if (__signatures.indexOf(s) < 0)
+    __signatures += s + "\n";    
+	_profile[s] || (_profile[s] = [0,0, 0]);
+	_profile[s][0]++;
+  _profile[s][1] += t1;
+  _profile[s][2] += t2;
 }
 
 /**
@@ -166,20 +205,6 @@ Clazz.showDuplicates = function(quiet) {
   System.out.println(s);
   if (!quiet)
     alert(s);
-}
-
-Clazz.getProfile = function() {
-  	var s = "";
-	if (_profile) {
-		var l = [];
-		for (var i in _profile) {
-			var n = "" + _profile[i];
-			l.push("        ".substring(n.length) + n + "\t" + i);
-		}
-		s = l.sort().reverse().join("\r\n");
-		_profile = {};
-	}
-	return s; //+ __signatures;
 }
 
 /**
@@ -433,12 +458,16 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig, isConstruct)
   if (doDelegate) {
 		//Generate a new delegating method for the class
     Clazz.saemCount1++;
-  	var delegate = function () {    
-      var f = findMethod(this, clazzThis, arguments, isConstruct);
+  	var delegate = function () {
+      var t0 = (_profile ? window.performance.now() : 0);
+      var pTypes = getParamTypes(arguments);      
+      var f = findMethod(this, clazzThis, arguments, pTypes, isConstruct);
       if (f == -1 || f == null)
         return null;
       var args = fixNullParams(arguments);
+      var t1 = (_profile ? window.performance.now() : 0);
       var ret = f.apply(this, args);
+      _profile && addProfile(arguments.callee.claxxRef, arguments.callee.methodName, pTypes, t1 - t0, window.performance.now() - t1);            
       return (isConstruct ? f.__STACKPT__ : ret); 
     };
   	delegate.claxxRef = clazzThis;
@@ -471,13 +500,12 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig, isConstruct)
 	return f$;
 };                     
 
-var findMethod = function(obj, clazzThis, args, isConstruct) {
-  var pTypes = getParamTypes(args);
+var findMethod = function(obj, clazzThis, args, pTypes, isConstruct) {
   var classTop = (isConstruct ? arguments.callee.caller.caller.exClazz || clazzThis : clazzThis);
 	var dsig = classTop.__CLASS_NAME__ + pTypes.typeString;
   var dsigs = arguments.callee.caller.dsigs; // delegate.dsigs
   var f = dsigs[dsig]; 
-  if (!f) {
+  if (!f || _profile) {
     Clazz.saemCount2++;
     var claxxRef = arguments.callee.caller.claxxRef;
     var fxName = arguments.callee.caller.methodName;
@@ -513,9 +541,6 @@ var bindMethod = function (claxxRef, fx, fxName, args, pTypes, classTop) {
 
  //System.out.println("SAEM " + Clazz.saemCount1+ "/" + Clazz.saemCount2 + ":" + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params.join(",") + ")");
  
-	_profile && addProfile(claxxRef, fxName, pTypes);
-  
-
 	var stack = fx.stack || claxxRef.prototype[fxName].stack;
 	/*
 	 * Search the inheritance stack, starting with the class containing this method
@@ -1208,16 +1233,6 @@ Clazz.extendInterface = implementOf;
  * which could be a bottle-neck for function calling.
  * This is critical for performance optimization.
  */ 
-
-var __signatures = ""; 
-
-var addProfile = function(c, f, p, id) {
-	var s = c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
-  if (__signatures.indexOf(s) < 0)
-    __signatures += s + "\n";    
-	_profile[s] || (_profile[s] = 0);
-	_profile[s]++;
-}
 
 /////////////////////// inner function support /////////////////////////////////
 

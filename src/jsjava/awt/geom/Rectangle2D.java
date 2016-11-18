@@ -440,6 +440,7 @@ public abstract class Rectangle2D extends RectangularShape {
             this.height = h;
         }
 
+
         /**
          * {@inheritDoc}
          * @since 1.2
