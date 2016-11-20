@@ -6,6 +6,8 @@
 
 // NOTES by Bob Hanson
 
+// BH 11/19/2016 10:01:22 AM better profiling with Clazz.startProfiling(seconds) 
+// BH 11/14/2016 9:40:59 AM removing extraneous "sp" super-field-prep calls
 // BH 11/13/2016 12:16:13 PM fixing Number.compareTo
 // BH 11/10/2016 9:47:00 PM prepField work complete; added System.exit()
 // BH 11/6/2016 1:17:41 PM fixing order of superclass prep
@@ -142,8 +144,10 @@ Clazz.duplicatedMethods = {};
 
 var _profile = null;
 var __signatures = ""; 
-
+var profilet0;
 Clazz.startProfiling = function(doProfile) {
+  if (typeof doProfile == "number")
+    setTimeout(function() { alert("total wall time: " + doProfile + " sec\n" + Clazz.getProfile()) }, doProfile * 1000);
   _profile = ((doProfile || arguments.length == 0) && self.JSON && window.performance ? {} : null);
   return (_profile ? "use Clazz.getProfile() to show results" : "profiling stopped and cleared")
 }
@@ -167,9 +171,9 @@ Clazz.getProfile = function() {
       totaltime += t2
 		}
 		s = "\ncount   \tprep(ms)\texec(ms)\n" 
-      + "\n--------\t--------\t--------\n" 
-      + tabN(totalcount)+ tabN(totalprep)+tabN(totaltime/1000) + " sec\n"
-      + "\n--------\t--------\t--------\n" 
+      + "--------\t--------\t--------\n" 
+      + tabN(totalcount)+ tabN(totalprep)+tabN(totaltime) + "\n"
+      + "--------\t--------\t--------\n" 
       + l.sort().reverse().join("\n")
       ;
 		_profile = {};
@@ -2042,13 +2046,11 @@ Clazz.superCall = function (objThis, clazzThis, funName, args, isConstruct) {
   }
   // there are instances where even though we have supplied a superConstructor call,
   // there is no super class;
-  var sp = null;//(i == 0  && clazzThis.superClazz ? clazzThis.superClazz._PREP_ : null);
-  if (fx == null && sp == null && clazzThis._PREP_ == null) {
+  if (fx == null && clazzThis._PREP_ == null) {
     arguments.callee.caller.caller.exMeth = -1;
     return null;
   }
   return arguments.callee.caller.caller.exMeth = function(objThis, args) {
-    sp && sp.apply(objThis, []);
     var pt = (fx ? fx.apply(objThis, args || []) : null);
     prepFields(objThis, clazzThis, pt);
   };

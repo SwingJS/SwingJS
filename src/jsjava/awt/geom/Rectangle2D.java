@@ -687,15 +687,6 @@ public abstract class Rectangle2D extends RectangularShape {
      * @since 1.2
      */
     @Override
-		public Rectangle2D getBounds2D() {
-        return (Rectangle2D) clone();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @since 1.2
-     */
-    @Override
 		public boolean contains(double x, double y) {
         double x0 = getX();
         double y0 = getY();

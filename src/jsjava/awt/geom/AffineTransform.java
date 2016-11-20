@@ -688,7 +688,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      */
     public static AffineTransform getRotateInstance(double theta) {
         AffineTransform Tx = new AffineTransform();
-        Tx.setToRotation(theta);
+        Tx.setToRotationTheta(theta);
         return Tx;
     }
 
@@ -732,7 +732,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
                                                     double anchory)
     {
         AffineTransform Tx = new AffineTransform();
-        Tx.setToRotation(theta, anchorx, anchory);
+        Tx.setToRotationThetaXY(theta, anchorx, anchory);
         return Tx;
     }
 
@@ -758,7 +758,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      */
     public static AffineTransform getRotateInstance(double vecx, double vecy) {
         AffineTransform Tx = new AffineTransform();
-        Tx.setToRotation(vecx, vecy);
+        Tx.setToRotationXY(vecx, vecy);
         return Tx;
     }
 
@@ -793,7 +793,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
                                                     double anchory)
     {
         AffineTransform Tx = new AffineTransform();
-        Tx.setToRotation(vecx, vecy, anchorx, anchory);
+        Tx.setToRotationV2XY(vecx, vecy, anchorx, anchory);
         return Tx;
     }
 
@@ -1861,36 +1861,40 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * @since 1.2
      */
     public void setToRotation(double theta) {
-        double sin = Math.sin(theta);
-        double cos;
-        if (sin == 1.0 || sin == -1.0) {
-            cos = 0.0;
-            state = APPLY_SHEAR;
-            type = TYPE_QUADRANT_ROTATION;
-        } else {
-            cos = Math.cos(theta);
-            if (cos == -1.0) {
-                sin = 0.0;
-                state = APPLY_SCALE;
-                type = TYPE_QUADRANT_ROTATION;
-            } else if (cos == 1.0) {
-                sin = 0.0;
-                state = APPLY_IDENTITY;
-                type = TYPE_IDENTITY;
-            } else {
-                state = APPLY_SHEAR | APPLY_SCALE;
-                type = TYPE_GENERAL_ROTATION;
-            }
-        }
-        m00 =  cos;
-        m10 =  sin;
-        m01 = -sin;
-        m11 =  cos;
-        m02 =  0.0;
-        m12 =  0.0;
+    	setToRotationTheta(theta);
     }
 
-    /**
+    private void setToRotationTheta(double theta) {
+      double sin = Math.sin(theta);
+      double cos;
+      if (sin == 1.0 || sin == -1.0) {
+          cos = 0.0;
+          state = APPLY_SHEAR;
+          type = TYPE_QUADRANT_ROTATION;
+      } else {
+          cos = Math.cos(theta);
+          if (cos == -1.0) {
+              sin = 0.0;
+              state = APPLY_SCALE;
+              type = TYPE_QUADRANT_ROTATION;
+          } else if (cos == 1.0) {
+              sin = 0.0;
+              state = APPLY_IDENTITY;
+              type = TYPE_IDENTITY;
+          } else {
+              state = APPLY_SHEAR | APPLY_SCALE;
+              type = TYPE_GENERAL_ROTATION;
+          }
+      }
+      m00 =  cos;
+      m10 =  sin;
+      m01 = -sin;
+      m11 =  cos;
+      m02 =  0.0;
+      m12 =  0.0;
+		}
+
+		/**
      * Sets this transform to a translated rotation transformation.
      * This operation is equivalent to translating the coordinates so
      * that the anchor point is at the origin (S1), then rotating them
@@ -1922,18 +1926,22 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * @since 1.2
      */
     public void setToRotation(double theta, double anchorx, double anchory) {
-        setToRotation(theta);
-        double sin = m10;
-        double oneMinusCos = 1.0 - m00;
-        m02 = anchorx * oneMinusCos + anchory * sin;
-        m12 = anchory * oneMinusCos - anchorx * sin;
-        if (m02 != 0.0 || m12 != 0.0) {
-            state |= APPLY_TRANSLATE;
-            type |= TYPE_TRANSLATION;
-        }
+    	setToRotationThetaXY(theta, anchorx, anchory);
     }
 
-    /**
+    private void setToRotationThetaXY(double theta, double anchorx, double anchory) {
+      setToRotationTheta(theta);
+      double sin = m10;
+      double oneMinusCos = 1.0 - m00;
+      m02 = anchorx * oneMinusCos + anchory * sin;
+      m12 = anchory * oneMinusCos - anchorx * sin;
+      if (m02 != 0.0 || m12 != 0.0) {
+          state |= APPLY_TRANSLATE;
+          type |= TYPE_TRANSLATION;
+      }
+		}
+
+		/**
      * Sets this transform to a rotation transformation that rotates
      * coordinates according to a rotation vector.
      * All coordinates rotate about the origin by the same amount.
@@ -1952,39 +1960,43 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      * @since 1.6
      */
     public void setToRotation(double vecx, double vecy) {
-        double sin, cos;
-        if (vecy == 0) {
-            sin = 0.0;
-            if (vecx < 0.0) {
-                cos = -1.0;
-                state = APPLY_SCALE;
-                type = TYPE_QUADRANT_ROTATION;
-            } else {
-                cos = 1.0;
-                state = APPLY_IDENTITY;
-                type = TYPE_IDENTITY;
-            }
-        } else if (vecx == 0) {
-            cos = 0.0;
-            sin = (vecy > 0.0) ? 1.0 : -1.0;
-            state = APPLY_SHEAR;
-            type = TYPE_QUADRANT_ROTATION;
-        } else {
-            double len = Math.sqrt(vecx * vecx + vecy * vecy);
-            cos = vecx / len;
-            sin = vecy / len;
-            state = APPLY_SHEAR | APPLY_SCALE;
-            type = TYPE_GENERAL_ROTATION;
-        }
-        m00 =  cos;
-        m10 =  sin;
-        m01 = -sin;
-        m11 =  cos;
-        m02 =  0.0;
-        m12 =  0.0;
+    	setToRotationXY(vecx, vecy);
     }
 
-    /**
+    private void setToRotationXY(double vecx, double vecy) {
+      double sin, cos;
+      if (vecy == 0) {
+          sin = 0.0;
+          if (vecx < 0.0) {
+              cos = -1.0;
+              state = APPLY_SCALE;
+              type = TYPE_QUADRANT_ROTATION;
+          } else {
+              cos = 1.0;
+              state = APPLY_IDENTITY;
+              type = TYPE_IDENTITY;
+          }
+      } else if (vecx == 0) {
+          cos = 0.0;
+          sin = (vecy > 0.0) ? 1.0 : -1.0;
+          state = APPLY_SHEAR;
+          type = TYPE_QUADRANT_ROTATION;
+      } else {
+          double len = Math.sqrt(vecx * vecx + vecy * vecy);
+          cos = vecx / len;
+          sin = vecy / len;
+          state = APPLY_SHEAR | APPLY_SCALE;
+          type = TYPE_GENERAL_ROTATION;
+      }
+      m00 =  cos;
+      m10 =  sin;
+      m01 = -sin;
+      m11 =  cos;
+      m02 =  0.0;
+      m12 =  0.0;
+		}
+
+		/**
      * Sets this transform to a rotation transformation that rotates
      * coordinates around an anchor point according to a rotation
      * vector.
@@ -2009,18 +2021,23 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
     public void setToRotation(double vecx, double vecy,
                               double anchorx, double anchory)
     {
-        setToRotation(vecx, vecy);
-        double sin = m10;
-        double oneMinusCos = 1.0 - m00;
-        m02 = anchorx * oneMinusCos + anchory * sin;
-        m12 = anchory * oneMinusCos - anchorx * sin;
-        if (m02 != 0.0 || m12 != 0.0) {
-            state |= APPLY_TRANSLATE;
-            type |= TYPE_TRANSLATION;
-        }
+    	setToRotationV2XY(vecx, vecy, anchorx, anchory);
     }
 
-    /**
+    private void setToRotationV2XY(double vecx, double vecy, double anchorx,
+				double anchory) {
+      setToRotationXY(vecx, vecy);
+      double sin = m10;
+      double oneMinusCos = 1.0 - m00;
+      m02 = anchorx * oneMinusCos + anchory * sin;
+      m12 = anchory * oneMinusCos - anchorx * sin;
+      if (m02 != 0.0 || m12 != 0.0) {
+          state |= APPLY_TRANSLATE;
+          type |= TYPE_TRANSLATION;
+      }
+		}
+
+		/**
      * Sets this transform to a rotation transformation that rotates
      * coordinates by the specified number of quadrants.
      * This operation is equivalent to calling:
@@ -3959,7 +3976,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
 
     /**
      * 
-     * @j2sOverride
+     * @j2sIgnore
      * 
      * Returns a copy of this <code>AffineTransform</code> object.
      * @return an <code>Object</code> that is a copy of this
@@ -3968,13 +3985,7 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
      */
     @Override
 		public Object clone() {
-    	/**
-    	 * @j2sNative
-    	 *     		 return Clazz.clone(this);
-    	 */
-    	{
-    		return null;
-    	}
+    	return null;
 //        try {
 //            return super.clone();
 //        } catch (CloneNotSupportedException e) {

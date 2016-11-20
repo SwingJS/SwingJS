@@ -373,50 +373,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.fill();
 	}
 
+	private DOMNode getImageNode(Image img) {
+		backgroundTaintCount++;
+		DOMNode imgNode = DOMNode.getImageNode(img);
+		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
+	}
+
 	private void observe(Image img, ImageObserver observer, boolean isOK) {
 		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
 	}
 
-	@SuppressWarnings("unused")
-	@Override
-	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-		backgroundTaintCount++;
-		if (img != null) {
-			int[] pixels = null;
-			boolean isRGB = false; // usually RGBA 
-			/**
-			 * @j2sNative
-			 * 
-			 * pixels = img._pix;
-			 * isRGB = (img.imageType == 1);
-			 * 
-			 */
-			{
-				
-			}
-			DOMNode imgNode = null;
-			int width = img.getWidth(observer);
-			int height = img.getHeight(observer);
-			if (pixels == null) {
-				if ((imgNode = getImageNode(img)) != null)
-					ctx.drawImage(imgNode, x, y, width, height);
-			} else {
-				Object imageData = HTML5CanvasContext2D.getImageData(ctx, x, y, width, height);
-				int[] buf8 = HTML5CanvasContext2D.getBuf8(imageData);
-				for (int pt = 0, i = 0, n = Math.min(buf8.length/4, pixels.length); i < n; i++) {
-					int argb = pixels[i];
-					buf8[pt++] = (argb >> 16) & 0xFF;
-					buf8[pt++] = (argb >> 8) & 0xFF;
-					buf8[pt++] = argb & 0xFF;
-					buf8[pt++] = (isRGB ? 0xFF : (argb >> 24) & 0xFF);
-				}
-				HTML5CanvasContext2D.putImageData(ctx, imageData, x, y);				
-			}
-			if (observer != null)
-				observe(img, observer, imgNode != null);
-		}
-		return true;
-	}
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
@@ -465,12 +431,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		return true;
 	}
 
-	private DOMNode getImageNode(Image img) {
-		backgroundTaintCount++;
-		DOMNode imgNode = DOMNode.getImageNode(img);
-		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
-	}
-
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
@@ -481,23 +441,65 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		backgroundTaintCount++;
 		JSToolkit.notImplemented("drawImage only uses xform translate");
-		return drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), obs);
+		return drawImagePriv((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), obs);
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-		backgroundTaintCount++;
 		//JSToolkit.notImplemented("drawRenderedImage only uses xform translate");
-		drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
+		drawImagePriv((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-		backgroundTaintCount++;
 		//JSToolkit.notImplemented("drawRenderableImage uses drawRenderedImage");
-		drawImage((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
+		drawImagePriv((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
+	}
+
+	@Override
+	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
+	  return drawImagePriv(img, x, y, observer);
+	}
+
+	@SuppressWarnings("unused")
+	private boolean drawImagePriv(Image img, int x, int y, ImageObserver observer) {
+		backgroundTaintCount++;
+		if (img != null) {
+			int[] pixels = null;
+			boolean isRGB = false; // usually RGBA 
+			/**
+			 * @j2sNative
+			 * 
+			 * pixels = img._pix;
+			 * isRGB = (img.imageType == 1);
+			 *
+			 */
+			{
+				
+			}
+			DOMNode imgNode = null;
+			int width = img.getWidth(observer);
+			int height = img.getHeight(observer);
+			if (pixels == null) {
+				if ((imgNode = getImageNode(img)) != null)
+					ctx.drawImage(imgNode, x, y, width, height);
+			} else {
+				Object imageData = HTML5CanvasContext2D.getImageData(ctx, x, y, width, height);
+				int[] buf8 = HTML5CanvasContext2D.getBuf8(imageData);
+				for (int pt = 0, i = 0, n = Math.min(buf8.length/4, pixels.length); i < n; i++) {
+					int argb = pixels[i];
+					buf8[pt++] = (argb >> 16) & 0xFF;
+					buf8[pt++] = (argb >> 8) & 0xFF;
+					buf8[pt++] = argb & 0xFF;
+					buf8[pt++] = (isRGB ? 0xFF : (argb >> 24) & 0xFF);
+				}
+				HTML5CanvasContext2D.putImageData(ctx, imageData, x, y);				
+			}
+			if (observer != null)
+				observe(img, observer, imgNode != null);
+		}
+		return true;
 	}
 
 	@Override

@@ -1411,22 +1411,4 @@ public abstract class QuadCurve2D implements Shape, Cloneable {
         return new FlatteningPathIterator(getPathIterator(at), flatness);
     }
 
-    /**
-     * Creates a new object of the same class and with the same contents
-     * as this object.
-     *
-     * @return     a clone of this instance.
-     * @exception  OutOfMemoryError            if there is not enough memory.
-     * @see        java.lang.Cloneable
-     * @since      1.2
-     */
-    @Override
-		public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            // this shouldn't happen, since we are Cloneable
-            throw new InternalError();
-        }
-    }
 }

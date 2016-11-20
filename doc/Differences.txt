@@ -31,7 +31,7 @@ MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS
 primitive numerical types
 distinguishing arrays
 forced null typing
-ArrayOutOfBounds
+ArrayIndexOutOfBounds
 native classes
 java.awt.Color
 javax.swing.JFileDialog
@@ -41,6 +41,8 @@ LookAndFeel
 inner class order
 String does not implement CharSequence.length() or .subSequence()
 toString() may need to be explicit
+System.exit(0) does not stop all processes
+
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -1214,11 +1216,18 @@ method receives a "null" URL object, which does not in JavaScript
 evaluate to true for "== null". Thus, testing for null within 
 functions called this way process improperly.
 
-ArrayOutOfBounds
-----------------
+ArrayIndexOutOfBounds
+---------------------
 
-You cannot intentionally throw an ArrayOutOfBoundsException in JavaScript.
-JavaScript will simply return "undefined", not throw an Exception. 
+You cannot intentionally throw an ArrayIndexOutOfBoundsException in JavaScript.
+JavaScript will simply return "undefined", not throw an Exception.
+
+ArrayIndexOutOutBoundsException cannot be trapped in JavaScript because 
+it is a JavaScript Error, not a Java Exception. 
+
+Solution is to change that catch to catch(Throwable e), 
+which includes all JavaScript errors and is transpiled as "catch(e)"
+ 
 
 java.awt.Color
 --------------
@@ -1328,6 +1337,13 @@ This problem was first seen in the original form of java.awt.image.BufferedImage
 where we got the JavaScript error "Can't convert .... to primitive type" in an error message
 due to " " + this.raster, where this.raster was a sun.awt.image.IntegerInterleavedRaster.
  
+
+System.exit(0) does not stop all processes
+------------------------------------------
+
+Although System.ext(int) has been implemented in JavaScript, it does nothing. 
+Applications are responsible for shutting down prior to executing it. 
+
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
