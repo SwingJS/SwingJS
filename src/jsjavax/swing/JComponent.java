@@ -3747,21 +3747,21 @@ public abstract class JComponent extends Container {
 	// return JComponent.this.getToolTipText();
 	// }
 	//
-	// /**
-	// * Returns the titled border text
-	// *
-	// * @return the titled border text, if supported, of the object;
-	// * otherwise, null
-	// * @since 1.4
-	// */
-	// public String getTitledBorderText() {
-	// Border border = JComponent.this.getBorder();
-	// if (border instanceof TitledBorder) {
-	// return ((TitledBorder)border).getTitle();
-	// } else {
-	// return null;
-	// }
-	// }
+// /**
+// * Returns the titled border text
+// *
+// * @return the titled border text, if supported, of the object;
+// * otherwise, null
+// * @since 1.4
+// */
+// public String getTitledBorderText() {
+// Border border = JComponent.this.getBorder();
+// if (border instanceof TitledBorder) {
+// return ((TitledBorder)border).getTitle();
+// } else {
+// return null;
+// }
+// }
 	//
 	// /**
 	// * Returns key bindings associated with this object
