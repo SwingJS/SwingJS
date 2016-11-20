@@ -863,7 +863,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				System.out.println("JSCUI could not add " + ui.c.getName() + " to "
 						+ c.getName());
 			} else {
-
+				if (ui.c.getWidth() == 0)ui.setVisible(false); // solves issue of megahelp button in PhET
 				containerNode.appendChild(ui.outerNode);
 			}
 		}
@@ -1536,15 +1536,18 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		 * x = g.$transform.m02;
 		 * y = g.$transform.m12;
 		 * 
+		 * 		if (x == node.lastSceneX && y == node.lastSceneY) return;
+		 * node.lastSceneX = x;
+		 * node.lastSceneY = y;
+		 * 
 		 */
 		{}
-
 		DOMNode.setStyles(node,  "left", x + "px", "top", y + "px");
-		
+		 
 		/**
 		 * @j2sNative
 		 * 
-		 * if (node.parent == null)
+		 * if (node.parentElement == null)
 		 *   owner.ui.outerNode.appendChild(node);
 		 * 
 		 */

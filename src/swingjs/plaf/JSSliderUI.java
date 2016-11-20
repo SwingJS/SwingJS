@@ -210,7 +210,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if (isHoriz &&  jSlider.getBorder() != null)
 			barPlace += 10;
 
-		String tickClass = "ui-slider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
+		String tickClass = "ui-j2sslider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
 		$(jqSlider).find(tickClass).remove();
 		$(jqSlider).find(".jslider-labels").remove();
 		setHTMLSize(jqSlider, false);
@@ -220,18 +220,18 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		// TODO: test inverted
 		boolean isInverted = jSlider.getInverted();
 		int margin = 10;
-		int totalWidth = jSlider.getWidth();
+		int length = (isHoriz ? jSlider.getWidth() : jSlider.getHeight()) - 2 * margin;
 		if (paintTicks) {
 			int check = majorSpacing / minorSpacing;
 			float fracSpacing = minorSpacing * 1f / (max - min);
-			int numTicks = (100 / minorSpacing) + 1;
+			int numTicks = ((max - min) / minorSpacing) + 1;
 			for (int i = 0; i < numTicks; i++) {
-				DOMNode node = DOMNode.createElement("span", id + "_t" + i);
+				DOMNode node = DOMNode.createElement("div", id + "_t" + i);
 				$(node).addClass("swingjs");
 				$(node).addClass(tickClass);
 				boolean isMajor = (i % check == 0);
 				float frac = (isHoriz == isInverted ? 1 - fracSpacing * i : fracSpacing * i);
-				String spt = (frac * (totalWidth - 2 * margin) + margin) + "px";
+				String spt = (frac * length + margin) + "px";
 				if (isMajor)
 					$(node).css(isHoriz ? "height" : "width", "10px");
 				$(node).css(isHoriz ? "left" : "top", spt).appendTo(domNode);
@@ -254,19 +254,33 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				float frac = (n - min) * 1f / (max - min);
 				if (isHoriz == isInverted)
 					frac = 1 - frac;
-				float px = (frac * (totalWidth - 2 * margin) + margin);
-				int left = (int) (px - label.getWidth() / 2);
-				int top;
+				float px = (frac * length + margin);
+				int left, top;
 				if (isHoriz) {
-					top = 28;
+					top = 30;
+					left = (int) (px - label.getWidth() / 2);
 				} else {
-					top = left;
+					top = (int) (px - label.getHeight() / 2);
 					left = 28;
 				}
 				DOMNode.setPositionAbsolute(labelNode, top, left);
 				domNode.appendChild(labelNode);
 			}
-			DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%"); 
+			if (paintTicks) {
+				if (isHoriz) {
+					DOMNode.setStyles(sliderHandle, "transform","scaleX(0.5) rotateZ(45deg)", "top","-8px");					
+					DOMNode.setStyles(sliderTrack, "height","1px", "background", "black");					
+				} else {
+					DOMNode.setStyles(sliderHandle, "transform","scaleY(0.5) rotateZ(45deg)", "left","-10px", "margin-bottom", "-7px" );					
+					DOMNode.setStyles(sliderTrack, "width","1px","left", "12px", "background", "black" );					
+				}
+					
+			} else {
+				DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%");
+			}
+			if (!isHoriz && !iVertScrollBar)
+				DOMNode.setStyles(sliderTrack, "height", length  + "px");
+				
 			setHTMLSize(domNode, false);
 		}
 	}
