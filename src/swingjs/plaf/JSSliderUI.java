@@ -232,7 +232,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				boolean isMajor = (i % check == 0);
 				float frac = (isHoriz == isInverted ? 1 - fracSpacing * i : fracSpacing * i);
 				String spt = (frac * length + margin) + "px";
-				if (isMajor)
+				if (isMajor)	
 					$(node).css(isHoriz ? "height" : "width", "10px");
 				$(node).css(isHoriz ? "left" : "top", spt).appendTo(domNode);
 			}
@@ -257,7 +257,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				float px = (frac * length + margin);
 				int left, top;
 				if (isHoriz) {
-					top = 30;
+					top = 22;
 					left = (int) (px - label.getWidth() / 2);
 				} else {
 					top = (int) (px - label.getHeight() / 2);
