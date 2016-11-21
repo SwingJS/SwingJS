@@ -2545,7 +2545,11 @@ public abstract class JComponent extends Container {
 	@Override
 	public void setVisible(boolean aFlag) {
 		if (aFlag != isVisible()) {
-			super.setVisible(aFlag);
+			if (aFlag)
+				showSAEM();
+			else
+				hideSAEM();
+//			super.setVisible(aFlag);
 			Container parent = getParent();
 			if (parent != null) {
 				Rectangle r = getBounds();

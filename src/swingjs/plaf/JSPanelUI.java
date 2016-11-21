@@ -20,7 +20,7 @@ public class JSPanelUI extends JSLightweightUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			JRootPane root = jc.getRootPane();
-			isContentPane = (jc == root.getContentPane());
+			isContentPane = (root != null && jc == root.getContentPane());
 			domNode = newDOMObject("div", id);
 			if (root != null && root.getGlassPane() == c)
 				DOMNode.setStyles(domNode, "display", "none");

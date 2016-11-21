@@ -281,7 +281,7 @@ protected  transient ComponentPeer peer;
      * @see #isVisible
      * @see #setVisible
      */
-    boolean visible = true;
+    public boolean visible = true;
 
     /**
      * True when the object is enabled. An object that is not
@@ -1473,17 +1473,8 @@ protected  transient ComponentPeer peer;
 			// synchronized (getTreeLock()) {
 			visible = true;
 			// mixOnShowing();
-			ComponentPeer peer = this.peer;
-			if (peer != null) {
-				peer.setVisible(true);// was show();
-				createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED, this, parent,
-						HierarchyEvent.SHOWING_CHANGED,
-						Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-				if (peer instanceof LightweightPeer) {
-					repaint();
-				}
-				updateCursorImmediately();
-			}
+			
+			updatePeerVisibility(true);
 
 			if (componentListener != null
 					|| (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0
@@ -1500,7 +1491,27 @@ protected  transient ComponentPeer peer;
 	}
 //    }
 
-    boolean containsFocus() {
+	/**
+	 * added for SwingJS
+	 * 
+	 * @param isVisible
+	 */
+    private void updatePeerVisibility(boolean isVisible) {
+      ComponentPeer peer = this.peer;
+			if (peer == null)
+				this.peer = peer = getToolkit().createComponent(this);
+      peer.setVisible(isVisible);// SwingJS  was hide();
+      createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
+                            this, parent,
+                            HierarchyEvent.SHOWING_CHANGED,
+                            Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
+      if (peer instanceof LightweightPeer) {
+          repaint();
+      }
+      updateCursorImmediately();
+    }
+
+		boolean containsFocus() {
         return isFocusOwner();
     }
 
@@ -1520,7 +1531,7 @@ protected  transient ComponentPeer peer;
     	hideSAEM();
     }
     
-    private void hideSAEM() {
+    protected void hideSAEM() {
         isPacked = false;
         if (visible) {
             clearCurrentFocusCycleRootOnHide();
@@ -1531,18 +1542,9 @@ protected  transient ComponentPeer peer;
 //                if (containsFocus() && KeyboardFocusManager.isAutoFocusTransferEnabled()) {
 //                    transferFocus(true);
 //                }
-                ComponentPeer peer = this.peer;
-                if (peer != null) {
-                    peer.setVisible(false);// SwingJS  was hide();
-                    createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
-                                          this, parent,
-                                          HierarchyEvent.SHOWING_CHANGED,
-                                          Toolkit.enabledOnToolkit(AWTEvent.HIERARCHY_EVENT_MASK));
-                    if (peer instanceof LightweightPeer) {
-                        repaint();
-                    }
-                    updateCursorImmediately();
-                }
+                
+                updatePeerVisibility(false);
+                
                 if (componentListener != null ||
                     (eventMask & AWTEvent.COMPONENT_EVENT_MASK) != 0 ||
                     Toolkit.enabledOnToolkit(AWTEvent.COMPONENT_EVENT_MASK)) {

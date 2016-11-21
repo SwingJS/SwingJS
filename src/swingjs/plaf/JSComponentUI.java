@@ -201,6 +201,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected int num;
 
+
+	/**
+	 * a flag to indicate that it is not visible, but not according to Java
+	 */
+	private boolean zeroWidth;
+	
 	/**
 	 * indicates that we need a new outerNode
 	 * 
@@ -789,8 +795,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				int w = getContainerWidth();
 				int h = getContainerHeight();
 				DOMNode.setSize(outerNode, w, h);
-				if (w == 0 || h  == 0)
+				if (w == 0 || h  == 0) {
+					// container is hidden
+					zeroWidth = true;
 					DOMNode.setStyles(outerNode, "display", "none");
+				}
 				if (isContentPane)
 					DOMNode.setStyles(outerNode, "overflow", "hidden");
 			}
@@ -1098,8 +1107,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (node == null)
 			node = domNode; // a frame or other window
 		DOMNode.setStyles(node, "display", b ? "block" : "none");
-		if (b)
+		if (b) {
+			zeroWidth = (width == 0 || height == 0);
 			toFront();
+		}
 	}
 
 	public void toFront() {
@@ -1144,6 +1155,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// if (this.width != width || this.height != height) {
 			this.width = width;
 			this.height = height;
+			if (width == 0 || height == 0)
+				setVisible(false);
 			if (debugging)
 				System.out.println(id + " setBounds " + x + " " + y + " " + this.width
 						+ " " + this.height + " op=" + op + " createDOM?"

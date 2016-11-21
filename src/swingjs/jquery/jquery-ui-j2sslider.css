@@ -78,7 +78,7 @@
 
 /* Interaction states
 ----------------------------------*/
-.swingjs .ui-state-default, .swingjs .ui-widget-content .ui-state-default, .swingjs .ui-widget-header .ui-state-default { border: 1px solid #cccccc; background: #f6f6f6 url("images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x; font-weight: bold; color: #1c94c4; }
+.swingjs .ui-state-default, .swingjs .ui-widget-content .ui-state-default, .swingjs .ui-widget-header .ui-state-default { border: 1px solid #cccccc; background: #a0a0a0 url("images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x; font-weight: bold; color: #1c94c4; }
 .swingjs .ui-state-default a, .swingjs .ui-state-default a:link, .swingjs .ui-state-default a:visited { color: #1c94c4; text-decoration: none; }
 .swingjs .ui-state-hover, .swingjs .ui-widget-content .ui-state-hover, .swingjs .ui-widget-header .ui-state-hover, .swingjs .ui-state-focus, .swingjs .ui-widget-content .ui-state-focus, .swingjs .ui-widget-header .ui-state-focus { border: 1px solid #fbcb09; background: #fdf5ce url("images/ui-bg_glass_100_fdf5ce_1x400.png") 50% 50% repeat-x; font-weight: bold; color: #c77405; }
 .swingjs .ui-state-hover a, .swingjs .ui-state-hover a:hover, .swingjs .ui-state-hover a:link, .swingjs .ui-state-hover a:visited { color: #c77405; text-decoration: none; }
