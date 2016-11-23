@@ -400,7 +400,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 	AtomViewerCanvas cv;
 
 	AtomViewerFrame(AtomViewer a) {
-		super("Hydrogenic Atom Viewer v1.5b");
+		super("Hydrogenic Atom Viewer v1.5c");
 		applet = a;
 	}
 
@@ -1382,17 +1382,20 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		int i;
 		int n = nChooser.getSelectedIndex() + 1;
 		int l = lChooser.getSelectedIndex();
+		ignoreAdjustments = true;
 		lChooser.removeAllItems();
 		for (i = 0; i < n; i++)
 			lChooser.add("l = " + i + ((i < 6) ? " (" + codeLetter[i] + ")" : ""));
 		if (l < n && l >= 0)
 			lChooser.select(l);
+		ignoreAdjustments = false;
 		setLValue();
 	}
 
 	void setLValue() {
 		int l = getL();
 		int i;
+		ignoreAdjustments = true;
 		mChooser.removeAllItems();
 		if (viewChooser.getSelectedIndex() == VIEW_REAL) {
 			if (l == 0) {
@@ -1422,6 +1425,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 			mChooser.select(l);
 		}
 		validate();
+		ignoreAdjustments = false;
 	}
 
 	String l1RealText[] = { "pz", "px", "py" };
@@ -1728,7 +1732,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 				nv = scaleValue;
 			if (!animatedZoomItem.getState())
 				nv = scaleValue;
+			ignoreAdjustments = true;
 			scaleBar.setValue(nv);
+			ignoreAdjustments = false;
 			scaleValue = nv;
 			precomputeAll();
 		}
@@ -2340,11 +2346,11 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	int scaleValue = -1;
 
-	private boolean finished;
+	private boolean finished, ignoreAdjustments;
 
 	@Override
 	public void adjustmentValueChanged(AdjustmentEvent e) {
-		if (!finished)
+		if (!finished || ignoreAdjustments)
 			return;
 		System.out.print(((Scrollbar) e.getSource()).getValue() + "\n");
 		if (e.getSource() == scaleBar) {
@@ -2524,7 +2530,7 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		if (!finished) {
+		if (!finished || ignoreAdjustments) {
 			return;
 		}
 		ItemSelectable c = e.getItemSelectable(); 
@@ -2949,7 +2955,9 @@ class AtomViewerFrame extends Frame implements ComponentListener,
 		bestBrightness = 113.9 / (Math.sqrt(minavg) * totn);
 		double mult = bestBrightness * userBrightMult;
 		int bvalue = (int) (Math.log(mult) * 100.);
+		ignoreAdjustments = true;
 		brightnessBar.setValue(bvalue);
+		ignoreAdjustments = false;
 	}
 
 	abstract class Orbital {
