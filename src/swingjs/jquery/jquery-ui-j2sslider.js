@@ -3,13 +3,14 @@
 * Includes: jquery.ui.slider.js
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
+// BH 11/22/2016 7:46:54 PM adding postMouseEvent
 // adjusted for SwingJS for smoother operation 
 // added j2sslider("getState")
 
 (function( $, undefined ) {
 
 // number of pages in a slider
-// (how many times can you page up/down to go through the whole range)
+// (how many times can you page 3/down to go through the whole range)
 var numPages = 5;
 
 var position, normValue, distance, closestHandle, index, allowed, offset, mouseOverHandle;
@@ -19,6 +20,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 	widgetEventPrefix: "slide",
 
 	options: {
+    jslider: null,
 		animate: false,
 		distance: 0,
 		max: 100,
@@ -76,13 +78,23 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 
     var me = this; 
     
-    var fDown = function(xye) {
+    var postMouseEvent = function(xye, id) {
+      // set target to the handle
+      xye.ev.currentTarget && (xye.ev.target = xye.ev.currentTarget);
+      // pass event to JSlider in case there is a mouse listener implemented for that
+      //InputEvent.BUTTON1 + InputEvent.BUTTON1_DOWN_MASK;
+      // same call here as in j2sApplet
+      me.options.jslider.getFrameViewer().processMouseEvent(id,xye.x,xye.y,1040,System.currentTimeMillis(), xye.ev);      
+    };
+
+    var fDown = function(xye, id) {
       me._doMouseCapture(xye.ev);
+      postMouseEvent(xye, id);
     };
     
-    var fDrag = function(xye) {
+    var fDrag = function(xye, id) {
       if (me.options.disabled)
-	  return;
+	      return;
       var event = xye.ev;
   		var position = { x: event.pageX, y: event.pageY };
 
@@ -93,11 +105,12 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
                 }
       var normValue = me._normValueFromMouse( position );
   		me._slide( event, me._handleIndex, normValue );
+      postMouseEvent(xye, id);
     };
     
-    var fUp = function(xye) {
+    var fUp = function(xye, id) {
       if (me.options.disabled)
-	  return;
+	      return;
       var event = xye.ev;
   		me.handles.removeClass( "ui-state-active" );
   		me._mouseSliding = false;  
@@ -106,8 +119,9 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
   		me._handleIndex = null;
   		me._clickOffset = null;
   		me._animateOff = false;
+      postMouseEvent(xye, id);
     };
-
+    
 		handleCount = ( o.values && o.values.length ) || 1;
 
 		for ( i = 0; i < handleCount; i++ ) {

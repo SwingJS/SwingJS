@@ -143,6 +143,8 @@ Clazz.duplicatedMethods = {};
 // This is critical for performance optimization.
 
 var _profile = null;
+var _profileNoOpt = false;  // setting this true will remove Bob's signature optimization
+
 var __signatures = ""; 
 var profilet0;
 Clazz.startProfiling = function(doProfile) {
@@ -509,7 +511,7 @@ var findMethod = function(obj, clazzThis, args, pTypes, isConstruct) {
 	var dsig = classTop.__CLASS_NAME__ + pTypes.typeString;
   var dsigs = arguments.callee.caller.dsigs; // delegate.dsigs
   var f = dsigs[dsig]; 
-  if (!f || _profile) {
+  if (!f || _profile && _profileNoOpt) { 
     Clazz.saemCount2++;
     var claxxRef = arguments.callee.caller.claxxRef;
     var fxName = arguments.callee.caller.methodName;

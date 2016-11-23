@@ -48,6 +48,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
+
+/**
+ * To run test_4 in JavaScript, 
+ * @author RM
+ *
+ */
 public class Test_4 extends Test_5 {
 
 	public String b = "test_4 b";
@@ -65,12 +71,27 @@ public class Test_4 extends Test_5 {
 		System.out.println("test4.construct " + i);
 	}
 
+	public Test_4(float j, float k) {
+		this(new Float(j));
+		System.out.println("Test4 floatj,k done");
+	}
+
+	public Test_4(Number n) {
+		super(n.intValue());		
+		System.out.println("Test4 Number n done");
+	}
+	
+	
 	public Test_4(String s) {
 		super(0);
 		System.out.println("test4.construct " + s);
 		myfunc(s);
 		myfunc3();
 		super.myfunc("from test4 " + s);
+		
+		myfunc(new Float(3));
+		
+		
 		Test_6 x = new Test_6() {
 			String zz = "zz";
 			String[] xx0 = { "x1", "x2" };
@@ -78,7 +99,7 @@ public class Test_4 extends Test_5 {
 				String yy = "y";
 				String[] xx = { "x1", "x2" };
 				{
-					System.out.println("whooah " + this.getClass().getName() + " xx0[0]=" + xx0[0]);
+//error					System.out.println("whooah " + this.getClass().getName() + " xx0[0]=" + xx0[0]);
 				}
 			}
 			public void x_1() {
@@ -88,6 +109,9 @@ public class Test_4 extends Test_5 {
 		
     JButton btn = new JButton( "test" ) {
       {
+      	// this block will throw an error in JavaScript because in the
+      	// Luna j2s compiler, it is being duplicated. PhET build removes these extra blocks
+      	
         setFont(new Font("SansSerif", Font.ITALIC, 10));
         addActionListener(new ActionListener() {
             public void actionPerformed( ActionEvent event ) {
@@ -98,6 +122,10 @@ public class Test_4 extends Test_5 {
     };
 
 		x.x_1();
+	}
+
+	protected void myfunc(Number x) {
+		System.out.println("test4.myfunct Number " + x);
 	}
 
 	protected void myfunc(String s) {
@@ -120,5 +148,6 @@ public class Test_4 extends Test_5 {
 		Test_4 t4 = new Test_4("main");
 		System.out.println("after construction");
 		t4.myfunc3();
+		new Test_4(3.4f, 3.5f);
 	}
 }

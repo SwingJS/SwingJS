@@ -99,6 +99,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 *            var me = this; 
 		 *            me.$(me.jqSlider).j2sslider(
 		 *             { orientation: me.orientation, 
+		 *               jslider: me.c,
 		 *               range: false, 
 		 *               min: me.min,
 		 *               max: me.max,
@@ -184,6 +185,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if (isNew) {
 			handleAllMouseEvents(sliderHandle);
 			handleAllMouseEvents(sliderTrack);
+			setDataComponent(sliderHandle);
 		}
 	}
 

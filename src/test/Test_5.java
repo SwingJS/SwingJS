@@ -14,6 +14,14 @@ public class Test_5 extends Test_6 {
 		System.out.println("test5.construct " + i);
 	}
 	
+	public Test_5(Float n) {
+		this("sN" + n);
+		System.out.println("Test5 Float n done");
+
+	}
+	
+	
+
 	public Test_5(String s) {
 		System.out.println("test5.construct " + s);
 		myfunc(s);
@@ -48,6 +56,10 @@ public class Test_5 extends Test_6 {
 		System.out.println("test5.myfunc4 this2 == this? " + (this2 == this));
 		System.out.println("test5.myfunc4 this2.a=" + this2.a);
 		System.out.println("test5.myfunc4 this.a=" + a);
+	}
+
+	protected void myfunc(Float x) {
+		System.out.println("test5.myfunct Float " + x);
 	}
 
 

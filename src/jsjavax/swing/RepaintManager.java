@@ -952,7 +952,8 @@ public class RepaintManager {
 
 			dx += x;
 			dy += y;
-			tmp.setLocation(tmp.x + x, tmp.y + y);
+			tmp.x += x;
+			tmp.y += y;
 
 			x = component.getX();
 			y = component.getY();
@@ -973,7 +974,8 @@ public class RepaintManager {
 
 		if (dirtyComponent != rootDirtyComponent) {
 			Rectangle r;
-			tmp.setLocation(tmp.x + rootDx - dx, tmp.y + rootDy - dy);
+			tmp.x += rootDx - dx;
+			tmp.y += rootDy - dy;
 			r = (Rectangle) dirtyComponents.get(rootDirtyComponent);
 			SwingUtilities.computeUnion(tmp.x, tmp.y, tmp.width, tmp.height, r);
 		}
