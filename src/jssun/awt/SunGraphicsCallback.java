@@ -42,19 +42,37 @@ public abstract class SunGraphicsCallback {
 
     public abstract void run(Component comp, Graphics cg);
 
+    /**
+     * This method is particularly entered by 
+     * 
+     * In SwingJS we consider the graphic to be owned be a background for
+     * the content pane. As such, its lower bound is 0,0, not bounds.x, bounds.y
+     *  
+     *   
+     * @param g
+     * @param bounds
+     */
     protected void constrainGraphics(Graphics g, Rectangle bounds) {
-        if (g instanceof ConstrainableGraphics) {
-            ((ConstrainableGraphics)g).constrain(bounds.x, bounds.y, bounds.width, bounds.height);
-        } else {
-            g.translate(bounds.x, bounds.y);
-        }
+//        if (g instanceof ConstrainableGraphics) {
+//            ((ConstrainableGraphics)g).constrain(bounds.x, bounds.y, bounds.width, bounds.height);
+//        } else {
+//           // g.translate(bounds.x, bounds.y);
+//        }
         g.clipRect(0, 0, bounds.width, bounds.height);
     }
 
+    /**
+     * 
+     * @param comp
+     * @param bounds
+     * @param g
+     * @param clip
+     * @param weightFlags
+     */
     public final void runOneComponent(Component comp, Rectangle bounds,
                                       Graphics g, Shape clip,
                                       int weightFlags) {
-        if (comp == null || !comp.isLightweight()/*getPeer() == null*/ || !comp.isVisible()) {
+        if (comp == null /* || !comp.isLightweight() getPeer() == null*/ || !comp.isVisible()) {
             return;
         }
         boolean lightweight = comp.isLightweight();
@@ -70,7 +88,8 @@ public abstract class SunGraphicsCallback {
         if (clip == null || clip.intersects(bounds)) {
             Graphics cg = g.create();
             try {
-                constrainGraphics(cg, bounds);
+            	// note: this caused problems with JDialog
+                //constrainGraphics(cg, bounds);
                 cg.setFont(comp.getFont());
                 cg.setColor(comp.getForeground());
                 if (cg instanceof Graphics2D) {
@@ -86,6 +105,16 @@ public abstract class SunGraphicsCallback {
         }
     }
 
+    /**
+     * clip the graphic and run its paint method. Called by 
+     * Container.paint, which is only called for a top-level
+     * window such as JFrame, JDialog, and JWindow.
+     * 
+     * 
+     * @param comps
+     * @param g
+     * @param weightFlags
+     */
     public final void runComponents(Component[] comps, Graphics g,
                                     int weightFlags) {
         int ncomponents = comps.length;

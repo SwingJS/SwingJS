@@ -6107,7 +6107,7 @@ protected  transient ComponentPeer peer;
 
             ComponentPeer p = peer;
             if (p != null) {
-                boolean isLightweight = isLightweight();
+//                boolean isLightweight = isLightweight();
 
 //                if (bufferStrategy instanceof FlipBufferStrategy) {
 //                    ((FlipBufferStrategy)bufferStrategy).destroyBuffers();
@@ -6129,7 +6129,7 @@ protected  transient ComponentPeer peer;
 
                 p.dispose();
 
-                mixOnHiding(isLightweight);
+//                mixOnHiding(isLightweight);
 
                 isAddNotifyComplete = false;
                 // Nullifying compoundShape means that the component has normal shape

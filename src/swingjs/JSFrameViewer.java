@@ -7,6 +7,7 @@ import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.event.PaintEvent;
 import jsjavax.swing.JApplet;
+import jsjavax.swing.JFrame;
 import jsjavax.swing.JRootPane;
 import jsjavax.swing.RootPaneContainer;
 import swingjs.api.DOMNode;
@@ -55,7 +56,7 @@ public class JSFrameViewer implements JSInterface {
 		this.fullName = appletViewer.fullName;
 		canvas = null;
 		jsgraphics = null;
-		insets = new Insets(20, 0, 0, 0);
+		insets = new Insets((window instanceof JFrame ? 20 : 0), 0, 0, 0);
 		getGraphics(0, 0);
 		return this;
 	}
