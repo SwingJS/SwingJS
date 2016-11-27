@@ -314,7 +314,7 @@ this.valuesCollection=((Clazz.isClassDefined("java.util.concurrent.ConcurrentHas
 }return this.valuesCollection;
 });
 c$.$ConcurrentHashMap$1$=function(){
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.declareAnonymous(java.util.concurrent,"ConcurrentHashMap$1",java.util.AbstractSet);
 Clazz.overrideMethod(c$,"contains",
 function(object){
@@ -342,7 +342,7 @@ return new java.util.concurrent.ConcurrentHashMap.ConcurrentHashMapIterator(((Cl
 c$=Clazz.p0p();
 };
 c$.$ConcurrentHashMap$1$1$=function(){
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.declareAnonymous(java.util.concurrent,"ConcurrentHashMap$1$1",null,java.util.MapEntry.Type);
 Clazz.overrideMethod(c$,"get",
 function(entry){
@@ -351,7 +351,7 @@ return entry.key;
 c$=Clazz.p0p();
 };
 c$.$ConcurrentHashMap$2$=function(){
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.declareAnonymous(java.util.concurrent,"ConcurrentHashMap$2",java.util.AbstractCollection);
 Clazz.overrideMethod(c$,"contains",
 function(object){
@@ -372,7 +372,7 @@ return new java.util.concurrent.ConcurrentHashMap.ConcurrentHashMapIterator(((Cl
 c$=Clazz.p0p();
 };
 c$.$ConcurrentHashMap$2$1$=function(){
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.declareAnonymous(java.util.concurrent,"ConcurrentHashMap$2$1",null,java.util.MapEntry.Type);
 Clazz.overrideMethod(c$,"get",
 function(entry){
@@ -380,7 +380,7 @@ return entry.value;
 },"java.util.MapEntry");
 c$=Clazz.p0p();
 };
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){
 this.origKeyHash=0;
 this.next=null;
@@ -399,7 +399,7 @@ a.next=this.next.clone();
 }return a;
 });
 c$=Clazz.p0p();
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){
 this.position=0;
 this.expectedModCount=0;
@@ -468,7 +468,7 @@ this.lastEntry.next=this.entry;
 this.expectedModCount++;
 });
 c$=Clazz.p0p();
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){
 this.associatedMap=null;
 Clazz.instantialize(this,arguments);
@@ -509,7 +509,7 @@ function(){
 return new java.util.concurrent.ConcurrentHashMap.ConcurrentHashMapIterator(((Clazz.isClassDefined("java.util.concurrent.ConcurrentHashMap$ConcurrentHashMapEntrySet$1")?0:java.util.concurrent.ConcurrentHashMap.ConcurrentHashMapEntrySet.$ConcurrentHashMap$ConcurrentHashMapEntrySet$1$()),Clazz.innerTypeInstance(java.util.concurrent.ConcurrentHashMap$ConcurrentHashMapEntrySet$1,this,null)),this.associatedMap);
 });
 c$.$ConcurrentHashMap$ConcurrentHashMapEntrySet$1$=function(){
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.declareAnonymous(java.util.concurrent,"ConcurrentHashMap$ConcurrentHashMapEntrySet$1",null,java.util.MapEntry.Type);
 Clazz.overrideMethod(c$,"get",
 function(a){

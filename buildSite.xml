@@ -21,11 +21,12 @@
 
   	<!-- create a NON svn local directory only containing JS files  -->
   	
+
+    <echo>SwingJS BuildSite Version 1.1</echo>
+
   	<echo>deleting the site directory</echo>
    	 	<delete quiet="true" dir="site/swingjs" />
   	
-<!--  	working here -->
-
    	<echo>...adding html files</echo>
    	<copy todir="site/swingjs" overwrite="true" >
   	  <fileset dir="html">
@@ -176,9 +177,11 @@
     <echo>...removing all $fz references for sub/superclass common private function names</echo>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="($fz =" value=""/>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token=", $fz.isPrivate = true, $fz)" value=""/>
-  	<echo>...changing Clazz.pu$h() to Clazz.pu$h(self.c$) (only a partial fix)</echo>
-  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h()" value="Clazz.pu$h(self.c$)"/>
-  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(self.c$)"/>
+  	
+  	
+	<echo>...changing Clazz.pu$h() to Clazz.pu$h(c$)</echo>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h()" value="Clazz.pu$h(c$)"/>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(c$)"/>
    	   	
 
     <echo>...abbreviating class name "javajs.util", and "com.jcraft.jzlib" to "JU"</echo>

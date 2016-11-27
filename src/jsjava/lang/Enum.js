@@ -65,7 +65,7 @@ return enumType.values();
 },"Class");
 
 //c$.$Enum$1$=function(){
-//Clazz.pu$h(self.c$);
+//Clazz.pu$h();
 
 //c$=Clazz.declareAnonymous(null,"Enum$1",null,java.security.PrivilegedExceptionAction);
 //Clazz.overrideMethod(c$,"run",

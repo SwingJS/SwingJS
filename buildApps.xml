@@ -60,9 +60,9 @@
     <echo>...removing all $fz references for sub/superclass common private function names</echo>
   	<replace dir="site/tmp" includes="**/*.js" token="($fz =" value=""/>
   	<replace dir="site/tmp" includes="**/*.js" token=", $fz.isPrivate = true, $fz)" value=""/>
-  	<echo>...changing Clazz.pu$h() to Clazz.pu$h(self.c$) (only a partial fix)</echo>
-  	<replace dir="site/tmp" includes="**/*.js" token="Clazz.pu$h()" value="Clazz.pu$h(self.c$)"/>
-  	<replace dir="site/tmp" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(self.c$)"/>
+  	<echo>...changing Clazz.pu$h() to Clazz.pu$h(c$)</echo>
+  	<replace dir="site/tmp" includes="**/*.js" token="Clazz.pu$h()" value="Clazz.pu$h(c$)"/>
+  	<replace dir="site/tmp" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(c$)"/>
    	   	
 
     <echo>...abbreviating class name "javajs.util", and "com.jcraft.jzlib" to "JU"</echo>

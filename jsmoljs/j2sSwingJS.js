@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 11/27/2016 7:26:24 AM c$ final fix
 // BH 11/25/2016 1:27:16 PM class.isInstance(obj) fixed
 // BH 11/19/2016 10:01:22 AM better profiling with Clazz.startProfiling(seconds) 
 // BH 11/14/2016 9:40:59 AM removing extraneous "sp" super-field-prep calls
@@ -68,8 +69,6 @@ LoadClazz = function() {
 // It is used as a local variable in class definitions to point to the 
 // current method. See Clazz.p0p and Clazz.pu$h
 
-c$ = null;
-
 if (!window["j2s.clazzloaded"])
 	window["j2s.clazzloaded"] = false;
 
@@ -107,6 +106,7 @@ window["j2s.object.native"] = true;
 
 ;(function(Clazz, J2S) {
 
+var c$;
 
 try {
 Clazz._debugging = (document.location.href.indexOf("j2sdebug") >= 0);
@@ -2066,8 +2066,9 @@ var cStack = [];
  * BH: I would like to be able to remove "self.c$" here, but that is tricky.
  */
 Clazz.pu$h = function (c) {
-  c || (c = self.c$); // old style
-	c && cStack.push(c);
+  //c || (c = self.c$); // old style
+	//c && 
+  cStack.push(c);
 };
 
 Clazz.p0p = function () {
@@ -3535,6 +3536,8 @@ Clazz._lastEvalError = null;
 
 /* private */
 var evaluate = function(file, js) {
+  if (js.indexOf("c$") >= 0)
+    js = "(function(){var c$;" + js + "})();";
  		try {
 			eval(js + ";//# sourceURL="+file);
 		} catch (e) {      
@@ -7694,9 +7697,11 @@ function(){
 return null;
 });
 
+
 })(Clazz);
 
 
+var c$;
 })(Clazz, J2S); // requires JSmolCore.js
 
 if (!window["java.registered"])

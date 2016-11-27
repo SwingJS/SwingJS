@@ -141,7 +141,7 @@ return new java.util.AbstractList.SubAbstractListRandomAccess(this,start,end);
 
 //c$.$AbstractList$SimpleListIterator$=function(){
 
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 
 c$=Clazz.decorateAsClass(function(){
 //Clazz.prepareCallback(this,arguments);
@@ -204,7 +204,7 @@ c$=Clazz.p0p();
 
 
 //c$.$AbstractList$FullListIterator$=function(){
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){
 //Clazz.prepareCallback(this,arguments);
 Clazz.instantialize(this,arguments);
@@ -289,14 +289,14 @@ c$=Clazz.p0p();
 
 
 
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.declareType(java.util.AbstractList,"SubAbstractListRandomAccess",java.util.AbstractList.SubAbstractList,java.util.RandomAccess);
 c$=Clazz.p0p();
 
 
 
 
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){
 this.fullList=null;
 this.offset=0;
@@ -406,7 +406,7 @@ this.$size++;
 this.$size--;
 }this.modCount=this.fullList.modCount;
 },"~B");
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$=Clazz.decorateAsClass(function(){
 this.subList=null;
 this.iterator=null;

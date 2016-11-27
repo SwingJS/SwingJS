@@ -190,7 +190,7 @@ format.setParseIntegerOnly (true);
 format.adjustForCurrencyDefaultFractionDigits ();
 }return format;
 }, "java.util.Locale,~N");
-Clazz.pu$h(self.c$);
+Clazz.pu$h();
 c$ = Clazz.declareType (java.text.NumberFormat, "Field", java.text.Format.Field);
 Clazz.makeConstructor (c$, 
 function (a) {

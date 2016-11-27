@@ -13,4 +13,5 @@ public class Test_6 extends Test_7 {
 		System.out.println("x_1 in  Test_6");
 	}
 
+
 }

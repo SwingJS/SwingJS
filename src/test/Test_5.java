@@ -62,5 +62,15 @@ public class Test_5 extends Test_6 {
 		System.out.println("test5.myfunct Float " + x);
 	}
 
+	public void testing() {
+		testing1();
+	}
+
+
+	
+	private void testing1() {
+		System.out.println("test5.testing1");
+	}
+
 
 }

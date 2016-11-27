@@ -150,4 +150,10 @@ public class Test_4 extends Test_5 {
 		t4.myfunc3();
 		new Test_4(3.4f, 3.5f);
 	}
+	
+	private void testing1() {
+		System.out.println("test4.testing1");
+	}
+
+
 }
