@@ -38,18 +38,24 @@ class RectIterator implements PathIterator {
     AffineTransform affine;
     int index;
 
-    RectIterator(Rectangle2D r, AffineTransform at) {
-        this.x = r.getX();
-        this.y = r.getY();
-        this.w = r.getWidth();
-        this.h = r.getHeight();
-        this.affine = at;
-        if (w < 0 || h < 0) {
-            index = 6;
-        }
+    /**
+     * SwingJS allowing for use of a static object 
+     * 
+     */
+    RectIterator() {
     }
 
-    /**
+    PathIterator set(Rectangle2D r, AffineTransform at) {
+      this.x = r.getX();
+      this.y = r.getY();
+      this.w = r.getWidth();
+      this.h = r.getHeight();
+      this.affine = at;
+      index = (w < 0 || h < 0 ? 6 : 0);
+      return this;
+		}
+
+		/**
      * Return the winding rule for determining the insideness of the
      * path.
      * @see #WIND_EVEN_ODD

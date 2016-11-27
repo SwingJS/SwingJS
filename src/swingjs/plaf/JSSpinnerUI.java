@@ -1,67 +1,165 @@
 package swingjs.plaf;
 
-import jsjava.awt.Dimension;
-import jsjavax.swing.JLabel;
+import java.awt.Event;
+import java.awt.event.KeyEvent;
+
+import jsjava.awt.Toolkit;
+import jsjava.awt.event.ActionEvent;
+import jsjava.awt.event.ActionListener;
+import jsjava.awt.event.FocusEvent;
 import jsjavax.swing.JSpinner;
 import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.SwingConstants;
+import jsjavax.swing.Timer;
+import jsjavax.swing.event.ChangeEvent;
 import swingjs.api.DOMNode;
 
 /**
- * A JavaScript equivalent for a label. Text only. Vertical 
+ * Very minimal spinner - just an editable text box. 
  * 
  * @author Bob Hanson
  *
  */
 public class JSSpinnerUI extends JSLightweightUI {
 	private JSpinner spinner;
-	private String textAlign;
 
+	private DOMNode dn, up, dnNode, upNode;
+	
 	@Override
 	protected DOMNode updateDOMNode() {
-		if (domNode == null)	
-			textNode = domNode = newDOMObject("label", id);
-		//vCenter(domNode, 10);
-		String temp = "[spinner]";
-		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
-		return setCssFont(DOMNode.setAttr(domNode, "innerHTML",temp), c.getFont());
+		if (domNode == null) {
+
+			domNode = newDOMObject("div", id);
+
+			// no textNode here, because in input does not have that.
+			
+			// input box
+			focusNode = valueNode = DOMNode.setStyles(
+					newDOMObject("input", id, "type", "text"), "padding", "0px 1px",
+					"width", "30px", "text-align", "right");
+			vCenter(valueNode, -10);
+			setDataUI(valueNode);
+			bindJSEvents(valueNode, "keydown keypress keyup", Event.KEY_PRESS, true);
+
+			// increment button
+			up = DOMNode.setStyles(newDOMObject("div", id + "_updiv"),
+					"left", "33px", "top", "-5px", "position", "absolute");
+			upNode = DOMNode.setStyles(
+					newDOMObject("input", id + "_up", "type", "button", "value", ""),
+					"transform", "scaleY(.4)", "width", "10px", "height", "20px");
+			up.appendChild(upNode);
+			bindJSEvents(upNode, "mousedown touchstart", Event.MOUSE_DOWN, true);
+			bindJSEvents(upNode, "mouseup touchend", Event.MOUSE_UP, true);
+
+			// decrement button
+			dn = DOMNode.setStyles(newDOMObject("div", id + "_dndiv"),
+					"left", "33px", "top", "5px", "position", "absolute");
+			dnNode = DOMNode.setStyles(
+					newDOMObject("input", id + "_dn", "type", "button", "value", ""),
+					"transform", "rotateZ(180deg) scaleY(.4)", "width", "10px", "height",
+					"20px");
+			dn.appendChild(dnNode);
+			bindJSEvents(dnNode, "mousedown touchstart", Event.MOUSE_DOWN, true);
+			bindJSEvents(dnNode, "mouseup touchend", Event.MOUSE_UP, true);
+
+			domNode.appendChild(valueNode);
+			domNode.appendChild(up);
+			domNode.appendChild(dn);
+
+			enableNodes = new DOMNode[] { valueNode, up, dn };
+
+			addJQueryFocusCallbacks();
+			
+		}
+		setCssFont(setValue(), c.getFont());
+		int w = (spinner.isPreferredSizeSet() ? spinner.getPreferredSize().width : 70);
+		DOMNode.setStyles(valueNode, "width", (w - 38) + "px");
+		DOMNode.setStyles(up, "left", (w - 34)  + "px");
+		DOMNode.setStyles(dn, "left", (w - 34)  + "px");
+			
+		return domNode;
+	}
+
+	private DOMNode setValue() {
+		setProp(valueNode, "value", "" + spinner.getValue());
+		return valueNode;
+	}
 	
+	private Timer timer;
+	private boolean incrementing;
+	/**
+	 * called by j2sApplet.js based on bindJSEvents
+	 * 
+	 * Handling mousedown (start incrementing) and mouseup (stop incrementing)
+	 * on the buttons
+	 * 
+	 * Handling ENTER pressed on text input
+	 * 
+	 * @return handled
+	 */
+	@Override
+	public boolean handleJSEvent(Object target, int eventID, Object jQueryEvent) {
+		
+		int keyCode = 0;
+		String id = (String) DOMNode.getAttr((DOMNode)target, "id");
+		/**
+		 * @j2sNative
+		 * 
+		 *            keyCode = jQueryEvent.keyCode; if (keyCode == 13) keyCode =
+		 *            10;
+		 *            
+		 */
+		{
+		}
+		switch (eventID) {
+		case Event.MOUSE_DOWN:
+			if (timer != null)
+				timer.stop();
+			incrementing = (id == this.id + "_up");
+			if (!incrementing && id != this.id + "_dn")
+				return true;
+			timer = new Timer(20, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					doAction();
+				}
+			});
+			timer.start();
+			doAction();
+			break;
+		case Event.MOUSE_UP:
+			if (timer != null)
+				timer.stop();
+			timer = null;
+			break;
+		case KeyEvent.KEY_PRESSED:
+			if (keyCode == 10) {
+			try {
+					int n = Integer.parseInt("" + DOMNode.getAttr(valueNode, "value"));
+				spinner.setValue(new Integer(n));
+			} catch (Throwable e) {
+				// ignore
+			}
+		}
+			break;
+		}
+		return true;
+	}
+
+	void doAction() {
+		Object val = (incrementing ? 
+			spinner.getNextValue() : spinner.getPreviousValue());
+		if (val != null)
+			spinner.setValue(val);
 	}
 
 	@Override
 	public void propertyChangedFromListener(String prop) {
-		boolean isVert = (prop.indexOf("vert") >= 0);
-		boolean isAlign = (prop.indexOf("Ali") >= 0);
-		if (isAlign && !isVert) {
-			revalidate();
-		} else {
 			propertyChangedFromListenerCUI(prop);
-		}
 	}
 
-	/**
-	 * adding in outer styles for text alignment of a label
-	 */
 	@Override
-	protected DOMNode setHTMLElement() {
-		setHTMLElementCUI();
-//		String prop = null;
-//		switch (label.getHorizontalAlignment()) {
-//		case SwingConstants.RIGHT:
-//		case SwingConstants.TRAILING:
-//			prop = "right";
-//			break;
-//		case SwingConstants.LEFT:
-//		case SwingConstants.LEADING:
-//			prop = "left";
-//			break;
-//		case SwingConstants.CENTER:
-//			prop = "center";
-//			break;
-//		}
-//		if (prop != null) 
-//			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align", textAlign = prop);
-		return outerNode;
+	public void stateChanged(ChangeEvent e) {
+		setValue();
 	}
 	
 	@Override
@@ -77,12 +175,10 @@ public class JSSpinnerUI extends JSLightweightUI {
 //       }),
     LookAndFeel.installColorsAndFont(jc, null, null,
         "Spinner.font");
+    super.installUIImpl();
 	}
 
-	@Override
-	protected void uninstallUIImpl() {
-		// TODO Auto-generated method stub
-		
-	}
+
+
 
 }

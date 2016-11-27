@@ -77,6 +77,9 @@ public class BufferedImage extends Image implements Transparency // ,
 	protected Object _imgNode; // used by JSGraphics2D directly
 	protected int width, height;
 	protected boolean _havePix;
+	protected Object _canvas; // created in setRangeRGB
+	private int[] _pixSaved;
+	private static int rangeIndex;
 
 	/**
 	 * Image Type Constants
@@ -857,8 +860,10 @@ public class BufferedImage extends Image implements Transparency // ,
 
 
 	public int getRGB(int x, int y) {
-		if (_imgNode != null && !this._havePix) 
+		if (_imgNode != null && !_havePix) 
 		  ((JSImage) this).setPixels();
+		if (_pix == null)
+			_pix = _pixSaved;
 		/**
 		 * @j2sNative
 		 * 
@@ -871,7 +876,7 @@ public class BufferedImage extends Image implements Transparency // ,
 
 	public int[] getRangeRGB(int startX, int startY, int w, int h,
 			int[] rgbArray, int offset, int scansize) {
-		int[] pixels = _pix;
+		int[] pixels = (_pix == null ? _pixSaved : _pix);
 		for (int y = startY, yoff=offset; y < startY + h; y++, yoff += scansize)
 			for (int off = yoff, x = startX; x < startX + w; x++)
 				rgbArray[off++] = pixels[y * this.width + x];
@@ -883,6 +888,7 @@ public class BufferedImage extends Image implements Transparency // ,
 		  ((JSImage) this).setPixels();
 		  _imgNode = null;
 		}
+		int[] pixels = (_pix == null ? _pixSaved : _pix);
 		/**
 		 * @j2sNative
 		 * 
@@ -890,16 +896,18 @@ public class BufferedImage extends Image implements Transparency // ,
 		 *            arguments));
 		 */
 		{}
-		_pix[y * this.width + x] = rgb;
+		pixels[y * this.width + x] = rgb;
 	}
 	
 	public void setRangeRGB(int startX, int startY, int w, int h, int[] rgbArray,
 			int offset, int scansize) {
-		int[] pixels = _pix;
+		int[] pixels = (_pix == null ? _pixSaved : _pix);
 		int width = this.width;
 		for (int y = startY, yoff = offset; y < startY + h; y++, yoff += scansize) 
 			for (int x = startX, off = yoff; x < startX + w; x++) 
 				pixels[y * width + x] = rgbArray[off++];
+		_pix = _pixSaved = pixels;
+		getGraphics();
 	}
 
 
@@ -1150,6 +1158,9 @@ public class BufferedImage extends Image implements Transparency // ,
 	}
 
 	/**
+	 * 
+	 * @j2sIgnore
+	 * 
 	 * Returns the width of the <code>BufferedImage</code>.
 	 * 
 	 * @param observer
@@ -1162,6 +1173,8 @@ public class BufferedImage extends Image implements Transparency // ,
 	}
 
 	/**
+	 * @j2sIgnore
+	 * 
 	 * Returns the height of the <code>BufferedImage</code>.
 	 * 
 	 * @param observer

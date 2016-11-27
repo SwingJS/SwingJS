@@ -204,7 +204,7 @@ public class Timer implements Serializable {
 			if (notify.get()) {
 				fireActionPerformed(new ActionEvent(Timer.this, 0, getActionCommand(),
 						System.currentTimeMillis(), 0));
-				if (coalesce) {
+				if (coalesce) {	
 					cancelNotify();
 				}
 			}
@@ -531,8 +531,8 @@ public class Timer implements Serializable {
 		// try {
 		JSToolkit.killDispatched(html5Id);
 		cancelNotify();
-		if (isRunning())
-			timerQueue().remove(this);
+		repeats = false;
+		timerQueue().remove(this);
 		html5Id = Integer.MIN_VALUE;
 		// } finally {
 		// getLock().unlock();

@@ -124,6 +124,7 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 
 	public void notifyFrameMoved() {
 		// from JavaScript
+		this.toFront();
 		Toolkit.getEventQueue().postEvent(
 				new ComponentEvent(frame, ComponentEvent.COMPONENT_MOVED));
 	}

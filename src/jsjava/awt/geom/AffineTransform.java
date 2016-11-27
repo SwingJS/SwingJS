@@ -2235,22 +2235,31 @@ public class AffineTransform implements Cloneable, java.io.Serializable {
     /**
      * Sets this transform to a copy of the transform in the specified
      * <code>AffineTransform</code> object.
-     * @param Tx the <code>AffineTransform</code> object from which to
+     * @param t the <code>AffineTransform</code> object from which to
      * copy the transform
      * @since 1.2
      */
-    public void setTransform(AffineTransform Tx) {
-        this.m00 = Tx.m00;
-        this.m10 = Tx.m10;
-        this.m01 = Tx.m01;
-        this.m11 = Tx.m11;
-        this.m02 = Tx.m02;
-        this.m12 = Tx.m12;
-        this.state = Tx.state;
-        this.type = Tx.type;
+    public void setTransform(AffineTransform t) {
+    	setTransformImpl(t);
     }
 
     /**
+     * allows for no overhead
+     * 
+     * @param t
+     */
+    public void setTransformImpl(AffineTransform t) {
+      this.m00 = t.m00;
+      this.m10 = t.m10;
+      this.m01 = t.m01;
+      this.m11 = t.m11;
+      this.m02 = t.m02;
+      this.m12 = t.m12;
+      this.state = t.state;
+      this.type = t.type;
+		}
+
+		/**
      * Sets this transform to the matrix specified by the 6
      * double precision values.
      *

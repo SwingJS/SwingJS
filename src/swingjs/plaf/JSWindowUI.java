@@ -91,7 +91,8 @@ public class JSWindowUI extends JSComponentUI implements WindowPeer {
 
 	@Override
 	public void toFront() {
-		System.out.println("window to front for " + id);
+		if (debugging)
+			System.out.println("window to front for " + id);
 		z = JSToolkit.J2S._setWindowZIndex(domNode, Integer.MAX_VALUE);
 	}
 

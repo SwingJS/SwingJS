@@ -1,5 +1,7 @@
 package swingjs.plaf;
 
+import java.awt.Event;
+
 import jsjava.awt.Dimension;
 import jsjava.awt.Insets;
 import jsjavax.swing.text.JTextComponent;
@@ -28,7 +30,7 @@ public class JSTextAreaUI extends JSTextUI {
 			DOMNode.setStyles(domNode, "resize", "none");
 			setDataUI(domNode);
 			if (((JTextComponent) c).isEditable()) {
-				bindKeys(domNode);
+				bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
 				addJQueryFocusCallbacks();
 			}
 		}

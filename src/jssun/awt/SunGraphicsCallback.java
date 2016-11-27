@@ -75,7 +75,7 @@ public abstract class SunGraphicsCallback {
         if (comp == null /* || !comp.isLightweight() getPeer() == null*/ || !comp.isVisible()) {
             return;
         }
-        boolean lightweight = comp.isLightweight();
+        boolean lightweight = true;//comp.isLightweight();
         if ((lightweight && (weightFlags & LIGHTWEIGHTS) == 0) ||
             (!lightweight && (weightFlags & HEAVYWEIGHTS) == 0)) {
             return;

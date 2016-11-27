@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 11/25/2016 1:27:16 PM class.isInstance(obj) fixed
 // BH 11/19/2016 10:01:22 AM better profiling with Clazz.startProfiling(seconds) 
 // BH 11/14/2016 9:40:59 AM removing extraneous "sp" super-field-prep calls
 // BH 11/13/2016 12:16:13 PM fixing Number.compareTo
@@ -955,7 +956,7 @@ var extendJO = function(c, name) {
     
 	if (supportsNativeObject) {
 
-    c.isInstance = function(o) { return Clazz.instanceOf(o, c) };
+    c.isInstance = function(o) { return Clazz.instanceOf(o, this) };
 
     
 		for (var i = 0; i < extendedObjectMethods.length; i++) {
@@ -6790,7 +6791,6 @@ st.nativeClazz=nativeClass;
 this.stackTrace[this.stackTrace.length]=st;
 for(var i=0;i<callerList.length;i++){
 if(callerList[i]==superCaller){
-
 var st=new StackTraceElement("lost","missing",null,-3);
 st.nativeClazz=null;
 this.stackTrace[this.stackTrace.length]=st;

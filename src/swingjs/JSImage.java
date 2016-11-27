@@ -110,19 +110,9 @@ public class JSImage extends BufferedImage {
 			// placeholder only, for Eclipse reference
 			toIntARGB(null);
 		}
+		_imgNode = canvas;
 		((DataBufferInt) raster.getDataBuffer()).data = this._pix;
 		_havePix = true;
 	}
 
-	@Override
-	public int getHeight(ImageObserver o) {
-		return height;
-	}
-
-	@Override
-	public int getWidth(ImageObserver o) {
-		return width;
-	}
-
-	
 }

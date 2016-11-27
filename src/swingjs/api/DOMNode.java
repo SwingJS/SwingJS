@@ -22,9 +22,11 @@ public abstract class DOMNode {
 	public static DOMNode createElement(String key, String id, Object... attrs) {
 		DOMNode node = null;
 		/**
+		 * adding __CLASS_NAME__ allows a node to be used as a parameter in an overloaded method
 		 * 
 		 * @j2sNative
 		 * 					node = document.createElement(key);
+		 * 					node.__CLASS_NAME__ = "swingjs.api.DOMNode";
 		 * 					if(id)node.id = id;
 		 */
 		{

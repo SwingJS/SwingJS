@@ -1,6 +1,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import java.awt.Event;
 import java.awt.event.KeyEvent;
 
 import jsjava.awt.Dimension;
@@ -33,7 +34,7 @@ public class JSTextFieldUI extends JSTextUI {
 			vCenter(domNode, -10);
 			setDataUI(domNode);
 			if (textField.isEditable()) {
-				bindKeys(domNode);
+				bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
 				addJQueryFocusCallbacks();
 			}
 		}

@@ -161,6 +161,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected DOMNode enableNode;
 
 	/**
+	 * a component or subcomponent that can be enabled/disabled
+	 */
+	protected DOMNode[] enableNodes;
+
+	/**
 	 * the part of a component that can hold text
 	 */
 	protected DOMNode textNode;
@@ -472,19 +477,66 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 	}
 
-	protected void bindKeys(DOMNode domNode) {
+	/**
+	 * Allows mouse and keyboard handling via an overridden method
+	 * 
+	 * this.handleJSEvent(node, eventID, jsEvent)
+	 * 
+	 * j2sApplet will require node["data-ui"] and, in the case of a mouse event,
+	 * node["swingjs-ui"] in order to ignore handling the event and allow this
+	 * method to work.
+	 * 
+	 * 
+	 * @param node the JavaScript element that is being triggered
+	 * 
+	 * @param eventList 
+	 *          one or more JavaScript event names to pass, separated by space
+	 * @param eventID
+	 *          an integer event type to return; can be anything, but Event.XXXX is recommended
+	 * @deprecated Use {@link #bindJSEvents(DOMNode,String,int,boolean)} instead
+	 */
+	protected void bindJSEvents(DOMNode node, String eventList, int eventID) {
+		bindJSEvents(node, eventList, eventID, false);
+	}
+
+	/**
+	 * Allows mouse and keyboard handling via an overridden method
+	 * 
+	 * this.handleJSEvent(node, eventID, jsEvent)
+	 * 
+	 * j2sApplet will require node["data-ui"] and, in the case of a mouse event,
+	 * node["swingjs-ui"] in order to ignore handling the event and allow this
+	 * method to work.
+	 * 
+	 * 
+	 * @param node the JavaScript element that is being triggered
+	 * @param eventList 
+	 *          one or more JavaScript event names to pass, separated by space
+	 * @param eventID
+	 *          an integer event type to return; can be anything, but Event.XXXX is recommended
+	 * @param andSetCSS TODO
+	 */
+	protected void bindJSEvents(DOMNode node, String eventList, int eventID, boolean andSetCSS) {
 		JSFunction f = null;
 		JSEventHandler me = this;
+		
+		if (andSetCSS) {
+			setDataUI(node);
+			handleAllMouseEvents(node);
+		}
+
+		
+		
 		/**
 		 * @j2sNative
 		 * 
-		 *            f = function(event) { me.handleJSEvent(me.domNode, 401, event)
+		 *            f = function(event) { me.handleJSEvent(node, eventID, event)
 		 *            }
 		 */
 		{
 			System.out.println(me);
 		}
-		$(domNode).bind("keydown keypress keyup", f);
+		$(node).bind(eventList, f);
 	}
 
 	/**
@@ -1120,6 +1172,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	public void setEnabled(boolean b) {
 		if (enableNode != null)
 			DOMNode.setAttr(enableNode, "disabled", (b ? null : "TRUE"));
+		else if (enableNodes != null)
+			for (int i = 0; i < enableNodes.length; i++)
+				DOMNode.setAttr(enableNodes[i], "disabled", (b ? null : "TRUE"));
 		if (textNode != null)
 			DOMNode.setStyles(textNode, "opacity", (b ? "1" : "0.5"));
 	}
@@ -1306,6 +1361,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		$(focusNode).focus();
 		if (textNode != null)
 			$(textNode).select();
+		else if (valueNode != null)
+			$(valueNode).select();
 		return true;
 	}
 

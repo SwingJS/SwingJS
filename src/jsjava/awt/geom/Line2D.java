@@ -521,6 +521,13 @@ public abstract class Line2D implements Shape, Cloneable {
                                   double x2, double y2,
                                   double px, double py)
     {
+    	return relativeCCWImpl(x1, y1, x2, y2, px, py);
+    }
+    
+    private static int relativeCCWImpl(double x1, double y1,
+        double x2, double y2,
+        double px, double py){
+
         x2 -= x1;
         y2 -= y1;
         px -= x1;
@@ -569,7 +576,7 @@ public abstract class Line2D implements Shape, Cloneable {
      * @since 1.2
      */
     public int relativeCCW(double px, double py) {
-        return relativeCCW(getX1(), getY1(), getX2(), getY2(), px, py);
+        return relativeCCWImpl(getX1(), getY1(), getX2(), getY2(), px, py);
     }
 
     /**
@@ -586,7 +593,7 @@ public abstract class Line2D implements Shape, Cloneable {
      * @since 1.2
      */
     public int relativeCCW(Point2D p) {
-        return relativeCCW(getX1(), getY1(), getX2(), getY2(),
+        return relativeCCWImpl(getX1(), getY1(), getX2(), getY2(),
                            p.getX(), p.getY());
     }
 
@@ -621,10 +628,10 @@ public abstract class Line2D implements Shape, Cloneable {
                                          double x3, double y3,
                                          double x4, double y4)
     {
-        return ((relativeCCW(x1, y1, x2, y2, x3, y3) *
-                 relativeCCW(x1, y1, x2, y2, x4, y4) <= 0)
-                && (relativeCCW(x3, y3, x4, y4, x1, y1) *
-                    relativeCCW(x3, y3, x4, y4, x2, y2) <= 0));
+        return ((relativeCCWImpl(x1, y1, x2, y2, x3, y3) *
+                 relativeCCWImpl(x1, y1, x2, y2, x4, y4) <= 0)
+                && (relativeCCWImpl(x3, y3, x4, y4, x1, y1) *
+                    relativeCCWImpl(x3, y3, x4, y4, x2, y2) <= 0));
     }
 
     /**

@@ -68,12 +68,14 @@ public abstract class Rectangle2D extends RectangularShape {
      */
     public static final int OUT_BOTTOM = 8;
 
+
     /**
      * The <code>Float</code> class defines a rectangle specified in float
      * coordinates.
      * @since 1.2
      */
     public static class Float extends Rectangle2D  {
+    	
         /**
          * The X coordinate of this <code>Rectangle2D</code>.
          * @since 1.2
@@ -530,6 +532,8 @@ public abstract class Rectangle2D extends RectangularShape {
         //private static final long serialVersionUID = 7771313791441850493L;
     }
 
+		private RectIterator iterator;
+
     /**
      * This is an abstract class that cannot be instantiated directly.
      * Type-specific implementation subclasses are available for
@@ -891,10 +895,13 @@ public abstract class Rectangle2D extends RectangularShape {
      */
     @Override
 		public PathIterator getPathIterator(AffineTransform at) {
-        return new RectIterator(this, at);
+    	  return (iterator == null ? iterator = new RectIterator() : iterator).set(this, at);
     }
 
     /**
+     * 
+     * @j2sIgnore
+     * 
      * Returns an iteration object that defines the boundary of the
      * flattened <code>Rectangle2D</code>.  Since rectangles are already
      * flat, the <code>flatness</code> parameter is ignored.
@@ -917,7 +924,7 @@ public abstract class Rectangle2D extends RectangularShape {
      */
     @Override
 		public PathIterator getPathIterator(AffineTransform at, double flatness) {
-        return new RectIterator(this, at);
+  	  return (iterator == null ? iterator = new RectIterator() : iterator).set(this, at);
     }
 
     /**

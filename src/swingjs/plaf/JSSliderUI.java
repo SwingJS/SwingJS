@@ -259,7 +259,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				float px = (frac * length + margin);
 				int left, top;
 				if (isHoriz) {
-					top = 22;
+					top = 20;
 					left = (int) (px - label.getWidth() / 2);
 				} else {
 					top = (int) (px - label.getHeight() / 2);
@@ -271,7 +271,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			if (paintTicks) {
 				if (isHoriz) {
 					DOMNode.setStyles(sliderHandle, "transform","scaleX(0.5) rotateZ(45deg)", "top","-8px");					
-					DOMNode.setStyles(sliderTrack, "height","1px", "background", "black");					
+					DOMNode.setStyles(sliderTrack, "height","1px", "background", "black", "top", "10px");					
 				} else {
 					DOMNode.setStyles(sliderHandle, "transform","scaleY(0.5) rotateZ(45deg)", "left","-10px", "margin-bottom", "-7px" );					
 					DOMNode.setStyles(sliderTrack, "width","1px","left", "12px", "background", "black" );					
@@ -291,7 +291,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
 		int d = 20;
 		if (paintLabels || paintTicks)
-			d += 20;
+			d += 10;
 		if (jSlider.getBorder() != null)
 			d += 10;
 		// only the width or height will be read here, not both

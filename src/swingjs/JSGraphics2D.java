@@ -37,7 +37,7 @@
 
 package swingjs;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -114,7 +114,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	private Color currentColor;
 
 	public JSGraphics2D(Object canvas) { // this must be Object, because we are passing an actual HTML5 canvas
-		hints = new RenderingHints(new HashMap());
+		hints = new RenderingHints(new Hashtable());
 		this.canvas = (HTML5Canvas) canvas;
 		ctx = this.canvas.getContext("2d");
 		transform = new AffineTransform();
@@ -479,8 +479,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 				
 			}
 			DOMNode imgNode = null;
-			int width = img.getWidth(observer);
-			int height = img.getHeight(observer);
+			int width = ((BufferedImage)img).getRaster().getWidth();
+			int height = ((BufferedImage)img).getRaster().getHeight();
 			if (pixels == null) {
 				if ((imgNode = getImageNode(img)) != null)
 					ctx.drawImage(imgNode, x, y, width, height);
@@ -635,7 +635,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		// region
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
-		currentClip = new Rectangle(x, y, width, height);
+		setCurrentClip(x, y, width, height);
 		ctx.clip();
 	}
 
@@ -644,16 +644,23 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		// clipping is disabled because for general component painting
 		// because it consumes so much processing.
 		// it is presumed that the user will clip when desired
-		currentClip = new Rectangle(x, y, width, height);
 		/**
 		 * @j2sNative
 		 *  
 		 *  if (arguments.length == 1) { this.setClip1(x); return; }
 		 */
 		{}
+		setCurrentClip(x, y, width, height);
+
 		ctx.beginPath();
 		ctx.rect(x, y, width, height);
 		ctx.clip();
+	}
+
+	private void setCurrentClip(int x, int y, int width, int height) {
+		Rectangle r = (currentClip instanceof Rectangle ? (Rectangle) currentClip : null);
+		if (r == null || r.x != x || r.y != y || r.width != width || r.height != height)
+			currentClip = new Rectangle(x, y, width, height);
 	}
 
 	@Override
@@ -798,10 +805,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			 * 
 			 *            this.ctx.setTransform (t.m00, t.m10, t.m01, t.m11, t.m02,
 			 *            t.m12);
+			 *            
+			 *            this.$transform.setTransformImpl(t);
+			 *            
 			 */
 			{
+				transform.setTransform(t);
 			}
-		transform.setTransform(t);
 	}
 
   /**
@@ -872,6 +882,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		return currentClip.getBounds();
 	}
 
+	
+	
 	@Override
 	public void setComposite(Composite comp) {
 		// this equality check speeds mark/reset significantly
@@ -932,11 +944,15 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	 */
 	public int mark() {
 		ctx.save();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("composite", currentComposite);
-		map.put("stroke", currentStroke);
-		map.put("transform", transform); // not implemented
-		map.put("font", font);
+		Map<String, Object> map = new Hashtable<String, Object>();
+		if (currentComposite != null)
+			map.put("composite", currentComposite);
+		if (currentStroke != null)
+			map.put("stroke", currentStroke);
+		if (transform != null)
+			map.put("transform", transform); // not implemented
+		if (font != null)
+			map.put("font", font);
 		if (currentClip != null)
 			map.put("clip", currentClip);
 		return HTML5CanvasContext2D.push(ctx, map);

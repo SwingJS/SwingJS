@@ -50,6 +50,7 @@ class CubicIterator implements PathIterator {
     CubicIterator set(CubicCurve2D q, AffineTransform at) {
       this.cubic = q;
       this.affine = at;
+      index = 0;
       return  this;
 		}
 
