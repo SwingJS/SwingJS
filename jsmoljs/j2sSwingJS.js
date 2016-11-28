@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 11/28/2016 6:43:41 AM inner class nesting fix for b$
 // BH 11/27/2016 7:26:24 AM c$ final fix
 // BH 11/25/2016 1:27:16 PM class.isInstance(obj) fixed
 // BH 11/19/2016 10:01:22 AM better profiling with Clazz.startProfiling(seconds) 
@@ -680,12 +681,8 @@ Clazz.defineEnumConstant = function (clazzEnum, enumName, enumOrdinal, initialPa
  * Attention: parameters should not be null!
  */
 Clazz.prepareCallback = function (innerObj, args) {
-
 	var outerObj = args[0];
-    
-  if (outerObj == _prepOnly)return;
-    
-	//var cbName = "b$"; // "callbacks";
+  if (outerObj == _prepOnly)return;    
 	if (innerObj && outerObj && outerObj !== window) {
     // BH: A major change here -- save the b$ array with the OUTER class,
     //     not the inner class, as it is a property of the outer class and
@@ -708,14 +705,9 @@ Clazz.prepareCallback = function (innerObj, args) {
       }
   		b[Clazz.getClassName(outerObj, true)] = outerObj;
     }
-    if (isNew) {
-      innerObj.b$ = outerObj.$b$ = b;
-    } else {   
-      var a = {};
-      for (var i in b)
-        a[i] = outerObj;
-      innerObj.b$ = a;
-    }
+    innerObj.b$ = b;
+    if (isNew)
+      outerObj.$b$ = b;
 	}
 	// note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
 	for (var i = 0, n = args.length - 1; i < n; i++)
@@ -1851,7 +1843,8 @@ Clazz.instantialize = function (objThis, args) {
     
 //    if (n > 2 && stack[0].prototype.construct == null)debugger;
     
-    p && p.apply(objThis, []);  
+    p && p.apply(objThis, []);
+    objThis.__PREPPED__ = 1;  
   
     // when we have a superclass and a prepareFields, 
     // the order must be:
@@ -1900,7 +1893,7 @@ var prepFields = function(objThis, clazzThis, pt) {
     //var cn = clazzThis.__CLASS_NAME__ + " for " + objThis.__CLASS_NAME__ + " " + pt + " " + n
     //System.out.println(cn);
     for (var i = pt, p; i <= n; i++)
-      (p = stack[i]._PREP_) && p.apply(objThis, []);
+      (p = stack[i]._PREP_) && (i > 0 || !objThis.__PREPPED__) && p.apply(objThis, []);
   } catch (e) {
      alert("ahah3!" + e + (e.stack || Clazz.getStackTrace()));
      debugger
