@@ -373,16 +373,10 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			ctx.fill();
 	}
 
-	private DOMNode getImageNode(Image img) {
-		backgroundTaintCount++;
-		DOMNode imgNode = DOMNode.getImageNode(img);
-		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
+	@Override
+	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
+	  return drawImagePriv(img, x, y, observer);
 	}
-
-	private void observe(Image img, ImageObserver observer, boolean isOK) {
-		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
-	}
-
 
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
@@ -396,6 +390,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 				observe(img, observer, imgNode != null);
 		}
 		return true;
+	}
+
+	private DOMNode getImageNode(Image img) {
+		backgroundTaintCount++;
+		DOMNode imgNode = DOMNode.getImageNode(img);
+		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
+	}
+
+	private void observe(Image img, ImageObserver observer, boolean isOK) {
+		observer.imageUpdate(img, (isOK ? 0 : ImageObserver.ABORT	| ImageObserver.ERROR), -1, -1, -1, -1);
 	}
 
 	@Override
@@ -441,25 +445,26 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public boolean drawImage(Image img, AffineTransform xform, ImageObserver obs) {
-		JSToolkit.notImplemented("drawImage only uses xform translate");
-		return drawImagePriv((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), obs);
+		return drawImageXT(img, xform, obs);
 	}
 
 	@Override
 	public void drawRenderedImage(RenderedImage img, AffineTransform xform) {
-		//JSToolkit.notImplemented("drawRenderedImage only uses xform translate");
-		drawImagePriv((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
+		drawImageXT((Image) img, xform, null);
 	}
 
 	@Override
 	public void drawRenderableImage(RenderableImage img, AffineTransform xform) {
-		//JSToolkit.notImplemented("drawRenderableImage uses drawRenderedImage");
-		drawImagePriv((Image) img, (int)xform.getTranslateX(), (int) xform.getTranslateY(), null);
+		drawImageXT((Image) img, xform, null);
 	}
 
-	@Override
-	public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
-	  return drawImagePriv(img, x, y, observer);
+	private boolean drawImageXT(Image img, AffineTransform xform,
+			ImageObserver obs) {
+		ctx.save();
+		transformCTX(xform);
+		boolean ret = drawImagePriv(img, 0, 0, obs);
+		ctx.restore();
+		return ret;
 	}
 
 	@SuppressWarnings("unused")
@@ -786,13 +791,17 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	 */
 	@Override
 	public void	 transform(AffineTransform t) {
+		transformCTX(t);
+	  transform.concatenate(t);
+	}
+
+	private void transformCTX(AffineTransform t) {
 		/**
 		 * @j2sNative
 		 * 
 		 * this.ctx.transform (t.m00, t.m10, t.m01, t.m11, t.m02, t.m12);
 		 */
 		{}
-	  transform.concatenate(t);
 	}
 
 	/**
