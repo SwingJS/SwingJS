@@ -3,6 +3,8 @@ package javajs.api;
 import java.io.BufferedReader;
 import java.util.Map;
 
+import javajs.util.CifDataParser;
+
 
 public interface GenericCifDataParser {
 
@@ -20,21 +22,21 @@ public interface GenericCifDataParser {
 
   String getFileHeader();
 
-  String getColumnData(int i);
+  Object peekToken() throws Exception;
 
-  String getNextDataToken() throws Exception;
+  Object getTokenPeeked();
+
+  Object getColumnData(int i);
+
+  Object getNextDataToken() throws Exception;
 
   String getNextToken() throws Exception;
 
-  String getTokenPeeked();
-
   void parseDataBlockParameters(String[] fields, String key, String data, int[] key2col, int[] col2key) throws Exception;
-
-  String peekToken() throws Exception;
 
   String readLine();
 
-  GenericCifDataParser set(GenericLineReader reader, BufferedReader br);
+  GenericCifDataParser set(GenericLineReader reader, BufferedReader br, boolean debugging);
 
   String toUnicode(String data);
 

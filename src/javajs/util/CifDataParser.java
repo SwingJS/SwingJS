@@ -10,10 +10,13 @@ import javajs.api.GenericCifDataParser;
 import javajs.api.GenericLineReader;
 
 
+// BH 11/21/16 -- adds support for array grouping [...] - used in 2016-format magCIF files
 
 /**
 *
-* A special tokenizer class for dealing with quoted strings in CIF files.
+* A CIF 1.0 tokenizer class for dealing with quoted strings in CIF files.
+* 
+* Subclassed by org.jmol.adapters.readers.cif.Cif2DataParser
 * 
 * Greek letters implemented in Jmol 13.3.9 and only for 
 * titles and space groups. All other mark ups ignored.
@@ -71,6 +74,10 @@ import javajs.api.GenericLineReader;
 
 public class CifDataParser implements GenericCifDataParser {
 
+  protected int getVersion() {
+    return 1;
+  }
+
   /**
    * The maximum number of columns (data keys) passed to the parser or found in the file
    * for a given loop_ or category.subkey listing.
@@ -81,22 +88,75 @@ public class CifDataParser implements GenericCifDataParser {
   private GenericLineReader reader;
   private BufferedReader br;
 
-  private String line;  
-  private String str;
-  private int ich;
-  private int cch;
-  private boolean wasUnQuoted;
-  private String strPeeked;
+  /**
+   * from buffered reader
+   */
+  protected String line;
+  
+  /**
+   * working string (buffer)
+   * 
+   */
+  protected String str;
+  
+  /**
+   * pointer to current character on str
+   */
+  protected int ich;
+  
+  /**
+   * length of str
+   * 
+   */
+  protected int cch;
+  
+  /**
+   * whether we are processing an unquoted value or key
+   */
+  protected boolean wasUnquoted;
+  
+  /**
+   * optional token terminator; in CIF 2.0 could be } or ] 
+   */
+  protected char cterm = '\0';
+  
+  /**
+   * string to return for CIF data value . and ?
+   */
+  protected String nullString = "\0";
+
+  /**
+   * A flag to create and return Java objects, not strings.
+   * Used only by Jmol scripting x = getProperty("cifInfo", filename).
+   */
+  protected boolean asObject;
+
+  
+  /**
+   * debugging flag passed from reader; unused
+   * 
+   */
+  protected boolean debugging;
+
+
+  /**
+   * private processing fields
+   * 
+   */
+  private Object strPeeked;
   private int ichPeeked;
   private int columnCount;
   private String[] columnNames;
-  private String[] columnData = new String[KEY_MAX];
+  private Object[] columnData = new Object[KEY_MAX];
   private boolean isLoop;
   private boolean haveData;
-
-  private SB fileHeader = new SB();
+  
+  /**
+   * comments at the top of a file, including #\#CIF_2.0, for example
+   */
+  private SB fileHeader = new SB(); 
   private boolean isHeader = true;
-  private String nullString = "\0";
+
 
   /**
    * Set the string value of what is returned for "." and "?"
@@ -124,7 +184,7 @@ public class CifDataParser implements GenericCifDataParser {
   }
     
   @Override
-  public String getColumnData(int i) {
+  public Object getColumnData(int i) {
     return columnData[i];
   }
 
@@ -141,21 +201,24 @@ public class CifDataParser implements GenericCifDataParser {
   /**
    * A Chemical Information File data parser.
    * 
-   * Should be called immediately upon construction.
+   * set() should be called immediately upon construction.
    *  
    * Two options; one of reader or br should be null, or reader will be
    * ignored. Just simpler this way...
    * 
    * @param reader  Anything that can deliver a line of text or null
    * @param br      A standard BufferedReader.
+   * @param debugging 
    *  
    */
   @Override
-  public CifDataParser set(GenericLineReader reader, BufferedReader br) {
+  public CifDataParser set(GenericLineReader reader, BufferedReader br, boolean debugging) {
     this.reader = reader;
     this.br = br;
+    this.debugging = debugging;
     return this;
   }
+
 
   /**
    * 
@@ -179,14 +242,17 @@ public class CifDataParser implements GenericCifDataParser {
   public Map<String, Object> getAllCifData() {
     line = "";
     String key;
-    Map<String, Object> data = null;
+    Map<String, Object> data = null, data0 = null;
     Map<String, Object> allData = new Hashtable<String, Object>();
     Lst<Map<String, Object>> models = new  Lst<Map<String,Object>>();
     allData.put("models", models);
+    asObject = (getVersion() >= 2);
+    nullString = null;
+    Lst<Map<String, Object>> saveFrames = new Lst<Map<String, Object>>();
     try {
       while ((key = getNextToken()) != null) {
         if (key.startsWith("global_") || key.startsWith("data_")) {
-          models.addLast(data = new Hashtable<String, Object>());
+          models.addLast(data0 = data = new Hashtable<String, Object>());
           data.put("name", key);
           continue;
         }
@@ -194,10 +260,27 @@ public class CifDataParser implements GenericCifDataParser {
           getAllCifLoopData(data);
           continue;
         }
+        if (key.startsWith("save_")) {
+          if (key.equals("save_")) {
+            int n = saveFrames.size();
+            if (n == 0) {
+              System.out.println("CIF ERROR ? save_ without corresponding save_xxxx");
+              data = data0;
+            } else {
+              data = saveFrames.removeItemAt(n - 1);
+            }
+          } else {
+            saveFrames.addLast(data);
+            Map<String, Object> d = data;
+            data = new Hashtable<String, Object>();
+            d.put(key, data);
+          }
+          continue;
+        }
         if (key.charAt(0) != '_') {
           System.out.println("CIF ERROR ? should be an underscore: " + key);
         } else {
-          String value = getNextToken();
+          Object value = (asObject ? getNextTokenObject() : getNextToken());
           if (value == null) {
             System.out.println("CIF ERROR ? end of file; data missing: " + key);
           } else {
@@ -208,12 +291,14 @@ public class CifDataParser implements GenericCifDataParser {
     } catch (Exception e) {
       // ?
     }
+    asObject = false;
     try {
       if (br != null)
         br.close();
     } catch (Exception e) {
       // ?
     }
+    nullString = "\0";
     return allData;
   }
 
@@ -229,17 +314,20 @@ public class CifDataParser implements GenericCifDataParser {
   private void getAllCifLoopData(Map<String, Object> data) throws Exception {
     String key;
     Lst<String> keyWords = new  Lst<String>();
-    while ((key = peekToken()) != null && key.charAt(0) == '_') {
-      key = fixKey(getTokenPeeked());
+    Object o;
+    while ((o = peekToken()) != null && o instanceof String &&  ((String) o).charAt(0) == '_') {
+      key = fixKey((String) getTokenPeeked());
       keyWords.addLast(key);
       data.put(key, new  Lst<String>());
     }
     columnCount = keyWords.size();
     if (columnCount == 0)
       return;
+    isLoop = true;
     while (getData())
       for (int i = 0; i < columnCount; i++)
-        ((Lst<String>)data.get(keyWords.get(i))).addLast(columnData[i]);
+        ((Lst<Object>)data.get(keyWords.get(i))).addLast(columnData[i]);
+    isLoop = false;
   }
 
   @Override
@@ -293,7 +381,7 @@ public class CifDataParser implements GenericCifDataParser {
     String str;
     SB ret = (doReport ? new SB() : null);
     int n = 0;
-    while ((str = peekToken()) != null && str.charAt(0) == '_') {
+    while ((str = (String) peekToken()) != null && str.charAt(0) == '_') {
       if (ret != null)
         ret.append(str).append("\n");
       getTokenPeeked();
@@ -302,7 +390,7 @@ public class CifDataParser implements GenericCifDataParser {
     if (n == 0)
       n = columnCount; // end-of-label-section skip 
     int m = 0;
-    while ((str = getNextDataToken()) != null) {
+    while ((str = (String) getNextDataToken()) != null) {
       if (ret == null)
         continue; 
       ret.append(str).append(" ");
@@ -313,16 +401,35 @@ public class CifDataParser implements GenericCifDataParser {
   }
 
   /**
+   * Get a token as a String value (for the reader)
    * 
    * @return the next token of any kind, or null
    * @throws Exception
    */
   @Override
   public String getNextToken() throws Exception {
-    while (!strHasMoreTokens())
-      if (setStringNextLine() == null)
-        return null;
-    return nextStrToken();
+    wasUnquoted = true;
+    return (String) getNextTokenProtected();
+  }
+
+  /**
+   * Get the token as a Java Object
+   * 
+   * @return the next token of any kind, or null
+   * @throws Exception
+   */
+  public Object getNextTokenObject() throws Exception {
+    wasUnquoted = true;
+    return getNextTokenProtected();
+  }
+
+  /**
+   * Just makes sure
+   * @return String from buffer.
+   * @throws Exception
+   */
+  protected Object getNextTokenProtected() throws Exception {
+    return (getNextLine() ? nextStrToken() : null);
   }
 
   /**
@@ -334,16 +441,19 @@ public class CifDataParser implements GenericCifDataParser {
    * @throws Exception
    */
   @Override
-  public String getNextDataToken() throws Exception { 
-    String str = peekToken();
-    if (str == null)
+  public Object getNextDataToken() throws Exception { 
+    Object o = peekToken();
+    if (o == null)
       return null;
-    if (wasUnQuoted)
+    if (wasUnquoted && o instanceof String) {
+      String str = (String) o;
       if (str.charAt(0) == '_' || str.startsWith("loop_")
           || str.startsWith("data_")
+          || str.startsWith("save_")
           || str.startsWith("stop_")
           || str.startsWith("global_"))
         return null;
+    }
     return getTokenPeeked();
   }
   
@@ -355,10 +465,9 @@ public class CifDataParser implements GenericCifDataParser {
    * @throws Exception
    */
   @Override
-  public String peekToken() throws Exception {
-    while (!strHasMoreTokens())
-      if (setStringNextLine() == null)
-        return null;
+  public Object peekToken() throws Exception {
+    if (!getNextLine())
+      return null;
     int ich = this.ich;
     strPeeked = nextStrToken();
     ichPeeked= this.ich;
@@ -367,11 +476,25 @@ public class CifDataParser implements GenericCifDataParser {
   }
   
   /**
+   * grab a new line if necessary and prepare it 
+   * if it starts with ";"
+   * 
+   * @return updated this.str
+   * @throws Exception
+   */
+  private boolean getNextLine() throws Exception {
+    while (!strHasMoreTokens())
+      if (prepareNextLine() == null)
+        return false;
+    return true;
+  }
+
+  /**
    * 
    * @return the token last acquired; may be null
    */
   @Override
-  public String getTokenPeeked() {
+  public Object getTokenPeeked() {
     ich = ichPeeked;
     return strPeeked;
   }
@@ -471,6 +594,7 @@ public class CifDataParser implements GenericCifDataParser {
   public void parseDataBlockParameters(String[] fields, String key,
                                  String data, int[] key2col, int[] col2key) throws Exception {
     isLoop = (key == null);
+    Object o;
     String s;
     if (fields == null) {
       // for reading full list of keys, as for matrices
@@ -486,18 +610,18 @@ public class CifDataParser implements GenericCifDataParser {
     int pt, i;
     if (isLoop) {
       while (true) {
-        s = peekToken();
-        if (s == null) {
+        o = peekToken();
+        if (o == null) {
           // we are PREMATURELY done; reset
           columnCount = 0;
           break;
         }
         // end of the loop is a new token not starting with underscore
-        if (s.charAt(0) != '_')
+        if (!(o instanceof String) || ((String) o).charAt(0) != '_')
           break;
 
         pt = columnCount++;
-        s = fixKey(getTokenPeeked());
+        s = fixKey((String) getTokenPeeked());
         if (fields == null) {
           // just make a linear model, saving the list
           columnNames[col2key[pt] = key2col[pt] = pt] = s;
@@ -515,14 +639,14 @@ public class CifDataParser implements GenericCifDataParser {
         // end of the loop is a new token not starting with underscore
         pt = columnCount++;
         if (key == null) {
-          key = getTokenPeeked();
+          key = (String) getTokenPeeked();
           data = getNextToken();
         }
         Integer iField = htFields.get(fixKey(key));
         i = (iField == null ? NONE : iField.intValue());
         if ((col2key[pt] = i) != NONE) 
           columnData[key2col[i] = pt] = data;
-        if ((s = peekToken()) == null || !s.startsWith(str0))
+        if ((o = peekToken()) == null || !(o instanceof String) ||  !((String) o).startsWith(str0))
           break;
         key = null;
       }
@@ -544,14 +668,18 @@ public class CifDataParser implements GenericCifDataParser {
   
   
   /**
-   * sets a string to be parsed from the beginning
+   * sets global str and line to be parsed from the beginning
    * 
-   * @param str
+   * \1 .... \1  indicates an embedded fully escaped data object
+   * 
+   * @param str new data string
+   * @return str
    */
-  private void setString(String str) {
+  protected String setString(String str) {
     this.str = line = str;
     cch = (str == null ? 0 : str.length());
     ich = 0;
+    return str;
   }
 
   /*
@@ -613,18 +741,43 @@ public class CifDataParser implements GenericCifDataParser {
    * that full multiline string. Uses \1 to indicate that 
    * this is a special quotation. 
    * 
+   * 
+   * 
    * @return  the next line or null if EOF
    * @throws Exception
    */
-  private String setStringNextLine() throws Exception {
+  protected String prepareNextLine() throws Exception {
     setString(readLine());
     if (line == null || line.length() == 0)
       return line;
-    if (line.charAt(0) != ';') {
-      if (str.startsWith("###non-st#"))
+    if (line.charAt(0) == ';')
+      return preprocessString();
+    if (str.startsWith("###non-st#"))
         ich = 10;
-      return line;
-    }
+    return line;
+ }
+
+  /**
+   * Preprocess the string on a line starting with a semicolon
+   * to produce a string with a \1 ... \1 segment
+   * that will be picked up in the next round
+   *  
+   * @return escaped part with attached extra data
+   * @throws Exception 
+   */
+  protected String preprocessString() throws Exception {
+    return setString(preprocessSemiString());
+  }
+
+  /**
+   * Encapsulate a multi-line ; .... ;  string with \1 ... \1
+   * 
+   * CIF 1.0 and CIF 2.0
+   * 
+   * @return ecapsulated string
+   * @throws Exception 
+   */
+  protected String preprocessSemiString() throws Exception {
     ich = 1;
     String str = '\1' + line.substring(1) + '\n';
     while (readLine() != null) {
@@ -636,7 +789,6 @@ public class CifDataParser implements GenericCifDataParser {
       }
       str += line + '\n';
     }
-    setString(str);
     return str;
   }
 
@@ -654,46 +806,99 @@ public class CifDataParser implements GenericCifDataParser {
   }
 
   /**
-   * assume that hasMoreTokens() has been called and that
-   * ich is pointing at a non-white character. Also sets
-   * boolean wasUnQuoted, because we need to know if we should 
-   * be checking for a control keyword. 'loop_' is different from just 
-   * loop_ without the quotes.
-   *
-   * @return null if no more tokens, "\0" if '.' or '?', or next token 
+   * assume that hasMoreTokens() has been called and that ich is pointing at a
+   * non-white character. Also sets boolean wasUnQuoted, because we need to know
+   * if we should be checking for a control keyword. 'loop_' is different from
+   * just loop_ without the quotes.
+   * 
+   * @return null if no more tokens, "\0" if '.' or '?', or next token
    */
-  private String nextStrToken() {
+  private Object nextStrToken() {
     if (ich == cch)
       return null;
-    int ichStart = ich;
-    char ch = str.charAt(ichStart);
-    if (ch != '\'' && ch != '"' && ch != '\1') {
-      wasUnQuoted = true;
-      while (ich < cch && (ch = str.charAt(ich)) != ' ' && ch != '\t')
-        ++ich;
-      if (ich == ichStart + 1)
-        if (nullString != null && (str.charAt(ichStart) == '.' || str.charAt(ichStart) == '?'))
-          return nullString;
-      String s = str.substring(ichStart, ich);
-      return s;
+    char ch = str.charAt(ich);
+    if (isQuote(ch)) {
+      wasUnquoted = false;
+      return getQuotedStringOrObject(ch);
     }
-    wasUnQuoted = false;
-    char chOpeningQuote = ch;
-    boolean previousCharacterWasQuote = false;
+    int ichStart = ich;
+    wasUnquoted = true;
+    while (ich < cch && !isTerminator(ch = str.charAt(ich)))
+      ++ich;
+    if (ich == ichStart + 1)
+      if (nullString != null
+          && (str.charAt(ichStart) == '.' || str.charAt(ichStart) == '?'))
+        return nullString;
+    String s = str.substring(ichStart, ich);
+    return unquoted(s);
+  }
+
+  /**
+   * In CIF 2.0, this method turns a String into an Integer or Float
+   * In CIF 1.0 (here) just return the unchanged value.
+   * @param s unquoted string
+   * @return unchanged value
+   */
+  protected Object unquoted(String s) {
+    return s;
+  }
+
+  /**
+   * The token terminator is space or tab in CIF 1.0, 
+   * but it can be quoted strings in CIF 2.0.
+   * 
+   * @param c
+   * @return true if this character is a terminator
+   */
+  protected boolean isTerminator(char c) {
+    return  c == ' ' || c == '\t' || c == cterm ;
+  }
+
+  /**
+   * CIF 1.0 only; we handle various quote types here 
+   * @param ch
+   * @return true if this character is a (starting) quote
+   */
+  protected boolean isQuote(char ch) {
+    switch (ch) {
+    case '\'':
+    case '\"':
+    case '\1':
+      return  true;
+    }
+    return false;
+  }
+
+  /**
+   * CIF 1.0 only. 
+   * 
+   *  
+   * @param ch current character being pointed to
+   * @return a String data object
+   */
+  protected Object getQuotedStringOrObject(char ch) {
+    int ichStart = ich;
+    char chClosingQuote = ch;
+    boolean wasQuote = false;
     while (++ich < cch) {
       ch = str.charAt(ich);
-      if (previousCharacterWasQuote && (ch == ' ' || ch == '\t'))
+      // CIF 1.0 rules require that the closing ' or ""  be followed by space or tab or EOL
+      if (wasQuote && (ch == ' ' || ch == '\t'))
         break;
-      previousCharacterWasQuote = (ch == chOpeningQuote);
+      wasQuote = (ch == chClosingQuote);
     }
-    if (ich == cch) {
-      if (previousCharacterWasQuote) // close quote was last char of string
-        return str.substring(ichStart + 1, ich - 1);
+    int pt1 = ichStart + 1;
+    int pt2 = ich - 1;
+    if (ich == cch && !wasQuote) {
       // reached the end of the string without finding closing '
-      return str.substring(ichStart, ich);
+      // so take the whole thing. Probably a bad CIF file.
+      pt1--;
+      pt2++;
+    } else {
+      // throw away the last white character
+      ++ich; 
     }
-    ++ich; // throw away the last white character
-    return str.substring(ichStart + 1, ich - 2);
+    return str.substring(pt1, pt2);
   }
 
   

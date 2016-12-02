@@ -67,7 +67,7 @@ public class Rdr implements GenericLineReader {
   }
 
   public static Map<String, Object> readCifData(GenericCifDataParser parser, BufferedReader br) {
-    return parser.set(null, br).getAllCifData();
+    return parser.set(null, br, false).getAllCifData();
   }
   
   
@@ -162,12 +162,21 @@ public class Rdr implements GenericLineReader {
   }
 
   public static boolean isPickleS(InputStream is) {
-    return Rdr.isPickleB(getMagic(is, 2));
+    return isPickleB(getMagic(is, 2));
   }
-
+  
   public static boolean isPickleB(byte[] bytes) {    
       return (bytes != null && bytes.length >= 2 
           && (bytes[0] & 0xFF) == 0x7D && (bytes[1] & 0xFF) == 0x71);
+  }
+
+  public static boolean isMessagePackS(InputStream is) {
+    return isMessagePackB(getMagic(is, 1));
+  }
+
+  public static boolean isMessagePackB(byte[] bytes) {
+    // look for 'map' start
+    return (bytes != null && bytes.length >= 1 && (bytes[0] & 0xFF) == 0xDE);
   }
 
   public static boolean isPngZipStream(InputStream is) {
@@ -191,7 +200,7 @@ public class Rdr implements GenericLineReader {
         && bytes[3] == 0x04);
   }
 
-  private static byte[] getMagic(InputStream is, int n) {
+  public static byte[] getMagic(InputStream is, int n) {
     byte[] abMagic = new byte[n];
     /**
      * @j2sNative
