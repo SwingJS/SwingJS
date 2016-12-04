@@ -254,52 +254,56 @@ public class LocaleData {
      *
      */
     private static Locale[] createLocaleList() {
-        String supportedLocaleString = "en|";// SwingJS SupportedLocales ;
-//        LocaleDataMetaInfo.
-//            getSupportedLocaleString("jssun.text.resources.FormatData");
-
-        if (supportedLocaleString.length() == 0) {
-            return null;
-        }
-
-//        /* Look for "|" and construct a new locale string list. */
-        int barIndex = supportedLocaleString.indexOf("|");
-        StringTokenizer localeStringTokenizer = null;
-//        if (isNonEuroLangSupported()) {
-//            localeStringTokenizer = new
-//                StringTokenizer(supportedLocaleString.substring(0, barIndex) +
-//                                supportedLocaleString.substring(barIndex + 1));
-//        } else {
-            localeStringTokenizer = new
-                StringTokenizer(supportedLocaleString.substring(0, barIndex));
+    	
+    	return new Locale[] { new Locale("en", "", "") };
+    	
+//    	
+//        String supportedLocaleString = "en|";// SwingJS SupportedLocales ;
+////        LocaleDataMetaInfo.
+////            getSupportedLocaleString("jssun.text.resources.FormatData");
+//
+//        if (supportedLocaleString.length() == 0) {
+//            return null;
 //        }
-
-        Locale[] locales = new Locale[localeStringTokenizer.countTokens()];
-        for (int i = 0; i < locales.length; i++) {
-            String currentToken = localeStringTokenizer.nextToken();
-            int p2 = 0;
-            int p1 = currentToken.indexOf('_');
-            String language = "";
-            String country = "";
-            String variant = "";
-
-            if (p1 == -1) {
-                language = currentToken;
-            } else {
-                language = currentToken.substring(0, p1);
-                p2 = currentToken.indexOf('_', p1 + 1);
-                if (p2 == -1) {
-                    country = currentToken.substring(p1 + 1);
-                } else {
-                    country = currentToken.substring(p1 + 1, p2);
-                    if (p2 < currentToken.length()) {
-                        variant = currentToken.substring(p2 + 1);
-                    }
-                }
-            }
-            locales[i] = new Locale(language, country, variant);
-        }
-        return locales;
+//
+////        /* Look for "|" and construct a new locale string list. */
+//        int barIndex = supportedLocaleString.indexOf("|");
+//        StringTokenizer localeStringTokenizer = null;
+////        if (isNonEuroLangSupported()) {
+////            localeStringTokenizer = new
+////                StringTokenizer(supportedLocaleString.substring(0, barIndex) +
+////                                supportedLocaleString.substring(barIndex + 1));
+////        } else {
+//            localeStringTokenizer = new
+//                StringTokenizer(supportedLocaleString.substring(0, barIndex));
+////        }
+//
+//        Locale[] locales = new Locale[localeStringTokenizer.countTokens()];
+//        for (int i = 0; i < locales.length; i++) {
+//            String currentToken = localeStringTokenizer.nextToken();
+//            int p2 = 0;
+//            int p1 = currentToken.indexOf('_');
+//            String language = "";
+//            String country = "";
+//            String variant = "";
+//
+//            if (p1 == -1) {
+//                language = currentToken;
+//            } else {
+//                language = currentToken.substring(0, p1);
+//                p2 = currentToken.indexOf('_', p1 + 1);
+//                if (p2 == -1) {
+//                    country = currentToken.substring(p1 + 1);
+//                } else {
+//                    country = currentToken.substring(p1 + 1, p2);
+//                    if (p2 < currentToken.length()) {
+//                        variant = currentToken.substring(p2 + 1);
+//                    }
+//                }
+//            }
+//            locales[i] = new Locale(language, country, variant);
+//        }
+//        return locales;
     }
 
 }

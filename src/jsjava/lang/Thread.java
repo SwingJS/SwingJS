@@ -268,8 +268,28 @@ class Thread implements Runnable {
      * @return  the currently executing thread.
      */
     public static Thread currentThread() {
+    	/**
+    	 * @j2sNative
+    	 *if (java.lang.Thread.thisThread == "working")
+    	 *  return null;
+    	 * 
+    	 * 
+    	 */
+    	{}
     	if (thisThread == null) {
-    		thisThread = new Thread("master");
+    		/**
+    		 * @j2sNative
+    		 *
+    		 * java.lang.Thread.thisThread = "working";
+    		 * java.lang.Thread.thisThread =  new java.lang.Thread ("master");
+    		 * var name = J2S._applets["master"]._id;
+    		 * var g = new swingjs.JSThreadGroup(null, name);
+    		 * java.lang.Thread.thisThread = new swingjs.JSThread(g, name);
+    		 *  
+    		 */
+    		{
+      		thisThread = new Thread("master");
+    		}
     		thisThread.setPriority(NORM_PRIORITY);
     	}
     	return thisThread;
@@ -368,7 +388,8 @@ class Thread implements Runnable {
 
             /* If the security doesn't have a strong opinion of the matter
                use the parent thread group. */
-            if (g == null && parent != null) {
+
+        	if (g == null && parent != null && !parent.equals("working")) { // BH for static call to Thread.currentThread()
                 g = parent.getThreadGroup();
             }
         }
@@ -1434,17 +1455,9 @@ class Thread implements Runnable {
      * @since 1.2
      */
     public ClassLoader getContextClassLoader() {
-    	return null;
-//        if (contextClassLoader == null)
-//            return null;
-//
-//        SecurityManager sm = System.getSecurityManager();
-//        if (sm != null) {
-//            ClassLoader.checkClassLoaderPermission(contextClassLoader,
-//                                                   Reflection.getCallerClass());
-//        }
-//        return contextClassLoader;
-    }
+    	// here if a static call during load
+     	 return JSToolkit.class.getClassLoader();
+  	}
 
     /**
      * Sets the context ClassLoader for this Thread. The context

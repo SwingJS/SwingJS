@@ -81,7 +81,7 @@ public class ZoneInfo extends TimeZone {
 //      USE_OLDMAPPING = (oldmapping.equals("yes") || oldmapping.equals("true"));
 //    }
 
-    private static final CalendarSystem gcal = CalendarSystem.getGregorianCalendar();
+    private static CalendarSystem gcal;
 
     /**
      * The raw GMT offset in milliseconds between this zone and GMT.
@@ -379,6 +379,9 @@ public class ZoneInfo extends TimeZone {
         } else if (era != java.util.GregorianCalendar.AD) {
             throw new IllegalArgumentException();
         }
+        
+        if (gcal == null)
+        	gcal = CalendarSystem.getGregorianCalendar();
 
         CalendarDate date = gcal.newCalendarDate(null);
         date.setDate(year, month + 1, day);

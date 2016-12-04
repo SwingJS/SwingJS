@@ -514,11 +514,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	@Override
-	public void setPaint(Paint paint) {
-		HTML5CanvasContext2D.setFillStyle(ctx, JSToolkit.getCSSColor((Color) paint));
-	}
-
-	@Override
 	public Stroke getStroke() {
 		return currentStroke;
 	}
@@ -615,6 +610,11 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public void setColor(Color c) {
 		foregroundColor = c;
 		setGraphicsColor(c);
+	}
+
+	@Override
+	public void setPaint(Paint paint) {
+		setColor((Color) paint);
 	}
 
 	@Override

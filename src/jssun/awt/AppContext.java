@@ -34,6 +34,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
+import swingjs.JSToolkit;
+
 import jsjava.beans.PropertyChangeSupport;
 import jsjava.beans.PropertyChangeListener;
 //import java.util.concurrent.atomic.AtomicInteger;
@@ -302,6 +304,11 @@ public final class AppContext {
             while (appContext == null) {
                 threadGroup = threadGroup.getParent();
                 if (threadGroup == null) {
+                	
+                	appContext = JSToolkit.createNewAppContext();
+                	break;
+                	
+                	
                     // We've got up to the root thread group and did not find an AppContext
                     // Try to get it from the security manager
 //                    SecurityManager securityManager = System.getSecurityManager();
@@ -316,7 +323,7 @@ public final class AppContext {
 //                            return threadGroup2appContext.get(smThreadGroup);
 //                        }
 //                    }
-                    return null;
+//                    return null;
                 }
                 appContext = threadGroup2appContext.get(threadGroup);
             }

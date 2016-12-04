@@ -1100,5 +1100,44 @@ public class JSToolkit extends SunToolkit {
     }		
 		DOMNode.setCursor(curs);
 	}
+
+	/**
+	 * All classes created by Clazz have static class loaders
+	 * which are just minimal objects in Clazz var inF.
+	 * 
+	 * @param name
+	 * @return the object as a stream
+	 */
+	@SuppressWarnings("null")
+	public static InputStream getResourceAsStream(String name) {
+		ClassLoader cl = null;
+		/**
+		 * @j2sNative
+		 * 
+		 * cl = swingjs.JSToolkit.getClassLoader();
+		 * 
+		 */
+		{} 		
+		return cl.getResourceAsStream(name);
+	}
 	
+	/**
+	 * All classes created by Clazz have static class loaders
+	 * which are just minimal objects in Clazz var inF.
+	 * 
+	 * @param name
+	 * @return a URL for this object
+	 */
+	public static URL getResource(String name) {
+		ClassLoader cl = null;
+		/**
+		 * @j2sNative
+		 * 
+		 * cl = swingjs.JSToolkit.getClassLoader();
+		 * 
+		 */
+		{} 
+		return cl.getResource(name);    
+  }
+
 }

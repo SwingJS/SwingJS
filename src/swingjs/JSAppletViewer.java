@@ -158,6 +158,18 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	private JFrame jAppletFrame;
 
 	private String main;
+	
+	static {
+		
+		try {
+			URL.setURLStreamHandlerFactory((URLStreamHandlerFactory) Interface
+					.getInstance("javajs.util.AjaxURLStreamHandlerFactory", false));
+		} catch (Throwable e) {
+			// that's fine -- already created
+		}
+
+		
+	}
 
 	/**
 	 * SwingJS initialization is through a Hashtable provided by the page
@@ -219,20 +231,13 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 		threadGroup = new JSThreadGroup(appletName);
 		myThread = new JSAppletThread(this, threadGroup, appletName);
-		((JSThreadGroup) threadGroup).setHtmlApplet(html5Applet);
-		JSToolkit.J2S._setAppletThread(appletName, myThread);
+//		JSToolkit.J2S._setAppletThread(appletName, myThread);
 		jsjava.lang.Thread.thisThread = (jsjava.lang.Thread) ((Object) myThread);
 		
 		appContext = JSToolkit.createNewAppContext();
 		// initialize toolkit and graphics configuration
 		Toolkit.getDefaultToolkit();
 		new JSGraphicsConfiguration().getDevice();
-		try {
-			URL.setURLStreamHandlerFactory((URLStreamHandlerFactory) Interface
-					.getInstance("javajs.util.AjaxURLStreamHandlerFactory", false));
-		} catch (Throwable e) {
-			// that's fine -- already created
-		}
 		System.out.println("JSAppletViewer initialized");
 		insets = new Insets(0, 0, 0, 0);
 	}
@@ -353,7 +358,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		/**
 		 * @j2sNative
 		 * 
-		 *            applet = Jmol._applets[name]; applet && (applet =
+		 *            applet = SwingJS._applets[name]; applet && (applet =
 		 *            applet._applet);
 		 */
 		{

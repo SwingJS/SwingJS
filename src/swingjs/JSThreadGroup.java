@@ -30,7 +30,7 @@ import swingjs.api.HTML5Applet;
 /**
  * A thread group represents a set of threads. In addition, a thread
  * group can also include other thread groups. The thread groups form
- * a tree in which every thread group except the initial thread group
+ * a tree in which every thread group except the initial threfad group
  * has a parent.
  * <p>
  * A thread is allowed to access information about its own thread
@@ -56,21 +56,31 @@ class JSThreadGroup extends ThreadGroup {
 
 	public JSThreadGroup(String name) {
 		super(name);
+		/**
+		 * @j2sNative
+		 * 
+		 * this.html5Applet = J2S._applets[name]; 
+		 * 
+		 */
+		{}
 	}
 
 	public JSThreadGroup(ThreadGroup parent, String name) {
 		super(parent, name);
+		/**
+		 * @j2sNative
+		 * 
+		 * this.html5Applet = J2S._applets[name]; 
+		 * 
+		 */
+		{}
 	}
 
 	private HTML5Applet html5Applet;
 
-    // 
-		public void setHtmlApplet(HTML5Applet html5Applet) {
-			this.html5Applet = html5Applet;
-		}
 
-		public HTML5Applet getHtmlApplet() {
-			return html5Applet;
-		}
+	public HTML5Applet getHtmlApplet() {
+		return html5Applet;
+	}
 
 }

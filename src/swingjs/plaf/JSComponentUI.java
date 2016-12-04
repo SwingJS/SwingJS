@@ -620,6 +620,14 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 
 	/**
+	 * set to TRUE by Container.validateTree at the beginning of its laying out
+	 * and FALSE when that is complete.
+	 * 
+	 */
+	private boolean layingOut;
+
+
+	/**
 	 * Create or recreate the inner DOM element for this Swing component. 
 	 * @return the DOM element's node and, if the DOM element already
 	 * exists, 
@@ -1503,14 +1511,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void beginLayout() {
-		// TODO Auto-generated method stub
-
+		layingOut = true;
 	}
 
 	@Override
 	public void endLayout() {
-		// TODO Auto-generated method stub
-
+		layingOut = false;
 	}
 
 	public String getId() {

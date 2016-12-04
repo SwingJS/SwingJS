@@ -560,7 +560,7 @@ public class SimpleTimeZone extends TimeZone {
                 }
             }
             BaseCalendar cal = date >= GregorianCalendar.DEFAULT_GREGORIAN_CUTOVER ?
-                gcal : (BaseCalendar) CalendarSystem.forName("julian");
+                getGcal() : (BaseCalendar) CalendarSystem.forName("julian");
             BaseCalendar.Date cdate = (BaseCalendar.Date) cal.newCalendarDate(TimeZone.NO_TIMEZONE);
             // Get the year in local time
             cal.getCalendarDate(date + rawOffset, cdate);
@@ -579,7 +579,11 @@ public class SimpleTimeZone extends TimeZone {
         return offset;
     }
 
-   /**
+   private BaseCalendar getGcal() {
+  	 return (gcal == null ? (gcal = CalendarSystem.getGregorianCalendar()): gcal);
+		}
+
+	/**
      * Returns the difference in milliseconds between local time and
      * UTC, taking into account both the raw offset and the effect of
      * daylight saving, for the specified date and time.  This method
@@ -637,7 +641,8 @@ public class SimpleTimeZone extends TimeZone {
         int m = month + 1;
 
         // First, calculate time as a Gregorian date.
-        BaseCalendar cal = gcal;
+        
+        BaseCalendar cal = getGcal();
         BaseCalendar.Date cdate = (BaseCalendar.Date) cal.newCalendarDate(TimeZone.NO_TIMEZONE);
         cdate.setDate(y, m, day);
         long time = cal.getTime(cdate); // normalize cdate
@@ -1200,7 +1205,7 @@ public class SimpleTimeZone extends TimeZone {
      */
     private int dstSavings;
 
-    private static final Gregorian gcal = CalendarSystem.getGregorianCalendar();
+    private static Gregorian gcal;
 
     /**
      * Cache values representing a single period of daylight saving

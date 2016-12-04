@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 12/3/2016 6:53:17 PM adds "master" for applet registration, allowing access during file loading
 // BH 10/23/2016 10:13:42 PM adds support for Info.main
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
 // BH 7/25/2016 8:28:57 AM adds 3Dialog(fDone, asBytes)
@@ -880,7 +881,7 @@ J2S = (function(document) {
 	}
 
 	J2S._registerApplet = function(id, applet) {
-		return window[id] = J2S._applets[id] = J2S._applets[id + "__" + J2S._syncId + "__"] = applet;
+		return window[id] = J2S._applets[id] = J2S._applets[id + "__" + J2S._syncId + "__"] = J2S._applets["master"] = applet;
 	} 
 
 	J2S._readyCallback = function (appId,fullId,isReady,javaApplet,javaAppletPanel) {

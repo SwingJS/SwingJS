@@ -45,7 +45,7 @@ class SegmentCache {
     /**
      * A global cache.
      */
-    private static SegmentCache sharedCache = new SegmentCache();
+    private static SegmentCache sharedCache;
 
     /**
      * A list of the currently unused Segments.
@@ -57,6 +57,8 @@ class SegmentCache {
      * Returns the shared SegmentCache.
      */
     public static SegmentCache getSharedInstance() {
+    	  if (sharedCache == null)
+    	  	sharedCache = new SegmentCache();
         return sharedCache;
     }
 
