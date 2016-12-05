@@ -15,6 +15,15 @@
  	
 <!--  	working here -->
 
+  	<echo>...removing initialization code blocks {...} in decorateAsClass calls</echo>
+  	<replaceregexp match="(Clazz\.decorateAsClass \(function \(\) \{[^{}]*)(\n\{[^{]*\})([^{]*\})" replace="\1\3" flags="g" byline="false" >
+        <fileset dir="bin">
+          <include name="**/*.js" />
+          <exclude name="jsjava/*.js" />
+          <exclude name="jssun/*.js" />
+        </fileset>
+    </replaceregexp>
+
    	<echo>...adding html files</echo>
    	<copy todir="site/swingjs" overwrite="true" >
   	  <fileset dir="html">
@@ -74,7 +83,7 @@
   	<replace dir="site/tmp/org" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
   	<replace dir="site/tmp/com" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
   	<replace dir="site/tmp/test" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
-   	
+
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="site/tmp">
         <include name="**/*.js" />
