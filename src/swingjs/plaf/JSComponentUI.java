@@ -219,6 +219,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected boolean isTainted = true;
 
 	/**
+	 * prevents premature visualization
+	 * 
+	 */
+	protected boolean boundsSet = false;
+	
+	/**
 	 * Indicates that we need an outerNode and that we should not
 	 * be applying any positioning to the control. All popup menu items
 	 * will have this set false.   
@@ -1189,6 +1195,14 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void setBounds(int x, int y, int width, int height, int op) {
+		boolean isBounded = (width > 0 && height > 0);
+		if (isBounded && !boundsSet) {
+			// now we can set it to be visible, because its bounds have
+			// been explicitly set.
+			if (c.visible)
+				setVisible(true);
+			boundsSet = true;
+		}
 		if (debugging)
 			System.out.println("CUI << SetBounds >> [" + x + " " + y + " " + width
 					+ " " + height + "] op=" + op + " for " + this.id);
@@ -1225,7 +1239,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				updateDOMNode();
 			DOMNode.setSize(domNode, width + size.width, height + size.height);
 			if (outerNode != null)
-				DOMNode.setSize(outerNode, width + size.width, height + size.height);				
+				DOMNode.setSize(outerNode, width + size.width, height + size.height);
 			setInnerComponentBounds(width, height);
 			break;
 		}
@@ -1511,6 +1525,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void beginLayout() {
+		// hide if not a panel and bounds have not been set.
+		if (!boundsSet && !isContainer)
+		    setVisible(false);
 		layingOut = true;
 	}
 

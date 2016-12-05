@@ -213,8 +213,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			barPlace += 10;
 
 		String tickClass = "ui-j2sslider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
-		$(jqSlider).find(tickClass).remove();
-		$(jqSlider).find(".jslider-labels").remove();
+		$(domNode).find("." + tickClass).remove();
+		$(domNode).find(".jslider-labels").remove();
 		setHTMLSize(jqSlider, false);
 		if (majorSpacing == 0 || minorSpacing == 0
 				|| !paintTicks && !paintLabels)
