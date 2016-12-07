@@ -1,4 +1,7 @@
 /*
+ * Some portions of this file have been modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017
+ * for use in SwingJS via transpilation into JavaScript using Java2Script.
+ *
  * Copyright 1997-1999 Sun Microsystems, Inc.  All Rights Reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
