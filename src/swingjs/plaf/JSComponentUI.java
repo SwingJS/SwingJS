@@ -1209,6 +1209,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		// Note that this.x and this.y are never used. We go get those directly.
 		// Coming in here they are adjusted.
 		switch (op) {
+		case SET_BOUNDS:
 		case SET_LOCATION:
 			x = c.getX();
 			y = c.getY();
@@ -1217,10 +1218,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				this.y = y;
 			}
 			setOuterLocationFromComponent();
-			break;
+			if (op == SET_LOCATION)
+				break;
+			//$FALL-THROUGH$
 		case SET_CLIENT_SIZE: // is supposed to be without insets
 		case SET_SIZE:
-		case SET_BOUNDS:
 			if (scrollerNode != null) {
 				width = Math.min(width, scrollerNode.c.getWidth());
 				height = Math.min(height, scrollerNode.c.getHeight());
