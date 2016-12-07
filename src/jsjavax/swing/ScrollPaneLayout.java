@@ -1,26 +1,26 @@
 /*
- * Copyright (c) 1997, 2008, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright (c) 1997, 2006, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
  *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
  *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 
 package jsjavax.swing;
@@ -47,8 +47,8 @@ import jsjavax.swing.border.Border;
  * appropriate for short term storage or RMI between applications running
  * the same version of Swing.  As of 1.4, support for long term storage
  * of all JavaBeans<sup><font size="-2">TM</font></sup>
- * has been added to the <code>jsjava.beans</code> package.
- * Please see {@link jsjava.beans.XMLEncoder}.
+ * has been added to the <code>java.beans</code> package.
+ * Please see {@link java.beans.XMLEncoder}.
  *
  * @see JScrollPane
  * @see JViewport
@@ -56,7 +56,7 @@ import jsjavax.swing.border.Border;
  * @author Hans Muller
  */
 public class ScrollPaneLayout
-    implements LayoutManager, ScrollPaneConstants
+    implements LayoutManager, ScrollPaneConstants //, Serializable
 {
 
     /**
@@ -222,8 +222,7 @@ public class ScrollPaneLayout
      * @param c the the component to be added
      * @exception IllegalArgumentException if <code>s</code> is an invalid key
      */
-    @Override
-		public void addLayoutComponent(String s, Component c)
+    public void addLayoutComponent(String s, Component c)
     {
         if (s.equals(VIEWPORT)) {
             viewport = (JViewport)addSingletonComponent(viewport, c);
@@ -263,8 +262,7 @@ public class ScrollPaneLayout
      *
      * @param c the component to remove
      */
-    @Override
-		public void removeLayoutComponent(Component c)
+    public void removeLayoutComponent(Component c)
     {
         if (c == viewport) {
             viewport = null;
@@ -466,8 +464,7 @@ public class ScrollPaneLayout
      * @see ViewportLayout
      * @see LayoutManager
      */
-    @Override
-		public Dimension preferredLayoutSize(Container parent)
+    public Dimension preferredLayoutSize(Container parent)
     {
         /* Sync the (now obsolete) policy fields with the
          * JScrollPane.
@@ -489,13 +486,11 @@ public class ScrollPaneLayout
         Dimension viewSize = null;
         Component view = null;
 
-        if (viewport != null) {
+        if (viewport !=  null) {
             extentSize = viewport.getPreferredSize();
             view = viewport.getView();
             if (view != null) {
                 viewSize = view.getPreferredSize();
-            } else {
-                viewSize = new Dimension(0, 0);
             }
         }
 
@@ -590,8 +585,7 @@ public class ScrollPaneLayout
      * @param parent the <code>Container</code> that will be laid out
      * @return a <code>Dimension</code> object specifying the minimum size
      */
-    @Override
-		public Dimension minimumLayoutSize(Container parent)
+    public Dimension minimumLayoutSize(Container parent)
     {
         /* Sync the (now obsolete) policy fields with the
          * JScrollPane.
@@ -692,8 +686,7 @@ public class ScrollPaneLayout
      *
      * @param parent the <code>Container</code> to lay out
      */
-    @Override
-		public void layoutContainer(Container parent)
+    public void layoutContainer(Container parent)
     {
         /* Sync the (now obsolete) policy fields with the
          * JScrollPane.
@@ -1120,5 +1113,5 @@ public class ScrollPaneLayout
     /**
      * The UI resource version of <code>ScrollPaneLayout</code>.
      */
-    public static class UIResource extends ScrollPaneLayout implements jsjavax.swing.plaf.UIResource {}
+    public static class UIResource extends ScrollPaneLayout implements javax.swing.plaf.UIResource {}
 }

@@ -653,8 +653,6 @@ swingjs/api/JSInterface.js
 
 swingjs/JSEvent.js
 swingjs/JSFontMetrics.js
-swingjs/JSAppletPanel.js
-swingjs/JSComponentPeer.js
 swingjs/JSGraphicsEnvironment.js
 swingjs/JSAppletViewer.js
 swingjs/JSFrameViewer.js
@@ -672,7 +670,7 @@ swingjs/plaf/JSLightweightUI.js
 swingjs/plaf/JSComponentUI.js
 swingjs/plaf/JSPanelUI.js
 swingjs/plaf/JSButtonUI.js
-swingjs/plaf/JSButtonListener.js
+swingjs/plaf/ButtonListener.js
 swingjs/plaf/JSRadioButtonUI.js
 swingjs/plaf/JSRootPaneUI.js
 swingjs/plaf/LazyActionMap.js

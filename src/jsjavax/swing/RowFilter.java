@@ -1,26 +1,26 @@
 /*
  * Copyright (c) 2005, 2006, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
  *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
  *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 package jsjavax.swing;
 
@@ -88,7 +88,7 @@ import java.util.regex.Pattern;
  * @param <M> the type of the model; for example <code>PersonModel</code>
  * @param <I> the type of the identifier; when using
  *            <code>TableRowSorter</code> this will be <code>Integer</code>
- * @see jsjavax.swing.table.TableRowSorter
+ * @see javax.swing.table.TableRowSorter
  * @since 1.6
  */
 public abstract class RowFilter<M,I> {
@@ -321,8 +321,8 @@ public abstract class RowFilter<M,I> {
      * @param <M> the type of the model; for example <code>PersonModel</code>
      * @param <I> the type of the identifier; when using
      *            <code>TableRowSorter</code> this will be <code>Integer</code>
-     * @see jsjavax.swing.RowFilter
-     * @see jsjavax.swing.DefaultRowSorter#setRowFilter(jsjavax.swing.RowFilter)
+     * @see javax.swing.RowFilter
+     * @see javax.swing.DefaultRowSorter#setRowFilter(javax.swing.RowFilter)
      * @since 1.6
      */
     public static abstract class Entry<M, I> {
@@ -402,8 +402,7 @@ public abstract class RowFilter<M,I> {
             this.columns = columns;
         }
 
-        @Override
-				public boolean include(Entry<? extends Object,? extends Object> value){
+        public boolean include(Entry<? extends Object,? extends Object> value){
             int count = value.getValueCount();
             if (columns.length > 0) {
                 for (int i = columns.length - 1; i >= 0; i--) {
@@ -441,8 +440,7 @@ public abstract class RowFilter<M,I> {
             matcher = regex.matcher("");
         }
 
-        @Override
-				protected boolean include(
+        protected boolean include(
                 Entry<? extends Object,? extends Object> value, int index) {
             matcher.reset(value.getStringValue(index));
             return matcher.find();
@@ -463,8 +461,7 @@ public abstract class RowFilter<M,I> {
             this.date = date;
         }
 
-        @Override
-				protected boolean include(
+        protected boolean include(
                 Entry<? extends Object,? extends Object> value, int index) {
             Object v = value.getValue(index);
 
@@ -506,8 +503,7 @@ public abstract class RowFilter<M,I> {
             isComparable = (number instanceof Comparable);
         }
 
-        @Override
-				@SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
         protected boolean include(
                 Entry<? extends Object,? extends Object> value, int index) {
             Object v = value.getValue(index);
@@ -566,8 +562,7 @@ public abstract class RowFilter<M,I> {
             }
         }
 
-        @Override
-				public boolean include(Entry<? extends M, ? extends I> value) {
+        public boolean include(Entry<? extends M, ? extends I> value) {
             for (RowFilter<? super M,? super I> filter : filters) {
                 if (filter.include(value)) {
                     return true;
@@ -583,8 +578,7 @@ public abstract class RowFilter<M,I> {
             super(filters);
         }
 
-        @Override
-				public boolean include(Entry<? extends M, ? extends I> value) {
+        public boolean include(Entry<? extends M, ? extends I> value) {
             for (RowFilter<? super M,? super I> filter : filters) {
                 if (!filter.include(value)) {
                     return false;
@@ -606,8 +600,7 @@ public abstract class RowFilter<M,I> {
             this.filter = filter;
         }
 
-        @Override
-				public boolean include(Entry<? extends M, ? extends I> value) {
+        public boolean include(Entry<? extends M, ? extends I> value) {
             return !filter.include(value);
         }
     }

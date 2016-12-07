@@ -1,26 +1,26 @@
 /*
- * Copyright (c) 1999, 2010, Oracle and/or its affiliates. All rights reserved.
- * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright (c) 1999, 2007, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
  *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
  *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
  */
 
 package jsjavax.sound.sampled;
@@ -434,38 +434,36 @@ public class AudioFormat {
 
 
     /**
-     * Indicates whether this format matches the one specified.
-     * To match, two formats must have the same encoding,
-     * and consistent values of the number of channels, sample rate, sample size,
-     * frame rate, and frame size.
-     * The values of the property are consistent if they are equal
-     * or the specified format has the property value
-     * {@code AudioSystem.NOT_SPECIFIED}.
-     * The byte order (big-endian or little-endian) must be the same
-     * if the sample size is greater than one byte.
+     * Indicates whether this format matches the one specified.  To match,
+     * two formats must have the same encoding, the same number of channels,
+     * and the same number of bits per sample and bytes per frame.
+     * The two formats must also have the same sample rate,
+     * unless the specified format has the sample rate value <code>AudioSystem.NOT_SPECIFIED</code>,
+     * which any sample rate will match.  The frame rates must
+     * similarly be equal, unless the specified format has the frame rate
+     * value <code>AudioSystem.NOT_SPECIFIED</code>.  The byte order (big-endian or little-endian)
+     * must match if the sample size is greater than one byte.
      *
      * @param format format to test for match
-     * @return {@code true} if this format matches the one specified,
-     *         {@code false} otherwise.
+     * @return <code>true</code> if this format matches the one specified,
+     * <code>false</code> otherwise.
+     */
+    /*
+     * $$kk: 04.20.99: i changed the semantics of this.
      */
     public boolean matches(AudioFormat format) {
-        if (format.getEncoding().equals(getEncoding())
-                && (format.getChannels() == AudioSystem.NOT_SPECIFIED
-                    || format.getChannels() == getChannels())
-                && (format.getSampleRate() == (float)AudioSystem.NOT_SPECIFIED
-                    || format.getSampleRate() == getSampleRate())
-                && (format.getSampleSizeInBits() == AudioSystem.NOT_SPECIFIED
-                    || format.getSampleSizeInBits() == getSampleSizeInBits())
-                && (format.getFrameRate() == (float)AudioSystem.NOT_SPECIFIED
-                    || format.getFrameRate() == getFrameRate())
-                && (format.getFrameSize() == AudioSystem.NOT_SPECIFIED
-                    || format.getFrameSize() == getFrameSize())
-                && (getSampleSizeInBits() <= 8
-                    || format.isBigEndian() == isBigEndian())) {
-            return true;
-        }
-        return false;
-    }
+
+      if (format.getEncoding().equals(getEncoding()) &&
+          ( (format.getSampleRate() == (float)AudioSystem.NOT_SPECIFIED) || (format.getSampleRate() == getSampleRate()) ) &&
+          (format.getSampleSizeInBits() == getSampleSizeInBits()) &&
+          (format.getChannels() == getChannels() &&
+           (format.getFrameSize() == getFrameSize()) &&
+           ( (format.getFrameRate() == (float)AudioSystem.NOT_SPECIFIED) || (format.getFrameRate() == getFrameRate()) ) &&
+           ( (format.getSampleSizeInBits() <= 8)  || (format.isBigEndian() == isBigEndian()) ) ) )
+          return true;
+
+      return false;
+  }
 
 
     /**
@@ -557,14 +555,14 @@ public class AudioFormat {
      * which is simply a linear (proportional) representation of the sound
      * waveform.  With PCM, the number stored in each sample is proportional
      * to the instantaneous amplitude of the sound pressure at that point in
-     * time.  The numbers may be signed or unsigned integers or floats.
+     * time.  The numbers are frequently signed or unsigned integers.
      * Besides PCM, other encodings include mu-law and a-law, which are nonlinear
      * mappings of the sound amplitude that are often used for recording speech.
      * <p>
      * You can use a predefined encoding by referring to one of the static
      * objects created by this class, such as PCM_SIGNED or
      * PCM_UNSIGNED.  Service providers can create new encodings, such as
-     * compressed audio formats, and make
+     * compressed audio formats or floating-point PCM samples, and make
      * these available through the <code>{@link AudioSystem}</code> class.
      * <p>
      * The <code>Encoding</code> class is static, so that all
@@ -593,13 +591,6 @@ public class AudioFormat {
          * Specifies unsigned, linear PCM data.
          */
         public static final Encoding PCM_UNSIGNED = new Encoding("PCM_UNSIGNED");
-
-        /**
-         * Specifies floating-point PCM data.
-         *
-         * @since 1.7
-         */
-        public static final Encoding PCM_FLOAT = new Encoding("PCM_FLOAT");
 
         /**
          * Specifies u-law encoded data.
