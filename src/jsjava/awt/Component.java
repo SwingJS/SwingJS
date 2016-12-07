@@ -6120,8 +6120,8 @@ protected  transient ComponentPeer peer;
                     p.setVisible(false);
                 }
 
-                peer = null; // Stop peer updates.
-                peerFont = null;
+                //peer = null; // Stop peer updates. // SwingJS actually, we need this because the peer is also the ui
+                //peerFont = null;
 
                 Toolkit.getEventQueue().removeSourceEvents(this, false);
 //                KeyboardFocusManager.getCurrentKeyboardFocusManager().

@@ -1590,6 +1590,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
+		if (isDisposed && c.visible && prop == "ancestor" &&  e.getNewValue() != null)
+			setVisible(true);
 		if (debugging)
 			System.out.println(id + dumpEvent(e) + prop);
 	}
