@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 12/5/2016 1:15:20 AM additional inner class nesting fix for b$
 // BH 11/30/2016 7:17:33 AM inner class nesting fix for b$
 // BH 11/27/2016 7:26:24 AM c$ final fix
 // BH 11/25/2016 1:27:16 PM class.isInstance(obj) fixed
@@ -639,6 +640,9 @@ Clazz.defineStatics = function(clazz) {
     var name = arguments[--j];
     clazz[name] = clazz.prototype[name] = val;
   }
+  
+//  Clazz._Loader && Clazz._Loader.doTODO();
+        
 };
 
 /**
@@ -697,23 +701,41 @@ Clazz.prepareCallback = function (innerObj, args) {
         isNew = true;
       }
       var clazz = Clazz.getClass(outerObj);
+      var oneOuter = !isNew;
       while (clazz.superClazz) {
         var key = Clazz.getClassName(clazz = clazz.superClazz, true);
-        if (!isNew && b[key]) 
-          break;
+        if (oneOuter && b[key]) {
+          if (b[key] == outerObj) {
+          // we are done if we find the outerObj, since its superclass references
+          // are already all present in the inner class's $b field
+          //
+          //    Outer
+          //      Inner1  
+          //        Inner2 <-- we are here
+            break;
+          }
+          // OK, we do need to copy if we have mixed objects, because an 
+          // anonymous class refers to its outerclass, but then the class it
+          // subclasses also has inner classes the refer to *its* outerclasses
+          // and we are now prepping that second inner class.
+          //(see PhET GasProperties idealgas.controller.ToolPanel buttons)
+          //
+          //    Outer1
+          //      Inner1   --subclasses--> Outer2
+          //                                 Inner2  <-- we are here
+          oneOuter = false;
+          b = appendMap({}, b);
+        }
         b[key] = outerObj; 
       }
       b[Clazz.getClassName(outerObj, true)] = outerObj;
     }
     if (isNew) {
       outerObj.$b$ = b;
-    } else {
+    } else if (oneOuter) {
       // BH: look out for an outer object being the same for two different inner classes of the same type
       // BH: only in that case we must clone the outer array.
-      var bb = {};
-      for (var key in b)
-        bb[key] = b[key];
-      b = bb;
+      b = appendMap({}, b);
     }
     innerObj.b$ = b;
   }
@@ -1757,6 +1779,9 @@ var unloadedClasses = [];
 
 /* public */
 Clazz.declarePackage = function (pkgName) {
+
+  Clazz._Loader && Clazz._Loader.doTODO();
+
   if (Clazz.lastPackageName == pkgName || !pkgName || pkgName.length == 0)
     return Clazz.lastPackage;
   var pkgFrags = pkgName.split (/\./);
@@ -2765,6 +2790,12 @@ java.lang.Object = Clazz._O;
 
 Clazz._O.getName = inF.getName;
 
+Clazz._declared = {}
+Clazz._setDeclared = function(name, func) {
+   Clazz.allClasses[name] = true;
+}
+
+Clazz._setDeclared("java.lang.System",
 java.lang.System = System = {
   props : null, //new java.util.Properties (),
   $props : {},
@@ -2832,8 +2863,9 @@ java.lang.System = System = {
     if (!System.props)
       return System.$props[key] = val; // BH
     System.props.setProperty (key, val);
-  }
-};
+  },
+  
+});
 
 System.identityHashCode=function(obj){
   if(obj==null)
@@ -2871,7 +2903,7 @@ System.err.write = function () {};
 System.exit = function() { swingjs.JSToolkit.exit() };
 Clazz.popup = Clazz.assert = Clazz.log = Clazz.error = window.alert;
 
-Thread = function () {};
+Clazz._setDeclared("java.lang.Thread",java.lang.Thread = Thread = function () {});
 Thread.J2S_THREAD = Thread.prototype.J2S_THREAD = new Thread ();
 Thread.currentThread = Thread.prototype.currentThread = function () {
   return this.J2S_THREAD;
@@ -2936,15 +2968,25 @@ var Node = function () {
 
 _Loader._checkLoad = J2S._checkLoad;
  
+_Loader._TODO = [];
+
+_Loader.doTODO = function() {
+  while (_Loader._TODO.length) {
+   var f = _Loader._TODO.shift();
+   f();
+    }
+}
+ 
 _Loader.updateNodeForFunctionDecoration = function(qName) {
 
   var node = findNode(qName);
   if (node && node.status == Node.STATUS_KNOWN) {
-    window.setTimeout((function(nnn) {
-      return function() {
-        updateNode(nnn);
-      };
-    })(node), 1);
+    if (node.musts.length == 0 && node.optionals.length == 0) {
+      var f = function() { updateNode(node) };
+      _Loader._TODO.push(f);
+    } else {
+      window.setTimeout(f, 1); 
+    }
   }
 }
 
@@ -3542,6 +3584,7 @@ var evaluate = function(file, js) {
     js = "(function(){var c$;" + js + "})();";
   }
   try {
+  ;
     eval(js + ";//# sourceURL="+file);
   } catch (e) {      
     var s = "[Java2Script] The required class file \n\n" + file + (js.indexOf("data: no") ? 
@@ -3649,7 +3692,9 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
     var data = J2S._getFileData(file);
     try{
       evaluate(file, data);
-      mapPath2ClassNode["@" + file0].status = Node.STATUS_CONTENT_LOADED;
+      var node = mapPath2ClassNode["@" + file0];
+      if (node.status < Node.STATUS_CONTENT_LOADED)
+        node.status = Node.STATUS_CONTENT_LOADED; // BH allowing load to update the node
     }catch(e) {
       var s = ""+e;
       if (s.indexOf("missing ] after element list")>= 0)
@@ -3954,7 +3999,7 @@ var checkCycle = function (node, file) {
     // then clear tracks and return true (keep checking)  
     if (_Loader._checkLoad) {
       var msg = "cycle found loading " + file + " for " + node;
-      System.out.println(msg)
+      System.out.println(msg);
     } 
     for (; i < len; i++) {
       var n = ts[i];
@@ -4037,10 +4082,10 @@ updateNode = function(node, ulev, chain, _updateNode) {
   chain || (chain = "");
   ulev++;
   if (ulev > 250) // something is wrong -- we want to see why
-    chain += (node == null ? "" : node.name + "\t")
+    chain += (node == null ? "" : node.name + "\n")
   if (ulev > Clazz._nodeDepth)
     Clazz._nodeDepth = ulev;
-  if (ulev % 300 == 0)alert(ulev + " " + chain)
+  if (ulev % 300 == 0)alert("warning - j2sSwingJS.updatenode depth " + ulev + "\n" + chain)
   if (!node.name || node.status >= Node.STATUS_LOAD_COMPLETE) {
     destroyClassNode(node);
     return;
@@ -4212,6 +4257,8 @@ var findNode = function(clazzName) {
   return findNodeUnderNode(clazzName, clazzTreeRoot);
 };
 
+Clazz._findNode = findNode;
+
 /* private */
 var findNextRequiredClass = function(status) {
   getRnd();
@@ -4350,6 +4397,8 @@ var load = function (musts, name, optionals, declaration) {
     node.status = Node.STATUS_CONTENT_LOADED;
   }
   processRequired(node, optionals, false);
+  if (node.musts.length == 0 && node.optionals.length == 0)
+    updateNode(node);
 };
 
 /* private */
@@ -5111,7 +5160,8 @@ Sys.err.write = function (buf, offset, len) {
     sJU + ".concurrent.Executors"
   ])
 
-java.lang.Math = Math;
+Clazz._setDeclared("java.lang.Math", java.lang.Math = Math);
+
 Math.rint || (Math.rint = function(a) {
  var b;
  return Math.round(a) + ((b = a % 1) != 0.5 && b != -0.5 ? 0 : (b = Math.round(a % 2)) > 0 ? b - 2 : b);
@@ -5149,7 +5199,7 @@ if(supportsNativeObject){
   }
 }
 
-java.lang.Number=Number;
+Clazz._setDeclared("java.lang.Number", java.lang.Number=Number);
 Number.__CLASS_NAME__="Number";
 implementOf(Number,java.io.Serializable);
 Number.equals=inF.equals;
@@ -5193,9 +5243,10 @@ function(){
 return this.valueOf();
 });
 
-java.lang.Integer=Integer=function(){
+Clazz._setDeclared("java.lang.Integer", java.lang.Integer=Integer=function(){
 Clazz.instantialize(this,arguments);
-};
+});
+
 decorateAsType(Integer,"Integer",Number,Comparable,true);
 Integer.prototype.valueOf=function(){return 0;};
 Integer.prototype.__VAL0__ = 1;
@@ -5339,9 +5390,9 @@ return this.valueOf();
 
 // Note that Long is problematic in JavaScript 
 
-java.lang.Long=Long=function(){
+Clazz._setDeclared("java.lang.Long", java.lang.Long=Long=function(){
 Clazz.instantialize(this,arguments);
-};
+});
 decorateAsType(Long,"Long",Number,Comparable,true);
 Long.prototype.valueOf=function(){return 0;};
 Long.prototype.__VAL0__ = 1;
@@ -5403,9 +5454,9 @@ function(n){
   return new Long(n);
 },"~S");
 
-java.lang.Short = Short = function () {
+Clazz._setDeclared("java.lang.Short", java.lang.Short = Short = function () {
 Clazz.instantialize (this, arguments);
-};
+});
 decorateAsType (Short, "Short", Number, Comparable, true);
 Short.prototype.valueOf = function () { return 0; };
 Short.toString = Short.prototype.toString = function () {
@@ -5474,9 +5525,9 @@ function(n){
   return new Short(n);
 }, "~S");
 
-java.lang.Byte=Byte=function(){
+Clazz._setDeclared("java.lang.Byte", java.lang.Byte=Byte=function(){
 Clazz.instantialize(this,arguments);
-};
+});
 decorateAsType(Byte,"Byte",Number,Comparable,true);
 Byte.prototype.valueOf=function(){return 0;};
 Byte.prototype.__VAL0__ = 1;
@@ -5554,9 +5605,10 @@ Clazz._floatToString = function(f) {
  return s;
 }
 
-java.lang.Float=Float=function(){
+Clazz._setDeclared("java.lang.Float", java.lang.Float=Float=function(){
 Clazz.instantialize(this,arguments);
-};
+});
+
 decorateAsType(Float,"Float",Number,Comparable,true);
 Float.prototype.valueOf=function(){return 0;};
 Float.prototype.__VAL0__ = 1;
@@ -5633,9 +5685,9 @@ return false;
 return s.valueOf()==this.valueOf();
 },"Object");
 
-java.lang.Double=Double=function(){
+Clazz._setDeclared("java.lang.Double", java.lang.Double=Double=function(){
 Clazz.instantialize(this,arguments);
-};
+});
 
 decorateAsType(Double,"Double",Number,Comparable,true);
 
@@ -5708,8 +5760,9 @@ return s.valueOf()==this.valueOf();
 
 //java.lang.B00lean = Boolean; ?? BH why this?
 
+Clazz._setDeclared("java.lang.Boolean", 
+Boolean = java.lang.Boolean = Boolean || function () {Clazz.instantialize (this, arguments);});
 
-Boolean = java.lang.Boolean = Boolean || function () {Clazz.instantialize (this, arguments);};
 if (supportsNativeObject) {
   for (var i = 0; i < extendedObjectMethods.length; i++) {
     var p = extendedObjectMethods[i];
@@ -5942,7 +5995,9 @@ return buf.join('');
 };
 
 if(String.prototype.$replace==null){
-java.lang.String=String;
+
+Clazz._setDeclared("java.lang.String", java.lang.String=String);
+
 if(supportsNativeObject){
 for(var i = 0; i < extendedObjectMethods.length; i++) {
 var p = extendedObjectMethods[i];
@@ -6461,6 +6516,10 @@ c$=Clazz.decorateAsClass(function(){
 this.value=0;
 Clazz.instantialize(this,arguments);
 },java.lang,"Character",null,[java.io.Serializable,Comparable]);
+
+
+Clazz._setDeclared("java.lang.Character", java.lang.Character); 
+
 Clazz.makeConstructor(c$,
 function(value){
 this.value=value;
@@ -6567,7 +6626,6 @@ Clazz.defineStatics(c$,
 "MIN_RADIX",2,
 "MAX_RADIX",36,
 "TYPE",null);
-
 java.lang.Character.TYPE=java.lang.Character.prototype.TYPE=java.lang.Character;
 java.lang.Character.charCount = java.lang.Character.prototype.charCount = function(codePoint){return codePoint >= 0x010000 ? 2 : 1;};
 
@@ -6582,6 +6640,10 @@ Clazz._ArrayWrapper = function(a, type) {
  };
 }
 c$=Clazz.declareType(java.lang.reflect,"Array");
+
+
+Clazz._setDeclared("java.lang.reflect.Array", java.lang.reflect.Array) 
+
 c$.newInstance=Clazz.defineMethod(c$,"newInstance",
 function(componentType,size){
 var a = Clazz.newArray(size);
@@ -6589,7 +6651,7 @@ var a = Clazz.newArray(size);
 return a;
 },"Class,~N");
 
-javautil.Date=Date;
+Clazz._setDeclared("java.util.Data", javautil.Date=Date);
 Date.TYPE="javautil.Date";
 Date.__CLASS_NAME__="Date";
 implementOf(Date,[java.io.Serializable,java.lang.Comparable]);
@@ -6627,10 +6689,15 @@ var ht=this.getTime();
 return parseInt(ht)^parseInt((ht>>32));
 });
 
+
 c$=Clazz.decorateAsClass(function(){
 this.source=null;
 Clazz.instantialize(this,arguments);
 },javautil,"EventObject",null,java.io.Serializable);
+
+Clazz._setDeclared("java.util.EventObject", java.util.EventObject); 
+
+
 Clazz.makeConstructor(c$,
 function(source){
 if(source!=null)this.source=source;
