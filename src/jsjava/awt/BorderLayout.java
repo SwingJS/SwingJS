@@ -440,7 +440,7 @@ public class BorderLayout implements LayoutManager2,
             name = "Center";
         }
 
-      	System.out.println("BorderLayout adding " + name + " " + comp);
+//      	System.out.println("BorderLayout adding " + name + " " + comp);
 
         /* Assign the component to one of the known regions of the layout.
          */

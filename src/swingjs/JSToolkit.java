@@ -634,7 +634,7 @@ public class JSToolkit extends SunToolkit {
 		 *            var thread0 = thread;
 		 *            (function(_JSToolkit_setTimeout) {
 		 *              var id0 = SwingJS.eventID || 0;
-		 *              System.out.println("runNow " + id); SwingJS.eventID = id;
+		 *              SwingJS.eventID = id;
 		 *              java.lang.Thread.thisThread = thread; 
 		 *              if (f.run)
 		 *                f.run();
@@ -767,9 +767,11 @@ public class JSToolkit extends SunToolkit {
 			ui = (JSComponentUI) ((JComponent) c).getUI();
 		}
 		if (ui == null) {
-			String s = "[JSToolkit] Component " + c.getClass().getName()
-					+ " has no corresponding JSComponentUI.";
-			System.out.println(s);
+			
+			String s = c.getClass().getName();
+			if (s != "javax.swing.Box.Filler" && s != "swingjs.JSApplet") 
+				System.out.println("[JSToolkit] Component " + s  
+					+ " has no corresponding JSComponentUI.");
 			// Coerce JSComponentUI for this peer.
 			// This is a JavaScript-only trick that would be
 			// problematic in Java as well as in JavaScript.

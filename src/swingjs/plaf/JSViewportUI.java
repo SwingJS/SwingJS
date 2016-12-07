@@ -56,7 +56,8 @@ ChangeListener {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		System.out.println(id + " getPreferredSize");
+		if (debugging) 
+			System.out.println(id + " getPreferredSize");
   	return null;
   }
 

@@ -634,6 +634,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 
 	/**
+	 * has been disposed; will need to reattach it if it ever becomes visible again.
+	 * 
+	 */
+	private boolean isDisposed;
+
+
+	/**
 	 * Create or recreate the inner DOM element for this Swing component. 
 	 * @return the DOM element's node and, if the DOM element already
 	 * exists, 
@@ -1173,7 +1180,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			node = domNode; // a frame or other window
 		DOMNode.setStyles(node, "display", b ? "block" : "none");
 		if (b) {
-//			zeroWidth = (width == 0 || height == 0);
+			if (isDisposed)
+				undisposeUI(node);
 			toFront();
 		}
 	}
@@ -1299,8 +1307,27 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void dispose() {
+		isDisposed = true;
 		DOMNode.remove(domNode);
 		DOMNode.remove(outerNode);
+	}
+	
+	/**
+	 * 
+	 * This control has been added back to some other node
+   * after being disposed of. So now we need to undo that.
+   * 
+	 * @param node
+	 */
+	private void undisposeUI(DOMNode node) {
+		if (c.getParent() != null) {
+			JSComponentUI ui = (JSComponentUI) c.getParent().getUI();
+			if (ui.containerNode != null)
+				ui.containerNode.appendChild(node);
+		}
+		if (outerNode != null)
+			outerNode.appendChild(domNode);
+		isDisposed = false;
 	}
 
 	@Override

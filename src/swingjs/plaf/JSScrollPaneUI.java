@@ -129,7 +129,6 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		float v = vertNode.jSlider.getValue();
 		float range = viewport.getHeight() - scrolledComponent.getHeight();
 		int pos = Math.min(0, (int) (range * v / 100));
-		System.out.println("v=" + v + " range=" + range + " pos=" + pos);
 		DOMNode.setStyles(((JSComponentUI) scrolledComponent.ui).domNode, "top",
 				pos + "px");
 	}
@@ -149,7 +148,7 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 
 	@Override
 	public Dimension getPreferredSize() {
-		System.out.println(id + " getpreferredSize");
+		//System.out.println(id + " getpreferredSize");
   	return null;
   }
 

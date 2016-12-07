@@ -21,13 +21,15 @@ public class JSScrollBarUI extends JSSliderUI {
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		super.propertyChange(e);
-		System.out.println(id + " propertyChange " + dumpEvent(e));
+		if (debugging) 
+					System.out.println(id + " propertyChange " + dumpEvent(e));
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		super.stateChanged(e);
-		System.out.println(id + " stateChange " + dumpEvent(e));
+		if (debugging) 
+					System.out.println(id + " stateChange " + dumpEvent(e));
 	}
 
 
