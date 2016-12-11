@@ -159,6 +159,11 @@ public class JSSpinnerUI extends JSLightweightUI {
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		if (valueNode == null) {
+			// This can happen if the model value is set and we have never displayed.
+			// Q: should we create the domNode at this point? Or doesn't that matter?
+			return;
+		}
 		setValue();
 	}
 	

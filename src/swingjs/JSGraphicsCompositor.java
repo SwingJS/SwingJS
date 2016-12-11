@@ -29,6 +29,9 @@ public class JSGraphicsCompositor {
 	/**
 	 * apply a source/destination rule to a canvas.context2d object
 	 * 
+	 * see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation
+	 * 
+	 * 
 	 * @param g
 	 * @param alphaRule
 	 * @return
@@ -56,6 +59,7 @@ public class JSGraphicsCompositor {
 		// new shape. The new shape is drawn behind the canvas content.
 		// darker Where both shapes overlap the color is determined by subtracting
 		// color values.
+	
 
 		@SuppressWarnings("unused")
 		String s = null;

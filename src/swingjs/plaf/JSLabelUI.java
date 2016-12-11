@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import javajs.util.PT;
 import jsjava.awt.JSComponent;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JLabel;
@@ -36,12 +37,24 @@ public class JSLabelUI extends JSLightweightUI {
 				if (gap != 0)
 					DOMNode.addHorizontalGap(domNode, gap);
 			}
-			domNode.appendChild(DOMNode.createTextNode(text));
+			DOMNode t;
+			if (text.indexOf("<html>") == 0) {
+				text = fixHTMLString(text);
+				t = newDOMObject("span", null, "innerHTML", text);
+			} else {
+				t = DOMNode.createTextNode(text);
+			}	
+			domNode.appendChild(t);
 		}
 		//vCenter(domNode, 10);
 		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
 		return setCssFont(domNode, c.getFont());
 	
+	}
+
+	private String fixHTMLString(String text) {
+		// PhET uses <html> in labels and uses </br>
+		return PT.rep(text.substring(6, text.length() - 7),  "</br>", "");
 	}
 
 	@Override

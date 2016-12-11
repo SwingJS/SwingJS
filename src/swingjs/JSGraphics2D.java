@@ -864,8 +864,10 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		boolean isValid = (comp == null || currentComposite == null ||
 				(comp instanceof AlphaComposite)
 				   && (newRule = ((AlphaComposite) comp).getRule()) != currentComposite.getRule());
-		if (isValid && JSToolkit.setGraphicsCompositeAlpha(this, newRule))
+		if (isValid && JSToolkit.setGraphicsCompositeAlpha(this, newRule)) {
 			currentComposite = (AlphaComposite) comp;
+		}
+		setAlpha(comp == null ? 1 : ((AlphaComposite) comp).getAlpha());
 	}
 
 	public Composite getComposite() {
@@ -915,6 +917,15 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	public int mark() {
 		ctx.save();
 		Map<String, Object> map = new Hashtable<String, Object>();
+		float alpha = 0;
+		/**
+		 * @j2sNative
+		 * 
+		 * alpha = this.ctx.globalAlpha;
+		 * 
+		 */
+		{}
+		map.put("alpha", Float.valueOf(alpha));
 		if (currentComposite != null)
 			map.put("composite", currentComposite);
 		if (currentStroke != null)
@@ -938,6 +949,9 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		while (HTML5CanvasContext2D.getSavedLevel(ctx) >= n0) {
 			Map<String, Object> map = HTML5CanvasContext2D.pop(ctx);
 			setComposite((Composite) map.get("composite"));
+			Float alpha = (Float) map.get("alpha");
+			if (alpha != null)
+				setAlpha(alpha.floatValue());
 			setStroke((Stroke) map.get("stroke"));
 			setTransform((AffineTransform) map.get("transform"));
 			setFont((Font) map.get("font"));

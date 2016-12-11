@@ -24,13 +24,15 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	JSlider jSlider;
 	private int min, max, val, majorSpacing, minorSpacing;
+	private boolean paintTicks, paintLabels, snapToTicks;
+	private Dictionary<Integer, JLabel> labelTable;
+	
 	private String orientation;
 	
 	boolean iVertScrollBar; // vertical scrollbars on scroll panes are inverted
 	
 	JSScrollPaneUI scrollPaneUI;
 
-	private boolean paintTicks, paintLabels;
 	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
@@ -69,6 +71,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			paintTicks = js.getPaintTicks();
 			paintLabels = js.getPaintLabels();
 			paintTrack = js.getPaintTrack();
+			snapToTicks = js.getSnapToTicks();
 		}
 		orientation = (js.getOrientation() == SwingConstants.VERTICAL ? "vertical"
 				: "horizontal");
@@ -216,7 +219,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		$(domNode).find("." + tickClass).remove();
 		$(domNode).find(".jslider-labels").remove();
 		setHTMLSize(jqSlider, false);
-		if (majorSpacing == 0 || minorSpacing == 0
+		if (majorSpacing == 0 && minorSpacing == 0
 				|| !paintTicks && !paintLabels)
 			return;
 		// TODO: test inverted
@@ -224,6 +227,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		int margin = 10;
 		int length = (isHoriz ? jSlider.getWidth() : jSlider.getHeight()) - 2 * margin;
 		if (paintTicks) {
+			if (minorSpacing == 0)
+				minorSpacing = majorSpacing;
 			int check = majorSpacing / minorSpacing;
 			float fracSpacing = minorSpacing * 1f / (max - min);
 			int numTicks = ((max - min) / minorSpacing) + 1;
@@ -244,12 +249,12 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			int m = 10;
 			int h = height;
 			int w = width;			
-			Dictionary<Integer, JLabel> labels = jSlider.getLabelTable();
-			Enumeration keys = labels.keys();
+			labelTable = jSlider.getLabelTable();
+			Enumeration keys = labelTable.keys();
 			while (keys.hasMoreElements()) {
 				Object key = keys.nextElement();
 				int n = Integer.parseInt(key.toString());
-				JLabel label = labels.get(key);
+				JLabel label = labelTable.get(key);
 				DOMNode labelNode = ((JSComponentUI) label.getUI())
 						.getOuterNode();
 				// need calculation of pixels
@@ -301,8 +306,11 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
-		if (prop == "ancestor")
+		if (prop == "ancestor") {
 			setup(false);
+//		} else if (domNode != null && "paintLabels paintTicks snapToTicks minorTickSpacing majorTickSpacing labelTable ".indexOf(prop) >= 0) {
+//		  updateDOMNode();
+		}
 	}
 
 	@Override
