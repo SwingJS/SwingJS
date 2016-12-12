@@ -431,7 +431,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	@SuppressWarnings("unused")
-	private boolean drawImagePriv(Image img, int x, int y, ImageObserver observer) {
+	public boolean drawImagePriv(Image img, int x, int y, ImageObserver observer) {
 		backgroundTaintCount++;
 		if (img != null) {
 			int[] pixels = null;

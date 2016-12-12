@@ -29,6 +29,7 @@
 package jsjava.awt.image;
 
 //import jsjava.awt.color.ICC_Profile;
+import swingjs.JSGraphics2D;
 import jsjava.awt.geom.Rectangle2D;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.Rectangle;
@@ -213,7 +214,7 @@ public class ConvolveOp implements BufferedImageOp, RasterOp {
         	if (origDst != dst) {
             Graphics2D g = origDst.createGraphics();
             try {
-                g.drawImage(dst, 0, 0, null);
+                ((JSGraphics2D)g).drawImagePriv(dst, 0, 0, null);
             } finally {
                 g.dispose();
             }

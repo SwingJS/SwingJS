@@ -140,7 +140,7 @@ public class JSGraphicsCompositor {
 					}
 			if (canDo) {
 				g.setAlpha(scaleFactors[3]);
-				g.drawImage(img, x, y, null);
+				g.drawImagePriv(img, x, y, null);
 				g.setAlpha(1);
 				return true;
 			}

@@ -28,6 +28,7 @@
 
 package jsjava.awt.image;
 
+import swingjs.JSGraphics2D;
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.geom.NoninvertibleTransformException;
 import jsjava.awt.geom.Rectangle2D;
@@ -301,7 +302,7 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
             Graphics2D g = origDst.createGraphics();
             try {
                 g.setComposite(AlphaComposite.Src);
-                g.drawImage(dst, 0, 0, null);
+                ((JSGraphics2D)g).drawImagePriv(dst, 0, 0, null);
             } finally {
                 g.dispose();
             }

@@ -30,6 +30,8 @@ package jssun.swing;
 import java.util.HashMap;
 import java.util.Map;
 
+import swingjs.JSGraphics2D;
+
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.GraphicsConfiguration;
@@ -196,7 +198,7 @@ public abstract class CachedPainter {
     protected void paintImage(Component c, Graphics g,
                               int x, int y, int w, int h, Image image,
                               Object[] args) {
-        g.drawImage(image, x, y, null);
+    	((JSGraphics2D)g).drawImagePriv(image, x, y, null);
     }
 
     /**

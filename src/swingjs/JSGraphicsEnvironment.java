@@ -60,7 +60,7 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 			// allow creating a Graphics from MemoryImageSource
 			// so pixels would never be there. 
 			if (pix != null)
-				g.drawImage((BufferedImage) img, 0, 0, null);
+				g.drawImagePriv((BufferedImage) img, 0, 0, null);
 			/**
 			 * @j2sNative
 			 * img._g = g;

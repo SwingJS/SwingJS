@@ -82,6 +82,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	protected boolean _havePix;
 	protected Object _canvas; // created in setRangeRGB
 	private int[] _pixSaved;
+	private Object _g; // a JSGraphics2D instance
 	private static int rangeIndex;
 
 	/**
@@ -910,6 +911,7 @@ public class BufferedImage extends Image implements Transparency // ,
 			for (int x = startX, off = yoff; x < startX + w; x++) 
 				pixels[y * width + x] = rgbArray[off++];
 		_pix = _pixSaved = pixels;
+		_g = null;
 		getGraphics();
 	}
 

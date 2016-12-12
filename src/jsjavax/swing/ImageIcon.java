@@ -29,6 +29,8 @@ package jsjavax.swing;
 
 import java.net.URL;
 
+import swingjs.JSGraphics2D;
+
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
@@ -406,7 +408,7 @@ public class ImageIcon implements Icon {
     @Override
 		public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
         if(imageObserver == null) {
-           g.drawImage(image, x, y, c);
+        	((JSGraphics2D)g).drawImagePriv(image, x, y, c);
         } else {
            g.drawImage(image, x, y, imageObserver);
         }

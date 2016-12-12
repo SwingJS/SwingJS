@@ -28,6 +28,7 @@
 
 package jsjavax.swing;
 
+import swingjs.JSGraphics2D;
 import jsjava.applet.Applet;
 import jsjava.awt.Component;
 import jsjava.awt.Container;
@@ -601,7 +602,7 @@ public class JViewport extends JComponent
         Graphics bsg = getBackingStoreGraphics(g);
         try {
             super.paint(bsg);
-            g.drawImage(backingStoreImage, 0, 0, this);
+            ((JSGraphics2D)g).drawImagePriv(backingStoreImage, 0, 0, this);
         } finally {
             bsg.dispose();
         }
@@ -612,7 +613,7 @@ public class JViewport extends JComponent
         try {
             super.paint(bsg);
             g.setClip(oClip);
-            g.drawImage(backingStoreImage, 0, 0, this);
+            ((JSGraphics2D)g).drawImagePriv(backingStoreImage, 0, 0, this);
         } finally {
             bsg.dispose();
         }
@@ -804,7 +805,7 @@ public class JViewport extends JComponent
                         super.paint(bsg);
 
                         // Copy whole of the backing store to g.
-                        g.drawImage(backingStoreImage, 0, 0, this);
+                        ((JSGraphics2D)g).drawImagePriv(backingStoreImage, 0, 0, this);
                     } finally {
                         bsg.dispose();
                     }

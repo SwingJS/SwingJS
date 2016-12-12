@@ -1228,7 +1228,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			setOuterLocationFromComponent();
 			if (op == SET_LOCATION)
 				break;
-			//$FALL-THROUGH$
+		//$FALL-THROUGH$
 		case SET_CLIENT_SIZE: // is supposed to be without insets
 		case SET_SIZE:
 			if (scrollerNode != null) {
