@@ -22,6 +22,12 @@ import swingjs.api.DOMNode;
  * 
  * Only integer raster data RGB and ARGB have been implemented.
  * 
+ * useful states:
+ * 
+ * _domNode != null ==> came from an image node (image file)
+ * _canvas != null ==> an image has been created from raster data 
+ * 
+ * 
  * 
  * 
  * @author Bob Hanson
@@ -42,28 +48,6 @@ public class JSImage extends BufferedImage {
 		_pix = argb;
 	}
 	
-	/**
-	 * convert [r g b a  r g b a ...] into [argb argb argb ...]
-	 * 
-	 * currently does not respect transparency
-	 * 
-	 * @param imgData HTML5 canvas.context.imageData.data
-	 * @return array of ARGB values
-	 * 
-	 */
-  int[] toIntARGB(int[] imgData) {
-    /*
-     * red=imgData.data[0];
-     * green=imgData.data[1];
-     * blue=imgData.data[2];
-     * alpha=imgData.data[3];
-     */
-    int n = imgData.length / 4;
-    int[] iData = new int[n];
-    for (int i = 0, j = 0; i < n; j++)
-      iData[i++] = (imgData[j++] << 16) | (imgData[j++] << 8) | imgData[j++] | 0xFF000000;
-    return iData;
-  }      
   
   /**
    * Use HTML5 to load PNG, JPG, or GIF image in order to extract its pixels
@@ -85,34 +69,5 @@ public class JSImage extends BufferedImage {
 		_imgNode = img;
 	}
 		
-	/**
-	 * Extract the int[] data from this image by installing it in a canvas.
-	 * Note that if if img.complete == false, then this will result in a
-	 * black rectangle.
-	 * 
-	 */
-	@SuppressWarnings("unused")
-	public void setPixels() {
-		DOMNode canvas = DOMNode.createElement("canvas", null);
-		int w = width;
-		int h = height;
-		/**
-		 * @j2sNative
-		 * 
-		 * canvas.width = w;
-		 * canvas.height = h;
-		 * var ctx = canvas.getContext("2d");
-		 * ctx.drawImage(this._imgNode, 0, 0, w, h);
-		 * this._pix = this.toIntARGB(ctx.getImageData(0, 0, w, h).data);
-		 * 
-		 */
-		{
-			// placeholder only, for Eclipse reference
-			toIntARGB(null);
-		}
-		_imgNode = canvas;
-		((DataBufferInt) raster.getDataBuffer()).data = this._pix;
-		_havePix = true;
-	}
 
 }

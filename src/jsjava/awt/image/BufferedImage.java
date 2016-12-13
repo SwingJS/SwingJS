@@ -31,8 +31,6 @@ package jsjava.awt.image;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import swingjs.JSImage;
-
 import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsEnvironment;
@@ -42,6 +40,8 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
 import jssun.awt.image.OffScreenImageSource;
+import swingjs.JSImage;
+import swingjs.api.DOMNode;
 
 /**
  * 
@@ -864,7 +864,7 @@ public class BufferedImage extends Image implements Transparency // ,
 
 
 	public int getRGB(int x, int y) {
-		if (_imgNode != null && !_havePix) 
+		if ((_imgNode != null || _g != null) && !_havePix) 
 		  ((JSImage) this).setPixels();
 		if (_pix == null)
 			_pix = _pixSaved;
@@ -888,7 +888,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	}
 	
 	public synchronized void setRGB(int x, int y, int rgb) {
-		if (_imgNode != null && !_havePix) { 
+		if ((_imgNode != null || _g != null) && !_havePix) {
 		  ((JSImage) this).setPixels();
 		  _imgNode = null;
 		}
@@ -911,8 +911,11 @@ public class BufferedImage extends Image implements Transparency // ,
 			for (int x = startX, off = yoff; x < startX + w; x++) 
 				pixels[y * width + x] = rgbArray[off++];
 		_pix = _pixSaved = pixels;
-		_g = null;
-		getGraphics();
+		// _pix is used by getGraphics()
+		// _pixSaved is kept in case we need to do this again
+		_g = null; // forces new this._canvas to be created in getGraphics()
+		getGraphics(); // sets _pix = null and creates _canvas 
+		
 	}
 
 
@@ -1531,6 +1534,9 @@ public class BufferedImage extends Image implements Transparency // ,
 						.getSampleModelTranslateY()));
 
 		Object tdata = null;
+		
+		if ((_imgNode != null || _g != null) && !_havePix) 
+		  ((JSImage) this).setPixels();
 
 		for (int i = startY; i < startY + height; i++) {
 			tdata = raster.getDataElements(startX, i, width, 1, tdata);
@@ -1746,5 +1752,71 @@ public class BufferedImage extends Image implements Transparency // ,
 	public int getTransparency() {
 		return colorModel.getTransparency();
 	}
+
+	/**
+	 * Extract the int[] data from this image by installing it in a canvas.
+	 * Note that if if img.complete == false, then this will result in a
+	 * black rectangle.
+	 * 
+	 */
+	@SuppressWarnings("unused")
+	public void setPixels() {
+		DOMNode canvas = null;
+		/**
+		 * @j2sNative
+		 * 
+		 * if (this._g)
+		 *   canvas = this._g.canvas;
+		 */
+		{}
+		if (canvas == null)
+			canvas = DOMNode.createElement("canvas", null);
+		int w = width;
+		int h = height;
+		int[] data = null;
+		/**
+		 * note that setting canvas.width clears it
+		 * @j2sNative
+		 * 
+		 * if (!this._g) {
+		 *   canvas.width = w;
+		 *   canvas.height = h;
+		 * }
+		 * var ctx = canvas.getContext("2d");
+		 * if (!this._g)
+		 *   ctx.drawImage(this._imgNode, 0, 0, w, h);
+		 * data = ctx.getImageData(0, 0, w, h).data;
+		 * 
+		 */
+		{
+		}
+	  _pix = toIntARGB(data);
+		_imgNode = canvas;
+		((DataBufferInt) raster.getDataBuffer()).data = _pix;
+		_havePix = true;
+	}
+
+	/**
+	 * convert [r g b a  r g b a ...] into [argb argb argb ...]
+	 * 
+	 * currently does not respect transparency
+	 * 
+	 * @param imgData HTML5 canvas.context.imageData.data
+	 * @return array of ARGB values
+	 * 
+	 */
+  int[] toIntARGB(int[] imgData) {
+    /*
+     * red=imgData.data[0];
+     * green=imgData.data[1];
+     * blue=imgData.data[2];
+     * alpha=imgData.data[3];
+     */
+    int n = imgData.length / 4;
+    int[] iData = new int[n];
+    for (int i = 0, j = 0; i < n; j++)
+      iData[i++] = (imgData[j++] << 16) | (imgData[j++] << 8) | imgData[j++] | 0xFF000000;
+    return iData;
+  }      
 
 }

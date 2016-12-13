@@ -237,9 +237,13 @@ public abstract class DOMNode {
 	public static DOMNode getImageNode(Image img) {
 		
 		/**
+		 * note that canvas takes precedence over imgNode, because
+		 * imgNode is a placeholder for the original image, but canvas
+		 * will be an op-filtered image
+		 * 
 		 * @j2sNative
 		 * 
-		 *            return (img._imgNode || img._canvas);
+		 *            return (img._canvas || img._imgNode);
 		 */
 		{
 			return null;

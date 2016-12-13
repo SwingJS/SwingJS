@@ -291,14 +291,15 @@ public class AffineTransformOp implements BufferedImageOp, RasterOp {
 //                                    BufferedImage.TYPE_INT_ARGB);
 //        }
         if (ImagingLib.filter(this, src, dst) == null) {
-            throw new ImagingOpException ("Unable to transform src image");
+        	dst = src;
+          System.out.println("Unable to transform src image");
         }
 
 //        if (needToConvert) {
 //            ColorConvertOp ccop = new ColorConvertOp(hints);
 //            ccop.filter(dst, origDst);
 //        }
-        else if (origDst != dst) {
+        if (origDst != dst) {
             Graphics2D g = origDst.createGraphics();
             try {
                 g.setComposite(AlphaComposite.Src);

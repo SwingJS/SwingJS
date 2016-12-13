@@ -2,8 +2,11 @@ package swingjs;
 
 import swingjs.api.DOMNode;
 import jsjava.awt.AlphaComposite;
+import jsjava.awt.Graphics2D;
 import jsjava.awt.Image;
+import jsjava.awt.Point;
 import jsjava.awt.geom.AffineTransform;
+import jsjava.awt.geom.Point2D;
 import jsjava.awt.image.AffineTransformOp;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
@@ -15,6 +18,7 @@ import jsjava.awt.image.LookupTable;
 import jsjava.awt.image.Raster;
 import jsjava.awt.image.RasterOp;
 import jsjava.awt.image.RescaleOp;
+import jsjava.awt.image.SampleModel;
 import jsjava.awt.image.WritableRaster;
 import jssun.awt.image.SunWritableRaster;
 
@@ -231,7 +235,7 @@ public class JSGraphicsCompositor {
 
 	public BufferedImage filterImage(BufferedImage src, BufferedImage dst,
 			BufferedImageOp op) {
-		BufferedImage retBI = dst; // was null; this is better for development at least
+		BufferedImage retBI = null;
 		int type = 0;
 		/**
 		 * @j2sNative
@@ -242,8 +246,16 @@ public class JSGraphicsCompositor {
 		{
 		}
 		switch (type) {
+		default:
+			retBI = op.filter(src, dst);
+			break;
+		case 'A':
+			((JSGraphics2D) dst.getGraphics()).drawImage(src, ((AffineTransformOp) op).getTransform(),
+					null);
+			retBI = dst;
+			break;
 		case 'L':
-			// REMIND: Fix this!
+			// not implemented
 			LookupTable table = ((LookupOp) op).getTable();
 			if (table.getOffset() != 0) {
 				// Right now the native code doesn't support offsets
@@ -256,24 +268,12 @@ public class JSGraphicsCompositor {
 				}
 			}
 			break;
-		case 'A':
-			AffineTransformOp bOp = (AffineTransformOp) op;
-			double[] matrix = new double[6];
-			AffineTransform xform = bOp.getTransform();
-			bOp.getTransform().getMatrix(matrix);
-
-			if (transformBI(src, dst, matrix, bOp.getInterpolationType()) > 0) {
-				retBI = dst;
-			}
-			break;
 		case 'C':
+			// not implemented
 			ConvolveOp cOp = (ConvolveOp) op;
 			if (convolveBI(src, dst, cOp.getKernel(), cOp.getEdgeCondition()) > 0) {
 				retBI = dst;
 			}
-			break;
-		default:
-			retBI = op.filter(src, dst);
 			break;
 		}
 
@@ -286,12 +286,6 @@ public class JSGraphicsCompositor {
 
 	private int convolveBI(BufferedImage src, BufferedImage dst, Kernel kernel,
 			int edgeCondition) {
-		// SwingJS TODO
-		return 0;
-	}
-
-	private int transformBI(BufferedImage src, BufferedImage dst,
-			double[] matrix, int interpolationType) {
 		// SwingJS TODO
 		return 0;
 	}
@@ -339,8 +333,7 @@ public class JSGraphicsCompositor {
 		   */
 		  {}
 		  // note: images created some other way are presumed to have int[] pix defined and possibly byte[pix]
-			return imgNode;
 		}
-		return null;
+		return imgNode;
 	}
 }
