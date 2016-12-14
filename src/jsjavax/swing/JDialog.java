@@ -640,7 +640,8 @@ public class JDialog extends Dialog implements WindowConstants,
 		rootPane.addNotify(); // builds a peer for the root pane
 	}
 
-    private static int dialogCount;
+  private static int dialogCount;
+    
     /**
      * Called by the constructor methods to create the default
      * <code>rootPane</code>.

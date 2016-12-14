@@ -3922,6 +3922,10 @@ public abstract class JComponent extends Container {
 		 * settings* to be installed.
 		 */
 
+		// BH note that this method is NOT run for top-level 
+		// classes JFrame, JDialog, or JApplet, as those do 
+		// not  
+		
 		uninstallUIAndProperties();
 
 		// // aaText shouldn't persist between look and feels, reset it.
