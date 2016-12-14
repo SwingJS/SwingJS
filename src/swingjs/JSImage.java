@@ -2,8 +2,6 @@ package swingjs;
 
 import javajs.util.Base64;
 import jsjava.awt.image.BufferedImage;
-import jsjava.awt.image.DataBufferInt;
-import jsjava.awt.image.ImageObserver;
 import swingjs.api.DOMNode;
 
 /**
@@ -40,7 +38,6 @@ public class JSImage extends BufferedImage {
 	// TODO: implement simple ColorModel and Raster
 	
 	public String src;
-	private Runnable callback;
 
 	public JSImage(int[] argb, int width, int height, String src) {
 		super(width, height, TYPE_INT_ARGB);

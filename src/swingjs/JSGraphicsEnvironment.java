@@ -5,6 +5,7 @@ import swingjs.api.HTML5Canvas;
 import jsjava.util.Locale;
 
 import jsjava.awt.Font;
+import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsDevice;
 import jsjava.awt.GraphicsEnvironment;
@@ -26,55 +27,9 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 
 	@Override
 	public Graphics2D createGraphics(BufferedImage img) {
-		return createGraphicsSized(img, img.getWidth(), img.getHeight());
+		return (Graphics2D) img.getImageGraphic().create();
 	}
 	
-	@SuppressWarnings("unused")
-	public Graphics2D createGraphicsSized(Object img, int width, int height) {
-		// get a canvas for an image
-		JSGraphics2D g = null;
-		/**
-		 * @j2sNative
-		 * 
-		 *     g = img._g;
-		 * 
-		 */
-		{
-		}
-		if (g == null) {
-			HTML5Canvas canvas = (HTML5Canvas) DOMNode.createElement("canvas", "img" + System.currentTimeMillis());
-			Object pix = null;
-			/**
-			 * @j2sNative
-			 * 
-			 * canvas.width = width;
-			 * canvas.height = height;
-			 * img._canvas = canvas;
-			 * pix = img._pix;
-			 * 	
-			 */
-			{}
-			g = new JSGraphics2D(canvas);
-			// we need to draw the image now, because it might
-			// have pixels. Note that Java actually does not
-			// allow creating a Graphics from MemoryImageSource
-			// so pixels would never be there. 
-			if (pix != null)
-				g.drawImagePriv((BufferedImage) img, 0, 0, null);
-			/**
-			 * @j2sNative
-			 * img._g = g;
-			 * if (pix)
-			 *   pix.img = img;
-			 * img._pix = null;
-			 * 
-			 */
-			{
-			}
-		}
-		return g;
-	}
-
 	@Override
 	public Font[] getAllFonts() {
 		// TODO Auto-generated method stub

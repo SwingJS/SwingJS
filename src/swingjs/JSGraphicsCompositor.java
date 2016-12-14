@@ -1,12 +1,7 @@
 package swingjs;
 
-import swingjs.api.DOMNode;
 import jsjava.awt.AlphaComposite;
-import jsjava.awt.Graphics2D;
 import jsjava.awt.Image;
-import jsjava.awt.Point;
-import jsjava.awt.geom.AffineTransform;
-import jsjava.awt.geom.Point2D;
 import jsjava.awt.image.AffineTransformOp;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.BufferedImageOp;
@@ -18,9 +13,9 @@ import jsjava.awt.image.LookupTable;
 import jsjava.awt.image.Raster;
 import jsjava.awt.image.RasterOp;
 import jsjava.awt.image.RescaleOp;
-import jsjava.awt.image.SampleModel;
 import jsjava.awt.image.WritableRaster;
 import jssun.awt.image.SunWritableRaster;
+import swingjs.api.DOMNode;
 
 public class JSGraphicsCompositor {
 
@@ -250,8 +245,8 @@ public class JSGraphicsCompositor {
 			retBI = op.filter(src, dst);
 			break;
 		case 'A':
-			((JSGraphics2D) dst.getGraphics()).drawImage(src, ((AffineTransformOp) op).getTransform(),
-					null);
+			dst.getImageGraphic().drawImage(src,
+					((AffineTransformOp) op).getTransform(), null);
 			retBI = dst;
 			break;
 		case 'L':

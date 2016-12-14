@@ -709,7 +709,8 @@ public abstract class JComponent extends Container {
 					// cr.width = width;
 					// cr.height = height;
 					// }
-					Graphics cg = sg.create4(cr.x, cr.y, cr.width, cr.height); // SwingJS
+					Graphics cg = sg.create4(cr.x, 
+							(((JComponent) comp).isContentPane ? 0 : cr.y), cr.width, cr.height); // SwingJS
 																																			// SAEM
 					cg.setColor(comp.getForeground());
 					cg.setFont(comp.getFont());

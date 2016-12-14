@@ -40,8 +40,10 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.Transparency;
 import jsjava.awt.color.ColorSpace;
 import jssun.awt.image.OffScreenImageSource;
+import swingjs.JSGraphics2D;
 import swingjs.JSImage;
 import swingjs.api.DOMNode;
+import swingjs.api.HTML5Canvas;
 
 /**
  * 
@@ -82,7 +84,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	protected boolean _havePix;
 	protected Object _canvas; // created in setRangeRGB
 	private int[] _pixSaved;
-	private Object _g; // a JSGraphics2D instance
+	private JSGraphics2D _g; // a JSGraphics2D instance
 	private static int rangeIndex;
 
 	/**
@@ -914,7 +916,7 @@ public class BufferedImage extends Image implements Transparency // ,
 		// _pix is used by getGraphics()
 		// _pixSaved is kept in case we need to do this again
 		_g = null; // forces new this._canvas to be created in getGraphics()
-		getGraphics(); // sets _pix = null and creates _canvas 
+		getImageGraphic(); // sets _pix = null and creates _canvas 
 		
 	}
 
@@ -1283,7 +1285,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 */
 	public Graphics2D createGraphics() {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		return env.createGraphics(this);
+		return (Graphics2D) env.createGraphics(this);
 	}
 
 	/**
@@ -1817,6 +1819,49 @@ public class BufferedImage extends Image implements Transparency // ,
     for (int i = 0, j = 0; i < n; j++)
       iData[i++] = (imgData[j++] << 16) | (imgData[j++] << 8) | imgData[j++] | 0xFF000000;
     return iData;
-  }      
+  }
+
+  /**
+   * 
+   * Get a JSGraphics2D for this image, but don't initialize it with a state save
+   * the way g.create() or image.getGraphics() or image.createGraphics() do.
+   * So do NOT execute g.dispose() on the returned object. 
+   * 
+   * @author Bob Hanson
+   * @return a JSGraphics2D object
+   */
+	public Graphics2D getImageGraphic() {
+		if (_g == null) {
+			HTML5Canvas canvas = (HTML5Canvas) DOMNode.createElement("canvas", "img" + System.currentTimeMillis());
+			/**
+			 * @j2sNative
+			 * 
+			 * canvas.width = this.getWidth();
+			 * canvas.height = this.getHeight();
+			 * 	
+			 */
+			{}
+			 _canvas = canvas;
+			Object pix =  _pix;
+			_g = new JSGraphics2D(canvas);
+			// we need to draw the image now, because it might
+			// have pixels. Note that Java actually does not
+			// allow creating a Graphics from MemoryImageSource
+			// so pixels would never be there. 
+			if (pix != null)
+				_g.drawImagePriv(this, 0, 0, null);
+			/**
+			 * @j2sNative
+			 * if (pix)
+			 *   pix.img = this;
+			 * 
+			 */
+			{
+			}
+			_pix = null;
+		}
+		return _g;
+	}
+
 
 }
