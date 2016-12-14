@@ -9,6 +9,7 @@ import jsjava.awt.Toolkit;
 import jsjava.awt.event.ComponentEvent;
 import jsjava.awt.event.WindowEvent;
 import jsjava.awt.peer.FramePeer;
+import jsjava.beans.PropertyChangeEvent;
 import jsjavax.swing.JFrame;
 import jsjavax.swing.LookAndFeel;
 import swingjs.JSToolkit;
@@ -240,6 +241,17 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 	@Override
 	public Insets getInsets() {
 		return jc.getFrameViewer().getInsets();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName().equals("resizable")) {
+			boolean resizable = ((Boolean) e.getNewValue()).booleanValue();
+			if (jc.getFrameViewer().isResizable() == resizable)
+				return;
+			jc.getFrameViewer().setResizable(resizable);
+		}
+		super.propertyChange(e);
 	}
 
 
