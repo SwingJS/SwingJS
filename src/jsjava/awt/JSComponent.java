@@ -139,8 +139,20 @@ public abstract class JSComponent extends Component {
       return uiClassID;
   }
 
+	/**
+	 * a version of setUI for objects that are not JComponents
+	 * (JDialog, JFrame, JWindow).
+	 * 
+	 * @param ui
+	 */
 	public void setUI(ComponentUI ui) {
 		this.ui = ui;
+		if (ui != null) {
+			// set up the ui as a PropertyChangeListener
+			// and, if applicable, a ChangeListener
+			ui.installUI(this);
+		}
+
 	}
 
 	public ComponentUI getUI() {
