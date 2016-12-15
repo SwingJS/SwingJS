@@ -23,6 +23,7 @@ public class Resizer {
 	private int offsetx = -4, offsety = -4, minSize = 10;
 	private RootPaneContainer rpc;
 	private int titleHeight;
+	private boolean enabled = true;
 
 	public Resizer() {
 	}
@@ -109,6 +110,8 @@ public class Resizer {
 	 * @param type
 	 */
 	protected void fHandleResizer(int dx, int dy, int type) {
+		if (!enabled)
+			return;
 		switch (type) {
 		case MouseEvent.MOUSE_PRESSED:
 			DOMNode.setStyles(resizer, "background-color", "green");
@@ -129,6 +132,8 @@ public class Resizer {
 
 	protected void fHandleDOMResize(Object event, int dw, int dh) {
 		Rectangle r;
+		if (!enabled)
+			return;
 		if (event == null) {
 			// from above
 			r = getFrameOffset(dw, dh);
@@ -163,6 +168,10 @@ public class Resizer {
 			if (r.height + dh > minSize)
 				r.height += dh;
 			return r;
+	}
+
+	public void setEnabled(boolean b) {
+		enabled  = b;
 	}
 
 }
