@@ -231,9 +231,30 @@ public class JSFrameViewer implements JSInterface {
 		return canvas;
 	}
 
+	boolean resizable = true;
+
+	public void setResizable(boolean tf) {
+		resizable = tf;
+		if (!isResizable())
+			resizable = false;
+		if (resizer != null)
+			resizer.setEnabled(resizable);
+		else if (resizable && newResizer() != null)
+			resizer.setPosition(0, 0);
+	}
+	
+	public boolean isResizable() {
+		// default is for a frame to be resizable, but we can override this either
+		// by setting JFrame.setResizable(false). 
+		
+		return resizable && (!appletViewer.haveResizable || appletViewer.isResizable);
+	}
+
 	public Resizer getResizer() {
-		if (resizer != null || !appletViewer.isResizable)
-			return resizer;
+		return (resizer != null || !isResizable() ? resizer : newResizer());
+	}
+
+	private Resizer newResizer() {
 		resizer = new Resizer().set(this);
 		if (resizer != null)
 			resizer.show();

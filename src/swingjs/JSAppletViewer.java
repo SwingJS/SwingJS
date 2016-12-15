@@ -151,7 +151,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 	private ArrayList<Object> timerQueue;
 
-	boolean isResizable;
+	boolean isResizable, haveResizable;
 
 	private boolean addFrame;
 
@@ -226,7 +226,10 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		// if (platform != null && platform.length() > 0)
 		// apiPlatform = (GenericPlatform) Interface.getInterface(platform);
 		display = params.get("display");
-		isResizable = "true".equalsIgnoreCase("" + params.get("isResizable"));
+		String s = "" + params.get("isResizable");
+		isResizable = "true".equalsIgnoreCase(s);
+		haveResizable = (isResizable || "false".equalsIgnoreCase(s));
+		
 		addFrame = "true".equalsIgnoreCase("" + params.get("addFrame"));
 
 		threadGroup = new JSThreadGroup(appletName);
