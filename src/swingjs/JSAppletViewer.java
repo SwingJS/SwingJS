@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javajs.util.Lst;
+import javajs.util.PT;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
@@ -535,7 +536,10 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				showAppletStatus("running " + main);
 				// we still have an applet context for a variety of reasons
 				// but main(String[] args) is run as a static method.
-				((JSApplet) applet).runMain(main, (String[]) params.get("args"));
+				Object args = params.get("args");
+				if (args instanceof String)
+					args = PT.split((String) args, " ");
+				((JSApplet) applet).runMain(main, (String[]) args);
 				JSToolkit.readyCallback(appletName, fullName, applet, this);				
 				break;
 			case APPLET_QUIT:
