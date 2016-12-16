@@ -85,11 +85,11 @@ public class JSRadioButtonUI extends JSButtonUI {
 			// But we need to slightly underestimate it so that the
 			// width of label + button does not go over the total calculated width
 			int wBtn = setHTMLSize1(domBtn, false, false).width - 1;
-			int wIcon = setHTMLSize1(iconNode, false, false).width;
-			// Now wrap the two with a zzzz and get its dimensions
-			// and then put them back into wrapper.
+			int wIcon = Math.max(0, setHTMLSize1(iconNode, false, false).width - 1);
+			// Now wrap the two with a div and get its dimensions
+			// and then put them back into the wrapper.
 			dobj = setHTMLSize1(wrap("div", "", iconNode, domBtn, textNode), false, false);
-			// set the offset of the text based on the radio button size
+			// set the offset of the text based on the icon and radio button size
 			DOMNode.setStyles(textNode, "left", wBtn + wIcon + "px");
 			// add a couple of vertical adjustments
 
