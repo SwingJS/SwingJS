@@ -6,7 +6,10 @@
 
 // NOTES by Bob Hanson
 
-// BH 12/5/2016 1:15:20 AM additional inner class nesting fix for b$
+// BH 12/15/2016 6:55:40 AM URL line switches:
+//     -j2sdebugCode  do not use core files at all
+//     -j2sdebugCore  use coreXXXX.js rather than coreXXXX.z.js and debugger if a class is defined twice
+//     -j2sdebugName=java.util.Hashtable  debugger started for load or declareInterface
 // BH 11/30/2016 7:17:33 AM inner class nesting fix for b$
 // BH 11/27/2016 7:26:24 AM c$ final fix
 // BH 11/25/2016 1:27:16 PM class.isInstance(obj) fixed
@@ -150,14 +153,20 @@ var _profileNoOpt = false;  // setting this true will remove Bob's signature opt
 
 var __signatures = ""; 
 var profilet0;
+var _profileNew = null;
+var _jsid0 = 0;
+
 Clazz.startProfiling = function(doProfile) {
-  if (typeof doProfile == "number")
+  if (typeof doProfile == "number") {
+    _profileNew = (arguments[1] ? {} : null);
+    _jsid0 = _jsid;
     setTimeout(function() { alert("total wall time: " + doProfile + " sec\n" + Clazz.getProfile()) }, doProfile * 1000);
+  }
   _profile = ((doProfile || arguments.length == 0) && self.JSON && window.performance ? {} : null);
   return (_profile ? "use Clazz.getProfile() to show results" : "profiling stopped and cleared")
 }
 
-var tabN = function(n) { n = ("" + n).split(".")[0]; return "        ".substring(n.length) + n + "\t" };
+var tabN = function(n) { n = ("" + n).split(".")[0]; return "..........".substring(n.length) + n + "\t" };
 
 Clazz.getProfile = function() {
   var s = "run  Clazz.startProfiling() first";
@@ -181,8 +190,25 @@ Clazz.getProfile = function() {
       + "--------\t--------\t--------\n" 
       + l.sort().reverse().join("\n")
       ;
-    _profile = {};
+    _profile = null;
+    
+    if (_profileNew) {
+      s += "\n\n Total new objects: " + (_jsid - _jsid0) + "\n";
+      s += "\ncount   \texec(ms)\n";
+      s += "--------\t--------\t------------------------------\n";
+      totalcount = 0;
+      totaltime = 0;
+      for (var key in _profileNew) {
+        var count = _profileNew[key][0];
+        var tnano = _profileNew[key][1];
+        totalcount += count
+        totaltime += tnano
+        s += tabN(count) + tabN(tnano) + "\t" +key + "\n";
+      }
+      s+= tabN(totalcount)+tabN(totaltime) + "\n"
+    }
   }
+  _profileNew = null;
   return s; //+ __signatures;
 }
 
@@ -190,12 +216,22 @@ Clazz.getProfile = function() {
 var addProfile = function(c, f, p, t1, t2) {
   var s = c.__CLASS_NAME__ + " " + f + " ";// + JSON.stringify(p);
   if (__signatures.indexOf(s) < 0)
-    __signatures += s + "\n";    
-  _profile[s] || (_profile[s] = [0,0, 0]);
-  _profile[s][0]++;
-  _profile[s][1] += t1;
-  _profile[s][2] += t2;
+    __signatures += s + "\n";
+  var p = _profile[s];
+  p || (p = _profile[s] = [0,0,0]);
+  p[0]++;
+  p[1] += t1;
+  p[2] += t2;
 }
+
+var addProfileNew = function(c, t) {
+  var s = c.__CLASS_NAME__;
+  var p = _profileNew[s]; 
+  p || (p = _profileNew[s] = [0,0]);
+  p[0]++;
+  p[1]+=t;
+}
+   
 
 /**
  * show all methods that have the same signature.
@@ -229,7 +265,7 @@ Clazz.getClass = function (clazzHost) {
   if (typeof clazzHost == "function")
     return clazzHost;
   var clazzName;
-  if (clazzHost instanceof CastedNull) {
+  if (clazzHost._NULL_) {
     clazzName = clazzHost.clazzName;
   } else {
     switch (typeof clazzHost) {
@@ -265,8 +301,25 @@ Clazz.getClass = function (clazzHost) {
 // overrideMethod 
 // c$ = p0p ();
 
+var doDebugger = function() { debugger }
+
+var _declared = {};
+
+var checkDeclared = function(name, type) {
+  if (J2S._debugName && name.toLowerCase() == J2S._debugName)doDebugger();
+  if (_declared[name] == type) {
+    var s = (type == 1 ? "interface" : "class") +" " + name + " is defined twice. A prior core file has probably needed to load a class that is in the current core file. Check to make sure that package.js declares the first class read in jarClassPath or that BuildCompress has included all necessary files."
+    System.out.println(s);
+    if (J2S._debugCore)
+      doDebugger();
+    }
+  _declared[name] = type;
+}
+
 Clazz.declareInterface = function (prefix, name, interfacez, _declareInterface) {
   var clazzFun = function () {};
+  if (J2S._debugCore)
+    checkDeclared((prefix.__PKG_NAME__ || prefix.__CLASS_NAME__) + "." + name, 1);
   decorateFunction(clazzFun, prefix, name);
   if (interfacez)
     implementOf(clazzFun, interfacez);
@@ -298,9 +351,6 @@ Clazz.decorateAsClass = function (clazzFun, prefix, name, clazzParent,
 
 Clazz.declareType = function (prefix, name, clazzSuper, interfacez, 
     superClazzInstance, _declareType) {
-    
-    if (superClazzInstance)debugger;
-    
   var cl = Clazz.decorateAsClass (function () { 
   Clazz.instantialize (this, arguments);}, 
     prefix, name, clazzSuper, interfacez, superClazzInstance);
@@ -467,13 +517,17 @@ Clazz.defineMethod = function (clazzThis, funName, funBody, rawSig, isConstruct)
   if (doDelegate) {
     //Generate a new delegating method for the class
     Clazz.saemCount1++;
+       
     var delegate = function () {
       var t0 = (_profile ? window.performance.now() : 0);
-      var pTypes = getParamTypes(arguments);      
-      var f = findMethod(this, clazzThis, arguments, pTypes, isConstruct);
+      var args = [];
+      for (var i = arguments.length; --i >= 0;)
+        args[i] = arguments[i];
+      var pTypes = getParamTypes(args);      
+      var f = findMethod(this, clazzThis, args, pTypes, isConstruct);
       if (f == -1 || f == null)
         return null;
-      var args = fixNullParams(arguments);
+      fixNullParams(args);
       var t1 = (_profile ? window.performance.now() : 0);
       var ret = f.apply(this, args);
       _profile && addProfile(arguments.callee.claxxRef, arguments.callee.methodName, pTypes, t1 - t0, window.performance.now() - t1);            
@@ -701,41 +755,23 @@ Clazz.prepareCallback = function (innerObj, args) {
         isNew = true;
       }
       var clazz = Clazz.getClass(outerObj);
-      var oneOuter = !isNew;
       while (clazz.superClazz) {
         var key = Clazz.getClassName(clazz = clazz.superClazz, true);
-        if (oneOuter && b[key]) {
-          if (b[key] == outerObj) {
-          // we are done if we find the outerObj, since its superclass references
-          // are already all present in the inner class's $b field
-          //
-          //    Outer
-          //      Inner1  
-          //        Inner2 <-- we are here
-            break;
-          }
-          // OK, we do need to copy if we have mixed objects, because an 
-          // anonymous class refers to its outerclass, but then the class it
-          // subclasses also has inner classes the refer to *its* outerclasses
-          // and we are now prepping that second inner class.
-          //(see PhET GasProperties idealgas.controller.ToolPanel buttons)
-          //
-          //    Outer1
-          //      Inner1   --subclasses--> Outer2
-          //                                 Inner2  <-- we are here
-          oneOuter = false;
-          b = appendMap({}, b);
-        }
+        if (!isNew && b[key]) 
+          break;
         b[key] = outerObj; 
       }
       b[Clazz.getClassName(outerObj, true)] = outerObj;
     }
     if (isNew) {
       outerObj.$b$ = b;
-    } else if (oneOuter) {
+    } else {
       // BH: look out for an outer object being the same for two different inner classes of the same type
       // BH: only in that case we must clone the outer array.
-      b = appendMap({}, b);
+      var bb = {};
+      for (var key in b)
+        bb[key] = b[key];
+      b = bb;
     }
     innerObj.b$ = b;
   }
@@ -797,6 +833,7 @@ Clazz.innerTypeInstance = function (clazzInner, outerObj, finalVars) {
     // f$ is short for the once-chosen "$finals"
     var of$ = outerObj.f$;
     obj.f$ = (finalVars ? 
+//      (of$ ? Object.assign({}, of$, finalVars) : finalVars)
       (of$ ? appendMap(appendMap({}, of$), finalVars) : finalVars)
       : of$ ? of$ : null);
   }
@@ -845,7 +882,7 @@ Clazz.isClassDefined = function(clazzName) {
 Clazz.getClassName = function(obj, fAsClassName) {
   if (obj == null)
     return "NullObject";
-  if (obj instanceof CastedNull)
+  if (obj._NULL_)
     return obj.clazzName;
   switch(typeof obj) {
   case "number":
@@ -899,8 +936,9 @@ Clazz.getClassName = function(obj, fAsClassName) {
 
 var appendMap = function(a, b) {
   if (b)
-    for (var s in b)
-      a[s] = b[s];
+    for (var s in b) {
+        a[s] = b[s];
+    }
   return a;
 }
 
@@ -1035,18 +1073,8 @@ var getParamTypes = function (args) {
  *  
  */
 var fixNullParams = function(args) {
-  var n = args.length;
-  var bits = 0;
-  for (var i = 0; i < n; i++) {
-    if (args[i] instanceof CastedNull)
-      bits |= (1 << i);
-  }
-  if (!bits)
-    return args;
-  var params = Array(n);
-  for (var k = n; --k >= 0;)
-    params[k] = (bits & (1 << k) ? null : args[k]);
-  return params;
+  for (var i = args.length; --i >= 0;)
+    args[i] && args[i]._NULL_ && (args[i] = null);
 }
 
 var setSignature = function(f$, funBody, sig) {
@@ -1103,7 +1131,6 @@ var getInheritedLevel = function (clazzTarget, clazzBase, isTgtStr, isBaseStr) {
     clazzBase = evalType(clazzBase);
   if (!clazzBase || !clazzTarget)
     return -1;
-  
   var level = 0;
   var zzalc = clazzTarget; // zzalc <--> clazz
   while (zzalc !== clazzBase && level < 10) {
@@ -1564,7 +1591,9 @@ var checkInnerFunction = function (hostSuper, funName) {
  */
 /* public */
 Clazz.castNullAs = function (asClazz) {
-  return new CastedNull (asClazz);
+  var f = new CastedNull (asClazz);
+  f._NULL_ = 1;
+  return f;
 };
 
 
@@ -1579,8 +1608,6 @@ Clazz.castNullAs = function (asClazz) {
  */
 /* public */
 Clazz.instanceOf = function (obj, clazz) {
-  if (obj == null)
-    return false    
   // allows obj to be a class already, from arrayX.getClass().isInstance(y)
   return (obj != null && clazz && (obj == clazz || obj instanceof clazz || getInheritedLevel(Clazz.getClassName(obj), clazz, true) >= 0));
 };
@@ -1850,6 +1877,9 @@ Clazz.instantialize = function (objThis, args) {
     return;
   }
 
+
+  var t0 = (_profileNew ? window.performance.now() : 0);
+
   try{
 
     // obj.construct.stack is the full stack of constructors. 
@@ -1903,8 +1933,9 @@ Clazz.instantialize = function (objThis, args) {
     delete objThis.__PREPPT__;
   } catch (e) {
      alert("ahah2!" + e + (e.stack || Clazz.getStackTrace()));
-     debugger
+     doDebugger()
   }
+  _profileNew && addProfileNew(myclass, window.performance.now() - t0);
 
 };
 
@@ -1929,7 +1960,7 @@ var prepFields = function(objThis, clazzThis, pt) {
       (p = stack[i]._PREP_) && (i > 0 || !objThis.__PREPPED__) && p.apply(objThis, []);
   } catch (e) {
      alert("ahah3!" + e + (e.stack || Clazz.getStackTrace()));
-     debugger
+     doDebugger()
   }
 };
 
@@ -1944,7 +1975,7 @@ Clazz._superCount1 = 0;
 /* public */
 Clazz.superConstructor = function (objThis, clazzThis, args) {
   if (clazzThis == null) {
-    debugger;//??
+    doDebugger();//??
    // SwingJS insertion
     clazzThis = objThis;
   } else {
@@ -2126,6 +2157,7 @@ var decorateFunction = function (clazzFun, prefix, name, _decorateFunction) {
 
   if (Clazz._Loader) 
     Clazz._Loader.updateNodeForFunctionDecoration(qName);
+  return;
 };
 
 /**
@@ -2156,7 +2188,7 @@ var inheritClass = function (clazzThis, clazzSuper, objSuper) {
     if (unloadedClasses[Clazz.getClassName(clazzThis, true)]) {
       // Don't change clazzThis.protoype! Keep it!
     } else if (objSuper) {
-      debugger;
+      doDebugger();
       // ! Unsafe reference prototype to an instance!
       // Feb 19, 2006 --josson
       // OK for this reference to an instance, as this is anonymous instance,
@@ -3380,8 +3412,12 @@ _Loader.jarClasspath = function (jar, clazzes) {
   if (!(clazzes instanceof Array))
     clazzes = [clazzes];
   unwrapArray(clazzes);
-  for (var i = clazzes.length; --i >= 0;)
+  if (J2S._debugCore)
+    jar = jar.replace(/\.z\./, ".")
+  for (var i = clazzes.length; --i >= 0;) {
+    clazzes[i] = clazzes[i].replace(/\//g,".").replace(/\.js$/g,"")
     classpathMap["#" + clazzes[i]] = jar;
+  }
   classpathMap["$" + jar] = clazzes;
 };
 
@@ -3699,7 +3735,7 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
       var s = ""+e;
       if (s.indexOf("missing ] after element list")>= 0)
         s = "File not found";
-      debugger
+      doDebugger()
       alert(s + " loading file " + file + ": " + node.name + " - " + Clazz._lastDecorated + (e.stack ? "\n\n" + e.stack : Clazz.getStackTrace()));
     }
     tryToLoadNext(file0);
@@ -4362,8 +4398,9 @@ var load = function (musts, name, optionals, declaration) {
     for (var i = 0; i < name.length; i++)
       load(musts, name[i], optionals, declaration, name);
     return;
-  }  
-
+  }
+  if (J2S._debugCore)
+    checkDeclared(name, 2);
   if (_Loader._checkLoad) {
     if (_Loader._classPending[name]) {
       //alert("duplicate load for " + name)
@@ -6803,7 +6840,7 @@ Clazz.defineMethod(c$,"getStackTrace",
 function(){
 var s = "" + this + "\n";
 if (!this.stackTrace){
-debugger
+debugger;
 return s
 }
 for(var i=0;i<this.stackTrace.length;i++){

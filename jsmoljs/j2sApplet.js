@@ -1,6 +1,10 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 12/15/2016 6:55:40 AM URL line switches:
+//     -j2sdebugCode  do not use core files at all
+//     -j2sdebugCore  use coreXXXX.js rather than coreXXXX.z.js and debugger if a class is defined twice
+//     -j2sdebugName=java.util.Hashtable  debugger started for load or declareInterface
 // BH 12/3/2016 6:53:17 PM adds "master" for applet registration, allowing access during file loading
 // BH 10/23/2016 10:13:42 PM adds support for Info.main
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
@@ -52,7 +56,6 @@ J2S = (function(document) {
     _persistentMenu: false,
 		_getZOrders: getZOrders,
 		_z:getZOrders(z),
-		_debugCode: true,  // set false in process of minimization
 		db: {
 			_DirectDatabaseCalls:{
 				// these sites are known to implement access-control-allow-origin * 
@@ -72,6 +75,9 @@ J2S = (function(document) {
 	}
   j.z = z;
 	var ref = document.location.href.toLowerCase();
+  j._debugCode = (ref.indexOf("-j2sdebugcode") >= 0);
+  j._debugCore = (ref.indexOf("-j2sdebugcore") >= 0);
+  j._debugName = (ref.indexOf("-j2sdebugname") >= 0 ? ref.split("-j2sdebugname=")[1].split(" ")[0] : null);
 	j._httpProto = (ref.indexOf("https") == 0 ? "https://" : "http://"); 
 	j._isFile = (ref.indexOf("file:") == 0);
 	if (j._isFile) // ensure no attempt to read XML in local request:
