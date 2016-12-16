@@ -8,6 +8,7 @@ import jsjava.awt.Dimension;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.ButtonGroup;
 import jsjavax.swing.DefaultButtonModel;
+import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JRadioButton;
 
 public class JSRadioButtonUI extends JSButtonUI {
@@ -50,23 +51,31 @@ public class JSRadioButtonUI extends JSButtonUI {
 			domBtn = enableNode = newDOMObject("input", id, "type", myType, "name",
 					name);
 			setDataComponent(domBtn);
+			iconNode = newDOMObject("span", id + "_icon");
 			textNode = newDOMObject("label", id + "l1");
 			setEnabled(c.isEnabled());
 			label = newDOMObject("label", id + "l2", "htmlFor", id);
 			setDataComponent(label);
-			setDataComponent(textNode);  // needed for mac safari/chrome
-			wrapper = (hasOuterDiv ? label : createItem("_item", label));
+			setDataComponent(iconNode); // needed for mac safari/chrome
+			setDataComponent(textNode); // needed for mac safari/chrome
+			// hasOuterDiv will be true unless this is a menu bar menu ?
+			if (hasOuterDiv) {
+				wrapper = label;
+			} else {
+				wrapper = createItem("_item", label);
+			}
 		}
 		if (b.isSelected() || isNew)
 			DOMNode.setAttr(domBtn, "checked", "true");
-		setCssFont(
-				DOMNode.setAttr(textNode, "innerHTML", ((AbstractButton) c).getText()),
-				c.getFont());
+		setCssFont(textNode, c.getFont());
+
+		setIconAndText("radio", (ImageIcon) button.getIcon(), button.getIconTextGap(), button.getText());
 
 		// Get the dimensions of the radio button by itself.
 
 		// We have to remove any position:abolute because if that
 		// is there, it messes up the width and height calculation.
+		DOMNode.setStyles(iconNode, "position", null);
 		DOMNode.setStyles(domBtn, "position", null);
 		DOMNode.setStyles(textNode, "position", null);
 		DOMNode obj;
@@ -76,24 +85,27 @@ public class JSRadioButtonUI extends JSButtonUI {
 			// But we need to slightly underestimate it so that the
 			// width of label + button does not go over the total calculated width
 			int wBtn = setHTMLSize1(domBtn, false, false).width - 1;
+			int wIcon = setHTMLSize1(iconNode, false, false).width;
 			// Now wrap the two with a zzzz and get its dimensions
 			// and then put them back into wrapper.
-			obj = wrap("div", "", domBtn, textNode);
-			dobj = setHTMLSize1(obj, false, false);
+			dobj = setHTMLSize1(wrap("div", "", iconNode, domBtn, textNode), false, false);
 			// set the offset of the text based on the radio button size
-			DOMNode.setStyles(textNode, "left", wBtn + "px");
+			DOMNode.setStyles(textNode, "left", wBtn + wIcon + "px");
 			// add a couple of vertical adjustments
 
 			vCenter(domBtn, -75);
+			vCenter(iconNode, -15);
 			vCenter(textNode, -50);
 
 			// make everything absolute to pass sizing info to all
 			DOMNode.setPositionAbsolute(domBtn, Integer.MIN_VALUE, 0);
+			DOMNode.setPositionAbsolute(iconNode, Integer.MIN_VALUE, 0);
 			DOMNode.setPositionAbsolute(textNode, Integer.MIN_VALUE, 0);
 			DOMNode.setPositionAbsolute(label, Integer.MIN_VALUE, 0);
 
 			// (Re)create label.
 		}
+		label.appendChild(iconNode);
 		label.appendChild(domBtn);
 		label.appendChild(textNode);
 		if (doAll) {
@@ -137,4 +149,11 @@ public class JSRadioButtonUI extends JSButtonUI {
 	public void handleDOMEvent(Object e) {
 		((AbstractButton) c).doClick(0);
 	}
+	
+	@Override
+	protected int getDefaultIconTextGap() {
+		return 4;
+	}
+
+
 }

@@ -146,7 +146,7 @@ public class Timer implements Serializable {
 	private transient final AtomicBoolean notify = new AtomicBoolean(false);
 
 	private volatile int initialDelay, delay;
-	private volatile boolean repeats = true, coalesce = true;
+	private volatile boolean repeats0 = true, repeats = true, coalesce = true;
 
 	private transient final Runnable doPostEvent;
 
@@ -414,7 +414,7 @@ public class Timer implements Serializable {
 	 *          its first action event
 	 */
 	public void setRepeats(boolean flag) {
-		repeats = flag;
+		repeats0 = repeats = flag;
 	}
 
 	/**
@@ -493,6 +493,7 @@ public class Timer implements Serializable {
 	 * @see #stop
 	 */
 	public void start() {
+		repeats = repeats0;
 		timerQueue().add(this);
 		dispatch(getInitialDelay());
 	}

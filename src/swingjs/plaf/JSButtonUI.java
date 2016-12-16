@@ -5,6 +5,7 @@ import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIManager;
@@ -40,56 +41,67 @@ public class JSButtonUI extends JSLightweightUI {
 	
 	protected boolean isRadio;
 	protected DOMNode itemNode;
-	private DOMNode labelNode;
 	protected JMenuItem menuItem;
+	protected AbstractButton button;
 
 
 	@Override
 	protected DOMNode updateDOMNode() {
-		if (domNode == null)
-			domBtn = enableNode = valueNode = domNode = newDOMObject("input", id,
-					"type", "button");
+		// all subclasses will have their own version of this.
+		if (domNode == null) {
+			domNode = newDOMObject("span", id);
+			domNode.appendChild(iconNode = newDOMObject("span", id+"_icon"));
+			domNode.appendChild(enableNode = domBtn = valueNode = 
+					newDOMObject("input", id + "_btn", "type", "button"));
+		}
 		setDataComponent(domBtn);
-		setCssFont(
-				DOMNode.setAttr(domNode, "value", ((AbstractButton) c).getText()),
-				c.getFont());
+		setDataComponent(iconNode);
+		setIconAndText("button", (ImageIcon) button.getIcon(), button.getIconTextGap(), button.getText());
+		setCssFont(domNode, c.getFont());
 		return domNode;
 	}
 
-	@SuppressWarnings("unused")
+	/**
+	 * 
+	 * @param type "_item" or "_menu"
+	 * @param myNode will be a label for radio and checkbox only; otherwise null
+	 * @return
+	 */
 	protected DOMNode createItem(String type, DOMNode myNode) {
-
-		String text = null;
-		/**
-		 * @j2sNative
-		 * 
-		 *            text = (this.c.getText ? this.c.getText() : null);
-		 */
-		{
-		}
+		// all subclasses will call this method
+		String text = button.getText();
+		ImageIcon icon = (ImageIcon) button.getIcon();
+		int gap = button.getIconTextGap();
 		if (text != null && (text.trim().length() == 0 || text.equals("|"))) {
 			text = null;
 		}
-
 		itemNode = newDOMObject("li", id + type);
-
-		if (text != null) {
+		if (text != null || icon != null) {
 			DOMNode aNode = newDOMObject("a", id + type + "_a");
 			DOMNode.setStyles(aNode, "margin", "1px 4px 1px 4px");
 			itemNode.appendChild(aNode);
 			if (myNode == null) {
-				setCssFont(DOMNode.setAttr(aNode, "innerHTML", text), c.getFont());	
+				if (iconNode == null)
+					iconNode = newDOMObject("span", id + "_icon");
+				if (textNode == null)
+					textNode = newDOMObject("span", id + "_text");
+				$(iconNode).attr("role","menucloser");
+				$(textNode).attr("role","menucloser");
+				setDataUI(iconNode);
+				setDataUI(textNode);
+				aNode.appendChild(iconNode);
+				aNode.appendChild(textNode);
+				setCssFont(aNode, c.getFont());	
 				enableNode = aNode;
+				setIconAndText("btn", icon, gap, text);
 			} else {
 				aNode.appendChild(myNode);
 			}
 			// j2sMenu.js will set the mouse-up event for the <a> tag with the role=menuitem
 			// attribute via j2sApplet._jsSetMouse(). 
 			// That event will then fire handleJSEvent
-			// since we .
 			setDataUI(aNode);
 			setDataComponent(aNode);
-//			setJ2sMouseHandler(aNode, false);
 			setDataComponent(itemNode);
 		}
 		return itemNode;
@@ -127,15 +139,16 @@ public class JSButtonUI extends JSLightweightUI {
 		// takes place through the standard Java
 		// pathway involving Component.LightweightDispatcher 
 		// posting to the event queue 
-		installDefaults((AbstractButton) c);
-		installListeners((AbstractButton) c);
-		installKeyboardActions((AbstractButton) c);
+		button = (AbstractButton) c;
+		installDefaults(button);
+		installListeners(button);
+		installKeyboardActions(button);
 	}
 
 	@Override
 	protected void uninstallUIImpl() {
-		uninstallKeyboardActions((AbstractButton) c);
-		uninstallListeners((AbstractButton) c);
+		uninstallKeyboardActions(button);
+		uninstallListeners(button);
 		// uninstallDefaults((AbstractButton) c);
 	}
 

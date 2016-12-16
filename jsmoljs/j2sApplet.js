@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 12/16/2016 8:43:11 AM adds icon+text for buttons
 // BH 12/15/2016 6:55:40 AM URL line switches:
 //     -j2sdebugCode  do not use core files at all
 //     -j2sdebugCore  use coreXXXX.js rather than coreXXXX.z.js and debugger if a class is defined twice
@@ -1195,16 +1196,12 @@ J2S = (function(document) {
 		});    
 
 		J2S.$bind(who, 'mouseup touchend', function(ev) {
-    
-  //    System.out.println(["j2sApplet UP",ev.type, doIgnore(ev),ev.target.id,ev.target.getAttribute("role"),ev.target["data-ui"]]);
-      
-      
+ 
       if (doIgnore(ev))
         return true;
         
-      if (ev.target.getAttribute("role")) {
-        //System.out.println("trying to hide the menu")
-        ev.target._menu._hideJSMenu()
+      if (ev.target.getAttribute("role")) { // JSButtonUI adds role=menucloser to icon and text
+        (ev.target._menu || ev.target.parentElement._menu)._hideJSMenu()
       }
         
 			J2S._setMouseOwner(null);

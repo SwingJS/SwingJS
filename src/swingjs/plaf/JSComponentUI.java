@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import javajs.util.PT;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
@@ -25,6 +26,7 @@ import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjava.util.EventObject;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.SwingConstants;
 import jsjavax.swing.event.ChangeEvent;
@@ -166,6 +168,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected DOMNode[] enableNodes;
 
 	/**
+	 * the part of a component that can hold an icon
+	 */
+	protected DOMNode iconNode;
+
+	/**
 	 * the part of a component that can hold text
 	 */
 	protected DOMNode textNode;
@@ -253,6 +260,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected JSComponentUI parent;
 
 	String currentText;
+	
+	protected ImageIcon currentIcon;
+
+	protected int currentGap = Integer.MAX_VALUE;
+
+
+
 
 	/**
 	 * the scroller for a text area
@@ -285,6 +299,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	public boolean isNull;
 
 	private DOMNode waitImage;
+
 
 	public JSComponentUI() {
 		setDoc();
@@ -583,44 +598,88 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
     propertyChangedFromListenerCUI(prop);
   }
   
-  protected void propertyChangedFromListenerCUI(String prop) {
-		DOMNode obj = null;
-		String val = null;
-		boolean isStyle = false;
+	protected void propertyChangedFromListenerCUI(String prop) {
 		if (prop == "preferredSize") {
 			preferredSize = c.getPreferredSize(); // may be null
 			getPreferredSize();
 			return;
 		}
+		if (prop == "background") {
+			setBackground(c.getBackground());
+			return;
+		}
 		if (prop == "text") {
-			val = ((AbstractButton) c).getText();
-			if (val.equals(currentText)) // we set it here, then fired the property
-																		// change
-				return;
-			currentText = val;
-			if (textNode != null) {
-				prop = "innerHTML";
-				obj = textNode;
-			} else if (valueNode != null) {
-				prop = "value";
-				obj = valueNode;
+			String val = ((AbstractButton) c).getText();
+			if (val == null ? currentText != null : val.equals(currentText))
+				setIconAndText(prop, currentIcon, currentGap,
+						(String) val);
+			return;
+		}
+		if (prop == "iconTextGap" && iconNode != null) {
+			int gap = ((AbstractButton) c).getIconTextGap();
+			if (currentGap != gap)
+				setIconAndText(prop, currentIcon, gap, currentText);
+			return;
+		}
+		if (prop == "icon" && iconNode != null) {
+			// note that we use AbstratButton cast here just because
+			// it has a getIcon() method. JavaScript will not care if
+			// it is really a JLabel or JOptionPane, which also have icons
+			ImageIcon icon = (ImageIcon) ((AbstractButton) c).getIcon();
+			if (icon == null ? currentIcon != null : !icon.equals(currentIcon))
+				setIconAndText(prop, icon, currentGap, currentText);
+			return;
+		}
+		if (debugging)
+			System.out.println("JSComponentUI: unrecognized prop: " + prop);
+	}
+	
+	protected void setIconAndText(String prop, ImageIcon icon, int gap,
+			String text) {
+		currentIcon = icon;
+		currentText = text;
+		currentGap = gap;
+		if (iconNode != null) {
+			DOMNode.setAttr(iconNode, "innerHTML", "");
+			if (icon != null) {
+				DOMNode imageNode = DOMNode.getImageNode(icon.getImage());
+				vCenter (imageNode, 35);
+				iconNode.appendChild(imageNode);
+				prefHeight = icon.getIconHeight();
 			}
 		}
-		if (obj == null) {
-			if (debugging)
-				System.out.println("JSComponentUI: unrecognized prop: " + prop);
+		if (text == null) {
+			text = "";
 		} else {
-			if (debugging)
-				System.out.println("JSComponentUI: setting " + id + " " + prop);// + " "
-																																				// +
-																																				// val);
-			if (isStyle)
-				DOMNode.setStyles(obj, prop, val);
-			else
-				setProp(obj, prop, val);
+			if (icon != null) {
+				if (gap == Integer.MAX_VALUE)
+					gap = getDefaultIconTextGap();
+				if (gap != 0)
+					DOMNode.addHorizontalGap(iconNode, gap);
+			}
+			if (text.indexOf("<html>") == 0) {
+				// PhET uses <html> in labels and uses </br>
+				text = PT.rep(text.substring(6, text.length() - 7), "</br>", "");
+			}
 		}
+		DOMNode obj = null;
+		if (textNode != null) {
+			prop = "innerHTML";
+			obj = textNode;
+		} else if (valueNode != null) {
+			prop = "value";
+			obj = valueNode;
+			setBackgroundFor(valueNode, c.getBackground());
+		}
+		if (obj != null)
+			setProp(obj, prop, text);
+		if (debugging)
+			System.out.println("JSComponentUI: setting " + id + " " + prop);
 	}
 
+	protected int getDefaultIconTextGap() {
+		return 0;
+	}
 
 	private String createMsgs = "";
 
@@ -1339,12 +1398,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void setBackground(Color color) {
-		if (domNode == null)
+		setBackgroundFor(domNode, color);
+	}
+
+	private void setBackgroundFor(DOMNode node, Color color) {
+		if (node == null)
 			return;
-		DOMNode.setStyles(domNode, "background-color",
+		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? Color.white : color));
 		if (c.isBackgroundPainted)
-			DOMNode.setStyles(domNode, "background","transparent");
+			DOMNode.setStyles(node, "background","transparent");
 	}
 
 	@Override

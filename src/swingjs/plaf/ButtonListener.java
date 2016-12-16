@@ -79,25 +79,26 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 		btn = b;
 	}
 
-	static String labelprops = ";" + AbstractButton.TEXT_CHANGED_PROPERTY + ";"
-			+ AbstractButton.MARGIN_CHANGED_PROPERTY + ";"
-			+ AbstractButton.VERTICAL_ALIGNMENT_CHANGED_PROPERTY + ";"
-			+ AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY + ";"
-			+ AbstractButton.VERTICAL_TEXT_POSITION_CHANGED_PROPERTY + ";"
-			+ AbstractButton.HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY;
+
+	
+//	static String labelprops = AbstractButton.MARGIN_CHANGED_PROPERTY + ";"
+//			+ AbstractButton.VERTICAL_ALIGNMENT_CHANGED_PROPERTY + ";"
+//			+ AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY + ";"
+//			+ AbstractButton.VERTICAL_TEXT_POSITION_CHANGED_PROPERTY + ";"
+//			+ AbstractButton.HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY;
 
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 		String prop = e.getPropertyName();
 		// System.out.println("JSButtonListener property change: " + prop + " " +
 		// e.getSource());
+		AbstractButton b = (AbstractButton) e.getSource();
+		
 		if (prop == AbstractButton.MNEMONIC_CHANGED_PROPERTY) {
-			updateMnemonicBinding((AbstractButton) e.getSource());
+			updateMnemonicBinding(b);
 		} else if (prop == AbstractButton.CONTENT_AREA_FILLED_CHANGED_PROPERTY) {
-			checkOpacity((AbstractButton) e.getSource());
-		} else if ("font" == prop || "foreground" == prop
-				|| labelprops.indexOf(prop) >= 0) {
-			AbstractButton b = (AbstractButton) e.getSource();
+			checkOpacity(b);
+		} else {
 			((JSComponentUI) b.ui).propertyChangedFromListener(prop);
 		}
 	}

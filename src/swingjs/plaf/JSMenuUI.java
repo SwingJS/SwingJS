@@ -29,6 +29,7 @@ public class JSMenuUI extends JSMenuItemUI {
 			isMenuBarMenu = jm.isTopLevelMenu();
 			if (isMenuBarMenu) {
 				domNode = newDOMObject("label", id);
+				// TODO implement icons for menuBar
 				setCssFont(DOMNode.setAttr(domNode, "innerHTML", menuItem.getText()),
 						c.getFont());
 				setDataComponent(domNode);
