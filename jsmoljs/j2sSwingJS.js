@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 12/18/2016 7:16:21 AM GCC fix for trailing comma in System
 // BH 12/15/2016 6:55:40 AM URL line switches:
 //     -j2sdebugCode  do not use core files at all
 //     -j2sdebugCore  use coreXXXX.js rather than coreXXXX.z.js and debugger if a class is defined twice
@@ -2895,7 +2896,7 @@ java.lang.System = System = {
     if (!System.props)
       return System.$props[key] = val; // BH
     System.props.setProperty (key, val);
-  },
+  }
   
 });
 

@@ -2,6 +2,7 @@
 
 // generic SwingJS Applet
 
+// BH 12/18/2016 8:09:56 AM added SwingJS.Loaded and SwingJS.isLoaded
 // BH 7/24/2015 9:09:39 AM allows setting Info.resourcePath
 // BH 4/28/2015 10:15:32 PM adds getAppletHtml 
 // BH 4/2/2015 5:17:44 PM  adds SwingJS.getJavaResource(path)
@@ -19,31 +20,6 @@ if (typeof(SwingJS) == "undefined") {
 	SwingJS.getApplet = function(id, Info, checkOnly) {
 		return SwingJS._Applet._get(id, Info, checkOnly);
 	}
-
-  SwingJS.getJavaResource = function(path, isJavaPath) {
-		if (path.indexOf("http") != 0) {
-      var applet = J2S._applets[java.lang.Thread.currentThread().getName()];
-      path = (!isJavaPath && applet.__Info.resourcePath || applet.__Info.j2sPath) + "/" + path
-      }      
-    System.out.println("Swingjs.js getJavaResource " + path)
-    var s = J2S._getFileData(path);
-    if (s.indexOf("[Exception") == 0)
-      return null; 
-    if (path.lastIndexOf(".css") == path.length - 4) {
-      path = path.substring(0, path.lastIndexOf("/") + 1) + "images/";
-      s = s.replace(/images\//g, path)
-      jQuery("head").append(jQuery("<style type='text/css'>" + s + "</style>"));
-      return s;
-    } else if (path.lastIndexOf(".js") == path.length - 3) {
-      try {
-        eval(s);
-      } catch (e) {
-      alert("error processing " + s)
-        return null;
-      }
-    }
-    return s; 
-  }
 
   	// optional Info here	
 	SwingJS.getAppletHtml = function(applet, Info) {
