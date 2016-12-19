@@ -343,6 +343,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 		setLayout(null); // layout is managed by View hierarchy
 		uiClassID = uid;
 		updateUI();
+    setOpaque(true);// BH not sure why this is not here
 	}
 
 	/**

@@ -33,5 +33,11 @@ public interface J2SInterface {
 
 	void _saveFile(String fileName, Object data, String mimeType, String encoding);
 
+	String _getResourcePath(String resourceName, boolean isJavaPath);
+
+	Object _getJavaResource(String resourceName, boolean isJavaPath);
+
+	boolean _isResourceLoaded(String file, boolean done);
+
 }
 

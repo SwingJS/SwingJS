@@ -606,11 +606,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 		if (prop == "background") {
 			setBackground(c.getBackground());
+			if (!c.isOpaque() && domNode != null)
+				setTransparent(domNode);
 			return;
 		}
 		if (prop == "text") {
 			String val = ((AbstractButton) c).getText();
-			if (val == null ? currentText != null : val.equals(currentText))
+			if (val == null ? currentText != null : !val.equals(currentText))
 				setIconAndText(prop, currentIcon, currentGap,
 						(String) val);
 			return;
@@ -894,6 +896,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			return outerNode;
 
 		domNode = updateDOMNode();
+		if (!c.isOpaque() && domNode != null)
+			setTransparent(domNode);
 		Component[] children = getChildren();
 		int n = children.length;
 
@@ -1407,7 +1411,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? Color.white : color));
 		if (c.isBackgroundPainted)
-			DOMNode.setStyles(node, "background","transparent");
+			setTransparent(node);
+	}
+
+	private void setTransparent(DOMNode node) {
+		DOMNode.setStyles(node, "background","transparent");
 	}
 
 	@Override
@@ -1634,7 +1642,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	protected String dumpEvent(EventObject e) {
 		String s = "";
-/**
+		/**
 		 * @j2sNative
 		 * 
 		 *  s = " " + e.__CLASS_NAME__ + " " + e.type + " " + e.id + " << " + e.getSource().htmlName; 

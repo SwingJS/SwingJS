@@ -178,8 +178,7 @@ public class JSSpinnerUI extends JSLightweightUI {
 //                     "DOWN", "decrement",
 //                  "KP_DOWN", "decrement",
 //       }),
-    LookAndFeel.installColorsAndFont(jc, null, null,
-        "Spinner.font");
+    LookAndFeel.installColorsAndFont(jc, "Spinner.background", "Spinner.foreground", "Spinner.font");
     super.installUIImpl();
 	}
 

@@ -8,10 +8,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javajs.util.AU;
 import javajs.util.Rdr;
 import javajs.util.SB;
+import javajs.util.ZipTools;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.Line;
@@ -71,6 +74,8 @@ public class JSToolkit extends SunToolkit {
 	public static J2SInterface J2S;
 	public static boolean isMac;
 		
+	private static Hashtable<String, Object> fileCache;
+	private static boolean useCache = true;
 	
 	/**
 	 * Derived from J2S._checkLoad, which can be set in html page
@@ -514,16 +519,73 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
-	public static String getJavaResource(String resourceName, boolean isJavaPath) {
-		System.out.println("JSToolkit getting Java resource " + resourceName);
-		/**
-		 * @j2sNative
-		 * 
-		 *            return SwingJS.getJavaResource(resourceName, isJavaPath);
-		 */
-		{
-			return null;
+	private static void cacheFileData(String path, Object data) {
+		if (fileCache == null)
+			fileCache = new Hashtable<String, Object>();
+		fileCache.put(path,  data);
+	}
+
+	/**
+	 * Load a Hashtable with resource files, which may be binary;
+	 * called by JSAppletViewer upon loading and finding Info.resourceZip not null.
+	 * 
+	 * @param zipFileName originating file
+	 * @param mapByteData map to fill or null for the default file cache
+	 */
+	public static void loadJavaResourcesFromZip(ClassLoader cl, String zipFileName, Map<String, Object>  mapByteData) {
+		if (mapByteData == null)
+			mapByteData = (fileCache == null ? (fileCache = new Hashtable<String, Object>()) : fileCache);
+		String fileList = "";
+		try {
+		  // ensure we have ZipTools, since this is a static call
+			Interface.getInstance("javajs.util.ZipTools", true); 
+			BufferedInputStream bis = new BufferedInputStream(cl.getResourceAsStream(zipFileName));
+			String prefix = J2S._getResourcePath(null, true);
+			fileList = ZipTools.cacheZipContentsStatic(bis, prefix, mapByteData, true);
+		} catch (Exception e) {
+			System.out.println("JSToolkit could not cache files from " + zipFileName);
+			return;
 		}
+		if (debugging)
+			System.out.println("JSToolkit loaded resources from " + zipFileName + ":\n" + fileList);
+	}
+	
+	
+	/**
+	 * Load a static JavaScript or CSS resource only once; 
+	 * no need to cache it if it is not there. 
+	 * 
+	 * @param file
+	 */
+	public static void getStaticResource(String file) {
+		if (J2S._isResourceLoaded(file, false))return;
+		getJavaResource(file, true, false);
+		J2S._isResourceLoaded(file, true);
+	}
+
+	/**
+	 * a String-based file such as .js, .css, or .property
+	 * 
+	 * @param resourceName
+	 * @param isJavaPath
+	 * @return
+	 */
+	public static String getJavaResource(String resourceName, boolean isJavaPath, boolean doCache) {
+		System.out.println("JSToolkit getting Java resource " + resourceName);
+		String path = J2S._getResourcePath(resourceName, isJavaPath);		
+		Object data = null;		
+		if (path == null || (data = getCachedFileData(path)) == null) { 
+			data = J2S._getJavaResource(resourceName, isJavaPath);
+			if (useCache && doCache && data != null)
+				cacheFileData(path, data);
+		}
+		return (data == null ? null : data instanceof String ? (String) data : Rdr.fixUTF((byte[]) data));
+
+	}
+	
+	private static Object getCachedFileData(String path) {
+		return (useCache && fileCache != null ?
+					fileCache.get(path) : null);
 	}
 
 	private static int dispatchID = 0;
@@ -811,13 +873,17 @@ public class JSToolkit extends SunToolkit {
 
 	/**
 	 * This could be a simple String, a javajs.util.SB, or unsigned or signed bytes
-	 * depending upon the browser and the file type.
+	 * depending upon the browser and the file type. 
+	 * 
+	 * It will not be cached, but it might come from a cache;
 	 * 
 	 * @param uri
 	 * @return
 	 */
 	public static Object getFileContents(String uri) {
-		Object data = null;
+		Object data = getCachedFileData(uri);
+		if (data != null)
+			return data;
 		/**
 		 * @j2sNative
 		 * 
@@ -1141,5 +1207,6 @@ public class JSToolkit extends SunToolkit {
 		{} 
 		return cl.getResource(name);    
   }
+
 
 }

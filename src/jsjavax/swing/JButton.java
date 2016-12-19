@@ -118,6 +118,7 @@ public class JButton extends AbstractButton {
 
         // initialize
         init(text, icon, "ButtonUI");
+        setOpaque(true);// BH not sure why this is not here
     }
 
     

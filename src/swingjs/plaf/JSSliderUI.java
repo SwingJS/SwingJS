@@ -54,8 +54,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		
 		// this mechanism allows on-demand loading of the jQuery slider
 		
-		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-j2sslider.css", true);
-		JSToolkit.getJavaResource("swingjs/jquery/jquery-ui-j2sslider.js", true);
+		JSToolkit.getStaticResource("swingjs/jquery/jquery-ui-j2sslider.css");
+		JSToolkit.getStaticResource("swingjs/jquery/jquery-ui-j2sslider.js");
 	}
 
 	@Override

@@ -328,6 +328,11 @@ public class ZipTools implements GenericZipTools {
 
   @Override
   public void readFileAsMap(BufferedInputStream bis, Map<String, Object> bdata, String name) {
+  	readFileAsMapStatic(bis, bdata, name);
+  }
+
+  public static void readFileAsMapStatic(BufferedInputStream bis,
+			Map<String, Object> bdata, String name) {
     int pt = (name == null ? -1 : name.indexOf("|"));
     name = (pt >= 0 ? name.substring(pt + 1) : null);
     try {
@@ -336,9 +341,9 @@ public class ZipTools implements GenericZipTools {
         if (name == null || isImage)
           bdata.put((isImage ? "_DATA_" : "_IMAGE_"), new BArray(getPngImageBytes(bis)));
         if (!isImage)
-          cacheZipContents(bis, name, bdata, true);
+          cacheZipContentsStatic(bis, name, bdata, true);
       } else if (Rdr.isZipS(bis)) {
-        cacheZipContents(bis, name, bdata, true);
+        cacheZipContentsStatic(bis, name, bdata, true);
       } else if (name == null){
         bdata.put("_DATA_", new BArray(Rdr.getLimitedStreamBytes(bis, -1)));
       } else {
@@ -349,22 +354,37 @@ public class ZipTools implements GenericZipTools {
       bdata.clear();
       bdata.put("_ERROR_", e.getMessage());
     }
-  }
+	}
 
-  @Override
+	@Override
   public String cacheZipContents(BufferedInputStream bis,
                                         String fileName,
                                         Map<String, Object> cache, 
                                         boolean asByteArray) {
+		return cacheZipContentsStatic(bis, fileName, cache, asByteArray);
+  }
+
+	/**
+	 * 
+	 * @param bis
+	 * @param fileName may end with "/" for a prefix or contain "|xxxx.xxx" for a specific file or be null
+	 * @param cache
+	 * @param asByteArray
+	 * @return
+	 */
+  public static String cacheZipContentsStatic(BufferedInputStream bis,
+			String fileName, Map<String, Object> cache, boolean asByteArray) {
     ZipInputStream zis = (ZipInputStream) newZIS(bis);
     ZipEntry ze;
     SB listing = new SB();
     long n = 0;
-    boolean oneFile = (asByteArray && fileName != null);
+    boolean isPath = (fileName != null && fileName.endsWith("/"));
+    boolean oneFile = (asByteArray && !isPath && fileName != null);
     int pt = (oneFile ? fileName.indexOf("|") : -1);
     String file0 = (pt >= 0 ? fileName : null);
     if (pt >= 0)
       fileName = fileName.substring(0,  pt);
+    String prefix = (fileName == null ? "" : isPath ? fileName : fileName + "|");
     try {
       while ((ze = zis.getNextEntry()) != null) {
         String name = ze.getName();
@@ -379,12 +399,12 @@ public class ZipTools implements GenericZipTools {
         long nBytes = ze.getSize();
         byte[] bytes = Rdr.getLimitedStreamBytes(zis, nBytes);
         if (file0 != null) {
-          readFileAsMap(Rdr.getBIS(bytes), cache, file0);
+          readFileAsMapStatic(Rdr.getBIS(bytes), cache, file0);
           return null;
         }
         n += bytes.length;
         Object o = (asByteArray ? new BArray(bytes) : bytes);        
-        cache.put((oneFile ? "_DATA_" : (fileName == null ? "" : fileName + "|") + name), o);
+        cache.put((oneFile ? "_DATA_" : prefix + name), o);
         if (oneFile)
           break;
       }
@@ -400,9 +420,9 @@ public class ZipTools implements GenericZipTools {
       return null;
     System.out.println("ZipTools cached " + n + " bytes from " + fileName);
     return listing.toString();
-  }
+	}
 
-  private static byte[] getPngImageBytes(BufferedInputStream bis) {
+	private static byte[] getPngImageBytes(BufferedInputStream bis) {
     try {
       if (Rdr.isPngZipStream(bis)) {
         int pt_count[] = new int[2];

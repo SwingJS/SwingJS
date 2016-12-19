@@ -19,7 +19,8 @@ public class JSPopupMenuUI extends JSPanelUI {
 		
 		// this mechanism allows on-demand loading of the CSS and JS used for the menu 
 		
-		JSToolkit.getJavaResource("swingjs/jquery/j2sMenu.js", true);
+		JSToolkit.getStaticResource("swingjs/jquery/j2sjquery-ui.js");
+		JSToolkit.getStaticResource("swingjs/jquery/j2sMenu.js");
 		/**
 		 * @j2sNative
 		 * 

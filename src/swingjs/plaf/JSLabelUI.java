@@ -1,15 +1,12 @@
 package swingjs.plaf;
 
-import javajs.util.PT;
-import jsjava.awt.JSComponent;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JLabel;
 import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.SwingConstants;
 import swingjs.api.DOMNode;
 
 /**
- * A JavaScript equivalent for a label. Text only. Vertical 
+ * A JavaScript equivalent for a label. Text only.  
  * 
  * @author Bob Hanson
  *

@@ -532,7 +532,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		ColorUIResource gray = new ColorUIResource(Color.gray);
 		// ColorUIResource lightGray = new ColorUIResource(Color.lightGray);
 		ColorUIResource darkGray = new ColorUIResource(Color.darkGray);
-		// ColorUIResource scrollBarTrack = new ColorUIResource(224, 224, 224);
+		ColorUIResource scrollBarTrack = new ColorUIResource(224, 224, 224);
 
 		Color control = table.getColor("control");
 		// Color controlDkShadow = table.getColor("controlDkShadow");
@@ -808,8 +808,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// *** Buttons
 				// "Button.defaultButtonFollowsFocus", Boolean.TRUE,
 				// "Button.font", dialogPlain12,
-				// "Button.background", control,
-				// "Button.foreground", controlText,
+			 "Button.background", control,
+			 "Button.foreground", controlText,
 				// "Button.shadow", controlShadow,
 				// "Button.darkShadow", controlDkShadow,
 				// "Button.light", controlHighlight,
@@ -817,7 +817,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "Button.border", buttonBorder,
 				"Button.margin",
 				new InsetsUIResource(2, 14, 2, 14),
-				// "Button.textIconGap", four,
+				"Button.textIconGap", four,
 				// "Button.textShiftOffset", zero,
 				// "Button.focusInputMap", new UIDefaults.LazyInputMap(new Object[] {
 				// "SPACE", "pressed",
@@ -827,8 +827,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// }),
 				//
 				// "ToggleButton.font", dialogPlain12,
-				// "ToggleButton.background", control,
-				// "ToggleButton.foreground", controlText,
+				"ToggleButton.background", control,
+				"ToggleButton.foreground", controlText,
 				// "ToggleButton.shadow", controlShadow,
 				// "ToggleButton.darkShadow", controlDkShadow,
 				// "ToggleButton.light", controlHighlight,
@@ -847,8 +847,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// }),
 				//
 				// "RadioButton.font", dialogPlain12,
-				// "RadioButton.background", control,
-				// "RadioButton.foreground", controlText,
+				"RadioButton.background", control,
+				"RadioButton.foreground", controlText,
 				// "RadioButton.shadow", controlShadow,
 				// "RadioButton.darkShadow", controlDkShadow,
 				// "RadioButton.light", controlHighlight,
@@ -869,8 +869,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// }),
 				//
 				// "CheckBox.font", dialogPlain12,
-				// "CheckBox.background", control,
-				// "CheckBox.foreground", controlText,
+				"CheckBox.background", control,
+			  "CheckBox.foreground", controlText,
 				// "CheckBox.border", radioButtonBorder,
 				"CheckBox.margin",
 				twoInsets,
@@ -888,8 +888,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 
 				// *** ColorChooser
 				// "ColorChooser.font", dialogPlain12,
-				// "ColorChooser.background", control,
-				// "ColorChooser.foreground", controlText,
+				"ColorChooser.background", control,
+				"ColorChooser.foreground", controlText,
 				//
 				"ColorChooser.swatchesSwatchSize",
 				new Dimension(10, 10),
@@ -1040,8 +1040,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 
 				// *** Label
 				"Label.font", dialogPlain12,
-				// "Label.background", control,
-				// "Label.foreground", controlText,
+				"Label.background", control,
+				"Label.foreground", controlText,
 				// "Label.disabledForeground", white,
 				// "Label.disabledShadow", controlShadow,
 				"Label.border",
@@ -1302,8 +1302,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// dictate the fonts used for the message, and
 				// OptionPane.buttonFont, which defines the font for the buttons.
 				// "OptionPane.font", dialogPlain12,
-				// "OptionPane.background", control,
-				// "OptionPane.foreground", controlText,
+			  "OptionPane.background", control,
+			  "OptionPane.foreground", controlText,
 				"OptionPane.messageForeground",
 				controlText,
 				// "OptionPane.border", optionPaneBorder,
@@ -1368,7 +1368,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "Separator.foreground", controlShadow,
 
 				// *** ScrollBar/ScrollPane/Viewport
-				// "ScrollBar.background", scrollBarTrack,
+				"ScrollBar.background", scrollBarTrack,
 				"ScrollBar.foreground",
 				control,
 				// "ScrollBar.track", table.get("scrollbar"),
@@ -1406,8 +1406,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				new Integer(16),
 
 				// "ScrollPane.font", dialogPlain12,
-				// "ScrollPane.background", control,
-				// "ScrollPane.foreground", controlText,
+				"ScrollPane.background", control,
+				"ScrollPane.foreground", controlText,
 				// "ScrollPane.border", textFieldBorder,
 				// "ScrollPane.viewportBorder", null,
 				// "ScrollPane.ancestorInputMap",
@@ -1434,14 +1434,14 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// }),
 				//
 				// "Viewport.font", dialogPlain12,
-				// "Viewport.background", control,
+				"Viewport.background", control,
 				"Viewport.foreground",
 				textText,
 
 				// *** Slider
 				// "Slider.font", dialogPlain12,
-				// "Slider.foreground", control,
-				// "Slider.background", control,
+				"Slider.foreground", control,
+				"Slider.background", control,
 				// "Slider.highlight", controlLtHighlight,
 				// "Slider.tickColor", Color.black,
 				// "Slider.shadow", controlShadow,
@@ -1482,8 +1482,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// *** Spinner
 				"Spinner.font",
 				sansSerifPlain12,
-				// "Spinner.background", control,
-				// "Spinner.foreground", control,
+				"Spinner.background", control,
+				"Spinner.foreground", control,
 				// "Spinner.border", textFieldBorder,
 				// "Spinner.arrowButtonBorder", null,
 				// "Spinner.arrowButtonInsets", null,
@@ -1532,8 +1532,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				//
 				// *** TabbedPane
 				// "TabbedPane.font", dialogPlain12,
-				// "TabbedPane.background", control,
-				// "TabbedPane.foreground", controlText,
+				"TabbedPane.background", control,
+				"TabbedPane.foreground", controlText,
 				// "TabbedPane.highlight", controlLtHighlight,
 				// "TabbedPane.light", controlHighlight,
 				// "TabbedPane.shadow", controlShadow,
@@ -1591,7 +1591,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				//
 				// *** Table
 				// "Table.font", dialogPlain12,
-				// "Table.foreground", controlText, // cell text color
+				"Table.foreground", controlText, // cell text color
 				"Table.background",
 				window, // cell background color
 				// "Table.selectionForeground", textHighlightText,
@@ -1715,8 +1715,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "Table.sortIconColor", controlShadow,
 				//
 				// "TableHeader.font", dialogPlain12,
-				// "TableHeader.foreground", controlText, // header text color
-				// "TableHeader.background", control, // header background
+				"TableHeader.foreground", controlText, // header text color
+				"TableHeader.background", control, // header background
 				// "TableHeader.cellBorder", tableHeaderBorder,
 
 				// Support for changing the background/border of the currently

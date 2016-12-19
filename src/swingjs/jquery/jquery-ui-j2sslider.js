@@ -7,7 +7,11 @@
 // adjusted for SwingJS for smoother operation 
 // added j2sslider("getState")
 
-(function( $, undefined ) {
+;(function() {
+
+if (J2S._isResourceLoaded("swingjs/jquery/jquery-ui-j2sslider.js", true))return;
+
+;(function( $, undefined ) {
 
 // number of pages in a slider
 // (how many times can you page 3/down to go through the whole range)
@@ -572,4 +576,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 
 });
 
-}(jQuery));
+})(J2S.__$);
+
+})();
+

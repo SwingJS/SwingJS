@@ -48,7 +48,7 @@ import swingjs.api.HTML5CanvasContext2D;
 @J2SIgnoreImport(jsjava.awt.AlphaComposite.class)
 public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
-	private int backgroundTaintCount;
+	private boolean backgroundPainted;
 	
   public int constrainX;
   public int constrainY;
@@ -212,7 +212,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	public void background(Color bgcolor) {
-		backgroundTaintCount++;
 		backgroundColor = bgcolor;
 		if (bgcolor == null) {
 			/*
@@ -235,7 +234,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		ctx.fillRect(x, y, width, height);
 	}
 
@@ -344,7 +343,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		if (img != null) {
 			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
@@ -356,7 +355,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private DOMNode getImageNode(Image img) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		DOMNode imgNode = DOMNode.getImageNode(img);
 		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
 	}
@@ -368,7 +367,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, observer);
 	}
@@ -376,7 +375,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, width, height, observer);
 	}
@@ -385,7 +384,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		if (img != null) {
 			byte[] bytes = null;
 		  DOMNode imgNode = getImageNode(img);
@@ -401,7 +400,6 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer) {
-		backgroundTaintCount++;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
 	}
@@ -432,7 +430,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@SuppressWarnings("unused")
 	public boolean drawImagePriv(Image img, int x, int y, ImageObserver observer) {
-		backgroundTaintCount++;
+		backgroundPainted = true;;
 		if (img != null) {
 			int[] pixels = null;
 			boolean isRGB = false; // usually RGBA 
@@ -897,10 +895,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	 * 
 	 * @return background taint count
 	 */
-	public int getBackgroundCount() {
-		int c = backgroundTaintCount;
-		backgroundTaintCount = 0;
-		return c;
+	public boolean isBackgroundPainted() {
+		return backgroundPainted;
 	}
 	
 	/////////////// saving of the state ////////////////
@@ -936,6 +932,9 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			map.put("font", font);
 		if (currentClip != null)
 			map.put("clip", currentClip);
+		if (backgroundPainted)
+			map.put("backgroundPainted", Boolean.TRUE);
+		backgroundPainted = false;
 		return HTML5CanvasContext2D.push(ctx, map);
 	}
 
@@ -956,6 +955,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 			setTransform((AffineTransform) map.get("transform"));
 			setFont((Font) map.get("font"));
 			currentClip = (Shape) map.get("clip");
+			backgroundPainted = map.containsKey("backgroundPainted");
 			ctx.restore();
 		}
 	}

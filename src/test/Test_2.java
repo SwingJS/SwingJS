@@ -66,7 +66,7 @@ public class Test_2 extends JApplet {
 		c.add(controls = new Test_2Controls(canvas), BorderLayout.NORTH);
 //		System.out.println( controls.bg0.getForeground()); 
 //				+ " "+ controls.bg0.getBackground() 
-	//			+ " \n cb " + controls.getForeground() + " cf " + controls.getBackground());
+	//			+ " \n cb " + controls.getForeground() + " cf " + controls.getBackground());z
 	}
 
 	@Override

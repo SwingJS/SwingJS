@@ -27,6 +27,7 @@
  */
 package swingjs.plaf;
 
+import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.Insets;
@@ -136,21 +137,21 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 * @see #installUI
 	 */
 	protected void installDefaults() {
-		 String prefix = getPropertyPrefix();
-		 Font f = editor.getFont();
-		 if ((f == null) || (f instanceof UIResource)) {
-		 editor.setFont(UIManager.getFont(prefix + ".font"));
-		 }
-		
-		// Color bg = editor.getBackground();
-		// if ((bg == null) || (bg instanceof UIResource)) {
-		// editor.setBackground(UIManager.getColor(prefix + ".background"));
-		// }
-		//
-		// Color fg = editor.getForeground();
-		// if ((fg == null) || (fg instanceof UIResource)) {
-		// editor.setForeground(UIManager.getColor(prefix + ".foreground"));
-		// }
+		String prefix = getPropertyPrefix();
+		Font f = editor.getFont();
+		if ((f == null) || (f instanceof UIResource)) {
+			editor.setFont(UIManager.getFont(prefix + ".font"));
+		}
+
+		Color bg = editor.getBackground();
+		if ((bg == null) || (bg instanceof UIResource)) {
+			editor.setBackground(UIManager.getColor(prefix + ".background"));
+		}
+
+		Color fg = editor.getForeground();
+		if ((fg == null) || (fg instanceof UIResource)) {
+			editor.setForeground(UIManager.getColor(prefix + ".foreground"));
+		}
 		//
 		// Color color = editor.getCaretColor();
 		// if ((color == null) || (color instanceof UIResource)) {
@@ -180,10 +181,10 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		// editor.setBorder(UIManager.getBorder(prefix + ".border"));
 		// }
 		//
-		// Insets margin = editor.getMargin();
-		// if (margin == null || margin instanceof UIResource) {
-		// editor.setMargin(UIManager.getInsets(prefix + ".margin"));
-		// }
+		Insets margin = editor.getMargin();
+		if (margin == null || margin instanceof UIResource) {
+			editor.setMargin(UIManager.getInsets(prefix + ".margin"));
+		}
 		//
 		// updateCursor();
 	}

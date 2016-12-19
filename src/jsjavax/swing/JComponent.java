@@ -628,7 +628,7 @@ public abstract class JComponent extends Container {
 			Graphics scratchGraphics = (g == null) ? null : g.create();
 			try {
 				ui.update(scratchGraphics, this);
-				isBackgroundPainted = (((JSGraphics2D)scratchGraphics).getBackgroundCount() > 0);
+				isBackgroundPainted = ((JSGraphics2D)scratchGraphics).isBackgroundPainted();
 			} finally {
 				scratchGraphics.dispose();
 			}

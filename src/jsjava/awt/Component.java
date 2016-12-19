@@ -1320,7 +1320,7 @@ protected  transient ComponentPeer peer;
         if (!enabled) {
  //           synchronized (getTreeLock()) {
                 enabled = true;
-                ComponentPeer peer = this.peer;
+                ComponentPeer peer = getOrCreatePeer();//this.peer;
                 if (peer != null) {
                     peer.setEnabled(true);// SwingJS  was enable();
                     if (visible) {
@@ -1369,7 +1369,7 @@ protected  transient ComponentPeer peer;
 //                    // makes sense to the user.
 //                    transferFocus(false);
 //                }
-                ComponentPeer peer = this.peer;
+                ComponentPeer peer = getOrCreatePeer();
                 if (peer != null) {
                     peer.setEnabled(false); // SwingJS  was disable();
                     if (visible) {
@@ -1500,9 +1500,7 @@ protected  transient ComponentPeer peer;
 	 * @param isVisible
 	 */
     private void updatePeerVisibility(boolean isVisible) {
-      ComponentPeer peer = this.peer;
-			if (peer == null)
-				this.peer = peer = getToolkit().createComponent(this);
+      ComponentPeer peer = getOrCreatePeer();
       peer.setVisible(isVisible);// SwingJS  was hide();
       createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
                             this, parent,
@@ -1513,6 +1511,10 @@ protected  transient ComponentPeer peer;
       }
       updateCursorImmediately();
     }
+
+		private ComponentPeer getOrCreatePeer() {
+			return (peer == null ? (peer = getToolkit().createComponent(this)) : peer);
+	}
 
 		boolean containsFocus() {
         return isFocusOwner();
@@ -1593,7 +1595,7 @@ protected  transient ComponentPeer peer;
      */
     public void setForeground(Color c) {
         Color oldColor = foreground;
-        ComponentPeer peer = this.peer;
+        ComponentPeer peer = getOrCreatePeer();
         foreground = c;
         if (peer != null) {
             c = getForeground();
@@ -1653,7 +1655,7 @@ protected  transient ComponentPeer peer;
      */
     public void setBackground(Color c) {
         Color oldColor = background;
-        ComponentPeer peer = this.peer;
+        ComponentPeer peer = getOrCreatePeer();
         background = c;
         if (peer != null) {
             c = getBackground();
@@ -1727,7 +1729,7 @@ protected  transient ComponentPeer peer;
 		synchronized (getTreeLock()) {
 			synchronized (this) {
 			}
-			ComponentPeer peer = this.peer;
+			ComponentPeer peer = getOrCreatePeer();
 			if (peer != null) {
 				f = getFont();
 				if (f != null) {
@@ -2100,7 +2102,7 @@ protected  transient ComponentPeer peer;
 
 			boolean needNotify = true;
 			mixOnReshaping();
-			if (peer != null) {
+			if (getOrCreatePeer() != null) {
 				// LightwightPeer is an empty stub so can skip peer.reshape
 				// SwingJS -- all "lightweight" peers still need to be resized 
 				// if (!(peer instanceof LightweightPeer)) {
@@ -5142,7 +5144,7 @@ protected  transient ComponentPeer peer;
 
         // if this is a lightweight component, enable mouse events
         // in the native container.
-        if (peer instanceof LightweightPeer) {
+        if (parent != null && peer instanceof LightweightPeer) {
             parent.proxyEnableEvents(eventMask);
         }
         if (notifyAncestors != 0) {
@@ -5944,13 +5946,14 @@ protected  transient ComponentPeer peer;
 
     protected void addNotifyComp() {
         synchronized (getTreeLock()) {
-            ComponentPeer peer = this.peer;
-            if (peer == null || peer instanceof LightweightPeer){
-                if (peer == null) {
-                    // Update both the Component's peer variable and the local
-                    // variable we use for thread safety.
-                    this.peer = peer = getToolkit().createComponent(this); 
-                }
+            ComponentPeer peer = getOrCreatePeer();
+//            this.peer;
+//            if (peer == null || peer instanceof LightweightPeer){
+//                if (peer == null) {
+//                    // Update both the Component's peer variable and the local
+//                    // variable we use for thread safety.
+//                    this.peer = peer = getToolkit().createComponent(this); 
+//                }
 
                 // This is a lightweight component which means it won't be
                 // able to get window-related events by itself.  If any
@@ -5979,14 +5982,14 @@ protected  transient ComponentPeer peer;
                         parent.proxyEnableEvents(mask);
                     }
                 }
-            } else {
-                // It's native.  If the parent is lightweight it
-                // will need some help.
-                Container parent = this.parent;
-                if (parent != null && parent.peer instanceof LightweightPeer) {
-                    relocateComponent();
-                }
-            }
+//            } else {
+//                // It's native.  If the parent is lightweight it
+//                // will need some help.
+//                Container parent = this.parent;
+//                if (parent != null && parent.peer instanceof LightweightPeer) {
+//                    relocateComponent();
+//                }
+//            }
             invalidate();
 
 //            int npopups = (popups != null? popups.size() : 0);
@@ -6108,7 +6111,7 @@ protected  transient ComponentPeer peer;
 //                }
 //            }
 
-            ComponentPeer p = peer;
+            ComponentPeer p = getOrCreatePeer();
             if (p != null) {
 //                boolean isLightweight = isLightweight();
 

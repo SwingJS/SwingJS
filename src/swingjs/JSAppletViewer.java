@@ -242,6 +242,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		// initialize toolkit and graphics configuration
 		Toolkit.getDefaultToolkit();
 		new JSGraphicsConfiguration().getDevice();
+		o = params.get("assets");
+		if (o != null)
+			JSToolkit.loadJavaResourcesFromZip(getClass().getClassLoader(), (String) o, null);
 		System.out.println("JSAppletViewer initialized");
 		insets = new Insets(0, 0, 0, 0);
 	}
