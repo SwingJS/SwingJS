@@ -43,18 +43,6 @@
       </fileset>
     </copy>
    	
-<!--  	
-  	<echo>...adding Falstad filesto swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
-  	<copy todir="site/swingjs/j2s"  overwrite="true" >
-      <fileset dir="src">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
-      </fileset>
-    </copy>
-   	
--->
    	<echo>Fixing "jsjava" references</echo>
   	<replace dir="site/tmp" includes="**/*.*" token="jsjava" value="java" />
   	<replace dir="site/tmp" includes="**/*.js" token="javajs.util" value="JU" />

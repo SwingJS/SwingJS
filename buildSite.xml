@@ -6,10 +6,8 @@
   <target name="createSite" id="createSite">
 
   	<property name="project.path" value="." />
-
-  	<!-- set this "false" to do code minimization -->
-  	
-  	<property name="debugging" value="true" />
+  	<!-- set debugging to "true" to not do code minimization -->  	
+  	<property name="debugging" value="false" />
 
     <!-- <if> construct needs ant-contrib.jar -->
     <taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -18,6 +16,7 @@
       </classpath>
     </taskdef>
 
+	<echo>Debugging is set to ${debugging}. [true=no minimization]</echo>
 
   	<!-- create a NON svn local directory only containing JS files  -->
   	
@@ -107,8 +106,6 @@
     </copy>
    	
 
-  	<!--  we need to remove this dependency -->
-  	
    	<echo>...JU (javajs/util, com/jcraft/jzlib)</echo>
    	<copy todir="site/swingjs/j2s/JU" >
       <fileset dir="bin/javajs/util">
@@ -119,37 +116,12 @@
         </fileset>
     </copy>
   	
-  	<!--  we need to remove this dependency
-  	
-
-  	<echo>...adding customized js from jsmol/bin but not java.awt.event </echo>
-   	<copy todir="site/swingjs/j2s"  overwrite="true" >
-      <fileset dir="jsmol/bin">
-        <include name="**/*.js" />
-        <exclude name="com/**/*" />
-        <exclude name="java/awt/event/*.js" />
-        <exclude name="javajs/**/*" />
-      </fileset>
-    </copy>	
- -->
     <echo>...adding to swingjs/j2s jsmol/bin/javajs/api</echo>
   	<copy todir="site/swingjs/j2s/javajs/api"  overwrite="true" >
       <fileset dir="bin/javajs/api">
         <include name="*.js" />
       </fileset>
     </copy>
-
-<!-- try without this - uses JSmol's version of BufferedInputStream and InputStream
-
-    <echo>...adding to swingjs/j2s j2s hacked JS from j2shack</echo>
-  	<copy todir="site/swingjs/j2s" overwrite="true" >
-      <fileset dir="j2shack">
-        <include name="**/*.js" />
-      </fileset>
-    </copy>
-
--->
-
    	 		
    	<echo>Changing "jsjava" to "java", "jsjavax" to "javax", and "jssun" to "sun"</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
@@ -232,18 +204,8 @@
 
    	<!-- note: any changes in these next sections must be reflected also
    	             in package.js -->
-<!--   	
-    <property name="javaCoreFiles" value="
-    	java/lang/AbstractStringBuilder.js
-    	java/lang/Enum.js
-    	...
-    	" />
-    	
-    	
-    	
--->    
 
-   	<echo>creating minimal core.z.js</echo>
+  	<echo>creating minimal core.z.js</echo>
   	
     <antcall target="call-core">
         <param name="call-core.name" value="" />
@@ -686,13 +648,47 @@ swingjs/plaf/LazyActionMap.js
    	core load and make them easier to debug
    	
 
-        	
+        	        	
+   	minimize additional SwingJS JavaScript -->
+  	
+   	<echo>...creating SwingJS.min.js -- the standard set, including jQuery</echo>
 
-        	
-   	minimize additional JSmol JavaScript -->
+    <antcall target="call-min">
+        <param name="call-min.fullname" value="full" />
+        <param name="call-min.minname" value="min" />
+        <param name="call-min.list" value="        
+       	../lib/jquery/jquery.js
+   		j2sJQueryExt.js
+       	j2sApplet.js
+       	j2sSwingJS.js
+   		SJSApplet.js
+   		" />
+    </antcall>
+
+  	
+   	<echo>...creating SwingJS.min.nojq.js -- the standard set but not including jQuery</echo>
+
+   	<antcall target="call-min">
+        <param name="call-min.fullname" value="full.nojq" />
+        <param name="call-min.minname" value="min.nojq" />
+        <param name="call-min.list" value="
+   		j2sJQueryExt.js
+       	j2sApplet.js
+       	j2sSwingJS.js
+   		SJSApplet.js
+   		" />
+    </antcall>
+
+  	
 
 	<delete quiet="true" dir="site/swingjs/js/core" />
 
+  	<echo>...running buildDist to create site/applets</echo>
+   	<ant antfile="buildDist.xml" target="testDist" />
+
+  	<echo>...running buildZip to create core zip/swingjs.zip</echo>
+   	<ant antfile="buildZip.xml" target="zip" />  	
+  	
   </target>
 
   <target name="call-core" id="call-core">
@@ -733,19 +729,10 @@ swingjs/plaf/LazyActionMap.js
     </else></if>
  	<delete quiet="true" file="site/swingjs/js/core/tmp.js" />
   	
-  	<echo>...running buildDist to create site/applets</echo>
-   	<ant antfile="buildDist.xml" target="testDist" />
-
-  	<echo>...running buildZip to create core zip/swingjs.zip</echo>
-   	<ant antfile="buildZip.xml" target="zip" />
-  	
-
-
-  	
   </target>
 
   <target name="call-min" id="call-min">
-   	<echo>......Creating JSmol.${call-min.minname}.js</echo> 	
+   	<echo>......Creating SwingJS.${call-min.minname}.js</echo> 	
    	<concat destfile="site/swingjs/js/SwingJS.${call-min.fullname}.js">
    		<filelist dir="jsmoljs" files="${call-min.list}" />
    	</concat>   

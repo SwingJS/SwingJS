@@ -1,5 +1,7 @@
 <project name = "swingjs" default="releaseDist" basedir=".">
 	<!-- Author Andreas Raduege 7/2016 -->
+	<!-- called from buildSite.xml -->
+	
 	<description> Generates publishable website for successfully converted applets. </description>
 
 	<target name="testDist" id="testDist"> 
@@ -200,12 +202,7 @@
 					<!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
 
 					<!--SwingJS files-->
-					<script type="text/javascript" src="../../jquery/jquery.js"></script>
-					<script type="text/javascript" src="../../js/j2sJQueryExt.js"></script>
-					<script type="text/javascript" src="../../js/j2sApplet.js"></script>
-					<script type="text/javascript" src="../../js/j2sSwingJS.js"></script>
-					<script type="text/javascript" src="../../js/SJSApplet.js"></script>
-
+					<script type="text/javascript" src="../../SwingJS.min.js"></script>
 					<script type="text/javascript">
 
 						J2S._checkLoad = false;

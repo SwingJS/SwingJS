@@ -1,8 +1,8 @@
 <project name="JSmol" default="zip" basedir=".">
+
+	<!-- called from buildSite.xml -->
 	
    <target name="zip" id="zip">
-   	
-		
    	<echo>creating zip file</echo>
     <zip zipfile="zip/swingjs.zip" basedir="site" includes="**" />
   </target>

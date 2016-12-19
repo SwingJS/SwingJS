@@ -1,0 +1,67 @@
+<project name="swingjs" default="test" basedir=".">
+   			
+<!-- buildTest.xml for testing build scripts -->
+	
+	
+  <target name="test" id="test">
+
+  	<property name="project.path" value="." />
+  	<!-- set debugging to "true" to not do code minimization -->  	
+  	<property name="debugging" value="false" />
+
+    <!-- <if> construct needs ant-contrib.jar -->
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <pathelement location="tools/ant-contrib.jar" />
+      </classpath>
+    </taskdef>
+
+	<echo>Debugging is set to ${debugging}. [true=no minimization]</echo>
+
+
+   	<echo>...creating SwingJS.min.js -- the standard set, including jQuery</echo>
+
+    <antcall target="call-min">
+        <param name="call-min.fullname" value="full" />
+        <param name="call-min.minname" value="min" />
+        <param name="call-min.list" value="        
+       	../lib/jquery/jquery.js
+   		j2sJQueryExt.js
+       	j2sApplet.js
+       	j2sSwingJS.js
+   		SJSApplet.js
+   		" />
+    </antcall>
+
+  	
+   	<echo>...creating SwingJS.min.nojq.js -- the standard set but not including jQuery</echo>
+
+   	<antcall target="call-min">
+        <param name="call-min.fullname" value="full.nojq" />
+        <param name="call-min.minname" value="min.nojq" />
+        <param name="call-min.list" value="
+   		j2sJQueryExt.js
+       	j2sApplet.js
+       	j2sSwingJS.js
+   		SJSApplet.js
+   		" />
+    </antcall>
+
+  	
+  </target>
+
+  <target name="call-min" id="call-min">
+   	<echo>......Creating SwingJS.${call-min.minname}.js</echo> 	
+   	<concat destfile="site/swingjs/js/SwingJS.${call-min.fullname}.js">
+   		<filelist dir="jsmoljs" files="${call-min.list}" />
+   	</concat>   
+  	<if><equals arg1="${debugging}" arg2="true" /><then>
+  	    <copy file="site/swingjs/js/SwingJS.${call-min.fullname}.js" tofile="site/swingjs/SwingJS.${call-min.minname}.js" />
+    </then><else>
+	   	<java jar="jars/closure_compiler.jar" fork="true" dir="" failonerror="false">
+	   		<arg line="--js site/swingjs/js/SwingJS.${call-min.fullname}.js --js_output_file site/swingjs/SwingJS.${call-min.minname}.js" />
+	    </java>
+    </else></if>
+  </target>
+	
+</project>
