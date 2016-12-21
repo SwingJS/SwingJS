@@ -681,8 +681,6 @@ swingjs/plaf/LazyActionMap.js
 
   	
 
-	<delete quiet="true" dir="site/swingjs/js/core" />
-
   	<echo>...running buildDist to create site/applets</echo>
    	<ant antfile="buildDist.xml" target="testDist" />
 

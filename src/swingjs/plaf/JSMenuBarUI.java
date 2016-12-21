@@ -65,9 +65,7 @@ public class JSMenuBarUI extends JSPanelUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			containerNode = domNode = newDOMObject("div", id);
-			//DOMNode.setStyles(containerNode, "overflow", "hidden");
-			DOMNode.setPositionAbsolute(domNode, 0, 0); // after title bar 
-//			$(domNode).addClass("swingjs-menu");
+			DOMNode.setPositionAbsolute(domNode, 0, 0); // after title bar
 		}
 
 		return domNode;

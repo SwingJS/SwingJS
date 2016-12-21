@@ -189,6 +189,7 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
         // Listen for Focus events
         addFocusListener(new MenuItemFocusListener());
         setUIProperty("borderPainted", Boolean.FALSE);
+        setOpaque(true); // BH  added
         setFocusPainted(false);
         setHorizontalTextPosition(JButton.TRAILING);
         setHorizontalAlignment(JButton.LEADING);
@@ -752,6 +753,4 @@ public class JMenuItem extends AbstractButton implements MenuElement  {
 		protected String paramString() {
         return super.paramString();
     }
-
-
 }

@@ -1,8 +1,5 @@
 package swingjs.plaf;
 
-import javajs.api.GenericColor;
-import javajs.util.CU;
-import jsjava.awt.Color;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;

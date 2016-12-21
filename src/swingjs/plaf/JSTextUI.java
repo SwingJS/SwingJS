@@ -122,6 +122,8 @@ import swingjs.api.DOMNode;
 public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFactory
 																											// {
 
+	private String inactiveBackgroundColor;
+
 	protected String getComponentText() {
 		return currentText = ((JTextComponent) c).getText();
 	}
@@ -170,11 +172,14 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		// ".selectionForeground"));
 		// }
 		//
-		// Color dfg = editor.getDisabledTextColor();
-		// if ((dfg == null) || (dfg instanceof UIResource)) {
-		// editor.setDisabledTextColor(UIManager.getColor(prefix +
-		// ".inactiveForeground"));
-		// }
+		Color dfg = editor.getDisabledTextColor();
+		if ((dfg == null) || (dfg instanceof UIResource)) {
+			editor.setDisabledTextColor(UIManager.getColor(prefix
+					+ ".inactiveForeground"));
+		}
+		dfg = UIManager.getColor(prefix + ".inactiveBackground");
+		inactiveBackgroundColor = (dfg == null ? null : JSToolkit.getCSSColor(dfg));
+
 		//
 		// Border b = editor.getBorder();
 		// if ((b == null) || (b instanceof UIResource)) {
@@ -2012,7 +2017,10 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 				if (bgcolor0 == null)
 					bgcolor0 = DOMNode.getStyle(domNode, "background-color");
 			}
-			DOMNode.setStyles(domNode, "background-color", "rgba(0,0,0,0)");
+
+			String textColor = JSToolkit.getCSSColor(editable || editor.isForegroundSet() ? editor.getForeground() : editor.getDisabledTextColor());
+			String bgColor = (editor.isBackgroundSet() || editable || inactiveBackgroundColor == null ? bgcolor0 : inactiveBackgroundColor);
+			DOMNode.setStyles(domNode, "background-color", bgColor, "color", textColor);
 		}
 
 	}
@@ -2767,4 +2775,19 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 */
 	 protected abstract String getPropertyPrefix();
 
+	public void setText(String val) {
+		String prop = null;
+		DOMNode obj = null;
+		if (val == null ? currentText != null : !val.equals(currentText)) {
+			if (textNode != null) {
+				prop = "innerHTML";
+				obj = textNode;
+			} else if (valueNode != null) {
+				prop = "value";
+				obj = valueNode;
+			}
+			if (obj != null)
+				setProp(obj, prop, val);
+		}
+	}
 }

@@ -50,7 +50,8 @@ public class DefaultMenuLayout extends BoxLayout implements UIResource {
         super(target, axis);
     }
 
-    public Dimension preferredLayoutSize(Container target) {
+    @Override
+		public Dimension preferredLayoutSize(Container target) {
         if (target instanceof JPopupMenu) {
             JPopupMenu popupMenu = (JPopupMenu) target;
 //            sun.swing.MenuItemLayoutHelper.clearUsedClientProperties(popupMenu);

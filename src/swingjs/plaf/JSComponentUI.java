@@ -99,18 +99,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected static int incr;
 
-	
 	/**
 	 * Set this during run time using swingjs.plaf.JSComponentUI.borderTest = true
 	 * to debug alignments
 	 */
 	private static boolean borderTest;
 
-	
 	/**
-	 * Derived from swingjs.JSToolkit.debugger.
-	 * Set this during run time using swingjs.plaf.JSComponentUI.debugger = true
-	 * to give detailed debugging messages
+	 * Derived from swingjs.JSToolkit.debugger. Set this during run time using
+	 * swingjs.plaf.JSComponentUI.debugger = true to give detailed debugging
+	 * messages
 	 */
 	protected static boolean debugging;
 
@@ -149,6 +147,18 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * 
 	 */
 	public DOMNode domNode;
+
+	/**
+	 * An inner div that allows vertical centering for a JLabel or AbstractButton
+	 */
+	protected DOMNode centeringNode;
+
+	/**
+	 * An icon image -- non-null means we do have an icon
+	 * 
+	 */
+	protected DOMNode imageNode;
+
 
 	/**
 	 * The HTML5 input element being pressed, if the control subclasses
@@ -195,8 +205,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	/**
 	 * Labels with icons will have this
 	 */
-	protected int prefHeight;	
-	
+	protected int iconHeight;
+
 	/**
 	 * a component that is focusable
 	 */
@@ -213,12 +223,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected int num;
 
+	// /**
+	// * a flag to indicate that it is not visible, but not according to Java
+	// */
+	// private boolean zeroWidth;
 
-//	/**
-//	 * a flag to indicate that it is not visible, but not according to Java
-//	 */
-//	private boolean zeroWidth;
-	
 	/**
 	 * indicates that we need a new outerNode
 	 * 
@@ -230,14 +239,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * 
 	 */
 	protected boolean boundsSet = false;
-	
+
 	/**
-	 * Indicates that we need an outerNode and that we should not
-	 * be applying any positioning to the control. All popup menu items
-	 * will have this set false.   
+	 * Indicates that we do not need an outerNode and that we should be applying
+	 * any positioning to the node itself. All menu items will have this set true.
 	 */
 
-	protected boolean hasOuterDiv = true;
+	protected boolean isMenuItem = false;
 
 	protected int x, y;
 
@@ -260,18 +268,15 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected JSComponentUI parent;
 
 	String currentText;
-	
+
 	protected ImageIcon currentIcon;
 
 	protected int currentGap = Integer.MAX_VALUE;
 
-
-
-
 	/**
 	 * the scroller for a text area
 	 */
-	protected JSScrollPaneUI scrollerNode;
+	protected JSScrollPaneUI scrollPaneUI;
 
 	/**
 	 * uiClassID for this component
@@ -288,7 +293,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	private DOMNode document;
 	protected HTML5Applet applet; // used in getting z value, setting frame mouse
 																// actions
-	
+
 	protected boolean needPreferred;
 
 	protected int width;
@@ -299,7 +304,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	public boolean isNull;
 
 	private DOMNode waitImage;
-
 
 	public JSComponentUI() {
 		setDoc();
@@ -320,7 +324,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	/**
 	 * installUI is called prior to completion of UI creation, guaranteeing that
-	 * this.c and this.jc have been set up and well before any call to this.updateDOMNode.
+	 * this.c and this.jc have been set up and well before any call to
+	 * this.updateDOMNode.
 	 * 
 	 * Subclasses should not implement this method; use installUIImpl() instead
 	 * 
@@ -331,15 +336,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		/**
 		 * @j2sNative
 		 * 
-		 * c.addChangeListener && c.addChangeListener(this);
+		 *            c.addChangeListener && c.addChangeListener(this);
 		 */
-		{}
+		{
+		}
 		c.addPropertyChangeListener(this);
-		//installUIImpl(); done earlier
+		// installUIImpl(); done earlier
 	}
 
 	/**
-	 * Called upon disposal of Window, JPopupMenu, and JComponent. 
+	 * Called upon disposal of Window, JPopupMenu, and JComponent.
 	 * 
 	 * Subclasses should not implement this method; use uninstallUIImpl() instead
 	 * 
@@ -347,18 +353,19 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	@Override
 	@Deprecated
 	public void uninstallUI(Component c) {
-		
+
 		// window closing will fire this with c == null
-		
+
 		uninstallUIImpl();
 
 		/**
 		 * @j2sNative
 		 * 
-		 * c && c.removeChangeListener && c.removeChangeListener(this);
-		 * c && c.removePropertyChangeListener(this);
+		 *            c && c.removeChangeListener && c.removeChangeListener(this); c
+		 *            && c.removePropertyChangeListener(this);
 		 */
-		{}
+		{
+		}
 		if (outerNode != null) {
 			DOMNode.remove(outerNode);
 			outerNode = null;
@@ -395,8 +402,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 	}
 
-	//////////////// user event handling ///////////////////
-	
+	// ////////////// user event handling ///////////////////
+
 	/**
 	 * When a user clicks a component in SwingJS, jQuery catches it, and a message
 	 * is sent to javax.swing.LightweightDispatcher (in Component.js) to be
@@ -417,9 +424,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	/**
-	 * Indicate to J2S to completely ignore all mouse events for this control.
-	 * It will be handled by the control directly using a jQuery callback that
-	 * is generated by updateDOMNode. Used by JSComboBoxUI and JSSliderUI. 
+	 * Indicate to J2S to completely ignore all mouse events for this control. It
+	 * will be handled by the control directly using a jQuery callback that is
+	 * generated by updateDOMNode. Used by JSComboBoxUI and JSSliderUI.
 	 * 
 	 * @param node
 	 */
@@ -465,10 +472,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	/**
-	 * Used by JSFrameUI to indicate that it is to be the "currentTarget"
-	 * for mouse clicks that target one of its buttons. The DOM attributes
-	 * applet and _frameViewer will be set for the node, making it consistent
-	 * with handling for Jmol's applet canvas element.
+	 * Used by JSFrameUI to indicate that it is to be the "currentTarget" for
+	 * mouse clicks that target one of its buttons. The DOM attributes applet and
+	 * _frameViewer will be set for the node, making it consistent with handling
+	 * for Jmol's applet canvas element.
 	 * 
 	 * @param node
 	 * @param isFrame
@@ -508,12 +515,14 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * method to work.
 	 * 
 	 * 
-	 * @param node the JavaScript element that is being triggered
+	 * @param node
+	 *          the JavaScript element that is being triggered
 	 * 
-	 * @param eventList 
+	 * @param eventList
 	 *          one or more JavaScript event names to pass, separated by space
 	 * @param eventID
-	 *          an integer event type to return; can be anything, but Event.XXXX is recommended
+	 *          an integer event type to return; can be anything, but Event.XXXX
+	 *          is recommended
 	 * @deprecated Use {@link #bindJSEvents(DOMNode,String,int,boolean)} instead
 	 */
 	protected void bindJSEvents(DOMNode node, String eventList, int eventID) {
@@ -530,29 +539,30 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * method to work.
 	 * 
 	 * 
-	 * @param node the JavaScript element that is being triggered
-	 * @param eventList 
+	 * @param node
+	 *          the JavaScript element that is being triggered
+	 * @param eventList
 	 *          one or more JavaScript event names to pass, separated by space
 	 * @param eventID
-	 *          an integer event type to return; can be anything, but Event.XXXX is recommended
-	 * @param andSetCSS TODO
+	 *          an integer event type to return; can be anything, but Event.XXXX
+	 *          is recommended
+	 * @param andSetCSS
+	 *          TODO
 	 */
-	protected void bindJSEvents(DOMNode node, String eventList, int eventID, boolean andSetCSS) {
+	protected void bindJSEvents(DOMNode node, String eventList, int eventID,
+			boolean andSetCSS) {
 		JSFunction f = null;
 		JSEventHandler me = this;
-		
+
 		if (andSetCSS) {
 			setDataUI(node);
 			handleAllMouseEvents(node);
 		}
 
-		
-		
 		/**
 		 * @j2sNative
 		 * 
-		 *            f = function(event) { me.handleJSEvent(node, eventID, event)
-		 *            }
+		 *            f = function(event) { me.handleJSEvent(node, eventID, event) }
 		 */
 		{
 			System.out.println(me);
@@ -588,75 +598,115 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		isTainted = true;
 	}
 
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		if (debugging) 
+			System.out.println(id + " stateChange " + dumpEvent(e));
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		String prop = e.getPropertyName();
+		if (isDisposed && c.visible && prop == "ancestor"
+				&& e.getNewValue() != null)
+			setVisible(true);
+		propertyChangedCUI(prop);
+	}
+
 	/**
 	 * plaf ButtonListener and TextListener will call this to update common
 	 * properties such as "text".
 	 * 
 	 * @param prop
 	 */
-  void propertyChangedFromListener(String prop) {
-    propertyChangedFromListenerCUI(prop);
-  }
-  
-	protected void propertyChangedFromListenerCUI(String prop) {
+	void propertyChangedFromListener(String prop) {
+		propertyChangedCUI(prop);
+	}
+
+	protected void propertyChangedCUI(String prop) {
 		if (prop == "preferredSize") {
+			// size has been set by JComponent layout
 			preferredSize = c.getPreferredSize(); // may be null
 			getPreferredSize();
 			return;
 		}
 		if (prop == "background") {
 			setBackground(c.getBackground());
-			if (!c.isOpaque() && domNode != null)
-				setTransparent(domNode);
+			return;
+		}
+		if (prop == "opaque") {
+			setBackground(c.getBackground());
 			return;
 		}
 		if (prop == "text") {
 			String val = ((AbstractButton) c).getText();
 			if (val == null ? currentText != null : !val.equals(currentText))
-				setIconAndText(prop, currentIcon, currentGap,
-						(String) val);
+				setIconAndText(prop, currentIcon, currentGap, (String) val);
 			return;
 		}
-		if (prop == "iconTextGap" && iconNode != null) {
-			int gap = ((AbstractButton) c).getIconTextGap();
-			if (currentGap != gap)
-				setIconAndText(prop, currentIcon, gap, currentText);
+		if (prop == "iconTextGap") {
+			if (iconNode != null) {
+				int gap = ((AbstractButton) c).getIconTextGap();
+				if (currentGap != gap)
+					setIconAndText(prop, currentIcon, gap, currentText);
+			}
 			return;
 		}
-		if (prop == "icon" && iconNode != null) {
-			// note that we use AbstratButton cast here just because
-			// it has a getIcon() method. JavaScript will not care if
-			// it is really a JLabel or JOptionPane, which also have icons
-			ImageIcon icon = (ImageIcon) ((AbstractButton) c).getIcon();
-			if (icon == null ? currentIcon != null : !icon.equals(currentIcon))
-				setIconAndText(prop, icon, currentGap, currentText);
+		if (prop == "icon") {
+			if (iconNode != null) {
+				// note that we use AbstratButton cast here just because
+				// it has a getIcon() method. JavaScript will not care if
+				// it is really a JLabel or JOptionPane, which also have icons
+				ImageIcon icon = (ImageIcon) ((AbstractButton) c).getIcon();
+				if (icon == null ? currentIcon != null : !icon.equals(currentIcon))
+					setIconAndText(prop, icon, currentGap, currentText);
+			}
 			return;
 		}
 		if (debugging)
-			System.out.println("JSComponentUI: unrecognized prop: " + prop);
+			System.out.println("JSComponentUI: unrecognized prop: " + this.id + " " + prop);
 	}
-	
+
+	/**
+	 * If a control is transparent, then set that in HTML for its node
+	 * @param node
+	 */
+	private void checkTransparent(DOMNode node) {
+		// Note that c.setOpaque(true/false) on a label DOES work, but you need
+		// to do a repaint to see it in Java.
+		// Here we keep it simple and do the change immediately.
+		//
+
+		if (!c.isOpaque() && node != null)
+			setTransparent(node);
+	}
+
 	protected void setIconAndText(String prop, ImageIcon icon, int gap,
 			String text) {
+
+		// TODO add textPosition
+
 		currentIcon = icon;
 		currentText = text;
 		currentGap = gap;
+		imageNode = null;
 		if (iconNode != null) {
 			DOMNode.setAttr(iconNode, "innerHTML", "");
 			if (icon != null) {
-				DOMNode imageNode = DOMNode.getImageNode(icon.getImage());
-				vCenter (imageNode, 35);
+				imageNode = DOMNode.getImageNode(icon.getImage());
+				DOMNode.setStyles(imageNode,  "vertical-align", "bottom"); // else this will be "baseline"
 				iconNode.appendChild(imageNode);
-				prefHeight = icon.getIconHeight();
+				iconHeight = icon.getIconHeight();
 			}
 		}
-		if (text == null) {
+		if (text == null || text.length() == 0) {
 			text = "";
 		} else {
 			if (icon != null) {
+				vCenter(imageNode, 10); // perhaps? Not sure if this is a good idea
 				if (gap == Integer.MAX_VALUE)
 					gap = getDefaultIconTextGap();
-				if (gap != 0)
+				if (gap != 0 && text != null)
 					DOMNode.addHorizontalGap(iconNode, gap);
 			}
 			if (text.indexOf("<html>") == 0) {
@@ -675,6 +725,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 		if (obj != null)
 			setProp(obj, prop, text);
+		if (centeringNode != null)
+			setCssFont(centeringNode, c.getFont());
 		if (debugging)
 			System.out.println("JSComponentUI: setting " + id + " " + prop);
 	}
@@ -685,7 +737,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	private String createMsgs = "";
 
-
 	/**
 	 * set to TRUE by Container.validateTree at the beginning of its laying out
 	 * and FALSE when that is complete.
@@ -693,18 +744,23 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	private boolean layingOut;
 
-
 	/**
-	 * has been disposed; will need to reattach it if it ever becomes visible again.
+	 * has been disposed; will need to reattach it if it ever becomes visible
+	 * again.
 	 * 
 	 */
 	private boolean isDisposed;
 
+	/**
+	 * Calculated by temporarily setting the node on the page and measuring its dimensions.
+	 * 
+	 */
+	protected int actualHeight, actualWidth;
 
 	/**
-	 * Create or recreate the inner DOM element for this Swing component. 
-	 * @return the DOM element's node and, if the DOM element already
-	 * exists, 
+	 * Create or recreate the inner DOM element for this Swing component.
+	 * 
+	 * @return the DOM element's node and, if the DOM element already exists,
 	 */
 	protected DOMNode updateDOMNode() {
 		String msg = "Swingjs WARNING: default JSComponentUI is being used for "
@@ -713,20 +769,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			createMsgs += msg;
 			JSToolkit.alert(msg);
 		}
-		System.out
-				.println(msg);
+		System.out.println(msg);
 		return (domNode == null ? domNode = DOMNode.createElement("div", id)
 				: domNode);
 	}
 
-	
-	
-	
 	protected DOMNode setCssFont(DOMNode obj, Font font) {
 		if (font != null) {
 			int istyle = font.getStyle();
 			String name = font.getFamily();
-			if (name == "Dialog")
+			if (name == "Dialog" || name == "SansSerif")
 				name = "Arial";
 			DOMNode.setStyles(obj, "font-family", name, "font-size", font.getSize()
 					+ "px", "font-style", ((istyle & Font.ITALIC) == 0 ? "normal"
@@ -748,8 +800,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		return obj;
 	}
 
-  protected DOMNode wrap(String type, String id, DOMNode... elements) {
-	  DOMNode obj = newDOMObject(type, id + type);
+	protected DOMNode wrap(String type, String id, DOMNode... elements) {
+		DOMNode obj = newDOMObject(type, id + type);
 		for (int i = 0; i < elements.length; i++) {
 			obj.appendChild(elements[i]);
 		}
@@ -784,19 +836,20 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * @param usePreferred
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	protected Dimension setHTMLSize1(DOMNode node, boolean addCSS,
 			boolean usePreferred) {
 		if (node == null)
 			return null;
-		addCSS &= hasOuterDiv;
+		addCSS &= !isMenuItem;
 		int h, w;
 		String w0 = null, h0 = null, position = null;
 		DOMNode parentNode = null;
+		if (centeringNode != null && node == domNode)
+			node = centeringNode;
 
-		if (scrollerNode != null) {
-			w = scrollerNode.c.getWidth();
-			h = scrollerNode.c.getHeight();
+		if (scrollPaneUI != null) {
+			w = scrollPaneUI.c.getWidth();
+			h = scrollPaneUI.c.getHeight();
 		} else if (usePreferred && preferredSize != null) {
 			// user has set preferred size
 			w = preferredSize.width;
@@ -808,14 +861,16 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 			// remove position, width, and height, because those are what we are
 			// setting here
-			
-			if (hasOuterDiv)
+
+			if (!isMenuItem)
 			/**
 			 * @j2sNative
 			 * 
-			 *            w0 = node.style.width; h0 = node.style.height; position = node.style.position;
+			 *            w0 = node.style.width; h0 = node.style.height; position =
+			 *            node.style.position;
 			 */
 			{
+				w0 = "";
 			}
 			DOMNode.setStyles(node, "position", null, "width", null, "height", null);
 			DOMNode div;
@@ -827,12 +882,19 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 			// process of discovering width and height is facilitated using jQuery
 			// and appending to document.body.
-			// By using .after() we avoid CSS changes in the BODY element. 
+			// By using .after() we avoid CSS changes in the BODY element.
+			// but this almost certainly has issues with zooming
 
 			$(body).after(div);
 			DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
-			w = (int) Math.max(0, Math.ceil($(test).width() + 0.5));
-			h = (prefHeight > 0 ? prefHeight  : (int) Math.max(0, Math.ceil($(test).height() + 0.5)));
+			w = (int) Math.max(0, Math.ceil($(test).width()));
+			h = (int) Math.max(0, Math.ceil($(test).height()));
+			if (!usePreferred) {
+				actualWidth = w;
+				actualHeight = h;
+			}
+//			h = preferredHeight;// (iconHeight > 0 ? iconHeight : centerHeight);
+			// TODO what if centerHeight is > prefHeight?
 			$(div).detach();
 		}
 		// allow a UI to slightly adjust its dimension
@@ -842,19 +904,21 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (addCSS) {
 			DOMNode.setPositionAbsolute(node, Integer.MIN_VALUE, 0);
 			DOMNode.setSize(node, size.width, size.height);
+			if (node == centeringNode) {
+				// also set domNode?
+				DOMNode.setPositionAbsolute(parentNode, Integer.MIN_VALUE, 0);
+				DOMNode.setSize(parentNode, size.width, size.height);
+			}
 		} else {
 			DOMNode.setStyles(node, "position", null);
 			// check to reset width/height after getPreferredSize
-			if (w0 != null && hasOuterDiv) {
-				DOMNode.setStyles(node, "width", w0, "height", h0, "position", position);
-				//if (w0 == "0px" || h0 == "0px") // DOES Not WORK
-					//DOMNode.setStyles(node, "display", "none");
+			if (w0 != null) {
+				DOMNode
+						.setStyles(node, "width", w0, "height", h0, "position", position);
 			}
 		}
 		if (parentNode != null)
 			parentNode.appendChild(node);
-		// System.out.println("JSComponentUI " + id + " resized to " + w + "x" + h +
-		// " parent=" + DOMNode.getAttr(parentNode,"id"));
 		return size;
 	}
 
@@ -884,24 +948,22 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	/**
-	 * When something has occurred that needs rebuilding of the internal
-	 * structure of the node, isTainted will be set. Only then will this
-	 * method be executed. 
+	 * When something has occurred that needs rebuilding of the internal structure
+	 * of the node, isTainted will be set. Only then will this method be executed.
 	 * 
-	 * @return the outer node for this component's DOM tree, containing all
-	 * child elements needed to implement it.
+	 * @return the outer node for this component's DOM tree, containing all child
+	 *         elements needed to implement it.
 	 */
 	protected DOMNode setHTMLElementCUI() {
 		if (!isTainted)
 			return outerNode;
 
 		domNode = updateDOMNode();
-		if (!c.isOpaque() && domNode != null)
-			setTransparent(domNode);
+		checkTransparent(domNode);
 		Component[] children = getChildren();
 		int n = children.length;
 
-		if (!hasOuterDiv) {
+		if (isMenuItem) {
 			outerNode = domNode;
 			if (n == 0)
 				return outerNode;
@@ -913,29 +975,29 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		/**
 		 * @j2sNative
 		 * 
-		 * this.outerNode.setAttribute("name", this.jc.__CLASS_NAME__);
+		 *            this.outerNode.setAttribute("name", this.jc.__CLASS_NAME__);
 		 */
-		{}
+		{
+		}
 		// set position
 
 		setOuterLocationFromComponent();
-		
-		
+
 		if (n > 0 && containerNode == null)
 			containerNode = outerNode;
 		if (isContainer || n > 0) {
 			// set width from component
-			if (isContainer && hasOuterDiv) {
+			if (isContainer && !isMenuItem) {
 				// System.out.println("JSComponentUI container " + id + " "
 				// + c.getBounds());
 				int w = getContainerWidth();
 				int h = getContainerHeight();
 				DOMNode.setSize(outerNode, w, h);
-//				if (w == 0 || h  == 0) {
-//					// container is hidden
-//					zeroWidth = true;
-//					DOMNode.setStyles(outerNode, "display", "none");
-//				}
+				// if (w == 0 || h == 0) {
+				// // container is hidden
+				// zeroWidth = true;
+				// DOMNode.setStyles(outerNode, "display", "none");
+				// }
 				if (isContentPane)
 					DOMNode.setStyles(outerNode, "overflow", "hidden");
 			}
@@ -977,7 +1039,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		// saying that everything is basically heavyweight. It
 		// "paints" itself.
 
-		if (hasOuterDiv && outerNode != null) {
+		if (outerNode != null && !isMenuItem) {
 			// Considering the possibility of the parent being created
 			// before children are formed. So here we can add them later.
 			if (parent == null && jc.getParent() != null
@@ -1291,31 +1353,35 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			setOuterLocationFromComponent();
 			if (op == SET_LOCATION)
 				break;
-		//$FALL-THROUGH$
+			//$FALL-THROUGH$
 		case SET_CLIENT_SIZE: // is supposed to be without insets
 		case SET_SIZE:
-			if (scrollerNode != null) {
-				width = Math.min(width, scrollerNode.c.getWidth());
-				height = Math.min(height, scrollerNode.c.getHeight());
+			if (scrollPaneUI != null) {
+				width = Math.min(width, scrollPaneUI.c.getWidth());
+				height = Math.min(height, scrollPaneUI.c.getHeight());
 			}
-			// allow for special adjustments
-			// currently MenuItem, TextField, and TextArea
-			Dimension size = getCSSAdjustment();
-			// if (this.width != width || this.height != height) {
-			this.width = width;
-			this.height = height;
-			if (debugging)
-				System.out.println(id + " setBounds " + x + " " + y + " " + this.width
-						+ " " + this.height + " op=" + op + " createDOM?"
-						+ (domNode == null));
-			if (domNode == null)
-				updateDOMNode();
-			DOMNode.setSize(domNode, width + size.width, height + size.height);
-			if (outerNode != null)
-				DOMNode.setSize(outerNode, width + size.width, height + size.height);
-			setInnerComponentBounds(width, height);
+			setSizeFromControl(width, height, op);
 			break;
 		}
+	}
+
+	protected void setSizeFromControl(int width, int height, int op) {
+		// allow for special adjustments
+		// currently MenuItem, TextField, and TextArea
+		Dimension size = getCSSAdjustment();
+		// if (this.width != width || this.height != height) {
+		this.width = width;
+		this.height = height;
+		if (debugging)
+			System.out.println(id + " setBounds " + x + " " + y + " " + this.width
+					+ " " + this.height + " op=" + op + " createDOM?"
+					+ (domNode == null));
+		if (domNode == null)
+			updateDOMNode();
+		DOMNode.setSize(domNode, width + size.width, height + size.height);
+		if (outerNode != null)
+			DOMNode.setSize(outerNode, width + size.width, height + size.height);
+		setInnerComponentBounds(width, height);
 	}
 
 	protected void setInnerComponentBounds(int width, int height) {
@@ -1326,9 +1392,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void handleEvent(AWTEvent e) {
-		// Mouse events will show up here immediately after being dispatched 
-		// to the target by Container.dispatchEventImpl. 
-		// We do not handle them here since we are already handling them there.		
+		// Mouse events will show up here immediately after being dispatched
+		// to the target by Container.dispatchEventImpl.
+		// We do not handle them here since we are already handling them there.
 	}
 
 	@Override
@@ -1374,12 +1440,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		DOMNode.remove(domNode);
 		DOMNode.remove(outerNode);
 	}
-	
+
 	/**
 	 * 
-	 * This control has been added back to some other node
-   * after being disposed of. So now we need to undo that.
-   * 
+	 * This control has been added back to some other node after being disposed
+	 * of. So now we need to undo that.
+	 * 
 	 * @param node
 	 */
 	private void undisposeUI(DOMNode node) {
@@ -1412,10 +1478,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				JSToolkit.getCSSColor(color == null ? Color.white : color));
 		if (c.isBackgroundPainted)
 			setTransparent(node);
+		else
+			checkTransparent(node);
 	}
 
 	private void setTransparent(DOMNode node) {
-		DOMNode.setStyles(node, "background","transparent");
+		DOMNode.setStyles(node, "background", "transparent");
 	}
 
 	@Override
@@ -1627,7 +1695,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	public void beginLayout() {
 		// hide if not a panel and bounds have not been set.
 		if (!boundsSet && !isContainer)
-		    setVisible(false);
+			setVisible(false);
 		layingOut = true;
 	}
 
@@ -1641,57 +1709,35 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	protected String dumpEvent(EventObject e) {
-		String s = "";
-		/**
-		 * @j2sNative
-		 * 
-		 *  s = " " + e.__CLASS_NAME__ + " " + e.type + " " + e.id + " << " + e.getSource().htmlName; 
-		 */
-		{
-		}
-		return s;
+		return e.toString();
 	}
 
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		if (debugging)
-			System.out.println(id + dumpEvent(e));
+	public static String toCSSString(Color c) {
+		int opacity = c.getAlpha();
+		if (opacity == 255)
+			return "#" + toRGBHexString(c);
+		int rgb = c.getRGB();
+		return "rgba(" + ((rgb >> 16) & 0xFF) + "," + ((rgb >> 8) & 0xff) + ","
+				+ (rgb & 0xff) + "," + opacity / 255f + ")";
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent e) {
-		String prop = e.getPropertyName();
-		if (isDisposed && c.visible && prop == "ancestor" &&  e.getNewValue() != null)
-			setVisible(true);
-		if (debugging)
-			System.out.println(id + dumpEvent(e) + prop);
+	public static String toRGBHexString(Color c) {
+		int rgb = c.getRGB();
+		if (rgb == 0)
+			return "000000";
+		String r = "00" + Integer.toHexString((rgb >> 16) & 0xFF);
+		r = r.substring(r.length() - 2);
+		String g = "00" + Integer.toHexString((rgb >> 8) & 0xFF);
+		g = g.substring(g.length() - 2);
+		String b = "00" + Integer.toHexString(rgb & 0xFF);
+		b = b.substring(b.length() - 2);
+		return r + g + b;
 	}
 
-  public static String toCSSString(Color c) {
-    int opacity = c.getAlpha();
-    if (opacity == 255)
-      return "#" + toRGBHexString(c);
-    int rgb = c.getRGB();
-    return "rgba(" + ((rgb>>16)&0xFF) + "," + ((rgb>>8)&0xff) + "," + (rgb&0xff) + "," + opacity/255f  + ")"; 
-  }
-
-  public static String toRGBHexString(Color c) {
-    int rgb = c.getRGB();    
-    if (rgb == 0)
-      return "000000";
-    String r  = "00" + Integer.toHexString((rgb >> 16) & 0xFF);
-    r = r.substring(r.length() - 2);
-    String g  = "00" + Integer.toHexString((rgb >> 8) & 0xFF);
-    g = g.substring(g.length() - 2);
-    String b  = "00" + Integer.toHexString(rgb & 0xFF);
-    b = b.substring(b.length() - 2);
-    return r + g + b;
-  }
-
-
-	protected void setTextAlignment(int horizontalAlignment) {
+	protected void setTextAlignment() {
+		int type = ((AbstractButton) c).getHorizontalAlignment();
 		String prop = null;
-		switch (horizontalAlignment) {
+		switch (type) {
 		case SwingConstants.RIGHT:
 		case SwingConstants.TRAILING:
 			prop = "right";
@@ -1703,47 +1749,116 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		case SwingConstants.CENTER:
 			prop = "center";
 			break;
+	  default:
+	  	return;
 		}
-		if (prop != null)
-			DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align",
+		// the centeringNode is not visible. It is a div that allows us to 
+		// position the text and icon of the image based on its preferred size
+		// in the 
+		DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align",
 					textAlign = prop);
+		if (jc.uiClassID == "LabelUI" && centeringNode != null) {
+			int left = 0;
+			int w = actualWidth;
+			if (w == 0)
+				w = setHTMLSize1(domNode, false, false).width;
+			switch (type) {
+			case SwingConstants.LEFT:
+			case SwingConstants.LEADING:
+				break;
+			case SwingConstants.RIGHT:
+			case SwingConstants.TRAILING:
+				prop = "right";
+				left = c.getWidth() - w;
+				break;
+			case SwingConstants.CENTER:
+				left = (c.getWidth() - w) / 2;
+				break;
+		  default:
+		  	return;
+			}
+			DOMNode.setStyles(centeringNode, "position", "absolute", "left", left + "px");			
+		}
+	}
+
+	protected void setVerticalAlignment() {
+		int type = ((AbstractButton) c).getVerticalAlignment();
+		if (centeringNode == null)
+			return;
+		int top = 0;
+		int h = actualHeight;
+		if (h == 0)
+			h = setHTMLSize1(domNode, false, false).height;
+		switch (type) {
+		case SwingConstants.TOP:
+			break;
+		case SwingConstants.BOTTOM:
+			top = c.getHeight() - h;
+			break;
+		case SwingConstants.CENTER:
+			top = (c.getHeight() - h) / 2;
+			break;
+		default:
+			return;
+		}
+		DOMNode.setStyles(centeringNode, "position", "absolute", "top", top + "px");
 	}
 
 	/**
-	 * We allow here for an off-screen graphic for which the paint
-	 * operation also sets its location. 
+	 * We allow here for an off-screen graphic for which the paint operation also
+	 * sets its location.
 	 * 
 	 * Called from edu.colorado.phet.common.phetgraphics.view.
+	 * 
 	 * @param comp
 	 * @param owner
 	 * @param g
 	 */
-	public static void updateSceneGraph(JComponent comp, JComponent owner, JSGraphics2D g) {
+	public static void updateSceneGraph(JComponent comp, JComponent owner,
+			JSGraphics2D g) {
 
 		DOMNode node = ((JSComponentUI) comp.ui).outerNode;
 		int x = 0, y = 0;
 		/**
 		 * @j2sNative
 		 * 
-		 * x = g.$transform.m02;
-		 * y = g.$transform.m12;
+		 *            x = g.$transform.m02; y = g.$transform.m12;
 		 * 
-		 * 		if (x == node.lastSceneX && y == node.lastSceneY) return;
-		 * node.lastSceneX = x;
-		 * node.lastSceneY = y;
+		 *            if (x == node.lastSceneX && y == node.lastSceneY) return;
+		 *            node.lastSceneX = x; node.lastSceneY = y;
 		 * 
 		 */
-		{}
-		DOMNode.setStyles(node,  "left", x + "px", "top", y + "px");
-		 
+		{
+		}
+		DOMNode.setStyles(node, "left", x + "px", "top", y + "px");
+
 		/**
 		 * @j2sNative
 		 * 
-		 * if (node.parentElement == null)
-		 *   owner.ui.outerNode.appendChild(node);
+		 *            if (node.parentElement == null)
+		 *            owner.ui.outerNode.appendChild(node);
 		 * 
 		 */
-		{}
+		{
+		}
+	}
+
+	/**
+	 * create the inner centering div for a compound label or button consisting of
+	 * the icon and text
+	 * 
+	 * @param node
+	 */
+	protected void addCenteringNode(DOMNode node) {
+		centeringNode = newDOMObject("div", id + "_cntr");
+		if (iconNode == null)
+			iconNode = newDOMObject("span", id + "_icon");
+		centeringNode.appendChild(iconNode);
+		if (domBtn != null)
+			centeringNode.appendChild(domBtn);
+		if (textNode != null)
+			centeringNode.appendChild(textNode);
+		node.appendChild(centeringNode);
 	}
 
 }

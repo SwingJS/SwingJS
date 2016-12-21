@@ -183,9 +183,11 @@ public class JPopupMenu extends JComponent implements MenuElement {
         lightWeightPopup = getDefaultLightWeightPopupEnabled();
         setSelectionModel(new DefaultSingleSelectionModel());
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+        setOpaque(true); // BH  added
         //setFocusTraversalKeysEnabled(false);
         uiClassID = "PopupMenuUI";
         updateUI();
+
     }
 
 

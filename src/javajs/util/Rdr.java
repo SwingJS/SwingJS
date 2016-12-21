@@ -386,6 +386,24 @@ public class Rdr implements GenericLineReader {
   }
 
   /**
+   * 
+   * Read a UTF-8 byte array fully, converting it to a String.
+   * Called by Jmol's XMLReaders
+   * 
+   * @param bis
+   * @return a UTF-8 string
+   */
+  public static String BytesToUTF8String(byte[] bytes) {
+    String[] data = new String[1];
+    try {
+    	BufferedInputStream bis = new BufferedInputStream(new ByteArrayInputStream(bytes));
+      readAllAsString(getBufferedReader(bis, "UTF-8"), -1, true, data, 0);
+    } catch (IOException e) {
+    }
+    return data[0];
+  }
+
+  /**
    * This method fills data[i] with string data from a file that may or may not
    * be binary even though it is being read by a reader. It is meant to be used
    * simple text-based files only.

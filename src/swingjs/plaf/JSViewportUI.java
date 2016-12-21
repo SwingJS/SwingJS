@@ -29,22 +29,22 @@
 package swingjs.plaf;
 
 import jsjava.awt.Dimension;
-import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JViewport;
-import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import swingjs.api.DOMNode;
 
 public class JSViewportUI extends JSLightweightUI implements PropertyChangeListener,
 ChangeListener {
 
-	private JViewport viewport;
+	JViewport viewport;
 
 	@Override
 	protected DOMNode updateDOMNode() {
-		if (domNode == null)
+		if (domNode == null) {
 			domNode = newDOMObject("div", id);
+		}
+		// add code here for adjustments when changes in bounds or other properties occur.
 		return domNode;
 	}
 
@@ -69,10 +69,5 @@ ChangeListener {
 	protected DOMNode setHTMLElement() {
 		return DOMNode.setStyles(setHTMLElementCUI(), "overflow", "hidden");
 	}
-
-
-
-
-
 
 }

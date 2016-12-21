@@ -6,6 +6,9 @@
 
 // NOTES by Bob Hanson
 
+// BH 12/20/2016 1:42:06 PM allowing file caching from class loader
+// BH 12/20/2016 7:49:03 AM final inner class nesting fix for $b$
+//   -trouble with two similar inner classes that both extend an class that itself has inner classes that need to reference their own (different) outer class.
 // BH 12/18/2016 7:16:21 AM GCC fix for trailing comma in System
 // BH 12/15/2016 6:55:40 AM URL line switches:
 //     -j2sdebugCode  do not use core files at all
@@ -726,54 +729,55 @@ Clazz.defineEnumConstant = function (clazzEnum, enumName, enumOrdinal, initialPa
 ///////////////////////// public supporting method creation //////////////////////
 
 /**
- * Prepare "callback" for instance of anonymous Class.
- * For example for the callback:
- *     this.callbacks.MyEditor.sayHello();
- *     
- * This is specifically for inner classes that are referring to 
- * outer class methods and fields.   
- *
- * @param objThis the host object for callback
- * @param args arguments object. args[0] will be classThisObj -- the "this"
- * object to be hooked
+ * Prepare synthetic callback references b$[] for an anonymous inner class.
  * 
- * Attention: parameters should not be null!
+ * This implementation takes advantage of the fact that the inheritance of the 
+ * outer object is a property of itself.    
+ *
+ * @param innerObj this object
+ * @param args args[0] will be the outer object; args [1...] 
+ *  must be shifted back to be actual calling arguments
+ *  @author Bob Hanson
  */
 Clazz.prepareCallback = function (innerObj, args) {
   var outerObj = args[0];
   if (outerObj == _prepOnly)return;    
   if (innerObj && outerObj && outerObj !== window) {
-    // BH: A major change here -- save the b$ array with the OUTER class,
-    //     not the inner class, as it is a property of the outer class and
-    //     does not have to be recreated upon every new instance of the inner class.    
+    // BH: For efficiency: Save the b$ array with the OUTER class as $b$, 
+    // as its keys are properties of it and can be used again.
     var b = outerObj.$b$;
     var isNew = false;
+    var innerName = Clazz.getClassName(innerObj, true);
     if (!b) {
       b = outerObj.b$;
-      // all references to outer class and its superclass objects must be here as well
+      // Inner class of an inner class must inherit all outer object references. Note that this 
+      // can cause conflicts. For example, b%["java.awt.Component"] could refer to the wrong
+      // object if I did this wrong.
+      // 
       if (!b) {
+        // the outer class is not itself an inner class - start a new map
         b = {};
         isNew = true;
+      } else if (b["$ " + innerName]) {
+        // this inner class is already in the map pointing to a different object. Clone the map.
+        b = appendMap({},b);
+        isNew = true;
       }
+      // add all superclass references for outer object
       var clazz = Clazz.getClass(outerObj);
-      while (clazz.superClazz) {
-        var key = Clazz.getClassName(clazz = clazz.superClazz, true);
-        if (!isNew && b[key]) 
+      do {
+        var key = Clazz.getClassName(clazz, true);
+        if (!isNew && b[key])
           break;
         b[key] = outerObj; 
-      }
-      b[Clazz.getClassName(outerObj, true)] = outerObj;
+      } while ((clazz = clazz.superClazz));
     }
-    if (isNew) {
+    // add a flag to disallow any other same-class use of this map.
+    b["$ " + innerName] = 1;
+    // it is new, save this map with the OUTER object as $b$
+    if (isNew)
       outerObj.$b$ = b;
-    } else {
-      // BH: look out for an outer object being the same for two different inner classes of the same type
-      // BH: only in that case we must clone the outer array.
-      var bb = {};
-      for (var key in b)
-        bb[key] = b[key];
-      b = bb;
-    }
+    // final objective: save this map for the inner object
     innerObj.b$ = b;
   }
   // note that args is an instance of arguments -- NOT an array; does not have the .shift() method!
@@ -1447,6 +1451,7 @@ var inF = {
       }            
     }
     var url = null;
+    var javapath = fname;
     try {
       if (fname.indexOf(":/") < 0) {
         var d = document.location.href.split("?")[0].split("/");
@@ -1455,8 +1460,12 @@ var inF = {
       }
       url = new java.net.URL(fname);
     } catch (e) {
+      return null;
     }
-    var data = (url == null ? null : J2S._getFileData(fname.toString(),null,1,1));
+    var fileCache = J2S._getSetJavaFileCache(null);
+    var data = fileCache && fileCache.get(javapath);   
+    if (!data)
+      data = J2S._getFileData(fname.toString(),null,1,1);
     
     if (data == null || data == "error" || data.indexOf && data.indexOf("[Exception") == 0)
       return null;

@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import jsjava.awt.event.ComponentEvent;
 import jsjava.awt.event.HierarchyEvent;
 import jsjava.awt.event.WindowEvent;
+import jsjava.awt.peer.ComponentPeer;
 import jsjava.awt.peer.DialogPeer;
 import jssun.awt.AppContext;
 import jssun.awt.PeerEvent;
@@ -756,13 +757,15 @@ public class Dialog extends Window {
             if (parent != null) {
                 parent.addNotify();
             }
-            if (peer == null) {
-                peer = getToolkit().createDialog(this);
-            }
+            getOrCreatePeer();
             super.addNotify();
         }
     }
 
+	@Override
+	protected ComponentPeer getOrCreatePeer() {
+		return (ui == null ? null : peer == null ? (peer = getToolkit().createDialog(this)) : peer);
+	}
     /**
      * Indicates whether the dialog is modal.
      * <p>

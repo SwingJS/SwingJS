@@ -28,34 +28,17 @@
 
 package swingjs.plaf;
 
-import jsjavax.swing.JSeparator;
-import jsjavax.swing.SwingConstants;
 import swingjs.api.DOMNode;
 
 public class JSSeparatorUI extends JSLightweightUI {
 
-	JSeparator jsep;
-	private String text;
-	
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
-			textNode = domNode = newDOMObject("label", id);
-			text = "";//(jsep.getOrientation() == SwingConstants.HORIZONTAL ? "|" : "-----------");
+			domNode = newDOMObject("label", id);
 		}
-		vCenter(domNode, 10);
-		return setCssFont(DOMNode.setAttr(domNode, "innerHTML", text), c.getFont());
-	}
-
-	@Override
-	protected void installUIImpl() {
-		jsep = (JSeparator) c;
-	}
-
-	@Override
-	protected void uninstallUIImpl() {
-		// TODO Auto-generated method stub
-		
+		// add code here for adjustments when changes in bounds or other properties occur.
+		return domNode;
 	}
 
 }

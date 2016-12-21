@@ -33,7 +33,12 @@ import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjavax.swing.DefaultListCellRenderer;
-import jsjavax.swing.JTextField;
+import jsjavax.swing.LookAndFeel;
+import jsjavax.swing.UIDefaults;
+import jsjavax.swing.plaf.ColorUIResource;
+import jsjavax.swing.plaf.DimensionUIResource;
+import jsjavax.swing.plaf.FontUIResource;
+import jsjavax.swing.plaf.InsetsUIResource;
 //import jsjava.awt.Component;
 //import jsjava.awt.Dimension;
 //import jsjava.awt.Font;
@@ -75,16 +80,11 @@ import jsjavax.swing.JTextField;
 //import jsjavax.swing.MenuElement;
 //import jsjavax.swing.MenuSelectionManager;
 //import jsjavax.swing.SwingUtilities;
-import jsjavax.swing.LookAndFeel;
-import jsjavax.swing.UIDefaults;
 //import jsjavax.swing.UIManager;
 //import jsjavax.swing.border.BevelBorder;
 //import jsjavax.swing.plaf.ActionMapUIResource;
 //import jsjavax.swing.plaf.BorderUIResource;
-import jsjavax.swing.plaf.ColorUIResource;
-import jsjavax.swing.plaf.FontUIResource;
 //import jsjavax.swing.plaf.ComponentUI;
-import jsjavax.swing.plaf.DimensionUIResource;
 //import jsjavax.swing.plaf.DimensionUIResource;
 //import jsjavax.swing.plaf.InsetsUIResource;
 ////import jsjavax.swing.plaf.basic.popupMenuUI;
@@ -95,8 +95,6 @@ import jsjavax.swing.plaf.DimensionUIResource;
 //import jssun.swing.SwingUtilities2;
 ////import jssun.swing.SwingLazyValue;
 //
-import jsjavax.swing.plaf.InsetsUIResource;
-import jssun.swing.SwingLazyValue;
 
 /**
  * A base class to use in creating a look and feel for Swing.
@@ -379,8 +377,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		"text", "#C0C0C0", /* Text background color */
 		"textText", "#333333", /* Text foreground color */
 //		"textHighlight", "#000080", /* Text background color when selected */
-//		"textHighlightText", "#FFFFFF", /* Text color when selected */
-//		"textInactiveText", "#808080", /* Text color when disabled */
+		"textHighlightText", "#FFFFFF", /* Text color when selected */
+		"textInactiveText", "#808080", /* Text color when disabled */
 		"control", "#EEEEEE", // SECONDARY3 Default color for controls (buttons, sliders, etc)
 		"controlText", "#333333", //  Default color for text in controls 
 //		"controlHighlight", "#C0C0C0", /*
@@ -543,8 +541,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		Color menu = table.getColor("menu");
 		Color menuText = table.getColor("menuText");
 		// Color textHighlight = table.getColor("textHighlight");
-		// Color textHighlightText = table.getColor("textHighlightText");
-		// Color textInactiveText = table.getColor("textInactiveText");
+		Color textHighlightText = table.getColor("textHighlightText");
+	  Color textInactiveText = table.getColor("textInactiveText");
 		Color textText = table.getColor("textText");
 		Color window = table.getColor("window");
 
@@ -1754,8 +1752,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "TextField.darkShadow", controlDkShadow,
 				// "TextField.light", controlHighlight,
 				// "TextField.highlight", controlLtHighlight,
-				// "TextField.inactiveForeground", textInactiveText,
-				// "TextField.inactiveBackground", control,
+				"TextField.inactiveForeground", textInactiveText,
+				"TextField.inactiveBackground", control,
 				// "TextField.selectionBackground", textHighlight,
 				// "TextField.selectionForeground", textHighlightText,
 				// "TextField.caretForeground", textText,
@@ -1770,8 +1768,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				window,
 				"FormattedTextField.foreground",
 				textText,
-				// "FormattedTextField.inactiveForeground", textInactiveText,
-				// "FormattedTextField.inactiveBackground", control,
+				"FormattedTextField.inactiveForeground", textInactiveText,
+				"FormattedTextField.inactiveBackground", control,
 				// "FormattedTextField.selectionBackground", textHighlight,
 				// "FormattedTextField.selectionForeground", textHighlightText,
 				"FormattedTextField.caretForeground",
@@ -1834,8 +1832,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				window,
 				"PasswordField.foreground",
 				textText,
-				// "PasswordField.inactiveForeground", textInactiveText,
-				// "PasswordField.inactiveBackground", control,
+				"PasswordField.inactiveForeground", textInactiveText,
+				"PasswordField.inactiveBackground", control,
 				// "PasswordField.selectionBackground", textHighlight,
 				// "PasswordField.selectionForeground", textHighlightText,
 				// "PasswordField.caretForeground", textText,
@@ -1852,7 +1850,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				window,
 				"TextArea.foreground",
 				textText,
-				// "TextArea.inactiveForeground", textInactiveText,
+				"TextArea.inactiveForeground", textInactiveText,
 				// "TextArea.selectionBackground", textHighlight,
 				// "TextArea.selectionForeground", textHighlightText,
 				// "TextArea.caretForeground", textText,
@@ -1871,7 +1869,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "TextPane.selectionForeground", textHighlightText,
 				// "TextPane.caretForeground", textText,
 				// "TextPane.caretBlinkRate", caretBlinkRate,
-				// "TextPane.inactiveForeground", textInactiveText,
+				"TextPane.inactiveForeground", textInactiveText,
 				// "TextPane.border", marginBorder,
 				"TextPane.margin",
 				editorMargin,
@@ -1886,7 +1884,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "EditorPane.selectionForeground", textHighlightText,
 				// "EditorPane.caretForeground", textText,
 				// "EditorPane.caretBlinkRate", caretBlinkRate,
-				// "EditorPane.inactiveForeground", textInactiveText,
+				"EditorPane.inactiveForeground", textInactiveText,
 				// "EditorPane.border", marginBorder,
 				"EditorPane.margin",
 				editorMargin,

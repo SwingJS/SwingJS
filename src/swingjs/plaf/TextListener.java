@@ -28,6 +28,7 @@
 
 package swingjs.plaf;
 
+import swingjs.api.DOMNode;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.FocusListener;
 import jsjava.awt.event.KeyEvent;
@@ -36,6 +37,7 @@ import jsjava.awt.event.MouseListener;
 import jsjava.awt.event.MouseMotionListener;
 import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
+import jsjavax.swing.AbstractButton;
 import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
@@ -208,12 +210,7 @@ public class TextListener implements MouseListener, MouseMotionListener,
 	}
 
 	private void setText() {
-		// this method will only be run in JavaScript; so as not to 
-		// have to modify the actual javax.swing code so much, we use
-		// the double qualification to prevent Java compilation errors.
-		// Not a great idea in general....
-	
-		((JSComponentUI)txtComp.getUI()).propertyChangedFromListener("text");	
+		ui.setText(txtComp.getText());
 	}
 }
   

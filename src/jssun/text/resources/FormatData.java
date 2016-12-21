@@ -160,7 +160,7 @@ public class FormatData extends ListResourceBundle {
             { "NumberPatterns",
                 new String[] {
                     "#,##0.###;-#,##0.###", // decimal pattern
-                    "\u00a4 #,##0.00;-\u00a4 #,##0.00", // currency pattern
+                    "\u00a4#,##0.00;'-\u00a4#,##0.00", // currency pattern
                     "#,##0%" // percent pattern
                 }
             },

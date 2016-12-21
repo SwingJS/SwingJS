@@ -40,9 +40,8 @@ public class JSTextFieldUI extends JSTextUI {
 		}
 		setCssFont(setProp(domNode, "value", getComponentText()),
 				c.getFont());
-		setTextAlignment(textField.getHorizontalAlignment());		
-		if (!editable)
-			DOMNode.setAttr(domNode, "readOnly", "true");
+		setTextAlignment();
+		setEditable(editable);
 		return domNode;
 	}
 

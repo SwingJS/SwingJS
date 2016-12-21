@@ -254,6 +254,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 			myThread.start();
 		else
 			showStatus("already started");
+		japplet.repaint();
 	}
 
 	synchronized public void addAppletListener(AppletListener l) {
@@ -487,6 +488,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 				System.out.println("JSAppletViewer start" + currentAppletSize);
 				japplet.resize(currentAppletSize);
 				japplet.start();
+				japplet.repaint();
 				status = APPLET_START;
 				showAppletStatus("started");
 				nextStatus = APPLET_READY;
@@ -502,6 +504,7 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 					if (resizer != null)
 						resizer.show();
 				}
+				japplet.repaint();
 				break;
 			case APPLET_STOP:
 				if (status == APPLET_START) {

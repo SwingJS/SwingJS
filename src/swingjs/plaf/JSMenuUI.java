@@ -6,45 +6,43 @@ import jsjavax.swing.JMenu;
 import swingjs.J2SRequireImport;
 import swingjs.api.DOMNode;
 
-
 @J2SRequireImport(swingjs.jquery.JQueryUI.class)
 public class JSMenuUI extends JSMenuItemUI {
 
 	private JMenu jm;
-  private boolean isMenuBarMenu;
 
 	public JSMenuUI() {
 		setDoc();
 	}
 
 	@Override
-	 protected void installUIImpl(){
-	 super.installUIImpl();
-		jm = (JMenu) jc;
-	 }
-
-	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
-			isMenuBarMenu = jm.isTopLevelMenu();
-			if (isMenuBarMenu) {
+			isMenuItem = !((JMenu) jc).isTopLevelMenu();
+			if (isMenuItem) {
+				containerNode = domNode = createItem("_menu", null);
+			} else {
 				domNode = newDOMObject("label", id);
-				// TODO implement icons for menuBar
+				// TODO implement icons for menuBar?
 				setCssFont(DOMNode.setAttr(domNode, "innerHTML", menuItem.getText()),
 						c.getFont());
 				setDataComponent(domNode);
-			} else {
-				hasOuterDiv = false;
-				containerNode = domNode = createItem("_menu", null);
 			}
 		}
+		setCssFont(domNode, c.getFont());
 		return domNode;
+	}
 
+	@Override
+	protected void installUIImpl() {
+		jm = (JMenu) jc;
+		super.installUIImpl();
 	}
 
 	@Override
 	protected Component[] getChildren() {
-		return (isMenuBarMenu ? jm.getComponents(): new Component[] { jm.getPopupMenu() } );
+		return (isMenuItem ? new Component[] { jm.getPopupMenu() } : jm
+				.getComponents());
 	}
 
 	@Override
@@ -52,6 +50,4 @@ public class JSMenuUI extends JSMenuItemUI {
 		return getPreferredSize();
 	}
 
-
-	
 }

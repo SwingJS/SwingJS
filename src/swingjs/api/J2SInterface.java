@@ -1,5 +1,7 @@
 package swingjs.api;
 
+import java.util.Hashtable;
+
 import swingjs.JSThread;
 
 /** 
@@ -38,6 +40,8 @@ public interface J2SInterface {
 	Object _getJavaResource(String resourceName, boolean isJavaPath);
 
 	boolean _isResourceLoaded(String file, boolean done);
+
+	Hashtable<String, Object> _getSetJavaFileCache(Object object);
 
 }
 

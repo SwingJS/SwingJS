@@ -9,8 +9,8 @@ public class JSScrollBarUI extends JSSliderUI {
 	// not a perfect solution
 	// TODO -- tie in setHorizontal/setVertical
 
+	JSScrollPaneUI myScrollPaneUI;
 	
-
 	private boolean isInvisible;
 
 	public JSScrollBarUI() {
@@ -36,14 +36,14 @@ public class JSScrollBarUI extends JSSliderUI {
 	@Override
 	public Dimension getPreferredSize() {
 		// thin because we are implementing jquery slider here
-		int wh = (scrollPaneUI == null ? 15 : scrollPaneUI.scrollBarUIDisabled ? 0 : 15);
+		int wh = (myScrollPaneUI == null ? 15 : myScrollPaneUI.scrollBarUIDisabled ? 0 : 15);
 		// just used for width or height, but not both. I think.... 
 		return new Dimension(wh, wh);
 	}
 	
 	@Override
 	public void setVisible(boolean b) {
-		isInvisible = (scrollPaneUI != null && scrollPaneUI.scrollBarUIDisabled);
+		isInvisible = (myScrollPaneUI != null && myScrollPaneUI.scrollBarUIDisabled);
 		b &= !isInvisible;
 		DOMNode.setStyles(getOuterNode(), "display", b ? "block" : "none");
 		DOMNode.setStyles(jqSlider, "display", b ? "block" : "none");

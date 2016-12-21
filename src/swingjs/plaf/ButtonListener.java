@@ -51,21 +51,25 @@ import jssun.swing.UIAction;
 import swingjs.api.DOMNode;
 
 /**
- * Button Listener
+ * A Button Listener for SwingJS that is one instantialization per button.
+ * 
+ * 
  * 
  * @author Jeff Dinkins
  * @author Arnaud Weber (keyboard UI support)
  * 
  * 
- *         Note that in Swingjs a JavaScript button press is routed through the
- *         underlying panel. The change in the button's clicking
+ *         Note that in Swingjs a JavaScript button press is routed directly
+ *         to the button via a link to the UI, not routed through the
+ *         underlying panel based on xy position. 
  * 
+ * @author Bob Hanson
  */
 
 public class ButtonListener implements MouseListener, MouseMotionListener,
 		FocusListener, ChangeListener, PropertyChangeListener {
 	
-	private AbstractButton btn;
+	private JSButtonUI ui;
 
 	/**
 	 * Populates Buttons actions.
@@ -75,8 +79,8 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 		map.put(new Actions(Actions.RELEASE));
 	}
 
-	public ButtonListener(AbstractButton b, boolean isMenuItem) {
-		btn = b;
+	public ButtonListener(JSButtonUI ui, boolean isMenuItem) {
+		this.ui = ui;
 	}
 
 
@@ -99,7 +103,7 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 		} else if (prop == AbstractButton.CONTENT_AREA_FILLED_CHANGED_PROPERTY) {
 			checkOpacity(b);
 		} else {
-			((JSComponentUI) b.ui).propertyChangedFromListener(prop);
+			ui.propertyChangedFromListener(prop);
 		}
 	}
 
@@ -239,7 +243,7 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		AbstractButton b = (AbstractButton) e.getSource();
+		//AbstractButton b = (AbstractButton) e.getSource();
 		//System.out.println("The button was clicked: " + b.htmlName);
 	}
 
@@ -320,7 +324,6 @@ public class ButtonListener implements MouseListener, MouseMotionListener,
 	 * @return true
 	 */
 	boolean verifyButtonClick(AbstractButton b) {
-		JSButtonUI ui = (JSButtonUI) b.ui;
 		ButtonModel m = b.getModel();
 		DOMNode btn = ui.domBtn;
 		// BH: I don't know that this is necessary anymore

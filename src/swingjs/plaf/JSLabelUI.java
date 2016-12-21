@@ -6,7 +6,7 @@ import jsjavax.swing.LookAndFeel;
 import swingjs.api.DOMNode;
 
 /**
- * A JavaScript equivalent for a label. Text only.  
+ * A JavaScript equivalent for a label.  
  * 
  * @author Bob Hanson
  *
@@ -18,25 +18,18 @@ public class JSLabelUI extends JSLightweightUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null)	{
 			domNode = newDOMObject("label", id);
-			domNode.appendChild(iconNode = newDOMObject("span", id+"_icon"));
-			domNode.appendChild(textNode = newDOMObject("span", id+"_text"));
+			textNode = newDOMObject("span", id+"_text");
+			addCenteringNode(domNode);
 		}
-		setIconAndText("dom", (ImageIcon) label.getIcon(), label.getIconTextGap(), label.getText());
-		//vCenter(domNode, 10);
-		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align", textAlign);
-		return setCssFont(domNode, c.getFont());
+		setIconAndText("label", (ImageIcon) label.getIcon(), label.getIconTextGap(), label.getText());
+		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align");
+		if (actualHeight > 0)
+			DOMNode.setStyles(centeringNode, "position", "absolute", "height", actualHeight + "px");
+		if (actualWidth > 0)
+			DOMNode.setStyles(centeringNode, "position", "absolute", "width", actualWidth + "px");
+		setCssFont(centeringNode, c.getFont());
+		return domNode;
 	
-	}
-
-	@Override
-	public void propertyChangedFromListener(String prop) {
-		boolean isVert = (prop.indexOf("vert") >= 0);
-		boolean isAlign = (prop.indexOf("Ali") >= 0);
-		if (isAlign && !isVert) {
-			revalidate();
-		} else {
-			propertyChangedFromListenerCUI(prop);
-		}
 	}
 
 	/**
@@ -45,7 +38,8 @@ public class JSLabelUI extends JSLightweightUI {
 	@Override
 	protected DOMNode setHTMLElement() {
 		setHTMLElementCUI();
-		setTextAlignment(label.getHorizontalAlignment());
+		setTextAlignment();
+		setVerticalAlignment();
 		return outerNode;
 	}
 	

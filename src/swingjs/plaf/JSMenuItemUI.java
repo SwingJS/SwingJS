@@ -3,16 +3,25 @@ package swingjs.plaf;
 
 import jsjava.awt.Dimension;
 import jsjavax.swing.JMenuItem;
+import jsjavax.swing.LookAndFeel;
 import swingjs.api.DOMNode;
 
 public class JSMenuItemUI extends JSButtonUI {
+	
+	/**
+	 * Just a simple menu item -- not radio or checkbox
+	 */
+	public JSMenuItemUI() {
+		super();
+		isMenuItem = true;
+	}
 
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
-			hasOuterDiv  = false;
-		  domNode = createItem("_item", null);
+			domNode = createItem("_item", null);
 		}
+		// add code here for adjustments when changes in bounds or other properties occur.
 		return domNode;
 	}
 
@@ -30,6 +39,8 @@ public class JSMenuItemUI extends JSButtonUI {
 	protected void installUIImpl() {
 		menuItem = (JMenuItem) c;
 		super.installUIImpl();
+    LookAndFeel.installColorsAndFont(jc, "MenuItem.background", "MenuItem.foreground",
+        "MenuItem.font");		
 	}
 
 }

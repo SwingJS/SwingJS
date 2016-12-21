@@ -6,7 +6,7 @@ interface ActionListener {
 	void actionPerformed(ActionEvent event);
 }
 
-class JButton {
+class JButton1 {
 	ActionListener actionListener;
 
 	private static int VALUE;
@@ -38,7 +38,7 @@ class JButton {
  * @author RM
  *
  */
-public class Test_9 extends JButton {
+public class Test_9 extends JButton1 {
 
 	static {
 		// see http://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
@@ -57,9 +57,9 @@ public class Test_9 extends JButton {
 		checkMe();
 	}
 
-	JButton createAnonymousWithInitializer() {
+	JButton1 createAnonymousWithInitializer() {
 
-		JButton button = new JButton() {
+		JButton1 button = new JButton1() {
 			
 			
 			public void checkMe2() {
@@ -74,7 +74,7 @@ public class Test_9 extends JButton {
 						System.out.println("runnable 1");
 						resetChamber();
 						checkMe();
-						JButton j2 = new JButton() {
+						JButton1 j2 = new JButton1() {
 						};
 						j2.checkMe();
 					}

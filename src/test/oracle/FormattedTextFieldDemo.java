@@ -189,6 +189,7 @@ implements ActionListener, PropertyChangeListener, FocusListener {
 
         double payment = computePayment(amount, rate, numPeriods);
         paymentField.setValue(new Double(payment));
+        System.out.println(paymentField.getValue());
     }
 
     /**

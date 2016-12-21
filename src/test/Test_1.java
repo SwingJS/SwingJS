@@ -1,53 +1,60 @@
 package test;
 
-import java.awt.AWTEvent;
-import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Event;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Stroke;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.Enumeration;
 
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 public class Test_1 extends JApplet {
 	
+  int ipt;
 
 	@Override
 	public void init() {
     JScrollBar bar = new JScrollBar(JScrollBar.HORIZONTAL);
-    JLabel label = new JLabel("hello");
-    label.setBounds(0, 20, 200, 60);
+    final JLabel label = new JLabel("hello");
+    label.setBounds(0, 60, 200, 60);
+    label.setPreferredSize(new Dimension(80, 80));
     label.setBackground(Color.yellow);
     label.setForeground(Color.BLUE);
-    bar.setBounds(0, 0, 200, 20);
-    getContentPane().add(bar);
-    getContentPane().add(label);
+    //label.setOpaque(true);
+    label.setHorizontalAlignment(JLabel.LEFT);
+    label.setVerticalAlignment(JLabel.CENTER);
+    final JButton button = new JButton("test");
+    button.setSize(80,40);
+    button.addActionListener(new java.awt.event.ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				boolean b = label.isOpaque();
+				label.setOpaque(!b);
+		    label.setBackground(Color.green);
+				switch (++ipt % 3) {
+				case 0:
+			    label.setHorizontalAlignment(JLabel.RIGHT);
+			    label.setVerticalAlignment(JLabel.TOP);
+			    break;					
+				case 1:
+			    label.setHorizontalAlignment(JLabel.CENTER);
+			    label.setVerticalAlignment(JLabel.CENTER);
+			    break;					
+				case 2:
+			    label.setHorizontalAlignment(JLabel.LEFT);
+			    label.setVerticalAlignment(JLabel.BOTTOM);
+			    break;					
+				}
+				repaint();
+			}
+    	
+    });
+    bar.setBounds(0, 0, 100, 20);
+    getContentPane().add(bar, BorderLayout.NORTH);
+    getContentPane().add(label, BorderLayout.SOUTH);
+    getContentPane().add(button, BorderLayout.CENTER);
 	}
 
 } 

@@ -27,6 +27,8 @@
  */
 package jsjava.awt;
 
+import jsjava.awt.peer.ComponentPeer;
+
 /**
  * <code>Panel</code> is the simplest container class. A panel
  * provides space in which an application can attach any other
@@ -89,19 +91,24 @@ public class Panel extends Container {
         }
     }
 
-    /**
-     * Creates the Panel's peer.  The peer allows you to modify the
-     * appearance of the panel without changing its functionality.
-     */
+	/**
+	 * Creates the Panel's peer. The peer allows you to modify the appearance of
+	 * the panel without changing its functionality.
+	 */
 
-    @Override
-		public void addNotify() {
-//        synchronized (getTreeLock()) {
-            if (peer == null)
-                peer = getToolkit().createPanel(this);
-            super.addNotify();
-//        }
-    }
+	@Override
+	public void addNotify() {
+		// synchronized (getTreeLock()) {
+		getOrCreatePeer();
+		super.addNotify();
+		// }
+	}
+    
+  	@Override
+  	protected ComponentPeer getOrCreatePeer() {
+  		return (ui == null ? null : peer == null ? (peer = getToolkit().createPanel(this)) : peer);
+  	}
+
 
 /////////////////
 // Accessibility support

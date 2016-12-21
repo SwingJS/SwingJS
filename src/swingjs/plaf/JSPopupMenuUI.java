@@ -30,12 +30,12 @@ public class JSPopupMenuUI extends JSPanelUI {
 	}
 
 	private JPopupMenu menu;
-	private boolean isTopLevel;
-	private JPopupMenu popupMenu;
+//	private JPopupMenu popupMenu;
 
 
 	public JSPopupMenuUI() {
 		isContainer = true;	
+		isMenuItem = true;
 		setDoc();
 	}
 	
@@ -43,10 +43,9 @@ public class JSPopupMenuUI extends JSPanelUI {
 	protected DOMNode updateDOMNode() {
 		// j2sMenu.js will wrap this in a div with the appropriate
 		if (domNode == null) {
-			popupMenu = (JPopupMenu) jc;
-			isTopLevel = (!(popupMenu.getInvoker() instanceof JMenu) 
-					|| ((JMenu) popupMenu.getInvoker()).isTopLevelMenu());
-			hasOuterDiv = false;
+//			popupMenu = (JPopupMenu) jc;
+//			isTopLevel = (!(popupMenu.getInvoker() instanceof JMenu) 
+//					|| ((JMenu) popupMenu.getInvoker()).isTopLevelMenu());
 			domNode = containerNode = newDOMObject("ul", id);
 		}
 		return domNode;

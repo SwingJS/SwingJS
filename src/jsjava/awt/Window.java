@@ -663,10 +663,14 @@ public class Window extends Container {
 		Container parent = this.parent;
 		if (parent != null && parent.getPeer() == null)
 			parent.addNotify();
-		if (peer == null)
-			peer = getToolkit().createWindow(this);
+		getOrCreatePeer();
 		JSToolkit.getAppletViewer().addWindow(this);
 		super.addNotify();
+	}
+
+	@Override
+	protected ComponentPeer getOrCreatePeer() {
+		return (ui == null ? null : peer == null ? (peer = getToolkit().createWindow(this)) : peer);
 	}
 
 	/**

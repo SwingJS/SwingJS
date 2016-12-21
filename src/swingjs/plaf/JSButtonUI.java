@@ -1,6 +1,36 @@
+/*
+ * Some portions of this file have been modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017
+ * for use in SwingJS via transpilation into JavaScript using Java2Script.
+ *
+ * Copyright (c) 1997, 2005, Oracle and/or its affiliates. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import java.awt.Color;
+
 import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
@@ -39,36 +69,48 @@ public class JSButtonUI extends JSLightweightUI {
 	//
 	//
 	
-	protected boolean isRadio;
-	protected DOMNode itemNode;
+	/**
+	 * a wrapper if this is not a menu item
+	 */
+	protected DOMNode label; 
+  protected DOMNode itemNode;
 	protected JMenuItem menuItem;
 	protected AbstractButton button;
+	
+	private boolean isSimpleButton;
 
 
 	@Override
 	protected DOMNode updateDOMNode() {
+		isSimpleButton = true;
 		// all subclasses will have their own version of this.
+		// this one is only for a simple button
 		if (domNode == null) {
 			domNode = newDOMObject("span", id);
-			domNode.appendChild(iconNode = newDOMObject("span", id+"_icon"));
-			domNode.appendChild(enableNode = domBtn = valueNode = 
-					newDOMObject("input", id + "_btn", "type", "button"));
+			enableNode = domBtn = valueNode = newDOMObject("input", id + "_btn", "type", "button");
+			addCenteringNode(domNode);
+			setDataComponent(domBtn);
+			setDataComponent(iconNode);
 		}
-		setDataComponent(domBtn);
-		setDataComponent(iconNode);
 		setIconAndText("button", (ImageIcon) button.getIcon(), button.getIconTextGap(), button.getText());
-		setCssFont(domNode, c.getFont());
+		
 		return domNode;
 	}
 
 	/**
 	 * 
-	 * @param type "_item" or "_menu"
-	 * @param myNode will be a label for radio and checkbox only; otherwise null
+	 * @param type
+	 *          "_item" or "_menu"
+	 * @param label
+	 *          will be a for-label for radio and checkbox only; otherwise null
 	 * @return
 	 */
-	protected DOMNode createItem(String type, DOMNode myNode) {
+	protected DOMNode createItem(String type, DOMNode label) {
 		// all subclasses will call this method
+
+		// unnecessary? if (label == null)
+		// hasOuterDiv = false;
+
 		String text = button.getText();
 		ImageIcon icon = (ImageIcon) button.getIcon();
 		int gap = button.getIconTextGap();
@@ -76,36 +118,38 @@ public class JSButtonUI extends JSLightweightUI {
 			text = null;
 		}
 		itemNode = newDOMObject("li", id + type);
-		if (text != null || icon != null) {
-			DOMNode aNode = newDOMObject("a", id + type + "_a");
-			DOMNode.setStyles(aNode, "margin", "1px 4px 1px 4px");
-			itemNode.appendChild(aNode);
-			if (myNode == null) {
-				if (iconNode == null)
-					iconNode = newDOMObject("span", id + "_icon");
-				if (textNode == null)
-					textNode = newDOMObject("span", id + "_text");
-				$(iconNode).attr("role","menucloser");
-				$(textNode).attr("role","menucloser");
-				setDataUI(iconNode);
-				setDataUI(textNode);
-				aNode.appendChild(iconNode);
-				aNode.appendChild(textNode);
-				setCssFont(aNode, c.getFont());	
-				enableNode = aNode;
-				setIconAndText("btn", icon, gap, text);
-			} else {
-				aNode.appendChild(myNode);
-			}
-			// j2sMenu.js will set the mouse-up event for the <a> tag with the role=menuitem
-			// attribute via j2sApplet._jsSetMouse(). 
-			// That event will then fire handleJSEvent
-			setDataUI(aNode);
-			setDataComponent(aNode);
-			setDataComponent(itemNode);
+		if (text == null && icon == null)
+			return itemNode;
+		DOMNode aNode = newDOMObject("a", id + type + "_a");
+		DOMNode.setStyles(aNode, "margin", "1px 4px 1px 4px");
+		itemNode.appendChild(aNode);
+		if (label == null) {
+			// not a radio or checkbox
+			// TODO: add vertical centering 
+			if (iconNode == null)
+				iconNode = newDOMObject("span", id + "_icon");
+			if (textNode == null)
+				textNode = newDOMObject("span", id + "_text");
+			$(iconNode).attr("role", "menucloser");
+			$(textNode).attr("role", "menucloser");
+			setDataUI(iconNode);
+			setDataUI(textNode);
+			aNode.appendChild(iconNode);
+			aNode.appendChild(textNode);
+			setCssFont(aNode, c.getFont());
+			enableNode = aNode;
+			setIconAndText("btn", icon, gap, text);
+		} else {
+			aNode.appendChild(label);
 		}
+		// j2sMenu.js will set the mouse-up event for the <a> tag with the
+		// role=menuitem
+		// attribute via j2sApplet._jsSetMouse().
+		// That event will then fire handleJSEvent
+		setDataUI(aNode);
+		setDataComponent(aNode);
+		setDataComponent(itemNode);
 		return itemNode;
-	
 
 	}
 
@@ -153,7 +197,7 @@ public class JSButtonUI extends JSLightweightUI {
 	}
 
 	protected void installListeners(AbstractButton b) {
-		ButtonListener listener = new ButtonListener(b, !hasOuterDiv);
+		ButtonListener listener = new ButtonListener(this, isMenuItem);
 		if (listener != null) {
 			b.addMouseListener(listener);
 			b.addMouseMotionListener(listener);
@@ -296,7 +340,6 @@ public class JSButtonUI extends JSLightweightUI {
 		if (b.getMargin() == null || (b.getMargin() instanceof UIResource)) {
 			b.setMargin(UIManager.getInsets(pp + "margin"));
 		}
-
 		LookAndFeel.installColorsAndFont(b, pp + "background", pp + "foreground",
 				pp + "font");
 		// LookAndFeel.installBorder(b, pp + "border");
@@ -665,5 +708,12 @@ public class JSButtonUI extends JSLightweightUI {
 		return new Dimension((itemNode == null ? 0 : 10), 0);
 	}
 	
+	@Override
+	protected void setInnerComponentBounds(int width, int height) {
+		if (isSimpleButton && width > 0 && height > 0
+				&& (imageNode == null || button.getText() == null))
+			DOMNode.setSize(domBtn, width, height);
+	}
+
 
 }

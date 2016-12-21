@@ -2,7 +2,6 @@ package swingjs.plaf;
 
 import jsjava.awt.Dimension;
 import jsjava.awt.Rectangle;
-import jsjava.beans.PropertyChangeEvent;
 import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JScrollBar;
@@ -34,17 +33,20 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 	private JComponent scrolledComponent;
 	private JScrollPane scrollpane;
 	private JViewport viewport;
-	private JSComponentUI scrolledUI;
-	private JSScrollBarUI horizNode;
-	private JSScrollBarUI vertNode;
 	private JScrollBar vscrollbar;
 	private JScrollBar hscrollbar;
-	
+
+	private JSComponentUI scrolledUI;
+	private JSScrollBarUI horizBarUI;
+	private JSScrollBarUI vertBarUI;
+
 	@Override
 	protected DOMNode updateDOMNode() {
 		isContainer = true;
-		if (domNode == null)
+		if (domNode == null) {
 			domNode = newDOMObject("div", id);
+		}
+		// add code here for adjustments when changes in bounds or other properties occur.
 		return domNode;
 	}
 
@@ -66,10 +68,10 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		vscrollbar.addChangeListener(this);
 		vscrollbar.addPropertyChangeListener(this);
 		
-		horizNode = (JSScrollBarUI) hscrollbar.getUI();
-		vertNode = (JSScrollBarUI) vscrollbar.getUI();
-		vertNode.iVertScrollBar = true;
-		horizNode.scrollPaneUI = vertNode.scrollPaneUI = this;
+		horizBarUI = (JSScrollBarUI) hscrollbar.getUI();
+		vertBarUI = (JSScrollBarUI) vscrollbar.getUI();
+		vertBarUI.iVertScrollBar = true;
+		horizBarUI.myScrollPaneUI = vertBarUI.myScrollPaneUI = this;
 		viewport = scrollpane.getViewport();
 		JComponent sc = (JComponent) viewport.getView();
 		// for whatever reason, the component being scrolled 
@@ -78,11 +80,9 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		if (sc == null || sc.ui == null)
 			return false;
 		if (sc != scrolledComponent) {
-			if (scrolledUI != null && scrolledUI.scrollerNode == this)
-				scrolledUI.scrollerNode = null;
 			scrolledComponent = sc;
 			scrolledUI = (JSComponentUI) sc.ui;
-			scrolledUI.scrollerNode = this;
+			scrolledUI.scrollPaneUI = this;
 			scrollNode = scrolledUI.domNode; // why outer node?
 			DOMNode.setSize(scrollNode, c.getWidth(), c.getHeight());
 		}
@@ -120,13 +120,13 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 				scrolledComponent.setBounds(r1);
 				DOMNode.setStyles(scrolledUI.domNode, "overflow-x", getScrollBarPolicyCSS(scrollpane.getHorizontalScrollBarPolicy()),
 						"overflow-y", getScrollBarPolicyCSS(scrollpane.getHorizontalScrollBarPolicy()));
-				DOMNode.setStyles(horizNode.jqSlider, "display", "none");
-				DOMNode.setStyles(vertNode.jqSlider, "display", "none");
+				DOMNode.setStyles(horizBarUI.jqSlider, "display", "none");
+				DOMNode.setStyles(vertBarUI.jqSlider, "display", "none");
 //			}
 			return;
 		}
 		// isTainted = true;
-		float v = vertNode.jSlider.getValue();
+		float v = vertBarUI.jSlider.getValue();
 		float range = viewport.getHeight() - scrolledComponent.getHeight();
 		int pos = Math.min(0, (int) (range * v / 100));
 		DOMNode.setStyles(((JSComponentUI) scrolledComponent.ui).domNode, "top",
@@ -151,7 +151,5 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		//System.out.println(id + " getpreferredSize");
   	return null;
   }
-
-		
 
 }

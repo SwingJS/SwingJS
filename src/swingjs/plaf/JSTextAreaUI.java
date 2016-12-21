@@ -50,7 +50,7 @@ public class JSTextAreaUI extends JSTextUI {
 	
 	@Override
 	protected Dimension getCSSAdjustment() {
-		return new Dimension(-5, -5);
+		return new Dimension(-5, -12); // total hack -12 is to see full vertical scrollbar (Boltzmann)
 	}
 
 	@Override

@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import jsjava.awt.event.KeyEvent;
 import jsjava.awt.event.WindowEvent;
+import jsjava.awt.peer.ComponentPeer;
 import jsjava.awt.peer.FramePeer;
 
 /**
@@ -466,32 +467,35 @@ public class Frame extends Window {
         }
     }
 
-    /**
-     * Makes this Frame displayable by connecting it to
-     * a native screen resource.  Making a frame displayable will
-     * cause any of its children to be made displayable.
-     * This method is called internally by the toolkit and should
-     * not be called directly by programs.
-     * @see Component#isDisplayable
-     * @see #removeNotify
-     */
-    @Override
-		public void addNotify() {
-//        synchronized (getTreeLock()) {
-            if (peer == null) {
-                peer = getToolkit().createFrame(this);
-            }
-            FramePeer p = (FramePeer)peer;
-//            MenuBar menuBar = this.menuBar;
-//            if (menuBar != null) {
-//                mbManagement = true;
-//                menuBar.addNotify();
-//                p.setMenuBar(menuBar);
-//            }
-            p.setMaximizedBounds(maximizedBounds);
-            super.addNotify();
-  //      }
-    }
+	/**
+	 * Makes this Frame displayable by connecting it to a native screen resource.
+	 * Making a frame displayable will cause any of its children to be made
+	 * displayable. This method is called internally by the toolkit and should not
+	 * be called directly by programs.
+	 * 
+	 * @see Component#isDisplayable
+	 * @see #removeNotify
+	 */
+	@Override
+	public void addNotify() {
+		// synchronized (getTreeLock()) {
+		getOrCreatePeer();
+		FramePeer p = (FramePeer) peer;
+		// MenuBar menuBar = this.menuBar;
+		// if (menuBar != null) {
+		// mbManagement = true;
+		// menuBar.addNotify();
+		// p.setMenuBar(menuBar);
+		// }
+		p.setMaximizedBounds(maximizedBounds);
+		super.addNotify();
+		// }
+	}
+
+  	@Override
+  	protected ComponentPeer getOrCreatePeer() {
+  		return (ui == null ? null : peer == null ? (peer = getToolkit().createFrame(this)) : peer);
+  	}
 
     /**
      * Gets the title of the frame.  The title is displayed in the

@@ -12,6 +12,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javajs.util.AU;
+import javajs.util.BArray;
 import javajs.util.Rdr;
 import javajs.util.SB;
 import javajs.util.ZipTools;
@@ -54,6 +55,7 @@ import jsjava.awt.peer.WindowPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
+import jsjavax.swing.plaf.ComponentUI;
 import jsjavax.swing.text.Document;
 import jssun.awt.AppContext;
 import jssun.awt.PostEventQueue;
@@ -83,16 +85,22 @@ public class JSToolkit extends SunToolkit {
 	public static boolean debugging;
 	
 	static {
+		boolean j2sdebug = false;
+		boolean j2sismac = false;
+		J2SInterface j2sself = null;
 		/**
 		 * @j2sNative
 		 * 
-		 * swingjs.JSToolkit.J2S = self.J2S;
-		 * swingjs.JSToolkit.isMac = (J2S.featureDetection.os == "mac");
-		 * swingjs.JSToolkit.debugging = J2S._checkLoad
+		 * j2sself = self.J2S;
+		 * j2sismac = (J2S.featureDetection.os == "mac");
+		 * j2sdebug = J2S._checkLoad || J2S._debugCode
 		 * 
 		 */
 		{
 		}
+		debugging = j2sdebug;
+		isMac = j2sismac;
+		J2S = j2sself;
 	}
 	
 	/*
@@ -400,9 +408,12 @@ public class JSToolkit extends SunToolkit {
 			strStyle += "italic ";
 		if (font.isBold())
 			strStyle += "bold ";
+		String family  = font.getFamily();
+		if (family.equals("SansSerif") || family.equals("Dialog"))
+			family = "Arial";
 		// for whatever reason, Java font points are much larger than HTML5 canvas
 		// points
-		return strStyle + font.getSize() + "px " + font.getFamily();
+		return strStyle + font.getSize() + "px " + family;
 	}
 
 	/**
@@ -519,10 +530,16 @@ public class JSToolkit extends SunToolkit {
 		}
 	}
 
-	private static void cacheFileData(String path, Object data) {
-		if (fileCache == null)
+	private static void cacheFileData(String path, Object data) {		
+		getFileCache().put(path,  data);
+	}
+
+	private static Map<String, Object> getFileCache() {
+		if (fileCache == null && (fileCache = J2S._getSetJavaFileCache(null)) == null) {
 			fileCache = new Hashtable<String, Object>();
-		fileCache.put(path,  data);
+			J2S._getSetJavaFileCache(fileCache);
+		}
+		return fileCache;
 	}
 
 	/**
@@ -534,14 +551,14 @@ public class JSToolkit extends SunToolkit {
 	 */
 	public static void loadJavaResourcesFromZip(ClassLoader cl, String zipFileName, Map<String, Object>  mapByteData) {
 		if (mapByteData == null)
-			mapByteData = (fileCache == null ? (fileCache = new Hashtable<String, Object>()) : fileCache);
+			mapByteData = getFileCache();
 		String fileList = "";
 		try {
 		  // ensure we have ZipTools, since this is a static call
 			Interface.getInstance("javajs.util.ZipTools", true); 
 			BufferedInputStream bis = new BufferedInputStream(cl.getResourceAsStream(zipFileName));
-			String prefix = J2S._getResourcePath(null, true);
-			fileList = ZipTools.cacheZipContentsStatic(bis, prefix, mapByteData, true);
+			String prefix = J2S._getResourcePath(null, true); // will end with /
+			fileList = ZipTools.cacheZipContentsStatic(bis, prefix, mapByteData, false);
 		} catch (Exception e) {
 			System.out.println("JSToolkit could not cache files from " + zipFileName);
 			return;
@@ -754,7 +771,11 @@ public class JSToolkit extends SunToolkit {
 
 	public static void readyCallback(String aname, String fname, Container applet,
 			JSAppletViewer appletPanel) {
-		J2S._readyCallback(aname, fname, true, applet, appletPanel);
+		try {
+			J2S._readyCallback(aname, fname, true, applet, appletPanel);
+		} catch (Throwable e) {
+			System.out.println("JSToolkit Error running readyCallback method for " + fname + " -- check your page JavaScript");
+		}
 	}
 
 
@@ -799,23 +820,32 @@ public class JSToolkit extends SunToolkit {
 
 	@Override
 	protected DialogPeer createDialog(Dialog target) {
+		ComponentUI ui = target.getUI();
+		if (ui == null)
+			return null;
   	if (debugging)
   		System.out.println("JSToolkit creating Dialog Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
-		return (DialogPeer) ((WindowPeer) target.getUI()).setFrame(target, true);
+		return (DialogPeer) ((WindowPeer) ui).setFrame(target, true);
 	}
 
 	@Override
 	protected FramePeer createFrame(Frame target) {
+		ComponentUI ui = target.getUI();
+		if (ui == null)
+			return null;
   	if (debugging)
   		System.out.println("JSToolkit creating Frame Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
-		return (FramePeer) ((WindowPeer) target.getUI()).setFrame(target, true);
+		return (FramePeer) ((WindowPeer) ui).setFrame(target, true);
 	}
 
 	@Override
 	protected WindowPeer createWindow(Window target) {
+		ComponentUI ui = target.getUI();
+		if (ui == null)
+			return null;
   	if (debugging)
   		System.out.println("JSToolkit creating Window Peer for " +  target.getClass().getName() + ": " + target.getClass().getName());
-		return ((WindowPeer) target.getUI()).setFrame(target, false);
+		return ((WindowPeer) ui).setFrame(target, false);
 	}
 
 	public static JSComponentUI getUI(Component c, boolean isQuiet) {
@@ -880,10 +910,9 @@ public class JSToolkit extends SunToolkit {
 	 * @param uri
 	 * @return
 	 */
-	public static Object getFileContents(String uri) {
+	private static Object getFileContents(String uri) {
 		Object data = getCachedFileData(uri);
-		if (data != null)
-			return data;
+		if (data == null)  
 		/**
 		 * @j2sNative
 		 * 
@@ -895,7 +924,10 @@ public class JSToolkit extends SunToolkit {
 			} catch (Exception e) {
 			}
 		}
-		return (J2S == null ? data : J2S._getFileData(uri, null, false, false));
+		else if (J2S != null) {
+			data = J2S._getFileData(uri, null, false, false);
+		}
+		return data;
 	}
 
 
@@ -932,14 +964,13 @@ public class JSToolkit extends SunToolkit {
 	 */
 	public static String getFileAsString(String filename) {
 		Object data = getFileContents(filename);
-		String s = null;
 		if (AU.isAB(data))
-			s = Rdr.StreamToUTF8String(new BufferedInputStream(new ByteArrayInputStream((byte[]) data)));
-		else if (data instanceof String || data instanceof SB)
-			s = data.toString();
-		else if (data instanceof InputStream)
-			s = Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) data));
-		return s;
+			return Rdr.BytesToUTF8String((byte[]) data);
+		if (data instanceof String || data instanceof SB)
+			return data.toString();
+		if (data instanceof InputStream)
+			return Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) data));
+		return null;
 	}
 
 

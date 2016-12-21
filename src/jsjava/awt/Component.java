@@ -1499,8 +1499,11 @@ protected  transient ComponentPeer peer;
 	 * 
 	 * @param isVisible
 	 */
-    private void updatePeerVisibility(boolean isVisible) {
-      ComponentPeer peer = getOrCreatePeer();
+    protected void updatePeerVisibility(boolean isVisible) {
+    	updatePeerVisibilityOrig(isVisible);
+    }
+
+		protected void updatePeerVisibilityOrig(boolean isVisible) {
       peer.setVisible(isVisible);// SwingJS  was hide();
       createHierarchyEvents(HierarchyEvent.HIERARCHY_CHANGED,
                             this, parent,
@@ -1510,10 +1513,11 @@ protected  transient ComponentPeer peer;
           repaint();
       }
       updateCursorImmediately();
-    }
+  	}
 
-		private ComponentPeer getOrCreatePeer() {
-			return (peer == null ? (peer = getToolkit().createComponent(this)) : peer);
+		protected ComponentPeer getOrCreatePeer() {
+			// but see JSComponent
+			return peer;
 	}
 
 		boolean containsFocus() {

@@ -319,11 +319,9 @@ public abstract class JTextComponent extends JComponent implements Scrollable
 	 * editable. No layout manager is used, because layout is managed by the view
 	 * subsystem of text. The document model is set to <code>null</code>.
 	 * 
-	 * Note that for SwingJS we need JSComponentUI, not ComponentUI
-	 * 
 	 */
 	public JTextComponent() {
-		this("JSComponentUI");
+		this("ComponentUI");
 	}
 
 	/**

@@ -154,7 +154,7 @@ public class JSSpinnerUI extends JSLightweightUI {
 
 	@Override
 	public void propertyChangedFromListener(String prop) {
-			propertyChangedFromListenerCUI(prop);
+			propertyChangedCUI(prop);
 	}
 
 	@Override

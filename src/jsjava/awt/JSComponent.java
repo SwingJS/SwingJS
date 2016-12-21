@@ -27,6 +27,7 @@
  */
 package jsjava.awt;
 
+import jsjava.awt.peer.ComponentPeer;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
@@ -115,7 +116,7 @@ public abstract class JSComponent extends Component {
 	public ComponentUI ui;
   
   
-  public String uiClassID = "JSComponentUI";
+  public String uiClassID = "ComponentUI";
 
 
   /**
@@ -152,12 +153,31 @@ public abstract class JSComponent extends Component {
 			// and, if applicable, a ChangeListener
 			ui.installUI(this);
 		}
-
 	}
 
 	public ComponentUI getUI() {
   	return ui;
   }
+	
+	Boolean peerVis;
+	
+  @Override
+	protected void updatePeerVisibility(boolean isVisible) {
+  	// check for visibility set prior to creation of ui.
+    if (getOrCreatePeer() == null)
+    	peerVis = (isVisible ? Boolean.TRUE : Boolean.FALSE);
+    else
+    	updatePeerVisibilityOrig(isVisible);
+  }
+
+  /**
+	 * A peer in SwingJS can only be created after the ui is created.
+	 */
+	@Override
+	protected ComponentPeer getOrCreatePeer() {
+		return (ui == null ? null : ui == null ? null : peer == null ? (peer = getToolkit().createComponent(this)) : peer);
+  }
+
 	
   /**
    * Run once for every component. Resets the UI property to a value from the current look and
@@ -166,6 +186,7 @@ public abstract class JSComponent extends Component {
    * @see JComponent#updateUI
    */
   public void updateUI() {
+  	if (ui == null)
       setUI(UIManager.getUI(this));
   }
   

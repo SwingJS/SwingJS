@@ -80,7 +80,7 @@ public class JScrollBar extends JComponent implements Adjustable
      * All changes from the model are treated as though the user moved
      * the scrollbar knob.
      */
-    private ChangeListener fwdAdjustmentEvents = new ModelListener();
+    private ChangeListener fwdAdjustmentEvents;
 
 
     /**
@@ -146,7 +146,7 @@ public class JScrollBar extends JComponent implements Adjustable
         this.blockIncrement = (extent == 0) ? 1 : extent;
         this.orientation = orientation;
         this.model = new DefaultBoundedRangeModel(value, extent, min, max);
-        this.model.addChangeListener(fwdAdjustmentEvents);
+        this.model.addChangeListener(fwdAdjustmentEvents = new ModelListener());
         setRequestFocusEnabled(false);
         uiClassID = "ScrollBarUI";
         updateUI();

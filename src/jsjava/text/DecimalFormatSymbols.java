@@ -42,13 +42,13 @@
 package jsjava.text;
 
 //import java.text.spi.DecimalFormatSymbolsProvider;
-import java.util.Currency;
 import java.util.Hashtable;
+
 import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
+import jssun.util.resources.LocaleData;
 //import java.util.spi.LocaleServiceProvider;
 //import sun.util.LocaleServiceProviderPool;
-import jssun.util.resources.LocaleData;
 
 /**
  * This class represents the set of symbols (such as the decimal separator,
@@ -576,12 +576,12 @@ public class DecimalFormatSymbols implements Cloneable {
 //            }
 //        } else {
             // default values
-            intlCurrencySymbol = "XXX";
+            intlCurrencySymbol = "\u00A4";
 //            try {
 //                currency = Currency.getInstance(intlCurrencySymbol);
 //            } catch (IllegalArgumentException e) {
 //            }
-            currencySymbol = "\u00A4";
+            currencySymbol = "$";//"\u00A4";
 //        }
         // Currently the monetary decimal separator is the same as the
         // standard decimal separator for all locales that we support.

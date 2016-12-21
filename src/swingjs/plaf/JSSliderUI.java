@@ -31,9 +31,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	
 	boolean iVertScrollBar; // vertical scrollbars on scroll panes are inverted
 	
-	JSScrollPaneUI scrollPaneUI;
-
-	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
 	private BoundedRangeModel model;
@@ -308,8 +305,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		String prop = e.getPropertyName();
 		if (prop == "ancestor") {
 			setup(false);
-//		} else if (domNode != null && "paintLabels paintTicks snapToTicks minorTickSpacing majorTickSpacing labelTable ".indexOf(prop) >= 0) {
-//		  updateDOMNode();
 		}
 	}
 

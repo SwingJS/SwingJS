@@ -532,6 +532,11 @@ J2S = (function(document) {
 		}
 		return fSuccess;
 	}
+  
+  J2S._getSetJavaFileCache = function(cache) {
+    // called by swingjs.JSToolkit 
+    return (cache == null ? J2S._javaFileCache : (J2S._javaFileCache = cache)); 
+  }
 	
 	J2S._loadFileData = function(applet, fileName, fSuccess, fError){
 		var isRaw = [];

@@ -95,7 +95,7 @@ public class JSSAXParser implements Parser, XMLReader {
 	@Override
 	public void parse(String fileName) throws SAXException, IOException {
 		try {
-			parseDocument(parseXML((String) JSToolkit.getFileContents(fileName)));
+			parseDocument(parseXML(JSToolkit.getFileAsString(fileName)));
 		} catch (Exception e) {
 			error(e);
 		}
