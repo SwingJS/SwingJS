@@ -21,6 +21,10 @@ public class TextField extends JTextField {
 		super(text, width);
 	}
 
+	public TextField(String text) {
+		super(text);
+	}
+
 	public void addTextListener(final TextListener textListener) {
 		getDocument().addDocumentListener(new DocumentListener() {
 

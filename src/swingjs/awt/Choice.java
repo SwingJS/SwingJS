@@ -17,4 +17,7 @@ public class Choice extends JComboBox {
 		addItem(label);
 	}
 	
+	public String getItem(int n) {
+		return (String)getItemAt(n);
+	}
 }
