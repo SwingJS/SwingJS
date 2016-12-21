@@ -1491,9 +1491,8 @@ public class Container extends JSComponent {
 		@Deprecated
     public void layout() {
     	// called by Component and Container
-        LayoutManager layoutMgr = this.layoutMgr;
-        if (layoutMgr != null) {
-            layoutMgr.layoutContainer(this);
+        if (this.layoutMgr != null && this.width > 0 && this.height > 0) {
+        	this.layoutMgr.layoutContainer(this);
         }
     }
 

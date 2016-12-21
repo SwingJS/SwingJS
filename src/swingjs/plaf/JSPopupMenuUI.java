@@ -2,38 +2,28 @@ package swingjs.plaf;
 
 
 import jsjava.awt.Dimension;
-import jsjavax.swing.JComponent;
-import jsjavax.swing.JMenu;
 import jsjavax.swing.JPopupMenu;
 import jsjavax.swing.LookAndFeel;
+import swingjs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JSSwingMenu;
 
+@J2SRequireImport(swingjs.jquery.JQueryUI.class)
 public class JSPopupMenuUI extends JSPanelUI {
 	
 	// a frameless independent window
 	
-	static JSSwingMenu j2sSwing;
-	static {
-		
-		// this mechanism allows on-demand loading of the CSS and JS used for the menu 
-		
-		JSToolkit.getStaticResource("swingjs/jquery/j2sjquery-ui.js");
-		JSToolkit.getStaticResource("swingjs/jquery/j2sMenu.js");
-		/**
-		 * @j2sNative
-		 * 
-		 * swingjs.plaf.JSPopupMenuUI.j2sSwing = J2S.Swing;
-		 */
-		{}
-	}
-
+	static JSSwingMenu j2sSwingMenu;
 	private JPopupMenu menu;
-//	private JPopupMenu popupMenu;
 
 
 	public JSPopupMenuUI() {
+		
+		if (j2sSwingMenu == null) {
+			JSToolkit.getStaticResource("swingjs/jquery/j2sMenu.js");
+			j2sSwingMenu = JSToolkit.J2S._getSwing();
+		}
 		isContainer = true;	
 		isMenuItem = true;
 		setDoc();
@@ -82,7 +72,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 		if (menu == null) {
 			// important to do this here, not earlier?
 			menu = (JPopupMenu) c;
-			j2sSwing.setMenu(menu);
+			j2sSwingMenu.setMenu(menu);
 		}
 		if (b) {
 			getOuterNode();
@@ -98,9 +88,9 @@ public class JSPopupMenuUI extends JSPanelUI {
 			 * 
 			 */
 			{}
-			j2sSwing.showMenu(menu, x, y);
+			j2sSwingMenu.showMenu(menu, x, y);
 		} else {
-			j2sSwing.hideMenu(menu);
+			j2sSwingMenu.hideMenu(menu);
 		}
 	}
 	
@@ -108,7 +98,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 	public void dispose() {
     DOMNode.remove(domNode);
     DOMNode.remove(outerNode);
-    j2sSwing.disposeMenu(menu);
+    j2sSwingMenu.disposeMenu(menu);
 	}
 
 	@Override

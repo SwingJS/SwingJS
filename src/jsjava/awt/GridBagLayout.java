@@ -2037,7 +2037,7 @@ java.io.Serializable {
      * @since 1.4
      */
     protected void arrangeGrid(Container parent) {
-        ArrangeGrid(parent);
+        arrangeGridPriv(parent);
     }
 
     /**
@@ -2048,7 +2048,7 @@ java.io.Serializable {
      * refer to <code>arrangeGrid</code> for details on the
      * parameter.
      */
-    protected void ArrangeGrid(Container parent) {
+    private void arrangeGridPriv(Container parent) {
         Component comp;
         int compindex;
         GridBagConstraints constraints;
@@ -2226,7 +2226,8 @@ java.io.Serializable {
              * it's mapped.
              */
 
-            if ((r.width <= 0) || (r.height <= 0)) {
+            // BH added r.x, r.y < 0 because parent might have 0 width/height
+            if (r.x < 0 || r.y < 0 || (r.width <= 0) || (r.height <= 0)) {
                 comp.setBounds(0, 0, 0, 0);
             }
             else {

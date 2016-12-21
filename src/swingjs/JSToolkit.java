@@ -8,11 +8,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javajs.util.AU;
-import javajs.util.BArray;
 import javajs.util.Rdr;
 import javajs.util.SB;
 import javajs.util.ZipTools;
@@ -569,15 +566,18 @@ public class JSToolkit extends SunToolkit {
 	
 	
 	/**
-	 * Load a static JavaScript or CSS resource only once; 
-	 * no need to cache it if it is not there. 
+	 * Load a static JavaScript or CSS resource only once; no need to cache it if
+	 * it is not there.
 	 * 
 	 * @param file
 	 */
-	public static void getStaticResource(String file) {
-		if (J2S._isResourceLoaded(file, false))return;
-		getJavaResource(file, true, false);
-		J2S._isResourceLoaded(file, true);
+	public static String getStaticResource(String file) {
+		String s = "OK";
+		if (!J2S._isResourceLoaded(file, false)) {
+			s = getJavaResource(file, true, false);
+			J2S._isResourceLoaded(file, true);
+		}
+		return s;
 	}
 
 	/**

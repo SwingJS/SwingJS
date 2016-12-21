@@ -43,5 +43,7 @@ public interface J2SInterface {
 
 	Hashtable<String, Object> _getSetJavaFileCache(Object object);
 
+	JSSwingMenu _getSwing();
+
 }
 
