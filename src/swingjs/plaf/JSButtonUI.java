@@ -710,8 +710,7 @@ public class JSButtonUI extends JSLightweightUI {
 	
 	@Override
 	protected void setInnerComponentBounds(int width, int height) {
-		if (isSimpleButton && width > 0 && height > 0
-				&& (imageNode == null || button.getText() == null))
+		if (isSimpleButton && (imageNode == null || button.getText() == null))
 			DOMNode.setSize(domBtn, width, height);
 	}
 

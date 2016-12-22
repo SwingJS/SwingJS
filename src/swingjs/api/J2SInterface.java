@@ -45,5 +45,7 @@ public interface J2SInterface {
 
 	JSSwingMenu _getSwing();
 
+	String _processResource(String path, Object data);
+
 }
 

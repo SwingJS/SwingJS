@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 12/21/2016 5:01:07 PM moving getJavaResource to JSToolkit
 // BH 12/18/2016 7:16:54 AM GCC fix for trailing comma in J2S.db
 // BH 12/16/2016 8:43:11 AM adds icon+text for buttons
 // BH 12/15/2016 6:55:40 AM URL line switches:
@@ -2221,6 +2222,7 @@ J2S.Swing = {
 	menuCounter:0
 };
 
+J2S._getSwing = function() { return J2S.Swing }
 
 J2S.showInfo = function(applet, tf) {
 	applet._showInfo(tf);
@@ -2246,34 +2248,6 @@ J2S._getResourcePath = function(path, isJavaPath) {
   }      
   return  path;
 }
-
-J2S._getJavaResource = function(path, isJavaPath) {
-  path = J2S._getResourcePath(path, isJavaPath); 
-  System.out.println("J2S._getJavaResource " + path)
-  return J2S._processResource(path, J2S._getFileData(path));
-}
-
-J2S._processResource = function(path, s) {
-  var ok = (s.indexOf("[Exception") != 0);
-  System.out.println("J2S._processResource " + path + " [" + (ok ? s.length : s) + "]");
-  if (!ok)
-    return null; 
-  if (path.lastIndexOf(".css") == path.length - 4) {
-    path = path.substring(0, path.lastIndexOf("/") + 1) + "images/";
-    s = s.replace(/images\//g, path)
-    $("head").append($("<style type='text/css'>" + s + "</style>"));
-    return s;
-  } else if (path.lastIndexOf(".js") == path.length - 3) {
-    try {
-      eval(s);
-    } catch (e) {
-    alert("error processing " + s)
-      return null;
-    }
-  }
-  return s; 
-}
-
 
 })(J2S);
 

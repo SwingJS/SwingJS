@@ -47,8 +47,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	public JSSliderUI() {
 		if (!cssLoaded) {
 			// this static call allows for the CSS to be loaded only once and only when needed
-			JSToolkit.getStaticResource("swingjs/jquery/jquery-ui-j2sslider.css");
-			JSToolkit.getStaticResource("swingjs/jquery/jquery-ui-j2sslider.js");
+			JSToolkit.loadStaticResource("swingjs/jquery/jquery-ui-j2sslider.css");
+			JSToolkit.loadStaticResource("swingjs/jquery/jquery-ui-j2sslider.js");
 			cssLoaded = true;
 		}
 		needPreferred = true;

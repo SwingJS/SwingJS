@@ -1072,6 +1072,16 @@ public final class URL {//implements Serializable {
      * @throws IOException
      */
     public Object getContent() throws IOException {
+    	/**
+    	 * 
+    	 * May have been opened by ClassLoader
+    	 * 
+    	 * @j2sNative
+    	 * 
+    	 * if (this._streamData)
+    	 * 	 return this._streamData;
+    	 */
+    	{}
       return openConnection().getInputStream();
     }    
 

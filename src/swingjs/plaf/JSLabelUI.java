@@ -14,6 +14,9 @@ import swingjs.api.DOMNode;
 public class JSLabelUI extends JSLightweightUI {
 	private JLabel label;
 
+	public JSLabelUI() {
+		setDoc();
+	}
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null)	{
@@ -38,8 +41,6 @@ public class JSLabelUI extends JSLightweightUI {
 	@Override
 	protected DOMNode setHTMLElement() {
 		setHTMLElementCUI();
-		setTextAlignment();
-		setVerticalAlignment();
 		return outerNode;
 	}
 	

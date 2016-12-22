@@ -217,7 +217,6 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		if (params.containsKey("maximumSize"))
 			Math.max(((Integer) params.get("maximumSize")).intValue(), 100);
 		async = (testAsync || params.containsKey("async"));
-		int pt = htmlName.indexOf("_object");
 		HTML5Applet applet = JSToolkit.J2S._findApplet(htmlName); 
 		String javaver = JSToolkit.J2S._getJavaVersion();
 		html5Applet = applet;

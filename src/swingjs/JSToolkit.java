@@ -10,6 +10,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import javajs.util.AU;
+import javajs.util.PT;
 import javajs.util.Rdr;
 import javajs.util.SB;
 import javajs.util.ZipTools;
@@ -571,10 +572,10 @@ public class JSToolkit extends SunToolkit {
 	 * 
 	 * @param file
 	 */
-	public static String getStaticResource(String file) {
-		String s = "OK";
+	public static String loadStaticResource(String file) {
+		String s = "alert('" + file + "' was not found)";
 		if (!J2S._isResourceLoaded(file, false)) {
-			s = getJavaResource(file, true, false);
+			s = getJavaResource(file, true, false, true);
 			J2S._isResourceLoaded(file, true);
 		}
 		return s;
@@ -583,23 +584,72 @@ public class JSToolkit extends SunToolkit {
 	/**
 	 * a String-based file such as .js, .css, or .property
 	 * 
+	 * .js and .css files will be processed appropriately
+	 * 
 	 * @param resourceName
 	 * @param isJavaPath
-	 * @return
+	 * @param doProcess
+	 *          evaluate JS or load CSS
+	 * @return the resource as a string
 	 */
-	public static String getJavaResource(String resourceName, boolean isJavaPath, boolean doCache) {
+	public static String getJavaResource(String resourceName, boolean isJavaPath,
+			boolean doCache, boolean doProcess) {
 		System.out.println("JSToolkit getting Java resource " + resourceName);
-		String path = J2S._getResourcePath(resourceName, isJavaPath);		
-		Object data = null;		
-		if (path == null || (data = getCachedFileData(path)) == null) { 
-			data = J2S._getJavaResource(resourceName, isJavaPath);
-			if (useCache && doCache && data != null)
-				cacheFileData(path, data);
-		}
-		return (data == null ? null : data instanceof String ? (String) data : Rdr.fixUTF((byte[]) data));
-
+		String path = J2S._getResourcePath(resourceName, isJavaPath);
+		if (path == null)
+			return null;
+		Object data = getCachedFileData(path);
+		if (data == null
+				&& (data = J2S._getFileData(path, null, false, false)) != null
+				&& useCache && doCache)
+			cacheFileData(path, data);
+		String sdata = ensureString(data);
+		boolean ok = (sdata != null && sdata.indexOf("[Exception") != 0);
+		System.out.println("Processing " + path + " ["
+				+ (ok ? "" + sdata.length() : sdata) + "]");
+		return (!ok ? null : !doProcess ? sdata
+				: path.endsWith(".css") ? processCSS(sdata, path) : path
+						.endsWith(".js") ? processJS(sdata) : sdata);
 	}
 	
+	private static String processCSS(String css, String path) {
+		if (path != null && css.indexOf("images/") >= 0) {
+			path = path.substring(0, path.lastIndexOf("/") + 1) + "images/";
+			css = PT.rep(css, "images/", path);
+		}
+		JQuery jq = getJQuery();
+    jq.$("head").append(jq.$("<style type='text/css'>" + css + "</style>"));
+    return css;
+	}
+
+	private static String processJS(String js) {
+    try {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * eval(js);
+    	 * 
+    	 */
+    	{}
+    } catch (Throwable e) {
+    	alert("error processing " + js);
+      return null;
+    }
+    return js;
+	}
+
+	private static String ensureString(Object data) {
+		if (data == null)
+			return null;
+		if (AU.isAB(data))
+			return Rdr.bytesToUTF8String((byte[]) data);
+		if (data instanceof String || data instanceof SB)
+			return data.toString();
+		if (data instanceof InputStream)
+			return Rdr.streamToUTF8String(new BufferedInputStream((InputStream) data));
+		return null;
+	}
+
 	private static Object getCachedFileData(String path) {
 		return (useCache && fileCache != null ?
 					fileCache.get(path) : null);
@@ -920,11 +970,11 @@ public class JSToolkit extends SunToolkit {
 		{
 			// for reference -- not used in JavaScript
 			try {
-				data = Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) new URL(uri).getContent()));
+				data = Rdr.streamToUTF8String(new BufferedInputStream((InputStream) new URL(uri).getContent()));
 			} catch (Exception e) {
 			}
 		}
-		else if (J2S != null) {
+		else {
 			data = J2S._getFileData(uri, null, false, false);
 		}
 		return data;
@@ -964,13 +1014,7 @@ public class JSToolkit extends SunToolkit {
 	 */
 	public static String getFileAsString(String filename) {
 		Object data = getFileContents(filename);
-		if (AU.isAB(data))
-			return Rdr.BytesToUTF8String((byte[]) data);
-		if (data instanceof String || data instanceof SB)
-			return data.toString();
-		if (data instanceof InputStream)
-			return Rdr.StreamToUTF8String(new BufferedInputStream((InputStream) data));
-		return null;
+		return  ensureString(data);
 	}
 
 

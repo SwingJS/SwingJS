@@ -40,7 +40,7 @@ public class JSTextFieldUI extends JSTextUI {
 		}
 		setCssFont(setProp(domNode, "value", getComponentText()),
 				c.getFont());
-		setTextAlignment();
+		//setTextAlignment();
 		setEditable(editable);
 		return domNode;
 	}

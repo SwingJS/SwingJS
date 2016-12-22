@@ -305,6 +305,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	private DOMNode waitImage;
 
+	private boolean canAlignText;
+
 	public JSComponentUI() {
 		setDoc();
 	}
@@ -689,6 +691,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		currentIcon = icon;
 		currentText = text;
 		currentGap = gap;
+		canAlignText = false;
 		imageNode = null;
 		if (iconNode != null) {
 			DOMNode.setAttr(iconNode, "innerHTML", "");
@@ -702,7 +705,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (text == null || text.length() == 0) {
 			text = "";
 		} else {
-			if (icon != null) {
+			if (icon == null) {
+				canAlignText = true;
+			} else {
 				vCenter(imageNode, 10); // perhaps? Not sure if this is a good idea
 				if (gap == Integer.MAX_VALUE)
 					gap = getDefaultIconTextGap();
@@ -1339,8 +1344,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (debugging)
 			System.out.println("CUI << SetBounds >> [" + x + " " + y + " " + width
 					+ " " + height + "] op=" + op + " for " + this.id);
-		// Note that this.x and this.y are never used. We go get those directly.
-		// Coming in here they are adjusted.
+		// Note that this.x and this.y are never used. Tney are frame-referenced
 		switch (op) {
 		case SET_BOUNDS:
 		case SET_LOCATION:
@@ -1360,12 +1364,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				width = Math.min(width, scrollPaneUI.c.getWidth());
 				height = Math.min(height, scrollPaneUI.c.getHeight());
 			}
-			setSizeFromControl(width, height, op);
+			if (width > 0 && height > 0)
+				setSizeFromComponent(width, height, op);
 			break;
 		}
 	}
 
-	protected void setSizeFromControl(int width, int height, int op) {
+	private void setSizeFromComponent(int width, int height, int op) {
 		// allow for special adjustments
 		// currently MenuItem, TextField, and TextArea
 		Dimension size = getCSSAdjustment();
@@ -1381,14 +1386,91 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		DOMNode.setSize(domNode, width + size.width, height + size.height);
 		if (outerNode != null)
 			DOMNode.setSize(outerNode, width + size.width, height + size.height);
-		setInnerComponentBounds(width, height);
+	  setInnerComponentBounds(width, height);
 	}
 
 	protected void setInnerComponentBounds(int width, int height) {
+		if (canAlignText) {
+			setVerticalAlignment();
+			setTextAlignment();
+		}
 		if (debugging)
 			System.out.println("CUI reshapeMe: need to reshape " + id + " w:"
 					+ this.width + "->" + width + " h:" + this.height + "->" + height);
 	}
+
+	private void setTextAlignment() {
+		if (this.c.getWidth() == 0)
+			return;
+		int type = ((AbstractButton) c).getHorizontalAlignment();
+		String prop = null;
+		switch (type) {
+		case SwingConstants.RIGHT:
+		case SwingConstants.TRAILING:
+			prop = "right";
+			break;
+		case SwingConstants.LEFT:
+		case SwingConstants.LEADING:
+			prop = "left";
+			break;
+		case SwingConstants.CENTER:
+			prop = "center";
+			break;
+	  default:
+	  	return;
+		}
+		// the centeringNode is not visible. It is a div that allows us to 
+		// position the text and icon of the image based on its preferred size
+		// in the 
+		DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align",
+					textAlign = prop);
+		if (jc.uiClassID == "LabelUI" && centeringNode != null) {
+			int left = 0;
+			int w = actualWidth;
+			if (w == 0)
+				w = setHTMLSize1(domNode, false, false).width;
+			switch (type) {
+			case SwingConstants.LEFT:
+			case SwingConstants.LEADING:
+				break;
+			case SwingConstants.RIGHT:
+			case SwingConstants.TRAILING:
+				prop = "right";
+				left = c.getWidth() - w;
+				break;
+			case SwingConstants.CENTER:
+				left = (c.getWidth() - w) / 2;
+				break;
+		  default:
+		  	return;
+			}
+			DOMNode.setStyles(centeringNode, "position", "absolute", "left", left + "px");			
+		}
+	}
+
+	protected void setVerticalAlignment() {
+		int type = ((AbstractButton) c).getVerticalAlignment();
+		if (centeringNode == null || this.c.getHeight() == 0)
+			return;
+		int top = 0;
+		int h = actualHeight;
+		if (h == 0)
+			h = setHTMLSize1(domNode, false, false).height;
+		switch (type) {
+		case SwingConstants.TOP:
+			break;
+		case SwingConstants.BOTTOM:
+			top = c.getHeight() - h;
+			break;
+		case SwingConstants.CENTER:
+			top = (c.getHeight() - h) / 2;
+			break;
+		default:
+			return;
+		}
+		DOMNode.setStyles(centeringNode, "position", "absolute", "top", top + "px");
+	}
+
 
 	@Override
 	public void handleEvent(AWTEvent e) {
@@ -1732,76 +1814,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		String b = "00" + Integer.toHexString(rgb & 0xFF);
 		b = b.substring(b.length() - 2);
 		return r + g + b;
-	}
-
-	protected void setTextAlignment() {
-		int type = ((AbstractButton) c).getHorizontalAlignment();
-		String prop = null;
-		switch (type) {
-		case SwingConstants.RIGHT:
-		case SwingConstants.TRAILING:
-			prop = "right";
-			break;
-		case SwingConstants.LEFT:
-		case SwingConstants.LEADING:
-			prop = "left";
-			break;
-		case SwingConstants.CENTER:
-			prop = "center";
-			break;
-	  default:
-	  	return;
-		}
-		// the centeringNode is not visible. It is a div that allows us to 
-		// position the text and icon of the image based on its preferred size
-		// in the 
-		DOMNode.setStyles(domNode, "width", c.getWidth() + "px", "text-align",
-					textAlign = prop);
-		if (jc.uiClassID == "LabelUI" && centeringNode != null) {
-			int left = 0;
-			int w = actualWidth;
-			if (w == 0)
-				w = setHTMLSize1(domNode, false, false).width;
-			switch (type) {
-			case SwingConstants.LEFT:
-			case SwingConstants.LEADING:
-				break;
-			case SwingConstants.RIGHT:
-			case SwingConstants.TRAILING:
-				prop = "right";
-				left = c.getWidth() - w;
-				break;
-			case SwingConstants.CENTER:
-				left = (c.getWidth() - w) / 2;
-				break;
-		  default:
-		  	return;
-			}
-			DOMNode.setStyles(centeringNode, "position", "absolute", "left", left + "px");			
-		}
-	}
-
-	protected void setVerticalAlignment() {
-		int type = ((AbstractButton) c).getVerticalAlignment();
-		if (centeringNode == null)
-			return;
-		int top = 0;
-		int h = actualHeight;
-		if (h == 0)
-			h = setHTMLSize1(domNode, false, false).height;
-		switch (type) {
-		case SwingConstants.TOP:
-			break;
-		case SwingConstants.BOTTOM:
-			top = c.getHeight() - h;
-			break;
-		case SwingConstants.CENTER:
-			top = (c.getHeight() - h) / 2;
-			break;
-		default:
-			return;
-		}
-		DOMNode.setStyles(centeringNode, "position", "absolute", "top", top + "px");
 	}
 
 	/**

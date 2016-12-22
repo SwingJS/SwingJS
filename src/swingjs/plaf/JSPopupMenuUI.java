@@ -21,7 +21,7 @@ public class JSPopupMenuUI extends JSPanelUI {
 	public JSPopupMenuUI() {
 		
 		if (j2sSwingMenu == null) {
-			JSToolkit.getStaticResource("swingjs/jquery/j2sMenu.js");
+			JSToolkit.loadStaticResource("swingjs/jquery/j2sMenu.js");
 			j2sSwingMenu = JSToolkit.J2S._getSwing();
 		}
 		isContainer = true;	
