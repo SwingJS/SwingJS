@@ -3,10 +3,8 @@ package swingjs.plaf;
 import java.awt.Event;
 import java.awt.event.KeyEvent;
 
-import jsjava.awt.Toolkit;
 import jsjava.awt.event.ActionEvent;
 import jsjava.awt.event.ActionListener;
-import jsjava.awt.event.FocusEvent;
 import jsjavax.swing.JSpinner;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.Timer;
@@ -45,7 +43,7 @@ public class JSSpinnerUI extends JSLightweightUI {
 					"left", "33px", "top", "-5px", "position", "absolute");
 			upNode = DOMNode.setStyles(
 					newDOMObject("input", id + "_up", "type", "button", "value", ""),
-					"transform", "scaleY(.4)", "width", "10px", "height", "20px");
+					"transform", "scaleY(.5)", "width", "10px", "height", "20px");
 			up.appendChild(upNode);
 			bindJSEvents(upNode, "mousedown touchstart", Event.MOUSE_DOWN, true);
 			bindJSEvents(upNode, "mouseup touchend", Event.MOUSE_UP, true);
@@ -55,7 +53,7 @@ public class JSSpinnerUI extends JSLightweightUI {
 					"left", "33px", "top", "5px", "position", "absolute");
 			dnNode = DOMNode.setStyles(
 					newDOMObject("input", id + "_dn", "type", "button", "value", ""),
-					"transform", "rotateZ(180deg) scaleY(.4)", "width", "10px", "height",
+					"transform", "scaleY(.5)", "width", "10px", "height",
 					"20px");
 			dn.appendChild(dnNode);
 			bindJSEvents(dnNode, "mousedown touchstart", Event.MOUSE_DOWN, true);
