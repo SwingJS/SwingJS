@@ -17,6 +17,7 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.PaintEvent;
+import jsjava.awt.geom.Rectangle2D;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
@@ -892,8 +893,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 			$(body).after(div);
 			DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
-			w = (int) Math.max(0, Math.ceil($(test).width()));
-			h = (int) Math.max(0, Math.ceil($(test).height()));
+			Rectangle r = test.getBoundingClientRect();
+			// From the DOM; Will be Rectangle2D.double, actually.
+			// This is preferable to $(text).width() because that is rounded DOWN.
+			// This showed up in Chrome, where a value of 70.22 for w caused a "Step" button to be wrapped.
+			w = (int) Math.max(0, Math.ceil(r.width));
+			h = (int) Math.max(0, Math.ceil(r.height));
 			if (!usePreferred) {
 				actualWidth = w;
 				actualHeight = h;

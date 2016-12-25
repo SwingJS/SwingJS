@@ -19,6 +19,9 @@ public abstract class DOMNode {
 	
 	public abstract void setSelectionRange(int pt0, int pt1);
 
+	public abstract Rectangle getBoundingClientRect();
+
+
 	public static DOMNode createElement(String key, String id, Object... attrs) {
 		DOMNode node = null;
 		/**
