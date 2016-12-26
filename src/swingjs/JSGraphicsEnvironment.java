@@ -1,5 +1,8 @@
 package swingjs;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import swingjs.api.DOMNode;
 import swingjs.api.HTML5Canvas;
 import jsjava.util.Locale;
@@ -9,6 +12,7 @@ import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsDevice;
 import jsjava.awt.GraphicsEnvironment;
+import jsjava.awt.Point;
 import jsjava.awt.image.BufferedImage;
 
 
@@ -54,5 +58,12 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 			device = (GraphicsDevice) JSToolkit.getInstance("swingjs.JSScreenDevice"); 
 		return device;
 	}
+
+	@Override
+  public Point getCenterPoint()  {
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		return new Point(d.width / 2, d.height / 2);
+	}
+
 
 }

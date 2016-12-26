@@ -754,10 +754,10 @@ public class Dialog extends Window {
     @Override
 		public void addNotify() {
         synchronized (getTreeLock()) {
+          getOrCreatePeer();
             if (parent != null) {
                 parent.addNotify();
             }
-            getOrCreatePeer();
             super.addNotify();
         }
     }

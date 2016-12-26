@@ -54,6 +54,7 @@ import jsjavax.swing.plaf.UIResource;
 import jssun.awt.AppContext;
 import jssun.swing.UIAction;
 import swingjs.J2SIgnoreImport;
+import swingjs.J2SRequireImport;
 import swingjs.JSAppletViewer;
 import swingjs.JSToolkit;
 import swingjs.api.Interface;
@@ -1757,9 +1758,18 @@ public class SwingUtilities implements SwingConstants
     // Don't use String, as it's not guaranteed to be unique in a Hashtable.
     //private static final Object sharedOwnerFrameKey = new Object(); // SwingUtilities.sharedOwnerFrame
 
-    static class SharedOwnerFrame extends Frame implements WindowListener {
+    // SwingJS -- note that we extend JFrame not Frame here so that we have a UI peer
+    
+    static class SharedOwnerFrame extends JFrame implements WindowListener {
+    	
+    	SharedOwnerFrame() {
+    		super(); // required by SwingJS
+    	}
+    	
         @Override
 				public void addNotify() {
+        	  updateUI();
+        		getOrCreatePeer();
             super.addNotify();
             installListeners();
         }

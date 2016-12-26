@@ -553,29 +553,45 @@ public class JOptionPane extends JComponent {
 			Object message, String title, int messageType, Icon icon,
 			Object[] selectionValues, Object initialSelectionValue) {
 		
-		Runnable r = getRunnable(message);
+		Object value;
+
 		message = joinMessage(message);
-		
-		JOptionPane pane = new JOptionPane(message, messageType, OK_CANCEL_OPTION,
-				icon, null, null);
 
-		pane.setWantsInput(true);
-		pane.setSelectionValues(selectionValues);
-		pane.setInitialSelectionValue(initialSelectionValue);
-		pane.setComponentOrientation(((parentComponent == null) ? getRootFrame()
-				: parentComponent).getComponentOrientation());
+		/**
+		 * 
+		 * Just a simple prompt for SwingJS
+		 * 
+		 * @j2sNative
+		 * 
+		 * value = prompt(message, initialSelectionValue == null ? "" : initialSelectionValue);
+		 * 
+		 */
+		{
+			
+			
+			Runnable r = getRunnable(message);
+			
+			JOptionPane pane = new JOptionPane(message, messageType, OK_CANCEL_OPTION,
+					icon, null, null);
 
-		int style = styleFromMessageType(messageType);
-		JDialog dialog = pane.createDialog(parentComponent, title, style);
+			pane.setWantsInput(true);
+			pane.setSelectionValues(selectionValues);
+			pane.setInitialSelectionValue(initialSelectionValue);
+			pane.setComponentOrientation(((parentComponent == null) ? getRootFrame()
+					: parentComponent).getComponentOrientation());
 
-		pane.selectInitialValue();
-		dialog.show();
-		dialog.dispose();
+			int style = styleFromMessageType(messageType);
+			JDialog dialog = pane.createDialog(parentComponent, title, style);
 
-		Object value = pane.getInputValue();
+			pane.selectInitialValue();
+			dialog.show();
+			dialog.dispose();
 
-		if (value == UNINITIALIZED_VALUE) {
-			return null;
+			value = pane.getInputValue();
+
+			if (value == UNINITIALIZED_VALUE) {
+				return null;
+			}
 		}
 		return value;
 	}
