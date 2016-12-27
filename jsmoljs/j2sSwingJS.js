@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 12/21/2016 9:29:56 PM  XX.getClass().getResource() broken (since forever)
 // BH 12/20/2016 1:42:06 PM allowing file caching from class loader
 // BH 12/20/2016 7:49:03 AM final inner class nesting fix for $b$
 //   -trouble with two similar inner classes that both extend an class that itself has inner classes that need to reference their own (different) outer class.
@@ -164,7 +165,7 @@ Clazz.startProfiling = function(doProfile) {
   if (typeof doProfile == "number") {
     _profileNew = (arguments[1] ? {} : null);
     _jsid0 = _jsid;
-    setTimeout(function() { alert("total wall time: " + doProfile + " sec\n" + Clazz.getProfile()) }, doProfile * 1000);
+    setTimeout(function() { var s = "total wall time: " + doProfile + " sec\n" + Clazz.getProfile(); console.log(s); System.out.println(s)}, doProfile * 1000);
   }
   _profile = ((doProfile || arguments.length == 0) && self.JSON && window.performance ? {} : null);
   return (_profile ? "use Clazz.getProfile() to show results" : "profiling stopped and cleared")
@@ -1373,82 +1374,28 @@ var inF = {
     }
     if (name.indexOf ('/') == 0) {
       //is.url = name.substring (1);
-      if (arguments.length == 2) { // additional argument
+      if (arguments.length == 2)  // additional argument
         baseFolder = arguments[1];
-        if (!baseFolder)
-          baseFolder = Clazz.binaryFolders[0];
-      } else if (Clazz._Loader) {
-        baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
-      }
-      if (!baseFolder) {
-        fname = name.substring (1);
-      } else {
-        baseFolder = baseFolder.replace (/\\/g, '/');
-        var length = baseFolder.length;
-        var lastChar = baseFolder.charAt (length - 1);
-        if (lastChar != '/') {
-          baseFolder += "/";
-        }
-        fname = baseFolder + name.substring (1);
-      }
-    } else {
-      if (this.base) {
-        // getClass().getClassLoader() will be here
-        baseFolder = this.base;
-      } else if (Clazz._Loader) {
-        baseFolder = Clazz._Loader.getClasspathFor(clazzName);
-        var x = baseFolder.lastIndexOf (clazzName.replace (/\./g, "/"));
-        if (x != -1) {
-          baseFolder = baseFolder.substring (0, x);
-        } else {
-          //baseFolder = null;
-          var y = -1;
-          if (baseFolder.indexOf (".z.js") == baseFolder.length - 5
-              && (y = baseFolder.lastIndexOf ("/")) != -1) {
-            baseFolder = baseFolder.substring (0, y + 1);
-            var pkgs = clazzName.split (/\./);
-            for (var k = 1; k < pkgs.length; k++) {
-              var pkgURL = "/";
-              for (var j = 0; j < k; j++) {
-                pkgURL += pkgs[j] + "/";
-              }
-              if (pkgURL.length > baseFolder.length) {
-                break;
-              }
-              if (baseFolder.indexOf (pkgURL) == baseFolder.length - pkgURL.length) {
-                baseFolder = baseFolder.substring (0, baseFolder.length - pkgURL.length + 1);
-                break;
-              }
-            }
-          } else {
-            baseFolder = Clazz._Loader.getClasspathFor(clazzName, true);
-          }
-        }
-      } else {
-        var bins = Clazz.binaryFolders;
-        if (bins && bins.length) {
-          baseFolder = bins[0];
-        }
-      }
       if (!baseFolder)
-        baseFolder = "j2s/";
-      baseFolder = baseFolder.replace (/\\/g, '/');
-      var length = baseFolder.length;
-      var lastChar = baseFolder.charAt (length - 1);
-      if (lastChar != '/') {
+        baseFolder = Clazz._Loader.getJ2SLibBase();
+      if (baseFolder.charAt(baseFolder.length - 1) != '/')
         baseFolder += "/";
-      }
-      if (this.base) {
-        fname = baseFolder + name;
-      } else {
-        var idx = clazzName.lastIndexOf ('.');
-        if (idx == -1 || this.base) {
-          fname = baseFolder + name;
-        } else {
-          fname = baseFolder + clazzName.substring (0, idx)
-              .replace (/\./g, '/') +  "/" + name;
+      fname = baseFolder + name.substring (1);
+    } else {
+      baseFolder = Clazz._Loader.getJ2SLibBase(); // getClass().getClassLoader() uses full path
+      fname = baseFolder;      
+      if (this.$_$base == null) {      
+        // getClass().getResource() will be here
+        var pkgs = clazzName.split(".");
+        var fname = baseFolder + "/";
+        var map = Clazz.allPackage;
+        for (var i = 0; i < pkgs.length - 1; i++) {
+          if (!(map = map[pkgs[i]]))
+            break;
+          fname += pkgs[i] + "/";
         }
-      }            
+      }
+      fname += name;
     }
     var url = null;
     var javapath = fname;
@@ -3049,12 +2996,12 @@ var loaders = [];
 /* public */
 _Loader.requireLoaderByBase = function (base) {
   for (var i = 0; i < loaders.length; i++) {
-    if (loaders[i].base == base) {
+    if (loaders[i].$_$base == base) {
       return loaders[i];
     }
   }
   var loader = new _Loader ();
-  loader.base = base; 
+  loader.$_$base = base; 
   loaders.push(loader);
   return loader;
 };
@@ -3169,6 +3116,8 @@ var classQueue = [];
 
 /* private */
 var classpathMap = {};
+
+Clazz.classpathMap = classpathMap;
 
 /* private */
 var pkgRefCount = 0;

@@ -1,13 +1,14 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 12/26/2016 5:22:45 PM adds j2sLang=la_CO_VA  e.g. en_US  or en-US, either is OK; capitalization ignored
 // BH 12/21/2016 5:01:07 PM moving getJavaResource to JSToolkit
 // BH 12/18/2016 7:16:54 AM GCC fix for trailing comma in J2S.db
 // BH 12/16/2016 8:43:11 AM adds icon+text for buttons
 // BH 12/15/2016 6:55:40 AM URL line switches:
-//     -j2sdebugCode  do not use core files at all
-//     -j2sdebugCore  use coreXXXX.js rather than coreXXXX.z.js and debugger if a class is defined twice
-//     -j2sdebugName=java.util.Hashtable  debugger started for load or declareInterface
+//     j2sdebugCode  do not use core files at all
+//     j2sdebugCore  use coreXXXX.js rather than coreXXXX.z.js and debugger if a class is defined twice
+//     j2sdebugName=java.util.Hashtable  debugger started for load or declareInterface
 // BH 12/3/2016 6:53:17 PM adds "master" for applet registration, allowing access during file loading
 // BH 10/23/2016 10:13:42 PM adds support for Info.main
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
@@ -78,9 +79,12 @@ J2S = (function(document) {
 	}
   j.z = z;
 	var ref = document.location.href.toLowerCase();
-  j._debugCode = (ref.indexOf("-j2sdebugcode") >= 0);
-  j._debugCore = (ref.indexOf("-j2sdebugcore") >= 0);
-  j._debugName = (ref.indexOf("-j2sdebugname") >= 0 ? ref.split("-j2sdebugname=")[1].split(" ")[0] : null);
+  j._debugCode = (ref.indexOf("j2sdebugcode") >= 0);
+  j._debugCore = (ref.indexOf("j2sdebugcore") >= 0);
+  var i = ref.indexOf("j2sdebugname=");
+  j._debugName = (i >= 0 ? (document.location.href+"&").substring(i + 13).split("&")[0] : null);
+  var i = ref.indexOf("j2slang=");
+  j._lang = (i >= 0 ? (document.location.href+"&").substring(i + 8).split("&")[0] : null);
 	j._httpProto = (ref.indexOf("https") == 0 ? "https://" : "http://"); 
 	j._isFile = (ref.indexOf("file:") == 0);
 	if (j._isFile) // ensure no attempt to read XML in local request:
@@ -343,7 +347,7 @@ J2S = (function(document) {
 		features.allowDestroy = (features.browserName != "msie");
 		features.allowHTML5 = (features.browserName != "msie" || navigator.appVersion.indexOf("MSIE 8") < 0);
 		features.getDefaultLanguage = function() {
-			return navigator.language || navigator.userLanguage || "en-US";
+			return (J2S._lang || navigator.language || navigator.userLanguage || "en-US");
 		};
 
 		features._webGLtest = 0;
@@ -409,6 +413,8 @@ J2S = (function(document) {
 	return features;
 
 })(document, window);
+
+J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection.getDefaultLanguage() : J2S._lang)};
 
 
 		////////////// AJAX-related core functionality //////////////
