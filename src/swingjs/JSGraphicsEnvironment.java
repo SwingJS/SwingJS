@@ -33,23 +33,28 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 	public Graphics2D createGraphics(BufferedImage img) {
 		return (Graphics2D) img.getImageGraphic().create();
 	}
-	
+
+	private static Font[] availableFonts;
+
 	@Override
 	public Font[] getAllFonts() {
-		// TODO Auto-generated method stub
-		return null;
+		if (availableFonts == null) {
+			String[] names = getAvailableFontFamilyNames();
+			availableFonts = new Font[names.length];
+			for (int i = names.length; --i >= 0;)
+				availableFonts[i] = new Font(names[i], Font.PLAIN, 1);
+		}
+		return availableFonts;
 	}
 
 	@Override
 	public String[] getAvailableFontFamilyNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return Toolkit.getDefaultToolkit().getFontList();
 	}
 
 	@Override
 	public String[] getAvailableFontFamilyNames(Locale l) {
-		// TODO Auto-generated method stub
-		return null;
+		return Toolkit.getDefaultToolkit().getFontList();
 	}
 
 	@Override

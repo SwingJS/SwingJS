@@ -143,6 +143,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected DOMNode outerNode;
 
 	/**
+	 * inner node for JButtonUI that needs to be cleared prior to calculating preferred size
+	 * 
+	 */
+	protected DOMNode innerNode;
+	
+	/**
 	 * the main HTML5 element for the component, possibly containing others, such
 	 * as radio button with its label.
 	 * 
@@ -848,7 +854,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			return null;
 		addCSS &= !isMenuItem;
 		int h, w;
-		String w0 = null, h0 = null, position = null;
+		String w0 = null, h0 = null, w0i = null, h0i = null, position = null;
 		DOMNode parentNode = null;
 		if (centeringNode != null && node == domNode)
 			node = centeringNode;
@@ -874,11 +880,18 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			 * 
 			 *            w0 = node.style.width; h0 = node.style.height; position =
 			 *            node.style.position;
+			 * 
+			 *            if (node == this.centeringNode && this.innerNode) { 
+			 *            w0i = this.innerNode.style.width; h0i =
+			 *            this.innerNode.style.height; }
 			 */
 			{
-				w0 = "";
+				w0 = w0i = "";
 			}
 			DOMNode.setStyles(node, "position", null, "width", null, "height", null);
+			if (innerNode != null)
+				DOMNode.setStyles(innerNode, "width", null, "height", null);
+
 			DOMNode div;
 			if (DOMNode.getAttr(node, "tagName") == "DIV")
 				div = node;
@@ -896,14 +909,15 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			Rectangle r = test.getBoundingClientRect();
 			// From the DOM; Will be Rectangle2D.double, actually.
 			// This is preferable to $(text).width() because that is rounded DOWN.
-			// This showed up in Chrome, where a value of 70.22 for w caused a "Step" button to be wrapped.
+			// This showed up in Chrome, where a value of 70.22 for w caused a "Step"
+			// button to be wrapped.
 			w = (int) Math.max(0, Math.ceil(r.width));
 			h = (int) Math.max(0, Math.ceil(r.height));
 			if (!usePreferred) {
 				actualWidth = w;
 				actualHeight = h;
 			}
-//			h = preferredHeight;// (iconHeight > 0 ? iconHeight : centerHeight);
+			// h = preferredHeight;// (iconHeight > 0 ? iconHeight : centerHeight);
 			// TODO what if centerHeight is > prefHeight?
 			$(div).detach();
 		}
@@ -925,6 +939,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			if (w0 != null) {
 				DOMNode
 						.setStyles(node, "width", w0, "height", h0, "position", position);
+				if (w0i != null) {
+					DOMNode.setStyles(innerNode, "width", w0i, "height", h0i);
+				}
 			}
 		}
 		if (parentNode != null)

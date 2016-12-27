@@ -50,6 +50,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 //import java.util.StringTokenizer;
 
+import swingjs.JSToolkit;
+
 //import jsjava.security.AccessController;
 //import jssun.security.action.GetPropertyAction;
 //import java.util.spi.LocaleNameProvider;
@@ -294,9 +296,9 @@ public final class Locale implements Cloneable, Serializable {
      * @exception NullPointerException thrown if any argument is null.
      */
     public Locale(String language, String country, String variant) {
-        this.language = language.intern();//convertOldISOCodes(language);
-        this.country = country.intern();//toUpperCase(country).intern();
-        this.variant = variant.intern();
+        this.language = language.toLowerCase().intern();//convertOldISOCodes(language);
+        this.country = country.toUpperCase().intern();
+        this.variant = variant.toUpperCase().intern();
     }
 
     /**
@@ -386,51 +388,45 @@ public final class Locale implements Cloneable, Serializable {
         return locale;
     }
 
-    /**
-     * Gets the current value of the default locale for this instance
-     * of the Java Virtual Machine.
-     * <p>
-     * The Java Virtual Machine sets the default locale during startup
-     * based on the host environment. It is used by many locale-sensitive
-     * methods if no locale is explicitly specified.
-     * It can be changed using the
-     * {@link #setDefault(java.util.Locale) setDefault} method.
-     *
-     * @return the default locale for this instance of the Java Virtual Machine
-     */
-    public static Locale getDefault() {
-        // do not synchronize this method - see 4071298
-        // it's OK if more than one default locale happens to be created
-        if (defaultLocale == null) {
-            String language/*, region*/, country, variant;
-            
-            // SwingJS  TODO? we could use System.getProperty() here
-            
-            language = "en";//AccessController.doPrivileged(
-                //new GetPropertyAction("user.language", "en"));
-            // for compatibility, check for old user.region property
-//            region = null;//AccessController.doPrivileged(
-                //new GetPropertyAction("user.region"));
-//            if (region != null) {
-//                // region can be of form country, country_variant, or _variant
-//                int i = region.indexOf('_');
-//                if (i >= 0) {
-//                    country = region.substring(0, i);
-//                    variant = region.substring(i + 1);
-//                } else {
-//                    country = region;
-//                    variant = "";
-//                }
-//            } else {
-                country = "";//AccessController.doPrivileged(
-                    //new GetPropertyAction("user.country", ""));
-                variant = "";//AccessController.doPrivileged(
-                    //new GetPropertyAction("user.variant", ""));
-//            }
-            defaultLocale = getInstance(language, country, variant);
-        }
-        return defaultLocale;
-    }
+	/**
+	 * Gets the current value of the default locale for this instance of the Java
+	 * Virtual Machine.
+	 * <p>
+	 * The Java Virtual Machine sets the default locale during startup based on
+	 * the host environment. It is used by many locale-sensitive methods if no
+	 * locale is explicitly specified. It can be changed using the
+	 * {@link #setDefault(java.util.Locale) setDefault} method.
+	 * 
+	 * @return the default locale for this instance of the Java Virtual Machine
+	 */
+	public static Locale getDefault() {
+		// do not synchronize this method - see 4071298
+		// it's OK if more than one default locale happens to be created
+		if (defaultLocale == null) {
+			String language, region, country, variant;
+			language = JSToolkit.getDefaultLanguageCode();
+			if (language == null || language.length() == 0 || language.equalsIgnoreCase("en"))
+				language = "en_US";
+			int i = language.indexOf('_');
+			if (i > 0) {
+				region = language.substring(i + 1);
+				language = language.substring(0, i);
+			} else {
+				region = "";
+			}
+			region = region.toUpperCase();
+			i = region.indexOf('_');
+			if (i > 0) {
+				country = region.substring(0, i);
+				variant = region.substring(i + 1);
+			} else {
+				country = region;
+				variant = "";
+			}
+			defaultLocale = getInstance(language, country, variant);
+		}
+		return defaultLocale;
+	}
 
     /**
      * Sets the default locale for this instance of the Java Virtual Machine.

@@ -47,5 +47,7 @@ public interface J2SInterface {
 
 	String _processResource(String path, Object data);
 
+	String getDefaultLanguage();
+
 }
 

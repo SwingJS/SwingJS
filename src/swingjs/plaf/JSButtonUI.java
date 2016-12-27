@@ -29,8 +29,6 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
-import java.awt.Color;
-
 import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
@@ -711,7 +709,7 @@ public class JSButtonUI extends JSLightweightUI {
 	@Override
 	protected void setInnerComponentBounds(int width, int height) {
 		if (isSimpleButton && (imageNode == null || button.getText() == null))
-			DOMNode.setSize(domBtn, width, height);
+			DOMNode.setSize(innerNode = domBtn, width, height);
 	}
 
 

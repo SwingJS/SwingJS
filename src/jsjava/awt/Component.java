@@ -1707,7 +1707,10 @@ protected  transient ComponentPeer peer;
             return font;
         }
         Container parent = this.parent;
-        return (parent != null) ? parent.getFont_NoClientCode() : null;
+        if (parent != null)
+        	return parent.getFont_NoClientCode();
+        
+        return null;
     }
 
     /**

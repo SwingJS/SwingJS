@@ -239,16 +239,18 @@ public class JSToolkit extends SunToolkit {
 	public ColorModel getColorModel() {
 		return ColorModel.getRGBdefault();
 	}
+	
+	private static String[] hardwiredFontList; 
+
+	// -- Obsolete font names from 1.0.2. It was decided that
+	// -- getFontList should not return these old names:
+	// "Helvetica", "TimesRoman", "Courier", "ZapfDingbats"
 
 	@Override
 	public String[] getFontList() {
-		String[] hardwiredFontList = { Font.SANS_SERIF, Font.SANS_SERIF, Font.SERIF,
-				Font.MONOSPACED, Font.DIALOG_INPUT
-
-		// -- Obsolete font names from 1.0.2. It was decided that
-		// -- getFontList should not return these old names:
-		// "Helvetica", "TimesRoman", "Courier", "ZapfDingbats"
-		};
+		if (hardwiredFontList == null)
+			hardwiredFontList = new String[] { Font.DIALOG, Font.SANS_SERIF,
+					Font.SERIF, Font.MONOSPACED, Font.DIALOG_INPUT };
 		return hardwiredFontList;
 	}
 
@@ -610,6 +612,11 @@ public class JSToolkit extends SunToolkit {
 		return (!ok ? null : !doProcess ? sdata
 				: path.endsWith(".css") ? processCSS(sdata, path) : path
 						.endsWith(".js") ? processJS(sdata) : sdata);
+	}
+	
+	public static boolean haveCachedResource(String resourceName, boolean isJavaPath) {
+		String path = J2S._getResourcePath(resourceName, isJavaPath);
+		return (path != null && getCachedFileData(path) != null);
 	}
 	
 	private static String processCSS(String css, String path) {
@@ -1283,5 +1290,23 @@ public class JSToolkit extends SunToolkit {
 		return cl.getResource(name);    
   }
 
+	/**
+	 * Get the default language for the browser
+	 * 
+	 * @return  en_US, for example
+	 */
+	public static String getDefaultLanguageCode() {
+	  J2SInterface j2s = J2S;
+	  // uses navigator.language||navigator.userLanguage||"en-US"
+	  /**
+	   * @j2sNative
+	   * 
+	   * j2s = J2S.featureDetection;
+	   *  
+	   */
+	  {	  	
+	  }
+		return j2s.getDefaultLanguage().replace('-','_');
+	}
 
 }
