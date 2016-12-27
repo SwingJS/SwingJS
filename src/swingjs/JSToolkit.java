@@ -1,5 +1,6 @@
 package swingjs;
 
+import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -50,6 +51,7 @@ import jsjava.awt.peer.DialogPeer;
 import jsjava.awt.peer.FramePeer;
 import jsjava.awt.peer.LightweightPeer;
 import jsjava.awt.peer.WindowPeer;
+import jsjava.util.Locale;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIDefaults;
 import jsjavax.swing.UIManager;
@@ -240,20 +242,6 @@ public class JSToolkit extends SunToolkit {
 		return ColorModel.getRGBdefault();
 	}
 	
-	private static String[] hardwiredFontList; 
-
-	// -- Obsolete font names from 1.0.2. It was decided that
-	// -- getFontList should not return these old names:
-	// "Helvetica", "TimesRoman", "Courier", "ZapfDingbats"
-
-	@Override
-	public String[] getFontList() {
-		if (hardwiredFontList == null)
-			hardwiredFontList = new String[] { Font.DIALOG, Font.SANS_SERIF,
-					Font.SERIF, Font.MONOSPACED, Font.DIALOG_INPUT };
-		return hardwiredFontList;
-	}
-
 	@Override
 	public void sync() {
 		// n/a?
@@ -394,45 +382,6 @@ public class JSToolkit extends SunToolkit {
 		return defaultContext;
 	}
 
-
-	/**
-	 * generates proper font name for JSGraphics2d Apparently Java sizes are
-	 * pixels, not points. Not sure on this...
-	 * 
-	 * @param font
-	 * @return "italic bold 10pt Helvetica"
-	 */
-	public static String getCanvasFont(Font font) {
-		String strStyle = "";
-		if (font.isItalic())
-			strStyle += "italic ";
-		if (font.isBold())
-			strStyle += "bold ";
-		String family  = font.getFamily();
-		if (family.equals("SansSerif") || family.equals("Dialog"))
-			family = "Arial";
-		// for whatever reason, Java font points are much larger than HTML5 canvas
-		// points
-		return strStyle + font.getSize() + "px " + family;
-	}
-
-	/**
-	 * Just using name, not family name, here for now
-	 * 
-	 * @param font
-	 * @return CSS family name
-	 */
-	public static String getFontFamily(Font font) {
-		return font.getName();
-	}
-
-	/**
-	 * In JavaScript we only have one font metric, so we can just save it with the font itself
-	 */
-	@Override
-	public FontMetrics getFontMetrics(Font font) {
-		return font.getFontMetrics();
-	}
 
 	public static String getCSSColor(Color c) {
 		String s = "000000" + Integer.toHexString(c.getRGB() & 0xFFFFFF);
@@ -1286,27 +1235,107 @@ public class JSToolkit extends SunToolkit {
 		 * cl = swingjs.JSToolkit.getClassLoader();
 		 * 
 		 */
-		{} 
+		{
+			cl = Toolkit.getDefaultToolkit().getClass().getClassLoader();
+		} 
 		return cl.getResource(name);    
   }
 
+//////// FONTS ///////
+	
+	
 	/**
-	 * Get the default language for the browser
+	 * Get a default Locale. Called by Locale.getDefault(), but also
+	 * called by JSAppletViewer, which will pass Info.language to this method.
 	 * 
-	 * @return  en_US, for example
+	 * @param language
+	 *          null to use J2S default language based on (1) setting of J2S._lang
+	 *          (2) setting of j2sLang=xx_XX in URI (3) navigator.language (4)
+	 *          navigator.userLanguage (5) "en-US"
+	 * 
+	 * 
+	 * 
+	 * @return
 	 */
-	public static String getDefaultLanguageCode() {
-	  J2SInterface j2s = J2S;
-	  // uses navigator.language||navigator.userLanguage||"en-US"
-	  /**
-	   * @j2sNative
-	   * 
-	   * j2s = J2S.featureDetection;
-	   *  
-	   */
-	  {	  	
-	  }
-		return j2s.getDefaultLanguage().replace('-','_');
+	public static Locale getDefaultLocale(String language) {
+		String region, country, variant;
+		if (language == null)
+			language = J2S._getDefaultLanguage(true);
+		language = language.replace('-','_');
+		if (language == null || language.length() == 0 || language.equalsIgnoreCase("en"))
+			language = "en_US";
+		int i = language.indexOf('_');
+		if (i > 0) {
+			region = language.substring(i + 1);
+			language = language.substring(0, i);
+		} else {
+			region = "";
+		}
+		region = region.toUpperCase();
+		i = region.indexOf('_');
+		if (i > 0) {
+			country = region.substring(0, i);
+			variant = region.substring(i + 1);
+		} else {
+			country = region;
+			variant = "";
+		}
+		return new Locale(language, country, variant);
+	}
+
+	private static String[] hardwiredFontList; 
+
+	// -- Obsolete font names from 1.0.2. It was decided that
+	// -- getFontList should not return these old names:
+	// "Helvetica", "TimesRoman", "Courier", "ZapfDingbats"
+
+	@Override
+	public String[] getFontList() {
+		if (hardwiredFontList == null)
+			hardwiredFontList = new String[] { Font.DIALOG, Font.SANS_SERIF,
+					Font.SERIF, Font.MONOSPACED, Font.DIALOG_INPUT };
+		return hardwiredFontList;
+	}
+
+
+	/**
+	 * Just using name, not family name, here for now
+	 * 
+	 * @param font
+	 * @return CSS family name
+	 */
+	public static String getFontFamily(Font font) {
+		return font.getName();
+	}
+
+	/**
+	 * In JavaScript we only have one font metric, so we can just save it with the font itself
+	 */
+	@Override
+	public FontMetrics getFontMetrics(Font font) {
+		return font.getFontMetrics();
+	}
+
+	/**
+	 * generates proper font name for JSGraphics2d Apparently Java sizes are
+	 * pixels, not points. Not sure on this...
+	 * 
+	 * @param font
+	 * @return "italic bold 10pt Helvetica"
+	 */
+	public static String getCanvasFont(Font font) {
+		String strStyle = "";
+		if (font.isItalic())
+			strStyle += "italic ";
+		if (font.isBold())
+			strStyle += "bold ";
+		String family = font.getFamily();
+		if (family.equals("SansSerif") || family.equals("Dialog")
+				|| family.equals("DialogInput"))
+			family = "Arial";
+		// for whatever reason, Java font points are much larger than HTML5 canvas
+		// points
+		return strStyle + font.getSize() + "px " + family;
 	}
 
 }

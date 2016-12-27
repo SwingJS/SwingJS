@@ -47,7 +47,12 @@ public interface J2SInterface {
 
 	String _processResource(String path, Object data);
 
-	String getDefaultLanguage();
+	/**
+	 * 
+	 * @param isAll true for check of navigator; otherwise just J2S._lang from j2sLang=xx_XX in URI
+	 * @return
+	 */
+	String _getDefaultLanguage(boolean isAll);
 
 }
 

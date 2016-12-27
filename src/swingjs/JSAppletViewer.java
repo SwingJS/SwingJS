@@ -20,6 +20,7 @@ import jsjava.awt.Image;
 import jsjava.awt.Insets;
 import jsjava.awt.Toolkit;
 import jsjava.awt.Window;
+import jsjava.util.Locale;
 import jsjavax.swing.JApplet;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.JFrame;
@@ -197,6 +198,10 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		isApplet = true;
 		System.out.println("JSAppletViewer initializing");
 		this.params = params;
+		String language = getParameter("language");
+		if (language == null)
+			language = JSToolkit.J2S._getDefaultLanguage(false);
+		Locale.setDefault(JSToolkit.getDefaultLocale(language));
 		htmlName = JSUtil.split("" + getParameter("name"), "_object")[0];
 		appletName = JSUtil.split(htmlName + "_", "_")[0];
 		// should be the same as htmlName; probably should point out that applet

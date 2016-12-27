@@ -403,27 +403,7 @@ public final class Locale implements Cloneable, Serializable {
 		// do not synchronize this method - see 4071298
 		// it's OK if more than one default locale happens to be created
 		if (defaultLocale == null) {
-			String language, region, country, variant;
-			language = JSToolkit.getDefaultLanguageCode();
-			if (language == null || language.length() == 0 || language.equalsIgnoreCase("en"))
-				language = "en_US";
-			int i = language.indexOf('_');
-			if (i > 0) {
-				region = language.substring(i + 1);
-				language = language.substring(0, i);
-			} else {
-				region = "";
-			}
-			region = region.toUpperCase();
-			i = region.indexOf('_');
-			if (i > 0) {
-				country = region.substring(0, i);
-				variant = region.substring(i + 1);
-			} else {
-				country = region;
-				variant = "";
-			}
-			defaultLocale = getInstance(language, country, variant);
+			defaultLocale = JSToolkit.getDefaultLocale(null);
 		}
 		return defaultLocale;
 	}
