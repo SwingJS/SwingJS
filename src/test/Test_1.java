@@ -27,6 +27,7 @@ public class Test_1 extends JApplet {
     label.setVerticalAlignment(JLabel.CENTER);
     final JButton button = new JButton("test");
     button.setSize(80,40);
+    button.setBackground(Color.orange);
     button.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
