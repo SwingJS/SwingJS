@@ -35,6 +35,7 @@ import jsjava.awt.Font;
 import jsjavax.swing.DefaultListCellRenderer;
 import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.UIDefaults;
+import jsjavax.swing.plaf.BorderUIResource;
 import jsjavax.swing.plaf.ColorUIResource;
 import jsjavax.swing.plaf.DimensionUIResource;
 import jsjavax.swing.plaf.FontUIResource;
@@ -554,9 +555,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		// // *** Shared Borders
 		// Object marginBorder = new SwingLazyValue(
 		// "jsjavax.swing.plaf.basic.BasicBorders$MarginBorder");
-		// Object etchedBorder = new SwingLazyValue(
-		// "jsjavax.swing.plaf.BorderUIResource",
-		// "getEtchedBorderUIResource");
+	Object etchedBorder = new BorderUIResource.EtchedBorderUIResource();
 		// Object loweredBevelBorder = new SwingLazyValue(
 		// "jsjavax.swing.plaf.BorderUIResource",
 		// "getLoweredBevelBorderUIResource");
@@ -707,10 +706,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		// "jsjavax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
 		// new Object[] {zero, zero, zero, zero});
 		//
-		// Integer ten = new Integer(10);
-		// Object optionPaneBorder = new SwingLazyValue(
-		// "jsjavax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
-		// new Object[] {ten, ten, twelve, ten});
+		Object optionPaneBorder = new jsjavax.swing.plaf.BorderUIResource.EmptyBorderUIResource(10, 10, 12, 10);
 		//
 		// Object optionPaneButtonAreaBorder = new SwingLazyValue(
 		// "jsjavax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
@@ -1899,7 +1895,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "TitledBorder.font", dialogPlain12,
 				"TitledBorder.titleColor",
 				controlText,
-				// "TitledBorder.border", etchedBorder,
+			  "TitledBorder.border", etchedBorder,
 
 				// *** ToolBar
 				// "ToolBar.font", dialogPlain12,
