@@ -28,13 +28,15 @@
 
 package jsjava.awt;
 
+import java.util.Hashtable;
+
 import jsjava.awt.geom.AffineTransform;
 import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.image.WritableRaster;
-
-import jssun.awt.image.SunVolatileImage;
+import swingjs.J2SIgnoreImport;
+import swingjs.api.Interface;
 
 
 /**
@@ -110,7 +112,7 @@ import jssun.awt.image.SunVolatileImage;
  *
  */
 
-
+@J2SIgnoreImport({ WritableRaster.class, ColorModel.class })
 public abstract class GraphicsConfiguration {
 
 //    private static BufferCapabilities defaultBufferCaps;
@@ -182,11 +184,20 @@ public abstract class GraphicsConfiguration {
                                                transparency);
         }
         WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
-        return new BufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
+        return newBufferedImage(cm, wr, cm.isAlphaPremultiplied(), null);
     }
 
 
-    /**
+	protected BufferedImage newBufferedImage(ColorModel cm, WritableRaster wr,
+			boolean alphaPremultiplied, Hashtable<?, ?> properties) {
+		return (BufferedImage) Interface.getInstanceWithParams(
+				"java.awt.image.BufferedImage", new Class<?>[] { ColorModel.class,
+						WritableRaster.class, Boolean.class, Hashtable.class },
+				new Object[] { cm, wr,
+						alphaPremultiplied ? Boolean.TRUE : Boolean.FALSE, properties });
+	}
+
+		/**
      * Returns a {@link VolatileImage} with a data layout and color model
      * compatible with this <code>GraphicsConfiguration</code>.
      * The returned <code>VolatileImage</code>
@@ -302,8 +313,12 @@ public abstract class GraphicsConfiguration {
     public VolatileImage createCompatibleVolatileImage(int width, int height,
         ImageCapabilities caps, int transparency) throws AWTException
     {
-        VolatileImage vi =
-            new SunVolatileImage(this, width, height, transparency, caps);
+        VolatileImage vi = (VolatileImage) Interface.getInstanceWithParams(
+        		"sun.awt.image.SunVolatileImage", 
+        		new Class<?>[] { GraphicsConfiguration.class, Integer.class, Integer.class, Boolean.class, Object.class, Integer.class },
+            new Object[] { this, Integer.valueOf(width), Integer.valueOf(height), caps, Integer.valueOf(transparency) }
+        	);
+ //           new SunVolatileImage(this, width, height, transparency, caps);
         if (caps != null && caps.isAccelerated() &&
             !vi.getCapabilities().isAccelerated())
         {

@@ -27,21 +27,18 @@
  */
 package jsjavax.swing.border;
 
-import swingjs.JSGraphics2D;
-import jssun.swing.SwingUtilities2;
-
-import jsjava.awt.Graphics;
-import jsjava.awt.Insets;
-import jsjava.awt.Rectangle;
 import jsjava.awt.Color;
-import jsjava.awt.Font;
-import jsjava.awt.FontMetrics;
-import jsjava.awt.Point;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
-
+import jsjava.awt.Font;
+import jsjava.awt.FontMetrics;
+import jsjava.awt.Graphics;
+import jsjava.awt.Insets;
+import jsjava.awt.Point;
+import jsjava.awt.Rectangle;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.UIManager;
+import swingjs.JSGraphics2D;
 
 /**
  * A class which implements an arbitrary border
@@ -252,14 +249,13 @@ public class TitledBorder extends AbstractBorder
 
         g.setFont(getFont(c));
 
-        JComponent jc = (c instanceof JComponent) ? (JComponent)c : null;
-        FontMetrics fm = SwingUtilities2.getFontMetrics(jc, g);
+        JComponent jc = (JComponent)c;
+        FontMetrics fm = getFont(c).getFontMetrics();
         int         fontHeight = fm.getHeight();
         int         descent = fm.getDescent();
         int         ascent = fm.getAscent();
         int         diff;
-        int         stringWidth = SwingUtilities2.stringWidth(jc, fm,
-                                                              getTitle());
+        int         stringWidth = fm.stringWidth(getTitle());
         Insets      insets;
 
         if (border != null) {
@@ -412,7 +408,8 @@ public class TitledBorder extends AbstractBorder
         }
 
         g.setColor(getTitleColor());
-        SwingUtilities2.drawString(jc, g, getTitle(), textLoc.x, textLoc.y);
+        //SwingUtilities2.drawString(jc, g, getTitle(), textLoc.x, textLoc.y);
+        g.drawString(getTitle(), textLoc.x, textLoc.y);
 
         g.setFont(font);
         g.setColor(color);
@@ -665,8 +662,7 @@ public class TitledBorder extends AbstractBorder
         switch (getTitlePosition()) {
           case ABOVE_TOP:
           case BELOW_BOTTOM:
-              minSize.width = Math.max(SwingUtilities2.stringWidth(jc, fm,
-                                       getTitle()), minSize.width);
+              minSize.width = Math.max(fm.stringWidth(getTitle()), minSize.width);
               break;
           case BELOW_TOP:
           case ABOVE_BOTTOM:
@@ -674,7 +670,7 @@ public class TitledBorder extends AbstractBorder
           case BOTTOM:
           case DEFAULT_POSITION:
           default:
-              minSize.width += SwingUtilities2.stringWidth(jc, fm, getTitle());
+              minSize.width += fm.stringWidth(getTitle());
         }
         return minSize;
     }

@@ -34,6 +34,8 @@ import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import swingjs.api.JSMinimalAbstractDocument;
+
 import jsjavax.swing.UIManager;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;

@@ -85,6 +85,7 @@ import swingjs.JSToolkit;
 //import java.util.Collections;
 //import jsjava.security.AccessController;
 //import jsjava.security.PrivilegedAction;
+import swingjs.api.JSMinimalAbstractDocument;
 
 /**
  * <code>JTextComponent</code> is the base class for swing text

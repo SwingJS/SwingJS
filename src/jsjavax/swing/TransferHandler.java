@@ -1735,17 +1735,17 @@ public class TransferHandler {
          * Returns the clipboard to use for cut/copy/paste.
          */
         private Clipboard getClipboard(JComponent c) {
-            if (SwingUtilities2.canAccessSystemClipboard()) {
+            //if (SwingUtilities2.canAccessSystemClipboard()) {
                 return c.getToolkit().getSystemClipboard();
-            }
-            Clipboard clipboard = (Clipboard)jssun.awt.AppContext.getAppContext().
-                get(SandboxClipboardKey);
-            if (clipboard == null) {
-                clipboard = new Clipboard("Sandboxed Component Clipboard");
-                jssun.awt.AppContext.getAppContext().put(SandboxClipboardKey,
-                                                       clipboard);
-            }
-            return clipboard;
+            //}
+//            Clipboard clipboard = (Clipboard)jssun.awt.AppContext.getAppContext().
+//                get(SandboxClipboardKey);
+//            if (clipboard == null) {
+//                clipboard = new Clipboard("Sandboxed Component Clipboard");
+//                jssun.awt.AppContext.getAppContext().put(SandboxClipboardKey,
+//                                                       clipboard);
+//            }
+//            return clipboard;
         }
 
         /**

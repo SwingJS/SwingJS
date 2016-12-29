@@ -119,14 +119,14 @@ public class SunVolatileImage extends VolatileImage
 
     public SunVolatileImage(GraphicsConfiguration graphicsConfig,
                             int width, int height, int transparency,
-                            ImageCapabilities caps)
+                            Object capsObject)
     {
 //    this.comp = comp;
     this.graphicsConfig = graphicsConfig;
     this.width = width;
     this.height = height;
     this.transparency = transparency;
-    this.caps = caps;
+    this.caps = (ImageCapabilities) capsObject; // because we are doing reflection here
     }
 
     @Override

@@ -44,15 +44,13 @@ import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.Action;
 import jsjavax.swing.ActionMap;
 import jsjavax.swing.SwingUtilities;
-//import jsjavax.swing.Timer;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.event.DocumentEvent;
 import jsjavax.swing.event.DocumentListener;
 import jsjavax.swing.event.EventListenerList;
-import jsjavax.swing.plaf.ListUI;
 import jsjavax.swing.plaf.TextUI;
-import jssun.swing.SwingUtilities2;
+//import jsjavax.swing.Timer;
 
 /**
  * A default implementation of Caret.  The caret is rendered as
@@ -425,7 +423,7 @@ public class DefaultCaret extends Rectangle implements Caret, FocusListener, Mou
 		public void mouseClicked(MouseEvent e) {
         int nclicks = e.getClickCount();
         
-        //SwingJS n/a SwingUtilities2.getAdjustedClickCount(getComponent(), e);
+		// SwingJS n/a SwingUtilities2.getAdjustedClickCount(getComponent(), e);
 
         if (! e.isConsumed()) {
             if (SwingUtilities.isLeftMouseButton(e)) {

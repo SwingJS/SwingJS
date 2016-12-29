@@ -63,7 +63,6 @@ import jsjavax.swing.text.DefaultEditorKit;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.Element;
-import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.StyleConstants;
 import jsjavax.swing.text.StyledEditorKit;
@@ -74,6 +73,7 @@ import swingjs.J2SIgnoreImport;
 import swingjs.JSAbstractDocument;
 import swingjs.api.Interface;
 //import java.io.ObjectOutputStream;
+import swingjs.api.JSMinimalAbstractDocument;
 
 /**
  * A text component to edit various kinds of content.

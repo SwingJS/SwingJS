@@ -351,6 +351,8 @@ public class JSToolkit extends SunToolkit {
 
 	public static float getStringWidth(HTML5CanvasContext2D context, Font font,
 			String text) {
+		if (text == null || text.length() == 0)
+			return 0;
 		@SuppressWarnings("unused")
 		String fontInfo = getCanvasFont(font);
 		if (context == null)
@@ -498,16 +500,15 @@ public class JSToolkit extends SunToolkit {
 	 * @param zipFileName originating file
 	 * @param mapByteData map to fill or null for the default file cache
 	 */
+	@SuppressWarnings("static-access")
 	public static void loadJavaResourcesFromZip(ClassLoader cl, String zipFileName, Map<String, Object>  mapByteData) {
 		if (mapByteData == null)
 			mapByteData = getFileCache();
 		String fileList = "";
 		try {
-		  // ensure we have ZipTools, since this is a static call
-			Interface.getInstance("javajs.util.ZipTools", true); 
 			BufferedInputStream bis = new BufferedInputStream(cl.getResourceAsStream(zipFileName));
 			String prefix = J2S._getResourcePath(null, true); // will end with /
-			fileList = ZipTools.cacheZipContentsStatic(bis, prefix, mapByteData, false);
+			fileList = getZipTools().cacheZipContentsStatic(bis, prefix, mapByteData, false);
 		} catch (Exception e) {
 			System.out.println("JSToolkit could not cache files from " + zipFileName);
 			return;
@@ -517,6 +518,12 @@ public class JSToolkit extends SunToolkit {
 	}
 	
 	
+	private static ZipTools zipTools;
+
+	private static ZipTools getZipTools() {
+		return (zipTools == null ? (zipTools = (ZipTools) Interface.getInstance("javajs.util.ZipTools", true)) : zipTools);		// TODO Auto-generated method stub
+	}
+
 	/**
 	 * Load a static JavaScript or CSS resource only once; no need to cache it if
 	 * it is not there.

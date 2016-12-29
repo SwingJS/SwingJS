@@ -29,6 +29,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.AWTEvent;
+import swingjs.J2SIgnoreImport;
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
@@ -116,6 +117,7 @@ import jsjavax.swing.plaf.InsetsUIResource;
  * 
  * @author unattributed
  */
+@J2SIgnoreImport({UIDefaults.class, UIDefaults.ActiveValue.class})
 public class HTML5LookAndFeel extends LookAndFeel {
 	
 	public HTML5LookAndFeel() {

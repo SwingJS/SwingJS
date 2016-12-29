@@ -49,13 +49,13 @@ import jsjavax.swing.text.DefaultFormatterFactory;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.DocumentFilter;
 import jsjavax.swing.text.InternationalFormatter;
-import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.NavigationFilter;
 import jsjavax.swing.text.NumberFormatter;
 import jsjavax.swing.text.TextAction;
 import swingjs.JSToolkit;
 //import jsjavax.swing.text.InternationalFormatter;
+import swingjs.api.JSMinimalAbstractDocument;
 
 /**
  * <code>JFormattedTextField</code> extends <code>JTextField</code> adding

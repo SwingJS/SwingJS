@@ -1,4 +1,9 @@
-package jsjavax.swing.text;
+package swingjs.api;
+
+import jsjavax.swing.text.AttributeSet;
+import jsjavax.swing.text.BadLocationException;
+import jsjavax.swing.text.Document;
+import jsjavax.swing.text.DocumentFilter;
 
 /**
  * class for all the important methods that do not involve extensive document parsing

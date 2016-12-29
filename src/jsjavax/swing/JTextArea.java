@@ -29,6 +29,7 @@ package jsjavax.swing;
 
 import swingjs.JSPlainDocument;
 import swingjs.JSToolkit;
+import swingjs.api.JSMinimalAbstractDocument;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
@@ -38,7 +39,6 @@ import jsjavax.swing.text.AbstractDocument;
 import jsjavax.swing.text.BadLocationException;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.Element;
-import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.PlainDocument;
 

@@ -27,6 +27,7 @@
  */
 package jsjavax.swing;
 
+import swingjs.api.JSMinimalAbstractDocument;
 import jsjava.awt.Component;
 import jsjavax.swing.text.AbstractDocument;
 import jsjavax.swing.text.AttributeSet;
@@ -35,7 +36,6 @@ import jsjavax.swing.text.Caret;
 import jsjavax.swing.text.Document;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.Element;
-import jsjavax.swing.text.JSMinimalAbstractDocument;
 import jsjavax.swing.text.MutableAttributeSet;
 import jsjavax.swing.text.Style;
 import jsjavax.swing.text.StyleConstants;

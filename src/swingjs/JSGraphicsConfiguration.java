@@ -1,6 +1,7 @@
 package swingjs;
 
 import swingjs.api.DOMNode;
+import swingjs.api.Interface;
 import swingjs.api.JQueryObject;
 import jsjava.awt.GraphicsConfiguration;
 import jsjava.awt.GraphicsDevice;
@@ -46,7 +47,7 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 	public BufferedImage createCompatibleImage(int width, int height) {
     ColorModel cm = getColorModel();
     WritableRaster wr = cm.createCompatibleWritableRaster(width, height);
-    return new BufferedImage(cm, wr, false, null);
+    return newBufferedImage(cm, wr, false, null);
 	}
 
 	@Override
@@ -56,17 +57,17 @@ public class JSGraphicsConfiguration extends GraphicsConfiguration {
 
 	@Override
 	public ColorModel getColorModel(int transparency) {
-		return ColorModel.getRGBdefault();
+		return getColorModel();
 	}
 
 	@Override
 	public AffineTransform getDefaultTransform() {
-		return new AffineTransform();
+		return (AffineTransform) Interface.getInstance("java.awt.geom.AffineTransform", true);
 	}
 
 	@Override
 	public AffineTransform getNormalizingTransform() {
-		return new AffineTransform();
+		return getDefaultTransform();
 	}
 
 	@Override

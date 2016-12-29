@@ -38,7 +38,6 @@ import jsjavax.swing.JComponent;
 import jsjavax.swing.JPanel;
 import jsjavax.swing.SwingUtilities;
 import jsjavax.swing.UIManager;
-import jssun.swing.SwingUtilities2;
 
 
 /**
@@ -86,7 +85,7 @@ class DefaultPreviewPanel extends JPanel {
 
         int ascent = fm.getAscent();
         int height = fm.getHeight();
-        int width = SwingUtilities2.stringWidth(host, fm, sampleText);
+        int width = fm.stringWidth(sampleText);
 
         int y = height*3 + textGap*3;
         int x = squareSize * 3 + squareGap*2 + swatchWidth + width + textGap*3;
@@ -124,15 +123,12 @@ class DefaultPreviewPanel extends JPanel {
 
     private int paintText(Graphics g, int offsetX) {
         g.setFont(getFont());
-        JComponent host = getColorChooser();
-        if (host == null) {
-            host = this;
-        }
-        FontMetrics fm = SwingUtilities2.getFontMetrics(host, g);
+
+        FontMetrics fm = getFont().getFontMetrics();
 
         int ascent = fm.getAscent();
         int height = fm.getHeight();
-        int width = SwingUtilities2.stringWidth(host, fm, sampleText);
+        int width = fm.stringWidth(sampleText);
 
         int textXOffset = offsetX + textGap;
 
@@ -140,8 +136,7 @@ class DefaultPreviewPanel extends JPanel {
 
         g.setColor(color);
 
-        SwingUtilities2.drawString(host, g, sampleText,textXOffset+(textGap/2),
-                                   ascent+2);
+        g.drawString(sampleText,textXOffset+(textGap/2), ascent+2);
 
         g.fillRect(textXOffset,
                    ( height) + textGap,
@@ -149,7 +144,7 @@ class DefaultPreviewPanel extends JPanel {
                    height +2);
 
         g.setColor(Color.black);
-        SwingUtilities2.drawString(host, g, sampleText,
+        g.drawString(sampleText,
                      textXOffset+(textGap/2),
                      height+ascent+textGap+2);
 
@@ -162,7 +157,7 @@ class DefaultPreviewPanel extends JPanel {
                    height +2);
 
         g.setColor(color);
-        SwingUtilities2.drawString(host, g, sampleText,
+        g.drawString(sampleText,
                      textXOffset+(textGap/2),
                      ((height+textGap) * 2)+ascent+2);
 

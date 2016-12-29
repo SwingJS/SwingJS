@@ -3,6 +3,8 @@ package swingjs;
 import java.util.HashMap;
 import java.util.Map;
 
+import swingjs.api.JSMinimalAbstractDocument;
+
 import javajs.util.AU;
 import javajs.util.SB;
 
@@ -17,7 +19,6 @@ import jsjavax.swing.text.Document;
 import jsjavax.swing.text.DocumentFilter;
 import jsjavax.swing.text.DocumentFilter.FilterBypass;
 import jsjavax.swing.text.Element;
-import jsjavax.swing.text.JSMinimalAbstractDocument;
 
 public abstract class JSAbstractDocument implements JSMinimalAbstractDocument {
 	protected Map<Object, Object> props;

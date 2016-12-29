@@ -39,7 +39,6 @@ import jsjava.awt.Graphics2D;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.RenderingHints;
-import jsjava.awt.Toolkit;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.font.FontRenderContext;
 import jsjava.util.Locale;
