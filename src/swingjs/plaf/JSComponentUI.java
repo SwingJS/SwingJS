@@ -17,7 +17,6 @@ import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
 import jsjava.awt.event.FocusEvent;
 import jsjava.awt.event.PaintEvent;
-import jsjava.awt.geom.Rectangle2D;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.ImageObserver;
 import jsjava.awt.image.ImageProducer;
@@ -670,6 +669,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				if (icon == null ? currentIcon != null : !icon.equals(currentIcon))
 					setIconAndText(prop, icon, currentGap, currentText);
 			}
+			return;
+		}
+		if (prop == "horizontalAlignment" || prop == "verticalAlignment") {
+			setAlignment();
 			return;
 		}
 		if (debugging)
@@ -1412,13 +1415,18 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	protected void setInnerComponentBounds(int width, int height) {
+		setAlignment();
+
+		if (debugging)
+			System.out.println("CUI reshapeMe: need to reshape " + id + " w:"
+					+ this.width + "->" + width + " h:" + this.height + "->" + height);
+	}
+
+	private void setAlignment() {
 		if (canAlignText) {
 			setVerticalAlignment();
 			setTextAlignment();
 		}
-		if (debugging)
-			System.out.println("CUI reshapeMe: need to reshape " + id + " w:"
-					+ this.width + "->" + width + " h:" + this.height + "->" + height);
 	}
 
 	private void setTextAlignment() {
@@ -1450,7 +1458,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			int left = 0;
 			int w = actualWidth;
 			if (w == 0)
-				w = setHTMLSize1(domNode, false, false).width;
+				w = setHTMLSize1(centeringNode, false, false).width;
 			switch (type) {
 			case SwingConstants.LEFT:
 			case SwingConstants.LEADING:

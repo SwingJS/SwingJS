@@ -90,6 +90,20 @@ public class JSButtonUI extends JSLightweightUI {
 			setDataComponent(domBtn);
 			setDataComponent(iconNode);
 		}
+// interestingly, this gives the background-border-only issue and causes problems with centering
+// because now the default position for the left side of the label is the button center.
+// and vertical alignment is off and vCenter does not help 
+		
+//		if (domNode == null) {
+//			domNode = enableNode = domBtn = newDOMObject("button", id);
+//			iconNode = newDOMObject("span", id + "_icon");
+//			textNode = newDOMObject("label", id + "_btn");
+//			domNode.appendChild(iconNode);
+//			domNode.appendChild(textNode);
+//			setDataComponent(domNode);
+//			setDataComponent(iconNode);
+//			setDataComponent(textNode);
+//		}
 		setIconAndText("button", (ImageIcon) button.getIcon(), button.getIconTextGap(), button.getText());
 		
 		return domNode;
