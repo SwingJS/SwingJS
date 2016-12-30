@@ -20,7 +20,7 @@
 		line-height: 1;
 	}
 
-	ol, ul {
+	ol.demo, ul.demo {
 		list-style: none;
 	}
 
@@ -33,7 +33,7 @@
 		content: none;
 	}
 
-	table {
+	 table.demo {
 		border-collapse: collapse;
 		border-spacing: 0;
 	}
@@ -1572,7 +1572,7 @@
 			transition: none !important;
 		}
 
-	body, input, textarea {
+	body, input.demo, textarea.demo {
 		color: #a2a2a2;
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 16pt;
@@ -1580,7 +1580,7 @@
 		/*line-height: 1.75em;*/
 	}
 
-	a {
+	a.demo {
 		-moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 		-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 		-ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
@@ -1590,7 +1590,7 @@
 		text-decoration: none;
 	}
 
-		a:hover {
+		a.demo:hover {
 			border-bottom-color: transparent;
 			color: #49bf9d !important;
 			text-decoration: none;
@@ -1690,14 +1690,14 @@
 		padding: 0.25em 0.65em;
 	}
 
-	pre {
+	 pre.demo {
 		-webkit-overflow-scrolling: touch;
 		font-family: "Courier New", monospace;
 		font-size: 0.9em;
 		margin: 0 0 2em 0;
 	}
 
-		pre code {
+	 pre.demo code {
 			display: block;
 			line-height: 1.75em;
 			padding: 1em 1.5em;
@@ -2100,23 +2100,23 @@
 
 /* List */
 
-	ol {
+	 ol {
 		list-style: decimal;
 		margin: 0 0 2em 0;
 		padding-left: 1.25em;
 	}
 
-		ol li {
+	ol li {
 			padding-left: 0.25em;
 		}
 
-	ul {
+	ul.demo {
 		list-style: disc;
 		margin: 0 0 2em 0;
 		padding-left: 1em;
 	}
 
-		ul li {
+		ul.demo li {
 			padding-left: 0.5em;
 		}
 
@@ -2141,61 +2141,61 @@
 			padding-left: 0;
 		}
 
-			ul.icons li {
+			 ul.icons li {
 				display: inline-block;
 				padding: 0 1em 0 0;
 			}
 
-				ul.icons li:last-child {
+				 ul.icons li:last-child {
 					padding-right: 0;
 				}
 
-				ul.icons li .icon:before {
+				 ul.icons li .icon:before {
 					font-size: 1.5em;
 				}
 
-		ul.actions {
+		 ul.actions {
 			cursor: default;
 			list-style: none;
 			padding-left: 0;
 		}
 
-			ul.actions li {
+			 ul.actions li {
 				display: inline-block;
 				padding: 0 1em 0 0;
 				vertical-align: middle;
 			}
 
-				ul.actions li:last-child {
+				 ul.actions li:last-child {
 					padding-right: 0;
 				}
 
-			ul.actions.small li {
+			 ul.actions.small li {
 				padding: 0 0.5em 0 0;
 			}
 
-			ul.actions.vertical li {
+			 ul.actions.vertical li {
 				display: block;
 				padding: 1em 0 0 0;
 			}
 
-				ul.actions.vertical li:first-child {
+				 ul.actions.vertical li:first-child {
 					padding-top: 0;
 				}
 
-				ul.actions.vertical li > * {
+				 ul.actions.vertical li > * {
 					margin-bottom: 0;
 				}
 
-			ul.actions.vertical.small li {
+			 ul.actions.vertical.small li {
 				padding: 0.5em 0 0 0;
 			}
 
-				ul.actions.vertical.small li:first-child {
+				 ul.actions.vertical.small li:first-child {
 					padding-top: 0;
 				}
 
-			ul.actions.fit {
+			 ul.actions.fit {
 				display: table;
 				margin-left: -1em;
 				padding: 0;
@@ -2203,45 +2203,45 @@
 				width: calc(100% + 1em);
 			}
 
-				ul.actions.fit li {
+				 ul.actions.fit li {
 					display: table-cell;
 					padding: 0 0 0 1em;
 				}
 
-					ul.actions.fit li > * {
+					 ul.actions.fit li > * {
 						margin-bottom: 0;
 					}
 
-				ul.actions.fit.small {
+				 ul.actions.fit.small {
 					margin-left: -0.5em;
 					width: calc(100% + 0.5em);
 				}
 
-					ul.actions.fit.small li {
+					 ul.actions.fit.small li {
 						padding: 0 0 0 0.5em;
 					}
 
-		ul.labeled-icons {
+		 ul.labeled-icons {
 			list-style: none;
 			padding: 0;
 		}
 
-			ul.labeled-icons li {
+			 ul.labeled-icons li {
 				line-height: 1.75em;
 				margin: 1.5em 0 0 0;
 				padding-left: 2.25em;
 				position: relative;
 			}
 
-				ul.labeled-icons li:first-child {
+				 ul.labeled-icons li:first-child {
 					margin-top: 0;
 				}
 
-				ul.labeled-icons li a {
+				 ul.labeled-icons li a {
 					color: inherit;
 				}
 
-				ul.labeled-icons li h3 {
+				 ul.labeled-icons li h3 {
 					color: #b2b2b2;
 					left: 0;
 					position: absolute;
@@ -2261,26 +2261,26 @@
 		overflow-x: auto;
 	}
 
-	table {
+	 table.demo {
 		margin: 0 0 2em 0;
 		width: 100%;
 	}
 
-		table tbody tr {
+	 table.demo tbody tr {
 			border: solid 1px #efefef;
 			border-left: 0;
 			border-right: 0;
 		}
 
-			table tbody tr:nth-child(2n + 1) {
+		table.demo tbody tr:nth-child(2n + 1) {
 				background-color: #f7f7f7;
 			}
 
-		table td {
+		 table.demo td {
 			padding: 0.75em 0.75em;
 		}
 
-		table th {
+		table.demo th {
 			color: #787878;
 			font-size: 0.9em;
 			font-weight: 400;
@@ -2288,37 +2288,37 @@
 			text-align: left;
 		}
 
-		table thead {
+		table.demo thead {
 			border-bottom: solid 2px #efefef;
 		}
 
-		table tfoot {
+		table.demo tfoot {
 			border-top: solid 2px #efefef;
 		}
 
-		table.alt {
+		 table.alt {
 			border-collapse: separate;
 		}
 
-			table.alt tbody tr td {
+			 table.alt tbody tr td {
 				border: solid 2px #efefef;
 				border-left-width: 0;
 				border-top-width: 0;
 			}
 
-				table.alt tbody tr td:first-child {
+				 table.alt tbody tr td:first-child {
 					border-left-width: 2px;
 				}
 
-			table.alt tbody tr:first-child td {
+			 table.alt tbody tr:first-child td {
 				border-top-width: 2px;
 			}
 
-			table.alt thead {
+			 table.alt thead {
 				border-bottom: 0;
 			}
 
-			table.alt tfoot {
+			 table.alt tfoot {
 				border-top: 0;
 			}
 
