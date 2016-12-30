@@ -12,6 +12,6 @@ import jsjavax.xml.sax.Parser;
  * @author Bob Hanson
  *
  */
-public abstract class SAXParser implements sax.Parser {
+public abstract class SAXParser implements Parser {
 }
 
