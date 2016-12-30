@@ -35,7 +35,7 @@ import java.util.Map;
 
 import javajs.util.Lst;
 
-import com.jcraft.jzlib.ZStream;
+import swingjs.jzlib.ZStream;
 
 /**
  * modified by Bob Hanson for compatibility with jzlib

@@ -28,7 +28,7 @@
 
 package jsjava.util.zip;
 
-public class Deflater extends com.jcraft.jzlib.Deflater {
+public class Deflater extends swingjs.jzlib.Deflater {
   
   public static final int DEFAULT_COMPRESSION = -1;
   

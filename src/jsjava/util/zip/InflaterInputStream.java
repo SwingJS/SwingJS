@@ -30,7 +30,7 @@ package jsjava.util.zip;
 
 import jsjava.io.InputStream;
 
-class InflaterInputStream extends com.jcraft.jzlib.InflaterInputStream {
+class InflaterInputStream extends swingjs.jzlib.InflaterInputStream {
 
   protected Inflater inf;
   InflaterInputStream(InputStream in, Inflater inflater, int size) {

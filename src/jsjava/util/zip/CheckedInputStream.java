@@ -31,7 +31,7 @@ package jsjava.util.zip;
 import jsjava.io.FilterInputStream;
 import jsjava.io.InputStream;
 import java.io.IOException;
-import com.jcraft.jzlib.Checksum;
+import swingjs.jzlib.Checksum;
 
 /**
  * An input stream that also maintains a checksum of the data being read.

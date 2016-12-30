@@ -1,4 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
+/* Java origin: com.jcraft.zlib;  modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017 */
 /*
 Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
 
@@ -27,7 +27,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.jcraft.jzlib;
+package swingjs.jzlib;
 
 import java.io.IOException;
 import jsjava.io.OutputStream;

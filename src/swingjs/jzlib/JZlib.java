@@ -1,4 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; -*- */
+/* Java origin: com.jcraft.zlib;  modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017 */
 /*
 Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
 
@@ -32,7 +32,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * and contributors of zlib.
  */
 
-package com.jcraft.jzlib;
+package swingjs.jzlib;
 
 final public class JZlib{
   private static final String version="1.1.0";

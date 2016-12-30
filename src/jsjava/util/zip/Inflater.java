@@ -28,7 +28,7 @@
 
 package jsjava.util.zip;
 
-public class Inflater extends com.jcraft.jzlib.Inflater {
+public class Inflater extends swingjs.jzlib.Inflater {
 
   public Inflater initialize(boolean nowrap) {
     return (Inflater) init(0, nowrap);

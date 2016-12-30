@@ -28,6 +28,6 @@
 
 package jsjava.util.zip;
 
-public class CRC32 extends com.jcraft.jzlib.CRC32 {
+public class CRC32 extends swingjs.jzlib.CRC32 {
 
 }

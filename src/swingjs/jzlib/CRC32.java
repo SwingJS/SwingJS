@@ -1,4 +1,4 @@
-/* -*-mode:java; c-basic-offset:2; -*- */
+/* Java origin: com.jcraft.zlib;  modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017 */
 /*
 Copyright (c) 2011 ymnk, JCraft,Inc. All rights reserved.
 
@@ -32,7 +32,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * and contributors of zlib.
  */
 
-package com.jcraft.jzlib;
+package swingjs.jzlib;
 
 public class CRC32 implements Checksum {
 
@@ -233,7 +233,7 @@ public class CRC32 implements Checksum {
 //static {
 //  b = new byte[] {1, 2, 3, 4};
 //  java.util.zip.CRC32 c0 = new java.util.zip.CRC32();
-//  com.jcraft.jzlib.CRC32 c1 = new com.jcraft.jzlib.CRC32();
+//  swingjs.jzlib.CRC32 c1 = new swingjs.jzlib.CRC32();
 //  for (int i = 0; i < 10; i++) {
 //    for (int k = 0; k < 4; k++) 
 //      b[k] = (byte)(Math.random()*256);

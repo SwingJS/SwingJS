@@ -40,7 +40,7 @@ import jsjava.io.OutputStream;
  * @author      David Connelly
  */
 public
-class DeflaterOutputStream extends com.jcraft.jzlib.DeflaterOutputStream {
+class DeflaterOutputStream extends swingjs.jzlib.DeflaterOutputStream {
 
   public DeflaterOutputStream() {
     // for JavaScript
