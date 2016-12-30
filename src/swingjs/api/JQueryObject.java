@@ -1,5 +1,7 @@
 package swingjs.api;
 
+import javajs.api.JSFunction;
+
 public interface JQueryObject {
 
 	public abstract JQueryObject append(Object span);

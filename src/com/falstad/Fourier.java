@@ -63,6 +63,8 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 
+import javajs.util.JSThread;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -72,7 +74,6 @@ import com.falstad.FFT;
 
 import swingjs.JSAudioThread;
 import swingjs.JSAudioThreadOwner;
-import swingjs.JSThread;
 import swingjs.awt.Applet;
 import swingjs.awt.Button;
 import swingjs.awt.Canvas;

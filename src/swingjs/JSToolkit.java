@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.api.JSFunction;
 import javajs.util.AU;
 import javajs.util.PT;
 import javajs.util.Rdr;
@@ -67,7 +68,6 @@ import swingjs.api.Interface;
 import swingjs.api.J2SInterface;
 import swingjs.api.JQuery;
 import swingjs.api.JSFileHandler;
-import swingjs.api.JSFunction;
 import swingjs.plaf.JSComponentUI;
 
 @J2SIgnoreImport(URL.class)

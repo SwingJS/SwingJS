@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import javajs.api.JSFunction;
 import jsjava.awt.Insets;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Toolkit;
@@ -11,7 +12,6 @@ import jsjavax.swing.JFrame;
 import jsjavax.swing.LookAndFeel;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
-import swingjs.api.JSFunction;
 
 public class JSFrameUI extends JSWindowUI implements FramePeer {
 	

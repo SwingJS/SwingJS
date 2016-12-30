@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import javajs.api.JSFunction;
 import javajs.util.PT;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
@@ -39,7 +40,6 @@ import swingjs.api.DOMNode;
 import swingjs.api.HTML5Applet;
 import swingjs.api.HTML5Canvas;
 import swingjs.api.JQueryObject;
-import swingjs.api.JSFunction;
 
 /**
  * The JSComponentUI subclasses are where all the detailed HTML5 implementation

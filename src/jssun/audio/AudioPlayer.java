@@ -1,8 +1,9 @@
 package jssun.audio;
 
+import javajs.util.JSThread;
+
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import swingjs.JSThread;
 import swingjs.JSToolkit;
 
 public class AudioPlayer extends JSThread {

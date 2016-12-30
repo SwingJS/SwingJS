@@ -2,6 +2,8 @@ package swingjs.plaf;
 
 import java.awt.event.MouseEvent;
 
+import javajs.api.JSFunction;
+
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.JSComponent;
@@ -13,7 +15,6 @@ import swingjs.JSFrameViewer;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JQueryObject;
-import swingjs.api.JSFunction;
 
 public class Resizer {
 

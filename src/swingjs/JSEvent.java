@@ -1,5 +1,6 @@
 package swingjs;
 
+import javajs.util.JSThread;
 import jsjava.awt.event.InvocationEvent;
 
 public class JSEvent extends InvocationEvent {

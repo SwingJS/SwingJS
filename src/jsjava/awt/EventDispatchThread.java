@@ -41,12 +41,12 @@ import jssun.awt.SunToolkit;
 
 import java.util.Vector;
 
+import javajs.api.JSFunction;
+import javajs.util.JSThread;
 import javajs.util.Lst;
 //import java.util.logging.*;
 
-import swingjs.JSThread;
 import swingjs.JSToolkit;
-import swingjs.api.JSFunction;
 
 //import sun.awt.dnd.SunDragSourceContextPeer;
 

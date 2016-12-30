@@ -1,5 +1,7 @@
 package swingjs;	
 
+import javajs.util.JSThread;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;

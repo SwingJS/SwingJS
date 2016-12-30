@@ -1,5 +1,6 @@
 package swingjs;
 
+import javajs.util.JSThread;
 import jsjavax.swing.SwingUtilities;
 
 /**

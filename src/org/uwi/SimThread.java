@@ -1,6 +1,6 @@
 package org.uwi;
 
-import swingjs.JSThread;
+import javajs.util.JSThread;
 
 public class SimThread extends JSThread {
 

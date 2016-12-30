@@ -4,12 +4,14 @@
 
 package jsjavax.xml.parsers;
 
+import jsjavax.xml.sax.Parser;
+
 /**
  * Just an interface to fill in for the JavaScript version
  * 
  * @author Bob Hanson
  *
  */
-public abstract class SAXParser implements org.xml.sax.Parser {
+public abstract class SAXParser implements sax.Parser {
 }
 

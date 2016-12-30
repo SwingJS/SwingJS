@@ -11,7 +11,7 @@ import java.lang.ClassCastException;
 
 import javax.xml.parsers.SAXParser;
 
-import org.xml.sax.Parser;
+import jsjavax.xml.sax.Parser;
 
 
 /**

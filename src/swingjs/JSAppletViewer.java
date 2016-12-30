@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import javajs.util.JSThread;
 import javajs.util.Lst;
 import javajs.util.PT;
 import jsjava.applet.Applet;

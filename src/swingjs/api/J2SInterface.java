@@ -2,7 +2,9 @@ package swingjs.api;
 
 import java.util.Hashtable;
 
-import swingjs.JSThread;
+import javajs.api.JSFunction;
+import javajs.util.JSThread;
+
 
 /** 
  * called by JSmol JavaScript methods using
