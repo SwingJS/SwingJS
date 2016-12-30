@@ -17,6 +17,10 @@ public class TextField extends JTextField {
 		super();
 	}
 
+	public TextField(String text) {
+		super(text);
+	}
+
 	public TextField(String text, int width) {
 		super(text, width);
 	}

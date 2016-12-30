@@ -1,9 +1,19 @@
 package a2s;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
 
 public class Checkbox extends JCheckBox {
 
+	
+	// added to (slightly) simplify converting code that uses Checkbox radio buttons
+	public static JRadioButton newRadioButton(String string, ButtonGroup bg, boolean b) {
+		JRadioButton rb = new JRadioButton(string, b);
+		bg.add(rb);
+		return rb;
+	}
+	
 	public Checkbox(String string) {
 		super(string, false);
 	}
