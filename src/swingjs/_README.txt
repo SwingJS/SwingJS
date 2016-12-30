@@ -28,8 +28,4 @@ swingjs/jzlib   ZIP-file related classes from org.jcraft.zlib
 swingjs/plaf    The key GUI classes for implementing Swing components in HTML5.
                 All the magic happens here.
                 
-
-
-   
-                of 
                   
