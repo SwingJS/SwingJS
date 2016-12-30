@@ -33,6 +33,8 @@ package jsjava.lang;
 //import jsjava.security.PrivilegedAction;
 import java.util.Map;
 import java.util.HashMap;
+
+import javajs.util.JSThread;
 //import java.util.Collections;
 //import java.util.concurrent.locks.LockSupport;
 //import jssun.misc.SoftCache;
@@ -270,7 +272,8 @@ class Thread implements Runnable {
      *
      * @return  the currently executing thread.
      */
-    public static Thread currentThread() {
+    @SuppressWarnings({ "unused", "static-access" })
+		public static Thread currentThread() {
     	/**
     	 * @j2sNative
     	 *if (java.lang.Thread.thisThread == "working")
@@ -281,16 +284,24 @@ class Thread implements Runnable {
     	{}
     	if (thisThread == null) {
     		/**
+    		 * 
+    		 * technically, JSThread is an abstract class, but we go ahead and
+    		 * instantialize it anyway in JavaScript. The reason it is abstract is
+    		 * to force generation of necessary methods when using it.
+    		 * 
     		 * @j2sNative
     		 *
     		 * java.lang.Thread.thisThread = "working";
     		 * java.lang.Thread.thisThread =  new java.lang.Thread ("master");
     		 * var name = J2S._applets["master"]._id;
     		 * var g = new swingjs.JSThreadGroup(null, name);
-    		 * java.lang.Thread.thisThread = new swingjs.JSThread(g, name);
+    		 * java.lang.Thread.thisThread = new javajs.util.JSThread(g, name);
     		 *  
     		 */
     		{
+    			// these are for reference only -- not used in JavaScript
+    			JSThread.interrupted();
+    			new swingjs.JSThreadGroup(null, null);
       		thisThread = new Thread("master");
     		}
     		thisThread.setPriority(NORM_PRIORITY);

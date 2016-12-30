@@ -7,7 +7,10 @@ import javajs.api.JSFunction;
 
 
 /**
- * A class that takes care of simple threading in Java or JavaScript. 
+ * An abstract class that takes care of simple threading in Java or JavaScript.
+ * 
+ * To use it, subclass it and complete the necessary methods.
+ * 
  * 
  * There are three states: INIT, LOOP, and DONE.
  * 
@@ -200,7 +203,6 @@ public abstract class JSThread extends Thread implements JSFunction {
 		 * 
 		 */
 		{
-			// for reference only
 			Toolkit.getDefaultToolkit().getSystemEventQueue()
 					.postEvent(new InvocationEvent(me, r));
 		}
