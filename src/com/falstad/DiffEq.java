@@ -2,6 +2,15 @@ package com.falstad;
 
 // DiffEq.java (C) 2001 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= DiffEq
+//web_Description= Visual differential equation solver.
+//web_JavaSource= http://www.falstad.com/diffeq/
+//web_AppletImage= images/diffeq.png
+//web_Category= Mathematics
+//web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features: graphics, AWT-to-Swing
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;

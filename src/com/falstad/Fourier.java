@@ -6,7 +6,6 @@ package com.falstad;
 //web_AppletName= Fourier
 //web_Description= Simulation of Fourier series, which is a method of expressing an arbitrary periodic function as a sum of cosine terms.
 //web_JavaSource= http://www.falstad.com/fourier/
-//web_Location= com.falstad.Fourier
 //web_AppletImage= images/fourier.png
 //web_Category= Physics
 //web_Date= $Date$

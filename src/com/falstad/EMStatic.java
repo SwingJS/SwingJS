@@ -1,17 +1,18 @@
 // EMStatic.java (c) 2001 by Paul Falstad, www.falstad.com
 
-//web_Ready
-//web_AppletName= EMStatic
-//web_Description= A simulation of electrostatics and static current distributions in two dimensions.
-//web_JavaSource= http://www.falstad.com/emstatic/
-//web_Location= com.falstad.EMStatic
-//web_AppletImage= images/emstatic.png
-//web_Category= Physics
-//web_Date= $Date$
-//web_Features= graphics, AWT-to-Swing
+
 
 
 package com.falstad;
+
+//web_Ready
+//web_AppletName= 2-D Electrostatics
+//web_Description= Demonstrates static electric fields and steady-state current
+//web_JavaSource= http://www.falstad.com/emstatic/
+//web_AppletImage= images/emstatic.png
+//web_Category= Physics
+//web_Date= $Date$
+//web_Features: graphics, AWT-to-Swing
 
 // Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //

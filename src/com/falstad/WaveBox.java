@@ -6,7 +6,6 @@ package com.falstad;
 //web_AppletName= WaveBox
 //web_Description= 
 //web_JavaSource= http://www.falstad.com/wavebox/
-//web_Location= com.falstad.WaveBox
 //web_AppletImage= images/wavebox.png
 //web_Category= Physics
 //web_Date= $Date$
@@ -28,7 +27,6 @@ package com.falstad;
 //
 // Replaced deprecated functions (move, show, hide, insets, size, resize) --> (setLocation, setVisible(true), setVisible(false), getInsets, getSize, setSize)
 //
-//WaveBoxFrame.paint() --> WaveBoxFrame.paintComponent()
 //
 //ShowFrame() moved to WavedBox.init()
 
@@ -69,7 +67,7 @@ import a2s.Label;
 import a2s.Scrollbar;
 
 // NM -- switched to singjs.awt classes
-// BH -- changed canvas and frame paint(g) to paintComponent(g)
+// BH -- changed canvas paint(g) to paintComponent(g)
 // BH -- added initialization checks for dbimage == null and winSize.height <= 0
 
 class WaveBoxCanvas extends Canvas {
@@ -838,9 +836,6 @@ class WaveBoxFrame extends Frame implements ComponentListener, ActionListener,
 		return x < 0 ? -1 : 1;
 	}
 
-//	public void paintComponent(Graphics g) {
-//		cv.repaint();
-//	}
 
 	long lastTime;
 

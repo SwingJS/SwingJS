@@ -1,6 +1,8 @@
 package com.falstad;
 // Antenna.java (c) 2004 by Paul Falstad, www.falstad.com
 
+
+
 import java.io.InputStream;
 import java.awt.Color;
 import java.awt.Component;
@@ -41,6 +43,15 @@ import a2s.Choice;
 import a2s.Frame;
 import a2s.Label;
 import a2s.Scrollbar;
+
+//web_Ready
+//web_AppletName= Antenna
+//web_Description= Generates antenna radiation patterns
+//web_JavaSource= http://www.falstad.com/antenna/
+//web_AppletImage= images/antenna.png
+//web_Category= Physics
+//web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features: graphics, AWT-to-Swing
 
 class AntennaCanvas extends Canvas {
     AntennaFrame pg;

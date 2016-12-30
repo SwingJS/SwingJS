@@ -4,6 +4,15 @@ package com.falstad;
 // BUILD_M defined before compiling with java compiler.  This was done
 // to reduce class file sizes.
 
+//web_Ready
+//web_AppletName= 2-D Vector Fields
+//web_Description= Demonstrates various properties of vector fields, including divergence and curl, etc.
+//web_JavaSource= http://www.falstad.com/vector/
+//web_AppletImage= images/vector2d.png
+//web_Category= Mathematics
+//web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features= graphics, AWT-to-Swing
+
 import java.io.InputStream;
 import java.awt.Adjustable;
 import java.awt.Color;

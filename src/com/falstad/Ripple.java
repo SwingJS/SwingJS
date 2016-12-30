@@ -6,7 +6,6 @@ package com.falstad;
 //web_AppletName= Ripple
 //web_Description= A simulation of a ripple tank demonstrating wave interference.
 //web_JavaSource= http://www.falstad.com/ripple/
-//web_Location= com.falstad.Ripple
 //web_AppletImage= images/ripple.png
 //web_Category= Physics
 //web_Date= $Date$

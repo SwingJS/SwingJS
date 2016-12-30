@@ -47,16 +47,19 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		setDoc();
 	}
 
-//	public void notifyFrameMoved() {
-//		Toolkit.getEventQueue().postEvent(new ComponentEvent(frame, ComponentEvent.COMPONENT_MOVED));
-//	}
-	
+	// public void notifyFrameMoved() {
+	// Toolkit.getEventQueue().postEvent(new ComponentEvent(frame,
+	// ComponentEvent.COMPONENT_MOVED));
+	// }
+
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
+			// we have to give it some sort of border, or it blends in with the page too much.
+			// a Windows applet has a sort of fuzzy shadowy border
 			domNode = frameNode = newDOMObject("div", id + "_frame");
-			DOMNode.setStyles(frameNode, "border-style", "solid",
-					"border-width", "5px", " box-sizing", "content-box");
+			DOMNode.setStyles(frameNode, "box-Shadow",
+					"0px 0px 10px gray", "box-sizing", "content-box");
 			setWindowClass(frameNode);
 			int w = c.getWidth();
 			int h = c.getHeight();
@@ -64,8 +67,8 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 				w = defaultWidth;
 			if (h == 0)
 				h = defaultHeight;
-			DOMNode.setStyles(frameNode, "background", toCSSString(c.getBackground()));
 			DOMNode.setSize(frameNode, w, h);
+			DOMNode.setAttr(frameNode, "ui", this);
 			DOMNode.setPositionAbsolute(frameNode, 0, 0);
 			setJ2sMouseHandler(frameNode);
 			titleBarNode = newDOMObject("div", id + "_titlebar");
@@ -73,50 +76,54 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 			DOMNode.setStyles(titleBarNode, "background-color", "#E0E0E0", "height",
 					"20px", "font-size", "14px", "font-family", "sans-serif",
 					"font-weight", "bold"// ,
-					// "border-style", "solid",
-					// "border-width", "1px"
-			);
+			// "border-style", "solid",
+			// "border-width", "1px"
+					);
 
 			titleNode = newDOMObject("label", id + "_title");
-			DOMNode.setPositionAbsolute(titleNode, 0, 4);
+			DOMNode.setPositionAbsolute(titleNode, 2, 4);
 			DOMNode.setStyles(titleNode, "height", "20px");
-			setTitle(frame.getTitle());
+
 
 			closerWrap = newDOMObject("div", id + "_closerwrap");
 			DOMNode.setPositionAbsolute(closerWrap, 0, 0);
 			DOMNode.setStyles(closerWrap, "text-align", "right");
 
 			closerNode = newDOMObject("label", id + "_closer", "innerHTML", "X");
-			DOMNode.setStyles(closerNode, "background-color", toCSSString(c.getBackground()), "width",
-					"20px", "height", "20px", "position", "absolute", "text-align",
-					"center", "right", "0px");
+			DOMNode.setStyles(closerNode, "width", "20px", "height", "20px",
+					"position", "absolute", "text-align", "center", "right", "0px");
 			DOMNode.addJqueryHandledEvent(this, closerNode,
 					"click mouseenter mouseout");
 
 			frameNode.appendChild(titleBarNode);
-			
-			// we have to wait until the frame is wrapped. 
+
+			// we have to wait until the frame is wrapped.
 			@SuppressWarnings("unused")
 			DOMNode fnode = frameNode;
 			JSFunction fGetFrameParent = null;
 			/**
-			 * @j2sNative
-			 * var me = this;
-			 * fGetFrameParent = function(){me.notifyFrameMoved();return $(fnode).parent()}  
+			 * @j2sNative var me = this; fGetFrameParent =
+			 *            function(){me.notifyFrameMoved();return $(fnode).parent()}
 			 */
-			{}
+			{
+			}
 			JSToolkit.J2S._setDraggable(titleBarNode, fGetFrameParent);
 			titleBarNode.appendChild(titleNode);
 			titleBarNode.appendChild(closerWrap);
 			closerWrap.appendChild(closerNode);
 			Insets s = getInsets();
 			DOMNode.setPositionAbsolute(frameNode, 0, 0);
-			DOMNode.setAttrs(frameNode, "width",
-					"" + frame.getWidth() + s.left + s.right, "height", "" + frame.getHeight()
-							+ s.top + s.bottom);
+			DOMNode.setAttrs(frameNode, "width", "" + frame.getWidth() + s.left
+					+ s.right, "height", "" + frame.getHeight() + s.top + s.bottom);
 			containerNode = frameNode;
 		}
+		String strColor = toCSSString(c.getBackground());
+		DOMNode.setStyles(domNode, "background-color", strColor);
+		DOMNode.setStyles(frameNode, "background", strColor);
+		DOMNode.setStyles(frameNode, "color", toCSSString(c.getForeground()));
+		DOMNode.setStyles(closerNode, "background-color", strColor);
 		setInnerComponentBounds(width, height);
+		setTitle(frame.getTitle());
 		return domNode;
 	}
 

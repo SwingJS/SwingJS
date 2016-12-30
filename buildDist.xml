@@ -65,10 +65,7 @@
 		
 		<foreach target="genWebpage" param="applet">
 			<path>
-			<fileset dir="${basedir}/src/com">
-				<contains text="//${WebKey}"/>
-			</fileset>
-			<fileset dir="${basedir}/src/org">
+			<fileset dir="${basedir}/src">
 				<contains text="//${WebKey}"/>
 			</fileset>
 			</path>
@@ -281,9 +278,9 @@
 				<div id="main_sub">
 					<div class="row">
 						<ul class="actions small">
-							<li><a href="javascript:showhide(Info.console)" class="button pretty small">Show System.out</a></li>
-							<li><a href="${JavaSource}" class="button pretty small" alt="requires java-enabled browser">Author's Page</a></li>
-							<li><a href="${SourceForgePath}/${SourceCode}" class="button pretty small">Java source code</a></li>
+							<li><a href="${JavaSource}" class="button pretty small demo" alt="requires java-enabled browser">Author's Page</a></li>
+							<li><a href="${SourceForgePath}/${SourceCode}" class="button pretty small demo">Java source code</a></li>
+							<li><a href="javascript:showhide(Info.console)" class="button pretty small demo">Show System.out</a></li>
 
 						</ul>
 					</div>
@@ -294,7 +291,7 @@
 						<div id="sysoutdiv" style="border:1px solid green;width:100%;height:95%;overflow:auto"></div>
 					</div><hr />
 					<ul class="actions">
-						<li><a href="../index.html" class="button pretty">Return to Index</a></li>
+						<li><a href="../index.html" class="button pretty demo">Return to Index</a></li>
 					</ul>
 				</div>
 

@@ -1,6 +1,16 @@
 package com.falstad;
 // QuantumTrans.java (C) 2005 by Paul Falstad, www.falstad.com
 
+//web_Ready
+//web_AppletName= 1-D Quantum Transitions
+//web_Description= Radiative transitions (absorption and stimulated emission) in one dimension
+//web_JavaSource= http://www.falstad.com/qm1drad/
+//web_AppletImage= images/quantumtrans.png
+//web_Category= Physics
+//web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features= graphics, AWT-to-Swing
+
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;

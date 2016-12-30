@@ -6,6 +6,17 @@ package com.falstad;
 //We raytrace through a 3-d dataset, sampling a number of points and
 //integrating over them using Simpson's rule.
 //
+
+
+//web_Ready
+//web_AppletName=3-D Quantum Harmonic Oscillator
+//web_Description= Harmonic oscillator in three dimensions	
+//web_JavaSource= http://www.falstad.com/qm3dosc/
+//web_AppletImage= images/quantumosc3d.png
+//web_Category= Physics
+//web_Date= $Date$
+
+
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
 //import javax.swing.applet.Applet --> a2s

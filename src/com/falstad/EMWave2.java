@@ -6,7 +6,6 @@ package com.falstad;
 //web_AppletName= EMWave2
 //web_Description= A simulation that demonstrates magnetostatics and electrodynamics in two dimensions.
 //web_JavaSource= http://www.falstad.com/emwave2/
-//web_Location= com.falstad.EMWave2
 //web_AppletImage= images/emwave2.png
 //web_Category= Physics
 //web_Date= $Date$

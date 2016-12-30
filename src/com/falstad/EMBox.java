@@ -4,7 +4,6 @@ package com.falstad;
 //web_AppletName= EMBox
 //web_Description= A simulation of standing electromagnetic waves in a 3-d rectangular box.
 //web_JavaSource= http://www.falstad.com/embox/
-//web_Location= com.falstad.EMBox
 //web_AppletImage= images/embox.png
 //web_Category= Physics
 //web_Date= $Date$

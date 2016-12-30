@@ -4,8 +4,8 @@ package com.pearce.complexviewer;
 //web_AppletName= ComplexViewer
 //web_Description= A viewer of mappings in the complex plane.
 //web_JavaSource= http://www.math.ttu.edu/~pearce/complex/complexviewer.html
-//web_Location= com.pearce.complexviewer
-//web_Category= Math
+//web_AppletImage= images/complexviewer.png
+//web_Category= Mathematics
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 

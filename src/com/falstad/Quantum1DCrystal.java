@@ -1,6 +1,17 @@
 package com.falstad;
 // Quantum1DCrystal.java (C) 2002 by Paul Falstad, www.falstad.com
 
+
+//web_Ready
+//web_AppletName= 1-D Quantum Crystal
+//web_Description= Periodic potentials in one dimension
+//web_JavaSource= http://www.falstad.com/qm1dcrystal/
+//web_AppletImage= images/1dqcrystal.png
+//web_Category= Physics
+//web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features= graphics, AWT-to-Swing
+
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;

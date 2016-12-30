@@ -1,33 +1,6 @@
 package com.falstad;
 
-//web_Ready
-//web_AppletName= CircOsc
-//web_Description= A simulation of waves in a circular membrane, showing its various vibrational modes. 
-//web_JavaSource= http://www.falstad.com/circosc/
-//web_AppletImage= images/circosc.png
-//web_Category= Physics
-//web_Date= $Date$
-//web_Features= audio, graphics, AWT-to-Swing
-
 //CircOsc.java (C) 2001 by Paul Falstad, www.falstad.com
-//
-//Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
-//
-//import javax.swing.applet.Applet --> a2s
-//
-//import java.awt [Applet, Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> a2s
-//
-//change paint() to paintComponent() in CircOscCanvas and CircOscFrame
-//
-//Added Container main
-//
-//Changed add() to main.add()
-//
-//resize and show --> useFrame options
-//
-//added triggerShow()
-//
-//added JSThread
 
 import java.awt.Color;
 import java.awt.Component;
@@ -70,6 +43,34 @@ import a2s.Choice;
 import a2s.Frame;
 import a2s.Label;
 import a2s.Scrollbar;
+
+//web_Ready
+//web_AppletName= CircOsc
+//web_Description= A simulation of waves in a circular membrane, showing its various vibrational modes. 
+//web_JavaSource= http://www.falstad.com/circosc/
+//web_AppletImage= images/circosc.png
+//web_Category= Physics
+//web_Date= $Date$
+//web_Features= audio, graphics, AWT-to-Swing
+
+//
+//Conversion to JavaScript by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
+//
+//import javax.swing.applet.Applet --> a2s
+//
+//import java.awt [Applet, Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> a2s
+//
+//change paint() to paintComponent() in CircOscCanvas; paint() removed for frame
+//
+//Added Container main
+//
+//Changed add() to main.add()
+//
+//resize and show --> useFrame options
+//
+//added triggerShow()
+//
+//added JSThread
 
 class CircOscCanvas extends Canvas {
 	CircOscFrame pg;

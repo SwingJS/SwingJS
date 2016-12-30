@@ -373,7 +373,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 //																				 */
 				// plaf.metal.OceanTheme
 		"window", "#FFFFFF", /* Default color for the interior of windows */
-//		"windowBorder", "#000000", /* ??? */
+		"windowBorder", "#000000", /* ??? */
 		"windowText", "#333333", /* ??? */
 		"menu", "#C0C0C0", /* Background color for menus */
 		"menuText", "#333333", /* Text color for menus */

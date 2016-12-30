@@ -524,10 +524,10 @@ public class Frame extends Window {
 
         synchronized(this) {
             this.title = title;
-//            FramePeer peer = (FramePeer)this.peer;
-//            if (peer != null) {
-//                peer.setTitle(title);
-//            }
+            FramePeer peer = (FramePeer)this.peer;
+            if (peer != null) {
+                peer.setTitle(title);
+            }
         }
         firePropertyChangeObject("title", oldTitle, title);
     }

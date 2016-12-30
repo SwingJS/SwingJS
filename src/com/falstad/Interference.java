@@ -6,7 +6,6 @@ package com.falstad;
 //web_AppletName= Interference
 //web_Description= A simulation of interference between two sources of sound waves.
 //web_JavaSource= http://www.falstad.com/interference/
-//web_Location= com.falstad.Interference
 //web_AppletImage= images/interference.png
 //web_Category= Physics
 //web_Date= $Date$

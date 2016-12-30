@@ -31,6 +31,15 @@ import a2s.Applet;
 import a2s.Canvas;
 import a2s.Button;
 
+//web_Ready
+//web_AppletName= DotProduct
+//web_Description= Demonstrates the dot product or scalar product of two vectors
+//web_JavaSource= http://www.falstad.com/dotproduct/
+//web_AppletImage= images/dotproduct.png
+//web_Category= Mathematics
+//web_Date= $Date$
+//web_Features: graphics, AWT-to-Swing
+
 class DotProductCanvas extends Canvas {
  DotProduct pg;
  DotProductCanvas(DotProduct p) {
