@@ -8,7 +8,7 @@ a2s          AWT-2-SWING methods that are only for use if trying to adapt a
 
 com,edu,org,test  (noncritical) example applications and applets
 
-Jama         (noncritical) matrix utilities used some by com.falstad applets
+Jama         (noncritical) matrix utilities used by some com.falstad applets
 
 java         (critical) raw JavaScript replacements for Java2Script originals
 
