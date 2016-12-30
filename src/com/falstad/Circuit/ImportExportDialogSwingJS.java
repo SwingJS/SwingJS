@@ -2,8 +2,8 @@ package com.falstad.Circuit;
 
 import java.awt.Event;
 
-import swingjs.awt.Dialog;
-import swingjs.awt.TextArea;
+import a2s.Dialog;
+import a2s.TextArea;
 
 /**
  * 

@@ -3,7 +3,7 @@ package com.falstad.Circuit;
 import java.awt.Graphics;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
     class WireElm extends CircuitElm {
 	public WireElm(int xx, int yy) { super(xx, yy); }

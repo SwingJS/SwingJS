@@ -18,9 +18,9 @@ package com.falstad;
 //
 // Changes include:
 //
-// import javax.swing.applet.Applet --> swingjs.awt.Applet
+// import javax.swing.applet.Applet --> a2s.Applet
 // 
-// import java.awt.[Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar, TextArea, Dialog] --> swingjs.awt.*
+// import java.awt.[Button, Canvas, Checkbox, Choice, Frame, Label, Scrollbar, TextArea, Dialog] --> a2s.*
 //
 // RippleFrame.paint --> RippleFrame.paintComponent
 //
@@ -89,16 +89,17 @@ import java.util.Vector;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
-import swingjs.awt.TextArea;
-import swingjs.awt.Dialog;
+import a2s.Applet;
+
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
+import a2s.TextArea;
+import a2s.Dialog;
 
 
 class RippleCanvas extends Canvas {

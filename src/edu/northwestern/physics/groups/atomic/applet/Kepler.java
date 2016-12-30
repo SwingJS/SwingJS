@@ -27,14 +27,14 @@ package edu.northwestern.physics.groups.atomic.applet;
  * @version 0.1, June 1999
  */
 
-import swingjs.awt.Applet;
+import a2s.Applet;
 
 import java.awt.BorderLayout;
 
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxGroup;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxGroup;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,8 +43,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 
-import swingjs.awt.Label;
-import swingjs.awt.Panel;
+import a2s.Label;
+import a2s.Panel;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -53,7 +53,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JRadioButton;
 import javax.swing.Timer;
 
-import swingjs.awt.TextField;
+import a2s.TextField;
 
 public class Kepler extends Applet implements ActionListener {
 	/**

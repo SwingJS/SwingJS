@@ -33,7 +33,7 @@ import java.util.HashMap;
 //import jsjava.util.Locale;
 import java.util.Map;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 //import java.util.MissingResourceException;
 //import jsjava.util.ResourceBundle;
 //import java.util.Set;

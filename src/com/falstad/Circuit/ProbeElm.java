@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
 class ProbeElm extends CircuitElm {
     static final int FLAG_SHOWVOLTAGE = 1;

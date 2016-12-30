@@ -4,7 +4,7 @@ package swingjs.plaf;
 import jsjava.awt.Dimension;
 import jsjavax.swing.JPopupMenu;
 import jsjavax.swing.LookAndFeel;
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 import swingjs.api.JSSwingMenu;

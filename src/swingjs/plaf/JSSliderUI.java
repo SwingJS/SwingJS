@@ -15,7 +15,7 @@ import jsjavax.swing.JScrollBar;
 import jsjavax.swing.JSlider;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 

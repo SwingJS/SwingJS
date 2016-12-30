@@ -35,7 +35,7 @@ import jsjava.awt.image.BufferedImage;
 import jsjava.awt.image.ColorModel;
 import jsjava.awt.image.VolatileImage;
 import jsjava.awt.image.WritableRaster;
-import swingjs.J2SIgnoreImport;
+import javajs.J2SIgnoreImport;
 import swingjs.api.Interface;
 
 

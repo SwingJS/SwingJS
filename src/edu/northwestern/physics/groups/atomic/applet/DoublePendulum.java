@@ -36,15 +36,15 @@ package edu.northwestern.physics.groups.atomic.applet;
 
  */
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
+import a2s.Applet;
+import a2s.Button;
+import a2s.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import swingjs.awt.Label;
+import a2s.Label;
 import java.awt.Panel;
-import swingjs.awt.Scrollbar;
+import a2s.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;

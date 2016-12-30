@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
 class AnalogSwitchElm extends CircuitElm {
 	final int FLAG_INVERT = 1;

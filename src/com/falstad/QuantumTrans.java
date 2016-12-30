@@ -28,21 +28,22 @@ import java.lang.Math;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxMenuItem;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Menu;
+import a2s.MenuBar;
+import a2s.MenuItem;
+import a2s.Scrollbar;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButtonMenuItem;
+
+import a2s.Applet;
 
 class QuantumTransCanvas extends Canvas {
     QuantumTransFrame pg;

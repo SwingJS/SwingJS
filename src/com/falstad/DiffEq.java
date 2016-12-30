@@ -27,11 +27,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
+import a2s.Applet;
+
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Choice;
+import a2s.Frame;
 
 class DiffEqCanvas extends Canvas {
     DiffEqFrame pg;

@@ -49,7 +49,7 @@ import java.util.ArrayList;
 //import java.util.Currency;
 import java.util.Hashtable;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 //import java.util.concurrent.atomic.AtomicInteger;

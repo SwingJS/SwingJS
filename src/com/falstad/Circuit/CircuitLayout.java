@@ -6,9 +6,9 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 
-import swingjs.awt.Choice;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Choice;
+import a2s.Label;
+import a2s.Scrollbar;
 
 
 class CircuitLayout implements LayoutManager {

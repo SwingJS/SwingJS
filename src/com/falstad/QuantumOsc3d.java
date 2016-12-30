@@ -8,9 +8,9 @@ package com.falstad;
 //
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
-//import javax.swing.applet.Applet --> swingjs.awt
+//import javax.swing.applet.Applet --> a2s
 //
-//import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> swingjs.awt
+//import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> a2s
 //
 //Changed paint() to paintComponent() in EMStaticCanvas and EMStaticFrame
 //
@@ -20,6 +20,8 @@ package com.falstad;
 //
 // Added 'finished' boolean/state machine to itemState & adjustmentListener and at the end of init
 //		--> otherwise it calls items before they exist
+
+import a2s.Applet;
 
 import com.falstad.Complex;
 
@@ -51,18 +53,17 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxMenuItem;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Menu;
+import a2s.MenuBar;
+import a2s.MenuItem;
+import a2s.Scrollbar;
 
 class QuantumOsc3dCanvas extends Canvas {
 	QuantumOsc3dFrame pg;

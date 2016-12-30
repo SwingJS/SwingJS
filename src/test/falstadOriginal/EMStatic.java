@@ -5,7 +5,7 @@ package test.falstadOriginal;
 //changes made:
 //		- EMStaticCanvas.paint() --> EMStaticCanvas.paintComponent()
 //		- EMStaticFrame.paint() --> EMStaticFrame.paintComponent()
-//		- imports java.awt --> swingjs.awt
+//		- imports java.awt --> a2s
 
 import java.awt.Color;
 import java.awt.Component;
@@ -38,16 +38,17 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
-import swingjs.awt.TextArea;
-import swingjs.awt.Dialog;
+import a2s.Applet;
+
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
+import a2s.TextArea;
+import a2s.Dialog;
 
 class EMStaticCanvas extends Canvas {
     EMStaticFrame pg;

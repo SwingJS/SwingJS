@@ -1,10 +1,10 @@
 package com.falstad.Circuit;
 
 
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Scrollbar;
-import swingjs.awt.TextField;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Scrollbar;
+import a2s.TextField;
 
 class EditInfo {
     EditInfo(String n, double val, double mn, double mx) {

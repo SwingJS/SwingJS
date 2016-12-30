@@ -10,7 +10,7 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.MemoryImageSource;
 import java.util.StringTokenizer;
 
-import swingjs.awt.PopupMenu;
+import a2s.PopupMenu;
 
 class Scope {
 	final int FLAG_YELM = 32;

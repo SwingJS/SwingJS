@@ -26,9 +26,10 @@ import java.awt.event.MouseMotionListener;
 import java.text.NumberFormat;
 import java.util.Random;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Canvas;
-import swingjs.awt.Button;
+import a2s.Applet;
+
+import a2s.Canvas;
+import a2s.Button;
 
 class DotProductCanvas extends Canvas {
  DotProduct pg;

@@ -3,7 +3,7 @@ package com.falstad.Circuit;
 
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
 class CounterElm extends ChipElm {
 	final int FLAG_ENABLE = 2;

@@ -9,9 +9,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 
-import swingjs.awt.Button;
-import swingjs.awt.Dialog;
-import swingjs.awt.TextArea;
+import a2s.Button;
+import a2s.Dialog;
+import a2s.TextArea;
 
 class ImportExportClipboardDialog
 extends Dialog

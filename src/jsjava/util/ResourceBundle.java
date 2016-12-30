@@ -71,7 +71,7 @@ import jsjava.util.Locale;
 import jsjava.util.MissingResourceException;
 import java.util.Set;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.Interface;
 

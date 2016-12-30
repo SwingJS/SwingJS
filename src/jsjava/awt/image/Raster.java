@@ -38,7 +38,7 @@
 
 
 package jsjava.awt.image;
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import swingjs.api.Interface;
 import jsjava.awt.Rectangle;
 import jsjava.awt.Point;

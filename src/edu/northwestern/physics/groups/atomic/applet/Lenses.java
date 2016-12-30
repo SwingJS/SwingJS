@@ -27,15 +27,15 @@ package edu.northwestern.physics.groups.atomic.applet;
  * @version 0.1, June 1999
  */
 
-import swingjs.awt.Applet;
+import a2s.Applet;
 import java.awt.BorderLayout;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import swingjs.awt.Panel;
+import a2s.Panel;
 import java.awt.Point;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;

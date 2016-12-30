@@ -1,4 +1,4 @@
-package swingjs.awt;
+package a2s;
 
 import javax.swing.JTextArea;
 

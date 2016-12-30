@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
 class SweepElm extends CircuitElm {
     double maxV, maxF, minF, sweepTime, frequency;

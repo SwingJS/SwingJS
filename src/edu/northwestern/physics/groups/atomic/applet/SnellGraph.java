@@ -31,10 +31,10 @@ package edu.northwestern.physics.groups.atomic.applet;
  */
 import java.awt.BorderLayout;
 
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Applet;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Applet;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,12 +43,12 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 
-import swingjs.awt.Label;
-import swingjs.awt.Panel;
+import a2s.Label;
+import a2s.Panel;
 
 import java.awt.Point;
 
-import swingjs.awt.TextField;
+import a2s.TextField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

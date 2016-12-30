@@ -25,7 +25,7 @@
 
 package jssun.awt.image;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import jsjava.awt.Point;
 import jsjava.awt.Rectangle;
 import jsjava.awt.image.DataBuffer;

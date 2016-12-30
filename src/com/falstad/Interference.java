@@ -15,9 +15,9 @@ package com.falstad;
 //
 //Conversion to JavaScriipt by Bob Hanson, Nadia El Mouldi, and Andreas Raduege (St. Olaf College) 
 //
-//import javax.swing.applet.Applet --> swingjs.awt
+//import javax.swing.applet.Applet --> a2s
 //
-//import java.awt [Applet, Canvas, Checkbox, Choice, Label, Scrollbar] --> swingjs.awt
+//import java.awt [Applet, Canvas, Checkbox, Choice, Label, Scrollbar] --> a2s
 //
 //Changed paint() to paintComponent() in BarWavesCanvas and BarWavesFrame
 //
@@ -55,14 +55,15 @@ import java.text.NumberFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
 
+import a2s.Applet;
+
 import swingjs.JSAudioThread;
 import swingjs.JSAudioThreadOwner;
-import swingjs.awt.Applet;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
 
 class InterferenceCanvas extends Canvas {
 	InterferenceFrame pg;

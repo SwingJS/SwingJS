@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
     class LogicOutputElm extends CircuitElm {
 	final int FLAG_TERNARY = 1;

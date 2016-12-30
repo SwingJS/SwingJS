@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.J2SIgnoreImport;
 import javajs.api.JSFunction;
 import javajs.util.AU;
 import javajs.util.PT;

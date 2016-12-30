@@ -50,7 +50,7 @@ import jsjavax.swing.text.DefaultEditorKit;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.TextAction;
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 //import jsjava.awt.KeyboardFocusManager;

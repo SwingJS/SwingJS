@@ -37,8 +37,8 @@ import jsjava.text.ParseException;
 import java.util.Iterator;
 import java.util.Map;
 
-import swingjs.J2SIgnoreImport;
-import swingjs.J2SRequireImport;
+import javajs.J2SIgnoreImport;
+import javajs.J2SRequireImport;
 
 
 /**

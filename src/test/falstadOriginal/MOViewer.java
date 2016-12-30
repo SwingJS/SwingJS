@@ -37,18 +37,19 @@ import java.net.URL;
 import java.util.Random;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
+import a2s.Applet;
+
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxMenuItem;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Menu;
+import a2s.MenuBar;
+import a2s.MenuItem;
+import a2s.Scrollbar;
 
 
 class MOViewerCanvas extends Canvas {

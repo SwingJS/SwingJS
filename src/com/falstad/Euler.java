@@ -33,13 +33,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Applet;
+
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
 
 class EulerCanvas extends Canvas {
     EulerFrame pg;

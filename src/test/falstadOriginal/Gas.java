@@ -23,13 +23,14 @@ import java.text.NumberFormat;
 import java.util.Random;
 import java.util.Vector;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Applet;
+
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Label;
+import a2s.Scrollbar;
 
 
 class GasCanvas extends Canvas {

@@ -37,7 +37,7 @@ import java.util.Enumeration;
 
 import javajs.util.AU;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 
 /**
  * This class is an implementation of the ImageProducer interface which

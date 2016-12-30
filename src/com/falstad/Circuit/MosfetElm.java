@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
     class MosfetElm extends CircuitElm {
 	int pnp;

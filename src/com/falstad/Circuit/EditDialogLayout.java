@@ -7,10 +7,10 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.*;
 
-import swingjs.awt.Button;
-import swingjs.awt.Choice;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Button;
+import a2s.Choice;
+import a2s.Label;
+import a2s.Scrollbar;
 
 class EditDialogLayout implements LayoutManager {
     public EditDialogLayout() {}

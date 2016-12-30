@@ -16,29 +16,28 @@
 
 package com.falstad;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxMenuItem;
+import a2s.Choice;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FontMetrics;
-import swingjs.awt.Frame;
+import a2s.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
-import swingjs.awt.Label;
+import a2s.Label;
 import java.awt.LayoutManager;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
+import a2s.Menu;
+import a2s.MenuBar;
+import a2s.MenuItem;
 import java.awt.Rectangle;
-import swingjs.awt.Scrollbar;
+import a2s.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -61,6 +60,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.ButtonGroup;
+
+import a2s.Applet;
 
 class MOViewerCanvas extends Canvas {
     MOViewerFrame pg;

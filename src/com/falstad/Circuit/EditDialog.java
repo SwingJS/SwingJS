@@ -7,11 +7,11 @@ import java.awt.event.*;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 
-import swingjs.awt.Button;
-import swingjs.awt.Dialog;
-import swingjs.awt.Label;
-import swingjs.awt.TextField;
-import swingjs.awt.Scrollbar;
+import a2s.Button;
+import a2s.Dialog;
+import a2s.Label;
+import a2s.TextField;
+import a2s.Scrollbar;
 
 class EditDialog extends Dialog implements AdjustmentListener, ActionListener, ItemListener {
     Editable elm;

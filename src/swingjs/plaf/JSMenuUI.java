@@ -3,7 +3,7 @@ package swingjs.plaf;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjavax.swing.JMenu;
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import swingjs.api.DOMNode;
 
 @J2SRequireImport(swingjs.jquery.JQueryUI.class)

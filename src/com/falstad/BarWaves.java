@@ -24,15 +24,16 @@ import java.awt.event.MouseMotionListener;
 import java.util.Random;
 import java.util.Vector;
 
+import a2s.Applet;
+
 import swingjs.JSAudioThread;
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
 
 
 //web_Ready
@@ -52,8 +53,8 @@ import swingjs.awt.Scrollbar;
 
 //AWT -> SWING
 //
-// import javax.swing.applet.Applet --> swingjs.awt
-// import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> swingjs.awt
+// import javax.swing.applet.Applet --> a2s
+// import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> a2s
 // Changed paint() to paintComponent() in BarWavesCanvas and BarWavesFrame
 // changed createImage to cv.createImage  
 

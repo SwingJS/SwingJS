@@ -53,7 +53,7 @@ import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 import java.util.StringTokenizer;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 
 //import sun.util.LocaleDataMetaInfo;
 

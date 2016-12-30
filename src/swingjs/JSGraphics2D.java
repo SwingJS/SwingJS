@@ -4,6 +4,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javajs.J2SIgnoreImport;
+
 import jsjava.awt.AlphaComposite;
 import jsjava.awt.BasicStroke;
 import jsjava.awt.Color;

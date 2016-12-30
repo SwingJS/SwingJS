@@ -26,13 +26,13 @@ package edu.northwestern.physics.groups.atomic.applet;
 
 import java.applet.Applet;
 import java.awt.BorderLayout;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
+import a2s.Button;
+import a2s.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import swingjs.awt.Panel;
-import swingjs.awt.TextField;
+import a2s.Panel;
+import a2s.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -6,9 +6,9 @@ package com.falstad;
 //
 //Changes:
 //
-//	import javax.swing.applet.Applet --> swingjs.awt
+//	import javax.swing.applet.Applet --> a2s
 //	
-//	import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> swingjs.awt
+//	import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> a2s
 //	
 //	replace paint with paintcomponent in frame and canvas
 // 
@@ -22,6 +22,8 @@ package com.falstad;
 //
 // added triggerShow()
 
+
+import a2s.Applet;
 
 import com.falstad.Complex;
 
@@ -56,18 +58,17 @@ import java.util.Vector;
 import com.falstad.FFT;
 
 
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxMenuItem;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Menu;
+import a2s.MenuBar;
+import a2s.MenuItem;
+import a2s.Scrollbar;
 
 class QuantumRotatorCanvas extends Canvas {
  QuantumRotatorFrame pg;

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Choice;
+import a2s.Choice;
 
 class VoltageElm extends CircuitElm {
     static final int FLAG_COS = 2;

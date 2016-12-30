@@ -3,7 +3,7 @@ package com.falstad.Circuit;
 import java.awt.Graphics;
 import java.util.StringTokenizer;
 
-import swingjs.awt.Checkbox;
+import a2s.Checkbox;
 
     class InductorElm extends CircuitElm {
 	Inductor ind;

@@ -56,7 +56,7 @@ import jsjava.util.ResourceBundle;
 import jsjava.util.TimeZone;
 import jssun.util.calendar.CalendarUtils;
 import jssun.util.resources.LocaleData;
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 //import jssun.util.calendar.ZoneInfoFile;
 
 /**

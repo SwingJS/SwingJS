@@ -47,25 +47,26 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
+import a2s.Applet;
+
 import com.falstad.Complex;
 import com.falstad.FFT;
 
 import swingjs.JSAudioThread;
 import swingjs.JSAudioThreadOwner;
-import swingjs.awt.Applet;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.CheckboxMenuItem;
-import swingjs.awt.Choice;
-import swingjs.awt.Dialog;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Menu;
-import swingjs.awt.MenuBar;
-import swingjs.awt.MenuItem;
-import swingjs.awt.Scrollbar;
-import swingjs.awt.TextArea;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.CheckboxMenuItem;
+import a2s.Choice;
+import a2s.Dialog;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Menu;
+import a2s.MenuBar;
+import a2s.MenuItem;
+import a2s.Scrollbar;
+import a2s.TextArea;
 
 /*
  * SwingJS note -- BH
@@ -79,7 +80,7 @@ import swingjs.awt.TextArea;
  * 
  */
 
-// using swingjs.awt classes for pre-Swing AWT controls
+// using a2s classes for pre-Swing AWT controls
 
 public class Vowel extends Applet implements ComponentListener {
 	static VowelFrame ogf;

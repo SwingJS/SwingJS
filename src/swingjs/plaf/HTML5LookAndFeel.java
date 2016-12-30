@@ -29,7 +29,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.AWTEvent;
-import swingjs.J2SIgnoreImport;
+import javajs.J2SIgnoreImport;
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;

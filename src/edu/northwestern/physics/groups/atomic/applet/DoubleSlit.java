@@ -41,10 +41,10 @@ package edu.northwestern.physics.groups.atomic.applet;
 
 import java.awt.BorderLayout;
 
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
 
 import java.awt.Color;
 import java.awt.Event;
@@ -55,9 +55,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JApplet;
 
-import swingjs.awt.Label;
-import swingjs.awt.Panel;
-import swingjs.awt.TextField;
+import a2s.Label;
+import a2s.Panel;
+import a2s.TextField;
 
 public class DoubleSlit extends JApplet {
 

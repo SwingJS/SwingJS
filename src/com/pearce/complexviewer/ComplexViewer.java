@@ -43,19 +43,21 @@ package com.pearce.complexviewer;
 		- Converted to SwingJS.  - Paul Falstad
 */
 
-import swingjs.awt.Applet;
 import java.awt.Image;
 import java.awt.Graphics;
-import swingjs.awt.Button;
-import swingjs.awt.Canvas;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
-import swingjs.awt.TextArea;
-import swingjs.awt.Dialog;
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
+import a2s.TextArea;
+import a2s.Dialog;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
+
+import a2s.Applet;
+
 import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.Component;
@@ -66,7 +68,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
-import swingjs.awt.Panel;
+import a2s.Panel;
 import java.awt.CheckboxGroup;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

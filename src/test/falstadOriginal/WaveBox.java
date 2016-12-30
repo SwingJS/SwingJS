@@ -9,7 +9,7 @@ package test.falstadOriginal;
 //changes made:
 //		- WaveBoxCanvas.paint() --> WaveBoxCanvas.paintComponent()
 //		- WaveBoxFrame.paint() --> WaveBoxFrame.paintComponent()
-//		- imports java.awt --> swingjs.awt
+//		- imports java.awt --> a2s
 
 import java.awt.Color;
 import java.awt.Component;
@@ -38,13 +38,14 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Applet;
+
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
 
 
 class WaveBoxCanvas extends Canvas {

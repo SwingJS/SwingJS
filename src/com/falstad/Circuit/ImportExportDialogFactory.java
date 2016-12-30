@@ -1,6 +1,6 @@
 package com.falstad.Circuit;
 
-import swingjs.J2SIgnoreImport;
+import javajs.J2SIgnoreImport;
 
 @J2SIgnoreImport({ImportExportClipboardDialog.class, ImportExportFileDialog.class})
 public class ImportExportDialogFactory {

@@ -4,7 +4,7 @@ package test.falstadOriginal;
 //changes made:
 //- InterferenceCanvas.paint() --> InterferenceCanvas.paintComponent()
 //- InterferenceFrame.paint() --> InterferenceFrame.paintComponent()
-//- imports java.awt --> swingjs.awt
+//- imports java.awt --> a2s
 
 
 
@@ -36,12 +36,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Applet;
+
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
 
 
 class InterferenceCanvas extends Canvas {

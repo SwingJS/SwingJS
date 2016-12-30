@@ -27,7 +27,7 @@
  */
 package jsjavax.swing;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 import jsjava.awt.Color;
 import jsjava.awt.Font;
 import jsjavax.swing.border.BevelBorder;

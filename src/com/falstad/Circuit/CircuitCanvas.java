@@ -3,7 +3,7 @@ package com.falstad.Circuit;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import swingjs.awt.Canvas;
+import a2s.Canvas;
 
 // Changed paint to paintComponent
 

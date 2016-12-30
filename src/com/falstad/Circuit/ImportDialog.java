@@ -5,9 +5,9 @@ import java.awt.Event;
 import java.awt.Point;
 import java.awt.event.*;
 
-import swingjs.awt.Button;
-import swingjs.awt.Dialog;
-import swingjs.awt.TextArea;
+import a2s.Button;
+import a2s.Dialog;
+import a2s.TextArea;
 
 
 

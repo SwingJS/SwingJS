@@ -69,7 +69,7 @@ import jsjavax.swing.text.StyledEditorKit;
 import jsjavax.swing.text.View;
 import jsjavax.swing.text.ViewFactory;
 import jsjavax.swing.text.WrappedPlainView;
-import swingjs.J2SIgnoreImport;
+import javajs.J2SIgnoreImport;
 import swingjs.JSAbstractDocument;
 import swingjs.api.Interface;
 //import java.io.ObjectOutputStream;

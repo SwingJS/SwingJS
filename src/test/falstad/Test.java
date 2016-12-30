@@ -10,9 +10,9 @@ package test.falstad;
 //
 // Changes include:
 //
-// import javax.swing.applet.Applet --> swingjs.awt
+// import javax.swing.applet.Applet --> a2s
 // 
-// import java.awt.[Button, Canvas, Checkbox, CheckboxMenuItem, Choice, Frame, Label, Scrollbar, Menu, MenuBar, MenuItem] --> swingjs.awt
+// import java.awt.[Button, Canvas, Checkbox, CheckboxMenuItem, Choice, Frame, Label, Scrollbar, Menu, MenuBar, MenuItem] --> a2s
 //
 // Applet.show does not trigger componentShown(e); showFrame() moved to AtomViewer.init()
 // 
@@ -37,7 +37,7 @@ package test.falstad;
 // deprecated method .inside --> .contains
 // deprecated method .handleEvent --> .processEvent
 
-import swingjs.awt.Applet;
+import a2s.Applet;
 
 
 public class Test extends Applet {

@@ -20,7 +20,6 @@ import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.MemoryImageSource;
-import swingjs.awt.Applet;
 import java.applet.AudioClip;
 import java.util.Vector;
 import java.util.Hashtable;
@@ -44,14 +43,16 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import swingjs.awt.Canvas;
-import swingjs.awt.TextField;
 
-import swingjs.awt.Label;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Button;
+import a2s.Applet;
+import a2s.Canvas;
+import a2s.TextField;
+
+import a2s.Label;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Checkbox;
+import a2s.Button;
 
 class VecDemoCanvas extends Canvas {
     VecDemoFrame pg;

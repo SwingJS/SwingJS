@@ -43,7 +43,7 @@ package jsjava.util;
 
 import java.util.Date;
 
-import swingjs.J2SRequireImport;
+import javajs.J2SRequireImport;
 
 import jssun.util.calendar.AbstractCalendar;
 import jssun.util.calendar.BaseCalendar;

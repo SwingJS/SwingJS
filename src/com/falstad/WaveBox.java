@@ -22,9 +22,9 @@ package com.falstad;
 //
 //Changes:
 //
-//	import javax.swing.applet.Applet --> swingjs.awt
+//	import javax.swing.applet.Applet --> a2s
 //	
-//	import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> swingjs.awt
+//	import java.awt [Applet, Canvas, Checkbox, Choice, Frame, Label, Scrollbar] --> a2s
 //
 // Replaced deprecated functions (move, show, hide, insets, size, resize) --> (setLocation, setVisible(true), setVisible(false), getInsets, getSize, setSize)
 //
@@ -59,13 +59,14 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.Vector;
 
-import swingjs.awt.Applet;
-import swingjs.awt.Canvas;
-import swingjs.awt.Checkbox;
-import swingjs.awt.Choice;
-import swingjs.awt.Frame;
-import swingjs.awt.Label;
-import swingjs.awt.Scrollbar;
+import a2s.Applet;
+
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Frame;
+import a2s.Label;
+import a2s.Scrollbar;
 
 // NM -- switched to singjs.awt classes
 // BH -- changed canvas and frame paint(g) to paintComponent(g)
