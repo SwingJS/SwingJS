@@ -106,14 +106,11 @@
     </copy>
    	
 
-   	<echo>...JU (javajs/util, com/jcraft/jzlib)</echo>
+   	<echo>...JU (javajs/util)</echo>
    	<copy todir="site/swingjs/j2s/JU" >
       <fileset dir="bin/javajs/util">
         <include name="**/*.js" />
       </fileset>
-        <fileset dir="bin/com/jcraft/jzlib">
-          <include name="**/*.js" />
-        </fileset>
     </copy>
   	
     <echo>...adding to swingjs/j2s jsmol/bin/javajs/api</echo>
@@ -226,6 +223,8 @@ java/applet/AppletStub.js
 java/awt/ActiveEvent.js
 java/awt/AWTEvent.js
 java/awt/AWTEventMulticaster.js
+java/awt/AWTException.js
+java/awt/DisplayMode.js
 java/awt/event/ActionEvent.js
 java/awt/event/ActionListener.js
 java/awt/event/AdjustmentListener.js
@@ -249,6 +248,7 @@ java/awt/event/ItemEvent.js
 java/awt/event/ItemListener.js
 java/awt/event/KeyEvent.js
 java/awt/event/KeyListener.js
+java/awt/event/MouseAdapter.js
 java/awt/event/MouseEvent.js
 java/awt/event/MouseListener.js
 java/awt/event/MouseMotionListener.js
@@ -272,6 +272,7 @@ java/awt/AWTError.js
 java/awt/AWTKeyStroke.js
 java/awt/BasicStroke.js
 java/awt/BorderLayout.js
+
 java/awt/Color.js
 java/awt/color/ColorSpace.js
 java/awt/ColorPaintContext.js
@@ -305,25 +306,25 @@ java/awt/geom/QuadCurve2D.js
 java/awt/geom/QuadIterator.js
 java/awt/geom/Rectangle2D.js
 java/awt/geom/RectangularShape.js
+java/awt/geom/RoundRectangle2D.js
+java/awt/geom/RoundRectIterator.js
 java/awt/geom/RectIterator.js
 java/awt/Graphics.js
 java/awt/Graphics2D.js
 java/awt/GraphicsCallback.js
 java/awt/GraphicsEnvironment.js
+
+java/awt/GraphicsConfiguration.js
+java/awt/GraphicsDevice.js
+java/awt/GridBagConstraints.js
+java/awt/GridBagLayout.js
+java/awt/GridBagLayoutInfo.js
+java/awt/GridLayout.js
+
 java/awt/IllegalComponentStateException.js
 java/awt/image/ColorModel.js
-java/awt/image/DataBuffer.js
-java/awt/image/DataBufferByte.js
-java/awt/image/DataBufferInt.js
-java/awt/image/DirectColorModel.js
 java/awt/image/ImageObserver.js
 java/awt/image/ImageProducer.js
-java/awt/image/MultiPixelPackedSampleModel.js
-java/awt/image/PackedColorModel.js
-java/awt/image/Raster.js
-java/awt/image/RasterFormatException.js
-java/awt/image/SampleModel.js
-java/awt/image/SinglePixelPackedSampleModel.js
 java/awt/Insets.js
 java/awt/ItemSelectable.js
 java/awt/LayoutManager.js
@@ -356,9 +357,12 @@ java/beans/PropertyChangeSupport.js
 java/io/BufferedInputStream.js
 java/io/BufferedReader.js
 java/io/ByteArrayInputStream.js
+java/io/ByteArrayOutputStream.js
 java/io/FilterInputStream.js
 java/io/InputStream.js
 java/io/InputStreamReader.js
+java/io/OutputStream.js
+ 
 java/io/Reader.js
 java/io/StringReader.js
 
@@ -443,11 +447,12 @@ sun/java2d/StateTracker.js
 sun/java2d/SunGraphics2D.js
 sun/misc/MessageUtils.js
 sun/misc/Queue.js
+sun/swing/DefaultLookup.js
 sun/swing/DefaultLayoutStyle.js
 sun/swing/StringUIClientPropertyKey.js
 sun/swing/UIAction.js
 sun/swing/UIClientPropertyKey.js
-
+sun/swing/SwingUtilities2.js
 javax/swing/event/AncestorEvent.js
 javax/swing/event/AncestorListener.js
 javax/swing/event/ChangeEvent.js
@@ -469,7 +474,12 @@ javax/swing/plaf/ComponentInputMapUIResource.js
 javax/swing/plaf/ComponentUI.js
 javax/swing/plaf/FontUIResource.js
 javax/swing/plaf/InputMapUIResource.js
+javax/swing/plaf/BorderUIResource.js
+javax/swing/plaf/DimensionUIResource.js
+javax/swing/plaf/InsetsUIResource.js
 javax/swing/plaf/UIResource.js
+
+        	
 
 javax/swing/AbstractAction.js
 javax/swing/AbstractButton.js
@@ -480,7 +490,21 @@ javax/swing/AncestorNotifier.js
 javax/swing/ArrayTable.js
 javax/swing/border/AbstractBorder.js
 javax/swing/border/Border.js
+javax/swing/border/BevelBorder.js
+javax/swing/border/CompoundBorder.js
+javax/swing/border/EmptyBorder.js
+javax/swing/border/EtchedBorder.js
+javax/swing/border/LineBorder.js
+javax/swing/border/MatteBorder.js
+javax/swing/border/TitledBorder.js
+javax/swing/BorderFactory.js
 javax/swing/BoundedRangeModel.js
+        	
+javax/swing/Box.js
+javax/swing/BoxLayout.js
+      		
+        	
+        	
 javax/swing/ButtonGroup.js
 javax/swing/ButtonModel.js
 javax/swing/CellRendererPane.js
@@ -496,9 +520,13 @@ javax/swing/event/DocumentEvent.js
 javax/swing/event/DocumentListener.js
 javax/swing/event/UndoableEditEvent.js
 javax/swing/event/UndoableEditListener.js
+javax/swing/event/MouseInputAdapter.js
+javax/swing/event/MouseInputListener.js
+
 javax/swing/Icon.js
 javax/swing/InputMap.js
 javax/swing/JApplet.js
+javax/swing/JButton.js
 javax/swing/JCheckBox.js
 javax/swing/JCheckBoxMenuItem.js
 javax/swing/JComponent.js
@@ -525,6 +553,10 @@ javax/swing/KeyboardManager.js
 javax/swing/KeyStroke.js
 javax/swing/LayoutStyle.js
 javax/swing/LookAndFeel.js
+        	
+javax/swing/DefaultListCellRenderer.js
+javax/swing/ListCellRenderer.js
+
 javax/swing/MenuElement.js
 javax/swing/MenuSelectionManager.js
 javax/swing/MultiUIDefaults.js
@@ -544,6 +576,7 @@ javax/swing/UIDefaults.js
 javax/swing/UIManager.js
 javax/swing/ViewportLayout.js
 javax/swing/WindowConstants.js
+        	
 
 javax/swing/text/JTextComponent.js
 javax/swing/text/DefaultCaret.js
@@ -585,6 +618,8 @@ javax/swing/undo/CannotUndoException.js
 javax/swing/undo/CompoundEdit.js
 javax/swing/undo/UndoableEdit.js
 
+JU/JSThread.js
+
 JU/DebugJS.js
 JU/AjaxURLStreamHandlerFactory.js
 JU/AjaxURLStreamHandler.js
@@ -605,38 +640,58 @@ JU/M4.js
 javajs/api/GenericLineReader.js
 javajs/api/JSONEncodable.js
 javajs/api/JSInterface.js
+javajs/api/JSFunction.js
 
 swingjs/api/DOMNode.js
 swingjs/api/HTML5CanvasContext2D.js
 swingjs/api/Interface.js
-swingjs/api/JSFunction.js
 swingjs/api/J2SInterface.js
 swingjs/api/JSInterface.js
-
+swingjs/api/JSMinimalAbstractDocument.js
 swingjs/JSEvent.js
+        	
 swingjs/JSFontMetrics.js
 swingjs/JSGraphicsEnvironment.js
+swingjs/JSGraphicsConfiguration.js
 swingjs/JSAppletViewer.js
 swingjs/JSFrameViewer.js
 swingjs/JSAppletThread.js
 swingjs/JSNullComponentPeer.js
 swingjs/JSGraphics2D.js
 swingjs/JSMouse.js
-swingjs/JSThread.js
+swingjs/JSScreenDevice.js
 swingjs/JSThreadGroup.js
 swingjs/JSToolkit.js
 swingjs/JSUtil.js
+swingjs/JSPlainDocument.js
+swingjs/JSAbstractDocument.js
+swingjs/JSDocumentEvent.js
+swingjs/JSPosition.js
 
-swingjs/plaf/HTML5LookAndFeel.js
-swingjs/plaf/JSLightweightUI.js
-swingjs/plaf/JSComponentUI.js
-swingjs/plaf/JSPanelUI.js
-swingjs/plaf/JSButtonUI.js
+
 swingjs/plaf/ButtonListener.js
+swingjs/plaf/HTML5LookAndFeel.js
+swingjs/plaf/JSButtonUI.js
+swingjs/plaf/JSCaret.js
+swingjs/plaf/JSCheckBoxUI.js
+swingjs/plaf/JSComponentUI.js
+swingjs/plaf/JSEventHandler.js
+swingjs/plaf/JSFrameUI.js
+swingjs/plaf/JSLabelUI.js
+swingjs/plaf/JSLayeredPaneUI.js
+swingjs/plaf/JSLightweightUI.js
+swingjs/plaf/JSPanelUI.js
 swingjs/plaf/JSRadioButtonUI.js
 swingjs/plaf/JSRootPaneUI.js
+swingjs/plaf/JSTextAreaUI.js
+swingjs/plaf/JSTextFieldUI.js
+swingjs/plaf/JSTextUI.js
+swingjs/plaf/JSViewportUI.js
+swingjs/plaf/JSWindowUI.js
 swingjs/plaf/LazyActionMap.js
-          	
+swingjs/plaf/Resizer.js
+swingjs/plaf/TextListener.js
+
         	
         	
         	"/>
