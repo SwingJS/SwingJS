@@ -3,17 +3,15 @@ package swingjs;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import swingjs.api.DOMNode;
-import swingjs.api.HTML5Canvas;
-import jsjava.util.Locale;
-
+import jsjava.awt.Color;
 import jsjava.awt.Font;
-import jsjava.awt.Graphics;
 import jsjava.awt.Graphics2D;
 import jsjava.awt.GraphicsDevice;
 import jsjava.awt.GraphicsEnvironment;
 import jsjava.awt.Point;
+import jsjava.awt.Transparency;
 import jsjava.awt.image.BufferedImage;
+import jsjava.util.Locale;
 
 
 public class JSGraphicsEnvironment extends GraphicsEnvironment {
@@ -31,7 +29,10 @@ public class JSGraphicsEnvironment extends GraphicsEnvironment {
 
 	@Override
 	public Graphics2D createGraphics(BufferedImage img) {
-		return (Graphics2D) img.getImageGraphic().create();
+	  Graphics2D g =  (Graphics2D) img.getImageGraphic().create();
+	  //if (img.getTransparency() == Transparency.OPAQUE) 
+	  	//g.setBackground(Color.WHITE);
+	  return g;
 	}
 
 	private static Font[] availableFonts;

@@ -34,12 +34,10 @@
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/tmp"  overwrite="true" >
       <fileset dir="bin">
-        <include name="com/**/*.js" />
-        <include name="org/**/*.js" />
-        <include name="test/**/*.js" />
-        <exclude name="**/java/*.js" />
-        <exclude name="jsjava/**/*.js" />
-        <exclude name="jssun/**/*.js" />
+        <include name="**/*.js" />
+        <exclude name="a2s/**/*.js" />
+        <exclude name="java/**/*.js" />
+      	<exclude name="*js*/**/*.js" />
       </fileset>
     </copy>
    	

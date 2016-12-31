@@ -177,7 +177,7 @@
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
 			<div class="4u work-item">
-				<a href="applets/${AppletName}.html"><span class="image fit thumb"><img src="${AppletImage}" alt="" /></span></a>
+				<a href="applets/${AppletName}.html"><span class="image fit thumb"><img src="${AppletImage}" alt="${AppletImage}" /></span></a>
 				<h3><a href="applets/${AppletName}.html">${AppletName}</a></h3>
 				<p>${Description}</p>
 				<cat>${Category}</cat>

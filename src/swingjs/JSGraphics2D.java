@@ -236,14 +236,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@Override
 	public void fillRect(int x, int y, int width, int height) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		ctx.fillRect(x, y, width, height);
-	}
-
-	private void setGraphicsColor(Color c) {
-		if (c == null)
-			return; // this was the case with a JRootPanel graphic call
-		HTML5CanvasContext2D.setColor(ctx, JSToolkit.getCSSColor(c));
 	}
 
 	@Override
@@ -646,9 +640,15 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public void clearRect(int x, int y, int width, int height) {
 		ctx.clearRect(x, y, width, height);
-		setGraphicsColor(backgroundColor);
+		setGraphicsColor(backgroundColor == null ? Color.WHITE : backgroundColor);
 		fillRect(x, y, width, height);
 		setGraphicsColor(foregroundColor);
+	}
+
+	private void setGraphicsColor(Color c) {
+		if (c == null)
+			return; // this was the case with a JRootPanel graphic call
+		HTML5CanvasContext2D.setColor(ctx, JSToolkit.getCSSColor(c));
 	}
 
 	@Override

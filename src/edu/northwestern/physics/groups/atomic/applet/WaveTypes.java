@@ -24,7 +24,7 @@ package edu.northwestern.physics.groups.atomic.applet;
  * @version 0.1, Feb 1999
  */
 
-import java.applet.Applet;
+import a2s.Applet;
 import java.awt.BorderLayout;
 import a2s.Button;
 import a2s.Canvas;
@@ -36,6 +36,21 @@ import a2s.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Timer;
+
+//web_Ready
+//web_AppletName= WaveTypes
+//web_Description= Longitudinal waves, transverse waves, and waves of mixed type
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/wavetypes.png
+//web_Info= width:550, height:560
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/waves/wavetype.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas, javax.swing.Timer
+
+// BH 1) replacing simple looping Thread with javax.swing.Timer
+// BH 2) ca;;
+
 public class WaveTypes extends Applet {
 	/**
 	 *
@@ -45,7 +60,7 @@ public class WaveTypes extends Applet {
 
 	public WaveTypes() {
 		setLayout(new BorderLayout());
-		canvas = new WaveTypesCanvas(10);
+		canvas = new WaveTypesCanvas(this, 10);
 		final WaveTypesControl control = new WaveTypesControl(canvas);
 		add("North", new Banner("Types of Waves"));
 		add("South", control);
@@ -98,7 +113,7 @@ class WaveTypesBall {
 	}
 }
 
-class WaveTypesCanvas extends Canvas implements Runnable {
+class WaveTypesCanvas extends Canvas {
 	/**
 	 *
 	 */
@@ -111,12 +126,15 @@ class WaveTypesCanvas extends Canvas implements Runnable {
 	WaveTypesBall ballMix[];
 	int number, time;
 
-	private Thread demo;
+	private Timer demo;
 
 	private boolean isStopped = false;
 
-	public WaveTypesCanvas(int num) {
+	private WaveTypes waveTypes;
+
+	public WaveTypesCanvas(WaveTypes waveTypes, int num) {
 		number = num;
+		this.waveTypes = waveTypes;
 		time = 0;
 		ballTrans = new WaveTypesBall[number];
 		ballLong = new WaveTypesBall[number];
@@ -169,22 +187,40 @@ class WaveTypesCanvas extends Canvas implements Runnable {
 		time = 0;
 	}
 
+	// public void run() {
+	// while (!isStopped) {
+	// advance();
+	// repaint();
+	// try {
+	// Thread.sleep(60);
+	// } catch (final InterruptedException e) {
+	// /* do nothing */
+	// }
+	// }
+	// }
+
 	public void run() {
-		while (!isStopped) {
-			advance();
-			repaint();
-			try {
-				Thread.sleep(60);
-			} catch (final InterruptedException e) {
-				/* do nothing */
-			}
+		if (isStopped) {
+			demo.stop();
+			return;
 		}
+		advance();
+		waveTypes.repaint(); // BH
 	}
 
+	
 	public void start() {
 		if (demo == null) {
 			isStopped = false;
-			demo = new Thread(this);
+			demo = new Timer(60, new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					run();					
+				}
+				
+			});
+			demo.setRepeats(true);
 			demo.start();
 		}
 	}
@@ -195,10 +231,12 @@ class WaveTypesCanvas extends Canvas implements Runnable {
 			demo = null;
 		}
 	}
+
 }
 
 class WaveTypesControl extends Panel {
 	class ControlListener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			readInput();
 			canvas.reset();

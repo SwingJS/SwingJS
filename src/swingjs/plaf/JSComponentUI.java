@@ -679,20 +679,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			System.out.println("JSComponentUI: unrecognized prop: " + this.id + " " + prop);
 	}
 
-	/**
-	 * If a control is transparent, then set that in HTML for its node
-	 * @param node
-	 */
-	private void checkTransparent(DOMNode node) {
-		// Note that c.setOpaque(true/false) on a label DOES work, but you need
-		// to do a repaint to see it in Java.
-		// Here we keep it simple and do the change immediately.
-		//
-
-		if (!c.isOpaque() && node != null)
-			setTransparent(node);
-	}
-
 	protected void setIconAndText(String prop, ImageIcon icon, int gap,
 			String text) {
 
@@ -1586,12 +1572,27 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	private void setBackgroundFor(DOMNode node, Color color) {
 		if (node == null)
 			return;
+		if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? Color.white : color));
 		if (c.isBackgroundPainted)
 			setTransparent(node);
 		else
 			checkTransparent(node);
+	}
+
+	/**
+	 * If a control is transparent, then set that in HTML for its node
+	 * @param node
+	 */
+	private void checkTransparent(DOMNode node) {
+		// Note that c.setOpaque(true/false) on a label DOES work, but you need
+		// to do a repaint to see it in Java.
+		// Here we keep it simple and do the change immediately.
+		//
+
+		if (!c.isOpaque() && node != null)
+			setTransparent(node);
 	}
 
 	private void setTransparent(DOMNode node) {

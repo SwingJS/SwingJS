@@ -55,6 +55,15 @@ import a2s.Panel;
 import a2s.TextField;
 import a2s.Applet;
 
+//web_Ready
+//web_AppletName= Sound1
+//web_Description= A simulation of sound
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/sound1.png
+//web_Info= width:550, height:500
+//web_JavaSource= ??http://groups.physics.northwestern.edu/vpl/waves/sound1.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
 public class Sound1 extends Applet implements Runnable {
 
 	/**

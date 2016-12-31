@@ -52,6 +52,16 @@ import a2s.Panel;
 import a2s.TextField;
 import a2s.Applet;
 
+//web_Ready
+//web_AppletName= Superposition1
+//web_Description= Adding Simple Harmonic Waves I
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/superposition1.png
+//web_Info= width:550, height:500
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/waves/superposition1.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
+
 public class Superposition1 extends Applet {
 
 	/**

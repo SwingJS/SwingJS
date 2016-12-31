@@ -20,6 +20,18 @@ package edu.northwestern.physics.groups.atomic.applet;
  *                                                                       *
  *************************************************************************/
 
+
+//web_Ready
+//web_AppletName= Double Slit
+//web_Description= A simulation of diffraction
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/doubleslit.png
+//web_Info= width:550, height:500
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/optics/diffraction.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
+
+
 //  Modification History
 //    Date      Initials     Change
 //    2/01/98    GWA         Initial release

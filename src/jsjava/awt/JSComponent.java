@@ -35,6 +35,7 @@ import jsjavax.swing.plaf.ComponentUI;
 import jssun.awt.ConstrainableGraphics;
 import swingjs.JSAppletViewer;
 import swingjs.JSFrameViewer;
+import swingjs.JSGraphics2D;
 import swingjs.JSToolkit;
 import swingjs.api.HTML5Canvas;
 
@@ -196,10 +197,17 @@ public abstract class JSComponent extends Component {
    * 
    */
   public boolean isBackgroundPainted;
+  
 
-  public void setIsPainted(boolean TF) {
-  	isBackgroundPainted = TF;
-  }
+	public void checkBackgroundPainted(JSGraphics2D jsg) {
+		if (jsg == null) {
+			isBackgroundPainted = false;
+			return;
+		}
+		isBackgroundPainted = jsg.isBackgroundPainted();
+		if (isBackgroundPainted)
+			ui.setBackground(null);
+	}
 
   @Override
 	public boolean isBackgroundSet() {

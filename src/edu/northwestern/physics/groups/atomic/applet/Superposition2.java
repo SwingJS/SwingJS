@@ -55,6 +55,16 @@ import a2s.Applet;
 
 public class Superposition2 extends Applet implements Runnable {
 
+//web_Ready
+//web_AppletName= Superposition2
+//web_Description= Adding Simple Harmonic Waves II
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/superposition2.png
+//web_Info= width:550, height:500
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/waves/superposition2.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
+	
 	/**
 	 *
 	 */

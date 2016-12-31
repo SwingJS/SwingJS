@@ -20,12 +20,23 @@ package edu.northwestern.physics.groups.atomic.applet;
  *                                                                       *
  *************************************************************************/
 
+
+//web_Ready
+//web_AppletName= Double Pendulum
+//web_Description= A simulation of a double pendulum
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/doublependulum.png
+//web_Info= width:828, height:535
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/mechanics/pendulum.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
+
 //  Modification History
 //    Date      Initials     Change
 //    2/10/99    XWJ         Initial release
 //  Abstract:
 /*
- * @authour Xiaowei Jiang
+ * @author Xiaowei Jiang
  * @version 0.1, Feb 1999
  */
 
@@ -50,6 +61,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import javax.swing.Timer;
+
 
 class canvasPenPen // ===================================
 extends Canvas {

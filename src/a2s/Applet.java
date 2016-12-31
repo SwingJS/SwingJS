@@ -18,6 +18,9 @@ import javax.swing.JApplet;
 
 public class Applet extends JApplet {
 
+//Note: applet.paint(g) needs to include super.paint(g), or buttons will not show.
+
+
 }
 
 

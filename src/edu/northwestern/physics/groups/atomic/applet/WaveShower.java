@@ -27,7 +27,7 @@ package edu.northwestern.physics.groups.atomic.applet;
  * @version 0.1, June 1999
  */
 
-import java.applet.Applet;
+import a2s.Applet;
 import java.awt.BorderLayout;
 import a2s.Button;
 import a2s.Canvas;
@@ -45,7 +45,31 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-class WaveCanvas extends Canvas implements Runnable {
+import javajs.util.JSThread;
+
+//web_Ready
+//web_AppletName= WaveShower
+//web_Description= A simulation of a wave reflection
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/waveshower.png
+//web_Info= width:550, height:400
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/waves/wavereflection.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas, JSThread
+
+// BH 1) Note that calling paint from update (as was the case here) was never recommended, even
+// BH for AWT. So here canvas.paint --> canvas.paintMe
+
+// BH see	http://www.oracle.com/technetwork/java/painting-140037.html#awt_summary
+
+// BH 2) applet.paint(g) needs to include super.paint(g), or buttons will not show.
+
+// BH 3) Thread --> JSThread; could have just made this a timer.
+
+// BH 4) fixing problem that after starting, increasing the size of the applet needs a new image.
+
+
+class WaveCanvas extends Canvas {
 	/**
 	 *
 	 */
@@ -68,8 +92,8 @@ class WaveCanvas extends Canvas implements Runnable {
 		g.drawImage(offImage, 0, 0, null);
 	}
 
-	@Override
-	public void paint(Graphics g) {
+	//@Override
+	public void paintMe(Graphics g) {
 		if (waveindex != 0) {
 			g.setColor(Color.red);
 			g.drawLine(10, d.height / 2, d.width - 10, d.height / 2);
@@ -95,45 +119,89 @@ class WaveCanvas extends Canvas implements Runnable {
 	}
 
 	private void prepareImage() {
+		Dimension dnew = getSize();
+		if (d != null && d.width == dnew.width && d.height == dnew.height)
+			return;
+		d = dnew;
 		offImage = createImage(d.width, d.height);
 		og = offImage.getGraphics();
 	}
 
-	public void run() {
-		while (wavethread != null) {
-			repaint();
-			time++;
-			try {
-				Thread.sleep(60);
-			} catch (final InterruptedException e) {
-				break;
-			}
-		}
-	}
-
 	public void start() {
-		prepareImage();
+		// prepareImage(); // BH moved from here
 		if (wavethread == null) {
-			wavethread = new Thread(this);
+			wavethread = new WaveThread();
 			wavethread.start();
 		}
 	}
 
 	public void stop() {
+		wavethread.interrupt();
 		wavethread = null;
 		time = 0;
 	}
+	
+
+//public void run() {
+//	while (wavethread != null) {
+//		repaint();
+//		time++;
+//		try {
+//			Thread.sleep(60);
+//		} catch (final InterruptedException e) {
+//			break;
+//		}
+//	}
+//}
+	
+	public class WaveThread extends JSThread {
+
+		@Override
+		protected boolean myInit() {
+			return true;
+		}
+
+		@Override
+		protected boolean isLooping() {
+			return (wavethread != null);
+		}
+
+		@Override
+		protected boolean myLoop() {
+			repaint();
+			time++;
+			return true;
+		}
+
+		@Override
+		protected void whenDone() {
+		}
+
+		@Override
+		protected int getDelayMillis() {
+			return 60;
+		}
+
+		@Override
+		protected void onException(Exception e) {
+		}
+
+		@Override
+		protected void doFinally() {
+		}
+	}
+
 
 	@Override
-	public synchronized void update(Graphics g) {
-		d = getSize();
+	public synchronized void paint(Graphics g) {
+		prepareImage(); // BH moved to here
 		waveindex = (d.width - 20);
 		x = new int[waveindex + 1];
 		y = new int[waveindex + 1];
 		int i;
 		if (!waveshower.on) {
 			g.clearRect(0, 0, d.width, d.height);
-			paint(g);
+			paintMe(g);
 			return;
 		} else {
 			for (i = 0; i <= waveindex; i++) {
@@ -327,6 +395,7 @@ class WaveCanvas extends Canvas implements Runnable {
 }
 
 public class WaveShower extends Applet implements ActionListener, ItemListener {
+
 	/**
 	 *
 	 */
@@ -440,8 +509,9 @@ public class WaveShower extends Applet implements ActionListener, ItemListener {
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g); // BH added
 		wavebutton.requestFocus();
-		wavecanvas.repaint();
+		//wavecanvas.repaint();// BH note: this is unnecessary
 	}
 
 	@Override

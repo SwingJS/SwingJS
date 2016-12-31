@@ -624,11 +624,14 @@ public abstract class JComponent extends Container {
 	 */
 	protected void paintComponent(Graphics g) {
 		if (ui != null) {
-			isBackgroundPainted = false;
 			Graphics scratchGraphics = (g == null) ? null : g.create();
 			try {
+				// note that this update will fill the component's background, but  
+				// that is not what we are worried about. What we are worried about
+				// is if this method is overridden and is written to.
+				//isBackgroundPainted = false;
 				ui.update(scratchGraphics, this);
-				isBackgroundPainted = ((JSGraphics2D)scratchGraphics).isBackgroundPainted();
+				//isBackgroundPainted = ((JSGraphics2D)scratchGraphics).isBackgroundPainted();
 			} finally {
 				scratchGraphics.dispose();
 			}
@@ -647,7 +650,7 @@ public abstract class JComponent extends Container {
 	 * @see jsjava.awt.Container#paint
 	 */
 	protected void paintChildren(Graphics g) {
-		boolean isJComponent;
+		//boolean isJComponent;
 		Graphics sg = g;
 
 		synchronized (getTreeLock()) {
@@ -680,14 +683,13 @@ public abstract class JComponent extends Container {
 			// }
 			// boolean printing = getFlag(IS_PRINTING);
 			for (; i >= 0; i--) {
-				Component comp = getComponent(i);
-				isJComponent = (comp instanceof JComponent);
-				// SwingJS here is where we need to differentiate between types
+				JComponent jc = (JComponent) getComponent(i);
+				//isJComponent = (comp instanceof JComponent);
+				// SwingJS: everything is a JComponent
 				// and probably not do this.
 				// SwingJS TODO -- allow JSpecView-like layer for writing over buttons
-				if (comp != null && (isJComponent || isLightweightComponent(comp))
-						&& (comp.isVisible() == true)) {
-					Rectangle cr = comp.getBounds(tmpRect);
+				if (jc != null && jc.isVisible() == true) {
+					Rectangle cr = jc.getBounds(tmpRect);
 					//
 					// boolean hitClip = g.hitClip(cr.x, cr.y, cr.width, cr.height);
 					//
@@ -709,15 +711,15 @@ public abstract class JComponent extends Container {
 					// cr.width = width;
 					// cr.height = height;
 					// }
-					Graphics cg = sg.create4(cr.x, 
-							(((JComponent) comp).isContentPane ? 0 : cr.y), cr.width, cr.height); // SwingJS
+					JSGraphics2D jsg = (JSGraphics2D) sg.create4(cr.x, 
+							(jc.isContentPane ? 0 : cr.y), cr.width, cr.height); // SwingJS
 																																			// SAEM
-					cg.setColor(comp.getForeground());
-					cg.setFont(comp.getFont());
+					jsg.setColor(jc.getForeground());
+					jsg.setFont(jc.getFont());
 					boolean shouldSetFlagBack = false;
 					// System.out.println("JC Painting " + comp.getName() + " " + cr);
 					try {
-						if (isJComponent) {
+//						if (isJComponent) {
 							// if (getFlag(ANCESTOR_USING_BUFFER)) {
 							// ((JComponent) comp).setFlag(ANCESTOR_USING_BUFFER, true);
 							// shouldSetFlagBack = true;
@@ -727,7 +729,9 @@ public abstract class JComponent extends Container {
 							// shouldSetFlagBack = true;
 							// }
 							// if (!printing) {
-							((JComponent) comp).paint(cg);
+							jc.checkBackgroundPainted(null);
+							jc.paint(jsg);
+							jc.checkBackgroundPainted(jsg);
 							// } else {
 							// if (!getFlag(IS_PRINTING_ALL)) {
 							// comp.print(cg);
@@ -735,22 +739,22 @@ public abstract class JComponent extends Container {
 							// comp.printAll(cg);
 							// }
 							// }
-						} else { // not JComponent -- we might allow these
-						// if (!printing) {
-							comp.paint(cg);
-							// } else {
-							// if (!getFlag(IS_PRINTING_ALL)) {
-							// comp.print(cg);
-							// } else {
-							// comp.printAll(cg);
-							// }
-							// }
-						}
+//						} else { // not JComponent -- we might allow these
+//						// if (!printing) {
+//							jc.paint(cg);
+//							// } else {
+//							// if (!getFlag(IS_PRINTING_ALL)) {
+//							// comp.print(cg);
+//							// } else {
+//							// comp.printAll(cg);
+//							// }
+//							// }
+//						}
 					} finally {
-						cg.dispose();
+						jsg.dispose();
 						if (shouldSetFlagBack) {
-							((JComponent) comp).setFlag(ANCESTOR_USING_BUFFER, false);
-							((JComponent) comp).setFlag(IS_PAINTING_TILE, false);
+							((JComponent) jc).setFlag(ANCESTOR_USING_BUFFER, false);
+							((JComponent) jc).setFlag(IS_PAINTING_TILE, false);
 						}
 					}
 				}
@@ -1059,9 +1063,13 @@ public abstract class JComponent extends Container {
 	 * @param g
 	 */
 	private void paintComponentSafely(Graphics g) {
-		int nSave = ((JSGraphics2D) g).mark();
-		paintComponent(g);
-		((JSGraphics2D) g).reset(nSave);
+		JSGraphics2D jsg = (JSGraphics2D) g;
+		int nSave = jsg.mark();
+		checkBackgroundPainted(null);
+		// note that paintComponent may be overridden.
+		paintComponent(jsg);
+		checkBackgroundPainted(jsg);
+		jsg.reset(nSave);
 	}
 
 	/**

@@ -27,7 +27,7 @@ package edu.northwestern.physics.groups.atomic.applet;
  * @version 0.1, June 1999
  */
 
-import java.applet.Applet;
+import a2s.Applet;
 import java.awt.BorderLayout;
 import a2s.Canvas;
 import a2s.Choice;
@@ -38,11 +38,21 @@ import java.awt.Graphics;
 import java.awt.Image;
 import a2s.Label;
 import a2s.Panel;
-import java.awt.TextField;
+import a2s.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
+//web_Ready
+//web_AppletName= WavePacket
+//web_Description= A simulation of wave packets
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/wavepacket.png
+//web_Info= width:550, height:400
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/waves/wavepacket.html
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
 
 public class WavePacket extends Applet {
 

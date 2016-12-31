@@ -50,6 +50,16 @@ import a2s.TextField;
 
 import javax.swing.JApplet;
 
+//web_Ready
+//web_AppletName= Hydrogen Levels
+//web_Description= Bohr and Dirac diagrams of energy levels in the hydrogen atom
+//web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
+//web_AppletImage= images/hydrogenlevels.png
+//web_Info= width:800, height:500
+//web_    JavaSource= ??http://groups.physics.northwestern.edu/vpl/mechanics ??
+//web_Category= Physics
+//web_Features= AWT-to-Swing, canvas 
+
 class HydrogenCanvas extends Canvas {
 
 	/**
