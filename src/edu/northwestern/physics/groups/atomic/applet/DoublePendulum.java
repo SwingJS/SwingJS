@@ -25,9 +25,9 @@ package edu.northwestern.physics.groups.atomic.applet;
 //web_AppletName= Double Pendulum
 //web_Description= A simulation of a double pendulum
 //web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
-//web_AppletImage= images/doublependulum.png
+//web_AppletImage= doublependulum.png
 //web_Info= width:828, height:535
-//web_JavaSource= http://groups.physics.northwestern.edu/vpl/mechanics/pendulum.html
+//web_JavaVersion= http://groups.physics.northwestern.edu/vpl/mechanics/pendulum.html
 //web_Category= Physics
 //web_Features= AWT-to-Swing, canvas 
 

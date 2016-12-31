@@ -42,9 +42,9 @@ import javax.swing.Timer;
 //web_AppletName= WaveTypes
 //web_Description= Longitudinal waves, transverse waves, and waves of mixed type
 //web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
-//web_AppletImage= images/wavetypes.png
+//web_AppletImage= wavetypes.png
 //web_Info= width:550, height:560
-//web_JavaSource= http://groups.physics.northwestern.edu/vpl/waves/wavetype.html
+//web_JavaVersion= http://groups.physics.northwestern.edu/vpl/waves/wavetype.html
 //web_Category= Physics
 //web_Features= AWT-to-Swing, canvas, javax.swing.Timer
 

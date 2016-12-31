@@ -40,7 +40,7 @@ import javax.swing.border.Border;
 //web_AppletName= Boltzmann
 //web_Description= A simulation of the Boltzmann distribution.
 //web_Date= $Date$
-//web_AppletImage= images/boltzmann.png
+//web_AppletImage= boltzmann.png
 //web_Category= Chemistry
 //web_Features= canvas, simple threading, scrolling text
 

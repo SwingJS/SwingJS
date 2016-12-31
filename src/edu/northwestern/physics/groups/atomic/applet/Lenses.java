@@ -48,9 +48,9 @@ import java.awt.event.MouseMotionAdapter;
 //web_AppletName= Lenses
 //web_Description= Interactive illustration of convex and concave lenses
 //web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
-//web_AppletImage= images/lenses.png
+//web_AppletImage= lenses.png
 //web_Info= width:550, height:400
-//web_JavaSource= http://groups.physics.northwestern.edu/vpl/optics/lenses.html
+//web_JavaVersion= http://groups.physics.northwestern.edu/vpl/optics/lenses.html
 //web_Category= Physics
 //web_Features= AWT-to-Swing, canvas 
 

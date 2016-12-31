@@ -16,6 +16,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+//web_Ready
+//web_AppletName= Prism
+//web_Description= Illustrates the refraction of light by a prism
+//web_JavaVersion= http://ultrastudio.org/en/Prism
+//web_JavaSource= https://java.net/projects/ultrastudio/sources/applets/show/us_Prism
+//web_AppletImage= prism.png
+//web_Category= Chemistry
+//web_Date= $Date$
+//web_Features= graphics
 
 // BH: private static String name(double n) conflicts with java.awt.Component.name
 // BH: ggg.destroy() required before second call to g.create()

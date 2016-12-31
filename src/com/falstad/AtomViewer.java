@@ -9,8 +9,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName= AtomViewer
 //web_Description= Displays the wave functions (orbitals) of the hydrogen atom in 3-D
-//web_JavaSource= http://www.falstad.com/qmatom/
-//web_AppletImage= images/atomviewer.png
+//web_JavaVersion= http://www.falstad.com/qmatom/
+//web_AppletImage= atomviewer.png
 //web_Category= Chemistry
 //web_Date= $Date$
 //web_Features: menubar, graphics, AWT-to-Swing

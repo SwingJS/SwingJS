@@ -11,8 +11,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName=3-D Quantum Harmonic Oscillator
 //web_Description= Harmonic oscillator in three dimensions	
-//web_JavaSource= http://www.falstad.com/qm3dosc/
-//web_AppletImage= images/quantumosc3d.png
+//web_JavaVersion= http://www.falstad.com/qm3dosc/
+//web_AppletImage= quantumosc3d.png
 //web_Category= Physics
 //web_Date= $Date$
 

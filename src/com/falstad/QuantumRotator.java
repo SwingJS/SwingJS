@@ -7,8 +7,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName= Quantum Rigid Rotator
 //web_Description= Particle confined to the surface of a sphere
-//web_JavaSource= http://www.falstad.com/qm1dcrystal/
-//web_AppletImage= images/quantumrotor.png
+//web_JavaVersion= http://www.falstad.com/qm1dcrystal/
+//web_AppletImage= quantumrotor.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing

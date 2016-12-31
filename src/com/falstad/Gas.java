@@ -14,8 +14,8 @@ package com.falstad;
 //web_AppletName= Gas
 //web_Description= A simulation of the ideal gas law.
 //web_Date= 02/08/2016
-//web_JavaSource= www.falstad.com/gas
-//web_AppletImage= images/gas.png
+//web_JavaVersion= www.falstad.com/gas
+//web_AppletImage= gas.png
 //web_Category= Chemistry
 //web_Features= graphics, AWT-to-Swing
 

@@ -5,8 +5,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName= EMWave1
 //web_Description= A simulation that demonstrates electrodynamics in two dimensions.
-//web_JavaSource= http://www.falstad.com/emwave1/
-//web_AppletImage= images/emwave1.png
+//web_JavaVersion= http://www.falstad.com/emwave1/
+//web_AppletImage= emwave1.png
 //web_Category= Physics
 //web_Date= $Date$ 
 //web_Features= graphics, AWT-to-Swing

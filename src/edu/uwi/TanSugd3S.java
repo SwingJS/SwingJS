@@ -4,10 +4,10 @@ package edu.uwi;
 //web_AppletName= tanSugd3S
 //web_Description= Interactive Tanabe-Sugano diagrams for inorganic d3 systems
 //web_Date= $Date$
-//web_JavaSource=http://wwwchem.uwimona.edu.jm/courses/Tanabe-Sugano/TSapplets.html 
+//web_JavaVersion=http://wwwchem.uwimona.edu.jm/courses/Tanabe-Sugano/TSapplets.html 
 //web_OriginalAuthor= Robert Lancashire, University of the West Indies.
 //web_SwingJSAuthor= <a href="mailto:hansonr@stolaf.edu">Bob Hanson, St. Olaf College</a>
-//web_AppletImage= images/tansugd3s.png
+//web_AppletImage= tansugd3s.png
 //web_Category= Chemistry
 //web_Features= graphics, radio buttons, scrolling text, simple threading
 //web_Info=	width: 850, height: 550

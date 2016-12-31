@@ -7,8 +7,8 @@
 //web_NOTReady
 //web_AppletName= MOViewer
 //web_Description= A simulation of the molecular wave functions (molecular orbitals) of the hydrogen molecular ion (H2+) in 3-D.
-//web_JavaSource= http://www.falstad.com/qmmo/
-//web_AppletImage= images/moviewer.png
+//web_JavaVersion= http://www.falstad.com/qmmo/
+//web_AppletImage= moviewer.png
 //web_Category= Chemistry
 //web_Date= $Date$
 

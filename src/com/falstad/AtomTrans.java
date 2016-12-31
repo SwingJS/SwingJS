@@ -56,8 +56,8 @@ import a2s.Scrollbar;
 //web_Ready
 //web_AppletName= Atomic Dipole Transitions
 //web_Description= Radiative transitions (absorption and stimulated emission) in atoms
-//web_JavaSource= http://www.falstad.com/qmatomrad/
-//web_AppletImage= images/atomtrans.png
+//web_JavaVersion= http://www.falstad.com/qmatomrad/
+//web_AppletImage= atomtrans.png
 //web_Category= Physics
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
 //web_Features: graphics, AWT-to-Swing

@@ -5,11 +5,11 @@ package com.falstad;
 //web_Ready
 //web_AppletName= DiffEq
 //web_Description= Visual differential equation solver.
-//web_JavaSource= http://www.falstad.com/diffeq/
-//web_AppletImage= images/diffeq.png
+//web_JavaVersion= http://www.falstad.com/diffeq/
+//web_AppletImage= diffeq.png
 //web_Category= Mathematics
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
-//web_Features: graphics, AWT-to-Swing
+//web_Features= graphics, AWT-to-Swing
 
 import java.awt.Color;
 import java.awt.Component;

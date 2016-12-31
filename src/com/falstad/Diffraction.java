@@ -3,8 +3,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName= Diffraction
 //web_Description= Generation of Fresnel diffraction patterns.
-//web_JavaSource= http://www.falstad.com/diffraction/
-//web_AppletImage= images/diffraction.png
+//web_JavaVersion= http://www.falstad.com/diffraction/
+//web_AppletImage= diffraction.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing

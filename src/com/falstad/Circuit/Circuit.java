@@ -8,9 +8,9 @@ package com.falstad.Circuit;
 //web_Ready
 //web_AppletName= Circuit
 //web_Description= An electronic circuit simulator.  When the applet starts up you will see an animated schematic of a simple LRC circuit. The green color indicates positive voltage.  The gray color indicates ground.  A red color indicates negative voltage.  The moving yellow dots indicate current.
-//web_JavaSource= http://www.falstad.com/circuit/
+//web_JavaVersion= http://www.falstad.com/circuit/
 //web_Location= com.falstad.Circuit.Circuit
-//web_AppletImage= images/circuit.png
+//web_AppletImage= circuit.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features= graphics, timer thread, pop-up menu, menubar, dialog, local file reading and writing, reflection

@@ -3,8 +3,8 @@
 //web_Ready
 //web_AppletName= Wave2d
 //web_Description= A simulation that demonstrates scalar waves (such as sound waves) in two dimensions.
-//web_JavaSource= http://www.falstad.com/wave2d/
-//web_AppletImage= images/wave2d.png
+//web_JavaVersion= http://www.falstad.com/wave2d/
+//web_AppletImage= wave2d.png
 //web_Category= Physics
 //web_Date=  $Date$
 //web_Date= $Date$

@@ -4,8 +4,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName= 3-D Vector Fields
 //web_Description= Demonstrates vector fields in 3 dimensions.  Includes the Lorenz Attractor and Rossler Attractor
-//web_JavaSource= http://www.falstad.com/vector3d/
-//web_AppletImage= images/vector3d.png
+//web_JavaVersion= http://www.falstad.com/vector3d/
+//web_AppletImage= vector3d.png
 //web_Category= Mathematics
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
 //web_Features= graphics, AWT-to-Swing

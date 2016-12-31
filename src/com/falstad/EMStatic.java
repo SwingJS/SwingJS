@@ -8,8 +8,8 @@ package com.falstad;
 //web_Ready
 //web_AppletName= 2-D Electrostatics
 //web_Description= Demonstrates static electric fields and steady-state current
-//web_JavaSource= http://www.falstad.com/emstatic/
-//web_AppletImage= images/emstatic.png
+//web_JavaVersion= http://www.falstad.com/emstatic/
+//web_AppletImage= emstatic.png
 //web_Category= Physics
 //web_Date= $Date$
 //web_Features: graphics, AWT-to-Swing
