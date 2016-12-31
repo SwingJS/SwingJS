@@ -56,7 +56,7 @@ import javax.swing.JApplet;
 //web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
 //web_AppletImage= images/hydrogenlevels.png
 //web_Info= width:800, height:500
-//web_    JavaSource= ??http://groups.physics.northwestern.edu/vpl/mechanics ??
+//web_JavaSource= http://groups.physics.northwestern.edu/vpl/atomic/hydrogen.html
 //web_Category= Physics
 //web_Features= AWT-to-Swing, canvas 
 
@@ -98,6 +98,11 @@ class HydrogenCanvas extends Canvas {
 
 	int nmax = 8; // The number of radial orbitals displayed
 	int lmax = 7; // The number of angular momentum states displayed
+	private HydrogenLevels applet;
+
+	public HydrogenCanvas(HydrogenLevels hydrogenLevels) {
+		this.applet = hydrogenLevels; // BH
+	}
 
 	public void displaySeries(Graphics g, int nf, int lf) {
 		if (displayModel == 0) {
@@ -206,10 +211,11 @@ class HydrogenCanvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+	public void paint(Graphics g) {
 		initSizes();
-		setBackground(Color.black);
+		//setBackground(Color.black); // BH -- causes repaint
+		g.setColor(Color.black);
+		g.fillRect(0, 0, getWidth(), getHeight());
 		int nf;
 
 		g.setColor(Color.yellow);
@@ -306,7 +312,7 @@ class HydrogenCanvas extends Canvas {
 	public void redraw(Integer Nmax, Integer Lmax) {
 		nmax = Nmax.intValue();
 		lmax = Lmax.intValue();
-		repaint();
+		applet.repaint();
 	}
 
 }
@@ -419,6 +425,12 @@ public class HydrogenLevels extends JApplet {
 	Label appletName = new Label("Virtual Interactive Demonstration");
 	Label department = new Label("Department of Physics and Astronomy");
 	Label university = new Label("Northwestern University");
+	
+	{
+		department.setForeground(Color.white);
+		university.setForeground(Color.white);
+		appletName.setForeground(Color.white);
+	}
 
 	@Override
 	public String getAppletInfo() {
@@ -441,10 +453,15 @@ public class HydrogenLevels extends JApplet {
 		banner.add("Center", department);
 		banner.add(appletName);
 		banner.add("Center", university);
-		banner.add("South", new Label("G.Anderson"));
+		banner.add("South", new Label("G.Anderson") {
+			{
+				setForeground(Color.white);
+			}
+			
+		});
 		add("North", banner);
 
-		c = new HydrogenCanvas();
+		c = new HydrogenCanvas(this);
 		add("Center", c);
 		add("South", controls = new HydrogenControls(c));
 	}

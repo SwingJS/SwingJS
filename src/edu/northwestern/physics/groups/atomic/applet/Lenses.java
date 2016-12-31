@@ -319,7 +319,7 @@ class LensCanvas extends Canvas {
 			final int x = e.getX();
 			final int y = e.getY();
 			lenseSys.move(x, y);
-			repaint();
+			getTopLevelAncestor().repaint();
 		}
 	}
 
@@ -333,7 +333,7 @@ class LensCanvas extends Canvas {
 
 	LensCanvas() {
 		item = 0;
-		setBackground(Color.white);
+		//setBackground(Color.white);
 	}
 
 	public void init() {
@@ -347,8 +347,9 @@ class LensCanvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g); // PF add
+	public void paint(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.clearRect(0,  0,  getWidth(),  getHeight());
 		lenseSys.paint(g);
 	}
 
@@ -363,14 +364,15 @@ class LensControl extends Panel {
 			parent.item = lenseType.getSelectedIndex();
 			parent.init();
 			setView();
-			parent.repaint();
+			getTopLevelAncestor().repaint();
+			// parent.repaint(); // BH
 		}
 	}
 
 	private class ViewListener implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
 			setView();
-			parent.repaint();
+			getTopLevelAncestor().repaint();
 		}
 	}
 

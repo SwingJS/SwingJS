@@ -84,6 +84,12 @@ public class DoubleSlit extends JApplet {
 	Label Department = new Label("Department of Physics and Astronomy");
 	Label University = new Label("Northwestern University");
 	Label AppletName = new Label("N-Slit Diffraction");
+	{
+		Collection.setForeground(Color.white);
+		Department.setForeground(Color.white);
+		University.setForeground(Color.white);
+		AppletName.setForeground(Color.white);
+	}
 
 	/*
 	@Override
@@ -106,7 +112,7 @@ public class DoubleSlit extends JApplet {
 		banner.add("South", AppletName);
 		add("North", banner);
 
-		final DoubleSlitCanvas c = new DoubleSlitCanvas();
+		final DoubleSlitCanvas c = new DoubleSlitCanvas(this);
 		add("Center", c);
 		add("South", controls = new DoubleSlitControls(c));
 	}
@@ -163,6 +169,12 @@ class DoubleSlitCanvas extends Canvas {
 	double a = 2; // slit width
 	double d = 10; // slit spacing
 	double lambda = 1;
+	private DoubleSlit doubleSlit;
+
+	public DoubleSlitCanvas(DoubleSlit doubleSlit) {
+		super();
+		this.doubleSlit = doubleSlit;
+	}
 
 	double alpha(double sin_theta) { // Single-slit arg
 		return ((Math.PI * a * sin_theta) / (2 * lambda));
@@ -199,9 +211,10 @@ class DoubleSlitCanvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-		setBackground(Color.black);
+	public void paint(Graphics g) {
+		//setBackground(Color.black);
+		g.setColor(Color.black);
+		g.fillRect(0, 0, getSize().width, getSize().height);
 		final int spacing = 30;
 		final int leftSpace = 15;
 		final int rightSpace = 10;

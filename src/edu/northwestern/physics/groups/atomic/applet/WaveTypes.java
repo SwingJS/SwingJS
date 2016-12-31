@@ -145,7 +145,6 @@ class WaveTypesCanvas extends Canvas {
 			ballLong[i] = new WaveTypesBall(Color.blue, 50 * (i + 1), 250, 5);
 			ballMix[i] = new WaveTypesBall(Color.green, 50 * (i + 1), 400, 5);
 		}
-		setBackground(Color.black);
 	}
 
 	public void advance() {
@@ -165,6 +164,8 @@ class WaveTypesCanvas extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
+		g.setColor(Color.black);
+		g.fillRect(0,  0,  getWidth(), getHeight());
 		g.setColor(Color.red);
 		g.drawString("Transverse Wave", 5, 20);
 		g.setColor(Color.blue);
@@ -200,12 +201,10 @@ class WaveTypesCanvas extends Canvas {
 	// }
 
 	public void run() {
-		if (isStopped) {
-			demo.stop();
-			return;
+		if (!isStopped) {
+			advance();
+			waveTypes.repaint(); // BH
 		}
-		advance();
-		waveTypes.repaint(); // BH
 	}
 
 	

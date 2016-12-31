@@ -175,9 +175,11 @@ class Superposition1Canvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-		setBackground(Color.white);
+	public void paint(Graphics g) {
+		
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
 		final Color darkmagenta = new Color(150, 0, 150);
 
 		/* axes */

@@ -44,6 +44,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.Timer;
+
 //web_Ready
 //web_AppletName= WavePacket
 //web_Description= A simulation of wave packets
@@ -96,7 +98,7 @@ class WavePacketCanvas extends Canvas implements Runnable {
 	private int width;
 
 	private int height;
-	private Thread demo;
+	private Timer demo;
 	public double k_ = 1000, w_ = 1000, m_ = 100;
 	public int relation = 0; // the type of dispersion relation
 
@@ -185,26 +187,48 @@ class WavePacketCanvas extends Canvas implements Runnable {
 		mypaint(og);
 	}
 
+	// public void run() {
+	// while (!isStopped) {
+	// advance();
+	// repaint();
+	// try {
+	// Thread.sleep(60);
+	// } catch (final InterruptedException e) {
+	// /* do nothing */
+	// }
+	// }
+	// }
+
 	public void run() {
-		while (!isStopped) {
+		width = getExpectedSize().width;
+		height = getExpectedSize().height;
+		if (width != getWidth() || height != getHeight()) {
+			width = expectedSize.width = getWidth();
+			height = expectedSize.height = getHeight();
+			offImage = null;
+		}
+		if (offImage == null) {
+			offImage = createImage(width, height);
+			og = offImage.getGraphics();
+		}
+		if (!isStopped) {
 			advance();
 			repaint();
-			try {
-				Thread.sleep(60);
-			} catch (final InterruptedException e) {
-				/* do nothing */
-			}
 		}
 	}
 
 	public void start() {
-		width = getExpectedSize().width;
-		height = getExpectedSize().height;
-		offImage = createImage(width, height);
-		og = offImage.getGraphics();
+
 		if (demo == null) {
 			isStopped = false;
-			demo = new Thread(this);
+			demo = new Timer(60, new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					run();					
+				}
+				
+			});
 			demo.start();
 		}
 	}

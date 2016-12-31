@@ -193,7 +193,7 @@ class WaveCanvas extends Canvas {
 
 
 	@Override
-	public synchronized void paint(Graphics g) {
+	public synchronized void update(Graphics g) {
 		prepareImage(); // BH moved to here
 		waveindex = (d.width - 20);
 		x = new int[waveindex + 1];

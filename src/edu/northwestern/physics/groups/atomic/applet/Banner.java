@@ -19,9 +19,30 @@ public class Banner extends Panel {
 		final Color darkMagenta = new Color(150, 0, 150);
 		setBackground(darkMagenta);
 		setLayout(new GridLayout(2, 2, 40, -5));
-		add(new Label("Department of Physics and Astronomy"));
-		add(new Label("Virtual Interactive Demonstration"));
-		add(new Label("Northwestern University"));
-		add(new Label(name));
+		setForeground(Color.white);
+		add(new Label("Department of Physics and Astronomy"){
+			{
+				setForeground(Color.white);
+			}
+			
+		});
+		add(new Label("Virtual Interactive Demonstration"){
+			{
+				setForeground(Color.white);
+			}
+			
+		});
+		add(new Label("Northwestern University"){
+			{
+				setForeground(Color.white);
+			}
+			
+		});
+		add(new Label(name){
+			{
+				setForeground(Color.white);
+			}
+			
+		});
 	}
 }

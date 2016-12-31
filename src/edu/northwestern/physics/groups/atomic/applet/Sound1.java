@@ -78,6 +78,14 @@ public class Sound1 extends Applet implements Runnable {
 	Label department = new Label("Department of Physics and Astronomy");
 	Label university = new Label("Northwestern University");
 	Label appletName = new Label("Sound Wave Propagation");
+	
+	{
+		vplName.setForeground(Color.white);
+		department.setForeground(Color.white);
+		university.setForeground(Color.white);
+		appletName.setForeground(Color.white);
+	}
+
 
 	@Override
 	public boolean handleEvent(Event e) {

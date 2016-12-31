@@ -115,12 +115,12 @@ class SnellCanvas extends Panel implements Runnable {
 		repaint();
 	}
 
-	@Override
-	public void repaint() {
-	    if (snellUpCanvas == null) return; // PF add to avoid crash
-		snellUpCanvas.repaint();
-		snellDownCanvas.repaint();
-	}
+//	@Override
+//	public void repaint() {
+//	    if (snellUpCanvas == null) return; // PF add to avoid crash
+//	//	snellUpCanvas.repaint();
+//	//	snellDownCanvas.repaint();
+//	}
 
 	public void reset() {
 		snellUpCanvas.reset();
@@ -374,8 +374,7 @@ class SnellDownCanvas extends Canvas {
 	}
 
 	@Override
-	public final void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+	public final void paint(Graphics g) {
 		g.drawImage(offImage, 0, 0, null);
 	}
 
@@ -395,6 +394,12 @@ public class SnellGraph extends Applet {
 	Label department = new Label("Department of Physics and Astronomy");
 	Label university = new Label("Northwestern University");
 
+	{
+		department.setForeground(Color.white);
+		university.setForeground(Color.white);
+		appletName.setForeground(Color.white);
+	}
+
 	public SnellGraph() {
 		setLayout(new BorderLayout());
 
@@ -402,7 +407,12 @@ public class SnellGraph extends Applet {
 		banner.add("Center", department);
 		banner.add(appletName);
 		banner.add("Center", university);
-		banner.add("South", new Label("Snell's Law"));
+		banner.add("South", new Label("Snell's Law") {
+			{
+				setForeground(Color.white);
+			}
+			
+		});
 		add("North", banner);
 
 		snellCanvas = new SnellCanvas();
@@ -846,8 +856,7 @@ class SnellUpCanvas extends Canvas {
 	}
 
 	@Override
-	public final void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+	public final void paint(Graphics g) {
 		g.drawImage(offImage, 0, 0, null);
 	}
 

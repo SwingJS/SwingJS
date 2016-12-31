@@ -77,6 +77,12 @@ public class Superposition2 extends Applet implements Runnable {
 	Label department = new Label("Department of Physics and Astronomy");
 	Label university = new Label("Northwestern University");
 
+	{
+		department.setForeground(Color.white);
+		university.setForeground(Color.white);
+		appletName.setForeground(Color.white);
+	}
+
 	@Override
 	public boolean handleEvent(Event e) {
 		if (e.id == Event.WINDOW_DESTROY) {
@@ -95,7 +101,12 @@ public class Superposition2 extends Applet implements Runnable {
 		banner.add("Center", department);
 		banner.add(appletName);
 		banner.add("Center", university);
-		banner.add("South", new Label("G.Anderson"));
+		banner.add("South", new Label("G.Anderson") {
+			{
+				setForeground(Color.white);
+			}
+			
+		});
 
 		add("North", banner);
 		add("Center", c);
@@ -230,12 +241,6 @@ class Superposition2Canvas extends Canvas {
 		return true;
 	}
 
-	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-		update(g);
-	}
-
 	public void redraw(Double W1, Double W2, Double K1, Double K2, Double a1,
 			Double a2) {
 		w1 = W1.doubleValue();
@@ -249,6 +254,9 @@ class Superposition2Canvas extends Canvas {
 
 	@Override
 	public void update(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		
 
 		final Dimension d = getSize(); // onscreen drawing area:
 		if ((offg == null) || (d.width != offDimension.width)

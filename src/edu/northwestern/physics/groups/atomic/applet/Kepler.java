@@ -81,7 +81,7 @@ public class Kepler extends Applet implements ActionListener {
 		add("South", inputPanel);
 		optionPanel = new KeplerOptionPanel(this);
 		add("East", optionPanel);
-		twoBody = new KeplerCanvas();
+		twoBody = new KeplerCanvas(this);
 		add("Center", twoBody);
 		setSize(550, 500);
 	}
@@ -127,6 +127,8 @@ public class Kepler extends Applet implements ActionListener {
 	@Override
 	public void start() {
 		twoBody.init();
+		twoBody.prepareImage(); // BH added
+		twoBody.start(); // BH  added to allow resizing
 	}
 
 }
@@ -158,8 +160,10 @@ class KeplerCanvas extends Canvas /*implements Runnable*/ {
 	private boolean stopRunning = false;
 
 	private final Dimension expectedSize = new Dimension(550, 500);
+	private Kepler applet;
 
-	public KeplerCanvas() {
+	public KeplerCanvas(Kepler kepler) {
+		this.applet = kepler;
 		showOrbit = false;
 		showArea = false;
 		showVelocity = false;
@@ -231,6 +235,7 @@ class KeplerCanvas extends Canvas /*implements Runnable*/ {
 	}
 
 	public void init() {
+				
 		offImage = createImage(getExpectedSize().width,
 				getExpectedSize().height);
 		orbitTrace = createImage(getExpectedSize().width,
@@ -250,7 +255,13 @@ class KeplerCanvas extends Canvas /*implements Runnable*/ {
 		}
 	}
 
-	private void prepareImage() {
+	void prepareImage() {
+		
+		if (applet.getWidth() != getExpectedSize().width
+				|| applet.getHeight() != getExpectedSize().height) {
+			expectedSize.setSize(applet.getWidth(), applet.getHeight());
+			init();			
+		}
 		// Color bg = getBackground();
 
 		// Erase the previous image.
@@ -348,7 +359,7 @@ class KeplerCanvas extends Canvas /*implements Runnable*/ {
 		            demo = new Timer(30, new ActionListener() {
 		                public void actionPerformed(ActionEvent evt) {
 		                    advance();
-		                    repaint();
+		                    applet.repaint();
 		                }
 		            });
 		            demo.start();
@@ -363,15 +374,15 @@ class KeplerCanvas extends Canvas /*implements Runnable*/ {
 		}
 	}
 
-//	@Override  // PF use paintComponent() instead
-//	public final void update(Graphics g) {
-//		g.drawImage(offImage, 0, 0, null);
-//	}
-	
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
-	    g.drawImage(offImage, 0, 0, null);
+	@Override  // PF use paintComponent() instead // BH - that is OK now
+	public final void paint(Graphics g) {
+		g.drawImage(offImage, 0, 0, null);
 	}
+	
+//	public void paintComponent(Graphics g) {
+//	    super.paintComponent(g);
+//	    g.drawImage(offImage, 0, 0, null);
+//	}
 }
 
 class KeplerCircle {

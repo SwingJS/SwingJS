@@ -329,8 +329,9 @@ class MirrorCanvas extends Canvas {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
+	public void paint(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.clearRect(0,  0,  getWidth(),  getHeight());
 		mirrorSys.paint(g);
 	}
 
