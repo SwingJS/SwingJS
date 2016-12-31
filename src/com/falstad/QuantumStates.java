@@ -2,12 +2,13 @@ package com.falstad;
 // QuantumStates.java (C) 2002 by Paul Falstad, www.falstad.com
 
 //web_Ready
-//web_AppletName= 1-D Quantum Mechanics
+//web_AppletName= 1-D Quantum States
 //web_Description= Single-particle quantum mechanics states in one dimension
 //web_JavaSource= http://www.falstad.com/qm1d/
 //web_AppletImage= images/quantumstates.png
 //web_Category= Physics
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features: graphics, AWT-to-Swing
 
 import java.awt.Color;
 import java.awt.Component;
