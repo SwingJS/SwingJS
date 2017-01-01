@@ -73,6 +73,13 @@
 			</path>
 		</foreach>
 		
+		<foreach target="genWebpage" param="applet">
+			<path>
+			<fileset dir="${basedir}/demo/more">
+			</fileset>
+			</path>
+		</foreach>
+		
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
 			<script>
@@ -110,15 +117,15 @@
 			        	return $(a).find("h3").text() > $(b).find("h3").text();
 			    	});
 			    	$("#container").html(alphabeticallyOrderedDivs);
-				});
+				}).click();
 
-				$('#numBnt').on('click', function () {
-					document.getElementById("sortation").innerHTML = "Newest First";
-			    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
-			        	return $(a).find("id").text() < $(b).find("id").text();
-			    	});
-			    	$("#container").html(alphabeticallyOrderedDivs);
-				});
+	//			$('#numBnt').on('click', function () {
+	//				document.getElementById("sortation").innerHTML = "Newest First";
+	//		    	var alphabeticallyOrderedDivs = $divs.sort(function (a, b) {
+	//		        	return $(a).find("id").text() < $(b).find("id").text();
+	//		    	});
+	//		    	$("#container").html(alphabeticallyOrderedDivs);
+	//			});
 
 				$('#catBnt').on('click', function () {
 					document.getElementById("sortation").innerHTML = "Category";
@@ -173,8 +180,14 @@
 			    </tokenfilter>
 			  </filterchain>
 		</loadresource>
-		
-		<echo message="Category: ${Category} ${AppletName}"/>
+		  <propertyregex property="AppletNameNoSpace"
+		  			  override = "true"
+			          input=" ${AppletName} "
+		  			  regexp='\s'
+			          replace="_"
+		  		      global="true"
+			          />
+		<echo message="Category: ${Category} ${AppletNameNoSpace}"/>
 		<echo message="ShortDate: ${ShortDate}"/>
 		<echo message="Description: ${Description}"/>
 		<echo message="Features: ${Features}"/>
@@ -184,8 +197,9 @@
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
 			<div class="4u work-item">
-				<a href="applets/${AppletName}.html"><span class="image fit thumb"><img src="images/applets/${AppletImage}" alt="${AppletImage}" /></span></a>
-				<h3><a href="applets/${AppletName}.html">${AppletName}</a></h3>
+				${Category}<br>
+				<a href="applets/${AppletNameNoSpace}.html">${AppletName}</a><br>
+				<a href="applets/${AppletNameNoSpace}.html"><span class="image fit thumb"><img src="images/applets/${AppletImage}" alt="${AppletImage}" /></span></a>
 				<p>${Description}</p>
 				<cat>${Category}</cat>
 				<id>${Date}</id>
@@ -194,7 +208,7 @@
 			]]>
 		</echo>
 		
-		<echo file="${basedir}/site/swingjs/examples/applets/${AppletName}.html" append="false">
+		<echo file="${basedir}/site/swingjs/examples/applets/${AppletNameNoSpace}.html" append="false">
 			<![CDATA[<!DOCTYPE html>
 			<html>
 				<head>
@@ -253,6 +267,7 @@
 								}
 							}
 						} catch (e) {}
+           				Info.main && !Info.console && (Info.console = "sysout");
 				
 						function dateTest() {
 
@@ -285,18 +300,16 @@
 				<div id="main_sub">
 					<div class="row">
 						<ul class="actions small">
-							<li><a href="${JavaVersion}" class="button pretty small demo" alt="requires java-enabled browser">Author's Page</a></li>
-							<li><a href="${SourceForgePath}/${SourceCode}" class="button pretty small demo">Java source code</a></li>
+							<li><a target="_blank" href="${JavaVersion}" class="button pretty small demo" alt="requires java-enabled browser">Author's Page</a></li>
+							<li><a target="_blank" href="${SourceForgePath}/${SourceCode}" class="button pretty small demo">Java source code</a></li>
 							<li><a href="javascript:showhide(Info.console)" class="button pretty small demo">Show System.out</a></li>
-
 						</ul>
 					</div>
 					<div class="nostyle">
 						<script>SwingJS.getApplet("testApplet", Info)</script>
 					</div>
-					<div id="sysout" style="position:relative;padding-top:1em;width:600px;height:300px;display: none">
-						<div id="sysoutdiv" style="border:1px solid green;width:100%;height:95%;overflow:auto"></div>
-					</div><hr />
+	          		<div id="sysout" style="position:relative;padding-top:1em;width:800px;height:500px;display: none;overflow:auto;border:1px solid green"></div>
+			        <hr />
 					<ul class="actions">
 						<li><a href="../index.html" class="button pretty demo">Return to Index</a></li>
 					</ul>

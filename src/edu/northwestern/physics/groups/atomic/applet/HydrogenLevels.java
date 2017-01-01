@@ -57,7 +57,7 @@ import javax.swing.JApplet;
 //web_AppletImage= hydrogenlevels.png
 //web_Info= width:800, height:500
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/atomic/hydrogen.html
-//web_Category= Physics
+//web_Category= Physics - Atomic
 //web_Features= AWT-to-Swing, canvas 
 
 class HydrogenCanvas extends Canvas {

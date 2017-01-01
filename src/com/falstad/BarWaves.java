@@ -41,7 +41,7 @@ import a2s.Scrollbar;
 //web_Description= A simulation that demonstrates standing flexural waves in a bar
 //web_JavaVersion= http://www.falstad.com/barwaves/
 //web_AppletImage= barwaves.png
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Date= $Date$
 //web_Features= graphics, audio, AWT-to-Swing
 

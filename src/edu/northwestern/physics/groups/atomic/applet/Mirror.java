@@ -56,7 +56,7 @@ import javax.swing.JApplet;
 //web_AppletImage= mirror.png
 //web_Info= width:550, height:400
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/optics/mirrors.html
-//web_Category= Physics
+//web_Category= Physics - Optics
 //web_Features= AWT-to-Swing, canvas 
 
 public class Mirror extends JApplet {

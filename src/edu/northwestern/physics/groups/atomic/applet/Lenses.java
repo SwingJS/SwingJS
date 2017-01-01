@@ -51,7 +51,7 @@ import java.awt.event.MouseMotionAdapter;
 //web_AppletImage= lenses.png
 //web_Info= width:550, height:400
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/optics/lenses.html
-//web_Category= Physics
+//web_Category= Physics - Optics
 //web_Features= AWT-to-Swing, canvas 
 
 class LensArrow {

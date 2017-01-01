@@ -62,7 +62,7 @@ import a2s.Applet;
 //web_AppletImage= sound1.png
 //web_Info= width:550, height:500
 //web_JavaVersion= ??http://groups.physics.northwestern.edu/vpl/waves/sound1.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas 
 public class Sound1 extends Applet implements Runnable {
 

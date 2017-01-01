@@ -63,7 +63,7 @@ import a2s.TextField;
 //web_AppletImage= kepler.png
 //web_Info= width:550, height:500
 //web_JavaVersion= ??http://groups.physics.northwestern.edu/vpl/mechanics/planets.html
-//web_Category= Physics
+//web_Category= Physics - Mechanics
 //web_Features= AWT-to-Swing, canvas 
 public class Kepler extends Applet implements ActionListener {
 	/**

@@ -62,7 +62,7 @@ public class Superposition2 extends Applet implements Runnable {
 //web_AppletImage= superposition2.png
 //web_Info= width:550, height:500
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/waves/superposition2.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas 
 	
 	/**

@@ -25,6 +25,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  * The canvas, where boids are painted.
@@ -32,7 +33,7 @@ import javax.swing.JComponent;
  * @author Audrius Meskauskas
  */
 @SuppressWarnings("serial")
-public class BoidCanvas extends JComponent {
+public class BoidCanvas extends JPanel {
 
 	Flock flock;
 

@@ -66,7 +66,7 @@ import javax.swing.Timer;
 //web_AppletImage= snellgraph.png
 //web_Info= width:550, height:500
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/optics/snell.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas 
 
 class SnellCanvas extends Panel implements Runnable {

@@ -7,7 +7,7 @@ package com.falstad;
 //web_Description= A simulation that shows the behavior of a particle in a two dimensional circular square well.
 //web_JavaVersion= http://www.falstad.com/qm2dcirc/
 //web_AppletImage= quantumcirc.png
-//web_Category= Physics
+//web_Category= Physics - Quantum
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 

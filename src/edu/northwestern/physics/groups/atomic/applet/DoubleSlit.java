@@ -28,7 +28,7 @@ package edu.northwestern.physics.groups.atomic.applet;
 //web_AppletImage= doubleslit.png
 //web_Info= width:550, height:500
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/optics/diffraction.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas 
 
 

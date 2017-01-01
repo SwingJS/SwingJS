@@ -54,7 +54,7 @@ import javajs.util.JSThread;
 //web_AppletImage= waveshower.png
 //web_Info= width:550, height:400
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/waves/wavereflection.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas, JSThread
 
 // BH 1) Note that calling paint from update (as was the case here) was never recommended, even

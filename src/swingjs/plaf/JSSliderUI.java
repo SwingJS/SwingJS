@@ -41,6 +41,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private DOMNode sliderTrack;
 	private DOMNode sliderHandle;
 	private int disabled;
+	private int myHeight;
 	
 	private static boolean cssLoaded = false;
 
@@ -207,7 +208,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("max", max);
 		
 		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
-
+		myHeight = 10;
 		int barPlace = 40;
 		if (isHoriz &&  jSlider.getBorder() != null)
 			barPlace += 10;
@@ -229,6 +230,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			int check = majorSpacing / minorSpacing;
 			float fracSpacing = minorSpacing * 1f / (max - min);
 			int numTicks = ((max - min) / minorSpacing) + 1;
+			myHeight += 10;
 			for (int i = 0; i < numTicks; i++) {
 				DOMNode node = DOMNode.createElement("div", id + "_t" + i);
 				$(node).addClass("swingjs");
@@ -243,9 +245,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			setHTMLSize(domNode, false);
 		}
 		if (paintLabels) {
-			int m = 10;
-			int h = height;
-			int w = width;			
+			int m = 10;		
+			myHeight += 20;
 			labelTable = jSlider.getLabelTable();
 			Enumeration keys = labelTable.keys();
 			while (keys.hasMoreElements()) {
@@ -328,6 +329,9 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		//DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
 		if (iVertScrollBar)
 			DOMNode.setStyles(sliderHandle, "left", "-8px");
+		else if (orientation == "horizontal") {
+			DOMNode.setStyles(domNode,  "position", "absolute", "top", (height - myHeight)/2 + "px");
+		}
 			
 	}
 

@@ -10,7 +10,7 @@ package com.falstad;
 //web_Description= Demonstrates static electric fields and steady-state current
 //web_JavaVersion= http://www.falstad.com/emstatic/
 //web_AppletImage= emstatic.png
-//web_Category= Physics
+//web_Category= Physics - Electromagnetics
 //web_Date= $Date$
 //web_Features: graphics, AWT-to-Swing
 

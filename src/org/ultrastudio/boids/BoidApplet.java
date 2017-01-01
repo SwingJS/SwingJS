@@ -29,6 +29,17 @@ import java.awt.event.MouseEvent;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 
+//web_Ready
+//web_AppletName= Boids
+//web_Description= Illustrates a flocking algorithm
+//web_JavaVersion= http://ultrastudio.org/en/Flock
+//web_JavaSource= https://java.net/projects/ultrastudio/sources/applets/show/us_Boids
+//web_AppletImage= boids.png
+//web_Category= Mathematics
+//web_Date= $Date$
+//web_Features= graphics
+
+
 /**
  * An applet, containing boids
  * 

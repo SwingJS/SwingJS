@@ -45,7 +45,7 @@ import javax.swing.Timer;
 //web_AppletImage= wavetypes.png
 //web_Info= width:550, height:560
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/waves/wavetype.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas, javax.swing.Timer
 
 // BH 1) replacing simple looping Thread with javax.swing.Timer

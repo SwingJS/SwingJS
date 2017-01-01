@@ -7,7 +7,7 @@ package com.falstad;
 //web_Description= A quantum mechanics simulation that shows the behavior of a particle in a two dimensional harmonic oscillator.
 //web_JavaVersion= http://www.falstad.com/qm2dosc/
 //web_AppletImage= quantumosc.png
-//web_Category= Physics
+//web_Category= Physics - Quantum
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 

@@ -7,7 +7,7 @@ package com.falstad;
 //web_Description= 
 //web_JavaVersion= http://www.falstad.com/wavebox/
 //web_AppletImage= wavebox.png
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 

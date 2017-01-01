@@ -7,7 +7,7 @@ package com.falstad;
 //web_Description= A simulation that demonstrates standing waves on a vibrating string (a loaded string, to be precise).
 //web_JavaVersion= http://www.falstad.com/loadedstring/
 //web_AppletImage= stringwave.png
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Date= $Date$
 //web_Features= audio, graphics, AWT-to-Swing
 

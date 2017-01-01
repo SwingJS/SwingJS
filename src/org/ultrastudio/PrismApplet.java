@@ -22,7 +22,7 @@ import javax.swing.event.ChangeListener;
 //web_JavaVersion= http://ultrastudio.org/en/Prism
 //web_JavaSource= https://java.net/projects/ultrastudio/sources/applets/show/us_Prism
 //web_AppletImage= prism.png
-//web_Category= Chemistry
+//web_Category= Physics - Optics
 //web_Date= $Date$
 //web_Features= graphics
 

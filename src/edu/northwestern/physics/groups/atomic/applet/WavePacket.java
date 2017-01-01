@@ -53,7 +53,7 @@ import javax.swing.Timer;
 //web_AppletImage= wavepacket.png
 //web_Info= width:550, height:400
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/waves/wavepacket.html
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Features= AWT-to-Swing, canvas 
 
 public class WavePacket extends Applet {

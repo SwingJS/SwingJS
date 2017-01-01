@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+// testing timing use of get showing that there is no difference
+// in using x.getValue() or x.i, where x.getValue = function() {return this.i};
+
+Test = function() {
+  this.i = 0;
+}
+Test.prototype.getValue = function() {return this.i++}
+
+var t = new Test()
+
+function testTest1(n) {
+  // uses t.getValue()
+  for (var i = 0; i < n; i++) {
+    var j = t.getValue() + 1;
+  }
+}
+
+var s;
+function testTest2(n) {
+  // uses t.i directly
+  for (var i = 0; i < n; i++) {
+    t.i++
+  }
+}
+
+function timeCheck(f, n, s) {
+  var t0 = +new Date;
+  f(n);
+  var av = (+new Date - t0)
+  return ("TOTAL time/ms for " + n + " executions of " + s +  " = " + av + "\n")  
+}
+
+var n = 10000000
+alert(timeCheck(testTest1, n, "getValue") + timeCheck(testTest2, n, "direct") + "t.i = " + t.i);
+
+
+</script>
+</head>
+<body>
+</body>
+</html>
+

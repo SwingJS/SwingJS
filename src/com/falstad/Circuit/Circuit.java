@@ -11,7 +11,7 @@ package com.falstad.Circuit;
 //web_JavaVersion= http://www.falstad.com/circuit/
 //web_Location= com.falstad.Circuit.Circuit
 //web_AppletImage= circuit.png
-//web_Category= Physics
+//web_Category= Physics - Electronics
 //web_Date= $Date$
 //web_Features= graphics, timer thread, pop-up menu, menubar, dialog, local file reading and writing, reflection
 

@@ -6,7 +6,7 @@ package com.falstad;
 //web_Description= Single-particle quantum mechanics states in one dimension
 //web_JavaVersion= http://www.falstad.com/qm1d/
 //web_AppletImage= quantumstates.png
-//web_Category= Physics
+//web_Category= Physics - Quantum
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
 //web_Features: graphics, AWT-to-Swing
 

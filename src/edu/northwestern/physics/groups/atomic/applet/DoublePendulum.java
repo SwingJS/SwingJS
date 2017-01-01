@@ -28,7 +28,7 @@ package edu.northwestern.physics.groups.atomic.applet;
 //web_AppletImage= doublependulum.png
 //web_Info= width:828, height:535
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/mechanics/pendulum.html
-//web_Category= Physics
+//web_Category= Physics - Mechanics
 //web_Features= AWT-to-Swing, canvas 
 
 //  Modification History

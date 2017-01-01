@@ -49,7 +49,7 @@ import a2s.Scrollbar;
 //web_Description= Generates antenna radiation patterns
 //web_JavaVersion= http://www.falstad.com/antenna/
 //web_AppletImage= antenna.png
-//web_Category= Physics
+//web_Category= Physics - Electronics
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
 //web_Features: graphics, AWT-to-Swing
 

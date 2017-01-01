@@ -17,6 +17,16 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+//web_Ready
+//web_AppletName= Lissajous
+//web_Description= llustrates the Lissajous pattern (two AC signals plotted on X and Y axes)
+//web_JavaVersion= http://ultrastudio.org/en/Lissajous_curves
+//web_JavaSource= https://java.net/projects/ultrastudio/sources/applets/show/us_Lissajous_s
+//web_AppletImage= lissajous.png
+//web_Category= Physics - Electronics
+//web_Date= $Date$
+//web_Features= graphics
+
 /**
  * Produciton allpet to draw Lissajous curves. Faster but more difficult to
  * understand.
@@ -31,7 +41,7 @@ public class LissajousSimple extends JApplet implements ChangeListener {
 	/**
 	 * The component that draws Lissajous chart.
 	 */
-	class LisChart extends JComponent {
+	class LisChart extends JPanel {
 		
 		float scale;
 		
@@ -71,7 +81,7 @@ public class LissajousSimple extends JApplet implements ChangeListener {
 	/**
 	 * The component that draws the signal curves chart.
 	 */
-	class SigChart extends JComponent {
+	class SigChart extends JPanel {
 		
 		/**
 		 * Horizontal scale
@@ -231,6 +241,7 @@ public class LissajousSimple extends JApplet implements ChangeListener {
 		slider.setPaintTicks(true);
 		slider.setPaintTrack(true);
 		slider.setSnapToTicks(true);
+		slider.setPreferredSize(new Dimension(200,30));
 		sliders.add(slider);
 		slider.addChangeListener(this);
 	}

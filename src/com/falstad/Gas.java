@@ -16,7 +16,7 @@ package com.falstad;
 //web_Date= 02/08/2016
 //web_JavaVersion= www.falstad.com/gas
 //web_AppletImage= gas.png
-//web_Category= Chemistry
+//web_Category= Chemistry - Ideal Gases
 //web_Features= graphics, AWT-to-Swing
 
 import java.awt.Color;

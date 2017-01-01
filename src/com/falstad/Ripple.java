@@ -7,7 +7,7 @@ package com.falstad;
 //web_Description= A simulation of a ripple tank demonstrating wave interference.
 //web_JavaVersion= http://www.falstad.com/ripple/
 //web_AppletImage= ripple.png
-//web_Category= Physics
+//web_Category= Physics - waves
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 

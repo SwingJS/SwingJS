@@ -5,7 +5,7 @@
 //web_Description= A simulation of sound waves in the human vocal tract to make vowel sounds.
 //web_JavaVersion= http://www.falstad.com/vowel/
 //web_AppletImage= vowel.png
-//web_Category= Physics
+//web_Category= Physics - Waves
 //web_Date= $Date$
 //web_Features= streaming audio, graphics, AWT-to-Swing
 

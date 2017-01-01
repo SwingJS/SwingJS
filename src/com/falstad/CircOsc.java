@@ -49,7 +49,7 @@ import a2s.Scrollbar;
 //web_Description= A simulation of waves in a circular membrane, showing its various vibrational modes. 
 //web_JavaVersion= http://www.falstad.com/circosc/
 //web_AppletImage= circosc.png
-//web_Category= Physics
+//web_Category= Physics - Mechanics
 //web_Date= $Date$
 //web_Features= audio, graphics, AWT-to-Swing
 

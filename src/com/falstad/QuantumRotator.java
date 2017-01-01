@@ -9,7 +9,7 @@ package com.falstad;
 //web_Description= Particle confined to the surface of a sphere
 //web_JavaVersion= http://www.falstad.com/qm1dcrystal/
 //web_AppletImage= quantumrotor.png
-//web_Category= Physics
+//web_Category= Physics - Quantum
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 
