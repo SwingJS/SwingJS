@@ -50,7 +50,7 @@ import a2s.TextField;
 //web_AppletName= Hydrogen Levels
 //web_Description= Interactive Bohr and Dirac diagrams of energy levels in the hydrogen atom
 //web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
-//web_AppletImage= hydrogenlevels0.png
+//web_AppletImage= hydrogenlevels.png
 //web_Info= width:600, height:500
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/atomic/hydrogen.html
 //web_Category= Physics - Atomic
