@@ -78,7 +78,7 @@ public abstract class JSComponent extends Component {
 	@Override
 	public Graphics getGraphics() {
 		if (width == 0 || height == 0 || !isVisible())
-			return null;
+			return null;		
 		if (frameViewer != null)
 			return frameViewer.getGraphics(0, 0).create();
 		if (parent == null) {
@@ -97,16 +97,19 @@ public abstract class JSComponent extends Component {
 		return g;
 	}
 
-	public JSFrameViewer setFrameViewer(JSFrameViewer viewer) {
+  public JSFrameViewer setFrameViewer(JSFrameViewer viewer) {
 		return frameViewer = (viewer == null ? viewer = new JSFrameViewer()
 				.setForWindow((Container) this) : viewer);
 	}
 	
+	private JSFrameViewer topFrameViewer;
+	
   public JSFrameViewer getFrameViewer() {
   	JSComponent parent = null;
-    return (frameViewer != null  ? frameViewer 
+  	return (topFrameViewer != null ? topFrameViewer
+  			: frameViewer != null  ? topFrameViewer = frameViewer 
     		: (parent = getParent()) == null ? null  
-    				: (frameViewer = parent.getFrameViewer())); 
+    				: (topFrameViewer = parent.getFrameViewer())); 
   }
 	
   public String getHTMLName(String uid) {

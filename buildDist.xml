@@ -157,7 +157,11 @@
 
 		<echo message="creating webpage for ${applet}"/>
 		<getAppletInfo file="${applet}"/>
-		
+	  	<if><equals arg1="${UseMain}" arg2="true" /><then>
+	  	    <property name="CodeType" value="main" />
+	    </then><else>
+	  	    <property name="CodeType" value="code" />
+	    </else></if>
 		<loadresource property="ShortDate">
 		  <string value="${Date}"/>
 		  <filterchain>
@@ -193,7 +197,7 @@
 		<echo message="Features: ${Features}"/>
 		<echo message="Info: ${Info}"/>
 		<echo message="${SourceForgePath}/${SourceCode}"/>
-		<echo message="Code: ${Code}" />
+		<echo message="${CodeType}: ${Code}" />
 		<echo file="${basedir}/site/swingjs/examples/addedApplets.html" append="true">
 			<![CDATA[
 			<div class="4u work-item">
@@ -238,7 +242,7 @@
 						}		
 
 						Info = {
-	    					code: "${Code}",
+	    					${CodeType}: "${Code}",
 							width: 700,
 							height: 500,
 							useFrame: true,

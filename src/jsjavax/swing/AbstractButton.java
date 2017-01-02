@@ -29,6 +29,8 @@ package jsjavax.swing;
 
 import javax.swing.event.EventListenerList;
 
+import swingjs.plaf.JSComponentUI;
+
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
 import jsjava.awt.Image;
@@ -366,7 +368,23 @@ public abstract class AbstractButton extends JComponent implements ItemSelectabl
      *
      * @param pressTime the time to "hold down" the button, in milliseconds
      */
-    public void doClick(int pressTime) {
+    @SuppressWarnings("unused")
+		public void doClick(int pressTime) {
+    	JSComponentUI focusedUI = null;
+    	// This is important for a button that is responding to a formatted text box input.
+    	// I cannot figure out how to get the blur message before this one.
+    	// See Micrometer.java
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * focusedUI = document.activeElement && document.activeElement.ui;  
+    	 * 
+    	 */
+    	{}
+    	if (focusedUI != null && focusedUI != this.ui) {
+    		focusedUI.notifyFocus(false);
+    		((JSComponentUI) ui).notifyFocus(true);
+    	}
         model.setArmed(true);
         model.setPressed(true);
         //paintImmediately(new Rectangle(0,0, size.width, size.height));

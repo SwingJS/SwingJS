@@ -181,6 +181,19 @@ public class Applet extends Panel {
         return stub.getAppletContext();
     }
 
+    
+    /**
+     * Added for SwingJS, because Applet extends Panel, and there is no way to trigger a System call to initially repaint it.
+     * Note that that call would come through an applet peer.
+     */
+    @Override
+		public void setVisible(boolean b) {
+        super.setVisible(b);
+        if (b)
+        	repaint(); // BH SwingJS needs this, because there is no system event set to do this.
+    }
+    
+    
     /**
      * Requests that this applet be resized.
      *

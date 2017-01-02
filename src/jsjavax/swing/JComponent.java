@@ -629,9 +629,11 @@ public abstract class JComponent extends Container {
 				// note that this update will fill the component's background, but  
 				// that is not what we are worried about. What we are worried about
 				// is if this method is overridden and is written to.
-				//isBackgroundPainted = false;
+				// BH TODO CHECK THIS 
+				isBackgroundPainted = false;
 				ui.update(scratchGraphics, this);
-				//isBackgroundPainted = ((JSGraphics2D)scratchGraphics).isBackgroundPainted();
+				// BH TODO CHECK THIS 
+				isBackgroundPainted = ((JSGraphics2D)scratchGraphics).isBackgroundPainted();
 			} finally {
 				scratchGraphics.dispose();
 			}
@@ -661,8 +663,8 @@ public abstract class JComponent extends Container {
 			// If we are only to paint to a specific child, determine
 			// its index.
 			if (paintingChild != null && (paintingChild instanceof JComponent)
-			// &&
-			// ((JComponent)paintingChild).isOpaque()
+					// BH is this change right? needed?
+			 // && ((JComponent)paintingChild).isOpaque()
 			) {
 				for (; i >= 0; i--) {
 					if (getComponent(i) == paintingChild) {
@@ -4836,6 +4838,7 @@ public abstract class JComponent extends Container {
 		if (!isShowing()) {
 			return;
 		}
+
 		while (!((JComponent) c).isOpaque()) {
 			parent = c.getParent();
 			if (parent != null) {

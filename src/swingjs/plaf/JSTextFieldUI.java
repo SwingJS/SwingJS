@@ -26,11 +26,13 @@ public class JSTextFieldUI extends JSTextUI {
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
+			allowBackground = false;
 			textListener.checkDocument();
 			// no textNode here, because in input does not have that.
 			focusNode = enableNode = valueNode = domNode = DOMNode
 					.setStyles(newDOMObject("input", id, "type", inputType),
 							"padding", "0px 1px");
+			DOMNode.setAttrs(focusNode, "ui", this);
 			vCenter(domNode, -10);
 			setDataUI(domNode);
 			if (textField.isEditable()) {

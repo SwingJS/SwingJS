@@ -30,6 +30,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	public JSComboBoxUI() {
 		isContainer = true;
+		allowBackground = false;
 		setDoc();
 	}
 	

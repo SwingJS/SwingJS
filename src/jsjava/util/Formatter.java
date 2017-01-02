@@ -4292,10 +4292,10 @@ public final class Formatter implements Flushable {
 				 * @j2sNative 
 				 * 
 				 * if (typeof j2sCompilerOK != "undefined") {
-				 *            sNoRound = value.toFixed(); sRound = value.toFixed(prec);
+				 *            sRound = value.toFixed(); sNoRound = value.toFixed(prec);
 				 * } else {
-				 *            d = b.toFixed(); 
-				 *            e = b.toFixed(c);
+				 *            e = b.toFixed(); 
+				 *            d = b.toFixed(c);
 				 * }
 				 * 
 				 */
@@ -4315,6 +4315,9 @@ public final class Formatter implements Flushable {
 				// check for 1.2e+3 or 1.2e-3 --> 1.2e+03 1.2e-03
 				if (pt == sRound.length() - 2)
 					sRound = sRound.substring(0, pt + 2) + "0" + sRound.substring(pt + 2);
+				break;
+			case DECIMAL_FLOAT:
+				sRound = sNoRound;
 				break;
 			case GENERAL:
 				// For exp >= -4 and exp < prec we must now express

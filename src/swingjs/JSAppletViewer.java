@@ -570,8 +570,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 	private void runLoader() {
 		dispatchAppletEvent(APPLET_LOADING, null);
 		status = APPLET_LOAD;
-		String code = getParameter("code");
 		main = getParameter("main");
+		String code = (main == null ? getParameter("code") : null);
+
 		try {
 			if (code == null && main == null) {
 				System.err.println("runloader.err-- \"code\" or \"main\" must be specified.");

@@ -154,9 +154,9 @@
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Clazz.pu$h ()" value="Clazz.pu$h(c$)"/>
    	   	
 
-    <echo>...abbreviating class name "javajs.util", and "com.jcraft.jzlib" to "JU"</echo>
+    <echo>...abbreviating class name "javajs.util" to "JU"</echo>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="javajs.util" value="JU"/>
-  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/>
+  	<!-- replace dir="site/swingjs/j2s" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/ -->
    	  	   	  	
   	<echo>...adding to swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >

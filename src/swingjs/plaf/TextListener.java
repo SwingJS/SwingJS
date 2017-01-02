@@ -90,7 +90,8 @@ public class TextListener implements MouseListener, MouseMotionListener,
 
     @Override
 		public void focusLost(FocusEvent e) {
-//        JTextComponent b = (JTextComponent) e.getSource();
+     //   JTextComponent b = (JTextComponent) e.getSource();
+        
     }
 
     @Override

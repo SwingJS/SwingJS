@@ -494,6 +494,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		JSToolkit.J2S._jsSetMouse(frameNode, true);
 	}
 
+	public static JSComponentUI focusedUI;
+	JSComponentUI getFocusedUI() {
+		return focusedUI;
+	}
 	/**
 	 * Add the $().focus() and $().blur() events to a DOM button
 	 * 
@@ -726,8 +730,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 		if (obj != null)
 			setProp(obj, prop, text);
-		if (centeringNode != null)
+		if (centeringNode != null) {
 			setCssFont(centeringNode, c.getFont());
+			// added to make sure that the displayed element does not wrap with this new text
+			setHTMLSize(domNode, true);
+		}
 		if (debugging)
 			System.out.println("JSComponentUI: setting " + id + " " + prop);
 	}
@@ -757,6 +764,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * 
 	 */
 	protected int actualHeight, actualWidth;
+
+	/**
+	 * can be set false to never draw a background (textfield, textarea)
+	 */
+	protected boolean allowBackground = true;
 
 	/**
 	 * Create or recreate the inner DOM element for this Swing component.
@@ -1131,9 +1143,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			System.out.println("drawing " + c.getWidth() + " " + c.getHeight());
 		}
 		setHTMLElement();
-		if (c.isOpaque()) {
-			g.setColor(c.getBackground());
-			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		if (c.isOpaque() && allowBackground) {
+				g.setColor(c.getBackground());
+    		g.fillRect(0, 0, c.getWidth(), c.getHeight());
 		}
 		paint(g, c);
 	}
@@ -1758,9 +1770,29 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	public void notifyFocus(boolean focusGained) {
-		Toolkit.getEventQueue().postEvent(
-				new FocusEvent(c, focusGained ? FocusEvent.FOCUS_GAINED
-						: FocusEvent.FOCUS_LOST));
+		// unfortunately, this will be TOO LATE
+
+		AWTEvent e = new FocusEvent(c, focusGained ? FocusEvent.FOCUS_GAINED
+				: FocusEvent.FOCUS_LOST);
+		if (focusGained) {
+			// The problem here is that we are getting an activate signal too early, 
+			// before focus has been obtained.
+			focusedUI = this;
+			Toolkit.getEventQueue().postEvent(e);
+		} else {
+			focusedUI = null;
+			/**
+			 * @j2xxsNative
+			 * 
+			 *              this.c.processEvent(e);
+			 * 
+			 */
+			{
+				// We must be certain that the lost message arrives before the gained.
+				Toolkit.getEventQueue().dispatchEventAndWait(e, c);
+			}
+			
+		}
 	}
 
 	public int getZIndex(String what) {

@@ -15,6 +15,7 @@ import jsjavax.swing.JScrollBar;
 import jsjavax.swing.JSlider;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
+import jssun.swing.DefaultLookup;
 import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
@@ -42,6 +43,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private DOMNode sliderHandle;
 	private int disabled;
 	private int myHeight;
+	private boolean isHoriz;
 	
 	private static boolean cssLoaded = false;
 
@@ -206,24 +208,33 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("value", val);
 		setSliderAttr("min", min);
 		setSliderAttr("max", max);
-		
-		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
+
+		isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
 		myHeight = 10;
 		int barPlace = 40;
-		if (isHoriz &&  jSlider.getBorder() != null)
+		if (isHoriz && jSlider.getBorder() != null)
 			barPlace += 10;
 
-		String tickClass = "ui-j2sslider-tick-mark" + (isHoriz ? "-vert" : "-horiz");
+		String tickClass = "ui-j2sslider-tick-mark"
+				+ (isHoriz ? "-vert" : "-horiz");
 		$(domNode).find("." + tickClass).remove();
 		$(domNode).find(".jslider-labels").remove();
 		setHTMLSize(jqSlider, false);
-		if (majorSpacing == 0 && minorSpacing == 0
-				|| !paintTicks && !paintLabels)
+		if (majorSpacing == 0 && minorSpacing == 0 || !paintTicks && !paintLabels)
 			return;
 		// TODO: test inverted
 		boolean isInverted = jSlider.getInverted();
 		int margin = 10;
-		int length = (isHoriz ? jSlider.getWidth() : jSlider.getHeight()) - 2 * margin;
+
+		int length = (isHoriz ? jSlider.getWidth() : jSlider.getHeight());
+		if (length <= 0)
+			length = (isHoriz ? getPreferredHorizontalSize().width
+					: getPreferredVerticalSize().height);
+		if (isHoriz)
+			actualWidth = length;
+		else
+			actualHeight = length;
+		length -= 2 * margin;
 		if (paintTicks) {
 			if (minorSpacing == 0)
 				minorSpacing = majorSpacing;
@@ -236,16 +247,17 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				$(node).addClass("swingjs");
 				$(node).addClass(tickClass);
 				boolean isMajor = (i % check == 0);
-				float frac = (isHoriz == isInverted ? 1 - fracSpacing * i : fracSpacing * i);
+				float frac = (isHoriz == isInverted ? 1 - fracSpacing * i : fracSpacing
+						* i);
 				String spt = (frac * length + margin) + "px";
-				if (isMajor)	
+				if (isMajor)
 					$(node).css(isHoriz ? "height" : "width", "10px");
 				$(node).css(isHoriz ? "left" : "top", spt).appendTo(domNode);
 			}
 			setHTMLSize(domNode, false);
 		}
 		if (paintLabels) {
-			int m = 10;		
+			int m = 10;
 			myHeight += 20;
 			labelTable = jSlider.getLabelTable();
 			Enumeration keys = labelTable.keys();
@@ -253,8 +265,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				Object key = keys.nextElement();
 				int n = Integer.parseInt(key.toString());
 				JLabel label = labelTable.get(key);
-				DOMNode labelNode = ((JSComponentUI) label.getUI())
-						.getOuterNode();
+				DOMNode labelNode = ((JSComponentUI) label.getUI()).getOuterNode();
 				// need calculation of pixels
 				float frac = (n - min) * 1f / (max - min);
 				if (isHoriz == isInverted)
@@ -271,24 +282,30 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				DOMNode.setPositionAbsolute(labelNode, top, left);
 				domNode.appendChild(labelNode);
 			}
-			if (paintTicks) {
-				if (isHoriz) {
-					DOMNode.setStyles(sliderHandle, "transform","scaleX(0.5) rotateZ(45deg)", "top","-8px");					
-					DOMNode.setStyles(sliderTrack, "height","1px", "background", "black", "top", "10px");					
-				} else {
-					DOMNode.setStyles(sliderHandle, "transform","scaleY(0.5) rotateZ(45deg)", "left","-10px", "margin-bottom", "-7px" );					
-					DOMNode.setStyles(sliderTrack, "width","1px","left", "12px", "background", "black" );					
-				}
-					
-			} else {
-				DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%");
-			}
-			if (!isHoriz && !iVertScrollBar)
-				DOMNode.setStyles(sliderTrack, "height", length  + "px");
-				
-			setHTMLSize(domNode, false);
 		}
+		if (paintTicks) {
+			if (isHoriz) {
+				DOMNode.setStyles(sliderHandle, "transform",
+						"scaleX(0.5) rotateZ(45deg)", "top", "-8px");
+				DOMNode.setStyles(sliderTrack, "height", "1px", "background", "black",
+						"top", "10px");
+			} else {
+				DOMNode.setStyles(sliderHandle, "transform",
+						"scaleY(0.5) rotateZ(45deg)", "left", "-10px", "margin-bottom",
+						"-7px");
+				DOMNode.setStyles(sliderTrack, "width", "1px", "left", "12px",
+						"background", "black");
+			}
+
+		} else {
+			DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%");
+		}
+		if (!isHoriz && !iVertScrollBar)
+			DOMNode.setStyles(sliderTrack, "height", length + "px");
+
+		setHTMLSize(domNode, false);
 	}
+
 
 	@Override
 	protected Dimension setHTMLSize(DOMNode obj, boolean addCSS) {
@@ -298,7 +315,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if (jSlider.getBorder() != null)
 			d += 10;
 		// only the width or height will be read here, not both
-		return new Dimension(d, d);
+		return new Dimension((isHoriz ? actualWidth : d), (isHoriz ? d : actualHeight));
 	}
 
 	@Override
@@ -333,6 +350,24 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			DOMNode.setStyles(domNode,  "position", "absolute", "top", (height - myHeight)/2 + "px");
 		}
 			
+	}
+
+	public Dimension getPreferredHorizontalSize() {
+		Dimension horizDim = (Dimension) DefaultLookup.get(jSlider, this,
+				"Slider.horizontalSize");
+		if (horizDim == null) {
+			horizDim = new Dimension(200, 21);
+		}
+		return horizDim;
+	}
+
+	public Dimension getPreferredVerticalSize() {
+		Dimension vertDim = (Dimension) DefaultLookup.get(jSlider, this,
+				"Slider.verticalSize");
+		if (vertDim == null) {
+			vertDim = new Dimension(21, 200);
+		}
+		return vertDim;
 	}
 
 }
