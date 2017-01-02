@@ -253,7 +253,7 @@ public class DefaultButtonModel implements ButtonModel {
     }
 
 
-s    /**
+    /**
      * {@inheritDoc}
      */
     @Override
