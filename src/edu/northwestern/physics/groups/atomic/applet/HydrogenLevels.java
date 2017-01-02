@@ -1,8 +1,21 @@
 package edu.northwestern.physics.groups.atomic.applet;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 
+import javax.swing.AbstractButton;
+import javax.swing.JApplet;
 
+import a2s.Button;
+import a2s.Canvas;
+import a2s.Checkbox;
+import a2s.Choice;
+import a2s.Label;
+import a2s.Panel;
+import a2s.TextField;
 //Hydrogen.java
 //
 /*************************************************************************
@@ -32,33 +45,21 @@ import java.awt.BorderLayout;
  * @author Greg Anderson
  * @version 0.1, 21 Feb 1998
  */
-import a2s.Button;
-import a2s.Canvas;
-import a2s.Checkbox;
-import a2s.Choice;
-
-import java.awt.Color;
-import java.awt.Event;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import a2s.Label;
-import a2s.Panel;
-import a2s.TextField;
-
-import javax.swing.JApplet;
 
 //web_Ready
 //web_AppletName= Hydrogen Levels
-//web_Description= Bohr and Dirac diagrams of energy levels in the hydrogen atom
+//web_Description= Interactive Bohr and Dirac diagrams of energy levels in the hydrogen atom
 //web_Date= $Date: 2016-12-30 11:17:11 -0600 (Fri, 30 Dec 2016) $
-//web_AppletImage= hydrogenlevels.png
-//web_Info= width:800, height:500
+//web_AppletImage= hydrogenlevels0.png
+//web_Info= width:600, height:500
 //web_JavaVersion= http://groups.physics.northwestern.edu/vpl/atomic/hydrogen.html
 //web_Category= Physics - Atomic
-//web_Features= AWT-to-Swing, canvas 
+//web_Features= AWT-to-Swing, AWT-ActionEvent, canvas 
+
+// BH only changes are (1) to replace setBackground() in the middle of a paint operation (which calls repaint!)
+// BH              and (2) check for button instanceof AbstractButton, not Button
+
+// BH no ActionListener business necessary, as these are now handled by a2s.A2SEvent
 
 class HydrogenCanvas extends Canvas {
 
@@ -98,11 +99,6 @@ class HydrogenCanvas extends Canvas {
 
 	int nmax = 8; // The number of radial orbitals displayed
 	int lmax = 7; // The number of angular momentum states displayed
-	private HydrogenLevels applet;
-
-	public HydrogenCanvas(HydrogenLevels hydrogenLevels) {
-		this.applet = hydrogenLevels; // BH
-	}
 
 	public void displaySeries(Graphics g, int nf, int lf) {
 		if (displayModel == 0) {
@@ -212,10 +208,11 @@ class HydrogenCanvas extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
+
 		initSizes();
-		//setBackground(Color.black); // BH -- causes repaint
-		g.setColor(Color.black);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(Color.black); // BH needed for Swing
+		g.fillRect(0,  0,  getWidth(),  getHeight()); // BH need for Swing
+		//setBackground(Color.black); // BH does not work in Java Swing
 		int nf;
 
 		g.setColor(Color.yellow);
@@ -312,12 +309,12 @@ class HydrogenCanvas extends Canvas {
 	public void redraw(Integer Nmax, Integer Lmax) {
 		nmax = Nmax.intValue();
 		lmax = Lmax.intValue();
-		applet.repaint();
+		repaint();
 	}
 
 }
 
-class HydrogenControls extends Panel implements ActionListener {
+class HydrogenControls extends Panel {
 
 	/**
 	 *
@@ -347,23 +344,18 @@ class HydrogenControls extends Panel implements ActionListener {
 
 		btemp = new Button("n_max = ");
 		btemp.setForeground(Color.black);
-		btemp.addActionListener(this); // PF add
 		add(btemp);
 		itemp = new Integer(canvas.nmax);
 		add(nmax = new TextField(itemp.toString(), 4));
-		nmax.addActionListener(this); // PF add
 
 		btemp = new Button("l_max = ");
 		btemp.setForeground(Color.black);
-		btemp.addActionListener(this); // PF add
 		add(btemp);
 		itemp = new Integer(canvas.lmax);
 		add(lmax = new TextField(itemp.toString(), 4));
-		lmax.addActionListener(this); // PF add
 
 		TrueColor = new Checkbox("True Colors");
 		TrueColor.setState(canvas.trueColor);
-		TrueColor.addActionListener(this);
 		add(TrueColor);
 		add(new Label("", Label.LEFT));
 		add(new Label("Theory:", Label.LEFT));
@@ -371,29 +363,27 @@ class HydrogenControls extends Panel implements ActionListener {
 		c.addItem("Bohr Model");
 		c.addItem("Dirac");
 		add(c);
-		c.addActionListener(this);
 
 		Lyman = new Checkbox("Lyman Series");
 		Lyman.setState(canvas.displayLyman);
-		Lyman.addActionListener(this);
 		add(Lyman);
 		Balmer = new Checkbox("Balmer Series");
 		Balmer.setState(canvas.displayBalmer);
-		Balmer.addActionListener(this);
 		add(Balmer);
 		Paschen = new Checkbox("Paschen Series");
 		Paschen.setState(canvas.displayPaschen);
-		Paschen.addActionListener(this);
 		add(Paschen);
 		Brackett = new Checkbox("Brackett Series");
 		Brackett.setState(canvas.displayBrackett);
-		Brackett.addActionListener(this);
 		add(Brackett);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent evt) {
+	public boolean action(Event ev, Object arg) {
 		// String label = (String) arg;
+		if ((ev.target instanceof AbstractButton) // BH changed
+				|| ((arg instanceof Boolean) || (ev.target instanceof Choice))
+				|| (ev.id == Event.END)) { // Redisplay if Return
 			// int Theory;
 			canvas.trueColor = TrueColor.getState();
 			canvas.displayLyman = Lyman.getState();
@@ -408,6 +398,10 @@ class HydrogenControls extends Panel implements ActionListener {
 			}
 			canvas.redraw(Integer.valueOf(nmax.getText().trim()),
 					Integer.valueOf(lmax.getText().trim()));
+			return true;
+		}
+
+		return false;
 	}
 
 }
@@ -425,12 +419,6 @@ public class HydrogenLevels extends JApplet {
 	Label appletName = new Label("Virtual Interactive Demonstration");
 	Label department = new Label("Department of Physics and Astronomy");
 	Label university = new Label("Northwestern University");
-	
-	{
-		department.setForeground(Color.white);
-		university.setForeground(Color.white);
-		appletName.setForeground(Color.white);
-	}
 
 	@Override
 	public String getAppletInfo() {
@@ -453,15 +441,10 @@ public class HydrogenLevels extends JApplet {
 		banner.add("Center", department);
 		banner.add(appletName);
 		banner.add("Center", university);
-		banner.add("South", new Label("G.Anderson") {
-			{
-				setForeground(Color.white);
-			}
-			
-		});
+		banner.add("South", new Label("G.Anderson"));
 		add("North", banner);
 
-		c = new HydrogenCanvas(this);
+		c = new HydrogenCanvas();
 		add("Center", c);
 		add("South", controls = new HydrogenControls(c));
 	}
