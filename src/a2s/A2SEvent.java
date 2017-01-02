@@ -33,7 +33,20 @@ public class A2SEvent implements Runnable {
 
 	@Override
 	public void run() {
-		c.handleEvent(e);
+	  Component c = this.c;
+	  Event e = this.e;
+		
+		/**
+		 * Otherwise the states have not changed
+		 * 
+		 * @j2sNative
+		 * 
+		 * 	setTimeout(function() { c.handleEvent(e);});
+		 * 
+		 */
+		{
+			c.handleEvent(e);
+		}
 	}
 
 
