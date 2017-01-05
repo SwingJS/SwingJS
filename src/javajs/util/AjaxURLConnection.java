@@ -1,11 +1,13 @@
 package javajs.util;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
 import javajs.api.JmolObjectInterface;
+import javajs.api.ResettableStream;
 
 /**
  * 
@@ -39,7 +41,7 @@ public class AjaxURLConnection extends URLConnection {
    * 
    */
   @SuppressWarnings("null")
-  private Object doAjax() {
+  private Object doAjax(boolean isBinary) {
     JmolObjectInterface jmol = null;
     /**
      * @j2sNative
@@ -49,7 +51,7 @@ public class AjaxURLConnection extends URLConnection {
      */
     {
     }
-    return jmol._doAjax(url, postOut, bytesOut);
+    return jmol._doAjax(url, postOut, bytesOut, isBinary);
   }
 
   @Override
@@ -67,23 +69,55 @@ public class AjaxURLConnection extends URLConnection {
     //     type = "application/x-www-form-urlencoded";
   }
 
-  @Override
-  public InputStream getInputStream() {
-    InputStream is = null;
-    Object o = doAjax();
-    if (AU.isAB(o))
-      is = Rdr.getBIS((byte[]) o);
-    else if (o instanceof SB) 
-      is = Rdr.getBIS(Rdr.getBytesFromSB((SB)o));
-    else if (o instanceof String)
-      is = Rdr.getBIS(((String) o).getBytes());
-    return is;
-  }
-  /**
+	@SuppressWarnings("unused")
+	@Override
+	public InputStream getInputStream() {
+		BufferedInputStream bis = getAttachedStreamData(url);
+		if (bis != null)
+			return bis;
+		Object o = doAjax(true);
+		return (
+				AU.isAB(o) ? Rdr.getBIS((byte[]) o) 
+				: o instanceof SB ? Rdr.getBIS(Rdr.getBytesFromSB((SB) o)) 
+				: o instanceof String ? Rdr.getBIS(((String) o).getBytes()) 
+				: bis
+		);
+	}
+  @SuppressWarnings("unused")
+	/**
+	 * J2S will attach a BufferedInputStream to any URL that is 
+	 * retrieved using a ClassLoader. This improves performance by
+	 * not going back to the server every time a second time, since
+	 * the first time in Java is usually just to see if it exists. 
+	 * 
+	 * This stream can be re-used, but it has to be reset. Java for some 
+	 * reason does not allow  a BufferedInputStream to fully reset its 
+	 * inner streams. We enable that by force-casting the stream as a 
+	 * jsjavax.io stream and then applying resetStream() to that. 
+	 * 
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static BufferedInputStream getAttachedStreamData(URL url) {
+		BufferedInputStream bis = null;
+		/**
+		 * @j2sNative
+		 * 
+		 *            bis = url._streamData;
+		 */
+		{
+		}
+		if (bis != null)
+			((ResettableStream) (Object) bis).resetStream();
+		return bis;
+	}
+
+	/**
    * @return javajs.util.SB or byte[], depending upon the file type
    */
   public Object getContents() {
-    return doAjax();
+    return doAjax(false);
   }
 
 }

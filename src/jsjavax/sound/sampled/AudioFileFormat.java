@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import jsjavax.sound.sampled.AudioFileFormat.Type;
+
 
 /**
  * An instance of the <code>AudioFileFormat</code> class describes
@@ -337,6 +339,16 @@ public class AudioFileFormat {
         public static final Type AIFC = new Type("AIFF-C", "aifc");
 
         /**
+         * Specifies a OGG file.
+         */
+        public static final Type OGG = new Type("OGG", "ogg");
+
+        /**
+         * Specifies a MP3 file.
+         */
+        public static final Type MP3 = new Type("MP3", "mp3");
+
+        /**
          * Specifies a SND file.
          */
         public static final Type SND = new Type("SND", "snd");
@@ -411,6 +423,17 @@ public class AudioFileFormat {
         public String getExtension() {
             return extension;
         }
+
+				public static Type getType(AudioFormat format) {
+					String type = (String) format.getProperty("fileFormat");
+					if (type == "WAV")
+						return WAVE;
+					if (type == "OGG")
+						return  OGG;
+					if (type == "MP3")
+						return  MP3;
+					return null;
+				}
 
     } // class Type
 

@@ -266,6 +266,7 @@ class Thread implements Runnable {
     /* Whether or not the Thread has been completely constructed;
      * init or clone method has successfully completed */
     private volatile Thread me;    // null
+		private boolean started;
 
     /**
      * Returns a reference to the currently executing thread object.
@@ -739,7 +740,8 @@ class Thread implements Runnable {
     }
 
     private void start0(){
-    	// SwingJS ;
+    	started = true;    	
+    	JSToolkit.dispatch(this, 0, 0);
     }
 
     /**
@@ -1078,7 +1080,7 @@ class Thread implements Runnable {
      */
     public final boolean isAlive(){
     	// SwingJS ;
-    	return true;
+    	return started && !stopped;
     }
 
     /**

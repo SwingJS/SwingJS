@@ -29,6 +29,11 @@
 package jsjavax.sound.sampled;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import javajs.util.Rdr;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Mixer;
@@ -208,6 +213,80 @@ public class AudioSystem {
 			ByteArrayInputStream stream)
 			throws javax.sound.sampled.UnsupportedAudioFileException {
 		return JSAudio.getAudioInputStream(stream);
+	}
+
+  /**
+   * Obtains the audio file format of the specified URL.  The URL must
+   * point to valid audio file data.
+   * @param url the URL from which file format information should be
+   * extracted
+   * @return an <code>AudioFileFormat</code> object describing the audio file format
+   * @throws UnsupportedAudioFileException if the URL does not point to valid audio
+   * file data recognized by the system
+   * @throws IOException if an input/output exception occurs
+   */
+  public static jsjavax.sound.sampled.AudioFileFormat getAudioFileFormat(URL url)
+      throws javax.sound.sampled.UnsupportedAudioFileException, IOException {
+
+  	javax.sound.sampled.AudioInputStream ais = getAudioInputStream(url);
+  	
+    jsjavax.sound.sampled.AudioFormat format = (jsjavax.sound.sampled.AudioFormat) (Object) (ais == null ? null : ais.getFormat());
+
+      if( format==null )
+          throw new javax.sound.sampled.UnsupportedAudioFileException("file is not a supported file type");
+     
+      return new AudioFileFormat(AudioFileFormat.Type.getType(format), format, AudioSystem.NOT_SPECIFIED);
+    
+  }
+
+  /**
+   * Obtains an audio input stream from the provided input stream.  The stream must
+   * point to valid audio file data.  The implementation of this method may
+   * require multiple parsers to
+   * examine the stream to determine whether they support it.  These parsers must
+   * be able to mark the stream, read enough data to determine whether they
+   * support the stream, and, if not, reset the stream's read pointer to its original
+   * position.  If the input stream does not support these operation, this method may fail
+   * with an <code>IOException</code>.
+   * @param stream the input stream from which the <code>AudioInputStream</code> should be
+   * constructed
+   * @return an <code>AudioInputStream</code> object based on the audio file data contained
+   * in the input stream.
+   * @throws UnsupportedAudioFileException if the stream does not point to valid audio
+   * file data recognized by the system
+   * @throws IOException if an I/O exception occurs
+   * @throws javax.sound.sampled.UnsupportedAudioFileException 
+   * @see InputStream#markSupported
+   * @see InputStream#mark
+   */
+  public static javax.sound.sampled.AudioInputStream getAudioInputStream(InputStream stream)
+      throws javax.sound.sampled.UnsupportedAudioFileException, IOException, javax.sound.sampled.UnsupportedAudioFileException {
+
+  	if (stream instanceof ByteArrayInputStream) 
+  		return getAudioInputStream((ByteArrayInputStream) stream);
+  	
+  	return getAudioInputStream(new ByteArrayInputStream(Rdr.getLimitedStreamBytes(stream, -1)));
+
+  }
+
+	/**
+	 * Obtains an audio input stream from the URL provided. The URL must point to
+	 * valid audio file data.
+	 * 
+	 * @param url
+	 *          the URL for which the <code>AudioInputStream</code> should be
+	 *          constructed
+	 * @return an <code>AudioInputStream</code> object based on the audio file
+	 *         data pointed to by the URL
+	 * @throws UnsupportedAudioFileException
+	 *           if the URL does not point to valid audio file data recognized by
+	 *           the system
+	 * @throws IOException
+	 *           if an I/O exception occurs
+	 */
+	public static javax.sound.sampled.AudioInputStream getAudioInputStream(URL url)
+			throws javax.sound.sampled.UnsupportedAudioFileException, IOException {
+		return getAudioInputStream(JSToolkit.getURLInputStream(url, false));
 	}
 
 }

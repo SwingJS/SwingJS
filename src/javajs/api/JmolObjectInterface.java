@@ -5,7 +5,7 @@ package javajs.api;
  */
 public interface JmolObjectInterface {
 
-  Object _doAjax(Object url, String postOut, Object bytesOrStringOut);
+  Object _doAjax(Object url, String postOut, Object bytesOrStringOut, boolean isBinary);
 
   void _apply(Object func, Object data);
 

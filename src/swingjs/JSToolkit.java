@@ -1012,25 +1012,10 @@ public class JSToolkit extends SunToolkit {
 	 */
 	@Override
 	public Image createImage(URL url) {
-		BufferedInputStream b = null;
-		/**
-		 * @j2sNative
-		 * 
-		 * b = url._streamData;
-		 * url._streamData = null;	
-		 * 
-		 */
-		{			
-		}
-		try {
-			if (b == null)
-				b = new BufferedInputStream(url.openStream());
-			return getImagekit().createImageFromBytes(getSignedStreamBytes(b), 0, -1, url.toString());
-		} catch (IOException e) {
-			return null;
-		}
+		BufferedInputStream b = getURLInputStream(url, true);
+		return (b == null ? null : getImagekit().createImageFromBytes(getSignedStreamBytes(b), 0, -1, url.toString()));
 	}
-
+	
 	@Override
 	public Image createImage(byte[] data, int imageoffset, int imagelength) {
 		return getImagekit().createImageFromBytes(data, imageoffset, imagelength, null);
@@ -1115,9 +1100,21 @@ public class JSToolkit extends SunToolkit {
 	public static void playAudio(byte[] data, AudioFormat audioFormat) throws UnsupportedAudioFileException {
 		getAudioPlayer().playAudio(data, audioFormat);
 	}
+	
+	
+	/**
+	 * Simple way to play any audio file
+	 * 
+	 * @param url URL for data; if created using a class loader, will have attached ._streamData and not opened again.
+	 * 
+	 * @throws IOException
+	 * @throws UnsupportedAudioFileException
+	 */
+	public static void playAudioFile(URL url) throws IOException, UnsupportedAudioFileException {
+		getAudioPlayer().playAudioFileURL(url);
+	}
 
 	public static Line getAudioLine(Line.Info info) {
-		// TODO Auto-generated method stub
 		return getAudioPlayer().getAudioLine(info);
 	}
 
@@ -1344,6 +1341,30 @@ public class JSToolkit extends SunToolkit {
 		// for whatever reason, Java font points are much larger than HTML5 canvas
 		// points
 		return strStyle + font.getSize() + "px " + family;
+	}
+
+	@SuppressWarnings("unused")
+	public static BufferedInputStream getURLInputStream(URL url, boolean andDelete) {
+		
+		BufferedInputStream bis = null;
+		/**
+		 * @j2sNative
+		 * 
+		 * bis = url._streamData;
+		 * if (andDelete)
+		 *   url._streamData = null;
+		 * 
+		 */
+		{}
+		
+		if (bis == null)
+			try {
+				return (BufferedInputStream) (Object) url.openStream();
+			} catch (IOException e) {
+				return null;
+			}
+		((jsjava.io.BufferedInputStream) (Object) bis).resetStream();
+		return bis;
 	}
 
 }

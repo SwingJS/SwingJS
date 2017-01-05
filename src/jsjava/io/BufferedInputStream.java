@@ -172,12 +172,12 @@ class BufferedInputStream extends FilterInputStream {
     }
 
     /**
-     * BH: Allows resetting of the underlying stream (buffered only)
+     * BH: Addeed to allow full reset of a bundled stream
      */
     @Override
     public void resetStream() {
-      //markpos = pos = count = 0;
-      //in.resetStream();
+      markpos = pos = count = 0;
+      in.resetStream();
     }
     /**
      * 

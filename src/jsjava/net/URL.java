@@ -30,8 +30,11 @@
 
 package jsjava.net;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.Hashtable;
+
+import javajs.util.AjaxURLConnection;
 
 import jsjava.io.InputStream;
 
@@ -1066,26 +1069,19 @@ public final class URL {//implements Serializable {
         return openConnection().getInputStream();
     }
 
-    /** same as openStream()
+    /** same as openStream(), except here we might get string buffer data, not bytes,
+     * since we will call J2S._doAjax(false), not J2S._doAjax(true), which
+     * will only return binary data for known binary file types (see j2sApplet)
      * 
      * @return  input stream
      * @throws IOException
      */
     public Object getContent() throws IOException {
-    	/**
-    	 * 
-    	 * May have been opened by ClassLoader
-    	 * 
-    	 * @j2sNative
-    	 * 
-    	 * if (this._streamData)
-    	 * 	 return this._streamData;
-    	 */
-    	{}
-      return openConnection().getInputStream();
+    	BufferedInputStream bis = AjaxURLConnection.getAttachedStreamData((java.net.URL) (Object) this);
+    	return (bis == null ? openConnection().getInputStream() : bis);
     }    
 
-    /**
+		/**
      * The URLStreamHandler factory.
      */
     static URLStreamHandlerFactory factory;

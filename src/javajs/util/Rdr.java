@@ -259,7 +259,7 @@ public class Rdr implements GenericLineReader {
   }
 
   public static byte[] getMagic(InputStream is, int n) {
-    byte[] abMagic = new byte[n];
+    byte[] abMagic = new byte[n];    
     /**
      * @j2sNative
      * 

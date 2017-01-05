@@ -11,6 +11,12 @@ public class BC {
     return intToFloat(bytesToInt(bytes, j, isBigEndian));
   }
 
+  public static short bytesToShort(byte[] bytes, int j, boolean isBigEndian) {
+    int n = (isBigEndian ? (bytes[j + 1] & 0xff) | (bytes[j] & 0xff) << 8
+        : (bytes[j++] & 0xff) | (bytes[j++] & 0xff) << 8);
+    return (short) (n > 0x7FFF ? n - 0x10000 : n);
+  }
+  
   public static int bytesToInt(byte[] bytes, int j, boolean isBigEndian) {
     int n = (isBigEndian ? (bytes[j + 3] & 0xff) | (bytes[j + 2] & 0xff) << 8
         | (bytes[j + 1] & 0xff) << 16 | (bytes[j] & 0xff) << 24

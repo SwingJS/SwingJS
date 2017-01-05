@@ -187,8 +187,14 @@ class ByteArrayInputStream extends InputStream {
         /**
          * @j2sNative
          * 
-         * if (arguments.length == 0)
+         * switch (arguments.length){
+         * case 0:
          *   return this.readByteAsInt();
+         * case 1:
+         *   off = 0;
+         *   len = b.length;
+         *   break;
+         * }
          */
         {}
         
@@ -287,7 +293,7 @@ class ByteArrayInputStream extends InputStream {
      */
     @Override
     public void resetStream() {
-      //mark = pos = 0;
+      mark = pos = 0;
     }
 
     /**

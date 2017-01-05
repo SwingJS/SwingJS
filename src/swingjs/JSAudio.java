@@ -2,13 +2,18 @@ package swingjs;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.api.ResettableStream;
+import javajs.util.BC;
 import javajs.util.Base64;
 import javajs.util.OC;
+import javajs.util.Rdr;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -22,6 +27,8 @@ import swingjs.api.DOMNode;
  * see http://stackoverflow.com/questions/5810164/how-can-i-write-wav-file-from-byte-array-in-java
  * 
  * see www-mmsp.ece.mcgill.ca/documents/audioformats/wave/wave.html
+ * 
+ * see http://www.jsresources.org/faq_audio.html
  * 
  * 
  * 
@@ -39,21 +46,36 @@ public class JSAudio {
 	public Line getAudioLine(Line.Info info) {
 		return new JSAudioLine(info);
 	}
-
+	
+	public void playAudioFileURL(URL url) throws IOException, UnsupportedAudioFileException {
+		if (JSToolkit.debugging)
+			System.out.println(url + " AudioFormat:" + getAudioFileFormat(url));
+		playAudioFile(Rdr.getLimitedStreamBytes(url.openStream(), -1), null);
+	}
+ 
+	
+	public static AudioFormat getAudioFileFormat(URL url) throws IOException, UnsupportedAudioFileException {
+		return getAudioFormatForStreamOrBytes(null, Rdr.getLimitedStreamBytes(url.openStream(), -1));
+	}
+ 
 
 	/**
-	 * play binary audio file data through an HTML5 audio element
-	 * where the data are already in wave format (this could be MPEG, for example, too, but
-	 * WAVE is the most reliable for cross-browser capability.
+	 * play binary audio file data through an HTML5 audio element where the data
+	 * are already in wave format (this could be MPEG, for example, too, but WAVE
+	 * is the most reliable for cross-browser capability.
 	 * 
-	 * @param fileData 
-	 * @param fileFormat  string xxx to be placed in data:audio/xxx;base64,
-	 * @throws UnsupportedAudioFileException 
+	 * @param fileData
+	 * @param fileType
+	 *          string xxx to be placed in data:audio/xxx;base64,
+	 * @throws UnsupportedAudioFileException
 	 */
-	public void playAudioFile(byte[] fileData, String fileFormat) throws UnsupportedAudioFileException {
+	public void playAudioFile(byte[] fileData, String fileType)
+			throws UnsupportedAudioFileException {
 		Map<String, Object> props = new Hashtable<String, Object>();
-		props.put("fileFormat", fileFormat);
-		playAudio(fileData, new AudioFormat(null, -1, -1, -1, -1, -1, false, props));		
+		if (fileType == null)
+			fileType = getAudioTypeForBytes(fileData);
+		props.put("fileFormat", fileType);
+		playAudio(fileData, new AudioFormat(null, -1, -1, -1, -1, -1, false, props));
 	}
 	/**
 	 * 
@@ -247,31 +269,83 @@ public class JSAudio {
 		 };
 	 
 	 public static AudioInputStream getAudioInputStream(ByteArrayInputStream stream) throws UnsupportedAudioFileException {
-		AudioFormat format = null; 
-		stream.mark(10);
-		byte[] b = new byte[10];
+		return new JSAudioInputStream(stream, getAudioFormatForStreamOrBytes(stream, null), -1);
+	}
+
+	private static AudioFormat getAudioFormatForStreamOrBytes(
+			ByteArrayInputStream stream, byte[] header) throws UnsupportedAudioFileException {
+		
+		// tests at http://www.kozco.com/tech/soundtests.html
+
+		Map<String, Object> props = new Hashtable<String, Object>();
+		String fmt = (stream == null ? getAudioTypeForBytes(header) : getAudioTypeForStream(stream));
+		ResettableStream jsstream = (ResettableStream) stream;
+		props.put("fileFormat", fmt);
+		if (stream != null)
+			jsstream.resetStream();
+		Encoding encoding = null;
+		float sampleRate = -1;
+		int sampleSizeInBits = -1;
+		int channels = -1;
+		int frameSize = -1;
+		float frameRate = -1;
+		boolean bigEndian = false;
+
+		try {
+			if (fmt == "MP3") {
+				// doubtful that Java can read these.
+			} else if (fmt == "OGG") {
+				// same deal
+			} else if (fmt == "WAV") {
+				// based on http://www.topherlee.com/software/pcm-tut-wavformat.html
+				if (stream != null) {
+					header = new byte[36];
+					stream.read(header);
+				}
+				int enc = BC.bytesToShort(header, 20, false);
+				if (enc == 1)
+					encoding = Encoding.PCM_SIGNED; // assuming signed here
+				channels = BC.bytesToShort(header, 22, false);
+				frameRate = sampleRate = BC.bytesToInt(header, 24, false);
+				//int byteRate =  BC.bytesToInt(header, 28, false);// Sample Rate * BitsPerSample * Channels / 8.
+				frameSize = BC.bytesToShort(header, 32, false);// NumChannels * BitsPerSample / 8
+				sampleSizeInBits = BC.bytesToShort(header, 34, false); // 8, 16, etc.
+			}
+		} catch (Throwable e) {
+		} finally {
+			if (stream != null)
+				jsstream.resetStream();
+		}
+		return new AudioFormat(encoding, sampleRate, sampleSizeInBits, channels,
+				frameSize, frameRate, bigEndian, props);
+	}
+
+
+	private static String getAudioTypeForStream(ByteArrayInputStream stream) throws UnsupportedAudioFileException {
+		ResettableStream jsstream = (ResettableStream) (Object) stream;
+		jsstream.resetStream();
+		byte[] b = new byte[12];
 		try {
 			stream.read(b);
 		} catch (IOException e) {
 			// no problem
 		}
-		stream.reset();
-		Map<String, Object> props = new Hashtable<String, Object>();
-		String fmt = null;
-		if (isWave(b)) {
-			fmt = "WAV";
-		} else if (isMP3(b)) {
-			fmt = "MP3";
-		} else if (isOGG(b)) {
-			fmt= "OGG";
-		}
-		if (fmt == null)
-			throw new UnsupportedAudioFileException();
-			props.put("fileFormat",fmt);
-		format = new javax.sound.sampled.AudioFormat(null, -1, 
-				-1, -1, -1, -1, false, props);
-		return new JSAudioInputStream(stream, format, -1);
+		jsstream.resetStream();
+		return getAudioTypeForBytes(b);
 	}
+
+
+	private static String getAudioTypeForBytes(byte[] b)
+			throws UnsupportedAudioFileException {
+		if (isWave(b))
+			return "WAV";
+		if (isMP3(b))
+			return "MP3";
+		if (isOGG(b))
+			return "OGG";
+		throw new UnsupportedAudioFileException();
+	}
+
 
 	private static boolean isOGG(byte[] b) {
 		// "OggS"
@@ -286,7 +360,7 @@ public class JSAudio {
 	private static boolean isWave(byte[] b) {
 		// "RIFF....WAVE" // 52 49 46 46
 		return b[0] == 0x52 && b[1] == 0x49 && b[2] == 0x46 && b[3] == 0x46
-			  && b[8] == 0x57 && b[8] == 0x41 && b[8] == 0x56 && b[8] == 0x45;
+			  && b[8] == 0x57 && b[9] == 0x41 && b[10] == 0x56 && b[11] == 0x45;
 	}
 
 }
