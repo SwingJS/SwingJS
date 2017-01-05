@@ -92,12 +92,26 @@
         <include name="**/*.js" />
       </fileset>
     </copy>
+
+   	<echo>...copying javajs/util to swingjs/j2s/JU</echo>
+   	<copy todir="site/swingjs/j2s/JU" >
+      <fileset dir="bin/javajs/util">
+        <include name="**/*.js" />
+      </fileset>
+    </copy>
+  	
+    <echo>...adding javajs/api to swingjs/j2s </echo>
+  	<copy todir="site/swingjs/j2s/javajs/api"  overwrite="true" >
+      <fileset dir="bin/javajs/api">
+        <include name="*.js" />
+      </fileset>
+    </copy>
+  	
   	
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
         <include name="**/*.js" />
-        <exclude name="**/java/*.js" />
         <exclude name="javajs/**/*.js" />
         <exclude name="jsjava/**/*.js" />
         <exclude name="jsjavax/**/*.js" />
@@ -105,20 +119,6 @@
       </fileset>
     </copy>
    	
-
-   	<echo>...JU (javajs/util)</echo>
-   	<copy todir="site/swingjs/j2s/JU" >
-      <fileset dir="bin/javajs/util">
-        <include name="**/*.js" />
-      </fileset>
-    </copy>
-  	
-    <echo>...adding to swingjs/j2s jsmol/bin/javajs/api</echo>
-  	<copy todir="site/swingjs/j2s/javajs/api"  overwrite="true" >
-      <fileset dir="bin/javajs/api">
-        <include name="*.js" />
-      </fileset>
-    </copy>
    	 		
    	<echo>Changing "jsjava" to "java", "jsjavax" to "javax", and "jssun" to "sun"</echo>
   	<replace dir="site/swingjs/" includes="**/*.*" token="jsjava" value="java" />
