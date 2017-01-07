@@ -147,6 +147,12 @@
 				});
 			</script> ]]>
 		</echo>
+		
+		
+
+	  	<echo>...running buildZip to create core zip/swingjs.zip</echo>
+	   	<ant antfile="buildZip.xml" target="zip" />  	
+	  	
 	</target>
 
 	<target name="genWebpage" id="genWebpage">
@@ -346,12 +352,7 @@
 			</html>
 			]]>
 		</echo>
-		
-		
-
-	  	<echo>...running buildZip to create core zip/swingjs.zip</echo>
-	   	<ant antfile="buildZip.xml" target="zip" />  	
-	  	
+	
 	  		
 		<property file="./applet.properties" />
 		<echo>${applet.count} applets processed. see site/swingjs/examples/index.html</echo>
