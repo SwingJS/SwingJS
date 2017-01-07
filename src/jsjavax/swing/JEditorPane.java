@@ -28,7 +28,6 @@
 package jsjavax.swing;
 
 import java.io.BufferedInputStream;
-import java.io.DataOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +43,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.J2SIgnoreImport;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
@@ -69,11 +69,10 @@ import jsjavax.swing.text.StyledEditorKit;
 import jsjavax.swing.text.View;
 import jsjavax.swing.text.ViewFactory;
 import jsjavax.swing.text.WrappedPlainView;
-import javajs.J2SIgnoreImport;
 import swingjs.JSAbstractDocument;
 import swingjs.api.Interface;
-//import java.io.ObjectOutputStream;
 import swingjs.api.JSMinimalAbstractDocument;
+//import java.io.ObjectOutputStream;
 
 /**
  * A text component to edit various kinds of content.
@@ -842,7 +841,7 @@ public class JEditorPane extends JTextComponent {
             hconn.setInstanceFollowRedirects(false);
             Object postData = getPostData();
             if (postData != null) {
-                handlePostData(hconn, postData);
+// SwingJS not implemented                handlePostData(hconn, postData);
             }
             int response = hconn.getResponseCode();
             boolean redirect = (response >= 300 && response <= 399);
@@ -906,21 +905,21 @@ public class JEditorPane extends JTextComponent {
         return getDocument().getProperty(PostDataProperty);
     }
 
-    private void handlePostData(HttpURLConnection conn, Object postData)
-                                                            throws IOException {
-        conn.setDoOutput(true);
-        DataOutputStream os = null;
-        try {
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
-            os = new DataOutputStream(conn.getOutputStream());
-            os.writeBytes((String) postData);
-        } finally {
-            if (os != null) {
-                os.close();
-            }
-        }
-    }
+//    private void handlePostData(HttpURLConnection conn, Object postData)
+//                                                            throws IOException {
+//        conn.setDoOutput(true);
+//        DataOutputStream os = null;
+//        try {
+//            conn.setRequestProperty("Content-Type",
+//                    "application/x-www-form-urlencoded");
+//            os = new DataOutputStream(conn.getOutputStream());
+//            os.writeBytes((String) postData);
+//        } finally {
+//            if (os != null) {
+//                os.close();
+//            }
+//        }
+//    }
 
 
     /**
