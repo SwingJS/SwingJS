@@ -35,7 +35,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
@@ -836,30 +835,31 @@ public class JEditorPane extends JTextComponent {
      */
     protected InputStream getStream(URL page) throws IOException {
         final URLConnection conn = page.openConnection();
-        if (conn instanceof HttpURLConnection) {
-            HttpURLConnection hconn = (HttpURLConnection) conn;
-            hconn.setInstanceFollowRedirects(false);
-            Object postData = getPostData();
-            if (postData != null) {
-// SwingJS not implemented                handlePostData(hconn, postData);
-            }
-            int response = hconn.getResponseCode();
-            boolean redirect = (response >= 300 && response <= 399);
-
-            /*
-             * In the case of a redirect, we want to actually change the URL
-             * that was input to the new, redirected URL
-             */
-            if (redirect) {
-                String loc = conn.getHeaderField("Location");
-                if (loc.startsWith("http", 0)) {
-                    page = new URL(loc);
-                } else {
-                    page = new URL(page, loc);
-                }
-                return getStream(page);
-            }
-        }
+     // SwingJS not implemented     
+//        if (conn instanceof HttpURLConnection) {
+//            HttpURLConnection hconn = (HttpURLConnection) conn;
+//            hconn.setInstanceFollowRedirects(false);
+//            Object postData = getPostData();
+//            if (postData != null) {
+//            	handlePostData(hconn, postData);
+//            }
+//            int response = hconn.getResponseCode();
+//            boolean redirect = (response >= 300 && response <= 399);
+//
+//            /*
+//             * In the case of a redirect, we want to actually change the URL
+//             * that was input to the new, redirected URL
+//             */
+//            if (redirect) {
+//                String loc = conn.getHeaderField("Location");
+//                if (loc.startsWith("http", 0)) {
+//                    page = new URL(loc);
+//                } else {
+//                    page = new URL(page, loc);
+//                }
+//                return getStream(page);
+//            }
+//        }
 
         // Connection properties handler should be forced to run on EDT,
         // as it instantiates the EditorKit.
