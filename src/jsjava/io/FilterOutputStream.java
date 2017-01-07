@@ -46,14 +46,21 @@ import java.io.IOException;
  * @author  Jonathan Payne
  * @since   JDK1.0
  */
-public
-class FilterOutputStream extends OutputStream {
+public class FilterOutputStream extends OutputStream {
     /**
      * The underlying output stream to be filtered.
      */
     protected OutputStream out;
+    
+    public FilterOutputStream() {
+    	// for reflection
+		}
 
-    /**
+    public FilterOutputStream(OutputStream out) {
+		  this.out = out;
+		}
+
+		/**
      * Creates an output stream filter built on top of the specified
      * underlying output stream.
      *

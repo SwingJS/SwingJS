@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 1/7/2017 7:01:02 AM better error messaging in loadScript
 // BH 12/21/2016 9:29:56 PM  XX.getClass().getResource() broken (since forever)
 // BH 12/20/2016 1:42:06 PM allowing file caching from class loader
 // BH 12/20/2016 7:49:03 AM final inner class nesting fix for $b$
@@ -3695,7 +3696,7 @@ var loadScript = function (node, file, why, ignoreOnload, fSuccess, _loadScript)
       if (s.indexOf("missing ] after element list")>= 0)
         s = "File not found";
       doDebugger()
-      alert(s + " loading file " + file + ": " + node.name + " - " + Clazz._lastDecorated + (e.stack ? "\n\n" + e.stack : Clazz.getStackTrace()));
+      alert(s + " loading file " + file + ": " + node.name + " - " + (why ? "\n -- required by " + why : "") + " lastDecorated: " + Clazz._lastDecorated + (e.stack ? "\n\n" + e.stack : Clazz.getStackTrace()));
     }
     tryToLoadNext(file0);
     if (fSuccess) {

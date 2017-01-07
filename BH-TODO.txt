@@ -1,0 +1,17 @@
+
+	protected void paintComponent(Graphics g) {
+		if (ui != null) {
+			Graphics scratchGraphics = (g == null) ? null : g.create();
+			try {
+				// note that this update will fill the component's background, but  
+				// that is not what we are worried about. What we are worried about
+				// is if this method is overridden and is written to.
+				// BH TODO CHECK THIS isBackgroundPainted = false;
+				ui.update(scratchGraphics, this);
+				// BH TODO CHECK THIS isBackgroundPainted = ((JSGraphics2D)scratchGraphics).isBackgroundPainted();
+			} finally {
+				scratchGraphics.dispose();
+			}
+		}
+	}
+
