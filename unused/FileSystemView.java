@@ -1,4 +1,7 @@
 /*
+ * Some portions of this file have been modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017
+ * for use in SwingJS via transpilation into JavaScript using Java2Script.
+ *
  * Copyright (c) 1998, 2006, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
@@ -35,8 +38,8 @@ import java.util.Vector;
 import jsjava.awt.Image;
 import jsjavax.swing.Icon;
 import jsjavax.swing.ImageIcon;
-import jsjavax.swing.UIManager;
-import jssun.awt.shell.ShellFolder;
+//import jsjavax.swing.UIManager;
+//import jssun.awt.shell.ShellFolder;
 
 /**
  * FileSystemView is JFileChooser's gateway to the
@@ -67,7 +70,7 @@ public abstract class FileSystemView {
     static boolean useSystemExtensionsHiding = false;
 
     public static FileSystemView getFileSystemView() {
-        useSystemExtensionsHiding = UIManager.getDefaults().getBoolean("FileChooser.useSystemExtensionHiding");
+//        useSystemExtensionsHiding = UIManager.getDefaults().getBoolean("FileChooser.useSystemExtensionHiding");
 //        UIManager.addPropertyChangeListener(new PropertyChangeListener() {
 //            public void propertyChange(PropertyChangeEvent e) {
 //               if (e.getPropertyName().equals("lookAndFeel")) {
@@ -76,19 +79,19 @@ public abstract class FileSystemView {
 //            }
 //        });
 
-        if(File.separatorChar == '\\') {
-            if(windowsFileSystemView == null) {
-                windowsFileSystemView = new WindowsFileSystemView();
-            }
-            return windowsFileSystemView;
-        }
-
-        if(File.separatorChar == '/') {
-            if(unixFileSystemView == null) {
-                unixFileSystemView = new UnixFileSystemView();
-            }
-            return unixFileSystemView;
-        }
+//        if(File.separatorChar == '\\') {
+//            if(windowsFileSystemView == null) {
+//                windowsFileSystemView = new WindowsFileSystemView();
+//            }
+//            return windowsFileSystemView;
+//        }
+//
+//        if(File.separatorChar == '/') {
+//            if(unixFileSystemView == null) {
+//                unixFileSystemView = new UnixFileSystemView();
+//            }
+//            return unixFileSystemView;
+//        }
 
         // if(File.separatorChar == ':') {
         //    if(macFileSystemView == null) {
@@ -270,26 +273,26 @@ public abstract class FileSystemView {
         return createFileObject(parent, fileName);
     }
 
-
-    /**
-     * Checks if <code>f</code> represents a real directory or file as opposed to a
-     * special folder such as <code>"Desktop"</code>. Used by UI classes to decide if
-     * a folder is selectable when doing directory choosing.
-     *
-     * @param f a <code>File</code> object
-     * @return <code>true</code> if <code>f</code> is a real file or directory.
-     * @since 1.4
-     */
-    public boolean isFileSystem(File f) {
-        if (f instanceof ShellFolder) {
-            ShellFolder sf = (ShellFolder)f;
-            // Shortcuts to directories are treated as not being file system objects,
-            // so that they are never returned by JFileChooser.
-            return sf.isFileSystem() && !(sf.isLink() && sf.isDirectory());
-        } else {
-            return true;
-        }
-    }
+//
+//    /**
+//     * Checks if <code>f</code> represents a real directory or file as opposed to a
+//     * special folder such as <code>"Desktop"</code>. Used by UI classes to decide if
+//     * a folder is selectable when doing directory choosing.
+//     *
+//     * @param f a <code>File</code> object
+//     * @return <code>true</code> if <code>f</code> is a real file or directory.
+//     * @since 1.4
+//     */
+//    public boolean isFileSystem(File f) {
+//        if (f instanceof ShellFolder) {
+//            ShellFolder sf = (ShellFolder)f;
+//            // Shortcuts to directories are treated as not being file system objects,
+//            // so that they are never returned by JFileChooser.
+//            return sf.isFileSystem() && !(sf.isLink() && sf.isDirectory());
+//        } else {
+//            return true;
+//        }
+//    }
 
     /**
      * Creates a new folder with a default folder name.
@@ -559,215 +562,216 @@ public abstract class FileSystemView {
     }
 }
 
-/**
- * FileSystemView that handles some specific unix-isms.
- */
-class UnixFileSystemView extends FileSystemView {
-
-    private static final String newFolderString =
-            UIManager.getString("FileChooser.other.newFolder");
-    private static final String newFolderNextString  =
-            UIManager.getString("FileChooser.other.newFolder.subsequent");
-
-    /**
-     * Creates a new folder with a default folder name.
-     */
-    public File createNewFolder(File containingDir) throws IOException {
-        if(containingDir == null) {
-            throw new IOException("Containing directory is null:");
-        }
-        File newFolder = null;
-        // Unix - using OpenWindows' default folder name. Can't find one for Motif/CDE.
-        newFolder = createFileObject(containingDir, newFolderString);
-        int i = 1;
-        while (newFolder.exists() && (i < 100)) {
-            newFolder = createFileObject(containingDir, MessageFormat.format(
-                    newFolderNextString, new Object[] { new Integer(i) }));
-            i++;
-        }
-
-        if(newFolder.exists()) {
-            throw new IOException("Directory already exists:" + newFolder.getAbsolutePath());
-        } else {
-            newFolder.mkdirs();
-        }
-
-        return newFolder;
-    }
-
-    public boolean isFileSystemRoot(File dir) {
-        return (dir != null && dir.getAbsolutePath().equals("/"));
-    }
-
-    public boolean isDrive(File dir) {
-        if (isFloppyDrive(dir)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isFloppyDrive(File dir) {
-        // Could be looking at the path for Solaris, but wouldn't be reliable.
-        // For example:
-        // return (dir != null && dir.getAbsolutePath().toLowerCase().startsWith("/floppy"));
-        return false;
-    }
-
-    public boolean isComputerNode(File dir) {
-        if (dir != null) {
-            String parent = dir.getParent();
-            if (parent != null && parent.equals("/net")) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-
-
-/**
- * FileSystemView that handles some specific windows concepts.
- */
-class WindowsFileSystemView extends FileSystemView {
-
-    private static final String newFolderString =
-            UIManager.getString("FileChooser.win32.newFolder");
-    private static final String newFolderNextString  =
-            UIManager.getString("FileChooser.win32.newFolder.subsequent");
-
-    public Boolean isTraversable(File f) {
-        return Boolean.valueOf(isFileSystemRoot(f) || isComputerNode(f) || f.isDirectory());
-    }
-
-    public File getChild(File parent, String fileName) {
-        if (fileName.startsWith("\\")
-            && !(fileName.startsWith("\\\\"))
-            && isFileSystem(parent)) {
-
-            //Path is relative to the root of parent's drive
-            String path = parent.getAbsolutePath();
-            if (path.length() >= 2
-                && path.charAt(1) == ':'
-                && Character.isLetter(path.charAt(0))) {
-
-                return createFileObject(path.substring(0, 2) + fileName);
-            }
-        }
-        return super.getChild(parent, fileName);
-    }
-
-    /**
-     * Type description for a file, directory, or folder as it would be displayed in
-     * a system file browser. Example from Windows: the "Desktop" folder
-     * is desribed as "Desktop".
-     *
-     * The Windows implementation gets information from the ShellFolder class.
-     */
-    public String getSystemTypeDescription(File f) {
-        if (f != null) {
-            return getShellFolder(f).getFolderType();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @return the Desktop folder.
-     */
-    public File getHomeDirectory() {
-        File[] roots = getRoots();
-        return (roots.length == 0) ? null : roots[0];
-    }
-
-    /**
-     * Creates a new folder with a default folder name.
-     */
-    public File createNewFolder(File containingDir) throws IOException {
-        if(containingDir == null) {
-            throw new IOException("Containing directory is null:");
-        }
-        File newFolder = null;
-        // Using NT's default folder name
-        newFolder = createFileObject(containingDir, newFolderString);
-        int i = 2;
-        while (newFolder.exists() && (i < 100)) {
-            newFolder = createFileObject(containingDir, MessageFormat.format(
-                newFolderNextString, new Object[] { new Integer(i) }));
-            i++;
-        }
-
-        if(newFolder.exists()) {
-            throw new IOException("Directory already exists:" + newFolder.getAbsolutePath());
-        } else {
-            newFolder.mkdirs();
-        }
-
-        return newFolder;
-    }
-
-    public boolean isDrive(File dir) {
-        return isFileSystemRoot(dir);
-    }
-
-    public boolean isFloppyDrive(File dir) {
-        String path = dir.getAbsolutePath();
-        return (path != null && (path.equals("A:\\") || path.equals("B:\\")));
-    }
-
-    /**
-     * Returns a File object constructed from the given path string.
-     */
-    public File createFileObject(String path) {
-        // Check for missing backslash after drive letter such as "C:" or "C:filename"
-        if (path.length() >= 2 && path.charAt(1) == ':' && Character.isLetter(path.charAt(0))) {
-            if (path.length() == 2) {
-                path += "\\";
-            } else if (path.charAt(2) != '\\') {
-                path = path.substring(0, 2) + "\\" + path.substring(2);
-            }
-        }
-        return super.createFileObject(path);
-    }
-
-    protected File createFileSystemRoot(File f) {
-        // Problem: Removable drives on Windows return false on f.exists()
-        // Workaround: Override exists() to always return true.
-        return new FileSystemRoot(f) {
-            public boolean exists() {
-                return true;
-            }
-        };
-    }
-
-}
-
+///**
+// * FileSystemView that handles some specific unix-isms.
+// */
+//class UnixFileSystemView extends FileSystemView {
+//
+//    private static final String newFolderString =
+//            UIManager.getString("FileChooser.other.newFolder");
+//    private static final String newFolderNextString  =
+//            UIManager.getString("FileChooser.other.newFolder.subsequent");
+//
+//    /**
+//     * Creates a new folder with a default folder name.
+//     */
+//    public File createNewFolder(File containingDir) throws IOException {
+//        if(containingDir == null) {
+//            throw new IOException("Containing directory is null:");
+//        }
+//        File newFolder = null;
+//        // Unix - using OpenWindows' default folder name. Can't find one for Motif/CDE.
+//        newFolder = createFileObject(containingDir, newFolderString);
+//        int i = 1;
+//        while (newFolder.exists() && (i < 100)) {
+//            newFolder = createFileObject(containingDir, MessageFormat.format(
+//                    newFolderNextString, new Object[] { new Integer(i) }));
+//            i++;
+//        }
+//
+//        if(newFolder.exists()) {
+//            throw new IOException("Directory already exists:" + newFolder.getAbsolutePath());
+//        } else {
+//            newFolder.mkdirs();
+//        }
+//
+//        return newFolder;
+//    }
+//
+//    public boolean isFileSystemRoot(File dir) {
+//        return (dir != null && dir.getAbsolutePath().equals("/"));
+//    }
+//
+//    public boolean isDrive(File dir) {
+//        if (isFloppyDrive(dir)) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//    public boolean isFloppyDrive(File dir) {
+//        // Could be looking at the path for Solaris, but wouldn't be reliable.
+//        // For example:
+//        // return (dir != null && dir.getAbsolutePath().toLowerCase().startsWith("/floppy"));
+//        return false;
+//    }
+//
+//    public boolean isComputerNode(File dir) {
+//        if (dir != null) {
+//            String parent = dir.getParent();
+//            if (parent != null && parent.equals("/net")) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//}
+//
+//
+///**
+// * FileSystemView that handles some specific windows concepts.
+// */
+//class WindowsFileSystemView extends FileSystemView {
+//
+//    private static final String newFolderString =
+//            UIManager.getString("FileChooser.win32.newFolder");
+//    private static final String newFolderNextString  =
+//            UIManager.getString("FileChooser.win32.newFolder.subsequent");
+//
+//    public Boolean isTraversable(File f) {
+//        return Boolean.valueOf(isFileSystemRoot(f) || isComputerNode(f) || f.isDirectory());
+//    }
+//
+//    public File getChild(File parent, String fileName) {
+//        if (fileName.startsWith("\\")
+//            && !(fileName.startsWith("\\\\"))
+//            && isFileSystem(parent)) {
+//
+//            //Path is relative to the root of parent's drive
+//            String path = parent.getAbsolutePath();
+//            if (path.length() >= 2
+//                && path.charAt(1) == ':'
+//                && Character.isLetter(path.charAt(0))) {
+//
+//                return createFileObject(path.substring(0, 2) + fileName);
+//            }
+//        }
+//        return super.getChild(parent, fileName);
+//    }
+//
+//    /**
+//     * Type description for a file, directory, or folder as it would be displayed in
+//     * a system file browser. Example from Windows: the "Desktop" folder
+//     * is desribed as "Desktop".
+//     *
+//     * The Windows implementation gets information from the ShellFolder class.
+//     */
+//    public String getSystemTypeDescription(File f) {
+//        if (f != null) {
+//            return getShellFolder(f).getFolderType();
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    /**
+//     * @return the Desktop folder.
+//     */
+//    public File getHomeDirectory() {
+//        File[] roots = getRoots();
+//        return (roots.length == 0) ? null : roots[0];
+//    }
+//
+//    /**
+//     * Creates a new folder with a default folder name.
+//     */
+//    public File createNewFolder(File containingDir) throws IOException {
+//        if(containingDir == null) {
+//            throw new IOException("Containing directory is null:");
+//        }
+//        File newFolder = null;
+//        // Using NT's default folder name
+//        newFolder = createFileObject(containingDir, newFolderString);
+//        int i = 2;
+//        while (newFolder.exists() && (i < 100)) {
+//            newFolder = createFileObject(containingDir, MessageFormat.format(
+//                newFolderNextString, new Object[] { new Integer(i) }));
+//            i++;
+//        }
+//
+//        if(newFolder.exists()) {
+//            throw new IOException("Directory already exists:" + newFolder.getAbsolutePath());
+//        } else {
+//            newFolder.mkdirs();
+//        }
+//
+//        return newFolder;
+//    }
+//
+//    public boolean isDrive(File dir) {
+//        return isFileSystemRoot(dir);
+//    }
+//
+//    public boolean isFloppyDrive(File dir) {
+//        String path = dir.getAbsolutePath();
+//        return (path != null && (path.equals("A:\\") || path.equals("B:\\")));
+//    }
+//
+//    /**
+//     * Returns a File object constructed from the given path string.
+//     */
+//    public File createFileObject(String path) {
+//        // Check for missing backslash after drive letter such as "C:" or "C:filename"
+//        if (path.length() >= 2 && path.charAt(1) == ':' && Character.isLetter(path.charAt(0))) {
+//            if (path.length() == 2) {
+//                path += "\\";
+//            } else if (path.charAt(2) != '\\') {
+//                path = path.substring(0, 2) + "\\" + path.substring(2);
+//            }
+//        }
+//        return super.createFileObject(path);
+//    }
+//
+//    protected File createFileSystemRoot(File f) {
+//        // Problem: Removable drives on Windows return false on f.exists()
+//        // Workaround: Override exists() to always return true.
+//        return new FileSystemRoot(f) {
+//            public boolean exists() {
+//                return true;
+//            }
+//        };
+//    }
+//
+//}
+//
 /**
  * Fallthrough FileSystemView in case we can't determine the OS.
  */
 class GenericFileSystemView extends FileSystemView {
 
-    private static final String newFolderString =
-            UIManager.getString("FileChooser.other.newFolder");
-
+//    private static final String newFolderString =
+//            UIManager.getString("FileChooser.other.newFolder");
+//
     /**
      * Creates a new folder with a default folder name.
      */
     public File createNewFolder(File containingDir) throws IOException {
-        if(containingDir == null) {
-            throw new IOException("Containing directory is null:");
-        }
-        File newFolder = null;
-        // Using NT's default folder name
-        newFolder = createFileObject(containingDir, newFolderString);
-
-        if(newFolder.exists()) {
-            throw new IOException("Directory already exists:" + newFolder.getAbsolutePath());
-        } else {
-            newFolder.mkdirs();
-        }
-
-        return newFolder;
+    	return null;
+//        if(containingDir == null) {
+//            throw new IOException("Containing directory is null:");
+//        }
+//        File newFolder = null;
+//        // Using NT's default folder name
+//        newFolder = createFileObject(containingDir, newFolderString);
+//
+//        if(newFolder.exists()) {
+//            throw new IOException("Directory already exists:" + newFolder.getAbsolutePath());
+//        } else {
+//            newFolder.mkdirs();
+//        }
+//
+//        return newFolder;
     }
 
 }
