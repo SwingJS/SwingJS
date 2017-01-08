@@ -6,7 +6,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -174,7 +176,7 @@ public class JSToolkit extends SunToolkit {
 		/**
 		 * @j2sNative
 		 * 
-		 * return confirm(msg, defaultRet);
+		 * return prompt(msg, defaultRet);
 		 */
 		{
 			return null;
@@ -1366,5 +1368,59 @@ public class JSToolkit extends SunToolkit {
 		((jsjava.io.BufferedInputStream) (Object) bis).resetStream();
 		return bis;
 	}
+
+	/**
+	 * Generate a date in a specific format.
+	 * 
+	 * @param isoType null, 8824, or 8601, or a standard SimpleDataFormat format 
+	 * @return formatted date
+	 */
+  public static String getDateFormat(String isoType) {
+  	String prefix = "";
+  	String suffix = "";
+    /**
+     * 
+     * Mon Jan 07 2013 19:54:39 GMT-0600
+     * or YYYYMMDDHHmmssOHH'mm'
+     * 
+     * @j2sNative
+     * 
+     * if (isoType == null) {
+     *   return ("" + (new Date())).split(" (")[0];
+     * } 
+     * if (isoType.indexOf("8824") >= 0) {
+     *   var d = new Date();
+     *   var x = d.toString().split(" ");
+     *   var MM = "0" + (1 + d.getMonth()); MM = MM.substring(MM.length - 2);
+     *   var dd = "0" + d.getDate(); dd = dd.substring(dd.length - 2);
+     *   return x[3] + MM + dd + x[4].replace(/\:/g,"") + x[5].substring(3,6) + "'" + x[5].substring(6,8) + "'"   
+     * }
+     * if (isoType.indexOf("8601") >= 0){
+     *   var d = new Date();
+     *   var x = d.toString().split(" ");
+     *   // Firefox now doing this?
+     *   if (x.length == 1)
+     *     return x;
+     *   var MM = "0" + (1 + d.getMonth()); MM = MM.substring(MM.length - 2);
+     *   var dd = "0" + d.getDate(); dd = dd.substring(dd.length - 2);
+     *   return x[3] + '-' + MM + '-' + dd + 'T' + x[4]   
+     * }
+     * 
+     */
+    {
+//      if (isoType == null) {
+//        isoType = "EEE dd MMM yyyy HH:mm:ss 'GMT'Z";
+//      } else if (isoType.contains("8824")) {
+//      	prefix = "D:";
+//      	suffix = "'00'";
+//      	isoType = "YYYYMMddHHmmssX";
+//      } else if (isoType.contains("8601")) {
+//        isoType = "yyyy-MM-dd'T'HH:mm:ss";
+//      }
+    	Date date = (Date) Interface.getInstance("java.util.Date", true);
+    	SimpleDateFormat format = (SimpleDateFormat) Interface.getInstanceWithParams("java.text.SimpleDateFormat", new Class<?>[] { String.class }, new Object[]  { isoType});
+      return prefix + format.format(date) + suffix;
+    }
+  }
 
 }

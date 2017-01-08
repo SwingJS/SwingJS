@@ -48,10 +48,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Random;
 
+import javajs.util.PT;
+
 import javax.imageio.ImageIO;
 import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 // SwingJS[1] Component --> JPanel	
@@ -116,6 +120,34 @@ import javax.swing.JPanel;
             }
         }
     }
+
+	public void save() {
+		final JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Save Image");
+		int result = fileChooser.showSaveDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			String fileName = fileChooser.getSelectedFile().getPath();
+			BufferedImage img = new BufferedImage(getWidth(), getHeight(),
+					BufferedImage.TYPE_INT_RGB);
+			Graphics g = img.getGraphics();
+			paint(g);
+			g.dispose();
+			try {
+				File file = new File(fileName);
+				String format = file.getName();
+				if (format.indexOf(".") >= 0)
+					format = format.substring(format.indexOf(".") + 1).toLowerCase();
+				else
+					format ="png";
+				String msg = "file " + fileName + " saved";
+				if (!ImageIO.write(img, format, file))
+					msg = "no file saved";
+				JOptionPane.showMessageDialog(this, msg);					
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 
 public class JumbledImageApplet extends JApplet {
@@ -141,7 +173,6 @@ public class JumbledImageApplet extends JApplet {
      
     public void buildUI() {
         final JumbledImage ji = new JumbledImage(imageSrc);
-        add("Center", ji);
         JButton jumbleButton = new JButton("Jumble");
         jumbleButton.addActionListener(new ActionListener() {
                 @Override
@@ -153,7 +184,16 @@ public class JumbledImageApplet extends JApplet {
             });
         Dimension jumbleSize = ji.getPreferredSize();
         resize(jumbleSize.width, jumbleSize.height+40);
-        add("South", jumbleButton);
+        add("North", jumbleButton);
+        add("Center", ji);
+        JButton saveButton = new JButton("Save Image");
+        saveButton.addActionListener(new ActionListener() {
+                @Override
+								public void actionPerformed(ActionEvent e) {
+                    ji.save();
+                }
+            });
+        add("South", saveButton);
     }
 
     public static void main(String s[]) {
@@ -187,9 +227,7 @@ public class JumbledImageApplet extends JApplet {
   	 */
   	private URL pathTo(String file) throws MalformedURLException {
   		String path = getDocumentBase().toString();
-  		int pt = path.indexOf("/bin/");
-  		if (pt > 0)
-  			path = path.substring(0, pt) + "/html/" + path.substring(pt + 5); 
+  		path = PT.rep(path, "/bin/", "/html/examples/oracle/");
   		path = path.substring(0, path.lastIndexOf("/") + 1) + file;
   		if (path.startsWith("/"))
   			path = "file://" + path;

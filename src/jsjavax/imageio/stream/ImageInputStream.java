@@ -1,15 +1,9 @@
 package jsjavax.imageio.stream;
 
-import java.io.ByteArrayInputStream;
 
-public class ImageInputStream extends ByteArrayInputStream {
+// SwingJS placeholder
 
-	public ImageInputStream(byte[] buf) {
-		super(buf);
-	}
+public interface ImageInputStream {
 	
-	public byte[] getBuf() {
-		return buf;
-	}
 
 }

@@ -28,16 +28,22 @@ package javajs.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import java.util.Map;
 
+import swingjs.api.Interface;
 
+
+import javajs.J2SIgnoreImport;
 import javajs.api.GenericCifDataParser;
 import javajs.api.GenericLineReader;
 import javajs.api.GenericZipTools;
@@ -56,6 +62,7 @@ import javajs.api.GenericZipTools;
  * 
  * 
  */
+@J2SIgnoreImport(BufferedWriter.class)
 public class Rdr implements GenericLineReader {
 
   BufferedReader reader;
@@ -534,6 +541,19 @@ public class Rdr implements GenericLineReader {
     int pt = fileName.indexOf("|");
     return (pt < 0 ? fileName : fileName.substring(0, pt));
   }
+
+	public static BufferedWriter getBufferedWriter(OutputStream os, String charSetName) {
+		OutputStreamWriter osw = (OutputStreamWriter) Interface.getInstanceWithParams("java.io.OutputStreamWriter", 
+				new Class<?>[] { java.io.OutputStream.class, String.class }, new Object[] {os, charSetName});
+		/**
+		 * @j2sNative
+		 * return osw.getBufferedWriter();
+		 * 
+		 */
+		{
+			return new BufferedWriter(osw);
+		}
+	}
 
   
 }

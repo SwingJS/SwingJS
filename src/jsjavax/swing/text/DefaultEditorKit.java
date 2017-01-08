@@ -36,6 +36,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import swingjs.JSPlainDocument;
+import swingjs.api.Interface;
 
 import jsjava.awt.ComponentOrientation;
 import jsjava.awt.Point;
@@ -185,8 +186,8 @@ public class DefaultEditorKit extends EditorKit {
     @Override
 		public void write(OutputStream out, Document doc, int pos, int len)
         throws IOException, BadLocationException {
-        OutputStreamWriter osw = new OutputStreamWriter(out);
-
+    	OutputStreamWriter osw = (OutputStreamWriter) Interface.getInstanceWithParams("java.io.OutputStreamWriter", 
+          new Class<?>[] { java.io.OutputStream.class }, new Object[] {out});
         write(osw, doc, pos, len);
         osw.flush();
     }

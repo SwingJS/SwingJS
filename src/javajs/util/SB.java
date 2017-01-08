@@ -310,8 +310,8 @@ public class SB {
   }
 
   /**
-   * simple byte conversion properly implementing UTF-8. * Used for base64
-   * conversion and allows for offset
+   * simple byte conversion properly implementing UTF-8. 
+   * Used for base64 conversion and allows for offset
    * 
    * @param off
    * @param len

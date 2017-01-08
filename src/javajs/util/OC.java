@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 import javajs.J2SIgnoreImport;
 import javajs.api.BytePoster;
@@ -86,7 +85,7 @@ public class OC extends OutputStream implements GenericOutputChannel {
     this.os = os;
     isLocalFile = (fileName != null && !isRemote(fileName));
     if (asWriter && !isBase64 && os != null)
-      bw = new BufferedWriter(new OutputStreamWriter(os));
+    	bw = Rdr.getBufferedWriter(os, null);
     return this;
   }
 
@@ -179,7 +178,7 @@ public class OC extends OutputStream implements GenericOutputChannel {
         os = new ByteArrayOutputStream();
       if (bw != null) {
         bw.close();
-        bw = new BufferedWriter(new OutputStreamWriter(os));
+        bw = Rdr.getBufferedWriter(os, null);
       }
     } catch (Exception e) {
       // not perfect here.
@@ -354,7 +353,7 @@ public class OC extends OutputStream implements GenericOutputChannel {
       if (_function == null)
         jmol._doAjax(fileName, null, data, sb == null);
       else
-        jmol._apply(fileName, data);
+        jmol._apply(_function, data);
     }
     return null;
   }

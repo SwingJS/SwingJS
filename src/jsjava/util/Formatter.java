@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javajs.util.Rdr;
 import jsjava.text.DateFormatSymbols;
 import jsjava.text.DecimalFormat;
 import jsjava.text.DecimalFormatSymbols;
@@ -1909,24 +1910,25 @@ public final class Formatter implements Flushable {
         init(a, l);
     }
 
-    /**
-     * Constructs a new formatter with the specified output stream.
-     *
-     * <p> The charset used is the {@linkplain
-     * java.nio.charset.Charset#defaultCharset() default charset} for this
-     * instance of the Java virtual machine.
-     *
-     * <p> The locale used is the {@linkplain Locale#getDefault() default
-     * locale} for this instance of the Java virtual machine.
-     *
-     * @param  os
-     *         The output stream to use as the destination of this formatter.
-     *         The output will be buffered.
-     */
-    public Formatter(OutputStream os) {
-        init(new BufferedWriter(new OutputStreamWriter(os)),
-             Locale.getDefault());
-    }
+	/**
+	 * Constructs a new formatter with the specified output stream.
+	 * 
+	 * <p>
+	 * The charset used is the
+	 * {@linkplain java.nio.charset.Charset#defaultCharset() default charset} for
+	 * this instance of the Java virtual machine.
+	 * 
+	 * <p>
+	 * The locale used is the {@linkplain Locale#getDefault() default locale} for
+	 * this instance of the Java virtual machine.
+	 * 
+	 * @param os
+	 *          The output stream to use as the destination of this formatter. The
+	 *          output will be buffered.
+	 */
+	public Formatter(OutputStream os) {	
+		init(Rdr.getBufferedWriter(os, null), Locale.getDefault());
+	}
 
     /**
      * Constructs a new formatter with the specified output stream and
@@ -1975,7 +1977,7 @@ public final class Formatter implements Flushable {
     public Formatter(OutputStream os, String csn, Locale l)
         throws UnsupportedEncodingException
     {
-        init(new BufferedWriter(new OutputStreamWriter(os, csn)), l);
+        init(Rdr.getBufferedWriter(os, csn), l);
     }
 
     private void setZero() {

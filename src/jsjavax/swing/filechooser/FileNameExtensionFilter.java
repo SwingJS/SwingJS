@@ -75,6 +75,7 @@ public final class FileNameExtensionFilter extends FileFilter {
      * @see #accept
      */
     public FileNameExtensionFilter(String description, String... extensions) {
+    	super(extensions);
         if (extensions == null || extensions.length == 0) {
             throw new IllegalArgumentException(
                     "Extensions must be non-null and not empty");

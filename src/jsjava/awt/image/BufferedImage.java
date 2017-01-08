@@ -67,7 +67,7 @@ import swingjs.api.HTML5Canvas;
  * @see WritableRaster
  */
 
-public class BufferedImage extends Image implements Transparency // ,
+public class BufferedImage extends Image implements RenderedImage, Transparency // ,
 																																	// WritableRenderedImage
 {
 	int imageType = TYPE_CUSTOM;
@@ -85,7 +85,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	protected Object _canvas; // created in setRangeRGB
 	private int[] _pixSaved;
 	private JSGraphics2D _g; // a JSGraphics2D instance
-	private static int rangeIndex;
+	//private static int rangeIndex;
 
 	/**
 	 * Image Type Constants
@@ -635,14 +635,14 @@ public class BufferedImage extends Image implements Transparency // ,
 		this.properties = properties;
 		// int numBands = raster.getNumBands();
 		// boolean isAlphaPre = cm.isAlphaPremultiplied();
-		ColorSpace cs;
+		//ColorSpace cs;
 
 		// Force the raster data alpha state to match the premultiplied
 		// state in the color model
 		// coerceData(isRasterPremultiplied);
 
 		// SampleModel sm = raster.getSampleModel();
-		cs = cm.getColorSpace();
+		// cs = cm.getColorSpace();
 		// int csType = cs.getType();
 		// if (csType != ColorSpace.TYPE_RGB) {
 		// if (csType == ColorSpace.TYPE_GRAY
@@ -825,6 +825,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the <code>ColorModel</code> of this <code>BufferedImage</code>.
 	 */
+	@Override
 	public ColorModel getColorModel() {
 		return colorModel;
 	}
@@ -1154,6 +1155,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the width of this <code>BufferedImage</code>
 	 */
+	@Override
 	public int getWidth() {
 		return raster.getWidth();
 	}
@@ -1163,6 +1165,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the height of this <code>BufferedImage</code>
 	 */
+	@Override
 	public int getHeight() {
 		return raster.getHeight();
 	}
@@ -1250,6 +1253,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 *         specified <code>name</code>.
 	 * @throws <code>NullPointerException</code> if the property name is null.
 	 */
+	@Override
 	public Object getProperty(String name) {
 		if (name == null) {
 			throw new NullPointerException("null property name is not allowed");
@@ -1369,6 +1373,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 *         <code>Vector</code> if this <code>BufferedImage</code> has no
 	 *         immediate sources.
 	 */
+	@Override
 	public Vector<RenderedImage> getSources() {
 		return null;
 	}
@@ -1382,6 +1387,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 *         that <code>getProperty(String)</code> recognizes; or
 	 *         <code>null</code> if no property names are recognized.
 	 */
+	@Override
 	public String[] getPropertyNames() {
 		return null;
 	}
@@ -1392,6 +1398,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the minimum x coordinate of this <code>BufferedImage</code>.
 	 */
+	@Override
 	public int getMinX() {
 		return raster.getMinX();
 	}
@@ -1402,6 +1409,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the minimum y coordinate of this <code>BufferedImage</code>.
 	 */
+	@Override
 	public int getMinY() {
 		return raster.getMinY();
 	}
@@ -1412,6 +1420,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the <code>SampleModel</code> of this <code>BufferedImage</code>.
 	 */
+	@Override
 	public SampleModel getSampleModel() {
 		return raster.getSampleModel();
 	}
@@ -1421,6 +1430,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the number of tiles in the x direction.
 	 */
+	@Override
 	public int getNumXTiles() {
 		return 1;
 	}
@@ -1430,6 +1440,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the number of tiles in the y direction.
 	 */
+	@Override
 	public int getNumYTiles() {
 		return 1;
 	}
@@ -1439,6 +1450,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the minimum tile index in the x direction.
 	 */
+	@Override
 	public int getMinTileX() {
 		return 0;
 	}
@@ -1448,6 +1460,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the mininum tile index in the y direction.
 	 */
+	@Override
 	public int getMinTileY() {
 		return 0;
 	}
@@ -1457,6 +1470,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the tile width in pixels.
 	 */
+	@Override
 	public int getTileWidth() {
 		return raster.getWidth();
 	}
@@ -1466,6 +1480,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the tile height in pixels.
 	 */
+	@Override
 	public int getTileHeight() {
 		return raster.getHeight();
 	}
@@ -1476,6 +1491,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the x offset of the tile grid.
 	 */
+	@Override
 	public int getTileGridXOffset() {
 		return 0;// raster.getSampleModelTranslateX();
 	}
@@ -1486,6 +1502,7 @@ public class BufferedImage extends Image implements Transparency // ,
 	 * 
 	 * @return the y offset of the tile grid.
 	 */
+	@Override
 	public int getTileGridYOffset() {
 		return 0;// raster.getSampleModelTranslateY();
 	}

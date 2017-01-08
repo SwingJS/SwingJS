@@ -77,44 +77,44 @@ public final class FontUtilities {
                 isLinux = osName.startsWith("Linux");
 
                 isMacOSX = osName.contains("OS X"); // TODO: MacOSX
-
-                String t2kStr = System.getProperty("jssun.java2d.font.scaler");
-                if (t2kStr != null) {
-                    useT2K = "t2k".equals(t2kStr);
-                } else {
-                    useT2K = false;
-                }
-                if (isSolaris) {
-                    String version = System.getProperty("os.version", "0.0");
-                    isSolaris8 = version.startsWith("5.8");
-                    isSolaris9 = version.startsWith("5.9");
-                    float ver = Float.parseFloat(version);
-                    if (ver > 5.10f) {
-                        File f = new File("/etc/release");
-                        String line = null;
-                        try {
-                            FileInputStream fis = new FileInputStream(f);
-                            InputStreamReader isr = new InputStreamReader(
-                                                            fis, "ISO-8859-1");
-                            BufferedReader br = new BufferedReader(isr);
-                            line = br.readLine();
-                            fis.close();
-                        } catch (Exception ex) {
-                            // Nothing to do here.
-                        }
-                        if (line != null && line.indexOf("OpenSolaris") >= 0) {
-                            isOpenSolaris = true;
-                        } else {
-                            isOpenSolaris = false;
-                        }
-                    } else {
-                        isOpenSolaris = false;
-                    }
-                } else {
-                    isSolaris8 = false;
-                    isSolaris9 = false;
-                    isOpenSolaris = false;
-                }
+//
+//                String t2kStr = System.getProperty("jssun.java2d.font.scaler");
+//                if (t2kStr != null) {
+//                    useT2K = "t2k".equals(t2kStr);
+//                } else {
+//                    useT2K = false;
+//                }
+//                if (isSolaris) {
+//                    String version = System.getProperty("os.version", "0.0");
+//                    isSolaris8 = version.startsWith("5.8");
+//                    isSolaris9 = version.startsWith("5.9");
+//                    float ver = Float.parseFloat(version);
+//                    if (ver > 5.10f) {
+//                        File f = new File("/etc/release");
+//                        String line = null;
+//                        try {
+//                            FileInputStream fis = new FileInputStream(f);
+//                            InputStreamReader isr = new InputStreamReader(
+//                                                            fis, "ISO-8859-1");
+//                            BufferedReader br = new BufferedReader(isr);
+//                            line = br.readLine();
+//                            fis.close();
+//                        } catch (Exception ex) {
+//                            // Nothing to do here.
+//                        }
+//                        if (line != null && line.indexOf("OpenSolaris") >= 0) {
+//                            isOpenSolaris = true;
+//                        } else {
+//                            isOpenSolaris = false;
+//                        }
+//                    } else {
+//                        isOpenSolaris = false;
+//                    }
+//                } else {
+//                    isSolaris8 = false;
+//                    isSolaris9 = false;
+//                    isOpenSolaris = false;
+//                }
                 isWindows = osName.startsWith("Windows");
                 String jreLibDirName = System.getProperty("java.home", "")
                                                       + File.separator + "lib";
