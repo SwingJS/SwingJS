@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 1/8/2017 1:00:02 PM allows ".jpeg" as file name ext
 // BH 1/3/2017 11:06:10 PM adds binary types ".mp3",".ogg", ".wav"
 // BH 12/26/2016 5:22:45 PM adds j2sLang=la_CO_VA  e.g. en_US  or en-US, either is OK; capitalization ignored
 // BH 12/21/2016 5:01:07 PM moving getJavaResource to JSToolkit
@@ -613,7 +614,7 @@ J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection
 		return true;  
 	}
 
-	J2S._binaryTypes = [".gz",".jpg",".gif",".png",".zip",".jmol",".bin",".smol",".spartan",".mrc",".pse", ".map", ".omap", 
+	J2S._binaryTypes = [".gz",".jpg",".jpeg",".gif",".png",".zip",".jmol",".bin",".smol",".spartan",".mrc",".pse", ".map", ".omap", 
   ".dcd",".mp3",".ogg", ".wav"];
 
 	J2S._isBinaryUrl = function(url) {
@@ -822,7 +823,7 @@ J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection
 		mimetype || (mimetype = (filename.indexOf(".pdf") >= 0 ? "application/pdf" 
 			: filename.indexOf(".png") >= 0 ? "image/png" 
 			: filename.indexOf(".gif") >= 0 ? "image/gif" 
-			: filename.indexOf(".jpg") >= 0 ? "image/jpg" : ""));
+			: filename.indexOf(".jpg") >= 0 | filename.indexOf(".jpeg") >= 0? "image/jpg" : ""));
 		var isString = (typeof data == "string");    
    	data = (JU ? JU : J.util).Base64.getBase64(isString ? data.getBytes("UTF-8") : data).toString();
 		encoding || (encoding = "base64");

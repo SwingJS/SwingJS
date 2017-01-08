@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 1/8/2017 12:41:48 PM allowing java.io.File
 // BH 1/7/2017 7:01:02 AM better error messaging in loadScript
 // BH 12/21/2016 9:29:56 PM  XX.getClass().getResource() broken (since forever)
 // BH 12/20/2016 1:42:06 PM allowing file caching from class loader
@@ -5147,9 +5148,9 @@ Sys.err.write = function (buf, offset, len) {
     "java.lang.Runtime",
     "java.security.AccessController",
     "java.security.PrivilegedExceptionAction",
-    "java.io.File",
-    "java.io.FileInputStream",
-    "java.io.FileWriter",
+//    "java.io.File",
+//    "java.io.FileInputStream",
+//    "java.io.FileWriter",
     "java.io.OutputStreamWriter",
 //    sJU + ".Calendar", // bypassed in ModelCollection
 //    "java.text.SimpleDateFormat", // not used
