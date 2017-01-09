@@ -1423,4 +1423,13 @@ public class JSToolkit extends SunToolkit {
     }
   }
 
+  public static void showWebPage(URL url) {
+    /**
+     * @j2sNative window.open(url.toString());
+     */
+    {
+      System.out.println(url);
+    }
+
+  }
 }

@@ -30,20 +30,9 @@ package jsjava.awt.print;
 
 import java.awt.AWTError;
 import java.awt.HeadlessException;
-import java.util.Enumeration;
+//import java.awt.print.Book;
 
-import javax.print.DocFlavor;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.StreamPrintServiceFactory;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Media;
-import javax.print.attribute.standard.MediaPrintableArea;
-import javax.print.attribute.standard.MediaSize;
-import javax.print.attribute.standard.MediaSizeName;
-import javax.print.attribute.standard.OrientationRequested;
-
-import sun.security.action.GetPropertyAction;
 
 /**
  * The <code>PrinterJob</code> class is the principal class that controls
@@ -94,61 +83,61 @@ public abstract class PrinterJob {
         });
     }
 
-    /**
-     * A convenience method which looks up 2D print services.
-     * Services returned from this method may be installed on
-     * <code>PrinterJob</code>s which support print services.
-     * Calling this method is equivalent to calling
-     * {@link javax.print.PrintServiceLookup#lookupPrintServices(
-     * DocFlavor, AttributeSet)
-     * <code>PrintServiceLookup.lookupPrintServices()</code>}
-     * and specifying a Pageable DocFlavor.
-     * @return a possibly empty array of 2D print services.
-     * @since     1.4
-     */
-    public static PrintService[] lookupPrintServices() {
-        return PrintServiceLookup.
-            lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
-    }
-
-
-    /**
-     * A convenience method which locates factories for stream print
-     * services which can image 2D graphics.
-     * Sample usage :
-     * <pre>
-     * FileOutputStream outstream;
-     * StreamPrintService psPrinter;
-     * String psMimeType = "application/postscript";
-     *
-     * StreamPrintServiceFactory[] factories =
-     *     PrinterJob.lookupStreamPrintServices(psMimeType);
-     * if (factories.length > 0) {
-     *     try {
-     *         outstream = new File("out.ps");
-     *         psPrinter =  factories[0].getPrintService(fos);
-     *         // psPrinter can now be set as the service on a PrinterJob
-     *     } catch (FileNotFoundException e) {
-     *     }
-     * }
-     * </pre>
-     * Services returned from this method may be installed on
-     * <code>PrinterJob</code> instances which support print services.
-     * Calling this method is equivalent to calling
-     * {@link javax.print.StreamPrintServiceFactory#lookupStreamPrintServiceFactories(DocFlavor, String)
-     * <code>StreamPrintServiceFactory.lookupStreamPrintServiceFactories()
-     * </code>} and specifying a Pageable DocFlavor.
-     *
-     * @param mimeType the required output format, or null to mean any format.
-     * @return a possibly empty array of 2D stream print service factories.
-     * @since     1.4
-     */
-    public static StreamPrintServiceFactory[]
-        lookupStreamPrintServices(String mimeType) {
-        return StreamPrintServiceFactory.lookupStreamPrintServiceFactories(
-                                       DocFlavor.SERVICE_FORMATTED.PAGEABLE,
-                                       mimeType);
-    }
+//    /**
+//     * A convenience method which looks up 2D print services.
+//     * Services returned from this method may be installed on
+//     * <code>PrinterJob</code>s which support print services.
+//     * Calling this method is equivalent to calling
+//     * {@link javax.print.PrintServiceLookup#lookupPrintServices(
+//     * DocFlavor, AttributeSet)
+//     * <code>PrintServiceLookup.lookupPrintServices()</code>}
+//     * and specifying a Pageable DocFlavor.
+//     * @return a possibly empty array of 2D print services.
+//     * @since     1.4
+//     */
+//    public static PrintService[] lookupPrintServices() {
+//        return PrintServiceLookup.
+//            lookupPrintServices(DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
+//    }
+//
+//
+//    /**
+//     * A convenience method which locates factories for stream print
+//     * services which can image 2D graphics.
+//     * Sample usage :
+//     * <pre>
+//     * FileOutputStream outstream;
+//     * StreamPrintService psPrinter;
+//     * String psMimeType = "application/postscript";
+//     *
+//     * StreamPrintServiceFactory[] factories =
+//     *     PrinterJob.lookupStreamPrintServices(psMimeType);
+//     * if (factories.length > 0) {
+//     *     try {
+//     *         outstream = new File("out.ps");
+//     *         psPrinter =  factories[0].getPrintService(fos);
+//     *         // psPrinter can now be set as the service on a PrinterJob
+//     *     } catch (FileNotFoundException e) {
+//     *     }
+//     * }
+//     * </pre>
+//     * Services returned from this method may be installed on
+//     * <code>PrinterJob</code> instances which support print services.
+//     * Calling this method is equivalent to calling
+//     * {@link javax.print.StreamPrintServiceFactory#lookupStreamPrintServiceFactories(DocFlavor, String)
+//     * <code>StreamPrintServiceFactory.lookupStreamPrintServiceFactories()
+//     * </code>} and specifying a Pageable DocFlavor.
+//     *
+//     * @param mimeType the required output format, or null to mean any format.
+//     * @return a possibly empty array of 2D stream print service factories.
+//     * @since     1.4
+//     */
+//    public static StreamPrintServiceFactory[]
+//        lookupStreamPrintServices(String mimeType) {
+//        return StreamPrintServiceFactory.lookupStreamPrintServiceFactories(
+//                                       DocFlavor.SERVICE_FORMATTED.PAGEABLE,
+//                                       mimeType);
+//    }
 
 
  /* Public Methods */
@@ -160,42 +149,42 @@ public abstract class PrinterJob {
     public PrinterJob() {
     }
 
-    /**
-     * Returns the service (printer) for this printer job.
-     * Implementations of this class which do not support print services
-     * may return null.  null will also be returned if no printers are
-     * available.
-     * @return the service for this printer job.
-     * @see #setPrintService(PrintService)
-     * @see #getPrinterJob()
-     * @since     1.4
-     */
-    public PrintService getPrintService() {
-        return null;
-    }
-
-    /**
-     * Associate this PrinterJob with a new PrintService.
-     * This method is overridden by subclasses which support
-     * specifying a Print Service.
-     *
-     * Throws <code>PrinterException</code> if the specified service
-     * cannot support the <code>Pageable</code> and
-     * <code>Printable</code> interfaces necessary to support 2D printing.
-     * @param service a print service that supports 2D printing
-     * @exception PrinterException if the specified service does not support
-     * 2D printing, or this PrinterJob class does not support
-     * setting a 2D print service, or the specified service is
-     * otherwise not a valid print service.
-     * @see #getPrintService
-     * @since     1.4
-     */
-    public void setPrintService(PrintService service)
-        throws PrinterException {
-            throw new PrinterException(
-                         "Setting a service is not supported on this class");
-    }
-
+//    /**
+//     * Returns the service (printer) for this printer job.
+//     * Implementations of this class which do not support print services
+//     * may return null.  null will also be returned if no printers are
+//     * available.
+//     * @return the service for this printer job.
+//     * @see #setPrintService(PrintService)
+//     * @see #getPrinterJob()
+//     * @since     1.4
+//     */
+//    public PrintService getPrintService() {
+//        return null;
+//    }
+//
+//    /**
+//     * Associate this PrinterJob with a new PrintService.
+//     * This method is overridden by subclasses which support
+//     * specifying a Print Service.
+//     *
+//     * Throws <code>PrinterException</code> if the specified service
+//     * cannot support the <code>Pageable</code> and
+//     * <code>Printable</code> interfaces necessary to support 2D printing.
+//     * @param service a print service that supports 2D printing
+//     * @exception PrinterException if the specified service does not support
+//     * 2D printing, or this PrinterJob class does not support
+//     * setting a 2D print service, or the specified service is
+//     * otherwise not a valid print service.
+//     * @see #getPrintService
+//     * @since     1.4
+//     */
+//    public void setPrintService(PrintService service)
+//        throws PrinterException {
+//            throw new PrinterException(
+//                         "Setting a service is not supported on this class");
+//    }
+//
     /**
      * Calls <code>painter</code> to render the pages.  The pages in the
      * document to be printed by this
@@ -254,7 +243,7 @@ public abstract class PrinterJob {
      * returns true.
      * @see java.awt.GraphicsEnvironment#isHeadless
      */
-    public abstract boolean printDialog() throws HeadlessException;
+    public abstract boolean printDialog();
 
     /**
      * A convenience method which displays a cross-platform print dialog
@@ -302,8 +291,7 @@ public abstract class PrinterJob {
      * @since     1.4
      *
      */
-    public boolean printDialog(PrintRequestAttributeSet attributes)
-        throws HeadlessException {
+    public boolean printDialog(PrintRequestAttributeSet attributes) {
 
         if (attributes == null) {
             throw new NullPointerException("attributes");
@@ -412,84 +400,84 @@ public abstract class PrinterJob {
      */
     public PageFormat getPageFormat(PrintRequestAttributeSet attributes) {
 
-        PrintService service = getPrintService();
+//        PrintService service = getPrintService();
         PageFormat pf = defaultPage();
 
-        if (service == null || attributes == null) {
+//        if (service == null || attributes == null) {
             return pf;
-        }
-
-        Media media = (Media)attributes.get(Media.class);
-        MediaPrintableArea mpa =
-            (MediaPrintableArea)attributes.get(MediaPrintableArea.class);
-        OrientationRequested orientReq =
-           (OrientationRequested)attributes.get(OrientationRequested.class);
-
-        if (media == null && mpa == null && orientReq == null) {
-           return pf;
-        }
-        Paper paper = pf.getPaper();
-
-        /* If there's a media but no media printable area, we can try
-         * to retrieve the default value for mpa and use that.
-         */
-        if (mpa == null && media != null &&
-            service.isAttributeCategorySupported(MediaPrintableArea.class)) {
-            Object mpaVals =
-                service.getSupportedAttributeValues(MediaPrintableArea.class,
-                                                    null, attributes);
-            if (mpaVals instanceof MediaPrintableArea[] &&
-                ((MediaPrintableArea[])mpaVals).length > 0) {
-                mpa = ((MediaPrintableArea[])mpaVals)[0];
-            }
-        }
-
-        if (media != null &&
-            service.isAttributeValueSupported(media, null, attributes)) {
-            if (media instanceof MediaSizeName) {
-                MediaSizeName msn = (MediaSizeName)media;
-                MediaSize msz = MediaSize.getMediaSizeForName(msn);
-                if (msz != null) {
-                    double inch = 72.0;
-                    double paperWid = msz.getX(MediaSize.INCH) * inch;
-                    double paperHgt = msz.getY(MediaSize.INCH) * inch;
-                    paper.setSize(paperWid, paperHgt);
-                    if (mpa == null) {
-                        paper.setImageableArea(inch, inch,
-                                               paperWid-2*inch,
-                                               paperHgt-2*inch);
-                    }
-                }
-            }
-        }
-
-        if (mpa != null &&
-            service.isAttributeValueSupported(mpa, null, attributes)) {
-            float [] printableArea =
-                mpa.getPrintableArea(MediaPrintableArea.INCH);
-            for (int i=0; i < printableArea.length; i++) {
-                printableArea[i] = printableArea[i]*72.0f;
-            }
-            paper.setImageableArea(printableArea[0], printableArea[1],
-                                   printableArea[2], printableArea[3]);
-        }
-
-        if (orientReq != null &&
-            service.isAttributeValueSupported(orientReq, null, attributes)) {
-            int orient;
-            if (orientReq.equals(OrientationRequested.REVERSE_LANDSCAPE)) {
-                orient = PageFormat.REVERSE_LANDSCAPE;
-            } else if (orientReq.equals(OrientationRequested.LANDSCAPE)) {
-                orient = PageFormat.LANDSCAPE;
-            } else {
-                orient = PageFormat.PORTRAIT;
-            }
-            pf.setOrientation(orient);
-        }
-
-        pf.setPaper(paper);
-        pf = validatePage(pf);
-        return pf;
+//        }
+//
+//        Media media = (Media)attributes.get(Media.class);
+//        MediaPrintableArea mpa =
+//            (MediaPrintableArea)attributes.get(MediaPrintableArea.class);
+//        OrientationRequested orientReq =
+//           (OrientationRequested)attributes.get(OrientationRequested.class);
+//
+//        if (media == null && mpa == null && orientReq == null) {
+//           return pf;
+//        }
+//        Paper paper = pf.getPaper();
+//
+//        /* If there's a media but no media printable area, we can try
+//         * to retrieve the default value for mpa and use that.
+//         */
+//        if (mpa == null && media != null &&
+//            service.isAttributeCategorySupported(MediaPrintableArea.class)) {
+//            Object mpaVals =
+//                service.getSupportedAttributeValues(MediaPrintableArea.class,
+//                                                    null, attributes);
+//            if (mpaVals instanceof MediaPrintableArea[] &&
+//                ((MediaPrintableArea[])mpaVals).length > 0) {
+//                mpa = ((MediaPrintableArea[])mpaVals)[0];
+//            }
+//        }
+//
+//        if (media != null &&
+//            service.isAttributeValueSupported(media, null, attributes)) {
+//            if (media instanceof MediaSizeName) {
+//                MediaSizeName msn = (MediaSizeName)media;
+//                MediaSize msz = MediaSize.getMediaSizeForName(msn);
+//                if (msz != null) {
+//                    double inch = 72.0;
+//                    double paperWid = msz.getX(MediaSize.INCH) * inch;
+//                    double paperHgt = msz.getY(MediaSize.INCH) * inch;
+//                    paper.setSize(paperWid, paperHgt);
+//                    if (mpa == null) {
+//                        paper.setImageableArea(inch, inch,
+//                                               paperWid-2*inch,
+//                                               paperHgt-2*inch);
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (mpa != null &&
+//            service.isAttributeValueSupported(mpa, null, attributes)) {
+//            float [] printableArea =
+//                mpa.getPrintableArea(MediaPrintableArea.INCH);
+//            for (int i=0; i < printableArea.length; i++) {
+//                printableArea[i] = printableArea[i]*72.0f;
+//            }
+//            paper.setImageableArea(printableArea[0], printableArea[1],
+//                                   printableArea[2], printableArea[3]);
+//        }
+//
+//        if (orientReq != null &&
+//            service.isAttributeValueSupported(orientReq, null, attributes)) {
+//            int orient;
+//            if (orientReq.equals(OrientationRequested.REVERSE_LANDSCAPE)) {
+//                orient = PageFormat.REVERSE_LANDSCAPE;
+//            } else if (orientReq.equals(OrientationRequested.LANDSCAPE)) {
+//                orient = PageFormat.LANDSCAPE;
+//            } else {
+//                orient = PageFormat.PORTRAIT;
+//            }
+//            pf.setOrientation(orient);
+//        }
+//
+//        pf.setPaper(paper);
+//        pf = validatePage(pf);
+//        return pf;
     }
 
     /**

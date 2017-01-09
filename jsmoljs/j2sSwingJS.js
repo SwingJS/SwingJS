@@ -5151,7 +5151,7 @@ Sys.err.write = function (buf, offset, len) {
 //    "java.io.File",
 //    "java.io.FileInputStream",
 //    "java.io.FileWriter",
-    "java.io.OutputStreamWriter",
+//    "java.io.OutputStreamWriter",
 //    sJU + ".Calendar", // bypassed in ModelCollection
 //    "java.text.SimpleDateFormat", // not used
 //    "java.text.DateFormat", // not used

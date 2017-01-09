@@ -1526,6 +1526,7 @@ public class JSTableUI extends JSLightweightUI {
    * @see #installUI
    */
   protected void installDefaults() {
+  	
       LookAndFeel.installColorsAndFont(table, "Table.background",
                                        "Table.foreground", "Table.font");
       // JTable's original row height is 16.  To correctly display the

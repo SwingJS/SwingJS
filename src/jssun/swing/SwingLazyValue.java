@@ -49,7 +49,7 @@ public class SwingLazyValue implements UIDefaults.LazyValue {
 
     public SwingLazyValue(String c) {
     	// new class()
-        this(c, (String)null);
+        this(c, null, null);
     }
     public SwingLazyValue(String c, String m) {
     	// new class.method()

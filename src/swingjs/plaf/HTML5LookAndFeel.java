@@ -97,6 +97,7 @@ import jsjavax.swing.plaf.InsetsUIResource;
 //import jssun.swing.SwingUtilities2;
 ////import jssun.swing.SwingLazyValue;
 //
+import jssun.swing.SwingLazyValue;
 
 /**
  * A base class to use in creating a look and feel for Swing.
@@ -379,18 +380,18 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		"menuText", "#333333", /* Text color for menus */
 		"text", "#C0C0C0", /* Text background color */
 		"textText", "#333333", /* Text foreground color */
-//		"textHighlight", "#000080", /* Text background color when selected */
+		"textHighlight", "#000080", /* Text background color when selected */
 		"textHighlightText", "#FFFFFF", /* Text color when selected */
 		"textInactiveText", "#808080", /* Text color when disabled */
 		"control", "#EEEEEE", // SECONDARY3 Default color for controls (buttons, sliders, etc)
 		"controlText", "#333333", //  Default color for text in controls 
-//		"controlHighlight", "#C0C0C0", /*
+		"controlHighlight", "#C0C0C0", /*
 //																		 * Specular highlight (opposite of the
 //																		 * shadow)
 //																		 */
-//		"controlLtHighlight", "#FFFFFF", /* Highlight color for controls */
-//		"controlShadow", "#808080", /* Shadow color for controls */
-//		"controlDkShadow", "#000000", /* Dark shadow color for controls */
+		"controlLtHighlight", "#FFFFFF", /* Highlight color for controls */
+		"controlShadow", "#808080", /* Shadow color for controls */
+		"controlDkShadow", "#000000", /* Dark shadow color for controls */
 		"scrollbar", "#E0E0E0", /* Scrollbar background (usually the "track") */
 		"info", "#FFFFE1", /* ??? */
 		"infoText", "#000000" /* ??? */
@@ -526,7 +527,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		//
 
 		// *** Shared Colors
-		// ColorUIResource red = new ColorUIResource(Color.red);
+		ColorUIResource red = new ColorUIResource(Color.red);
 		ColorUIResource black = new ColorUIResource(Color.black);
 		ColorUIResource white = new ColorUIResource(Color.white);
 		// ColorUIResource yellow = new ColorUIResource(Color.yellow);
@@ -536,14 +537,14 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		ColorUIResource scrollBarTrack = new ColorUIResource(224, 224, 224);
 
 		Color control = table.getColor("control");
-		// Color controlDkShadow = table.getColor("controlDkShadow");
-		// Color controlHighlight = table.getColor("controlHighlight");
-		// Color controlLtHighlight = table.getColor("controlLtHighlight");
-		// Color controlShadow = table.getColor("controlShadow");
+		Color controlDkShadow = table.getColor("controlDkShadow");
+		Color controlHighlight = table.getColor("controlHighlight");
+	  Color controlLtHighlight = table.getColor("controlLtHighlight");
+		Color controlShadow = table.getColor("controlShadow");
 		Color controlText = table.getColor("controlText");
 		Color menu = table.getColor("menu");
 		Color menuText = table.getColor("menuText");
-		// Color textHighlight = table.getColor("textHighlight");
+		Color textHighlight = table.getColor("textHighlight");
 		Color textHighlightText = table.getColor("textHighlightText");
 	  Color textInactiveText = table.getColor("textInactiveText");
 		Color textText = table.getColor("textText");
@@ -558,9 +559,9 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		// Object marginBorder = new SwingLazyValue(
 		// "jsjavax.swing.plaf.basic.BasicBorders$MarginBorder");
 	Object etchedBorder = new BorderUIResource.EtchedBorderUIResource();
-		// Object loweredBevelBorder = new SwingLazyValue(
-		// "jsjavax.swing.plaf.BorderUIResource",
-		// "getLoweredBevelBorderUIResource");
+		Object loweredBevelBorder = new SwingLazyValue(
+		"jsjavax.swing.plaf.BorderUIResource",
+		"getLoweredBevelBorderUIResource");
 		//
 		// Object popupMenuBorder = new SwingLazyValue(
 		// "jsjavax.swing.plaf.basic.BasicBorders",
@@ -731,7 +732,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		//
 		// Object sliderFocusInsets = twoInsets;
 		//
-		// Object toolBarSeparatorSize = new DimensionUIResource( 10, 10 );
+		Object toolBarSeparatorSize = new DimensionUIResource( 10, 10 );
 		//
 		//
 		// // *** SplitPane value objects
@@ -1586,13 +1587,13 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				//
 				//
 				// *** Table
-				// "Table.font", dialogPlain12,
+				"Table.font", dialogPlain12,
 				"Table.foreground", controlText, // cell text color
 				"Table.background",
 				window, // cell background color
-				// "Table.selectionForeground", textHighlightText,
-				// "Table.selectionBackground", textHighlight,
-				// "Table.dropLineColor", controlShadow,
+				"Table.selectionForeground", textHighlightText,
+				"Table.selectionBackground", textHighlight,
+			   "Table.dropLineColor", controlShadow,
 				"Table.dropLineShortColor",
 				black,
 				"Table.gridColor",
@@ -1601,8 +1602,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				window,
 				"Table.focusCellForeground",
 				controlText,
-				// "Table.focusCellHighlightBorder", focusCellHighlightBorder,
-				// "Table.scrollPaneBorder", loweredBevelBorder,
+				//"Table.focusCellHighlightBorder", focusCellHighlightBorder,
+				"Table.scrollPaneBorder", loweredBevelBorder,
 				// "Table.ancestorInputMap",
 				// new UIDefaults.LazyInputMap(new Object[] {
 				// "ctrl C", "copy",
@@ -1708,12 +1709,12 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "sun.swing.icon.SortArrowIcon",
 				// null, new Object[] { Boolean.FALSE,
 				// "Table.sortIconColor" }),
-				// "Table.sortIconColor", controlShadow,
+			  "Table.sortIconColor", controlShadow,
 				//
-				// "TableHeader.font", dialogPlain12,
+				"TableHeader.font", dialogPlain12,
 				"TableHeader.foreground", controlText, // header text color
 				"TableHeader.background", control, // header background
-				// "TableHeader.cellBorder", tableHeaderBorder,
+				//"TableHeader.cellBorder", tableHeaderBorder,
 
 				// Support for changing the background/border of the currently
 				// selected header column when the header has the keyboard focus.
@@ -1900,19 +1901,19 @@ public class HTML5LookAndFeel extends LookAndFeel {
 			  "TitledBorder.border", etchedBorder,
 
 				// *** ToolBar
-				// "ToolBar.font", dialogPlain12,
-				// "ToolBar.background", control,
-				// "ToolBar.foreground", controlText,
-				// "ToolBar.shadow", controlShadow,
-				// "ToolBar.darkShadow", controlDkShadow,
-				// "ToolBar.light", controlHighlight,
-				// "ToolBar.highlight", controlLtHighlight,
-				// "ToolBar.dockingBackground", control,
-				// "ToolBar.dockingForeground", red,
-				// "ToolBar.floatingBackground", control,
-				// "ToolBar.floatingForeground", darkGray,
-				// "ToolBar.border", etchedBorder,
-				// "ToolBar.separatorSize", toolBarSeparatorSize,
+				"ToolBar.font", dialogPlain12,
+				"ToolBar.background", control,
+				"ToolBar.foreground", controlText,
+				"ToolBar.shadow", controlShadow,
+				"ToolBar.darkShadow", controlDkShadow,
+				"ToolBar.light", controlHighlight,
+				"ToolBar.highlight", controlLtHighlight,
+				"ToolBar.dockingBackground", control,
+				"ToolBar.dockingForeground", red,
+				"ToolBar.floatingBackground", control,
+				"ToolBar.floatingForeground", darkGray,
+				"ToolBar.border", etchedBorder,
+				"ToolBar.separatorSize", toolBarSeparatorSize,
 				// "ToolBar.ancestorInputMap",
 				// new UIDefaults.LazyInputMap(new Object[] {
 				// "UP", "navigateUp",

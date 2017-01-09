@@ -30,6 +30,7 @@ package jsjavax.swing;
 
 import java.awt.HeadlessException;
 import java.lang.reflect.Constructor;
+import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -1356,8 +1357,24 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
                 return (TableCellRenderer)renderer;
             }
             else {
-                return getDefaultRenderer(columnClass.getSuperclass());
-            }
+              Class c = null;
+              /**
+               * String does not have .getSuperclass
+               * @j2sNative
+               * 
+               * c = columnClass.getSuperclass && columnClass.getSuperclass();
+               */
+              {
+              	columnClass.getSuperclass();
+              }
+              if (c == null && columnClass != Object.class) {
+                  c = Object.class;
+              }
+              return getDefaultRenderer(c);
+          }
+//            	
+//                return getDefaultRenderer(columnClass.getSuperclass());
+//            }
         }
     }
 
@@ -1408,9 +1425,26 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             if (editor != null) {
                 return (TableCellEditor)editor;
             }
+            
             else {
-                return getDefaultEditor(columnClass.getSuperclass());
-            }
+              Class c = null;
+              /**
+               * String does not have .getSuperclass
+               * @j2sNative
+               * 
+               * c = columnClass.getSuperclass && columnClass.getSuperclass();
+               */
+              {
+              	columnClass.getSuperclass();
+              }
+              if (c == null && columnClass != Object.class) {
+                  c = Object.class;
+              }
+              return getDefaultEditor(c);
+          }
+//           else {         	
+//                return getDefaultEditor(columnClass.getSuperclass());
+//            }
         }
     }
 
@@ -5416,18 +5450,18 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
         }
     }
 
-// SwingJS  TODO    static class DateRenderer extends DefaultTableCellRenderer.UIResource {
-//        DateFormat formatter;
-//        public DateRenderer() { super(); }
-//
-//        public void setValue(Object value) {
-//            if (formatter==null) {
-//                formatter = DateFormat.getDateInstance();
-//            }
-//            setText((value == null) ? "" : formatter.format(value));
-//        }
-//    }
-//
+  static class DateRenderer extends DefaultTableCellRenderer.UIResource {
+        DateFormat formatter;
+        public DateRenderer() { super(); }
+
+        public void setValue(Object value) {
+            if (formatter==null) {
+                formatter = DateFormat.getDateInstance();
+            }
+            setText((value == null) ? "" : formatter.format(value));
+        }
+    }
+
     static class IconRenderer extends DefaultTableCellRenderer.UIResource {
         public IconRenderer() {
             super();
