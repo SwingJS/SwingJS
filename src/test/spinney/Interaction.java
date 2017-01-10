@@ -30,6 +30,16 @@ import a2s.Applet;
 import a2s.Button;
 import a2s.Scrollbar;
 
+
+//web_Ready
+//web_AppletName= Wave Interaction
+//web_Description= Adjust two sinusoidal waves and see their sum
+//web_JavaVersion= http://www.eserc.stonybrook.edu/ProjectJava/WaveInteractionApplet
+//web_AppletImage= waveinteraction.png
+//web_Category= Physics - Waves
+//web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
+//web_Features= graphics, AWT-to-Swing with handleEvent
+
 public class Interaction extends Applet implements Runnable {
 	
 	// Note that a2s.Applet subclasses javax.swing.JApplet, not java.applet.Applet
