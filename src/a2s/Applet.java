@@ -28,8 +28,19 @@ public class Applet extends JApplet implements AdjustmentListener, ActionListene
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				//System.out.println("init " + this.getSize());
+				try {
 				if (this.getWidth() > 0)
 					paintMe(g);
+				} catch (Throwable e) {
+					System.out.println(e);
+					e.printStackTrace();
+					/**
+					 * @j2sNative
+					 * 
+					 * debugger;
+					 */
+					{}
+				}
 			}
 		});
 	}

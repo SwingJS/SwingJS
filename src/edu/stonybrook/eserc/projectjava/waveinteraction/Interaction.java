@@ -77,6 +77,7 @@ public class Interaction extends Applet implements Runnable {
 	private int msDelay;
 	private int startSpeed;
 
+	@Override
 	public void init() {
 
 		// super.init() is a SwingJS call to a2s.Applet that 
@@ -167,10 +168,12 @@ public class Interaction extends Applet implements Runnable {
 	}
 
 
+	@Override
 	public String getAppletInfo() {
 		return "Waveform Interaction, written by Konstantin Lukin. (ProjectJava, LICIL)";
 	}
 
+	@Override
 	public void start() {
 		
 		// The original applet used a thread with a do/while loop and Thread.sleep(),
@@ -194,6 +197,7 @@ public class Interaction extends Applet implements Runnable {
 		this.runner.start();
 	}
 	
+	@Override
 	public void run() {
 		switch (this.runner_state) {
 		default: {
@@ -207,6 +211,7 @@ public class Interaction extends Applet implements Runnable {
 	}
 
 
+	@Override
 	public void stop() {
 		this.runner.stop();
 		this.runner = null;
@@ -270,6 +275,7 @@ public class Interaction extends Applet implements Runnable {
 		this.repaint();
 	}
 
+	@Override
 	public boolean action(Event event, Object object) {
 		if (event.target instanceof Button) {
 			if (this.button.getLabel().equals("start")) {
@@ -285,9 +291,10 @@ public class Interaction extends Applet implements Runnable {
 		return true;
 	}
 
+	@Override
 	public boolean handleEvent(Event event) {
 		int n;
-		System.out.println("handle " + event);
+		//System.out.println("handle " + event);
 		if (event.id == 605 || event.id == 601 || event.id == 602
 				|| event.id == 603 || event.id == 604) {
 			n = 0;
@@ -332,6 +339,7 @@ public class Interaction extends Applet implements Runnable {
 		return true;
 	}
 
+	@Override
 	public boolean mouseDown(Event event, int n, int n2) {
 		if (this.runner_state == 1) {
 			return super.mouseDown(event, n, n2);
@@ -344,6 +352,7 @@ public class Interaction extends Applet implements Runnable {
 		return true;
 	}
 
+	@Override
 	public boolean mouseUp(Event event, int n, int n2) {
 		if (this.runner_state == 1) {
 			return super.mouseDown(event, n, n2);
@@ -353,6 +362,7 @@ public class Interaction extends Applet implements Runnable {
 		return super.mouseUp(event, n, n2);
 	}
 
+	@Override
 	public boolean mouseDrag(Event event, int n, int n2) {
 		switch (this.index) {
 		case -1: {
@@ -488,6 +498,7 @@ public class Interaction extends Applet implements Runnable {
 		}
 	}
 
+	@Override
 	protected void paintMe(Graphics graphics) {
 		defineLayout();
 		if (this.offg == null) {
@@ -510,6 +521,7 @@ public class Interaction extends Applet implements Runnable {
 
 	}
 
+	@Override
 	public void update(Graphics graphics) {
 		this.drawValues(graphics);
 		if (this.runner_state == 1) {
