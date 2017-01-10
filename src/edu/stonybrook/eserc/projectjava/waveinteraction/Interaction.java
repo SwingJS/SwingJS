@@ -8,7 +8,7 @@
  *  SumWaves
  */
 
-package edu.stonybrook.eserc.projectjava;
+package edu.stonybrook.eserc.projectjava.waveinteraction;
 
 import java.awt.Color;
 import java.awt.Event;
@@ -983,13 +983,13 @@ public class Interaction extends Applet implements Runnable {
 // ......1326 ........16 .......897 swingjs.JSGraphics2D create
 // .......748 ........17 ........80 swingjs.JSGraphics2D drawString
 // .......408 .........9 .........0 swingjs.plaf.JSComponentUI paint
-// .......272 ........15 ........84 edu.stonybrook.eserc.projectjava.Box construct
+// .......272 ........15 ........84 edu.stonybrook.eserc.projectjava.waveinteraction.Box construct
 // .......272 .........3 .........3 java.awt.Polygon construct
 // .......204 .........5 .......169 java.awt.image.Raster createPackedRaster
 // .......204 .........3 .........3 sun.awt.image.SunWritableRaster stealData
 // .......204 .........2 .........0 sun.awt.image.SunWritableRaster$1 getData
-// .......136 .........3 ........48 edu.stonybrook.eserc.projectjava.Interaction drawGraphPaper
-// .......136 .........1 ........22 edu.stonybrook.eserc.projectjava.Handle construct
+// .......136 .........3 ........48 edu.stonybrook.eserc.projectjava.waveinteraction.Interaction drawGraphPaper
+// .......136 .........1 ........22 edu.stonybrook.eserc.projectjava.waveinteraction.Handle construct
 // .......134 .........2 .........4 java.lang.Thread init
 // .......102 .........2 .......111 swingjs.JSImage construct
 // .......102 .........2 ........68 swingjs.JSGraphics2D drawImage
@@ -1013,7 +1013,7 @@ public class Interaction extends Applet implements Runnable {
 // .......102 .........0 .........0 java.awt.image.Raster construct
 // .......101 .........1 .........1 JU.Lst construct
 // .......100 .........2 .........1 java.awt.AWTEvent construct
-// ........68 .........1 ......4749 edu.stonybrook.eserc.projectjava.SineWave draw
+// ........68 .........1 ......4749 edu.stonybrook.eserc.projectjava.waveinteraction.SineWave draw
 // ........67 .........3 .........4 java.awt.event.InvocationEvent construct
 // ........67 .........2 ........15 java.awt.EventDispatchThread construct
 // ........67 .........1 .........6 JU.JSThread construct
@@ -1025,10 +1025,10 @@ public class Interaction extends Applet implements Runnable {
 // ........66 .........1 ........80 javax.swing.JApplet repaint
 // ........66 .........1 ........57 javax.swing.RepaintManager
 // scheduleProcessingRunnable
-// ........34 .........1 ......2329 edu.stonybrook.eserc.projectjava.SumWaves draw
+// ........34 .........1 ......2329 edu.stonybrook.eserc.projectjava.waveinteraction.SumWaves draw
 // ........34 .........0 ......8894 javax.swing.JLayeredPane paint
 // ........34 .........0 ......7892 a2s.Applet$1 paintComponent
-// ........34 .........0 ........40 edu.stonybrook.eserc.projectjava.Interaction setHandles
+// ........34 .........0 ........40 edu.stonybrook.eserc.projectjava.waveinteraction.Interaction setHandles
 // ........34 .........0 ........30 javax.swing.JApplet getGraphics
 // ........34 .........0 .........2 java.util.IdentityHashMap getEntry
 // ........34 .........0 .........0 javax.swing.AbstractButton paintBorder
@@ -1063,9 +1063,9 @@ public class Interaction extends Applet implements Runnable {
 // ......1428 ........59 java.awt.BasicStroke
 // ......2311 .......141 java.awt.Rectangle
 // .......102 .........4 java.awt.Dimension
-// .......272 .......104 edu.stonybrook.eserc.projectjava.Box
+// .......272 .......104 edu.stonybrook.eserc.projectjava.waveinteraction.Box
 // .......272 .........9 java.awt.Polygon
-// .......136 ........27 edu.stonybrook.eserc.projectjava.Handle
+// .......136 ........27 edu.stonybrook.eserc.projectjava.waveinteraction.Handle
 // .......102 .........0 sun.java2d.StateTrackableDelegate
 // .......102 ........29 java.awt.image.DataBufferInt
 // ....124542 ......4444 java.awt.Point

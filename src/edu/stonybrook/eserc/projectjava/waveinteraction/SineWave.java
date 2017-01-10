@@ -5,7 +5,7 @@
  *  MyMath
  */
 
-package edu.stonybrook.eserc.projectjava;
+package edu.stonybrook.eserc.projectjava.waveinteraction;
 
 import java.awt.Graphics;
 import java.awt.Point;

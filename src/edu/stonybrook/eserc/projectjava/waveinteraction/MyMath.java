@@ -2,7 +2,7 @@
  * Decompiled with CFR 0_118.
  */
 
-package edu.stonybrook.eserc.projectjava;
+package edu.stonybrook.eserc.projectjava.waveinteraction;
 
 import java.awt.Point;
 
