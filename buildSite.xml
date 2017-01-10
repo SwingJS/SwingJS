@@ -100,13 +100,17 @@
       </fileset>
     </copy>
   	
-    <echo>...adding javajs/api to swingjs/j2s </echo>
+    <echo>...adding javajs/api and javajs/img to swingjs/j2s </echo>
   	<copy todir="site/swingjs/j2s/javajs/api"  overwrite="true" >
       <fileset dir="bin/javajs/api">
         <include name="*.js" />
       </fileset>
     </copy>
-  	
+  	<copy todir="site/swingjs/j2s/javajs/img"  overwrite="true" >
+      <fileset dir="bin/javajs/img">
+        <include name="*.js" />
+      </fileset>
+    </copy>  	
   	
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
@@ -143,7 +147,7 @@
     <echo>...replacing Class.forName with Clazz._4Name</echo>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="Class.forName" value="Clazz._4Name"/>
     <echo>...replacing JavaObject with Clazz._O</echo>
-  	<replace dir="site/swingjs/j2s" includes="**/*.js" token=" JavaObject" value=" Clazz._O"/>
+  	<replace dir="site/swingjs/j2s" includes="**/*.js" token="JavaObject" value="Clazz._O"/>
     <echo>...removing all $fz references for sub/superclass common private function names</echo>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="($fz =" value=""/>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token=", $fz.isPrivate = true, $fz)" value=""/>

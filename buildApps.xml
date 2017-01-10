@@ -74,21 +74,21 @@
       </fileset>
     </copy>
 
+  	<echo>Adding non-JS files from bin</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
-      <fileset dir="src">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
+      <fileset dir="bin">
+        <include name="**/*." />
+        <exclude name="**/*.class" />
+        <exclude name="**/*.js" />
+        <exclude name="*java*/**/*" />
         <exclude name="jssun/**/*" />
       </fileset>
     </copy>   	
   	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
-      <fileset dir="src\jssun">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
+      <fileset dir="bin\jssun">
+        <include name="**/*." />
+        <exclude name="**/*.class" />
+        <exclude name="**/*.js" />
       </fileset>
     </copy>
    	
