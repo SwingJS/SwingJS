@@ -5,7 +5,7 @@
  *  MyMath
  */
 
-package test.spinney;
+package edu.stonybrook.eserc.projectjava;
 
 import java.awt.Graphics;
 import java.awt.Point;

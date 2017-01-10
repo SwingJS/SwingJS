@@ -2,7 +2,7 @@
  * Decompiled with CFR 0_118.
  */
 
-package test.spinney;
+package edu.stonybrook.eserc.projectjava;
 
 import java.awt.Graphics;
 import java.awt.Point;
