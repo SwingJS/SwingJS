@@ -46,7 +46,7 @@ public class Applet extends JApplet implements AdjustmentListener, ActionListene
 	}
 
 	protected void paintMe(Graphics g) {
-		// TODO Auto-generated method stub
+		System.out.println("paintMe has not been implemented!");
 	}
 
 	public Component add(Component comp) {

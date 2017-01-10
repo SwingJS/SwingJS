@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javajs.J2SIgnoreImport;
-
 import jsjava.awt.AlphaComposite;
 import jsjava.awt.BasicStroke;
 import jsjava.awt.Color;
@@ -76,7 +75,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	boolean isShifted;// private, but only JavaScript
 	private Font font;
 
-	private Color currentColor;
+	//private Color currentColor;
 
 	public JSGraphics2D(Object canvas) { // this must be Object, because we are passing an actual HTML5 canvas
 		hints = new RenderingHints(new Hashtable());
@@ -339,7 +338,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			ImageObserver observer) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		if (img != null) {
 			DOMNode imgNode = getImageNode(img);
 			if (imgNode != null)
@@ -351,7 +350,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 
 	private DOMNode getImageNode(Image img) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		DOMNode imgNode = DOMNode.getImageNode(img);
 		return (imgNode == null ? JSToolkit.getCompositor().createImageNode(img) : imgNode);
 	}
@@ -363,7 +362,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, Color bgcolor,
 			ImageObserver observer) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, observer);
 	}
@@ -371,7 +370,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int x, int y, int width, int height,
 			Color bgcolor, ImageObserver observer) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		JSToolkit.notImplemented(null);
 		return drawImage(img, x, y, width, height, observer);
 	}
@@ -380,7 +379,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	@Override
 	public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
 			int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		if (img != null) {
 			byte[] bytes = null;
 		  DOMNode imgNode = getImageNode(img);
@@ -426,7 +425,7 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 
 	@SuppressWarnings("unused")
 	public boolean drawImagePriv(Image img, int x, int y, ImageObserver observer) {
-		backgroundPainted = true;;
+		backgroundPainted = true;
 		if (img != null) {
 			int[] pixels = null;
 			boolean isRGB = false; // usually RGBA 
@@ -902,6 +901,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	}
 	
 	/////////////// saving of the state ////////////////
+	
+	private final static int SAVE_ALPHA = 0;
+	private final static int SAVE_COMPOSITE = 1;
+	private final static int SAVE_STROKE = 2;
+	private final static int SAVE_TRANSFORM = 3;
+	private final static int SAVE_FONT = 4;
+	private final static int SAVE_CLIP = 5;
+	private final static int SAVE_BACKGROUND_PAINTED = 6;
+	private final static int SAVE_MAX = 7;
+	
 
 	/**
 	 * creates a save object to extend the capabilities of context2d.save()
@@ -914,7 +923,8 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 	 */
 	public int mark() {
 		ctx.save();
-		Map<String, Object> map = new Hashtable<String, Object>();
+		Object[] map = new Object[SAVE_MAX];
+		
 		float alpha = 0;
 		/**
 		 * @j2sNative
@@ -923,19 +933,13 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		 * 
 		 */
 		{}
-		map.put("alpha", Float.valueOf(alpha));
-		if (currentComposite != null)
-			map.put("composite", currentComposite);
-		if (currentStroke != null)
-			map.put("stroke", currentStroke);
-		if (transform != null)
-			map.put("transform", transform); // not implemented
-		if (font != null)
-			map.put("font", font);
-		if (currentClip != null)
-			map.put("clip", currentClip);
-		if (backgroundPainted)
-			map.put("backgroundPainted", Boolean.TRUE);
+		map[SAVE_ALPHA] = Float.valueOf(alpha);
+		map[SAVE_COMPOSITE] = currentComposite;
+		map[SAVE_STROKE] = currentStroke;
+		map[SAVE_TRANSFORM] = transform;
+		map[SAVE_FONT] = font;
+		map[SAVE_CLIP] = currentClip;
+		map[SAVE_BACKGROUND_PAINTED] = (backgroundPainted ? Boolean.TRUE : Boolean.FALSE);
 		backgroundPainted = false;
 		return HTML5CanvasContext2D.push(ctx, map);
 	}
@@ -948,16 +952,16 @@ public class JSGraphics2D extends SunGraphics2D implements Cloneable {
 		if (n0 < 1)
 			n0 = 1;
 		while (HTML5CanvasContext2D.getSavedLevel(ctx) >= n0) {
-			Map<String, Object> map = HTML5CanvasContext2D.pop(ctx);
-			setComposite((Composite) map.get("composite"));
-			Float alpha = (Float) map.get("alpha");
+			Object[] map = HTML5CanvasContext2D.pop(ctx);
+			setComposite((Composite) map[SAVE_COMPOSITE]);
+			Float alpha = (Float) map[SAVE_ALPHA];
 			if (alpha != null)
 				setAlpha(alpha.floatValue());
-			setStroke((Stroke) map.get("stroke"));
-			setTransform((AffineTransform) map.get("transform"));
-			setFont((Font) map.get("font"));
-			currentClip = (Shape) map.get("clip");
-			backgroundPainted = map.containsKey("backgroundPainted");
+			setStroke((Stroke) map[SAVE_STROKE]);
+			setTransform((AffineTransform) map[SAVE_TRANSFORM]);
+			setFont((Font) map[SAVE_FONT]);
+			currentClip = (Shape) map[SAVE_CLIP];
+			backgroundPainted = ((Boolean) map[SAVE_BACKGROUND_PAINTED]).booleanValue();
 			ctx.restore();
 		}
 	}

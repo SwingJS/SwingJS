@@ -39,20 +39,20 @@ public class MyMath {
         return 180.0f * f / 3.1415927f;
     }
 
-    public static Point translate(Point point, Point point2, float f) {
+    public static Point translate(Point start, Point p1, float angle) {
     	// SwingJS optimization ptTemp
-        int n = point2.x - point.x;
-        int n2 = point2.y - point.y;
+        int n = p1.x - start.x;
+        int n2 = p1.y - start.y;
         int n3 = MyMath.round(Math.sqrt(n * n + n2 * n2));
         float f2 = (float)Math.atan((float)n2 / (float)n);
-        float f3 = 0.017453292f * f;
-        f = f3 + f2;
+        float f3 = 0.017453292f * angle;
+        angle = f3 + f2;
         if (n < 0) {
-            f += 3.1415927f;
+            angle += 3.1415927f;
         }
-        point2.x = point.x + Math.round((float)n3 * (float)Math.cos(f));
-        point2.y = point.y + Math.round((float)n3 * (float)Math.sin(f));
-        return point2;
+        p1.x = start.x + Math.round((float)n3 * (float)Math.cos(angle));
+        p1.y = start.y + Math.round((float)n3 * (float)Math.sin(angle));
+        return p1;
     }
 
     public static Point rotate(Point point, float f, float f2) {

@@ -37,8 +37,9 @@ import a2s.Scrollbar;
 //web_JavaVersion= http://www.eserc.stonybrook.edu/ProjectJava/WaveInteractionApplet
 //web_AppletImage= waveinteraction.png
 //web_Category= Physics - Waves
+//web_Info= width:600,height:520
 //web_Date= $Date: 2016-12-30 10:36:32 -0600 (Fri, 30 Dec 2016) $
-//web_Features= graphics, AWT-to-Swing with handleEvent
+//web_Features= graphics, AWT-to-Swing with handleEvent, decompiled using CFR
 
 public class Interaction extends Applet implements Runnable {
 	
@@ -80,6 +81,8 @@ public class Interaction extends Applet implements Runnable {
 	@Override
 	public void init() {
 
+		this.setSize(600, 520);
+		
 		// super.init() is a SwingJS call to a2s.Applet that 
 		// enable the older handleEvent() method in Java AWT applets
 		// and also fixes flashing/background/missing button problems
@@ -104,7 +107,6 @@ public class Interaction extends Applet implements Runnable {
 		msDelay = (isJS ? 2 : 30); // SwingJS optimization
 		startSpeed = (isJS ? 15 : 5); // SwingJS optimization
 
-		this.setSize(800, 520);
 
 		this.title_font = new Font("Helvetica", 1, 16);
 		this.label_font = new Font("Helvetica", 0, 14);

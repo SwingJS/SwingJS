@@ -1,6 +1,5 @@
 package swingjs.api;
 
-import java.util.Map;
 
 
 public abstract class HTML5CanvasContext2D {
@@ -74,7 +73,7 @@ public abstract class HTML5CanvasContext2D {
 	 * @param ctx
 	 * @return the length of the stack array after the push
 	 */
-	public static int push(HTML5CanvasContext2D ctx, Map<String, Object> map) {
+	public static int push(HTML5CanvasContext2D ctx, Object[] map) {
 		/**
 		 * @j2sNative
 		 * 
@@ -92,7 +91,7 @@ public abstract class HTML5CanvasContext2D {
 	 * @param ctx
 	 * @return
 	 */
-	public static Map<String, Object> pop(HTML5CanvasContext2D ctx) {
+	public static Object[] pop(HTML5CanvasContext2D ctx) {
 		/**
 		 * @j2sNative
 		 * 

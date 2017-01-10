@@ -1,10 +1,8 @@
 package a2s;
 
 import java.awt.AWTEvent;
-
 import java.awt.Component;
 import java.awt.Event;
-
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +20,6 @@ import java.util.EventListener;
 import javax.swing.AbstractButton;
 import javax.swing.JComboBox;
 import javax.swing.JScrollBar;
-import javax.swing.JSlider;
 
 
 public class A2SEvent implements Runnable {
@@ -37,6 +34,7 @@ public class A2SEvent implements Runnable {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 	  Component c = this.c;
@@ -166,9 +164,9 @@ public class A2SEvent implements Runnable {
             ActionEvent ae = (ActionEvent)e;
             String cmd;
             if (src instanceof AbstractButton) {
-                cmd = ((AbstractButton)src).getLabel();
+                cmd = ((AbstractButton)src).getText();
             } else if (src instanceof MenuItem) {
-                cmd = ((MenuItem)src).getLabel();
+                cmd = ((MenuItem)src).getText();
             } else {
                 cmd = ae.getActionCommand();
             }
