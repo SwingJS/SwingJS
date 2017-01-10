@@ -994,6 +994,17 @@ public class JSToolkit extends SunToolkit {
 	}
 
 	@Override
+	public Image getImage(String filename) {
+		return createImage(filename);
+	}
+
+	@Override
+	public Image getImage(URL url) {
+		return createImage(url);
+	}
+	
+	
+	@Override
 	public Image createImage(ImageProducer producer) {
 		JSImagekit kit = (JSImagekit) Interface.getInstance("swingjs.JSImagekit", true);
 		producer.startProduction(kit); // JSImageKit is the ImageConsumer here

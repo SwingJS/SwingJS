@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 1/9/2017 7:31:11 AM fix for basefolder //
 // BH 1/8/2017 12:41:48 PM allowing java.io.File
 // BH 1/7/2017 7:01:02 AM better error messaging in loadScript
 // BH 12/21/2016 9:29:56 PM  XX.getClass().getResource() broken (since forever)
@@ -1389,7 +1390,9 @@ var inF = {
       if (this.$_$base == null) {      
         // getClass().getResource() will be here
         var pkgs = clazzName.split(".");
-        var fname = baseFolder + "/";
+        var fname = baseFolder;
+        if (fname.charAt(fname.length - 1) != '/')
+          fname += "/";
         var map = Clazz.allPackage;
         for (var i = 0; i < pkgs.length - 1; i++) {
           if (!(map = map[pkgs[i]]))

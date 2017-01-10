@@ -726,6 +726,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		} else if (valueNode != null) {
 			prop = "value";
 			obj = valueNode;
+			if (iconNode != null)
+				DOMNode.setStyles(obj, "display",(text == null ? "none" : "block"));
 			setBackgroundFor(valueNode, c.getBackground());
 		}
 		if (obj != null)
@@ -940,10 +942,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			if (w0 != null) {
 				DOMNode
 						.setStyles(node, "width", w0, "height", h0, "position", position);
-				if (w0i != null) {
-					DOMNode.setStyles(innerNode, "width", w0i, "height", h0i);
-				}
 			}
+			
+		}
+		if (w0i != null) {
+			DOMNode.setStyles(innerNode, "width", w0i, "height", h0i);
 		}
 		if (parentNode != null)
 			parentNode.appendChild(node);

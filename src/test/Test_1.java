@@ -38,6 +38,7 @@ public class Test_1 extends JApplet {
 				case 0:
 			    label.setHorizontalAlignment(JLabel.RIGHT);
 			    label.setVerticalAlignment(JLabel.TOP);
+			    button.setText(button.getText() + 1);
 			    break;					
 				case 1:
 			    label.setHorizontalAlignment(JLabel.CENTER);

@@ -7,7 +7,9 @@ import java.awt.Event;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
@@ -15,8 +17,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.EventListener;
 
 import javax.swing.AbstractButton;
+import javax.swing.JComboBox;
+import javax.swing.JScrollBar;
+import javax.swing.JSlider;
 
 
 public class A2SEvent implements Runnable {
@@ -25,7 +31,7 @@ public class A2SEvent implements Runnable {
   private Component c;
 
 
-	public A2SEvent(Component c, ActionEvent e) {
+	public A2SEvent(Component c, AWTEvent e) {
 		this.c = c;
   	this.e = A2SEvent.convertToOld(e);
 	}
@@ -218,6 +224,19 @@ public class A2SEvent implements Runnable {
       }
       return null;
   }
+  
+	public static Component addComponent(EventListener listener, Component comp) {
+		if (comp instanceof AbstractButton) {
+			((AbstractButton) comp).addActionListener((ActionListener) listener);
+		} else if (comp instanceof TextField) {
+			((TextField) comp).addActionListener((ActionListener) listener);
+		} else if (comp instanceof JComboBox) {
+			((JComboBox) comp).addActionListener((ActionListener) listener);
+		} else if (comp instanceof JScrollBar) {
+			((JScrollBar) comp).addAdjustmentListener((AdjustmentListener) listener);
+		}
+		return comp;
+	}
 
 
 

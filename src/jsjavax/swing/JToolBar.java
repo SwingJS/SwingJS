@@ -656,6 +656,7 @@ public class JToolBar extends JComponent implements SwingConstants {
 			} else {
 				lm = new BoxLayout(JToolBar.this, BoxLayout.LINE_AXIS);
 			}
+			
 		}
 
 		@Override

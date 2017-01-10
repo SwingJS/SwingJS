@@ -375,14 +375,14 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
      * indexed by class as declared in <code>getColumnClass</code>
      * in the <code>TableModel</code> interface.
      */
-    transient protected Hashtable defaultRenderersByColumnClass;
+    transient protected UIDefaults defaultRenderersByColumnClass;
 
     /**
      * A table of objects that display and edit the contents of a cell,
      * indexed by class as declared in <code>getColumnClass</code>
      * in the <code>TableModel</code> interface.
      */
-    transient protected Hashtable defaultEditorsByColumnClass;
+    transient protected UIDefaults defaultEditorsByColumnClass;
 
     /** The foreground color of selected cells. */
     protected Color selectionForeground;
@@ -5408,6 +5408,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
 
         // Objects
         setLazyRenderer(Object.class, "jsjavax.swing.table.DefaultTableCellRenderer$UIResource");
+        setLazyRenderer(String.class, "jsjavax.swing.table.DefaultTableCellRenderer$UIResource");
 
         // Numbers
         setLazyRenderer(Number.class, "jsjavax.swing.JTable$NumberRenderer");
@@ -5532,7 +5533,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
     static class GenericEditor extends DefaultCellEditor {
 
         Class[] argTypes = new Class[]{String.class};
-        Constructor constructor;
+        Class constructorClass;
         Object value;
 
         public GenericEditor() {
@@ -5540,31 +5541,50 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
             getComponent().setName("Table.editor");
         }
 
-        @Override
-				public boolean stopCellEditing() {
-            String s = (String)super.getCellEditorValue();
-            // Here we are dealing with the case where a user
-            // has deleted the string value in a cell, possibly
-            // after a failed validation. Return null, so that
-            // they have the option to replace the value with
-            // null or use escape to restore the original.
-            // For Strings, return "" for backward compatibility.
-            try {
-                if ("".equals(s)) {
-                    if (constructor.getDeclaringClass() == String.class) {
-                        value = s;
-                    }
-                    super.stopCellEditing();
-                }
-//                SwingUtilities2.checkAccess(constructor.getModifiers());
-                value = constructor.newInstance(new Object[]{s});
-            }
-            catch (Exception e) {
-                ((JComponent)getComponent()).setBorder(new LineBorder(Color.red));
-                return false;
-            }
-            return super.stopCellEditing();
-        }
+		@Override
+		public boolean stopCellEditing() {
+			String s = (String) super.getCellEditorValue();
+			// Here we are dealing with the case where a user
+			// has deleted the string value in a cell, possibly
+			// after a failed validation. Return null, so that
+			// they have the option to replace the value with
+			// null or use escape to restore the original.
+			// For Strings, return "" for backward compatibility.
+			try {
+				if ("".equals(s) || constructorClass == String.class) {
+					if (constructorClass == String.class) {
+						value = s;
+						return super.stopCellEditing();					}
+
+				}
+				// SwingUtilities2.checkAccess(constructor.getModifiers());
+				
+				boolean haveConstructor = true;
+				/**
+				 * @j2sNative
+				 * 
+				 * haveConstructor = !!constructor.getConstructor;
+				 */
+				{}
+				if (constructorClass == String.class) {
+					value = s;
+				} else if (haveConstructor) {
+					value = constructorClass.getConstructor(argTypes).newInstance(
+						new Object[] { s });
+				} else {
+					  /**
+					   * @j2sNative
+					   * debugger;
+					   */
+						{}
+				}
+				
+			} catch (Throwable e) { // BH Throwable here
+				((JComponent) getComponent()).setBorder(new LineBorder(Color.red));
+				return false;
+			}
+			return super.stopCellEditing();
+		}
 
         @Override
 				public Component getTableCellEditorComponent(JTable table, Object value,
@@ -5583,7 +5603,7 @@ public class JTable extends JComponent implements TableModelListener, Scrollable
                 }
                 //ReflectUtil.checkPackageAccess(type);
                 //SwingUtilities2.checkAccess(type.getModifiers());
-                constructor = type.getConstructor(argTypes);
+                constructorClass = type;//.getConstructor(argTypes);
             }
             catch (Exception e) {
                 return null;
