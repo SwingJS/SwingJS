@@ -1,6 +1,7 @@
 // j2sApplet.js (based on JmolCore.js)
 // Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 1/11/2017 2:21:32 AM should allow uppercase binary formats WAV MP3 etc.
 // BH 1/8/2017 1:00:02 PM allows ".jpeg" as file name ext
 // BH 1/3/2017 11:06:10 PM adds binary types ".mp3",".ogg", ".wav"
 // BH 12/26/2016 5:22:45 PM adds j2sLang=la_CO_VA  e.g. en_US  or en-US, either is OK; capitalization ignored
@@ -618,6 +619,7 @@ J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection
   ".dcd",".mp3",".ogg", ".wav"];
 
 	J2S._isBinaryUrl = function(url) {
+    url = url.toLowerCase();
 		for (var i = J2S._binaryTypes.length; --i >= 0;)
 			if (url.indexOf(J2S._binaryTypes[i]) >= 0) return true;
 		return false;

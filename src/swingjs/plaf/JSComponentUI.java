@@ -5,6 +5,7 @@ import javajs.util.PT;
 import jsjava.awt.AWTEvent;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
+import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.FontMetrics;
@@ -234,6 +235,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	// */
 	// private boolean zeroWidth;
 
+	/**
+	 * indicates that in a toolbar, this component should use its preferred size for min and max
+	 * 
+	 */
+	
+	protected boolean isToolbarFixed = true;
+	
 	/**
 	 * indicates that we need a new outerNode
 	 * 
@@ -697,7 +705,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			DOMNode.setAttr(iconNode, "innerHTML", "");
 			if (icon != null) {
 				imageNode = DOMNode.getImageNode(icon.getImage());
-				DOMNode.setStyles(imageNode,  "vertical-align", "bottom"); // else this will be "baseline"
+				DOMNode.setStyles(imageNode,  "vertical-align", "middle"); // else this will be "baseline"
 				iconNode.appendChild(imageNode);
 				iconHeight = icon.getIconHeight();
 			}
@@ -708,7 +716,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			if (icon == null) {
 				canAlignText = true;
 			} else {
-				vCenter(imageNode, 10); // perhaps? Not sure if this is a good idea
+				//vCenter(imageNode, 10); // perhaps? Not sure if this is a good idea
 				if (gap == Integer.MAX_VALUE)
 					gap = getDefaultIconTextGap();
 				if (gap != 0 && text != null)
@@ -728,15 +736,18 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			obj = valueNode;
 			if (iconNode != null)
 				DOMNode.setStyles(obj, "display",(text == null ? "none" : "block"));
-			setBackgroundFor(valueNode, c.getBackground());
 		}
 		if (obj != null)
 			setProp(obj, prop, text);
-		if (centeringNode != null) {
+		if (centeringNode == null) {
+			// button
+			setBackgroundFor(valueNode, c.getBackground());
+		} else {
+			// label
 			setCssFont(centeringNode, c.getFont());
 			// added to make sure that the displayed element does not wrap with this new text
-			setHTMLSize(domNode, true);
 		}
+		setHTMLSize(domNode, true);
 		if (debugging)
 			System.out.println("JSComponentUI: setting " + id + " " + prop);
 	}
@@ -908,8 +919,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// but this almost certainly has issues with zooming
 
 			$(body).after(div);
-			DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
-			Rectangle r = test.getBoundingClientRect();
+			//DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
+			Rectangle r = div.getBoundingClientRect();
 			// From the DOM; Will be Rectangle2D.double, actually.
 			// This is preferable to $(text).width() because that is rounded DOWN.
 			// This showed up in Chrome, where a value of 70.22 for w caused a "Step"
@@ -925,7 +936,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			$(div).detach();
 		}
 		// allow a UI to slightly adjust its dimension
-		Dimension size = getCSSAdjustment();
+		Dimension size = getCSSAdjustment(addCSS);
 		size.width += w;
 		size.height += h;
 		if (addCSS) {
@@ -953,12 +964,14 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		return size;
 	}
 
+
 	/**
 	 * allows for can be overloaded to allow some special adjustments
+	 * @param addingCSS TODO
 	 * 
 	 * @return
 	 */
-	protected Dimension getCSSAdjustment() {
+	protected Dimension getCSSAdjustment(boolean addingCSS) {
 		return new Dimension(0, 0);
 	}
 
@@ -1184,7 +1197,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public Dimension getMaximumSize() {
-		return null;// getPreferredSize(c);
+		if (isToolbarFixed) {
+			Container parent = jc.getParent();
+			String parentClass = (parent == null ? null : parent.getUIClassID());
+			if ("ToolBarUI" == parentClass)
+				return getPreferredSize();
+		}
+		return null;
 	}
 
 	/**
@@ -1399,7 +1418,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	private void setSizeFromComponent(int width, int height, int op) {
 		// allow for special adjustments
 		// currently MenuItem, TextField, and TextArea
-		Dimension size = getCSSAdjustment();
+		Dimension size = getCSSAdjustment(true);
 		// if (this.width != width || this.height != height) {
 		this.width = width;
 		this.height = height;
@@ -1587,10 +1606,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	private void setBackgroundFor(DOMNode node, Color color) {
 		if (node == null)
 			return;
-		if (color == null) // from paintComponentSafely
+		//if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? Color.white : color));
-		if (c.isBackgroundPainted)
+		if (c.isBackgroundPainted && allowBackground)
 			setTransparent(node);
 		else
 			checkTransparent(node);
@@ -1921,22 +1940,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 	}
 
-	/**
-	 * create the inner centering div for a compound label or button consisting of
-	 * the icon and text
-	 * 
-	 * @param node
-	 */
-	protected void addCenteringNode(DOMNode node) {
-		centeringNode = newDOMObject("div", id + "_cntr");
-		if (iconNode == null)
-			iconNode = newDOMObject("span", id + "_icon");
-		centeringNode.appendChild(iconNode);
-		if (domBtn != null)
-			centeringNode.appendChild(domBtn);
-		if (textNode != null)
-			centeringNode.appendChild(textNode);
-		node.appendChild(centeringNode);
-	}
+
 
 }

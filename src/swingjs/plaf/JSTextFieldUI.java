@@ -48,8 +48,8 @@ public class JSTextFieldUI extends JSTextUI {
 	}
 
 	@Override
-	protected Dimension getCSSAdjustment() {
-		return new Dimension(0, -2);
+	protected Dimension getCSSAdjustment(boolean addingCSS) {
+		return new Dimension(0, addingCSS ? 0 : -2);
 	}
 	
 	@Override

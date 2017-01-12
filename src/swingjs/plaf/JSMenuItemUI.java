@@ -32,7 +32,7 @@ public class JSMenuItemUI extends JSButtonUI {
 	}
 
 	@Override
-	protected Dimension getCSSAdjustment() {
+	protected Dimension getCSSAdjustment(boolean addingCSS) {
 		return new Dimension(5, 0);
 	}
 	

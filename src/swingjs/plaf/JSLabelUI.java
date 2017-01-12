@@ -17,22 +17,33 @@ public class JSLabelUI extends JSLightweightUI {
 	public JSLabelUI() {
 		setDoc();
 	}
+
 	@Override
 	protected DOMNode updateDOMNode() {
-		if (domNode == null)	{
+		if (domNode == null) {
 			domNode = newDOMObject("label", id);
-			textNode = newDOMObject("span", id+"_text");
-			addCenteringNode(domNode);
+			textNode = newDOMObject("span", id + "_text");
+			iconNode = newDOMObject("span", id + "_icon");
+			// labels are different from buttons, because we allow them to have
+			// different centerings - left, top, middle, bottom, etc.
+			centeringNode = newDOMObject("span", id + "_cntr");
+			centeringNode.appendChild(iconNode);
+			centeringNode.appendChild(textNode);
+			domNode.appendChild(centeringNode);
 		}
-		setIconAndText("label", (ImageIcon) label.getIcon(), label.getIconTextGap(), label.getText());
-		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth() + "px",  "height", c.getHeight() + "px", "text-align");
+		setIconAndText("label", (ImageIcon) label.getIcon(),
+				label.getIconTextGap(), label.getText());
+		DOMNode.setStyles(domNode, "position", "absolute", "width", c.getWidth()
+				+ "px", "height", c.getHeight() + "px");
 		if (actualHeight > 0)
-			DOMNode.setStyles(centeringNode, "position", "absolute", "height", actualHeight + "px");
+			DOMNode.setStyles(centeringNode, "position", "absolute", "height",
+					actualHeight + "px");
 		if (actualWidth > 0)
-			DOMNode.setStyles(centeringNode, "position", "absolute", "width", actualWidth + "px");
+			DOMNode.setStyles(centeringNode, "position", "absolute", "width",
+					actualWidth + "px");
 		setCssFont(centeringNode, c.getFont());
 		return domNode;
-	
+
 	}
 
 	/**

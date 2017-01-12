@@ -110,8 +110,8 @@
       <fileset dir="bin/javajs/img">
         <include name="*.js" />
       </fileset>
-    </copy>  	
-  	
+    </copy>
+   	 		
     <echo>...copying all other bin/*.js to j2s</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
@@ -122,6 +122,31 @@
         <exclude name="jssun/**/*.js" />
       </fileset>
     </copy>
+  	
+  	<echo>...adding non-JS non-sun files from bin</echo>
+  	<copy todir="bin/swingjs/j2s"  overwrite="true" >
+      <fileset dir="bin">
+        <include name="**/*.*" />
+        <exclude name="**/*.class" />
+        <exclude name="**/*.js" />
+        <exclude name="javajs/**/*" />
+        <exclude name="jsjava/**/*" />
+        <exclude name="jsjavax/**/*" />
+        <exclude name="jssun/**/*" />
+      </fileset>
+    </copy> 
+ 
+  	<echo>Adding non-JS sun files from bin</echo>
+  	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
+      <fileset dir="bin\jssun">
+        <include name="**/*.properties" />
+        <include name="**/*.css" />
+        <include name="**/*.png" />
+        <include name="**/*.txt" />
+      </fileset>
+    </copy>
+
+  	
    	
    	 		
    	<echo>Changing "jsjava" to "java", "jsjavax" to "javax", and "jssun" to "sun"</echo>
@@ -160,28 +185,7 @@
 
     <echo>...abbreviating class name "javajs.util" to "JU"</echo>
   	<replace dir="site/swingjs/j2s" includes="**/*.js" token="javajs.util" value="JU"/>
-  	<!-- replace dir="site/swingjs/j2s" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/ -->
-   	  	   	  	
-  	<echo>...adding to swingjs/j2s property and css files from src (for CalendarData, swingjs.jquery)</echo>
-  	<copy todir="site/swingjs/j2s"  overwrite="true" >
-      <fileset dir="src">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
-        <exclude name="jssun/**/*" />
-      </fileset>
-    </copy>   	
-  	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
-      <fileset dir="src\jssun">
-        <include name="**/*.properties" />
-        <include name="**/*.css" />
-        <include name="**/*.png" />
-        <include name="**/*.txt" />
-      </fileset>
-    </copy>
-
-  	
+  	<!-- replace dir="site/swingjs/j2s" includes="**/*.js" token="com.jcraft.jzlib" value="JU"/ -->  	   	  	
   	
   	<echo>...adding jQuery and minimizing it</echo>
   	<copy todir="site/swingjs/jquery">
@@ -744,9 +748,6 @@ swingjs/plaf/TextListener.js
   	<echo>...running buildDist to create site/applets</echo>
    	<ant antfile="buildDist.xml" target="testDist" />
 
-  	<echo>...running buildZip to create core zip/swingjs.zip</echo>
-   	<ant antfile="buildZip.xml" target="zip" />  	
-  	
   </target>
 
   <target name="call-core" id="call-core">

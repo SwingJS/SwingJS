@@ -31,7 +31,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import javajs.util.DebugJS;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JApplet;
@@ -673,7 +672,6 @@ class TSd3Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseOn = true;
-		DebugJS._("mousePressed");
 		e.consume();
 		gx = e.getX();
 		deltaB = ((gx - bottomLeft.x) / xScale) + start_x;

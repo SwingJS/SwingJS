@@ -22,7 +22,7 @@
   	  </fileset>
     </copy>
 
-    <echo>...copying all other bin/*.js to j2s</echo>
+    <echo>...copying all non-J2S bin/*.js to tmp</echo>
   	<copy todir="site/tmp"  overwrite="true" >
       <fileset dir="bin">
         <include name="**/*.js" />
@@ -73,25 +73,19 @@
         <include name="**/*.js" />
       </fileset>
     </copy>
-
-  	<echo>Adding non-JS files from bin</echo>
+ 
+  	<echo>Adding non-JS files from bin to j2s</echo>
   	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
-        <include name="**/*." />
+        <include name="**/*.*" />
         <exclude name="**/*.class" />
         <exclude name="**/*.js" />
-        <exclude name="*java*/**/*" />
+        <exclude name="javajs/**/*" />
+        <exclude name="jsjava/**/*" />
+        <exclude name="jsjavax/**/*" />
         <exclude name="jssun/**/*" />
       </fileset>
-    </copy>   	
-  	<copy todir="site/swingjs/j2s/sun"  overwrite="true" >
-      <fileset dir="bin\jssun">
-        <include name="**/*." />
-        <exclude name="**/*.class" />
-        <exclude name="**/*.js" />
-      </fileset>
-    </copy>
-   	
+    </copy> 
   	<echo>deleting site/tmp directory</echo>
    	 	<delete quiet="true" dir="site/tmp" />
   	

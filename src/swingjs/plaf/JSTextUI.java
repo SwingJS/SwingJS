@@ -616,6 +616,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 */
 	@Override
 	protected void installUIImpl() {
+		isToolbarFixed = false;
 		editor = (JTextComponent) c;
 		textListener = new TextListener(this, editor);
 
@@ -829,8 +830,8 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	 */
 	@Override
 	public Dimension getMaximumSize() {
-		// SwingJS TODO
-		return getMinimumSize();
+
+		return super.getMaximumSize();
 
 		// Document doc = editor.getDocument();
 		// Insets i = c.getInsets();

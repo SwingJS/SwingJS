@@ -29,6 +29,7 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
+import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
@@ -74,21 +75,25 @@ public class JSButtonUI extends JSLightweightUI {
   protected DOMNode itemNode;
 	protected JMenuItem menuItem;
 	protected AbstractButton button;
-	
+
 	private boolean isSimpleButton;
 
 
 	@Override
 	protected DOMNode updateDOMNode() {
 		isSimpleButton = true;
+		allowBackground = false;
 		// all subclasses will have their own version of this.
 		// this one is only for a simple button
 		if (domNode == null) {
-			domNode = newDOMObject("span", id);
-			enableNode = domBtn = valueNode = newDOMObject("input", id + "_btn", "type", "button");
-			addCenteringNode(domNode);
-			setDataComponent(domBtn);
-			setDataComponent(iconNode);
+			domNode = enableNode = newDOMObject ("button", id, "type", "button");
+			iconNode = newDOMObject("span", id + "_icon");
+			textNode = newDOMObject ("span", id + "_btn");
+			domNode.appendChild(iconNode);
+			domNode.appendChild(textNode);;
+			setDataComponent (domNode);
+			setDataComponent (iconNode);
+
 		}
 // interestingly, this gives the background-border-only issue and causes problems with centering
 // because now the default position for the left side of the label is the button center.
@@ -715,16 +720,16 @@ public class JSButtonUI extends JSLightweightUI {
 	//
 	//
 
+
 	@Override
-	protected Dimension getCSSAdjustment() {
+	protected Dimension getCSSAdjustment(boolean addingCSS) {
 		return new Dimension((itemNode == null ? 0 : 10), 0);
 	}
 	
 	@Override
 	protected void setInnerComponentBounds(int width, int height) {
 		if (isSimpleButton && (imageNode == null || button.getText() == null))
-			DOMNode.setSize(innerNode = domBtn, width, height);
+			DOMNode.setSize(innerNode = domNode, width, height);
 	}
-
 
 }
