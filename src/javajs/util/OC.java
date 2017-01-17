@@ -75,13 +75,13 @@ public class OC extends OutputStream implements GenericOutputChannel {
   public OC setParams(BytePoster bytePoster, String fileName,
                                      boolean asWriter, OutputStream os) {
     this.bytePoster = bytePoster;
-    this.fileName = fileName;
     isBase64 = ";base64,".equals(fileName);
     if (isBase64) {
     	fileName = null;
     	os0 = os;
     	os = null;
     }
+    this.fileName = fileName;
     this.os = os;
     isLocalFile = (fileName != null && !isRemote(fileName));
     if (asWriter && !isBase64 && os != null)
