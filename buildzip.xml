@@ -1,6 +1,13 @@
 <project name="JSmol" default="zip" basedir=".">
 
-	<!-- called from buildSite.xml -->
+	<!--
+	
+	 called from buildSite.xml or independently
+	 
+	 creates the zip file that can be used by other projects				    
+	
+	
+	-->
 	
    <target name="zip" id="zip">
    	<echo>creating zip file</echo>

@@ -124,7 +124,7 @@
     </copy>
   	
   	<echo>...adding non-JS non-sun files from bin</echo>
-  	<copy todir="bin/swingjs/j2s"  overwrite="true" >
+  	<copy todir="site/swingjs/j2s"  overwrite="true" >
       <fileset dir="bin">
         <include name="**/*.*" />
         <exclude name="**/*.class" />
