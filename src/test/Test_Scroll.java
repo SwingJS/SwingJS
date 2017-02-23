@@ -93,11 +93,13 @@ public class Test_Scroll extends JApplet {
 
 		mkBar(p, tf, JScrollBar.VERTICAL, 20, 200);
 		mkSlider(p, tf, JScrollBar.VERTICAL, 20, 200);
+		mkSlider(p, tf, JScrollBar.VERTICAL, 20, 200).setInverted(true);
 		p.add(label);
 		p.add(tf);
 		p.add(button);
-		mkBar(p, tf, JScrollBar.HORIZONTAL, 150, 20);
-		mkSlider(p, tf, JScrollBar.HORIZONTAL, 150, 20);
+		mkBar(p, tf, JScrollBar.HORIZONTAL, 100, 20);
+		mkSlider(p, tf, JScrollBar.HORIZONTAL, 100, 20);
+		mkSlider(p, tf, JScrollBar.HORIZONTAL, 100, 20).setInverted(true);
 
 		repaint();
 	}
