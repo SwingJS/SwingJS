@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.text.DecimalFormat;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -29,8 +30,14 @@ import javax.swing.JTextField;
 //import javax.swing.JScrollBar;
 
 public class Test_Scroll extends JApplet {
+	
+	
+	static DecimalFormat df = new DecimalFormat("0.00");
+	
 	boolean preferred = true;
 
+	
+	
 	void setSize(JComponent c, int x, int y) {
 		if (preferred)
 			c.setPreferredSize(new Dimension(x, y));
@@ -96,7 +103,7 @@ public class Test_Scroll extends JApplet {
 
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				tf.setText("" + e.getValue());
+				tf.setText(df.format(e.getValue() / 100.0));
 			}
 			
 		});
