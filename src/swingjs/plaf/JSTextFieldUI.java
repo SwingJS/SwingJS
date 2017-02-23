@@ -33,7 +33,7 @@ public class JSTextFieldUI extends JSTextUI {
 					.setStyles(newDOMObject("input", id, "type", inputType),
 							"padding", "0px 1px");
 			DOMNode.setAttrs(focusNode, "ui", this);
-			vCenter(domNode, -10);
+			// not active; requires position:absolute; wrong for standard text box vCenter(domNode, -10);
 			setDataUI(domNode);
 			if (textField.isEditable()) {
 				bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
