@@ -30,7 +30,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	
 	private String orientation;
 	
-	boolean iVertScrollBar; // vertical scrollbars on scroll panes are inverted
+	boolean isScrollPaneVertScrollBar; // vertical scrollbars on scroll panes are inverted
 	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
@@ -44,6 +44,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private int disabled;
 	private int myHeight;
 	private boolean isHoriz;
+	private boolean isVerticalScrollBar;
 	
 	private static boolean cssLoaded = false;
 
@@ -77,6 +78,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 				: "horizontal");
 		model = js.getModel();
 		if (isNew) {
+			isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
+			isVerticalScrollBar = (isScrollBar && !isHoriz);
 			domNode = wrap("div", id + "_wrap",
 					jqSlider = DOMNode.createElement("div", id));
 			$(domNode).addClass("swingjs");
@@ -108,7 +111,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 *               max: me.max,
 		 *               value: me.val, 
 		 *               disabled: me.disabled,
-		 *               inverted: me.iVertScrollBar,
+		 *               inverted: me.isVerticalScrollBar,
 		 *               change: function(jqevent, handle) {
 		 *                     me.jqueryCallback(jqevent, handle); }, 
 		 *               slide: function(jqevent, handle) { 
@@ -166,7 +169,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 */
 		{}
 		
-		jSlider.setValue(val = (iVertScrollBar ? 100 - value : value));
+		jSlider.setValue(val = (isVerticalScrollBar ? 100 - value : value));
 	}
 
 	/**
@@ -209,7 +212,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setSliderAttr("min", min);
 		setSliderAttr("max", max);
 
-		isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
 		myHeight = 10;
 		int barPlace = 40;
 		if (isHoriz && jSlider.getBorder() != null)
@@ -300,7 +302,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		} else {
 			DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%");
 		}
-		if (!isHoriz && !iVertScrollBar)
+		if (!isHoriz && !isScrollPaneVertScrollBar)
 			DOMNode.setStyles(sliderTrack, "height", length + "px");
 
 		setHTMLSize(domNode, false);
@@ -343,13 +345,15 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	@Override
 	public void setInnerComponentBounds(int width, int height) {
-		//DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
-		if (iVertScrollBar)
+		// DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
+		if (isScrollPaneVertScrollBar)
 			DOMNode.setStyles(sliderHandle, "left", "-8px");
-		else if (orientation == "horizontal") {
-			DOMNode.setStyles(domNode,  "position", "absolute", "top", (height - myHeight)/2 + "px");
-		}
-			
+		else if (orientation == "vertical" && isScrollBar)
+			DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
+		else if (orientation == "horizontal" && !isScrollBar)
+			DOMNode.setStyles(domNode, "position", "absolute", "top",
+					(height - myHeight) / 2 + "px");
+
 	}
 
 	public Dimension getPreferredHorizontalSize() {

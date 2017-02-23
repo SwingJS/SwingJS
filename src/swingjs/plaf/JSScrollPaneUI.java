@@ -70,7 +70,7 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		
 		horizBarUI = (JSScrollBarUI) hscrollbar.getUI();
 		vertBarUI = (JSScrollBarUI) vscrollbar.getUI();
-		vertBarUI.iVertScrollBar = true;
+		vertBarUI.isScrollPaneVertScrollBar = true;
 		horizBarUI.myScrollPaneUI = vertBarUI.myScrollPaneUI = this;
 		viewport = scrollpane.getViewport();
 		JComponent sc = (JComponent) viewport.getView();
