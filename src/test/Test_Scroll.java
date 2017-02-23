@@ -57,14 +57,14 @@ public class Test_Scroll extends JApplet {
 		label.setBackground(Color.yellow);
 		label.setForeground(Color.BLUE);
 		label.setOpaque(true);
-		label.setHorizontalAlignment(JLabel.LEFT);
+		label.setHorizontalAlignment(JLabel.RIGHT);
 		label.setVerticalAlignment(JLabel.CENTER);
 
 		final JTextField tf = new JTextField("12.5", 8);
 		tf.setBackground(Color.black);
 		tf.setForeground(Color.yellow);
 		tf.setOpaque(true);
-		setSize(tf, 80, 20);
+		setSize(tf, 80, 40);
 		tf.addActionListener(new java.awt.event.ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
