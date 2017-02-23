@@ -22,7 +22,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 //import java.text.NumberFormat;
 //import a2s.Canvas;
 //import a2s.Panel;
@@ -50,7 +53,7 @@ public class Test_Scroll extends JApplet {
 
 		final JLabel label = new JLabel("hello");
 		// label.setBounds(0, 60, 200, 60);
-		setSize(label, 80, 20);
+		setSize(label, 80, 50);
 		label.setBackground(Color.yellow);
 		label.setForeground(Color.BLUE);
 		label.setOpaque(true);
@@ -89,16 +92,18 @@ public class Test_Scroll extends JApplet {
 		getContentPane().add(p);
 
 		mkBar(p, tf, JScrollBar.VERTICAL, 20, 200);
+		mkSlider(p, tf, JScrollBar.VERTICAL, 20, 200);
 		p.add(label);
 		p.add(tf);
 		p.add(button);
-		mkBar(p, tf, JScrollBar.HORIZONTAL, 300, 20);
+		mkBar(p, tf, JScrollBar.HORIZONTAL, 150, 20);
+		mkSlider(p, tf, JScrollBar.HORIZONTAL, 150, 20);
 
 		repaint();
 	}
 
 	JScrollBar mkBar(JPanel p, final JTextField tf, int orient, int x, int y) {
-		JScrollBar bar = new JScrollBar(orient, 500, 10, 0, 1000);
+		JScrollBar bar = new JScrollBar(orient, 500, 10, 300, 1000);
 		bar.addAdjustmentListener(new AdjustmentListener() {
 
 			@Override
@@ -107,6 +112,24 @@ public class Test_Scroll extends JApplet {
 			}
 			
 		});
+		setSize(bar, x, y);
+		bar.setBackground(Color.orange);
+		bar.setForeground(Color.green);
+		bar.setOpaque(true);
+		p.add(bar);
+		return bar;
+	}
+
+
+	JSlider mkSlider(JPanel p, final JTextField tf, int orient, int x, int y) {
+		JSlider bar = new JSlider(orient, 300, 1000, 500);
+		bar.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				tf.setText(df.format(((JSlider) e.getSource()).getValue() / 100.0));
+			}
+		}
+			);
 		setSize(bar, x, y);
 		bar.setBackground(Color.orange);
 		bar.setForeground(Color.green);
