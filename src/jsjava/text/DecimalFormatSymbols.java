@@ -44,6 +44,8 @@ package jsjava.text;
 //import java.text.spi.DecimalFormatSymbolsProvider;
 import java.util.Hashtable;
 
+import javajs.J2SRequireImport;
+
 import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 import jssun.util.resources.LocaleData;
@@ -63,7 +65,7 @@ import jssun.util.resources.LocaleData;
  * @author       Mark Davis
  * @author       Alan Liu
  */
-
+@J2SRequireImport(LocaleData.class)
 public class DecimalFormatSymbols implements Cloneable {
 
     /**

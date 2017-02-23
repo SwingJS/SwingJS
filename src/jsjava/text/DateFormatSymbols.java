@@ -44,6 +44,9 @@ package jsjava.text;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+
+import javajs.J2SRequireImport;
+import jsjava.util.ListResourceBundle;
 import jsjava.util.Locale;
 import jsjava.util.ResourceBundle;
 import jsjava.util.TimeZone;
@@ -96,6 +99,7 @@ import jssun.util.resources.LocaleData;
  * @see          java.util.SimpleTimeZone
  * @author       Chen-Lieh Huang
  */
+@J2SRequireImport(LocaleData.class)
 public class DateFormatSymbols implements Cloneable {
 
     /**
