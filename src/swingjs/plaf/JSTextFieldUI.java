@@ -44,6 +44,8 @@ public class JSTextFieldUI extends JSTextUI {
 				c.getFont());
 		//setTextAlignment();
 		setEditable(editable);
+		if (jc.isOpaque())
+			setBackground(jc.getBackground());
 		return domNode;
 	}
 
