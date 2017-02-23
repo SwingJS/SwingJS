@@ -46,6 +46,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
+import javajs.J2SRequireImport;
+
 import jsjava.text.DateFormat;
 import jsjava.text.DateFormatSymbols;
 //import sun.util.BuddhistCalendar;
@@ -302,6 +304,7 @@ import jssun.util.resources.LocaleData;
  * @author Mark Davis, David Goldsmith, Chen-Lieh Huang, Alan Liu
  * @since JDK1.1
  */
+@J2SRequireImport(LocaleData.class)
 public abstract class Calendar implements Cloneable, Comparable<Calendar> {
 
     // Data flow in Calendar

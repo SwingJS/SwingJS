@@ -345,7 +345,6 @@ import javajs.J2SRequireImport;
  */
 @J2SRequireImport( { 
 	jsjava.util.GregorianCalendar.class, 
-	sun.util.resources.LocaleData.class,
 	jsjava.util.Calendar.class, jsjava.util.TimeZone.class, 
 	jssun.util.calendar.ZoneInfo.class, jsjava.text.DecimalFormat.class })
 public class SimpleDateFormat extends DateFormat {
