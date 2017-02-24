@@ -658,6 +658,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			setBackground(c.getBackground());
 			return;
 		}
+		if (prop == "inverted") {
+			updateDOMNode();
+			return;
+		}
 		if (prop == "text") {
 			String val = ((AbstractButton) c).getText();
 			if (val == null ? currentText != null : !val.equals(currentText))
@@ -919,6 +923,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// but this almost certainly has issues with zooming
 
 			$(body).after(div);
+			if (node == this.centeringNode)
+				DOMNode.setStyles(div, "lineHeight", "0.8"); // necessary for exact label centering	
 			//DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
 			Rectangle r = div.getBoundingClientRect();
 			// From the DOM; Will be Rectangle2D.double, actually.
