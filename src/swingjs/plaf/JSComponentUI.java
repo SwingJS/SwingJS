@@ -700,6 +700,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 		// TODO add textPosition
 
+		actualWidth = actualHeight = 0;
 		currentIcon = icon;
 		currentText = text;
 		currentGap = gap;
@@ -752,6 +753,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// added to make sure that the displayed element does not wrap with this new text
 		}
 		setHTMLSize(domNode, true);
+		if (centeringNode != null)
+			setAlignment();
 		if (debugging)
 			System.out.println("JSComponentUI: setting " + id + " " + prop);
 	}
