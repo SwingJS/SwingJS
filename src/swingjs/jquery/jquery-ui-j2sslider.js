@@ -245,7 +245,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
     
 		var pixelTotal,
 			pixelMouse,
-			percentMouse,
+			fMouse,
 			valueTotal,
 			valueMouse;
 
@@ -257,19 +257,23 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			pixelMouse = position.y - this.elementOffset.top - ( this._clickOffset ? this._clickOffset.top : 0 );
 		}
 
-		percentMouse = ( pixelMouse / pixelTotal );
-		if ( percentMouse > 1 ) {
-			percentMouse = 1;
+		fMouse = ( pixelMouse / pixelTotal );
+		if ( fMouse > 1 ) {
+			fMouse = 1;
 		}
-		if ( percentMouse < 0 ) {
-			percentMouse = 0;
+		if ( fMouse < 0 ) {
+			fMouse = 0;
 		}
 		if ( this.orientation === "vertical" ) {
-			percentMouse = 1 - percentMouse;
+			fMouse = 1 - fMouse;
 		}
-
+    if (this.options.inverted) {
+			fMouse = 1 - fMouse;
+    }
+    
 		valueTotal = this._valueMax() - this._valueMin();
-		valueMouse = this._valueMin() + percentMouse * valueTotal;
+		valueMouse = this._valueMin() + fMouse * valueTotal;
+    
 		return this._trimAlignValue( valueMouse );
 	},
 
@@ -359,6 +363,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 
 	value: function( newValue ) {
 		if ( arguments.length ) {
+        
 			this.options.value = this._trimAlignValue( newValue );
 			this._refreshValue();
 			this._change( null, 0 );
@@ -527,7 +532,9 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		if ( this.options.values && this.options.values.length ) {
 			this.handles.each(function( i ) {
 				valPercent = ( that.values(i) - that._valueMin() ) / ( that._valueMax() - that._valueMin() ) * 100;
-				_set[ that.orientation === "horizontal" ? "left" : "bottom" ] = valPercent + "%";
+        if (this.options.inverted)valPercent = 100 - valPercent;
+        
+        _set[ that.orientation === "horizontal" ? "left" : that.options.inverted ? "top" : "bottom" ] = valPercent + "%";
 				$( this ).stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 				if ( that.options.range === true ) {
 					if ( that.orientation === "horizontal" ) {
@@ -555,7 +562,9 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			valPercent = ( valueMax !== valueMin ) ?
 					( value - valueMin ) / ( valueMax - valueMin ) * 100 :
 					0;
-      if (this.options.inverted)valPercent = 100 - valPercent;
+      var switched = (this.options.inverted && this.orientation === "horizontal"); 
+      if (switched)
+        valPercent = 100 - valPercent;
 			_set[ this.orientation === "horizontal" ? "left" : this.options.inverted ? "top" : "bottom" ] = valPercent + "%";
 			this.handle.stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 
@@ -580,3 +589,4 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 
 })();
 
+  
