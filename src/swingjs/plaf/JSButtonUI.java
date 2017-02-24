@@ -87,6 +87,7 @@ public class JSButtonUI extends JSLightweightUI {
 		// this one is only for a simple button
 		if (domNode == null) {
 			domNode = enableNode = newDOMObject ("button", id, "type", "button");
+			DOMNode.setStyles(domNode, "lineHeight", "0.8");
 			iconNode = newDOMObject("span", id + "_icon");
 			textNode = newDOMObject ("span", id + "_btn");
 			domNode.appendChild(iconNode);

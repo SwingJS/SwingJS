@@ -45,6 +45,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	private int myHeight;
 	private boolean isHoriz;
 	private boolean isVerticalScrollBar;
+	private boolean isInverted;
 	
 	private static boolean cssLoaded = false;
 
@@ -61,7 +62,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	@Override
 	protected DOMNode updateDOMNode() {
-		boolean isNew = (domNode == null);
 		JSlider js = (JSlider) c;
 		min = js.getMinimum();
 		max = js.getMaximum();
@@ -77,15 +77,30 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		orientation = (js.getOrientation() == SwingConstants.VERTICAL ? "vertical"
 				: "horizontal");
 		model = js.getModel();
+		boolean isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
+		boolean isVerticalScrollBar = (isScrollBar && !isHoriz);
+		boolean isInverted = isVerticalScrollBar || !isScrollBar && jSlider.getInverted();
+		boolean isChanged = false;
+		if (isHoriz != this.isHoriz || isVerticalScrollBar != this.isVerticalScrollBar
+				|| isInverted != this.isInverted) {
+			this.isHoriz = isHoriz;
+			this.isVerticalScrollBar = isVerticalScrollBar;
+			this.isInverted = isInverted;
+			isChanged = true;
+		}
+		boolean isNew = (domNode == null);
 		if (isNew) {
-			isHoriz = (jSlider.getOrientation() == SwingConstants.HORIZONTAL);
-			isVerticalScrollBar = (isScrollBar && !isHoriz);
 			domNode = wrap("div", id + "_wrap",
 					jqSlider = DOMNode.createElement("div", id));
 			$(domNode).addClass("swingjs");
 			setJQuerySliderAndEvents();	
+		} else if (isChanged) {
+			DOMNode.remove(jqSlider);
+			domNode.appendChild(jqSlider = DOMNode.createElement("div", id));
+			setJQuerySliderAndEvents();	
+		  setInnerComponentBounds(jc.getWidth(), jc.getHeight());
 		}
-		setup(isNew);
+		setup(isNew || isChanged);
 		setSlider();
 		return domNode;
 	}
@@ -111,7 +126,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 *               max: me.max,
 		 *               value: me.val, 
 		 *               disabled: me.disabled,
-		 *               inverted: me.isVerticalScrollBar,
+		 *               inverted: me.isInverted, 
 		 *               change: function(jqevent, handle) {
 		 *                     me.jqueryCallback(jqevent, handle); }, 
 		 *               slide: function(jqevent, handle) { 
@@ -169,7 +184,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		 */
 		{}
 		
-		jSlider.setValue(val = (isVerticalScrollBar ? 100 - value : value));
+		jSlider.setValue(val = (value));
 	}
 
 	/**
@@ -177,10 +192,10 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	 * @param isNew
 	 */
 	private void setup(boolean isNew) {
-		int z = getZIndex(null);
-		if (z == z0)
-			return;
-		z0 = z;
+//		int z = getZIndex(null);
+//		if (z == z0)
+//			return;
+//		z0 = z;
 		//System.out.println("JSSliderUI setting z to " + z);
 		sliderTrack = DOMNode.firstChild(domNode);
 		sliderHandle = DOMNode.firstChild(sliderTrack);
@@ -224,8 +239,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		setHTMLSize(jqSlider, false);
 		if (majorSpacing == 0 && minorSpacing == 0 || !paintTicks && !paintLabels)
 			return;
-		// TODO: test inverted
-		boolean isInverted = jSlider.getInverted();
 		int margin = 10;
 
 		int length = (isHoriz ? jSlider.getWidth() : jSlider.getHeight());
@@ -259,7 +272,6 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			setHTMLSize(domNode, false);
 		}
 		if (paintLabels) {
-			int m = 10;
 			myHeight += 20;
 			labelTable = jSlider.getLabelTable();
 			Enumeration keys = labelTable.keys();
@@ -348,9 +360,9 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		// DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
 		if (isScrollPaneVertScrollBar)
 			DOMNode.setStyles(sliderHandle, "left", "-8px");
-		else if (orientation == "vertical" && isScrollBar)
+		else if (orientation == "vertical")// && isScrollBar)
 			DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
-		else if (orientation == "horizontal" && !isScrollBar)
+		else if (false && orientation == "horizontal" && !isScrollBar) // does not work for standard simple slider
 			DOMNode.setStyles(domNode, "position", "absolute", "top",
 					(height - myHeight) / 2 + "px");
 
