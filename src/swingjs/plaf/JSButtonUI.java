@@ -29,7 +29,6 @@
 package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
-import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
@@ -91,7 +90,7 @@ public class JSButtonUI extends JSLightweightUI {
 			iconNode = newDOMObject("span", id + "_icon");
 			textNode = newDOMObject ("span", id + "_btn");
 			domNode.appendChild(iconNode);
-			domNode.appendChild(textNode);;
+			domNode.appendChild(textNode);
 			setDataComponent (domNode);
 			setDataComponent (iconNode);
 

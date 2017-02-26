@@ -95,6 +95,8 @@ import swingjs.api.JQueryObject;
 public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		JSEventHandler, PropertyChangeListener, ChangeListener {
 
+	private static final Color rootPaneColor = new Color(238, 238, 238); // EE EE EE; look and feel "control"
+
 	/**
 	 * provides a unique id for any component; set on instantiation
 	 */
@@ -1623,7 +1625,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			return;
 		//if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
-				JSToolkit.getCSSColor(color == null ? Color.white : color));
+				JSToolkit.getCSSColor(color == null ? rootPaneColor : color));
 		if (c.isBackgroundPainted && allowBackground)
 			setTransparent(node);
 		else
