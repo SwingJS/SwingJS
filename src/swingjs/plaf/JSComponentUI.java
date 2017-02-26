@@ -644,6 +644,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	protected void propertyChangedCUI(String prop) {
+		updateDOMNode();
 		if (prop == "preferredSize") {
 			// size has been set by JComponent layout
 			preferredSize = c.getPreferredSize(); // may be null
@@ -652,6 +653,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 		if (prop == "background") {
 			setBackground(c.getBackground());
+			return;
+		}
+		if (prop == "foreground") {
+			setForeground(c.getForeground());
 			return;
 		}
 		if (prop == "opaque") {
@@ -752,7 +757,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			setCssFont(centeringNode, c.getFont());
 			// added to make sure that the displayed element does not wrap with this new text
 		}
-		setHTMLSize(domNode, true);
+		if (!boundsSet)
+			setHTMLSize(domNode, true);
 		if (centeringNode != null)
 			setAlignment();
 		if (debugging)

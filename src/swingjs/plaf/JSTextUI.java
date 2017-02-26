@@ -125,7 +125,8 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	private String inactiveBackgroundColor;
 
 	protected String getComponentText() {
-		return currentText = ((JTextComponent) c).getText();
+		JTextComponent jtc = (JTextComponent) c;
+		return (jtc.getDocument() == null ? null : (currentText = ((JTextComponent) c).getText()));
 	}
 
 	/**
