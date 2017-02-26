@@ -28,9 +28,10 @@ jmol_isReady = function(applet) {
 	J2S._getElement(applet, "appletdiv").style.border="1px solid blue"
  
 }		
-
+var test = document.location.search.substring(1);
+if (!test) test = prompt("test to run?", "1");
 Info = {
-    code: "org.uwi.TanSugd3S",
+    code: "test.Test_" + test,
 	width: 850,
 	height: 550,
 	debug: false,
@@ -67,13 +68,11 @@ function dateTest() {
 </head>
 <body>
 A test page for the SwingJS system. 
-<a href=https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src/org/uwi/TanSugd3S.java></a>. 
+<a href=https://sourceforge.net/p/swingjs/code/HEAD/tree/trunk/src/swingjs/test/Test_2.java></a>. 
 Status: demo only; limited graphics; controls and layouts are taking shape. Click on the graph.
 <script>
 SwingJS.getApplet("testApplet", Info)
 </script>
-If this is a simple rectangle with a blue outline, it means that the JApplet loaded successfully.  
-<br>Shown below are comparisons with the Java applet.
 <!-- info <a href="javascript:testApplet._showInfo(true)">show</a>
 <a href="javascript:testApplet._showInfo(false)">hide</a>
 -->
@@ -85,11 +84,7 @@ Go ahead and open a developer console and type
 <b> <a href='javascript:System.out.println("Hello, world!")'>System.out.println("Hello, world!")</a></b>
 <br>
 <br>
-<input type=text id=date style="width:200px" value="EEE, d MMM yyyy HH:mm:ss z"> <a href="javascript:dateTest()">SimpleDateFormat test</a>
- <a href="javascript:alert('The methods listed in the next message are those that are overloaded in such a way -- for example, Color(int r, int g, int b) and Color(float r, float g, float b) -- that make them impossible for Java2Script to differentiate and so must be refactored.'); Clazz.showDuplicates()">Show Duplicates</a>
-<br> <a href="../../j2s" target="_blank">Converted Java class directory</a>
 </div>
 </div>
-<img src=javaimage.png />
 </body>
 </html>
