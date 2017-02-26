@@ -1419,6 +1419,9 @@ However, java.lang.Thread itself is implemented and used extensively.
 
 Methods thread.start() and thread.run() both work fine. 
 
+For simple applications that use Thread.sleep() just to have a delay, as in a frame rate, for 
+example, one can use javax.swing.Timer instead. That is fully implemented. 
+
 In addition, SwingJS provides swingjs.JSThread, which can be subclassed
 if desired. This class allows simple 
 
