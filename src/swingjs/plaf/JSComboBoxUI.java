@@ -37,7 +37,8 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
-			domNode = focusNode = newDOMObject("select", id);
+			domNode = focusNode = DOMNode.setStyles(newDOMObject("select", id), 
+					"padding", "0px 0px","lineHeight", "0.8","box-sizing", "border-box");
 			handleAllMouseEvents(domNode);
 			DOMNode.addJqueryHandledEvent(this, domNode, "change");
 			addJQueryFocusCallbacks();

@@ -31,7 +31,7 @@ public class JSTextFieldUI extends JSTextUI {
 			// no textNode here, because in input does not have that.
 			focusNode = enableNode = valueNode = domNode = DOMNode
 					.setStyles(newDOMObject("input", id, "type", inputType),
-							"padding", "0px 1px");
+							"padding", "0px 0px","lineHeight", "0.8","box-sizing", "border-box");
 			DOMNode.setAttrs(focusNode, "ui", this);
 			// not active; requires position:absolute; wrong for standard text box vCenter(domNode, -10);
 			setDataUI(domNode);
