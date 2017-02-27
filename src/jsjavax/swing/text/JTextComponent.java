@@ -1720,6 +1720,7 @@ public abstract class JTextComponent extends JComponent implements Scrollable
                 doc.remove(0, doc.getLength());
                 doc.insertString(0, t, null);
             }
+            
         } catch (BadLocationException e) {
         	JSToolkit.alert("SWINGJS BAD LOCATION EXCEPTION (setText):" + e.getMessage() + JSToolkit.getStackTrace(-10));
         }
