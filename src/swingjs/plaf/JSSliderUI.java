@@ -364,7 +364,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			DOMNode.setStyles(sliderHandle, "left", "-8px");
 		} else if (orientation == "vertical") {// && isScrollBar)
 			DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
-			if (isInverted && !isScrollBar)
+			if (!isInverted && !isScrollBar && !paintTicks && !paintLabels)
 				DOMNode.setStyles(sliderTrack, "top", "10px");
 		} else if (false && orientation == "horizontal" && !isScrollBar) {
 			// does
