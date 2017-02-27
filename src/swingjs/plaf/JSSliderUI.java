@@ -102,6 +102,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		}
 		setup(isNew || isChanged);
 		setSlider();
+		if (jc.isOpaque())
+			setBackground(jc.getBackground());
 		return domNode;
 	}
 
@@ -358,13 +360,23 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void setInnerComponentBounds(int width, int height) {
 		// DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
-		if (isScrollPaneVertScrollBar)
+		if (isScrollPaneVertScrollBar) {
 			DOMNode.setStyles(sliderHandle, "left", "-8px");
-		else if (orientation == "vertical")// && isScrollBar)
+		} else if (orientation == "vertical") {// && isScrollBar)
 			DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
-		else if (false && orientation == "horizontal" && !isScrollBar) // does not work for standard simple slider
+			if (isInverted && !isScrollBar)
+				DOMNode.setStyles(sliderTrack, "top", "10px");
+		} else if (false && orientation == "horizontal" && !isScrollBar) {
+			// does
+			// not
+			// work
+			// for
+			// standard
+			// simple
+			// slider
 			DOMNode.setStyles(domNode, "position", "absolute", "top",
 					(height - myHeight) / 2 + "px");
+		}
 
 	}
 

@@ -27,7 +27,6 @@ public class JSTextFieldUI extends JSTextUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			allowBackground = false;
-			textListener.checkDocument();
 			// no textNode here, because in input does not have that.
 			focusNode = enableNode = valueNode = domNode = DOMNode
 					.setStyles(newDOMObject("input", id, "type", inputType),
@@ -40,6 +39,7 @@ public class JSTextFieldUI extends JSTextUI {
 				addJQueryFocusCallbacks();
 			}
 		}
+		textListener.checkDocument();
 		setCssFont(setProp(domNode, "value", getComponentText()),
 				c.getFont());
 		//setTextAlignment();
