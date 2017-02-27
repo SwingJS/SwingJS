@@ -1,4 +1,4 @@
-﻿Clazz.load (["java.io.InputStream"], "java.io.SequenceInputStream", ["java.lang.Error", "$.IndexOutOfBoundsException", "$.NullPointerException", "java.util.Vector"], function () {
+Clazz.load (["java.io.InputStream"], "java.io.SequenceInputStream", ["java.lang.Error", "$.IndexOutOfBoundsException", "$.NullPointerException", "java.util.Vector"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.e = null;
 this.$in = null;

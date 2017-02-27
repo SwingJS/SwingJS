@@ -1,4 +1,4 @@
-﻿Clazz.declarePackage ("java.util.zip");
+Clazz.declarePackage ("java.util.zip");
 c$ = Clazz.decorateAsClass (function () {
 this.$address = 0;
 Clazz.instantialize (this, arguments);

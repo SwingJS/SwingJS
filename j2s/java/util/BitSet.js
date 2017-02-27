@@ -1,4 +1,4 @@
-﻿Clazz.load (null, "java.util.BitSet", ["java.lang.IndexOutOfBoundsException", "$.NegativeArraySizeException", "$.StringBuffer", "java.util.Arrays"], function () {
+Clazz.load (null, "java.util.BitSet", ["java.lang.IndexOutOfBoundsException", "$.NegativeArraySizeException", "$.StringBuffer", "java.util.Arrays"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.bits = null;
 Clazz.instantialize (this, arguments);
