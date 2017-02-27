@@ -333,4 +333,6 @@ public abstract class ComponentUI implements ComponentPeer {
         return Component.BaselineResizeBehavior.OTHER;
     }
 
+		abstract public void setBackgroundPainted();
+
 }

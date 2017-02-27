@@ -1646,6 +1646,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			setTransparent(node);
 	}
 
+	@Override
+	public void setBackgroundPainted(){
+		setTransparent(domNode);
+	}
+	
+
 	private void setTransparent(DOMNode node) {
 		DOMNode.setStyles(node, "background", "transparent");
 	}

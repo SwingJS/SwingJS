@@ -208,8 +208,12 @@ public abstract class JSComponent extends Component {
 			return;
 		}
 		isBackgroundPainted = jsg.isBackgroundPainted();
-		if (isBackgroundPainted)
-			ui.setBackground(null);
+		if (isBackgroundPainted) {
+			ui.setBackgroundPainted();
+			// It's all one canvas, and it is behind the root pane (bad design?)
+			// so if it is painted, we should make the root pane transparent
+			((JComponent) this).getRootPane().getUI().setBackgroundPainted();
+		}
 	}
 
   @Override
