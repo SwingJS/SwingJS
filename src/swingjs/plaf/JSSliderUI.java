@@ -305,12 +305,14 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 						"scaleX(0.5) rotateZ(45deg)", "top", "-8px");
 				DOMNode.setStyles(sliderTrack, "height", "1px", "background", "black",
 						"top", "10px");
+				setSliderAttr("scaleX", 1);
 			} else {
 				DOMNode.setStyles(sliderHandle, "transform",
 						"scaleY(0.5) rotateZ(45deg)", "left", "-10px", "margin-bottom",
 						"-7px");
 				DOMNode.setStyles(sliderTrack, "width", "1px", "left", "12px",
 						"background", "black");
+				setSliderAttr("scaleY", 1);
 			}
 
 		} else {
@@ -360,23 +362,17 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void setInnerComponentBounds(int width, int height) {
 		// DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
-		if (isScrollPaneVertScrollBar) {
-			DOMNode.setStyles(sliderHandle, "left", "-8px");
-		} else if (orientation == "vertical") {// && isScrollBar)
-			DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
-			if (!isInverted && !isScrollBar && !paintTicks && !paintLabels)
-				DOMNode.setStyles(sliderTrack, "top", "10px");
-		} else if (false && orientation == "horizontal" && !isScrollBar) {
-			// does
-			// not
-			// work
-			// for
-			// standard
-			// simple
-			// slider
-			DOMNode.setStyles(domNode, "position", "absolute", "top",
-					(height - myHeight) / 2 + "px");
-		}
+		if (!paintTicks && !paintLabels)
+			if (isScrollPaneVertScrollBar) {
+				DOMNode.setStyles(sliderHandle, "left", "-8px");
+			} else if (orientation == "vertical") {
+				DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px", "top",
+						"10px");
+			} else if (false && orientation == "horizontal" && !isScrollBar) {
+				// does not work for standard simple slider
+				DOMNode.setStyles(domNode, "position", "absolute", "top",
+						(height - myHeight) / 2 + "px");
+			}
 
 	}
 

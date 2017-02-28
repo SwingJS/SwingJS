@@ -3,6 +3,7 @@
 * Includes: jquery.ui.slider.js
 * Copyright 2015 jQuery Foundation and other contributors; Licensed MIT */
 
+// BH 2/28/2017 7:06:57 AM fix for vertical inverted and slider jump when clicked
 // BH 11/22/2016 7:46:54 PM adding postMouseEvent
 // adjusted for SwingJS for smoother operation 
 // added j2sslider("getState")
@@ -27,6 +28,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
     jslider: null,
 		animate: false,
 		distance: 0,
+    scaleX: 0, // 1 here means diamond cursor horizontal
+    scaleY: 0, // 1 here means diamond cursor vertical
 		max: 100,
 		min: 0,
 		orientation: "horizontal",
@@ -191,7 +194,6 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
                       position.x = event.originalEvent.touches[0].pageX;
                       position.y = event.originalEvent.touches[0].pageY;
                 }
-		normValue = this._normValueFromMouse( position );
 		distance = this._valueMax() - this._valueMin() + 1;
     
 		index = event.target.index;
@@ -218,16 +220,20 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			.focus();
 
 		offset = closestHandle.offset();
-		mouseOverHandle = !$( event.target ).parents().andSelf().is( ".ui-j2sslider-handle" );
-		this._clickOffset = mouseOverHandle ? { left: 0, top: 0 } : {
-			left: position.x - offset.left - ( closestHandle.width() / 2 ),
-			top: position.y - offset.top -
-				( closestHandle.height() / 2 ) -
+		mouseOverHandle = $( event.target ).parents().andSelf().is( ".ui-j2sslider-handle" );
+    
+    xxxs = this;
+    xxxh = closestHandle;
+    
+		this._clickOffset = (mouseOverHandle ? {
+			left: position.x - offset.left - ( closestHandle.width() / (this.options.scaleX ? 4 : 2) ),
+			top: position.y - offset.top - 
+				( closestHandle.height() / (this.options.scaleY ? 4 : 2) ) -
 				( parseInt( closestHandle.css("borderTopWidth"), 10 ) || 0 ) -
 				( parseInt( closestHandle.css("borderBottomWidth"), 10 ) || 0) +
 				( parseInt( closestHandle.css("marginTop"), 10 ) || 0)
-		};
-
+		} : { left: 0, top: 0 });
+		normValue = this._normValueFromMouse( position );
 		if ( !this.handles.hasClass( "ui-state-hover" ) ) {
 			this._slide( event, index, normValue );
 		}
@@ -256,7 +262,6 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			pixelTotal = this.elementSize.height;
 			pixelMouse = position.y - this.elementOffset.top - ( this._clickOffset ? this._clickOffset.top : 0 );
 		}
-
 		fMouse = ( pixelMouse / pixelTotal );
 		if ( fMouse > 1 ) {
 			fMouse = 1;
@@ -532,9 +537,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 		if ( this.options.values && this.options.values.length ) {
 			this.handles.each(function( i ) {
 				valPercent = ( that.values(i) - that._valueMin() ) / ( that._valueMax() - that._valueMin() ) * 100;
-        if (this.options.inverted)valPercent = 100 - valPercent;
-        
-        _set[ that.orientation === "horizontal" ? "left" : that.options.inverted ? "top" : "bottom" ] = valPercent + "%";
+        if (this.options.inverted)valPercent = 100 - valPercent;        
+        _set[ that.orientation === "horizontal" ? "left" : "bottom" ] = valPercent + "%";
 				$( this ).stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 				if ( that.options.range === true ) {
 					if ( that.orientation === "horizontal" ) {
@@ -562,10 +566,9 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			valPercent = ( valueMax !== valueMin ) ?
 					( value - valueMin ) / ( valueMax - valueMin ) * 100 :
 					0;
-      var switched = (this.options.inverted && this.orientation === "horizontal"); 
-      if (switched)
+      if (this.options.inverted)
         valPercent = 100 - valPercent;
-			_set[ this.orientation === "horizontal" ? "left" : this.options.inverted ? "top" : "bottom" ] = valPercent + "%";
+			_set[ this.orientation === "horizontal" ? "left" : "bottom" ] = valPercent + "%";
 			this.handle.stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 
 			if ( oRange === "min" && this.orientation === "horizontal" ) {
