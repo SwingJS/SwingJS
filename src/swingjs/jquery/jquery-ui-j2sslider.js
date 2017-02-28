@@ -521,6 +521,12 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 	_valueMax: function() {
 		return this.options.max;
 	},
+  
+  _getValPercent: function(i) {
+    var dif = this._valueMax() - this._valueMin();  
+    var valPercent = (dif == 0 ? 0 : ((i >= 0 ? this.values(i) : this.value()) - this._valueMin())/dif * 100);
+    return (this.options.inverted ? 100 - valPercent : valPercent);
+  },          
 
 	_refreshValue: function() {
 		var lastValPercent, valPercent, value, valueMin, valueMax,
@@ -529,11 +535,9 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 			that = this,
 			animate = ( !this._animateOff ) ? o.animate : false,
 			_set = {};
-
 		if ( this.options.values && this.options.values.length ) {
 			this.handles.each(function( i ) {
-				valPercent = ( that.values(i) - that._valueMin() ) / ( that._valueMax() - that._valueMin() ) * 100;
-        if (this.options.inverted)valPercent = 100 - valPercent;        
+      	valPercent = that._getValPercent(i);              
         _set[ that.orientation === "horizontal" ? "left" : "bottom" ] = valPercent + "%";
 				$( this ).stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 				if ( that.options.range === true ) {
@@ -556,14 +560,7 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 				lastValPercent = valPercent;
 			});
 		} else {
-			value = this.value();
-			valueMin = this._valueMin();
-			valueMax = this._valueMax();
-			valPercent = ( valueMax !== valueMin ) ?
-					( value - valueMin ) / ( valueMax - valueMin ) * 100 :
-					0;
-      if (this.options.inverted)
-        valPercent = 100 - valPercent;
+      valPercent = this._getValPercent(-1);
 			_set[ this.orientation === "horizontal" ? "left" : "bottom" ] = valPercent + "%";
 			this.handle.stop( 1, 1 )[ animate ? "animate" : "css" ]( _set, o.animate );
 
