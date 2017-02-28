@@ -71,6 +71,7 @@
 		<foreach target="genWebpage" param="applet">
 			<path>
 			<fileset dir="${basedir}/src">
+				<include name="**/*.java"/>
 				<contains text="//${WebKey}"/>
 			</fileset>
 			</path>
