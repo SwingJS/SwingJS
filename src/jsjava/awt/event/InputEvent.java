@@ -344,6 +344,16 @@ public abstract class InputEvent extends ComponentEvent {
      */
     @Override
 		public void consume() {
+    	/**
+    	 * @j2sNative
+    	 * 
+    	 * if (this.bdata && this.bdata.jqevent) {
+    	 * 			this.bdata.jqevent.stopPropagation();
+    	 *      this.bdata.jqevent.preventDefault();
+    	 * }
+    	 */
+    	{
+    	}
         consumed = true;
     }
 
