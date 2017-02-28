@@ -164,6 +164,8 @@ public class TextListener implements MouseListener, MouseMotionListener,
 			mark = oldMark;
 		}
 		switch (eventType) {
+		case MouseEvent.MOUSE_WHEEL:
+			return false;
 		case MouseEvent.MOUSE_PRESSED:
 		case MouseEvent.MOUSE_RELEASED:
 		case MouseEvent.MOUSE_CLICKED:
