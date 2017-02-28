@@ -28,8 +28,8 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
     jslider: null,
 		animate: false,
 		distance: 0,
-    scaleX: 0, // 1 here means diamond cursor horizontal
-    scaleY: 0, // 1 here means diamond cursor vertical
+    scaleX: 1, // diamond cursor scaling X
+    scaleY: 1, // diamand cursor scaling Y
 		max: 100,
 		min: 0,
 		orientation: "horizontal",
@@ -221,14 +221,10 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 
 		offset = closestHandle.offset();
 		mouseOverHandle = $( event.target ).parents().andSelf().is( ".ui-j2sslider-handle" );
-    
-    xxxs = this;
-    xxxh = closestHandle;
-    
 		this._clickOffset = (mouseOverHandle ? {
-			left: position.x - offset.left - ( closestHandle.width() / (this.options.scaleX ? 4 : 2) ),
+			left: position.x - offset.left - ( closestHandle.width() / 2 * this.options.scaleX ),
 			top: position.y - offset.top - 
-				( closestHandle.height() / (this.options.scaleY ? 4 : 2) ) -
+				( closestHandle.height() / 2 * this.options.scaleY ) -
 				( parseInt( closestHandle.css("borderTopWidth"), 10 ) || 0 ) -
 				( parseInt( closestHandle.css("borderBottomWidth"), 10 ) || 0) +
 				( parseInt( closestHandle.css("marginTop"), 10 ) || 0)
@@ -591,5 +587,3 @@ $.widget( "ui.j2sslider", $.ui.mouse, {
 })(J2S.__$);
 
 })();
-
-  

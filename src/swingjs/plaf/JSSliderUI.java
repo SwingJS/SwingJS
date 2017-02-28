@@ -212,8 +212,7 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		}
 	}
 
-	private void setSliderAttr(String key, int val) {
-		//	System.out.println(id + " setting " + key + " = " + val);
+	private void setSliderAttr(String key, float val) {
 		/**
 		 * @j2sNative
 		 * 
@@ -305,14 +304,14 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 						"scaleX(0.5) rotateZ(45deg)", "top", "-8px");
 				DOMNode.setStyles(sliderTrack, "height", "1px", "background", "black",
 						"top", "10px");
-				setSliderAttr("scaleX", 1);
+				setSliderAttr("scaleX", 0.5f);
 			} else {
 				DOMNode.setStyles(sliderHandle, "transform",
 						"scaleY(0.5) rotateZ(45deg)", "left", "-10px", "margin-bottom",
 						"-7px");
 				DOMNode.setStyles(sliderTrack, "width", "1px", "left", "12px",
 						"background", "black");
-				setSliderAttr("scaleY", 1);
+				setSliderAttr("scaleY", 0.5f);
 			}
 
 		} else {
@@ -368,10 +367,10 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 			} else if (orientation == "vertical") {
 				DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px", "top",
 						"10px");
-			} else if (false && orientation == "horizontal" && !isScrollBar) {
-				// does not work for standard simple slider
-				DOMNode.setStyles(domNode, "position", "absolute", "top",
-						(height - myHeight) / 2 + "px");
+//			} else if (orientation == "horizontal" && !isScrollBar) {
+//				// does not work for standard simple slider -- don't know why this was added
+//				DOMNode.setStyles(domNode, "position", "absolute", "top",
+//						(height - myHeight) / 2 + "px");
 			}
 
 	}
