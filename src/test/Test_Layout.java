@@ -48,6 +48,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JTextField;
 
@@ -206,6 +208,14 @@ public class Test_Layout extends JApplet {
       outlft = new JTextField("12.5", 5);
       outlft.setBackground(Color.black);
       outlft.setForeground(Color.yellow);
+      outlft.addMouseWheelListener(new MouseWheelListener() {
+
+				@Override
+				public void mouseWheelMoved(MouseWheelEvent e) {
+					System.out.println("JTextField mouse wheeled " + e);
+				}
+      	
+      });
 
       outDrag = new JTextField("12.5", 5);
       outDrag.setBackground(Color.black);
