@@ -31,6 +31,7 @@ package jsjavax.swing;
 import jsjava.awt.Color;
 import jsjava.awt.Component;
 import jsjava.awt.Font;
+import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
 import jsjavax.swing.plaf.UIResource;
 import jsjavax.swing.text.JTextComponent;
@@ -214,11 +215,10 @@ public abstract class LookAndFeel
      *         <a href="#exceptions">exceptions</a>
      */
     public static void installBorder(JComponent c, String defaultBorderName) {
-    	JSToolkit.notImplemented(null);
-//        Border b = c.getBorder();
-//        if (b == null || b instanceof UIResource) {
-//            c.setBorder(UIManager.getBorder(defaultBorderName));
-//        }
+        Border b = c.getBorder();
+        if (b == null || b instanceof UIResource) {
+            c.setBorder(UIManager.getBorder(defaultBorderName));
+        }
     }
 
 

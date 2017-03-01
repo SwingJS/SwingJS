@@ -29,6 +29,8 @@
 package swingjs.plaf;
 
 //import jsjava.awt.AWTEvent;
+import jsjavax.swing.BorderFactory;
+
 import javajs.J2SIgnoreImport;
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
@@ -590,10 +592,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		//
 		// // *** Button value objects
 		//
-		// Object buttonBorder =
-		// new SwingLazyValue(
-		// "jsjavax.swing.plaf.basic.BasicBorders",
-		// "getButtonBorder");
+		Object buttonBorder = BorderFactory.createHTML5Border(); // an empty border, but really just the browser's border
 		//
 		// Object buttonToggleBorder =
 		// new SwingLazyValue(
@@ -811,7 +810,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "Button.darkShadow", controlDkShadow,
 				// "Button.light", controlHighlight,
 				// "Button.highlight", controlLtHighlight,
-				// "Button.border", buttonBorder,
+			  "Button.border", buttonBorder,
 				"Button.margin",
 				new InsetsUIResource(2, 14, 2, 14),
 				"Button.textIconGap", four,
@@ -850,7 +849,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "RadioButton.darkShadow", controlDkShadow,
 				// "RadioButton.light", controlHighlight,
 				// "RadioButton.highlight", controlLtHighlight,
-				// "RadioButton.border", radioButtonBorder,
+				"RadioButton.border", buttonBorder,
 				"RadioButton.margin",
 				twoInsets,
 				"RadioButton.textIconGap",
@@ -868,7 +867,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "CheckBox.font", dialogPlain12,
 				"CheckBox.background", control,
 			  "CheckBox.foreground", controlText,
-				// "CheckBox.border", radioButtonBorder,
+				"CheckBox.border", buttonBorder,
 				"CheckBox.margin",
 				twoInsets,
 				"CheckBox.textIconGap",

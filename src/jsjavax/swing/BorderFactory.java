@@ -428,7 +428,7 @@ public class BorderFactory
                         titlePosition, titleFont, titleColor);
     }
 //// EmptyBorder ///////////////////////////////////////////////////////////
-    final static Border emptyBorder = new EmptyBorder(0, 0, 0, 0);
+    public final static Border emptyBorder = new EmptyBorder(0, 0, 0, 0);
 
     /**
      * Creates an empty border that takes up no space. (The width
@@ -438,6 +438,18 @@ public class BorderFactory
      */
     public static Border createEmptyBorder() {
         return emptyBorder;
+    }
+
+    public final static Border html5Border = new EmptyBorder(0, 0, 0, 0);
+
+    /**
+     * Creates an empty border that takes up no space. (The width
+     * of the top, bottom, left, and right sides are all zero.)
+     *
+     * @return the <code>Border</code> object
+     */
+    public static Border createHTML5Border() {
+        return html5Border;
     }
 
     /**

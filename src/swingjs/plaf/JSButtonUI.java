@@ -33,6 +33,7 @@ import jsjava.awt.Dimension;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
+import jsjavax.swing.BorderFactory;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
@@ -110,7 +111,11 @@ public class JSButtonUI extends JSLightweightUI {
 //			setDataComponent(textNode);
 //		}
 		setIconAndText("button", (ImageIcon) button.getIcon(), button.getIconTextGap(), button.getText());
-		
+		// "emptyBorder" is not really empty. It is 
+		if (button.getBorder() == null || button.getBorder() == BorderFactory.emptyBorder)
+			DOMNode.setStyles(domNode, "border", "none");
+		else if (button.getBorder() == BorderFactory.html5Border)
+			DOMNode.setStyles(domNode, "border", null);			
 		return domNode;
 	}
 
@@ -359,7 +364,8 @@ public class JSButtonUI extends JSLightweightUI {
 		}
 		LookAndFeel.installColorsAndFont(b, pp + "background", pp + "foreground",
 				pp + "font");
-		// LookAndFeel.installBorder(b, pp + "border");
+		
+		LookAndFeel.installBorder(b, pp + "border");
 		//
 		// Object rollover = UIManager.get(pp + "rollover");
 		// if (rollover != null) {
