@@ -158,9 +158,6 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		  		 */
 		  		{}
 					frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-					JSToolkit.J2S._jsUnsetMouse(frameNode);
-					$(frameNode).remove();
-					$(outerNode).remove();
 					return true;		  		
 		  	} else if (type.equals("mouseout")) {
 			  	DOMNode.setStyles(closerNode, "background-color", toCSSString(c.getBackground()));
@@ -172,6 +169,17 @@ public class JSFrameUI extends JSWindowUI implements FramePeer {
 		  }			
 		}
 		return false;
+	}
+
+	@Override
+	protected void uninstallUIImpl() {
+		closeFrame();
+	}
+
+	protected void closeFrame() {
+		JSToolkit.J2S._jsUnsetMouse(frameNode);
+		$(frameNode).remove();
+		$(outerNode).remove();
 	}
 
 	@Override

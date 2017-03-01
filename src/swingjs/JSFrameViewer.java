@@ -18,7 +18,7 @@ import swingjs.plaf.JSComponentUI;
 import swingjs.plaf.Resizer;
 
 /**
- * JSJavaViewer 
+ * JSFrameViewer 
  * 
  * SwingJS class to support an independent Window, either from using Main() 
  * or one created from a JApplet. Each viewer has an independent mouse event processor. 
