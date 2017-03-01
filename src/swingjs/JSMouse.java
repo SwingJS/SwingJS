@@ -163,7 +163,7 @@ public class JSMouse {
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		e.consume();
+   	e.consume();
 		wheeled(e.getWhen(), e.getWheelRotation(), e.getModifiers());
 	}
 
@@ -262,6 +262,7 @@ public class JSMouse {
 		// nothing here?
 	}
 
+	@SuppressWarnings("unused")
 	private void mouseAction(int id, long time, int x, int y, int xcount,
 			int modifiers) {
 
@@ -290,14 +291,25 @@ public class JSMouse {
 				count, popupTrigger, button));
 		byte[] bdata = new byte[0];
 		Object jqevent = this.jqevent;
+		Component c = null;
 		/**
-		 * @j2sNative bdata.jqevent = this.jqevent;
+		 * @j2sNative 
+		 * 
+		 * bdata.jqevent = jqevent;
+		 * c = jqevent.target["data-component"];
 		 */
 		{
 			System.out.println(jqevent);
 		}
 		e.setBData(e, bdata);
-		Toolkit.getEventQueue().postEvent(e);
+		// the key here is that if we have a data-component, we can go directly to it (perhaps!)
+		// and dispatch the event; we do not need to go through the dispatcher. 
+		// Possibly?
+		
+		if (c != null)
+		  c.dispatchEvent(e);
+		else
+			Toolkit.getEventQueue().postEvent(e);
 	}
 
 	private long lasttime;
