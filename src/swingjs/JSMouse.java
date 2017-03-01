@@ -306,10 +306,10 @@ public class JSMouse {
 		// and dispatch the event; we do not need to go through the dispatcher. 
 		// Possibly?
 		
-		if (c != null)
-		  c.dispatchEvent(e);
-		else
+		if (c == null)
 			Toolkit.getEventQueue().postEvent(e);
+		else
+		  c.dispatchEvent(e);
 	}
 
 	private long lasttime;
