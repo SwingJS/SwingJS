@@ -302,9 +302,9 @@ public class JSMouse {
 			System.out.println(jqevent);
 		}
 		e.setBData(e, bdata);
-		// the key here is that if we have a data-component, we can go directly to it (perhaps!)
-		// and dispatch the event; we do not need to go through the dispatcher. 
-		// Possibly?
+		// the key here is that if we have a data-component, we must go directly to it
+		// and dispatch the event; if we go through the dispatcher, any e.consume()
+		// that occurs is too late to consume it. 
 		
 		if (c == null)
 			Toolkit.getEventQueue().postEvent(e);

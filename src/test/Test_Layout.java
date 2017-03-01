@@ -213,6 +213,7 @@ public class Test_Layout extends JApplet {
 				@Override
 				public void mouseWheelMoved(MouseWheelEvent e) {
 					System.out.println("JTextField mouse wheeled " + e);
+					e.consume();
 				}
       	
       });
