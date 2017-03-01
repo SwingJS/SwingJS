@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import javax.swing.WindowConstants;
+
 import javajs.util.JSThread;
 import javajs.util.Lst;
 import javajs.util.PT;
 import jsjava.applet.Applet;
 import jsjava.applet.AppletContext;
 import jsjava.applet.AppletStub;
+import jsjava.awt.Container;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
 import jsjava.awt.Frame;
@@ -158,9 +161,9 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 
 	private boolean addFrame;
 
-	private JFrame jAppletFrame;
-
 	private String main;
+
+	private JFrame jAppletFrame;
 	
 	static {
 		
@@ -300,13 +303,14 @@ public class JSAppletViewer extends JSFrameViewer implements AppletStub, AppletC
 		japplet.getRootPane().setBounds(0, 0, getWidth(), getHeight());
 		japplet.getContentPane().setBounds(0, 0, getWidth(), getHeight());
 		((JComponent) japplet.getContentPane()).revalidate();
-//		if (addFrame) {
-//			jAppletFrame = new JFrame("SwingJS Applet Viewer");
-//			Container pane = japplet.getContentPane();
-//			jAppletFrame.setContentPane(pane);
-//		  japplet.setVisible(false);
-//		  jAppletFrame.pack();
-//		}
+		if (addFrame) {
+			jAppletFrame = new JFrame("SwingJS Applet Viewer");
+			Container pane = japplet.getContentPane();
+			jAppletFrame.setContentPane(pane);
+		  japplet.setVisible(false);
+		  jAppletFrame.pack();
+		  jAppletFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		}
 	//if (wNew > 0 && hNew > 0)
 	  japplet.repaint(0, 0, getWidth(), getHeight());
 
