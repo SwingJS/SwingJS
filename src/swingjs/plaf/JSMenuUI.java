@@ -12,6 +12,7 @@ public class JSMenuUI extends JSMenuItemUI {
 	private JMenu jm;
 
 	public JSMenuUI() {
+		isMenu = true;
 		setDoc();
 	}
 

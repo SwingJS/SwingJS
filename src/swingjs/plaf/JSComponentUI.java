@@ -263,6 +263,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	protected boolean isMenuItem = false;
 
+	/**
+	 * Indicates that we do not want to updateDOMNode too early.
+	 */
+
+	protected boolean isMenu = false;
+
 	protected int x, y;
 
 	/**
@@ -646,7 +652,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	protected void propertyChangedCUI(String prop) {
-		updateDOMNode();
+		// don't want to update a menu until we have to, after its place is set
+		// and we know it is not a JMenuBar menu 
+		if (!isMenu)
+			updateDOMNode();
 		if (prop == "preferredSize") {
 			// size has been set by JComponent layout
 			preferredSize = c.getPreferredSize(); // may be null
