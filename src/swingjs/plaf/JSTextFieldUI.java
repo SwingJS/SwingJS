@@ -16,7 +16,7 @@ import swingjs.api.DOMNode;
  * A minimal implementation of a test field ui/peer
  * 
  * @author Bob Hanson
- *
+ * 
  */
 public class JSTextFieldUI extends JSTextUI {
 
@@ -28,11 +28,12 @@ public class JSTextFieldUI extends JSTextUI {
 		if (domNode == null) {
 			allowBackground = false;
 			// no textNode here, because in input does not have that.
-			focusNode = enableNode = valueNode = domNode = DOMNode
-					.setStyles(newDOMObject("input", id, "type", inputType),
-							"padding", "0px 0px","lineHeight", "0.8","box-sizing", "border-box");
+			focusNode = enableNode = valueNode = domNode = DOMNode.setStyles(
+					newDOMObject("input", id, "type", inputType), "padding", "0px 0px",
+					"lineHeight", "0.8", "box-sizing", "border-box");
 			DOMNode.setAttrs(focusNode, "ui", this);
-			// not active; requires position:absolute; wrong for standard text box vCenter(domNode, -10);
+			// not active; requires position:absolute; wrong for standard text box
+			// vCenter(domNode, -10);
 			setDataUI(domNode);
 			setDataComponent(domNode);
 			if (textField.isEditable()) {
@@ -41,9 +42,8 @@ public class JSTextFieldUI extends JSTextUI {
 			}
 		}
 		textListener.checkDocument();
-		setCssFont(setProp(domNode, "value", getComponentText()),
-				c.getFont());
-		//setTextAlignment();
+		setCssFont(setProp(domNode, "value", getComponentText()), c.getFont());
+		// setTextAlignment();
 		setEditable(editable);
 		if (jc.isOpaque())
 			setBackground(jc.getBackground());
@@ -54,7 +54,7 @@ public class JSTextFieldUI extends JSTextUI {
 	protected Dimension getCSSAdjustment(boolean addingCSS) {
 		return new Dimension(0, addingCSS ? 0 : -2);
 	}
-	
+
 	@Override
 	protected void installUIImpl() {
 		textField = (JTextField) c;
@@ -66,7 +66,8 @@ public class JSTextFieldUI extends JSTextUI {
 		if (eventType == KeyEvent.KEY_PRESSED) {
 			Action a = getActionMap().get(JTextField.notifyAction);
 			if (a != null)
-				a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, JTextField.notifyAction, System.currentTimeMillis(), 0));
+				a.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED,
+						JTextField.notifyAction, System.currentTimeMillis(), 0));
 		}
 		return true;
 	}
@@ -75,6 +76,5 @@ public class JSTextFieldUI extends JSTextUI {
 	protected String getPropertyPrefix() {
 		return "TextField";
 	}
-
 
 }

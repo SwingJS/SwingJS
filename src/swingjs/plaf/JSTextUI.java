@@ -218,7 +218,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	}
 
 	/**
-	 * called by JmolCore.js
+	 * called by JSComponentUI.bindJSEvents
 	 * 
 	 * @return handled
 	 */

@@ -593,7 +593,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		 *            f = function(event) { me.handleJSEvent(node, eventID, event) }
 		 */
 		{
-			System.out.println(me);
+			handleJSEvent(null, 0, null); // Eclipse reference only; not in JavaScript
 		}
 		$(node).bind(eventList, f);
 	}

@@ -137,7 +137,16 @@ public class TextListener implements MouseListener, MouseMotionListener,
 //        model.setArmed(false);
     }
 
-
+    
+  
+  /**
+   * Called by JSTextUI.handleJSEvent directly from  
+   * 
+   * @param ui
+   * @param eventType
+   * @param jQueryEvent
+   * @return
+   */
 	boolean handleJSTextEvent(JSTextUI ui, int eventType, Object jQueryEvent) {
 		int dot = 0, mark = 0;
 		String evType = null;
