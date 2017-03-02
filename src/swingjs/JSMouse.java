@@ -29,6 +29,7 @@ package swingjs;
 import java.awt.event.InputEvent;
 
 import jsjava.awt.Component;
+import jsjava.awt.Container;
 import jsjava.awt.Event;
 import jsjava.awt.Toolkit;
 import jsjava.awt.event.MouseEvent;
@@ -302,14 +303,14 @@ public class JSMouse {
 			System.out.println(jqevent);
 		}
 		e.setBData(e, bdata);
-		// the key here is that if we have a data-component, we must go directly to it
-		// and dispatch the event; if we go through the dispatcher, any e.consume()
-		// that occurs is too late to consume it. 
+		// the key here is that if we have a data-component, we must go directly to its
+		// container and dispatch the event; if we go through the event queue, any e.consume()
+		// that occurs is too late to consume the event. 
 		
 		if (c == null)
 			Toolkit.getEventQueue().postEvent(e);
 		else
-		  c.dispatchEvent(e);
+		  ((Container) e.getSource()).dispatchEvent(e);
 	}
 
 	private long lasttime;
