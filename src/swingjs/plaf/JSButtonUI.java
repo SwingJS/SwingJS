@@ -136,7 +136,7 @@ public class JSButtonUI extends JSLightweightUI {
 		String text = button.getText();
 		ImageIcon icon = (ImageIcon) button.getIcon();
 		int gap = button.getIconTextGap();
-		if (text != null && (text.trim().length() == 0 || text.equals("|"))) {
+		if (("|").equals(text) || ("-").equals(text)) {
 			text = null;
 		}
 		itemNode = newDOMObject("li", id + type);
