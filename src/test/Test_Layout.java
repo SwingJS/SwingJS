@@ -43,6 +43,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -216,6 +218,24 @@ public class Test_Layout extends JApplet {
 					e.consume();
 				}
       	
+      });
+      
+      outlft.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+		      JTextField tf = (JTextField) e.getComponent();
+		      tf.setBackground(Color.BLACK);
+		      double val = Double.parseDouble(tf.getText().trim());
+		      tf.setText("12.5");
+		      repaint();
+		    }      	
       });
 
       outDrag = new JTextField("12.5", 5);
