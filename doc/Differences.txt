@@ -1,6 +1,8 @@
 Notes
 =====
 
+updated 3/2/17 -- more indication of classes not implemented (KeyListener)
+
 =============================================================================
 SwingJS and JDK 1.6
 =============================================================================
@@ -9,13 +11,15 @@ SwingJS implements a wide range of the Java language in JavaScript. The base
 version for this implementation is Java 1.6. However, some classes were
 implemented using older source code, and there are some missing methods.  
 
-MINOR ISSUES--unimplemented classes
-===================================
+UNIMPLEMENTED CLASSES
+=====================
 
 accessibility
-native classes
 security
 serialization
+key listeners
+keyboard accelerators
+
 
 MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
 ================================================================
@@ -1027,8 +1031,8 @@ Class.loadClass("jsjava.text.SimpleDateFormat", function() { x = new jsjava.text
 
 //////////////////////////////////////////////////////////////////////////////
 
-MINOR ISSUES--unimplemented classes
-===================================
+UNIMPLEMENTED CLASSES
+=====================
 
 accessibility
 -------------
@@ -1051,6 +1055,18 @@ serialization
 
 All serialization has been removed. It was never very useful for Swing anyway, 
 because one needs exactly the same Java version to save and restore serialized objects.
+
+key listeners
+-------------
+
+The KeyListener interface for JTextField and JTextArea has not been implemented. 
+Alternative coding is to use ActionListener, TextListener, or DocumentListener (largely untested)
+
+keyboard accelerators
+---------------------
+
+JMenu.setAccelerator() and JMenuItem.setAccelerator() hae not been implemented in SwingJS. 
+Thus, menus cannot be opened just be typing CTRL-C or similar shortcuts.
 
 
 MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
@@ -1267,6 +1283,7 @@ key Focus
 - Less explicit key focus 
 - handling (mostly done by Browser/HTML)
 - no SwingUtilities.findFocusOwner
+- focus traversal not implemented
 
 static methods and classes -- order is important
 ------------------------------------------------
@@ -1286,6 +1303,17 @@ will fail. It's actually quite odd that it does not fail in Java as well.
 Likewise, static classes hidden in other classes must be presented in an order
 that does not call an uninitiated class. In java.util.Collections, for example,
 it was important to move SynchronizedRandomAccessList to after SynchronizedList.
+
+The solution in some cases is to use
+
+@J2SRequireImport
+
+to force the transpiler to indicate that a class is needed prior to considering a class loaded.
+For example:
+
+@J2SRequireImport(NumberFormat.class)
+public class NumberFormatter extends InternationalFormatter...
+
 
 LookAndFeel
 -----------
