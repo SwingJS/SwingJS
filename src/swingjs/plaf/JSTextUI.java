@@ -2781,6 +2781,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		String prop = null;
 		DOMNode obj = null;
 		if (val == null ? currentText != null : !val.equals(currentText)) {
+			currentText = val;			
 			if (textNode != null) {
 				prop = "innerHTML";
 				obj = textNode;
