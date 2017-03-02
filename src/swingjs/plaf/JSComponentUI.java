@@ -1630,7 +1630,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 
 	private void setBackgroundFor(DOMNode node, Color color) {
-		if (node == null)
+		// Don't allow color for Menu and MenuItem. This is taken care of by jQuery 
+		if (node == null || isMenuItem)
 			return;
 		//if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
