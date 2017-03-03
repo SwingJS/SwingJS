@@ -49,6 +49,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -109,7 +110,7 @@ public class Test_Layout extends JApplet {
       onePlaceDF = new DecimalFormat("#.#");
 
     }
-    JPanel p = new JPanel();
+    final JPanel p = new JPanel();
     p.setLayout(new GridLayout(2,2,10,10));
     Con con = new Con();
     p.add(new Label("quadrant 1", Label.CENTER));
@@ -118,6 +119,20 @@ public class Test_Layout extends JApplet {
     p.add(new Label("quadrant 4", Label.CENTER));
     getContentPane().add(p);
     
+    p.addMouseMotionListener(new MouseMotionAdapter() {
+      public void mouseMoved (MouseEvent e) {
+        System.out.println("JPanel mouse moved " + e);
+        mouseX = e.getX();
+        mouseY = e.getY();
+      }
+    });
+    panelBG = p.getBackground();
+    p.addMouseWheelListener(new MouseWheelListener() {
+    public void mouseWheelMoved(MouseWheelEvent e) {
+      System.out.println("JPanel mouse wheeled " + e);
+      p.setBackground(e.getX() == mouseX && e.getY() == mouseY
+          ? panelBG : Color.RED);
+    }});
    
   }
   
@@ -297,4 +312,8 @@ public class Test_Layout extends JApplet {
     }
 
   }
+  
+  static int mouseX, mouseY; Color panelBG;
+
+
 }
