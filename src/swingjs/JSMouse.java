@@ -58,7 +58,7 @@ public class JSMouse {
 			modifiers = applyLeftMouse(modifiers);
 		switch (id) {	
 		case MouseEvent.MOUSE_WHEEL:
-			wheeled(time, x, modifiers);
+			wheeled(time, 0, 0, x, modifiers);
 			break;
 		case MouseEvent.MOUSE_PRESSED:
 			xWhenPressed = x;
@@ -165,7 +165,7 @@ public class JSMouse {
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
    	e.consume();
-		wheeled(e.getWhen(), e.getWheelRotation(), e.getModifiers());
+		wheeled(e.getWhen(), 0, 0, e.getWheelRotation(), e.getModifiers());
 	}
 
 	private void entry(long time, int x, int y, boolean isExit) {
@@ -185,7 +185,7 @@ public class JSMouse {
 		// clearKeyBuffer();
 		// clickedCount is not reliable on some platforms
 		// so we will just deal with it ourselves
-		mouseAction(MouseEvent.MOUSE_CLICKED, time, x, y, 1, modifiers);
+		mouseAction(MouseEvent.MOUSE_CLICKED, time, x, y, 1, modifiers, 0);
 	}
 
 	private boolean isMouseDown; // Macintosh may not recognize CTRL-SHIFT-LEFT as
@@ -196,16 +196,16 @@ public class JSMouse {
 		// clearKeyBuffer();
 		if (isMouseDown)
 			mouseAction(MouseEvent.MOUSE_DRAGGED, time, x, y, 0,
-					applyLeftMouse(modifiers));
+					applyLeftMouse(modifiers), 0);
 		else
-			mouseAction(MouseEvent.MOUSE_MOVED, time, x, y, 0, modifiers);
+			mouseAction(MouseEvent.MOUSE_MOVED, time, x, y, 0, modifiers, 0);
 	}
 
-	void wheeled(long time, int rotation, int modifiers) {
+	void wheeled(long time, int x, int y, int rotation, int modifiers) {
 		// clearKeyBuffer();
 		wheeling = true;
-		mouseAction(MouseEvent.MOUSE_WHEEL, time, 0, rotation, 0, modifiers
-				& ~BUTTON_MASK | MOUSE_WHEEL);
+		mouseAction(MouseEvent.MOUSE_WHEEL, time, x, y, 0, modifiers
+				& ~BUTTON_MASK | MOUSE_WHEEL, rotation);
 	}
 
 	/**
@@ -221,13 +221,13 @@ public class JSMouse {
 		// clearKeyBuffer();
 		isMouseDown = true;
 		wheeling = false;
-		mouseAction(MouseEvent.MOUSE_PRESSED, time, x, y, 0, modifiers);
+		mouseAction(MouseEvent.MOUSE_PRESSED, time, x, y, 0, modifiers, 0);
 	}
 
 	private void released(long time, int x, int y, int modifiers) {
 		isMouseDown = false;
 		wheeling = false;
-		mouseAction(MouseEvent.MOUSE_RELEASED, time, x, y, 0, modifiers);
+		mouseAction(MouseEvent.MOUSE_RELEASED, time, x, y, 0, modifiers, 0);
 	}
 
 	private void dragged(long time, int x, int y, int modifiers) {
@@ -235,7 +235,7 @@ public class JSMouse {
 			return;
 		if ((modifiers & MAC_COMMAND) == MAC_COMMAND)
 			modifiers = modifiers & ~MOUSE_RIGHT | Event.CTRL_MASK;
-		mouseAction(MouseEvent.MOUSE_DRAGGED, time, x, y, 0, modifiers);
+		mouseAction(MouseEvent.MOUSE_DRAGGED, time, x, y, 0, modifiers, 0);
 	}
 
 	private static int applyLeftMouse(int modifiers) {
@@ -265,7 +265,7 @@ public class JSMouse {
 
 	@SuppressWarnings("unused")
 	private void mouseAction(int id, long time, int x, int y, int xcount,
-			int modifiers) {
+			int modifiers, int dy) {
 
 		// Oddly, Windows returns InputEvent.META_DOWN_MASK on release, though
 		// BUTTON3_DOWN_MASK for pressed. So here we just accept both when not a
@@ -281,15 +281,19 @@ public class JSMouse {
 		int count = updateClickCount(id, time, x, y);
 
 		Component source = viewer.top; // may be a JFrame
-		MouseEvent e = (id == MouseEvent.MOUSE_WHEEL ? 
-				new MouseWheelEvent(source, id, time, modifiers, 
-						xWhenPressed, yWhenPressed, xWhenPressed, yWhenPressed, count, 
-						popupTrigger, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, y)
+		MouseEvent e;
+		if (id == MouseEvent.MOUSE_WHEEL) {
+			e = new MouseWheelEvent(source, id, time, modifiers, x, y, x, y, count, 
+							popupTrigger, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, dy);
+
+		} else {
 		// Component source, int id, long when, int modifiers,
     // int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger,
     // int scrollType, int scrollAmount, int wheelRotation
-		: new MouseEvent(source, id, time, modifiers, x, y, x, y,
-				count, popupTrigger, button));
+			
+		e = new MouseEvent(source, id, time, modifiers, x, y, x, y,
+				count, popupTrigger, button);
+		}
 		byte[] bdata = new byte[0];
 		Object jqevent = this.jqevent;
 		Component c = null;

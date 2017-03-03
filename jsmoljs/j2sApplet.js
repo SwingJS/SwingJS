@@ -1272,7 +1272,9 @@ J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection
 			var oe = ev.originalEvent;
 			var scroll = (oe.detail ? oe.detail : (J2S.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
 			var modifiers = getMouseModifiers(ev);
-			who.applet._processEvent(507,[scroll < 0 ? -1 : 1,0,modifiers], ev, who._frameViewer);
+			var xym = J2S._jsGetXY(who, ev);
+      if (xym)
+  			who.applet._processEvent(507,[scroll < 0 ? -1 : 1,0,modifiers, xym], ev, who._frameViewer);
 			return !!ui;
 		});
 

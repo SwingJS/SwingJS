@@ -102,7 +102,7 @@ public class JSMouse2 {
 			v1 = V3.new3(x2first - x1first, y2first - y1first, 0);
 			v2 = V3.new3(x2last - x1last, y2last - y1last, 0);
 			float dx = v2.length() - v1.length();
-			mouse.wheeled(System.currentTimeMillis(), dx < 0 ? -1 : 1, MouseEvent.MOUSE_WHEEL);
+			mouse.wheeled(System.currentTimeMillis(), 0, 0, dx < 0 ? -1 : 1, MouseEvent.MOUSE_WHEEL);
 		}
 	}
 
