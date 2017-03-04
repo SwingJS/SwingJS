@@ -10,82 +10,32 @@ package test;
 //web_Features= graphics, AWT-to-Swing
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JApplet;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.SwingUtilities;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.CardLayout;
 import java.awt.GridLayout;
-import java.awt.BorderLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-
-import javax.swing.JTextField;
-
-//import java.text.NumberFormat;
-
-
-
-
-
-import a2s.Applet;
-
-//import a2s.Canvas;
-import a2s.Checkbox;
-import a2s.Frame;
-import a2s.Label;
-import a2s.Scrollbar;
-import a2s.Button;
-import a2s.Choice;
-//import a2s.Panel;
-
-import a2s.TextArea;
-
-import javax.swing.JApplet;
-//import javax.swing.JButton;
-import javax.swing.JPanel;
-//import javax.swing.JScrollBar;
-import javax.swing.Timer;
-
-import java.lang.Math;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 import javajs.J2SRequireImport;
+
+import javax.swing.JApplet;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import a2s.Button;
+import a2s.Choice;
+import a2s.Label;
+//import java.text.NumberFormat;
+//import a2s.Canvas;
+//import a2s.Panel;
+//import javax.swing.JButton;
+//import javax.swing.JScrollBar;
 @J2SRequireImport({ java.text.DecimalFormat.class})
 public class Test_Layout extends JApplet {
   static DecimalFormatSymbols dfs; // = new DecimalFormatSymbols();
@@ -113,10 +63,10 @@ public class Test_Layout extends JApplet {
     final JPanel p = new JPanel();
     p.setLayout(new GridLayout(2,2,10,10));
     Con con = new Con();
-    p.add(new Label("quadrant 1", Label.CENTER));
+    p.add(new Label("quadrant 1", SwingConstants.CENTER));
     p.add(con);
-    p.add(new Label("quadrant 3", Label.CENTER));
-    p.add(new Label("quadrant 4", Label.CENTER));
+    p.add(new Label("quadrant 3", SwingConstants.CENTER));
+    p.add(new Label("quadrant 4", SwingConstants.CENTER));
     getContentPane().add(p);
     
     p.addMouseMotionListener(new MouseMotionAdapter() {
@@ -149,12 +99,12 @@ public class Test_Layout extends JApplet {
       //outerparent = target;
       setLayout(new GridLayout(7, 4, 10, 10));
 
-      l1 = new Label("Output", Label.RIGHT);
+      l1 = new Label("Output", SwingConstants.RIGHT);
       l1.setForeground(Color.red);
-      l2 = new Label("Input", Label.CENTER);
+      l2 = new Label("Input", SwingConstants.CENTER);
       l2.setForeground(Color.blue);
 
-      FSlabel = new Label("FoilSim III", Label.CENTER);
+      FSlabel = new Label("FoilSim III", SwingConstants.CENTER);
       FSlabel.setForeground(Color.red);
 
       bt3 = new Button("Reset");
@@ -248,7 +198,7 @@ public class Test_Layout extends JApplet {
 		      JTextField tf = (JTextField) e.getComponent();
 		      tf.setBackground(Color.BLACK);
 		      double val = Double.parseDouble(tf.getText().trim());
-		      tf.setText("12.5");
+		      tf.setText("" + val);
 		      repaint();
 		    }      	
       });
@@ -257,9 +207,9 @@ public class Test_Layout extends JApplet {
       outDrag.setBackground(Color.black);
       outDrag.setForeground(Color.yellow);
 
-      pitchMomentLabel = new Label("Cm", Label.RIGHT);
+      pitchMomentLabel = new Label("Cm", SwingConstants.RIGHT);
 
-      liftOverDrag = new Label("L/D ratio", Label.RIGHT);
+      liftOverDrag = new Label("L/D ratio", SwingConstants.RIGHT);
       liftOverDrag.setForeground(Color.black);
 
       outLD = new JTextField("12.5", 5);
@@ -272,17 +222,17 @@ public class Test_Layout extends JApplet {
       outReynolds.setBackground(Color.black);
       outReynolds.setForeground(Color.yellow);
 
-      reynoldsLabel = new Label("Reynolds #", Label.RIGHT);
+      reynoldsLabel = new Label("Reynolds #", SwingConstants.RIGHT);
       reynoldsLabel.setForeground(Color.black);
 
       add(FSlabel);
-      add(new Label("Units: ", Label.RIGHT));
+      add(new Label("Units: ", SwingConstants.RIGHT));
       add(untch);
       add(bt3);
 
       add(l2);
-      add(new Label("Student ", Label.RIGHT));
-      add(new Label(" Version 1.5b", Label.LEFT));
+      add(new Label("Student ", SwingConstants.RIGHT));
+      add(new Label(" Version 1.5b", SwingConstants.LEFT));
       add(l1);
 
       add(ibt1);
@@ -295,10 +245,10 @@ public class Test_Layout extends JApplet {
       add(obt4);
       add(obt5);
 
-      add(new Label(" ", Label.CENTER));
+      add(new Label(" ", SwingConstants.CENTER));
       add(ibt4);
       add(obt1);
-      add(new Label(" ", Label.CENTER));
+      add(new Label(" ", SwingConstants.CENTER));
 
       add(outch);
       add(outlft);
