@@ -110,8 +110,8 @@ public class JSFrameViewer implements JSInterface {
 
 	@Override
 	public boolean processMouseEvent(int id, int x, int y, int modifiers,
-			long time, Object jqevent) {
-		getMouse().processEvent(id, x, y, modifiers, time, jqevent);
+			long time, Object jqevent, int scroll) {
+		getMouse().processEvent(id, x, y, modifiers, time, jqevent, scroll);
 		return false;
 	}
 

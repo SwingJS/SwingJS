@@ -52,13 +52,13 @@ public class JSMouse {
 		viewer = v;
 	}
 
-	public boolean processEvent(int id, int x, int y, int modifiers, long time, Object jqevent) {
+	public boolean processEvent(int id, int x, int y, int modifiers, long time, Object jqevent, int scroll) {
 		this.jqevent = jqevent;
 		if (id != MouseEvent.MOUSE_WHEEL && id != MouseEvent.MOUSE_MOVED)
 			modifiers = applyLeftMouse(modifiers);
 		switch (id) {	
 		case MouseEvent.MOUSE_WHEEL:
-			wheeled(time, 0, 0, x, modifiers);
+			wheeled(time, x, y, scroll, modifiers);
 			break;
 		case MouseEvent.MOUSE_PRESSED:
 			xWhenPressed = x;
@@ -285,7 +285,6 @@ public class JSMouse {
 		if (id == MouseEvent.MOUSE_WHEEL) {
 			e = new MouseWheelEvent(source, id, time, modifiers, x, y, x, y, count, 
 							popupTrigger, MouseWheelEvent.WHEEL_UNIT_SCROLL, 1, dy);
-
 		} else {
 		// Component source, int id, long when, int modifiers,
     // int x, int y, int xAbs, int yAbs, int clickCount, boolean popupTrigger,

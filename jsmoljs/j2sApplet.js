@@ -1273,8 +1273,11 @@ J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection
 			var scroll = (oe.detail ? oe.detail : (J2S.featureDetection.os == "mac" ? 1 : -1) * oe.wheelDelta); // Mac and PC are reverse; but 
 			var modifiers = getMouseModifiers(ev);
 			var xym = J2S._jsGetXY(who, ev);
-      if (xym)
-  			who.applet._processEvent(507,[scroll < 0 ? -1 : 1,0,modifiers, xym], ev, who._frameViewer);
+      
+      if (xym) {
+        xym.push(scroll < 0 ? -1 : 1)
+  			who.applet._processEvent(507, xym, ev, who._frameViewer);
+      }
 			return !!ui;
 		});
 
@@ -1933,7 +1936,8 @@ J2S.Cache.put = function(filename, data) {
 		}
 
 		proto._processEvent = function(type, xym, ev, frameViewer) {
-      (frameViewer || this._appletPanel).processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis(), ev);
+      // xym is [x,y,modifiers,wheelScroll]
+      (frameViewer || this._appletPanel).processMouseEvent(type,xym[0],xym[1],xym[2],System.currentTimeMillis(), ev, xym[3]);
 		}
 
 		proto._resize = function() {
