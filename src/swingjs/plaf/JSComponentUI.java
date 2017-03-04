@@ -409,7 +409,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	public JSComponentUI set(JComponent target) {
 		c = target;
 		jc = (JComponent) c; // in JavaScript, in certain cases this will not be a
-													// JComponent
+													// JComponent, but it will always be a JSComponent
 		applet = JSToolkit.getHTML5Applet(c);
 		newID();
 		installUIImpl(); // need to do this immediately, not later
@@ -803,7 +803,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected int actualHeight, actualWidth;
 
 	/**
-	 * can be set false to never draw a background (textfield, textarea)
+	 * can be set false to never draw a background, primarily because Mac OS will
+	 * paint a non-rectangular object.
+	 * 
+	 *  (textfield, textarea, button, combobox, menuitem)
 	 */
 	protected boolean allowBackground = true;
 
@@ -1188,6 +1191,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		if (c.isOpaque() && allowBackground) {
 				g.setColor(c.getBackground());
     		g.fillRect(0, 0, c.getWidth(), c.getHeight());
+    		setBackgroundPainted();
 		}
 		paint(g, c);
 	}
@@ -1636,7 +1640,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		//if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? rootPaneColor : color));
-		if (c.isBackgroundPainted && allowBackground)
+		if (jc.selfOrParentBackgroundPainted() && allowBackground)
 			setTransparent(node);
 		else
 			checkTransparent(node);

@@ -8,8 +8,6 @@ import jsjava.awt.Dimension;
 import jsjava.awt.event.ActionEvent;
 import jsjavax.swing.Action;
 import jsjavax.swing.JTextField;
-import jsjavax.swing.SwingConstants;
-import jsjavax.swing.text.JTextComponent;
 import swingjs.api.DOMNode;
 
 /**
@@ -36,10 +34,8 @@ public class JSTextFieldUI extends JSTextUI {
 			// vCenter(domNode, -10);
 			setDataUI(domNode);
 			setDataComponent(domNode);
-			if (textField.isEditable()) {
-				bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
-				addJQueryFocusCallbacks();
-			}
+			bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
+			addJQueryFocusCallbacks();
 		}
 		textListener.checkDocument();
 		setCssFont(setProp(domNode, "value", getComponentText()), c.getFont());

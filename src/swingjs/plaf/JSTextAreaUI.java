@@ -26,15 +26,13 @@ public class JSTextAreaUI extends JSTextUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			allowBackground = false;
-			textListener.checkDocument();
 			domBtn = focusNode = enableNode = textNode = valueNode = domNode = newDOMObject("textarea", id);
 			DOMNode.setStyles(domNode, "resize", "none");
 			setDataUI(domNode);
-			if (((JTextComponent) c).isEditable()) {
-				bindJSEvents(domNode, "keydown keypress keyup focusout", Event.KEY_PRESS, false);
-				addJQueryFocusCallbacks();
-			}
+			bindJSEvents(domNode, "keydown keypress keyup focusout", Event.KEY_PRESS, false);
+			addJQueryFocusCallbacks();
 		}
+		textListener.checkDocument();
 		setCssFont(
 				DOMNode.setAttr(domNode, "innerHTML", getComponentText()),
 				c.getFont());

@@ -225,7 +225,8 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	@Override
 	public boolean handleJSEvent(Object target, int eventType, Object jQueryEvent) {
 		//System.out.println("Handling for " + id + " " + eventType + " "	+ jQueryEvent);
-		return textListener.handleJSTextEvent(this, eventType, jQueryEvent);
+		JTextComponent t = (JTextComponent) c;
+		return (t.isEditable() ? textListener.handleJSTextEvent(this, eventType, jQueryEvent) : false);
 	}
 
 	/**

@@ -215,6 +215,16 @@ public abstract class JSComponent extends Component {
 			((JComponent) this).getRootPane().getUI().setBackgroundPainted();
 		}
 	}
+	
+	public boolean selfOrParentBackgroundPainted() {
+		JSComponent c = this;
+		while (c != null) {
+			if (c.isBackgroundPainted)
+			return true;
+			c = (JSComponent) c.getParent();
+		}
+		return false;
+	}
 
   @Override
 	public boolean isBackgroundSet() {
