@@ -133,13 +133,17 @@ public abstract class DOMNode {
 
 	
 	public static DOMNode setAttr(DOMNode node, String attr, Object val) {
-		/**
-		 * @j2sNative
-		 * 
-		 *            node[attr] = (val == "TRUE" ? true : val);
-		 * 
-		 */
-		{
+		if (val == null) {
+			node.removeAttribute("readOnly");
+		} else {
+			/**
+			 * @j2sNative
+			 * 
+			 *            node[attr] = (val == "TRUE" ? true : val);
+			 * 
+			 */
+			{
+			}
 		}
 		return node;
 	}

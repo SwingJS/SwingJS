@@ -78,7 +78,6 @@ public class JSButtonUI extends JSLightweightUI {
 
 	private boolean isSimpleButton;
 
-
 	@Override
 	protected DOMNode updateDOMNode() {
 		isSimpleButton = true;
@@ -311,6 +310,12 @@ public class JSButtonUI extends JSLightweightUI {
 	 */
 	protected int defaultTextShiftOffset;
 
+	@Override
+	protected String getPropertyPrefix() {
+		return "CheckBoxMenuItem.";
+	}
+
+
 	//
 	// protected String propertyPrefix = "Button.";
 	//
@@ -330,10 +335,6 @@ public class JSButtonUI extends JSLightweightUI {
 	// return buttonUI;
 	// }
 	//
-	protected String getPropertyPrefix() {
-		return "Button.";
-	}
-
 	//
 	//
 	// // ********************************

@@ -55,7 +55,7 @@ public class JSTextAreaUI extends JSTextUI {
 
 	@Override
 	protected String getPropertyPrefix() {
-		return "TextArea";
+		return "TextArea.";
 	}
 	
 }

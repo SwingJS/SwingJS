@@ -41,7 +41,7 @@ public class JSTextFieldUI extends JSTextUI {
 		setCssFont(setProp(domNode, "value", getComponentText()), c.getFont());
 		// setTextAlignment();
 		setEditable(editable);
-		if (jc.isOpaque())
+		if (jc.isOpaque() && jc.isEnabled())
 			setBackground(jc.getBackground());
 		return domNode;
 	}
@@ -70,7 +70,7 @@ public class JSTextFieldUI extends JSTextUI {
 
 	@Override
 	protected String getPropertyPrefix() {
-		return "TextField";
+		return "TextField.";
 	}
 
 }

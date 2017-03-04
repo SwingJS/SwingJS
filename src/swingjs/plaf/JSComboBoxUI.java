@@ -11,6 +11,7 @@ import jsjava.beans.PropertyChangeListener;
 import jsjavax.swing.JComboBox;
 import jsjavax.swing.JComponent;
 import jsjavax.swing.LookAndFeel;
+import jsjavax.swing.UIManager;
 import jsjavax.swing.event.ListDataEvent;
 import jsjavax.swing.event.ListDataListener;
 import swingjs.api.DOMNode;
@@ -81,6 +82,12 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
         "ComboBox.background",
         "ComboBox.foreground",
         "ComboBox.font");
+	}
+
+	@Override
+	protected void getDisabledColors(String pp) {
+		inactiveBackground = UIManager.getColor(pp + "disabledBackground");
+		inactiveForeground = UIManager.getColor(pp + "disabledForeground");		
 	}
 
 	@Override

@@ -27,6 +27,7 @@
  */
 package swingjs.plaf;
 
+import javajs.J2SRequireImport;
 import jsjava.awt.Color;
 import jsjava.awt.Dimension;
 import jsjava.awt.Font;
@@ -50,7 +51,6 @@ import jsjavax.swing.text.DefaultEditorKit;
 import jsjavax.swing.text.EditorKit;
 import jsjavax.swing.text.JTextComponent;
 import jsjavax.swing.text.TextAction;
-import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 //import jsjava.awt.KeyboardFocusManager;
@@ -143,42 +143,42 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		String prefix = getPropertyPrefix();
 		Font f = editor.getFont();
 		if ((f == null) || (f instanceof UIResource)) {
-			editor.setFont(UIManager.getFont(prefix + ".font"));
+			editor.setFont(UIManager.getFont(prefix + "font"));
 		}
 
 		Color bg = editor.getBackground();
 		if ((bg == null) || (bg instanceof UIResource)) {
-			editor.setBackground(UIManager.getColor(prefix + ".background"));
+			editor.setBackground(UIManager.getColor(prefix + "background"));
 		}
 
 		Color fg = editor.getForeground();
 		if ((fg == null) || (fg instanceof UIResource)) {
-			editor.setForeground(UIManager.getColor(prefix + ".foreground"));
+			editor.setForeground(UIManager.getColor(prefix + "foreground"));
 		}
 		//
 		// Color color = editor.getCaretColor();
 		// if ((color == null) || (color instanceof UIResource)) {
-		// editor.setCaretColor(UIManager.getColor(prefix + ".caretForeground"));
+		// editor.setCaretColor(UIManager.getColor(prefix + "caretForeground"));
 		// }
 		//
 		// Color s = editor.getSelectionColor();
 		// if ((s == null) || (s instanceof UIResource)) {
 		// editor.setSelectionColor(UIManager.getColor(prefix +
-		// ".selectionBackground"));
+		// "selectionBackground"));
 		// }
 		//
 		// Color sfg = editor.getSelectedTextColor();
 		// if ((sfg == null) || (sfg instanceof UIResource)) {
 		// editor.setSelectedTextColor(UIManager.getColor(prefix +
-		// ".selectionForeground"));
+		// "selectionForeground"));
 		// }
 		//
 		Color dfg = editor.getDisabledTextColor();
 		if ((dfg == null) || (dfg instanceof UIResource)) {
 			editor.setDisabledTextColor(UIManager.getColor(prefix
-					+ ".inactiveForeground"));
+					+ "inactiveForeground"));
 		}
-		dfg = UIManager.getColor(prefix + ".inactiveBackground");
+		dfg = UIManager.getColor(prefix + "inactiveBackground");
 		inactiveBackgroundColor = (dfg == null ? null : JSToolkit.getCSSColor(dfg));
 
 		//
@@ -1778,7 +1778,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	// rootView.changedUpdate(e, alloc, rootView.getViewFactory());
 	// }
 	//
-	// // --- LayoutManager2 methods --------------------------------
+	// // --- LayoutManager2 methods -------------------------------
 	//
 	// /**
 	// * Adds the specified component with the specified name to
@@ -1999,33 +1999,11 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		return false;
 	}
 
-	String bgcolor0;
-	
-	public void setEditable(boolean editable) {
-		
+	public void setEditable(boolean editable) {		
 		this.editable = editable;
 		if (domNode == null)
 			return;
-		if (c.isBackgroundSet())
-			bgcolor0 = JSToolkit.getCSSColor(c.getBackground());
-		if (editable) {
-			domNode.removeAttribute("readOnly");
-			if (bgcolor0 != null)
-				DOMNode.setStyles(domNode, "background-color", bgcolor0);
-		} else {
-			DOMNode.setAttr(domNode, "readOnly", "true");
-			if (c.isBackgroundSet()) {
-				bgcolor0 = JSToolkit.getCSSColor(c.getBackground());
-			} else {
-				if (bgcolor0 == null)
-					bgcolor0 = DOMNode.getStyle(domNode, "background-color");
-			}
-
-			String textColor = JSToolkit.getCSSColor(editable || editor.isForegroundSet() ? editor.getForeground() : editor.getDisabledTextColor());
-			String bgColor = (editor.isBackgroundSet() || editable || inactiveBackgroundColor == null ? bgcolor0 : inactiveBackgroundColor);
-			DOMNode.setStyles(domNode, "background-color", bgColor, "color", textColor);
-		}
-
+		DOMNode.setAttr(domNode, "readOnly", editable ? "true" : null);
 	}
 
 	// private static DragListener getDragListener() {
@@ -2769,14 +2747,6 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 	// }
 	// }
 	//
-	 /**
-	 * Gets the name used as a key to look up properties through the
-	 * UIManager. This is used as a prefix to all the standard
-	 * text properties.
-	 *
-	 * @return the name
-	 */
-	 protected abstract String getPropertyPrefix();
 
 	public void setText(String val) {
 		String prop = null;
@@ -2794,4 +2764,17 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 				setProp(obj, prop, val);
 		}
 	}
+	
+	@Override
+	protected Color getInactiveTextColor(Color fg) {
+		// For TextComponents:
+		// !enabled: c.getDisabledTextColor();
+		// enabled and editable: c.getForeground();
+		// enabled but !editable: inactiveForeground
+		// 
+		// In addition, if color == null, then no text is shown		
+		return (!editor.isEnabled() ? editor.getDisabledTextColor() : !editor.isEditable() ? inactiveForeground : fg);
+	}
+
+
 }

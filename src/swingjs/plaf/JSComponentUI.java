@@ -30,10 +30,13 @@ import jsjava.util.EventObject;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JComponent;
+import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.SwingConstants;
+import jsjavax.swing.UIManager;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jsjavax.swing.plaf.ComponentUI;
+import jsjavax.swing.plaf.UIResource;
 import jssun.awt.CausedFocusEvent.Cause;
 import swingjs.JSGraphics2D;
 import swingjs.JSToolkit;
@@ -838,9 +841,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 					: "italic"), "font-weight", ((istyle & Font.BOLD) == 0 ? "normal"
 					: "bold"));
 		}
-		if (c.isBackgroundSet())
-			setBackground(c.getBackground());
-		setForeground(c.getForeground());
+		
+//		if (c.isBackgroundSet())
+//		setBackground(c.getBackground());
+//		setForeground(c.getForeground());
+		enabled = !c.isEnabled();
+		setEnabled(c.isEnabled());
 		return obj;
 	}
 
@@ -1397,14 +1403,45 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	@Override
 	public void setEnabled(boolean b) {
+		if (b == enabled)
+			return;
+		enabled = b;
 		if (enableNode != null)
-			DOMNode.setAttr(enableNode, "disabled", (b ? null : "TRUE"));
+			enableNode(enableNode, b);
 		else if (enableNodes != null)
 			for (int i = 0; i < enableNodes.length; i++)
-				DOMNode.setAttr(enableNodes[i], "disabled", (b ? null : "TRUE"));
-		DOMNode node = (centeringNode != null ? centeringNode : textNode != null ? textNode : valueNode);
-		if (node != null)
-			DOMNode.setStyles(node, "opacity", (b ? "1" : "0.5"));
+				enableNode(enableNodes[i], b);
+	}
+
+	private final Color colorUNKNOWN = new Color();
+
+	protected Color inactiveForeground = colorUNKNOWN, inactiveBackground = colorUNKNOWN;
+
+	private boolean enabled = true;
+
+	private void enableNode(DOMNode node, boolean b) {
+		if (node == null)
+			return;
+		DOMNode.setAttr(node, "disabled", (b ? null : "TRUE"));
+		String pp = getPropertyPrefix();
+		if (!b && inactiveForeground == colorUNKNOWN)
+			getDisabledColors(pp);
+		Color bg = c.getBackground();
+		bg = (!jc.isOpaque() ? null : b || !(bg instanceof UIResource) || inactiveBackground == null ? bg : inactiveBackground);
+		if (jc.isOpaque())
+			setBackground(bg);
+		Color fg = c.getForeground();
+		fg = (b || !(fg instanceof UIResource) ? fg : getInactiveTextColor(fg));
+		setForeground(fg);
+	}
+	
+	protected Color getInactiveTextColor(Color fg) {
+		return (inactiveForeground == null ? fg : inactiveForeground);
+	}
+
+	protected void getDisabledColors(String pp) {
+		inactiveBackground = UIManager.getColor(pp + "inactiveBackground");
+		inactiveForeground = UIManager.getColor(pp + "inactiveForeground");		
 	}
 
 	@Override
@@ -1625,8 +1662,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	@Override
 	public void setForeground(Color color) {
 		if (domNode != null)
-			DOMNode.setStyles(domNode, "color",
-					JSToolkit.getCSSColor(color == null ? Color.black : color));
+			DOMNode.setStyles(domNode, "color", (color == null ? "rgba(0,0,0,0)" :
+					JSToolkit.getCSSColor(color == null ? Color.black : color)));
 	}
 
 	@Override
@@ -1976,6 +2013,17 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		 */
 		{
 		}
+	}
+	
+	
+	/**
+	 * prefix for the HTML5LookAndFeal
+	 * 
+	 * @return
+	 */
+
+	protected String getPropertyPrefix() {
+		return null;
 	}
 
 
