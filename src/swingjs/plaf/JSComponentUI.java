@@ -1402,8 +1402,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		else if (enableNodes != null)
 			for (int i = 0; i < enableNodes.length; i++)
 				DOMNode.setAttr(enableNodes[i], "disabled", (b ? null : "TRUE"));
-		if (textNode != null)
-			DOMNode.setStyles(textNode, "opacity", (b ? "1" : "0.5"));
+		DOMNode node = (centeringNode != null ? centeringNode : textNode != null ? textNode : valueNode);
+		if (node != null)
+			DOMNode.setStyles(node, "opacity", (b ? "1" : "0.5"));
 	}
 
 	@Override
