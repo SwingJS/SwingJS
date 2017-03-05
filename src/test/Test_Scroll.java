@@ -9,11 +9,14 @@ package test;
 //web_Date= $Date$
 //web_Features= graphics, AWT-to-Swing
 
+import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
@@ -24,8 +27,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 //import java.text.NumberFormat;
@@ -56,8 +61,8 @@ public class Test_Scroll extends JApplet {
 		label.setBackground(Color.yellow);
 		label.setForeground(Color.BLUE);
 		label.setOpaque(true);
-		label.setHorizontalAlignment(JLabel.RIGHT);
-		label.setVerticalAlignment(JLabel.CENTER);
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		label.setVerticalAlignment(SwingConstants.CENTER);
 
 		final JTextField tf = new JTextField("12.5", 8);
 		tf.setBackground(Color.black);
@@ -68,9 +73,29 @@ public class Test_Scroll extends JApplet {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				label.setBackground(Color.white);
-				;
 				label.setText(tf.getText());
-				repaint();
+//				repaint();
+			}
+		});
+		tf.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				tf.setBackground(Color.BLUE);				
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				tf.setBackground(Color.BLACK);				
+			}
+			
+		});
+		tf.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int n = e.getWheelRotation();
+				tf.setText("" + (Float.parseFloat(tf.getText()) + n));
+				//e.consume(); not necessary for scrollbars
 			}
 		});
 		final JButton button = new JButton("test");
@@ -82,24 +107,25 @@ public class Test_Scroll extends JApplet {
 				label.setBackground(Color.green);
 				tf.setBackground(Color.black);
 				label.setText("Hello");
-				repaint();
+//				repaint();
 			}
 		});
 
 		JPanel p = new JPanel();
 		// p.setLayout(new GridLayout(2, 2, 2, 2));
-		getContentPane().add(p);
+		JScrollPane sp = new JScrollPane();
+		sp.getViewport().add(p);
+		getContentPane().add(sp);
 
-		mkBar(p, tf, JScrollBar.VERTICAL, 20, 200);
-		mkSlider(p, tf, JScrollBar.VERTICAL, 20, 200);
-		mkSlider(p, tf, JScrollBar.VERTICAL, 20, 200).setInverted(true);
+		mkBar(p, tf, Adjustable.VERTICAL, 20, 200);
+		mkSlider(p, tf, Adjustable.VERTICAL, 20, 200);
+		mkSlider(p, tf, Adjustable.VERTICAL, 20, 200).setInverted(true);
 		p.add(label);
 		p.add(tf);
 		p.add(button);
-		mkBar(p, tf, JScrollBar.HORIZONTAL, 100, 20);
-		mkSlider(p, tf, JScrollBar.HORIZONTAL, 100, 20);
-		mkSlider(p, tf, JScrollBar.HORIZONTAL, 100, 20).setInverted(true);
-
+		mkBar(p, tf, Adjustable.HORIZONTAL, 100, 20);
+		mkSlider(p, tf, Adjustable.HORIZONTAL, 100, 20);
+		mkSlider(p, tf, Adjustable.HORIZONTAL, 100, 20).setInverted(true);
 		repaint();
 	}
 
@@ -118,7 +144,7 @@ public class Test_Scroll extends JApplet {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int n = e.getWheelRotation();
 				bar.setValue(bar.getValue() + n*5);
-				//e.consume();
+				//e.consume(); not necessary for scrollbars
 			}
 		});
 		setSize(bar, x, y);
@@ -142,7 +168,7 @@ public class Test_Scroll extends JApplet {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int n = e.getWheelRotation();
 				bar.setValue(bar.getValue() + n*5);
-				//e.consume();
+				//e.consume(); not necessary for sliders
 			}
 		});
 		setSize(bar, x, y);

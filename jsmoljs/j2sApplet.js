@@ -1,6 +1,6 @@
 // j2sApplet.js (based on JmolCore.js)
-// Bob Hanson 7/13/2016 9:43:56 PM
 
+// BH 3/5/2017 5:49:30 PM mouse wheel action
 // BH 1/11/2017 2:21:32 AM should allow uppercase binary formats WAV MP3 etc.
 // BH 1/8/2017 1:00:02 PM allows ".jpeg" as file name ext
 // BH 1/3/2017 11:06:10 PM adds binary types ".mp3",".ogg", ".wav"
@@ -16,6 +16,7 @@
 // BH 10/23/2016 10:13:42 PM adds support for Info.main
 // BH 7/18/2016 4:51:52 PM adds frame title dragging and toFront(), toBack()
 // BH 7/25/2016 8:28:57 AM adds 3Dialog(fDone, asBytes)
+// Bob Hanson 7/13/2016 9:43:56 PM
 
 if(typeof(jQuery)=="undefined") alert ("Note -- jQuery is required, but it's not defined.")
 
@@ -1256,8 +1257,9 @@ J2S._getDefaultLanguage = function(isAll) { return (isAll ? J2S.featureDetection
 		});
 		
 		J2S.$bind(who, 'DOMMouseScroll mousewheel', function(ev) { // Zoom
-      if (doIgnore(ev))
-        return true;
+      //not for wheel event, or action will not take place on handle and track
+      //if (doIgnore(ev))
+        //return true;
         
       if (ev.target.getAttribute("role")) {
         return true;

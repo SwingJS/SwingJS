@@ -360,19 +360,13 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	@Override
 	public void setInnerComponentBounds(int width, int height) {
-		// DOMNode.setSize(jqSlider, width, height + (iVertScrollBar ? -20 : 0));
-		if (!paintTicks && !paintLabels)
+		if (!paintTicks && !paintLabels) {
 			if (isScrollPaneVertScrollBar) {
 				DOMNode.setStyles(sliderHandle, "left", "-8px");
 			} else if (orientation == "vertical") {
-				DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px", "top",
-						"10px");
-//			} else if (orientation == "horizontal" && !isScrollBar) {
-//				// does not work for standard simple slider -- don't know why this was added
-//				DOMNode.setStyles(domNode, "position", "absolute", "top",
-//						(height - myHeight) / 2 + "px");
+				DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
 			}
-
+		}
 	}
 
 	public Dimension getPreferredHorizontalSize() {

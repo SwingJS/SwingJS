@@ -141,13 +141,13 @@ public class Boltzmann extends JApplet {
 		lCollisions.setBounds(275, 6, 90, 15);
 		tEnergy.setAutoscrolls(false);
 		tEnergy.setColumns(10);
-
-tEnergy.setEditable(false);
-tEnergy.setBackground(Color.GREEN);
-tEnergy.setForeground(Color.BLACK);
-tEnergy.setDisabledTextColor(Color.RED);
-tEnergy.setOpaque(false);
-
+//
+//tEnergy.setEditable(false);
+//tEnergy.setBackground(Color.GREEN);
+//tEnergy.setForeground(Color.BLACK);
+//tEnergy.setDisabledTextColor(Color.RED);
+//tEnergy.setOpaque(false);
+//
 		tEnergy.setNextFocusableComponent(tParticles);
 		UserInput.add(tEnergy, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0,
@@ -155,13 +155,13 @@ tEnergy.setOpaque(false);
 		tEnergy.setBounds(9, 33, 110, 19);
 		tParticles.setAutoscrolls(false);
 		tParticles.setColumns(10);
-		
-tParticles.setEnabled(false);
-tParticles.setBackground(Color.GREEN);
-tParticles.setForeground(null);
-tParticles.setDisabledTextColor(null);
-tParticles.setOpaque(true);
-		
+//		
+//tParticles.setEnabled(false);
+//tParticles.setBackground(Color.GREEN);
+//tParticles.setForeground(null);
+//tParticles.setDisabledTextColor(null);
+//tParticles.setOpaque(true);
+//		
 		tParticles.setNextFocusableComponent(tCollisions);
 		UserInput.add(tParticles, new GridBagConstraints(1, 1, 1, 1, 1.0, 1.0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0,
