@@ -40,19 +40,17 @@ package test.oracle.table;
  *   ColorEditor.java
  */
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
 import javax.swing.JApplet;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TableDialogEditDemo extends JApplet {
 

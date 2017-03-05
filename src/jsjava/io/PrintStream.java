@@ -71,8 +71,8 @@ public class PrintStream extends FilterOutputStream
      * Track both the text- and character-output streams, so that their buffers
      * can be flushed without flushing the entire stream.
      */
-    private BufferedWriter textOut;
-    private OutputStreamWriter charOut;
+    private BufferedWriter bufferedWriter;
+    private OutputStreamWriter streamWriter;
 
     /**
      * Creates a new print stream.  This stream will not flush automatically.
@@ -103,8 +103,8 @@ public class PrintStream extends FilterOutputStream
     }
 
     private void init(OutputStreamWriter osw) {
-        this.charOut = osw;
-        this.textOut = new BufferedWriter(osw);
+        this.streamWriter = osw;
+        this.bufferedWriter = new BufferedWriter(osw);
     }
 
     /**
@@ -332,14 +332,14 @@ public class PrintStream extends FilterOutputStream
             if (! closing) {
                 closing = true;
                 try {
-                    textOut.close();
+                    bufferedWriter.close();
                     out.close();
                 }
                 catch (IOException x) {
                     trouble = true;
                 }
-                textOut = null;
-                charOut = null;
+                bufferedWriter = null;
+                streamWriter = null;
                 out = null;
             }
         }
@@ -478,13 +478,14 @@ public class PrintStream extends FilterOutputStream
         try {
             synchronized (this) {
                 ensureOpen();
-                textOut.write(buf);
-                textOut.flushBuffer();
-                charOut.flushBuffer();
+                bufferedWriter.write(buf);
+                bufferedWriter.flushBuffer();
+                streamWriter.flushBuffer();
                 if (autoFlush) {
                     for (int i = 0; i < buf.length; i++)
-                        if (buf[i] == '\n')
+                        if (buf[i] == '\n') {
                             out.flush();
+                        }
                 }
             }
         }
@@ -500,9 +501,9 @@ public class PrintStream extends FilterOutputStream
         try {
             synchronized (this) {
                 ensureOpen();
-                textOut.write(s);
-                textOut.flushBuffer();
-                charOut.flushBuffer();
+                bufferedWriter.write(s);
+                bufferedWriter.flushBuffer();
+                streamWriter.flushBuffer();
                 if (autoFlush && (s.indexOf('\n') >= 0))
                     out.flush();
             }
@@ -519,9 +520,9 @@ public class PrintStream extends FilterOutputStream
         try {
             synchronized (this) {
                 ensureOpen();
-                textOut.newLine();
-                textOut.flushBuffer();
-                charOut.flushBuffer();
+                bufferedWriter.newLine();
+                bufferedWriter.flushBuffer();
+                streamWriter.flushBuffer();
                 if (autoFlush)
                     out.flush();
             }
