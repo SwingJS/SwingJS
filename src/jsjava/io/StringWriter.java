@@ -30,7 +30,6 @@ package jsjava.io;
 
 import java.io.IOException;
 
-
 /**
  * A character stream that collects its output in a string buffer, which can
  * then be used to construct a string.

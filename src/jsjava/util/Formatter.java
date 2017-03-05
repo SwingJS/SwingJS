@@ -37,12 +37,10 @@
  */
 package jsjava.util;
 
-import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.Flushable;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -2362,10 +2360,6 @@ public final class Formatter implements Flushable {
             return f;
         }
 
-        Flags flags() {
-            return f;
-        }
-
         private int width(String s) {
             width = -1;
             if (s != null) {
@@ -2377,10 +2371,6 @@ public final class Formatter implements Flushable {
                     assert(false);
                 }
             }
-            return width;
-        }
-
-        int width() {
             return width;
         }
 
@@ -2399,10 +2389,6 @@ public final class Formatter implements Flushable {
             return precision;
         }
 
-        int precision() {
-            return precision;
-        }
-
         private char conversion(String s) {
             c = s.charAt(0);
             if (!dt) {
@@ -2414,10 +2400,6 @@ public final class Formatter implements Flushable {
                 if (Conversion.isText(c))
                     index = -2;
             }
-            return c;
-        }
-
-        private char conversion() {
             return c;
         }
 
@@ -2488,7 +2470,7 @@ public final class Formatter implements Flushable {
                 a.append(ls);
                 break;
             case Conversion.PERCENT_SIGN:
-                a.append('%');
+                a.append("%");
                 break;
             default:
                 assert false;
@@ -3554,19 +3536,6 @@ public final class Formatter implements Flushable {
             return tmp;
         }
 
-        // Add trailing zeros in the case precision is greater than the number
-        // of available digits after the decimal separator.
-        private char[] trailingZeros(char[] mant, int nzeros) {
-            char[] tmp = mant;
-            if (nzeros > 0) {
-                tmp = new char[mant.length + nzeros];
-                System.arraycopy(mant, 0, tmp, 0, mant.length);
-                for (int i = mant.length; i < tmp.length; i++)
-                    tmp[i] = '0';
-            }
-            return tmp;
-        }
-
         private void printDT(Calendar t, char c, Locale l)  throws IOException
         {
             StringBuilder sb = new StringBuilder();
@@ -3741,7 +3710,7 @@ public final class Formatter implements Flushable {
             // Composites
             case DateTime.TIME:         // 'T' (24 hour hh:mm:ss - %tH:%tM:%tS)
             case DateTime.TIME_24_HOUR:    { // 'R' (hh:mm same as %H:%M)
-                char sep = ':';
+                String sep = ":";
                 printDTL(sb, t, DateTime.HOUR_OF_DAY_0, l).append(sep);
                 printDTL(sb, t, DateTime.MINUTE, l);
                 if (c == DateTime.TIME) {
@@ -3751,10 +3720,10 @@ public final class Formatter implements Flushable {
                 break;
             }
             case DateTime.TIME_12_HOUR:    { // 'r' (hh:mm:ss [AP]M)
-                char sep = ':';
+                String sep = ":";
                 printDTL(sb, t, DateTime.HOUR_0, l).append(sep);
                 printDTL(sb, t, DateTime.MINUTE, l).append(sep);
-                printDTL(sb, t, DateTime.SECOND, l).append(' ');
+                printDTL(sb, t, DateTime.SECOND, l).append(" ");
                 // this may be in wrong place for some locales
                 StringBuilder tsb = new StringBuilder();
                 printDTL(tsb, t, DateTime.AM_PM, l);
@@ -3762,7 +3731,7 @@ public final class Formatter implements Flushable {
                 break;
             }
             case DateTime.DATE_TIME:    { // 'c' (Sat Nov 04 12:02:33 EST 1999)
-                char sep = ' ';
+                String sep = " ";
                 printDTL(sb, t, DateTime.NAME_OF_DAY_ABBREV, l).append(sep);
                 printDTL(sb, t, DateTime.NAME_OF_MONTH_ABBREV, l).append(sep);
                 printDTL(sb, t, DateTime.DAY_OF_MONTH_0, l).append(sep);
@@ -3772,14 +3741,14 @@ public final class Formatter implements Flushable {
                 break;
             }
             case DateTime.DATE:            { // 'D' (mm/dd/yy)
-                char sep = '/';
+                String sep = "/";
                 printDTL(sb, t, DateTime.MONTH, l).append(sep);
                 printDTL(sb, t, DateTime.DAY_OF_MONTH_0, l).append(sep);
                 printDTL(sb, t, DateTime.YEAR_2, l);
                 break;
             }
             case DateTime.ISO_STANDARD_DATE: { // 'F' (%Y-%m-%d)
-                char sep = '-';
+                String sep = "-";
                 printDTL(sb, t, DateTime.YEAR_4, l).append(sep);
                 printDTL(sb, t, DateTime.MONTH, l).append(sep);
                 printDTL(sb, t, DateTime.DAY_OF_MONTH_0, l);
@@ -3924,7 +3893,7 @@ public final class Formatter implements Flushable {
             return new Flags(flags);
         }
 
-        private Flags add(Flags f) {
+        Flags add(Flags f) {
             flags |= f.valueOf();
             return this;
         }
@@ -3962,11 +3931,6 @@ public final class Formatter implements Flushable {
             default:
                 throw new UnknownFormatFlagsException(String.valueOf(c));
             }
-        }
-
-        // Returns a string representation of the current <tt>Flags</tt>.
-        public static String toString(Flags f) {
-            return f.toString();
         }
 
         @Override
