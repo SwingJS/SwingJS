@@ -180,6 +180,10 @@ public class Test_Layout extends JApplet {
 				@Override
 				public void mouseWheelMoved(MouseWheelEvent e) {
 					System.out.println("JTextField mouse wheeled " + e);
+		      JTextField tf = (JTextField) e.getComponent();
+		      tf.setBackground(Color.BLUE);
+		      double val = Double.parseDouble(tf.getText().trim()) + e.getWheelRotation();
+		      tf.setText("" + val);
 					e.consume();
 				}
       	
@@ -190,17 +194,13 @@ public class Test_Layout extends JApplet {
 				@Override
 				public void focusGained(FocusEvent e) {
 		      JTextField tf = (JTextField) e.getComponent();
-		      tf.setBackground(Color.BLACK);
-		      double val = Double.parseDouble(tf.getText().trim()) + 1;
-		      tf.setText("" + val);
+		      tf.setBackground(Color.BLUE);
 				}
 
 				@Override
 				public void focusLost(FocusEvent e) {
 		      JTextField tf = (JTextField) e.getComponent();
 		      tf.setBackground(Color.BLACK);
-		      double val = Double.parseDouble(tf.getText().trim()) + 1;
-		      tf.setText("" + val);
 		      //repaint(); // unnecessary
 		    }      	
       });
