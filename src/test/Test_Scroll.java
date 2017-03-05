@@ -14,6 +14,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.text.DecimalFormat;
 
 import javax.swing.JApplet;
@@ -33,14 +35,11 @@ import javax.swing.event.ChangeListener;
 //import javax.swing.JScrollBar;
 
 public class Test_Scroll extends JApplet {
-	
-	
+
 	static DecimalFormat df = new DecimalFormat("0.00");
-	
+
 	boolean preferred = true;
 
-	
-	
 	void setSize(JComponent c, int x, int y) {
 		if (preferred)
 			c.setPreferredSize(new Dimension(x, y));
@@ -105,14 +104,22 @@ public class Test_Scroll extends JApplet {
 	}
 
 	JScrollBar mkBar(JPanel p, final JTextField tf, int orient, int x, int y) {
-		JScrollBar bar = new JScrollBar(orient, 500, 10, 300, 1000);
+		final JScrollBar bar = new JScrollBar(orient, 500, 10, 300, 1000);
 		bar.addAdjustmentListener(new AdjustmentListener() {
 
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				tf.setText(df.format(e.getValue() / 100.0));
 			}
-			
+
+		});
+		bar.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int n = e.getWheelRotation();
+				bar.setValue(bar.getValue() + n*5);
+				//e.consume();
+			}
 		});
 		setSize(bar, x, y);
 		bar.setBackground(Color.orange);
@@ -122,16 +129,22 @@ public class Test_Scroll extends JApplet {
 		return bar;
 	}
 
-
 	JSlider mkSlider(JPanel p, final JTextField tf, int orient, int x, int y) {
-		JSlider bar = new JSlider(orient, 300, 1000, 500);
+		final JSlider bar = new JSlider(orient, 300, 1000, 500);
 		bar.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				tf.setText(df.format(((JSlider) e.getSource()).getValue() / 100.0));
 			}
-		}
-			);
+		});
+		bar.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int n = e.getWheelRotation();
+				bar.setValue(bar.getValue() + n*5);
+				//e.consume();
+			}
+		});
 		setSize(bar, x, y);
 		bar.setBackground(Color.orange);
 		bar.setForeground(Color.green);
