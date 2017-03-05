@@ -31,6 +31,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 
+import swingjs.api.Interface;
+
 import jsjava.util.Formatter;
 import jsjava.util.Locale;
 
@@ -167,7 +169,7 @@ public class PrintWriter extends Writer {
      * @since  1.5
      */
     public PrintWriter(String fileName) throws FileNotFoundException {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName))),
+        this(new BufferedWriter(new OutputStreamWriter(newFileOutputStream(new File(fileName)))),
              false);
     }
 
@@ -207,11 +209,15 @@ public class PrintWriter extends Writer {
     public PrintWriter(String fileName, String csn)
         throws FileNotFoundException, UnsupportedEncodingException
     {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), csn)),
+        this(new BufferedWriter(new OutputStreamWriter(newFileOutputStream(new File(fileName)), csn)),
              false);
     }
 
-    /**
+    private static OutputStream newFileOutputStream(File file) {
+    	return (OutputStream) Interface.getInstanceWithParams("java.io.FileOutputStream", new Class[] { java.io.File.class }, new Object[] { file } );
+		}
+
+		/**
      * Creates a new PrintWriter, without automatic line flushing, with the
      * specified file.  This convenience constructor creates the necessary
      * intermediate {@link java.io.OutputStreamWriter OutputStreamWriter},
@@ -239,7 +245,7 @@ public class PrintWriter extends Writer {
      * @since  1.5
      */
     public PrintWriter(File file) throws FileNotFoundException {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file))),
+        this(new BufferedWriter(new OutputStreamWriter(newFileOutputStream(file))),
              false);
     }
 
@@ -279,7 +285,7 @@ public class PrintWriter extends Writer {
     public PrintWriter(File file, String csn)
         throws FileNotFoundException, UnsupportedEncodingException
     {
-        this(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), csn)),
+        this(new BufferedWriter(new OutputStreamWriter(newFileOutputStream(file), csn)),
              false);
     }
 
@@ -888,7 +894,7 @@ public class PrintWriter extends Writer {
                 ensureOpen();
                 if ((formatter == null)
                     || (formatter.locale() != Locale.getDefault()))
-                    formatter = new Formatter(this);
+                    formatter = newFormatter();
                 formatter.format(Locale.getDefault(), format, args);
                 if (autoFlush)
                     out.flush();
@@ -901,7 +907,11 @@ public class PrintWriter extends Writer {
         return this;
     }
 
-    /**
+    private Formatter newFormatter() {
+			return (Formatter)Interface.getInstanceWithParams("java.util.Formatter", new Class[] { Appendable.class }, new Object[] { this } );
+		}
+
+		/**
      * Writes a formatted string to this writer using the specified format
      * string and arguments.  If automatic flushing is enabled, calls to this
      * method will flush the output buffer.

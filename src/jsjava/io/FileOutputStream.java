@@ -30,8 +30,8 @@ package jsjava.io;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import jsjava.nio.channels.FileChannel;
-import jssun.nio.ch.FileChannelImpl;
+import javajs.util.OC;
+import swingjs.JSToolkit;
 
 
 /**
@@ -56,28 +56,18 @@ import jssun.nio.ch.FileChannelImpl;
 public
 class FileOutputStream extends OutputStream
 {
-    /**
-     * The system dependent file descriptor. The value is
-     * 1 more than actual file descriptor. This means that
-     * the default value 0 indicates that the file is not open.
-     */
-    private FileDescriptor fd;
+//    /**
+//     * The system dependent file descriptor. The value is
+//     * 1 more than actual file descriptor. This means that
+//     * the default value 0 indicates that the file is not open.
+//     */
+//    private FileDescriptor fd;
 
-    private FileChannel channel= null;
+//    private boolean append = false;
+//
+//    private volatile boolean closed = false;
 
-    private boolean append = false;
-
-    private Object closeLock = new Object();
-    private volatile boolean closed = false;
-    private static ThreadLocal<Boolean> runningFinalize =
-                                        new ThreadLocal<Boolean>();
-
-    private static boolean isRunningFinalize() {
-        Boolean val;
-        if ((val = runningFinalize.get()) != null)
-            return val.booleanValue();
-        return false;
-    }
+    private OC out;
 
     /**
      * Creates an output file stream to write to the file with the
@@ -193,6 +183,9 @@ class FileOutputStream extends OutputStream
      * @see        java.lang.SecurityException
      * @see        java.lang.SecurityManager#checkWrite(java.lang.String)
      * @since 1.4
+     * 
+     * Swingjs: Utilizes javajs.util.OC simple output channel
+     * 
      */
     public FileOutputStream(File file, boolean append)
         throws FileNotFoundException
@@ -201,9 +194,9 @@ class FileOutputStream extends OutputStream
         if (name == null) {
             throw new NullPointerException();
         }
-        fd = new FileDescriptor();
-        fd.incrementAndGetUseCount();
-        this.append = append;
+//        fd = new FileDescriptor();
+//        fd.incrementAndGetUseCount();
+//        this.append = append;
         if (append) {
             openAppend(name);
         } else {
@@ -227,30 +220,56 @@ class FileOutputStream extends OutputStream
      * @see        java.lang.SecurityManager#checkWrite(java.io.FileDescriptor)
      */
     public FileOutputStream(FileDescriptor fdObj) {
-        if (fdObj == null) {
-            throw new NullPointerException();
-        }
-        fd = fdObj;
-
-        /*
-         * FileDescriptor is being shared by streams.
-         * Ensure that it's GC'ed only when all the streams/channels are done
-         * using it.
-         */
-        fd.incrementAndGetUseCount();
+    	JSToolkit.notImplemented(null);
+//        if (fdObj == null) {
+//            throw new NullPointerException();
+//        }
+//        fd = fdObj;
+//
+//        /*
+//         * FileDescriptor is being shared by streams.
+//         * Ensure that it's GC'ed only when all the streams/channels are done
+//         * using it.
+//         */
+//        fd.incrementAndGetUseCount();
     }
 
     /**
      * Opens a file, with the specified name, for writing.
      * @param name name of file to be opened
      */
-    private native void open(String name) throws FileNotFoundException;
+    private void open(String name) throws FileNotFoundException {
+    	out = new OC();
+    	out.setParams(null, name, false, null);
+    }
 
     /**
      * Opens a file, with the specified name, for appending.
      * @param name name of file to be opened
      */
-    private native void openAppend(String name) throws FileNotFoundException;
+    private void openAppend(String name) throws FileNotFoundException {
+    	out = new OC();
+    	byte[] bytes = JSToolkit.getFileAsBytes(name);
+    	java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+    	os.write(bytes, 0, bytes.length);
+    	out.setParams(null, name, false, os);
+    }
+
+  	@Override
+  	public void writeByteAsInt(int b) throws IOException {
+  		out.writeByteAsInt(b);
+  	}
+
+  	/**
+     * Writes a sub array as a sequence of bytes.
+     * @param b the data to be written
+     * @param off the start offset in the data
+     * @param len the number of bytes that are written
+     * @exception IOException If an I/O error has occurred.
+     */
+    private void writeBytes(byte b[], int off, int len) throws IOException {
+    	out.write(b, off, len);    	
+    }
 
     /**
      * Writes the specified byte to this file output stream. Implements
@@ -260,16 +279,9 @@ class FileOutputStream extends OutputStream
      * @exception  IOException  if an I/O error occurs.
      */
     @Override
-		public native void write(int b) throws IOException;
-
-    /**
-     * Writes a sub array as a sequence of bytes.
-     * @param b the data to be written
-     * @param off the start offset in the data
-     * @param len the number of bytes that are written
-     * @exception IOException If an I/O error has occurred.
-     */
-    private native void writeBytes(byte b[], int off, int len) throws IOException;
+		public void write(int b) throws IOException {
+    	out.writeByteAsInt(b);
+    }
 
     /**
      * Writes <code>b.length</code> bytes from the specified byte array
@@ -311,84 +323,55 @@ class FileOutputStream extends OutputStream
      */
     @Override
 		public void close() throws IOException {
-        synchronized (closeLock) {
-            if (closed) {
-                return;
-            }
-            closed = true;
-        }
-
-        if (channel != null) {
-            /*
-             * Decrement FD use count associated with the channel
-             * The use count is incremented whenever a new channel
-             * is obtained from this stream.
-             */
-            fd.decrementAndGetUseCount();
-            channel.close();
-        }
-
-        /*
-         * Decrement FD use count associated with this stream
-         */
-        int useCount = fd.decrementAndGetUseCount();
-
-        /*
-         * If FileDescriptor is still in use by another stream, the finalizer
-         * will not close it.
-         */
-        if ((useCount <= 0) || !isRunningFinalize()) {
-            close0();
-        }
+    	out.closeChannel();
     }
-
-    /**
-     * Returns the file descriptor associated with this stream.
-     *
-     * @return  the <code>FileDescriptor</code> object that represents
-     *          the connection to the file in the file system being used
-     *          by this <code>FileOutputStream</code> object.
-     *
-     * @exception  IOException  if an I/O error occurs.
-     * @see        java.io.FileDescriptor
-     */
-     public final FileDescriptor getFD()  throws IOException {
-        if (fd != null) return fd;
-        throw new IOException();
-     }
-
-    /**
-     * Returns the unique {@link java.nio.channels.FileChannel FileChannel}
-     * object associated with this file output stream. </p>
-     *
-     * <p> The initial {@link java.nio.channels.FileChannel#position()
-     * </code>position<code>} of the returned channel will be equal to the
-     * number of bytes written to the file so far unless this stream is in
-     * append mode, in which case it will be equal to the size of the file.
-     * Writing bytes to this stream will increment the channel's position
-     * accordingly.  Changing the channel's position, either explicitly or by
-     * writing, will change this stream's file position.
-     *
-     * @return  the file channel associated with this file output stream
-     *
-     * @since 1.4
-     * @spec JSR-51
-     */
-    public FileChannel getChannel() {
-        synchronized (this) {
-            if (channel == null) {
-                channel = FileChannelImpl.openWrite(fd, this, append);
-
-                /*
-                 * Increment fd's use count. Invoking the channel's close()
-                 * method will result in decrementing the use count set for
-                 * the channel.
-                 */
-                fd.incrementAndGetUseCount();
-            }
-            return channel;
-        }
-    }
+//		/**
+//     * Returns the file descriptor associated with this stream.
+//     *
+//     * @return  the <code>FileDescriptor</code> object that represents
+//     *          the connection to the file in the file system being used
+//     *          by this <code>FileOutputStream</code> object.
+//     *
+//     * @exception  IOException  if an I/O error occurs.
+//     * @see        java.io.FileDescriptor
+//     */
+//     public final FileDescriptor getFD()  throws IOException {
+//        if (fd != null) return fd;
+//        throw new IOException();
+//     }
+//
+//    /**
+//     * Returns the unique {@link java.nio.channels.FileChannel FileChannel}
+//     * object associated with this file output stream. </p>
+//     *
+//     * <p> The initial {@link java.nio.channels.FileChannel#position()
+//     * </code>position<code>} of the returned channel will be equal to the
+//     * number of bytes written to the file so far unless this stream is in
+//     * append mode, in which case it will be equal to the size of the file.
+//     * Writing bytes to this stream will increment the channel's position
+//     * accordingly.  Changing the channel's position, either explicitly or by
+//     * writing, will change this stream's file position.
+//     *
+//     * @return  the file channel associated with this file output stream
+//     *
+//     * @since 1.4
+//     * @spec JSR-51
+//     */
+//    public FileChannel getChannel() {
+//        synchronized (this) {
+//            if (channel == null) {
+//                channel = FileChannelImpl.openWrite(fd, this, append);
+//
+//                /*
+//                 * Increment fd's use count. Invoking the channel's close()
+//                 * method will result in decrementing the use count set for
+//                 * the channel.
+//                 */
+//                fd.incrementAndGetUseCount();
+//            }
+//            return channel;
+//        }
+//    }
 
     /**
      * Cleans up the connection to the file, and ensures that the
@@ -398,40 +381,31 @@ class FileOutputStream extends OutputStream
      * @exception  IOException  if an I/O error occurs.
      * @see        java.io.FileInputStream#close()
      */
-    @Override
-		protected void finalize() throws IOException {
-        if (fd != null) {
-            if (fd == fd.out || fd == fd.err) {
-                flush();
-            } else {
-
-                /*
-                 * Finalizer should not release the FileDescriptor if another
-                 * stream is still using it. If the user directly invokes
-                 * close() then the FileDescriptor is also released.
-                 */
-                runningFinalize.set(Boolean.TRUE);
-                try {
-                    close();
-                } finally {
-                    runningFinalize.set(Boolean.FALSE);
-                }
-            }
-        }
-    }
-
-    private native void close0() throws IOException;
-
-    private static native void initIDs();
-
-    static {
-        initIDs();
-    }
-
 		@Override
-		public void writeByteAsInt(int b) throws IOException {
-			// TODO Auto-generated method stub
-			
-		}
+		protected void finalize() throws IOException {
+//        if (fd != null) {
+//            if (fd == fd.out || fd == fd.err) {
+//                flush();
+//            } else {
+//
+//                /*
+//                 * Finalizer should not release the FileDescriptor if another
+//                 * stream is still using it. If the user directly invokes
+//                 * close() then the FileDescriptor is also released.
+//                 */
+////                runningFinalize.set(Boolean.TRUE);
+////                try {
+                    close();
+////                } finally {
+////                    runningFinalize.set(Boolean.FALSE);
+////                }
+//            }
+//        }
+    }
+
+//    private void close0() throws IOException {
+//    	out.closeChannel();
+//    }
+//
 
 }
