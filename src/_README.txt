@@ -23,3 +23,10 @@ jssun        (critical) JavaScript-compatible sun classes
 
 swingjs      (critical) Core SwingJS classes, including platform look and feel (plaf)
  
+test		 test applets and applications. Note that to quickly test any of the
+             form Test_XXX.java, simply run buildApps.xml (if no changes in SwingJS classes)
+             or buildSite.xml (if changes have been made to the SwingJS system) and then
+             in site/examples/test/ run test.htm. You will be prompted for XXX. Or you can
+             run test.htm?XXX. And either way you can add #j2sdebugcode to that URL to
+             use non-compressed swingjs/j2s/core files for easier debugging in JavaScript. 
+             
