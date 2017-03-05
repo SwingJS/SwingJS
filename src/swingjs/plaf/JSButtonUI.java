@@ -30,6 +30,7 @@ package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
 import jsjava.awt.Dimension;
+import jsjava.awt.Insets;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
@@ -86,15 +87,15 @@ public class JSButtonUI extends JSLightweightUI {
 		// this one is only for a simple button
 		if (domNode == null) {
 			domNode = enableNode = newDOMObject ("button", id, "type", "button");
-			DOMNode.setStyles(domNode, "lineHeight", "0.8", "padding", "0px 0px");
+			DOMNode.setStyles(domNode, "lineHeight", "0.8");
 			iconNode = newDOMObject("span", id + "_icon");
 			textNode = newDOMObject ("span", id + "_btn");
 			domNode.appendChild(iconNode);
 			domNode.appendChild(textNode);
 			setDataComponent (domNode);
 			setDataComponent (iconNode);
-
 		}
+		setPadding(button.getMargin());
 // interestingly, this gives the background-border-only issue and causes problems with centering
 // because now the default position for the left side of the label is the button center.
 // and vertical alignment is off and vCenter does not help 
@@ -312,7 +313,7 @@ public class JSButtonUI extends JSLightweightUI {
 
 	@Override
 	protected String getPropertyPrefix() {
-		return "CheckBoxMenuItem.";
+		return "Button.";
 	}
 
 

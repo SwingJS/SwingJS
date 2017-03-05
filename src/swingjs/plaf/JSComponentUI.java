@@ -2026,6 +2026,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		return null;
 	}
 
+	protected void setPadding(Insets padding) {
+		// JTextField and JButton
+		DOMNode.setStyles(domNode, "padding", padding == null ? "0px" : padding.top
+				+ "px " + padding.left + "px " + padding.bottom + "px " + padding.right
+				+ "px");
+	}
+
 
 
 }

@@ -27,7 +27,7 @@ public class JSTextFieldUI extends JSTextUI {
 			allowBackground = false;
 			// no textNode here, because in input does not have that.
 			focusNode = enableNode = valueNode = domNode = DOMNode.setStyles(
-					newDOMObject("input", id, "type", inputType), "padding", "0px 0px",
+					newDOMObject("input", id, "type", inputType),
 					"lineHeight", "0.8", "box-sizing", "border-box");
 			DOMNode.setAttrs(focusNode, "ui", this);
 			// not active; requires position:absolute; wrong for standard text box
@@ -37,6 +37,7 @@ public class JSTextFieldUI extends JSTextUI {
 			bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
 			addJQueryFocusCallbacks();
 		}
+		setPadding(editor.getMargin());
 		textListener.checkDocument();
 		setCssFont(setProp(domNode, "value", getComponentText()), c.getFont());
 		// setTextAlignment();

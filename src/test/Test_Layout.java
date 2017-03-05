@@ -189,17 +189,19 @@ public class Test_Layout extends JApplet {
 
 				@Override
 				public void focusGained(FocusEvent e) {
-					// TODO Auto-generated method stub
-					
+		      JTextField tf = (JTextField) e.getComponent();
+		      tf.setBackground(Color.BLACK);
+		      double val = Double.parseDouble(tf.getText().trim()) + 1;
+		      tf.setText("" + val);
 				}
 
 				@Override
 				public void focusLost(FocusEvent e) {
 		      JTextField tf = (JTextField) e.getComponent();
 		      tf.setBackground(Color.BLACK);
-		      double val = Double.parseDouble(tf.getText().trim());
+		      double val = Double.parseDouble(tf.getText().trim()) + 1;
 		      tf.setText("" + val);
-		      repaint();
+		      //repaint(); // unnecessary
 		    }      	
       });
 

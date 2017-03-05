@@ -228,7 +228,7 @@ public abstract class JSComponent extends Component {
 
   @Override
 	public boolean isBackgroundSet() {
-    return false;// TODO (background != null && !isBackgroundPainted);
+    return background != null;//false;// TODO (background != null && !isBackgroundPainted);
 }
 
 }

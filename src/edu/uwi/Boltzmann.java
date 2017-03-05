@@ -62,6 +62,7 @@ public class Boltzmann extends JApplet {
 	JLabel lParticles = new JLabel();
 	JLabel lCollisions = new JLabel();
 	JTextField tEnergy = new JTextField();
+
 	JTextField tParticles = new JTextField();
 	JTextField tCollisions = new JTextField();
 	JButton bStartSim = new JButton();
@@ -140,6 +141,13 @@ public class Boltzmann extends JApplet {
 		lCollisions.setBounds(275, 6, 90, 15);
 		tEnergy.setAutoscrolls(false);
 		tEnergy.setColumns(10);
+
+tEnergy.setEditable(false);
+tEnergy.setBackground(Color.GREEN);
+tEnergy.setForeground(Color.BLACK);
+tEnergy.setDisabledTextColor(Color.RED);
+tEnergy.setOpaque(false);
+
 		tEnergy.setNextFocusableComponent(tParticles);
 		UserInput.add(tEnergy, new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0,
@@ -147,6 +155,13 @@ public class Boltzmann extends JApplet {
 		tEnergy.setBounds(9, 33, 110, 19);
 		tParticles.setAutoscrolls(false);
 		tParticles.setColumns(10);
+		
+tParticles.setEnabled(false);
+tParticles.setBackground(Color.GREEN);
+tParticles.setForeground(null);
+tParticles.setDisabledTextColor(null);
+tParticles.setOpaque(true);
+		
 		tParticles.setNextFocusableComponent(tCollisions);
 		UserInput.add(tParticles, new GridBagConstraints(1, 1, 1, 1, 1.0, 1.0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0,
@@ -162,11 +177,12 @@ public class Boltzmann extends JApplet {
 		bStartSim.setText("Start");
 		bStartSim.setActionCommand("Start");
 		bStartSim.setNextFocusableComponent(tEnergy);
+		bStartSim.setMargin(new Insets(2, 16, 2, 16));
 		UserInput.add(bStartSim, new GridBagConstraints(1, 2, 1, 1, 1.0, 1.0,
 				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0,
 						0), 0, 0));
 		bStartSim.setBackground(Color.green);
-		bStartSim.setBounds(160, 64, 63, 25);
+		bStartSim.setBounds(160, 64, 63, 55); // note that 63 and 55 here are ignored
 		// lineBorder3.move(48,392);
 		DispResults
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -176,7 +192,7 @@ public class Boltzmann extends JApplet {
 		getContentPane().add(DispResults);
 		DispResults.setBounds(384, 156, 180, 240);
 		ShowText.setRows(10000);
-		ShowText.setDisabledTextColor(new Color(153, 153, 153));
+		ShowText.setDisabledTextColor(new Color(153, 153, 153));		
 		DispResults.getViewport().add(ShowText);
 		ShowText.setBounds(0, 0, 162, 150000);
 
