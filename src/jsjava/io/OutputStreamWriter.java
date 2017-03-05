@@ -88,7 +88,7 @@ public class OutputStreamWriter extends Writer {
 
     private String charsetName;
 		private OutputStream stream;
-		private StringWriter se;
+		private StringWriter writer;
 
 		/**
      * Creates an OutputStreamWriter that uses the named charset.
@@ -119,7 +119,7 @@ public class OutputStreamWriter extends Writer {
     	if (!charsetName.equals("UTF-8"))
     		throw new UnsupportedEncodingException();
     	this.charsetName = "UTF-8";
-    	se = new StringWriter();
+    	writer = new StringWriter();
 		}
 
 		/**
@@ -129,16 +129,12 @@ public class OutputStreamWriter extends Writer {
      */
     public OutputStreamWriter(OutputStream out) {
         super(out);
+        this.stream = out;
         try {
 					setCharset(null);
 				} catch (UnsupportedEncodingException e) {
 					// won't happen
 				}
-//        try {
-//            se = StreamEncoder.forOutputStreamWriter(out, this, (String)null);
-//        } catch (UnsupportedEncodingException e) {
-//            throw new Error(e);
-//        }
     }
 
 //    /**
@@ -159,7 +155,7 @@ public class OutputStreamWriter extends Writer {
 //            throw new NullPointerException("charset");
 //        se = StreamEncoder.forOutputStreamWriter(out, this, cs);
 //    }
-//
+
 //    /**
 //     * Creates an OutputStreamWriter that uses the given charset encoder.  </p>
 //     *
@@ -227,7 +223,7 @@ public class OutputStreamWriter extends Writer {
     	 * 
     	 * ch = String.fromCodePoint(c);
     	 */
-        se.write(ch);
+        writer.write(ch);
     }
 
     /**
@@ -241,7 +237,7 @@ public class OutputStreamWriter extends Writer {
      */
     @Override
 		public void write(char cbuf[], int off, int len) throws IOException {
-      se.write(cbuf, off, len);
+      writer.write(cbuf, off, len);
     }
 
     /**
@@ -255,7 +251,7 @@ public class OutputStreamWriter extends Writer {
      */
     @Override
 		public void write(String str, int off, int len) throws IOException {
-        se.write(str, off, len);
+        writer.write(str, off, len);
     }
 
     /**
@@ -265,16 +261,19 @@ public class OutputStreamWriter extends Writer {
      */
     @Override
 		public void flush() throws IOException {
-        se.flush();
-        byte[] buf = se.getBuffer().toString().getBytes();
-        stream.write(buf, 0, buf.length);
-        se = new StringWriter();
+        writer.flush();
+        String s = writer.getBuffer().toString();
+        if (s.length() > 0) {
+        	byte[] buf = s.getBytes();
+        	stream.write(buf, 0, buf.length);
+        }
+        writer = new StringWriter();
     }
 
     @Override
 		public void close() throws IOException {
-        se.close();
-        stream.close();
+    	  flush();
+        writer.close();
     }
     
     /** Added for SwingJS
