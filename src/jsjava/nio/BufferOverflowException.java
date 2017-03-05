@@ -1,7 +1,8 @@
 /*
  * Some portions of this file have been modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017
  * for use in SwingJS via transpilation into JavaScript using Java2Script.
- * Copyright 1995-1997 Sun Microsystems, Inc.  All Rights Reserved.
+ * Copyright 2000-2007 Sun Microsystems, Inc.  All Rights Reserved.
+ *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,33 +24,30 @@
  * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa Clara,
  * CA 95054 USA or visit www.sun.com if you need additional information or
  * have any questions.
+ *
  */
 
-package jsjava.applet;
+// -- This file was mechanically generated: Do not edit! -- //
+
+package jsjava.nio;
+
 
 /**
- * The <code>AudioClip</code> interface is a simple abstraction for
- * playing a sound clip. Multiple <code>AudioClip</code> items can be
- * playing at the same time, and the resulting sound is mixed
- * together to produce a composite.
+ * Unchecked exception thrown when a relative <i>put</i> operation reaches
+ * the target buffer's limit.
  *
- * @author      Arthur van Hoff
- * @since       JDK1.0
+ * @since 1.4
  */
-public interface AudioClip {
-    /**
-     * Starts playing this audio clip. Each time this method is called,
-     * the clip is restarted from the beginning.
-     */
-    void play();
+
+public class BufferOverflowException
+    extends RuntimeException
+{
+
+    private static final long serialVersionUID = -5484897634319144535L;
 
     /**
-     * Starts playing this audio clip in a loop.
+     * Constructs an instance of this class.
      */
-    void loop();
+    public BufferOverflowException() { }
 
-    /**
-     * Stops playing this audio clip.
-     */
-    void stop();
 }

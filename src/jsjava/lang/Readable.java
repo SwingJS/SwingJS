@@ -1,7 +1,7 @@
 /*
  * Some portions of this file have been modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017
  * for use in SwingJS via transpilation into JavaScript using Java2Script.
- * Copyright 1995-1997 Sun Microsystems, Inc.  All Rights Reserved.
+ * Copyright 2003 Sun Microsystems, Inc.  All Rights Reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,31 +25,35 @@
  * have any questions.
  */
 
-package jsjava.applet;
+package jsjava.lang;
+
+import java.io.IOException;
+
+import jsjava.nio.CharBuffer;
 
 /**
- * The <code>AudioClip</code> interface is a simple abstraction for
- * playing a sound clip. Multiple <code>AudioClip</code> items can be
- * playing at the same time, and the resulting sound is mixed
- * together to produce a composite.
+ * A <tt>Readable</tt> is a source of characters. Characters from
+ * a <tt>Readable</tt> are made available to callers of the read
+ * method via a {@link java.nio.CharBuffer CharBuffer}.
  *
- * @author      Arthur van Hoff
- * @since       JDK1.0
+ * @since 1.5
  */
-public interface AudioClip {
-    /**
-     * Starts playing this audio clip. Each time this method is called,
-     * the clip is restarted from the beginning.
-     */
-    void play();
+
+public interface Readable {
 
     /**
-     * Starts playing this audio clip in a loop.
+     * Attempts to read characters into the specified character buffer.
+     * The buffer is used as a repository of characters as-is: the only
+     * changes made are the results of a put operation. No flipping or
+     * rewinding of the buffer is performed.
+     *
+     * @param cb the buffer to read characters into
+     * @return @return The number of <tt>char</tt> values added to the buffer,
+     *                 or -1 if this source of characters is at its end
+     * @throws IOException if an I/O error occurs
+     * @throws NullPointerException if cb is null
+     * @throws ReadOnlyBufferException if cb is a read only buffer
      */
-    void loop();
+    public int read(CharBuffer cb) throws IOException;
 
-    /**
-     * Stops playing this audio clip.
-     */
-    void stop();
 }

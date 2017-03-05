@@ -1,7 +1,7 @@
 package test;
 
 //web_Ready
-//web_AppletName= MyTest2
+//web_AppletName= Test_Layout
 //web_Description= A test
 //web_JavaVersion= http://www
 //web_AppletImage= dddd

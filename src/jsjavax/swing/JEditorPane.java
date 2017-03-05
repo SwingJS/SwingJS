@@ -1388,20 +1388,23 @@ public class JEditorPane extends JTextComponent {
      * is done this way instead of via a static as the static is only
      * called once when running in plugin resulting in the entries only
      * appearing in the first applet.
+     *
      */
     private static void loadDefaultKitsIfNecessary() {
         if (SwingUtilities.appContextGet(kitTypeRegistryKey) == null) {
             synchronized(defaultEditorKitMap) {
                 if (defaultEditorKitMap.size() == 0) {
-                    defaultEditorKitMap.put("text/plain",
-                                            "jsjavax.swing.JEditorPane$PlainEditorKit");
-                    defaultEditorKitMap.put("text/html",
-                                            "jsjavax.swing.text.html.HTMLEditorKit");
-                    defaultEditorKitMap.put("text/rtf",
-                                            "jsjavax.swing.text.rtf.RTFEditorKit");
-                    defaultEditorKitMap.put("application/rtf",
-                                            "jsjavax.swing.text.rtf.RTFEditorKit");
-                }
+                	// preliminary only - no support for rtf; html same as plain
+                    defaultEditorKitMap.put("text/plain", "jsjavax.swing.JEditorPane$PlainEditorKit");
+                    defaultEditorKitMap.put("text/html", "jsjavax.swing.JEditorPane$PlainEditorKit");
+                    
+//defaultEditorKitMap.put("text/plain", "jsjavax.swing.JEditorPane$PlainEditorKit");
+//defaultEditorKitMap.put("text/html", "jsjavax.swing.text.html.HTMLEditorKit");
+//defaultEditorKitMap.put("text/rtf", "jsjavax.swing.text.rtf.RTFEditorKit");
+//defaultEditorKitMap.put("application/rtf", "jsjavax.swing.text.rtf.RTFEditorKit");
+
+
+                }                    
             }
             Hashtable ht = new Hashtable();
             SwingUtilities.appContextPut(kitTypeRegistryKey, ht);

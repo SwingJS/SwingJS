@@ -1,7 +1,5 @@
 /*
- * Some portions of this file have been modified by Robert Hanson hansonr.at.stolaf.edu 2012-2017
- * for use in SwingJS via transpilation into JavaScript using Java2Script.
- * Copyright 1995-1997 Sun Microsystems, Inc.  All Rights Reserved.
+ * Copyright 2000 Sun Microsystems, Inc.  All Rights Reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -25,31 +23,13 @@
  * have any questions.
  */
 
-package jsjava.applet;
 
-/**
- * The <code>AudioClip</code> interface is a simple abstraction for
- * playing a sound clip. Multiple <code>AudioClip</code> items can be
- * playing at the same time, and the resulting sound is mixed
- * together to produce a composite.
- *
- * @author      Arthur van Hoff
- * @since       JDK1.0
- */
-public interface AudioClip {
-    /**
-     * Starts playing this audio clip. Each time this method is called,
-     * the clip is restarted from the beginning.
-     */
-    void play();
 
-    /**
-     * Starts playing this audio clip in a loop.
-     */
-    void loop();
+package jssun.nio.ch;
 
-    /**
-     * Stops playing this audio clip.
-     */
-    void stop();
+
+public interface Interruptible {
+
+    public void interrupt();
+
 }
