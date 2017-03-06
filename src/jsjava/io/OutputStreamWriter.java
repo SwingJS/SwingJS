@@ -31,6 +31,7 @@ package jsjava.io;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 //import java.nio.charset.Charset;
 //import java.nio.charset.CharsetEncoder;
 //import sun.nio.cs.StreamEncoder;
@@ -104,7 +105,7 @@ public class OutputStreamWriter extends Writer {
      *             If the named encoding is not supported
      */
     public OutputStreamWriter(OutputStream out, String charsetName)
-        throws UnsupportedEncodingException
+        throws UnsupportedEncodingException 
     {
         super(out);
         this.stream = out;

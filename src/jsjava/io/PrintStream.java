@@ -30,6 +30,7 @@ package jsjava.io;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.io.UnsupportedEncodingException;
 import java.util.IllegalFormatException;
 
 import jsjava.util.Formatter;
