@@ -1,19 +1,14 @@
 package swingjs.plaf;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import swingjs.api.DOMNode;
 import jsjava.awt.Dimension;
 import jsjavax.swing.AbstractButton;
-import jsjavax.swing.ButtonGroup;
-import jsjavax.swing.DefaultButtonModel;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JRadioButton;
+import swingjs.api.DOMNode;
 
 public class JSRadioButtonUI extends JSButtonUI {
 
-	private static Map<ButtonGroup, String> groupNames;
+//	private static Map<ButtonGroup, String> groupNames;
 
 	@Override
 	protected DOMNode updateDOMNode() {
@@ -40,19 +35,19 @@ public class JSRadioButtonUI extends JSButtonUI {
 		boolean doAll = false;
 		if (domNode == null) {
 			doAll = true;
-			if (groupNames == null)
-				groupNames = new HashMap<ButtonGroup, String>();
-			ButtonGroup bg = null;
 			String name = id;
-			if (b.getModel() instanceof DefaultButtonModel) {
-				bg = ((DefaultButtonModel) b.getModel()).getGroup();
-				name = groupNames.get(bg);
-				isNew = (bg != null && name == null);
-				if (name == null)
-					name = id;
-				if (isNew)
-					groupNames.put(bg, name);
-			}
+//			if (groupNames == null)
+//				groupNames = new HashMap<ButtonGroup, String>();
+//			ButtonGroup bg = null;
+//			if (b.getModel() instanceof DefaultButtonModel) {
+//				bg = ((DefaultButtonModel) b.getModel()).getGroup();
+//				name = groupNames.get(bg);
+//				isNew = (bg != null && name == null);
+//				if (name == null)
+//					name = id;
+//				if (isNew)
+//					groupNames.put(bg, name);
+//			}
 			domBtn = enableNode = newDOMObject("input", id, "type", myType, "name",
 					name);
 			iconNode = newDOMObject("span", id + "_icon");

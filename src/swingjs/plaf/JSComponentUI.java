@@ -1678,7 +1678,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		//if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? rootPaneColor : color));
-		if (jc.selfOrParentBackgroundPainted() && allowBackground)
+		if (allowBackground && jc.selfOrParentBackgroundPainted())
 			setTransparent(node);
 		else
 			checkTransparent(node);

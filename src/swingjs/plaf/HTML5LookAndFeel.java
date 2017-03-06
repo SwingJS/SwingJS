@@ -391,7 +391,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 //																		 * Specular highlight (opposite of the
 //																		 * shadow)
 //																		 */
-		"controlLtHighlight", "#FFFFFF", /* Highlight color for controls */
+		"controlLtHighlight", "#B8CFE5", /* Highlight color for controls */
 		"controlShadow", "#808080", /* Shadow color for controls */
 		"controlDkShadow", "#000000", /* Dark shadow color for controls */
 		"scrollbar", "#E0E0E0", /* Scrollbar background (usually the "track") */
@@ -594,10 +594,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		//
 		Object buttonBorder = BorderFactory.createHTML5Border(); // an empty border, but really just the browser's border
 		//
-		// Object buttonToggleBorder =
-		// new SwingLazyValue(
-		// "jsjavax.swing.plaf.basic.BasicBorders",
-		// "getToggleButtonBorder");
+//		Object buttonToggleBorder = buttonBorder;//new SwingLazyValue("jsjavax.swing.plaf.basic.BasicBorders", "getToggleButtonBorder");
 		//
 		// Object radioButtonBorder =
 		// new SwingLazyValue(
@@ -828,8 +825,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "ToggleButton.shadow", controlShadow,
 				// "ToggleButton.darkShadow", controlDkShadow,
 				// "ToggleButton.light", controlHighlight,
-				// "ToggleButton.highlight", controlLtHighlight,
-				// "ToggleButton.border", buttonToggleBorder,
+			  "ToggleButton.highlight", controlLtHighlight,
+				"ToggleButton.border", buttonBorder,
 				"ToggleButton.margin",
 				new InsetsUIResource(2, 14, 2, 14),
 				"ToggleButton.textIconGap",

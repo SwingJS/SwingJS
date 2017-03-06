@@ -30,11 +30,11 @@ package swingjs.plaf;
 
 //import jsjava.awt.FontMetrics;
 import jsjava.awt.Dimension;
-import jsjava.awt.Insets;
 import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.BorderFactory;
+import jsjavax.swing.ButtonModel;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;
@@ -78,7 +78,7 @@ public class JSButtonUI extends JSLightweightUI {
 	protected AbstractButton button;
 
 	private boolean isSimpleButton;
-
+	
 	@Override
 	protected DOMNode updateDOMNode() {
 		isSimpleButton = true;
@@ -115,7 +115,7 @@ public class JSButtonUI extends JSLightweightUI {
 		if (button.getBorder() == null || button.getBorder() == BorderFactory.emptyBorder)
 			DOMNode.setStyles(domNode, "border", "none");
 		else if (button.getBorder() == BorderFactory.html5Border)
-			DOMNode.setStyles(domNode, "border", null);			
+			DOMNode.setStyles(domNode, "border", null);
 		return domNode;
 	}
 

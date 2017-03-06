@@ -177,6 +177,7 @@ public class JToggleButton extends AbstractButton {
         model.setSelected(selected);
         // initialize
         init(text, icon, uid);
+        setOpaque(true);// BH not sure why this is not here
     }
 
 
@@ -216,11 +217,7 @@ public class JToggleButton extends AbstractButton {
          */
         @Override
 				public boolean isSelected() {
-//              if(getGroup() != null) {
-//                  return getGroup().isSelected(this);
-//              } else {
-                return (stateMask & SELECTED) != 0;
-//              }
+          return (stateMask & SELECTED) != 0;
         }
 
 
