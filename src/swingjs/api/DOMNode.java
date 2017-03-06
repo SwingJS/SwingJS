@@ -134,7 +134,7 @@ public abstract class DOMNode {
 	
 	public static DOMNode setAttr(DOMNode node, String attr, Object val) {
 		if (val == null) {
-			node.removeAttribute("readOnly");
+			node.removeAttribute(attr);
 		} else {
 			/**
 			 * @j2sNative
