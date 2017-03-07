@@ -1,6 +1,6 @@
 Notes
 =====
-
+updated 3/7/17 -- overloading of JSplitPane.setDividerLocation
 updated 3/2/17 -- more indication of classes not implemented (KeyListener)
 
 =============================================================================
@@ -11,14 +11,104 @@ SwingJS implements a wide range of the Java language in JavaScript. The base
 version for this implementation is Java 1.6. However, some classes were
 implemented using older source code, and there are some missing methods.  
 
-UNIMPLEMENTED CLASSES
-=====================
+=================
+DESIGN PHILOSOPHY
+=================
+
+The SwingJS design goal is to recreate a recognizable, easily debuggable
+equivalent in JavaScript for as much of Java as practical. This means, for example, 
+that one can call in JavaScript 
+
+  new java.util.Hashtable()
+  
+and for all practical purposes it will appear that Java is running.
+
+Performance
+-----------
+
+Obviously, there are limitations. One is performance, but we have seen reproducible 
+performance at 1/6 - 1/3 the speed of Java. Achieving this performance may require
+some refactoring of the Java to make it more efficient in both Java and JavaScript. 
+"for" loops need to be more carefully crafted; use of "new" and "instanceof" need to be
+minimized in critical areas; overloaded methods (methods with the same name but different
+signatures) should be renamed. 
+  
+Threads
+-------
+
+Although there is only a single thread in JavaScript, meaning Thread.sleep(int) and 
+Thread.notify() cannot be reproduced, we have found that this is not a serious limitation. 
+For example, javax.swing.Timer() works perfectly in JavaScript. All it means is that threads 
+that use sleep(int) or notify() must be refectored to allow Timer-like callbacks. That is, 
+they must allow full exit and re-entry of Thread.run(), not the typical while/sleep motif. 
+
+Native calls
+------------
+
+Native calls in Java are calls to operating system methods that are not in Java. JavaScript
+has no access to these, of course, and they must all be replaced by JavaScript equivalents.
+Fortunately, they are not common, and those that are present in Java (for example, in calculating
+checksums in ZIP file creation) are at a low enough level that most developers do not utilize them
+or do not even have access to them. All native calls in Java classes have been replaced by 
+Java equivalents.
+
+Swing GUI Peers and UIClasses
+-----------------------------
+
+One of the biggest adaptations introduced in SwingJS is in the area of the graphical 
+user interface. The issue here is complex but workable. In Java there are two background 
+concepts -- the Component "peer" (one per component) and the Component "uiClass" (one per class).
+Peers are native objects of the operating system. These are the virtual buttons and text areas
+that the user is interacting with at a very base level. Their events are being passed on to 
+Java or the browser by the operating system. UI classes provide a consistent "look and feel" 
+for these native objects, rendering them onto the native window canvas and handling all 
+user-generated events. They paint the borders, the backgrounds, the highlights, of every 
+control you see in Java. There is one-to-one correspondence of Swing classes and UI classes. 
+Setting the Look and Feel for a project amounts to selecting the directory from which to draw 
+these UI classes. The UI classes can be found in the javax.swing.plaf ("platform look and feel") 
+package.
+
+Early on in the development of SwingJS, we decided not to fully reproduce the painfully detailed 
+painting of controls as is done in Java. Instead, we felt it was wiser to utilize the standard
+HTML5 UI capabilities as much as possible, using DIV, and INPUT especially, with extensive use
+of CSS and sometimes jQuery (menus, and sliders, for example). Thus, we have created a new 
+set of UIs -- the "HTML5 Look and Feel". These classes can be found in swingjs.plaf. Besides being
+more adaptable, this approach allows far more versatility to SwingJS developers, allowing them
+to modify the GUI to suit their needs if desired.
+
+In SwingJS, since we have no access to native peers except through the browser DOM,
+it seemed logical to merge the peer and UI idea. So instead of having one peer per control and
+one UI class instance for each control type, we just have one UI class instance per control, and
+that UI class instance is what is being referred to when a "peer" is notified. 
+
+In some ways this is a throw back to when all of Swing's components were subclasses of
+specific AWT components such as Button and List. These "heavy-weight components" all had their 
+own individual native peers and thus automatically took on the look and feel provided by the OS. 
+Later Swing versions implemented full look and feel for all peers, leaving only JDialog, JFrame,
+and a few other classes to have native peers. But in SwingJS we have again a 1:1 map of component
+and UI class/peer instance.
+
+The origin of most issues (read "bugs") in relation to the GUI will probably be found in the
+swingjs.plaf JSxxxxUI.java code.
+
+  
+
+UNIMPLEMENTED CLASSES BY DESIGN
+===============================
 
 accessibility
 security
 serialization
 key listeners
 keyboard accelerators
+
+
+TODO LIST FOR UNIMPLEMENTED CLASSES
+===================================
+
+JEditorPane (minimal implementation)
+JSplitPane (in development, BH)
+JTabbedPane (in development, NEM)
 
 
 MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
@@ -46,7 +136,7 @@ inner class order
 String does not implement CharSequence.length() or .subSequence()
 toString() may need to be explicit
 System.exit(0) does not stop all processes
-
+overloading of JSplitPane.setDividerLocation
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -1371,6 +1461,16 @@ System.exit(0) does not stop all processes
 
 Although System.ext(int) has been implemented in JavaScript, it does nothing. 
 Applications are responsible for shutting down prior to executing it. 
+
+
+overloading of JSplitPane.setDividerLocation
+--------------------------------------------
+
+JSplitPane includes both setDividerLocation(double) and setDividerLocation(int).
+In order to handle this in SwingJS, we have renamed setDividerLocation(int) as setDividerLocationInt(int)
+and routed all int action through setDividerLocation(double). This works fine unless
+1) the developer subclasses JSplitPane and overrides setDividerLocation(int) and/or setDividerLocation(double), or
+2) JSplitPane.setDividerLocation(1) is called. The "1" intended to mean "1 pixel" will be interpreted as "1.0".
 
 
 MAJOR ISSUES--for Bob and Udo within SwingJS

@@ -34,7 +34,10 @@
 
 package test.oracle;
 
+import java.awt.Button;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -104,7 +107,6 @@ public class SplitPaneDemo2 extends JFrame
         //Create and set up the window.
         JFrame frame = new SplitPaneDemo2();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         //Display the window.
         frame.pack();
         frame.setVisible(true);

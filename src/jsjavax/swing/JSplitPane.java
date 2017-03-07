@@ -208,6 +208,7 @@ public class JSplitPane extends JComponent {
 	 * different value.
 	 */
 	private int dividerLocation;
+	private boolean dividerLocationSetByUser; // SwingJS
 
 	/**
 	 * Creates a new <code>JSplitPane</code> configured to arrange the child
@@ -645,15 +646,22 @@ public class JSplitPane extends JComponent {
 	 * @beaninfo description: The location of the divider.
 	 */
 	public void setDividerLocation(double proportionalLocation) {
-		if (proportionalLocation < 0.0 || proportionalLocation > 1.0) {
+		// SwingJS note: JavaScript cannot handle two methods x(double) and x(int). 
+		// So we rename setDividerLocation(int) as setDividerLocationInt(int) and
+		// make all action go through here. 
+		// A limitation is that setDividerLocation(1) will be interpreted differently than in Java.
+		// 
+		int intLocation = (int) proportionalLocation;
+		boolean isInt = (intLocation == Math.round(proportionalLocation));
+		if (proportionalLocation < 0.0 || proportionalLocation > 1.0 && !isInt) {
 			throw new IllegalArgumentException("proportional location must "
 					+ "be between 0.0 and 1.0.");
 		}
-		if (getOrientation() == VERTICAL_SPLIT) {
-			setDividerLocation((int) ((double) (getHeight() - getDividerSize()) * proportionalLocation));
-		} else {
-			setDividerLocation((int) ((double) (getWidth() - getDividerSize()) * proportionalLocation));
+		if (!isInt) {
+			int wh = (getOrientation() == VERTICAL_SPLIT ? getHeight() : getWidth());
+			intLocation = (int) ((wh - getDividerSize()) * proportionalLocation);
 		}
+		setDividerLocationInt(intLocation);
 	}
 
 	/**
@@ -668,14 +676,26 @@ public class JSplitPane extends JComponent {
 	 *          an int specifying a UI-specific value (typically a pixel count)
 	 * @beaninfo bound: true description: The location of the divider.
 	 */
-	public void setDividerLocation(int location) {
+	public void setDividerLocationInt(int location) {
+	  dividerLocationSetByUser = true; // SwingJS
+	  setDividerLocationIntImpl(location);
+	}
+	
+	public boolean isDividerLocationSetByUser() {
+		return dividerLocationSetByUser;
+	}
+	
+	public void setDividerLocationIntImpl(int location) {
 		int oldValue = dividerLocation;
-
 		dividerLocation = location;
 
 		// Notify UI.
 		JSSplitPaneUI ui = (JSSplitPaneUI) getUI();
 
+		// note that the SwingJS UI will get two messages, 
+		// one from the property change and one from this call
+		// because it is both the peer and the ui
+		
 		if (ui != null) {
 			ui.setDividerLocation(this, location);
 		}
