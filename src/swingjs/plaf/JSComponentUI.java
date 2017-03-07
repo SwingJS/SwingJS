@@ -171,6 +171,20 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected DOMNode imageNode;
 
+	/**
+	 * for SplitPaneDivider
+	 * 
+	 */
+	protected boolean draggable;
+	
+	@Override
+	public void setDraggable(JSFunction f) {
+		// SplitPaneDivider
+		draggable = true;
+		JSToolkit.J2S._setDraggable(updateDOMNode(), f);
+	}
+	
+
 
 	/**
 	 * The HTML5 input element being pressed, if the control subclasses
@@ -1419,6 +1433,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	private boolean enabled = true;
 
+
+
 	private void enableNode(DOMNode node, boolean b) {
 		if (node == null)
 			return;
@@ -2032,7 +2048,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				+ "px " + padding.left + "px " + padding.bottom + "px " + padding.right
 				+ "px");
 	}
-
 
 
 }

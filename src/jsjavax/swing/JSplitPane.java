@@ -28,9 +28,9 @@
 
 package jsjavax.swing;
 
+import swingjs.plaf.JSSplitPaneUI;
 import jsjava.awt.Component;
 import jsjava.awt.Graphics;
-import jsjavax.swing.plaf.SplitPaneUI;
 
 /**
  * <code>JSplitPane</code> is used to divide two (and only two)
@@ -319,36 +319,6 @@ public class JSplitPane extends JComponent {
 		uiClassID = "SplitPaneUI";
 		updateUI();
 
-	}
-
-	/**
-	 * Sets the L&F object that renders this component.
-	 * 
-	 * @param ui
-	 *          the <code>SplitPaneUI</code> L&F object
-	 * @see UIDefaults#getUI
-	 * @beaninfo bound: true hidden: true attribute: visualUpdate true
-	 *           description: The UI object that implements the Component's
-	 *           LookAndFeel.
-	 */
-	public void setUI(SplitPaneUI ui) {
-		if ((SplitPaneUI) this.ui != ui) {
-			super.setUI(ui);
-			revalidate();
-		}
-	}
-
-	/**
-	 * Notification from the <code>UIManager</code> that the L&F has changed.
-	 * Replaces the current UI object with the latest version from the
-	 * <code>UIManager</code>.
-	 * 
-	 * @see JComponent#updateUI
-	 */
-	@Override
-	public void updateUI() {
-		super.updateUI();
-		revalidate();
 	}
 
 	/**
@@ -650,7 +620,7 @@ public class JSplitPane extends JComponent {
 	 * location.
 	 */
 	public void resetToPreferredSizes() {
-		SplitPaneUI ui = (SplitPaneUI) getUI();
+		JSSplitPaneUI ui = (JSSplitPaneUI) getUI();
 
 		if (ui != null) {
 			ui.resetToPreferredSizes(this);
@@ -704,7 +674,7 @@ public class JSplitPane extends JComponent {
 		dividerLocation = location;
 
 		// Notify UI.
-		SplitPaneUI ui = (SplitPaneUI) getUI();
+		JSSplitPaneUI ui = (JSSplitPaneUI) getUI();
 
 		if (ui != null) {
 			ui.setDividerLocation(this, location);
@@ -738,7 +708,7 @@ public class JSplitPane extends JComponent {
 	 * @beaninfo description: The minimum location of the divider from the L&F.
 	 */
 	public int getMinimumDividerLocation() {
-		SplitPaneUI ui = (SplitPaneUI) getUI();
+		JSSplitPaneUI ui = (JSSplitPaneUI) getUI();
 
 		if (ui != null) {
 			return ui.getMinimumDividerLocation(this);
@@ -754,7 +724,7 @@ public class JSplitPane extends JComponent {
 	 *         (typically a pixel count); or -1 if the UI is <code>null</code>
 	 */
 	public int getMaximumDividerLocation() {
-		SplitPaneUI ui = (SplitPaneUI) getUI();
+		JSSplitPaneUI ui = (JSSplitPaneUI) getUI();
 
 		if (ui != null) {
 			return ui.getMaximumDividerLocation(this);
@@ -934,7 +904,7 @@ public class JSplitPane extends JComponent {
 	protected void paintChildren(Graphics g) {
 		super.paintChildren(g);
 
-		SplitPaneUI ui = (SplitPaneUI) getUI();
+		JSSplitPaneUI ui = (JSSplitPaneUI) getUI();
 
 		if (ui != null) {
 			Graphics tempG = g.create();

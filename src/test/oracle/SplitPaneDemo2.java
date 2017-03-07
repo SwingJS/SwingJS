@@ -100,7 +100,7 @@ public class SplitPaneDemo2 extends JFrame
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new SplitPaneDemo2();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

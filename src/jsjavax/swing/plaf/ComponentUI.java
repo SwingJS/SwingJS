@@ -28,6 +28,7 @@
 
 package jsjavax.swing.plaf;
 
+import javajs.api.JSFunction;
 import jsjava.awt.Component;
 import jsjava.awt.Dimension;
 import jsjava.awt.Graphics;
@@ -334,5 +335,7 @@ public abstract class ComponentUI implements ComponentPeer {
     }
 
 		abstract public void setBackgroundPainted();
+
+		abstract public void setDraggable(JSFunction f);
 
 }
