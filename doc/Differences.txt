@@ -23,6 +23,19 @@ that one can call in JavaScript
   
 and for all practical purposes it will appear that Java is running.
 
+
+Applet vs. Application
+----------------------
+
+One of the very cool aspects of SwingJS is that it doesn't particularly matter if a browser-based
+Java app is an "applet" or an "application". We don't need JNLP (Java Network Launch Protocol) 
+because now we can just start up any Java application in a browser just as easily as any applet.
+The associative array that passes information to the SwingJS applet (information that formerly
+might have been part of the APPLET tag, such as width, height, and codebase, always referred to 
+in our writing as "the Info array") allows the option to specify the JApplet/Applet "code" 
+class or the application "main" class. Either one will run just fine.
+
+
 Performance
 -----------
 
@@ -33,6 +46,7 @@ some refactoring of the Java to make it more efficient in both Java and JavaScri
 minimized in critical areas; overloaded methods (methods with the same name but different
 signatures) should be renamed. 
   
+
 Threads
 -------
 
@@ -41,6 +55,34 @@ Thread.notify() cannot be reproduced, we have found that this is not a serious l
 For example, javax.swing.Timer() works perfectly in JavaScript. All it means is that threads 
 that use sleep(int) or notify() must be refectored to allow Timer-like callbacks. That is, 
 they must allow full exit and re-entry of Thread.run(), not the typical while/sleep motif. 
+
+
+No Non-Swing AWT Components
+---------------------------
+
+Swing was introduced into Java well after the Java Abstract Window Toolkit (AWT) was well
+established. As such, its designers chose to allow AWT controls such as Button and List to be used 
+alongside their Swing counterparts JButton and JList. Reading the code, it is clear that this 
+design choice posed a huge headache for Swing class developers. For SwingJS, we decided from 
+the beginning NOT to allow this mixed-mode programming and instead to require that all 
+components be Swing components. 
+ 
+The a2s Adapter Package
+-----------------------
+
+Thus, originally, we thought that we would restrict ourselves to JApplets only. That is, only
+Swing-based applets. But as we worked, we discovered that there are a lot of great 
+applets out there that are pre-Swing pure-AWT java.applet.Applet applets. Our problem was 
+that we also wanted it to be possible to quickly adapt these applets to JavaScript as well.
+ 
+The solution turned out to be simple: Write a package (a2s) that recreates the interface for 
+non-Swing components as subclasses of Swing components. Thus, a2s.Button subclasses javax.swing.JButton
+but also accepts all of the methods of java.awt.Button. It's not perfect, and the ultimate 
+solution is probably to just change java.awt.Xxxx itself to subclass javax.swing.JXxxx.
+In any case, it works -- mostly. By adding the a2s package to a project and changing the include
+statements to target a2s instead of java.awt, non-Swing applets can be easily converted to JavaScript.
+Certainly there will be issues such as missing methods. It is all a work in progress.
+
 
 Native calls
 ------------
@@ -51,6 +93,7 @@ Fortunately, they are not common, and those that are present in Java (for exampl
 checksums in ZIP file creation) are at a low enough level that most developers do not utilize them
 or do not even have access to them. All native calls in Java classes have been replaced by 
 Java equivalents.
+
 
 Swing GUI Peers and UIClasses
 -----------------------------
@@ -115,7 +158,6 @@ MINOR ISSUES--required some rewriting/refactoring by Bob and Udo
 ================================================================
 
 java.util.BitSet must be 16-bit
-
 Thread.currentThread() == dispatchThread
 
 
