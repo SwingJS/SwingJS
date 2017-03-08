@@ -1444,8 +1444,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			getDisabledColors(pp);
 		if (jc.isOpaque()) {
 			Color bg = c.getBackground();
-			bg = (b || !(bg instanceof UIResource) || inactiveBackground == null ? bg : inactiveBackground);
-			setBackground(bg);
+			setBackground(b || !(bg instanceof UIResource) || inactiveBackground == null ? bg : inactiveBackground);
 		}
 		Color fg = c.getForeground();
 		setForeground(b || inactiveForeground == null ? fg : inactiveForeground);
