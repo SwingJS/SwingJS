@@ -2,12 +2,12 @@ package test;
 
 import java.awt.event.ActionEvent;
 
-interface ActionListener {
+interface ActionListener_ {
 	void actionPerformed(ActionEvent event);
 }
 
 class JButton1 {
-	ActionListener actionListener;
+	ActionListener_ actionListener;
 
 	private static int VALUE;
 
@@ -17,7 +17,7 @@ class JButton1 {
     	jbuttonval = ++VALUE;
     }
     
-	public void addActionListener(ActionListener actionListener) {
+	public void addActionListener(ActionListener_ actionListener) {
 		this.actionListener = actionListener;
 	}
 
@@ -80,7 +80,7 @@ public class Test_9 extends JButton1 {
 					}
 				};
 				r.run();
-				addActionListener(new ActionListener() {
+				addActionListener(new ActionListener_() {
 					public void actionPerformed(ActionEvent event) {
 						System.out.println("test_9 running actionPerformed");
 						resetChamber();
