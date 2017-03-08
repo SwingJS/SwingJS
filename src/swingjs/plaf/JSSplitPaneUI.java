@@ -1139,7 +1139,7 @@ public class JSSplitPaneUI extends JSPanelUI {
 
 		/**
 		 * Adds the component at place. Place must be one of JSplitPane.LEFT, RIGHT,
-		 * TOP, BOTTOM, or null (for the divider).
+		 * TOP, BOTTOM, or DIVIDER.
 		 */
 		@Override
 		public void addLayoutComponent(String place, Component component) {

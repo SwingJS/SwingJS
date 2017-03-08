@@ -114,63 +114,81 @@ public class CellRendererPane extends Container
 
     /**
      * Paint a cell renderer component c on graphics object g.  Before the component
-     * is drawn it's reparented to this (if that's necessary), it's bounds
+     * is drawn it's reparented to this (if that's necessary), its bounds
      * are set to w,h and the graphics object is (effectively) translated to x,y.
      * If it's a JComponent, double buffering is temporarily turned off. After
-     * the component is painted it's bounds are reset to -w, -h, 0, 0 so that, if
+     * the component is painted its bounds are reset to -w, -h, 0, 0 so that, if
      * it's the last renderer component painted, it will not start consuming input.
      * The Container p is the component we're actually drawing on, typically it's
      * equal to this.getParent(). If shouldValidate is true the component c will be
      * validated before painted.
      */
     public void paintComponent(Graphics g, Component c, Container p, int x, int y, int w, int h, boolean shouldValidate) {
-        if (c == null) {
-            if (p != null) {
-                Color oldColor = g.getColor();
-                g.setColor(p.getBackground());
-                g.fillRect(x, y, w, h);
-                g.setColor(oldColor);
-            }
-            return;
-        }
-
-        if (c.getParent() != this) {
-            this.add(c);
-        }
-
-        c.setBounds(x, y, w, h);
-
-        if(shouldValidate) {
-            c.validate();
-        }
-
-//        boolean wasDoubleBuffered = false;
-//        if ((c instanceof JComponent) && ((JComponent)c).isDoubleBuffered()) {
-//            wasDoubleBuffered = true;
-//            ((JComponent)c).setDoubleBuffered(false);
-//        }
-
-        Graphics cg = g.create(x, y, w, h);
-        try {
-            c.paint(cg);
-        }
-        finally {
-            cg.dispose();
-        }
-
-//        if (wasDoubleBuffered && (c instanceof JComponent)) {
-//            ((JComponent)c).setDoubleBuffered(true);
-//        }
-//
-        c.setBounds(-w, -h, 0, 0);
+    	paintComponentSAEM(g, c, p, x, y, w, h, shouldValidate);
     }
 
 
     /**
+     * SwingJS renaming to avoid SearchAndReplaceMethod
+     * 
+     * @param g
+     * @param c
+     * @param p
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @param shouldValidate
+     */
+    public void paintComponentSAEM(Graphics g, Component c, Container p,
+				int x, int y, int w, int h, boolean shouldValidate) {
+    	
+      if (c == null) {
+          if (p != null) {
+              Color oldColor = g.getColor();
+              g.setColor(p.getBackground());
+              g.fillRect(x, y, w, h);
+              g.setColor(oldColor);
+          }
+          return;
+      }
+
+      if (c.getParent() != this) {
+          this.add(c);
+      }
+
+      c.setBounds(x, y, w, h);
+
+      if(shouldValidate) {
+          c.validate();
+      }
+
+//      boolean wasDoubleBuffered = false;
+//      if ((c instanceof JComponent) && ((JComponent)c).isDoubleBuffered()) {
+//          wasDoubleBuffered = true;
+//          ((JComponent)c).setDoubleBuffered(false);
+//      }
+
+      Graphics cg = g.create(x, y, w, h);
+      try {
+          c.paint(cg);
+      }
+      finally {
+          cg.dispose();
+      }
+
+//      if (wasDoubleBuffered && (c instanceof JComponent)) {
+//          ((JComponent)c).setDoubleBuffered(true);
+//      }
+//
+      c.setBounds(-w, -h, 0, 0);
+		}
+
+		/**
      * Calls this.paintComponent(g, c, p, x, y, w, h, false).
      */
     public void paintComponent(Graphics g, Component c, Container p, int x, int y, int w, int h) {
-        paintComponent(g, c, p, x, y, w, h, false);
+        paintComponentSAEM(g, c, p, x, y, w, h, false);
     }
 
 
@@ -178,7 +196,7 @@ public class CellRendererPane extends Container
      * Calls this.paintComponent() with the rectangles x,y,width,height fields.
      */
     public void paintComponent(Graphics g, Component c, Container p, Rectangle r) {
-        paintComponent(g, c, p, r.x, r.y, r.width, r.height);
+        paintComponentSAEM(g, c, p, r.x, r.y, r.width, r.height, false);
     }
 
 

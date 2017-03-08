@@ -828,6 +828,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 */
 	protected boolean allowBackground = true;
 
+	@Override
+	public DOMNode getDOMNode() {
+		return updateDOMNode();
+	}
+
+
 	/**
 	 * Create or recreate the inner DOM element for this Swing component.
 	 * 
@@ -2052,6 +2058,5 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				+ "px " + padding.left + "px " + padding.bottom + "px " + padding.right
 				+ "px");
 	}
-
 
 }

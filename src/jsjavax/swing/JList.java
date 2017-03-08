@@ -527,7 +527,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
         Object value = getPrototypeCellValue();
 
         if ((cr != null) && (value != null)) {
-            Component c = cr.getListCellRendererComponent(this, value, 0, false, false);
+            JComponent c = cr.getListCellRendererComponent(this, value, 0, false, false);
 
             /* The ListUI implementation will add Component c to its private
              * CellRendererPane however we can't assume that's already
@@ -1483,13 +1483,13 @@ public class JList extends JComponent implements Scrollable//, Accessible
                                getCellBounds(index, index)) != null &&
                                cellBounds.contains(p.x, p.y)) {
                 ListSelectionModel lsm = getSelectionModel();
-                Component rComponent = r.getListCellRendererComponent(
+                JComponent rComponent = r.getListCellRendererComponent(
                            this, getModel().getElementAt(index), index,
                            lsm.isSelectedIndex(index),
                            (hasFocus() && (lsm.getLeadSelectionIndex() ==
                                            index)));
 
-                if(rComponent instanceof JComponent) {
+//                if(rComponent instanceof JComponent) {
                     MouseEvent      newEvent;
 
                     p.translate(-cellBounds.x, -cellBounds.y);
@@ -1509,7 +1509,7 @@ public class JList extends JComponent implements Scrollable//, Accessible
                     if (tip != null) {
                         return tip;
                     }
-                }
+//                }
             }
         }
         return super.getToolTipText();

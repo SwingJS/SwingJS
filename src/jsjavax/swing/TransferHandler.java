@@ -202,7 +202,8 @@ public class TransferHandler {
          *
          * @return a string representation of this drop location
          */
-        public String toString() {
+        @Override
+				public String toString() {
             return getClass().getName() + "[dropPoint=" + dropPoint + "]";
         }
     };
@@ -1099,7 +1100,8 @@ public class TransferHandler {
          * for providing the data (from most richly descriptive to least descriptive).
          * @return an array of data flavors in which this data can be transferred
          */
-        public DataFlavor[] getTransferDataFlavors() {
+        @Override
+				public DataFlavor[] getTransferDataFlavors() {
             DataFlavor[] flavors = new DataFlavor[1];
             Class<?> propertyType = property.getPropertyType();
             String mimeType = DataFlavor.javaJVMLocalObjectMimeType + ";class=" + propertyType.getName();
@@ -1118,7 +1120,8 @@ public class TransferHandler {
          * @return true if this <code>DataFlavor</code> is supported,
          *   otherwise false
          */
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
+        @Override
+				public boolean isDataFlavorSupported(DataFlavor flavor) {
             Class<?> propertyType = property.getPropertyType();
             if ("application".equals(flavor.getPrimaryType()) &&
                 "x-java-jvm-local-objectref".equals(flavor.getSubType()) &&
@@ -1140,7 +1143,8 @@ public class TransferHandler {
          * @exception UnsupportedFlavorException if the requested data flavor is
          *              not supported.
          */
-        public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+        @Override
+				public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
             if (! isDataFlavorSupported(flavor)) {
                 throw new UnsupportedFlavorException(flavor);
             }
@@ -1179,7 +1183,8 @@ public class TransferHandler {
             } catch (TooManyListenersException tmle) {}
         }
 
-        public void addDropTargetListener(DropTargetListener dtl) throws TooManyListenersException {
+        @Override
+				public void addDropTargetListener(DropTargetListener dtl) throws TooManyListenersException {
             // Since the super class only supports one DropTargetListener,
             // and we add one from the constructor, we always add to the
             // extended list.
@@ -1189,7 +1194,8 @@ public class TransferHandler {
             listenerList.add(DropTargetListener.class, dtl);
         }
 
-        public void removeDropTargetListener(DropTargetListener dtl) {
+        @Override
+				public void removeDropTargetListener(DropTargetListener dtl) {
             if (listenerList != null) {
                 listenerList.remove(DropTargetListener.class, dtl);
             }
@@ -1197,7 +1203,8 @@ public class TransferHandler {
 
         // --- DropTargetListener methods (multicast) --------------------------
 
-        public void dragEnter(DropTargetDragEvent e) {
+        @Override
+				public void dragEnter(DropTargetDragEvent e) {
             super.dragEnter(e);
             if (listenerList != null) {
                 Object[] listeners = listenerList.getListenerList();
@@ -1209,7 +1216,8 @@ public class TransferHandler {
             }
         }
 
-        public void dragOver(DropTargetDragEvent e) {
+        @Override
+				public void dragOver(DropTargetDragEvent e) {
             super.dragOver(e);
             if (listenerList != null) {
                 Object[] listeners = listenerList.getListenerList();
@@ -1221,7 +1229,8 @@ public class TransferHandler {
             }
         }
 
-        public void dragExit(DropTargetEvent e) {
+        @Override
+				public void dragExit(DropTargetEvent e) {
             super.dragExit(e);
             if (listenerList != null) {
                 Object[] listeners = listenerList.getListenerList();
@@ -1233,7 +1242,8 @@ public class TransferHandler {
             }
         }
 
-        public void drop(DropTargetDropEvent e) {
+        @Override
+				public void drop(DropTargetDropEvent e) {
             super.drop(e);
             if (listenerList != null) {
                 Object[] listeners = listenerList.getListenerList();
@@ -1245,7 +1255,8 @@ public class TransferHandler {
             }
         }
 
-        public void dropActionChanged(DropTargetDragEvent e) {
+        @Override
+				public void dropActionChanged(DropTargetDragEvent e) {
             super.dropActionChanged(e);
             if (listenerList != null) {
                 Object[] listeners = listenerList.getListenerList();
@@ -1384,7 +1395,8 @@ public class TransferHandler {
          * <P>
          * @param e the <code>ActionEvent</code>
          */
-        public void actionPerformed(ActionEvent e) {
+        @Override
+				public void actionPerformed(ActionEvent e) {
             updateAutoscrollRegion((JComponent)component);
             if (outer.contains(lastPosition) && !inner.contains(lastPosition)) {
                 autoscroll((JComponent)component, lastPosition);
@@ -1447,7 +1459,8 @@ public class TransferHandler {
             setComponentDropLocation(showLocation ? support : null, false);
         }
 
-        public void dragEnter(DropTargetDragEvent e) {
+        @Override
+				public void dragEnter(DropTargetDragEvent e) {
             state = null;
             component = e.getDropTargetContext().getComponent();
 
@@ -1460,7 +1473,8 @@ public class TransferHandler {
             }
         }
 
-        public void dragOver(DropTargetDragEvent e) {
+        @Override
+				public void dragOver(DropTargetDragEvent e) {
             handleDrag(e);
 
             if (!(component instanceof JComponent)) {
@@ -1480,11 +1494,13 @@ public class TransferHandler {
             lastPosition = p;
         }
 
-        public void dragExit(DropTargetEvent e) {
+        @Override
+				public void dragExit(DropTargetEvent e) {
             cleanup(false);
         }
 
-        public void drop(DropTargetDropEvent e) {
+        @Override
+				public void drop(DropTargetDropEvent e) {
             TransferHandler importer =
                 ((HasGetTransferHandler)component).getTransferHandler();
 
@@ -1522,7 +1538,8 @@ public class TransferHandler {
             }
         }
 
-        public void dropActionChanged(DropTargetDragEvent e) {
+        @Override
+				public void dropActionChanged(DropTargetDragEvent e) {
             /*
              * Work-around for Linux bug where dropActionChanged
              * is called before dragEnter.
@@ -1563,7 +1580,8 @@ public class TransferHandler {
         /**
          * a Drag gesture has been recognized
          */
-        public void dragGestureRecognized(DragGestureEvent dge) {
+        @Override
+				public void dragGestureRecognized(DragGestureEvent dge) {
             JComponent c = (JComponent) dge.getComponent();
             TransferHandler th = c.getTransferHandler();
             Transferable t = th.createTransferable(c);
@@ -1586,25 +1604,29 @@ public class TransferHandler {
         /**
          * as the hotspot enters a platform dependent drop site
          */
-        public void dragEnter(DragSourceDragEvent dsde) {
+        @Override
+				public void dragEnter(DragSourceDragEvent dsde) {
         }
 
         /**
          * as the hotspot moves over a platform dependent drop site
          */
-        public void dragOver(DragSourceDragEvent dsde) {
+        @Override
+				public void dragOver(DragSourceDragEvent dsde) {
         }
 
         /**
          * as the hotspot exits a platform dependent drop site
          */
-        public void dragExit(DragSourceEvent dsde) {
+        @Override
+				public void dragExit(DragSourceEvent dsde) {
         }
 
         /**
          * as the operation completes
          */
-        public void dragDropEnd(DragSourceDropEvent dsde) {
+        @Override
+				public void dragDropEnd(DragSourceDropEvent dsde) {
             DragSourceContext dsc = dsde.getDragSourceContext();
             JComponent c = (JComponent)dsc.getComponent();
             if (dsde.getDropSuccess()) {
@@ -1615,7 +1637,8 @@ public class TransferHandler {
             c.setAutoscrolls(scrolls);
         }
 
-        public void dropActionChanged(DragSourceDragEvent dsde) {
+        @Override
+				public void dropActionChanged(DragSourceDragEvent dsde) {
         }
     }
 
@@ -1635,7 +1658,8 @@ public class TransferHandler {
         /**
          * register this DragGestureRecognizer's Listeners with the Component
          */
-        protected void registerListeners() {
+        @Override
+				protected void registerListeners() {
         }
 
         /**
@@ -1643,7 +1667,8 @@ public class TransferHandler {
          *
          * subclasses must override this method
          */
-        protected void unregisterListeners() {
+        @Override
+				protected void unregisterListeners() {
         }
 
     }
@@ -1658,7 +1683,8 @@ public class TransferHandler {
             super(name);
         }
 
-        public boolean isEnabled(Object sender) {
+        @Override
+				public boolean isEnabled(Object sender) {
             if (sender instanceof JComponent
                 && ((JComponent)sender).getTransferHandler() == null) {
                     return false;
@@ -1670,7 +1696,8 @@ public class TransferHandler {
 //        private static final JavaSecurityAccess javaSecurityAccess =
 //            SharedSecrets.getJavaSecurityAccess();
 //
-        public void actionPerformed(final ActionEvent e) {
+        @Override
+				public void actionPerformed(final ActionEvent e) {
             final Object src = e.getSource();
 //
 //            final PrivilegedAction<Void> action = new PrivilegedAction<Void>() {

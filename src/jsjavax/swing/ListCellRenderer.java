@@ -88,6 +88,9 @@ import jsjava.awt.Component;
 public interface ListCellRenderer
 {
     /**
+     * 
+     * SWINGJS CHANGES THIS TO JComponent, not Component
+     * 
      * Return a component that has been configured to display the specified
      * value. That component's <code>paint</code> method is then called to
      * "render" the cell.  If it is necessary to compute the dimensions
@@ -106,7 +109,7 @@ public interface ListCellRenderer
      * @see ListSelectionModel
      * @see ListModel
      */
-    Component getListCellRendererComponent(
+    JComponent getListCellRendererComponent(
         JList list,
         Object value,
         int index,

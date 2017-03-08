@@ -2,8 +2,6 @@ package swingjs.plaf;
 
 
 import javajs.util.PT;
-
-
 import jsjava.awt.event.ItemEvent;
 import jsjava.awt.event.ItemListener;
 import jsjava.beans.PropertyChangeEvent;
@@ -53,7 +51,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		switch (eventType) {
 		case -1:
       int index = PT.parseInt("" + DOMNode.getAttr(domNode, "selectedIndex"));
-      comboBox.setSelectedIndex(index);
+      	comboBox.setSelectedIndex(index);
 			break;
 		}
 		return true;
@@ -83,6 +81,18 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
         "ComboBox.foreground",
         "ComboBox.font");
 	}
+
+	/**
+	 * prefix for the HTML5LookAndFeal
+	 * 
+	 * @return
+	 */
+
+	@Override
+	protected String getPropertyPrefix() {
+		return "ComboBox.";
+	}
+
 
 	@Override
 	protected void getDisabledColors(String pp) {

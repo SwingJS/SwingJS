@@ -34,7 +34,6 @@ import jsjava.awt.event.MouseEvent;
 import jsjava.awt.event.MouseMotionListener;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.BorderFactory;
-import jsjavax.swing.ButtonModel;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JMenuItem;
 import jsjavax.swing.LookAndFeel;

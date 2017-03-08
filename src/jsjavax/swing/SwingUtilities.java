@@ -1178,7 +1178,7 @@ public class SwingUtilities implements SwingConstants
      * @see jsjava.awt.Component#isLightweight
      */
     public static void paintComponent(Graphics g, Component c, Container p, int x, int y, int w, int h) {
-        getCellRendererPane(c, p).paintComponent(g, c, p, x, y, w, h,false);
+        getCellRendererPane(c, p).paintComponentSAEM(g, c, p, x, y, w, h,false);
     }
 
     /**

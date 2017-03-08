@@ -264,4 +264,14 @@ public abstract class DOMNode {
 		domNode.appendChild(label);
 	}
 
+	public static void removeAllChildren(DOMNode node) {
+		/**
+		 * @j2sNative
+		 * 
+		 *            while (node.hasChildNodes()) {
+		 *            node.removeChild(node.lastChild); }
+		 */
+		{}
+	}
+
 }

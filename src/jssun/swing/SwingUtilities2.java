@@ -698,7 +698,7 @@ public class SwingUtilities2 {
         ListCellRenderer renderer = list.getCellRenderer();
         ListModel dataModel = list.getModel();
         Object value = dataModel.getElementAt(index);
-        Component item = renderer.getListCellRendererComponent(list,
+        JComponent item = renderer.getListCellRendererComponent(list,
                           value, index, false, false);
         Dimension itemSize = item.getPreferredSize();
         Rectangle cellBounds = list.getCellBounds(index, index);

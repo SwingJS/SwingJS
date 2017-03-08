@@ -110,7 +110,7 @@ public class DefaultListCellRenderer extends JLabel
     }
 
     @Override
-		public Component getListCellRendererComponent(
+		public JComponent getListCellRendererComponent(
         JList list,
         Object value,
         int index,
