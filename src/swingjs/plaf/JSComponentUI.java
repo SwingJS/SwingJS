@@ -1455,7 +1455,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	}
 	
 	protected Color getInactiveTextColor(Color fg) {
-		// overridden in JSTextUI
+		// overridden in JSTextUI to include consideration of editable
 		return (inactiveForeground == null ? fg : inactiveForeground);
 	}
 	
