@@ -30,7 +30,6 @@ import jsjava.util.EventObject;
 import jsjavax.swing.AbstractButton;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JComponent;
-import jsjavax.swing.LookAndFeel;
 import jsjavax.swing.SwingConstants;
 import jsjavax.swing.UIManager;
 import jsjavax.swing.event.ChangeEvent;
@@ -457,6 +456,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * to the LightweightDispatcher that we already know what button was clicked;
 	 * it is not necessary to check x and y for that. This ensures perfect
 	 * correspondence between a clicked button and its handling by SwingJS.
+	 * 
+	 * The action will be handled by a standard Java MouseListener
 	 * 
 	 * @param button
 	 */
@@ -1228,6 +1229,9 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		// are BEHIND the button. We will need to paint onto the
 		// glass pane for this to work, and then also manage
 		// mouse clicks and key clicks with that in mind.
+		
+		// used by JSListUI
+		
 	}
 
 	@Override
@@ -1447,7 +1451,12 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			setBackground(b || !(bg instanceof UIResource) || inactiveBackground == null ? bg : inactiveBackground);
 		}
 		Color fg = c.getForeground();
-		setForeground(b || inactiveForeground == null ? fg : inactiveForeground);
+		setForeground(b ? fg : getInactiveTextColor(fg));
+	}
+	
+	protected Color getInactiveTextColor(Color fg) {
+		// overridden in JSTextUI
+		return (inactiveForeground == null ? fg : inactiveForeground);
 	}
 	
 	protected void getDisabledColors(String pp) {
