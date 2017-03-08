@@ -2003,7 +2003,7 @@ public abstract class JSTextUI extends JSLightweightUI {// implements {ViewFacto
 		this.editable = editable;
 		if (domNode == null)
 			return;
-		DOMNode.setAttr(domNode, "readOnly", editable ? "true" : null);
+		DOMNode.setAttr(domNode, "readOnly", editable ? null : "true");
 	}
 
 	// private static DragListener getDragListener() {
