@@ -12,6 +12,8 @@ package test;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -164,7 +166,6 @@ public class Test_Layout extends JApplet {
       outch.addItem("Lift ");
       outch.addItem("  Cl ");
       outch.select(0);
-
       dragOutputCh = new Choice();
       dragOutputCh.setBackground(Color.white);
       dragOutputCh.setForeground(Color.black);
@@ -173,34 +174,47 @@ public class Test_Layout extends JApplet {
       dragOutputCh.select(0);
 
       outlft = new JTextField("12.5", 5);
-      outlft.setBackground(Color.black);
-      outlft.setForeground(Color.yellow);
+      outlft.setBackground(Color.yellow);
+      outlft.setForeground(Color.red);
       outlft.addMouseWheelListener(new MouseWheelListener() {
 
 				@Override
 				public void mouseWheelMoved(MouseWheelEvent e) {
 					System.out.println("JTextField mouse wheeled " + e);
 		      JTextField tf = (JTextField) e.getComponent();
-		      tf.setBackground(Color.BLUE);
+		      //tf.setBackground(Color.BLUE);
 		      double val = Double.parseDouble(tf.getText().trim()) + e.getWheelRotation();
 		      tf.setText("" + val);
 					e.consume();
 				}
       	
       });
-      
+
+      bt3.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					outlft.setEnabled(!outlft.isEnabled());
+					ibt2.setEnabled(!outlft.isEnabled());
+					
+					
+				}
+      	
+      });
+
+
       outlft.addFocusListener(new FocusListener() {
 
 				@Override
 				public void focusGained(FocusEvent e) {
 		      JTextField tf = (JTextField) e.getComponent();
-		      tf.setBackground(Color.BLUE);
+		      //tf.setBackground(Color.BLUE);
 				}
 
 				@Override
 				public void focusLost(FocusEvent e) {
 		      JTextField tf = (JTextField) e.getComponent();
-		      tf.setBackground(Color.BLACK);
+		      //tf.setBackground(Color.BLACK);
 		      //repaint(); // unnecessary
 		    }      	
       });
