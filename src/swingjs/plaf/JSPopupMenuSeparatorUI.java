@@ -6,7 +6,7 @@ public class JSPopupMenuSeparatorUI extends JSSeparatorUI {
 	public JSPopupMenuSeparatorUI() {
 		super();
 		isMenuItem = true;
-		allowBackground = false;
+		allowPaintedBackground = false;
 	}
 
 }

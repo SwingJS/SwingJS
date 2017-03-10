@@ -46,6 +46,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -76,6 +77,10 @@ public class ListDemo extends JPanel
         listModel.addElement("Jane Doe");
         listModel.addElement("John Smith");
         listModel.addElement("Kathy Green");
+        listModel.addElement("Kathy Green2");
+        listModel.addElement("Kathy Green3");
+        listModel.addElement("Kathy Green4");
+        listModel.addElement("Kathy Green5");
 
         //Create the list and put it in a scroll pane.
         list = new JList(listModel);
@@ -98,6 +103,20 @@ public class ListDemo extends JPanel
         employeeName = new JTextField(10);
         employeeName.addActionListener(hireListener);
         employeeName.getDocument().addDocumentListener(hireListener);
+        
+        
+        list.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+						if (e.getValueIsAdjusting())
+							return;
+						System.out.println(e.getValueIsAdjusting() + " " + list.getMinSelectionIndex() + " " + list.getMaxSelectionIndex());
+						employeeName.setText((String) list.getModel().getElementAt(list.getMinSelectionIndex()));
+					}
+        	
+        });
+
         String name = listModel.getElementAt(
                               list.getSelectedIndex()).toString();
 
@@ -243,7 +262,7 @@ public class ListDemo extends JPanel
      * this method should be invoked from the
      * event-dispatching thread.
      */
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("ListDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

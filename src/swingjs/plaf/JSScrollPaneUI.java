@@ -56,7 +56,7 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 	// children[1]  vert scrollbar
 	// children[2]  horiz scrollbar
 	
-	boolean scrollBarUIDisabled = true;
+	boolean scrollBarUIDisabled = false;//true;
 
 	private boolean setViewPort() {
 		// first time through -- could be a view, but not necessarily
@@ -127,10 +127,31 @@ public class JSScrollPaneUI extends JSLightweightUI  implements PropertyChangeLi
 		}
 		// isTainted = true;
 		float v = vertBarUI.jSlider.getValue();
-		float range = viewport.getHeight() - scrolledComponent.getHeight();
+		int ht = scrolledComponent.getHeight();
+		float range = viewport.getHeight();
+		if (scrolledComponent.getUIClassID() == "TextAreaUI") {
+			/**
+			 * @j2sNative
+			 * 
+			 *            var x = this.scrolledComponent.ui.domNode; 
+			 *            x.style.height = null; 
+			 *            ht = range + x.scrollHeight; 
+			 *            x.style.height = ht + "px";
+			 *            
+			 *             this.c.verticalScrollBar.setVisibleAmount(Math.floor(range/ht * 100) );
+			 */
+			{}
+		}
+		
+	  range -= ht;
 		int pos = Math.min(0, (int) (range * v / 100));
-		DOMNode.setStyles(((JSComponentUI) scrolledComponent.ui).domNode, "top",
-				pos + "px");
+		scrolledComponent.setLocation(scrolledComponent.getX(), pos);
+		// this needs to be sent through the message system; the component is actually moved, amazingly
+//		DOMNode.setStyles(((JSComponentUI) scrolledComponent.ui).domNode, "top",
+	//			pos + "px", "position", "absolute");
+		
+		// why next needed?
+		DOMNode.setStyles(((JSComponentUI) scrolledComponent.ui).domNode, "position", "absolute");
 	}
 
 

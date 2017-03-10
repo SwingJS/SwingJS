@@ -341,4 +341,6 @@ public abstract class ComponentUI implements ComponentPeer {
 
 		abstract public DOMNode getDOMNode();
 
+		abstract public void setAllowPaintedBackground(boolean b);
+
 }

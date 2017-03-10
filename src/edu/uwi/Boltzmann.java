@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.Border;
 //import java.awt.Toolkit;
@@ -453,6 +454,15 @@ public class Boltzmann extends JApplet {
 			ShowText.appendLine("WL " + i + "= " + df.format(DispEntropy.Entropy[i]));
 		ShowText.setRows(curMaxEnergy + EntropyCalcs + 2);
 		ShowText.setText(ShowText.levelInfo.toString());
+		JViewport vp = DispResults.getViewport();
+    Insets insets = vp.getInsets();
+    Dimension viewPrefSize = vp.getPreferredSize();
+    Dimension vpSize = vp.getSize();
+    Dimension extentSize = vp.toViewCoordinates(vpSize);
+    Dimension viewSize = new Dimension(viewPrefSize);
+		System.out.println(ShowText.getHeight() + " " + insets + " " + viewPrefSize + " " + vpSize + " " + extentSize + " " + viewSize);
+
+		
 		repaint();
 	}
 

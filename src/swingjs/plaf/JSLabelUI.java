@@ -1,5 +1,6 @@
 package swingjs.plaf;
 
+import jsjava.awt.Dimension;
 import jsjavax.swing.ImageIcon;
 import jsjavax.swing.JLabel;
 import jsjavax.swing.LookAndFeel;

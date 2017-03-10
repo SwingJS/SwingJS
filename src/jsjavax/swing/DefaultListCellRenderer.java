@@ -92,6 +92,9 @@ public class DefaultListCellRenderer extends JLabel
         setOpaque(true);
         setBorder(getNoFocusBorder());
         setName("List.cellRenderer");
+        // JavaScript is a little slow on painting selection backgrounds, so we instead 
+        // set the background using CSS
+        getUI().setAllowPaintedBackground(false);
     }
 
     private Border getNoFocusBorder() {
@@ -182,16 +185,18 @@ public class DefaultListCellRenderer extends JLabel
      */
     @Override
     public boolean isOpaque() {
-        Color back = getBackground();
-        Component p = getParent();
-        if (p != null) {
-            p = p.getParent();
-        }
-        // p should now be the JList.
-        boolean colorMatch = (back != null) && (p != null) &&
-            back.equals(p.getBackground()) &&
-                        p.isOpaque();
-        return !colorMatch && super.isOpaque();
+    	return true;
+// BH ??
+//        Color back = getBackground();
+//        Component p = getParent();
+//        if (p != null) {
+//            p = p.getParent();
+//        }
+//        // p should now be the JList.
+//        boolean colorMatch = (back != null) && (p != null) &&
+//            back.equals(p.getBackground()) &&
+//                        p.isOpaque();
+//        return !colorMatch && super.isOpaque();
     }
 
    /**

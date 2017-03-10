@@ -188,13 +188,15 @@ public class JSMouse {
 		mouseAction(MouseEvent.MOUSE_CLICKED, time, x, y, 1, modifiers, 0);
 	}
 
-	private boolean isMouseDown; // Macintosh may not recognize CTRL-SHIFT-LEFT as
+	private boolean isCtrlShiftMouseDown; // Macintosh may not recognize CTRL-SHIFT-LEFT as
 																// drag, only move
 	private boolean wheeling;
 
 	private void moved(long time, int x, int y, int modifiers) {
+		// BH cannot remember why this was important; removed because the release was being missed.
+		// Maybe for touch devices?
 		// clearKeyBuffer();
-		if (isMouseDown)
+		if (isCtrlShiftMouseDown)
 			mouseAction(MouseEvent.MOUSE_DRAGGED, time, x, y, 0,
 					applyLeftMouse(modifiers), 0);
 		else
@@ -219,13 +221,13 @@ public class JSMouse {
 	private void pressed(long time, int x, int y, int modifiers,
 			boolean isPopupTrigger) {
 		// clearKeyBuffer();
-		isMouseDown = true;
+		isCtrlShiftMouseDown = ((modifiers & (Event.CTRL_MASK | Event.SHIFT_MASK)) == (Event.CTRL_MASK | Event.SHIFT_MASK));
 		wheeling = false;
 		mouseAction(MouseEvent.MOUSE_PRESSED, time, x, y, 0, modifiers, 0);
 	}
 
 	private void released(long time, int x, int y, int modifiers) {
-		isMouseDown = false;
+		isCtrlShiftMouseDown = false;
 		wheeling = false;
 		mouseAction(MouseEvent.MOUSE_RELEASED, time, x, y, 0, modifiers, 0);
 	}

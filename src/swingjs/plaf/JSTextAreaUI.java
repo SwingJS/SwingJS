@@ -25,7 +25,7 @@ public class JSTextAreaUI extends JSTextUI {
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
-			allowBackground = false;
+			allowPaintedBackground = false;
 			domBtn = focusNode = enableNode = textNode = valueNode = domNode = newDOMObject("textarea", id);
 			DOMNode.setStyles(domNode, "resize", "none");
 			setDataUI(domNode);
@@ -57,5 +57,12 @@ public class JSTextAreaUI extends JSTextUI {
 	protected String getPropertyPrefix() {
 		return "TextArea.";
 	}
-	
+
+	@Override
+	protected DOMNode setHTMLElement() {
+		// handled by JScrollPane
+		return DOMNode.setStyles(setHTMLElementCUI(), "overflow", "hidden", "position", "absolute");
+	}
+
+
 }

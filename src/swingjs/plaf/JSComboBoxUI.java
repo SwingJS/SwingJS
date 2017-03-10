@@ -29,7 +29,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 
 	public JSComboBoxUI() {
 		isContainer = true;
-		allowBackground = false;
+		allowPaintedBackground = false;
 		setDoc();
 	}
 	
@@ -38,7 +38,7 @@ public class JSComboBoxUI extends JSLightweightUI implements PropertyChangeListe
 		if (domNode == null) {
 			domNode = focusNode = DOMNode.setStyles(newDOMObject("select", id), 
 					"padding", "0px 0px","lineHeight", "0.8","box-sizing", "border-box");
-			handleAllMouseEvents(domNode);
+			ignoreAllMouseEvents(domNode);
 			DOMNode.addJqueryHandledEvent(this, domNode, "change");
 			addJQueryFocusCallbacks();
 		}

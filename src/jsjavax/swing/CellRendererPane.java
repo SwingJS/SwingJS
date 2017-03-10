@@ -63,8 +63,10 @@ import jsjava.awt.Rectangle;
  *
  * @author Hans Muller
  */
-public class CellRendererPane extends Container
+public class CellRendererPane extends JPanel
 {
+	// SwingJS switched to JPanel instead of Container
+	
     /**
      * Construct a CellRendererPane object.
      */

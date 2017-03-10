@@ -91,10 +91,14 @@ import swingjs.api.DOMNode;
  * 
  *         SwingJS notes:
  * 
- *         Implementation does not include support for drag/drop (tab moving).
+ *         Current implementation does not include support for drag/drop.
  *         
  *         Only changes to Java 6.27 BasicListUI involve cell painting, which is 
- *         replaced by DOM div insertion. See updateItemHTML
+ *         replaced by DOM div insertion (see updateItemHTML), and overall CSS
+ *         width and height, which are set to the full size so that scrolling will
+ *         take place properly via the viewport.
+ *         
+ *         
  * 
  * 
  * 
@@ -102,6 +106,7 @@ import swingjs.api.DOMNode;
 public class JSListUI extends JSLightweightUI {
 
 	protected boolean needFilling = true;
+
 
 	JSListUI() {
 		super();
@@ -339,6 +344,9 @@ public class JSListUI extends JSLightweightUI {
 	}
 
 	private void paintImpl(Graphics g, JComponent c) {
+		
+		// It is the responsibility of the JScrollPane scrollbar will move the JList to new x,y coordinates.
+		
 		needFilling = true;
 		itemHTML = "";
 		switch (layoutOrientation) {
@@ -370,7 +378,6 @@ public class JSListUI extends JSLightweightUI {
 
 		// Determine how many columns we need to paint
 		Rectangle paintBounds = g.getClipBounds();
-
 		int startColumn, endColumn;
 		if (c.getComponentOrientation().isLeftToRight()) {
 			startColumn = convertLocationToColumn(paintBounds.x, paintBounds.y);
@@ -391,7 +398,7 @@ public class JSListUI extends JSLightweightUI {
 			int row = convertLocationToRowInColumn(paintBounds.y, colCounter);
 			int rowCount = getRowCount(colCounter);
 			int index = getModelIndex(colCounter, row);
-			Rectangle rowBounds = getCellBounds2(list, index, index);
+			Rectangle rowBounds = getCellBounds(list, index, index);
 
 			if (rowBounds == null) {
 				// Not valid, bail!
@@ -656,14 +663,16 @@ public class JSListUI extends JSLightweightUI {
 	 *          The JList component.
 	 * @return The total size of the list.
 	 */
-	public Dimension getPreferredSize(JComponent c) {
+	public Dimension getPreferredSize() {//JComponent c) {
 		maybeUpdateLayoutState();
+		return getListDimensions();
+	}
 
+	private Dimension getListDimensions() {
 		int lastRow = list.getModel().getSize() - 1;
 		if (lastRow < 0) {
 			return new Dimension(0, 0);
 		}
-
 		Insets insets = list.getInsets();
 		int width = cellWidth * columnCount + insets.left + insets.right;
 		int height;
@@ -998,7 +1007,7 @@ public class JSListUI extends JSLightweightUI {
 	 */
 	public Point indexToLocation(JList list, int index) {
 		maybeUpdateLayoutState();
-		Rectangle rect = getCellBounds2(list, index, index);
+		Rectangle rect = getCellBounds(list, index, index);
 
 		if (rect != null) {
 			return new Point(rect.x, rect.y);
@@ -1009,7 +1018,7 @@ public class JSListUI extends JSLightweightUI {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Rectangle getCellBounds2(JList list, int index1, int index2) {
+	public Rectangle getCellBounds(JList list, int index1, int index2) {
 		maybeUpdateLayoutState();
 
 		int minIndex = Math.min(index1, index2);
@@ -1132,7 +1141,7 @@ public class JSListUI extends JSLightweightUI {
 		if (row >= getRowCount(0) || row < 0) {
 			return -1;
 		}
-		Rectangle bounds = getCellBounds2(list, row, row);
+		Rectangle bounds = getCellBounds(list, row, row);
 		return bounds.y;
 	}
 
@@ -1353,8 +1362,8 @@ public class JSListUI extends JSLightweightUI {
 	 */
 	protected void maybeUpdateLayoutState() {
 		if (updateLayoutStateNeeded != 0) {
+			updateLayoutStateNeeded = 0; // SwingJS switch of order here for getting actual size
 			updateLayoutState();
-			updateLayoutStateNeeded = 0;
 		}
 	}
 
@@ -1425,13 +1434,14 @@ public class JSListUI extends JSLightweightUI {
 		}
 
 		columnCount = 1;
+		getSwingJSListActualSize(fixedCellWidth, fixedCellHeight);
 		if (layoutOrientation != JList.VERTICAL) {
 			updateHorizontalLayoutState(fixedCellWidth, fixedCellHeight);
 		}
 	}
 
 	/**
-	 * Invoked when the list is layed out horizontally to determine how many
+	 * Invoked when the list is laid out horizontally to determine how many
 	 * columns to create.
 	 * <p>
 	 * This updates the <code>rowsPerColumn, </code><code>columnCount</code>,
@@ -1440,7 +1450,22 @@ public class JSListUI extends JSLightweightUI {
 	 */
 	private void updateHorizontalLayoutState(int fixedCellWidth,
 			int fixedCellHeight) {
-		int visRows = list.getVisibleRowCount();
+		getWrappedListDimensions(list.getVisibleRowCount(), fixedCellWidth, fixedCellHeight);
+	}
+
+	private void getSwingJSListActualSize(int fixedCellWidth, int fixedCellHeight) {
+		if (layoutOrientation != JList.VERTICAL) {
+			getWrappedListDimensions(list.getModel().getSize(), fixedCellWidth,
+					fixedCellHeight);
+		}
+		Dimension d = getListDimensions();
+		jsActualWidth = d.width;
+		jsActualHeight = d.height;
+		System.out.println("ListUI Actual size is " + d);
+	}
+	
+	private void getWrappedListDimensions(int visRows, int fixedCellWidth,
+			int fixedCellHeight) {
 		int dataModelSize = list.getModel().getSize();
 		Insets insets = list.getInsets();
 
@@ -2591,7 +2616,7 @@ public class JSListUI extends JSLightweightUI {
 			int firstIndex = Math.min(size - 1, Math.max(e.getFirstIndex(), 0));
 			int lastIndex = Math.min(size - 1, Math.max(e.getLastIndex(), 0));
 
-			Rectangle bounds = getCellBounds2(list, firstIndex, lastIndex);
+			Rectangle bounds = getCellBounds(list, firstIndex, lastIndex);
 
 			if (bounds != null) {
 				list.repaint(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -2736,7 +2761,7 @@ public class JSListUI extends JSLightweightUI {
 				if (isFileList) {
 					return;
 				}
-				Rectangle cellBounds = getCellBounds2(list, row, row);
+				Rectangle cellBounds = getCellBounds(list, row, row);
 				if (cellBounds != null) {
 					list.scrollRectToVisible(cellBounds);
 					list.setSelectionInterval(row, row);
@@ -2773,7 +2798,7 @@ public class JSListUI extends JSLightweightUI {
 		protected void repaintCellFocus() {
 			int leadIndex = adjustIndex(list.getLeadSelectionIndex(), list);
 			if (leadIndex != -1) {
-				Rectangle r = getCellBounds2(list, leadIndex, leadIndex);
+				Rectangle r = getCellBounds(list, leadIndex, leadIndex);
 				if (r != null) {
 					list.repaint(r.x, r.y, r.width, r.height);
 				}
@@ -2853,4 +2878,5 @@ public class JSListUI extends JSLightweightUI {
 	// }
 	//
 	// }
+	
 }

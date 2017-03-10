@@ -877,7 +877,7 @@ public class JSToolkit extends SunToolkit {
 		if (ui == null) {
 			
 			String s = c.getClass().getName();
-			if (s != "javax.swing.Box.Filler" && s != "swingjs.JSApplet") 
+			if (!PT.isOneOf(s, ";javax.swing.Box.Filler;swingjs.JSApplet;")) 
 				System.out.println("[JSToolkit] Component " + s  
 					+ " has no corresponding JSComponentUI.");
 			// Coerce JSComponentUI for this peer.
@@ -1442,5 +1442,9 @@ public class JSToolkit extends SunToolkit {
       System.out.println(url);
     }
 
+  }
+  
+  public static void beep() {
+  	System.out.println("JSToolkit.beep");
   }
 }

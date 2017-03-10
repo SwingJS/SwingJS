@@ -382,8 +382,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		"menuText", "#333333", /* Text color for menus */
 		"text", "#C0C0C0", /* Text background color */
 		"textText", "#333333", /* Text foreground color */
-		"textHighlight", "#000080", /* Text background color when selected */
-		"textHighlightText", "#FFFFFF", /* Text color when selected */
+		"textHighlight", "#B8CFE5", /* Text color when selected */
+		"textHighlightText", "#000000", /* Text color when selected */
 		"textInactiveText", "#808080", /* Text color when disabled */
 		"control", "#EEEEEE", // SECONDARY3 Default color for controls (buttons, sliders, etc)
 		"controlText", "#333333", //  Default color for text in controls 
@@ -604,34 +604,34 @@ public class HTML5LookAndFeel extends LookAndFeel {
 		// // *** FileChooser / FileView value objects
 		//
 		// Object newFolderIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/NewFolder.gif");
 		// Object upFolderIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/UpFolder.gif");
 		// Object homeFolderIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/HomeFolder.gif");
 		// Object detailsViewIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/DetailsView.gif");
 		// Object listViewIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/ListView.gif");
 		// Object directoryIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/Directory.gif");
 		// Object fileIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/File.gif");
 		// Object computerIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/Computer.gif");
 		// Object hardDriveIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/HardDrive.gif");
 		// Object floppyDriveIcon = SwingUtilities2.makeIcon(getClass(),
-		// BasicLookAndFeel.class,
+		// HTML5LookAndFeel.class,
 		// "icons/FloppyDrive.gif");
 		//
 		//
@@ -903,8 +903,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "ComboBox.buttonShadow", controlShadow,
 				// "ComboBox.buttonDarkShadow", controlDkShadow,
 				// "ComboBox.buttonHighlight", controlLtHighlight,
-				// "ComboBox.selectionBackground", textHighlight,
-				// "ComboBox.selectionForeground", textHighlightText,
+				"ComboBox.selectionBackground", textHighlight,
+				"ComboBox.selectionForeground", textHighlightText,
 				 "ComboBox.disabledBackground", control,
 				 "ComboBox.disabledForeground", disabledTextColor,
 				"ComboBox.timeFactor",
@@ -952,7 +952,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "InternalFrame.borderLight", controlHighlight,
 				// "InternalFrame.border", internalFrameBorder,
 				// "InternalFrame.icon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/JavaCup16.png"),
 				//
 				// /* Default frame icons are undefined for Basic. */
@@ -1047,8 +1047,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				window,
 				"List.foreground",
 				textText,
-				// "List.selectionBackground", textHighlight,
-				// "List.selectionForeground", textHighlightText,
+			  "List.selectionBackground", textHighlight,
+				"List.selectionForeground", textHighlightText,
 				// "List.noFocusBorder", noFocusBorder,
 				// "List.focusCellHighlightBorder", focusCellHighlightBorder,
 				// "List.dropLineColor", controlShadow,
@@ -1305,16 +1305,16 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				// "OptionPane.buttonAreaBorder", optionPaneButtonAreaBorder,
 				// "OptionPane.minimumSize", optionPaneMinimumSize,
 				// "OptionPane.errorIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/Error.gif"),
 				// "OptionPane.informationIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/Inform.gif"),
 				// "OptionPane.warningIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/Warn.gif"),
 				// "OptionPane.questionIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/Question.gif"),
 				// "OptionPane.windowBindings", new Object[] {
 				// "ESCAPE", "close" },
@@ -1886,10 +1886,10 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				editorMargin,
 				//
 				// "html.pendingImage", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/image-delayed.png"),
 				// "html.missingImage", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/image-failed.png"),
 				// *** TitledBorder
 				// "TitledBorder.font", dialogPlain12,
@@ -1957,8 +1957,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				textText,
 				"Tree.textBackground",
 				table.get("text"),
-				// "Tree.selectionForeground", textHighlightText,
-				// "Tree.selectionBackground", textHighlight,
+				"Tree.selectionForeground", textHighlightText,
+				"Tree.selectionBackground", textHighlight,
 				// "Tree.selectionBorderColor", black,
 				// "Tree.dropLineColor", controlShadow,
 				// "Tree.editorBorder", blackLineBorder,
@@ -1966,13 +1966,13 @@ public class HTML5LookAndFeel extends LookAndFeel {
 				new Integer(13), "Tree.rowHeight", new Integer(16),
 				"Tree.scrollsOnExpand", Boolean.TRUE,
 				// "Tree.openIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/TreeOpen.gif"),
 				// "Tree.closedIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/TreeClosed.gif"),
 				// "Tree.leafIcon", SwingUtilities2.makeIcon(getClass(),
-				// BasicLookAndFeel.class,
+				// HTML5LookAndFeel.class,
 				// "icons/TreeLeaf.gif"),
 				// "Tree.expandedIcon", null,
 				// "Tree.collapsedIcon", null,
@@ -2285,7 +2285,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 	// new PrivilegedAction() {
 	// public Object run() {
 	// try {
-	// InputStream resource = BasicLookAndFeel.this.
+	// InputStream resource = HTML5LookAndFeel.this.
 	// getClass().getResourceAsStream(soundFile);
 	// if (resource == null) {
 	// return null;
@@ -2368,8 +2368,8 @@ public class HTML5LookAndFeel extends LookAndFeel {
 	// */
 	// static void installAudioActionMap(ActionMap map) {
 	// LookAndFeel laf = UIManager.getLookAndFeel();
-	// if (laf instanceof BasicLookAndFeel) {
-	// map.setParent(((BasicLookAndFeel)laf).getAudioActionMap());
+	// if (laf instanceof HTML5LookAndFeel) {
+	// map.setParent(((HTML5LookAndFeel)laf).getAudioActionMap());
 	// }
 	// }
 	//
@@ -2382,7 +2382,7 @@ public class HTML5LookAndFeel extends LookAndFeel {
 	// */
 	// static void playSound(JComponent c, Object actionKey) {
 	// LookAndFeel laf = UIManager.getLookAndFeel();
-	// if (laf instanceof BasicLookAndFeel) {
+	// if (laf instanceof HTML5LookAndFeel) {
 	// ActionMap map = c.getActionMap();
 	// if (map != null) {
 	// Action audioAction = map.get(actionKey);

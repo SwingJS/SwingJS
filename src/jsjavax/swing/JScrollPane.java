@@ -810,7 +810,7 @@ public class JScrollPane extends JComponent implements ScrollPaneConstants
 
 
     /**
-     * Returns the vertical scroll bar that controls the viewports
+     * Returns the vertical scroll bar that controls the viewport's
      * vertical view position.
      *
      * @return the <code>verticalScrollBar</code> property

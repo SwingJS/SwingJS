@@ -1,5 +1,4 @@
 /* $RCSfile$
- * $Author: egonw $
  * $Date: 2006-03-18 15:59:33 -0600 (Sat, 18 Mar 2006) $
  * $Revision: 4652 $
  *

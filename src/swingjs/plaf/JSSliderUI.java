@@ -206,8 +206,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		// mark the handle and track with the "swingjs-ui" class
 		// so as to ignore all mouse/touch events from Jmol._jsSetMouse();
 		if (isNew) {
-			handleAllMouseEvents(sliderHandle);
-			handleAllMouseEvents(sliderTrack);
+			ignoreAllMouseEvents(sliderHandle);
+			ignoreAllMouseEvents(sliderTrack);
 			setDataComponent(sliderHandle);
 		}
 	}
@@ -363,7 +363,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		if (!paintTicks && !paintLabels) {
 			if (isScrollPaneVertScrollBar) {
 				DOMNode.setStyles(sliderHandle, "left", "-8px");
-			} else if (orientation == "vertical") {
+			} 
+			if (orientation == "vertical") {
 				DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
 			}
 		}

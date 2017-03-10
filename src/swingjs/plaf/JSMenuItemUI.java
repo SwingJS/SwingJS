@@ -14,7 +14,7 @@ public class JSMenuItemUI extends JSButtonUI {
 	public JSMenuItemUI() {
 		super();
 		isMenuItem = true;
-		allowBackground = false;
+		allowPaintedBackground = false;
 	}
 
 	@Override

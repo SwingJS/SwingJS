@@ -344,6 +344,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	private DOMNode waitImage;
 
 	private boolean canAlignText;
+	private boolean canAlignIcon;
 
 	public JSComponentUI() {
 		setDoc();
@@ -472,7 +473,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * 
 	 * @param node
 	 */
-	protected void handleAllMouseEvents(DOMNode node) {
+	protected void ignoreAllMouseEvents(DOMNode node) {
 		$(node).addClass("swingjs-ui");
 	}
 
@@ -602,7 +603,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 		if (andSetCSS) {
 			setDataUI(node);
-			handleAllMouseEvents(node);
+			ignoreAllMouseEvents(node);
 		}
 
 		/**
@@ -739,6 +740,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		currentText = text;
 		currentGap = gap;
 		canAlignText = false;
+		canAlignIcon = false;
 		imageNode = null;
 		if (iconNode != null) {
 			DOMNode.setAttr(iconNode, "innerHTML", "");
@@ -751,6 +753,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 		if (text == null || text.length() == 0) {
 			text = "";
+			if (icon != null)
+				canAlignIcon = true;
 		} else {
 			if (icon == null) {
 				canAlignText = true;
@@ -826,7 +830,11 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * 
 	 *  (textfield, textarea, button, combobox, menuitem)
 	 */
-	protected boolean allowBackground = true;
+	protected boolean allowPaintedBackground = true;
+	
+  public void setAllowPaintedBackground(boolean TF) {
+  	allowPaintedBackground = TF;
+  }
 
 	@Override
 	public DOMNode getDOMNode() {
@@ -973,8 +981,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			// but this almost certainly has issues with zooming
 
 			$(body).after(div);
-			if (node == this.centeringNode)
-				DOMNode.setStyles(div, "lineHeight", "0.8"); // necessary for exact label centering	
 			//DOMNode test = (jc.uiClassID == "LabelUI" ? node : div);
 			Rectangle r = div.getBoundingClientRect();
 			// From the DOM; Will be Rectangle2D.double, actually.
@@ -1215,7 +1221,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 			System.out.println("drawing " + c.getWidth() + " " + c.getHeight());
 		}
 		setHTMLElement();
-		if (c.isOpaque() && allowBackground) {
+		if (c.isOpaque() && allowPaintedBackground) {
 				g.setColor(c.getBackground());
     		g.fillRect(0, 0, c.getWidth(), c.getHeight());
     		setBackgroundPainted();
@@ -1442,9 +1448,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	protected Color inactiveForeground = colorUNKNOWN, inactiveBackground = colorUNKNOWN;
 
 	private boolean enabled = true;
-
-
-
+	
 	private void enableNode(DOMNode node, boolean b) {
 		if (node == null)
 			return;
@@ -1522,15 +1526,27 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 					+ (domNode == null));
 		if (domNode == null)
 			updateDOMNode();
-		DOMNode.setSize(domNode, width + size.width, height + size.height);
-		if (outerNode != null)
-			DOMNode.setSize(outerNode, width + size.width, height + size.height);
+		setJSDimensions(width + size.width, height + size.height);
 	  setInnerComponentBounds(width, height);
+	}
+
+	/**
+	 * used by JSListUI to give it the correct scrollable size for its JViewPort
+	 */
+	protected int jsActualWidth, jsActualHeight;
+
+	protected void setJSDimensions(int width, int height) {
+		if (jsActualWidth > 0)
+			width = jsActualWidth;
+		if (jsActualHeight > 0)
+			height = jsActualHeight;
+		DOMNode.setSize(domNode, width, height);
+		if (outerNode != null)
+			DOMNode.setSize(outerNode, width, height);
 	}
 
 	protected void setInnerComponentBounds(int width, int height) {
 		setAlignment();
-
 		if (debugging)
 			System.out.println("CUI reshapeMe: need to reshape " + id + " w:"
 					+ this.width + "->" + width + " h:" + this.height + "->" + height);
@@ -1538,7 +1554,10 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 
 	private void setAlignment() {
 		if (canAlignText) {
-			setVerticalAlignment();
+			setVerticalAlignment(true);
+			setTextAlignment();
+		} else if (canAlignIcon) {
+			setVerticalAlignment(false);
 			setTextAlignment();
 		}
 	}
@@ -1592,14 +1611,22 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 	}
 
-	protected void setVerticalAlignment() {
+	protected void setVerticalAlignment(boolean isText) {
 		int type = ((AbstractButton) c).getVerticalAlignment();
 		if (centeringNode == null || this.c.getHeight() == 0)
 			return;
 		int top = 0;
 		int h = actualHeight;
-		if (h == 0)
-			h = setHTMLSize1(domNode, false, false).height;
+		if (h == 0) {
+			if (isText) {
+				h = setHTMLSize1(domNode, false, false).height;
+			// for example, a 12-pt font might have a height of 16, and ascent of 13, and descent of 3
+			// adjust down to center only the ascension of the text.
+				h -= (c.getFont().getFontMetrics().getDescent());
+			} else {
+				h = iconHeight;
+			}				
+		}
 		switch (type) {
 		case SwingConstants.TOP:
 			break;
@@ -1704,7 +1731,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		//if (color == null) // from paintComponentSafely
 		DOMNode.setStyles(node, "background-color",
 				JSToolkit.getCSSColor(color == null ? rootPaneColor : color));
-		if (allowBackground && jc.selfOrParentBackgroundPainted())
+		if (allowPaintedBackground && jc.selfOrParentBackgroundPainted())
 			setTransparent(node);
 		else
 			checkTransparent(node);

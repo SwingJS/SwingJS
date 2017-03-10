@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javajs.util.SB;
 
-public interface GenericBinaryDocument {
+public interface GenericBinaryDocument extends GenericBinaryDocumentReader {
 
   GenericBinaryDocument setStream(BufferedInputStream bis, boolean isBigEndian);
 
@@ -26,34 +26,15 @@ public interface GenericBinaryDocument {
 
   void seek(long i);
 
-  byte readByte() throws Exception;
-
-  int readUInt8() throws Exception;
-
-  int readInt() throws Exception;
-
-  int readIntLE() throws Exception;
-
-  long readLong() throws Exception;
-
-  float readFloat() throws Exception;
-
-  double readDouble() throws Exception;
-
-  short readShort() throws Exception;
-
-  int readUnsignedShort() throws Exception;
-
-  String readString(int i) throws Exception;
-
-  int readByteArray(byte[] b, int off, int len) throws Exception;
-
-  byte[] readBytes(int n) throws Exception;
-
-  void close();
-
   void setOutputChannel(GenericOutputChannel out);
 
   InputStream getInputStream();
+
+  int readIntLE() throws Exception;
+
+  int readByteArray(byte[] b, int off, int len) throws Exception;
+
+
+  void close();
 
 }

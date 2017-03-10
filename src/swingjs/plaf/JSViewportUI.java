@@ -37,12 +37,18 @@ import swingjs.api.DOMNode;
 public class JSViewportUI extends JSLightweightUI implements PropertyChangeListener,
 ChangeListener {
 
+	/**
+	 * Note that JViewport itself does not have scrollbars. These can be attached by the
+	 * developer or taken care of by a JScrollPane.
+	 * 
+	 */
 	JViewport viewport;
 
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			domNode = newDOMObject("div", id);
+			ignoreAllMouseEvents(domNode);
 		}
 		// add code here for adjustments when changes in bounds or other properties occur.
 		return domNode;

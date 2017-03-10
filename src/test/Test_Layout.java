@@ -11,6 +11,7 @@ package test;
 
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,7 +66,8 @@ public class Test_Layout extends JApplet {
     final JPanel p = new JPanel();
     p.setLayout(new GridLayout(2,2,10,10));
     Con con = new Con();
-    p.add(new Label("quadrant 1", SwingConstants.CENTER));
+    Label l = new Label("quadrant 1", SwingConstants.CENTER);
+    p.add(l);
     p.add(con);
     p.add(new Label("quadrant 3", SwingConstants.CENTER));
     p.add(new Label("quadrant 4", SwingConstants.CENTER));
@@ -102,6 +104,7 @@ public class Test_Layout extends JApplet {
       setLayout(new GridLayout(7, 4, 10, 10));
 
       l1 = new Label("Output", SwingConstants.RIGHT);
+      l1.setFont(new Font("SansSerif", Font.PLAIN, 12));
       l1.setForeground(Color.red);
       l2 = new Label("Input", SwingConstants.CENTER);
       l2.setForeground(Color.blue);
@@ -196,7 +199,11 @@ public class Test_Layout extends JApplet {
 				public void actionPerformed(ActionEvent event) {
 					outlft.setEnabled(!outlft.isEnabled());
 					ibt2.setEnabled(!outlft.isEnabled());
-					
+					System.out.println("label min size " + l1.getUI().getMinimumSize(l1)
+							 + " h=" + l1.getFontMetrics(l1.getFont()).getHeight() + " " + l1.getFont() 
+							 + " l=" + l1.getFontMetrics(l1.getFont()).getLeading()
+							 + " a=" + l1.getFontMetrics(l1.getFont()).getAscent()
+							 + " d=" + l1.getFontMetrics(l1.getFont()).getDescent());
 					
 				}
       	

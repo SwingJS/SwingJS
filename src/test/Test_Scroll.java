@@ -101,7 +101,7 @@ public class Test_Scroll extends JApplet {
 				// e.consume(); not necessary for scrollbars
 			}
 		});
-		final JToggleButton button = new JToggleButton("test");
+		final JToggleButton button = new JToggleButton("ytesty");
 		// BasicToggleButtonUI us; just using this to get access to code for
 		// BasicToggleButtonUI
 		setSize(button, 80, 20);

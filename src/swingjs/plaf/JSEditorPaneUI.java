@@ -18,7 +18,7 @@ public class JSEditorPaneUI  extends JSTextUI {
   @Override
   protected DOMNode updateDOMNode() {
     if (domNode == null) {
-      allowBackground = false;
+      allowPaintedBackground = false;
       domBtn = focusNode = enableNode = textNode = valueNode = domNode = 
           newDOMObject("div", id);
       DOMNode.setStyles(domNode, "resize", "none");

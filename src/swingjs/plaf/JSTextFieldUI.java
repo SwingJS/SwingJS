@@ -24,7 +24,7 @@ public class JSTextFieldUI extends JSTextUI {
 	@Override
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
-			allowBackground = false;
+			allowPaintedBackground = false;
 			// no textNode here, because in input does not have that.
 			focusNode = enableNode = valueNode = domNode = DOMNode.setStyles(
 					newDOMObject("input", id, "type", inputType),

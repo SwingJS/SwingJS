@@ -7,7 +7,7 @@ public class JSRadioButtonMenuItemUI extends JSRadioButtonUI {
 	public JSRadioButtonMenuItemUI() {
 		super();
 		isMenuItem = true;
-		allowBackground = false;
+		allowPaintedBackground = false;
 	}
 	
 	@Override

@@ -58,6 +58,7 @@ public class SplitPaneDemo2 extends JFrame
         JSplitPane top = splitPaneDemo.getSplitPane();
         splitPaneDemo.getImageList().addListSelectionListener(this);
 
+        
         //XXXX: Bug #4131528, borders on nested split panes accumulate.
         //Workaround: Set the border on any split pane within
         //another split pane to null. Components within nested split
