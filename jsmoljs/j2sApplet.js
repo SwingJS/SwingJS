@@ -2224,6 +2224,7 @@ J2S._setWindowZIndex = function(node, z) {
     zbase += 1000;
   }
   z = (node.style.zIndex = (z > 0 ? zbase : z0));
+  node.style.position = "absolute";
   if (J2S._checkLoading)
     System.out.println("setting z-index to " + z + " for " + node.id); 
   return z;
