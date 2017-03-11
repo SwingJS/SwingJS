@@ -151,6 +151,7 @@ public class Resizer {
 			jframe.setPreferredSize(new Dimension(r.width, r.height));
 			jframe.invalidate();
 			jframe.repackContainer();
+			jframe.toFront();
 		}
 		setPosition(0, 0);
 		// Toolkit.getEventQueue().postEvent(new ComponentEvent(f,
