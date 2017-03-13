@@ -126,7 +126,7 @@ import jsjava.awt.Toolkit;
  * WARNING: Aside from those keys that are defined by the Java language
  * (VK_ENTER, VK_BACK_SPACE, and VK_TAB), do not rely on the values of the VK_
  * constants.  Sun reserves the right to change these values as needed
- * to accomodate a wider range of keyboards in the future.
+ * to accommodate a wider range of keyboards in the future.
  *
  * @author Carl Quinn
  * @author Amy Fowler
@@ -857,7 +857,7 @@ public class KeyEvent extends InputEvent {
      * @see #getKeyCode()
      * @see #setKeyCode(int)
      */
-    int  keyCode;
+    protected int  keyCode;
 
     /**
      * <code>keyChar</code> is a valid unicode character
@@ -868,7 +868,7 @@ public class KeyEvent extends InputEvent {
      * @see #getKeyChar()
      * @see #setKeyChar(char)
      */
-    char keyChar;
+    protected char keyChar;
 
     /**
      * The location of the key on the keyboard.
@@ -884,7 +884,7 @@ public class KeyEvent extends InputEvent {
      * @serial
      * @see #getKeyLocation()
      */
-    int keyLocation;
+    protected int keyLocation;
 
     /*
      * JDK 1.1 serialVersionUID
@@ -1022,7 +1022,11 @@ public class KeyEvent extends InputEvent {
         this(source, id, when, modifiers, keyCode, (char)keyCode);
     }
 
-    /**
+		public KeyEvent() {
+			super();
+		}
+
+		/**
      * Returns the integer keyCode associated with the key in this event.
      *
      * @return the integer code for an actual key on the keyboard.
@@ -1491,7 +1495,7 @@ public class KeyEvent extends InputEvent {
             str.append(" keyChar");
             break;
           default:
-            str.append("'").append(keyChar).append("'");
+            str.append("'").append("" + keyChar).append("'");
             break;
         }
 

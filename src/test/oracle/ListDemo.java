@@ -38,6 +38,8 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -52,12 +54,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 /* ListDemo.java requires no other files. */
 public class ListDemo extends JPanel
@@ -88,8 +95,30 @@ public class ListDemo extends JPanel
         list.setSelectedIndex(0);
         list.addListSelectionListener(this);
         list.setVisibleRowCount(5);
-        JScrollPane listScrollPane = new JScrollPane(list);
+        list.addKeyListener(new KeyListener() {
 
+					@Override
+					public void keyTyped(KeyEvent e) {
+						//System.out.println(e);
+					}
+
+					@Override
+					public void keyPressed(KeyEvent e) {
+						//System.out.println(e);
+					}
+
+					@Override
+					public void keyReleased(KeyEvent e) {
+						//System.out.println(e);
+					}
+        	
+        });
+        
+        JScrollPane listScrollPane = new JScrollPane(list);
+        //JViewport listScrollPane = new JViewport();
+        //listScrollPane.setView(list);
+        BasicScrollBarUI b;
+       
         JButton hireButton = new JButton(hireString);
         HireListener hireListener = new HireListener(hireButton);
         hireButton.setActionCommand(hireString);
@@ -111,7 +140,7 @@ public class ListDemo extends JPanel
 					public void valueChanged(ListSelectionEvent e) {
 						if (e.getValueIsAdjusting())
 							return;
-						System.out.println(e.getValueIsAdjusting() + " " + list.getMinSelectionIndex() + " " + list.getMaxSelectionIndex());
+						System.out.println(e.getValueIsAdjusting() + " " + list.getMinSelectionIndex() + " " + list.getMaxSelectionIndex() + " " + list.getBounds());
 						employeeName.setText((String) list.getModel().getElementAt(list.getMinSelectionIndex()));
 					}
         	
@@ -280,8 +309,50 @@ public class ListDemo extends JPanel
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+  
+    	// JAVA TESTING ONLY -- not JAVASCRIPT
+//      try {
+//				UIManager.setLookAndFeel(new javax.swing.plaf.basic.BasicLookAndFeel(){
+//
+//					@Override
+//					public String getName() {
+//						// TODO Auto-generated method stub
+//						return "mylaf";
+//					}
+//
+//					@Override
+//					public String getID() {
+//						// TODO Auto-generated method stub
+//						return "mylaf";
+//					}
+//
+//					@Override
+//					public String getDescription() {
+//						// TODO Auto-generated method stub
+//						return "mylaf";
+//					}
+//
+//					@Override
+//					public boolean isNativeLookAndFeel() {
+//						// TODO Auto-generated method stub
+//						return false;
+//					}
+//
+//					@Override
+//					public boolean isSupportedLookAndFeel() {
+//						// TODO Auto-generated method stub
+//						return true;
+//					}}
+//				);
+//			} catch (UnsupportedLookAndFeelException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+      
+      javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
+            	
+            	
                 createAndShowGUI();
             }
         });

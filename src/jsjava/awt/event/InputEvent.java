@@ -174,7 +174,7 @@ public abstract class InputEvent extends ComponentEvent {
      * @serial
      * @see #getWhen()
      */
-    long when;
+    protected long when;
 
     /**
      * The state of the modifier mask at the time the input
@@ -186,7 +186,7 @@ public abstract class InputEvent extends ComponentEvent {
      * @see jsjava.awt.event.KeyEvent
      * @see jsjava.awt.event.MouseEvent
      */
-    int modifiers;
+    protected int modifiers;
 
     /*
      * A flag that indicates that this instance can be used to access
@@ -252,7 +252,11 @@ public abstract class InputEvent extends ComponentEvent {
 //        return b;
 //    }
 
-    /**
+    public InputEvent() {
+    	super();
+		}
+
+		/**
      * Returns whether or not the Shift modifier is down on this event.
      */
     public boolean isShiftDown() {

@@ -361,7 +361,10 @@ public abstract class AWTEvent extends EventObject {
         }
     }
 
-    /**
+    public AWTEvent() {
+		}
+
+		/**
      * Retargets an event to a new source. This method is typically used to
      * retarget an event to a lightweight child Component of the original
      * heavyweight source.

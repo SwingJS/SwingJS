@@ -66,7 +66,7 @@ class LazyActionMap extends ActionMapUIResource {
         ActionMap map = (ActionMap)UIManager.get(defaultsKey);
         if (map == null) {
             map = new LazyActionMap(loaderClass);
-//            UIManager.getLookAndFeelDefaults().put(defaultsKey, map);
+            UIManager.getLookAndFeelDefaults().put(defaultsKey, map);
         }
         SwingUtilities.replaceUIActionMap(c, map);
     }
@@ -89,7 +89,7 @@ class LazyActionMap extends ActionMapUIResource {
         ActionMap map = (ActionMap)UIManager.get(defaultsKey);
         if (map == null) {
             map = new LazyActionMap(loaderClass);
-//SwingJS temp            UIManager.getLookAndFeelDefaults().put(defaultsKey, map);
+            UIManager.getLookAndFeelDefaults().put(defaultsKey, map);
         }
         return map;
     }
@@ -153,16 +153,16 @@ class LazyActionMap extends ActionMapUIResource {
 
     private void loadIfNecessary() {
         if (_loader != null) {
+          @SuppressWarnings("unused")
+					Object loader = _loader;
+        	_loader = null;
         	/**
         	 * @j2sNative
         	 * 
-        	 * this._loader.loadActionMap(this);
-        	 * this._loader = null;
+        	 * loader.loadActionMap(this);
         	 */
         	{}
-//            Object loader = _loader;
 //
-//        	_loader = null;
 //            Class klass = (Class)loader;
 //            try {
 //                Method method = klass.getDeclaredMethod("loadActionMap",

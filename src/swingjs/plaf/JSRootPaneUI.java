@@ -20,7 +20,6 @@ public class JSRootPaneUI extends JSLightweightUI {
 	protected DOMNode updateDOMNode() {
 		if (domNode == null) {
 			domNode = newDOMObject("div", id);
-			DOMNode.setStyles(domNode, "overflow","hidden");
 		}
 		// add code here for adjustments when changes in bounds or other properties occur.
 		return domNode;

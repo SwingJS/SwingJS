@@ -35,8 +35,7 @@ public class JSSpinnerUI extends JSLightweightUI {
 					newDOMObject("input", id, "type", "text"), "padding", "0px 1px",
 					"width", "30px", "text-align", "right");
 			vCenter(valueNode, -10);
-			setDataUI(valueNode);
-			bindJSEvents(valueNode, "keydown keypress keyup", Event.KEY_PRESS, true);
+			bindJSKeyEvents(valueNode, false);
 
 			// increment button
 			up = DOMNode.setStyles(newDOMObject("div", id + "_updiv"),

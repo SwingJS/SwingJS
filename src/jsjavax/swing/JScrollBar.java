@@ -429,7 +429,6 @@ public class JScrollBar extends JComponent implements Adjustable
 //                    AccessibleContext.ACCESSIBLE_VALUE_PROPERTY,
 //                    new Integer(oldValue),
 //                    new Integer(m.getValue()));
-//        }
     }
 
 

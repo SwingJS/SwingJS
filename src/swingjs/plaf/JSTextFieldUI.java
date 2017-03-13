@@ -32,9 +32,8 @@ public class JSTextFieldUI extends JSTextUI {
 			DOMNode.setAttrs(focusNode, "ui", this);
 			// not active; requires position:absolute; wrong for standard text box
 			// vCenter(domNode, -10);
-			setDataUI(domNode);
 			setDataComponent(domNode);
-			bindJSEvents(domNode, "keydown keypress keyup", Event.KEY_PRESS, false);
+			bindJSKeyEvents(domNode, false);
 			addJQueryFocusCallbacks();
 		}
 		setPadding(editor.getMargin());

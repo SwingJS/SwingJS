@@ -33,6 +33,7 @@ import jsjava.awt.Component;
 import jsjava.awt.Font;
 import jsjavax.swing.border.Border;
 import jsjavax.swing.plaf.ComponentInputMapUIResource;
+import jsjavax.swing.plaf.InputMapUIResource;
 import jsjavax.swing.plaf.UIResource;
 import jsjavax.swing.text.JTextComponent;
 import jssun.swing.DefaultLayoutStyle;
@@ -231,10 +232,9 @@ public abstract class LookAndFeel
      * @throws NullPointerException if {@code c} is {@code null}
      */
     public static void uninstallBorder(JComponent c) {
-    	JSToolkit.notImplemented(null);
-//        if (c.getBorder() instanceof UIResource) {
-//            c.setBorder(null);
-//        }
+        if (c.getBorder() instanceof UIResource) {
+            c.setBorder(null);
+        }
     }
 
     /**
@@ -262,10 +262,9 @@ public abstract class LookAndFeel
      */
     public static void installProperty(JComponent c,
                                        String propertyName, Object propertyValue) {
-        // this is a special case because the JPasswordField's ancestor heirarchy
+        // this is a special case because the JPasswordField's ancestor hierarchy
         // includes a class outside of jsjavax.swing, thus we cannot call setUIProperty
         // directly.
-//    	JSToolkit.notImplemented(null);
         if (c instanceof JPasswordField) {
             if (!((JPasswordField)c).customSetUIProperty(propertyName, propertyValue)) {
                 c.setUIProperty(propertyName, propertyValue);
@@ -353,11 +352,9 @@ public abstract class LookAndFeel
      * @since 1.3
      */
     public static InputMap makeInputMap(Object[] keys) {
-    	JSToolkit.notImplemented(null);
-//        InputMap retMap = new InputMapUIResource();
-//        loadKeyBindings(retMap, keys);
-//        return retMap;
-    	return null;
+        InputMap retMap = new InputMapUIResource();
+        loadKeyBindings(retMap, keys);
+        return retMap;
     }
 
     /**
@@ -381,11 +378,9 @@ public abstract class LookAndFeel
      */
     public static ComponentInputMap makeComponentInputMap(JComponent c,
                                                           Object[] keys) {
-    	JSToolkit.notImplemented(null);
-//        ComponentInputMap retMap = new ComponentInputMapUIResource(c);
-//        loadKeyBindings(retMap, keys);
-//        return retMap;
-    	return null;
+        ComponentInputMap retMap = new ComponentInputMapUIResource(c);
+        loadKeyBindings(retMap, keys);
+        return retMap;
     }
 
 
@@ -428,17 +423,16 @@ public abstract class LookAndFeel
      * @since 1.3
      */
     public static void loadKeyBindings(InputMap retMap, Object[] keys) {
-    	JSToolkit.notImplemented(null);
-//        if (keys != null) {
-//            for (int counter = 0, maxCounter = keys.length;
-//                 counter < maxCounter; counter++) {
-//                Object keyStrokeO = keys[counter++];
-//                KeyStroke ks = (keyStrokeO instanceof KeyStroke) ?
-//                                (KeyStroke)keyStrokeO :
-//                                KeyStroke.getKeyStroke((String)keyStrokeO);
-//                retMap.put(ks, keys[counter]);
-//            }
-//        }
+        if (keys != null) {
+            for (int counter = 0, maxCounter = keys.length;
+                 counter < maxCounter; counter++) {
+                Object keyStrokeO = keys[counter++];
+                KeyStroke ks = (keyStrokeO instanceof KeyStroke) ?
+                                (KeyStroke)keyStrokeO :
+                                KeyStroke.getKeyStroke((String)keyStrokeO);
+                retMap.put(ks, keys[counter]);
+            }
+        }
     }
 
     /**

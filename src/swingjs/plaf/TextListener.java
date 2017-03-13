@@ -140,10 +140,10 @@ public class TextListener implements MouseListener, MouseMotionListener,
     
   
   /**
-   * Called by JSTextUI.handleJSEvent directly from  
+   * Called by JSTextUI.handleJSEvent
    * 
    * @param ui
-   * @param eventType
+   * @param eventType 
    * @param jQueryEvent
    * @return
    */

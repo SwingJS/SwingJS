@@ -47,7 +47,9 @@ public class JSScrollBarUI extends JSSliderUI {
 		b &= !isInvisible;
 		DOMNode.setStyles(getOuterNode(), "display", b ? "block" : "none");
 		DOMNode.setStyles(jqSlider, "display", b ? "block" : "none");
-	}	
+	}
+	
+
 }
 
 

@@ -23,10 +23,8 @@ public class JSEditorPaneUI  extends JSTextUI {
           newDOMObject("div", id);
       DOMNode.setStyles(domNode, "resize", "none");
       setDataUI(domNode);
-      if (((JTextComponent) c).isEditable()) {
-        bindJSEvents(domNode, "keydown keypress keyup focusout", Event.KEY_PRESS, false);
-        addJQueryFocusCallbacks();
-      }
+      if (((JTextComponent) c).isEditable())
+        bindJSKeyEvents(domNode, true);
     }
     textListener.checkDocument();
     setCssFont(DOMNode.setAttr(domNode, "innerHTML", getComponentText()), c.getFont());

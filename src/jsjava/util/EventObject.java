@@ -49,7 +49,6 @@ public class EventObject {
     protected transient Object source;
 
     public EventObject() {
-    	// ignored
     }
     /**
      * Constructs a prototypical Event.

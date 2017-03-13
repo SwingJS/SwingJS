@@ -4,6 +4,8 @@ package swingjs.plaf;
 import java.util.Dictionary;
 import java.util.Enumeration;
 
+import javajs.J2SRequireImport;
+
 import javax.swing.SwingConstants;
 
 import jsjava.awt.Dimension;
@@ -16,7 +18,6 @@ import jsjavax.swing.JSlider;
 import jsjavax.swing.event.ChangeEvent;
 import jsjavax.swing.event.ChangeListener;
 import jssun.swing.DefaultLookup;
-import javajs.J2SRequireImport;
 import swingjs.JSToolkit;
 import swingjs.api.DOMNode;
 
@@ -25,12 +26,14 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	JSlider jSlider;
 	private int min, max, val, majorSpacing, minorSpacing;
-	private boolean paintTicks, paintLabels, snapToTicks;
+	protected boolean paintTicks;
+	protected boolean paintLabels;
+	private boolean snapToTicks;
 	private Dictionary<Integer, JLabel> labelTable;
 	
-	private String orientation;
+	protected String orientation;
 	
-	boolean isScrollPaneVertScrollBar; // vertical scrollbars on scroll panes are inverted
+	boolean isScrollPaneScrollBar; // vertical scrollbars on scroll panes are inverted
 	
 	protected DOMNode jqSlider;
 	private int z0 = Integer.MIN_VALUE;
@@ -39,8 +42,8 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 
 	protected boolean isScrollBar;
 	private JScrollBar jScrollBar;
-	private DOMNode sliderTrack;
-	private DOMNode sliderHandle;
+	protected DOMNode sliderTrack;
+	protected DOMNode sliderHandle;
 	private int disabled;
 	private int myHeight;
 	private boolean isHoriz;
@@ -317,9 +320,10 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 		} else {
 			DOMNode.setStyles(sliderTrack, isHoriz ? "top" : "left", barPlace + "%");
 		}
-		if (!isHoriz && !isScrollPaneVertScrollBar)
+		if (!isHoriz && !isScrollPaneScrollBar)
 			DOMNode.setStyles(sliderTrack, "height", length + "px");
-
+		if (isScrollPaneScrollBar)
+			setScrollPaneCSS();
 		setHTMLSize(domNode, false);
 	}
 
@@ -361,14 +365,26 @@ public class JSSliderUI extends JSLightweightUI implements PropertyChangeListene
 	@Override
 	public void setInnerComponentBounds(int width, int height) {
 		if (!paintTicks && !paintLabels) {
-			if (isScrollPaneVertScrollBar) {
-				DOMNode.setStyles(sliderHandle, "left", "-8px");
-			} 
 			if (orientation == "vertical") {
 				DOMNode.setStyles(sliderTrack, "height", (height - 20) + "px");
 			}
+			if (isScrollPaneScrollBar)
+				setScrollPaneCSS();
+
 		}
 	}
+
+	void setScrollPaneCSS() {
+		isScrollPaneScrollBar = true;
+		if (orientation == "vertical") {
+			DOMNode.setStyles(sliderTrack, "left", "0px", "width", "12px");
+			DOMNode.setStyles(sliderHandle, "left", "-1px");
+		} else {
+			DOMNode.setStyles(sliderTrack, "top", "0px", "height", "12px");
+			DOMNode.setStyles(sliderHandle, "top", "-1px");
+		}
+	}
+
 
 	public Dimension getPreferredHorizontalSize() {
 		Dimension horizDim = (Dimension) DefaultLookup.get(jSlider, this,

@@ -1180,38 +1180,38 @@ public class UIDefaults extends Hashtable<Object,Object>
 //    }
 //
 //
-//    /**
-//     * <code>LazyInputMap</code> will create a <code>InputMap</code>
-//     * in its <code>createValue</code>
-//     * method. The bindings are passed in in the constructor.
-//     * The bindings are an array with
-//     * the even number entries being string <code>KeyStrokes</code>
-//     * (eg "alt SPACE") and
-//     * the odd number entries being the value to use in the
-//     * <code>InputMap</code> (and the key in the <code>ActionMap</code>).
-//     * @since 1.3
-//     */
-//    public static class LazyInputMap implements LazyValue {
-//        /** Key bindings are registered under. */
-//        private Object[] bindings;
-//
-//        public LazyInputMap(Object[] bindings) {
-//            this.bindings = bindings;
-//        }
-//
-//        /**
-//         * Creates an <code>InputMap</code> with the bindings that are
-//         * passed in.
-//         *
-//         * @param table a <code>UIDefaults</code> table
-//         * @return the <code>InputMap</code>
-//         */
-//        public Object createValue(UIDefaults table) {
-//            if (bindings != null) {
-//                InputMap km = LookAndFeel.makeInputMap(bindings);
-//                return km;
-//            }
-//            return null;
-//        }
-//    }
+    /**
+     * <code>LazyInputMap</code> will create a <code>InputMap</code>
+     * in its <code>createValue</code>
+     * method. The bindings are passed in in the constructor.
+     * The bindings are an array with
+     * the even number entries being string <code>KeyStrokes</code>
+     * (eg "alt SPACE") and
+     * the odd number entries being the value to use in the
+     * <code>InputMap</code> (and the key in the <code>ActionMap</code>).
+     * @since 1.3
+     */
+    public static class LazyInputMap implements LazyValue {
+        /** Key bindings are registered under. */
+        private Object[] bindings;
+
+        public LazyInputMap(Object[] bindings) {
+            this.bindings = bindings;
+        }
+
+        /**
+         * Creates an <code>InputMap</code> with the bindings that are
+         * passed in.
+         *
+         * @param table a <code>UIDefaults</code> table
+         * @return the <code>InputMap</code>
+         */
+        public Object createValue(UIDefaults table) {
+            if (bindings != null) {
+                InputMap km = LookAndFeel.makeInputMap(bindings);
+                return km;
+            }
+            return null;
+        }
+    }
 }

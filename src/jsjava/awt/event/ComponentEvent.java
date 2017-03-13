@@ -115,7 +115,11 @@ public class ComponentEvent extends AWTEvent {
         super(source, id);
     }
 
-    /**
+    public ComponentEvent() {
+    	super();
+		}
+
+		/**
      * Returns the originator of the event.
      *
      * @return the <code>Component</code> object that originated

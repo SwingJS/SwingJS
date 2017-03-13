@@ -28,17 +28,46 @@ public class JSTextAreaUI extends JSTextUI {
 			allowPaintedBackground = false;
 			domBtn = focusNode = enableNode = textNode = valueNode = domNode = newDOMObject("textarea", id);
 			DOMNode.setStyles(domNode, "resize", "none");
-			setDataUI(domNode);
-			bindJSEvents(domNode, "keydown keypress keyup focusout", Event.KEY_PRESS, false);
-			addJQueryFocusCallbacks();
+			bindJSKeyEvents(domNode, true);
 		}
 		textListener.checkDocument();
 		setCssFont(
 				DOMNode.setAttr(domNode, "innerHTML", getComponentText()),
 				c.getFont());
 		if (!editable)
-			DOMNode.setAttr(domNode, "readOnly", "true");
+			DOMNode.setAttr(domNode, "readOnly", "true");		
 		return domNode;
+	}
+
+	/**
+	 * Get the real height and width of the text in a JavaScript textarea
+	 * Used by JSScrollPaneUI
+	 * 
+	 * @return
+	 */
+	void getTextAreaTextSize(Dimension d) {
+		int sh = 0;
+		int sw = 0;
+		/**
+		 * @j2sNative 
+		 * 
+		 * var h = this.domNode.style.height; 
+		 * this.domNode.style.height = null;
+		 * sh = this.domNode.scrollHeight; 
+		 * this.domNode.style.height = h;
+		 * 		 
+		 * var w = this.domNode.style.width; 
+		 * this.domNode.style.width = null;
+		 * sw = this.domNode.scrollWidth; 
+		 * this.domNode.style.width = w;
+
+		 * 
+		 */
+			{
+			}
+			
+			d.width = sw;
+			d.height = sh;
 	}
 
 	private Insets myInsets = new Insets(0, 0, 5, 5); 

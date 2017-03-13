@@ -1,5 +1,7 @@
 package swingjs.plaf;
 
+import java.awt.Event;
+
 import javajs.api.JSFunction;
 import javajs.util.PT;
 import jsjava.awt.AWTEvent;
@@ -443,6 +445,13 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 	}
 
+	public void reInit() {
+		 setTainted();
+		 domNode = null;
+		 id = null;
+		 newID();
+	}
+	
 	// ////////////// user event handling ///////////////////
 
 	/**
@@ -564,30 +573,6 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 	 * 
 	 * @param node
 	 *          the JavaScript element that is being triggered
-	 * 
-	 * @param eventList
-	 *          one or more JavaScript event names to pass, separated by space
-	 * @param eventID
-	 *          an integer event type to return; can be anything, but Event.XXXX
-	 *          is recommended
-	 * @deprecated Use {@link #bindJSEvents(DOMNode,String,int,boolean)} instead
-	 */
-	protected void bindJSEvents(DOMNode node, String eventList, int eventID) {
-		bindJSEvents(node, eventList, eventID, false);
-	}
-
-	/**
-	 * Allows mouse and keyboard handling via an overridden method
-	 * 
-	 * this.handleJSEvent(node, eventID, jsEvent)
-	 * 
-	 * j2sApplet will require node["data-ui"] and, in the case of a mouse event,
-	 * node["swingjs-ui"] in order to ignore handling the event and allow this
-	 * method to work.
-	 * 
-	 * 
-	 * @param node
-	 *          the JavaScript element that is being triggered
 	 * @param eventList
 	 *          one or more JavaScript event names to pass, separated by space
 	 * @param eventID
@@ -616,6 +601,20 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 		}
 		$(node).bind(eventList, f);
 	}
+
+	/**
+	 * Set the node to accept key events and possibly focusout
+	 * 
+	 * @param node
+	 * @param andFocusOut
+	 */
+	protected void bindJSKeyEvents(DOMNode node, boolean andFocusOut) {
+		setDataUI(node);
+		bindJSEvents(node, "keydown keypress keyup" + (andFocusOut ? " focusout" : ""), Event.KEY_PRESS, false);
+		if (andFocusOut)
+			addJQueryFocusCallbacks();
+	}
+
 
 	/**
 	 * Cause a new event to be scheduled for the rebuilding of this Swing
@@ -1099,11 +1098,7 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 				int w = getContainerWidth();
 				int h = getContainerHeight();
 				DOMNode.setSize(outerNode, w, h);
-				// if (w == 0 || h == 0) {
-				// // container is hidden
-				// zeroWidth = true;
-				// DOMNode.setStyles(outerNode, "display", "none");
-				// }
+				// not clear why this does not always work:
 				if (isContentPane)
 					DOMNode.setStyles(outerNode, "overflow", "hidden");
 			}
@@ -1122,8 +1117,8 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 						DOMNode.setAttr(canvas, "_installed", "1");
 					}
 				}
+				DOMNode.setStyles(outerNode, "overflow","hidden");
 			}
-
 			addChildrenToDOM(children);
 
 			if (isWindow) {

@@ -274,4 +274,13 @@ public abstract class DOMNode {
 		{}
 	}
 
+	public static void seTabIndex(DOMNode node, int i) {
+		/**
+		 * @j2sNative
+		 * 
+		 * node.tabIndex = i;
+		 */
+		{}
+	}
+
 }

@@ -43,6 +43,8 @@ public class JSLabelUI extends JSLightweightUI {
 			DOMNode.setStyles(centeringNode, "position", "absolute", "width",
 					actualWidth + "px");
 		setCssFont(centeringNode, c.getFont());
+		if (jc.isOpaque() && jc.isEnabled())
+			setBackground(jc.getBackground());
 		return domNode;
 
 	}
