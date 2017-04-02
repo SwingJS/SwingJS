@@ -1108,14 +1108,15 @@ public class JSComponentUI extends ComponentUI implements ContainerPeer,
 					// layer div
 					swingjs.JSToolkit.getHTML5Applet(jc)._getContentLayer()
 							.appendChild(outerNode);
-				} else {
+//				} else {
+					// BH: pretty sure this next is totally unnecessary; would never run?
 					// This is the root pane of a JFrame, JDialog, JWindow, etc.
 					// we insert the canvas for the frame into this content pane
-					HTML5Canvas canvas = jc.getFrameViewer().canvas;
-					if (DOMNode.getAttr(canvas, "_installed") != null) {
-						outerNode.appendChild(canvas);
-						DOMNode.setAttr(canvas, "_installed", "1");
-					}
+					//HTML5Canvas canvas = jc.getFrameViewer().canvas;
+					//if (DOMNode.getAttr(canvas, "_installed") != null) {
+					//	outerNode.appendChild(canvas);
+					//	DOMNode.setAttr(canvas, "_installed", "1");
+					///}
 				}
 				DOMNode.setStyles(outerNode, "overflow","hidden");
 			}
