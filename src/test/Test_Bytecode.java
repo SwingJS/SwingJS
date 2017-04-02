@@ -17,6 +17,13 @@ public class Test_Bytecode {
 	}
 	
 
+	void setX(Double x) {
+		System.out.println("BC_setX(Number) " + x);
+		// note that in JavaScript, the above construction uses "valueOf" not "toString" for x.
+		// this results in reporting "3" for new Double(3.0) instead of "3.0"
+	}
+	
+
 	public Test_Bytecode() {
 		setX(y); 
 //	BC_setX(double) 4.4
@@ -31,6 +38,7 @@ public class Test_Bytecode {
 	public static void main(String[] args) {
 		Test_Bytecode t = new Test_Bytecode();
 		t.setX(3);
+//    10  invokevirtual test.Test_Bytecode.setX(int) : void [51]
 //	BC_setX(int) 3
 
 		t.setX(1.1);

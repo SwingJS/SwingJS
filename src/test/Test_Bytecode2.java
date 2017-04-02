@@ -7,6 +7,8 @@ public class Test_Bytecode2 extends Test_Bytecode {
 
 	void setX(Number x) {
 		System.out.println("BC2_setX(Number) " + x);
+		// note that in JavaScript, the above construction uses "valueOf" not "toString" for x.
+		// this results in reporting "3" for new Double(3.0) instead of "3.0"
 	}
 	
 	void setX(Double x) {
@@ -30,29 +32,56 @@ public class Test_Bytecode2 extends Test_Bytecode {
 	public static void main(String[] args) {
 		
 		Test_Bytecode2 t = new Test_Bytecode2();
+//  4  invokespecial test.Test_Bytecode2() [57]
+//	var t =  new test.Test_Bytecode2 ();
 		
 		t.setX(new Integer(3));
+	// 14  invokespecial java.lang.Integer(int) [60]
+	// 17  invokevirtual test.Test_Bytecode2.setX(java.lang.Number) : void [63]
+//	t.setX ( new Integer (3));
+
 		t.setX(new Double(3));
+	// 28  invokespecial java.lang.Double(double) [69]
+	// 31  invokevirtual test.Test_Bytecode2.setX(java.lang.Double) : void [72]
+//	t.setX ( new Double (3));
+
+		t.setX((Number) new Double(3));
+//    42  invokespecial java.lang.Double(double) [69]
+//    45  invokevirtual test.Test_Bytecode2.setX(java.lang.Number) : void [63]
+//		t.setX ( new Double (3)); // SWINGJS FAILURE!
+
+		
+		Test_Bytecode t0 = new Test_Bytecode2();
+//  4  invokespecial test.Test_Bytecode2() [57]
+//	  	var t0 =  new test.Test_Bytecode2 ();
+		
+		t0.setX(new Integer(3));
+//    68  invokevirtual test.Test_Bytecode.setX(int) : void [78]
+//		t0.setX (( new Integer (3)).intValue ());
+		// BC_setX(int) 3
+		
+		t0.setX(new Double(3));
+//    82  invokevirtual test.Test_Bytecode.setX(java.lang.Double) : void [80]
+//  	t0.setX ( new Double (3));
+		// BC2_setX(Double) 3.0
+
+
+		Test_Bytecode t1 = new Test_Bytecode();
+//    89  invokespecial test.Test_Bytecode() [12]
+//	  	var t0 =  new test.Test_Bytecode2 ();
+		
+		t1.setX(new Integer(3));
+//    68  invokevirtual test.Test_Bytecode.setX(int) : void [78]
+//		t0.setX (( new Integer (3)).intValue ());
+		// BC_setX(int) 3
+		
+		t1.setX(new Double(3));
+//    119  invokevirtual test.Test_Bytecode.setX(java.lang.Double) : void [80]
+//  	t0.setX ( new Double (3));
+		// BC_setX(Double) 3.0
+
+
 		
 	}
 	
 }
-
-//public static void main(java.lang.String[] args);
-//  0  new test.Test_Bytecode2 [1]
-//  3  dup
-//  4  invokespecial test.Test_Bytecode2() [57]
-//  7  astore_1 [t]
-//  8  aload_1 [t]
-//  9  new java.lang.Integer [58]
-// 12  dup
-// 13  iconst_3
-// 14  invokespecial java.lang.Integer(int) [60]
-// 17  invokevirtual test.Test_Bytecode2.setX(java.lang.Number) : void [63]
-// 20  aload_1 [t]
-// 21  new java.lang.Double [65]
-// 24  dup
-// 25  ldc2_w <Double 3.0> [67]
-// 28  invokespecial java.lang.Double(double) [69]
-// 31  invokevirtual test.Test_Bytecode2.setX(java.lang.Double) : void [72]
-// 34  return
