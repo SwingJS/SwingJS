@@ -1,4 +1,5 @@
 // BH adjusted to have only one sort method.
+// BH 4/7/2017 1:49:45 PM fixing "instanceof Comparable"
 // BH adding copyOf 7/12/2016 10:35:01 AM
 Clazz.load(["java.util.AbstractList","$.RandomAccess"],"java.util.Arrays",["java.lang.ArrayIndexOutOfBoundsException","$.IllegalArgumentException","$.NullPointerException"],function(){
 c$=Clazz.declareType(java.util,"Arrays");
@@ -8,7 +9,7 @@ function(a,c,d,e){
   switch (arguments.length) {
   case 1:
     var aux=a.sort(function(o1,o2){
-      if(typeof o1=="string"||o1 instanceof Comparable){
+      if(typeof o1=="string"||Clazz.instanceOf(o1, Comparable)){
         return o1.compareTo(o2);
       }
       return o1-o2;
@@ -21,7 +22,7 @@ function(a,c,d,e){
     var aux=a.sort(function(o1,o2){
       if(c!=null){
         return c.compare(o1,o2);
-      }else if(typeof o1=="string"||o1 instanceof Comparable){
+      }else if(typeof o1=="string"||Clazz.instanceOf(o1, Comparable)){
         return o1.compareTo(o2);
       }
       return o1-o2;
@@ -39,7 +40,7 @@ function(a,c,d,e){
       aux[i-fromIndex]=a[i];
     }
     aux=aux.sort(function(o1,o2){
-      if(typeof o1=="string"||o1 instanceof Comparable){
+      if(typeof o1=="string"||Clazz.instanceOf(o1, Comparable)){
         return o1.compareTo(o2);
       }
       return o1-o2;
@@ -60,7 +61,7 @@ function(a,c,d,e){
     aux=aux.sort(function(o1,o2){
       if(c!=null){
         return c.compare(o1,o2);
-      }else if(typeof o1=="string"||o1 instanceof Comparable){
+      }else if(typeof o1=="string"||Clazz.instanceOf(o1, Comparable)){
         return o1.compareTo(o2);
       }
       return o1-o2;

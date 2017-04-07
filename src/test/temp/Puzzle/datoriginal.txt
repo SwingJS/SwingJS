@@ -1,0 +1,63 @@
+// -----------------------------------------------------------------------
+// Initialisierungsdatei fuer das Puzzle-Applet
+//
+// Es sind die Namen der Puzzle-Bilder einzugeben.
+// Die Position der Bilder wird ueber Matrizen definiert.
+//
+// BilderNummern werden den Spalten/Zeilen der Matrizen zugewiesen
+// Jede Matrix enthaelt dabei folgende Informationen:
+//
+//	dimX, dimY 	=  { 1, 2, ... }
+//			-> Anzahl der Bilder pro Spalte, Zeile)
+//	fix		=  { 0 , 1 }
+//			-> Bilder in Matrix sind fest positioniert/bewegliche)
+//	Zufall		=  { 0, 1, 2, ... }
+//			-> Verknüpfung mit Zufallsmatrizen,
+//				0 bedeutet kein Zufall
+//				gleiche Nummern bedeuten gleiche Zufälle
+//	UrspX, UrspY	=  { 0, 1, ... }
+//
+//			-> Position der Matrix-Ecke links, oben)
+//	BildW, BildH	=  { 1, 2, ... }
+//			-> Breite, Höhe der Bilder)
+//	Rand 		=  { 0, 1, ... }
+//			-> Abstand zwischen den Bildern
+//
+//	Elem 		=  { 2-dim Matrix }
+//			-> Zustand des MatrixElementes:
+//				0 => frei
+//				nr => Nr. des Bildes {1, ... Bilderanzahl}
+//			   Spalten durch Komma, Zeilen durch Semikolon getrennt
+//	Lsg		=  { 2-dim Matrix }
+//			-> Zustand des MatrixElementes:
+//				0 => frei
+//				nr => Nr. des Bildes {1, ... Bilderanzahl}
+//			   Spalten durch Komma, Zeilen durch Semikolon getrennt
+//
+// -----------------------------------------------------------------------
+// --- ( Bildernamen ) ---------------------------------------------------
+Pics/prop.gif
+Pics/anti.gif
+Pics/linse.gif
+Pics/linear.gif
+Pics/TPropZu.gif
+Pics/TAProZu.gif
+Pics/TLiGl.gif
+Pics/TLinZu.gif
+// --- ( Matrizenparameter ) ---------------------------------------------
+// --- ( dimX, dimY, fix, Zufall, UrspX, UrspY, BildW, BildH, Rand ) -----
+1, 4, 0, 1, 10, 20, 171, 139,  11
+1, 4, 1, 1, 220, 69, 144,  43, 107
+1, 4, 1, 2, 380, 69, 144,  43, 107
+// --- ( Werte in Matrizen ) ---------------------------------------------
+ [  1;  2;  3;  4]
+ [  0;  0;  0;  0]
+ [  5;  6;  7;  8]
+// --- ( Loesungen in Matrizen ) -----------------------------------------
+ [  0;  0;  0;  0]
+ [  5;  6;  7;  8]
+ [  0;  0;  0;  0]
+// Ende der Initialisierungsdatei
+// -----------------------------------------------------------------------
+
+
