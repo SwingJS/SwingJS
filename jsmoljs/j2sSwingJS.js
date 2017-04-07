@@ -6,6 +6,8 @@
 
 // NOTES by Bob Hanson
 
+// BH 4/7/2017 10:51:07 AM fix for Math.signum(f)
+// BH 3/11/2017 9:08:42 AM added this() to EventObject
 // BH 1/9/2017 7:31:11 AM fix for basefolder //
 // BH 1/8/2017 12:41:48 PM allowing java.io.File
 // BH 1/7/2017 7:01:02 AM better error messaging in loadScript
@@ -5178,8 +5180,8 @@ Math.toRadians||(Math.toRadians=function(angdeg){return angdeg/180.0*Math.PI});
 
 Math.copySign||(Math.copySign=function(mag,sign){return((sign>0?1:-1)*Math.abs(mag))});
 
-//could use Math.sign(), but this was used to preserve cross-brower compatability
-Math.signum||(Math.signum=function(d){return(d==0.0||d.isNaN)?d:Math.copySign(1.0,d)});
+//could use Math.sign(), but this was used to preserve cross-brower compatability (not in Internet Explorer)
+Math.signum||(Math.signum=function(d){return(d==0.0||isNaN(d))?d:d < 0 ? -1 : 1});
 
 Math.scalb||(Math.scalb=function(d,scaleFactor){return d*Math.pow(2,scaleFactor)});
 
@@ -6698,10 +6700,13 @@ Clazz.instantialize(this,arguments);
 
 Clazz._setDeclared("java.util.EventObject", java.util.EventObject); 
 
+Clazz.makeConstructor(c$,
+function(source){
+});
 
 Clazz.makeConstructor(c$,
 function(source){
-if(source!=null)this.source=source;
+if(arguments.length > 0  && source!=null)this.source=source;
 else throw new IllegalArgumentException();
 },"~O");
 Clazz.defineMethod(c$,"getSource",
