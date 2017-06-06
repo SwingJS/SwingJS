@@ -1,5 +1,7 @@
 Notes
 =====
+updated 6/5/17 -- reserved package name "window"
+updated 3/11/17 -- myClass.getField
 updated 3/7/17 -- overloading of JSplitPane.setDividerLocation
 updated 3/2/17 -- more indication of classes not implemented (KeyListener)
 
@@ -65,7 +67,8 @@ established. As such, its designers chose to allow AWT controls such as Button a
 alongside their Swing counterparts JButton and JList. Reading the code, it is clear that this 
 design choice posed a huge headache for Swing class developers. For SwingJS, we decided from 
 the beginning NOT to allow this mixed-mode programming and instead to require that all 
-components be Swing components. 
+components be Swing components.
+
  
 The a2s Adapter Package
 -----------------------
@@ -179,6 +182,9 @@ String does not implement CharSequence.length() or .subSequence()
 toString() may need to be explicit
 System.exit(0) does not stop all processes
 overloading of JSplitPane.setDividerLocation
+list cell renderers must be JComponents
+myClass.getField not implemented
+"window" and other reserved JavaScript names
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
@@ -1515,6 +1521,31 @@ and routed all int action through setDividerLocation(double). This works fine un
 2) JSplitPane.setDividerLocation(1) is called. The "1" intended to mean "1 pixel" will be interpreted as "1.0".
 
 
+list cell renderers must be JComponents
+---------------------------------------
+
+JList requires cell renderers to be JComponents, same as all other components.
+
+myClass.getField not implemented
+--------------------------------
+
+java.lang.reflect.Field is not implemented. You can get a field value very simply
+using:
+
+/**
+ *@j2sNative
+ *
+ * return myClass[name]
+ */   
+
+
+"window" and other reserved JavaScript names
+--------------------------------------------
+
+No reserved top-level JavaScript name is allowed for a package name. So, for example, 
+one must rename packages such as "window" or "document" to names such as "win" or "doc".
+
+
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================
 
@@ -1591,6 +1622,25 @@ Methods thread.start() and thread.run() both work fine.
 
 For simple applications that use Thread.sleep() just to have a delay, as in a frame rate, for 
 example, one can use javax.swing.Timer instead. That is fully implemented. 
+
+Likewise, java.util.Timer can be replaced with no loss of performance with javax.Swing.Timer.
+Note that java.util.TimerTask is implemented, but it can also be replaced by an implementation of Runnable.
+
+task = new TimerTask(){....};
+t = new java.util.Timer();
+t.schedule(task, 0, 1);
+
+becomes
+
+task = new TimerTask(){....}; // or task = new Runnable() {...}
+t = new javax.swing.Timer(1, new ActionListener() {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		task.run();
+	}
+};
+t.setInitialDelay(0); // not particularly necessary
+t.start();
 
 In addition, SwingJS provides swingjs.JSThread, which can be subclassed
 if desired. This class allows simple 
