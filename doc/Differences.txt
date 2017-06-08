@@ -1,5 +1,10 @@
 Notes
 =====
+
+TODO: SwingJS removes all $fx private designations and as such will 
+      improperly call a superclass's private function if it is a better
+      match to a method in a subclass that is not an exact match
+updated 6/7/17 -- issue with overloaded nonexact methods fixed
 updated 6/5/17 -- reserved package name "window"
 updated 3/11/17 -- myClass.getField
 updated 3/7/17 -- overloading of JSplitPane.setDividerLocation
@@ -743,6 +748,30 @@ then "return(jQuery)" will always be kept as a single unit.
 
 J2S bugs identified
 -------------------
+#28 subclass nonexact signatures
+
+The j2sSwingJS runtime method finder will select a nonexact signature in the current class before
+it checks for exact/closer signatures in superclasses. For example, in the call to
+
+  myfunc(new Float(3))
+
+the method
+
+  this.myfunc(Number)
+
+will be selected even if 
+
+  super.myfunc(Float)
+
+is present.
+
+Solution was in bindMethod(): 
+  (a) return if an exact match is found
+  (b) if no exact match, keep a reference to the best found and continue to the superclass  
+
+ - fixed for SwingJS 6/7/2017 8:06:36 AM
+
+
 #27 compiler produces 
 
   new Boolean(string)
@@ -1544,7 +1573,6 @@ using:
 
 No reserved top-level JavaScript name is allowed for a package name. So, for example, 
 one must rename packages such as "window" or "document" to names such as "win" or "doc".
-
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
 ============================================

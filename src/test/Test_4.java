@@ -88,7 +88,7 @@ public class Test_4 extends Test_5 {
 		myfunc(s);
 		myfunc3();
 		super.myfunc("from test4 " + s);
-		
+		System.out.println("This next call should be to test5.myfunc(Float) but in JavaScript it is instead to test4.myfunc(Number)");
 		myfunc(new Float(3));
 		
 		
@@ -125,6 +125,7 @@ public class Test_4 extends Test_5 {
 	}
 
 	protected void myfunc(Number x) {
+		// NOTE THAT JavaScript will call this method instead of test5.myfunc(Float).
 		System.out.println("test4.myfunct Number " + x);
 	}
 

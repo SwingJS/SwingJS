@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 6/8/2017 7:52:44 AM fixes issue that f(Number)in subclass called even if f(Float) is in superclass 
 // BH 4/7/2017 10:51:07 AM fix for Math.signum(f)
 // BH 3/11/2017 9:08:42 AM added this() to EventObject
 // BH 1/9/2017 7:31:11 AM fix for basefolder //
@@ -615,29 +616,39 @@ var bindMethod = function (claxxRef, fx, fxName, args, pTypes, classTop) {
  //System.out.println("SAEM " + Clazz.saemCount1+ "/" + Clazz.saemCount2 + ":" + claxxRef.__CLASS_NAME__ + "." + fxName + "(" + params.join(",") + ")");
  
   var stack = fx.stack || claxxRef.prototype[fxName].stack;
-  /*
-   * Search the inheritance stack, starting with the class containing this method
-   */
-  for (var pt= -1, i = stack.length; --i >= 0;) {
-    var cl = stack[i];
-    // skip stack references higher than this class
-    if (classTop == null || cl === classTop) {
-      var clazzFun = cl.prototype[fxName];
-      var sigs = clazzFun.sigs;
-      if (sigs.sig)
-        setSignature(clazzFun, clazzFun, sigs.sig);
-      var found = sigs.fparams[nparams];  // [[$f, ["string","int","int"]]]
-      if (found && (pt = searchMethod(found, pTypes)) >= 0) {
-        var f = found[pt][0];
-        f.__STACKPT__ = i;
-        return f;
-      }
-      // As there are no such methods in current class,  
-      // search its super class stack -- stop checking for the class
-      classTop = null; 
+  
+  // Search the inheritance stack [supersuper, super, this, sub,...] starting with the class containing this method
+  // skip stack references in subclasses of this class
+  var i;
+  for (i = stack.length; --i >= 0;) {
+    if (stack[i] === classTop) {
+      i++;
+      break;
     }
+  }
+  var best = null;
+  var bestSig = null;
+  var exact = [];
+  for (var pt= -1; --i >= 0;) {
+    var clazzFun = stack[i].prototype[fxName];
+    var sigs = clazzFun.sigs;
+    if (sigs.sig)
+      setSignature(clazzFun, clazzFun, sigs.sig);
+    var found = sigs.fparams[nparams];  // [[$f, ["string","int","int"]]]
+    if (found && (pt = searchMethod(found, pTypes, bestSig, exact)) >= 0) {
+      if (pt == found.length) {
+        // best is still the best
+        continue;
+      }
+      best = found[pt][0];
+      bestSig = found[pt][1];
+      best.__STACKPT__ = i;
+      if (exact[0])
+        return best;
+    }
+    // search its super class stack, looking for a better match
   }  
-  return null;
+  return best;
 };
 
 /**
@@ -649,26 +660,40 @@ var bindMethod = function (claxxRef, fx, fxName, args, pTypes, classTop) {
  * @return string of method parameters seperated by "\\"
  */
 /* private */
-var searchMethod = function(roundOne, paramTypes, debug) {
+var searchMethod = function(roundOne, paramTypes, bestSig, exact, debug) {
 // roundOne -  [[f$,["string","int","int"...]...]
 // Filter out all the fitted methods for the given parameters
   var roundTwo = [];
   var len = roundOne.length;
-  for (var i = 0; i < len; i++) {
+  for (var i = 0; i <= len; i++) {
+    var params;
+    if (i == len) {
+      if (bestSig == null)
+        break;
+        params = bestSig;      
+    } else {
+        params = roundOne[i][1];
+    }
     var fittedLevel = [];
     var isFitted = true;
-    var params = roundOne[i][1];
     var len2 = params.length;
+    var isExact = true;
     for (var j = 0; j < len2; j++) {
-      fittedLevel[j] = getInheritedLevel(paramTypes[j], 
+      var level = fittedLevel[j] = getInheritedLevel(paramTypes[j], 
           params[j], true, true);
       //if (debug)alert([paramTypes[j],fittedLevel[j],roundOne[i][j]])    
-      if (fittedLevel[j] < 0) {
+      if (level < 0) {
         isFitted = false;
         break;
+      } else if (level != 0) {
+        isExact = false;
       }
     }
     if (isFitted) {
+      if (isExact) {
+        exact[0] = 1;
+        return i;
+      }
       fittedLevel[paramTypes.length] = i; // Keep index for later use
       roundTwo.push(fittedLevel);
     }
