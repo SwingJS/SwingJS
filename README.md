@@ -1,11 +1,13 @@
 # SwingJS 2017
 
-### Robert M. Hanson
-### Udo Borkowski
+### [Robert M. Hanson](https://github.com/BobHanson)
+### [Udo Borkowski](https://github.com/abego)
 
 [Original Link](http://sourceforge.net/projects/swingjs/)
 
 **NOTE: THIS PROJECT IS NOT IN AN EXECUTABLE STATE YET**
+
+![App Testing](SwingJS-57.png)
 
 ### Description
 SwingJS is a work in progress -- interested developers are welcome. 
