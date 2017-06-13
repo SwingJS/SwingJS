@@ -172,11 +172,7 @@ We now have jsjava.lang.Thread and jsjava.lang.ThreadGroup. These should be usef
 
 | 	Date   | Description 	                                                               				|
 | ------------- | ----------------------------------------------------------------------------------------- |
-| 7/23/2016 | We (Andreas Raduege, Nadia ElMouldi, and Bob Hanson) have now converted 24 Falstad applets, including Circuit. These applets are running approximately 3-6 times slower than in Java, in some cases after a bit of for-loop optimization. 
-
-No significant issues have been found, though we continue to find mostly minor j2s compiler bugs. Mostly what is taking time is the addition of missing features, such as audio, pop-up menus, menu bars, sliders, graphics2D capability, independent frames and dialogs, and threading.
-
-At this point we have a good variety of common controls. Events are being handled properly through the "java" event queue. Mouse operation is smooth. | 
+| 7/23/2016 | We (Andreas Raduege, Nadia ElMouldi, and Bob Hanson) have now converted 24 Falstad applets, including Circuit. These applets are running approximately 3-6 times slower than in Java, in some cases after a bit of for-loop optimization.<br>No significant issues have been found, though we continue to find mostly minor j2s compiler bugs. Mostly what is taking time is the addition of missing features, such as audio, pop-up menus, menu bars, sliders, graphics2D capability, independent frames and dialogs, and threading.<br>At this point we have a good variety of common controls. Events are being handled properly through the "java" event queue. Mouse operation is smooth. | 
 | BH 11/2/2016 8:53:44 AM  | -- bug #38 in compiler -- if a class has a constructor such as JButton() that calls `this(null, null)`, and that class is subclassed with a class such as `ToggleButton` that contains a constructor such as `ToggleButton(String,String)`, then the call to `JButton()` will improperly call that subclass's constructor. This is a problem due to the fact that in Java "this" in a superclass DURING CONSTRUCTION does not refer to the "this" of the  subclass. |
 | BH 7/23/2016 6:16:30 PM  | bug #27 in compiler -- need `Boolean.from(string)` not `new Boolean(string)` |
 | BH 7/23/2016 6:17:31 PM  | but #26 in compiler -- compiler can inappropriately use `Clazz.overrideMethod` |
@@ -201,147 +197,17 @@ At this point we have a good variety of common controls. Events are being handle
 
 | 7/15/2015 BH | j2s bug #17 (`jalview.analysis.RNA`) |
 
-| 6/3/2015 BH |JTextField ENTER action enabled
-JPasswordField working using simple HTML5 type="password"
-JFormattedTextField working; proper validation enabled for number formatters with FocusLost action
+| 6/3/2015 BH |JTextField ENTER action enabled<br>JPasswordField working using simple HTML5 type="password"<br>JFormattedTextField working; proper validation enabled for number formatters with FocusLost action<br>see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm) and [swingjs/test/FormattedTextFieldDemo.java](swingjs/test/FormattedTextFieldDemo.java)<br>see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm)<br>   (this app still needs selection boxes)<br>SwingJS J2S bug #16 NumberFormat.js includes the inner public class `NumberFormat.Field`, which is called here by `instanceOf`<br>Solution was to change the requirement to the outer class:<br>`@J2SRequireImport(NumberFormat.class)`<br>`@J2SIgnoreImport(NumberFormat.Field.class)`<br>`public class NumberFormatter extends InternationalFormatter...` |
 
-see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm) and [swingjs/test/FormattedTextFieldDemo.java](swingjs/test/FormattedTextFieldDemo.java)
+| 5/30/2015 BH | jQuery Slider is implemented for JSlider<br>(see site/swingjs/seethroughimage.htm)<br>jQueryUI files may be found in swingjs.jquery:<br>  - jquery-ui-slider.css<br>  - jquery-ui-slider.js<br>  - JQueryUI.js<br>
+<br>JQueryUI.js is just a shell Java class;<br>loading of jQueryUI occurs when a class utilizes<br> `@J2SRequireImport(swingjs.jquery.JQueryUI.class)`<br>and then also has a static block such as:`static {<br>swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");<br>swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");<br>}<br>`<br>method in the loading a css style block or executing JavaScript, as appropriate.<br>The CSS for the slider widget is scoped as "swingjs". On the page, a slider gets implemented as:
+ `<div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;"><br><div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;"><br><div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui"><br><a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a><br></div><br></div><br></div>`<br>The className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse action and work directly with jQuery events. These events fire a method in the component UI class that looks like this:<br>`Clazz.defineMethod (c$, "jqueryCallback",<br>function (event, ui) {<br>var value = 0;<br>value = ui.value;<br>this.jSlider.setValue (this.val = value);<br>}, "~O,swingjs.api.DOMNode");`<br>The widget itself is created using a standard jQuery widget constructor:<br><br>`me.$(me.jqSlider).slider({<br>orientation: me.orientation,<br>range: false,<br>min: me.min,<br>max: me.max,<br>value: me.val,<br>change: function( event, handle ) {<br>me.jqueryCallback(event, handle);<br>},<br>slide: function( event, handle ) {<br>me.jqueryCallback(event, handle);<br>}<br>});`<br>It is nice to see that the jQuery bindings to key actions (UP, DOWN, LEFT, RIGHT, HOME, END, PGUP, PGDN all work properly.<br>There is a complication with z-index, because jQuery sets that, and we need to have it correct in the heirarchy of applets and dialogs. So to implement that, we catch the "ancestor" change property event, and hope that somewhere up the chain the z-index is set. I am not sure this is completely correct. We probably need to adjust the z-index for all DOM child nodes when this happens.<br>It seems that it is also possible to lose an event, in which case the handle image just floats away from the handle with the user's mouse, and a click is required to reset that.<br>I have not tried tics and labels on sliders |
 
-see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm)
-   (this app still needs selection boxes)
+| 5/25/2015 BH |- found J2S bug #13,#14,#15<br>- java.awt.image.BufferedImage implemented; RescaleOp working for alpha scaling<br>- see seethroughimage.htm<br>- working on SeeThroughImageApplet (slider, image filtering) |
+| 5/24/2015 BH |- fix for "south" button not spanning full width |
+| 5/23/2015 BH | - fix for java.util.Random.nextInt(bits)<br>- adds loadimage.htm and jumbledimage.htm<br>- Q: What sets the "south" button to be the full width?<br>- reading and drawing of PNG, JPG, GIF, and BMP image formats<br>`java.awt.Toolkit.getDefaultToolkit().getImage(String filename)<br>java.awt.Toolkit.getDefaultToolkit().getImage(URL)<br>java.awt.Toolkit.getDefaultToolkit().createImage(String filename)<br>java.awt.Toolkit.getDefaultToolkit().createImage(URL)<br>java.awt.Toolkit.getDefaultToolkit().createImage(byte[], intOffset, intLength)<br>javax.imageio.ImageIO.read(URL)<br>java.awt.Graphics2D.drawImage(...)`<br>- implementation of focus, though not traversal:<br>`java.awt.Component.hasFocus()<br>java.awt.Component.isFocusable()<br>java.awt.Component.requestFocus()<br>java.awt.Component.requestFocusInWindow()` // same as requestFocus here<br>- reading files, both binary and ASCII<br>`java.net.URL.getInputStream() -- works for binary and ascii files<br>swingjs.JSToolkit.getFileAsBytes(String filename)<br>swingjs.JSToolkit.ensureSignedBytes(byte[])<br> |
 
-SwingJS J2S bug #16 NumberFormat.js includes the inner public class `NumberFormat.Field`, which is called here by `instanceOf`
-
-Solution was to change the requirement to the outer class:
-`@J2SRequireImport(NumberFormat.class)`
-`@J2SIgnoreImport(NumberFormat.Field.class)`
-`public class NumberFormatter extends InternationalFormatter...` |
-
-| 5/30/2015 BH | jQuery Slider is implemented for JSlider 
-(see site/swingjs/seethroughimage.htm)
-
-jQueryUI files may be found in swingjs.jquery:
-  
-  - jquery-ui-slider.css
-  - jquery-ui-slider.js
-  - JQueryUI.js
-  
-
-JQueryUI.js is just a shell Java class; 
-loading of jQueryUI occurs when a class utilizes
-
-  @J2SRequireImport(swingjs.jquery.JQueryUI.class)
-
-and then also has a static block such as:
-
-static {
-  swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");
-  swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");
-}
-
-method in the loading a css style block or executing JavaScript, as appropriate.
-
-The CSS for the slider widget is scoped as "swingjs". On the page, a slider
-gets implemented as:
-
- <div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">
-   <div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;">
-      <div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui">
-	    <a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a>
-      </div>
-   </div>
- </div>
-
-The className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse
-action and work directly with jQuery events. These events fire a method in 
-the component UI class that looks like this:
-
-Clazz.defineMethod (c$, "jqueryCallback", 
-function (event, ui) {
-  var value = 0;
-  value = ui.value;
-  this.jSlider.setValue (this.val = value);
-}, "~O,swingjs.api.DOMNode");
-
-The widget itself is created using a standard jQuery widget constructor:
-
-me.$(me.jqSlider).slider({
-  orientation: me.orientation,
-  range: false,
-  min: me.min,
-  max: me.max,
-  value: me.val,
-  change: function( event, handle ) {
-    me.jqueryCallback(event, handle);
-  },
-  slide: function( event, handle ) {
-    me.jqueryCallback(event, handle);
-  }
-});
-
-It is nice to see that the jQuery bindings to key actions (UP, DOWN,
-LEFT, RIGHT, HOME, END, PGUP, PGDN all work properly.
-
-There is a complication with z-index, because jQuery sets that, and 
-we need to have it correct in the heirarchy of applets and dialogs. 
-So to implement that, we catch the "ancestor" change property event, and 
-hope that somewhere up the chain the z-index is set. I am not sure this is 
-completely correct. We probably need to adjust the z-index for all DOM child
-nodes when this happens.
-
-It seems that it is also possible to lose an event, in which case the 
-handle image just floats away from the handle with the user's mouse, and 
-a click is required to reset that.
- 
-I have not tried tics and labels on sliders 
-
-
-5/25/2015 BH
-
-- found J2S bug #13,#14,#15
-
-- java.awt.image.BufferedImage implemented; RescaleOp working for alpha scaling
-- see seethroughimage.htm
-
-- working on SeeThroughImageApplet (slider, image filtering)
-
-5/24/2015 BH
-
-- fix for "south" button not spanning full width
-
-5/23/2015 BH
-
-- fix for java.util.Random.nextInt(bits)
-
-- adds loadimage.htm and jumbledimage.htm 
-
-- Q: What sets the "south" button to be the full width?
-
-- reading and drawing of PNG, JPG, GIF, and BMP image formats
-    
-    java.awt.Toolkit.getDefaultToolkit().getImage(String filename)
-    java.awt.Toolkit.getDefaultToolkit().getImage(URL)
-    java.awt.Toolkit.getDefaultToolkit().createImage(String filename)
-    java.awt.Toolkit.getDefaultToolkit().createImage(URL)
-    java.awt.Toolkit.getDefaultToolkit().createImage(byte[], intOffset, intLength)
-    javax.imageio.ImageIO.read(URL)
-
-	java.awt.Graphics2D.drawImage(...)
-    
-- implementation of focus, though not traversal:
-
-    java.awt.Component.hasFocus()
-    java.awt.Component.isFocusable()
-    java.awt.Component.requestFocus()
-    java.awt.Component.requestFocusInWindow()  // same as requestFocus here
-
-- reading files, both binary and ASCII
-    
-    java.net.URL.getInputStream() -- works for binary and ascii files
-    swingjs.JSToolkit.getFileAsBytes(String filename)
-    swingjs.JSToolkit.ensureSignedBytes(byte[])
-    
-========
+----
 5/21/2015 BH
 
 - fixes JSmol bug in JSmolJavaExt for Integer.parseRadix
