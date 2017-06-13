@@ -189,11 +189,55 @@ We now have jsjava.lang.Thread and jsjava.lang.ThreadGroup. These should be usef
 | 7/18/2015 BH | j2s bug #19 improper signature identification in SAEM with untyped null parameter |
 | 7/17/2015 BH | j2s bug #18 (`jalview.commands.EditCommand`) |
 | 7/15/2015 BH | j2s bug #17 (`jalview.analysis.RNA`) |
-| 6/3/2015 BH |JTextField ENTER action enabled<br>JPasswordField working using simple HTML5 type="password"<br>JFormattedTextField working; proper validation enabled for number formatters with FocusLost action<br>see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm) and [swingjs/test/FormattedTextFieldDemo.java](swingjs/test/FormattedTextFieldDemo.java)<br>see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm)<br>   (this app still needs selection boxes)<br>SwingJS J2S bug #16 NumberFormat.js includes the inner public class `NumberFormat.Field`, which is called here by `instanceOf`<br>Solution was to change the requirement to the outer class:<br>`@J2SRequireImport(NumberFormat.class)`\n`@J2SIgnoreImport(NumberFormat.Field.class)`\n`public class NumberFormatter extends InternationalFormatter...` |
-| 5/30/2015 BH | jQuery Slider is implemented for JSlider\n(see site/swingjs/seethroughimage.htm)\njQueryUI files may be found in swingjs.jquery:<br>  - jquery-ui-slider.css<br>  - jquery-ui-slider.js<br>  - JQueryUI.js<br>JQueryUI.js is just a shell Java class;<br>loading of jQueryUI occurs when a class utilizes<br> `@J2SRequireImport(swingjs.jquery.JQueryUI.class)`<br>and then also has a static block such as:`static {\nswingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");\nswingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");\n}\n`\nmethod in the loading a css style block or executing JavaScript, as appropriate.<br>The CSS for the slider widget is scoped as "swingjs". On the page, a slider gets implemented as:<br>`<div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">\n<div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;">\n<div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui">\n<a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a>\n</div>\n</div>\n</div>`\nThe className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse action and work directly with jQuery events. These events fire a method in the component UI class that looks like this:<br>`Clazz.defineMethod (c$, "jqueryCallback",\nfunction (event, ui) {\nvar value = 0;\nvalue = ui.value;\nthis.jSlider.setValue (this.val = value);\n}, "~O,swingjs.api.DOMNode");`<br>The widget itself is created using a standard jQuery widget constructor:<br><br>`me.$(me.jqSlider).slider({\norientation: me.orientation,\nrange: false,\nmin: me.min,\nmax: me.max,\nvalue: me.val,\nchange: function( event, handle ) {\nme.jqueryCallback(event, handle);\n},\nslide: function( event, handle ) {\nme.jqueryCallback(event, handle);\n}\n});`<br>It is nice to see that the jQuery bindings to key actions (UP, DOWN, LEFT, RIGHT, HOME, END, PGUP, PGDN all work properly.<br>There is a complication with z-index, because jQuery sets that, and we need to have it correct in the heirarchy of applets and dialogs. So to implement that, we catch the "ancestor" change property event, and hope that somewhere up the chain the z-index is set. I am not sure this is completely correct. We probably need to adjust the z-index for all DOM child nodes when this happens.<br>It seems that it is also possible to lose an event, in which case the handle image just floats away from the handle with the user's mouse, and a click is required to reset that.<br>I have not tried tics and labels on sliders |
+| 6/3/2015 BH |JTextField ENTER action enabled<br>JPasswordField working using simple HTML5 type="password"<br>JFormattedTextField working; proper validation enabled for number formatters with FocusLost action<br>see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/formattedfield.htm) and [swingjs/test/FormattedTextFieldDemo.java](swingjs/test/FormattedTextFieldDemo.java)<br>see [http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm](http://chemapps.stolaf.edu/jmol/swingjs/site/swingjs/examples/oracle/converter.htm)<br>   (this app still needs selection boxes)<br>SwingJS J2S bug #16 NumberFormat.js includes the inner public class `NumberFormat.Field`, which is called here by `instanceOf`<br>Solution was to change the requirement to the outer class:<br>`@J2SRequireImport(NumberFormat.class)`\
+`@J2SIgnoreImport(NumberFormat.Field.class)`\
+`public class NumberFormatter extends InternationalFormatter...` |
+| 5/30/2015 BH | jQuery Slider is implemented for JSlider\
+(see site/swingjs/seethroughimage.htm)\
+jQueryUI files may be found in swingjs.jquery:<br>  - jquery-ui-slider.css<br>  - jquery-ui-slider.js<br>  - JQueryUI.js<br>JQueryUI.js is just a shell Java class;<br>loading of jQueryUI occurs when a class utilizes<br> `@J2SRequireImport(swingjs.jquery.JQueryUI.class)`<br>and then also has a static block such as:`static {\
+swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");\
+swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");\
+}\
+`\
+method in the loading a css style block or executing JavaScript, as appropriate.<br>The CSS for the slider widget is scoped as "swingjs". On the page, a slider gets implemented as:<br>`<div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">\
+<div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;">\
+<div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui">\
+<a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a>\
+</div>\
+</div>\
+</div>`\
+The className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse action and work directly with jQuery events. These events fire a method in the component UI class that looks like this:<br>`Clazz.defineMethod (c$, "jqueryCallback",\
+function (event, ui) {\
+var value = 0;\
+value = ui.value;\
+this.jSlider.setValue (this.val = value);\
+}, "~O,swingjs.api.DOMNode");`<br>The widget itself is created using a standard jQuery widget constructor:<br><br>`me.$(me.jqSlider).slider({\
+orientation: me.orientation,\
+range: false,\
+min: me.min,\
+max: me.max,\
+value: me.val,\
+change: function( event, handle ) {\
+me.jqueryCallback(event, handle);\
+},\
+slide: function( event, handle ) {\
+me.jqueryCallback(event, handle);\
+}\
+});`<br>It is nice to see that the jQuery bindings to key actions (UP, DOWN, LEFT, RIGHT, HOME, END, PGUP, PGDN all work properly.<br>There is a complication with z-index, because jQuery sets that, and we need to have it correct in the heirarchy of applets and dialogs. So to implement that, we catch the "ancestor" change property event, and hope that somewhere up the chain the z-index is set. I am not sure this is completely correct. We probably need to adjust the z-index for all DOM child nodes when this happens.<br>It seems that it is also possible to lose an event, in which case the handle image just floats away from the handle with the user's mouse, and a click is required to reset that.<br>I have not tried tics and labels on sliders |
 | 5/25/2015 BH |- found J2S bug #13,#14,#15<br>- java.awt.image.BufferedImage implemented; RescaleOp working for alpha scaling<br>- see seethroughimage.htm<br>- working on SeeThroughImageApplet (slider, image filtering) |
 | 5/24/2015 BH |- fix for "south" button not spanning full width |
-| 5/23/2015 BH | - fix for java.util.Random.nextInt(bits)<br>- adds loadimage.htm and jumbledimage.htm<br>- Q: What sets the "south" button to be the full width?<br>- reading and drawing of PNG, JPG, GIF, and BMP image formats<br>`java.awt.Toolkit.getDefaultToolkit().getImage(String filename)\njava.awt.Toolkit.getDefaultToolkit().getImage(URL)\njava.awt.Toolkit.getDefaultToolkit().createImage(String filename)\njava.awt.Toolkit.getDefaultToolkit().createImage(URL)\njava.awt.Toolkit.getDefaultToolkit().createImage(byte[], intOffset, intLength)\njavax.imageio.ImageIO.read(URL)\njava.awt.Graphics2D.drawImage(...)`<br>- implementation of focus, though not traversal:<br>`java.awt.Component.hasFocus()\njava.awt.Component.isFocusable()\njava.awt.Component.requestFocus()\njava.awt.Component.requestFocusInWindow()` // same as requestFocus here<br>- reading files, both binary and ASCII<br>`java.net.URL.getInputStream() -- works for binary and ascii files\nswingjs.JSToolkit.getFileAsBytes(String filename)\nswingjs.JSToolkit.ensureSignedBytes(byte[])` |
+| 5/23/2015 BH | - fix for java.util.Random.nextInt(bits)<br>- adds loadimage.htm and jumbledimage.htm<br>- Q: What sets the "south" button to be the full width?<br>- reading and drawing of PNG, JPG, GIF, and BMP image formats<br>`java.awt.Toolkit.getDefaultToolkit().getImage(String filename)\
+java.awt.Toolkit.getDefaultToolkit().getImage(URL)\
+java.awt.Toolkit.getDefaultToolkit().createImage(String filename)\
+java.awt.Toolkit.getDefaultToolkit().createImage(URL)\
+java.awt.Toolkit.getDefaultToolkit().createImage(byte[], intOffset, intLength)\
+javax.imageio.ImageIO.read(URL)\
+java.awt.Graphics2D.drawImage(...)`<br>- implementation of focus, though not traversal:<br>`java.awt.Component.hasFocus()\
+java.awt.Component.isFocusable()\
+java.awt.Component.requestFocus()\
+java.awt.Component.requestFocusInWindow()` // same as requestFocus here<br>- reading files, both binary and ASCII<br>`java.net.URL.getInputStream() -- works for binary and ascii files\
+swingjs.JSToolkit.getFileAsBytes(String filename)\
+swingjs.JSToolkit.ensureSignedBytes(byte[])` |
 
 ----
 5/21/2015 BH
