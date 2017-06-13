@@ -199,13 +199,14 @@ swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.css");\
 swingjs.JSToolkit.getJavaResource ("swingjs/jquery/jquery-ui-slider.js");\
 }\
 `\
-method in the loading a css style block or executing JavaScript, as appropriate.<br>The CSS for the slider widget is scoped as "swingjs". On the page, a slider gets implemented as:<br>`<div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">\
+method in the loading a css style block or executing JavaScript, as appropriate.<br>The CSS for the slider widget is scoped as "swingjs". On the page, a slider gets implemented as:\
+```<div id="testApplet_SliderUI_13_5div" style="position: absolute; left: 0px; top: 150px;">\
 <div id="testApplet_SliderUI_13_5_wrapdiv" class="swingjs" style="width: 200px; height: 20px;">\
 <div id="testApplet_SliderUI_13_5" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all swingjs-ui">\
 <a class="ui-slider-handle ui-state-default ui-corner-all swingjs-ui" href="#" style="left: 50%;"></a>\
 </div>\
 </div>\
-</div>`\
+</div>```\
 The className "swingjs-ui" tells SwingJS (in JSmolCore.js) to ignore all mouse action and work directly with jQuery events. These events fire a method in the component UI class that looks like this:<br>`Clazz.defineMethod (c$, "jqueryCallback",\
 function (event, ui) {\
 var value = 0;\
