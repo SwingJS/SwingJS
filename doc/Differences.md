@@ -1,5 +1,5 @@
 # Notes
-=====
+---
 
 ** TODO: SwingJS removes all $fx private designations and as such will improperly call a superclass's private function if it is a better match to a method in a subclass that is not an exact match **
 ## Updates
@@ -11,15 +11,15 @@
 | 3/7/17 | overloading of JSplitPane.setDividerLocation |
 | 3/2/17 | more indication of classes not implemented (KeyListener) |
 
-=============================================================================
+---
 ## SwingJS and JDK 1.6
-=============================================================================
+---
 
 SwingJS implements a wide range of the Java language in JavaScript. The base version for this implementation is Java 1.6. However, some classes were implemented using older source code, and there are some missing methods.  
 
-=================
+---
 ## DESIGN PHILOSOPHY
-=================
+---
 
 The SwingJS design goal is to recreate a recognizable, easily debuggable equivalent in JavaScript for as much of Java as practical. This means, for example, that one can call in JavaScript 
 
@@ -86,7 +86,7 @@ The origin of most issues (read "bugs") in relation to the GUI will probably be 
   
 
 ## UNIMPLEMENTED CLASSES BY DESIGN
-===============================
+---
 
 ```
 accessibility
@@ -98,7 +98,7 @@ keyboard accelerators
 
 
 ## TODO LIST FOR UNIMPLEMENTED CLASSES
-===================================
+---
 
 | --- | ---- |
 | JEditorPane | (minimal implementation) |
@@ -106,7 +106,7 @@ keyboard accelerators
 | JTabbedPane | (in development, NEM) |
 
 
-================================================================
+---
 ## MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
 
 - `java.util.BitSet` must be 16-bit
@@ -114,7 +114,7 @@ keyboard accelerators
 
 
 ## MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
-=====================================================================
+---
 
 - primitive numerical types
 - distinguishing arrays
@@ -136,7 +136,7 @@ keyboard accelerators
 - "window" and other reserved JavaScript names
 
 ## MAJOR ISSUES--for Bob and Udo within SwingJS
-============================================
+---
 
 - fonts
 - OS-dependent classes
@@ -144,7 +144,7 @@ keyboard accelerators
  
  
 ## MAJOR ISSUES--to be resolved by implementers
-============================================
+---
 
 - fonts
 - specific AWT components not implemented
@@ -156,10 +156,10 @@ keyboard accelerators
 - text-related field implementation
 - Formatter/Regex limitations
 
-======================================================================== 
+---
 
 ## DISCUSS
-=======
+---
 
 Table row/col sorter needs checking after removal of java.text.Collator references
 
@@ -168,7 +168,7 @@ I had to move all of SunHints class to RenderingHints, or the two classes could 
 We now have jsjava.lang.Thread and jsjava.lang.ThreadGroup. These should be useful in figuring out what we want to do with those. ThreadGroup in particular is interesting, as it is used to key for AppContexts. We will see if that use useful or not.
 
 ## PROGRESS
-========
+---
 
 | 	Date   | Description 	                                                               				|
 | ------------- | ----------------------------------------------------------------------------------------- |
@@ -492,7 +492,7 @@ This will allow easy access to applet-specific quantities
 
 Project initiated - files from GrepCode
 
-========================================================================== 
+---
 J2S tips
 --------
 
@@ -979,7 +979,7 @@ Class.loadClass("jsjava.text.SimpleDateFormat", function() { x = new jsjava.text
 //////////////////////////////////////////////////////////////////////////////
 
 UNIMPLEMENTED CLASSES
-=====================
+---
 
 accessibility
 -------------
@@ -1017,7 +1017,7 @@ Thus, menus cannot be opened just be typing CTRL-C or similar shortcuts.
 
 
 MINOR ISSUES--required some rewriting/refactoring by Bob and Udo  
-================================================================
+---
 
 
 java.util.BitSet must be 16-bit
@@ -1043,7 +1043,7 @@ changed to JSToolkit.isDispatchThread()
 
 
 MINOR ISSUES--requiring some rewriting/refactoring outside of SwingJS  
-=====================================================================
+---
 
 primitive numerical types
 -------------------------
@@ -1355,7 +1355,7 @@ No reserved top-level JavaScript name is allowed for a package name. So, for exa
 one must rename packages such as "window" or "document" to names such as "win" or "doc".
 
 MAJOR ISSUES--for Bob and Udo within SwingJS
-============================================
+---
 
 fonts
 -----
@@ -1397,7 +1397,7 @@ some connection to similar DOM objects, even for "light-weight" components.
 
   
 MAJOR ISSUES--to be resolved by implementers
-============================================
+---
 
 fonts
 -----
