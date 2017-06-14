@@ -6,6 +6,7 @@
 
 // NOTES by Bob Hanson
 
+// BH 6/13/2017 11:53:42 PM fixes bug introduced 6/8/2017
 // BH 6/8/2017 7:52:44 AM fixes issue that f(Number)in subclass called even if f(Float) is in superclass 
 // BH 4/7/2017 10:51:07 AM fix for Math.signum(f)
 // BH 3/11/2017 9:08:42 AM added this() to EventObject
@@ -661,18 +662,21 @@ var bindMethod = function (claxxRef, fx, fxName, args, pTypes, classTop) {
  */
 /* private */
 var searchMethod = function(roundOne, paramTypes, bestSig, exact, debug) {
-// roundOne -  [[f$,["string","int","int"...]...]
-// Filter out all the fitted methods for the given parameters
+  // roundOne -  [[f$,["string","int","int"...]...]
+  // Filter out all the fitted methods for the given parameters
   var roundTwo = [];
-  var len = roundOne.length;
-  for (var i = 0; i <= len; i++) {
+  // Note that there may be two methods with "void" 
+  // since the one in slot [0] may be the default one created by
+  // declareType, prepareFields, or declareAnonymous. So we must
+  // count down, not up, here. 
+  for (var i = roundOne.length; --i >= -1;) {
     var params;
-    if (i == len) {
+    if (i == -1) {
       if (bestSig == null)
         break;
-        params = bestSig;      
+      params = bestSig;      
     } else {
-        params = roundOne[i][1];
+      params = roundOne[i][1];
     }
     var fittedLevel = [];
     var isFitted = true;
