@@ -158,13 +158,23 @@
   		
    	<echo>Fixing J2S compiler errors</echo>
   	<!-- no idea what this problem could be -->
+  	
+  	<!-- works fine without the line below. Issue might have fixed with newest version of transpiler
     <echo>...fixing Thread.js error</echo>
   	<replace dir="site/swingjs/j2s/java/lang" includes="Thread.js" token="(g.Thread" value="(java.lang.Thread" />
+  	-->
+  	
+  	<!--
     <echo>...replacing "new Boolean" with "Boolean.from" in com, org, and test</echo>
-  	<!-- problem here is that  new Boolean("false") returns true -->
+  	-->
+  	
+  	<!-- problem here is that  new Boolean("false") returns true in javascript -->
+  	<!-- Commenting out these replacements. Fixed in Java2ScriptCompiler.java line 368 
+  	
   	<replace dir="site/swingjs/j2s/org" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
   	<replace dir="site/swingjs/j2s/com" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
   	<replace dir="site/swingjs/j2s/test" includes="**/*.js" token="new Boolean" value="Boolean.from"/>
+	-->	
 
   	<!-- modify class names -->		
 
