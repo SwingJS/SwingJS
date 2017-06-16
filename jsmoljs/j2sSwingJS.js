@@ -4534,7 +4534,7 @@ var J2sLibBase;
 /* public */
 _Loader.getJ2SLibBase = function () {
   var o = window["j2s.lib"];
-  return (o ? o.base + (o.alias == "." ? "" : (o.alias ? o.alias : (o.version ? o.version : "1.0.0")) + "/") : null);
+  return (o ? o.base + (o.alias == "." ? "" : (o.alias ? o.alias : (o.version ? o.version : "3.1.1")) + "/") : null);
 };
 
 /**

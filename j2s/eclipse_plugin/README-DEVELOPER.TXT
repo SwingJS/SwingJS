@@ -6,7 +6,7 @@ At this point in time, you will need either Eclipse 4.2-4.4
 for the Java2Script compiler to work. The plug-in can be found in 
 j2s/eclipse_plugin. 
 
-Within each of those zip files remove net.sf.j2s.core_2.0.0.jar
+Within each of those zip files remove net.sf.j2s.core_3.1.1.jar
 and place it in your eclipse/plugins/ directory.
 
 Make sure you have a .j2s file in the top directory of your project as well.
